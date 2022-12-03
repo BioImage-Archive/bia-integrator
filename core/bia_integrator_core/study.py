@@ -6,6 +6,15 @@ from .models import BIAStudy
 
 logger = logging.getLogger(__name__)
 
+def get_study(accession_id: str) -> BIAStudy:
+    """Return the study object for the given accession identifier."""
+
+    settings = Settings()
+    study_fpath = settings.data_dirpath/"studies"/f"{accession_id}.json"
+    bia_study = BIAStudy.parse_file(study_fpath)
+
+    return bia_study
+
 
 def persist_study(study: BIAStudy):
     """Persist the given study to disk."""

@@ -5,7 +5,7 @@ from bia_integrator_core.annotation import get_study_annotations, persist_study_
 from bia_integrator_core.models import BIAImage, BIAStudy, StudyAnnotation
 from bia_integrator_core.config import Settings
 from bia_integrator_core.integrator import load_and_annotate_study
-
+from .study import get_study
 
 logger = logging.getLogger(__name__)
 
@@ -16,14 +16,6 @@ def get_all_study_identifiers() -> List[str]:
     settings = Settings()
 
     return [fp.stem for fp in settings.studies_dirpath.iterdir()]
-
-
-def get_study(accession_id: str) -> BIAStudy:
-    """Load the study with the given accession identifier."""
-
-    study = load_and_annotate_study(accession_id)
-
-    return study
 
 
 def get_image(accession_id: str, image_id: str) -> BIAImage:

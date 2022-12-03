@@ -1,23 +1,13 @@
-from bia_integrator_core.config import Settings
 from bia_integrator_core.models import BIAStudy
 from bia_integrator_core.annotation import get_study_annotations, get_image_annotations
 from bia_integrator_core.representation import get_representations
-
-
-def load_study(accession_id: str) -> BIAStudy:
-    """Return the study object for the given accession identifier."""
-
-    settings = Settings()
-    study_fpath = settings.data_dirpath/"studies"/f"{accession_id}.json"
-    bia_study = BIAStudy.parse_file(study_fpath)
-
-    return bia_study
+from bia_integrator_core.study import get_study
 
 
 def load_and_annotate_study(accession_id: str) -> BIAStudy:
     """Load the study, merge annotations, and return the result."""
 
-    study = load_study(accession_id)
+    study = get_study(accession_id)
 
     study_annotations = get_study_annotations(accession_id)
     annotations_dict = {}
