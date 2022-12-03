@@ -28,6 +28,7 @@ class BIAStudy(BaseModel):
     organism: str
     release_date: str
     imaging_type: Optional[str]
+    attributes: Dict = {}
     example_image_uri: str = ""
 
     images: Dict[str, BIAImage] = {}
