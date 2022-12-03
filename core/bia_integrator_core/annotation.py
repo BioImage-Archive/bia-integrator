@@ -1,8 +1,8 @@
 import logging
 from typing import List
 
-from bia_integrator_core.models import StudyAnnotation, ImageAnnotation
-from bia_integrator_core.config import Settings
+from .models import StudyAnnotation, ImageAnnotation
+from .config import Settings
 
 
 logger = logging.getLogger()
@@ -43,7 +43,7 @@ def get_image_annotations(accession_id: str, image_id: str) -> List[ImageAnnotat
 
     return image_annotations
   
-  
+
 def persist_study_annotation(annotation: StudyAnnotation):
     """Save the given annotation to disk."""
 
