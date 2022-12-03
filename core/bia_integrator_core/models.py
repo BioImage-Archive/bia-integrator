@@ -18,7 +18,7 @@ class BIAImage(BaseModel):
     original_relpath: pathlib.Path
     dimensions: Optional[str]
     representations: List[BIAImageRepresentation] = []
-    attributes: Optional[Dict]
+    attributes: Dict = {}
 
 
 class BIAStudy(BaseModel):
@@ -34,8 +34,10 @@ class BIAStudy(BaseModel):
 
 
 class BIACollection(BaseModel):
+    name: str
     title: str
     subtitle: str
+    description: Optional[str]
     accession_ids: List[str]
 
 
