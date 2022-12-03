@@ -1,10 +1,10 @@
 import logging
 from typing import List
 
-from bia_integrator_core.annotation import get_study_annotations, persist_study_annotation
-from bia_integrator_core.models import BIAImage, BIAStudy, StudyAnnotation
-from bia_integrator_core.config import Settings
-from bia_integrator_core.integrator import load_and_annotate_study
+from .annotation import get_study_annotations, persist_study_annotation, persist_image_annotation
+from .models import BIAImage, BIAStudy, StudyAnnotation
+from .config import Settings
+from .integrator import load_and_annotate_study
 from .study import get_study
 
 logger = logging.getLogger(__name__)

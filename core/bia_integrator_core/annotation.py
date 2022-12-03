@@ -5,7 +5,7 @@ from .models import StudyAnnotation, ImageAnnotation
 from .config import Settings
 
 
-logger = logging.getLogger()
+logger = logging.getLogger(__name__)
 
 
 def get_study_annotations(accession_id: str) -> List[StudyAnnotation]:
