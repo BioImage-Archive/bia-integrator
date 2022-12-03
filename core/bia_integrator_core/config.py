@@ -5,7 +5,7 @@ from pydantic import BaseSettings
 
 
 class Settings(BaseSettings):
-    data_dirpath: Path = Path.home()/".data"
+    data_dirpath: Path = Path.home()/".bia-integrator-data"
 
     @property
     def studies_dirpath(self):
@@ -18,3 +18,7 @@ class Settings(BaseSettings):
     @property
     def representations_dirpath(self):
         return self.data_dirpath/"representations"
+
+    @property
+    def collections_dirpath(self):
+        return self.data_dirpath/"collections"
