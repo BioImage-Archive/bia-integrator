@@ -43,3 +43,9 @@ class StudyAnnotation(BaseModel):
     accession_id: str
     key: str
     value: str
+
+class ImageAnnotation(BaseModel):
+    accession_id: str
+    image_id: str
+    key: str
+    value: str

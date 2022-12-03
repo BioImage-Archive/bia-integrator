@@ -1,6 +1,7 @@
 from bia_integrator_core.config import Settings
 from bia_integrator_core.models import BIAStudy
-from bia_integrator_core.interface import get_study_annotations
+from bia_integrator_core.annotation import get_study_annotations, get_image_annotations
+from bia_integrator_core.representation import get_representations
 
 
 def load_study(accession_id: str) -> BIAStudy:
@@ -13,7 +14,7 @@ def load_study(accession_id: str) -> BIAStudy:
     return bia_study
 
 
-def load_and_integrate(accession_id: str) -> BIAStudy:
+def load_and_annotate_study(accession_id: str) -> BIAStudy:
     """Load the study, merge annotations, and return the result."""
 
     study = load_study(accession_id)
@@ -23,5 +24,12 @@ def load_and_integrate(accession_id: str) -> BIAStudy:
     for annotation in study_annotations:
         annotations_dict[annotation.key] = annotation.value
     study.__dict__.update(annotations_dict)
+
+    for image_id, image in study.images.items():
+        image_annotations = get_image_annotations(accession_id, image_id)
+        for image_annotation in image_annotations:
+            study.images[image_id].__dict__[image_annotation.key] = image_annotation.value
+        additional_image_reps = get_representations(accession_id, image_id)
+        image.representations += additional_image_reps
 
     return study

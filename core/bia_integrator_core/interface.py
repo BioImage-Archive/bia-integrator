@@ -4,7 +4,7 @@ from typing import List
 from bia_integrator_core.annotation import get_study_annotations, persist_study_annotation
 from bia_integrator_core.models import BIAImage, BIAStudy, StudyAnnotation
 from bia_integrator_core.config import Settings
-from bia_integrator_core.integrator import load_and_integrate
+from bia_integrator_core.integrator import load_and_annotate_study
 
 
 logger = logging.getLogger(__name__)
@@ -21,7 +21,7 @@ def get_all_study_identifiers() -> List[str]:
 def get_study(accession_id: str) -> BIAStudy:
     """Load the study with the given accession identifier."""
 
-    study = load_and_integrate(accession_id)
+    study = load_and_annotate_study(accession_id)
 
     return study
 
@@ -29,7 +29,7 @@ def get_study(accession_id: str) -> BIAStudy:
 def get_image(accession_id: str, image_id: str) -> BIAImage:
     """Get the given image from the study with the given accession identifier."""
 
-    study = load_and_integrate(accession_id)
+    study = load_and_annotate_study(accession_id)
 
     return study.images[image_id]
 
@@ -37,7 +37,7 @@ def get_image(accession_id: str, image_id: str) -> BIAImage:
 def get_images_for_study(accession_id) -> List[BIAImage]:
     """Get all images from the study with the given accession identifier."""
 
-    study = load_and_integrate(accession_id)
+    study = load_and_annotate_study(accession_id)
 
     return list(study.images.values())
 
