@@ -1,6 +1,6 @@
 import logging
 
-from .config import Settings
+from .config import settings
 from .models import BIACollection
 
 
@@ -10,7 +10,6 @@ logger = logging.getLogger(__name__)
 def get_collection(name: str) -> BIACollection:
     """Load the collection with the given name from disk and return."""
 
-    settings = Settings()
     collections_dirpath = settings.data_dirpath/"collections"
     collection_fpath = collections_dirpath/f"{name}.json"
 
@@ -20,7 +19,6 @@ def get_collection(name: str) -> BIACollection:
 def persist_collection(collection: BIACollection):
     """Persist the given collection to disk."""
 
-    settings = Settings()
     collections_dirpath = settings.data_dirpath/"collections"
     collections_dirpath.mkdir(exist_ok=True, parents=True)
 

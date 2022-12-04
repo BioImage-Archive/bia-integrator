@@ -2,6 +2,9 @@ from . import TEST_SAMPLE_DATA
 
 
 def test_load_study():
+    
+    from bia_integrator_core.config import settings
+    settings.data_dirpath = TEST_SAMPLE_DATA
 
     from bia_integrator_core.study import get_study
 

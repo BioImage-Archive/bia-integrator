@@ -3,7 +3,11 @@ from . import TEST_SAMPLE_DATA
 
 def test_get_study_annotations():
 
+    from bia_integrator_core.config import settings
+    settings.data_dirpath = TEST_SAMPLE_DATA
+
     from bia_integrator_core.annotation import get_study_annotations
+
 
     accession_id = "S-BIAD144"
 

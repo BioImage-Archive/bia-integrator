@@ -1,7 +1,7 @@
 import logging
 from typing import List
 
-from bia_integrator_core.config import Settings
+from bia_integrator_core.config import settings
 from bia_integrator_core.models import BIAImageRepresentation
 
 
@@ -11,7 +11,6 @@ logger = logging.getLogger(__name__)
 def persist_image_representation(representation: BIAImageRepresentation):
     """Persist the representation to disk."""
 
-    settings = Settings()
     representation_dirpath = settings.representations_dirpath/representation.accession_id/representation.image_id
     representation_dirpath.mkdir(exist_ok=True, parents=True)
 
@@ -25,7 +24,6 @@ def persist_image_representation(representation: BIAImageRepresentation):
 def get_representations(accession_id: str, image_id: str) -> List[BIAImageRepresentation]:
     """Return all representations stored on disk for the given accession/image."""
     
-    settings = Settings()
     image_reps_dirpath = settings.representations_dirpath/accession_id/image_id
     if image_reps_dirpath.exists():
         image_reps = [

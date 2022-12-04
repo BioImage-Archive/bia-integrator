@@ -22,3 +22,6 @@ class Settings(BaseSettings):
     @property
     def collections_dirpath(self):
         return self.data_dirpath/"collections"
+
+
+settings = Settings()

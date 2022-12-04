@@ -10,15 +10,12 @@ def load_and_annotate_study(accession_id: str) -> BIAStudy:
     study = get_study(accession_id)
 
     study_annotations = get_study_annotations(accession_id)
-    annotations_dict = {}
     study_field_names = [f.name for f in BIAStudy.__fields__.values()]
     for annotation in study_annotations:
         if annotation.key in study_field_names:
             study.__dict__[annotation.key] = annotation.value
         else:
             study.attributes[annotation.key] = annotation.value
-        # annotations_dict[annotation.key] = annotation.value
-    # study.__dict__.update(annotations_dict)
 
     for image_id, image in study.images.items():
         image_annotations = get_image_annotations(accession_id, image_id)

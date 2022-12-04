@@ -2,7 +2,7 @@ import logging
 from typing import List
 
 from .models import StudyAnnotation, ImageAnnotation
-from .config import Settings
+from .config import settings
 
 
 logger = logging.getLogger(__name__)
@@ -10,7 +10,6 @@ logger = logging.getLogger(__name__)
 
 def get_study_annotations(accession_id: str) -> List[StudyAnnotation]:
     """Load study annotations from disk and return."""
-    settings = Settings()
 
     study_annotations_dirpath = settings.annotations_dirpath/accession_id
 
@@ -29,7 +28,6 @@ def get_study_annotations(accession_id: str) -> List[StudyAnnotation]:
 def get_image_annotations(accession_id: str, image_id: str) -> List[ImageAnnotation]:
     """Load image annotations from disk and return."""
 
-    settings = Settings()
     image_annotations_dirpath = settings.annotations_dirpath/accession_id/image_id
     
     if image_annotations_dirpath.exists():
@@ -47,7 +45,6 @@ def get_image_annotations(accession_id: str, image_id: str) -> List[ImageAnnotat
 def persist_study_annotation(annotation: StudyAnnotation):
     """Save the given annotation to disk."""
 
-    settings = Settings()
     annotation_dirpath = settings.annotations_dirpath/annotation.accession_id
     annotation_dirpath.mkdir(exist_ok=True, parents=True)
 
@@ -61,7 +58,6 @@ def persist_study_annotation(annotation: StudyAnnotation):
 def persist_image_annotation(annotation: ImageAnnotation):
     """Save the given image annotation to disk."""
 
-    settings = Settings()
     annotation_dirpath = settings.annotations_dirpath/annotation.accession_id/annotation.image_id
     annotation_dirpath.mkdir(exist_ok=True, parents=True)
 

@@ -3,7 +3,7 @@ from typing import List
 
 from .annotation import get_study_annotations, persist_study_annotation, persist_image_annotation
 from .models import BIAImage, BIAStudy, StudyAnnotation
-from .config import Settings
+from .config import settings
 from .integrator import load_and_annotate_study
 from .study import get_study
 
@@ -12,8 +12,6 @@ logger = logging.getLogger(__name__)
 
 def get_all_study_identifiers() -> List[str]:
     """Return a list of all accession identifiers of studies."""
-
-    settings = Settings()
 
     return [fp.stem for fp in settings.studies_dirpath.iterdir()]
 
