@@ -16,7 +16,7 @@ from bia_integrator_tools.biostudies import (
 logger = logging.getLogger(__file__)
 
 
-IMAGE_EXTS = ['.png', '.czi', '.tif', '.lsm', '.ims', '.lif', '.tiff', '.nd2', '.ome.tiff']
+IMAGE_EXTS = ['.png', '.czi', '.tif', '.lsm', '.ims', '.lif', '.tiff', '.nd2', '.ome.tiff', '.dv', '.svs']
 
 
 def bst_submission_to_bia_study(submission: Submission) -> BIAStudy:
