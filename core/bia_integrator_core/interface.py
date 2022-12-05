@@ -5,7 +5,9 @@ from .annotation import get_study_annotations, persist_study_annotation, persist
 from .models import BIAImage, BIAStudy, StudyAnnotation
 from .config import settings
 from .integrator import load_and_annotate_study
-from .study import get_study
+from .study import get_study, persist_study
+from .collection import get_collection, persist_collection
+from .representation import persist_image_representation
 
 logger = logging.getLogger(__name__)
 
