@@ -43,3 +43,40 @@ def copy_local_to_s3(src_fpath: Path, dst_key: str) -> str:
     response = s3.meta.client.upload_file(str(src_fpath), bucket_name, dst_key, ExtraArgs = {"ACL": "public-read"}) # type: ignore
 
     return f"{endpoint_url}/{bucket_name}/{dst_key}"
+
+
+def upload_multiple_files_to_s3(src_dst_list):
+    """Upload multiple files to S3, expected input is a list of:
+    (source file local path, destination key) tuples.
+    Credentials, endpoint and bucket assumed to be determined by global config."""
+
+    for src_fpath, dst_key in src_dst_list:
+        copy_local_to_s3(src_fpath, dst_key)
+
+
+def get_s3_key_prefix(accession_id, image_id):
+
+    return f"{accession_id}/{image_id}"
+
+
+def copy_local_zarr_to_s3(zarr_fpath: Path, accession_id: str, image_id: str) -> str:
+    """Copy the zarr at the given local path to S3, credentials, bucket and endpoint will
+    be taken from global config. Return the URI of the Zarr generated."""
+
+    endpoint_url = c2zsettings.endpoint_url
+    bucket_name = c2zsettings.bucket_name
+
+    zarr_parent_dirpath = zarr_fpath.parent
+
+    s3_key_prefix = get_s3_key_prefix(accession_id, image_id)
+
+    upload_list = []
+    for f in zarr_fpath.rglob("*"):
+        if f.is_file():
+            upload_list.append((f, f"{s3_key_prefix}/{f.relative_to(zarr_parent_dirpath)}"))
+
+    upload_multiple_files_to_s3(upload_list)
+
+    zarr_image_uri = f"{endpoint_url}/{bucket_name}/{s3_key_prefix}/{image_id}.zarr/0"
+
+    return zarr_image_uri
