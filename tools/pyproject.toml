@@ -10,7 +10,7 @@ packages = [{include = "bia_integrator_tools"}]
 biaint = "bia_integrator_tools.cli:app"
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.10"
 typer = {extras = ["all"], version = "^0.7.0"}
 
 
