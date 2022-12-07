@@ -10,6 +10,11 @@ First install requirements with:
 
     pip install -r requirements 
 
-Then install with:
+This should also install the bia-integrator-core repository. Then install with:
 
     pip install -e .
+
+To get an initial set of data for experimentation/testing, you can also install `bia-integrator-data` from [here](https://github.com/BioImage-Archive/bia-integrator-data), or:
+
+    git clone git@github.com:BioImage-Archive/bia-integrator-data.git ~/.bia-integrator-data
+
