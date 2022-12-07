@@ -18,3 +18,15 @@ To get an initial set of data for experimentation/testing, you can also install 
 
     git clone git@github.com:BioImage-Archive/bia-integrator-data.git ~/.bia-integrator-data
 
+First steps
+-----------
+
+After installation, including the data repository, you should be able to run:
+
+    biaint studies list
+
+to list known studies, and:
+
+    biaint images show S-BIAD144 IM1
+
+to show known information for a specific images. If the `biaint` command isn't found, you may need to run `rehash`.
