@@ -10,6 +10,7 @@ from pydantic import BaseSettings
 
 
 from bia_integrator_tools.io import copy_local_zarr_to_s3
+from bia_integrator_tools.conversion import run_zarr_conversion
 from bia_integrator_core.integrator import load_and_annotate_study
 from bia_integrator_core.models import BIAImageRepresentation
 from bia_integrator_core.interface import persist_image_representation
@@ -33,17 +34,6 @@ def copy_uri_to_local(src_uri: str, dst_fpath: Path):
     with requests.get(src_uri, stream=True) as r:
         with open(dst_fpath, "wb") as fh:
             shutil.copyfileobj(r.raw, fh)
-
-            
-def run_zarr_conversion(input_fpath, output_dirpath):
-    """Convert the local file at input_fpath to Zarr format, in a directory specified by
-    output_dirpath"""
-
-    zarr_cmd = f'export JAVA_HOME={BIOFORMATS2RAW_JAVA_HOME} && {BIOFORMATS2RAW_BIN} "{input_fpath}" "{output_dirpath}"'
-
-    logger.info(f"Converting with {zarr_cmd}")
-    retval = subprocess.run(zarr_cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    assert retval.returncode == 0, f"Error converting to zarr: {retval.stderr.decode('utf-8')}"
 
 
 @click.command()
