@@ -4,7 +4,8 @@ from bia_integrator_core.models import (
     StudyAnnotation,
     BIAImageRepresentation,
     ImageAnnotation,
-    BIACollection
+    BIACollection,
+    StudyTag
 )
 
 from bia_integrator_core.interface import (
@@ -16,7 +17,9 @@ from bia_integrator_core.interface import (
     persist_study_annotation,
     persist_image_representation,
     persist_image_annotation,
-    persist_collection
+    persist_collection,
+    get_study_tags,
+    persist_study_tag
 )
 
 
@@ -44,7 +47,8 @@ def images_list(accession_id: str):
     images = get_images_for_study(accession_id)
 
     for image in images:
-        typer.echo(f"{image.id} {image.original_relpath}")
+        rep_rep = ','.join(rep.type for rep in image.representations)
+        typer.echo(f"{image.id} {image.original_relpath} {rep_rep}")
 
 
 @images_app.command("show")
@@ -106,6 +110,22 @@ def create_image_annotation(accession_id: str, image_id: str, key: str, value: s
     persist_image_annotation(annotation)
 
 
+@annotations_app.command("list-study-tags")
+def list_study_tags(accession_id):
+    tags = get_study_tags(accession_id)
+
+    typer.echo(tags)
+
+
+@annotations_app.command("create-study-tag")
+def create_study_tag(accession_id, value):
+    tag = StudyTag(
+        accession_id=accession_id,
+        value=value
+    )
+    persist_study_tag(tag)
+
+
 @reps_app.command("register")
 def register_image_representation(accession_id: str, image_id: str, type: str, size: int, uri: str):
     rep = BIAImageRepresentation(
@@ -114,7 +134,8 @@ def register_image_representation(accession_id: str, image_id: str, type: str, s
         type=type,
         uri=uri,
         size=size,
-        dimensions=None
+        dimensions=None,
+        attributes={}
     )
     persist_image_representation(rep)
 
@@ -122,7 +143,7 @@ def register_image_representation(accession_id: str, image_id: str, type: str, s
 @collections_app.command("create")
 def create_collection(name: str, title: str, subtitle: str, accessions_list: str):
     collection = BIACollection(
-        name=name,
+        name=name,  
         title=title,
         subtitle=subtitle,
         accession_ids=accessions_list.split(","),

@@ -30,3 +30,16 @@ to list known studies, and:
     biaint images show S-BIAD144 IM1
 
 to show known information for a specific images. If the `biaint` command isn't found, you may need to run `rehash`.
+
+CLI examples
+------------
+
+### Tags
+
+List tags for a study:
+
+    biaint annotations list-study-tags S-BIAD144
+
+Add a tag (value `2D`) for a study:
+
+    biaint annotations create-study-tag S-BIAD144 2D
