@@ -37,8 +37,13 @@ class Omero(BaseModel):
     rdefs: RDefs
     channels: List[Channel]
 
+class CoordinateTransformation(BaseModel):
+    scale: List[float]
+    type: str
+
 class DataSet(BaseModel):
     path: str
+    coordinateTransformations: List[CoordinateTransformation]
 
 class MSMetadata(BaseModel):
     method: str
@@ -53,6 +58,7 @@ class MultiScaleImage(BaseModel):
     datasets: List[DataSet]
     metadata: MSMetadata
     axes: List[Axis]
+    version: str
 
 class ZMeta(BaseModel):
     omero: Omero
@@ -83,6 +89,11 @@ def replace_first_channel_color(image):
     put_string_to_s3(as_indented_str, str(dst_key_as_path))
 
 
+def write_back_zmeta(accession_id: str, image_id: str, zmeta: ZMeta):
+    pass
+
+def get_zmeta(accession_id, image_id):
+    pass
 
 
 @click.command()
@@ -101,12 +112,20 @@ def main(accession_id, image_id):
     r = requests.get(zattrs_uri)
     zmeta = ZMeta.parse_raw(r.content)
 
-    print(zmeta.omero.channels[4].active)
+    # Write a backup
+    with open(f"{accession_id}.backup.zattrs", "w") as fh:
+        fh.write(r.content.decode())
+
+    # Make channels visible & set colours
+    zmeta.omero.channels[3].active = True
+    zmeta.omero.channels[3].color = "FFFF00"
+
     zmeta.omero.channels[4].active = True
-    print(zmeta.omero.channels[4].active)
+    zmeta.omero.channels[4].color = "00FFFF"
 
-
-    # print(r.content.decode())
+    # Get key and write back to S3
+    dst_key_as_path = Path(urlparse(zattrs_uri).path).relative_to(f"/{c2zsettings.bucket_name}")
+    put_string_to_s3(zmeta.json(indent=2), str(dst_key_as_path))
 
 
 if __name__ == "__main__":
