@@ -28,6 +28,19 @@ def copy_uri_to_local(src_uri: str, dst_fpath: Path):
             shutil.copyfileobj(r.raw, fh)
 
 
+def put_string_to_s3(string: str, dst_key: str) -> str:
+    """Put the given string to the given key."""
+
+    endpoint_url = c2zsettings.endpoint_url
+    bucket_name = c2zsettings.bucket_name
+
+    s3 = boto3.resource('s3', endpoint_url=endpoint_url)
+    logger.info(f"Uploading {string} to {dst_key}")
+    s3.Object(bucket_name, dst_key).put(Body=string, ACL="public-read")
+  
+    return f"{endpoint_url}/{bucket_name}/{dst_key}"
+
+
 def copy_local_to_s3(src_fpath: Path, dst_key: str) -> str:
     """Copy the local file with the given path to the S3 location for which the endpoint
     and bucket are described in the global Config object, and the destination key is
