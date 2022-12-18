@@ -1,7 +1,13 @@
 import logging
 from typing import List
 
-from .annotation import get_study_annotations, persist_study_annotation, persist_image_annotation
+from .annotation import (
+    get_study_annotations,
+    persist_study_annotation,
+    persist_image_annotation,
+    persist_study_tag,
+    get_study_tags
+)
 from .models import BIAImage, BIAStudy, StudyAnnotation
 from .config import settings
 from .integrator import load_and_annotate_study
