@@ -36,7 +36,7 @@ def find_authors_in_submission(submission: Submission):
     
     authors = []
     for section in submission.section.subsections:
-        if section.type == 'author':
+        if section.type == 'Author' or section.type == 'author':
             authors.append(author_section_to_author(section))
             
     return authors
