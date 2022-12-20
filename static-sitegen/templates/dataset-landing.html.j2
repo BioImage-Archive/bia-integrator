@@ -32,6 +32,13 @@
                     <h2 class="vf-intro__subheading">{{ study.title }}</h2>
                     Released {{ study.release_date }}
                     <p></p>
+                    Authors: {{ authors }}
+                    <!--
+                    {% for aname in study.authors %}
+                    {{aname.name}} , 
+                    {% endfor %} 
+                    -->
+                    <p></p>
                     <figure class="vf-figure vf-figure--align vf-figure--align-centered">
                         <img class="vf-figure__image" src="{{ study.example_image_uri }}">
                     </figure>  
