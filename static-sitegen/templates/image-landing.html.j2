@@ -1,5 +1,6 @@
 <html lang="en" class="vf-no-js">
     <head>
+        <meta charset="UTF-8">
         <link rel="stylesheet" href="https://assets.emblstatic.net/vf/v2.5.8/css/styles.css">
         <title>{{ image.id }}</title>
     </head>
@@ -30,7 +31,8 @@
                 <div>
                     <h1 class="vf-intro__heading vf-intro__heading--has-tag">{{ study.accession_id }}:{{ image.id }}<a href="JavaScript:Void(0);" class="vf-badge vf-badge--primary vf-badge--phases">alpha</a></h1>
                     <h2 class="vf-intro__subheading">{{ image.original_relpath }}</h2>
-                    <p>{{ study.organism }}</p>
+                    <p>Study Title: {{ study.title }}</p>
+                    <p>Organism: {{ study.organism }}</p>
                     <figure class="vf-figure vf-figure--align vf-figure--align-centered">
                         <img class="vf-figure__image" src="{{ image_uri }}">
                     </figure>  
@@ -52,9 +54,30 @@
                 <div>
                     <h2 class="vf-section-header__heading">Image metadata</h2>
                     <p></p>
-                    Dimensions: {{ image.dimensions }}
+                    {% if not image.dimensions %}
+                        {% if image.attributes.get('SizeX') %}
+                            {% if image.attributes.get('SizeZ') %}
+                                Dimensions: {{ image.attributes['SizeX'] }} x {{ image.attributes['SizeY'] }} x {{ image.attributes['SizeZ'] }}
+                            {% else %}
+                                Dimensions: {{ image.attributes['SizeX'] }} x {{ image.attributes['SizeY'] }}
+                            {% endif %}
+                        {% else %}
+                            Dimensions : {{ image.dimensions }}
+                        {% endif %}
+                    {% else %}
+                        Dimensions : {{ image.dimensions }}
+                    {% endif %}
+                    {% if psize != None %}
+                    <div> Physical Dimensions : {{ psize }} </div>
+                    {% endif %}
                     {% for key, value in image.attributes.items() %}
-                    <div> {{key}} : {{value}} </div>
+                        {% if 'PhysicalSize' not in key %}
+                            {% if key == 'SizeC' %}
+                                <div> Number of Channels : {{value}} </div>    
+                            {% elif key not in ['SizeX','SizeY','SizeZ'] %}
+                                <div> {{key}} : {{value}} </div>
+                            {% endif %}
+                        {% endif %}
                     {% endfor %}
                 </div>
                 <div>

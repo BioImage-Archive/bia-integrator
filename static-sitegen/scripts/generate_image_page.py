@@ -28,7 +28,15 @@ def generate_image_page_html(accession_id, image_id):
         for representation in bia_image.representations
     }
 
-    rendered = template.render(study=bia_study, image=bia_image, zarr_uri=reps_by_type["ome_ngff"].uri)
+    psize = None
+    if bia_image.attributes.get('PhysicalSizeX'):
+        psize = str(bia_image.attributes['PhysicalSizeX']) + ' ' + bia_image.attributes[u'PhysicalSizeXUnit'] + \
+            ' x ' + str(bia_image.attributes['PhysicalSizeY']) + ' ' + str(bia_image.attributes['PhysicalSizeYUnit'])
+        if bia_image.attributes.get('PhysicalSizeZ'):
+            psize += ' x ' + str(bia_image.attributes['PhysicalSizeZ']) + ' ' + str(bia_image.attributes['PhysicalSizeZUnit'])
+    
+
+    rendered = template.render(study=bia_study, image=bia_image, zarr_uri=reps_by_type["ome_ngff"].uri, psize=psize)
 
     return rendered
 
