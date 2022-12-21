@@ -1,6 +1,5 @@
 import os
 import logging
-import subprocess
 from pathlib import Path
 
 import click
@@ -17,13 +16,6 @@ from bia_integrator_core.interface import persist_image_representation
 
 
 logger = logging.getLogger(__file__)
-
-
-BIOFORMATS2RAW_JAVA_HOME = os.environ["BIOFORMATS2RAW_JAVA_HOME"]
-BIOFORMATS2RAW_BIN = os.environ["BIOFORMATS2RAW_BIN"]
-
-
-
 
 
 def copy_uri_to_local(src_uri: str, dst_fpath: Path):
