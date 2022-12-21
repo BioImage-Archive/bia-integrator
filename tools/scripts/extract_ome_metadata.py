@@ -1,19 +1,19 @@
-import json
 import logging
 from pathlib import Path
-from typing import List, Optional
+from typing import List
 from urllib.parse import urlparse, urlunparse
 import xml.etree.ElementTree as ET
 
 import click
 import requests
-from pydantic import BaseModel
 from bia_integrator_core.integrator import load_and_annotate_study
 from bia_integrator_core.models import ImageAnnotation
 from bia_integrator_core.interface import persist_image_annotation
 
 from bia_integrator_tools.utils import get_ome_ngff_rep
 
+
+logger = logging.getLogger(__file__)
 
 @click.command()
 @click.argument("accession_id")
@@ -45,12 +45,12 @@ def main(accession_id, image_id):
         image_data = pixels_element.attrib
         metadata_by_image_name[image_name] = image_data
 
-    print(metadata_by_image_name.values())
+    logger.info(f"Found metadata: {metadata_by_image_name.values()}")
 
     # Pyramidal files sometimes have multiple "Images", we pick the first one and hope this is biggest
     # TODO: Make sure it is!
     first_image_metadata = list(metadata_by_image_name.values())[0]
-    print(first_image_metadata)
+    logger.info(f"Metadata for first image: {first_image_metadata}")
 
     for k, v in first_image_metadata.items():
         annotation = ImageAnnotation(
