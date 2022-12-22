@@ -56,7 +56,7 @@
                     <p></p>
                     {% if not dimensions %}
                         {% if image.attributes.get('SizeX') %}
-                            {% if image.attributes['SizeZ'] != 1 %}
+                            {% if image.attributes['SizeZ'].strip() != '1' %}
                                 Dimensions: {{ image.attributes['SizeX'] }} x {{ image.attributes['SizeY'] }} x {{ image.attributes['SizeZ'] }}
                             {% else %}
                                 Dimensions: {{ image.attributes['SizeX'] }} x {{ image.attributes['SizeY'] }}

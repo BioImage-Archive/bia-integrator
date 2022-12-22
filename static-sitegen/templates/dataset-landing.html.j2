@@ -101,7 +101,13 @@
                             <tr class="vf-table__row">
                                 <td class="vf-table__cell">{{ image.id }}</td>
                                 <td class="vf-table__cell">{{ image.original_relpath }}</td>
-                                <td class="vf-table__cell">{{ image.dimensions }}</td>
+                                {% if image.dimensions %}
+                                    <td class="vf-table__cell">{{ image.dimensions }}</td>
+                                {% elif image.attributes.get('SizeX') %}
+                                    <td class="vf-table__cell"> ({{ image.attributes['SizeT'] }}, {{ image.attributes['SizeC'] }}, {{ image.attributes['SizeZ'] }}, {{ image.attributes['SizeY'] }}, {{ image.attributes['SizeX'] }})</td>
+                                {% else %}
+                                    <td class="vf-table__cell"> None </td>
+                                {% endif %}
                                 <td class="vf-table__cell--actions">
                                     <a href={{ landing_uris[image.id] }}><button class="vf-button vf-button--sm vf-button--icon">view</button><a>
                                     <button class="vf-button vf-button--sm vf-button--icon">download</button>
