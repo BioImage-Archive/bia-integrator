@@ -54,27 +54,33 @@
                 <div>
                     <h2 class="vf-section-header__heading">Image metadata</h2>
                     <p></p>
-                    {% if not image.dimensions %}
+                    {% if not dimensions %}
                         {% if image.attributes.get('SizeX') %}
-                            {% if image.attributes.get('SizeZ') %}
+                            {% if image.attributes['SizeZ'] != 1 %}
                                 Dimensions: {{ image.attributes['SizeX'] }} x {{ image.attributes['SizeY'] }} x {{ image.attributes['SizeZ'] }}
                             {% else %}
                                 Dimensions: {{ image.attributes['SizeX'] }} x {{ image.attributes['SizeY'] }}
                             {% endif %}
                         {% else %}
-                            Dimensions : {{ image.dimensions }}
+                            Dimensions : {{ dimensions }}
                         {% endif %}
                     {% else %}
-                        Dimensions : {{ image.dimensions }}
+                        Dimensions : {{ dimensions }}
+                    {% endif %}
+                    {% if image.attributes.get('SizeC') %}
+                        <div> Number of Channels : {{ image.attributes['SizeC'] }} </div>
+                    {% endif %}
+                    {% if image.attributes.get('SizeT') %}
+                        {% if image.attributes['SizeT'] != 1 %}
+                            <div> Number of Time Points : {{ image.attributes['SizeT'] }} </div>
+                        {% endif %}
                     {% endif %}
                     {% if psize != None %}
-                    <div> Physical Dimensions : {{ psize }} </div>
+                        <div> Physical Dimensions : {{ psize }} </div>
                     {% endif %}
                     {% for key, value in image.attributes.items() %}
-                        {% if 'PhysicalSize' not in key %}
-                            {% if key == 'SizeC' %}
-                                <div> Number of Channels : {{value}} </div>    
-                            {% elif key not in ['SizeX','SizeY','SizeZ'] %}
+                        {% if 'Size' not in key %} 
+                            {% if key not in ['DimensionOrder','md5'] %}
                                 <div> {{key}} : {{value}} </div>
                             {% endif %}
                         {% endif %}

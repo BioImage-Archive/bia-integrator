@@ -28,6 +28,7 @@ def generate_image_page_html(accession_id, image_id):
         for representation in bia_image.representations
     }
 
+    # Format physical dimensions to X unit x Y unit x Z unit format before passing on to the template
     psize = None
     if bia_image.attributes.get('PhysicalSizeX'):
         psize = str(bia_image.attributes['PhysicalSizeX']) + ' ' + bia_image.attributes[u'PhysicalSizeXUnit'] + \
@@ -35,8 +36,21 @@ def generate_image_page_html(accession_id, image_id):
         if bia_image.attributes.get('PhysicalSizeZ'):
             psize += ' x ' + str(bia_image.attributes['PhysicalSizeZ']) + ' ' + str(bia_image.attributes['PhysicalSizeZUnit'])
     
+    # Convert image dimensions to X x Y x Z format before passing on to the template
+    dims = None
+    if bia_image.dimensions :
+        dl = bia_image.dimensions.split(',')
+        if dl[0].startswith('('):
+            dl[0] = dl[0].split('(')[1]
+            dl[-1] = dl[-1].split(')')[0]
+            dims = dl[-1] + ' x ' + dl[-2] 
+            if dl[-3].strip() != '1':
+                dims += ' x ' + dl[-3]
+        else:
+            dims = bia_image.dimensions
 
-    rendered = template.render(study=bia_study, image=bia_image, zarr_uri=reps_by_type["ome_ngff"].uri, psize=psize)
+
+    rendered = template.render(study=bia_study, image=bia_image, zarr_uri=reps_by_type["ome_ngff"].uri, psize=psize, dimensions=dims)
 
     return rendered
 
