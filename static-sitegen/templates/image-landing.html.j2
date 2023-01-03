@@ -52,6 +52,9 @@
                 <div>
                     <h2 class="vf-section-header__heading">Image metadata</h2>
                     Dimensions: {{ image.dimensions }}
+                    {% for key, value in image.attributes.items() %}
+                    <b>{{ key }}</b>={{ value }}<br>
+                    {% endfor %}
                 </div>
                 <div>
                     <div class="vf-content">

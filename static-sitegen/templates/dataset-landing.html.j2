@@ -30,18 +30,28 @@
                 <div>
                     <h1 class="vf-intro__heading vf-intro__heading--has-tag">{{ study.accession_id }}<a href="JavaScript:Void(0);" class="vf-badge vf-badge--primary vf-badge--phases">alpha</a></h1>
                     <h2 class="vf-intro__subheading">{{ study.title }}</h2>
-                    Released {{ study.release_date }}
-                    <p></p>
+                    Released {{ study.release_date }}<br>
+                    {% for author in study.authors %}
+                    {{ author.name}}
+                    {{ "," if not loop.last else "" }}
+                    {% endfor %}
+                </div>
+                <div></div>
+            </section>
+            <section  class="vf-content | embl-grid embl-grid--has-centered-content">
+                <div>
+                {% if 'bia_binder_url' in study.attributes %}
+                    <a href={{ study.attributes['bia_binder_url'] }}><button class="vf-button vf-button--primary vf-button--sm">Explore in BIA Binder</button></a>
+                {% endif %}
+                </div>
+                <div>                  
                     <figure class="vf-figure vf-figure--align vf-figure--align-centered">
                         <img class="vf-figure__image" src="{{ study.example_image_uri }}">
                     </figure>  
                     {{ study.description }}
-
-                    
                 </div>
                 <div></div>
             </section>
-
             <!-- Study information -->
             <section class="vf-content | embl-grid embl-grid--has-centered-content">
                 <div>
@@ -53,7 +63,7 @@
                             <div><b>Organism</b></div>
                             <div>{{ study.organism }}</div>
                             <div><b>Study type</b></div>
-                            <div>Image segmentation</div>
+                            <div>{{ study.attributes["study_type"] }}</div>
                             <div><b>Imaging type</b></div>
                             <div>{{ study.imaging_type }}</div>
                         </div>
@@ -65,11 +75,11 @@
             <!-- Images -->
             <section class="vf-content | embl-grid embl-grid--has-centered-content">
                 <div>
-                    <h2 class="vf-section-header__heading">Images</h2>
+                    <h2 class="vf-section-header__heading">Content</h2>
                     <ul class="vf-list">
-                        <li>{{ study.images|length }}</li>
-                        <li>XXX image annotations</li>
-                        <li>YYY other files</li>
+                        <li>{{ study.images|length }} images</li>
+                        <li>{{ study.archive_files|length }} archive files</li>
+                        <li>{{ study.other_files|length }} other files</li>
                     </ul>
                 </div>
                 <div>
@@ -77,17 +87,17 @@
                     <section>
                         
                     <table class="vf-table">
-                        <caption class="vf-table__caption">Visual examples</caption>
+                        <caption class="vf-table__caption">Images with OME-NGFF representations</caption>
                         <colgroup>
-                              <col span="1" style="width: 30%;">
-                              <col span="1" style="width: 50%;">
                               <col span="1" style="width: 20%;">
+                              <col span="1" style="width: 40%;">
+                              <col span="1" style="width: 30%;">
                               <col span="1" style="width: 10%;">
                         </colgroup>
                             <tr class="vf-table__row">
                                 <th class="vf-table__heading">Image ID</th>
                                 <th class="vf-table__heading">Filename</th>
-                                <th class="vf-table__heading">Dimensions</th>
+                                <th class="vf-table__heading">Dimensions<br>(T, C, Z, Y, X)</th>
                                 <th class="vf-table__heading vf-table__heading--actions">Actions</th>
                             </tr>
                             {% for image in images %}
@@ -102,6 +112,30 @@
                             </tr>
                             {% endfor %}
                       </table>
+                        <br>
+                      <table class="vf-table">
+                        <caption class="vf-table__caption">All images</caption>
+                        <colgroup>
+                              <col span="1" style="width: 20%;">
+                              <col span="1" style="width: 40%;">
+                              <col span="1" style="width: 10%;">
+                        </colgroup>
+                            <tr class="vf-table__row">
+                                <th class="vf-table__heading">Image ID</th>
+                                <th class="vf-table__heading">Filename</th>
+                                <th class="vf-table__heading vf-table__heading--actions">Actions</th>
+                            </tr>
+                            {% for image in study.images.values() %}
+                            <tr class="vf-table__row">
+                                <td class="vf-table__cell">{{ image.id }}</td>
+                                <td class="vf-table__cell">{{ image.original_relpath }}</td>
+                                <td class="vf-table__cell--actions">
+                                    <a href={{ landing_uris[image.id] }}><button class="vf-button vf-button--sm vf-button--icon">view</button><a>
+                                    <button class="vf-button vf-button--sm vf-button--icon">download</button>
+                                </td>                            
+                            </tr>
+                            {% endfor %}
+                      </table>                      
                       </section>
                 </div>
             </section>
