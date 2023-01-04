@@ -20,6 +20,10 @@ template = env.get_template("dataset-landing.html.j2")
 
 def generate_dataset_page_html(accession_id):
     bia_study = load_and_annotate_study(accession_id)
+    author_names = ', '.join([ 
+        author.name
+        for author in bia_study.authors
+    ])
 
     images_with_ome_ngff = []
     image_landing_uris = {}
@@ -32,7 +36,8 @@ def generate_dataset_page_html(accession_id):
     rendered = template.render(
             study=bia_study,
             images=images_with_ome_ngff,
-            landing_uris=image_landing_uris
+            landing_uris=image_landing_uris,
+            authors=author_names
     )
 
     return rendered

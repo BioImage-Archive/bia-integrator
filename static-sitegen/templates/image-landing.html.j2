@@ -1,21 +1,18 @@
 <html lang="en" class="vf-no-js">
     <head>
+        <meta charset="UTF-8">
         <link rel="stylesheet" href="https://assets.emblstatic.net/vf/v2.5.8/css/styles.css">
         <title>{{ image.id }}</title>
     </head>
 
     <body>
         <header class="vf-global-header">
-            <!-- <a href="https://www.ebi.ac.uk/bioimage-archive" class="vf-logo | vf-logo--has--text">
-                <img class="vf-logo__image" src="https://uk1s3.embassy.ebi.ac.uk/bia-zarr-test/images/BIA-Logo.png">
-                <div class="vf-logo__text">BioImage Archive</div>
-            </a> -->
             <header class="vf-global-header">
 
                 <div class="vf-global-header__inner">
           
                   <a href="http://www.embl.de" class="vf-logo">
-                    <img class="vf-logo__image" src="images/BIA-Logo.png" alt="BioImage Archive">
+                    <img class="vf-logo__image" src="/bia-integrator-data/pages/assets/BIA-Logo.png" alt="BioImage Archive">
                     <span class="vf-logo__text">   BioImage Archive</span>
                   </a>
           
@@ -30,7 +27,8 @@
                 <div>
                     <h1 class="vf-intro__heading vf-intro__heading--has-tag">{{ study.accession_id }}:{{ image.id }}<a href="JavaScript:Void(0);" class="vf-badge vf-badge--primary vf-badge--phases">alpha</a></h1>
                     <h2 class="vf-intro__subheading">{{ image.original_relpath }}</h2>
-                    <p>{{ study.organism }}</p>
+                    <p>Study Title: {{ study.title }}</p>
+                    <p>Organism: {{ study.organism }}</p>
                     <figure class="vf-figure vf-figure--align vf-figure--align-centered">
                         <img class="vf-figure__image" src="{{ image_uri }}">
                     </figure>  
@@ -51,9 +49,37 @@
 
                 <div>
                     <h2 class="vf-section-header__heading">Image metadata</h2>
-                    Dimensions: {{ image.dimensions }}
+                    <p></p>
+                    {% if not dimensions %}
+                        {% if image.attributes.get('SizeX') %}
+                            {% if image.attributes['SizeZ'].strip() != '1' %}
+                                Dimensions: {{ image.attributes['SizeX'] }} x {{ image.attributes['SizeY'] }} x {{ image.attributes['SizeZ'] }}
+                            {% else %}
+                                Dimensions: {{ image.attributes['SizeX'] }} x {{ image.attributes['SizeY'] }}
+                            {% endif %}
+                        {% else %}
+                            Dimensions : {{ dimensions }}
+                        {% endif %}
+                    {% else %}
+                        Dimensions : {{ dimensions }}
+                    {% endif %}
+                    {% if image.attributes.get('SizeC') %}
+                        <div> Number of Channels : {{ image.attributes['SizeC'] }} </div>
+                    {% endif %}
+                    {% if image.attributes.get('SizeT') %}
+                        {% if image.attributes['SizeT'] != 1 %}
+                            <div> Number of Time Points : {{ image.attributes['SizeT'] }} </div>
+                        {% endif %}
+                    {% endif %}
+                    {% if psize != None %}
+                        <div> Physical Dimensions : {{ psize }} </div>
+                    {% endif %}
                     {% for key, value in image.attributes.items() %}
-                    <b>{{ key }}</b>={{ value }}<br>
+                        {% if 'Size' not in key %} 
+                            {% if key not in ['DimensionOrder','md5'] %}
+                                <div> <b>{{key}}</b> : {{value}} </div>
+                            {% endif %}
+                        {% endif %}
                     {% endfor %}
                 </div>
                 <div>
@@ -69,38 +95,38 @@
         </div>
     </body>
     <script>
-                    function copyTextToClipboard(text) {
-                    var textArea = document.createElement("textarea");
-                    // Place in the top-left corner of screen regardless of scroll position.
-                    textArea.style.position = 'fixed';
+        function copyTextToClipboard(text) {
+            var textArea = document.createElement("textarea");
+            // Place in the top-left corner of screen regardless of scroll position.
+            textArea.style.position = 'fixed';
 
-                    textArea.value = text;
+            textArea.value = text;
 
-                    document.body.appendChild(textArea);
-                    textArea.focus();
-                    textArea.select();
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
 
-                    var successful;
-                    try {
-                        successful = document.execCommand('copy');
-                    } catch (err) {
-                        console.log('Oops, unable to copy');
-                    }
-                    document.body.removeChild(textArea);
+            var successful;
+            try {
+                successful = document.execCommand('copy');
+            } catch (err) {
+                console.log('Oops, unable to copy');
+            }
+            document.body.removeChild(textArea);
 
-                    if (successful) {
-                        // show user that copying happened - update text on element (e.g. button)
-                        let target = event.target;
-                        let html = target.innerHTML;
-                        target.classList.add("shake");
-                        setTimeout(() => {
-                            // reset after 1 second
-                            target.classList.remove("shake");
-                        }, 1000)
-                    } else {
-                        console.log("Copying failed")
-                    }
-                }
+            if (successful) {
+                // show user that copying happened - update text on element (e.g. button)
+                let target = event.target;
+                let html = target.innerHTML;
+                target.classList.add("shake");
+                setTimeout(() => {
+                    // reset after 1 second
+                    target.classList.remove("shake");
+                }, 1000)
+            } else {
+                console.log("Copying failed")
+            }
+        }
     </script>
     <script type="text/javascript" src="https://kitware.github.io/itk-vtk-viewer/app/itkVtkViewerCDN.js"></script>
 </html>
