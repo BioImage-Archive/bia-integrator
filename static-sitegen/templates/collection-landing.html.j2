@@ -43,73 +43,53 @@
 
                     <section>
                         
-                    <table class="vf-table">
+                    <table class="vf-table--striped">
                         <colgroup>
-                              <col span="1" style="width: 20%;">
-                              <col span="1" style="width: 60%;">
+                              <col span="1" style="width: 15%;">
+                              <col span="1" style="width: 40%;">
+                              <col span="1" style="width: 35%;">
                               <col span="1" style="width: 10%;">
-                              <col span="1" style="width: 5%;">
-                              <col span="1" style="width: 5%;">
                         </colgroup>
                             <tr class="vf-table__row">
-                                <th class="vf-table__heading">Accession</th>
+                                <th class="vf-table__heading">Info</th>
+                                <th class="vf-table__heading">Thumbnail</th>
                                 <th class="vf-table__heading">Title</th>
-                                <th class="vf-table__heading">Imaging type</th>
-                                <th class="vf-table__heading">Images</th>
-                                <th class="vf-table__heading vf-table__heading--actions">Actions</th>
+                                <th class="vf-table__heading">More</th>
                             </tr>
                             {% for study in studies %}
                             <tr class="vf-table__row">
                               <td class="vf-table__cell">
-                                  {{ study.accession_id }}
+                                  <b>{{ study.accession_id }}</b>
+                                  <br><br>
+                                  {{ study.images|length }} images
+                                  <br><br>
+                                  {{ study.tags }}
+                                  <br><br>
+                                  <a href="{{ study.accession_id }}.html"><button class="vf-button vf-button--sm">view</button></a>
+                              </td>
+                              <td class="vf-table__cell">{{ study.title }}</td>
+                              <td class="vf-table__cell">
                                   <figure class="vf-figure vf-figure--align vf-figure--align-centered">
                                     <img class="vf-figure__image" src="{{ study.example_image_uri }}">
                                   </figure>  
                               </td>
-                              <td class="vf-table__cell">{{ study.title }}</td>
-                              <td class="vf-table__cell">{{ study.imaging_type }}</td>
-                              <td class="vf-table__cell">{{ study.images|length }}</td>
-                              <td class="vf-table__cell--actions">
+                              <td class="vf-table__cell">
+                                {{ study.imaging_type }}
+                                <br><hr>
+                                {{ study.organism }}
+                              </td>
+                              {# <td class="vf-table__cell">{{ study.images|length }}</td> #}
+                              {# <td class="vf-table__cell--actions">
                                 <a href="{{ study.accession_id }}.html"><button class="vf-button vf-button--sm vf-button--icon">view</button></a>
-                            </td>
+                              </td> #}
                             </tr>
+ 
                             {% endfor %}
                       </table>
                       </section>
                 </div>
             </section>
-        <!-- <div class="vf-content">
-        <table>
-            <thead>
-              <tr>
-                <th scope="col">Event</th>
-                <th scope="col">Date</th>
-                <th scope="col">Type</th>
-                <th scope="col">Location</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>dave</td>
-                <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima accusamus a nostrum odit aliquid repudiandae architecto molestiae, dolores.</td>
-                <td>roger</td>
-                <td>London, U.K.</td>
-              </tr>
-              <tr>
-                <td>dave</td>
-                <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio fugit illo officia dignissimos amet.</td>
-                <td>roger</td>
-                <td>London, U.K.</td>
-              </tr>
-              <tr>
-                <td>dave</td>
-                <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</td>
-                <td>roger</td>
-                <td>London, U.K.</td>
-              </tr>
-            </tbody>
-            </table>
-            </div> -->
-        </div>
+
+          </div>
     </body>
 </html>
