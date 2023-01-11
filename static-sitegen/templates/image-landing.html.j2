@@ -50,29 +50,17 @@
                 <div>
                     <h2 class="vf-section-header__heading">Image metadata</h2>
                     <p></p>
-                    {% if not dimensions %}
-                        {% if image.attributes.get('SizeX') %}
-                            {% if image.attributes['SizeZ'].strip() != '1' %}
-                                Dimensions: {{ image.attributes['SizeX'] }} x {{ image.attributes['SizeY'] }} x {{ image.attributes['SizeZ'] }}
-                            {% else %}
-                                Dimensions: {{ image.attributes['SizeX'] }} x {{ image.attributes['SizeY'] }}
-                            {% endif %}
-                        {% else %}
-                            Dimensions : {{ dimensions }}
-                        {% endif %}
-                    {% else %}
-                        Dimensions : {{ dimensions }}
+                    <b> Image Dimensions </b>: {{ dimensions }}
+                    {% if psize != None %}
+                        <div> <b> Physical Dimensions </b>: {{ psize }} </div>
                     {% endif %}
                     {% if image.attributes.get('SizeC') %}
-                        <div> Number of Channels : {{ image.attributes['SizeC'] }} </div>
+                        <div> <b> Number of Channels</b> : {{ image.attributes['SizeC'] }} </div>
                     {% endif %}
                     {% if image.attributes.get('SizeT') %}
                         {% if image.attributes['SizeT'] != 1 %}
-                            <div> Number of Time Points : {{ image.attributes['SizeT'] }} </div>
+                            <div> <b> Number of Time Points </b>: {{ image.attributes['SizeT'] }} </div>
                         {% endif %}
-                    {% endif %}
-                    {% if psize != None %}
-                        <div> Physical Dimensions : {{ psize }} </div>
                     {% endif %}
                     {% for key, value in image.attributes.items() %}
                         {% if 'Size' not in key %} 
