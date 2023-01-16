@@ -29,9 +29,13 @@ def main(accession_id, image_id):
 
     parsed_url = urlparse(ngff_rep.uri)
     ome_metadata_path = Path(parsed_url.path).parent/"OME/METADATA.ome.xml"
+    # ome_metadata_path = Path(parsed_url.path).parent.parent.parent/"OME/METADATA.ome.xml"
+
     ome_metadata_uri = urlunparse((parsed_url.scheme, parsed_url.netloc, str(ome_metadata_path), None, None, None))
+    logger.info(f"Fetching OME metadata from {ome_metadata_uri}")
 
     r = requests.get(ome_metadata_uri)
+    assert r.status_code == 200
     root = ET.fromstring(r.content)
     xml_namespace = list(root.attrib.values())[0].split()[0]
 
@@ -49,6 +53,7 @@ def main(accession_id, image_id):
 
     # Pyramidal files sometimes have multiple "Images", we pick the first one and hope this is biggest
     # TODO: Make sure it is!
+
     first_image_metadata = list(metadata_by_image_name.values())[0]
     logger.info(f"Metadata for first image: {first_image_metadata}")
 
