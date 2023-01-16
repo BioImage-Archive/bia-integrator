@@ -18,12 +18,12 @@ from bia_integrator_tools.biostudies import (
 logger = logging.getLogger(__file__)
 
 
-IMAGE_EXTS = ['.png', '.czi', '.tif', '.lsm', '.ims', '.lif', '.tiff', '.nd2', '.ome.tiff', '.dv', '.svs']
+IMAGE_EXTS = ['.png', '.czi', '.tif', '.lsm', '.ims', '.lif', '.tiff', '.nd2', '.ome.tiff', '.dv', '.svs', '.jpg']
 ARCHIVE_EXTS = ['.zip']
 
 
 def is_image(file: File) -> bool:
-    return file.path.suffix in IMAGE_EXTS
+    return file.path.suffix.lower() in IMAGE_EXTS
 
 
 def author_section_to_author(author_section: Section) -> Author:
@@ -67,7 +67,7 @@ def bst_submission_to_bia_study(submission: Submission) -> BIAStudy:
     archive_files = []
 
     for file in all_files:
-        if file.path.suffix in IMAGE_EXTS:
+        if is_image(file):
             image_files.append(file)
         elif file.path.suffix in ARCHIVE_EXTS:
             archive_files.append(file)
