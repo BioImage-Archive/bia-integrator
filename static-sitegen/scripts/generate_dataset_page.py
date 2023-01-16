@@ -27,16 +27,20 @@ def generate_dataset_page_html(accession_id):
 
     images_with_ome_ngff = []
     image_landing_uris = {}
+    image_thumbnails = {}
     for image in bia_study.images.values():
         for representation in image.representations:
             if representation.type == "ome_ngff":
                 images_with_ome_ngff.append(image)
                 image_landing_uris[image.id] = f"{accession_id}/{image.id}.html"
+            if representation.type == "thumbnail":
+                image_thumbnails[image.id] = representation.uri
 
     rendered = template.render(
             study=bia_study,
             images=images_with_ome_ngff,
             landing_uris=image_landing_uris,
+            image_thumbnails=image_thumbnails,
             authors=author_names
     )
 
