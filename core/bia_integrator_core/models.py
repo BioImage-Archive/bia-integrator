@@ -4,6 +4,18 @@ from typing import Dict, List, Optional, Set
 from pydantic import BaseModel
 
 
+class ChannelRendering(BaseModel):
+    colormap_start: List[float]
+    colormap_end: List[float]
+    scale_factor: float = 1.0
+
+
+class RenderingInfo(BaseModel):
+    channel_renders: List[ChannelRendering]
+    default_z: Optional[int]
+    default_t: Optional[int]
+
+
 class BIAImageRepresentation(BaseModel):
     accession_id: str
     image_id: str
@@ -12,6 +24,7 @@ class BIAImageRepresentation(BaseModel):
     type: Optional[str]
     dimensions: Optional[str]
     attributes: Optional[Dict]
+    rendering: Optional[RenderingInfo]
 
 
 class BIAFileRepresentation(BaseModel):
