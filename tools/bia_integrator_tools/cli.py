@@ -83,7 +83,7 @@ def show(accession_id: str):
 def list():
     studies = get_all_study_identifiers()
 
-    typer.echo('\n'.join(studies))
+    typer.echo('\n'.join(sorted(studies)))
 
 
 @annotations_app.command("list-studies")
