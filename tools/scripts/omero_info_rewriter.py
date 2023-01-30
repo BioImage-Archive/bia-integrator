@@ -96,6 +96,16 @@ def get_zmeta(accession_id, image_id):
     pass
 
 
+def set_multichannel_rendering(zmeta):
+
+    # Make channels visible & set colours
+    zmeta.omero.channels[3].active = True
+    zmeta.omero.channels[3].color = "FFFF00"
+
+    zmeta.omero.channels[4].active = True
+    zmeta.omero.channels[4].color = "00FFFF"
+
+
 @click.command()
 @click.argument("accession_id")
 @click.argument("image_id")
@@ -116,12 +126,7 @@ def main(accession_id, image_id):
     with open(f"{accession_id}.backup.zattrs", "w") as fh:
         fh.write(r.content.decode())
 
-    # Make channels visible & set colours
-    zmeta.omero.channels[3].active = True
-    zmeta.omero.channels[3].color = "FFFF00"
-
-    zmeta.omero.channels[4].active = True
-    zmeta.omero.channels[4].color = "00FFFF"
+    zmeta.omero.channels[0].color = "FFFFFF"
 
     # Get key and write back to S3
     dst_key_as_path = Path(urlparse(zattrs_uri).path).relative_to(f"/{c2zsettings.bucket_name}")

@@ -1,3 +1,8 @@
+import logging
+
+logger = logging.getLogger("biaint")
+logging.basicConfig(level=logging.INFO)
+
 import typer
 
 from bia_integrator_core.models import (
@@ -21,7 +26,7 @@ from bia_integrator_core.interface import (
     get_study_tags,
     persist_study_tag
 )
-
+from bia_integrator_core.integrator import load_and_annotate_study
 
 
 app = typer.Typer()
@@ -53,10 +58,12 @@ def images_list(accession_id: str):
 
 @images_app.command("show")
 def images_show(accession_id: str, image_id: str):
-    image = get_image(accession_id, image_id)
+    study = load_and_annotate_study(accession_id)
+    image = study.images[image_id]
 
     typer.echo(image.id)
     typer.echo(image.original_relpath)
+    typer.echo(f"Dimensions: {image.dimensions}")
     typer.echo("Attributes:")
     for k, v in image.attributes.items():
         typer.echo(f"  {k}={v}")
@@ -67,7 +74,7 @@ def images_show(accession_id: str, image_id: str):
     
 @studies_app.command("show")
 def show(accession_id: str):
-    study = get_study(accession_id)
+    study = load_and_annotate_study(accession_id)
 
     typer.echo(study)
 
@@ -76,7 +83,7 @@ def show(accession_id: str):
 def list():
     studies = get_all_study_identifiers()
 
-    typer.echo('\n'.join(studies))
+    typer.echo('\n'.join(sorted(studies)))
 
 
 @annotations_app.command("list-studies")

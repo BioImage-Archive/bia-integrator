@@ -17,7 +17,9 @@ def main(zarr_fpath, accession_id, image_id):
 
     logging.basicConfig(level=logging.INFO)
 
-    copy_local_zarr_to_s3(Path(zarr_fpath), accession_id, image_id)
+    zarr_uri = copy_local_zarr_to_s3(Path(zarr_fpath), accession_id, image_id)
+
+    print(zarr_uri)
 
 
 if __name__ == "__main__":
