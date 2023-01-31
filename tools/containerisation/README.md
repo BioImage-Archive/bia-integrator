@@ -7,7 +7,7 @@ The docker image can be built locally from the Dockerfile or pulled from EBI's g
 ## Building image locally
 From directory with Dockerfile build the image.
 ```
-docker build --build-arg SSH_KEY="$SSH_KEY" --squash -t bia:v1.0 .
+docker build bia:v1.0 .
 ```
 
 ## Running from container registry
@@ -32,19 +32,25 @@ export bioformats2raw_bin=/opt/conda/envs/bia/bin/bioformats2raw
 export AWS_ACCESS_KEY_ID=XXXXXXXXXXXXXXXXXXXX
 export AWS_SECRET_ACCESS_KEY=XXXXXXXXXXXXXXXX
 
+# Make reference to container an environment variable to cater for locally built version or version pulled from gitlab
+# If pulled from gitlab
+export CONT_NAME=dockerhub.ebi.ac.uk/bioimage-archive/study-explorer/fire-to-s3/bia:v1.0
+# If built locally
+export CONT_NAME=bia:v1.0
+
 # All commands from bia-integrator-tools can be run. Some examples:
 
 # Pull details for a study
-docker container run --rm --mount type=bind,src=${data_dirpath},dst=/root/.bia-integrator-data bia:v1.0 conda run -n bia python bia-integrator-tools/scripts/bst_pulldown.py S-BIAD229
+docker container run --rm --mount type=bind,src=${data_dirpath},dst=/root/.bia-integrator-data $CONT_NAME conda run -n bia python bia-integrator-tools/scripts/bst_pulldown.py S-BIAD229
 
 # List studies
-docker container run --rm --mount type=bind,src=${data_dirpath},dst=/root/.bia-integrator-data bia:v1.0 conda run -n bia biaint studies list
+docker container run --rm --mount type=bind,src=${data_dirpath},dst=/root/.bia-integrator-data $CONT_NAME conda run -n bia biaint studies list
 
 # List images for a study
-docker container run --rm --mount type=bind,src=${data_dirpath},dst=/root/.bia-integrator-data bia:v1.0 conda run -n bia biaint images list S-BIAD229
+docker container run --rm --mount type=bind,src=${data_dirpath},dst=/root/.bia-integrator-data $CONT_NAME conda run -n bia biaint images list S-BIAD229
 
 # Convert to zarr and upload to S3
-docker container run --rm -e bioformats2raw_java_home=$bioformats2raw_java_home -e bioformats2raw_bin=$bioformats2raw_bin -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY --mount type=bind,src=${data_dirpath},dst=/root/.bia-integrator-data bia:v1.0 conda run -n bia python bia-integrator-tools/scripts/convert_to_zarr_and_upload.py S-BIAD229 IM6
+docker container run --rm -e bioformats2raw_java_home=$bioformats2raw_java_home -e bioformats2raw_bin=$bioformats2raw_bin -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY --mount type=bind,src=${data_dirpath},dst=/root/.bia-integrator-data $CONT_NAME conda run -n bia python bia-integrator-tools/scripts/convert_to_zarr_and_upload.py S-BIAD229 IM6
 
 ```
 
