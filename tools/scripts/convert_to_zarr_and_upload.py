@@ -1,4 +1,4 @@
-import os
+import json
 import logging
 from pathlib import Path
 
@@ -31,7 +31,8 @@ def copy_uri_to_local(src_uri: str, dst_fpath: Path):
 @click.command()
 @click.argument("accession_id")
 @click.argument("image_id")
-def main(accession_id, image_id):
+@click.option("--save-to-file", is_flag=True, default=False, help="Save representation to file")
+def main(accession_id, image_id, save_to_file):
 
     logging.basicConfig(level=logging.INFO)
 
@@ -62,10 +63,18 @@ def main(accession_id, image_id):
         size=0,
         type="ome_ngff",
         uri=zarr_image_uri,
-        dimensions=None
+        dimensions=None,
+        rendering=None,
+        attributes={}
     )
 
-    persist_image_representation(representation)
+    if not save_to_file:
+        persist_image_representation(representation)
+    else:
+        fname = f"{accession_id}-{image_id}.json"
+        logging.info(f"Saving to {fname}")
+        with open(fname, "w") as fh:
+            fh.write(representation.json(indent=2))
         
 
 
