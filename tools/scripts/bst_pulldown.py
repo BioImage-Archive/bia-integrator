@@ -76,6 +76,9 @@ def bst_submission_to_bia_study(submission: Submission) -> BIAStudy:
 
     logger.info(f"Submission has {len(all_files)} files, of which {len(image_files)} are images and {len(archive_files)} are archive files.")
 
+    other_file_exts = set(file.path.suffix for file in other_files)
+    logger.info(f"Other file extensions: {other_file_exts}")
+
     images = {}
     for n, imfile in enumerate(image_files, start=1):
         image_id = f"IM{n}"
@@ -86,7 +89,8 @@ def bst_submission_to_bia_study(submission: Submission) -> BIAStudy:
             size=imfile.size,
             type="fire_object",
             dimensions=None,
-            attributes = {}
+            attributes = {},
+            rendering=None
         )
         images[image_id] = BIAImage(
             dimensions=None,
