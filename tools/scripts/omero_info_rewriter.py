@@ -100,10 +100,10 @@ def set_multichannel_rendering(zmeta):
 
     # Make channels visible & set colours
     zmeta.omero.channels[3].active = True
-    zmeta.omero.channels[3].color = "FFFF00"
+    zmeta.omero.channels[3].color = "00FFFF"
 
-    zmeta.omero.channels[4].active = True
-    zmeta.omero.channels[4].color = "00FFFF"
+    # zmeta.omero.channels[4].active = True
+    # zmeta.omero.channels[4].color = "FFFF00"
 
 
 @click.command()
@@ -126,7 +126,10 @@ def main(accession_id, image_id):
     with open(f"{accession_id}.backup.zattrs", "w") as fh:
         fh.write(r.content.decode())
 
-    zmeta.omero.channels[0].color = "FFFFFF"
+    if len(zmeta.omero.channels) == 1:
+        zmeta.omero.channels[0].color = "FFFFFF"
+    else:
+        set_multichannel_rendering(zmeta)
 
     # Get key and write back to S3
     dst_key_as_path = Path(urlparse(zattrs_uri).path).relative_to(f"/{c2zsettings.bucket_name}")

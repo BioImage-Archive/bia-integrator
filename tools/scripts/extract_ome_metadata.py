@@ -15,21 +15,11 @@ from bia_integrator_tools.utils import get_ome_ngff_rep
 
 logger = logging.getLogger(__file__)
 
-@click.command()
-@click.argument("accession_id")
-@click.argument("image_id")
-def main(accession_id, image_id):
 
-    logging.basicConfig(level=logging.INFO)
+def image_metadata_from_zarr_uri(uri):
 
-    bia_study = load_and_annotate_study(accession_id)
-    image = bia_study.images[image_id]
-
-    ngff_rep = get_ome_ngff_rep(image)
-
-    parsed_url = urlparse(ngff_rep.uri)
+    parsed_url = urlparse(uri)
     ome_metadata_path = Path(parsed_url.path).parent/"OME/METADATA.ome.xml"
-    # ome_metadata_path = Path(parsed_url.path).parent.parent.parent/"OME/METADATA.ome.xml"
 
     ome_metadata_uri = urlunparse((parsed_url.scheme, parsed_url.netloc, str(ome_metadata_path), None, None, None))
     logger.info(f"Fetching OME metadata from {ome_metadata_uri}")
@@ -56,6 +46,23 @@ def main(accession_id, image_id):
 
     first_image_metadata = list(metadata_by_image_name.values())[0]
     logger.info(f"Metadata for first image: {first_image_metadata}")
+
+    return first_image_metadata
+
+
+@click.command()
+@click.argument("accession_id")
+@click.argument("image_id")
+def main(accession_id, image_id):
+
+    logging.basicConfig(level=logging.INFO)
+
+    bia_study = load_and_annotate_study(accession_id)
+    image = bia_study.images[image_id]
+
+    ngff_rep = get_ome_ngff_rep(image)
+
+    first_image_metadata = image_metadata_from_zarr_uri(ngff_rep.uri)
 
     for k, v in first_image_metadata.items():
         annotation = ImageAnnotation(
