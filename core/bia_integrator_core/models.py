@@ -3,20 +3,25 @@ from typing import Dict, List, Optional, Set
 
 from pydantic import BaseModel
 
+class BIABaseModel(BaseModel):
+    def json(self, ensure_ascii=False, **kwargs):
+        """ensure_ascii defaults to False instead of True to handle the common case of non-ascii names"""
 
-class ChannelRendering(BaseModel):
+        return super().json(ensure_ascii=ensure_ascii, **kwargs)
+
+class ChannelRendering(BIABaseModel):
     colormap_start: List[float]
     colormap_end: List[float]
     scale_factor: float = 1.0
 
 
-class RenderingInfo(BaseModel):
+class RenderingInfo(BIABaseModel):
     channel_renders: List[ChannelRendering]
     default_z: Optional[int]
     default_t: Optional[int]
 
 
-class BIAImageRepresentation(BaseModel):
+class BIAImageRepresentation(BIABaseModel):
     accession_id: str
     image_id: str
     uri: str
@@ -27,14 +32,14 @@ class BIAImageRepresentation(BaseModel):
     rendering: Optional[RenderingInfo]
 
 
-class BIAFileRepresentation(BaseModel):
+class BIAFileRepresentation(BIABaseModel):
     accession_id: str
     file_id: str
     uri: str
     size: int
 
 
-class BIAFile(BaseModel):
+class BIAFile(BIABaseModel):
     id: str
     original_relpath: pathlib.Path
     original_size: int
@@ -42,7 +47,7 @@ class BIAFile(BaseModel):
     representations: List[BIAFileRepresentation] = []
 
 
-class BIAImage(BaseModel):
+class BIAImage(BIABaseModel):
     id: str
     original_relpath: pathlib.Path
     dimensions: Optional[str]
@@ -50,11 +55,11 @@ class BIAImage(BaseModel):
     attributes: Dict = {}
 
 
-class Author(BaseModel):
+class Author(BIABaseModel):
     name: str
 
 
-class BIAStudy(BaseModel):
+class BIAStudy(BIABaseModel):
     accession_id: str
     title: str
     description: str
@@ -71,8 +76,7 @@ class BIAStudy(BaseModel):
 
     tags: Set[str] = set()
 
-
-class BIACollection(BaseModel):
+class BIACollection(BIABaseModel):
     name: str
     title: str
     subtitle: str
@@ -80,18 +84,18 @@ class BIACollection(BaseModel):
     accession_ids: List[str]
 
 
-class StudyTag(BaseModel):
+class StudyTag(BIABaseModel):
     accession_id: str
     value: str
 
 
-class StudyAnnotation(BaseModel):
+class StudyAnnotation(BIABaseModel):
     accession_id: str
     key: str
     value: str
 
 
-class ImageAnnotation(BaseModel):
+class ImageAnnotation(BIABaseModel):
     accession_id: str
     image_id: str
     key: str
