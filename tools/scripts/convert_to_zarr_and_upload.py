@@ -72,7 +72,7 @@ def main(accession_id, image_id, save_to_file):
         persist_image_representation(representation)
     else:
         fname = f"{accession_id}-{image_id}.json"
-        logging.info(f"Saving to {fname}")
+        logger.info(f"Saving to {fname}")
         with open(fname, "w") as fh:
             fh.write(representation.json(indent=2))
         

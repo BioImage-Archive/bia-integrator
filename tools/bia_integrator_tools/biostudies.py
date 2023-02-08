@@ -64,7 +64,8 @@ class Section(BaseModel):
     type: str
     accno: Optional[str]
     attributes: List[Attribute] = []
-    subsections: List["Section"] = []
+    # subsections: List["Section"] = []
+    subsections: List[Union["Section", List["Section"]]] = []
     links: List[Link] = []
     files: List[Union[File, List[File]]] = []
 
@@ -162,6 +163,7 @@ def find_file_lists_in_section(section, flists) -> list:
 
     for subsection in section.subsections:
         find_file_lists_in_section(subsection, flists)
+
 
     return flists
 

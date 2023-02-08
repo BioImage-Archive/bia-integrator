@@ -1,3 +1,4 @@
+import logging
 import datetime
 
 import click
@@ -73,13 +74,9 @@ def image_to_catalogue_entry(image):
 
 @click.command()
 def main():
+    logging.basicConfig(level=logging.INFO)
+
     accession_ids = get_all_study_identifiers()
-
-    # for accession_id in accession_ids:
-    #     print(f"Loading {accession_id}")
-    #     study = load_and_annotate_study(accession_id)
-
-    # accession_ids = ['S-BIAD7', 'S-BIAD144', 'S-BIAD229', 'S-BIAD548', 'S-BIAD564']
 
     entries = []
 
@@ -93,7 +90,8 @@ def main():
                 try:
                     entry = image_to_catalogue_entry(image)
                     entries.append(entry)
-                except KeyError:
+                except KeyError as e:
+                    logging.info(f"Can't find {e} for {accession_id}:{image.id}")
                     pass
 
     # print(entries)
