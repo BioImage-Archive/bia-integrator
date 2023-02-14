@@ -28,6 +28,7 @@
                     <h1 class="vf-intro__heading vf-intro__heading--has-tag">{{ study.accession_id }}:{{ image.id }}<a href="JavaScript:Void(0);" class="vf-badge vf-badge--primary vf-badge--phases">alpha</a></h1>
                     <h2 class="vf-intro__subheading">{{ image.original_relpath }}</h2>
                     <p>Study Title: {{ study.title }}</p>
+                    <p>By: {{ authors }}</p>
                     <p>Organism: {{ study.organism }}</p>
                     <figure class="vf-figure vf-figure--align vf-figure--align-centered">
                         <img class="vf-figure__image" src="{{ image_uri }}">

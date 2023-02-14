@@ -22,6 +22,10 @@ def generate_image_page_html(accession_id, image_id):
 
     bia_study = load_and_annotate_study(accession_id)
     bia_image = bia_study.images[image_id]
+    author_names = ', '.join([ 
+        author.name
+        for author in bia_study.authors
+    ])
 
     reps_by_type = {
         representation.type: representation
@@ -54,7 +58,8 @@ def generate_image_page_html(accession_id, image_id):
         else:
             dims = str(bia_image.attributes['SizeX']) + ' x ' + str(bia_image.attributes['SizeY']) 
 
-    rendered = template.render(study=bia_study, image=bia_image, zarr_uri=reps_by_type["ome_ngff"].uri, psize=psize, dimensions=dims)
+    rendered = template.render(study=bia_study, image=bia_image, zarr_uri=reps_by_type["ome_ngff"].uri, 
+            psize=psize, dimensions=dims, authors=author_names)
 
     return rendered
 
