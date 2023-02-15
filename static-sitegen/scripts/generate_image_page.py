@@ -1,5 +1,6 @@
 import os
 import logging
+import urllib.parse
 
 import click
 from jinja2 import Environment, FileSystemLoader, select_autoescape
@@ -58,8 +59,21 @@ def generate_image_page_html(accession_id, image_id):
         else:
             dims = str(bia_image.attributes['SizeX']) + ' x ' + str(bia_image.attributes['SizeY']) 
 
-    rendered = template.render(study=bia_study, image=bia_image, zarr_uri=reps_by_type["ome_ngff"].uri, 
-            psize=psize, dimensions=dims, authors=author_names)
+
+    try:
+        download_uri = urllib.parse.quote(reps_by_type["fire_object"].uri, safe=":/")
+    except KeyError:
+        download_uri = None
+        
+    rendered = template.render(
+        study=bia_study,
+        image=bia_image,
+        zarr_uri=reps_by_type["ome_ngff"].uri,
+        psize=psize,
+        dimensions=dims,
+        authors=author_names,
+        download_uri=download_uri
+    )
 
     return rendered
 

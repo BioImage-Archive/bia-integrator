@@ -1,5 +1,6 @@
 import os
 import logging
+import urllib.parse
 
 import click
 from jinja2 import Environment, FileSystemLoader, select_autoescape # type: ignore
@@ -28,6 +29,7 @@ def generate_dataset_page_html(accession_id):
     images_with_ome_ngff = []
     image_landing_uris = {}
     image_thumbnails = {}
+    image_download_uris = {}
     for image in bia_study.images.values():
         for representation in image.representations:
             if representation.type == "ome_ngff":
@@ -35,12 +37,15 @@ def generate_dataset_page_html(accession_id):
                 image_landing_uris[image.id] = f"{accession_id}/{image.id}.html"
             if representation.type == "thumbnail":
                 image_thumbnails[image.id] = representation.uri
+            if representation.type == "fire_object":
+                image_download_uris[image.id] = urllib.parse.quote(representation.uri, safe=":/")
 
     rendered = template.render(
             study=bia_study,
             images=images_with_ome_ngff,
             landing_uris=image_landing_uris,
             image_thumbnails=image_thumbnails,
+            image_download_uris=image_download_uris,
             authors=author_names
     )
 
