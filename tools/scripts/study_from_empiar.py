@@ -1,11 +1,27 @@
 import json
+from typing import Optional
 
 import click
 import requests
-from bia_integrator_core.models import BIAStudy, BIAImage, BIAImageRepresentation
+from pydantic import BaseModel
+from bia_integrator_core.models import BIAStudy, BIAImage, BIAImageRepresentation, Author
 from bia_integrator_core.interface import persist_study
 
 from ruamel.yaml import YAML
+
+
+class EMPIARAuthor(BaseModel):
+    
+    name: str
+    author_orcid: Optional[str]
+
+
+def parse_empiar_authors(raw_obj):
+    entry_dict = list(raw_obj.values())[0]
+    author_dictlist = entry_dict['authors']
+    authors = [EMPIARAuthor.parse_obj(entry['author']) for entry in author_dictlist]
+    return authors
+    
 
 def get_empiar_file_uri(accession_no, relpath):
     
@@ -30,6 +46,7 @@ def main(definition_yaml_fpath):
 
     r = requests.get(empiar_uri)
     raw_data = json.loads(r.content)
+    empiar_authors = parse_empiar_authors(raw_data)
 
     images = {}
     for image_id, imdesc in config_dict["images"].items():
@@ -58,7 +75,8 @@ def main(definition_yaml_fpath):
         organism=organism,
         imaging_type=imaging_type,
         example_image_uri=example_image_uri,
-        images=images
+        images=images,
+        authors = [Author.parse_obj(a.__dict__) for a in empiar_authors]
     )
 
     persist_study(bia_study)
