@@ -24,7 +24,8 @@ from bia_integrator_core.interface import (
     persist_image_annotation,
     persist_collection,
     get_study_tags,
-    persist_study_tag
+    persist_study_tag,
+    get_collection
 )
 from bia_integrator_core.integrator import load_and_annotate_study
 
@@ -156,6 +157,15 @@ def create_collection(name: str, title: str, subtitle: str, accessions_list: str
         accession_ids=accessions_list.split(","),
         description=None
     )
+    persist_collection(collection)
+
+
+@collections_app.command("add-study")
+def add_study_to_collection(collection_name: str, accession_id: str):
+    collection = get_collection(collection_name)
+    
+    collection.accession_ids.append(accession_id)
+
     persist_collection(collection)
 
     

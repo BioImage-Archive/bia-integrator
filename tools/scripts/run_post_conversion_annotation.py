@@ -24,8 +24,11 @@ def main(accession_id):
     for image_id, image in bia_study.images.items():
         for rep in image.representations:
             if rep.type == "ome_ngff":
-                set_rendering_info_for_ome_ngff_rep(rep)
-                generate_and_persist_thumbnail_from_ngff_rep(rep, dimensions)
+                try:
+                    set_rendering_info_for_ome_ngff_rep(rep)
+                    generate_and_persist_thumbnail_from_ngff_rep(rep, dimensions)
+                except AttributeError:
+                    pass
 
 
 if __name__ == "__main__":
