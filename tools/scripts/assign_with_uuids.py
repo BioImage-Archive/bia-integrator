@@ -13,6 +13,7 @@ from bia_integrator_tools.biostudies import (
     Section,
     attributes_to_dict,
     load_submission,
+    file_uri,
     find_files_in_submission
 )
 
@@ -72,6 +73,7 @@ def bst_file_to_file_reference(accession_id: str, bst_file: File) -> FileReferen
     fileref = FileReference(
         id=fileref_id,
         name=fileref_name,
+        uri=file_uri(accession_id, bst_file),
         size_in_bytes=bst_file.size,
         attributes=fileref_attributes
     )
@@ -138,7 +140,8 @@ def imaging_method_from_submission(submission: Submission) -> str:
 def bst_submission_to_bia_study(submission: Submission) -> BIAStudy:
 
     accession_id = submission.accno
-    filerefs = filerefs_from_bst_submission(submission)
+    filerefs_list = filerefs_from_bst_submission(submission)
+    filerefs_dict = {fileref.id: fileref for fileref in filerefs_list}
     study_title = study_title_from_submission(submission)
     imaging_method = imaging_method_from_submission(submission)
 
@@ -152,7 +155,7 @@ def bst_submission_to_bia_study(submission: Submission) -> BIAStudy:
         description=study_section_attr_dict['Description'],
         organism=study_section_attr_dict.get('Organism', "Unknown"),
         imaging_type=imaging_method,
-        file_references=filerefs
+        file_references=filerefs_dict
     )
 
     return bia_study
