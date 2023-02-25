@@ -47,9 +47,23 @@ class BIAFile(BIABaseModel):
     representations: List[BIAFileRepresentation] = []
 
 
+class FileReference(BIABaseModel):
+    """A reference to an externally hosted file."""
+
+    id: str # A unique identifier for the file reference
+    name: str # A short descriptive name
+    uri: str # URI of the file
+    size_in_bytes: Optional[int] # Size of the file
+    attributes: Dict = {}
+
+
 class BIAImage(BIABaseModel):
+    accession_id: str
     id: str
+    # TODO - rationalise these (name should probably replace original_relpath)
+    name: Optional[str]
     original_relpath: pathlib.Path
+
     dimensions: Optional[str]
     representations: List[BIAImageRepresentation] = []
     attributes: Dict = {}
@@ -66,15 +80,20 @@ class BIAStudy(BIABaseModel):
     authors: Optional[List[Author]] = []
     organism: str
     release_date: str
+    
+    # FIXME - this should be a list
     imaging_type: Optional[str]
     attributes: Dict = {}
     example_image_uri: str = ""
+
+    file_references: Dict[str, FileReference] = {}
 
     images: Dict[str, BIAImage] = {}
     archive_files: Dict[str, BIAFile] = {}
     other_files: Dict[str, BIAFile] = {}
 
     tags: Set[str] = set()
+
 
 class BIACollection(BIABaseModel):
     name: str

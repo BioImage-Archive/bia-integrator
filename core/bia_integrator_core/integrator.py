@@ -1,4 +1,5 @@
 from bia_integrator_core.models import BIAImage, BIAStudy
+from bia_integrator_core.image import get_images
 from bia_integrator_core.annotation import get_study_annotations, get_image_annotations, get_study_tags
 from bia_integrator_core.representation import get_representations
 from bia_integrator_core.study import get_study
@@ -16,6 +17,10 @@ def load_and_annotate_study(accession_id: str) -> BIAStudy:
             study.__dict__[annotation.key] = annotation.value
         else:
             study.attributes[annotation.key] = annotation.value
+
+    additional_images = get_images(accession_id)
+    study.images.update(additional_images)
+
 
     # TODO - refactor the image annotation into a separate function
     image_field_names = [f.name for f in BIAImage.__fields__.values()]

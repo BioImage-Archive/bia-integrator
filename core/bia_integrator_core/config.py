@@ -16,6 +16,10 @@ class Settings(BaseSettings):
         return self.data_dirpath/"annotations"
 
     @property
+    def images_dirpath(self):
+        return self.data_dirpath/"images"
+
+    @property
     def representations_dirpath(self):
         return self.data_dirpath/"representations"
 
