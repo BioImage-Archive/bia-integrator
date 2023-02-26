@@ -42,7 +42,8 @@ def main(yaml_fpath):
             image_id=image_id,
             size=sum(fileref.size_in_bytes for fileref in filerefs),
             uri=[fileref.uri for fileref in filerefs],
-            type="multi_fire_object"
+            attributes={"fileref_ids": fileref_ids},
+            type="multi_fileref"
         )
 
         image = BIAImage(

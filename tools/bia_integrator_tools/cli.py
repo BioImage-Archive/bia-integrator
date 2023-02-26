@@ -47,6 +47,17 @@ app.add_typer(collections_app, name="collections")
 annotations_app = typer.Typer()
 app.add_typer(annotations_app, name="annotations")
 
+filerefs_app = typer.Typer()
+app.add_typer(filerefs_app, name="filerefs")
+
+
+@filerefs_app.command("list")
+def filerefs_list(accession_id: str):
+    bia_study = load_and_annotate_study(accession_id)
+
+    for fileref in bia_study.file_references.values():
+        print(fileref.id, fileref.name)
+
 
 @images_app.command("list")
 def images_list(accession_id: str):
