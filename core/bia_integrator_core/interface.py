@@ -1,6 +1,7 @@
 import logging
 from typing import List
 
+from .alias import persist_image_alias, get_aliases
 from .annotation import (
     get_study_annotations,
     persist_study_annotation,

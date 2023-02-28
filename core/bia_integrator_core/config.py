@@ -12,6 +12,10 @@ class Settings(BaseSettings):
         return self.data_dirpath/"studies"
 
     @property
+    def aliases_dirpath(self):
+        return self.data_dirpath/"aliases"
+
+    @property
     def annotations_dirpath(self):
         return self.data_dirpath/"annotations"
 

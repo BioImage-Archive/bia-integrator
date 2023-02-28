@@ -22,7 +22,7 @@ def persist_study(study: BIAStudy):
     studies_dirpath.mkdir(exist_ok=True, parents=True)
 
     study_fpath = studies_dirpath/f"{study.accession_id}.json"
-    logger.info(f"Writing collection to {study_fpath}")
+    logger.info(f"Writing study to {study_fpath}")
 
     with open(study_fpath, "w") as fh:
         fh.write(study.json(indent=2))
