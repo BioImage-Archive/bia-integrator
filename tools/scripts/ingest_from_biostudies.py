@@ -112,6 +112,7 @@ def find_authors_in_submission(submission: Submission):
 def study_title_from_submission(submission: Submission) -> str:
 
     submission_attr_dict = attributes_to_dict(submission.attributes)
+    study_section_attr_dict = attributes_to_dict(submission.section.attributes)
 
     study_title = submission_attr_dict.get("Title", None)
     if not study_title:

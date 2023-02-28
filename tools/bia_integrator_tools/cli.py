@@ -10,7 +10,8 @@ from bia_integrator_core.models import (
     BIAImageRepresentation,
     ImageAnnotation,
     BIACollection,
-    StudyTag
+    StudyTag,
+    BIAImageAlias
 )
 
 from bia_integrator_core.interface import (
@@ -25,12 +26,17 @@ from bia_integrator_core.interface import (
     persist_collection,
     get_study_tags,
     persist_study_tag,
-    get_collection
+    get_collection,
+    get_aliases,
+    persist_image_alias
 )
 from bia_integrator_core.integrator import load_and_annotate_study
 
 
 app = typer.Typer()
+
+aliases_app = typer.Typer()
+app.add_typer(aliases_app, name="aliases")
 
 images_app = typer.Typer()
 app.add_typer(images_app, name="images")
@@ -51,12 +57,40 @@ filerefs_app = typer.Typer()
 app.add_typer(filerefs_app, name="filerefs")
 
 
+@aliases_app.command("add")
+def add_alias(accession_id: str, image_id: str, name: str):
+    alias = BIAImageAlias(
+        accession_id=accession_id,
+        image_id=image_id,
+        name=name
+    )
+
+    persist_image_alias(alias)
+
+
+@aliases_app.command("list")
+def list_aliases(accession_id: str, image_id: str):
+    aliases = get_aliases(accession_id)
+
+    for alias in aliases:
+        if image_id == alias.image_id:
+            print(alias.name, alias.accession_id, alias.image_id)
+
+
+@aliases_app.command("list-for-study")
+def list_aliases_for_study(accession_id: str):
+    aliases = get_aliases(accession_id)
+
+    for alias in aliases:
+        print(alias.name, alias.accession_id, alias.image_id)
+
+
 @filerefs_app.command("list")
-def filerefs_list(accession_id: str):
+def list_filerefs(accession_id: str):
     bia_study = load_and_annotate_study(accession_id)
 
     for fileref in bia_study.file_references.values():
-        print(fileref.id, fileref.name)
+        print(fileref.id, fileref.name, fileref.size_in_bytes)
 
 
 @images_app.command("list")
