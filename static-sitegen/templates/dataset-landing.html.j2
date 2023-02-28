@@ -110,7 +110,7 @@
                         <tbody>
                             {% for image in images %}
                             <tr>
-                                <td>{{ image.id }}</td>
+                                <td>{{ image_names[image.id] }}</td>
                                 <td>
                                     <img class="vf-figure__image" src={{ image_thumbnails[image.id] }}>
                                 </td>
@@ -147,8 +147,7 @@
                         </thead>
                         <tbody>
                             {% for image in study.images.values() %}
-                            <tr>
-                                <td>{{ image.id }}</td>
+                                <td>{{ image_names[image.id] }}</td>
                                 <td>{{ image.original_relpath }}</td>
                                 <td><a href={{ image_download_uris[image.id] }}>Download</a></td>
                             </tr>

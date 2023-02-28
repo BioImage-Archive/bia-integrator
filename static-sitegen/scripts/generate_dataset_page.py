@@ -6,6 +6,7 @@ import click
 from jinja2 import Environment, FileSystemLoader, select_autoescape # type: ignore
 
 from bia_integrator_core.integrator import load_and_annotate_study
+from bia_integrator_core.interface import get_aliases
 
 
 logger = logging.getLogger(os.path.basename(__file__))
@@ -26,6 +27,16 @@ def generate_dataset_page_html(accession_id):
         for author in bia_study.authors
     ])
 
+    aliases = get_aliases(accession_id)
+    aliases_by_id = {
+        alias.image_id: alias.name
+        for alias in aliases
+    }
+    image_names = {
+        image_id: aliases_by_id.get(image_id, image_id)
+        for image_id in bia_study.images
+    }
+
     images_with_ome_ngff = []
     image_landing_uris = {}
     image_thumbnails = {}
@@ -41,6 +52,7 @@ def generate_dataset_page_html(accession_id):
                 image_download_uris[image.id] = urllib.parse.quote(representation.uri, safe=":/")
 
     rendered = template.render(
+            image_names=image_names,
             study=bia_study,
             images=images_with_ome_ngff,
             landing_uris=image_landing_uris,
