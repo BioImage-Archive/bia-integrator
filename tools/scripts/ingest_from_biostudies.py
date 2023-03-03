@@ -7,6 +7,7 @@ import click
 from bia_integrator_core.models import BIAStudy, FileReference, Author
 from bia_integrator_core.interface import persist_study
 
+from bia_integrator_tools.identifiers import file_to_id
 from bia_integrator_tools.biostudies import (
     File,
     Submission,
@@ -21,52 +22,9 @@ from bia_integrator_tools.biostudies import (
 logger = logging.getLogger(__file__)
 
 
-def bst_file_to_id(accession_id: str, bst_file: File):
-
-    hash_input = accession_id
-    hash_input += str(bst_file.path)
-    hash_input += str(bst_file.size)
-    hexdigest = hashlib.md5(hash_input.encode("utf-8")).hexdigest()
-
-    id_as_uuid = uuid.UUID(version=4, hex=hexdigest)
-
-    return str(id_as_uuid)
-
-
-def test_bst_file_to_uuid():
-
-    first_bst_file = File(path="file1.tif", size=123)
-    second_bst_file = File(path="file2.tif", size=456)
-    third_bst_file = File(path="file2.tif", size=789)
-
-    # id is a string
-    id = bst_file_to_id(accession_id="foo1", bst_file=first_bst_file)
-    assert isinstance(id, str)
-
-    # Same accession, same file, same size should produce same id
-    first_id = bst_file_to_id(accession_id="foo1", bst_file=first_bst_file)
-    second_id = bst_file_to_id(accession_id="foo1", bst_file=first_bst_file)
-    assert first_id == second_id
-
-    # Same accession, different filename should produce different ids
-    first_id = bst_file_to_id(accession_id="foo1", bst_file=first_bst_file)
-    second_id = bst_file_to_id(accession_id="foo1", bst_file=second_bst_file)
-    assert first_id != second_id
-
-    # Different accession, same filename should produce different ids
-    first_id = bst_file_to_id(accession_id="foo1", bst_file=first_bst_file)
-    second_id = bst_file_to_id(accession_id="foo2", bst_file=first_bst_file)
-    assert first_id != second_id
-
-    # Same accession, same filename, different size should produce different ids
-    first_id = bst_file_to_id(accession_id="foo1", bst_file=second_bst_file)
-    second_id = bst_file_to_id(accession_id="foo1", bst_file=third_bst_file)
-    assert first_id != second_id
-
-
 def bst_file_to_file_reference(accession_id: str, bst_file: File) -> FileReference:
 
-    fileref_id = bst_file_to_id(accession_id, bst_file)
+    fileref_id = file_to_id(accession_id, bst_file)
     fileref_name = str(bst_file.path)
     fileref_attributes = attributes_to_dict(bst_file.attributes)
 
