@@ -15,10 +15,9 @@ def get_image_rep_by_type(accession_id, image_id, rep_type):
 
     bia_study = load_and_annotate_study(accession_id)
 
-    for image in bia_study.images.values():
-        for image_rep in image.representations:
-            if image_rep.type == rep_type:
-                return image_rep
+    for image_rep in bia_study.images[image_id].representations:
+        if image_rep.type == rep_type:
+            return image_rep
 
     return None
 
@@ -28,6 +27,8 @@ def main(accession_id: str, image_id: str, rep_type: str):
 
     bia_study = load_and_annotate_study(accession_id)
     image_rep = get_image_rep_by_type(accession_id, image_id, rep_type)
+
+    print(image_rep)
 
     cache_root_dirpath = Path.home()/".cache"/"bia-converter"
     cache_dirpath = cache_root_dirpath/accession_id
