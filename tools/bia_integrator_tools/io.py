@@ -1,10 +1,12 @@
 from pathlib import Path
 import logging
 import shutil
+from urllib.parse import urlparse
 
 import boto3
 import requests
 from pydantic import BaseSettings
+from bia_integrator_core.models import FileReference
 
     
 logger = logging.getLogger(__name__)
@@ -93,3 +95,23 @@ def copy_local_zarr_to_s3(zarr_fpath: Path, accession_id: str, image_id: str) ->
     zarr_image_uri = f"{endpoint_url}/{bucket_name}/{s3_key_prefix}/{image_id}.zarr/0"
 
     return zarr_image_uri
+
+
+def stage_fileref_and_get_fpath(accession_id: str, fileref: FileReference) -> Path:
+
+    cache_root_dirpath = Path.home()/".cache"/"bia-converter"
+    cache_dirpath = cache_root_dirpath/accession_id
+    cache_dirpath.mkdir(exist_ok=True, parents=True)
+
+    suffix = Path(urlparse(fileref.uri).path).suffix
+    dst_fname = fileref.id+suffix
+    dst_fpath = cache_dirpath/dst_fname
+    logger.info(f"Checking cache for {fileref.name}")
+
+    if not dst_fpath.exists():
+        copy_uri_to_local(fileref.uri, dst_fpath)
+        logger.info(f"Downloading file to {dst_fpath}")
+    else:
+        logger.info(f"File exists at {dst_fpath}")
+
+    return dst_fpath

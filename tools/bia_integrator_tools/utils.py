@@ -11,6 +11,17 @@ from bia_integrator_core.interface import persist_image_representation
 logger = logging.getLogger(__name__)
 
 
+def get_image_rep_by_type(accession_id, image_id, rep_type):
+
+    bia_study = load_and_annotate_study(accession_id)
+
+    for image_rep in bia_study.images[image_id].representations:
+        if image_rep.type == rep_type:
+            return image_rep
+
+    return None
+
+
 def get_ome_ngff_rep(image):
     for rep in image.representations:
         if rep.type == "ome_ngff":
