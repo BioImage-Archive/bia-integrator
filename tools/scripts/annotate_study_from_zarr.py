@@ -38,7 +38,7 @@ def main(accession_id):
             annotation = zarr_rep_to_dimension_annotation(rep)
             persist_image_annotation(annotation)
             # FIXME - this is an ugly way to do this, should parse properly somewhere else
-            tdim, cdim, zdim, ydim, xdim = literal_eval(annotation.value)
+            dims_tuple = literal_eval(annotation.value)
 
             def make_and_persist_annotation(key, value):
                 ann = ImageAnnotation(
@@ -49,8 +49,14 @@ def main(accession_id):
                 )
                 persist_image_annotation(ann)
 
-            make_and_persist_annotation("SizeT", tdim)
-            make_and_persist_annotation("SizeC", cdim)
+            if len(dims_tuple) == 5:
+                tdim, cdim, zdim, ydim, xdim = dims_tuple
+                make_and_persist_annotation("SizeT", tdim)
+                make_and_persist_annotation("SizeC", cdim)
+            if len(dims_tuple) == 3:
+                zdim, ydim, xdim = dims_tuple
+
+
             make_and_persist_annotation("SizeZ", zdim)
             make_and_persist_annotation("SizeY", ydim)
             make_and_persist_annotation("SizeX", xdim)

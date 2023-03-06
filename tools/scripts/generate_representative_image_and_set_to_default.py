@@ -2,7 +2,7 @@ import logging
 import tempfile
 
 import click
-from bia_integrator_core.models import BIAImageRepresentation, StudyAnnotation
+from bia_integrator_core.models import BIAImageRepresentation, StudyAnnotation, RenderingInfo, ChannelRendering
 from bia_integrator_core.interface import persist_image_representation, persist_study_annotation
 from bia_integrator_tools.utils import get_ome_ngff_rep_by_accession_and_image
 from bia_integrator_tools.io import copy_local_to_s3
@@ -28,7 +28,19 @@ def main(accession_id, image_id):
     ome_ngff_rep = get_ome_ngff_rep_by_accession_and_image(accession_id, image_id)
     rendering = ome_ngff_rep.rendering
 
-    channel_renders = ome_ngff_rep.rendering.channel_renders
+    if not rendering:
+        render = ChannelRendering(
+            colormap_start=[0., 0., 0.],
+            colormap_end=[1., 1., 1.],
+            scale_factor=1
+        )
+        rendering=RenderingInfo(
+            channel_renders=[render],
+            default_t=None,
+            default_z=None
+        )
+
+    channel_renders = rendering.channel_renders
     imarray = min_dim_array_from_zarr_uri(ome_ngff_rep.uri, dimensions)
     channel_arrays = get_single_channel_image_arrays(imarray, rendering.default_z, rendering.default_t)
     scaled_arrays = scale_channel_arrays(channel_arrays, channel_renders)

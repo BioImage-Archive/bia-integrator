@@ -60,8 +60,11 @@ def min_dim_array_from_zarr_uri(zarr_uri, dimensions):
     image_node = nodes[0]
 
     for array in reversed(image_node.data):
-    
-        size_t, size_c, size_z, size_y, size_x = array.shape
+
+        if len(array.shape) == 5:
+            size_t, size_c, size_z, size_y, size_x = array.shape
+        if len(array.shape) == 3:
+            size_z, size_y, size_x = array.shape
         
         if (size_x >= min_x) and (size_y >= min_y):
             return array
@@ -115,7 +118,7 @@ def thumbnail_from_image(accession_id: str, image_id: str, dimensions=(256, 256)
     return im
 
 
-def pad_to_target_dims(im, target_dims):
+def pad_to_target_dims(im, target_dims, fill=(0, 0, 0)):
 
     w, h = im.size
 
@@ -123,25 +126,36 @@ def pad_to_target_dims(im, target_dims):
     delta_h = target_dims[1] - h
 
     padding = (delta_w//2, delta_h//2, delta_w-(delta_w//2), delta_h-(delta_h//2))
-    padded_im = ImageOps.expand(im, padding, fill=(0, 0, 0))
+    padded_im = ImageOps.expand(im, padding, fill=fill)
     
     return padded_im
 
 
 def get_single_channel_image_arrays(imarray, z=None, t=None):
 
-    size_t, size_c, size_z, size_y, size_x = imarray.shape
+    if len(imarray.shape) == 5:
+        size_t, size_c, size_z, size_y, size_x = imarray.shape
+        if not t:
+            t = size_t // 2
+        if not z:
+            z = size_z // 2
+        channel_images = [
+            imarray[t,c,z,:,:].compute()
+            for c in range(size_c)
+        ]
+    if len(imarray.shape) == 3:
+        size_z, size_y, size_x = imarray.shape
 
-    if not t:
-        t = size_t // 2
+        if not z:
+            z = size_z // 2
+        channel_images = [
+            imarray[z,:,:].compute()
+        ]
+
     
-    if not z:
-        z = size_z // 2
 
-    channel_images = [
-        imarray[t,c,z,:,:].compute()
-        for c in range(size_c)
-    ]
+
+
     
     return channel_images
 
