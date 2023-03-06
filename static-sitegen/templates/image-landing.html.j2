@@ -54,8 +54,11 @@
                     <h2 class="vf-section-header__heading">Image metadata</h2>
                     <p></p>
                     <b> Image Dimensions </b>: {{ dimensions }}
+                    {% if pdims != None %}
+                        <div> <b> Physical Dimensions </b>: {{ pdims }} </div>
+                    {% endif %}
                     {% if psize != None %}
-                        <div> <b> Physical Dimensions </b>: {{ psize }} </div>
+                        <div> <b> Pixel/Voxel Size </b>: {{ psize }} </div>
                     {% endif %}
                     {% if image.attributes.get('SizeC') %}
                         <div> <b> Number of Channels</b> : {{ image.attributes['SizeC'] }} </div>
