@@ -108,7 +108,7 @@ Check to converted file:
 https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/EMPIAR-11275/IM1/IM1.zarr/0
 
 Then:
-export ACCESSION_NO=10903
+export ACCESSION_NO=10311
 python scripts/study_from_empiar.py local-data/EMPIAR-$ACCESSION_NO.yml
 python scripts/register_ome_ngff_rep.py EMPIAR-$ACCESSION_NO IM1 https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/EMPIAR-$ACCESSION_NO/IM1/IM1.zarr/0
 python scripts/extract_ome_metadata.py EMPIAR-$ACCESSION_NO IM1
