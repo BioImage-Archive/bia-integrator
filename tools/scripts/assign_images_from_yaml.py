@@ -82,6 +82,28 @@ def copy_uri_to_local(src_uri: str, dst_fpath: Path):
         with open(dst_fpath, "wb") as fh:
             shutil.copyfileobj(r.raw, fh)
 
+def convert_xml_to_zarr(accession_id, image_id, src_uris):
+    bia_study = load_and_annotate_study(accession_id)
+    dst_dir_basepath = Path("tmp/c2z")/accession_id
+    dst_dir_basepath.mkdir(exist_ok=True, parents=True)
+
+    for src_uri in src_uris:
+        dst_fpath = dst_dir_basepath/Path(src_uri).name
+        if dst_fpath.exists():
+            logger.info(f"{dst_fpath} exists. Skipping fetch")
+        else:
+            copy_uri_to_local(src_uri, dst_fpath)
+        
+    # Save first Study ID as source for bioformats2raw
+    src_fpath = dst_dir_basepath/Path(src_uris[0]).name
+    
+    zarr_fpath = dst_dir_basepath/f"{image_id}.zarr"
+    if not zarr_fpath.exists():
+        run_zarr_conversion(src_fpath, zarr_fpath)
+
+    # Copy to S3
+    zarr_image_uri = copy_local_zarr_to_s3(zarr_fpath, accession_id, image_id)
+    
 def convert_multichannel_to_zarr_and_upload(
     accession_id,
     image_id,
@@ -167,7 +189,7 @@ def main(yaml_fpath):
 
         persist_image(image)
 
-        bioformats_conversion_type = image_ref.attributes["bioformats_conversion_type"]
+        bioformats_conversion_type = image_rep.attributes["bioformats_conversion_type"]
         if bioformats_conversion_type == "multiple_channels_to_zarr":
             convert_multichannel_to_zarr_and_upload(
                 accession_id=image_rep.accession_id,
@@ -176,10 +198,15 @@ def main(yaml_fpath):
                 channel_names=image_rep.attributes["channel_names"],
                 pattern=image_rep.attributes["pattern"]
             )
-        elif bioformats_conversion_type == "":
-            
+        elif bioformats_conversion_type == "xml_to_zarr":
+            #convert_xml_to_zarr(
+            #    accession_id=image_rep.accession_id,
+            #    image_id=image_rep.image_id,
+            #    src_uris=image_rep.uri
+            #)
+            pass
         else:
-            logger.error("No converter for f{bioformats_conversion_type}")
+            logger.error(f"No converter for {bioformats_conversion_type}")
 
 
 if __name__ == "__main__":
