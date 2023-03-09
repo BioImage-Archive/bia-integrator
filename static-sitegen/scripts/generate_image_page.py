@@ -6,6 +6,7 @@ import click
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 from bia_integrator_core.integrator import load_and_annotate_study
+from bia_integrator_core.interface import get_aliases
 
 
 logger = logging.getLogger(os.path.basename(__file__))
@@ -32,6 +33,14 @@ def generate_image_page_html(accession_id, image_id):
         representation.type: representation
         for representation in bia_image.representations
     }
+
+    aliases = get_aliases(accession_id)
+    aliases_by_id = {
+        alias.image_id: alias.name
+        for alias in aliases
+    }
+    image_alias = aliases_by_id.get(image_id, image_id)
+
 
     # Format physical dimensions to X unit x Y unit x Z unit format before passing on to the template
     psize = None
@@ -68,6 +77,7 @@ def generate_image_page_html(accession_id, image_id):
     rendered = template.render(
         study=bia_study,
         image=bia_image,
+        image_alias=image_alias,
         zarr_uri=reps_by_type["ome_ngff"].uri,
         psize=psize,
         dimensions=dims,
