@@ -13,4 +13,21 @@ The BIA Integrator serves this goal by allowing us to:
 On top of the BIA Integrator, by using its API, we can build:
 
 * Conversion pipelines for images.
+* Metadata extraction and storage.
 * Web pages that visualise images.
+
+
+
+Example flow
+------------
+
+1. Ingest from BioStudies, creating a BIAStudy object, together with file references.
+
+
+flowchart TD
+    A[Submission in BioStudies] -->|Ingest study metadata| B(BIA Study)
+    B --> C[Assign images]
+    C -->|One| D[Laptop]
+    C -->|Two| E[iPhone]
+    C -->|Three| F[fa:fa-car Car]
+  
