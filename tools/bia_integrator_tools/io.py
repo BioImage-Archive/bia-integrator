@@ -1,6 +1,7 @@
 from pathlib import Path
 import logging
 import shutil
+import subprocess
 from urllib.parse import urlparse
 
 import boto3
@@ -18,6 +19,18 @@ class C2ZSettings(BaseSettings):
 
 
 c2zsettings = C2ZSettings()
+
+
+def upload_dirpath_as_zarr_image_rep(src_dirpath, accession_id, image_id):
+
+    dst_prefix = f"{c2zsettings.bucket_name}/{accession_id}/{image_id}/{image_id}.zarr"
+    logger.info(f"Uploading with prefix {dst_prefix}")
+    cmd = f"aws --region us-east-1 --endpoint-url {c2zsettings.endpoint_url} s3 sync {src_dirpath}/ s3://{dst_prefix} --acl public-read"
+    subprocess.run(cmd, shell=True)
+
+    uri = f"{c2zsettings.endpoint_url}/{c2zsettings.bucket_name}/{accession_id}/{image_id}/{image_id}.zarr"
+
+    return uri
 
 
 def copy_uri_to_local(src_uri: str, dst_fpath: Path):

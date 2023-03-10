@@ -9,8 +9,9 @@ import click
 from bia_integrator_core.models import BIAImageRepresentation
 from bia_integrator_core.integrator import load_and_annotate_study
 from bia_integrator_core.interface import persist_image_representation
-from bia_integrator_tools.io import stage_fileref_and_get_fpath, c2zsettings
-from bia_integrator_tools.utils import get_image_rep_by_type
+from bia_integrator_tools.io import (
+    stage_fileref_and_get_fpath, c2zsettings, upload_dirpath_as_zarr_image_rep
+)
 
 logger = logging.getLogger(__file__)
 
@@ -28,16 +29,7 @@ def unzip_and_get_path_of_contents(zip_fpath, td):
     return src_dirpath
 
 
-def upload_dirpath_as_zarr_image_rep(src_dirpath, accession_id, image_id):
 
-    dst_prefix = f"{c2zsettings.bucket_name}/{accession_id}/{image_id}/{image_id}.zarr"
-    logger.info(f"Uploading with prefix {dst_prefix}")
-    cmd = f"aws --region us-east-1 --endpoint-url {c2zsettings.endpoint_url} s3 sync {src_dirpath}/ s3://{dst_prefix} --acl public-read"
-    subprocess.run(cmd, shell=True)
-
-    uri = f"{c2zsettings.endpoint_url}/{c2zsettings.bucket_name}/{accession_id}/{image_id}/{image_id}.zarr"
-
-    return uri
 
 
 @click.command()
