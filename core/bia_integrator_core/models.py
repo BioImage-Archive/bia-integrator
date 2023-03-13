@@ -1,7 +1,11 @@
 import pathlib
-from typing import Dict, List, Optional, Set, Union
+from typing import Dict, List, Optional, Set, Union, AnyStr
 
 from pydantic import BaseModel
+from urllib.parse import urlparse, urlunparse
+from pathlib import Path
+from ome_types import OME, from_xml
+import requests
 
 class BIABaseModel(BaseModel):
     def json(self, ensure_ascii=False, **kwargs):
@@ -83,6 +87,38 @@ class BIAImage(BIABaseModel):
     representations: List[BIAImageRepresentation] = []
     attributes: Dict = {}
 
+    @property
+    def ome_metadata(self) -> Optional[OME]:
+        metadata = self.__dict__.get('ome_metadata', None)
+        if metadata is None:
+            ngff_rep = [rep for rep in self.representations if rep.type == "ome_ngff"]
+            if not ngff_rep:
+                raise Exception(f"No NGFF representation for image {self.id}")
+            else:
+                # If the same image has multiple ngff representations, assume metadata is the same
+                ngff_rep = ngff_rep.pop()
+                parsed_url = urlparse(ngff_rep.uri)
+                ome_metadata_path = Path(parsed_url.path).parent/"OME/METADATA.ome.xml"
+                ome_metadata_uri = urlunparse((
+                    parsed_url.scheme, parsed_url.netloc, str(ome_metadata_path),
+                    None,
+                    None,
+                    None
+                ))
+
+                metadata = BIAImage._ome_xml_url_parse(ome_metadata_uri)
+                self.__dict__['ome_metadata'] = metadata
+
+        return metadata
+
+    @classmethod
+    def _ome_xml_url_parse(cls, ome_metadata_uri: AnyStr) -> Optional[OME]:    
+        r = requests.get(ome_metadata_uri)
+        assert r.status_code == 200, f"Error {r.status_code} fetching URI '{ome_metadata_uri}: {r.content}"
+
+        ome_metadata = from_xml(r.content, parser='lxml', validate=False)
+
+        return ome_metadata
 
 class BIAImageAlias(BIABaseModel):
     """An alias for an image - a more convenient way to refer to the image than
