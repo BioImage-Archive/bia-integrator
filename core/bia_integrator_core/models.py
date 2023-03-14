@@ -13,6 +13,7 @@ class BIABaseModel(BaseModel):
 
         return super().json(ensure_ascii=ensure_ascii, **kwargs)
 
+
 class ChannelRendering(BIABaseModel):
     colormap_start: List[float]
     colormap_end: List[float]
@@ -26,6 +27,13 @@ class RenderingInfo(BIABaseModel):
 
 
 class BIAImageRepresentation(BIABaseModel):
+    """A particular representation of a BIAImage. Examples:
+    
+    * A single HTTP accessible file.
+    * Multiple HTTP accessible files, representing different channels, planes and time points.
+    * An S3 accessible OME-Zarr.
+    * A thumbnail."""
+    
     accession_id: str
     image_id: str
     uri: Union[str, List[str]]
@@ -78,7 +86,7 @@ class BIAImage(BIABaseModel):
 
     id: str
     # TODO - this should be mandatory, but it's a breaking change
-    accession_id: str = None
+    accession_id: Optional[str] = None
     # TODO - rationalise these (name should probably replace original_relpath)
     name: Optional[str]
     original_relpath: pathlib.Path
@@ -158,6 +166,9 @@ class BIAStudy(BIABaseModel):
 
 
 class BIACollection(BIABaseModel):
+    """A collection of studies with a coherent purpose. Studies can be in 
+    multiple collections."""
+
     name: str
     title: str
     subtitle: str
