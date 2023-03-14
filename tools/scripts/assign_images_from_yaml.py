@@ -108,7 +108,7 @@ def convert_multichannel_to_zarr_and_upload(
     accession_id,
     image_id,
     src_uris,
-    pattern,
+    pattern=None,
     channel_names=None
 ):
     """Convert image made from multiple single channel images to single zarr and upload to S3
@@ -118,12 +118,28 @@ def convert_multichannel_to_zarr_and_upload(
     dst_dir_basepath = Path("tmp/c2z")/accession_id
     dst_dir_basepath.mkdir(exist_ok=True, parents=True)
     
-    for src_uri in src_uris:
+    if pattern is None:
+        link_to_generic_pattern_files = True
+        suffix = Path(src_uris[0]).suffix
+        pattern = f"pattern<000-{len(src_uris):03d}>{suffix}"
+    else:
+        link_to_generic_pattern_files = False
+
+    for i, src_uri in enumerate(src_uris):
         dst_fpath = dst_dir_basepath/Path(src_uri).name
         if dst_fpath.exists():
             logger.info(f"{dst_fpath} exists. Skipping fetch")
         else:
             copy_uri_to_local(src_uri, dst_fpath)
+        
+        # If pattern was not specified use generic pattern names
+        if link_to_generic_pattern_files:
+            suffix = dst_fpath.suffix
+            pattern_fpath = dst_dir_basepath/f"pattern{i:03d}{suffix}"
+            if pattern_fpath.is_symlink():
+                pattern_fpath.unlink()
+            pattern_fpath.symlink_to(dst_fpath)
+            logger.info(f"Linking {pattern_fpath} to {dst_fpath}")
 
     # Create pattern file in same dir as downloaded images
     dst_fpath = dst_dir_basepath/f"{image_id}.pattern"
@@ -196,7 +212,7 @@ def main(yaml_fpath):
                 image_id=image_rep.image_id,
                 src_uris=image_rep.uri,
                 channel_names=image_rep.attributes["channel_names"],
-                pattern=image_rep.attributes["pattern"]
+                pattern=image_rep.attributes.get("pattern", None)
             )
         elif bioformats_conversion_type == "xml_to_zarr":
             #convert_xml_to_zarr(
