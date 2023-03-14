@@ -93,7 +93,7 @@ class BIAImage(BIABaseModel):
         if metadata is None:
             ngff_rep = [rep for rep in self.representations if rep.type == "ome_ngff"]
             if not ngff_rep:
-                raise Exception(f"No NGFF representation for image {self.id}")
+                return None
             else:
                 # If the same image has multiple ngff representations, assume metadata is the same
                 ngff_rep = ngff_rep.pop()
