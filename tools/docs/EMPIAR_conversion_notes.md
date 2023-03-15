@@ -117,3 +117,15 @@ python scripts/annotate_study_from_zarr.py EMPIAR-$ACCESSION_NO
 python scripts/run_post_conversion_annotation.py EMPIAR-$ACCESSION_NO
 python scripts/generate_representative_image_and_set_to_default.py EMPIAR-$ACCESSION_NO IM1
 biaint collections add-study empiar EMPIAR-$ACCESSION_NO
+
+With new architecture
+---------------------
+
+biaint filerefs list EMPIAR-11380
+
+% python scripts/assign_single_image_from_fileref.py EMPIAR-11380 e2aef854-0ce3-4e28-9fff-df6b7f20b7e5
+INFO:/Users/matthewh/projects/bia-integrator-tools/scripts/assign_single_image_from_fileref.py:Assigned name /empiar/world_availability/11380/data/F107_A1_bin2_actin.mrc
+INFO:bia_integrator_core.image:Writing image to /Users/matthewh/.bia-integrator-data/images/EMPIAR-11380/a7c25fbf-0e40-4f7a-87c7-7798a05f2a4f.json
+
+biaint images list EMPIAR-11380
+python scripts/stage_files.py EMPIAR-11380 a7c25fbf-0e40-4f7a-87c7-7798a05f2a4f fire_object
