@@ -3,7 +3,7 @@ from pathlib import Path
 
 import click
 
-from bia_integrator_tools.io import copy_local_zarr_to_s3
+from bia_integrator_tools.io import upload_dirpath_as_zarr_image_rep
 
 
 logging.getLogger(__file__)
@@ -17,9 +17,9 @@ def main(zarr_fpath, accession_id, image_id):
 
     logging.basicConfig(level=logging.INFO)
 
-    zarr_uri = copy_local_zarr_to_s3(Path(zarr_fpath), accession_id, image_id)
+    zarr_uri = upload_dirpath_as_zarr_image_rep(zarr_fpath, accession_id, image_id)
 
-    print(zarr_uri)
+    print(f"Uploaded, URI: {zarr_uri}")
 
 
 if __name__ == "__main__":
