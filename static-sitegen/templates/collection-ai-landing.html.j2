@@ -1,0 +1,82 @@
+<html lang="en" class="vf-no-js">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="https://assets.emblstatic.net/vf/v2.5.8/css/styles.css">
+        <meta charset="UTF-8">
+        <title>Collection landing</title>
+    </head>
+
+    <body>
+        <!-- Header -->
+        <header class="vf-global-header">
+
+            <header class="vf-global-header">
+
+                <div class="vf-global-header__inner">
+          
+                  <a href="https://www.ebi.ac.uk/bioimage-archive" class="vf-logo">
+                    <img class="vf-logo__image" src="/bia-integrator-data/pages/assets/BIA-Logo.png" alt="BioImage Archive">
+                    <span class="vf-logo__text">   BioImage Archive</span>
+                  </a>
+          
+                </div>
+          
+            </header>
+        </header>
+
+        <!-- Collection summary -->
+        <div class="vf-stack vf-stack--500">
+            <section class="vf-intro | embl-grid embl-grid--has-centered-content">
+                <div></div>
+                <div>
+                    <h1 class="vf-intro__heading vf-intro__heading--has-tag">{{ collection.title }}<a href="JavaScript:Void(0);" class="vf-badge vf-badge--primary vf-badge--phases">alpha</a></h1>
+                    <h2 class="vf-intro__subheading">{{ collection.subtitle }}</h2>
+                    {{ collection.description }}
+                </div>
+                <div></div>
+            </section>
+ 
+            <!-- Images -->
+            <section class="vf-content | embl-grid embl-grid--has-centered-content">
+                <div>
+
+                </div>
+                <div>
+
+                    <section>
+                        
+                    <table class="vf-table--striped">
+                        <colgroup>
+                              <col span="1" style="width: 50%;">
+                              <col span="1" style="width: 50%;">
+                        </colgroup>
+                        <tr class="vf-table__row">
+                            {% for study in studies %}
+                                {% if loop.index is divisibleby 3 %}
+                                    </tr>
+                                    <tr class="vf-table__row">
+                                {% endif %}
+                              <td class="vf-table__cell">
+                                <figure class="vf-figure vf-figure--align vf-figure--align-centered">
+                                    <img class="vf-figure__image" src="{{ study.example_image_uri }}">
+                                  </figure> 
+                                  <b>{{ study.accession_id }}</b>
+                                  <br><br>
+                                {{ study.imaging_type }}
+                                <br><br>
+                                {{ study.organism }}
+                                <br><br>
+                                <b>Tags: </b>{{ study.tags|join(", ") }}
+                                  <br><br>
+                                  <a href="{{ study.accession_id }}.html"><button class="vf-button vf-button--sm">view</button></a>
+                              </td>                             
+                            {% endfor %}
+                        </tr>
+                      </table>
+                      </section>
+                </div>
+            </section>
+
+          </div>
+    </body>
+</html>

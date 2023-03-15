@@ -17,8 +17,8 @@ env = Environment(
     autoescape=select_autoescape()
 )
 
+#template = env.get_template("collection-ai-landing.html.j2")
 template = env.get_template("collection-landing.html.j2")
-
 
 def generate_collection_page_html(collection: BIACollection) -> str:
 
