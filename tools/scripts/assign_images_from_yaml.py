@@ -12,6 +12,7 @@ from bia_integrator_tools.io import copy_local_zarr_to_s3
 from bia_integrator_tools.conversion import run_zarr_conversion
 
 import click
+import parse
 from ruamel.yaml import YAML
 
 from bia_integrator_core.models import BIAImage, BIAImageRepresentation
@@ -158,6 +159,15 @@ def convert_multichannel_to_zarr_and_upload(
     # Copy to S3
     zarr_image_uri = copy_local_zarr_to_s3(zarr_fpath, accession_id, image_id)
 
+def identifier_from_fileref_ids(fileref_ids):
+    hash_input = ''.join(fileref_ids)
+    hexdigest = hashlib.md5(hash_input.encode("utf-8")).hexdigest()
+    image_id_as_uuid = uuid.UUID(version=4, hex=hexdigest)
+    image_id = str(image_id_as_uuid)    
+
+    return image_id
+
+
 @click.command()
 @click.argument("yaml_fpath")
 def main(yaml_fpath):
@@ -170,6 +180,8 @@ def main(yaml_fpath):
     accession_id = raw_config['accession_id']
     bia_study = load_and_annotate_study(accession_id)
 
+    fileref_ids = []
+    structure = {}
     for image_description in raw_config['images'].values():
         name = image_description['name']
         fileref_ids = image_description['fileref_ids']
@@ -180,6 +192,17 @@ def main(yaml_fpath):
         hexdigest = hashlib.md5(hash_input.encode("utf-8")).hexdigest()
         image_id_as_uuid = uuid.UUID(version=4, hex=hexdigest)
         image_id = str(image_id_as_uuid)
+        parse_template = image_description['parse_template']
+        for fileref_id, fileref in bia_study.file_references.items():
+            result = parse.parse(parse_template, fileref.name)
+            if result:
+                fileref_ids.append(fileref_id)
+                # structure_key = tuple(result.named.items())
+                structure_key = "Z_{z:04}".format(**result.named)
+                structure[structure_key] = fileref_id
+        # print(structure)
+
+        image_id = identifier_from_fileref_ids(fileref_ids)
 
         filerefs = [bia_study.file_references[id] for id in fileref_ids]
 
@@ -188,8 +211,13 @@ def main(yaml_fpath):
             image_id=image_id,
             size=sum(fileref.size_in_bytes for fileref in filerefs),
             uri=[fileref.uri for fileref in filerefs],
-            attributes={"fileref_ids": fileref_ids},
-            type="multi_fileref"
+            attributes={
+                "fileref_ids": fileref_ids,
+                "structure": structure
+            },
+            type="structured_fileref",
+            dimensions=None,
+            rendering=None
         )
         # Get other attributes
         for attr, value in image_description["attributes"].items():
