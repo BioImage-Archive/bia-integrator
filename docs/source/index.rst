@@ -10,7 +10,10 @@ Welcome to BIA Integrator Tools's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   identifiers
+   purpose
+   examples
+   conversion
+   ingesting_and_converting
 
 Indices and tables
 ==================

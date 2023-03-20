@@ -2,13 +2,17 @@ BIA Integrator: purpose
 =======================
 
 One of the long term goals of the BioImage Archive is to make sufficiently-well-annotated large and varied biological imaging data
-available in a consistent format by standardised APIs.
+available in a consistent format by standardised APIs. To do this, we need to solve a number of problems:
 
-The BIA Integrator serves this goal by allowing us to:
+* Image data are stored in many different formats across data repositories.
+* The metadata stored with images is often incomplete, and needs additional information to enable interpretation.
+* Both image data and metadata should be provided to consumers by a consistent API.
 
-* Provide an API to interrogate the images we have, and get access to OME-NGFF representations of those images.
-* Provide consistent identifiers for images, so that they can be tracked, converted and referenced.
-* Allow easy annotation of datasets and images, while maintaining annotations as separate objects.
+The BIA Integrator serves addresses these problems, and supports our long-term goal by providing:
+
+* An API to interrogate the studies and images we have, and get access to different representations of those images.
+* Easy annotation of datasets and images, while maintaining annotations as separate objects.
+* Consistent identifiers for images, so that they can be tracked, converted and referenced.
 
 On top of the BIA Integrator, by using its API, we can build:
 
@@ -16,18 +20,7 @@ On top of the BIA Integrator, by using its API, we can build:
 * Metadata extraction and storage.
 * Web pages that visualise images.
 
+The BIA Integrator should provide the core functionality to enable:
 
-
-Example flow
-------------
-
-1. Ingest from BioStudies, creating a BIAStudy object, together with file references.
-
-
-flowchart TD
-    A[Submission in BioStudies] -->|Ingest study metadata| B(BIA Study)
-    B --> C[Assign images]
-    C -->|One| D[Laptop]
-    C -->|Two| E[iPhone]
-    C -->|Three| F[fa:fa-car Car]
-  
+* Search based on a core set of metadata (e.g. organism, imaging type) across images from different repository sources.
+* 
