@@ -17,10 +17,5 @@ The BIA Integrator serves addresses these problems, and supports our long-term g
 On top of the BIA Integrator, by using its API, we can build:
 
 * Conversion pipelines for images.
-* Metadata extraction and storage.
-* Web pages that visualise images.
-
-The BIA Integrator should provide the core functionality to enable:
-
-* Search based on a core set of metadata (e.g. organism, imaging type) across images from different repository sources.
-* 
+* Extraction of metadata from images and storage as annotations.
+* Web pages that visualise images and present metadata together with images.
