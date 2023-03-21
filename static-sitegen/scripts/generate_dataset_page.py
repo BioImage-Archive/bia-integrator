@@ -17,8 +17,8 @@ env = Environment(
     autoescape=select_autoescape()
 )
 
-#template = env.get_template("dataset-ai-landing.html.j2")
-template = env.get_template("dataset-landing.html.j2")
+template = env.get_template("dataset-ai-landing.html.j2")
+#template = env.get_template("dataset-landing.html.j2")
 
 
 def generate_dataset_page_html(accession_id):

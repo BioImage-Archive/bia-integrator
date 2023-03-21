@@ -16,7 +16,7 @@
 
                 <div class="vf-global-header__inner">
           
-                  <a href="http://www.embl.de" class="vf-logo">
+                  <a href="https://www.ebi.ac.uk/bioimage-archive/" class="vf-logo">
                     <img class="vf-logo__image" src="/bia-integrator-data/pages/assets/BIA-Logo.png" alt="BioImage Archive">
                     <span class="vf-logo__text">   BioImage Archive</span>
                   </a>
@@ -28,12 +28,14 @@
 
         <div class="vf-stack vf-stack--500">
             <section class="vf-intro | embl-grid embl-grid--has-centered-content">
-                <div></div>
+                <div>
+                <!--  No collection parameter is passed <a class="vf-card__link" href=" collection.name .html">Back to Collection</a> -->
+                </div>
                 <div>
                     <h1 class="vf-intro__heading vf-intro__heading--has-tag">{{ study.accession_id }}<a href="JavaScript:Void(0);" class="vf-badge vf-badge--primary vf-badge--phases">alpha</a></h1>
                     <h2 class="vf-intro__subheading">{{ study.title }}</h2>
-                    Released {{ study.release_date }}<br>
-                    {{ authors }}
+                    <p> Released: {{ study.release_date }}</p>
+                    <p> By: {{ authors }} </p>
                 </div>
                 <div></div>
             </section>
@@ -61,9 +63,11 @@
                     <figure class="vf-figure vf-figure--align vf-figure--align-centered">
                         <img class="vf-figure__image" src="{{ study.example_image_uri }}">
                     </figure>  
-                    {{ study.description }}
+                <!--    {{ study.description }} -->
                 </div>
-                <div></div>
+                <div>
+                <a class="vf-card__link" href="https://www.ebi.ac.uk/biostudies/BioImages/studies/{{ study.accession_id }}" target=”_blank”> Link to original submission page </a>
+                </div>
             </section>
             <!-- Study information -->
             <section class="vf-content | embl-grid embl-grid--has-centered-content">
