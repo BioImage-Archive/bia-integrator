@@ -66,6 +66,7 @@ class FileReference(BIABaseModel):
     name: str # A short descriptive name
     uri: str # URI of the file
     size_in_bytes: Optional[int] # Size of the file
+    type: Optional[str] # Type of file reference, by default direct but could be inside an archive
     attributes: Dict = {}
 
 
