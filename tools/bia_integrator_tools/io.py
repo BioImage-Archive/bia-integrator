@@ -2,11 +2,13 @@ from pathlib import Path
 import logging
 import shutil
 import subprocess
+import tempfile
 from urllib.parse import urlparse
 
 import boto3
 import requests
 from pydantic import BaseSettings
+from remotezip import RemoteZip
 from bia_integrator_core.models import FileReference
 
     
@@ -110,19 +112,35 @@ def copy_local_zarr_to_s3(zarr_fpath: Path, accession_id: str, image_id: str) ->
     return zarr_image_uri
 
 
+def copy_file_in_remote_zip_to_local(fileref: FileReference, dst_fpath: Path):
+
+    tmpdir = tempfile.TemporaryDirectory()
+
+    with RemoteZip(fileref.uri) as zipf:
+        extracted_fpath = zipf.extract(fileref.name, tmpdir.name)
+        shutil.move(extracted_fpath, dst_fpath)
+
+
+def fetch_fileref_to_local(fileref, dst_fpath):
+    if fileref.type == "file_in_zip":
+        copy_file_in_remote_zip_to_local(fileref, dst_fpath)
+    else:
+        copy_uri_to_local(fileref.uri, dst_fpath)
+
+
 def stage_fileref_and_get_fpath(accession_id: str, fileref: FileReference) -> Path:
 
     cache_root_dirpath = Path.home()/".cache"/"bia-converter"
     cache_dirpath = cache_root_dirpath/accession_id
     cache_dirpath.mkdir(exist_ok=True, parents=True)
 
-    suffix = Path(urlparse(fileref.uri).path).suffix
+    suffix = Path(urlparse(fileref.name).path).suffix
     dst_fname = fileref.id+suffix
     dst_fpath = cache_dirpath/dst_fname
     logger.info(f"Checking cache for {fileref.name}")
 
     if not dst_fpath.exists():
-        copy_uri_to_local(fileref.uri, dst_fpath)
+        fetch_fileref_to_local(fileref, dst_fpath)
         logger.info(f"Downloading file to {dst_fpath}")
     else:
         logger.info(f"File exists at {dst_fpath}")
