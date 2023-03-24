@@ -5,11 +5,15 @@ Here we explain how the process of creating a BIA Study from an existing (public
 
 To start, run the initial ingest:
 
+.. code-block:: console
+
     python scripts/ingest_from_biostudies.py S-BIAD610
 
 This will create the study record, and assign identifiers to each file in the study.
 
 Files recorded are then viewable with:
+
+.. code-block:: console
 
     % biaint filerefs list S-BIAD610
     f686ae3f-38f0-4250-9ce1-282a38f1565c BT474.tif 110121336
@@ -17,20 +21,34 @@ Files recorded are then viewable with:
 
 Which shows that we now have two file references. We currently do not know anything about images in the study:
 
+.. code-block:: console
+
     % biaint images list S-BIAD610
 
 We can create an image from one of those file references with:
 
+.. code-block:: console
+
     python scripts/assign_single_image_from_fileref.py S-BIAD610 f686ae3f-38f0-4250-9ce1-282a38f1565c
 
 The study now has an associated image:
+
+.. code-block:: console
 
     % biaint images list S-BIAD610
     defc458d-bec7-4df3-9aed-c526c5c05a30 BT474.tif fire_object
 
 This shows the identifier, the short name (in this case original filename) and available representations (in this case fire_object) for the image.
 
-biaint aliases add S-BIAD610 defc458d-bec7-4df3-9aed-c526c5c05a30 IM1
+We can also add an alias:
+
+.. code-block:: console
+
+    biaint aliases add S-BIAD610 defc458d-bec7-4df3-9aed-c526c5c05a30 IM1
+
+Which then shows up in the command line:
+
+.. code-block:: console
 
     % biaint aliases list-for-study S-BIAD610
     IM1 S-BIAD610 defc458d-bec7-4df3-9aed-c526c5c05a30
