@@ -17,7 +17,8 @@ Starting from an existing study which contains file references, the process of c
 .. mermaid:: 
 
     flowchart TD
-        A[Pull from BioStudies] -->|Extract file references| B[File references]
+        A[Ingest from BioStudies] -->|Extract file references| B[File references]
+        B -->|Extract references from archive files| B
         B -->|Assign image| D[Image representation\ne.g. CZI]
         D -->|Convert| E[Image representation\ne.g. OME-Zarr]
  

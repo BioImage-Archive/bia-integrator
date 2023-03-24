@@ -14,6 +14,7 @@ Welcome to BIA Integrator's documentation!
    core_primitives
    conversion
    ingesting_and_converting
+   worked_examples
 
 Indices and tables
 ==================
