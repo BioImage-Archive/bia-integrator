@@ -1,8 +1,5 @@
 import logging
-import shutil
-import tempfile
 
-from remotezip import RemoteZip
 from bia_integrator_core.integrator import load_and_annotate_study
 from bia_integrator_tools.io import stage_fileref_and_get_fpath
 
@@ -22,7 +19,9 @@ def stage_fileref_to_local(accession_id: str, fileref_id: str):
     bia_study = load_and_annotate_study(accession_id)
     fileref = bia_study.file_references[fileref_id]
 
-    stage_fileref_and_get_fpath(accession_id, fileref)
+    local_fpath = stage_fileref_and_get_fpath(accession_id, fileref)
+
+    print(local_fpath)
 
 
 if __name__ == "__main__":

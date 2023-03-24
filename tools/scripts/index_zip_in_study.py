@@ -1,12 +1,12 @@
 import uuid
 import hashlib
 import logging
-from urllib.parse import urlparse
+
 from pathlib import Path
-#from zipfile import ZipFile
-from remotezip import RemoteZip, RemoteIOError
 
 import click
+import parse
+from remotezip import RemoteZip
 
 from bia_integrator_core.integrator import load_and_annotate_study
 from bia_integrator_core.interface import persist_study
@@ -36,15 +36,17 @@ def main(accession_id, zip_fileref_id):
 
     logging.basicConfig(level=logging.INFO)
 
+    result = parse.parse("{collection}{number:d}", accession_id)
+    number = str(result.named['number'])
+    collection = result.named['collection']
+    mode = "fire"
+
     bia_study = load_and_annotate_study(accession_id)
     zip_fileref = bia_study.file_references[zip_fileref_id]
 
     base_url = "https://ftp.ebi.ac.uk/biostudies"
-    mode = "fire"
-    collection = "S-BSST"
-    number = "1053"
 
-    uri = f"{base_url}/{mode}/{collection}/{number[1:]}/{collection}{number}/Files/{zip_fileref.name}"
+    uri = f"{base_url}/{mode}/{collection}/{number}/{collection}{number}/Files/{zip_fileref.name}"
 
     with RemoteZip(uri) as zipf:
         info_list = zipf.infolist()
@@ -62,6 +64,7 @@ def main(accession_id, zip_fileref_id):
 
         new_filerefs[new_fileref.id] = new_fileref
 
+    logger.info(f"Adding {len(new_filerefs)} new file references from archive")
     bia_study.file_references.update(new_filerefs)
 
     persist_study(bia_study)
