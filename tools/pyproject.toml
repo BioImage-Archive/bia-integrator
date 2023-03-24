@@ -8,6 +8,7 @@ packages = [{include = "bia_integrator_tools"}]
 
 [tool.poetry.scripts]
 biaint = "bia_integrator_tools.cli:app"
+biaconv = "bia_integrator_tools.biaconv:app"
 
 [tool.poetry.dependencies]
 python = "^3.10"
