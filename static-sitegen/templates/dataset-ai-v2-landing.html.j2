@@ -25,7 +25,8 @@
           
             </header>
         </header>
-<nav class="vf-navigation vf-navigation--main | vf-cluster">
+
+<!-- <nav class="vf-navigation vf-navigation--main | vf-cluster">
   <ul class="vf-navigation__list | vf-list | vf-cluster__inner">
     <li class="vf-navigation__item">
       <a href="JavaScript:Void(0);" class="vf-navigation__link" aria-current="page">Home</a>
@@ -45,6 +46,7 @@
       <a href="JavaScript:Void(0);" class="vf-navigation__link">Feedback</a>
     </li>  </ul>
 </nav>
+-->
 
 <section class="vf-intro">
 
@@ -54,8 +56,8 @@
 
   <h1 class="vf-intro__heading ">{{ study.accession_id }}</h1>
   <h2 class="vf-intro__subheading">{{ study.title }}</h2>
-    <p> Released: {{ study.release_date }}</p>
-    <p> By: {{ authors }} </p></p>
+     Released: {{ study.release_date }} <br>
+    By: {{ authors }}
   </div>
 </section>
 
@@ -132,6 +134,8 @@
     </div>
     <div class="vf-content">
       <div class="vf-grid vf-grid__col-2">
+            <div><b>Study Summary</b></div>
+            <div>{{ study.attributes["one_summary"] }}</div>
            <div><b>Organism</b></div>
             <div>{{ study.organism }}</div>
             <div><b>Study type</b></div>
