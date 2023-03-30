@@ -7,6 +7,7 @@ from pathlib import Path
 from ome_types import OME, from_xml
 import requests
 
+
 class BIABaseModel(BaseModel):
     def json(self, ensure_ascii=False, **kwargs):
         """ensure_ascii defaults to False instead of True to handle the common case of non-ascii names"""
@@ -174,6 +175,7 @@ class BIACollection(BIABaseModel):
     subtitle: str
     description: Optional[str]
     accession_ids: List[str]
+    attributes: Optional[Dict] = {}
 
 
 class StudyTag(BIABaseModel):
