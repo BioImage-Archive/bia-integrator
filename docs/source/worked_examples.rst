@@ -103,32 +103,43 @@ Then open them:
 Converting and squeezing an EMPIAR entry image
 ----------------------------------------------
 
-% biaint filerefs list EMPIAR-11380
-b94e2fa6-6719-4e65-831a-8ce3e77f8e04 /empiar/world_availability/11380/data/F059_bin2.mrc 4692016528
-2b3e321b-79a8-4510-87c0-742f8c7e1999 /empiar/world_availability/11380/data/F059_bin2_mitos.mrc 4692016528
-3206756d-c6c7-487d-b8cd-3112ec68bb7e /empiar/world_availability/11380/data/F059_bin2_nuclei.mrc 4692016528
-1bd6ce34-6699-4633-89d2-757ed8341384 /empiar/world_availability/11380/data/F107_A1_bin2.mrc 3348516724
-e2aef854-0ce3-4e28-9fff-df6b7f20b7e5 /empiar/world_availability/11380/data/F107_A1_bin2_actin.mrc 3348516724
-71d53d2d-0878-494e-901a-8c6bfa255ff8 /empiar/world_availability/11380/data/F107_A1_bin2_entotic_cell.mrc 3348516724
+.. code-block:: console
 
-% python scripts/assign_single_image_from_fileref.py EMPIAR-11380 71d53d2d-0878-494e-901a-8c6bfa255ff8
-INFO:/Users/matthewh/projects/bia-integrator/tools/scripts/assign_single_image_from_fileref.py:Assigned name /empiar/world_availability/11380/data/F107_A1_bin2_entotic_cell.mrc
-INFO:bia_integrator_core.image:Writing image to /Users/matthewh/.bia-integrator-data/images/EMPIAR-11380/3cb53ffe-1801-4987-9424-5856d14a989b.json
+    % biaint filerefs list EMPIAR-11380
+    b94e2fa6-6719-4e65-831a-8ce3e77f8e04 /empiar/world_availability/11380/data/F059_bin2.mrc 4692016528
+    2b3e321b-79a8-4510-87c0-742f8c7e1999 /empiar/world_availability/11380/data/F059_bin2_mitos.mrc 4692016528
+    3206756d-c6c7-487d-b8cd-3112ec68bb7e /empiar/world_availability/11380/data/F059_bin2_nuclei.mrc 4692016528
+    1bd6ce34-6699-4633-89d2-757ed8341384 /empiar/world_availability/11380/data/F107_A1_bin2.mrc 3348516724
+    e2aef854-0ce3-4e28-9fff-df6b7f20b7e5 /empiar/world_availability/11380/data/F107_A1_bin2_actin.mrc 3348516724
+    71d53d2d-0878-494e-901a-8c6bfa255ff8 /empiar/world_availability/11380/data/F107_A1_bin2_entotic_cell.mrc 3348516724
 
-% python scripts/convert_fire_obj_to_local.py EMPIAR-11380 3cb53ffe-1801-4987-9424-5856d14a989b fire_object ~/tmp/empiar-11380/entotic.zarr
-INFO:bia_integrator_tools.io:Checking cache for /empiar/world_availability/11380/data/F107_A1_bin2_entotic_cell.mrc
-INFO:bia_integrator_tools.io:Fetching https://ftp.ebi.ac.uk/empiar/world_availability/11380/data/F107_A1_bin2_entotic_cell.mrc to /Users/matthewh/.cache/bia-converter/EMPIAR-11380/71d53d2d-0878-494e-901a-8c6bfa255ff8.mrc
-INFO:bia_integrator_tools.io:Downloading file to /Users/matthewh/.cache/bia-converter/EMPIAR-11380/71d53d2d-0878-494e-901a-8c6bfa255ff8.mrc
-INFO:/Users/matthewh/projects/bia-integrator/tools/scripts/convert_fire_obj_to_local.py:Destination fpath: /Users/matthewh/tmp/empiar-11380/entotic.zarr
-INFO:bia_integrator_tools.conversion:Converting with export JAVA_HOME=/Users/matthewh/miniconda3/envs/bf2zarr/lib/jvm && /Users/matthewh/miniconda3/envs/bf2zarr/bin/bioformats2raw "/Users/matthewh/.cache/bia-converter/EMPIAR-11380/71d53d2d-0878-494e-901a-8c6bfa255ff8.mrc" "/Users/matthewh/tmp/empiar-11380/entotic.zarr"
+.. code-block:: console
 
-% python scripts/squeeze_ngff.py ~/tmp/empiar-11380/entotic.zarr/0 ~/tmp/empiar-11380/entotic-squeezed.zarr
+    % python scripts/assign_single_image_from_fileref.py EMPIAR-11380 71d53d2d-0878-494e-901a-8c6bfa255ff8
+    INFO:/Users/matthewh/projects/bia-integrator/tools/scripts/assign_single_image_from_fileref.py:Assigned name /empiar/world_availability/11380/data/F107_A1_bin2_entotic_cell.mrc
+    INFO:bia_integrator_core.image:Writing image to /Users/matthewh/.bia-integrator-data/images/EMPIAR-11380/3cb53ffe-1801-4987-9424-5856d14a989b.json
 
-% python scripts/copy_local_zarr_to_s3.py ~/tmp/empiar-11380/entotic-squeezed.zarr EMPIAR-11380 3cb53ffe-1801-4987-9424-5856d14a989b
-...
-upload: ../../../tmp/empiar-11380/entotic-squeezed.zarr/3/991/0/0 to s3://bia-integrator-data/EMPIAR-11380/3cb53ffe-1801-4987-9424-5856d14a989b/3cb53ffe-1801-4987-9424-5856d14a989b.zarr/3/991/0/0
-Uploaded, URI: https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/EMPIAR-11380/3cb53ffe-1801-4987-9424-5856d14a989b/3cb53ffe-1801-4987-9424-5856d14a989b.zarr
+.. code-block:: console
 
+    % python scripts/convert_fire_obj_to_local.py EMPIAR-11380 3cb53ffe-1801-4987-9424-5856d14a989b fire_object ~/tmp/empiar-11380/entotic.zarr
+    INFO:bia_integrator_tools.io:Checking cache for /empiar/world_availability/11380/data/F107_A1_bin2_entotic_cell.mrc
+    INFO:bia_integrator_tools.io:Fetching https://ftp.ebi.ac.uk/empiar/world_availability/11380/data/F107_A1_bin2_entotic_cell.mrc to /Users/matthewh/.cache/bia-converter/EMPIAR-11380/71d53d2d-0878-494e-901a-8c6bfa255ff8.mrc
+    INFO:bia_integrator_tools.io:Downloading file to /Users/matthewh/.cache/bia-converter/EMPIAR-11380/71d53d2d-0878-494e-901a-8c6bfa255ff8.mrc
+    INFO:/Users/matthewh/projects/bia-integrator/tools/scripts/convert_fire_obj_to_local.py:Destination fpath: /Users/matthewh/tmp/empiar-11380/entotic.zarr
+    INFO:bia_integrator_tools.conversion:Converting with export JAVA_HOME=/Users/matthewh/miniconda3/envs/bf2zarr/lib/jvm && /Users/matthewh/miniconda3/envs/bf2zarr/bin/bioformats2raw "/Users/matthewh/.cache/bia-converter/EMPIAR-11380/71d53d2d-0878-494e-901a-8c6bfa255ff8.mrc" "/Users/matthewh/tmp/empiar-11380/entotic.zarr"
 
-% python scripts/register_ome_ngff_rep.py EMPIAR-11380 3cb53ffe-1801-4987-9424-5856d14a989b https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/EMPIAR-11380/3cb53ffe-1801-4987-9424-5856d14a989b/3cb53ffe-1801-4987-9424-5856d14a989b.zarr
-INFO:bia_integrator_core.representation:Writing image representation to /Users/matthewh/.bia-integrator-data/representations/EMPIAR-11380/3cb53ffe-1801-4987-9424-5856d14a989b/ome_ngff.json
+.. code-block:: console
+
+    % python scripts/squeeze_ngff.py ~/tmp/empiar-11380/entotic.zarr/0 ~/tmp/empiar-11380/entotic-squeezed.zarr
+
+.. code-block:: console
+
+    % python scripts/copy_local_zarr_to_s3.py ~/tmp/empiar-11380/entotic-squeezed.zarr EMPIAR-11380 3cb53ffe-1801-4987-9424-5856d14a989b
+    ...
+    upload: ../../../tmp/empiar-11380/entotic-squeezed.zarr/3/991/0/0 to s3://bia-integrator-data/EMPIAR-11380/3cb53ffe-1801-4987-9424-5856d14a989b/3cb53ffe-1801-4987-9424-5856d14a989b.zarr/3/991/0/0
+    Uploaded, URI: https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/EMPIAR-11380/3cb53ffe-1801-4987-9424-5856d14a989b/3cb53ffe-1801-4987-9424-5856d14a989b.zarr
+
+.. code-block:: console
+
+    % python scripts/register_ome_ngff_rep.py EMPIAR-11380 3cb53ffe-1801-4987-9424-5856d14a989b https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/EMPIAR-11380/3cb53ffe-1801-4987-9424-5856d14a989b/3cb53ffe-1801-4987-9424-5856d14a989b.zarr
+    INFO:bia_integrator_core.representation:Writing image representation to /Users/matthewh/.bia-integrator-data/representations/EMPIAR-11380/3cb53ffe-1801-4987-9424-5856d14a989b/ome_ngff.json
