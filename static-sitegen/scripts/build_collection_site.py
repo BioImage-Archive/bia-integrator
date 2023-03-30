@@ -46,10 +46,11 @@ def main(collection_name):
         "dataset_landing_template", DEFAULT_DATASET_TEMPLATE
     )
 
+    page_suffix = collection.attributes.get("page-suffix", ".html")
     for accession_id in collection.accession_ids:
         logger.info(f"Generating dataset page for {accession_id}")
         rendered_html = generate_dataset_page_html(accession_id, dataset_template_fname)
-        output_fpath = output_base_dirpath/f"{accession_id}.html"
+        output_fpath = output_base_dirpath/f"{accession_id}{page_suffix}"
         with open(output_fpath, "w") as fh:
             fh.write(rendered_html)
 
