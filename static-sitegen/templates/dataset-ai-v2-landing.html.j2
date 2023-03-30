@@ -109,7 +109,9 @@
         </ul>
         <h2 class="vf-section-header__heading">This dataset has</h2>
         <ul class="vf-list">
-        <li>{{ study.tags|join(", ") }}</li>
+        {% for value in study.tags %}
+        <li>{{ value }}</li>
+        {% endfor %}
         </ul>
         {% if 'bia_binder_url' in study.attributes %}
             <a href={{ study.attributes['bia_binder_url'] }}><button class="vf-button vf-button--primary vf-button--sm">Explore in BIA Binder</button></a>
