@@ -110,7 +110,11 @@
         <h2 class="vf-section-header__heading">This dataset has</h2>
         <ul class="vf-list">
         {% for value in study.tags %}
+        {% if value.startswith('AI') %}
+        <li>{{ value[2:] }}</li>
+        {% else %}
         <li>{{ value }}</li>
+        {% endif %}
         {% endfor %}
         </ul>
         {% if 'bia_binder_url' in study.attributes %}

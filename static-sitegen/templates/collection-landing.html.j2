@@ -65,7 +65,12 @@
                                   <br><br>
                                   {{ study.images|length }} images
                                   <br><br>
-                                  <b>Tags: </b>{{ study.tags|join(", ") }}
+                                  <!-- <b>Tags: </b>{{ study.tags|join(", ") }} -->
+                                    {% for value in study.tags %}
+                                    {% if not value.startswith('AI') %}
+                                    {{ value }},
+                                    {% endif %}
+                                    {% endfor %}
                                   <br><br>
                                   <a href="{{ study.accession_id }}.html"><button class="vf-button vf-button--sm">view</button></a>
                               </td>

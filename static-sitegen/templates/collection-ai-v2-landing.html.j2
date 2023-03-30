@@ -55,7 +55,15 @@
         <br><br>
         {{ study.organism }}
         <br><br>
-        <b>Tags: </b>{{ study.tags|join(", ") }}
+        <b>Tags: </b>
+        {% for value in study.tags %}
+        {% if value.startswith('AI') %}
+        {{ value[2:] }},
+        {% else %}
+        {{ value }},
+        {% endif %}
+        {% endfor %}
+        <!-- {{ study.tags|join(", ") }} -->
         <br><br>
         </p>
         </div>
