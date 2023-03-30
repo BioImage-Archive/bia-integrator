@@ -1,4 +1,5 @@
 import pathlib
+import datetime
 from typing import Dict, List, Optional, Set, Union, AnyStr
 
 from pydantic import BaseModel
@@ -6,6 +7,7 @@ from urllib.parse import urlparse, urlunparse
 from pathlib import Path
 from ome_types import OME, from_xml
 import requests
+
 
 class BIABaseModel(BaseModel):
     def json(self, ensure_ascii=False, **kwargs):
@@ -148,7 +150,7 @@ class BIAStudy(BIABaseModel):
     description: str
     authors: Optional[List[Author]] = []
     organism: str
-    release_date: str
+    release_date: Union[str, datetime.date]
     
     # FIXME - this should be a list
     imaging_type: Optional[str]
