@@ -10,7 +10,12 @@ router = APIRouter(prefix="/api/private")
 @router.post("/study", status_code=status.HTTP_201_CREATED)
 async def create_study(study: db_models.BIAStudy) -> Optional[db_models.BIAStudy]:
     study_created = await repository.persist_study(study)
-    return study
+    return study_created
+
+@router.patch("/study", status_code=status.HTTP_201_CREATED)
+async def create_study(study: db_models.BIAStudy) -> Optional[db_models.BIAStudy]:
+    study_updated = await repository.update_study(study)
+    return study_updated
 
 @router.post("/studies/{study_uuid}/refresh_counts")
 async def study_refresh_counts(study_uuid: str) -> Optional[db_models.BIAStudy]:

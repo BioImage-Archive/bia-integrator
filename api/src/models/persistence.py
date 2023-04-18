@@ -39,8 +39,8 @@ class DocumentMixin(BaseModel):
     class Config(BaseConfig):
         allow_population_by_field_name = True
         json_encoders = {
-            datetime: lambda dt: dt.isoformat(),
-            ObjectId: lambda oid: str(oid),
+            #datetime: lambda dt: dt.isoformat(),
+            #ObjectId: lambda oid: str(oid)
         }
 
 class Author(BIABaseModel):

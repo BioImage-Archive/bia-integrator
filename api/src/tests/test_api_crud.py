@@ -2,26 +2,14 @@ from fastapi.testclient import TestClient
 
 from ..api.api import app
 import uuid
+import time
 
 client = TestClient(app.router)
 
-def test_create_study():
-    study_uuid = str(uuid.UUID(int=2))
+def _get_uuid() -> str:
+    generated = uuid.UUID(int=int(time.time()))
 
-    rsp = client.post('/api/private/study', json={
-        "uuid": study_uuid,
-        "version": 0,
-        "title": "Test BIA study",
-        "description": "description",
-        "authors": [{
-            "name": "First Author"
-        }, {
-            "name": "Second Author"
-        }],
-        "organism": "test",
-        "release_date": "test"
-    })
-    assert rsp.status_code == 201, rsp.json()
+    return str(generated)
 
 def test_create_everything():
     study_uuid = "123-123-123-123"
