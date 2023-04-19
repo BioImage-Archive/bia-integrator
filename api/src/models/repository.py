@@ -3,7 +3,7 @@ from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorCollection
 from bson import ObjectId
 
 def get_db() -> AsyncIOMotorCollection:
-    mongo_connstring = "mongodb://root:example@localhost:27018/"
+    mongo_connstring = "mongodb://root:example@mongo1:27018/"
     client = AsyncIOMotorClient(mongo_connstring, uuidRepresentation='standard')
     return client.bia_integrator.bia_integrator
 

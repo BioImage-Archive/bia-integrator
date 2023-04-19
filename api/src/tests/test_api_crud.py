@@ -17,16 +17,17 @@ def test_create_everything():
     rsp = client.post('/studies', json={
         "id": study_uuid,
         "title": "Test BIA study",
+        "description": "description",
         "authors": [{
             "name": "First Author"
         }, {
             "name": "Second Author"
         }],
-        "description": "description",
         "organism": "test",
         "release_date": "test"
     })
     assert rsp.status_code == 201, rsp.json()
+    raise Exception("A")
 
     # IMAGES CREATE
     study_images = []
