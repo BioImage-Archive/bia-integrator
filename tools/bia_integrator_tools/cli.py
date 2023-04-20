@@ -82,7 +82,7 @@ def list_aliases_for_study(accession_id: str):
     aliases = get_aliases(accession_id)
 
     for alias in aliases:
-        print(alias.name, alias.accession_id, alias.image_id)
+        typer.echo(f"{alias.name}, {alias.accession_id}, {alias.image_id}")
 
 
 @filerefs_app.command("list")
@@ -90,7 +90,7 @@ def list_filerefs(accession_id: str):
     bia_study = load_and_annotate_study(accession_id)
 
     for fileref in bia_study.file_references.values():
-        print(fileref.id, fileref.name, fileref.size_in_bytes)
+        typer.echo(f"{fileref.id}, {fileref.name}, {fileref.size_in_bytes}")
 
 
 @images_app.command("list")

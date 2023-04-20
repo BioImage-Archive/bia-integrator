@@ -38,16 +38,16 @@ def main(accession_id, image_id, save_to_file):
 
     bia_study = load_and_annotate_study(accession_id)
 
-    image = bia_study.images[image_id]
+    image = bia_study.file_references[image_id]
 
     dst_dir_basepath = Path("tmp/c2z")/accession_id
     dst_dir_basepath.mkdir(exist_ok=True, parents=True)
 
-    image_suffix = image.original_relpath.suffix
+    image_suffix = Path(image.name).suffix
     dst_fpath = dst_dir_basepath/f"{image_id}{image_suffix}"
 
     # FIXME - this should check for the correct representation type, not assume it's the first one
-    src_uri = image.representations[0].uri
+    src_uri = image.uri
     if not dst_fpath.exists():
         copy_uri_to_local(src_uri, dst_fpath)
 
