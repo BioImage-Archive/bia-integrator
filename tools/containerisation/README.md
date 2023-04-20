@@ -46,18 +46,22 @@ export CONT_NAME=bia:${VERSION}
 # All commands from bia-integrator-tools can be run. Some examples:
 
 # Pull details for a study
-docker container run --rm --mount type=bind,src=${data_dirpath},dst=/root/.bia-integrator-data $CONT_NAME conda run -n bia python bia-integrator-tools/scripts/bst_pulldown.py S-BIAD229
+docker container run --rm --mount type=bind,src=${data_dirpath},dst=/root/.bia-integrator-data $CONT_NAME conda run -n bia python  /bia/bia-integrator/tools/scripts/ingest_from_biostudies.py S-BIAD229
 
 # List studies
 docker container run --rm --mount type=bind,src=${data_dirpath},dst=/root/.bia-integrator-data $CONT_NAME conda run -n bia biaint studies list
 
-# List images for a study
-docker container run --rm --mount type=bind,src=${data_dirpath},dst=/root/.bia-integrator-data $CONT_NAME conda run -n bia biaint images list S-BIAD229
+# List file references for a study
+docker container run --rm --mount type=bind,src=${data_dirpath},dst=/root/.bia-integrator-data $CONT_NAME conda run -n bia biaint filerefs list S-BIAD229
+
+# Create an alias to file reference
+docker container run --rm --mount type=bind,src=${data_dirpath},dst=/root/.bia-integrator-data $CONT_NAME conda run -n bia biaint aliases add S-BIAD229 3928687b-5f42-4385-9bb2-259b7c1d9cae IM1
+
+# List aliases in study
+docker container run --rm --mount type=bind,src=${data_dirpath},dst=/root/.bia-integrator-data $CONT_NAME conda run -n bia biaint aliases list-for-study S-BIAD229
 
 # Convert to zarr and upload to S3
-docker container run --rm -e bioformats2raw_java_home=$bioformats2raw_java_home -e bioformats2raw_bin=$bioformats2raw_bin -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY --mount type=bind,src=${data_dirpath},dst=/root/.bia-integrator-data $CONT_NAME conda run -n bia python bia-integrator-tools/scripts/convert_to_zarr_and_upload.py S-BIAD229 IM6
-
-```
+docker container run --rm -e bioformats2raw_java_home=$bioformats2raw_java_home -e bioformats2raw_bin=$bioformats2raw_bin -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY --mount type=bind,src=${data_dirpath},dst=/root/.bia-integrator-data $CONT_NAME conda run -n bia python /bia/bia-integrator/tools/scripts/convert_to_zarr_and_upload.py S-BIAD229  3928687b-5f42-4385-9bb2-259b7c1d9cae
 
 ## Running using singularity (assuming an interactive bsub shell node on codon)
 Because we use 2 factor authentication, you need to create a personal access token with a minimum scope of `read_registry` (see [https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html#personal-access-tokens](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html#personal-access-tokens) )
