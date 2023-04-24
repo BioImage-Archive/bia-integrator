@@ -15,12 +15,20 @@ or time point).
 
 The steps here are:
 
-1. Create the study and file reference objects. This is usually done by one of the ingestion scripts
-(e.g. ingest from BioStudies or EMPIAR), but can be performed manually.
-2. Create image objects, each of which will have a file-based representation including one or more
-file reference.
+1. Create the study and file reference objects. This is usually done by one of the ingestion scripts (e.g. ingest from BioStudies or EMPIAR), but can be performed manually.
+2. Create image objects, each of which will have a file-based representation including one or more file reference.
 3. Convert these representations into OME-Zarr.
 
+The overall flow for the process is:
+
+.. mermaid::
+
+    flowchart LR
+        B[Study with\nfile references]
+        B -->|Assign images| C[File-based image\nrepresentations]
+        C -->|Convert| D[Alternative image\nrepresentation\ne.g. OME-Zarr]
+ 
+  
 Conversion stages
 -----------------
 
