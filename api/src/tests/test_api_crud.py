@@ -27,8 +27,7 @@ def test_create_everything():
         "release_date": "test"
     })
     assert rsp.status_code == 201, rsp.json()
-    raise Exception("A")
-
+    
     # IMAGES CREATE
     study_images = []
     for i in range(10):

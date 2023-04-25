@@ -1,6 +1,7 @@
 import src.models.persistence as db_models
 import src.models.api as api_models
 import src.models.repository as repository
+import src.api.exceptions as exceptions
 
 from typing import List, Optional
 from fastapi import APIRouter, status
@@ -9,12 +10,19 @@ router = APIRouter(prefix="/api/private")
 
 @router.post("/study", status_code=status.HTTP_201_CREATED)
 async def create_study(study: db_models.BIAStudy) -> Optional[db_models.BIAStudy]:
-    study_created = await repository.persist_study(study)
+    if study.version != 0:
+        raise exceptions.InvalidRequestException(f"Expecting all newly created objects to have version 0. Got {study.version}")
+
+    await repository.persist_study(study)
+    study_created = repository.find_study_by_uuid(study.uuid)
+    
     return study_created
 
 @router.patch("/study", status_code=status.HTTP_201_CREATED)
 async def create_study(study: db_models.BIAStudy) -> Optional[db_models.BIAStudy]:
-    study_updated = await repository.update_study(study)
+    await repository.update_doc(study)
+    
+    study_updated = await repository.find_study_by_uuid(study.uuid)
     return study_updated
 
 @router.post("/studies/{study_uuid}/refresh_counts")
@@ -22,13 +30,12 @@ async def study_refresh_counts(study_uuid: str) -> Optional[db_models.BIAStudy]:
     """Recalculate and persist counts for other objects pointing to this study."""
     repository.refresh_counts(study_uuid)
 
-    bia_study = repository.find_study_by_id(study_uuid)
+    bia_study = repository.find_study_by_uuid(study_uuid)
     return bia_study
 
 @router.post("/images")
 async def create_images(study_images: List[db_models.BIAImage]) -> api_models.BulkOperationResponse:
-    for img in study_images:
-        repository.persist_image(img)
+    repository.persist_docs(study_images)
 
     return None
 

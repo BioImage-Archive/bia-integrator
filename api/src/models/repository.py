@@ -1,6 +1,9 @@
 import src.models.persistence as models
+import src.api.exceptions as exceptions
+
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorCollection
 from bson import ObjectId
+from typing import List, Any
 
 def get_db() -> AsyncIOMotorCollection:
     mongo_connstring = "mongodb://root:example@mongo1:27018/"
@@ -29,13 +32,39 @@ async def get_study(id : str | ObjectId = None, **kwargs) -> models.BIAStudy:
     doc = await get_db().find_one(kwargs)
     return models.BIAStudy(**doc)
 
-async def persist_study(study: models.BIAStudy) -> models.BIAStudy:
-    result = await get_db().insert_one(study.dict())
-    return await get_study(result.inserted_id)
+async def persist_doc(doc_model: models.DocumentMixin) -> Any:
+    return await get_db().insert_one(doc_model.dict())
 
-async def update_study(study: models.BIAStudy) -> models.BIAStudy:
-    result = await get_db().insert_one(study.dict())
-    return await get_study(result.inserted_id)
+async def persist_docs(doc_models: List[models.DocumentMixin]) -> Any:
+    rsp = await get_db().insert_many(
+        doc_models.dict(),
+        # if ordered=true, client stops after the first failure (e.g. duplicated uuid)
+        ordered=False
+    )
+
+    # @TODO: Cleaner way to signal partial failure - return failed indices?
+    return rsp
+
+async def update_doc(doc_model: models.DocumentMixin) -> Any:
+    result = await get_db().update_one(
+        {
+            'uuid': doc_model.uuid,
+            'version': doc_model.version-1
+        },    
+        {
+            '$set': doc_model.dict()
+        },
+        upsert=False
+    )
+    if not result.matched_count:
+        raise exceptions.DocumentNotFound(f"Could not find document with uuid {doc_model.uuid} and version {doc_model.version}")
+    return result
 
 async def find_study_by_uuid(uuid: str) -> models.BIAStudy:
+    return await get_study(uuid=uuid)
+
+async def find_studies_uuid_for_collection(collection: str) -> List[str]:
+    pass
+
+async def persist_images(images: List[models.BIAImage]) -> None:
     pass
