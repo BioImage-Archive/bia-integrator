@@ -13,9 +13,10 @@ Welcome to BIA Integrator's documentation!
    purpose
    core_primitives
    conversion
-   ingesting_and_converting
    annotation
    worked_examples
+   ingesting_and_converting
+
 
 Indices and tables
 ==================
