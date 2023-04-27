@@ -85,12 +85,22 @@ def list_aliases_for_study(accession_id: str):
         typer.echo(f"{alias.name}, {alias.accession_id}, {alias.image_id}")
 
 
+# From https://stackoverflow.com/questions/1094841/get-human-readable-version-of-file-size
+def sizeof_fmt(num, suffix="B"):
+    for unit in ["", "Ki", "Mi", "Gi", "Ti", "Pi", "Ei", "Zi"]:
+        if abs(num) < 1024.0:
+            return f"{num:3.1f}{unit}{suffix}"
+        num /= 1024.0
+    return f"{num:.1f}Yi{suffix}"
+
+
 @filerefs_app.command("list")
 def list_filerefs(accession_id: str):
     bia_study = load_and_annotate_study(accession_id)
 
     for fileref in bia_study.file_references.values():
-        typer.echo(f"{fileref.id}, {fileref.name}, {fileref.size_in_bytes}")
+        readable_size = sizeof_fmt(fileref.size_in_bytes)
+        typer.echo(f"{fileref.id}, {fileref.name}, {readable_size}")
 
 
 @images_app.command("list")

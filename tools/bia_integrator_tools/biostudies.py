@@ -1,3 +1,4 @@
+import json
 import logging
 import pathlib
 import datetime
@@ -188,12 +189,30 @@ def flist_from_flist_fname(accession_id: str, flist_fname: str):
     return fl
 
 
-def file_uri(accession_id: str, file: File):
+def file_uri(accession_id: str, file: File, file_uri_template=FILE_URI_TEMPLATE):
+    """For a given accession and file object, return the HTTP URI where we can expect
+    to be able to access that file."""
 
-    return FILE_URI_TEMPLATE.format(
+    return file_uri_template.format(
         accession_id=accession_id,
         relpath=file.path
     )
+
+
+def get_file_uri_template_for_accession(accession_id: str) -> str:
+    """Given an accession identifier, use the BioStudies API to generate a
+    template which can be populated with the value of relpath to produce
+    the URI for a given file."""
+
+    request_uri = f"https://www.ebi.ac.uk/biostudies/api/v1/studies/{accession_id}/info"
+    r = requests.get(request_uri)
+    raw_obj = json.loads(r.content)
+    # Strip the initial ftp from the ftp link, replace by http and add /Files
+    accession_base_uri = "https" + raw_obj["ftpLink"][3:] + "/Files"
+
+    file_uri_template = accession_base_uri + "/{relpath}"
+
+    return file_uri_template
 
 
 def find_files_in_submission_file_lists(submission: Submission) -> List[File]:
