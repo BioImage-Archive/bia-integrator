@@ -29,6 +29,19 @@ def zipfile_item_to_id(accession_id: str, zipfile_name: str, item_name: str):
     return str(id_as_uuid)
 
 
+def get_base_http_uri_for_bst_file(accession_id: str):
+
+    import json
+    import requests
+
+    request_uri = f"https://www.ebi.ac.uk/biostudies/api/v1/studies/{accession_id}/info"
+    r = requests.get(request_uri)
+    raw_obj = json.loads(r.content)
+
+    # Strip the initial ftp from the ftp link, replace by http and add /Files
+    return "https" + raw_obj["ftpLink"][3:] + "/Files"
+
+
 @click.command()
 @click.argument('accession_id')
 @click.argument('zip_fileref_id')
@@ -36,33 +49,35 @@ def main(accession_id, zip_fileref_id):
 
     logging.basicConfig(level=logging.INFO)
 
-    result = parse.parse("{collection}{number:d}", accession_id)
-    number = str(result.named['number'])
-    collection = result.named['collection']
-    mode = "fire"
+    # base_files_uri = get_base_http_uri_for_bst_file(accession_id)
 
     bia_study = load_and_annotate_study(accession_id)
+
     zip_fileref = bia_study.file_references[zip_fileref_id]
 
-    base_url = "https://ftp.ebi.ac.uk/biostudies"
+    if not zip_fileref.uri.endswith(".zip"):
+        uri_to_fetch = zip_fileref.uri + ".zip"
+    else:
+        uri_to_fetch = zip_fileref.uri
 
-    uri = f"{base_url}/{mode}/{collection}/{number}/{collection}{number}/Files/{zip_fileref.name}"
+    # uri = f"{base_files_uri}/{filename}"
 
-    with RemoteZip(uri) as zipf:
+    with RemoteZip(uri_to_fetch) as zipf:
         info_list = zipf.infolist()
 
     new_filerefs = {}
     for item in info_list:
-        new_fileref = FileReference(
-            id=zipfile_item_to_id(accession_id, zip_fileref.name, item.filename),
-            name=item.filename,
-            uri=uri,
-            type="file_in_zip",
-            size_in_bytes=item.file_size,
-            attributes=zip_fileref.attributes
-        )
+        if not item.filename.startswith("__MACOSX"):
+            new_fileref = FileReference(
+                id=zipfile_item_to_id(accession_id, zip_fileref.name, item.filename),
+                name=item.filename,
+                uri=uri_to_fetch,
+                type="file_in_zip",
+                size_in_bytes=item.file_size,
+                attributes=zip_fileref.attributes
+            )
 
-        new_filerefs[new_fileref.id] = new_fileref
+            new_filerefs[new_fileref.id] = new_fileref
 
     logger.info(f"Adding {len(new_filerefs)} new file references from archive")
     bia_study.file_references.update(new_filerefs)
