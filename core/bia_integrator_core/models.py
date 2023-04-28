@@ -154,6 +154,7 @@ class BIAStudy(BIABaseModel):
     imaging_type: Optional[str]
     attributes: Dict = {}
     example_image_uri: str = ""
+    example_annotation_uri: str = ""
 
     file_references: Dict[str, FileReference] = {}
 

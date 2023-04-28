@@ -122,13 +122,28 @@
         {% endif %}
     </div>
       <div>
+    <table class="vf-table--striped">
+    <colgroup>
+      <col span="1" style="width: 50%;">
+      <col span="1" style="width: 50%;">                         
+    </colgroup>
+    <tr class="vf-table__row">  
+    <td class="vf-table__cell">             
       <figure class="vf-figure">
         <img class="vf-figure__image" src="{{ study.example_image_uri }}" alt="Example image for this dataset">
-      </figure>  
-    </div>
-    <div>
-    Annotation image here
-    </div>
+        <figcaption class="vf-figure__caption">Example image for this dataset</figcaption>
+      </figure> 
+      </td> 
+    <td class="vf-table__cell">
+      <figure class="vf-figure">
+        <img class="vf-figure__image" src="{{ study.example_annotation_uri }}" alt="Example annotation for this dataset">
+        <figcaption class="vf-figure__caption">Example annotation for this dataset</figcaption>
+      </figure>
+    </td>
+    </tr> 
+    </table>
+      </div>
+
   </div>
 
     <!-- Study Information --> 
