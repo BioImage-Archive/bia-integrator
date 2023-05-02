@@ -1,5 +1,8 @@
-import src.models.persistence as db_models
-import src.models.repository as repository
+from ..models import persistence as db_models
+from ..models import repository  as repository
+
+#import models.persistence as db_models
+#import models.repository as repository
 
 from typing import List, Optional
 from fastapi import APIRouter

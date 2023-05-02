@@ -1,6 +1,6 @@
 from fastapi.testclient import TestClient
 
-from ..api.api import app
+from ..app import app
 import uuid
 import time
 

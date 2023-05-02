@@ -1,9 +1,12 @@
-import src.models.persistence as models
-import src.api.exceptions as exceptions
+from . import persistence as models
+from ..api import exceptions
 
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorCollection
 from bson import ObjectId
 from typing import List, Any
+
+from fastapi import HTTPException
+
 
 def get_db() -> AsyncIOMotorCollection:
     mongo_connstring = "mongodb://root:example@mongo1:27018/"
@@ -57,6 +60,7 @@ async def update_doc(doc_model: models.DocumentMixin) -> Any:
         upsert=False
     )
     if not result.matched_count:
+        raise HTTPException(404)
         raise exceptions.DocumentNotFound(f"Could not find document with uuid {doc_model.uuid} and version {doc_model.version}")
     return result
 

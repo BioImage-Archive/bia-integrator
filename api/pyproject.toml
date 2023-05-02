@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "bia-integrator-api"
+version = "0.1.0"
+description = ""
+authors = []
+readme = "README.md"
+packages = [{include = "api"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pydantic = "^1.10.7"
+fastapi = "^0.95.1"
+ome-types = "^0.3.4"
+motor = "^3.1.2"
+requests = "^2.29.0"
+uvicorn = "^0.22.0"
+httpx = "^0.24.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.2.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

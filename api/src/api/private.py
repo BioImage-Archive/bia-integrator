@@ -1,7 +1,7 @@
-import src.models.persistence as db_models
-import src.models.api as api_models
-import src.models.repository as repository
-import src.api.exceptions as exceptions
+from ..models import persistence as db_models
+from ..models import repository  as repository
+from ..models import api as api_models
+from ..api import exceptions
 
 from typing import List, Optional
 from fastapi import APIRouter, status
@@ -13,8 +13,8 @@ async def create_study(study: db_models.BIAStudy) -> Optional[db_models.BIAStudy
     if study.version != 0:
         raise exceptions.InvalidRequestException(f"Expecting all newly created objects to have version 0. Got {study.version}")
 
-    await repository.persist_study(study)
-    study_created = repository.find_study_by_uuid(study.uuid)
+    await repository.persist_doc(study)
+    study_created = await repository.find_study_by_uuid(study.uuid)
     
     return study_created
 

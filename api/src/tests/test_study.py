@@ -1,10 +1,16 @@
+# ? pytest is supposed to do the path hack automatically?
+import sys, os
+#module_root=os.path.join(os.path.dirname(__file__), '..')
+#sys.path.insert(0, module_root)
+
+
 from fastapi.testclient import TestClient
 
-from ..api.api import app
+from .. import app
 import uuid
 import time
 
-client = TestClient(app.router, raise_server_exceptions=False)
+client = TestClient(app.app, raise_server_exceptions=False)
 
 def _get_uuid() -> str:
     # @TODO: make this constant and require mongo to always be clean?
@@ -27,7 +33,7 @@ def test_create_study():
         "release_date": "test"
     }
     rsp = client.post('/api/private/study', json=study)
-    assert rsp.status_code == 201, rsp.json()
+    assert rsp.status_code == 201, str(rsp)
 
     study_with_defaults = {
         **study,
@@ -143,7 +149,7 @@ def test_update_study_not_created():
             "release_date": "test"
         }
         rsp = client.patch('/api/private/study', json=study)
-        assert rsp.status_code == 400, study
+        assert rsp.status_code == 400, str(rsp)
 
 def test_update_study_nested_objects_overwritten():
     raise Exception("TODO - supposed to pull-update-push")
