@@ -1,0 +1,71 @@
+import re
+import subprocess
+def get_image_representations(wildcards):
+    pattern = r"INFO.*/" + wildcards.accno + r"/([\d|a-z|-]{36})\.json"
+    regex = re.compile(pattern)
+    im_reps = []
+    base = f"logs/{wildcards.accno}2"
+    subprocess.run(["mkdir", base])
+    with open(f"{base}.log") as fid:
+        for line in fid.readlines():
+            try:
+                #yield regex.findall(line.strip("\n"))[0]
+                im_reps.append(regex.findall(line.strip("\n"))[0])
+                subprocess.run(["touch", f"{base}/{im_reps[-1]}"])
+            except IndexError:
+                continue
+    return im_reps
+            
+rule all:
+    input:
+        "logs/final_output_{accno}.log"
+    
+# Get image_representations dynamically
+checkpoint get_image_representations:
+    input:
+        "logs/{accno}2.log"
+    params:
+        im_refs=get_image_representations
+    output:
+        "logs/{accno}3.log"
+    shell:
+        "touch {output}"
+    
+rule ingest_from_biostudies:
+    #input:
+    #    "S-BIAD249"
+    output:
+        "logs/{accno}1.log"
+    shell:
+        "python ../scripts/ingest_from_biostudies.py {wildcards.accno} > {output}"
+
+
+rule auto_create_image_representations:
+    input:
+        "logs/{accno}1.log"
+    output:
+        "logs/{accno}2.log"
+    log:
+        "logs/{accno}2"
+    shell:
+        #"python ../scripts/auto_create_image_representations.py {wildcards.accno} -n 3 > {output}"
+        "biaint filerefs list-easily-convertable {wildcards.accno} | tail -n -3 | cut -d',' -f1 | xargs -L1 python ../scripts/assign_single_image_from_fileref.py {wildcards.accno} 2>&1 | tee {output}"
+
+rule convert_to_zarr_and_upload:
+    input:
+        im_ref = "logs/{accno}2/{i}"
+    #params:
+    #    im_refs=get_image_representations
+    output:
+        im_ref = "logs/{accno}{i}_im_ref.log"
+    shell:
+        "python ../scripts/convert_to_zarr_and_upload.py {wildcards.accno} {input.im_ref} > {output.im_ref}"
+
+
+# Collect the output logs so we have one file for 'all' rule
+rule combine_output:
+    output:
+        "logs/final_output_{accno}.log"
+    shell:
+        "cat {wildcards.accno}*im_ref.log > {output}"
+        
