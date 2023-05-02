@@ -1,0 +1,3 @@
+tmp/*
+.snakemake/*
+work_dir/*

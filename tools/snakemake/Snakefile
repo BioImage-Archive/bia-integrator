@@ -1,71 +1,77 @@
+"""
+    To run this script the following are needed:
+    1. export accession id of submission e.g. export ACCNO="S-BIAD679"
+    2. env variables for convert_to_zarr
+        export bioformats2raw_java_home=/home/kola/miniconda3/envs/bia/
+        export bioformats2raw_bin=/home/kola/miniconda3/envs/bia/bin/bioformats2raw
+        export AWS_PROFILE=embassy && export AWS_SHARED_CREDENTIALS_FILE=/home/kola/.aws/embassy_s3_credentials && export AWS_CONFIG_FILE=/home/kola/.aws/embassy_s3_config
+
+    run command example:
+        snakemake --cores 3 work_dir/final_output_${ACCNO}.log
+
+"""
+
+
+from pathlib import Path
 import re
 import subprocess
-def get_image_representations(wildcards):
-    pattern = r"INFO.*/" + wildcards.accno + r"/([\d|a-z|-]{36})\.json"
-    regex = re.compile(pattern)
-    im_reps = []
-    base = f"logs/{wildcards.accno}2"
-    subprocess.run(["mkdir", base])
-    with open(f"{base}.log") as fid:
-        for line in fid.readlines():
-            try:
-                #yield regex.findall(line.strip("\n"))[0]
-                im_reps.append(regex.findall(line.strip("\n"))[0])
-                subprocess.run(["touch", f"{base}/{im_reps[-1]}"])
-            except IndexError:
-                continue
-    return im_reps
-            
+
+# ToDo: use variable for work_dir
+#work_dir = "work_dir"
+
 rule all:
     input:
-        "logs/final_output_{accno}.log"
+        "work_dir/final_output_{accno}.log"
     
 # Get image_representations dynamically
 checkpoint get_image_representations:
-    input:
-        "logs/{accno}2.log"
-    params:
-        im_refs=get_image_representations
+    input: "work_dir/image_representations.log"
     output:
-        "logs/{accno}3.log"
+        im_rep_dir = directory("work_dir/im_reps")
     shell:
-        "touch {output}"
+        """
+            OUTPUT_DIR='{output.im_rep_dir}'
+            REGEX="([0-9|a-z]+-[0-9|a-z]+-[0-9|a-z]+-[0-9|a-z]+-[0-9|a-z]+)"
+            mkdir $OUTPUT_DIR
+            while read line; do if [[ $line =~ $REGEX ]]; then touch "$OUTPUT_DIR/${{BASH_REMATCH[1]}}"; fi; done < {input}
+        """
     
 rule ingest_from_biostudies:
-    #input:
-    #    "S-BIAD249"
     output:
-        "logs/{accno}1.log"
+        "work_dir/ingest_from_biostudies.log"
     shell:
-        "python ../scripts/ingest_from_biostudies.py {wildcards.accno} > {output}"
-
+        "python ../scripts/ingest_from_biostudies.py $ACCNO > {output}"
 
 rule auto_create_image_representations:
     input:
-        "logs/{accno}1.log"
+        "work_dir/ingest_from_biostudies.log"
     output:
-        "logs/{accno}2.log"
-    log:
-        "logs/{accno}2"
+        "work_dir/image_representations.log"
     shell:
-        #"python ../scripts/auto_create_image_representations.py {wildcards.accno} -n 3 > {output}"
-        "biaint filerefs list-easily-convertable {wildcards.accno} | tail -n -3 | cut -d',' -f1 | xargs -L1 python ../scripts/assign_single_image_from_fileref.py {wildcards.accno} 2>&1 | tee {output}"
+        # ToDo set bash so pipeline non-zero exit does not propagate
+        # Then I can use 'head' in line below
+        "biaint filerefs list-easily-convertable $ACCNO | tail -n -3 | cut -d',' -f1 | xargs -L1 python ../scripts/assign_single_image_from_fileref.py $ACCNO 2>&1 | tee {output}"
 
 rule convert_to_zarr_and_upload:
-    input:
-        im_ref = "logs/{accno}2/{i}"
-    #params:
-    #    im_refs=get_image_representations
     output:
-        im_ref = "logs/{accno}{i}_im_ref.log"
+        im_ref = "work_dir/im_reps_output/{i,[a-z|\d|-]+}"
+    input:
+        im_ref = "work_dir/im_reps/{i}"
     shell:
-        "python ../scripts/convert_to_zarr_and_upload.py {wildcards.accno} {input.im_ref} > {output.im_ref}"
+        """
+            IM_REF=$(basename {input.im_ref})
+            python ../scripts/convert_to_zarr_and_upload.py $ACCNO $IM_REF > {output.im_ref}
+        """
 
+def aggregate_input(wildcards):
+    checkpoint_output = checkpoints.get_image_representations.get(**wildcards).output[0]
+    return expand("work_dir/im_reps_output/{i}", i=glob_wildcards(os.path.join(checkpoint_output, '{i,[a-z|\d|-]+}')).i)
 
 # Collect the output logs so we have one file for 'all' rule
 rule combine_output:
     output:
-        "logs/final_output_{accno}.log"
+        combined = "work_dir/final_output_{accno}.log"
+    input:
+        aggregate_input
     shell:
-        "cat {wildcards.accno}*im_ref.log > {output}"
-        
+        "echo {input} > {output}.combined"

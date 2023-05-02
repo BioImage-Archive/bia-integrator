@@ -1,4 +1,5 @@
 import logging
+from pathlib import Path
 
 logger = logging.getLogger("biaint")
 logging.basicConfig(level=logging.INFO)
@@ -101,6 +102,16 @@ def list_filerefs(accession_id: str):
     for fileref in bia_study.file_references.values():
         readable_size = sizeof_fmt(fileref.size_in_bytes)
         typer.echo(f"{fileref.id}, {fileref.name}, {readable_size}")
+
+@filerefs_app.command("list-easily-convertable")
+def list_easily_convertable_filerefs(accession_id: str):
+    bia_study = load_and_annotate_study(accession_id)
+    convertable_ext_path = Path(__file__).resolve().parent.parent / "resources" /"bioformats_curated_single_file_formats.txt"
+    easily_convertable_exts = [ l for l in convertable_ext_path.read_text().split("\n") if len(l) > 0]
+    for fileref in bia_study.file_references.values():
+        if Path(fileref.name).suffix.lower() in easily_convertable_exts:
+            readable_size = sizeof_fmt(fileref.size_in_bytes)
+            typer.echo(f"{fileref.id}, {fileref.name}, {readable_size}")
 
 
 @images_app.command("list")
