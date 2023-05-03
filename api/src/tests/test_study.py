@@ -1,26 +1,9 @@
-# ? pytest is supposed to do the path hack automatically?
-import sys, os
-#module_root=os.path.join(os.path.dirname(__file__), '..')
-#sys.path.insert(0, module_root)
-
-
 from fastapi.testclient import TestClient
+from .util import *
 
-from .. import app
-import uuid
-import time
-
-client = TestClient(app.app, raise_server_exceptions=False)
-
-def _get_uuid() -> str:
-    # @TODO: make this constant and require mongo to always be clean?
-    generated = uuid.UUID(int=int(time.time()))
-
-    return str(generated)
-
-def test_create_study():
+def test_create_study(api_client: TestClient, uuid: str):
     study = {
-        "uuid": _get_uuid(),
+        "uuid": uuid,
         "version": 0,
         "title": "Test BIA study",
         "description": "description",
@@ -32,7 +15,7 @@ def test_create_study():
         "organism": "test",
         "release_date": "test"
     }
-    rsp = client.post('/api/private/study', json=study)
+    rsp = api_client.post('/api/private/study', json=study)
     assert rsp.status_code == 201, str(rsp)
 
     study_with_defaults = {
@@ -47,11 +30,9 @@ def test_create_study():
     }
     assert rsp.json() == study_with_defaults
 
-def test_create_study_nonzero_version():
-    # FIXME - map python exception to http response
-    return
+def test_create_study_nonzero_version(api_client: TestClient, uuid: str):
     study = {
-        "uuid": _get_uuid(),
+        "uuid": uuid,
         "version": 1,
         "title": "Test BIA study",
         "description": "description",
@@ -63,18 +44,16 @@ def test_create_study_nonzero_version():
         "organism": "test",
         "release_date": "test"
     }
-    rsp = client.post('/api/private/study', json=study)
-    assert rsp.status_code == 400
+    rsp = api_client.post('/api/private/study', json=study)
+    assert rsp.status_code == 422
 
 
-def test_create_study_missing_version():
-    # FIXME: RequestValidationError
-    return
+def test_create_study_missing_version(api_client: TestClient, uuid: str):
     """
     Leftover from same model being used internally and in the api
     In the more common case, version isn't optional"""
     study = {
-        "uuid": _get_uuid(),
+        "uuid": uuid,
         "title": "Test BIA study",
         "description": "description",
         "authors": [{
@@ -85,12 +64,12 @@ def test_create_study_missing_version():
         "organism": "test",
         "release_date": "test"
     }
-    rsp = client.post('/api/private/study', json=study)
-    assert rsp.status_code == 400
+    rsp = api_client.post('/api/private/study', json=study)
+    assert rsp.status_code == 422
 
-def test_update_study_wrong_version():
+def test_update_study_wrong_version(api_client: TestClient, uuid: str):
     study = {
-        "uuid": _get_uuid(),
+        "uuid": uuid,
         "version": 0,
         "title": "Test BIA study",
         "description": "description",
@@ -102,41 +81,41 @@ def test_update_study_wrong_version():
         "organism": "test",
         "release_date": "test"
     }
-    rsp = client.post('/api/private/study', json=study)
+    rsp = api_client.post('/api/private/study', json=study)
     assert rsp.status_code == 201, rsp.json()
 
     # re-issuing a create request shouldn't create a new object
-    rsp = client.post('/api/private/study', json=study)
-    assert rsp.status_code == 400
+    rsp = api_client.post('/api/private/study', json=study)
+    assert rsp.status_code == 409
 
     # updating an existing object with the current version number shouldn't work
-    rsp = client.patch('/api/private/study', json=study)
-    assert rsp.status_code == 400
+    rsp = api_client.patch('/api/private/study', json=study)
+    assert rsp.status_code == 404
 
     # skipping a version when updating an object shouldn't work
     study['version'] = 2
-    rsp = client.patch('/api/private/study', json=study)
-    assert rsp.status_code == 400
+    rsp = api_client.patch('/api/private/study', json=study)
+    assert rsp.status_code == 404
 
     # updating with an incremented version number should work
     study['version'] = 1
-    rsp = client.patch('/api/private/study', json=study)
-    assert rsp.status_code == 200
+    rsp = api_client.patch('/api/private/study', json=study)
+    assert rsp.status_code == 201
 
     # updating with an old version number shouldn't work
     study['version'] = 0
-    rsp = client.patch('/api/private/study', json=study)
-    assert rsp.status_code == 400
+    rsp = api_client.patch('/api/private/study', json=study)
+    assert rsp.status_code == 404
 
     # trying to create a study was already updated shouldn't work
     study['version'] = 0
-    rsp = client.post('/api/private/study', json=study)
-    assert rsp.status_code == 400
+    rsp = api_client.post('/api/private/study', json=study)
+    assert rsp.status_code == 409
 
-def test_update_study_not_created():
+def test_update_study_not_created(api_client: TestClient, uuid: str):
     for i in range(2):
         study = {
-            "uuid": _get_uuid(),
+            "uuid": uuid,
             "version": i,
             "title": "Test BIA study",
             "description": "description",
@@ -148,8 +127,8 @@ def test_update_study_not_created():
             "organism": "test",
             "release_date": "test"
         }
-        rsp = client.patch('/api/private/study', json=study)
-        assert rsp.status_code == 400, str(rsp)
+        rsp = api_client.patch('/api/private/study', json=study)
+        assert rsp.status_code == 404, str(rsp)
 
 def test_update_study_nested_objects_overwritten():
     raise Exception("TODO - supposed to pull-update-push")

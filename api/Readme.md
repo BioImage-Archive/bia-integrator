@@ -7,6 +7,11 @@ docker inspect   -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $C
 Add `mongo1` to /etc/hosts
 ```
 
+```
+use bia_integrator
+db.bia_integrator.createIndex({'uuid': 1}, {unique: true})
+```
+
 viewing old versions of documents/document changes
 
 ```

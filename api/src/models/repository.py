@@ -4,9 +4,7 @@ from ..api import exceptions
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorCollection
 from bson import ObjectId
 from typing import List, Any
-
-from fastapi import HTTPException
-
+import pymongo
 
 def get_db() -> AsyncIOMotorCollection:
     mongo_connstring = "mongodb://root:example@mongo1:27018/"
@@ -36,7 +34,10 @@ async def get_study(id : str | ObjectId = None, **kwargs) -> models.BIAStudy:
     return models.BIAStudy(**doc)
 
 async def persist_doc(doc_model: models.DocumentMixin) -> Any:
-    return await get_db().insert_one(doc_model.dict())
+    try:
+        return await get_db().insert_one(doc_model.dict())
+    except pymongo.errors.DuplicateKeyError as e:
+        raise exceptions.InvalidUpdateException(str(e))
 
 async def persist_docs(doc_models: List[models.DocumentMixin]) -> Any:
     rsp = await get_db().insert_many(
@@ -60,7 +61,6 @@ async def update_doc(doc_model: models.DocumentMixin) -> Any:
         upsert=False
     )
     if not result.matched_count:
-        raise HTTPException(404)
         raise exceptions.DocumentNotFound(f"Could not find document with uuid {doc_model.uuid} and version {doc_model.version}")
     return result
 

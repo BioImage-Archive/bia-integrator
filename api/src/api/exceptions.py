@@ -7,3 +7,7 @@ class InvalidRequestException(HTTPException):
 class DocumentNotFound(HTTPException):
     def __init__(self, detail, **kwargs) -> None:
         super().__init__(404, detail, **kwargs)
+
+class InvalidUpdateException(HTTPException):
+    def __init__(self, detail, **kwargs) -> None:
+        super().__init__(409, detail, **kwargs)

@@ -12,7 +12,7 @@ router = APIRouter(prefix="/api/private")
 async def create_study(study: db_models.BIAStudy) -> Optional[db_models.BIAStudy]:
     if study.version != 0:
         raise exceptions.InvalidRequestException(f"Expecting all newly created objects to have version 0. Got {study.version}")
-
+    
     await repository.persist_doc(study)
     study_created = await repository.find_study_by_uuid(study.uuid)
     
