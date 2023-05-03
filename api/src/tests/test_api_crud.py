@@ -6,7 +6,7 @@ import time
 
 client = TestClient(app.router)
 
-def _get_uuid() -> str:
+def get_uuid() -> str:
     generated = uuid.UUID(int=int(time.time()))
 
     return str(generated)

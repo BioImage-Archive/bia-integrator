@@ -15,7 +15,7 @@ async def get_studies_for_collection(collection: str) -> List[str]:
 
 @router.get("/{study_uuid}")
 async def get_study(study_uuid: str) -> db_models.BIAStudy:
-    return repository.find_study_by_uuid(study_uuid)
+    return await repository.find_study_by_uuid(study_uuid)
 
 @router.get("/{study_uuid}/file_references")
 async def get_study_file_references(study_uuid: str) -> db_models.FileReference:

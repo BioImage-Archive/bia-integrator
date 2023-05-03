@@ -4,6 +4,7 @@ from ..api import exceptions
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorCollection
 from bson import ObjectId
 from typing import List, Any
+from uuid import UUID
 import pymongo
 
 def get_db() -> AsyncIOMotorCollection:
@@ -40,11 +41,8 @@ async def persist_doc(doc_model: models.DocumentMixin) -> Any:
         raise exceptions.InvalidUpdateException(str(e))
 
 async def persist_docs(doc_models: List[models.DocumentMixin]) -> Any:
-    rsp = await get_db().insert_many(
-        doc_models.dict(),
-        # if ordered=true, client stops after the first failure (e.g. duplicated uuid)
-        ordered=False
-    )
+    doc_models = [doc_model.dict() for doc_model in doc_models]
+    rsp = await get_db().insert_many(doc_models, ordered=False)
 
     # @TODO: Cleaner way to signal partial failure - return failed indices?
     return rsp
@@ -64,7 +62,10 @@ async def update_doc(doc_model: models.DocumentMixin) -> Any:
         raise exceptions.DocumentNotFound(f"Could not find document with uuid {doc_model.uuid} and version {doc_model.version}")
     return result
 
-async def find_study_by_uuid(uuid: str) -> models.BIAStudy:
+async def find_study_by_uuid(uuid: str | UUID) -> models.BIAStudy:
+    if isinstance(uuid, str):
+        uuid = UUID(uuid)
+
     return await get_study(uuid=uuid)
 
 async def find_studies_uuid_for_collection(collection: str) -> List[str]:

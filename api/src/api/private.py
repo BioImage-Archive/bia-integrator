@@ -35,7 +35,7 @@ async def study_refresh_counts(study_uuid: str) -> Optional[db_models.BIAStudy]:
 
 @router.post("/images")
 async def create_images(study_images: List[db_models.BIAImage]) -> api_models.BulkOperationResponse:
-    repository.persist_docs(study_images)
+    await repository.persist_docs(study_images)
 
     return None
 

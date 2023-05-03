@@ -138,15 +138,15 @@ class BIAImage(BIABaseModel, DocumentMixin):
     different file structures.
     """
 
-    study_id: str
-    name: Optional[str]
-    original_relpath: Path
+    study_id: str = Field()
+    original_relpath: str = Field() # originally Path
+    name: Optional[str] = Field(default=None)
 
-    dimensions: Optional[str]
-    representations: List[BIAImageRepresentation] = []
-    attributes: Dict = {}
-    annotations: List[ImageAnnotation]
-    image_aliases: List[BIAImageAlias]
+    dimensions: Optional[str] = Field(default=None)
+    representations: List[BIAImageRepresentation] = Field(default=[])
+    attributes: Dict = Field(default={})
+    annotations: List[ImageAnnotation] = Field(default=[])
+    image_aliases: List[BIAImageAlias] = Field(default=[])
 
     @property
     def ome_metadata(self) -> Optional[BIAOmeMetadata]:
