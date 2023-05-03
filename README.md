@@ -6,3 +6,6 @@ A system for ingesting imaging datasets, tracking images and their representatio
 `core` - core models and interfaces
 `tools` - functionality for manipulating studies, images and representations, including conversion
 `static-sitegen` - code for building static pages
+
+## Help
+See [documentation](https://bia-integrator.readthedocs.io) for more details
