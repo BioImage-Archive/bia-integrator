@@ -6,6 +6,7 @@ from ..models import repository  as repository
 
 from typing import List, Optional
 from fastapi import APIRouter
+from uuid import UUID
 
 router = APIRouter(prefix="/api")
 
@@ -41,6 +42,10 @@ async def get_study_images(study_uuid: str) -> db_models.BIAImage:
 #async def get_image_representations(image_uuid: str, type=None) -> List[db_models.BIAImageRepresentation]:
 #    pass
 
+@router.get("/images/{image_uuid}")
+async def get_image(image_uuid: str) -> db_models.BIAImage:
+    return await repository.get_image(uuid=UUID(image_uuid))
+    
 @router.get("/images/{image_uuid}/ome_metadata")
 async def get_image_ome_metadata(study_uuid: str, image_uuid: str) -> db_models.BIAOmeMetadata:
     return repository.find_image_by_id(image_uuid)

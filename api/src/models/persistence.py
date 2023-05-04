@@ -81,7 +81,7 @@ class BIAStudy(BIABaseModel, DocumentMixin):
 class FileReference(BIABaseModel, DocumentMixin):
     """A reference to an externally hosted file."""
 
-    study_id: str
+    study_uuid: UUID = Field()
     name: str # A short descriptive name
     uri: str # URI of the file
     size_bytes: Optional[int] # Size of the file
@@ -138,7 +138,7 @@ class BIAImage(BIABaseModel, DocumentMixin):
     different file structures.
     """
 
-    study_id: str = Field()
+    study_uuid: UUID = Field()
     original_relpath: str = Field() # originally Path
     name: Optional[str] = Field(default=None)
 

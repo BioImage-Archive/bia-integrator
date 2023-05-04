@@ -33,11 +33,13 @@ async def study_refresh_counts(study_uuid: str) -> Optional[db_models.BIAStudy]:
     bia_study = repository.find_study_by_uuid(study_uuid)
     return bia_study
 
-@router.post("/images")
+@router.post("/images", status_code=status.HTTP_201_CREATED)
 async def create_images(study_images: List[db_models.BIAImage]) -> api_models.BulkOperationResponse:
-    await repository.persist_docs(study_images)
+    insert_results = await repository.persist_docs(study_images)
 
-    return None
+    rsp = api_models.BulkOperationResponse(items=insert_results)
+
+    return rsp
 
 @router.post("/images/bulk")
 async def create_images() -> None:
