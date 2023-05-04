@@ -42,9 +42,24 @@ rule ingest_from_biostudies:
     shell:
         "python ../scripts/ingest_from_biostudies.py $ACCNO > {output}"
 
-rule auto_create_image_representations:
+rule index_zips_in_study:
     input:
         "work_dir/ingest_from_biostudies.log"
+    output:
+        "work_dir/index_zips_in_study.log"
+    shell:
+        # ToDo set bash so pipeline non-zero exit does not propagate
+        # Then I can use 'head' in line below
+        #"biaint filerefs list $ACCNO | grep '\.zip2," | cut -d',' -f1 | xargs -L1 python ../scripts/index_zip_in_study.py $ACCNO 2>&1 | tee {output}"
+        """
+            for ZIP_FILEREF_ID in `biaint filerefs list $ACCNO | grep '\.zip,' | cut -d',' -f1`; do python ../scripts/index_zip_in_study.py $ACCNO $ZIP_FILEREF_ID 2>&1 | tee -a {output}; done
+            touch {output}
+        """
+
+
+rule auto_create_image_representations:
+    input:
+        "work_dir/index_zips_in_study.log"
     output:
         "work_dir/image_representations.log"
     shell:
