@@ -30,10 +30,11 @@ checkpoint get_image_representations:
         im_rep_dir = directory("work_dir/im_reps")
     shell:
         """
+            head -n 6 {input} | grep "json" > {input}.temp
             OUTPUT_DIR='{output.im_rep_dir}'
             REGEX="([0-9|a-z]+-[0-9|a-z]+-[0-9|a-z]+-[0-9|a-z]+-[0-9|a-z]+)"
             mkdir $OUTPUT_DIR
-            while read line; do if [[ $line =~ $REGEX ]]; then touch "$OUTPUT_DIR/${{BASH_REMATCH[1]}}"; fi; done < {input}
+            while read line; do if [[ $line =~ $REGEX ]]; then touch "$OUTPUT_DIR/${{BASH_REMATCH[1]}}"; fi; done < {input}.temp
         """
     
 rule ingest_from_biostudies:
@@ -56,16 +57,13 @@ rule index_zips_in_study:
             touch {output}
         """
 
-
 rule auto_create_image_representations:
     input:
         "work_dir/index_zips_in_study.log"
     output:
         "work_dir/image_representations.log"
     shell:
-        # ToDo set bash so pipeline non-zero exit does not propagate
-        # Then I can use 'head' in line below
-        "biaint filerefs list-easily-convertable $ACCNO | tail -n -3 | cut -d',' -f1 | xargs -L1 python ../scripts/assign_single_image_from_fileref.py $ACCNO 2>&1 | tee {output}"
+        "biaint filerefs list-easily-convertable $ACCNO | cut -d',' -f1 | xargs -L1 python ../scripts/assign_single_image_from_fileref.py $ACCNO 2>&1 | tee {output}"
 
 rule convert_to_zarr_and_upload:
     output:

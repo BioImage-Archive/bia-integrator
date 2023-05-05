@@ -61,7 +61,6 @@
 .jpk
 .jpx
 .klb
-.labels
 .lif
 .liff
 .lim
@@ -120,7 +119,6 @@
 .tiff
 tiff
 .top
-.txt
 .v
 .wat
 .wav
@@ -131,5 +129,4 @@ tiff
 .xv
 .zfp
 .zfr
-.zip
 .zvi
