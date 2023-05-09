@@ -18,7 +18,6 @@
 .cif
 .cr2
 .crw
-.csv
 .cxd
 .czi
 .df3
@@ -80,8 +79,6 @@
 .ndpi
 .nef
 .oir
-.ome
-.ome.xml
 .pbm
 .pct
 .pcx
