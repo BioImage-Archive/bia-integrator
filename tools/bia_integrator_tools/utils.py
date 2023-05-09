@@ -1,12 +1,14 @@
+import uuid
 import logging
+import hashlib
 from typing import Optional
 
 from ome_zarr.io import parse_url
 from ome_zarr.reader import Reader
 from bia_integrator_core.integrator import load_and_annotate_study
-from bia_integrator_core.models import BIAImageRepresentation
+from bia_integrator_core.models import BIAImageRepresentation, BIAImage
 from bia_integrator_core.models import RenderingInfo, ChannelRendering
-from bia_integrator_core.interface import persist_image_representation
+from bia_integrator_core.interface import persist_image_representation, persist_image
 
 logger = logging.getLogger(__name__)
 
@@ -62,3 +64,35 @@ def set_rendering_info_for_ome_ngff_rep(ome_ngff_rep):
         )
         
         persist_image_representation(ome_ngff_rep)
+
+
+def create_and_persist_image_from_fileref(accession_id, fileref):
+    name = fileref.name
+    logger.info(f"Assigned name {name}")
+
+    hash_input = fileref.id
+    hexdigest = hashlib.md5(hash_input.encode("utf-8")).hexdigest()
+    image_id_as_uuid = uuid.UUID(version=4, hex=hexdigest)
+    image_id = str(image_id_as_uuid)
+
+    image_rep = BIAImageRepresentation(
+        accession_id=accession_id,
+        image_id=image_id,
+        size=fileref.size_in_bytes,
+        uri=fileref.uri,
+        attributes={"fileref_ids": [fileref.id]},
+        type="fire_object"
+    )
+
+    image = BIAImage(
+        id=image_id,
+        accession_id=accession_id,
+        original_relpath=name,
+        name=name,
+        representations=[image_rep],
+        attributes=fileref.attributes
+    )
+
+    persist_image(image)
+
+    return image_id

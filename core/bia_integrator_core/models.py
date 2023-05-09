@@ -131,6 +131,7 @@ class BIAImage(BIABaseModel):
 
         return ome_metadata
 
+
 class BIAImageAlias(BIABaseModel):
     """An alias for an image - a more convenient way to refer to the image than
     the full accession ID / UUID pair"""
