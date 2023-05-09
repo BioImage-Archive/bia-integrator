@@ -170,9 +170,9 @@
 <p></p>
         
     <!-- Images -->
-    <section class="embl-grid embl-grid--has-centered-content">
-    <div class="vf-section-header">
-      <h3 class="vf-section-header__heading" id="images">Viewable images</h3>
+    <section class="vf-content | embl-grid embl-grid--has-centered-content">
+    <div>
+      <h2 class="vf-section-header__heading" id="images">Viewable images</h2>
     </div>
     <div>
 
@@ -198,7 +198,7 @@
                         <tbody>
                             {% for image in images %}
                             <tr>
-                                <td>{{ image.id }}</td>
+                                <td>{{ image_names[image.id] }}</td>
                                 <td>
                                     <img class="vf-figure__image" src={{ image_thumbnails[image.id] }}>
                                 </td>
@@ -220,6 +220,7 @@
                       </table>
                       {# </section> #}
                     </div>
+                    
                     <div>
                     </div>
             </section>
@@ -262,8 +263,7 @@
                         </thead>
                         <tbody>
                             {% for image in study.images.values() %}
-                            <tr>
-                                <td>{{ image.id }}</td>
+                                <td>{{ image_names[image.id] }}</td>
                                 <td>{{ image.original_relpath }}</td>
                                 <td><a href={{ image_download_uris[image.id] }}>Download</a></td>
                             </tr>
