@@ -15,7 +15,32 @@ def uuid() -> str:
     return get_uuid()
 
 @pytest.fixture(scope="function")
-def existing_study(api_client: TestClient, uuid: str):
+def existing_study(api_client: TestClient):
+    return make_study(api_client)
+
+@pytest.fixture(scope="function")
+def existing_image(api_client: TestClient, existing_study: dict):
+    uuid = get_uuid()
+
+    image = {
+        "uuid": uuid,
+        "version": 0,
+        "study_uuid": existing_study['uuid'],
+        "name": f"image_{uuid}",
+        "original_relpath": f"/home/test/{uuid}",
+        "attributes": {
+            "image_uuid": uuid
+        }
+    }
+
+    rsp = api_client.post('/api/private/images', json=[image])
+    assert rsp.status_code == 201, rsp.json()
+
+    return image
+
+def make_study(api_client: TestClient):
+    uuid = get_uuid()
+
     study = {
         "uuid": uuid,
         "version": 0,
@@ -32,10 +57,14 @@ def existing_study(api_client: TestClient, uuid: str):
     rsp = api_client.post('/api/private/study', json=study)
     assert rsp.status_code == 201, rsp.json()
 
-    rsp = api_client.get(f'/api/{uuid}')
-    assert rsp.status_code == 200
+    return get_study(api_client, uuid)
+
+def get_study(api_client: TestClient, study_uuid: str, assert_status_code=200):
+    rsp = api_client.get(f'/api/{study_uuid}')
+    assert rsp.status_code == assert_status_code
 
     return rsp.json()
+
 
 def get_client(**kwargs) -> TestClient:
     from fastapi.responses import JSONResponse

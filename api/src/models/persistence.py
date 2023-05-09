@@ -112,13 +112,14 @@ class BIAImageRepresentation(BIABaseModel):
     * An S3 accessible OME-Zarr.
     * A thumbnail."""
     
-    accession_id: str
-    uri: List[str]
-    size: int
-    type: Optional[str]
-    dimensions: Optional[str]
-    attributes: Dict = {}
-    rendering: Optional[RenderingInfo]
+    image: UUID = Field()
+    accession_id: str = Field()
+    size: int = Field()
+    uri: List[str] = Field(default=[])
+    type: Optional[str] = Field(default=None)
+    dimensions: Optional[str] = Field(default=None)
+    attributes: Dict = Field(default={})
+    rendering: Optional[RenderingInfo] = Field(default=None)
 
 class BIAOmeMetadata(dict):
     pass

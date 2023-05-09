@@ -39,6 +39,10 @@ async def refresh_counts(image_id: str):
 
 async def get_study(*args, **kwargs) -> models.BIAStudy:
     doc = await _get_doc_raw(*args, **kwargs)
+    
+    if doc is None:
+        raise exceptions.DocumentNotFound('Study does not exist')
+    
     return models.BIAStudy(**doc)
 
 async def persist_doc(doc_model: models.DocumentMixin) -> Any:
@@ -47,19 +51,25 @@ async def persist_doc(doc_model: models.DocumentMixin) -> Any:
     except pymongo.errors.DuplicateKeyError as e:
         raise exceptions.InvalidUpdateException(str(e))
 
-async def persist_docs(doc_models: List[models.DocumentMixin]) -> List[api_models.BulkOperationItem]:
-    insert_errors_by_uuid = {}
+async def persist_docs(doc_models: List[models.DocumentMixin], insert_errors_by_uuid = {}) -> List[api_models.BulkOperationItem]:
+    """
+    @param insert_errors_by_uuid passed in because there might be type-specific errors
+    """
     doc_dicts = []
 
     # preliminary validation
     for doc_model in doc_models:
-        insert_errors_by_uuid[doc_model.uuid] = {}
-        if doc_model.version == 0:
-            doc_dicts.append(doc_model.dict())
+        if insert_errors_by_uuid.get(doc_model.uuid, None):
+            # skip documents already known to have errors
+            continue
         else:
-            insert_errors_by_uuid[doc_model.uuid] = {
-                'errmsg': f'Error: Expected version to be 0, got {doc_model.version} instead'
-            }
+            if doc_model.version == 0:
+                insert_errors_by_uuid[doc_model.uuid] = {}
+                doc_dicts.append(doc_model.dict())
+            else:
+                insert_errors_by_uuid[doc_model.uuid] = {
+                    'errmsg': f'Error: Expected version to be 0, got {doc_model.version} instead'
+                }
 
     try:    
         # actual insert
@@ -118,6 +128,12 @@ async def update_doc(doc_model: models.DocumentMixin) -> Any:
     if not result.matched_count:
         raise exceptions.DocumentNotFound(f"Could not find document with uuid {doc_model.uuid} and version {doc_model.version}")
     return result
+
+async def find_image_by_uuid(uuid: str | UUID) -> models.BIAImage:
+    if isinstance(uuid, str):
+        uuid = UUID(uuid)
+    
+    return await get_image(uuid=uuid)
 
 async def find_study_by_uuid(uuid: str | UUID) -> models.BIAStudy:
     if isinstance(uuid, str):

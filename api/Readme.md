@@ -26,3 +26,5 @@ viewing old versions of documents/document changes
 
 TODO:
 - define ttl and size for oplog, **backup method**
+- hypercorn
+- type
