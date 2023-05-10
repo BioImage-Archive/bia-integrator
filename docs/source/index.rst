@@ -11,6 +11,7 @@ Welcome to BIA Integrator's documentation!
    :caption: Contents:
 
    purpose
+   setup
    core_primitives
    conversion
    annotation

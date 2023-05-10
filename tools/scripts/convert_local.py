@@ -12,10 +12,8 @@ from pydantic import BaseSettings
 
 from bia_integrator_tools.conversion import run_zarr_conversion
 from bia_integrator_core.integrator import load_and_annotate_study
-from bia_integrator_core.models import BIAImageRepresentation
-from bia_integrator_core.interface import persist_image_representation
 from bia_integrator_tools.utils import get_image_rep_by_type
-from bia_integrator_tools.io import stage_fileref_and_get_fpath, c2zsettings
+from bia_integrator_tools.io import stage_fileref_and_get_fpath
 
 
 logger = logging.getLogger(__file__)

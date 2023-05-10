@@ -14,6 +14,10 @@ from generate_image_page import generate_image_page_html
 logger = logging.getLogger(__file__)
 
 
+DEFAULT_DATASET_TEMPLATE = "dataset-landing.html.j2"
+
+
+
 def generate_and_write_image_pages(accession_id, output_base_dirpath):
     bia_study = load_and_annotate_study(accession_id)
     for image in bia_study.images.values():
@@ -38,10 +42,15 @@ def main(collection_name):
     output_base_dirpath = Path("tmp/pages")
     output_base_dirpath.mkdir(exist_ok=True, parents=True)
 
+    dataset_template_fname = collection.attributes.get(
+        "dataset_landing_template", DEFAULT_DATASET_TEMPLATE
+    )
+
+    page_suffix = collection.attributes.get("page-suffix", ".html")
     for accession_id in collection.accession_ids:
         logger.info(f"Generating dataset page for {accession_id}")
-        rendered_html = generate_dataset_page_html(accession_id)
-        output_fpath = output_base_dirpath/f"{accession_id}.html"
+        rendered_html = generate_dataset_page_html(accession_id, dataset_template_fname)
+        output_fpath = output_base_dirpath/f"{accession_id}{page_suffix}"
         with open(output_fpath, "w") as fh:
             fh.write(rendered_html)
 

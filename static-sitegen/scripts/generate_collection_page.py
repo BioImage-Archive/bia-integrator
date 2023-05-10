@@ -17,16 +17,24 @@ env = Environment(
     autoescape=select_autoescape()
 )
 
-#template = env.get_template("collection-ai-landing.html.j2")
-template = env.get_template("collection-landing.html.j2")
+DEFAULT_TEMPLATE = "collection-landing.html.j2"
 
 def generate_collection_page_html(collection: BIACollection) -> str:
 
+    template_fname = collection.attributes.get("collection_landing_template", DEFAULT_TEMPLATE)
+    
     bia_studies = [load_and_annotate_study(accession_id) for accession_id in collection.accession_ids]
+
+    page_suffix = collection.attributes.get("page-suffix", ".html")
+    logger.info(f"Loading template {template_fname}")
+    logger.info(f"Using dataset page suffix: {page_suffix}")
+
+    template = env.get_template(template_fname)
 
     rendered = template.render(
             studies=bia_studies,
-            collection=collection
+            collection=collection,
+            page_suffix=page_suffix
     )
 
     return rendered

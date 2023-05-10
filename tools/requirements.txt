@@ -46,6 +46,7 @@ locket==1.0.0
 lxml==4.9.2
 MarkupSafe==2.1.2
 matplotlib-inline==0.1.6
+microfilm
 multidict==6.0.4
 networkx==3.1
 numcodecs==0.11.0

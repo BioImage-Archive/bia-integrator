@@ -131,6 +131,7 @@ class BIAImage(BIABaseModel):
 
         return ome_metadata
 
+
 class BIAImageAlias(BIABaseModel):
     """An alias for an image - a more convenient way to refer to the image than
     the full accession ID / UUID pair"""
@@ -156,6 +157,7 @@ class BIAStudy(BIABaseModel):
     imaging_type: Optional[str]
     attributes: Dict = {}
     example_image_uri: str = ""
+    example_annotation_uri: str = ""
 
     file_references: Dict[str, FileReference] = {}
 
@@ -177,6 +179,7 @@ class BIACollection(BIABaseModel):
     subtitle: str
     description: Optional[str]
     accession_ids: List[str]
+    attributes: Optional[Dict] = {}
 
 
 class StudyTag(BIABaseModel):
