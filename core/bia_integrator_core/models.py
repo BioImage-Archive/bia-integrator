@@ -1,4 +1,5 @@
 import pathlib
+import datetime
 from typing import Dict, List, Optional, Set, Union, AnyStr
 
 from pydantic import BaseModel
@@ -67,6 +68,7 @@ class FileReference(BIABaseModel):
     name: str # A short descriptive name
     uri: str # URI of the file
     size_in_bytes: Optional[int] # Size of the file
+    type: Optional[str] # Type of file reference, by default direct but could be inside an archive
     attributes: Dict = {}
 
 
@@ -129,6 +131,7 @@ class BIAImage(BIABaseModel):
 
         return ome_metadata
 
+
 class BIAImageAlias(BIABaseModel):
     """An alias for an image - a more convenient way to refer to the image than
     the full accession ID / UUID pair"""
@@ -148,7 +151,7 @@ class BIAStudy(BIABaseModel):
     description: str
     authors: Optional[List[Author]] = []
     organism: str
-    release_date: str
+    release_date: Union[str, datetime.date]
     
     # FIXME - this should be a list
     imaging_type: Optional[str]

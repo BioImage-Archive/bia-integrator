@@ -1,85 +1,88 @@
+import uuid
 import hashlib
 import logging
-from urllib.parse import urlparse
+
 from pathlib import Path
-from zipfile import ZipFile
 
 import click
+import parse
+from remotezip import RemoteZip
 
 from bia_integrator_core.integrator import load_and_annotate_study
 from bia_integrator_core.interface import persist_study
-from bia_integrator_core.models import BIAFile, BIAImageRepresentation, BIAImage
+from bia_integrator_core.models import BIAFile, FileReference
 
-from bst_pulldown import IMAGE_EXTS
 
+FIRE_FTP_ENDPOINT = "https://ftp.ebi.ac.uk/biostudies/fire"
 logger = logging.getLogger(__file__)
 
 
-def fetch_zipfile_with_caching(zipfile: BIAFile) -> Path:
+def zipfile_item_to_id(accession_id: str, zipfile_name: str, item_name: str):
 
-    # FIXME - not always first representation
-    zipfile_rep = zipfile.representations[0]
-    cache_dirpath = Path.home()/".cache"/"bia-converter"
-    cache_dirpath.mkdir(exist_ok=True, parents=True)
+    hash_input = accession_id
+    hash_input += zipfile_name
+    hash_input += item_name
+    hexdigest = hashlib.md5(hash_input.encode("utf-8")).hexdigest()
 
-    suffix = Path(urlparse(zipfile_rep.uri).path).suffix
-    prefix = hashlib.md5(zipfile_rep.uri.encode()).hexdigest()
-    dst_fname = prefix + suffix
-    dst_fpath = cache_dirpath/dst_fname
-    
-    if not dst_fpath.exists():
-        copy_uri_to_local(zipfile_uri, dst_fpath)
-        logger.info(f"Downloading zipfile to {dst_fpath}")
-    else:
-        logger.info(f"Zipfile exists at {dst_fpath}")
+    id_as_uuid = uuid.UUID(version=4, hex=hexdigest)
 
-    return dst_fpath
-    
+    return str(id_as_uuid)
+
+
+def get_base_http_uri_for_bst_file(accession_id: str):
+
+    import json
+    import requests
+
+    request_uri = f"https://www.ebi.ac.uk/biostudies/api/v1/studies/{accession_id}/info"
+    r = requests.get(request_uri)
+    raw_obj = json.loads(r.content)
+
+    # Strip the initial ftp from the ftp link, replace by http and add /Files
+    return "https" + raw_obj["ftpLink"][3:] + "/Files"
+
 
 @click.command()
 @click.argument('accession_id')
-@click.argument('zipfile_id')
-def main(accession_id, zipfile_id):
+@click.argument('zip_fileref_id')
+def main(accession_id, zip_fileref_id):
 
     logging.basicConfig(level=logging.INFO)
 
+    # base_files_uri = get_base_http_uri_for_bst_file(accession_id)
+
     bia_study = load_and_annotate_study(accession_id)
 
-    zipfile = bia_study.archive_files[zipfile_id]
-    zipfile_fpath = fetch_zipfile_with_caching(zipfile)
+    zip_fileref = bia_study.file_references[zip_fileref_id]
 
-    with ZipFile(zipfile_fpath) as zipf:
+    if not zip_fileref.uri.endswith(".zip"):
+        uri_to_fetch = zip_fileref.uri + ".zip"
+    else:
+        uri_to_fetch = zip_fileref.uri
+
+    # uri = f"{base_files_uri}/{filename}"
+
+    with RemoteZip(uri_to_fetch) as zipf:
         info_list = zipf.infolist()
 
-    image_zipinfos = [
-        zipinfo for zipinfo in info_list
-        if Path(zipinfo.filename).suffix in IMAGE_EXTS
-    ]
+    new_filerefs = {}
+    for item in info_list:
+        if not item.filename.startswith("__MACOSX"):
+            new_fileref = FileReference(
+                id=zipfile_item_to_id(accession_id, zip_fileref.name, item.filename),
+                name=item.filename,
+                uri=uri_to_fetch,
+                type="file_in_zip",
+                size_in_bytes=item.file_size,
+                attributes=zip_fileref.attributes
+            )
 
-    images = {}
-    for n, zipinfo in enumerate(image_zipinfos, start=1):
+            new_filerefs[new_fileref.id] = new_fileref
 
-        image_id = f"{zipfile_id}-IM{n}"
+    logger.info(f"Adding {len(new_filerefs)} new file references from archive")
+    bia_study.file_references.update(new_filerefs)
 
-        rep = BIAImageRepresentation(
-            accession_id=accession_id,
-            image_id=image_id,
-            # FIXME
-            uri=zipfile.representations[0].uri,
-            size=zipinfo.file_size,
-            type="zipfile",
-            attributes = {"zip_filename": zipinfo.filename}
-        )
-
-        images[image_id] = BIAImage(
-            id=image_id,
-            original_relpath=zipinfo.filename,
-            representations=[rep]
-        )
-
-    bia_study.images.update(images)
     persist_study(bia_study)
-
     
 
 
