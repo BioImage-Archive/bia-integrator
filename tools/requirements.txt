@@ -3,8 +3,6 @@ appnope==0.1.3
 asttokens==2.2.0
 Babel==2.12.1
 backcall==0.2.0
-#-e git+ssh://git@github.com/BioImage-Archive/bia-integrator-core.git@5ffe9f9ef7fd99af89070507a5a1b81a936e45c4#egg=bia_integrator_core
-#-e git+ssh://git@github.com/BioImage-Archive/bia-integrator-tools.git@37c518104ae79b2a1685fcf9eef0fbbfcff9afa3#egg=bia_integrator_tools
 boto3==1.26.22
 botocore==1.29.22
 certifi==2022.9.24
