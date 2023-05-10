@@ -24,7 +24,7 @@ def main(accession_id):
                     accession_id=accession_id,
                     image_id=image_id,
                     key=k,
-                    value=v
+                    value=str(v)
                 )
 
                 persist_image_annotation(annotation)

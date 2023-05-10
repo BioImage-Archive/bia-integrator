@@ -4,6 +4,18 @@ import hashlib
 from .biostudies import File
 
 
+def uri_to_id(accession_id: str, uri: str):
+
+    hash_input = accession_id
+    hash_input += str(uri)
+
+    hexdigest = hashlib.md5(hash_input.encode("utf-8")).hexdigest()
+
+    id_as_uuid = uuid.UUID(version=4, hex=hexdigest)
+
+    return str(id_as_uuid)
+
+
 def file_to_id(accession_id: str, file: File):
 
     hash_input = accession_id

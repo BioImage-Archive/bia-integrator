@@ -1,3 +1,4 @@
+import json
 import logging
 import pathlib
 import datetime
@@ -64,7 +65,6 @@ class Section(BaseModel):
     type: str
     accno: Optional[str]
     attributes: List[Attribute] = []
-    # subsections: List["Section"] = []
     subsections: List[Union["Section", List["Section"]]] = []
     links: List[Link] = []
     files: List[Union[File, List[File]]] = []
@@ -155,11 +155,16 @@ def attributes_to_dict(attributes: List[Attribute]) -> dict:
 
 
 def find_file_lists_in_section(section, flists) -> list:
+    """Find all of the File Lists in a Section, recursively descending through
+    the subsections.
+    
+    Return a list of dictionaries.
+    """
 
     attr_dict = attributes_to_dict(section.attributes)
 
     if "File List" in attr_dict:
-        flists.append(attr_dict["File List"])
+        flists.append(attr_dict)
 
     for subsection in section.subsections:
         find_file_lists_in_section(subsection, flists)
@@ -173,7 +178,7 @@ def find_file_lists_in_submission(submission: Submission):
     return find_file_lists_in_section(submission.section, [])
 
 
-def flist_from_flist_fname(accession_id: str, flist_fname: str):
+def flist_from_flist_fname(accession_id: str, flist_fname: str, extra_attribute=None):
 
     flist_url = FLIST_URI_TEMPLATE.format(
         accession_id=accession_id, flist_fname=flist_fname
@@ -185,21 +190,51 @@ def flist_from_flist_fname(accession_id: str, flist_fname: str):
 
     fl = parse_raw_as(List[File], r.content)
 
+    if extra_attribute:
+        for file in fl:
+            file.attributes.append(extra_attribute)
+
     return fl
 
 
-def file_uri(accession_id: str, file: File):
+def file_uri(accession_id: str, file: File, file_uri_template=FILE_URI_TEMPLATE):
+    """For a given accession and file object, return the HTTP URI where we can expect
+    to be able to access that file."""
 
-    return FILE_URI_TEMPLATE.format(
+    return file_uri_template.format(
         accession_id=accession_id,
         relpath=file.path
     )
 
 
+def get_file_uri_template_for_accession(accession_id: str) -> str:
+    """Given an accession identifier, use the BioStudies API to generate a
+    template which can be populated with the value of relpath to produce
+    the URI for a given file."""
+
+    request_uri = f"https://www.ebi.ac.uk/biostudies/api/v1/studies/{accession_id}/info"
+    r = requests.get(request_uri)
+    raw_obj = json.loads(r.content)
+    # Strip the initial ftp from the ftp link, replace by http and add /Files
+    accession_base_uri = "https" + raw_obj["ftpLink"][3:] + "/Files"
+
+    file_uri_template = accession_base_uri + "/{relpath}"
+
+    return file_uri_template
+
+
 def find_files_in_submission_file_lists(submission: Submission) -> List[File]:
 
-    file_list_fnames = find_file_lists_in_submission(submission)
-    file_lists = [flist_from_flist_fname(submission.accno, fname) for fname in file_list_fnames]
+    file_list_dicts = find_file_lists_in_submission(submission)
+    file_lists = []
+    for file_list_dict in file_list_dicts:
+        fname = file_list_dict["File List"]
+        if "Title" in file_list_dict:
+            extra_attribute = Attribute(name="Title", value=file_list_dict["Title"])
+        else:
+            extra_attribute = None
+        file_list = flist_from_flist_fname(submission.accno, fname, extra_attribute)
+        file_lists.append(file_list)
 
     return sum(file_lists, [])
 

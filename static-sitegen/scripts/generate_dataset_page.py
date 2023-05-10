@@ -17,11 +17,14 @@ env = Environment(
     autoescape=select_autoescape()
 )
 
-#template = env.get_template("dataset-ai-landing.html.j2")
-template = env.get_template("dataset-landing.html.j2")
+#template = env.get_template("dataset-landing.html.j2")
+
+DEFAULT_TEMPLATE = "dataset-landing.html.j2"
 
 
-def generate_dataset_page_html(accession_id):
+def generate_dataset_page_html(accession_id, template_fname: str):
+    """Generate an HTML page for a specific dataset."""
+
     bia_study = load_and_annotate_study(accession_id)
     author_names = ', '.join([ 
         author.name
@@ -52,6 +55,8 @@ def generate_dataset_page_html(accession_id):
             if representation.type == "fire_object":
                 image_download_uris[image.id] = urllib.parse.quote(representation.uri, safe=":/")
 
+    template = env.get_template(template_fname)
+
     rendered = template.render(
             image_names=image_names,
             study=bia_study,
@@ -67,11 +72,12 @@ def generate_dataset_page_html(accession_id):
 
 @click.command()
 @click.argument("accession_id")
-def main(accession_id):
+@click.option("--template-fname", default=DEFAULT_TEMPLATE)
+def main(accession_id: str, template_fname: str):
 
     logging.basicConfig(level=logging.INFO)
 
-    rendered = generate_dataset_page_html(accession_id)
+    rendered = generate_dataset_page_html(accession_id, template_fname)
     
     print(rendered)    
 

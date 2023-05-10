@@ -1,4 +1,5 @@
 import os
+import json
 import logging
 import urllib.parse
 
@@ -23,6 +24,31 @@ def sig_format(n):
     inte = int(n)
     n -= inte
     return str(inte + float("{0:.2g}".format(n)))
+
+
+def generate_neuroglancer_link(uri: str):
+    """Given the URI of a Zarr image, return a Neuroglancer URI that will open that image as the default
+    image layer."""
+
+    viewer_state_obj = {
+      "layers": [
+        {
+          "type": "image",
+          "source": "zarr://{zarr_uri}".format(zarr_uri=uri),
+          "tab": "source",
+          "name": "Image"
+        }
+      ],
+      "layout": "4panel"
+    }
+
+    viewer_json_str = json.dumps(viewer_state_obj)
+    viewer_state_no_spaces = viewer_json_str.replace(" ", "")
+    
+    neuroglancer_uri = "https://neuroglancer-demo.appspot.com/#!" + urllib.parse.quote_plus(viewer_state_no_spaces, safe=":{}/,[]")
+    
+    return neuroglancer_uri
+
 
 def generate_image_page_html(accession_id, image_id):
 
@@ -92,17 +118,22 @@ def generate_image_page_html(accession_id, image_id):
         download_uri = urllib.parse.quote(reps_by_type["fire_object"].uri, safe=":/")
     except KeyError:
         download_uri = None
-        
+    
+    zarr_uri = reps_by_type["ome_ngff"].uri
+
+    neuroglancer_uri = generate_neuroglancer_link(zarr_uri)
+
     rendered = template.render(
         study=bia_study,
         image=bia_image,
         image_alias=image_alias,
-        zarr_uri=reps_by_type["ome_ngff"].uri,
+        zarr_uri=zarr_uri,
         psize=psize,
         pdims=pdims,
         dimensions=dims,
         authors=author_names,
-        download_uri=download_uri
+        download_uri=download_uri,
+        neuroglancer_uri=neuroglancer_uri
     )
 
     return rendered

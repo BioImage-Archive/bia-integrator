@@ -1,6 +1,8 @@
+import json
 import uuid
 import logging
 import hashlib
+import requests
 from typing import List 
 
 import click
@@ -15,14 +17,15 @@ from bia_integrator_tools.biostudies import (
     attributes_to_dict,
     load_submission,
     file_uri,
-    find_files_in_submission
+    find_files_in_submission,
+    get_file_uri_template_for_accession
 )
 
 
 logger = logging.getLogger(__file__)
 
 
-def bst_file_to_file_reference(accession_id: str, bst_file: File) -> FileReference:
+def bst_file_to_file_reference(accession_id: str, bst_file: File, file_uri_template: str) -> FileReference:
 
     fileref_id = file_to_id(accession_id, bst_file)
     fileref_name = str(bst_file.path)
@@ -31,7 +34,7 @@ def bst_file_to_file_reference(accession_id: str, bst_file: File) -> FileReferen
     fileref = FileReference(
         id=fileref_id,
         name=fileref_name,
-        uri=file_uri(accession_id, bst_file),
+        uri=file_uri(accession_id, bst_file, file_uri_template=file_uri_template),
         size_in_bytes=bst_file.size,
         attributes=fileref_attributes
     )
@@ -45,7 +48,11 @@ def filerefs_from_bst_submission(submission: Submission) -> List[FileReference]:
 
     logger.info(f"Creating references for {len(all_files)} files")
     accession_id = submission.accno
-    filerefs = [bst_file_to_file_reference(accession_id, bst_file) for bst_file in all_files]
+    file_uri_template = get_file_uri_template_for_accession(accession_id)
+
+    filerefs = [
+        bst_file_to_file_reference(accession_id, bst_file, file_uri_template) for bst_file in all_files
+    ]
 
     return filerefs
 

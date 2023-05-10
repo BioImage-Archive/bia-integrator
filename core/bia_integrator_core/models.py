@@ -1,4 +1,5 @@
 import pathlib
+import datetime
 from typing import Dict, List, Optional, Set, Union, AnyStr
 
 from pydantic import BaseModel
@@ -6,6 +7,7 @@ from urllib.parse import urlparse, urlunparse
 from pathlib import Path
 from ome_types import OME, from_xml
 import requests
+
 
 class BIABaseModel(BaseModel):
     def json(self, ensure_ascii=False, **kwargs):
@@ -66,6 +68,7 @@ class FileReference(BIABaseModel):
     name: str # A short descriptive name
     uri: str # URI of the file
     size_in_bytes: Optional[int] # Size of the file
+    type: Optional[str] # Type of file reference, by default direct but could be inside an archive
     attributes: Dict = {}
 
 
@@ -128,6 +131,7 @@ class BIAImage(BIABaseModel):
 
         return ome_metadata
 
+
 class BIAImageAlias(BIABaseModel):
     """An alias for an image - a more convenient way to refer to the image than
     the full accession ID / UUID pair"""
@@ -147,12 +151,13 @@ class BIAStudy(BIABaseModel):
     description: str
     authors: Optional[List[Author]] = []
     organism: str
-    release_date: str
+    release_date: Union[str, datetime.date]
     
     # FIXME - this should be a list
     imaging_type: Optional[str]
     attributes: Dict = {}
     example_image_uri: str = ""
+    example_annotation_uri: str = ""
 
     file_references: Dict[str, FileReference] = {}
 
@@ -174,6 +179,7 @@ class BIACollection(BIABaseModel):
     subtitle: str
     description: Optional[str]
     accession_ids: List[str]
+    attributes: Optional[Dict] = {}
 
 
 class StudyTag(BIABaseModel):
