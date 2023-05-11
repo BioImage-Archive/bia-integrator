@@ -7,7 +7,6 @@ from urllib.parse import urlparse, urlunparse
 from bson import ObjectId, errors
 from uuid import UUID
 import requests
-import datetime
 
 class BIABaseModel(BaseModel):
     def json(self, ensure_ascii=False, **kwargs):
@@ -82,10 +81,10 @@ class FileReference(BIABaseModel, DocumentMixin):
     """A reference to an externally hosted file."""
 
     study_uuid: UUID = Field()
-    name: str # A short descriptive name
-    uri: str # URI of the file
-    size_bytes: Optional[int] # Size of the file
-    attributes: Dict = {}
+    name: str = Field()
+    uri: str = Field()
+    size_bytes: Optional[int] = Field(default=None)
+    attributes: Dict = Field(default={})
 
 class ChannelRendering(BIABaseModel):
     colormap_start: List[float]
@@ -93,16 +92,16 @@ class ChannelRendering(BIABaseModel):
     scale_factor: float = 1.0
 
 class RenderingInfo(BIABaseModel):
-    channel_renders: List[ChannelRendering]
-    default_z: Optional[int]
-    default_t: Optional[int]
+    channel_renders: List[ChannelRendering] = Field(default=[])
+    default_z: Optional[int] = Field(default=None)
+    default_t: Optional[int] = Field(default=None)
 
 class BIAImageAlias(BIABaseModel):
     """An alias for an image - a more convenient way to refer to the image than
     the full accession ID / UUID pair"""
 
-    name: str
-    accession_id: str
+    name: str = Field()
+    accession_id: str = Field()
     
 class BIAImageRepresentation(BIABaseModel):
     """A particular representation of a BIAImage. Examples:
@@ -112,7 +111,6 @@ class BIAImageRepresentation(BIABaseModel):
     * An S3 accessible OME-Zarr.
     * A thumbnail."""
     
-    image: UUID = Field()
     accession_id: str = Field()
     size: int = Field()
     uri: List[str] = Field(default=[])
@@ -183,10 +181,10 @@ class BIAImage(BIABaseModel, DocumentMixin):
         return ome_metadata
 
 class BIACollection(BIABaseModel, DocumentMixin):
-    """A collection of studies with a coherent purpose. Studies can be in 
+    """A collection of studies with a coherent purpose. Studies can be in
     multiple collections."""
-    name: str
-    title: str
-    subtitle: str
-    description: Optional[str]
-    accession_ids: List[str]
+    name: str = Field()
+    title: str = Field()
+    subtitle: str = Field()
+    description: Optional[str] = Field(default=None)
+    study_uuids: List[str] = Field(default=[])

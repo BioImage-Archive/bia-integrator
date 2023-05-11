@@ -46,6 +46,10 @@ async def get_study_images(study_uuid: str) -> db_models.BIAImage:
 async def get_image(image_uuid: str) -> db_models.BIAImage:
     return await repository.get_image(uuid=UUID(image_uuid))
     
+@router.get("/file_references/{file_reference_uuid}")
+async def get_image(file_reference_uuid: str) -> db_models.FileReference:
+    return await repository.get_file_reference(uuid=UUID(file_reference_uuid))
+
 @router.get("/images/{image_uuid}/ome_metadata")
 async def get_image_ome_metadata(study_uuid: str, image_uuid: str) -> db_models.BIAOmeMetadata:
     return repository.find_image_by_id(image_uuid)

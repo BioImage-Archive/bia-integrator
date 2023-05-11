@@ -130,5 +130,15 @@ def test_update_study_not_created(api_client: TestClient, uuid: str):
         rsp = api_client.patch('/api/private/study', json=study)
         assert rsp.status_code == 404, str(rsp)
 
-def test_update_study_nested_objects_overwritten(api_client: TestClient, existing_study):
-    raise Exception("TODO - supposed to pull-update-push")
+def test_update_study_nested_objects_overwritten(api_client: TestClient, existing_study: dict):
+    existing_study["title"] = "Updated title"
+    existing_study["authors"] = [{
+        "name": "New author1"
+    },{
+        "name": "New author2"
+    }]
+
+    rsp = api_client.patch('/api/private/study', json=existing_study)
+    assert rsp.status_code == 201
+
+    rsp = api_client.patch('/api/study', json=existing_study)

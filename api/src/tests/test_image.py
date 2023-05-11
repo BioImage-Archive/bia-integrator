@@ -103,3 +103,25 @@ def test_image_change_study_to_missing_study(api_client: TestClient, existing_im
 
     rsp = api_client.patch("/api/private/images/single", json=existing_image)
     assert rsp.status_code == 404, rsp.json()
+
+def test_add_image_representation(api_client: TestClient, existing_image: dict):
+    """
+    Would rather not add uuids for sub-objects because then we need to define what a sub-object is.
+    Also, deleting/updating (a.i. the uncommon situations) don't make sense until we can identify specific sub-objects, allowing for parallel request
+    So just don't support either (a.i. to delete a representation, modify the parent image instead of using an endpoint for this purpose only)
+    Adding new representations works as a separate operation"""
+
+    representation = {
+        "accession_id": "test-representation",
+        "size": 1
+    }
+    rsp = api_client.post(f"/api/private/images/{existing_image['uuid']}/representations/single", json=representation)
+    assert rsp.status_code == 201, rsp.json()
+
+def test_add_image_representation_missing_image(api_client: TestClient):
+    representation = {
+        "accession_id": "test-representation",
+        "size": 1
+    }
+    rsp = api_client.post(f"/api/private/images/00000000-0000-0000-0000-000000000000/representations/single", json=representation)
+    assert rsp.status_code == 404, rsp.json()

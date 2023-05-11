@@ -9,21 +9,19 @@ from fastapi import APIRouter, status
 router = APIRouter(prefix="/api/private")
 
 @router.post("/study", status_code=status.HTTP_201_CREATED)
-async def create_study(study: db_models.BIAStudy) -> Optional[db_models.BIAStudy]:
+async def create_study(study: db_models.BIAStudy) -> None:
     if study.version != 0:
         raise exceptions.InvalidRequestException(f"Expecting all newly created objects to have version 0. Got {study.version}")
     
     await repository.persist_doc(study)
-    study_created = await repository.find_study_by_uuid(study.uuid)
     
-    return study_created
+    return None
 
 @router.patch("/study", status_code=status.HTTP_201_CREATED)
-async def update_study(study: db_models.BIAStudy) -> Optional[db_models.BIAStudy]:
+async def update_study(study: db_models.BIAStudy) -> None:
     await repository.update_doc(study)
     
-    study_updated = await repository.find_study_by_uuid(study.uuid)
-    return study_updated
+    return None
 
 @router.post("/studies/{study_uuid}/refresh_counts")
 async def study_refresh_counts(study_uuid: str) -> Optional[db_models.BIAStudy]:
@@ -35,25 +33,7 @@ async def study_refresh_counts(study_uuid: str) -> Optional[db_models.BIAStudy]:
 
 @router.post("/images", status_code=status.HTTP_201_CREATED)
 async def create_images(study_images: List[db_models.BIAImage]) -> api_models.BulkOperationResponse:
-    # no individual errors for this since images will generally be created with the same study
-    insert_errors_by_uuid = {}
-    image_studies_not_found = {
-        study_image.study_uuid: None
-        for study_image in study_images
-    }
-    for study_uuid in image_studies_not_found.keys():
-        try:
-            await repository.find_study_by_uuid(study_uuid)
-        except exceptions.DocumentNotFound as e:
-            image_studies_not_found[study_uuid] = e
-    if any([v for v in image_studies_not_found if v is not None]):
-        for study_image in study_images:
-            image_error = image_studies_not_found[study_image.study_uuid]
-            if image_error:
-                insert_errors_by_uuid[study_image.uuid] = {
-                    'errmsg': image_error.detail
-                }
-
+    insert_errors_by_uuid = await repository.doc_dependency_verify_exists(study_images, lambda img: img.study_uuid, repository.find_study_by_uuid)
     insert_results = await repository.persist_docs(study_images, insert_errors_by_uuid=insert_errors_by_uuid)
 
     rsp = api_models.BulkOperationResponse(items=insert_results)
@@ -61,52 +41,45 @@ async def create_images(study_images: List[db_models.BIAImage]) -> api_models.Bu
     return rsp
 
 @router.patch("/images/single", status_code=status.HTTP_200_OK)
-async def update_image(study_image: db_models.BIAImage) -> db_models.BIAImage:
+async def update_image(study_image: db_models.BIAImage) -> None:
     """Bulk update not available - update_many only has one filter for the entire update
     @TODO: Find common bulk update usecases and map them to mongo operations"""
     await repository.find_study_by_uuid(study_image.study_uuid)
-
     await repository.update_doc(study_image)
-    image_updated = await repository.find_image_by_uuid(study_image.uuid)
     
-    return image_updated
+    return None
 
 @router.post("/images/bulk")
 async def create_images() -> None:
     """TODO: Maybe file-based async?"""
     raise Exception("Not implemented")
 
-@router.post("/images/representations")
-async def create_image_representations(representations : List[db_models.BIAImageRepresentation]) -> api_models.BulkOperationResponse:
-    representations_images = {
-        representation.image
-        for representation in representations
-    }
-    for image_uuid in representations_images:
-        await repository.find_image_by_uuid(image_uuid)
-    
-    insert_results = await repository.persist_docs(representations)
+@router.post("/images/{image_uuid}/representations/single", status_code=status.HTTP_201_CREATED)
+async def create_image_representation(image_uuid: str, representation : db_models.BIAImageRepresentation) -> None:
+    await repository.list_item_push(image_uuid, 'representations', representation)
+
+    return None
+
+@router.post("/file_references", status_code=status.HTTP_201_CREATED)
+async def create_file_reference(file_references: List[db_models.FileReference]) -> api_models.BulkOperationResponse:
+    insert_errors_by_uuid = await repository.doc_dependency_verify_exists(file_references, lambda fr: fr.study_uuid, repository.find_study_by_uuid)
+    insert_results = await repository.persist_docs(file_references, insert_errors_by_uuid=insert_errors_by_uuid)
 
     rsp = api_models.BulkOperationResponse(items=insert_results)
-
     return rsp
 
-@router.delete("/images/{image_uuid}/representations/{representation_uuid}")
-async def delete_representation(image_uuid: str, representation_uuid: str) -> None:
-    pass
+@router.patch("/file_references/single", status_code=status.HTTP_200_OK)
+async def update_file_reference(file_reference: db_models.FileReference) -> None:
+    await repository.find_study_by_uuid(file_reference.study_uuid)
+    await repository.update_doc(file_reference)
 
-@router.post("/file_references")
-async def create_images(study_images: List[db_models.FileReference]) -> api_models.BulkOperationResponse:
-    pass
+    return None
 
-@router.post("/collections")
-async def post_collection(collection: db_models.BIACollection) -> db_models.BIACollection:
-    pass
+@router.post("/collections", status_code=status.HTTP_201_CREATED)
+async def create_collection(collection: db_models.BIACollection) -> None:
+    for study_uuid in collection.study_uuids:
+        await repository.find_study_by_uuid(study_uuid)
+    
+    await repository.persist_doc(collection)
 
-@router.post("/collections/{collection_uuid}/studies")
-async def post_collection_studies(collection_uuid: str, study_uuids: List[str]) -> api_models.BulkOperationResponse:
-    pass
-
-@router.delete("/collections/{collection_uuid}/studies")
-async def remove_collection_image(collection_uuid: str, study_uuids: List[str]) -> api_models.BulkOperationResponse:
-    pass
+    return None

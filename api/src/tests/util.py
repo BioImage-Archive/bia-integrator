@@ -19,6 +19,24 @@ def existing_study(api_client: TestClient):
     return make_study(api_client)
 
 @pytest.fixture(scope="function")
+def existing_file_reference(api_client: TestClient, existing_study: dict):
+    uuid = get_uuid()
+
+    file_reference = {
+        "uuid": uuid,
+        "version": 0,
+        "study_uuid": existing_study['uuid'],
+        "name": "test",
+        "uri": "https://test.com/test"
+    }
+
+    rsp = api_client.post('/api/private/file_references', json=[file_reference])
+    assert rsp.status_code == 201, rsp.json()
+
+    return file_reference
+
+
+@pytest.fixture(scope="function")
 def existing_image(api_client: TestClient, existing_study: dict):
     uuid = get_uuid()
 

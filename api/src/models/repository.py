@@ -4,7 +4,8 @@ from ..api import exceptions
 
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorCollection
 from bson import ObjectId
-from typing import List, Any
+import pydantic
+from typing import List, Any, Callable
 from uuid import UUID
 import pymongo
 import json
@@ -33,6 +34,10 @@ async def _get_doc_raw(id : str | ObjectId = None, **kwargs) -> Any:
 async def get_image(*args, **kwargs) -> models.BIAImage:
     doc = await _get_doc_raw(*args, **kwargs)
     return models.BIAImage(**doc)
+
+async def get_file_reference(*args, **kwargs) -> models.FileReference:
+    doc = await _get_doc_raw(*args, **kwargs)
+    return models.FileReference(**doc)
 
 async def refresh_counts(image_id: str):
     pass
@@ -71,7 +76,7 @@ async def persist_docs(doc_models: List[models.DocumentMixin], insert_errors_by_
                     'errmsg': f'Error: Expected version to be 0, got {doc_model.version} instead'
                 }
 
-    try:    
+    try:
         # actual insert
         rsp = await get_db().insert_many(doc_dicts, ordered=False)
     except pymongo.errors.BulkWriteError as e:
@@ -113,6 +118,57 @@ async def persist_docs(doc_models: List[models.DocumentMixin], insert_errors_by_
             ))
 
     return insert_results
+
+async def list_item_push(root_doc_uuid: str | UUID, location: str, new_list_item: pydantic.BaseModel):
+    if isinstance(root_doc_uuid, str):
+        root_doc_uuid = UUID(root_doc_uuid)
+
+    result = await get_db().update_one(
+        {
+            'uuid': root_doc_uuid
+        },    
+        {
+            '$push': {
+                location: new_list_item.dict()
+            }
+        },
+        upsert=False
+    )
+    if not result.matched_count:
+        raise exceptions.DocumentNotFound(f"Could not find document with uuid {root_doc_uuid}")
+    return result
+
+async def doc_dependency_verify_exists(
+        models_to_verify: List[models.DocumentMixin],
+        fn_model_extract_dependency: Callable[[models.BIABaseModel], UUID],
+        fn_dependency_fetch: Callable[[str | UUID], models.BIABaseModel]
+    ) -> dict:
+    """
+    @return 
+    """
+    dependency_errors_by_model_uuid = {}
+
+    dependency_errors_by_dependency_uuid = {
+        fn_model_extract_dependency(model): None
+        for model in models_to_verify
+    }
+
+    for dependency_uuid in dependency_errors_by_dependency_uuid.keys():
+        try:
+            await fn_dependency_fetch(dependency_uuid)
+        except exceptions.DocumentNotFound as e:
+            dependency_errors_by_dependency_uuid[dependency_uuid] = e
+    if any([v for v in dependency_errors_by_dependency_uuid if v is not None]):
+        for model in models_to_verify:
+            dependency_uuid = fn_model_extract_dependency(model)
+            dependency_error = dependency_errors_by_dependency_uuid[dependency_uuid]
+            if dependency_error:
+                dependency_errors_by_model_uuid[model.uuid] = {
+                    'errmsg': dependency_error.detail
+                }
+
+    return dependency_errors_by_model_uuid
+
 
 async def update_doc(doc_model: models.DocumentMixin) -> Any:
     result = await get_db().update_one(
