@@ -1,9 +1,11 @@
+import logging
 from bia_integrator_core.models import BIAImage, BIAStudy
 from bia_integrator_core.image import get_images
 from bia_integrator_core.annotation import get_study_annotations, get_image_annotations, get_study_tags
 from bia_integrator_core.representation import get_representations
 from bia_integrator_core.study import get_study
 
+logger = logging.getLogger(__name__)
 
 def load_and_annotate_study(accession_id: str) -> BIAStudy:
     """Load the study, merge annotations, and return the result."""
@@ -27,6 +29,10 @@ def load_and_annotate_study(accession_id: str) -> BIAStudy:
     for image_id, image in study.images.items():
         image_annotations = get_image_annotations(accession_id, image_id)
         for image_annotation in image_annotations:
+            # We do not want to override the image 'id'
+            if image_annotation.key == "id":
+                logger.warn(f"Not overriding image.id for {accession_id}:{image_id} with annotation {{ '{image_annotation.key}': '{image_annotation.value}' }}")
+                continue
             if image_annotation.key in image_field_names:
                 study.images[image_id].__dict__[image_annotation.key] = image_annotation.value
             else:
