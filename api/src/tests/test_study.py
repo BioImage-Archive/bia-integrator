@@ -131,14 +131,28 @@ def test_update_study_not_created(api_client: TestClient, uuid: str):
         assert rsp.status_code == 404, str(rsp)
 
 def test_update_study_nested_objects_overwritten(api_client: TestClient, existing_study: dict):
-    existing_study["title"] = "Updated title"
-    existing_study["authors"] = [{
+    new_title = "Updated title"
+    new_authors_list = [{
         "name": "New author1"
     },{
         "name": "New author2"
     }]
 
+    existing_study["title"] = new_title
+    existing_study["authors"] = new_authors_list
+    existing_study["version"] = 1
+
     rsp = api_client.patch('/api/private/study', json=existing_study)
     assert rsp.status_code == 201
 
-    rsp = api_client.patch('/api/study', json=existing_study)
+    study = api_client.get(f'/api/{existing_study["uuid"]}').json()
+    assert study["authors"] == new_authors_list
+    assert study["title"] == new_title
+    assert study["version"] == 1
+    assert study["uuid"] == existing_study["uuid"]
+
+    # check changed that shouldn't
+    for attr in ["authors", "title", "version"]:
+        del study[attr]
+        del existing_study[attr]
+    assert study == existing_study

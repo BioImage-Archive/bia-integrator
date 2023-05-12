@@ -1,6 +1,7 @@
 from fastapi.testclient import TestClient
 from .util import *
 import itertools
+from uuid import UUID
 
 def test_create_images(api_client: TestClient, existing_study: dict):
     uuids = [get_uuid() for _ in range(2)]
@@ -125,3 +126,60 @@ def test_add_image_representation_missing_image(api_client: TestClient):
     }
     rsp = api_client.post(f"/api/private/images/00000000-0000-0000-0000-000000000000/representations/single", json=representation)
     assert rsp.status_code == 404, rsp.json()
+
+def test_image_pagination_defaults(api_client: TestClient, existing_study: dict):
+    images = make_images(api_client, existing_study, 100)
+    images.sort(key=lambda img: UUID(img['uuid']).hex)
+
+    rsp = api_client.get(f"/api/{existing_study['uuid']}/images")
+    assert rsp.status_code == 200
+    images_fetched = rsp.json()
+
+    assert len(images_fetched) == 10
+    assert images[:10] == images_fetched
+
+def test_image_pagination(api_client: TestClient, existing_study: dict):
+    images = make_images(api_client, existing_study, 5)
+    images.sort(key=lambda img: UUID(img['uuid']).hex)
+    chunk_size = 2
+
+    #1,2
+    rsp = api_client.get(f"/api/{existing_study['uuid']}/images?limit={chunk_size}")
+    assert rsp.status_code == 200
+    images_fetched = rsp.json()
+    assert len(images_fetched) == chunk_size
+    images_chunk = images[:2]
+    assert images_chunk == images_fetched
+
+    #3,4
+    rsp = api_client.get(f"/api/{existing_study['uuid']}/images?start_uuid={images_fetched[-1]['uuid']}&limit={chunk_size}")
+    assert rsp.status_code == 200
+    images_fetched = rsp.json()
+    assert len(images_fetched) == chunk_size
+    images_chunk = images[2:4]
+    assert images_chunk == images_fetched
+
+    #5
+    rsp = api_client.get(f"/api/{existing_study['uuid']}/images?start_uuid={images_fetched[-1]['uuid']}&limit={chunk_size}")
+    assert rsp.status_code == 200
+    images_fetched = rsp.json()
+    assert len(images_fetched) == 1
+    images_chunk = images[4:5]
+    assert images_chunk == images_fetched
+
+def test_image_pagination_large_page(api_client: TestClient, existing_study: dict):
+    images = make_images(api_client, existing_study, 5)
+    images.sort(key=lambda img: UUID(img['uuid']).hex)
+
+    rsp = api_client.get(f"/api/{existing_study['uuid']}/images?limit={10000}")
+    assert rsp.status_code == 200
+    images_fetched = rsp.json()
+    assert len(images_fetched) == 5
+    assert images == images_fetched
+
+def test_image_pagination_bad_limit(api_client: TestClient, existing_study: dict):
+    images = make_images(api_client, existing_study, 5)
+    images.sort(key=lambda img: UUID(img['uuid']).hex)
+
+    rsp = api_client.get(f"/api/{existing_study['uuid']}/images?limit={0}")
+    assert rsp.status_code == 422

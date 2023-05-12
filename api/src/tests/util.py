@@ -77,6 +77,58 @@ def make_study(api_client: TestClient):
 
     return get_study(api_client, uuid)
 
+def make_images(api_client: TestClient, existing_study: dict, n: int, image_template = None):
+    if image_template is None:
+        image_template = {
+            "uuid": None,
+            "version": 0,
+            "study_uuid": existing_study['uuid'],
+            "name": f"image_name_value",
+            "original_relpath": f"/home/test/image_path_value",
+            "attributes": {
+                "k": "v"
+            },
+            "annotations": [],
+            "dimensions": None,
+            "image_aliases": [],
+            "representations": []
+        }
+    images = []
+    for _ in range(n):
+        img = image_template.copy()
+        img['uuid'] = get_uuid()
+        images.append(img)
+    
+    rsp = api_client.post("/api/private/images", json=images)
+    assert rsp.status_code == 201, rsp.json()
+
+    return images
+
+def make_file_references(api_client: TestClient, existing_study: dict, n: int, file_reference_template = None):
+    if file_reference_template is None:
+        file_reference_template = {
+            "uuid": None,
+            "version": 0,
+            "study_uuid": existing_study['uuid'],
+            "name": "test",
+            "uri": "https://test.com/test",
+            "size_bytes": 2,
+            "attributes": {
+                "k": "v"
+            }
+        }
+    
+    file_references = []
+    for _ in range(n):
+        file_ref = file_reference_template.copy()
+        file_ref['uuid'] = get_uuid()
+        file_references.append(file_ref)
+    
+    rsp = api_client.post("/api/private/file_references", json=file_references)
+    assert rsp.status_code == 201, rsp.json()
+
+    return file_references
+
 def get_study(api_client: TestClient, study_uuid: str, assert_status_code=200):
     rsp = api_client.get(f'/api/{study_uuid}')
     assert rsp.status_code == assert_status_code
@@ -93,7 +145,7 @@ def get_client(**kwargs) -> TestClient:
     def generic_exception_handler(request: Request, exc: Exception):
         return JSONResponse(
             status_code=500,
-            content=traceback.format_exception(etype=type(exc), value=exc, tb=exc.__traceback__),
+            content=traceback.format_exception(exc, value=exc, tb=exc.__traceback__),
         )
 
     return TestClient(app.app, **kwargs)

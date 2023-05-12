@@ -15,11 +15,31 @@ def get_db() -> AsyncIOMotorCollection:
     client = AsyncIOMotorClient(mongo_connstring, uuidRepresentation='standard')
     return client.bia_integrator.bia_integrator
 
-async def file_references_for_study(study_id: str):
-    pass
+async def file_references_for_study(*args, **kwargs) -> List[models.FileReference]:
+    return await _study_assets_find(*args, fn_model_factory=models.FileReference, **kwargs)
 
-async def images_for_study(study_id: str):
-    pass
+async def images_for_study(*args, **kwargs) -> List[models.BIAImage]:
+    return await _study_assets_find(*args, fn_model_factory=models.BIAImage, **kwargs)
+
+async def _study_assets_find(study_uuid: UUID, start_uuid: UUID | None, limit: int, fn_model_factory: Any) -> models.DocumentMixin:
+    mongo_query = {
+        'study_uuid': study_uuid
+    }
+    if start_uuid:
+        mongo_query['uuid'] = {
+            '$gt': start_uuid
+        }
+    else:
+        # explicitly start from the first uuid (by sorted order) if none specified
+        mongo_query['uuid'] = {
+            '$gt': UUID(int=0)
+        }
+
+    docs = []
+    async for doc in get_db().find(mongo_query, limit=limit):
+        docs.append(fn_model_factory(**doc))
+    
+    return docs
 
 async def _get_doc_raw(id : str | ObjectId = None, **kwargs) -> Any:
     if id:

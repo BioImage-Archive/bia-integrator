@@ -1,4 +1,5 @@
 - uuid distinct index
+- image / file reference study uuid index
 
 ```bash
 CONTAINER_ID=2b82096937e7

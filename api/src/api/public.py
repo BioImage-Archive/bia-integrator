@@ -4,8 +4,8 @@ from ..models import repository  as repository
 #import models.persistence as db_models
 #import models.repository as repository
 
-from typing import List, Optional
-from fastapi import APIRouter
+from typing import List, Optional, Annotated
+from fastapi import APIRouter, Query
 from uuid import UUID
 
 router = APIRouter(prefix="/api")
@@ -19,9 +19,8 @@ async def get_study(study_uuid: str) -> db_models.BIAStudy:
     return await repository.find_study_by_uuid(study_uuid)
 
 @router.get("/{study_uuid}/file_references")
-async def get_study_file_references(study_uuid: str) -> db_models.FileReference:
-    """@TODO: Pagination"""
-    return repository.file_references_for_study(study_uuid)
+async def get_study_file_references(study_uuid: UUID, start_uuid: UUID | None = None, limit : Annotated[int, Query(gt=0)] = 10) -> List[db_models.FileReference]:
+    return await repository.file_references_for_study(study_uuid, start_uuid, limit)
 
 @router.get("/search/images")
 async def search_images(
@@ -33,9 +32,8 @@ async def search_images(
     return None
 
 @router.get("/{study_uuid}/images")
-async def get_study_images(study_uuid: str) -> db_models.BIAImage:
-    """@TODO: Cursor-based pagination"""
-    return repository.images_for_study(study_uuid)
+async def get_study_images(study_uuid: UUID, start_uuid: UUID | None = None, limit : Annotated[int, Query(gt=0)] = 10) -> List[db_models.BIAImage]:    
+    return await repository.images_for_study(study_uuid, start_uuid, limit)
 
 # included in images now
 #@router.get("/images/{image_uuid}/representations")
