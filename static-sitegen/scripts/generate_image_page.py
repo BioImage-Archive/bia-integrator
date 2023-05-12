@@ -25,6 +25,9 @@ def sig_format(n):
     n -= inte
     return str(inte + float("{0:.2g}".format(n)))
 
+def sort_dict(d):
+    """Return dictionary with keys sorted alphabetically"""
+    return {key: d[key] for key in sorted(d)}
 
 def generate_neuroglancer_link(uri: str):
     """Given the URI of a Zarr image, return a Neuroglancer URI that will open that image as the default
@@ -123,6 +126,7 @@ def generate_image_page_html(accession_id, image_id):
 
     neuroglancer_uri = generate_neuroglancer_link(zarr_uri)
 
+    bia_image.attributes = sort_dict(bia_image.attributes)
     rendered = template.render(
         study=bia_study,
         image=bia_image,
