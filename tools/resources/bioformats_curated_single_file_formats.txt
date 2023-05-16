@@ -65,6 +65,7 @@
 .lim
 .lms
 .lof
+.lsm
 .map
 .mnc
 .mng
