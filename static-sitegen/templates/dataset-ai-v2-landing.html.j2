@@ -112,6 +112,7 @@
         {% if study.other_files|length > 0 %}
        <li>{{ study.other_files|length }} other files</li>
         {% endif %}
+        <li><b>License : {{ study.license }} </b><li>
         </ul>
         <h2 class="vf-section-header__heading">This dataset has</h2>
         <ul class="vf-list">
@@ -270,7 +271,12 @@
       <h3 class="vf-section-header__heading" id="models">Models</h3>
     </div>
     <div class="vf-content">
-      AI Models used listed here
+      {% for k,v in study.links.items() %}
+      {% if 'model' in k or 'code' in k %}
+        <div>  {{ k }} :  <a href={{ v }}> {{ v }} </a></div>
+      {% endif %}
+      {% endfor %} 
+      <br>
         </div>
     </div>
   </section>

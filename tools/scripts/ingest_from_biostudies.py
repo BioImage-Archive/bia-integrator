@@ -85,6 +85,20 @@ def study_title_from_submission(submission: Submission) -> str:
 
     return study_title
 
+def study_links_from_submission(submission: Submission) -> dict:
+
+
+
+    links = {}
+    for l in submission.section.links:
+        study_link = l.url
+        study_link_attr = attributes_to_dict(l.attributes)
+        study_link_desc=study_link_attr['Description']
+
+        links[study_link_desc] = study_link
+
+    return links
+
 
 def imaging_method_from_submission(submission: Submission) -> str:
 
@@ -120,6 +134,8 @@ def bst_submission_to_bia_study(submission: Submission) -> BIAStudy:
         release_date=submission_attr_dict['ReleaseDate'],
         description=study_section_attr_dict['Description'],
         organism=study_section_attr_dict.get('Organism', "Unknown"),
+        license=study_section_attr_dict.get('License', "CC0"),
+        links=study_links_from_submission(submission),
         imaging_type=imaging_method,
         file_references=filerefs_dict
     )
