@@ -93,7 +93,7 @@ def study_links_from_submission(submission: Submission) -> dict:
     for l in submission.section.links:
         study_link = l.url
         study_link_attr = attributes_to_dict(l.attributes)
-        study_link_desc=study_link_attr['Description']
+        study_link_desc=study_link_attr.get('Description',"Unknown")
 
         links[study_link_desc] = study_link
 
