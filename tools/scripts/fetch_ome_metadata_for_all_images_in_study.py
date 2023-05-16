@@ -20,14 +20,17 @@ def main(accession_id):
     for image_id, image in bia_study.images.items():
         if image.ome_metadata:
             for k, v in get_image_metadata(image).items():
-                annotation = ImageAnnotation(
-                    accession_id=accession_id,
-                    image_id=image_id,
-                    key=k,
-                    value=str(v)
-                )
+                try:
+                    annotation = ImageAnnotation(
+                        accession_id=accession_id,
+                        image_id=image_id,
+                        key=k,
+                        value=str(v)
+                    )
 
-                persist_image_annotation(annotation)
+                    persist_image_annotation(annotation)
+                except Exception as e:
+                    logging.error(f"Could not persist annotation with key: '{k}' and value: '{v}' for ImageID {image_id} of study {accession_id}")
 
 if __name__ == "__main__":
     main()

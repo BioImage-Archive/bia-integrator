@@ -1,0 +1,131 @@
+"""
+    To run this script the following are needed:
+    1. export accession id of submission e.g. export ACCNO="S-BIAD679"
+    2. env variables for convert_to_zarr
+        export bioformats2raw_java_home=/home/kola/miniconda3/envs/bia/
+        export bioformats2raw_bin=/home/kola/miniconda3/envs/bia/bin/bioformats2raw
+        export AWS_PROFILE=embassy && export AWS_SHARED_CREDENTIALS_FILE=/home/kola/.aws/embassy_s3_credentials && export AWS_CONFIG_FILE=/home/kola/.aws/embassy_s3_config
+
+    run command example:
+        snakemake --cores 3 work_dir/final_output_${ACCNO}.log
+
+"""
+
+
+from pathlib import Path
+import re
+import subprocess
+import os
+
+# ToDo: use variable for work_dir
+work_dir = "work_dir/" + os.environ["ACCNO"]
+
+rule all:
+    input:
+        work_dir + "/final_output_{accno}.log"
+    
+rule ingest_from_biostudies:
+    output:
+        work_dir + "/ingest_from_biostudies.log"
+    shell:
+        "python ../scripts/ingest_from_biostudies.py $ACCNO > {output}"
+
+rule index_zips_in_study:
+    input:
+        work_dir + "/ingest_from_biostudies.log"
+    output:
+        work_dir + "/index_zips_in_study.log"
+    shell:
+        # ToDo set bash so pipeline non-zero exit does not propagate
+        # Then I can use 'head' in line below
+        #"biaint filerefs list $ACCNO | grep '\.zip2," | cut -d',' -f1 | xargs -L1 python ../scripts/index_zip_in_study.py $ACCNO 2>&1 | tee {output}"
+        """
+            for ZIP_FILEREF_ID in `biaint filerefs list $ACCNO | grep '\.zip,' | cut -d',' -f1`; do python ../scripts/index_zip_in_study.py $ACCNO $ZIP_FILEREF_ID 2>&1 | tee -a {output}; done
+            touch {output}
+        """
+
+rule auto_create_image_representations:
+    input:
+        work_dir + "/index_zips_in_study.log"
+    output:
+        work_dir + "/image_representations.log"
+    shell:
+        "python ../scripts/assign_all_easily_convertible_images_from_filerefs.py $ACCNO 2>&1 | tee {output}"
+    
+# Get image_representations dynamically
+checkpoint get_image_reps_to_convert:
+    input: work_dir + "/image_representations.log"
+    output:
+        im_rep_dir = directory(work_dir + "/im_reps")
+    shell:
+        """
+            head -n 6 {input} | grep "json" > {input}.temp
+            OUTPUT_DIR='{output.im_rep_dir}'
+            REGEX="([0-9|a-z]+-[0-9|a-z]+-[0-9|a-z]+-[0-9|a-z]+-[0-9|a-z]+)"
+            mkdir $OUTPUT_DIR
+            while read line; do if [[ $line =~ $REGEX ]]; then touch "$OUTPUT_DIR/${{BASH_REMATCH[1]}}"; fi; done < {input}.temp
+        """
+
+rule convert_to_zarr_and_upload:
+    input:
+        im_ref = work_dir + "/im_reps/{i,[a-z|\d|-]+}"
+    output:
+        im_ref = work_dir + "/im_reps_output/{i}"
+    shell:
+        """
+            IM_REF=$(basename {input.im_ref})
+            python ../scripts/convert_to_zarr_and_upload.py $ACCNO $IM_REF > {output.im_ref}
+        """
+# The command for this rule could be placed in convert_to_zarr_and_upload
+# but putting it here to make the steps involved clearer
+rule generate_thumbnails:
+    input:
+        work_dir + "/im_reps_output/{i,[a-z|\d|-]+}"
+    output:
+        work_dir + "/gen_thumb_output/{i}"
+    shell:
+        """
+            IM_REF=$(basename {input})
+            python ../scripts/generate_thumbnail.py $ACCNO $IM_REF > {output}
+        """
+def aggregate_converted_im_reps(wildcards):
+    """Return converted image_representations"""
+    checkpoint_output = checkpoints.get_image_reps_to_convert.get(**wildcards).output[0]
+    im_reps_paths = expand(work_dir + "/gen_thumb_output/{i}", i=glob_wildcards(os.path.join(checkpoint_output, '{i,[a-z|\d|-]+}')).i)
+    return im_reps_paths
+
+rule generate_representative_image:
+    # Although the aggregate function returns a space separated list
+    # of paths for the converted image representations,
+    # We use 'basename' in the shell to get the reference of the
+    # last image representation only.
+    # i.e. basename of "dir/111-111-111 dir/222-222-222 dir/333-333-333"
+    # is 333-333-333
+    input:
+        aggregate_converted_im_reps
+    output:
+        work_dir + "/representative_image.log"
+    shell:
+        """
+            IM_REF=$(basename "{input}")
+            python ../scripts/generate_representative_image_and_set_to_default.py $ACCNO $IM_REF > {output}
+        """
+
+rule run_post_conversion_annotation:
+    input:
+        work_dir + "/representative_image.log"
+    output:
+        work_dir + "/post_conversion_annotation.log"
+    shell:
+        """
+            python ../scripts/run_post_conversion_annotation.py $ACCNO > {output}
+        """
+
+# Collect the output logs so we have one file for 'all' rule
+rule combine_output:
+    output:
+        combined = work_dir + "/final_output_{accno}.log"
+    input:
+        work_dir + "/post_conversion_annotation.log"
+    shell:
+        "echo {input} > {output.combined}"
