@@ -236,6 +236,13 @@
   <section class="embl-grid embl-grid--has-centered-content">
     <div class="vf-section-header">
       <h3 class="vf-section-header__heading" id="annotations">Annotations</h3>
+      <ul class="vf-list">
+        {% if study.attributes.get('annotation_type') %}
+        <li><b>Annotation type(s):</b> {{ study.attributes['annotation_type'] }}</li>
+        {% endif %}
+        {% if study.attributes.get('annotation_method') %}
+        <li><b>Annotation method(s):</b> {{ study.attributes['annotation_method'] }}</li>
+        {% endif %}
     </div>
     <div class="vf-content">
             <table class="display table" id="annot_table">
@@ -271,11 +278,16 @@
       <h3 class="vf-section-header__heading" id="models">Models</h3>
     </div>
     <div class="vf-content">
+    {% if study.attributes.get('models_uri') %}
+        <li><b>Model description:</b> {{ study.attributes['models_description'] }}</li>
+        <li><b>Model link:</b> <a href={{ study.attributes['models_uri'] }}>{{ study.attributes['models_uri'] }}</a> </li> 
+    {%else %}
       {% for k,v in study.links.items() %}
       {% if 'model' in k or 'code' in k %}
         <div>  {{ k }} :  <a href={{ v }}> {{ v }} </a></div>
       {% endif %}
       {% endfor %} 
+      {% endif %}
       <br>
         </div>
     </div>
