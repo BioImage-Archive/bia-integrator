@@ -152,6 +152,8 @@ class BIAStudy(BIABaseModel):
     authors: Optional[List[Author]] = []
     organism: str
     release_date: Union[str, datetime.date]
+    license: str="CC0"
+    links: dict = {}
     
     # FIXME - this should be a list
     imaging_type: Optional[str]

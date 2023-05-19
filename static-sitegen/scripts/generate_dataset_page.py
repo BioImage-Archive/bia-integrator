@@ -7,6 +7,7 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape # type: igno
 
 from bia_integrator_core.integrator import load_and_annotate_study
 from bia_integrator_core.interface import get_aliases
+from utils import get_annotation_images_in_study, get_non_annotation_images_in_study
 
 
 logger = logging.getLogger(os.path.basename(__file__))
@@ -41,11 +42,22 @@ def generate_dataset_page_html(accession_id, template_fname: str):
         for image_id in bia_study.images
     }
 
+
+    annotation_images = get_annotation_images_in_study(bia_study)
+    non_annotation_images = get_non_annotation_images_in_study(bia_study)
+
+    ann_names = {}
+    for image in annotation_images:
+        ann_names[image.id]=aliases_by_id.get(image.id, image.id)
+    
+
     images_with_ome_ngff = []
     image_landing_uris = {}
     image_thumbnails = {}
     image_download_uris = {}
-    for image in bia_study.images.values():
+    annotation_download_uris = {}
+#    for image in bia_study.images.values():
+    for image in non_annotation_images:
         for representation in image.representations:
             if representation.type == "ome_ngff":
                 images_with_ome_ngff.append(image)
@@ -54,6 +66,11 @@ def generate_dataset_page_html(accession_id, template_fname: str):
                 image_thumbnails[image.id] = representation.uri
             if representation.type == "fire_object":
                 image_download_uris[image.id] = urllib.parse.quote(representation.uri, safe=":/")
+
+    for image in annotation_images:
+        for representation in image.representations:
+            if representation.type == "fire_object":
+                annotation_download_uris[image.id] = urllib.parse.quote(representation.uri, safe=":/")
 
     template = env.get_template(template_fname)
 
@@ -64,6 +81,10 @@ def generate_dataset_page_html(accession_id, template_fname: str):
             landing_uris=image_landing_uris,
             image_thumbnails=image_thumbnails,
             image_download_uris=image_download_uris,
+            annotation_names=annotation_images,
+            ann_names=ann_names,
+            annotation_download_uris=annotation_download_uris,
+            non_annotation_names = non_annotation_images,
             authors=author_names
     )
 

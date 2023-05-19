@@ -16,7 +16,5 @@ def main(accession_id):
 
     print(f"Study has {len(annotation_images)} annotations and {len(non_annotation_images)} images")
 
-
-
 if __name__ == "__main__":
     main()
