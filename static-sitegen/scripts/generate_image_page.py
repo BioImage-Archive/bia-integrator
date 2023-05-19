@@ -120,8 +120,12 @@ def generate_image_page_html(accession_id, image_id):
 
     # If an attribute is in form of json format to display indented in html
     for key, attribute in bia_image.attributes.items():
-        if attribute.find("{") >= 0:
-            bia_image.attributes[key] = format_for_html(attribute)
+        try:
+            if attribute.find("{") >= 0:
+                bia_image.attributes[key] = format_for_html(attribute)
+        except Exception:
+            # Skip if any errors
+            continue
     try:
         download_uri = urllib.parse.quote(reps_by_type["fire_object"].uri, safe=":/")
     except KeyError:
