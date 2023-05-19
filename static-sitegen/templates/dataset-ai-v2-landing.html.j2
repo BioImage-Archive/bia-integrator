@@ -250,9 +250,9 @@
                             <tr>
                                 <th>Annotation ID</th>
                                 <th>Filename</th>
-                                <!-- {% if annotation_names %}
+                                {% if annotation_names %}
                                 <th>Source Image</th>
-                                {% endif %} -->
+                                {% endif %}
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -260,9 +260,9 @@
                             {% for image in annotation_names %}
                                 <td>{{ ann_names[image.id] }}</td>
                                 <td>{{ image.original_relpath }}</td>
-                                <!--  {% if image.attributes.get('source image') %}
+                                 {% if image.attributes.get('source image') %}
                                 <td>{{ image.attributes['source image'] }}</td>
-                                {% endif %} -->
+                                {% endif %}
                                 <td><a href={{ annotation_download_uris[image.id] }}>Download</a></td>
                             </tr>
                             {% endfor %}
