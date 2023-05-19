@@ -35,17 +35,19 @@ def main(accession_id):
             i+=1
     else:
         all_image_ids = {fr.imageid: fr for fr in all_aliases}
+        last_alias = len(all_image_ids)
         for image_id in bia_study.images.keys():
             if not image_id in all_image_ids.keys():
-                # TO DO
-                # how to assign alias for studies that have *some* images with aliases and some without?
-                al_id = XX
+                # TO CHECK
+                # how to assign alias for studies that have *some* images with aliases and some without
+                al_id = "IM" + str(last_alias + 1)
                 alias = BIAImageAlias(
                     accession_id=accession_id,
                     name=al_id,
                     image_id=image_id
                     )
                 persist_image_alias(alias)
+                last_alias +=1
 
 
 if __name__ == "__main__":
