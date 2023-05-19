@@ -5,18 +5,9 @@ from bia_integrator_core.models import BIAImageAlias
 from bia_integrator_core.config import settings
 from bia_integrator_core.integrator import load_and_annotate_study
 from bia_integrator_core.interface import (
-    get_image_annotations,
-    persist_image_annotation,
-    get_representations,
-    persist_image_representation,
-    persist_image_alias
+    persist_image_alias,
+    get_aliases
 )
-
-from bia_integrator_tools.biostudies import load_submission
-
-from assign_single_image_from_fileref import create_and_persist_image_from_fileref
-from ingest_from_biostudies import filerefs_from_bst_submission
-
 
 logger = logging.getLogger(__file__)
 
@@ -29,18 +20,32 @@ def main(accession_id):
     logging.basicConfig(level=logging.INFO)
 
     bia_study = load_and_annotate_study(accession_id)
-
-    i = 1
-    for image_id, image in bia_study.images.items():
-
-        al_id = "IM"+str(i) 
-        alias = BIAImageAlias(
-                accession_id=accession_id,
-                name=al_id,
-                image_id=image_id
-            )
-        persist_image_alias(alias)
-        i+=1
+    all_aliases = get_aliases(accession_id)
+    # check if there is any image aliases, if not, go through the list and assign all images, assuming they're not zipped:
+    if not all_aliases:
+        i = 1
+        for image_id in bia_study.images.keys():
+            al_id = "IM"+str(i) 
+            alias = BIAImageAlias(
+                    accession_id=accession_id,
+                    name=al_id,
+                    image_id=image_id
+                )
+            persist_image_alias(alias)
+            i+=1
+    else:
+        all_image_ids = {fr.imageid: fr for fr in all_aliases}
+        for image_id in bia_study.images.keys():
+            if not image_id in all_image_ids.keys():
+                # TO DO
+                # how to assign alias for studies that have *some* images with aliases and some without?
+                al_id = XX
+                alias = BIAImageAlias(
+                    accession_id=accession_id,
+                    name=al_id,
+                    image_id=image_id
+                    )
+                persist_image_alias(alias)
 
 
 if __name__ == "__main__":
