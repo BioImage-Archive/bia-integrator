@@ -1,0 +1,34 @@
+name: CI
+on: [pull_request,push]
+
+jobs:
+  ci:
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10"]
+        poetry-version: ["1.4.2"]
+        os: [ubuntu-20.04, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: ./core
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Run image
+        uses: abatilo/actions-poetry@v2
+        with:
+          poetry-version: ${{ matrix.poetry-version }}
+      - name: View poetry --help
+        run: poetry --help
+      - name: Poetry env setup
+        run: poetry env use python
+      - name: Poetry install
+        run: poetry install
+      - name: Check to see if poetry can build
+        run: poetry build
+      - name: Run pytest
+        run: poetry run pytest
