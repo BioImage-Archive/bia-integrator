@@ -9,6 +9,7 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 from bia_integrator_core.integrator import load_and_annotate_study
 from bia_integrator_core.interface import get_aliases
 
+from utils import format_for_html
 
 logger = logging.getLogger(os.path.basename(__file__))
 
@@ -117,11 +118,20 @@ def generate_image_page_html(accession_id, image_id):
             pdims += ' x ' + "{0:.1f}".format(float(dz)*float(pz)) + bia_image.attributes[u'PhysicalSizeZUnit']
 
 
+    # If an attribute is in form of json format to display indented in html
+    for key, attribute in bia_image.attributes.items():
+        if attribute.find("{") >= 0:
+            bia_image.attributes[key] = format_for_html(attribute)
     try:
         download_uri = urllib.parse.quote(reps_by_type["fire_object"].uri, safe=":/")
     except KeyError:
         download_uri = None
     
+    try:
+        download_size = bia_study.images[image_id].attributes["download_size"]
+    except KeyError:
+        download_size = "?MiB"
+
     zarr_uri = reps_by_type["ome_ngff"].uri
 
     neuroglancer_uri = generate_neuroglancer_link(zarr_uri)
@@ -137,7 +147,8 @@ def generate_image_page_html(accession_id, image_id):
         dimensions=dims,
         authors=author_names,
         download_uri=download_uri,
-        neuroglancer_uri=neuroglancer_uri
+        neuroglancer_uri=neuroglancer_uri,
+        download_size=download_size
     )
 
     return rendered

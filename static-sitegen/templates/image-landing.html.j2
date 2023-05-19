@@ -46,7 +46,7 @@
                     <button class="vf-button vf-button--primary vf-button--sm" onclick="location.href='https://hms-dbmi.github.io/vizarr/?source={{ zarr_uri }}';">Open fullscreen in Vizarr</button>
                     <button class="vf-button vf-button--primary vf-button--sm" onclick="location.href='{{ neuroglancer_uri }}';">Open in Neuroglancer</button>
 
-                    <a href={{ download_uri }}><button class="vf-button vf-button--primary vf-button--sm">Download original</button></a>
+                    <a href={{ download_uri }}><button class="vf-button vf-button--primary vf-button--sm">Download original ({{ download_size }})</button></a>
                 </div>
                 <div>
                     <iframe style="width: 100%; height: 500px" name="vizarr" src="https://uk1s3.embassy.ebi.ac.uk/bia-zarr-test/vizarr/index.html?source={{ zarr_uri }}"></iframe>

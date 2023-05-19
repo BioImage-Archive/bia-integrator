@@ -48,6 +48,11 @@
                         {% if study.other_files|length > 0 %}
                         <li>{{ study.other_files|length }} other files</li>
                         {% endif %}
+                        {% if "n_files_in_study" in study.attributes %}
+                        <li>Study size: {{ study.attributes["study_size"] }}</li>
+                        <li>N files in study: {{ study.attributes["n_files_in_study"] }}</li>
+                        <li>Filetype breakdown: {{ study.attributes["filetype_breakdown_html"] }}</li>
+                        {% endif %}
                     </ul>
                 {% if 'bia_binder_url' in study.attributes %}
                     <a href={{ study.attributes['bia_binder_url'] }}><button class="vf-button vf-button--primary vf-button--sm">Explore in BIA Binder</button></a>
@@ -104,6 +109,7 @@
                                 <th>Preview</th>
                                 <th>Filename</th>
                                 <th>Dimensions<br>(T, C, Z, Y, X)</th>
+                                <th>Download Size</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -121,6 +127,11 @@
                                     <td> ({{ image.attributes['SizeT'] }}, {{ image.attributes['SizeC'] }}, {{ image.attributes['SizeZ'] }}, {{ image.attributes['SizeY'] }}, {{ image.attributes['SizeX'] }})</td>
                                 {% else %}
                                     <td> None </td>
+                                {% endif %}
+                                {% if "download_size" in image.attributes %}
+                                    <td>{{ image.attributes["download_size"] }}</td>
+                                {% else %}
+                                    <td>Unavailable</td>
                                 {% endif %}
                                 <td>
                                     <a href={{ landing_uris[image.id] }}><button class="vf-button vf-button--sm vf-button--icon">view</button><a>
@@ -142,6 +153,7 @@
                             <tr>
                                 <th>Image ID</th>
                                 <th>Filename</th>
+                                <th>Download Size</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -149,6 +161,11 @@
                             {% for image in study.images.values() %}
                                 <td>{{ image_names[image.id] }}</td>
                                 <td>{{ image.original_relpath }}</td>
+                                {% if "download_size" in image.attributes %}
+                                    <td>{{ image.attributes["download_size"] }}</td>
+                                {% else %}
+                                    <td>Unavailable</td>
+                                {% endif %}
                                 <td><a href={{ image_download_uris[image.id] }}>Download</a></td>
                             </tr>
                             {# <tr class="vf-table__row">
