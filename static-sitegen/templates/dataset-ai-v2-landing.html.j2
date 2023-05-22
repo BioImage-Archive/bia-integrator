@@ -162,8 +162,14 @@
     </div>
     <div class="vf-content">
       <div class="vf-grid vf-grid__col-2">
+            {% if study.attributes.get('one_summary') %}
             <div><b>Study Summary</b></div>
             <div>{{ study.attributes["one_summary"] }}</div>
+            {% endif %}
+            {% if study.attributes.get('annotation_summary') %}
+            <div><b>Annotation Summary</b></div>
+            <div>{{ study.attributes["annotation_summary"] }}</div>
+            {% endif %}
            <div><b>Organism</b></div>
             <div>{{ study.organism }}</div>
             <div><b>Study type</b></div>
