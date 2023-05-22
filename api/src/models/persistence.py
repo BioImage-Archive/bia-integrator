@@ -130,6 +130,9 @@ class FileReference(BIABaseModel, DocumentMixin):
     size_bytes: Optional[int] = Field(default=None)
     attributes: Dict = Field(default={})
 
+    class Config(BaseConfig):
+        model_version_latest = 1
+
 class ChannelRendering(BIABaseModel):
     colormap_start: List[float]
     colormap_end: List[float]
@@ -223,6 +226,9 @@ class BIAImage(BIABaseModel, DocumentMixin):
         ome_metadata = from_xml(r.content, parser='lxml', validate=False)
 
         return ome_metadata
+
+    class Config(BaseConfig):
+        model_version_latest = 1
 
     class Config(BaseConfig):
         model_version_latest = 1

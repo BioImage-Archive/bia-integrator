@@ -162,3 +162,15 @@ def test_update_study_nested_objects_overwritten(api_client: TestClient, existin
         del study[attr]
         del existing_study[attr]
     assert study == existing_study
+
+def test_update_study_children_counts(api_client: TestClient, existing_study):
+    assert existing_study['file_references_count'] == 0
+
+    make_file_references(api_client, existing_study, 10)
+    make_images(api_client, existing_study, 5)
+    rsp = api_client.post(f"/api/private/studies/{existing_study['uuid']}/refresh_counts")
+    assert rsp.status_code, 201
+
+    existing_study = get_study(api_client, existing_study['uuid'])
+    assert existing_study['file_references_count'] == 10
+    assert existing_study['images_count'] == 5

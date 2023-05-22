@@ -59,8 +59,38 @@ async def get_file_reference(*args, **kwargs) -> models.FileReference:
     doc = await _get_doc_raw(*args, **kwargs)
     return models.FileReference(**doc)
 
-async def refresh_counts(image_id: str):
-    pass
+async def _study_child_count(study_uuid: str, child_type_name: str):
+    child_count = [ i async for i in
+        get_db().aggregate([
+            {
+                "$match": {
+                    "study_uuid": {
+                        "$eq": UUID(study_uuid)
+                    },
+                    "model.type_name": {
+                        "$eq": child_type_name
+                    }
+                }
+            },
+            {
+                "$count": "n_items"
+            }
+        ])
+    ]
+
+    return child_count[0]['n_items'] if len(child_count) else 0
+
+async def study_refresh_counts(study_uuid: str):
+    study = await find_study_by_uuid(uuid=study_uuid)
+
+    # count twice instead of groupby to avoid keeping full result in memory
+    study.file_references_count = await _study_child_count(study_uuid, models.FileReference.__name__)
+    study.images_count = await _study_child_count(study_uuid, models.BIAImage.__name__)
+
+    study.version += 1
+    await update_doc(study)
+
+    return None
 
 async def get_study(*args, **kwargs) -> models.BIAStudy:
     doc = await _get_doc_raw(*args, **kwargs)

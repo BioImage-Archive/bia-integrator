@@ -35,11 +35,6 @@ async def search_images(
 async def get_study_images(study_uuid: UUID, start_uuid: UUID | None = None, limit : Annotated[int, Query(gt=0)] = 10) -> List[db_models.BIAImage]:    
     return await repository.images_for_study(study_uuid, start_uuid, limit)
 
-# included in images now
-#@router.get("/images/{image_uuid}/representations")
-#async def get_image_representations(image_uuid: str, type=None) -> List[db_models.BIAImageRepresentation]:
-#    pass
-
 @router.get("/images/{image_uuid}")
 async def get_image(image_uuid: str) -> db_models.BIAImage:
     return await repository.get_image(uuid=UUID(image_uuid))

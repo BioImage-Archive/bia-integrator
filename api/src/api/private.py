@@ -23,13 +23,12 @@ async def update_study(study: db_models.BIAStudy) -> None:
     
     return None
 
-@router.post("/studies/{study_uuid}/refresh_counts")
-async def study_refresh_counts(study_uuid: str) -> Optional[db_models.BIAStudy]:
+@router.post("/studies/{study_uuid}/refresh_counts", status_code=status.HTTP_201_CREATED)
+async def study_refresh_counts(study_uuid: str) -> None:
     """Recalculate and persist counts for other objects pointing to this study."""
-    repository.refresh_counts(study_uuid)
+    await repository.study_refresh_counts(study_uuid)
 
-    bia_study = repository.find_study_by_uuid(study_uuid)
-    return bia_study
+    return None
 
 @router.post("/images", status_code=status.HTTP_201_CREATED)
 async def create_images(study_images: List[db_models.BIAImage]) -> api_models.BulkOperationResponse:
