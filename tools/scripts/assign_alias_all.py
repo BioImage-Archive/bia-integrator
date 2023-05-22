@@ -24,8 +24,11 @@ def main(accession_id):
     # check if there is any image aliases, if not, go through the list and assign all images, assuming they're not zipped:
     if not all_aliases:
         i = 1
-        for image_id in bia_study.images.keys():
-            al_id = "IM"+str(i) 
+        for image_id, image in bia_study.images.items():
+            if image.attributes.get('source_image'): 
+                al_id = "AN"+str(i)
+            else:
+                al_id = "IM"+str(i) 
             alias = BIAImageAlias(
                     accession_id=accession_id,
                     name=al_id,
@@ -36,11 +39,14 @@ def main(accession_id):
     else:
         all_image_ids = {fr.imageid: fr for fr in all_aliases}
         last_alias = len(all_image_ids)
-        for image_id in bia_study.images.keys():
+        for image_id, image in bia_study.images.items():
             if not image_id in all_image_ids.keys():
                 # TO CHECK
                 # how to assign alias for studies that have *some* images with aliases and some without
-                al_id = "IM" + str(last_alias + 1)
+                if image.attributes.get('source_image'): 
+                    al_id = "AN"+ str(last_alias + 1)
+                else:
+                    al_id = "IM"+ str(last_alias + 1)
                 alias = BIAImageAlias(
                     accession_id=accession_id,
                     name=al_id,
