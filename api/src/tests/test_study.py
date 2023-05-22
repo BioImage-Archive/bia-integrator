@@ -27,8 +27,14 @@ def test_create_study(api_client: TestClient, uuid: str):
         'tags': [],
         'file_references_count': 0,
         'images_count': 0,
+        'model': {'type_name': 'BIAStudy', 'version': 1}
     }
-    assert rsp.json() == study_with_defaults
+
+    study_created = get_study(api_client, uuid)
+    assert type(study_created['_id']) == str
+    del study_created['_id']
+
+    assert study_created == study_with_defaults
 
 def test_create_study_nonzero_version(api_client: TestClient, uuid: str):
     study = {

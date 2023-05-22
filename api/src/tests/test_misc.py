@@ -19,3 +19,7 @@ def test_create_collection(api_client: TestClient, uuid: str):
 
     rsp = api_client.post(f"/api/private/collections", json=collection)
     assert rsp.status_code == 201, rsp.json()
+
+def test_fetch_study_as_image(api_client: TestClient, existing_study):
+    rsp = api_client.get(f"/api/images/{existing_study['uuid']}")
+    assert rsp.status_code == 404

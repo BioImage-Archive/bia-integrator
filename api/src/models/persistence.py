@@ -1,5 +1,5 @@
 from enum import Enum
-from pydantic import BaseModel, Field, BaseConfig
+from pydantic import BaseModel, Field, BaseConfig, PrivateAttr, validator
 from typing import Dict, List, Optional, Union, AnyStr
 from pathlib import Path
 from ome_types import OME, from_xml
@@ -7,6 +7,8 @@ from urllib.parse import urlparse, urlunparse
 from bson import ObjectId, errors
 from uuid import UUID
 import requests
+
+from src.api.exceptions import DocumentNotFound
 
 class BIABaseModel(BaseModel):
     def json(self, ensure_ascii=False, **kwargs):
@@ -26,20 +28,58 @@ class OID(str):
       except errors.InvalidId:
           raise ValueError("Not a valid ObjectId")
 
-class DocumentMixin(BaseModel):
-    _id: OID = Field()
-    uuid: UUID = Field()
+class ModelMetadata(BaseModel):
+    type_name: str = Field()
     version: int = Field()
 
-    @property
-    def mongo_oid(self) -> OID:
-        return self._id
+class DocumentMixin(BaseModel):
+    id: Optional[OID] = Field(alias="_id")
+    #id: Optional[OID] = Field(alias="_id", default=None)
+    uuid: UUID = Field()
+    # this is the document version, not the model version
+    version: int = Field()
+
+    model: ModelMetadata = Field()
+
+    def __init__(self, **data):
+        if not hasattr(self.__class__.Config, 'model_version_latest'):
+            raise ValueError(f"Class {self.__class__.__name__} missing 'model_version_latest' in its Config")
+        model_metadata_expected = ModelMetadata(
+            type_name=self.__class__.__name__,
+            # @TODO: maybe eventually change model_version_latest to handle next-version migrations?
+            version=self.__class__.Config.model_version_latest
+        )
+
+        if data.get('_id', None):
+            # document comes from mongo, expect ModelMetadata to match
+            model_metadata_existing = data.get('model', None)
+            if model_metadata_existing:
+                model_metadata_existing = ModelMetadata(**model_metadata_existing)
+
+                if model_metadata_existing != model_metadata_expected:
+                    raise DocumentNotFound(f"Document {str(data.get('_id'))} has model metadata {model_metadata_existing}, expected : {model_metadata_expected}")
+            else:
+                raise ValueError(f"Document missing model attribute")
+        else:
+            # document created now, will pe persisted later - add model
+            if data.get("model", None):
+                raise ValueError("Expecting models without an _id field to not have a model either")
+            data["model"] = model_metadata_expected
+        
+        super().__init__(**data)
+
+    def dict(self, *args, **kwargs):
+        doc_dict = super().dict(*args, **kwargs)
+        if 'id' in doc_dict:
+            del doc_dict['id']
+
+        return doc_dict
 
     class Config(BaseConfig):
         allow_population_by_field_name = True
         json_encoders = {
             #datetime: lambda dt: dt.isoformat(),
-            #ObjectId: lambda oid: str(oid)
+            ObjectId: lambda oid: str(oid)
         }
 
 class Author(BIABaseModel):
@@ -76,6 +116,9 @@ class BIAStudy(BIABaseModel, DocumentMixin):
 
     file_references_count: int = Field(default=0)
     images_count: int = Field(default=0)
+
+    class Config(BaseConfig):
+        model_version_latest = 1
 
 class FileReference(BIABaseModel, DocumentMixin):
     """A reference to an externally hosted file."""
@@ -179,6 +222,9 @@ class BIAImage(BIABaseModel, DocumentMixin):
         ome_metadata = from_xml(r.content, parser='lxml', validate=False)
 
         return ome_metadata
+
+    class Config(BaseConfig):
+        model_version_latest = 1
 
 class BIACollection(BIABaseModel, DocumentMixin):
     """A collection of studies with a coherent purpose. Studies can be in
