@@ -33,8 +33,9 @@ class ModelMetadata(BaseModel):
     version: int = Field()
 
 class DocumentMixin(BaseModel):
+    # id optional only when creating documents, in all other cases it is required and gets manually verified
+    # so it's OR(no id no model defined, both defined)
     id: Optional[OID] = Field(alias="_id")
-    #id: Optional[OID] = Field(alias="_id", default=None)
     uuid: UUID = Field()
     # this is the document version, not the model version
     version: int = Field()
