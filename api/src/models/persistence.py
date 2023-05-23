@@ -91,11 +91,11 @@ class AnnotationState(str, Enum):
     deleted = "deleted"
 
 class Annotation(BIABaseModel):
-    author_email: str
-    accession_id: str
-    key: str
-    value: str
-    state: AnnotationState
+    author_email: str = Field()
+    accession_id: str = Field()
+    key: str = Field()
+    value: str = Field()
+    state: AnnotationState = Field()
 
 class ImageAnnotation(Annotation):
     pass
@@ -109,6 +109,7 @@ class BIAStudy(BIABaseModel, DocumentMixin):
     authors: Optional[List[Author]] = Field(default=[])
     organism: str = Field()
     release_date: str = Field()
+    accession_id: str = Field()
     
     imaging_type: List[str] = Field(default=[])
     attributes: Dict = Field(default={})
@@ -129,6 +130,7 @@ class FileReference(BIABaseModel, DocumentMixin):
     study_uuid: UUID = Field()
     name: str = Field()
     uri: str = Field()
+    type: str = Field()
     size_bytes: Optional[int] = Field(default=None)
     attributes: Dict = Field(default={})
 
@@ -190,6 +192,7 @@ class BIAImage(BIABaseModel, DocumentMixin):
     original_relpath: str = Field() # originally Path
     name: Optional[str] = Field(default=None)
 
+    accession_id: str = Field()
     dimensions: Optional[str] = Field(default=None)
     representations: List[BIAImageRepresentation] = Field(default=[])
     attributes: Dict = Field(default={})
