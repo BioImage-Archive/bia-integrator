@@ -92,6 +92,7 @@ class AnnotationState(str, Enum):
 
 class Annotation(BIABaseModel):
     author_email: str
+    accession_id: str
     key: str
     value: str
     state: AnnotationState
@@ -113,6 +114,7 @@ class BIAStudy(BIABaseModel, DocumentMixin):
     attributes: Dict = Field(default={})
     annotations: List[StudyAnnotation] = Field(default=[])
     example_image_uri: str = Field(default="")
+    example_image_annotation_uri: str = Field(default="")
     tags: List[str] = Field(default=[])
 
     file_references_count: int = Field(default=0)
