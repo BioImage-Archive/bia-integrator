@@ -25,6 +25,8 @@ def existing_file_reference(api_client: TestClient, existing_study: dict):
     file_reference = {
         "uuid": uuid,
         "version": 0,
+        "accession_id": f"test-{uuid}",
+        "type": "file",
         "study_uuid": existing_study['uuid'],
         "name": "test",
         "uri": "https://test.com/test"
@@ -43,6 +45,7 @@ def existing_image(api_client: TestClient, existing_study: dict):
     image = {
         "uuid": uuid,
         "version": 0,
+        "accession_id": f"test-{uuid}",
         "study_uuid": existing_study['uuid'],
         "name": f"image_{uuid}",
         "original_relpath": f"/home/test/{uuid}",
@@ -62,6 +65,7 @@ def make_study(api_client: TestClient):
     study = {
         "uuid": uuid,
         "version": 0,
+        "accession_id": '123',
         "title": "Test BIA study",
         "description": "description",
         "authors": [{
@@ -82,6 +86,7 @@ def make_images(api_client: TestClient, existing_study: dict, n: int, image_temp
         image_template = {
             "uuid": None,
             "version": 0,
+            "accession_id": None,
             "study_uuid": existing_study['uuid'],
             "name": f"image_name_value",
             "original_relpath": f"/home/test/image_path_value",
@@ -97,6 +102,7 @@ def make_images(api_client: TestClient, existing_study: dict, n: int, image_temp
     for _ in range(n):
         img = image_template.copy()
         img['uuid'] = get_uuid()
+        img['accession_id'] = get_uuid()
         images.append(img)
     
     rsp = api_client.post("/api/private/images", json=images)
@@ -115,7 +121,8 @@ def make_file_references(api_client: TestClient, existing_study: dict, n: int, f
             "size_bytes": 2,
             "attributes": {
                 "k": "v"
-            }
+            },
+            "type": "file"
         }
     
     file_references = []

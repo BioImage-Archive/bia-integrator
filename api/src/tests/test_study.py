@@ -5,6 +5,7 @@ def test_create_study(api_client: TestClient, uuid: str):
     study = {
         "uuid": uuid,
         "version": 0,
+        'accession_id': '123',
         "title": "Test BIA study",
         "description": "description",
         "authors": [{
@@ -24,6 +25,7 @@ def test_create_study(api_client: TestClient, uuid: str):
         'attributes': {},
         'annotations': [],
         'example_image_uri': "",
+        'example_image_annotation_uri': "",
         'tags': [],
         'file_references_count': 0,
         'images_count': 0,
@@ -77,6 +79,7 @@ def test_update_study_wrong_version(api_client: TestClient, uuid: str):
     study = {
         "uuid": uuid,
         "version": 0,
+        'accession_id': '123',
         "title": "Test BIA study",
         "description": "description",
         "authors": [{
@@ -123,6 +126,7 @@ def test_update_study_not_created(api_client: TestClient, uuid: str):
         study = {
             "uuid": uuid,
             "version": i,
+            'accession_id': '123',
             "title": "Test BIA study",
             "description": "description",
             "authors": [{

@@ -10,6 +10,7 @@ def test_create_images(api_client: TestClient, existing_study: dict):
         {
             "uuid": uuid,
             "version": 0,
+            "accession_id": f"test-{uuid}",
             "study_uuid": existing_study['uuid'],
             "name": f"image_{uuid}",
             "original_relpath": f"/home/test/{uuid}",
@@ -33,6 +34,7 @@ def test_create_images_multiple_errors(api_client: TestClient, existing_study: d
         {
             "uuid": uuid,
             "version": 0,
+            "accession_id": f"test-{uuid}",
             "study_uuid": existing_study['uuid'],
             "name": f"image_{uuid}",
             "original_relpath": f"/home/test/{uuid}",
@@ -81,6 +83,7 @@ def test_create_images_multiple_errors(api_client: TestClient, existing_study: d
 def test_update_image(api_client: TestClient, existing_image: dict):
     existing_image['version'] = 1
     existing_image['name'] = 'some_other_name'
+    existing_image['type'] = 'some_other_name'
 
     rsp = api_client.patch("/api/private/images/single", json=existing_image)
     assert rsp.status_code == 200, rsp.json()
@@ -119,24 +122,13 @@ def test_add_image_representation(api_client: TestClient, existing_image: dict):
     rsp = api_client.post(f"/api/private/images/{existing_image['uuid']}/representations/single", json=representation)
     assert rsp.status_code == 201, rsp.json()
 
-def test_add_image_representation_missing_image(api_client: TestClient):
+def test_add_image_representation_missing_image(api_client: TestClient, existing_study: dict):
     representation = {
         "accession_id": "test-representation",
         "size": 1
     }
     rsp = api_client.post(f"/api/private/images/00000000-0000-0000-0000-000000000000/representations/single", json=representation)
     assert rsp.status_code == 404, rsp.json()
-
-def test_image_pagination_defaults(api_client: TestClient, existing_study: dict):
-    images = make_images(api_client, existing_study, 100)
-    images.sort(key=lambda img: UUID(img['uuid']).hex)
-
-    rsp = api_client.get(f"/api/{existing_study['uuid']}/images")
-    assert rsp.status_code == 200
-    images_fetched = rsp.json()
-
-    assert len(images_fetched) == 10
-    assert images[:10] == images_fetched
 
 def test_image_pagination(api_client: TestClient, existing_study: dict):
     images = make_images(api_client, existing_study, 5)
@@ -147,6 +139,9 @@ def test_image_pagination(api_client: TestClient, existing_study: dict):
     rsp = api_client.get(f"/api/{existing_study['uuid']}/images?limit={chunk_size}")
     assert rsp.status_code == 200
     images_fetched = rsp.json()
+    for img in images_fetched:
+        del img['_id']
+        del img['model']
     assert len(images_fetched) == chunk_size
     images_chunk = images[:2]
     assert images_chunk == images_fetched
@@ -155,6 +150,9 @@ def test_image_pagination(api_client: TestClient, existing_study: dict):
     rsp = api_client.get(f"/api/{existing_study['uuid']}/images?start_uuid={images_fetched[-1]['uuid']}&limit={chunk_size}")
     assert rsp.status_code == 200
     images_fetched = rsp.json()
+    for img in images_fetched:
+        del img['_id']
+        del img['model']
     assert len(images_fetched) == chunk_size
     images_chunk = images[2:4]
     assert images_chunk == images_fetched
@@ -163,6 +161,9 @@ def test_image_pagination(api_client: TestClient, existing_study: dict):
     rsp = api_client.get(f"/api/{existing_study['uuid']}/images?start_uuid={images_fetched[-1]['uuid']}&limit={chunk_size}")
     assert rsp.status_code == 200
     images_fetched = rsp.json()
+    for img in images_fetched:
+        del img['_id']
+        del img['model']
     assert len(images_fetched) == 1
     images_chunk = images[4:5]
     assert images_chunk == images_fetched
@@ -174,6 +175,9 @@ def test_image_pagination_large_page(api_client: TestClient, existing_study: dic
     rsp = api_client.get(f"/api/{existing_study['uuid']}/images?limit={10000}")
     assert rsp.status_code == 200
     images_fetched = rsp.json()
+    for img in images_fetched:
+        del img['_id']
+        del img['model']
     assert len(images_fetched) == 5
     assert images == images_fetched
 

@@ -10,6 +10,8 @@ def test_create_file_references(api_client: TestClient, existing_study: dict):
         {
             "uuid": uuid,
             "version": 0,
+            "accession_id": f"test-{uuid}",
+            "type": "file",
             "study_uuid": existing_study['uuid'],
             "name": "test",
             "uri": "https://test.com/test"
@@ -32,6 +34,8 @@ def test_create_file_references_multiple_errors(api_client: TestClient, existing
         {
             "uuid": uuid,
             "version": 0,
+            "accession_id": f"test-{uuid}",
+            "type": "file",
             "study_uuid": existing_study['uuid'],
             "name": "test",
             "uri": "https://test.com/test"
@@ -89,6 +93,9 @@ def test_file_reference_pagination_defaults(api_client: TestClient, existing_stu
     rsp = api_client.get(f"/api/{existing_study['uuid']}/file_references")
     assert rsp.status_code == 200
     file_references_fetched = rsp.json()
+    for file_ref in file_references_fetched:
+        del file_ref['_id']
+        del file_ref['model']
 
     assert len(file_references_fetched) == 10
     assert file_references[:10] == file_references_fetched
@@ -102,6 +109,9 @@ def test_file_reference_pagination(api_client: TestClient, existing_study: dict)
     rsp = api_client.get(f"/api/{existing_study['uuid']}/file_references?limit={chunk_size}")
     assert rsp.status_code == 200
     file_references_fetched = rsp.json()
+    for file_ref in file_references_fetched:
+        del file_ref['_id']
+        del file_ref['model']
     assert len(file_references_fetched) == chunk_size
     images_chunk = file_references[:2]
     assert images_chunk == file_references_fetched
@@ -110,6 +120,9 @@ def test_file_reference_pagination(api_client: TestClient, existing_study: dict)
     rsp = api_client.get(f"/api/{existing_study['uuid']}/file_references?start_uuid={file_references_fetched[-1]['uuid']}&limit={chunk_size}")
     assert rsp.status_code == 200
     file_references_fetched = rsp.json()
+    for file_ref in file_references_fetched:
+        del file_ref['_id']
+        del file_ref['model']
     assert len(file_references_fetched) == chunk_size
     images_chunk = file_references[2:4]
     assert images_chunk == file_references_fetched
@@ -118,6 +131,9 @@ def test_file_reference_pagination(api_client: TestClient, existing_study: dict)
     rsp = api_client.get(f"/api/{existing_study['uuid']}/file_references?start_uuid={file_references_fetched[-1]['uuid']}&limit={chunk_size}")
     assert rsp.status_code == 200
     file_references_fetched = rsp.json()
+    for file_ref in file_references_fetched:
+        del file_ref['_id']
+        del file_ref['model']
     assert len(file_references_fetched) == 1
     images_chunk = file_references[4:5]
     assert images_chunk == file_references_fetched
@@ -129,6 +145,9 @@ def test_file_reference_large_page(api_client: TestClient, existing_study: dict)
     rsp = api_client.get(f"/api/{existing_study['uuid']}/file_references?limit={10000}")
     assert rsp.status_code == 200
     file_references_fetched = rsp.json()
+    for file_ref in file_references_fetched:
+        del file_ref['_id']
+        del file_ref['model']
     assert len(file_references_fetched) == 5
     assert file_references == file_references_fetched
 

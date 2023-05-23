@@ -235,9 +235,6 @@ class BIAImage(BIABaseModel, DocumentMixin):
     class Config(BaseConfig):
         model_version_latest = 1
 
-    class Config(BaseConfig):
-        model_version_latest = 1
-
 class BIACollection(BIABaseModel, DocumentMixin):
     """A collection of studies with a coherent purpose. Studies can be in
     multiple collections."""
@@ -246,3 +243,6 @@ class BIACollection(BIABaseModel, DocumentMixin):
     subtitle: str = Field()
     description: Optional[str] = Field(default=None)
     study_uuids: List[str] = Field(default=[])
+
+    class Config(BaseConfig):
+        model_version_latest = 1
