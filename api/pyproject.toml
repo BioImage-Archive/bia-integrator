@@ -15,6 +15,7 @@ motor = "^3.1.2"
 requests = "^2.29.0"
 uvicorn = "^0.22.0"
 httpx = "^0.24.0"
+python-dotenv = "^1.0.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.1"

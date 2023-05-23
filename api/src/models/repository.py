@@ -9,9 +9,10 @@ from typing import List, Any, Callable
 from uuid import UUID
 import pymongo
 import json
+import os
 
 def get_db() -> AsyncIOMotorCollection:
-    mongo_connstring = "mongodb://root:example@mongo1:27018/"
+    mongo_connstring = os.environ["DOCKER_CONNSTRING"]
     client = AsyncIOMotorClient(mongo_connstring, uuidRepresentation='standard')
     return client.bia_integrator.bia_integrator
 
