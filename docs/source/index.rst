@@ -17,6 +17,7 @@ Welcome to BIA Integrator's documentation!
    annotation
    worked_examples
    ingesting_and_converting
+   staging_zipped_zarrs
 
 
 Indices and tables
