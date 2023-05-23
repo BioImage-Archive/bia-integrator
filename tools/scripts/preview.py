@@ -152,11 +152,6 @@ def get_single_channel_image_arrays(imarray, z=None, t=None):
             imarray[z,:,:].compute()
         ]
 
-    
-
-
-
-    
     return channel_images
 
 
