@@ -1,4 +1,7 @@
-import os
+"""Convert an image from a structured fileref representation (i.e. multiple input
+files together with information on how they relate, such as channel or timepoint
+numbers) into OME-Zarr."""
+
 import logging
 import tempfile
 from pathlib import Path
@@ -41,7 +44,7 @@ def convert_structured_fileref(accession_id: str, image_id: str, rep_type: str, 
         target_path.symlink_to(input_fpath)
 
     pattern_fpath = tmpdir_path / "conversion.pattern"
-    pattern = f"Z_<0000-{n_items-1:04d}>{suffix}"
+    pattern = image_rep.attributes['pattern']
     logger.info(f"Using pattern {pattern}")
     pattern_fpath.write_text(pattern)
 
