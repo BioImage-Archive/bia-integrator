@@ -13,7 +13,8 @@ RUN conda create -n bia python=3.10
 SHELL ["conda", "run", "-n", "bia", "/bin/bash", "-c"]
  
 # Get bioformats2raw
-RUN conda install -y -c ome bioformats2raw
+# Install snakemake using conda as pip gives error 'cannot find gcc'
+RUN conda install -y -c ome -c conda-forge -c bioconda bioformats2raw snakemake
 
 # Install bia-integrator code 
 RUN git clone https://github.com/BioImage-Archive/bia-integrator.git && \
