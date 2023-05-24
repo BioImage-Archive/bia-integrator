@@ -1,3 +1,4 @@
+
 import logging
 import pathlib
 import tempfile
@@ -10,8 +11,9 @@ from bia_integrator_core.models import BIAImageRepresentation
 from bia_integrator_core.integrator import load_and_annotate_study
 from bia_integrator_core.interface import persist_image_representation
 from bia_integrator_tools.io import (
-    stage_fileref_and_get_fpath, c2zsettings, upload_dirpath_as_zarr_image_rep
+    stage_fileref_and_get_fpath, upload_dirpath_as_zarr_image_rep
 )
+from bia_integrator_tools.utils import get_image_rep_by_type
 
 logger = logging.getLogger(__file__)
 
@@ -27,9 +29,6 @@ def unzip_and_get_path_of_contents(zip_fpath, td):
     src_dirpath = dirpath_list[0]
 
     return src_dirpath
-
-
-
 
 
 @click.command()
@@ -49,6 +48,8 @@ def main(accession_id, image_id):
 
     with tempfile.TemporaryDirectory() as td:
         src_dirpath = unzip_and_get_path_of_contents(zip_fpath, td)
+
+        logger.info(f"Unzipped to {src_dirpath}")
 
         uri = upload_dirpath_as_zarr_image_rep(src_dirpath, accession_id, image_id)
         uri += path_in_zarr

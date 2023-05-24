@@ -1,3 +1,5 @@
+"""Assign images from zipped ome.zarr file references."""
+
 import uuid
 import logging
 import hashlib
@@ -20,35 +22,36 @@ def main(accession_id):
     filerefs = bia_study.file_references
 
     for fileref in filerefs.values():
-        name = fileref.name.split('.', maxsplit=1)[0]
+        if "ome.zarr" in fileref.name:
+            name = fileref.name
 
-        hash_input = fileref.id
-        hexdigest = hashlib.md5(hash_input.encode("utf-8")).hexdigest()
-        image_id_as_uuid = uuid.UUID(version=4, hex=hexdigest)
-        image_id = str(image_id_as_uuid)
+            hash_input = fileref.id
+            hexdigest = hashlib.md5(hash_input.encode("utf-8")).hexdigest()
+            image_id_as_uuid = uuid.UUID(version=4, hex=hexdigest)
+            image_id = str(image_id_as_uuid)
 
-        image_rep = BIAImageRepresentation(
-            accession_id=accession_id,
-            image_id=image_id,
-            size=fileref.size_in_bytes,
-            uri=fileref.uri,
-            attributes={
-                "fileref_ids": [fileref.id],
-                "path_in_zarr": "/0"
-            },
-            type="zipped_zarr"
-        )
+            image_rep = BIAImageRepresentation(
+                accession_id=accession_id,
+                image_id=image_id,
+                size=fileref.size_in_bytes,
+                uri=fileref.uri,
+                attributes={
+                    "fileref_ids": [fileref.id],
+                    "path_in_zarr": "/0"
+                },
+                type="zipped_zarr"
+            )
 
-        image = BIAImage(
-            id=image_id,
-            accession_id=accession_id,
-            original_relpath=name,
-            name=name,
-            representations=[image_rep],
-            attributes=fileref.attributes
-        )
+            image = BIAImage(
+                id=image_id,
+                accession_id=accession_id,
+                original_relpath=name,
+                name=name,
+                representations=[image_rep],
+                attributes=fileref.attributes
+            )
 
-        persist_image(image)
+            persist_image(image)
 
 
 if __name__ == "__main__":

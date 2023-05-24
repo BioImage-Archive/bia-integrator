@@ -21,8 +21,8 @@ def get_ome_ngff_rep_by_accession_and_image(accession_id: str, image_id: str) ->
     return ome_ngff_rep
 
 
-def set_rending_info_for_ome_ngff_rep(ome_ngff_rep):
-    if not ome_ngff_rep.rendering:
+def set_rending_info_for_ome_ngff_rep(ome_ngff_rep, force=True):
+    if not ome_ngff_rep.rendering or force:
         logger.info(f"No rendering info set, using Zarr OMERO metadata")
 
         reader = Reader(parse_url(ome_ngff_rep.uri))
@@ -46,6 +46,8 @@ def set_rending_info_for_ome_ngff_rep(ome_ngff_rep):
         )
         
         persist_image_representation(ome_ngff_rep)
+    else:
+        logger.info(f"Rendering info exists {ome_ngff_rep.rendering}, not overwriting")
 
 
 @click.command()

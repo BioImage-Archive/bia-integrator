@@ -52,9 +52,17 @@ rule auto_create_image_representations:
     shell:
         "python ../scripts/assign_all_easily_convertible_images_from_filerefs.py $ACCNO 2>&1 | tee {output}"
     
+rule generate_image_size_annotations:
+    input:
+        work_dir + "/image_representations.log"
+    output:
+        work_dir + "/generate_image_size_annotations.log"
+    shell:
+        "python ../scripts/generate_image_download_size_annotations.py $ACCNO 2>&1 | tee {output}"
+
 # Get image_representations dynamically
 checkpoint get_image_reps_to_convert:
-    input: work_dir + "/image_representations.log"
+    input: work_dir + "/generate_image_size_annotations.log"
     output:
         im_rep_dir = directory(work_dir + "/im_reps")
     shell:
@@ -111,9 +119,29 @@ rule generate_representative_image:
             python ../scripts/generate_representative_image_and_set_to_default.py $ACCNO $IM_REF > {output}
         """
 
-rule run_post_conversion_annotation:
+rule fetch_ome_metadata_for_all_images_in_study:
     input:
         work_dir + "/representative_image.log"
+    output:
+        work_dir + "/fetch_ome_metadata_for_all_images_in_study.log"
+    shell:
+        """
+            python ../scripts/fetch_ome_metadata_for_all_images_in_study.py $ACCNO > {output}
+        """
+
+rule annotate_study_from_zarr:
+    input:
+        work_dir + "/fetch_ome_metadata_for_all_images_in_study.log"
+    output:
+        work_dir + "/annotate_study_from_zarr.log"
+    shell:
+        """
+            python ../scripts/annotate_study_from_zarr.py $ACCNO > {output}
+        """
+
+rule run_post_conversion_annotation:
+    input:
+        work_dir + "/annotate_study_from_zarr.log"
     output:
         work_dir + "/post_conversion_annotation.log"
     shell:
