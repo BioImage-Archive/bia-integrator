@@ -66,7 +66,10 @@ def set_rendering_info_for_ome_ngff_rep(ome_ngff_rep):
         persist_image_representation(ome_ngff_rep)
 
 
-def create_and_persist_image_from_fileref(accession_id, fileref):
+def create_and_persist_image_from_fileref(accession_id, fileref, rep_type="fire_object"):
+    """Create a new image, together with a single representation from one file
+    reference."""
+
     name = fileref.name
     logger.info(f"Assigned name {name}")
 
@@ -81,7 +84,7 @@ def create_and_persist_image_from_fileref(accession_id, fileref):
         size=fileref.size_in_bytes,
         uri=fileref.uri,
         attributes={"fileref_ids": [fileref.id]},
-        type="fire_object"
+        type=rep_type
     )
 
     image = BIAImage(
