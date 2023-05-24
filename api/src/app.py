@@ -4,9 +4,10 @@ from .api import admin
 
 import uvicorn
 from fastapi import FastAPI
+import os
 
 from dotenv import load_dotenv
-load_dotenv()
+load_dotenv(os.environ.get("DOTENV_PATH", None))
 
 app = FastAPI()
 
