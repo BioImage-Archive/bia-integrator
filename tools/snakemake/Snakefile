@@ -44,9 +44,17 @@ rule index_zips_in_study:
             touch {output}
         """
 
-rule auto_create_image_representations:
+rule summarise_study_filetypes:
     input:
         work_dir + "/index_zips_in_study.log"
+    output:
+        work_dir + "/summarise_study_filetypes.log"
+    shell:
+        "python ../scripts/summarise_study_filetypes.py $ACCNO 2>&1 | tee {output}"
+
+rule auto_create_image_representations:
+    input:
+        work_dir + "/summarise_study_filetypes.log"
     output:
         work_dir + "/image_representations.log"
     shell:
