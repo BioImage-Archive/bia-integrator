@@ -11,8 +11,8 @@ services:
     container_name: biaint-mongo
     restart: "no"
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
+      MONGO_INITDB_ROOT_USERNAME: "${MONGO_INITDB_ROOT_USERNAME}"
+      MONGO_INITDB_ROOT_PASSWORD: "${MONGO_INITDB_ROOT_PASSWORD}"
     ports:
       - 27018:27018
     expose:
@@ -21,10 +21,21 @@ services:
     volumes:
       - /home/liviu/Documents/bia-integrator/api/.share/mongo.conf:/etc/mongo.conf
       - /home/liviu/Documents/bia-integrator/api/.share/keyfile.secret:/home/share/keyfile/keyfile.secret
+  bia-integrator-api:
+    image: dockerhub.ebi.ac.uk/bioimage-archive/integrator-api:0.1
+    container_name: api
+    hostname:  api
+    ports:
+      - 8000:8000
+    expose: 
+      - 8000
+    volumes:
+      - /home/liviu/Documents/bia-integrator/api/.env:/integrator-api/.env
+
     #networks:
     #  bia-integrator:
     #    ipv4_address: 172.20.0.2
-        
+
     #volumes:
     #  - config_share:/home/share
   #mongoinit:

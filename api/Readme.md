@@ -28,4 +28,17 @@ viewing old versions of documents/document changes
 TODO:
 - define ttl and size for oplog, **backup method**
 - hypercorn
-- type
+
+```sh
+# starting the api
+docker login dockerhub.ebi.ac.uk
+docker compose --env-file ./.env up
+```
+
+```sh
+# building the api image
+docker login dockerhub.ebi.ac.uk
+docker build -t bioimage-archive/integrator-api:0.1 .
+docker image tag bioimage-archive/integrator-api:0.1 dockerhub.ebi.ac.uk/bioimage-archive/integrator-api:0.1
+docker push dockerhub.ebi.ac.uk/bioimage-archive/integrator-api:0.1
+```
