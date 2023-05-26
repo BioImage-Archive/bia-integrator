@@ -1,5 +1,8 @@
+"""Copy a local OME-Zarr file to S3 storage. The S3 path will be determined
+automatically, using the image's accession identifier and image identifier.
+"""
+
 import logging
-from pathlib import Path
 
 import click
 

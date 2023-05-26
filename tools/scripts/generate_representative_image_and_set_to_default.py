@@ -29,6 +29,7 @@ def main(accession_id, image_id):
     rendering = ome_ngff_rep.rendering
 
     if not rendering:
+        logging.info(f"No rendering information set, will default to grayscale")
         render = ChannelRendering(
             colormap_start=[0., 0., 0.],
             colormap_end=[1., 1., 1.],
@@ -39,6 +40,8 @@ def main(accession_id, image_id):
             default_t=None,
             default_z=None
         )
+    else:
+        logging.info(f"Read channel renders for {len(rendering.channel_renders)} channels")
 
     channel_renders = rendering.channel_renders
     imarray = min_dim_array_from_zarr_uri(ome_ngff_rep.uri, dimensions)
