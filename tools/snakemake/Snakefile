@@ -52,8 +52,11 @@ rule index_zips_in_study:
         # Then I can use 'head' in line below
         #"biaint filerefs list $ACCNO | grep '\.zip2," | cut -d',' -f1 | xargs -L1 python {script_dir}/index_zip_in_study.py $ACCNO 2>&1 | tee {output}"
         """
-            for ZIP_FILEREF_ID in `{command_prefix} biaint filerefs list $ACCNO | grep '\.zip,' | cut -d',' -f1`; do {command_prefix} python {script_dir}/index_zip_in_study.py $ACCNO $ZIP_FILEREF_ID 2>&1 | tee -a {output}; done
-            touch {output}
+            for ZIP_FILEREF_ID in `biaint filerefs list $ACCNO | grep '\.zip,' | cut -d',' -f1`; do python ../scripts/index_zip_in_study.py $ACCNO $ZIP_FILEREF_ID 2>&1 | tee -a {output}; done
+            
+            # Repeat for directories (assume no '.' in name)
+            for ZIP_FILEREF_ID in `biaint filerefs list $ACCNO | grep -v ',.*\..*,' | cut -d',' -f1`; do python ../scripts/index_zip_in_study.py $ACCNO $ZIP_FILEREF_ID 2>&1 | tee -a {output}; done
+
         """
 
 rule summarise_study_filetypes:
@@ -61,10 +64,8 @@ rule summarise_study_filetypes:
         work_dir + "/index_zips_in_study.log"
     output:
         work_dir + "/summarise_study_filetypes.log"
-    singularity:
-        singularity_container_path
     shell:
-        "{command_prefix} python {script_dir}/summarise_study_filetypes.py $ACCNO 2>&1 | tee {output}"
+        "python ../scripts/summarise_study_filetypes.py $ACCNO 2>&1 | tee {output}"
 
 rule auto_create_image_representations:
     input:
