@@ -13,6 +13,7 @@ biaconv = "bia_integrator_tools.biaconv:app"
 [tool.poetry.dependencies]
 python = "^3.10"
 typer = {extras = ["all"], version = "^0.7.0"}
+fs = "^2.4.16"
 
 
 [build-system]
