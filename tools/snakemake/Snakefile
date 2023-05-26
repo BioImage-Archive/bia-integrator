@@ -20,6 +20,14 @@ import os
 # ToDo: use variable for work_dir
 work_dir = "work_dir/" + os.environ["ACCNO"]
 
+# Prefix to append when running in singularity container
+command_prefix = os.environ.get("CONTAINER_COMMAND_PREFIX", "")
+
+# Set directory for scripts when using singularity or a custom setup
+script_dir = os.environ.get("BIA_INTEGRATOR_TOOLS_SCRIPT_DIR", "../scripts")
+
+singularity_container_path = os.environ.get("SINGULARITY_CONTAINER_PATH", "")
+
 rule all:
     input:
         work_dir + "/final_output_{accno}.log"
@@ -27,20 +35,24 @@ rule all:
 rule ingest_from_biostudies:
     output:
         work_dir + "/ingest_from_biostudies.log"
+    singularity:
+        singularity_container_path
     shell:
-        "python ../scripts/ingest_from_biostudies.py $ACCNO > {output}"
+        "{command_prefix} python {script_dir}/ingest_from_biostudies.py $ACCNO > {output}"
 
 rule index_zips_in_study:
     input:
         work_dir + "/ingest_from_biostudies.log"
     output:
         work_dir + "/index_zips_in_study.log"
+    singularity:
+        singularity_container_path
     shell:
         # ToDo set bash so pipeline non-zero exit does not propagate
         # Then I can use 'head' in line below
-        #"biaint filerefs list $ACCNO | grep '\.zip2," | cut -d',' -f1 | xargs -L1 python ../scripts/index_zip_in_study.py $ACCNO 2>&1 | tee {output}"
+        #"biaint filerefs list $ACCNO | grep '\.zip2," | cut -d',' -f1 | xargs -L1 python {script_dir}/index_zip_in_study.py $ACCNO 2>&1 | tee {output}"
         """
-            for ZIP_FILEREF_ID in `biaint filerefs list $ACCNO | grep '\.zip,' | cut -d',' -f1`; do python ../scripts/index_zip_in_study.py $ACCNO $ZIP_FILEREF_ID 2>&1 | tee -a {output}; done
+            for ZIP_FILEREF_ID in `{command_prefix} biaint filerefs list $ACCNO | grep '\.zip,' | cut -d',' -f1`; do {command_prefix} python {script_dir}/index_zip_in_study.py $ACCNO $ZIP_FILEREF_ID 2>&1 | tee -a {output}; done
             touch {output}
         """
 
@@ -49,30 +61,38 @@ rule summarise_study_filetypes:
         work_dir + "/index_zips_in_study.log"
     output:
         work_dir + "/summarise_study_filetypes.log"
+    singularity:
+        singularity_container_path
     shell:
-        "python ../scripts/summarise_study_filetypes.py $ACCNO 2>&1 | tee {output}"
+        "{command_prefix} python {script_dir}/summarise_study_filetypes.py $ACCNO 2>&1 | tee {output}"
 
 rule auto_create_image_representations:
     input:
         work_dir + "/summarise_study_filetypes.log"
     output:
         work_dir + "/image_representations.log"
+    singularity:
+        singularity_container_path
     shell:
-        "python ../scripts/assign_all_easily_convertible_images_from_filerefs.py $ACCNO 2>&1 | tee {output}"
+        "{command_prefix} python {script_dir}/assign_all_easily_convertible_images_from_filerefs.py $ACCNO 2>&1 | tee {output}"
     
 rule generate_image_size_annotations:
     input:
         work_dir + "/image_representations.log"
     output:
         work_dir + "/generate_image_size_annotations.log"
+    singularity:
+        singularity_container_path
     shell:
-        "python ../scripts/generate_image_download_size_annotations.py $ACCNO 2>&1 | tee {output}"
+        "{command_prefix} python {script_dir}/generate_image_download_size_annotations.py $ACCNO 2>&1 | tee {output}"
 
 # Get image_representations dynamically
 checkpoint get_image_reps_to_convert:
     input: work_dir + "/generate_image_size_annotations.log"
     output:
         im_rep_dir = directory(work_dir + "/im_reps")
+    singularity:
+        singularity_container_path
     shell:
         """
             head -n 6 {input} | grep "json" > {input}.temp
@@ -87,10 +107,12 @@ rule convert_to_zarr_and_upload:
         im_ref = work_dir + "/im_reps/{i,[a-z|\d|-]+}"
     output:
         im_ref = work_dir + "/im_reps_output/{i}"
+    singularity:
+        singularity_container_path
     shell:
         """
             IM_REF=$(basename {input.im_ref})
-            python ../scripts/convert_to_zarr_and_upload.py $ACCNO $IM_REF > {output.im_ref}
+            {command_prefix} python {script_dir}/convert_to_zarr_and_upload.py $ACCNO $IM_REF > {output.im_ref}
         """
 # The command for this rule could be placed in convert_to_zarr_and_upload
 # but putting it here to make the steps involved clearer
@@ -99,10 +121,12 @@ rule generate_thumbnails:
         work_dir + "/im_reps_output/{i,[a-z|\d|-]+}"
     output:
         work_dir + "/gen_thumb_output/{i}"
+    singularity:
+        singularity_container_path
     shell:
         """
             IM_REF=$(basename {input})
-            python ../scripts/generate_thumbnail.py $ACCNO $IM_REF > {output}
+            {command_prefix} python {script_dir}/generate_thumbnail.py $ACCNO $IM_REF > {output}
         """
 def aggregate_converted_im_reps(wildcards):
     """Return converted image_representations"""
@@ -121,10 +145,12 @@ rule generate_representative_image:
         aggregate_converted_im_reps
     output:
         work_dir + "/representative_image.log"
+    singularity:
+        singularity_container_path
     shell:
         """
             IM_REF=$(basename "{input}")
-            python ../scripts/generate_representative_image_and_set_to_default.py $ACCNO $IM_REF > {output}
+            {command_prefix} python {script_dir}/generate_representative_image_and_set_to_default.py $ACCNO $IM_REF > {output}
         """
 
 rule fetch_ome_metadata_for_all_images_in_study:
@@ -132,9 +158,11 @@ rule fetch_ome_metadata_for_all_images_in_study:
         work_dir + "/representative_image.log"
     output:
         work_dir + "/fetch_ome_metadata_for_all_images_in_study.log"
+    singularity:
+        singularity_container_path
     shell:
         """
-            python ../scripts/fetch_ome_metadata_for_all_images_in_study.py $ACCNO > {output}
+            {command_prefix} python {script_dir}/fetch_ome_metadata_for_all_images_in_study.py $ACCNO > {output}
         """
 
 rule annotate_study_from_zarr:
@@ -142,9 +170,11 @@ rule annotate_study_from_zarr:
         work_dir + "/fetch_ome_metadata_for_all_images_in_study.log"
     output:
         work_dir + "/annotate_study_from_zarr.log"
+    singularity:
+        singularity_container_path
     shell:
         """
-            python ../scripts/annotate_study_from_zarr.py $ACCNO > {output}
+            {command_prefix} python {script_dir}/annotate_study_from_zarr.py $ACCNO > {output}
         """
 
 rule run_post_conversion_annotation:
@@ -152,9 +182,11 @@ rule run_post_conversion_annotation:
         work_dir + "/annotate_study_from_zarr.log"
     output:
         work_dir + "/post_conversion_annotation.log"
+    singularity:
+        singularity_container_path
     shell:
         """
-            python ../scripts/run_post_conversion_annotation.py $ACCNO > {output}
+            {command_prefix} python {script_dir}/run_post_conversion_annotation.py $ACCNO > {output}
         """
 
 # Collect the output logs so we have one file for 'all' rule
