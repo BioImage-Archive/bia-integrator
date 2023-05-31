@@ -52,6 +52,7 @@ def generate_dataset_page_html(accession_id, template_fname: str):
     
 
     images_with_ome_ngff = []
+    images_unconverted = []
     image_landing_uris = {}
     image_thumbnails = {}
     image_download_uris = {}
@@ -59,9 +60,12 @@ def generate_dataset_page_html(accession_id, template_fname: str):
 #    for image in bia_study.images.values():
     for image in non_annotation_images:
         for representation in image.representations:
-            if representation.type == "ome_ngff":
+            if representation.type == "ome_ngff": # or representation.type == "unconverted":
                 images_with_ome_ngff.append(image)
                 image_landing_uris[image.id] = f"{accession_id}/{image.id}.html"
+            #if representation.type == "unconverted":
+            #    images_unconverted.append(image)
+            #    image_landing_uris[image.id] = f"{accession_id}/{image.id}.html"
             if representation.type == "thumbnail":
                 image_thumbnails[image.id] = representation.uri
             if representation.type == "fire_object":

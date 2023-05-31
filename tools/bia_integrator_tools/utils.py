@@ -1,6 +1,7 @@
 import uuid
 import logging
 import hashlib
+import pathlib
 from typing import Optional
 
 from ome_zarr.io import parse_url
@@ -29,6 +30,17 @@ def get_ome_ngff_rep(image):
         if rep.type == "ome_ngff":
             return rep
 
+def get_fileref_for_png_jpg(image, rep_type):
+    ext_list = ['.jpeg','.jpg','.png']
+    ext = pathlib.PurePath(image.name).suffix
+    if ext in ext_list:
+        for rep in image.representations:
+            if rep.type == rep_type:
+                fileref_id = rep.attributes["fileref_ids"][0]
+                return fileref_id
+ 
+    return None
+
 
 def get_ome_ngff_rep_by_accession_and_image(accession_id: str, image_id: str) -> Optional[BIAImageRepresentation]:
     bia_study = load_and_annotate_study(accession_id)
@@ -37,6 +49,12 @@ def get_ome_ngff_rep_by_accession_and_image(accession_id: str, image_id: str) ->
     ome_ngff_rep = get_ome_ngff_rep(image)
     
     return ome_ngff_rep
+
+def get_unconverted_rep_by_accession_and_image(accession_id: str, image_id: str) -> Optional[BIAImageRepresentation]:
+    
+    im_rep = get_image_rep_by_type(accession_id,image_id,"unconverted")
+    
+    return im_rep
 
 
 def set_rendering_info_for_ome_ngff_rep(ome_ngff_rep):

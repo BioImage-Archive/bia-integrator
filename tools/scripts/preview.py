@@ -1,17 +1,32 @@
 import logging
 
 from PIL import Image, ImageOps
+from io import BytesIO
 import numpy as np
 from ome_zarr.io import parse_url
 from ome_zarr.reader import Reader
-from bia_integrator_tools.utils import get_ome_ngff_rep
+from bia_integrator_tools.utils import get_ome_ngff_rep, get_unconverted_rep_by_accession_and_image
 from bia_integrator_core.integrator import load_and_annotate_study
 from microfilm.colorify import multichannel_to_rgb
 from matplotlib.colors import LinearSegmentedColormap
+import requests
 
 
 logger = logging.getLogger("thumbnailer")
 
+def load_pil_image_from_uri(image_uri):
+
+    r = requests.get(image_uri)
+    assert r.status_code == 200
+
+    im = Image.open(BytesIO(r.content))
+
+    return im
+
+def get_unconverted_uri(accession_id: str, image_id: str) -> str:
+    im_rep = get_unconverted_rep_by_accession_and_image(accession_id, image_id)
+    
+    return im_rep.uri
 
 def get_zarr_uri(accession_id: str, image_id: str) -> str:
     bia_study = load_and_annotate_study(accession_id)
@@ -117,6 +132,15 @@ def thumbnail_from_image(accession_id: str, image_id: str, dimensions=(256, 256)
     
     return im
 
+def thumbnail_from_unconverted_image(accession_id: str, image_id: str, dimensions=(256, 256)) -> Image:
+    
+    im_uri = get_unconverted_uri(accession_id, image_id)
+    imarray = load_pil_image_from_uri(im_uri)
+    
+    #im = Image.fromarray(scale_to_uint8(imarray))
+    imarray.thumbnail(dimensions)
+    
+    return imarray
 
 def pad_to_target_dims(im, target_dims, fill=(0, 0, 0)):
 
