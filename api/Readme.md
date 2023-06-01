@@ -2,12 +2,13 @@
 - image / file reference study uuid index
 
 ```bash
-CONTAINER_ID=2b82096937e7
+# initialise replicaset (if enabled)
+CONTAINER_ID=3f0267d17e65
 docker exec -it $CONTAINER_ID  mongosh "mongodb://root:example@mongo1:27018" --eval "rs.initiate();"
 docker inspect   -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $CONTAINER_ID
-Add `mongo1` to /etc/hosts
 ```
 
+## Indexes
 ```
 use bia_integrator
 db.bia_integrator.createIndex({'uuid': 1}, {unique: true})
@@ -29,16 +30,20 @@ TODO:
 - define ttl and size for oplog, **backup method**
 - hypercorn
 
+## Running the api
+
 ```sh
 # starting the api
-docker login dockerhub.ebi.ac.uk
+docker login ghcr.io
 docker compose --env-file ./.env up
+
+# docs available at http://localhost:8080/redoc
 ```
 
 ```sh
 # building the api image
-docker login dockerhub.ebi.ac.uk
+docker login ghcr.io
 docker build -t bioimage-archive/integrator-api:0.1 .
-docker image tag bioimage-archive/integrator-api:0.1 dockerhub.ebi.ac.uk/bioimage-archive/integrator-api:0.1
-docker push dockerhub.ebi.ac.uk/bioimage-archive/integrator-api:0.1
+docker image tag bioimage-archive/integrator-api:0.1 ghcr.io/bioimage-archive/integrator-api:0.1
+docker push ghcr.io/bioimage-archive/integrator-api:0.1
 ```
