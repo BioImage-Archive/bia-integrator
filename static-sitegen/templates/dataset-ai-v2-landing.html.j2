@@ -112,6 +112,11 @@
         {% if study.other_files|length > 0 %}
        <li>{{ study.other_files|length }} other files</li>
         {% endif %}
+        {% if "n_files_in_study" in study.attributes %}
+        <li>Study size: {{ study.attributes["study_size"] }}</li>
+        <li>No of files in study: {{ study.attributes["n_files_in_study"] }}</li>
+        <li>Filetype breakdown: {{ study.attributes["filetype_breakdown_html"] }}</li>
+        {% endif %}
         <li><b>License : {{ study.license }} </b><li>
         </ul>
         <h2 class="vf-section-header__heading">This dataset has</h2>
