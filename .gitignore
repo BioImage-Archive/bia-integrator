@@ -2,3 +2,5 @@ static-sitegen/.DS_Store
 .history
 .vscode
 poetry.lock
+tools/.DS_Store
+.DS_Store
