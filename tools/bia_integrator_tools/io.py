@@ -10,6 +10,7 @@ import requests
 from pydantic import BaseSettings
 from remotezip import RemoteZip
 from bia_integrator_core.models import FileReference
+from bia_integrator_core.config import Settings
 
     
 logger = logging.getLogger(__name__)
@@ -131,8 +132,7 @@ def fetch_fileref_to_local(fileref, dst_fpath):
 
 def stage_fileref_and_get_fpath(accession_id: str, fileref: FileReference) -> Path:
 
-    cache_root_dirpath = Path.home()/".cache"/"bia-converter"
-    cache_dirpath = cache_root_dirpath/accession_id
+    cache_dirpath = Settings().cache_root_dirpath/accession_id
     cache_dirpath.mkdir(exist_ok=True, parents=True)
 
     suffix = Path(urlparse(fileref.name).path).suffix

@@ -6,6 +6,7 @@ from pydantic import BaseSettings
 
 class Settings(BaseSettings):
     data_dirpath: Path = Path.home()/".bia-integrator-data"
+    cache_root_dirpath: Path = Path.home()/".cache"/"bia-converter"
 
     @property
     def studies_dirpath(self):
