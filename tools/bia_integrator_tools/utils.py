@@ -13,6 +13,14 @@ from bia_integrator_core.interface import persist_image_representation, persist_
 
 logger = logging.getLogger(__name__)
 
+def get_annotation_files_by_accession(accession_id):
+    """Generate list of files in study that are annotations of another image."""
+    
+    bia_study = load_and_annotate_study(accession_id)
+    return [
+        fileref for fileref in bia_study.file_references.values()
+        if "source image" in fileref.attributes
+    ]
 
 def get_image_rep_by_type(accession_id, image_id, rep_type):
 

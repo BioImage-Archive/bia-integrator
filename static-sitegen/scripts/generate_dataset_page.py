@@ -7,8 +7,10 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape # type: igno
 
 from bia_integrator_core.integrator import load_and_annotate_study
 from bia_integrator_core.interface import get_aliases
-from utils import get_annotation_images_in_study, get_non_annotation_images_in_study
-
+from utils import ( get_annotation_files_in_study, 
+                   get_non_annotation_images_in_study,
+                   add_annotation_download_size_attributes
+)
 
 logger = logging.getLogger(os.path.basename(__file__))
 
@@ -43,12 +45,14 @@ def generate_dataset_page_html(accession_id, template_fname: str):
     }
 
 
-    annotation_images = get_annotation_images_in_study(bia_study)
+    ann_files = get_annotation_files_in_study(bia_study)
+    annotation_files = add_annotation_download_size_attributes(ann_files)
+
     non_annotation_images = get_non_annotation_images_in_study(bia_study)
 
-    ann_names = {}
-    for image in annotation_images:
-        ann_names[image.id]=aliases_by_id.get(image.id, image.id)
+#    ann_names = {}
+#    for image in annotation_images:
+#        ann_names[image.id]=aliases_by_id.get(image.id, image.id)
     
 
     images_with_ome_ngff = []
@@ -71,10 +75,8 @@ def generate_dataset_page_html(accession_id, template_fname: str):
             if representation.type == "fire_object":
                 image_download_uris[image.id] = urllib.parse.quote(representation.uri, safe=":/")
 
-    for image in annotation_images:
-        for representation in image.representations:
-            if representation.type == "fire_object":
-                annotation_download_uris[image.id] = urllib.parse.quote(representation.uri, safe=":/")
+    for annfile in annotation_files:
+        annotation_download_uris[annfile.id] = urllib.parse.quote(annfile.uri, safe=":/")
 
     template = env.get_template(template_fname)
 
@@ -85,8 +87,7 @@ def generate_dataset_page_html(accession_id, template_fname: str):
             landing_uris=image_landing_uris,
             image_thumbnails=image_thumbnails,
             image_download_uris=image_download_uris,
-            annotation_names=annotation_images,
-            ann_names=ann_names,
+            annotation_names=annotation_files,
             annotation_download_uris=annotation_download_uris,
             non_annotation_names = non_annotation_images,
             authors=author_names

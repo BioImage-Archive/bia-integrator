@@ -90,12 +90,6 @@
             <svg class="vf-icon vf-icon__arrown--down | vf-list__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M.249,7.207,11.233,19.678h0a1.066,1.066,0,0,0,1.539,0L23.751,7.207a.987.987,0,0,0-.107-1.414l-1.85-1.557a1.028,1.028,0,0,0-1.438.111L12.191,13.8a.25.25,0,0,1-.379,0L3.644,4.346A1.021,1.021,0,0,0,2.948,4a1,1,0,0,0-.741.238L.356,5.793A.988.988,0,0,0,0,6.478.978.978,0,0,0,.249,7.207Z"></path></svg>
           </a>
         </li>
-        <li class="vf-list__item">
-          <a class="vf-list__link" href="#access">
-            How to access data
-            <svg class="vf-icon vf-icon__arrown--down | vf-list__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M.249,7.207,11.233,19.678h0a1.066,1.066,0,0,0,1.539,0L23.751,7.207a.987.987,0,0,0-.107-1.414l-1.85-1.557a1.028,1.028,0,0,0-1.438.111L12.191,13.8a.25.25,0,0,1-.379,0L3.644,4.346A1.021,1.021,0,0,0,2.948,4a1,1,0,0,0-.741.238L.356,5.793A.988.988,0,0,0,0,6.478.978.978,0,0,0,.249,7.207Z"></path></svg>
-          </a>
-        </li>
       </ul>
     </div>
   </section>
@@ -281,18 +275,22 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for image in annotation_names %}
-                                <td>{{ ann_names[image.id] }}</td>
-                                <td>{{ image.original_relpath }}</td>
-                                 {% if image.attributes.get('source image') %}
-                                <td>{{ image.attributes['source image'] }}</td>
+                            {% for annfile in annotation_names %}
+                                {% if annfile.attributes.get('alias')%}
+                                <td>{{ annfile.attributes['alias']}} </td>
+                                {% else %}
+                                <td>{{ annfile.id }}</td>
                                 {% endif %}
-                                {% if "download_size" in image.attributes %}
-                                    <td>{{ image.attributes["download_size"] }}</td>
+                                <td>{{ annfile.name }}</td>
+                                 {% if annfile.attributes.get('source image') %}
+                                <td>{{ annfile.attributes['source image'] }}</td>
+                                {% endif %}
+                                {% if annfile.attributes.get('download_size') %}
+                                    <td>{{ annfile.attributes["download_size"] }}</td>
                                 {% else %}
                                     <td>Unavailable</td>
                                 {% endif %}
-                                <td><a href={{ annotation_download_uris[image.id] }}>Download</a></td>
+                                <td><a href={{ annotation_download_uris[annfile.id] }}>Download</a></td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -318,26 +316,6 @@
       {% endfor %} 
       {% endif %}
       <br>
-        </div>
-    </div>
-  </section>
-
-  <!-- How to access the data --> 
-  <section class="embl-grid embl-grid--has-centered-content">
-    <div class="vf-section-header">
-      <h3 class="vf-section-header__heading" id="access">How to access the data</h3>
-    </div>
-    <div class="vf-content">
-    The images that are converted to ome-ngff can be viewed by clicking the "view" button in the <a href="#images">Viewable Images</a> table. 
-    This opens the image web page with image metadata and links to different ome-ngff compliant viewers. The ome-ngff files cannot be downloaded currently.
-      <br>
-    If you want to download any of the data files, you can do so by clicking the "download" button next to the file on the dataset page. 
-    This will download the original file in the format it was originally submitted to the BioImage Archive. 
-    If the file was submitted as part of a zip file or folder, the download button will trigger the download of the whole zip file or zipped folder.
-    <br>
-    You can also download multiple files or the whole dataset if you go to the original BioImage Archive page of the relevant submission. 
-    The link to the original submission of datasets are on the dataset page in the <a href="#study">Study Information</a> section.
-    <br>
         </div>
     </div>
   </section>
