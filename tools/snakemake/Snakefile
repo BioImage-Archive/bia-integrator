@@ -97,10 +97,20 @@ rule auto_create_image_aliases:
         singularity_container_path
     shell:
         "{command_prefix} python {script_dir}/assign_alias_images.py $ACCNO 2>&1 | tee {output}"
-    
-rule generate_image_size_annotations:
+
+rule auto_create_annotation_aliases:
     input:
         work_dir + "/image_aliases.log"
+    output:
+        work_dir + "/annotation_aliases.log"
+    singularity:
+        singularity_container_path
+    shell:
+        "{command_prefix} python {script_dir}/assign_alias_to_annotations.py $ACCNO 2>&1 | tee {output}"
+
+rule generate_image_size_annotations:
+    input:
+        work_dir + "/annotation_aliases.log"
     output:
         work_dir + "/generate_image_size_annotations.log"
     singularity:
