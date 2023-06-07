@@ -91,15 +91,14 @@ Class | Method | HTTP request | Description
 *DefaultApi* | [**create_images_api_private_images_bulk_post**](docs/DefaultApi.md#create_images_api_private_images_bulk_post) | **POST** /api/private/images/bulk | Create Images
 *DefaultApi* | [**create_images_api_private_images_post**](docs/DefaultApi.md#create_images_api_private_images_post) | **POST** /api/private/images | Create Images
 *DefaultApi* | [**create_study_api_private_study_post**](docs/DefaultApi.md#create_study_api_private_study_post) | **POST** /api/private/study | Create Study
-*DefaultApi* | [**get_collections_api_search_collections_get**](docs/DefaultApi.md#get_collections_api_search_collections_get) | **GET** /api/search/collections | Get Collections
 *DefaultApi* | [**get_image_api_file_references_file_reference_uuid_get**](docs/DefaultApi.md#get_image_api_file_references_file_reference_uuid_get) | **GET** /api/file_references/{file_reference_uuid} | Get Image
 *DefaultApi* | [**get_image_api_images_image_uuid_get**](docs/DefaultApi.md#get_image_api_images_image_uuid_get) | **GET** /api/images/{image_uuid} | Get Image
 *DefaultApi* | [**get_image_ome_metadata_api_images_image_uuid_ome_metadata_get**](docs/DefaultApi.md#get_image_ome_metadata_api_images_image_uuid_ome_metadata_get) | **GET** /api/images/{image_uuid}/ome_metadata | Get Image Ome Metadata
-*DefaultApi* | [**get_studies_for_collection_api_search_studies_get**](docs/DefaultApi.md#get_studies_for_collection_api_search_studies_get) | **GET** /api/search/studies | Get Studies For Collection
 *DefaultApi* | [**get_study_api_study_uuid_get**](docs/DefaultApi.md#get_study_api_study_uuid_get) | **GET** /api/{study_uuid} | Get Study
 *DefaultApi* | [**get_study_file_references_api_study_uuid_file_references_get**](docs/DefaultApi.md#get_study_file_references_api_study_uuid_file_references_get) | **GET** /api/{study_uuid}/file_references | Get Study File References
 *DefaultApi* | [**get_study_images_api_study_uuid_images_get**](docs/DefaultApi.md#get_study_images_api_study_uuid_images_get) | **GET** /api/{study_uuid}/images | Get Study Images
 *DefaultApi* | [**health_check_admin_health_check_get**](docs/DefaultApi.md#health_check_admin_health_check_get) | **GET** /admin/health-check | Health Check
+*DefaultApi* | [**search_collections_api_collections_get**](docs/DefaultApi.md#search_collections_api_collections_get) | **GET** /api/collections | Search Collections
 *DefaultApi* | [**search_images_api_search_images_get**](docs/DefaultApi.md#search_images_api_search_images_get) | **GET** /api/search/images | Search Images
 *DefaultApi* | [**study_refresh_counts_api_private_studies_study_uuid_refresh_counts_post**](docs/DefaultApi.md#study_refresh_counts_api_private_studies_study_uuid_refresh_counts_post) | **POST** /api/private/studies/{study_uuid}/refresh_counts | Study Refresh Counts
 *DefaultApi* | [**update_file_reference_api_private_file_references_single_patch**](docs/DefaultApi.md#update_file_reference_api_private_file_references_single_patch) | **PATCH** /api/private/file_references/single | Update File Reference
