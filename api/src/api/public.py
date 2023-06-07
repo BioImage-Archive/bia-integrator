@@ -10,10 +10,6 @@ from uuid import UUID
 
 router = APIRouter(prefix="/api")
 
-@router.get("/search/studies")
-async def get_studies_for_collection(collection: str) -> List[str]:
-    return repository.find_studies_uuid_for_collection(collection)
-
 @router.get("/{study_uuid}")
 async def get_study(study_uuid: str) -> db_models.BIAStudy:
     return await repository.find_study_by_uuid(study_uuid)
@@ -45,8 +41,11 @@ async def get_image(file_reference_uuid: str) -> db_models.FileReference:
 
 @router.get("/images/{image_uuid}/ome_metadata")
 async def get_image_ome_metadata(study_uuid: str, image_uuid: str) -> db_models.BIAOmeMetadata:
-    return repository.find_image_by_id(image_uuid)
+    return repository.find_image_by_uuid(image_uuid)
 
-@router.get("/search/collections")
-async def get_collections() -> List[db_models.BIACollection]:
-    return repository.find_collections()
+@router.get("/collections")
+async def search_collections(
+    name: Optional[str] = None
+) -> List[db_models.BIACollection]:
+    return await repository.search_collections(name=name)
+

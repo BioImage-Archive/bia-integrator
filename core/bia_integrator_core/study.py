@@ -9,8 +9,7 @@ logger = logging.getLogger(__name__)
 def get_study(accession_id: str) -> BIAStudy:
     """Return the study object for the given accession identifier."""
 
-    study_fpath = settings.data_dirpath/"studies"/f"{accession_id}.json"
-    bia_study = BIAStudy.parse_file(study_fpath)
+    bia_study = settings.api_client.get_study_api_study_uuid_get(accession_id)
 
     return bia_study
 
@@ -18,11 +17,4 @@ def get_study(accession_id: str) -> BIAStudy:
 def persist_study(study: BIAStudy):
     """Persist the given study to disk."""
 
-    studies_dirpath = settings.studies_dirpath
-    studies_dirpath.mkdir(exist_ok=True, parents=True)
-
-    study_fpath = studies_dirpath/f"{study.accession_id}.json"
-    logger.info(f"Writing study to {study_fpath}")
-
-    with open(study_fpath, "w") as fh:
-        fh.write(study.json(indent=2))
+    settings.api_client.create_study_api_private_study_post(study)

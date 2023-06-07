@@ -10,6 +10,7 @@ logger = logging.getLogger(__name__)
 def get_collection(name: str) -> BIACollection:
     """Load the collection with the given name from disk and return."""
 
+    settings.api_client.get_collections_api_search_collections_get(name=name)
     collections_dirpath = settings.data_dirpath/"collections"
     collection_fpath = collections_dirpath/f"{name}.json"
 

@@ -5,7 +5,7 @@ from ..api import exceptions
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorCollection
 from bson import ObjectId
 import pydantic
-from typing import List, Any, Callable
+from typing import List, Any, Callable, Optional
 from uuid import UUID
 import pymongo
 import json
@@ -248,8 +248,22 @@ async def find_study_by_uuid(uuid: str | UUID) -> models.BIAStudy:
 
     return await get_study(uuid=uuid)
 
-async def find_studies_uuid_for_collection(collection: str) -> List[str]:
-    pass
-
 async def persist_images(images: List[models.BIAImage]) -> None:
     pass
+
+async def search_collections(**kwargs) -> List[models.BIACollection]:
+    mongo_query = {
+        'model': {
+            'type_name': 'BIACollection'
+        },
+        **kwargs
+    }
+    
+    collections = []
+    async for collection in get_db().find(mongo_query):
+        collections.append(models.BIACollection(**collection))
+    
+    if not len(collections):
+        raise exceptions.DocumentNotFound(f"Could not find any collections matching {str(kwargs)}")
+    
+    return collections
