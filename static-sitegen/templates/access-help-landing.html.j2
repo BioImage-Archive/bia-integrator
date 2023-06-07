@@ -1,0 +1,119 @@
+<html lang="en" class="vf-no-js">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="https://assets.emblstatic.net/vf/v2.5.8/css/styles.css">
+    </head>
+
+    <body>
+        <header class="vf-global-header">
+            <header class="vf-global-header">
+
+                <div class="vf-global-header__inner">
+          
+                  <a href="https://www.ebi.ac.uk/bioimage-archive/" class="vf-logo">
+                    <img class="vf-logo__image" src="/bia-integrator-data/pages/assets/BIA-Logo.png" alt="BioImage Archive">
+                    <span class="vf-logo__text">   BioImage Archive</span>
+                  </a>
+          
+                </div>
+          
+            </header>
+        </header>
+
+        <div class="vf-stack vf-stack--500">
+            <section class="vf-intro | embl-grid embl-grid--has-centered-content">
+                <div></div>
+                <div>
+                <h1 class="vf-intro_subheading">How to access the data</h1>
+            </div>
+             <div></div>
+            </section>
+        <section class="vf-content | embl-grid embl-grid--has-centered-content">
+            <div></div>
+            <div>
+            
+            <h2 class="vf-text vf-text-heading--3">How to view and access the ome-ngff images? </h2>
+            
+            The images that are converted to ome-ngff can be viewed by clicking the "view" button in the Viewable Images table. This opens a web page with image metadata and image displayed by embedded Vizarr viewer, with links to other ome-ngff compliant viewers. 
+            <p>
+            
+            <figure class="vf-figure">
+            <img class="vf-figure__image" src="{{ view_button_uri }}" alt="Figure showing where to click to view and download images">
+            </figure>
+            </p>
+            
+            The "download" buttons on the dataset pages are to download the data in its original format, as explained in the <a href="#download">next section</a>.
+            
+            To download the ome-ngff images, you need to use an S3 client.
+            <p>
+            <h2 class="vf-text vf-text-heading--3">How to access data with the AWS client?</h2> 
+            </p>
+
+            It is possible to access the datasets through any tool that can read from S3. We recommend using the AWS command line interface.
+            <br>
+            The S3 uri of the ome-ngff images can be found by clicking on the “Copy S3 uri to clipboard” button on the image webpage. 
+            <br>
+            <figure class="vf-figure">
+            <img class="vf-figure__image" src="{{ copy_button_uri }}" alt="Figure showing where to click to copy image s3 uri">
+            </figure>            
+            <br>
+            The first part of the s3 uri, starting with https is the s3 endpoint, and the rest is the s3 path of the image. When run from the command line, this command lists the contents of the ome-ngff image folder:
+            <br>
+            <pre class="vf-code-example__pre"><code class="Code Code--lang-html vf-code-example"> aws --endpoint-url https://uk1s3.embassy.ebi.ac.uk s3 ls s3://bia-integrator-data/S-BIAD463/00cddbf9-1282-4a49-94d9-481b7a43cc0c/00cddbf9-1282-4a49-94d9-481b7a43cc0c.zarr/
+            </code></pre>
+            
+            The AWS client can also copy data from S3 to local storage. Detailed instructions for using this tool can be found in the <a href=”https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html”>AWS user guide</a>.
+            <p>
+            <h2 class="vf-text vf-text-heading--3" id="download"> How to download the original data? </h2>
+            </p>
+            <b>Web Download</b>
+            <br>
+            If you want to download any of the data files, you can do so by clicking the "download" button next to the file on the dataset page. This will download the original file in the format it was originally submitted to the BioImage Archive. 
+If the file was submitted as part of a zip file or folder, the download button will trigger the download of the whole zip file or zipped folder.
+            <br>
+            You can also download multiple files or the whole dataset if you go to the original BioImage Archive page of the relevant submission. The link to the original submission of datasets are on the dataset page in the Study Information section.
+            <br>
+            <b>FTP, Aspera, Globus </b>
+            <br>
+            You can download the data in their original format using ftp, Aspera or Globus. The instructions on how to do it can be found <a href=”https://www.ebi.ac.uk/bioimage-archive/help-download/"> here </a>.
+            </div>
+            <div></div>
+        </section>
+        </div>
+    </body>
+    <script>
+        function copyTextToClipboard(text) {
+            var textArea = document.createElement("textarea");
+            // Place in the top-left corner of screen regardless of scroll position.
+            textArea.style.position = 'fixed';
+
+            textArea.value = text;
+
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+
+            var successful;
+            try {
+                successful = document.execCommand('copy');
+            } catch (err) {
+                console.log('Oops, unable to copy');
+            }
+            document.body.removeChild(textArea);
+
+            if (successful) {
+                // show user that copying happened - update text on element (e.g. button)
+                let target = event.target;
+                let html = target.innerHTML;
+                target.classList.add("shake");
+                setTimeout(() => {
+                    // reset after 1 second
+                    target.classList.remove("shake");
+                }, 1000)
+            } else {
+                console.log("Copying failed")
+            }
+        }
+    </script>
+    <script type="text/javascript" src="https://kitware.github.io/itk-vtk-viewer/app/itkVtkViewerCDN.js"></script>
+</html>
