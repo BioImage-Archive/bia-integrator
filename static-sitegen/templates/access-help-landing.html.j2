@@ -59,7 +59,7 @@
             <br>
             The first part of the s3 uri, starting with https is the s3 endpoint, and the rest is the s3 path of the image. When run from the command line, this command lists the contents of the ome-ngff image folder:
             <br>
-            <pre class="vf-code-example__pre"><code class="Code Code--lang-html vf-code-example"> aws --endpoint-url https://uk1s3.embassy.ebi.ac.uk s3 ls s3://bia-integrator-data/S-BIAD463/00cddbf9-1282-4a49-94d9-481b7a43cc0c/00cddbf9-1282-4a49-94d9-481b7a43cc0c.zarr/
+            <pre class="vf-code-example__pre"><code class="Code Code--lang-html vf-code-example"> aws --endpoint-url https://uk1s3.embassy.ebi.ac.uk s3 ls s3://bia-integrator-data/S-BIAD463/00cddbf9-1282-4a49-94d9-481b7a43cc0c/00cddbf9-1282-4a49-94d9-481b7a43cc0c.zarr/ --no-sign-request
             </code></pre>
             
             The AWS client can also copy data from S3 to local storage. Detailed instructions for using this tool can be found in the <a href=”https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html”>AWS user guide</a>.
