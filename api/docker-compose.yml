@@ -11,10 +11,10 @@ services:
       - 27017:27017
     expose:
       - 27017
-        # command: "mongod --config /etc/mongo.conf --oplogMinRetentionHours 10"
-        # volumes:
-        #   - "./.share/mongo.conf:/etc/mongo.conf"
-        #     #- "./.share/keyfile.secret:/home/share/keyfile/keyfile.secret"
+    #command: "mongod --config /etc/mongo.conf --oplogMinRetentionHours 10"
+    #volumes:
+    #  - "./.share/mongo.conf:/etc/mongo.conf"
+    #    #- "./.share/keyfile.secret:/home/share/keyfile/keyfile.secret"
   bia-integrator-api:
     image: ghcr.io/bioimage-archive/integrator-api:0.1
     container_name: api

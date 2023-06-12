@@ -1,5 +1,8 @@
+from . import persistence as db_models
+
 from pydantic import BaseModel
 from typing import List, Optional, Dict
+from uuid import UUID
 
 class BIABaseModel(BaseModel):
     pass
@@ -21,4 +24,7 @@ class BulkOperationResponse(BIABaseModel):
             by_status[item.status].append(item)
 
         return by_status
-    
+
+class ObjectInfo(BIABaseModel):
+    uuid: UUID
+    model: db_models.ModelMetadata

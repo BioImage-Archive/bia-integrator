@@ -52,6 +52,24 @@ async def _get_doc_raw(id : str | ObjectId = None, **kwargs) -> Any:
     doc = await get_db().find_one(kwargs)
     return doc
 
+async def get_object_info(accessions: List[str]) -> api_models.ObjectInfo:
+    query = {
+        'accession_id': {
+            '$in': accessions
+        }
+    }
+    object_info_projection = {
+        'uuid': 1,
+        'model': 1
+    }
+
+    documents = []
+    async for doc in get_db().find(query, object_info_projection):
+        documents.append(api_models.ObjectInfo(**doc))
+    
+    return documents
+
+
 async def get_image(*args, **kwargs) -> models.BIAImage:
     doc = await _get_doc_raw(*args, **kwargs)
     return models.BIAImage(**doc)
