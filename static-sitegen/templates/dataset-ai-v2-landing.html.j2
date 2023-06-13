@@ -163,7 +163,8 @@
     <div class="vf-section-header">
       <h3 class="vf-section-header__heading" id="study">Study Information</h3>
       <p></p>
-       <a class="vf-card__link" href="https://www.ebi.ac.uk/biostudies/BioImages/studies/{{ study.accession_id }}" target=”_blank”> Original submission page </a>
+      <a class="vf-card__link" href="https://www.ebi.ac.uk/biostudies/BioImages/studies/{{ study.accession_id }}" target=”_blank”><button class="vf-button vf-button--primary vf-button--sm">Original submission page</button></a>
+     <!--  <a class="vf-card__link" href="https://www.ebi.ac.uk/biostudies/BioImages/studies/{{ study.accession_id }}" target=”_blank”> Original submission page </a> -->
     </div>
     <div class="vf-content">
       <div class="vf-grid vf-grid__col-2">
@@ -217,7 +218,12 @@
                         <tbody>
                             {% for image in images %}
                             <tr>
+                                {% if image_ann_aliases.get(image.id) %}
+                                <td>{{ image_names[image.id] }},{{ image_ann_aliases[image.id] }}</td>
+                                {% else %}
                                 <td>{{ image_names[image.id] }}</td>
+                                
+                                {% endif %}
                                 <td>
                                     <img class="vf-figure__image" src={{ image_thumbnails[image.id] }}>
                                 </td>
