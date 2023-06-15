@@ -22,6 +22,19 @@ def get_annotation_files_by_accession(accession_id):
         if "source image" in fileref.attributes
     ]
 
+def get_non_annotation_images_by_accession(accession_id):
+    """Generate list of images in study that are not annotations of another image."""
+    
+    bia_study = load_and_annotate_study(accession_id)
+    fileref_name = [
+        fileref.name for fileref in bia_study.file_references.values()
+        if "source image" not in fileref.attributes
+    ]    
+    return [
+        image for image in bia_study.images.values() 
+        if image.name in fileref_name
+    ]
+
 def get_image_rep_by_type(accession_id, image_id, rep_type):
 
     bia_study = load_and_annotate_study(accession_id)
