@@ -21,7 +21,8 @@ def main(accession_id):
 
     for image in images:
         if get_ome_ngff_rep_by_accession_and_image(accession_id,image.id):
-            return image.id
+            print(image.id)
+            return None
 
 #    list_image_ids = [ 
 #        image.id for image in images
@@ -30,7 +31,7 @@ def main(accession_id):
 #    if list_image_ids:
 #        return list_image_ids[0]
 #    else:
-        return None
+
 
 if __name__ == "__main__":
     main()
