@@ -20,6 +20,7 @@ docs/HTTPValidationError.md
 docs/ImageAnnotation.md
 docs/LocationInner.md
 docs/ModelMetadata.md
+docs/ObjectInfo.md
 docs/RenderingInfo.md
 docs/StudyAnnotation.md
 docs/ValidationError.md
@@ -48,6 +49,7 @@ openapi_client/models/http_validation_error.py
 openapi_client/models/image_annotation.py
 openapi_client/models/location_inner.py
 openapi_client/models/model_metadata.py
+openapi_client/models/object_info.py
 openapi_client/models/rendering_info.py
 openapi_client/models/study_annotation.py
 openapi_client/models/validation_error.py
@@ -58,4 +60,5 @@ setup.cfg
 setup.py
 test-requirements.txt
 test/__init__.py
+test/test_object_info.py
 tox.ini

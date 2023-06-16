@@ -10,15 +10,15 @@ Method | HTTP request | Description
 [**create_images_api_private_images_bulk_post**](DefaultApi.md#create_images_api_private_images_bulk_post) | **POST** /api/private/images/bulk | Create Images
 [**create_images_api_private_images_post**](DefaultApi.md#create_images_api_private_images_post) | **POST** /api/private/images | Create Images
 [**create_study_api_private_study_post**](DefaultApi.md#create_study_api_private_study_post) | **POST** /api/private/study | Create Study
-[**get_collections_api_search_collections_get**](DefaultApi.md#get_collections_api_search_collections_get) | **GET** /api/search/collections | Get Collections
 [**get_image_api_file_references_file_reference_uuid_get**](DefaultApi.md#get_image_api_file_references_file_reference_uuid_get) | **GET** /api/file_references/{file_reference_uuid} | Get Image
 [**get_image_api_images_image_uuid_get**](DefaultApi.md#get_image_api_images_image_uuid_get) | **GET** /api/images/{image_uuid} | Get Image
 [**get_image_ome_metadata_api_images_image_uuid_ome_metadata_get**](DefaultApi.md#get_image_ome_metadata_api_images_image_uuid_ome_metadata_get) | **GET** /api/images/{image_uuid}/ome_metadata | Get Image Ome Metadata
-[**get_studies_for_collection_api_search_studies_get**](DefaultApi.md#get_studies_for_collection_api_search_studies_get) | **GET** /api/search/studies | Get Studies For Collection
+[**get_object_info_api_object_info_by_accessions_get**](DefaultApi.md#get_object_info_api_object_info_by_accessions_get) | **GET** /api/object_info_by_accessions | Get Object Info
 [**get_study_api_study_uuid_get**](DefaultApi.md#get_study_api_study_uuid_get) | **GET** /api/{study_uuid} | Get Study
 [**get_study_file_references_api_study_uuid_file_references_get**](DefaultApi.md#get_study_file_references_api_study_uuid_file_references_get) | **GET** /api/{study_uuid}/file_references | Get Study File References
 [**get_study_images_api_study_uuid_images_get**](DefaultApi.md#get_study_images_api_study_uuid_images_get) | **GET** /api/{study_uuid}/images | Get Study Images
 [**health_check_admin_health_check_get**](DefaultApi.md#health_check_admin_health_check_get) | **GET** /admin/health-check | Health Check
+[**search_collections_api_collections_get**](DefaultApi.md#search_collections_api_collections_get) | **GET** /api/collections | Search Collections
 [**search_images_api_search_images_get**](DefaultApi.md#search_images_api_search_images_get) | **GET** /api/search/images | Search Images
 [**study_refresh_counts_api_private_studies_study_uuid_refresh_counts_post**](DefaultApi.md#study_refresh_counts_api_private_studies_study_uuid_refresh_counts_post) | **POST** /api/private/studies/{study_uuid}/refresh_counts | Study Refresh Counts
 [**update_file_reference_api_private_file_references_single_patch**](DefaultApi.md#update_file_reference_api_private_file_references_single_patch) | **PATCH** /api/private/file_references/single | Update File Reference
@@ -416,66 +416,6 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **get_collections_api_search_collections_get**
-> List[BIACollection] get_collections_api_search_collections_get()
-
-Get Collections
-
-### Example
-
-```python
-import time
-import os
-import openapi_client
-from openapi_client.models.bia_collection import BIACollection
-from openapi_client.rest import ApiException
-from pprint import pprint
-
-# Defining the host is optional and defaults to http://localhost
-# See configuration.py for a list of all supported configuration parameters.
-configuration = openapi_client.Configuration(
-    host = "http://localhost"
-)
-
-
-# Enter a context with an instance of the API client
-with openapi_client.ApiClient(configuration) as api_client:
-    # Create an instance of the API class
-    api_instance = openapi_client.DefaultApi(api_client)
-
-    try:
-        # Get Collections
-        api_response = api_instance.get_collections_api_search_collections_get()
-        print("The response of DefaultApi->get_collections_api_search_collections_get:\n")
-        pprint(api_response)
-    except Exception as e:
-        print("Exception when calling DefaultApi->get_collections_api_search_collections_get: %s\n" % e)
-```
-
-
-### Parameters
-This endpoint does not need any parameter.
-
-### Return type
-
-[**List[BIACollection]**](BIACollection.md)
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: application/json
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-**200** | Successful Response |  -  |
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
 # **get_image_api_file_references_file_reference_uuid_get**
 > FileReference get_image_api_file_references_file_reference_uuid_get(file_reference_uuid)
 
@@ -672,10 +612,10 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **get_studies_for_collection_api_search_studies_get**
-> List[str] get_studies_for_collection_api_search_studies_get(collection)
+# **get_object_info_api_object_info_by_accessions_get**
+> List[ObjectInfo] get_object_info_api_object_info_by_accessions_get(accessions)
 
-Get Studies For Collection
+Get Object Info
 
 ### Example
 
@@ -683,6 +623,7 @@ Get Studies For Collection
 import time
 import os
 import openapi_client
+from openapi_client.models.object_info import ObjectInfo
 from openapi_client.rest import ApiException
 from pprint import pprint
 
@@ -697,15 +638,15 @@ configuration = openapi_client.Configuration(
 with openapi_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = openapi_client.DefaultApi(api_client)
-    collection = 'collection_example' # str | 
+    accessions = ['accessions_example'] # List[str] | 
 
     try:
-        # Get Studies For Collection
-        api_response = api_instance.get_studies_for_collection_api_search_studies_get(collection)
-        print("The response of DefaultApi->get_studies_for_collection_api_search_studies_get:\n")
+        # Get Object Info
+        api_response = api_instance.get_object_info_api_object_info_by_accessions_get(accessions)
+        print("The response of DefaultApi->get_object_info_api_object_info_by_accessions_get:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling DefaultApi->get_studies_for_collection_api_search_studies_get: %s\n" % e)
+        print("Exception when calling DefaultApi->get_object_info_api_object_info_by_accessions_get: %s\n" % e)
 ```
 
 
@@ -713,11 +654,11 @@ with openapi_client.ApiClient(configuration) as api_client:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **collection** | **str**|  | 
+ **accessions** | [**List[str]**](str.md)|  | 
 
 ### Return type
 
-**List[str]**
+[**List[ObjectInfo]**](ObjectInfo.md)
 
 ### Authorization
 
@@ -995,6 +936,71 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Successful Response |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **search_collections_api_collections_get**
+> List[BIACollection] search_collections_api_collections_get(name=name)
+
+Search Collections
+
+### Example
+
+```python
+import time
+import os
+import openapi_client
+from openapi_client.models.bia_collection import BIACollection
+from openapi_client.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = openapi_client.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with openapi_client.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = openapi_client.DefaultApi(api_client)
+    name = 'name_example' # str |  (optional)
+
+    try:
+        # Search Collections
+        api_response = api_instance.search_collections_api_collections_get(name=name)
+        print("The response of DefaultApi->search_collections_api_collections_get:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling DefaultApi->search_collections_api_collections_get: %s\n" % e)
+```
+
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **name** | **str**|  | [optional] 
+
+### Return type
+
+[**List[BIACollection]**](BIACollection.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

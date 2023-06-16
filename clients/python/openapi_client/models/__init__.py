@@ -30,6 +30,7 @@ from openapi_client.models.http_validation_error import HTTPValidationError
 from openapi_client.models.image_annotation import ImageAnnotation
 from openapi_client.models.location_inner import LocationInner
 from openapi_client.models.model_metadata import ModelMetadata
+from openapi_client.models.object_info import ObjectInfo
 from openapi_client.models.rendering_info import RenderingInfo
 from openapi_client.models.study_annotation import StudyAnnotation
 from openapi_client.models.validation_error import ValidationError
