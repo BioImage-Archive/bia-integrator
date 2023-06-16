@@ -53,10 +53,9 @@ def main(accession_id):
         if old_image_id.startswith("IM"):
             alias = BIAImageAlias(
                 accession_id=accession_id,
-                name=old_image_id,
-                image_id=new_image_id
+                name=old_image_id
             )
-            persist_image_alias(alias)
+            persist_image_alias(image_id, alias)
 
 
 if __name__ == "__main__":

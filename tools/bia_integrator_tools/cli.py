@@ -1,5 +1,6 @@
 import logging
 from pathlib import Path
+from openapi_client import models as api_models
 
 logger = logging.getLogger("biaint")
 logging.basicConfig(level=logging.INFO)
@@ -60,13 +61,12 @@ app.add_typer(filerefs_app, name="filerefs")
 
 @aliases_app.command("add")
 def add_alias(accession_id: str, image_id: str, name: str):
-    alias = BIAImageAlias(
+    alias = api_models.BIAImageAlias(
         accession_id=accession_id,
-        image_id=image_id,
         name=name
     )
 
-    persist_image_alias(alias)
+    persist_image_alias(image_id, alias)
 
 
 @aliases_app.command("list")
