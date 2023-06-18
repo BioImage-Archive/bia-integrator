@@ -8,6 +8,10 @@ from pydantic import BaseModel
 from microfilm.colorify import multichannel_to_rgb
 from matplotlib.colors import LinearSegmentedColormap
 
+from bia_integrator_core.interface import get_image
+from bia_integrator_tools.utils import get_ome_ngff_rep_by_accession_and_image
+from .omezarrmeta import ZMeta
+
 
 DEFAULT_COLORS = [
     [1, 0, 0],
@@ -22,6 +26,39 @@ DEFAULT_COLORMAPS = [
     LinearSegmentedColormap.from_list(f'n{n}', ([0, 0, 0], cmap_end))
     for n, cmap_end in enumerate(DEFAULT_COLORS)
 ]
+
+
+class BIAProxyImage(object):
+
+    def __init__(self, accession_id, image_id):
+        self.bia_image = get_image(accession_id, image_id)
+        self.ome_ngff_rep = get_ome_ngff_rep_by_accession_and_image(accession_id, image_id)
+        self._init_darray()
+        self.zgroup = zarr.open_group(self.ome_ngff_rep.uri)
+
+        self.ngff_metadata = ZMeta.parse_obj(self.zgroup.attrs.asdict())
+        
+    def _init_darray(self):
+        self.darray = dask_array_from_ome_ngff_rep(self.ome_ngff_rep)
+        size_t, size_c, size_z, size_y, size_x = self.darray.shape
+        
+        self.size_t = size_t
+        self.size_c = size_c
+        self.size_z = size_z
+        self.size_y = size_y
+        self.size_x = size_x
+
+    def get_dask_array_with_min_dimensions(self, dims):
+        ydim, xdim = dims
+        path_keys = [dataset.path for dataset in self.ngff_metadata.multiscales[0].datasets]
+
+        for path_key in reversed(path_keys):
+            zarr_array = self.zgroup[path_key]
+            _, _, _, size_y, size_x = zarr_array.shape
+            if (size_y >= ydim) and (size_x >= xdim):
+                break
+        
+        return da.from_zarr(zarr_array)
 
 
 class ChannelRenderingSettings(BaseModel):
@@ -116,7 +153,30 @@ def dask_array_from_ome_ngff_rep(ome_ngff_rep):
     return darray
 
 
-def best_efforts_render_image(accession_id, image_id):
+def select_region_from_dask_array(darray, region):
+    """Select a single plane from a Dask array, and compute it."""
+
+    return darray[region.t, region.c, region.z, region.ymin:region.ymax, region.xmin:region.xmax].compute()
+
+
+def render_multiple_2D_arrays(arrays, colormaps):
+    """Given a list of 2D arrays and a list of colormaps, apply each colormap
+    merge into a single 2D RGB image."""
+
+    imarray, _, _, _ = multichannel_to_rgb(arrays, colormaps)
+    im = Image.fromarray(scale_to_uint8(imarray))
+    
+    return im
+
+
+def best_efforts_render_image(accession_id, image_id, dims=(512, 512)):
+    """In order to render a 2D plane we need to:
+    
+    1. Lazy-load the image as a Dask array.
+    2. Select the plane (single t and z values) we'll use.
+    3. Separate channels.
+    4. Apply a color map to each channel array.
+    5. Merge the channel arrays."""
     
     bia_proxy_im = BIAProxyImage(accession_id, image_id)
 
@@ -136,7 +196,7 @@ def best_efforts_render_image(accession_id, image_id):
         for c in range(bia_proxy_im.size_c)
     }
 
-    darray = bia_proxy_im.darray
+    darray = bia_proxy_im.get_dask_array_with_min_dimensions(dims)
 
     channel_arrays = {c: select_region_from_dask_array(darray, region) for c, region in region_per_channel.items()}
 
@@ -147,71 +207,3 @@ def best_efforts_render_image(accession_id, image_id):
     im = render_multiple_2D_arrays(channel_arrays.values(), cmaps)
     
     return im
-
-
-def render(ome_ngff_rep, rview: RenderingView) -> Image:
-    """Given an OME NGFF representation, return a rendering."""
-
-    darray = dask_array_from_ome_ngff_rep(ome_ngff_rep)
-
-    assert len(darray.shape) == 5
-    n_channels = darray.shape[1]
-
-    z = 0
-    t = 0
-    if rview.region:
-        s = np.s_[z, 0, t, rview.region.ymin:rview.region.ymax, rview.region.xmin:rview.region.xmax]
-    else:
-        s = np.s_[z, 0, t, :, :]
-    
-    arrays = [darray[s].compute() for n in range(n_channels)]
-    # arrays = [darray[t, n, z, :, :].compute() for n in range(n_channels)]
-
-    cmaps = [
-        LinearSegmentedColormap.from_list(f'c{c}', (crendering.colormap_start, crendering.colormap_end))
-        for c, crendering in rview.channel_rendering.items()
-    ]
-
-    imarray, _, _, _ = multichannel_to_rgb(arrays, cmaps)
-    im = Image.fromarray(scale_to_uint8(imarray))
-
-    return im
-
-    # if rview.region:
-    #     sections = {
-    #         c: darray[rview.t, c, rview.z, rview.region.ymin:rview.region.ymax, rview.region.xmin:rview.region.xmax].compute()
-    #         for c in rview.channel_rendering.keys()
-    #     }
-    # else:
-    #      sections = {
-    #         c: darray[rview.t, c, rview.z, :, :].compute()
-    #         for c in rview.channel_rendering.keys()
-    #     }       
-
-    # windowed_sections = {}
-
-    # for c, array in sections.items():
-    #     if rview.channel_rendering[c].window_start:
-    #         windowed_sections[c] = apply_window(array, rview.channel_rendering[c].window_start, rview.channel_rendering[c].window_end)
-    #     else:
-    #         windowed_sections[c] = array
-    # # windowed_sections = { c: array for c, array in sections.items()}
-    # # FIXME - put this back!
-    # # windowed_sections = {
-    # #     c: apply_window(array, rview.channel_rendering[c].window_start, rview.channel_rendering[c].window_end)
-    # #     for c, array in sections.items()
-    # # }
-
-    # cmaps = [
-    #     LinearSegmentedColormap.from_list('c', (crendering.colormap_start, crendering.colormap_end))
-    #     for c, crendering in rview.channel_rendering.items()
-    # ]
-
-    # imarray, _, _, _ = multichannel_to_rgb(windowed_sections.values(), cmaps)
-
-    # im = Image.fromarray(scale_to_uint8(imarray))
-    
-    # return im
-
-
-# def render_2D_array(array, )
