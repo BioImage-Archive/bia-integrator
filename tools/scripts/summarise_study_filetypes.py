@@ -73,7 +73,7 @@ def study_filetypes_as_html(ftypes: dict) -> str:
 
     html = "<ul>" + html
     if len(zip_html) > 0:
-        html += f"<li>Zip contents (not included it study totals above):<ul>{zip_html}</ul>"
+        html += f"<li>Zip contents:<ul>{zip_html}</ul>"
     html += "</ul>"
     
     return html
