@@ -59,6 +59,17 @@ class BIAProxyImage(object):
                 break
         
         return da.from_zarr(zarr_array)
+    
+    @property
+    def all_sizes(self):
+        path_keys = [dataset.path for dataset in self.ngff_metadata.multiscales[0].datasets]
+
+        for path_key in path_keys:
+            zarr_array = self.zgroup[path_key]
+            yield zarr_array.shape
+
+
+
 
 
 class ChannelRenderingSettings(BaseModel):
@@ -69,6 +80,25 @@ class ChannelRenderingSettings(BaseModel):
     colormap_end: List[float]
     window_start: Optional[int]
     window_end: Optional[int]
+
+
+class BoundingBox2DRel(BaseModel):
+    """Bounding box within a plane, described in relative coordniates such that
+    1.0 is the full width/height of the plane image."""
+
+    x: float
+    y: float
+    xsize: float
+    ysize: float
+
+
+class BoundingBox2D(BaseModel):
+    """Bounding box within a plane, described in absolute coordinates."""
+
+    x: int
+    y: int
+    xsize: int
+    ysize: int
 
 
 # FIXME - naming
