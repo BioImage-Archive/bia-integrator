@@ -17,6 +17,7 @@ class BIABaseModel(BaseModel):
 
 
 class ChannelRendering(BIABaseModel):
+    channel_label: Optional[str]
     colormap_start: List[float]
     colormap_end: List[float]
     scale_factor: float = 1.0
@@ -47,6 +48,8 @@ class BIAImageRepresentation(BIABaseModel):
 
 
 class BIAFileRepresentation(BIABaseModel):
+    """DEPRECATED (CHECK)"""
+
     accession_id: str
     file_id: str
     uri: Union[str, List[str]]
@@ -70,6 +73,31 @@ class FileReference(BIABaseModel):
     size_in_bytes: Optional[int] # Size of the file
     type: Optional[str] # Type of file reference, by default direct but could be inside an archive
     attributes: Dict = {}
+
+
+class ChannelRenderingSettings(BaseModel):
+    """Rendering settings for a specific channel."""
+
+    label: Optional[str]
+    colormap_start: List[float] = [0., 0., 0.]
+    colormap_end: List[float]
+    window_start: Optional[int]
+    window_end: Optional[int]
+
+
+class RenderingView(BaseModel):
+    """A view of a BIAImage that should provide settings to produce a 2D image.
+    
+    Used for, e.g., generating thumbnails or example images."""
+
+    t: int
+    z: int
+    xmin: int
+    xmax: int
+    ymin: int
+    ymax: int
+
+    channel_rendering: Dict[int, ChannelRenderingSettings]
 
 
 class BIAImage(BIABaseModel):
@@ -158,8 +186,8 @@ class BIAStudy(BIABaseModel):
     # FIXME - this should be a list
     imaging_type: Optional[str]
     attributes: Dict = {}
-    example_image_uri: str = ""
-    example_annotation_uri: str = ""
+    example_image_uri: str = "" # FIXME - this should be an attribute, and better named
+    example_annotation_uri: str = "" # FIXME - this should be an attribute, and better named
 
     file_references: Dict[str, FileReference] = {}
 
