@@ -1,66 +1,34 @@
 import logging
 from typing import List, Set
 
-from .models import StudyAnnotation, ImageAnnotation, StudyTag
+from openapi_client import models as api_models
 from .config import settings
-
+from .study import get_study, update_study
+from .image import get_image
 
 logger = logging.getLogger(__name__)
 
-
-def get_study_annotations(accession_id: str) -> List[StudyAnnotation]:
+# TODO: consider removing these and just fetching the study? Same for other things that are now nested
+def get_study_annotations(study_accession_id: str) -> List[api_models.StudyAnnotation]:
     """Load study annotations from disk and return."""
-
-    study_annotations_dirpath = settings.annotations_dirpath/accession_id
-
-    if study_annotations_dirpath.exists():
-        study_annotations = [
-                StudyAnnotation.parse_file(fp)
-                for fp in study_annotations_dirpath.iterdir()
-                if fp.is_file()
-        ]
-    else:
-        study_annotations = []
-
-    return study_annotations
-
+    study = get_study(study_accession_id)
+    return study.annotations
 
 # FIXME - this is all wrong!
-def get_study_tags(accession_id: str) -> Set[str]:
+def get_study_tags(study_accession_id: str) -> Set[str]:
     """Load study tags from disk and return."""
 
-    tags_dirpath = settings.annotations_dirpath/accession_id/"tags"
-
-    if tags_dirpath.exists():
-        tags_list = [
-                StudyTag.parse_file(fp)
-                for fp in tags_dirpath.iterdir()
-                if fp.is_file()
-        ]
-    else:
-        tags_list = set([])
-
-    return set([tag.value for tag in tags_list]) #type: ignore
+    study = get_study(study_accession_id)
+    return study.tags
 
 
-def get_image_annotations(accession_id: str, image_id: str) -> List[ImageAnnotation]:
+def get_image_annotations(image_uuid: str) -> List[api_models.ImageAnnotation]:
     """Load image annotations from disk and return."""
-
-    image_annotations_dirpath = settings.annotations_dirpath/accession_id/image_id
-    
-    if image_annotations_dirpath.exists():
-        image_annotations = [
-            ImageAnnotation.parse_file(fp)
-            for fp in image_annotations_dirpath.iterdir()
-            if fp.is_file()
-        ]
-    else:
-        image_annotations = []
-
-    return image_annotations
+    image = get_image(image_uuid)
+    return image.annotations
   
 
-def persist_study_annotation(annotation: StudyAnnotation):
+def persist_study_annotation(annotation: api_models.StudyAnnotation):
     """Save the given annotation to disk."""
 
     annotation_dirpath = settings.annotations_dirpath/annotation.accession_id
@@ -73,7 +41,7 @@ def persist_study_annotation(annotation: StudyAnnotation):
         fh.write(annotation.json(indent=2))
 
 
-def persist_image_annotation(annotation: ImageAnnotation):
+def persist_image_annotation(annotation: api_models.ImageAnnotation):
     """Save the given image annotation to disk."""
 
     annotation_dirpath = settings.annotations_dirpath/annotation.accession_id/annotation.image_id
@@ -86,14 +54,9 @@ def persist_image_annotation(annotation: ImageAnnotation):
         fh.write(annotation.json(indent=2))
 
 
-def persist_study_tag(tag: StudyTag):
+def add_study_tag(study_accession: str, tag_name: str, tag_value: str):
     """Save the given study tag to disk."""
 
-    tag_dirpath = settings.annotations_dirpath/tag.accession_id/"tags"
-    tag_dirpath.mkdir(exist_ok=True, parents=True)
-
-    tag_fpath = tag_dirpath/f"{tag.value}.json"
-
-    logger.info(f"Writing tag to {tag_fpath}")
-    with open(tag_fpath, "w") as fh:
-        fh.write(tag.json(indent=2))
+    study = get_study(study_accession)
+    study.tags[tag_name] = tag_value
+    update_study(study)

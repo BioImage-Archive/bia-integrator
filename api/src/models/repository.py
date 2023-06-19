@@ -5,7 +5,7 @@ from ..api import exceptions
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorCollection
 from bson import ObjectId
 import pydantic
-from typing import List, Any, Callable
+from typing import List, Any, Callable, Optional
 from uuid import UUID
 import pymongo
 import json
@@ -52,6 +52,24 @@ async def _get_doc_raw(id : str | ObjectId = None, **kwargs) -> Any:
     doc = await get_db().find_one(kwargs)
     return doc
 
+async def get_object_info(accessions: List[str]) -> api_models.ObjectInfo:
+    query = {
+        'accession_id': {
+            '$in': accessions
+        }
+    }
+    object_info_projection = {
+        'uuid': 1,
+        'model': 1
+    }
+
+    documents = []
+    async for doc in get_db().find(query, object_info_projection):
+        documents.append(api_models.ObjectInfo(**doc))
+    
+    return documents
+
+
 async def get_image(*args, **kwargs) -> models.BIAImage:
     doc = await _get_doc_raw(*args, **kwargs)
     return models.BIAImage(**doc)
@@ -82,12 +100,11 @@ async def _study_child_count(study_uuid: str, child_type_name: str):
     return child_count[0]['n_items'] if len(child_count) else 0
 
 async def study_refresh_counts(study_uuid: str):
-    study = await find_study_by_uuid(uuid=study_uuid)
-
     # count twice instead of groupby to avoid keeping full result in memory
     study.file_references_count = await _study_child_count(study_uuid, models.FileReference.__name__)
     study.images_count = await _study_child_count(study_uuid, models.BIAImage.__name__)
 
+    study = await find_study_by_uuid(uuid=study_uuid)
     study.version += 1
     await update_doc(study)
 
@@ -248,8 +265,22 @@ async def find_study_by_uuid(uuid: str | UUID) -> models.BIAStudy:
 
     return await get_study(uuid=uuid)
 
-async def find_studies_uuid_for_collection(collection: str) -> List[str]:
-    pass
-
 async def persist_images(images: List[models.BIAImage]) -> None:
     pass
+
+async def search_collections(**kwargs) -> List[models.BIACollection]:
+    mongo_query = {
+        'model': {
+            'type_name': 'BIACollection'
+        },
+        **kwargs
+    }
+    
+    collections = []
+    async for collection in get_db().find(mongo_query):
+        collections.append(models.BIACollection(**collection))
+    
+    if not len(collections):
+        raise exceptions.DocumentNotFound(f"Could not find any collections matching {str(kwargs)}")
+    
+    return collections

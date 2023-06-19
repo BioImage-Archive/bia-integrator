@@ -28,10 +28,9 @@ def main(accession_id):
             al_id = "IM"+str(i) 
             alias = BIAImageAlias(
                     accession_id=accession_id,
-                    name=al_id,
-                    image_id=image_id
+                    name=al_id
                 )
-            persist_image_alias(alias)
+            persist_image_alias(image_id, alias)
             i+=1
     else:
         all_image_ids = {fr.imageid: fr for fr in all_aliases}
@@ -43,10 +42,9 @@ def main(accession_id):
                 al_id = "IM" + str(last_alias + 1)
                 alias = BIAImageAlias(
                     accession_id=accession_id,
-                    name=al_id,
-                    image_id=image_id
+                    name=al_id
                     )
-                persist_image_alias(alias)
+                persist_image_alias(image_id, alias)
                 last_alias +=1
 
 

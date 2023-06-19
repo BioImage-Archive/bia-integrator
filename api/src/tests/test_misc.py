@@ -23,3 +23,17 @@ def test_create_collection(api_client: TestClient, uuid: str):
 def test_fetch_study_as_image(api_client: TestClient, existing_study):
     rsp = api_client.get(f"/api/images/{existing_study['uuid']}")
     assert rsp.status_code == 404
+
+def test_fetch_object_info(api_client: TestClient, uuid: str):
+    created_study = make_study(api_client, {'accession_id': uuid})
+
+    #rsp = api_client.get(f"/api/object_info_by_accessions?accessions[]={uuid}")
+    rsp = api_client.get(f"/api/object_info_by_accessions", params={
+        'accessions': [uuid]
+    })
+    assert rsp.status_code == 200
+
+    assert len(rsp.json()) == 1
+
+    accession_info = rsp.json()[0]
+    assert created_study['uuid'] == accession_info['uuid']

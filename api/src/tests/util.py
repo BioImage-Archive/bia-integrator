@@ -59,7 +59,7 @@ def existing_image(api_client: TestClient, existing_study: dict):
 
     return image
 
-def make_study(api_client: TestClient):
+def make_study(api_client: TestClient, study_attributes_override = {}):
     uuid = get_uuid()
 
     study = {
@@ -76,6 +76,8 @@ def make_study(api_client: TestClient):
         "organism": "test",
         "release_date": "test"
     }
+    study |= study_attributes_override
+
     rsp = api_client.post('/api/private/study', json=study)
     assert rsp.status_code == 201, rsp.json()
 
