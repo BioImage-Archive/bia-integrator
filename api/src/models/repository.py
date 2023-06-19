@@ -100,12 +100,11 @@ async def _study_child_count(study_uuid: str, child_type_name: str):
     return child_count[0]['n_items'] if len(child_count) else 0
 
 async def study_refresh_counts(study_uuid: str):
-    study = await find_study_by_uuid(uuid=study_uuid)
-
     # count twice instead of groupby to avoid keeping full result in memory
     study.file_references_count = await _study_child_count(study_uuid, models.FileReference.__name__)
     study.images_count = await _study_child_count(study_uuid, models.BIAImage.__name__)
 
+    study = await find_study_by_uuid(uuid=study_uuid)
     study.version += 1
     await update_doc(study)
 
