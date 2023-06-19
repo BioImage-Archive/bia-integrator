@@ -18,7 +18,7 @@ services:
   bia-integrator-api:
     image: ghcr.io/bioimage-archive/integrator-api:0.1
     container_name: api
-    hostname:  api
+    hostname: api
     ports:
       - 8080:8000
     expose:

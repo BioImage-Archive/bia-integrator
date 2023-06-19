@@ -22,13 +22,15 @@ def update_image(image: api_models.BIAImage):
 def get_images(study_accession_id: str) -> List[api_models.BIAImage]:
     """Return all images stored on disk for the given accession."""
     
-    images_list = settings.api_client.get_study_images_api_study_uuid_images_get(study_accession_id, limit=10**6)
+    study_obj_info = settings.api_client.get_object_info_api_object_info_by_accessions_get([study_accession_id]).pop()
+    images_list = settings.api_client.get_study_images_api_study_uuid_images_get(study_obj_info.uuid, limit=10**6)
 
     return {image.accession_id: image for image in images_list}
 
 def get_image(accession_id: str) -> api_models.BIAImage:
     """Return all images stored on disk for the given accession."""
     
-    image = settings.api_client.get_image_api_images_image_uuid_get(accession_id)
+    image_obj_info = settings.api_client.get_object_info_api_object_info_by_accessions_get([accession_id]).pop()
+    image = settings.api_client.get_image_api_images_image_uuid_get(image_obj_info.uuid)
 
     return image
