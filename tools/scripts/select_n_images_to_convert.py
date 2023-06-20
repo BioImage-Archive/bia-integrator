@@ -19,7 +19,7 @@ def main(accession_id,number_of_images):
     bia_study = load_and_annotate_study(accession_id)
     image_ids = list(bia_study.images.keys())
     n = int(number_of_images)
-    print(','.join(image_ids[:n]))
+    print('\n'.join(image_ids[:n]))
 
 if __name__ == "__main__":
     main()

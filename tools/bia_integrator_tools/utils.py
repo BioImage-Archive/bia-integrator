@@ -62,6 +62,9 @@ def get_fileref_for_png_jpg(image, rep_type):
  
     return None
 
+def get_example_image_uri(accession_id):
+    bia_study = load_and_annotate_study(accession_id)
+    return bia_study.example_image_uri
 
 def get_ome_ngff_rep_by_accession_and_image(accession_id: str, image_id: str) -> Optional[BIAImageRepresentation]:
     bia_study = load_and_annotate_study(accession_id)

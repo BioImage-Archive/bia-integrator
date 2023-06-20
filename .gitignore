@@ -4,3 +4,5 @@ static-sitegen/.DS_Store
 poetry.lock
 tools/.DS_Store
 .DS_Store
+tools/snakemake/test_snakefile
+tools/scripts/select_n_images_to_convert.py
