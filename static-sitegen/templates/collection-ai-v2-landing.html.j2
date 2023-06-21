@@ -55,11 +55,17 @@
         {% if study.attributes.get('one_summary') %}
         <p class="vf-card__text">{{ study.attributes["one_summary"] }}</p>
         {% else %}
-        <p class="vf-card__text">{{ study.imaging_type }}</p>
+        <p class="vf-card__text">{{ study.imaging_type }}
         <br>
         {{ study.organism }}
+        </p>
         {% endif %}
-        <br><br>
+        <br>
+        {{ study.attributes["no_of_images"] }} images
+        {% if study.attributes.get('no_of_annotations') %}
+        , {{ study.attributes["no_of_annotations"] }} annotations
+        {% endif %}
+        <p>
         <b>Tags: </b>
         {% for value in study.tags %}
         {% if value.startswith('AI') %}
