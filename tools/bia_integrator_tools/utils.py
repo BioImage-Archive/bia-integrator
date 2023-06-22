@@ -22,18 +22,6 @@ def get_annotation_files_by_accession(accession_id):
         if "source image" in fileref.attributes
     ]
 
-def get_non_annotation_images_by_accession(accession_id):
-    """Generate list of images in study that are not annotations of another image."""
-    
-    bia_study = load_and_annotate_study(accession_id)
-    fileref_name = [
-        fileref.name for fileref in bia_study.file_references.values()
-        if "source image" not in fileref.attributes
-    ]    
-    return [
-        image for image in bia_study.images.values() 
-        if image.name in fileref_name
-    ]
 
 def get_image_rep_by_type(accession_id, image_id, rep_type):
 
@@ -51,16 +39,6 @@ def get_ome_ngff_rep(image):
         if rep.type == "ome_ngff":
             return rep
 
-def get_fileref_for_png_jpg(image, rep_type):
-    ext_list = ['.jpeg','.jpg','.png']
-    ext = pathlib.PurePath(image.name).suffix
-    if ext in ext_list:
-        for rep in image.representations:
-            if rep.type == rep_type:
-                fileref_id = rep.attributes["fileref_ids"][0]
-                return fileref_id
- 
-    return None
 
 def get_example_image_uri(accession_id):
     bia_study = load_and_annotate_study(accession_id)
@@ -73,12 +51,6 @@ def get_ome_ngff_rep_by_accession_and_image(accession_id: str, image_id: str) ->
     ome_ngff_rep = get_ome_ngff_rep(image)
     
     return ome_ngff_rep
-
-def get_unconverted_rep_by_accession_and_image(accession_id: str, image_id: str) -> Optional[BIAImageRepresentation]:
-    
-    im_rep = get_image_rep_by_type(accession_id,image_id,"unconverted")
-    
-    return im_rep
 
 
 def set_rendering_info_for_ome_ngff_rep(ome_ngff_rep):

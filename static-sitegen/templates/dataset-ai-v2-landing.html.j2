@@ -105,11 +105,9 @@
       In a nutshell
       </h2>
 <ul class="vf-list">
-        {% if annotation_names|length > 0 %}
-        <li>{{ non_annotation_names|length }} images</li>
-        <li>{{ annotation_names|length }} annotations</li>
-        {% else %}
         <li>{{ study.images|length }} images</li>
+        {% if annotation_names|length > 0 %}
+        <li>{{ annotation_names|length }} annotations</li>
         {% endif %}
         {% if study.archive_files|length > 0 %}
         <li>{{ study.archive_files|length }} archive files</li>

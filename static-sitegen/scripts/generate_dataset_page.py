@@ -48,7 +48,6 @@ def generate_dataset_page_html(accession_id, template_fname: str):
     ann_files = get_annotation_files_in_study(bia_study)
     annotation_files = add_annotation_download_size_attributes(ann_files)
 
-    non_annotation_images = get_non_annotation_images_in_study(bia_study)
 
     an_aliases_by_name = {
         annfile.name: annfile.attributes['alias'] 
@@ -62,20 +61,15 @@ def generate_dataset_page_html(accession_id, template_fname: str):
     
 
     images_with_ome_ngff = []
-    images_unconverted = []
     image_landing_uris = {}
     image_thumbnails = {}
     image_download_uris = {}
     annotation_download_uris = {}
     for image in bia_study.images.values():
-#    for image in non_annotation_images:
         for representation in image.representations:
-            if representation.type == "ome_ngff": # or representation.type == "unconverted":
+            if representation.type == "ome_ngff": 
                 images_with_ome_ngff.append(image)
                 image_landing_uris[image.id] = f"{accession_id}/{image.id}.html"
-            #if representation.type == "unconverted":
-            #    images_unconverted.append(image)
-            #    image_landing_uris[image.id] = f"{accession_id}/{image.id}.html"
             if representation.type == "thumbnail":
                 image_thumbnails[image.id] = representation.uri
             if representation.type == "fire_object":
@@ -95,7 +89,6 @@ def generate_dataset_page_html(accession_id, template_fname: str):
             image_download_uris=image_download_uris,
             annotation_names=annotation_files,
             annotation_download_uris=annotation_download_uris,
-            non_annotation_names = non_annotation_images,
             authors=author_names,
             image_ann_aliases=ann_aliases_for_images
     )

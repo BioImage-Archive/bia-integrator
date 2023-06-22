@@ -34,7 +34,7 @@ def generate_collection_page_html(collection: BIACollection) -> str:
     # Calculate the number of images and number of annotations in a study
     # Put it as an attribute of the study to pass it to collection template
     for bia_study in bia_studies:
-        len_images = len(get_non_annotation_images_in_study(bia_study)) 
+        len_images = len(bia_study.images.keys()) 
         bia_study.attributes['no_of_images'] = len_images
         ann_files = get_annotation_files_in_study(bia_study)
         if ann_files:

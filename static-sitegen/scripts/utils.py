@@ -29,13 +29,9 @@ def get_annotation_files_in_study(bia_study):
 def get_non_annotation_images_in_study(bia_study):
     """Generate list of images in study that are not annotations of another image."""
 
-    fileref_name = [
-        fileref.name for fileref in bia_study.file_references.values()
-        if "source image" not in fileref.attributes
-    ]    
     return [
-        image for image in bia_study.images.values() 
-        if image.name in fileref_name
+        image for image in bia_study.images.values()
+        if "source image" not in image.attributes
     ]
 
 def add_annotation_download_size_attributes(annotation_files):
