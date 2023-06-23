@@ -92,7 +92,6 @@ class AnnotationState(str, Enum):
 
 class Annotation(BIABaseModel):
     author_email: str = Field()
-    accession_id: str = Field()
     key: str = Field()
     value: str = Field()
     state: AnnotationState = Field()
@@ -152,7 +151,6 @@ class BIAImageAlias(BIABaseModel):
     the full accession ID / UUID pair"""
 
     name: str = Field()
-    accession_id: str = Field()
     
 class BIAImageRepresentation(BIABaseModel):
     """A particular representation of a BIAImage. Examples:
@@ -162,7 +160,6 @@ class BIAImageRepresentation(BIABaseModel):
     * An S3 accessible OME-Zarr.
     * A thumbnail."""
     
-    accession_id: str = Field()
     size: int = Field()
     uri: List[str] = Field(default=[])
     type: Optional[str] = Field(default=None)
@@ -192,7 +189,6 @@ class BIAImage(BIABaseModel, DocumentMixin):
     original_relpath: str = Field() # originally Path
     name: Optional[str] = Field(default=None)
 
-    accession_id: str = Field()
     dimensions: Optional[str] = Field(default=None)
     representations: List[BIAImageRepresentation] = Field(default=[])
     attributes: Dict = Field(default={})

@@ -20,7 +20,7 @@ DEFAULT_DATASET_TEMPLATE = "dataset-landing.html.j2"
 
 def generate_and_write_image_pages(accession_id, output_base_dirpath):
     bia_study = load_and_annotate_study(accession_id)
-    for image in bia_study.images.values():
+    for image in bia_study.images:
         for representation in image.representations:
             if representation.type == "ome_ngff":
                 logger.info(f"Generating image page for {accession_id}:{image.id}")

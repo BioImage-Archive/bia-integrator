@@ -13,7 +13,7 @@ logger = logging.getLogger(__file__)
 def get_all_zarr_representations(bia_study):
 
     zarr_reps = []
-    for image in bia_study.images.values():
+    for image in bia_study.images:
         for rep in image.representations:
             if rep.type == "ome_ngff":
                 zarr_reps.append(rep)

@@ -10,7 +10,6 @@ def test_create_images(api_client: TestClient, existing_study: dict):
         {
             "uuid": uuid,
             "version": 0,
-            "accession_id": f"test-{uuid}",
             "study_uuid": existing_study['uuid'],
             "name": f"image_{uuid}",
             "original_relpath": f"/home/test/{uuid}",
@@ -34,7 +33,6 @@ def test_create_images_multiple_errors(api_client: TestClient, existing_study: d
         {
             "uuid": uuid,
             "version": 0,
-            "accession_id": f"test-{uuid}",
             "study_uuid": existing_study['uuid'],
             "name": f"image_{uuid}",
             "original_relpath": f"/home/test/{uuid}",
@@ -116,7 +114,6 @@ def test_add_image_representation(api_client: TestClient, existing_image: dict):
     Adding new representations works as a separate operation"""
 
     representation = {
-        "accession_id": "test-representation",
         "size": 1
     }
     rsp = api_client.post(f"/api/private/images/{existing_image['uuid']}/representations/single", json=representation)

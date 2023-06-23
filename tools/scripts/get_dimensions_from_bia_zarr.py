@@ -39,12 +39,12 @@ def zarr_rep_to_dimension_annotation(zarr_rep: BIAImageRepresentation) -> ImageA
 
 @click.command()
 @click.argument("accession_id")
-@click.argument("image_id")
-def main(accession_id, image_id):
+@click.argument("image_uuid")
+def main(accession_id, image_uuid):
 
     logging.basicConfig(level=logging.INFO)
 
-    image = get_image(accession_id, image_id)
+    image = get_image(accession_id, image_uuid)
     reps_by_type = {
         rep.type: rep
         for rep in image.representations

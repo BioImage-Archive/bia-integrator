@@ -9,8 +9,23 @@ from uuid import UUID
 router = APIRouter(prefix="/api")
 
 @router.get("/object_info_by_accessions")
-async def get_object_info(accessions: List[str] = Query()) -> List[api_models.ObjectInfo]:
-    return await repository.get_object_info(accessions)
+async def get_object_info_by_accession(accessions: List[str] = Query()) -> List[api_models.ObjectInfo]:
+    query = {
+        'accession_id': {
+            '$in': accessions
+        }
+    }
+    return await repository.get_object_info(query)
+
+@router.get("/object_info_by_aliases")
+async def get_object_info_by_alias(aliases: List[str] = Query()) -> List[api_models.ObjectInfo]:
+    query = {
+        'image_aliases.name': {
+            '$in': aliases
+        }
+    }
+
+    return await repository.get_object_info(query)
 
 @router.get("/{study_uuid}")
 async def get_study(study_uuid: str) -> db_models.BIAStudy:

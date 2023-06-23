@@ -10,7 +10,6 @@ def test_create_file_references(api_client: TestClient, existing_study: dict):
         {
             "uuid": uuid,
             "version": 0,
-            "accession_id": f"test-{uuid}",
             "type": "file",
             "study_uuid": existing_study['uuid'],
             "name": "test",
@@ -34,7 +33,6 @@ def test_create_file_references_multiple_errors(api_client: TestClient, existing
         {
             "uuid": uuid,
             "version": 0,
-            "accession_id": f"test-{uuid}",
             "type": "file",
             "study_uuid": existing_study['uuid'],
             "name": "test",

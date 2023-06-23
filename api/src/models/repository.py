@@ -52,12 +52,7 @@ async def _get_doc_raw(id : str | ObjectId = None, **kwargs) -> Any:
     doc = await get_db().find_one(kwargs)
     return doc
 
-async def get_object_info(accessions: List[str]) -> api_models.ObjectInfo:
-    query = {
-        'accession_id': {
-            '$in': accessions
-        }
-    }
+async def get_object_info(query: dict) -> api_models.ObjectInfo:
     object_info_projection = {
         'uuid': 1,
         'model': 1
@@ -101,10 +96,13 @@ async def _study_child_count(study_uuid: str, child_type_name: str):
 
 async def study_refresh_counts(study_uuid: str):
     # count twice instead of groupby to avoid keeping full result in memory
-    study.file_references_count = await _study_child_count(study_uuid, models.FileReference.__name__)
-    study.images_count = await _study_child_count(study_uuid, models.BIAImage.__name__)
+    file_references_count = await _study_child_count(study_uuid, models.FileReference.__name__)
+    images_count = await _study_child_count(study_uuid, models.BIAImage.__name__)
 
     study = await find_study_by_uuid(uuid=study_uuid)
+    study.file_references_count = file_references_count
+    study.images_count = images_count
+
     study.version += 1
     await update_doc(study)
 
