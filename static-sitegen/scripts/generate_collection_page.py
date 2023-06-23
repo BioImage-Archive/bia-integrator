@@ -7,6 +7,8 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape # type: igno
 from bia_integrator_core.collection import get_collection
 from bia_integrator_core.models import BIACollection
 from bia_integrator_core.interface import load_and_annotate_study
+from utils import ( get_annotation_files_in_study, 
+                   get_non_annotation_images_in_study)
 
 
 logger = logging.getLogger(os.path.basename(__file__))
@@ -28,6 +30,15 @@ def generate_collection_page_html(collection: BIACollection) -> str:
     page_suffix = collection.attributes.get("page-suffix", ".html")
     logger.info(f"Loading template {template_fname}")
     logger.info(f"Using dataset page suffix: {page_suffix}")
+
+    # Calculate the number of images and number of annotations in a study
+    # Put it as an attribute of the study to pass it to collection template
+    for bia_study in bia_studies:
+        len_images = len(bia_study.images.keys()) 
+        bia_study.attributes['no_of_images'] = len_images
+        ann_files = get_annotation_files_in_study(bia_study)
+        if ann_files:
+            bia_study.attributes['no_of_annotations'] = len(ann_files)
 
     template = env.get_template(template_fname)
 

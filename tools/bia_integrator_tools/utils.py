@@ -1,6 +1,7 @@
 import uuid
 import logging
 import hashlib
+import pathlib
 from typing import Optional
 
 from ome_zarr.io import parse_url
@@ -11,6 +12,15 @@ from bia_integrator_core.models import RenderingInfo, ChannelRendering
 from bia_integrator_core.interface import persist_image_representation, persist_image
 
 logger = logging.getLogger(__name__)
+
+def get_annotation_files_by_accession(accession_id):
+    """Generate list of files in study that are annotations of another image."""
+    
+    bia_study = load_and_annotate_study(accession_id)
+    return [
+        fileref for fileref in bia_study.file_references.values()
+        if "source image" in fileref.attributes
+    ]
 
 
 def get_image_rep_by_type(accession_id, image_id, rep_type):
@@ -29,6 +39,10 @@ def get_ome_ngff_rep(image):
         if rep.type == "ome_ngff":
             return rep
 
+
+def get_example_image_uri(accession_id):
+    bia_study = load_and_annotate_study(accession_id)
+    return bia_study.example_image_uri
 
 def get_ome_ngff_rep_by_accession_and_image(accession_id: str, image_id: str) -> Optional[BIAImageRepresentation]:
     bia_study = load_and_annotate_study(accession_id)
