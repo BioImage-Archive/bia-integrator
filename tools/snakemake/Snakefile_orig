@@ -1,17 +1,12 @@
 """
     To run this script the following are needed:
-    1. export accession id of submission e.g. 
-        export ACCNO="S-BIAD679"
+    1. export accession id of submission e.g. export ACCNO="S-BIAD679"
     2. env variables for convert_to_zarr
         export bioformats2raw_java_home=/home/kola/miniconda3/envs/bia/
         export bioformats2raw_bin=/home/kola/miniconda3/envs/bia/bin/bioformats2raw
         export AWS_PROFILE=embassy && export AWS_SHARED_CREDENTIALS_FILE=/home/kola/.aws/embassy_s3_credentials && export AWS_CONFIG_FILE=/home/kola/.aws/embassy_s3_config
-        export BIA_INTEGRATOR_TOOLS_SCRIPT_DIR="/homes/aybuke/code/bia-integrator/tools/scripts/"
 
-    # Activate virtual environment containing snakemake tools
-        source ${BIA_INTEGRATOR_TOOLS_SCRIPT_DIR}../venv/bin/activate
-    
-    run command example at the snakemake directory under the BIA_INTEGRATOR_TOOLS_SCRIPT_DIR:
+    run command example:
         snakemake --cores 3 work_dir/final_output_${ACCNO}.log
 
 """
@@ -61,7 +56,6 @@ rule index_zips_in_study:
             
             # Repeat for directories (assume no '.' in name)
             for ZIP_FILEREF_ID in `biaint filerefs list $ACCNO | grep -v ',.*\..*,' | cut -d',' -f1`; do python ../scripts/index_zip_in_study.py $ACCNO $ZIP_FILEREF_ID 2>&1 | tee -a {output}; done
-            touch {output}
 
         """
 
@@ -71,7 +65,7 @@ rule summarise_study_filetypes:
     output:
         work_dir + "/summarise_study_filetypes.log"
     shell:
-        "{command_prefix} python {script_dir}/summarise_study_filetypes.py $ACCNO 2>&1 | tee {output}"
+        "python ../scripts/summarise_study_filetypes.py $ACCNO 2>&1 | tee {output}"
 
 rule auto_create_image_representations:
     input:
@@ -82,45 +76,10 @@ rule auto_create_image_representations:
         singularity_container_path
     shell:
         "{command_prefix} python {script_dir}/assign_all_easily_convertible_images_from_filerefs.py $ACCNO 2>&1 | tee {output}"
-
-# Set source image for file references which are AI annotations and has a source image.
-# This is the way to set which files are annotations in a dataset. 
-# The script only works for a limited number of accessions; you need to modify the script 
-# for other accessions.
-rule auto_create_source_image_attributes:
-    input:
-        work_dir + "/image_representations.log"
-    output:
-        work_dir + "/source_image_attributes.log"
-    singularity:
-        singularity_container_path
-    shell:
-        "{command_prefix} python {script_dir}/assign_source_image_for_annotations.py $ACCNO 2>&1 | tee {output}"
-
-rule auto_create_image_aliases:
-    input:
-        work_dir + "/source_image_attributes.log"
-    output:
-        work_dir + "/image_aliases.log"
-    singularity:
-        singularity_container_path
-    shell:
-        "{command_prefix} python {script_dir}/assign_alias_images.py $ACCNO 2>&1 | tee {output}"
-
-# Creates aliases for AI annotation files (i.e. aliases for segmentation files)  
-rule auto_create_annotation_aliases:
-    input:
-        work_dir + "/image_aliases.log"
-    output:
-        work_dir + "/annotation_aliases.log"
-    singularity:
-        singularity_container_path
-    shell:
-        "{command_prefix} python {script_dir}/assign_alias_to_annotations.py $ACCNO 2>&1 | tee {output}"
-
+    
 rule generate_image_size_annotations:
     input:
-        work_dir + "/annotation_aliases.log"
+        work_dir + "/image_representations.log"
     output:
         work_dir + "/generate_image_size_annotations.log"
     singularity:
@@ -129,8 +88,6 @@ rule generate_image_size_annotations:
         "{command_prefix} python {script_dir}/generate_image_download_size_annotations.py $ACCNO 2>&1 | tee {output}"
 
 # Get image_representations dynamically
-# It only does it for the first 6. Change the first line of the shell code if 
-# you want any other number or all of them to be converted in the next rule.
 checkpoint get_image_reps_to_convert:
     input: work_dir + "/generate_image_size_annotations.log"
     output:
