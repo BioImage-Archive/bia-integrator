@@ -33,7 +33,7 @@ class CoordinateTransformation(BaseModel):
 
 class DataSet(BaseModel):
     path: str
-    coordinateTransformations: List[CoordinateTransformation]
+    coordinateTransformations: Optional[List[CoordinateTransformation]]
 
 class MSMetadata(BaseModel):
     method: str
@@ -47,7 +47,7 @@ class Axis(BaseModel):
 class MultiScaleImage(BaseModel):
     datasets: List[DataSet]
     metadata: MSMetadata
-    axes: List[Axis]
+    axes: Optional[List[Axis]]
     version: str
 
 class ZMeta(BaseModel):
