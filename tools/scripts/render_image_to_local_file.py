@@ -1,3 +1,6 @@
+"""Given an accession identifier and image identifier, load the image and
+render to a 2D image, which will be saved to the given local file."""
+
 import typer
 
 from bia_integrator_tools.utils import get_ome_ngff_rep_by_accession_and_image
@@ -14,9 +17,6 @@ def main(accession_id: str, image_id: str, output_fname: str):
     im = generate_padded_thumbnail_from_ngff_uri(ome_ngff_rep.uri)
 
     im.save(output_fname)
-
-
-
 
 
 if __name__ == "__main__":
