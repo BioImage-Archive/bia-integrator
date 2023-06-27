@@ -193,7 +193,7 @@ class BIAImage(BIABaseModel, DocumentMixin):
     representations: List[BIAImageRepresentation] = Field(default=[])
     attributes: Dict = Field(default={})
     annotations: List[ImageAnnotation] = Field(default=[])
-    image_aliases: List[BIAImageAlias] = Field(default=[])
+    alias: Optional[BIAImageAlias] = Field(default=None)
 
     @property
     def ome_metadata(self) -> Optional[BIAOmeMetadata]:

@@ -37,3 +37,33 @@ def test_fetch_object_info(api_client: TestClient, uuid: str):
 
     accession_info = rsp.json()[0]
     assert created_study['uuid'] == accession_info['uuid']
+
+def test_fetch_image_by_alias(api_client: TestClient, existing_study, uuid: str):
+    images = make_images(api_client, existing_study, 5, image_template = {
+        "uuid": None,
+        "version": 0,
+        "study_uuid": existing_study['uuid'],
+        "name": f"image_name_value",
+        "original_relpath": f"/home/test/image_path_value",
+        "attributes": {
+            "k": "v"
+        },
+        "annotations": [],
+        "dimensions": None,
+        "alias": {
+            "name": f"{uuid}_test_1"
+        },
+        "representations": []
+    })
+
+    images[2]["alias"] = {
+        "name": f"{uuid}_test_2"
+    }
+
+    rsp = api_client.get(f"/api/images_by_aliases", params={
+        'aliases': [f"{uuid}_test_1", f"{uuid}_test_2"]
+    })
+    assert rsp.status_code == 200
+    assert len(rsp.json()) == 5
+
+# should image aliases be unique?

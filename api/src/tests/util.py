@@ -94,7 +94,7 @@ def make_images(api_client: TestClient, existing_study: dict, n: int, image_temp
             },
             "annotations": [],
             "dimensions": None,
-            "image_aliases": [],
+            "alias": None,  
             "representations": []
         }
     images = []

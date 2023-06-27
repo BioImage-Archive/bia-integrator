@@ -17,15 +17,15 @@ async def get_object_info_by_accession(accessions: List[str] = Query()) -> List[
     }
     return await repository.get_object_info(query)
 
-@router.get("/object_info_by_aliases")
-async def get_object_info_by_alias(aliases: List[str] = Query()) -> List[api_models.ObjectInfo]:
+@router.get("/images_by_aliases")
+async def get_images_by_alias(aliases: List[str] = Query()) -> List[db_models.BIAImage]:
     query = {
-        'image_aliases.name': {
+        'alias.name': {
             '$in': aliases
         }
     }
 
-    return await repository.get_object_info(query)
+    return await repository.get_images(query)
 
 @router.get("/{study_uuid}")
 async def get_study(study_uuid: str) -> db_models.BIAStudy:

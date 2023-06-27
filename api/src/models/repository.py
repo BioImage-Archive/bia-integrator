@@ -52,6 +52,9 @@ async def _get_doc_raw(id : str | ObjectId = None, **kwargs) -> Any:
     doc = await get_db().find_one(kwargs)
     return doc
 
+async def _get_docs_raw(query) -> Any:
+    return await get_db().find(query)
+
 async def get_object_info(query: dict) -> api_models.ObjectInfo:
     object_info_projection = {
         'uuid': 1,
@@ -68,6 +71,15 @@ async def get_object_info(query: dict) -> api_models.ObjectInfo:
 async def get_image(*args, **kwargs) -> models.BIAImage:
     doc = await _get_doc_raw(*args, **kwargs)
     return models.BIAImage(**doc)
+
+async def get_images(query) -> models.BIAImage:
+    images = []
+    
+    async for doc in get_db().find(query):
+        images.append(models.BIAImage(**doc))
+    
+    return images
+
 
 async def get_file_reference(*args, **kwargs) -> models.FileReference:
     doc = await _get_doc_raw(*args, **kwargs)

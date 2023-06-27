@@ -14,6 +14,8 @@ use bia_integrator
 db.bia_integrator.createIndex({'uuid': 1}, {unique: true})
 ```
 
+ima
+
 viewing old versions of documents/document changes
 
 ```
