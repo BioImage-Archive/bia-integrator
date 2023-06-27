@@ -151,7 +151,7 @@ rule convert_to_zarr_and_upload:
         im_ref = work_dir + "/im_reps/{i,[a-z|\d|-]+}"
     output:
         im_ref = work_dir + "/im_reps_output/{i}"
-        flag = work_ + "im_reps_output/{i}.done"
+        flag = touch(work_ + "im_reps_output/{i}.done")
     singularity:
         singularity_container_path
     shell:
