@@ -13,11 +13,11 @@ Method | HTTP request | Description
 [**get_image_api_file_references_file_reference_uuid_get**](DefaultApi.md#get_image_api_file_references_file_reference_uuid_get) | **GET** /api/file_references/{file_reference_uuid} | Get Image
 [**get_image_api_images_image_uuid_get**](DefaultApi.md#get_image_api_images_image_uuid_get) | **GET** /api/images/{image_uuid} | Get Image
 [**get_image_ome_metadata_api_images_image_uuid_ome_metadata_get**](DefaultApi.md#get_image_ome_metadata_api_images_image_uuid_ome_metadata_get) | **GET** /api/images/{image_uuid}/ome_metadata | Get Image Ome Metadata
-[**get_images_by_alias_api_images_by_aliases_get**](DefaultApi.md#get_images_by_alias_api_images_by_aliases_get) | **GET** /api/images_by_aliases | Get Images By Alias
 [**get_object_info_by_accession_api_object_info_by_accessions_get**](DefaultApi.md#get_object_info_by_accession_api_object_info_by_accessions_get) | **GET** /api/object_info_by_accessions | Get Object Info By Accession
 [**get_study_api_study_uuid_get**](DefaultApi.md#get_study_api_study_uuid_get) | **GET** /api/{study_uuid} | Get Study
 [**get_study_file_references_api_study_uuid_file_references_get**](DefaultApi.md#get_study_file_references_api_study_uuid_file_references_get) | **GET** /api/{study_uuid}/file_references | Get Study File References
 [**get_study_images_api_study_uuid_images_get**](DefaultApi.md#get_study_images_api_study_uuid_images_get) | **GET** /api/{study_uuid}/images | Get Study Images
+[**get_study_images_by_alias_api_study_study_accession_images_by_aliases_get**](DefaultApi.md#get_study_images_by_alias_api_study_study_accession_images_by_aliases_get) | **GET** /api/study/{study_accession}/images_by_aliases | Get Study Images By Alias
 [**health_check_admin_health_check_get**](DefaultApi.md#health_check_admin_health_check_get) | **GET** /admin/health-check | Health Check
 [**search_collections_api_collections_get**](DefaultApi.md#search_collections_api_collections_get) | **GET** /api/collections | Search Collections
 [**search_images_api_search_images_get**](DefaultApi.md#search_images_api_search_images_get) | **GET** /api/search/images | Search Images
@@ -613,71 +613,6 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **get_images_by_alias_api_images_by_aliases_get**
-> List[BIAImage] get_images_by_alias_api_images_by_aliases_get(aliases)
-
-Get Images By Alias
-
-### Example
-
-```python
-import time
-import os
-import openapi_client
-from openapi_client.models.bia_image import BIAImage
-from openapi_client.rest import ApiException
-from pprint import pprint
-
-# Defining the host is optional and defaults to http://localhost
-# See configuration.py for a list of all supported configuration parameters.
-configuration = openapi_client.Configuration(
-    host = "http://localhost"
-)
-
-
-# Enter a context with an instance of the API client
-with openapi_client.ApiClient(configuration) as api_client:
-    # Create an instance of the API class
-    api_instance = openapi_client.DefaultApi(api_client)
-    aliases = ['aliases_example'] # List[str] | 
-
-    try:
-        # Get Images By Alias
-        api_response = api_instance.get_images_by_alias_api_images_by_aliases_get(aliases)
-        print("The response of DefaultApi->get_images_by_alias_api_images_by_aliases_get:\n")
-        pprint(api_response)
-    except Exception as e:
-        print("Exception when calling DefaultApi->get_images_by_alias_api_images_by_aliases_get: %s\n" % e)
-```
-
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **aliases** | [**List[str]**](str.md)|  | 
-
-### Return type
-
-[**List[BIAImage]**](BIAImage.md)
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: application/json
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-**200** | Successful Response |  -  |
-**422** | Validation Error |  -  |
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
 # **get_object_info_by_accession_api_object_info_by_accessions_get**
 > List[ObjectInfo] get_object_info_by_accession_api_object_info_by_accessions_get(accessions)
 
@@ -924,6 +859,73 @@ Name | Type | Description  | Notes
  **study_uuid** | **str**|  | 
  **start_uuid** | **str**|  | [optional] 
  **limit** | **int**|  | [optional] [default to 10]
+
+### Return type
+
+[**List[BIAImage]**](BIAImage.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **get_study_images_by_alias_api_study_study_accession_images_by_aliases_get**
+> List[BIAImage] get_study_images_by_alias_api_study_study_accession_images_by_aliases_get(study_accession, aliases)
+
+Get Study Images By Alias
+
+### Example
+
+```python
+import time
+import os
+import openapi_client
+from openapi_client.models.bia_image import BIAImage
+from openapi_client.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = openapi_client.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with openapi_client.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = openapi_client.DefaultApi(api_client)
+    study_accession = 'study_accession_example' # str | 
+    aliases = ['aliases_example'] # List[str] | 
+
+    try:
+        # Get Study Images By Alias
+        api_response = api_instance.get_study_images_by_alias_api_study_study_accession_images_by_aliases_get(study_accession, aliases)
+        print("The response of DefaultApi->get_study_images_by_alias_api_study_study_accession_images_by_aliases_get:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling DefaultApi->get_study_images_by_alias_api_study_study_accession_images_by_aliases_get: %s\n" % e)
+```
+
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **study_accession** | **str**|  | 
+ **aliases** | [**List[str]**](str.md)|  | 
 
 ### Return type
 

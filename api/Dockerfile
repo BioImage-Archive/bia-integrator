@@ -16,6 +16,6 @@ WORKDIR /integrator-api
 RUN curl -sSL https://install.python-poetry.org | python3 -
 ENV PATH=/root/.local/bin:$PATH
 RUN poetry install
- 
-ENTRYPOINT ["/root/.local/bin/poetry"] 
+
+ENTRYPOINT ["/root/.local/bin/poetry"]
 CMD ["run", "python", "-m", "src.app"]
