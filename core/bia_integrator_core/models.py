@@ -17,6 +17,7 @@ class BIABaseModel(BaseModel):
 
 
 class ChannelRendering(BIABaseModel):
+    channel_label: Optional[str]
     colormap_start: List[float]
     colormap_end: List[float]
     scale_factor: float = 1.0
@@ -47,6 +48,8 @@ class BIAImageRepresentation(BIABaseModel):
 
 
 class BIAFileRepresentation(BIABaseModel):
+    """DEPRECATED (CHECK)"""
+
     accession_id: str
     file_id: str
     uri: Union[str, List[str]]
@@ -158,8 +161,8 @@ class BIAStudy(BIABaseModel):
     # FIXME - this should be a list
     imaging_type: Optional[str]
     attributes: Dict = {}
-    example_image_uri: str = ""
-    example_annotation_uri: str = ""
+    example_image_uri: str = "" # FIXME - this should be an attribute, and better named
+    example_annotation_uri: str = "" # FIXME - this should be an attribute, and better named
 
     file_references: Dict[str, FileReference] = {}
 
