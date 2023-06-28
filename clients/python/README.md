@@ -94,7 +94,8 @@ Class | Method | HTTP request | Description
 *DefaultApi* | [**get_image_api_file_references_file_reference_uuid_get**](docs/DefaultApi.md#get_image_api_file_references_file_reference_uuid_get) | **GET** /api/file_references/{file_reference_uuid} | Get Image
 *DefaultApi* | [**get_image_api_images_image_uuid_get**](docs/DefaultApi.md#get_image_api_images_image_uuid_get) | **GET** /api/images/{image_uuid} | Get Image
 *DefaultApi* | [**get_image_ome_metadata_api_images_image_uuid_ome_metadata_get**](docs/DefaultApi.md#get_image_ome_metadata_api_images_image_uuid_ome_metadata_get) | **GET** /api/images/{image_uuid}/ome_metadata | Get Image Ome Metadata
-*DefaultApi* | [**get_object_info_api_object_info_by_accessions_get**](docs/DefaultApi.md#get_object_info_api_object_info_by_accessions_get) | **GET** /api/object_info_by_accessions | Get Object Info
+*DefaultApi* | [**get_images_by_alias_api_images_by_aliases_get**](docs/DefaultApi.md#get_images_by_alias_api_images_by_aliases_get) | **GET** /api/images_by_aliases | Get Images By Alias
+*DefaultApi* | [**get_object_info_by_accession_api_object_info_by_accessions_get**](docs/DefaultApi.md#get_object_info_by_accession_api_object_info_by_accessions_get) | **GET** /api/object_info_by_accessions | Get Object Info By Accession
 *DefaultApi* | [**get_study_api_study_uuid_get**](docs/DefaultApi.md#get_study_api_study_uuid_get) | **GET** /api/{study_uuid} | Get Study
 *DefaultApi* | [**get_study_file_references_api_study_uuid_file_references_get**](docs/DefaultApi.md#get_study_file_references_api_study_uuid_file_references_get) | **GET** /api/{study_uuid}/file_references | Get Study File References
 *DefaultApi* | [**get_study_images_api_study_uuid_images_get**](docs/DefaultApi.md#get_study_images_api_study_uuid_images_get) | **GET** /api/{study_uuid}/images | Get Study Images

@@ -27,11 +27,10 @@ class ImageAnnotation(BaseModel):
     ImageAnnotation
     """
     author_email: StrictStr = Field(...)
-    accession_id: StrictStr = Field(...)
     key: StrictStr = Field(...)
     value: StrictStr = Field(...)
     state: AnnotationState = Field(...)
-    __properties = ["author_email", "accession_id", "key", "value", "state"]
+    __properties = ["author_email", "key", "value", "state"]
 
     class Config:
         """Pydantic configuration"""
@@ -70,7 +69,6 @@ class ImageAnnotation(BaseModel):
 
         _obj = ImageAnnotation.parse_obj({
             "author_email": obj.get("author_email"),
-            "accession_id": obj.get("accession_id"),
             "key": obj.get("key"),
             "value": obj.get("value"),
             "state": obj.get("state")

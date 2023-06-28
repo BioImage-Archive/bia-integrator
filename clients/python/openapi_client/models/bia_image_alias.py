@@ -26,8 +26,7 @@ class BIAImageAlias(BaseModel):
     An alias for an image - a more convenient way to refer to the image than the full accession ID / UUID pair
     """
     name: StrictStr = Field(...)
-    accession_id: StrictStr = Field(...)
-    __properties = ["name", "accession_id"]
+    __properties = ["name"]
 
     class Config:
         """Pydantic configuration"""
@@ -65,8 +64,7 @@ class BIAImageAlias(BaseModel):
             return BIAImageAlias.parse_obj(obj)
 
         _obj = BIAImageAlias.parse_obj({
-            "name": obj.get("name"),
-            "accession_id": obj.get("accession_id")
+            "name": obj.get("name")
         })
         return _obj
 

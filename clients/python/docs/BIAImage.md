@@ -12,12 +12,11 @@ Name | Type | Description | Notes
 **study_uuid** | **str** |  | 
 **original_relpath** | **str** |  | 
 **name** | **str** |  | [optional] 
-**accession_id** | **str** |  | 
 **dimensions** | **str** |  | [optional] 
 **representations** | [**List[BIAImageRepresentation]**](BIAImageRepresentation.md) |  | [optional] [default to []]
 **attributes** | **object** |  | [optional] 
 **annotations** | [**List[ImageAnnotation]**](ImageAnnotation.md) |  | [optional] [default to []]
-**image_aliases** | [**List[BIAImageAlias]**](BIAImageAlias.md) |  | [optional] [default to []]
+**alias** | [**BIAImageAlias**](BIAImageAlias.md) |  | [optional] 
 
 ## Example
 

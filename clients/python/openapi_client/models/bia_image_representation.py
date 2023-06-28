@@ -26,14 +26,13 @@ class BIAImageRepresentation(BaseModel):
     """
     A particular representation of a BIAImage. Examples:  * A single HTTP accessible file. * Multiple HTTP accessible files, representing different channels, planes and time points. * An S3 accessible OME-Zarr. * A thumbnail.
     """
-    accession_id: StrictStr = Field(...)
     size: StrictInt = Field(...)
     uri: Optional[conlist(StrictStr)] = None
     type: Optional[StrictStr] = None
     dimensions: Optional[StrictStr] = None
     attributes: Optional[Dict[str, Any]] = None
     rendering: Optional[RenderingInfo] = None
-    __properties = ["accession_id", "size", "uri", "type", "dimensions", "attributes", "rendering"]
+    __properties = ["size", "uri", "type", "dimensions", "attributes", "rendering"]
 
     class Config:
         """Pydantic configuration"""
@@ -74,7 +73,6 @@ class BIAImageRepresentation(BaseModel):
             return BIAImageRepresentation.parse_obj(obj)
 
         _obj = BIAImageRepresentation.parse_obj({
-            "accession_id": obj.get("accession_id"),
             "size": obj.get("size"),
             "uri": obj.get("uri"),
             "type": obj.get("type"),

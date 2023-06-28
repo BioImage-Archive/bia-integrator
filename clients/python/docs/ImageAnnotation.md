@@ -5,7 +5,6 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **author_email** | **str** |  | 
-**accession_id** | **str** |  | 
 **key** | **str** |  | 
 **value** | **str** |  | 
 **state** | [**AnnotationState**](AnnotationState.md) |  | 

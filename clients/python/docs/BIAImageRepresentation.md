@@ -5,7 +5,6 @@ A particular representation of a BIAImage. Examples:  * A single HTTP accessible
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**accession_id** | **str** |  | 
 **size** | **int** |  | 
 **uri** | **List[str]** |  | [optional] [default to []]
 **type** | **str** |  | [optional] 

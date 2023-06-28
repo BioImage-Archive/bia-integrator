@@ -13,7 +13,8 @@ Method | HTTP request | Description
 [**get_image_api_file_references_file_reference_uuid_get**](DefaultApi.md#get_image_api_file_references_file_reference_uuid_get) | **GET** /api/file_references/{file_reference_uuid} | Get Image
 [**get_image_api_images_image_uuid_get**](DefaultApi.md#get_image_api_images_image_uuid_get) | **GET** /api/images/{image_uuid} | Get Image
 [**get_image_ome_metadata_api_images_image_uuid_ome_metadata_get**](DefaultApi.md#get_image_ome_metadata_api_images_image_uuid_ome_metadata_get) | **GET** /api/images/{image_uuid}/ome_metadata | Get Image Ome Metadata
-[**get_object_info_api_object_info_by_accessions_get**](DefaultApi.md#get_object_info_api_object_info_by_accessions_get) | **GET** /api/object_info_by_accessions | Get Object Info
+[**get_images_by_alias_api_images_by_aliases_get**](DefaultApi.md#get_images_by_alias_api_images_by_aliases_get) | **GET** /api/images_by_aliases | Get Images By Alias
+[**get_object_info_by_accession_api_object_info_by_accessions_get**](DefaultApi.md#get_object_info_by_accession_api_object_info_by_accessions_get) | **GET** /api/object_info_by_accessions | Get Object Info By Accession
 [**get_study_api_study_uuid_get**](DefaultApi.md#get_study_api_study_uuid_get) | **GET** /api/{study_uuid} | Get Study
 [**get_study_file_references_api_study_uuid_file_references_get**](DefaultApi.md#get_study_file_references_api_study_uuid_file_references_get) | **GET** /api/{study_uuid}/file_references | Get Study File References
 [**get_study_images_api_study_uuid_images_get**](DefaultApi.md#get_study_images_api_study_uuid_images_get) | **GET** /api/{study_uuid}/images | Get Study Images
@@ -612,10 +613,75 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **get_object_info_api_object_info_by_accessions_get**
-> List[ObjectInfo] get_object_info_api_object_info_by_accessions_get(accessions)
+# **get_images_by_alias_api_images_by_aliases_get**
+> List[BIAImage] get_images_by_alias_api_images_by_aliases_get(aliases)
 
-Get Object Info
+Get Images By Alias
+
+### Example
+
+```python
+import time
+import os
+import openapi_client
+from openapi_client.models.bia_image import BIAImage
+from openapi_client.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = openapi_client.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with openapi_client.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = openapi_client.DefaultApi(api_client)
+    aliases = ['aliases_example'] # List[str] | 
+
+    try:
+        # Get Images By Alias
+        api_response = api_instance.get_images_by_alias_api_images_by_aliases_get(aliases)
+        print("The response of DefaultApi->get_images_by_alias_api_images_by_aliases_get:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling DefaultApi->get_images_by_alias_api_images_by_aliases_get: %s\n" % e)
+```
+
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **aliases** | [**List[str]**](str.md)|  | 
+
+### Return type
+
+[**List[BIAImage]**](BIAImage.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **get_object_info_by_accession_api_object_info_by_accessions_get**
+> List[ObjectInfo] get_object_info_by_accession_api_object_info_by_accessions_get(accessions)
+
+Get Object Info By Accession
 
 ### Example
 
@@ -641,12 +707,12 @@ with openapi_client.ApiClient(configuration) as api_client:
     accessions = ['accessions_example'] # List[str] | 
 
     try:
-        # Get Object Info
-        api_response = api_instance.get_object_info_api_object_info_by_accessions_get(accessions)
-        print("The response of DefaultApi->get_object_info_api_object_info_by_accessions_get:\n")
+        # Get Object Info By Accession
+        api_response = api_instance.get_object_info_by_accession_api_object_info_by_accessions_get(accessions)
+        print("The response of DefaultApi->get_object_info_by_accession_api_object_info_by_accessions_get:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling DefaultApi->get_object_info_api_object_info_by_accessions_get: %s\n" % e)
+        print("Exception when calling DefaultApi->get_object_info_by_accession_api_object_info_by_accessions_get: %s\n" % e)
 ```
 
 

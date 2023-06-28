@@ -1339,13 +1339,152 @@ class DefaultApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def get_object_info_api_object_info_by_accessions_get(self, accessions : conlist(StrictStr), **kwargs) -> List[ObjectInfo]:  # noqa: E501
-        """Get Object Info  # noqa: E501
+    def get_images_by_alias_api_images_by_aliases_get(self, aliases : conlist(StrictStr), **kwargs) -> List[BIAImage]:  # noqa: E501
+        """Get Images By Alias  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.get_object_info_api_object_info_by_accessions_get(accessions, async_req=True)
+        >>> thread = api.get_images_by_alias_api_images_by_aliases_get(aliases, async_req=True)
+        >>> result = thread.get()
+
+        :param aliases: (required)
+        :type aliases: List[str]
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :return: Returns the result object.
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: List[BIAImage]
+        """
+        kwargs['_return_http_data_only'] = True
+        if '_preload_content' in kwargs:
+            raise ValueError("Error! Please call the get_images_by_alias_api_images_by_aliases_get_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
+        return self.get_images_by_alias_api_images_by_aliases_get_with_http_info(aliases, **kwargs)  # noqa: E501
+
+    @validate_arguments
+    def get_images_by_alias_api_images_by_aliases_get_with_http_info(self, aliases : conlist(StrictStr), **kwargs) -> ApiResponse:  # noqa: E501
+        """Get Images By Alias  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.get_images_by_alias_api_images_by_aliases_get_with_http_info(aliases, async_req=True)
+        >>> result = thread.get()
+
+        :param aliases: (required)
+        :type aliases: List[str]
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _preload_content: if False, the ApiResponse.data will
+                                 be set to none and raw_data will store the 
+                                 HTTP response body without reading/decoding.
+                                 Default is True.
+        :type _preload_content: bool, optional
+        :param _return_http_data_only: response data instead of ApiResponse
+                                       object with status code, headers, etc
+        :type _return_http_data_only: bool, optional
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the authentication
+                              in the spec for a single request.
+        :type _request_auth: dict, optional
+        :type _content_type: string, optional: force content-type for the request
+        :return: Returns the result object.
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: tuple(List[BIAImage], status_code(int), headers(HTTPHeaderDict))
+        """
+
+        _params = locals()
+
+        _all_params = [
+            'aliases'
+        ]
+        _all_params.extend(
+            [
+                'async_req',
+                '_return_http_data_only',
+                '_preload_content',
+                '_request_timeout',
+                '_request_auth',
+                '_content_type',
+                '_headers'
+            ]
+        )
+
+        # validate the arguments
+        for _key, _val in _params['kwargs'].items():
+            if _key not in _all_params:
+                raise ApiTypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method get_images_by_alias_api_images_by_aliases_get" % _key
+                )
+            _params[_key] = _val
+        del _params['kwargs']
+
+        _collection_formats = {}
+
+        # process the path parameters
+        _path_params = {}
+
+        # process the query parameters
+        _query_params = []
+        if _params.get('aliases') is not None:  # noqa: E501
+            _query_params.append(('aliases', _params['aliases']))
+            _collection_formats['aliases'] = 'multi'
+
+        # process the header parameters
+        _header_params = dict(_params.get('_headers', {}))
+        # process the form parameters
+        _form_params = []
+        _files = {}
+        # process the body parameter
+        _body_params = None
+        # set the HTTP header `Accept`
+        _header_params['Accept'] = self.api_client.select_header_accept(
+            ['application/json'])  # noqa: E501
+
+        # authentication setting
+        _auth_settings = []  # noqa: E501
+
+        _response_types_map = {
+            '200': "List[BIAImage]",
+            '422': "HTTPValidationError",
+        }
+
+        return self.api_client.call_api(
+            '/api/images_by_aliases', 'GET',
+            _path_params,
+            _query_params,
+            _header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            response_types_map=_response_types_map,
+            auth_settings=_auth_settings,
+            async_req=_params.get('async_req'),
+            _return_http_data_only=_params.get('_return_http_data_only'),  # noqa: E501
+            _preload_content=_params.get('_preload_content', True),
+            _request_timeout=_params.get('_request_timeout'),
+            collection_formats=_collection_formats,
+            _request_auth=_params.get('_request_auth'))
+
+    @validate_arguments
+    def get_object_info_by_accession_api_object_info_by_accessions_get(self, accessions : conlist(StrictStr), **kwargs) -> List[ObjectInfo]:  # noqa: E501
+        """Get Object Info By Accession  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.get_object_info_by_accession_api_object_info_by_accessions_get(accessions, async_req=True)
         >>> result = thread.get()
 
         :param accessions: (required)
@@ -1363,17 +1502,17 @@ class DefaultApi(object):
         """
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
-            raise ValueError("Error! Please call the get_object_info_api_object_info_by_accessions_get_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
-        return self.get_object_info_api_object_info_by_accessions_get_with_http_info(accessions, **kwargs)  # noqa: E501
+            raise ValueError("Error! Please call the get_object_info_by_accession_api_object_info_by_accessions_get_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
+        return self.get_object_info_by_accession_api_object_info_by_accessions_get_with_http_info(accessions, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def get_object_info_api_object_info_by_accessions_get_with_http_info(self, accessions : conlist(StrictStr), **kwargs) -> ApiResponse:  # noqa: E501
-        """Get Object Info  # noqa: E501
+    def get_object_info_by_accession_api_object_info_by_accessions_get_with_http_info(self, accessions : conlist(StrictStr), **kwargs) -> ApiResponse:  # noqa: E501
+        """Get Object Info By Accession  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.get_object_info_api_object_info_by_accessions_get_with_http_info(accessions, async_req=True)
+        >>> thread = api.get_object_info_by_accession_api_object_info_by_accessions_get_with_http_info(accessions, async_req=True)
         >>> result = thread.get()
 
         :param accessions: (required)
@@ -1425,7 +1564,7 @@ class DefaultApi(object):
             if _key not in _all_params:
                 raise ApiTypeError(
                     "Got an unexpected keyword argument '%s'"
-                    " to method get_object_info_api_object_info_by_accessions_get" % _key
+                    " to method get_object_info_by_accession_api_object_info_by_accessions_get" % _key
                 )
             _params[_key] = _val
         del _params['kwargs']

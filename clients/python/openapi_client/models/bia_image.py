@@ -36,13 +36,12 @@ class BIAImage(BaseModel):
     study_uuid: StrictStr = Field(...)
     original_relpath: StrictStr = Field(...)
     name: Optional[StrictStr] = None
-    accession_id: StrictStr = Field(...)
     dimensions: Optional[StrictStr] = None
     representations: Optional[conlist(BIAImageRepresentation)] = None
     attributes: Optional[Dict[str, Any]] = None
     annotations: Optional[conlist(ImageAnnotation)] = None
-    image_aliases: Optional[conlist(BIAImageAlias)] = None
-    __properties = ["_id", "uuid", "version", "model", "study_uuid", "original_relpath", "name", "accession_id", "dimensions", "representations", "attributes", "annotations", "image_aliases"]
+    alias: Optional[BIAImageAlias] = None
+    __properties = ["_id", "uuid", "version", "model", "study_uuid", "original_relpath", "name", "dimensions", "representations", "attributes", "annotations", "alias"]
 
     class Config:
         """Pydantic configuration"""
@@ -85,13 +84,9 @@ class BIAImage(BaseModel):
                 if _item:
                     _items.append(_item.to_dict())
             _dict['annotations'] = _items
-        # override the default output from pydantic by calling `to_dict()` of each item in image_aliases (list)
-        _items = []
-        if self.image_aliases:
-            for _item in self.image_aliases:
-                if _item:
-                    _items.append(_item.to_dict())
-            _dict['image_aliases'] = _items
+        # override the default output from pydantic by calling `to_dict()` of alias
+        if self.alias:
+            _dict['alias'] = self.alias.to_dict()
         return _dict
 
     @classmethod
@@ -111,12 +106,11 @@ class BIAImage(BaseModel):
             "study_uuid": obj.get("study_uuid"),
             "original_relpath": obj.get("original_relpath"),
             "name": obj.get("name"),
-            "accession_id": obj.get("accession_id"),
             "dimensions": obj.get("dimensions"),
             "representations": [BIAImageRepresentation.from_dict(_item) for _item in obj.get("representations")] if obj.get("representations") is not None else None,
             "attributes": obj.get("attributes"),
             "annotations": [ImageAnnotation.from_dict(_item) for _item in obj.get("annotations")] if obj.get("annotations") is not None else None,
-            "image_aliases": [BIAImageAlias.from_dict(_item) for _item in obj.get("image_aliases")] if obj.get("image_aliases") is not None else None
+            "alias": BIAImageAlias.from_dict(obj.get("alias")) if obj.get("alias") is not None else None
         })
         return _obj
 

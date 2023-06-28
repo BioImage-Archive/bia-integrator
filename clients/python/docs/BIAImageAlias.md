@@ -6,7 +6,6 @@ An alias for an image - a more convenient way to refer to the image than the ful
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **name** | **str** |  | 
-**accession_id** | **str** |  | 
 
 ## Example
 
