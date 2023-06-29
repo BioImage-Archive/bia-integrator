@@ -4,8 +4,6 @@ import click
 
 from bia_integrator_core.integrator import load_and_annotate_study
 
-from bia_integrator_tools.utils import set_rendering_info_for_ome_ngff_rep
-
 from generate_thumbnail import generate_and_persist_thumbnail_from_ngff_rep
 
 
@@ -25,7 +23,6 @@ def main(accession_id):
         for rep in image.representations:
             if rep.type == "ome_ngff":
                 try:
-                    set_rendering_info_for_ome_ngff_rep(rep)
                     generate_and_persist_thumbnail_from_ngff_rep(rep, dimensions)
                 except AttributeError:
                     pass
