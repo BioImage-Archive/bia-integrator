@@ -205,9 +205,9 @@
                         <tbody>
                             {% for image in images %}
                             <tr>
-                                <td>{{ image_names[image.id] }}</td>
+                                <td>{{ image_names[image.uuid] }}</td>
                                 <td>
-                                    <img class="vf-figure__image" src={{ image_thumbnails[image.id] }}>
+                                    <img class="vf-figure__image" src={{ image_thumbnails[image.uuid] }}>
                                 </td>
                                 <td>{{ image.original_relpath }}</td>
                                 {% if image.dimensions %}
@@ -218,8 +218,8 @@
                                     <td> None </td>
                                 {% endif %}
                                 <td>
-                                    <a href={{ landing_uris[image.id] }}><button class="vf-button vf-button--sm vf-button--icon">view</button><a>
-                                    <a href={{ image_download_uris[image.id] }}><button class="vf-button vf-button--sm vf-button--icon">download</button></a>
+                                    <a href={{ landing_uris[image.uuid] }}><button class="vf-button vf-button--sm vf-button--icon">view</button><a>
+                                    <a href={{ image_download_uris[image.uuid] }}><button class="vf-button vf-button--sm vf-button--icon">download</button></a>
                                 </td>                            
                             </tr>
                             {% endfor %}
@@ -309,13 +309,13 @@
                         </thead>
                         <tbody>
                             <!-- {% for image in study.images.values() %}
-                                <td>{{ image_names[image.id] }}</td>
+                                <td>{{ image_names[image.uuid] }}</td>
                                 <td>{{ image.original_relpath }}</td>
                                 <td><a href={{ image_download_uris[image.id] }}>Download</a></td>
                             </tr>
                             {% endfor %}-->
                             {% for image in non_annotation_names %}
-                                <td>{{ image_names[image.id] }}</td>
+                                <td>{{ image_names[image.uuid] }}</td>
                                 <td>{{ image.original_relpath }}</td>
                                 <td><a href={{ image_download_uris[image.id] }}>Download</a></td>
                             </tr>

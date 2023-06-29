@@ -6,7 +6,6 @@ import click
 from jinja2 import Environment, FileSystemLoader, select_autoescape # type: ignore
 
 from bia_integrator_core.integrator import load_and_annotate_study
-from bia_integrator_core.interface import get_aliases
 from utils import get_annotation_images_in_study, get_non_annotation_images_in_study
 
 
@@ -32,24 +31,18 @@ def generate_dataset_page_html(accession_id, template_fname: str):
         for author in bia_study.authors
     ])
 
-    aliases = get_aliases(accession_id)
-    aliases_by_id = {
-        alias.image_id: alias.name
-        for alias in aliases
-    }
     image_names = {
-        image_id: aliases_by_id.get(image_id, image_id)
-        for image_id in bia_study.images
+        img.uuid: img.alias.name if img.alias else img.uuid
+        for img in bia_study.images
     }
-
 
     annotation_images = get_annotation_images_in_study(bia_study)
     non_annotation_images = get_non_annotation_images_in_study(bia_study)
 
-    ann_names = {}
-    for image in annotation_images:
-        ann_names[image.id]=aliases_by_id.get(image.id, image.id)
-    
+    ann_names = {
+        img.uuid: img.alias.name if img.alias else img.uuid
+        for img in annotation_images
+    }
 
     images_with_ome_ngff = []
     image_landing_uris = {}
@@ -61,16 +54,16 @@ def generate_dataset_page_html(accession_id, template_fname: str):
         for representation in image.representations:
             if representation.type == "ome_ngff":
                 images_with_ome_ngff.append(image)
-                image_landing_uris[image.id] = f"{accession_id}/{image.id}.html"
+                image_landing_uris[image.uuid] = f"{accession_id}/{image.uuid}.html"
             if representation.type == "thumbnail":
-                image_thumbnails[image.id] = representation.uri
+                image_thumbnails[image.uuid] = representation.uri
             if representation.type == "fire_object":
-                image_download_uris[image.id] = urllib.parse.quote(representation.uri, safe=":/")
+                image_download_uris[image.uuid] = urllib.parse.quote(representation.uri, safe=":/")
 
     for image in annotation_images:
         for representation in image.representations:
             if representation.type == "fire_object":
-                annotation_download_uris[image.id] = urllib.parse.quote(representation.uri, safe=":/")
+                annotation_download_uris[image.uuid] = urllib.parse.quote(representation.uri, safe=":/")
 
     template = env.get_template(template_fname)
 

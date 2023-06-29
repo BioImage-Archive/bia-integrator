@@ -2,15 +2,20 @@ import logging
 
 from .config import settings
 from openapi_client import models as api_models
+from typing import Optional
 
 
 logger = logging.getLogger(__name__)
 
-def get_study(accession_id: str) -> api_models.BIAStudy:
-    """Return the study object for the given accession identifier."""
+def get_study(accession_id: Optional[str] = None, study_uuid: Optional[str] = None) -> api_models.BIAStudy:
+    """Providing an uuid overrides accession_id, as an alternative to get_study_by_* functions"""
 
-    study_obj_info = settings.api_client.get_object_info_api_object_info_by_accessions_get([accession_id])
-    bia_study = settings.api_client.get_study_api_study_uuid_get(study_obj_info.uuid)
+    if not study_uuid:
+        assert accession_id
+
+        study_obj_info = settings.api_client.get_object_info_api_object_info_by_accessions_get([accession_id])
+        study_uuid = study_obj_info.uuid
+    bia_study = settings.api_client.get_study_api_study_uuid_get(study_uuid)
 
     return bia_study
 

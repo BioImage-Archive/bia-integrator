@@ -4,9 +4,9 @@ import logging
 from openapi_client import models as api_models
 from bia_integrator_core.config import settings
 from bia_integrator_core.integrator import load_and_annotate_study
+from bia_integrator_core.image import get_images
 from bia_integrator_core.interface import (
-    persist_image_alias,
-    get_aliases
+    persist_image_alias
 )
 import re
 
@@ -22,12 +22,12 @@ def main(study_accession_id):
 
     bia_study = load_and_annotate_study(study_accession_id)
     
+    study_images = get_images(study_accession_id)
+    aliases = sorted([img.alias.name for img in study_images if img.alias])
     current_alias = 1
-    all_aliases = get_aliases(study_accession_id)
-    if all_aliases:
-        # assumes no gaps or if any ignores them and starts from the last alias
-        all_image_ids = sorted([alias.name for alias in all_aliases])
-        last_alias_name = all_image_ids[-1]
+    if len(aliases):
+        # assumes no gaps or if any ignores them and starts from the first unassigned alias
+        last_alias_name = aliases[-1]
         current_alias = int(re.search(r'IM(.*)', last_alias_name))+1
     
     for image_id in bia_study.images:

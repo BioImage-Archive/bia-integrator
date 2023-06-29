@@ -116,7 +116,7 @@
                         <tbody>
                             {% for image in images %}
                             <tr>
-                                <td>{{ image_names[image.id] }}</td>
+                                <td>{{ image_names[image.uuid] }}</td>
                                 <td>
                                     <img class="vf-figure__image" src={{ image_thumbnails[image.id] }}>
                                 </td>
@@ -134,8 +134,8 @@
                                     <td>Unavailable</td>
                                 {% endif %}
                                 <td>
-                                    <a href={{ landing_uris[image.id] }}><button class="vf-button vf-button--sm vf-button--icon">view</button><a>
-                                    <a href={{ image_download_uris[image.id] }}><button class="vf-button vf-button--sm vf-button--icon">download</button></a>
+                                    <a href={{ landing_uris[image.uuid] }}><button class="vf-button vf-button--sm vf-button--icon">view</button><a>
+                                    <a href={{ image_download_uris[image.uuid] }}><button class="vf-button vf-button--sm vf-button--icon">download</button></a>
                                 </td>                            
                             </tr>
                             {% endfor %}
@@ -158,21 +158,21 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for image in study.images.values() %}
-                                <td>{{ image_names[image.id] }}</td>
+                            {% for image in study.images %}
+                                <td>{{ image_names[image.uuid] }}</td>
                                 <td>{{ image.original_relpath }}</td>
                                 {% if "download_size" in image.attributes %}
                                     <td>{{ image.attributes["download_size"] }}</td>
                                 {% else %}
                                     <td>Unavailable</td>
                                 {% endif %}
-                                <td><a href={{ image_download_uris[image.id] }}>Download</a></td>
+                                <td><a href={{ image_download_uris[image.uuid] }}>Download</a></td>
                             </tr>
                             {# <tr class="vf-table__row">
                                 <td class="vf-table__cell">{{ image.id }}</td>
                                 <td class="vf-table__cell">{{ image.original_relpath }}</td>
                                 <td class="vf-table__cell--actions">
-                                    <a href={{ landing_uris[image.id] }}><button class="vf-button vf-button--sm vf-button--icon">view</button><a>
+                                    <a href={{ landing_uris[image.uuid] }}><button class="vf-button vf-button--sm vf-button--icon">view</button><a>
                                     <button class="vf-button vf-button--sm vf-button--icon">download</button>
                                 </td>                            
                             </tr> #}

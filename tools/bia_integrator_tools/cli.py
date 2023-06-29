@@ -29,7 +29,6 @@ from bia_integrator_core.interface import (
     get_study_tags,
     persist_study_tag,
     get_collection,
-    get_aliases,
     persist_image_alias
 )
 from bia_integrator_core.integrator import load_and_annotate_study
@@ -70,20 +69,28 @@ def add_alias(accession_id: str, image_id: str, name: str):
 
 
 @aliases_app.command("list")
-def list_aliases(accession_id: str, image_id: str):
-    aliases = get_aliases(accession_id)
+def list_aliases(image_uuid: str):
+    """
+    The version of this function accepting (study_accession, image_id) was deprecated
+    image_id replaced with image_uuid and study_accession not needed anymore since image_uuid is sufficient to address a single image  
+    """
+    image = get_image(image_uuid)
+    image_alias = image.alias.name if image.alias else "NO_ALIAS"
 
-    for alias in aliases:
-        if image_id == alias.image_id:
-            print(alias.name, alias.accession_id, alias.image_id)
-
+    print(image_alias)
 
 @aliases_app.command("list-for-study")
 def list_aliases_for_study(accession_id: str):
-    aliases = get_aliases(accession_id)
+    study_images = get_images_for_study(accession_id)
 
-    for alias in aliases:
-        typer.echo(f"{alias.name}, {alias.accession_id}, {alias.image_id}")
+    if len(study_images):
+        study = get_study(accession_id)
+        for image in study_images:
+            image_alias = image.alias.name if image.alias else "NO_ALIAS"
+
+            typer.echo(f"{image_alias}, {study.accession_id}, {image.uuid}")
+    else:
+        print(f"Study {accession_id} has no images")
 
 
 # From https://stackoverflow.com/questions/1094841/get-human-readable-version-of-file-size

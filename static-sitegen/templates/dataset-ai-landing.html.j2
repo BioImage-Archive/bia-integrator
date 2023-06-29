@@ -118,9 +118,9 @@
                         <tbody>
                             {% for image in images %}
                             <tr>
-                                <td>{{ image.id }}</td>
+                                <td>{{ image.uuid }}</td>
                                 <td>
-                                    <img class="vf-figure__image" src={{ image_thumbnails[image.id] }}>
+                                    <img class="vf-figure__image" src={{ image_thumbnails[image.uuid] }}>
                                 </td>
                                 <td>{{ image.original_relpath }}</td>
                                 {% if image.dimensions %}
@@ -131,8 +131,8 @@
                                     <td> None </td>
                                 {% endif %}
                                 <td>
-                                    <a href={{ landing_uris[image.id] }}><button class="vf-button vf-button--sm vf-button--icon">view</button><a>
-                                    <a href={{ image_download_uris[image.id] }}><button class="vf-button vf-button--sm vf-button--icon">download</button></a>
+                                    <a href={{ landing_uris[image.uuid] }}><button class="vf-button vf-button--sm vf-button--icon">view</button><a>
+                                    <a href={{ image_download_uris[image.uuid] }}><button class="vf-button vf-button--sm vf-button--icon">download</button></a>
                                 </td>                            
                             </tr>
                             {% endfor %}
@@ -154,17 +154,17 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for image in study.images.values() %}
+                            {% for image in study.images %}
                             <tr>
-                                <td>{{ image.id }}</td>
+                                <td>{{ image.uuid }}</td>
                                 <td>{{ image.original_relpath }}</td>
-                                <td><a href={{ image_download_uris[image.id] }}>Download</a></td>
+                                <td><a href={{ image_download_uris[image.uuid] }}>Download</a></td>
                             </tr>
                             {# <tr class="vf-table__row">
-                                <td class="vf-table__cell">{{ image.id }}</td>
+                                <td class="vf-table__cell">{{ image.uuid }}</td>
                                 <td class="vf-table__cell">{{ image.original_relpath }}</td>
                                 <td class="vf-table__cell--actions">
-                                    <a href={{ landing_uris[image.id] }}><button class="vf-button vf-button--sm vf-button--icon">view</button><a>
+                                    <a href={{ landing_uris[image.uuid] }}><button class="vf-button vf-button--sm vf-button--icon">view</button><a>
                                     <button class="vf-button vf-button--sm vf-button--icon">download</button>
                                 </td>                            
                             </tr> #}
