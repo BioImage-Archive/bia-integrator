@@ -3,7 +3,6 @@ import uuid
 import logging
 import hashlib
 import requests
-from pathlib import Path
 from typing import List 
 
 import click
@@ -25,15 +24,6 @@ from bia_integrator_tools.biostudies import (
 
 logger = logging.getLogger(__file__)
 
-# Get known image extensions
-known_image_extensions = []
-resource_names = [
-    "bioformats_curated_other_file_formats.txt",
-    "bioformats_curated_single_file_formats.txt",
-]
-for resource_name in resource_names:
-    resource_path = Path(__file__).parent.parent / "resources" / resource_name
-    known_image_extensions.extend([r for r in resource_path.read_text().split("\n") if len(r) > 0])
 
 def bst_file_to_file_reference(accession_id: str, bst_file: File, file_uri_template: str) -> FileReference:
 
@@ -41,25 +31,10 @@ def bst_file_to_file_reference(accession_id: str, bst_file: File, file_uri_templ
     fileref_name = str(bst_file.path)
     fileref_attributes = attributes_to_dict(bst_file.attributes)
 
-    # To deal with inconsistent URIs associated with directories,
-    # If a URI does not end with an extension of a known file format
-    # Check that the URI exists. If it does not exist try appending '.zip'
-    
-    # TODO: Check with MH if changing name/uri breaks anything downstream
-    # as uuid computation includes names/uris
-    fileref_uri = file_uri(accession_id, bst_file, file_uri_template=file_uri_template)
-    suffix = Path(fileref_uri).suffix
-    if suffix not in known_image_extensions:
-        zip_uri = fileref_uri + ".zip"
-        response = requests.head(zip_uri)
-        if response.status_code == 200:
-            fileref_uri = zip_uri
-            fileref_name += ".zip"
-
     fileref = FileReference(
         id=fileref_id,
         name=fileref_name,
-        uri=fileref_uri,
+        uri=file_uri(accession_id, bst_file, file_uri_template=file_uri_template),
         size_in_bytes=bst_file.size,
         attributes=fileref_attributes
     )
