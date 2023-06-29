@@ -45,7 +45,7 @@ def get_image_download_size(accession_id: str) -> dict:
                 if n_fileref_ids > 1:
                     warning_str = [
                         f"image_representation in {bia_image.accession_id} "
-                        f"with ID: {bia_image.id} has {n_fileref_ids} file "
+                        f"with ID: {bia_image.uuid} has {n_fileref_ids} file "
                         "references. However, only the first one is being "
                         "used to compute download size"
                     ]
@@ -54,7 +54,7 @@ def get_image_download_size(accession_id: str) -> dict:
                     download_size = f"In {zip_sizes[image_representation.uri]} zip"
                 else:
                     download_size = sizeof_fmt(bia_study.file_references[fileref_ids[0]].size_in_bytes)
-            download_sizes[bia_image.id] = download_size
+            download_sizes[bia_image.uuid] = download_size
                 
     return download_sizes
 

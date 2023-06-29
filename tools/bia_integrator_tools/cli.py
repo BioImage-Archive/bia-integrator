@@ -127,7 +127,7 @@ def images_list(accession_id: str):
 
     for image in images:
         rep_rep = ','.join(rep.type for rep in image.representations)
-        typer.echo(f"{image.id} {image.original_relpath} {rep_rep}")
+        typer.echo(f"{image.uuid} {image.original_relpath} {rep_rep}")
 
 
 @images_app.command("show")
@@ -135,7 +135,7 @@ def images_show(accession_id: str, image_id: str):
     study = load_and_annotate_study(accession_id)
     image = study.images[image_id]
 
-    typer.echo(image.id)
+    typer.echo(image.uuid)
     typer.echo(image.original_relpath)
     typer.echo(f"Dimensions: {image.dimensions}")
     typer.echo("Attributes:")

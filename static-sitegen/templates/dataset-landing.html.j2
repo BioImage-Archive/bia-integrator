@@ -118,7 +118,7 @@
                             <tr>
                                 <td>{{ image_names[image.uuid] }}</td>
                                 <td>
-                                    <img class="vf-figure__image" src={{ image_thumbnails[image.id] }}>
+                                    <img class="vf-figure__image" src={{ image_thumbnails[image.uuid] }}>
                                 </td>
                                 <td>{{ image.original_relpath }}</td>
                                 {% if image.dimensions %}
@@ -169,7 +169,7 @@
                                 <td><a href={{ image_download_uris[image.uuid] }}>Download</a></td>
                             </tr>
                             {# <tr class="vf-table__row">
-                                <td class="vf-table__cell">{{ image.id }}</td>
+                                <td class="vf-table__cell">{{ image.uuid }}</td>
                                 <td class="vf-table__cell">{{ image.original_relpath }}</td>
                                 <td class="vf-table__cell--actions">
                                     <a href={{ landing_uris[image.uuid] }}><button class="vf-button vf-button--sm vf-button--icon">view</button><a>

@@ -258,12 +258,12 @@
                         </thead>
                         <tbody>
                             {% for image in annotation_names %}
-                                <td>{{ ann_names[image.id] }}</td>
+                                <td>{{ ann_names[image.uuid] }}</td>
                                 <td>{{ image.original_relpath }}</td>
                                  {% if image.attributes.get('source image') %}
                                 <td>{{ image.attributes['source image'] }}</td>
                                 {% endif %}
-                                <td><a href={{ annotation_download_uris[image.id] }}>Download</a></td>
+                                <td><a href={{ annotation_download_uris[image.uuid] }}>Download</a></td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -311,13 +311,13 @@
                             <!-- {% for image in study.images.values() %}
                                 <td>{{ image_names[image.uuid] }}</td>
                                 <td>{{ image.original_relpath }}</td>
-                                <td><a href={{ image_download_uris[image.id] }}>Download</a></td>
+                                <td><a href={{ image_download_uris[image.uuid] }}>Download</a></td>
                             </tr>
                             {% endfor %}-->
                             {% for image in non_annotation_names %}
                                 <td>{{ image_names[image.uuid] }}</td>
                                 <td>{{ image.original_relpath }}</td>
-                                <td><a href={{ image_download_uris[image.id] }}>Download</a></td>
+                                <td><a href={{ image_download_uris[image.uuid] }}>Download</a></td>
                             </tr>
                             {% endfor %}
                         </tbody>
