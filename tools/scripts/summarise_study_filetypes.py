@@ -1,3 +1,10 @@
+"""Script and helper functions to save annotations of filetype info
+
+The main function saves annotations of information about the types of files
+in the study referenced by the accession_id supplied. This includes the
+content of zip files.
+"""
+
 import sys
 from pathlib import Path
 import logging
@@ -12,11 +19,15 @@ from bia_integrator_core.interface import persist_study_annotation
 logger = logging.getLogger(__file__)
 
 def _get_extension(p):
+    """Return the standardized file extension for a given file path."""
+
+    ext_map = {
+        ".jpeg": ".jpg",
+        ".tiff": ".tif",
+    }
     ext = Path(p).suffix.lower()
-    if ext == ".jpeg":
-        return ".jpg"
-    elif ext == ".tiff":
-        return ".tif"
+    if ext in ext_map:
+        return ext_map[ext]
     else:
         return ext
 

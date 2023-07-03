@@ -1,3 +1,13 @@
+"""Script and helper functions to save filetype info into tsvs
+
+The main function creates a tsv containing the contents of filetype
+information for accession_ids. These can be a comma separated list of ids
+or the path to a file containing accession ids
+
+It is assumed that ingest_from_biostudies.py and 
+summarise_study_filetypes.py have been run for each accession_id included.
+"""
+
 import sys
 from pathlib import Path
 import logging
@@ -87,18 +97,6 @@ def combine_study_filetype_info(accession_ids: list) -> list:
                 dict_summary[col_name][i] = str(filetype_stat_value)
                 
     return dict_summary
-#
-#    summary = io.StringIO()
-#    writer = csv.writer(
-#        summary,
-#        delimiter="\t",
-#        lineterminator="\n"
-#    )
-#    writer.writerow(dict_summary.keys())
-#    rows = zip(*dict_summary.values())   # Transpose the values
-#    writer.writerows(rows)             # Write the rows
-#
-#    return summary.getvalue()
 
 @click.command()
 @click.option('--accession-ids', help='Comma separated accession_ids e.g. S-BIAD1,S-BIAD3')
