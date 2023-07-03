@@ -1,0 +1,1325 @@
+{
+  "accession_id": "S-BSST1053",
+  "title": "Microscopy images related to the Manuscript #EMBOJ-2022-112580",
+  "description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+  "authors": [
+    {
+      "name": "Amandine Grimm"
+    },
+    {
+      "name": "Leonora Szabo"
+    },
+    {
+      "name": "Nadia Cummins"
+    },
+    {
+      "name": "Paolo Paganetti"
+    },
+    {
+      "name": "Alex Odermatt"
+    },
+    {
+      "name": "Andreas Papassotiropoulos"
+    },
+    {
+      "name": "Celeste Karch"
+    },
+    {
+      "name": "Jürgen Götz"
+    },
+    {
+      "name": "Anne Eckert"
+    }
+  ],
+  "organism": "Mus musculus (mouse)",
+  "release_date": "2023-03-21",
+  "license": "CC0",
+  "links": {},
+  "imaging_type": "Unknown",
+  "attributes": {},
+  "example_image_uri": "",
+  "example_annotation_uri": "",
+  "file_references": {
+    "ee577bf3-6fea-4644-957e-1cb0d3736de7": {
+      "id": "ee577bf3-6fea-4644-957e-1cb0d3736de7",
+      "name": "Figure source data file_microscope images.zip",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 6923976982,
+      "type": null,
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "43c06823-1e09-4594-b0b3-8ebc2b447a1b": {
+      "id": "43c06823-1e09-4594-b0b3-8ebc2b447a1b",
+      "name": "Figure source data file_microscope images/",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 0,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "65fd5f07-4165-460c-b2a7-627b07a14d64": {
+      "id": "65fd5f07-4165-460c-b2a7-627b07a14d64",
+      "name": "Figure source data file_microscope images/.DS_Store",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 6148,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "47e0682f-d4ae-493e-b73a-a8b4ab3bb28b": {
+      "id": "47e0682f-d4ae-493e-b73a-a8b4ab3bb28b",
+      "name": "Figure source data file_microscope images/Figure 6/",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 0,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "610de1cc-e4fb-46ce-88bd-30dc09db0d77": {
+      "id": "610de1cc-e4fb-46ce-88bd-30dc09db0d77",
+      "name": "Figure source data file_microscope images/Figure 1/",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 0,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "92302150-371e-42b7-89ad-e743ed7bf0ef": {
+      "id": "92302150-371e-42b7-89ad-e743ed7bf0ef",
+      "name": "Figure source data file_microscope images/Figure 4/",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 0,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "d5a43c8a-2f1e-4e83-9398-5f141235abfe": {
+      "id": "d5a43c8a-2f1e-4e83-9398-5f141235abfe",
+      "name": "Figure source data file_microscope images/Figure 2/",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 0,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "1e822c78-9d23-4e58-8c97-f5e42049357f": {
+      "id": "1e822c78-9d23-4e58-8c97-f5e42049357f",
+      "name": "Figure source data file_microscope images/Figure 5/",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 0,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "f4616a49-808a-4532-bf31-94bb3710185c": {
+      "id": "f4616a49-808a-4532-bf31-94bb3710185c",
+      "name": "Figure source data file_microscope images/Figure 6/6A/",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 0,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "2fa5e59b-e6c1-4354-b9c4-f5a13153bc04": {
+      "id": "2fa5e59b-e6c1-4354-b9c4-f5a13153bc04",
+      "name": "Figure source data file_microscope images/Figure 6/6H/",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 0,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "f86f6ee5-daab-4d42-af31-48e35b676032": {
+      "id": "f86f6ee5-daab-4d42-af31-48e35b676032",
+      "name": "Figure source data file_microscope images/Figure 6/6G/",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 0,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "c0c0b3c2-2416-4cd8-8546-6c5ac5549ab3": {
+      "id": "c0c0b3c2-2416-4cd8-8546-6c5ac5549ab3",
+      "name": "Figure source data file_microscope images/Figure 6/.DS_Store",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 6148,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "d094120c-7204-4bcc-a0d8-7627c67e9c0a": {
+      "id": "d094120c-7204-4bcc-a0d8-7627c67e9c0a",
+      "name": "Figure source data file_microscope images/Figure 6/6E/",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 0,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "573850bf-b212-40d0-be39-f57580766fc5": {
+      "id": "573850bf-b212-40d0-be39-f57580766fc5",
+      "name": "Figure source data file_microscope images/Figure 6/6C/",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 0,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "eea1ae4a-93b5-4eec-8176-124b701703dc": {
+      "id": "eea1ae4a-93b5-4eec-8176-124b701703dc",
+      "name": "Figure source data file_microscope images/Figure 1/.DS_Store",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 6148,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "9108fa37-bc83-4846-a3c3-8882461852d2": {
+      "id": "9108fa37-bc83-4846-a3c3-8882461852d2",
+      "name": "Figure source data file_microscope images/Figure 1/1H/",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 0,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "412b1960-c318-414f-bb71-5e69f557654a": {
+      "id": "412b1960-c318-414f-bb71-5e69f557654a",
+      "name": "Figure source data file_microscope images/Figure 1/1F/",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 0,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "7106a228-da80-4ba8-a6f1-c5b0d64d429c": {
+      "id": "7106a228-da80-4ba8-a6f1-c5b0d64d429c",
+      "name": "Figure source data file_microscope images/Figure 1/1A/",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 0,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "9e13437a-94bb-45c7-b18d-9faf36ae9733": {
+      "id": "9e13437a-94bb-45c7-b18d-9faf36ae9733",
+      "name": "Figure source data file_microscope images/Figure 4/.DS_Store",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 6148,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "203ed244-84fd-4ff5-a2f3-ce5d28ddb1de": {
+      "id": "203ed244-84fd-4ff5-a2f3-ce5d28ddb1de",
+      "name": "Figure source data file_microscope images/Figure 4/4P/",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 0,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "311446d4-435e-4341-8f2e-5ef7ad07e6d3": {
+      "id": "311446d4-435e-4341-8f2e-5ef7ad07e6d3",
+      "name": "Figure source data file_microscope images/Figure 4/4M/",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 0,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "08a7129e-b8cb-4a54-9bb2-0a00ec032419": {
+      "id": "08a7129e-b8cb-4a54-9bb2-0a00ec032419",
+      "name": "Figure source data file_microscope images/Figure 4/4J/",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 0,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "5282733c-fa65-4b67-a3ae-5798eb4c6b67": {
+      "id": "5282733c-fa65-4b67-a3ae-5798eb4c6b67",
+      "name": "Figure source data file_microscope images/Figure 4/4D/",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 0,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "b286b07a-15bc-47f6-a148-1bf4f0180b3a": {
+      "id": "b286b07a-15bc-47f6-a148-1bf4f0180b3a",
+      "name": "Figure source data file_microscope images/Figure 4/4A/",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 0,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "ec3fe7db-e0a5-4d64-8565-bea28d168623": {
+      "id": "ec3fe7db-e0a5-4d64-8565-bea28d168623",
+      "name": "Figure source data file_microscope images/Figure 4/4G/",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 0,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "f8b74ace-e21a-44c0-874e-048bea1335d8": {
+      "id": "f8b74ace-e21a-44c0-874e-048bea1335d8",
+      "name": "Figure source data file_microscope images/Figure 2/.DS_Store",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 8196,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "f3b472fe-095e-4caf-bd57-a68040c045f9": {
+      "id": "f3b472fe-095e-4caf-bd57-a68040c045f9",
+      "name": "Figure source data file_microscope images/Figure 2/2R/",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 0,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "087963db-5f16-402c-8034-82a36c7179ab": {
+      "id": "087963db-5f16-402c-8034-82a36c7179ab",
+      "name": "Figure source data file_microscope images/Figure 2/2S/",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 0,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "113a8dd1-1424-4a09-8fd5-b07f7303e250": {
+      "id": "113a8dd1-1424-4a09-8fd5-b07f7303e250",
+      "name": "Figure source data file_microscope images/Figure 2/2A/",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 0,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "bd0d33f7-f848-427f-a9ba-fca10cc1d5da": {
+      "id": "bd0d33f7-f848-427f-a9ba-fca10cc1d5da",
+      "name": "Figure source data file_microscope images/Figure 2/2F/",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 0,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "d6a25fc3-ee41-41f2-ba84-3950502691fd": {
+      "id": "d6a25fc3-ee41-41f2-ba84-3950502691fd",
+      "name": "Figure source data file_microscope images/Figure 2/2D/",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 0,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "3ec06e59-1934-46d8-ab47-06ce5fee59ee": {
+      "id": "3ec06e59-1934-46d8-ab47-06ce5fee59ee",
+      "name": "Figure source data file_microscope images/Figure 2/2J/",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 0,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "13b99083-69cf-4c09-9ea2-749ec3a772f9": {
+      "id": "13b99083-69cf-4c09-9ea2-749ec3a772f9",
+      "name": "Figure source data file_microscope images/Figure 2/2V/",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 0,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "f3bb76a1-997b-4930-8a63-a2ce2c9764a5": {
+      "id": "f3bb76a1-997b-4930-8a63-a2ce2c9764a5",
+      "name": "Figure source data file_microscope images/Figure 2/2Q/",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 0,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "d146eedf-16a6-45b2-a8f3-7209f7ab9074": {
+      "id": "d146eedf-16a6-45b2-a8f3-7209f7ab9074",
+      "name": "Figure source data file_microscope images/Figure 2/2E/",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 0,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "b43c4188-8239-46d6-b9a0-99ec9cafbdf1": {
+      "id": "b43c4188-8239-46d6-b9a0-99ec9cafbdf1",
+      "name": "Figure source data file_microscope images/Figure 2/2P/",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 0,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "f066d7d1-3ccb-4ef3-a727-95b31a233c4c": {
+      "id": "f066d7d1-3ccb-4ef3-a727-95b31a233c4c",
+      "name": "Figure source data file_microscope images/Figure 5/5A/",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 0,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "8214bc4b-beaa-475d-a7d1-d700294d3095": {
+      "id": "8214bc4b-beaa-475d-a7d1-d700294d3095",
+      "name": "Figure source data file_microscope images/Figure 5/.DS_Store",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 6148,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "08198aa5-1317-44b2-a5f6-c8244eec4294": {
+      "id": "08198aa5-1317-44b2-a5f6-c8244eec4294",
+      "name": "Figure source data file_microscope images/Figure 5/5C/",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 0,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "6633c105-8de5-43e8-a4e4-9b02f0fa7fbd": {
+      "id": "6633c105-8de5-43e8-a4e4-9b02f0fa7fbd",
+      "name": "Figure source data file_microscope images/Figure 5/5D/",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 0,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "21efbf2f-0642-4001-865f-f6de7739bf6e": {
+      "id": "21efbf2f-0642-4001-865f-f6de7739bf6e",
+      "name": "Figure source data file_microscope images/Figure 6/6A/P301L GFP_AT8 555_CHIR.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 27271142,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "d69eb679-8531-48f9-b98d-ec19ad996e5a": {
+      "id": "d69eb679-8531-48f9-b98d-ec19ad996e5a",
+      "name": "Figure source data file_microscope images/Figure 6/6A/P301L GFP_AT8 555_Ctrl.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 27271142,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "4d40019a-c082-44df-a3f5-7dd7769c284a": {
+      "id": "4d40019a-c082-44df-a3f5-7dd7769c284a",
+      "name": "Figure source data file_microscope images/Figure 6/6H/P301L GFP 488_Filipin 405_ER-RFP 555_Ctrl.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 213921586,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "c51e3a49-01c5-4751-b8e2-efbb6d0eb408": {
+      "id": "c51e3a49-01c5-4751-b8e2-efbb6d0eb408",
+      "name": "Figure source data file_microscope images/Figure 6/6H/P301L GFP 488_Filipin 405_ER-RFP 555_CHIR.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 213921585,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "92b33195-d640-4d32-a73e-e4bb34e238f2": {
+      "id": "92b33195-d640-4d32-a73e-e4bb34e238f2",
+      "name": "Figure source data file_microscope images/Figure 6/6H/WT GFP 488_Filipin 405_ER-RFP 555_Ctrl.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 327172815,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "0a5a54c3-c384-4215-9606-6c14dc7228ce": {
+      "id": "0a5a54c3-c384-4215-9606-6c14dc7228ce",
+      "name": "Figure source data file_microscope images/Figure 6/6H/WT GFP 488_Filipin 405_ER-RFP 555_CHIR.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 239100805,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "64972efc-e4de-45b7-a7a9-760f455a8f89": {
+      "id": "64972efc-e4de-45b7-a7a9-760f455a8f89",
+      "name": "Figure source data file_microscope images/Figure 6/6G/WT GFP 488_Filipin 405_TOMM20 555_CHIR.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 213933384,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "d4fd1d73-9995-4732-b50e-f368133d8c54": {
+      "id": "d4fd1d73-9995-4732-b50e-f368133d8c54",
+      "name": "Figure source data file_microscope images/Figure 6/6G/WT GFP 488_Filipin 405_TOMM20 555_Ctrl.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 213921587,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "0392c7d4-352e-4733-9d4a-5df6d0db15c1": {
+      "id": "0392c7d4-352e-4733-9d4a-5df6d0db15c1",
+      "name": "Figure source data file_microscope images/Figure 6/6G/P301L GFP 488_Filipin 405_TOMM20 555_CHIR.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 213921588,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "0725ef27-9e72-4324-aa4c-33a77ca3b827": {
+      "id": "0725ef27-9e72-4324-aa4c-33a77ca3b827",
+      "name": "Figure source data file_microscope images/Figure 6/6G/P301L GFP 488_Filipin 405_TOMM20 555_Ctrl.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 163587706,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "09a868ca-5ea0-41d7-998b-4179d28f0fe0": {
+      "id": "09a868ca-5ea0-41d7-998b-4179d28f0fe0",
+      "name": "Figure source data file_microscope images/Figure 6/6E/WT_PLA VAPB-PTPIP51_Ctrl.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 20978569,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "4b949f9a-7b4c-4f93-9f0f-30380a8b8e09": {
+      "id": "4b949f9a-7b4c-4f93-9f0f-30380a8b8e09",
+      "name": "Figure source data file_microscope images/Figure 6/6E/P301L_PLA VAPB-PTPIP51_Ctrl.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 20978568,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "c9c69def-7dbd-4704-8f3b-cd15a3b5cd8e": {
+      "id": "c9c69def-7dbd-4704-8f3b-cd15a3b5cd8e",
+      "name": "Figure source data file_microscope images/Figure 6/6E/WT_PLA VAPB-PTPIP51_CHIR.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 20978569,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "f98908aa-cf07-4e93-95a0-1aac4a606a0e": {
+      "id": "f98908aa-cf07-4e93-95a0-1aac4a606a0e",
+      "name": "Figure source data file_microscope images/Figure 6/6E/P301L_PLA VAPB-PTPIP51_CHIR.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 20978569,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "15435f1e-93f8-4430-9113-37164eb32b63": {
+      "id": "15435f1e-93f8-4430-9113-37164eb32b63",
+      "name": "Figure source data file_microscope images/Figure 6/6C/P301L GFP_AT180 555_CHIR.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 27271142,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "d4dcc9c6-716b-4114-8ae7-a19cd423933d": {
+      "id": "d4dcc9c6-716b-4114-8ae7-a19cd423933d",
+      "name": "Figure source data file_microscope images/Figure 6/6C/P301L GFP_AT180 555_Ctrl.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 27271142,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "3bbecbe6-f598-4198-9732-c9a9c49a4b57": {
+      "id": "3bbecbe6-f598-4198-9732-c9a9c49a4b57",
+      "name": "Figure source data file_microscope images/Figure 1/1H/1J_Ca1_mitoCFP+P301L+.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 12586072,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "54970c64-910b-4865-80b2-14e92c92901f": {
+      "id": "54970c64-910b-4865-80b2-14e92c92901f",
+      "name": "Figure source data file_microscope images/Figure 1/1H/1J_Ca1_mitoCFP+P301L-.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 12586073,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "d2c683fb-a4bc-4941-ae4f-742ee9e81a6e": {
+      "id": "d2c683fb-a4bc-4941-ae4f-742ee9e81a6e",
+      "name": "Figure source data file_microscope images/Figure 1/1F/amygdala_mitoCFP+P301L-.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 12586069,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "a7bedb15-a90f-4080-a96f-9689d1c2324a": {
+      "id": "a7bedb15-a90f-4080-a96f-9689d1c2324a",
+      "name": "Figure source data file_microscope images/Figure 1/1F/amygdala_mitoCFP+P301L+.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 12586068,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "3d01793d-51fa-4e9d-8355-6098a3f68629": {
+      "id": "3d01793d-51fa-4e9d-8355-6098a3f68629",
+      "name": "Figure source data file_microscope images/Figure 1/1A/Amygdalax10.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 22853062,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "31998920-f0e4-4d7c-a15a-4d0af7dcc408": {
+      "id": "31998920-f0e4-4d7c-a15a-4d0af7dcc408",
+      "name": "Figure source data file_microscope images/Figure 1/1A/AmygdalaX63.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 12586070,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "1f5ff4a5-d8ba-4a35-a8a5-d2b255ea5b5a": {
+      "id": "1f5ff4a5-d8ba-4a35-a8a5-d2b255ea5b5a",
+      "name": "Figure source data file_microscope images/Figure 1/1A/CA1x10.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 33632980,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "78257ae0-5e99-45fd-aa93-03345d220137": {
+      "id": "78257ae0-5e99-45fd-aa93-03345d220137",
+      "name": "Figure source data file_microscope images/Figure 1/1A/CA1x63.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 12586072,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "7e6748b0-9783-4420-bab5-69019f9741b4": {
+      "id": "7e6748b0-9783-4420-bab5-69019f9741b4",
+      "name": "Figure source data file_microscope images/Figure 4/4P/WT GFP_Filipin III_M6PR 647.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 239088526,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "5de289d6-3bcf-4e4e-b641-8403b8da389d": {
+      "id": "5de289d6-3bcf-4e4e-b641-8403b8da389d",
+      "name": "Figure source data file_microscope images/Figure 4/4P/P301L GFP_Filipin III_M6PR 647.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 239088527,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "b0916f22-8f05-49b8-b914-67a7484c5d9e": {
+      "id": "b0916f22-8f05-49b8-b914-67a7484c5d9e",
+      "name": "Figure source data file_microscope images/Figure 4/4M/WT GFP_Filipin III_Lipidspot 647.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 276838936,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "b62a3f4c-2e2b-4884-9c97-34747bb4adfd": {
+      "id": "b62a3f4c-2e2b-4884-9c97-34747bb4adfd",
+      "name": "Figure source data file_microscope images/Figure 4/4M/P301L GFP_Filipin III_Lipidspot 647.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 327172816,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "2e556a0c-ab6a-4bcd-8bfe-e05577635d7a": {
+      "id": "2e556a0c-ab6a-4bcd-8bfe-e05577635d7a",
+      "name": "Figure source data file_microscope images/Figure 4/4J/P301L GFP_Filipin III_EEA1 647.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 220658524,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "9abf746b-e52b-48e8-b733-272c8cd21506": {
+      "id": "9abf746b-e52b-48e8-b733-272c8cd21506",
+      "name": "Figure source data file_microscope images/Figure 4/4J/WT GFP_Filipin III_EEA1 647.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 246617999,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "71601646-d625-4b09-8ac3-ca5d441da966": {
+      "id": "71601646-d625-4b09-8ac3-ca5d441da966",
+      "name": "Figure source data file_microscope images/Figure 4/4D/P301L GFP_Filipin III_ER-RFP.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 220658481,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "3954bf0a-33e3-4eb1-aac0-6f9716bb49a7": {
+      "id": "3954bf0a-33e3-4eb1-aac0-6f9716bb49a7",
+      "name": "Figure source data file_microscope images/Figure 4/4D/WT GFP_Filipin III_ER-RFP.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 298537029,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "0bb9aa20-6557-4b9b-8880-203a8a89fdca": {
+      "id": "0bb9aa20-6557-4b9b-8880-203a8a89fdca",
+      "name": "Figure source data file_microscope images/Figure 4/4A/WT GFP_Filipin III_TOMM20 555.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 239088524,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "514fdc9f-0ced-4bc7-b319-58066151bb8f": {
+      "id": "514fdc9f-0ced-4bc7-b319-58066151bb8f",
+      "name": "Figure source data file_microscope images/Figure 4/4A/.DS_Store",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 6148,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "fba82e8d-fd75-4c83-a486-37fc1d4b728c": {
+      "id": "fba82e8d-fd75-4c83-a486-37fc1d4b728c",
+      "name": "Figure source data file_microscope images/Figure 4/4A/P301L GFP_Filipin III_TOMM20 555.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 201338116,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "66e4457b-eef8-4a19-a70e-99c41f5e0d4c": {
+      "id": "66e4457b-eef8-4a19-a70e-99c41f5e0d4c",
+      "name": "Figure source data file_microscope images/Figure 4/4G/P301L GFP_Filipin III_GM130 647.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 259597756,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "ed71f044-fb80-4513-bfcb-47c312e8beca": {
+      "id": "ed71f044-fb80-4513-bfcb-47c312e8beca",
+      "name": "Figure source data file_microscope images/Figure 4/4G/WT GFP_Filipin III_GM130 647.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 246617997,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "86d9d7cc-968f-4ef5-a686-16bbdd4ea222": {
+      "id": "86d9d7cc-968f-4ef5-a686-16bbdd4ea222",
+      "name": "Figure source data file_microscope images/Figure 2/2R/WT tubulin 488_PLA VAPB PTPIP51.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 20978570,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "6a2d5a00-23b6-461d-aa7a-2cf7ade95585": {
+      "id": "6a2d5a00-23b6-461d-aa7a-2cf7ade95585",
+      "name": "Figure source data file_microscope images/Figure 2/2R/Tau KO tubulin 488_PLA VAPB PTPIP51.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 20978570,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "83f3c350-48be-4cae-bd8a-ffa80eb94863": {
+      "id": "83f3c350-48be-4cae-bd8a-ffa80eb94863",
+      "name": "Figure source data file_microscope images/Figure 2/2S/.DS_Store",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 6148,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "1616f879-44b2-400b-a941-fe51fda6d7f3": {
+      "id": "1616f879-44b2-400b-a941-fe51fda6d7f3",
+      "name": "Figure source data file_microscope images/Figure 2/2S/iPSC-P301L_TOMM20 555 + cell shape.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 20978573,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "4f1d4987-12f9-4c4d-8ce5-08a65f6dcb38": {
+      "id": "4f1d4987-12f9-4c4d-8ce5-08a65f6dcb38",
+      "name": "Figure source data file_microscope images/Figure 2/2S/iPSC-WT_TOMM20 555 + cell shape.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 20978573,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "1c2c209c-d53f-4f28-9804-ceb40b311af4": {
+      "id": "1c2c209c-d53f-4f28-9804-ceb40b311af4",
+      "name": "Figure source data file_microscope images/Figure 2/2A/P301L GFP_TOMM20 555.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 159392427,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "0b3601fa-ad9c-4e27-acf5-a911ea2d102b": {
+      "id": "0b3601fa-ad9c-4e27-acf5-a911ea2d102b",
+      "name": "Figure source data file_microscope images/Figure 2/2A/wtTau GFP_TOMM20 555.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 159392428,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "ebfb60d3-04a1-4165-a6fb-48eb355bdd8c": {
+      "id": "ebfb60d3-04a1-4165-a6fb-48eb355bdd8c",
+      "name": "Figure source data file_microscope images/Figure 2/2A/WT GFP_TOMM20 555.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 184559367,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "e087d9d7-4d5b-4351-9034-11523128e04f": {
+      "id": "e087d9d7-4d5b-4351-9034-11523128e04f",
+      "name": "Figure source data file_microscope images/Figure 2/2F/P301L GFP_PLA VAPB PTPIP51.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 20978570,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "b5562dff-7545-4fbf-b749-8457a72ac74e": {
+      "id": "b5562dff-7545-4fbf-b749-8457a72ac74e",
+      "name": "Figure source data file_microscope images/Figure 2/2F/WT GFP_PLA VAPB PTPIP51.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 20978570,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "87be366e-579b-4e02-b6ff-777538d1f7da": {
+      "id": "87be366e-579b-4e02-b6ff-777538d1f7da",
+      "name": "Figure source data file_microscope images/Figure 2/2F/wtTau GFP_PLA VAPB PTPIP51.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 20978570,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "1fd6ec8a-c01a-4c16-b485-e0e7e2b2b9a7": {
+      "id": "1fd6ec8a-c01a-4c16-b485-e0e7e2b2b9a7",
+      "name": "Figure source data file_microscope images/Figure 2/2D/P301L GFP_PLA IP3R VDAC.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 20978570,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "0e952668-b90a-4be5-bf84-205cc27d91c9": {
+      "id": "0e952668-b90a-4be5-bf84-205cc27d91c9",
+      "name": "Figure source data file_microscope images/Figure 2/2D/wtTau GFP_PLA IP3R VDAC.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 20978569,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "fe19433b-6b5c-4f0d-9621-1d2faec20fb5": {
+      "id": "fe19433b-6b5c-4f0d-9621-1d2faec20fb5",
+      "name": "Figure source data file_microscope images/Figure 2/2D/WT GFP_PLA IP3R VDAC.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 20978570,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "946d2764-f9db-4fcd-bc94-c1f015493c5d": {
+      "id": "946d2764-f9db-4fcd-bc94-c1f015493c5d",
+      "name": "Figure source data file_microscope images/Figure 2/2J/Tau KO_TOMM20 555.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 83893656,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "eea6e176-c0cd-4fbb-be73-5362be32a710": {
+      "id": "eea6e176-c0cd-4fbb-be73-5362be32a710",
+      "name": "Figure source data file_microscope images/Figure 2/2J/WT_TOMM20 555.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 79699041,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "eba7612b-b06f-4c80-ad17-c1e16c459fea": {
+      "id": "eba7612b-b06f-4c80-ad17-c1e16c459fea",
+      "name": "Figure source data file_microscope images/Figure 2/2V/iPSC-WT_PLA VAPB-PTPIP51 + cell shape.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 20978573,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "c0f3da12-c975-44a0-a6ff-93e343a9aa0b": {
+      "id": "c0f3da12-c975-44a0-a6ff-93e343a9aa0b",
+      "name": "Figure source data file_microscope images/Figure 2/2V/iPSC-P301L_PLA VAPB-PTPIP51 + cell shape.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 20978573,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "d281bac9-e40a-4ec9-909d-6c778327d6fb": {
+      "id": "d281bac9-e40a-4ec9-909d-6c778327d6fb",
+      "name": "Figure source data file_microscope images/Figure 2/2Q/Tau KO tubulin 488_PLA IP3R GRP75.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 20978570,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "98141021-81b6-4e06-a2d9-04b4007bfac0": {
+      "id": "98141021-81b6-4e06-a2d9-04b4007bfac0",
+      "name": "Figure source data file_microscope images/Figure 2/2Q/WT tubulin 488_PLA IP3R GRP75.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 20978570,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "b34d0d49-6b30-445d-a2b2-050446f6c046": {
+      "id": "b34d0d49-6b30-445d-a2b2-050446f6c046",
+      "name": "Figure source data file_microscope images/Figure 2/2E/wtTau GFP_PLA IP3R GRP75.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 20978570,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "0db92735-fd2a-4186-920a-38735219f923": {
+      "id": "0db92735-fd2a-4186-920a-38735219f923",
+      "name": "Figure source data file_microscope images/Figure 2/2E/P301L GFP_PLA IP3R GRP75.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 20978570,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "81c29299-946a-4465-a506-2def8ccffbe6": {
+      "id": "81c29299-946a-4465-a506-2def8ccffbe6",
+      "name": "Figure source data file_microscope images/Figure 2/2E/WT GFP_PLA IP3R GRP75.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 20978570,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "d62e2e8b-f91c-4ef5-ba0b-06ecd0077e58": {
+      "id": "d62e2e8b-f91c-4ef5-ba0b-06ecd0077e58",
+      "name": "Figure source data file_microscope images/Figure 2/2P/WT tubulin 488_PLA IP3R VADC.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 20978569,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "0c225d80-2f6f-4f16-80a4-d65bd655aa47": {
+      "id": "0c225d80-2f6f-4f16-80a4-d65bd655aa47",
+      "name": "Figure source data file_microscope images/Figure 2/2P/Tau KO tubulin 488_PLA IP3R VADC.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 20978570,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "b1958965-8abd-425b-8033-339334391b54": {
+      "id": "b1958965-8abd-425b-8033-339334391b54",
+      "name": "Figure source data file_microscope images/Figure 5/5A/WT GFP_PLA VAPB-PTPIP51_MFN2 siRNA.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 20978570,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "434fb898-56f9-4acd-855f-b005da1f1674": {
+      "id": "434fb898-56f9-4acd-855f-b005da1f1674",
+      "name": "Figure source data file_microscope images/Figure 5/5A/.DS_Store",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 6148,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "7786cf4c-0019-486c-8a30-9d435b614b7c": {
+      "id": "7786cf4c-0019-486c-8a30-9d435b614b7c",
+      "name": "Figure source data file_microscope images/Figure 5/5A/P301L GFP_PLA VAPB-PTPIP51_Ctrl siRNA.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 20978570,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "67962ec7-9c8d-423e-9106-5042a166c33b": {
+      "id": "67962ec7-9c8d-423e-9106-5042a166c33b",
+      "name": "Figure source data file_microscope images/Figure 5/5A/P301L GFP_PLA VAPB-PTPIP51_MFN2 siRNA.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 20978570,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "74defcd0-4393-4c20-af4b-b91c7c84dc7c": {
+      "id": "74defcd0-4393-4c20-af4b-b91c7c84dc7c",
+      "name": "Figure source data file_microscope images/Figure 5/5A/WT GFP_PLA VAPB-PTPIP51_Ctrl siRNA.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 20978570,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "be47cd7f-55fd-4d1c-b057-5c12573b0c77": {
+      "id": "be47cd7f-55fd-4d1c-b057-5c12573b0c77",
+      "name": "Figure source data file_microscope images/Figure 5/5C/.DS_Store",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 6148,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "9af052cc-4d77-4930-a2d5-556893d976ba": {
+      "id": "9af052cc-4d77-4930-a2d5-556893d976ba",
+      "name": "Figure source data file_microscope images/Figure 5/5C/P301L_Filipin III 405_TOMM20 555_MFN2 siRNA.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 310394069,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "7e5f4f0a-6cc1-48cc-86cc-bcc590458077": {
+      "id": "7e5f4f0a-6cc1-48cc-86cc-bcc590458077",
+      "name": "Figure source data file_microscope images/Figure 5/5C/WT_Filipin III 405_TOMM20 555_MFN2 siRNA.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 310408430,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "3c25553c-3ce2-4be2-8095-fa090d4e57d2": {
+      "id": "3c25553c-3ce2-4be2-8095-fa090d4e57d2",
+      "name": "Figure source data file_microscope images/Figure 5/5C/WT_Filipin III 405_TOMM20 555_Ctrl siRNA.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 209726308,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "280b068c-b8a3-46ef-a5e9-cec800eecd17": {
+      "id": "280b068c-b8a3-46ef-a5e9-cec800eecd17",
+      "name": "Figure source data file_microscope images/Figure 5/5C/P301L_Filipin III 405_TOMM20 555_Ctrl siRNA.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 159392428,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "8acd17f6-42c4-4326-9d3e-f768da26b5ea": {
+      "id": "8acd17f6-42c4-4326-9d3e-f768da26b5ea",
+      "name": "Figure source data file_microscope images/Figure 5/5D/WT_Filipin III 405_ER-RFP 555_MFN2 siRNA.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 199024762,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "272aab08-019f-4f0f-88b5-1615eb8a7bae": {
+      "id": "272aab08-019f-4f0f-88b5-1615eb8a7bae",
+      "name": "Figure source data file_microscope images/Figure 5/5D/P301L_Filipin III 405_ER-RFP 555_MFN2 siRNA.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 173065247,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "8fb788df-fd6a-4310-bb8c-ac869523bb95": {
+      "id": "8fb788df-fd6a-4310-bb8c-ac869523bb95",
+      "name": "Figure source data file_microscope images/Figure 5/5D/P301L_Filipin III 405_ER-RFP 555_Ctrl siRNA.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 164412076,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    },
+    "241f4f97-5fb0-451b-bb6e-e669586ff434": {
+      "id": "241f4f97-5fb0-451b-bb6e-e669586ff434",
+      "name": "Figure source data file_microscope images/Figure 5/5D/WT_Filipin III 405_ER-RFP 555_Ctrl siRNA.tif",
+      "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BSST/053/S-BSST1053/Files/Figure source data file_microscope images.zip",
+      "size_in_bytes": 250943796,
+      "type": "file_in_zip",
+      "attributes": {
+        "Description": "Raw microscopy images related to the manuscript titled \"ER-mitochondria coupling and cholesterol transfer are disrupted by disease-associated tau protein\"",
+        "Type": "Microscopy images"
+      }
+    }
+  },
+  "images": {},
+  "archive_files": {},
+  "other_files": {},
+  "image_aliases": {},
+  "tags": []
+}

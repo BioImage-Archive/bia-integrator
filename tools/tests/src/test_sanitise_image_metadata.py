@@ -8,7 +8,7 @@ dict_no_nesting = {
     "key1": "value1",
     "key2": None,
     "key2_unit": "nm",
-    "key3": None,
+    "key3": "null",
     "key3_unit": "mm",
     "key4": "value4",
     "key4_unit": "m",
@@ -32,7 +32,7 @@ dict_with_nesting = {
         "nested_key3_1_unit": "m",
         "nested_key3_2": None,
         "nested_key3_2_unit": "km",
-        "nested_key3_3": None,
+        "nested_key3_3": "null",
         "nested_key3_4": "nested_key3_4_value",
         "nested_key3_5": [
             dict_no_nesting,
@@ -45,7 +45,7 @@ dict_with_nesting = {
     "key3_unit": "mm",
     "key4": "value4",
     "key4_unit": "m",
-    "key5": None,
+    "key5": "null",
     "key6": [],
     "key6_unit": "km",
 }

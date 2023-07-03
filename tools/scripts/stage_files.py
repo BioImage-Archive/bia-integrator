@@ -4,6 +4,7 @@ from urllib.parse import urlparse
 
 import typer
 from bia_integrator_core.integrator import load_and_annotate_study
+from bia_integrator_core.config import Settings
 
 from bia_integrator_tools.io import copy_uri_to_local
 
@@ -30,8 +31,7 @@ def main(accession_id: str, image_id: str, rep_type: str):
 
     print(image_rep)
 
-    cache_root_dirpath = Path.home()/".cache"/"bia-converter"
-    cache_dirpath = cache_root_dirpath/accession_id
+    cache_dirpath = Settings().cache_root_dirpath/accession_id
     cache_dirpath.mkdir(exist_ok=True, parents=True)
 
     for fileref_id in image_rep.attributes["fileref_ids"]:

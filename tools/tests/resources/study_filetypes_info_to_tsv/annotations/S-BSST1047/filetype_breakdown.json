@@ -1,0 +1,5 @@
+{
+  "accession_id": "S-BSST1047",
+  "key": "filetype_breakdown",
+  "value": "{'.zip': {'n': 1, 'size_in_bytes': 1766829351, 'size_human_readable': '1.6GiB'}, '.fcs in .zip': {'n': 25, 'size_in_bytes': 79924584, 'size_human_readable': '76.2MiB'}, '.cpproj in .zip': {'n': 1, 'size_in_bytes': 10772338, 'size_human_readable': '10.3MiB'}, '.csv in .zip': {'n': 7, 'size_in_bytes': 5284549678, 'size_human_readable': '4.9GiB'}, '.txt in .zip': {'n': 5, 'size_in_bytes': 4380816715, 'size_human_readable': '4.1GiB'}, '.jpg in .zip': {'n': 48, 'size_in_bytes': 6907608, 'size_human_readable': '6.6MiB'}, '.npy in .zip': {'n': 24, 'size_in_bytes': 25962520, 'size_human_readable': '24.8MiB'}, '.tif in .zip': {'n': 1585, 'size_in_bytes': 1261539626, 'size_human_readable': '1.2GiB'}, '.ilp in .zip': {'n': 1, 'size_in_bytes': 35875179, 'size_human_readable': '34.2MiB'}, '.png in .zip': {'n': 26, 'size_in_bytes': 3696931, 'size_human_readable': '3.5MiB'}, '.xlsx in .zip': {'n': 4, 'size_in_bytes': 48360, 'size_human_readable': '47.2KiB'}, '.m in .zip': {'n': 19, 'size_in_bytes': 91922, 'size_human_readable': '89.8KiB'}}"
+}

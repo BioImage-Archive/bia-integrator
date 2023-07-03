@@ -24,6 +24,15 @@ env = Environment(
 
 DEFAULT_TEMPLATE = "dataset-landing.html.j2"
 
+# Attributes to display in study content section
+# Use list for backward compatibility with different annotation names
+# Most recent names come first in list
+STUDY_CONTENT_ANNOTATIONS = {
+    "Study size:": ["study_size_human_readable", "study_size"],
+    "N files (exc zip contents):": ["n_files_excluding_zip_contents", "n_files_in_study",],
+    "N files (inc zip contents):": ["n_files_including_zip_contents",],
+    "Filetype breakdown:": ["filetype_breakdown_html",],
+}
 
 def generate_dataset_page_html(accession_id, template_fname: str):
     """Generate an HTML page for a specific dataset."""
@@ -80,6 +89,14 @@ def generate_dataset_page_html(accession_id, template_fname: str):
 
     template = env.get_template(template_fname)
 
+    # Get the keys to use for rendering study contents section
+    study_content_annotations = {}
+    for label, keys in STUDY_CONTENT_ANNOTATIONS.items():
+        for key in keys:
+            if key in bia_study.attributes:
+                study_content_annotations[label] = key
+                break
+
     rendered = template.render(
             image_names=image_names,
             study=bia_study,
@@ -90,6 +107,7 @@ def generate_dataset_page_html(accession_id, template_fname: str):
             annotation_names=annotation_files,
             annotation_download_uris=annotation_download_uris,
             authors=author_names,
+            study_content_annotations=study_content_annotations,
             image_ann_aliases=ann_aliases_for_images
     )
 

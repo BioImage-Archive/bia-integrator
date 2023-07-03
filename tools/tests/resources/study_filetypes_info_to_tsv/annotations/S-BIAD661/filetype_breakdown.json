@@ -1,0 +1,5 @@
+{
+  "accession_id": "S-BIAD661",
+  "key": "filetype_breakdown",
+  "value": "{'.jpg': {'n': 17, 'size_in_bytes': 34717675, 'size_human_readable': '33.1MiB'}, '.bmp': {'n': 17, 'size_in_bytes': 28310814, 'size_human_readable': '27.0MiB'}, '.tif': {'n': 211, 'size_in_bytes': 1078740550, 'size_human_readable': '1.0GiB'}, '.xlsx': {'n': 26, 'size_in_bytes': 258091, 'size_human_readable': '252.0KiB'}}"
+}
