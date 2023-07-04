@@ -79,6 +79,9 @@ async def create_collection(collection: db_models.BIACollection) -> None:
     for study_uuid in collection.study_uuids:
         await repository.find_study_by_uuid(study_uuid)
     
-    await repository.persist_doc(collection)
+    if collection.version == 0:
+        await repository.persist_doc(collection)
+    else:
+        await repository.update_doc(collection)
 
     return None

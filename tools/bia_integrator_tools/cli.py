@@ -2,6 +2,7 @@ import logging
 from pathlib import Path
 from openapi_client import models as api_models
 from typing import Optional
+from uuid import UUID
 
 logger = logging.getLogger("biaint")
 logging.basicConfig(level=logging.INFO)
@@ -26,6 +27,7 @@ from bia_integrator_core.interface import (
     persist_image_representation,
     persist_image_annotation,
     persist_collection,
+    update_collection,
     get_study_tags,
     add_study_tag,
     get_collection,
@@ -222,26 +224,27 @@ def create_study_tag(accession_id, value):
 
 @reps_app.command("register")
 def register_image_representation(accession_id: str, image_id: str, type: str, size: int, uri: str):
+    image_uuid = to_uuid(image_id, lambda: get_image(accession_id, image_id))
+
     rep = api_models.BIAImageRepresentation(
-        accession_id=accession_id,
-        image_id=image_id,
-        type=type,
-        uri=uri,
         size=size,
+        uri=uri,
+        type=type,
         dimensions=None,
         attributes={}
-    )
-    persist_image_representation(rep)
+    )    
+    persist_image_representation(image_uuid, rep)
 
 
 @collections_app.command("create")
-def create_collection(name: str, title: str, subtitle: str, accessions_list: str):
-    collection = BIACollection(
-        name=name,  
+def create_collection(name: str, title: str, subtitle: str, accessions_list: str):    
+    collection = api_models.BIACollection(
+        uuid=UUID(),
+        version=1,
+        name=name,
         title=title,
         subtitle=subtitle,
-        accession_ids=accessions_list.split(","),
-        description=None
+        study_uuids=accessions_list.split(",")
     )
     persist_collection(collection)
 
@@ -252,10 +255,7 @@ def add_study_to_collection(collection_name: str, accession_id: str):
     
     collection.accession_ids.append(accession_id)
 
-    persist_collection(collection)
-
-    
-
+    update_collection(collection)
 
 if __name__ == "__main__":
     app()
