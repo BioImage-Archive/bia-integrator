@@ -1,6 +1,7 @@
 import logging
 from pathlib import Path
 from openapi_client import models as api_models
+from typing import Optional
 
 logger = logging.getLogger("biaint")
 logging.basicConfig(level=logging.INFO)
@@ -12,8 +13,7 @@ from bia_integrator_core.models import (
     BIAImageRepresentation,
     ImageAnnotation,
     BIACollection,
-    StudyTag,
-    BIAImageAlias
+    StudyTag
 )
 
 from bia_integrator_core.interface import (
@@ -27,9 +27,10 @@ from bia_integrator_core.interface import (
     persist_image_annotation,
     persist_collection,
     get_study_tags,
-    persist_study_tag,
+    add_study_tag,
     get_collection,
-    persist_image_alias
+    persist_image_alias,
+    to_uuid
 )
 from bia_integrator_core.integrator import load_and_annotate_study
 
@@ -69,11 +70,17 @@ def add_alias(accession_id: str, image_id: str, name: str):
 
 
 @aliases_app.command("list")
-def list_aliases(image_uuid: str):
+def list_alias(image_id: str, accession_id: Optional[str] = None):
     """
-    The version of this function accepting (study_accession, image_id) was deprecated
-    image_id replaced with image_uuid and study_accession not needed anymore since image_uuid is sufficient to address a single image  
+    Accepts either the image uuid, or a (image_alias, accession_id) pair
     """
+
+    image_uuid = None
+    if accession_id:
+        image_uuid = to_uuid(image_id, lambda: get_image(accession_id, image_id))
+    else:
+        image_uuid = image_id
+
     image = get_image(image_uuid)
     image_alias = image.alias.name if image.alias else "NO_ALIAS"
 
@@ -169,26 +176,36 @@ def list_study_annotations(accession_id: str):
 
 @annotations_app.command("create-study")
 def create_study_annotation(accession_id: str, key: str, value: str):
-
-    annotation = StudyAnnotation(
-        accession_id=accession_id,
+    annotation = api_models.StudyAnnotation(
+        # @TODO: Fix this when we add authentication
+        author_email='cli',
         key=key,
-        value=value
+        value=value,
+        state=api_models.AnnotationState.ACTIVE
     )
 
-    persist_study_annotation(annotation)
+    study = get_study(accession_id=accession_id)
+    persist_study_annotation(study.uuid, annotation)
 
 
 @annotations_app.command("create-image")
-def create_image_annotation(accession_id: str, image_id: str, key: str, value: str):
-    annotation = ImageAnnotation(
-        accession_id=accession_id,
-        image_id=image_id,
+def create_image_annotation(key: str, value: str, image_id: str, accession_id: Optional[str] = None):    
+    image_uuid = None
+    if accession_id:
+        image_uuid = to_uuid(image_id, lambda: get_image(accession_id, image_id))
+    else:
+        image_uuid = image_id
+
+
+    annotation = api_models.ImageAnnotation(
+        # @TODO: Fix this when we add authentication
+        author_email='cli',
         key=key,
-        value=value
+        value=value,
+        state=api_models.AnnotationState.ACTIVE
     )
 
-    persist_image_annotation(annotation)
+    persist_image_annotation(image_uuid, annotation)
 
 
 @annotations_app.command("list-study-tags")
@@ -200,16 +217,12 @@ def list_study_tags(accession_id):
 
 @annotations_app.command("create-study-tag")
 def create_study_tag(accession_id, value):
-    tag = StudyTag(
-        accession_id=accession_id,
-        value=value
-    )
-    persist_study_tag(tag)
+    add_study_tag(accession_id, value)
 
 
 @reps_app.command("register")
 def register_image_representation(accession_id: str, image_id: str, type: str, size: int, uri: str):
-    rep = BIAImageRepresentation(
+    rep = api_models.BIAImageRepresentation(
         accession_id=accession_id,
         image_id=image_id,
         type=type,

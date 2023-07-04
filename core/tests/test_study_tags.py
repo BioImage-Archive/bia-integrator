@@ -19,13 +19,10 @@ def test_tags_functional(disk_backend_dir):
     tags = get_study_tags(accession_id)
     assert "2D" not in tags
 
-    from bia_integrator_core.interface import persist_study_tag
+    from bia_integrator_core.interface import add_study_tag
     from bia_integrator_core.models import StudyTag
-    tag = StudyTag(
-        accession_id=accession_id,
-        value="2D"
-    )
-    persist_study_tag(tag)
+
+    add_study_tag(accession_id, "2D")
 
     tags = get_study_tags(accession_id)
     assert "2D" in tags

@@ -4,7 +4,7 @@ from typing import List, Set
 from openapi_client import models as api_models
 from .config import settings
 from .study import get_study, update_study
-from .image import get_image
+from .image import get_image, update_image
 
 logger = logging.getLogger(__name__)
 
@@ -19,44 +19,32 @@ def get_study_tags(study_accession_id: str) -> Set[str]:
     """Load study tags from disk and return."""
 
     study = get_study(study_accession_id)
-    return study.tags
+    return set(study.tags.keys())
 
 
 def get_image_annotations(image_uuid: str) -> List[api_models.ImageAnnotation]:
     """Load image annotations from disk and return."""
     image = get_image(image_uuid)
     return image.annotations
-  
 
-def persist_study_annotation(annotation: api_models.StudyAnnotation):
+
+def persist_study_annotation(study_uuid: str, annotation: api_models.StudyAnnotation):
     """Save the given annotation to disk."""
-
-    annotation_dirpath = settings.annotations_dirpath/annotation.accession_id
-    annotation_dirpath.mkdir(exist_ok=True, parents=True)
-
-    annotation_fpath = annotation_dirpath/f"{annotation.key}.json"
-
-    logger.info(f"Writing study annotation to {annotation_fpath}")
-    with open(annotation_fpath, "w") as fh:
-        fh.write(annotation.json(indent=2))
+    study = get_study(study_uuid)
+    study.annotations.append(annotation)
+    update_study(study)
 
 
-def persist_image_annotation(annotation: api_models.ImageAnnotation):
+def persist_image_annotation(image_uuid: str, annotation: api_models.ImageAnnotation):
     """Save the given image annotation to disk."""
 
-    annotation_dirpath = settings.annotations_dirpath/annotation.accession_id/annotation.image_id
-    annotation_dirpath.mkdir(exist_ok=True, parents=True)
+    img = get_image(image_uuid)
+    img.annotations.append(annotation)
+    update_image(img)
 
-    annotation_fpath = annotation_dirpath/f"{annotation.key}.json"
-
-    logger.info(f"Writing image annotation to {annotation_fpath}")
-    with open(annotation_fpath, "w") as fh:
-        fh.write(annotation.json(indent=2))
-
-
-def add_study_tag(study_accession: str, tag_name: str, tag_value: str):
+def add_study_tag(study_accession: str, tag_name: str):
     """Save the given study tag to disk."""
 
     study = get_study(study_accession)
-    study.tags[tag_name] = tag_value
+    study.tags[tag_name] = 1
     update_study(study)

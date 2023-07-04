@@ -7,7 +7,7 @@ from .annotation import (
     get_study_annotations,
     persist_study_annotation,
     persist_image_annotation,
-    persist_study_tag,
+    add_study_tag,
     get_study_tags,
     get_image_annotations,
 )
