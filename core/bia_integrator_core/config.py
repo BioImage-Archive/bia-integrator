@@ -3,13 +3,14 @@ from pathlib import Path
 
 from pydantic import BaseSettings
 from typing import Optional
-from openapi_client import Configuration
+from openapi_client import Configuration, ApiClient
+from openapi_client.api import DefaultApi
 
 
 class Settings(BaseSettings):
-    data_dirpath: Path = Path.home()/".bia-integrator-data"
-    api_host = "http://45.88.80.182:8080"
-    _api_client: Optional[Configuration] = None
+    #data_dirpath: Path = Path.home()/".bia-integrator-data"
+    api_host = "http://localhost:8080"
+    bia_api: Optional[DefaultApi] = None
 
     @property
     def studies_dirpath(self):
@@ -37,11 +38,13 @@ class Settings(BaseSettings):
 
     @property
     def api_client(self) -> Configuration:
-        if not self._api_client:
-            self._api_client = Configuration(
+        if not self.bia_api:
+            config = Configuration(
                 host = self.api_host
             )
+            api_client = ApiClient(configuration=config)
+            self.bia_api = DefaultApi(api_client=api_client)
         
-        return self._api_client
+        return self.bia_api
 
 settings = Settings()

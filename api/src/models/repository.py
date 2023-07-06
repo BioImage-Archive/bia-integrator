@@ -12,7 +12,7 @@ import json
 import os
 
 def get_db() -> AsyncIOMotorCollection:
-    mongo_connstring = os.environ["DOCKER_CONNSTRING"]
+    mongo_connstring = os.environ["MONGO_CONNSTRING"]
     client = AsyncIOMotorClient(mongo_connstring, uuidRepresentation='standard')
     return client.bia_integrator.bia_integrator
 
@@ -37,7 +37,7 @@ async def _study_assets_find(study_uuid: UUID, start_uuid: UUID | None, limit: i
         }
 
     docs = []
-    async for doc in get_db().find(mongo_query, limit=limit):
+    async for doc in get_db().find(mongo_query, limit=limit, sort=[("uuid", 1)]):
         docs.append(fn_model_factory(**doc))
     
     return docs
@@ -133,6 +133,24 @@ async def persist_doc(doc_model: models.DocumentMixin) -> Any:
         return await get_db().insert_one(doc_model.dict())
     except pymongo.errors.DuplicateKeyError as e:
         raise exceptions.InvalidUpdateException(str(e))
+
+async def search_studies(query: dict, start_uuid: UUID | None = None, limit: int = 100) -> List[models.BIAStudy]:
+    studies = []
+
+    query["model.type_name"] = "BIAStudy"
+    if start_uuid:
+        query["uuid"] = {
+            "$gt": start_uuid
+        }
+    #else:
+    #    query["uuid"] = {
+    #        "$gt": UUID(int=0)
+    #    }
+
+    async for obj_study in get_db().find(query, limit=limit, sort=[("uuid", 1)]):
+        studies.append(models.BIAStudy(**obj_study))
+    
+    return studies
 
 async def persist_docs(doc_models: List[models.DocumentMixin], insert_errors_by_uuid = {}) -> List[api_models.BulkOperationItem]:
     """

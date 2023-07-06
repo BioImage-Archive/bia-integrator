@@ -102,6 +102,7 @@ Class | Method | HTTP request | Description
 *DefaultApi* | [**health_check_admin_health_check_get**](docs/DefaultApi.md#health_check_admin_health_check_get) | **GET** /admin/health-check | Health Check
 *DefaultApi* | [**search_collections_api_collections_get**](docs/DefaultApi.md#search_collections_api_collections_get) | **GET** /api/collections | Search Collections
 *DefaultApi* | [**search_images_api_search_images_get**](docs/DefaultApi.md#search_images_api_search_images_get) | **GET** /api/search/images | Search Images
+*DefaultApi* | [**search_studies_api_search_studies_get**](docs/DefaultApi.md#search_studies_api_search_studies_get) | **GET** /api/search/studies | Search Studies
 *DefaultApi* | [**study_refresh_counts_api_private_studies_study_uuid_refresh_counts_post**](docs/DefaultApi.md#study_refresh_counts_api_private_studies_study_uuid_refresh_counts_post) | **POST** /api/private/studies/{study_uuid}/refresh_counts | Study Refresh Counts
 *DefaultApi* | [**update_file_reference_api_private_file_references_single_patch**](docs/DefaultApi.md#update_file_reference_api_private_file_references_single_patch) | **PATCH** /api/private/file_references/single | Update File Reference
 *DefaultApi* | [**update_image_api_private_images_single_patch**](docs/DefaultApi.md#update_image_api_private_images_single_patch) | **PATCH** /api/private/images/single | Update Image

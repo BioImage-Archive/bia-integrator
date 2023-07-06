@@ -21,6 +21,7 @@ Method | HTTP request | Description
 [**health_check_admin_health_check_get**](DefaultApi.md#health_check_admin_health_check_get) | **GET** /admin/health-check | Health Check
 [**search_collections_api_collections_get**](DefaultApi.md#search_collections_api_collections_get) | **GET** /api/collections | Search Collections
 [**search_images_api_search_images_get**](DefaultApi.md#search_images_api_search_images_get) | **GET** /api/search/images | Search Images
+[**search_studies_api_search_studies_get**](DefaultApi.md#search_studies_api_search_studies_get) | **GET** /api/search/studies | Search Studies
 [**study_refresh_counts_api_private_studies_study_uuid_refresh_counts_post**](DefaultApi.md#study_refresh_counts_api_private_studies_study_uuid_refresh_counts_post) | **POST** /api/private/studies/{study_uuid}/refresh_counts | Study Refresh Counts
 [**update_file_reference_api_private_file_references_single_patch**](DefaultApi.md#update_file_reference_api_private_file_references_single_patch) | **PATCH** /api/private/file_references/single | Update File Reference
 [**update_image_api_private_images_single_patch**](DefaultApi.md#update_image_api_private_images_single_patch) | **PATCH** /api/private/images/single | Update Image
@@ -1130,6 +1131,75 @@ No authorization required
 ### HTTP request headers
 
  - **Content-Type**: application/json
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **search_studies_api_search_studies_get**
+> List[BIAStudy] search_studies_api_search_studies_get(start_uuid=start_uuid, limit=limit)
+
+Search Studies
+
+@TODO: Define search criteria for the general case
+
+### Example
+
+```python
+import time
+import os
+import openapi_client
+from openapi_client.models.bia_study import BIAStudy
+from openapi_client.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = openapi_client.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with openapi_client.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = openapi_client.DefaultApi(api_client)
+    start_uuid = 'start_uuid_example' # str |  (optional)
+    limit = 10 # int |  (optional) (default to 10)
+
+    try:
+        # Search Studies
+        api_response = api_instance.search_studies_api_search_studies_get(start_uuid=start_uuid, limit=limit)
+        print("The response of DefaultApi->search_studies_api_search_studies_get:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling DefaultApi->search_studies_api_search_studies_get: %s\n" % e)
+```
+
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **start_uuid** | **str**|  | [optional] 
+ **limit** | **int**|  | [optional] [default to 10]
+
+### Return type
+
+[**List[BIAStudy]**](BIAStudy.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
  - **Accept**: application/json
 
 ### HTTP response details

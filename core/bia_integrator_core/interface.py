@@ -22,12 +22,16 @@ from .representation import persist_image_representation, get_representations
 logger = logging.getLogger(__name__)
 
 
-def get_all_study_identifiers() -> List[str]:
+def get_all_study_identifiers() -> List[api_models.BIAStudy]:
     """Return a list of all accession identifiers of studies."""
 
     raise Exception("TODO: Doesn't exist in api at the moment")
 
     return [fp.stem for fp in settings.studies_dirpath.iterdir()]
+
+def get_all_studies() -> List[api_models.BIAStudy]:
+    studies = settings.api_client.search_studies_api_search_studies_get(limit=10**6)
+    return studies
 
 def to_uuid(uuid_or_alternative: str | UUID, fn_fetch_object):
     if type(uuid_or_alternative) is UUID:

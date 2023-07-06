@@ -9,17 +9,9 @@ logging.basicConfig(level=logging.INFO)
 
 import typer
 
-from bia_integrator_core.models import (
-    StudyAnnotation,
-    BIAImageRepresentation,
-    ImageAnnotation,
-    BIACollection,
-    StudyTag
-)
-
 from bia_integrator_core.interface import (
     get_study,
-    get_all_study_identifiers,
+    get_all_studies,
     get_image,
     get_images_for_study,
     get_study_annotations,
@@ -164,9 +156,10 @@ def show(accession_id: str):
 
 @studies_app.command("list")
 def list():
-    studies = get_all_study_identifiers()
+    studies = get_all_studies()
+    study_accnos = [study.accession_id for study in studies]
 
-    typer.echo('\n'.join(sorted(studies)))
+    typer.echo('\n'.join(sorted(study_accnos)))
 
 
 @annotations_app.command("list-studies")

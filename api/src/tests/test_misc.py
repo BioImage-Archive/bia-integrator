@@ -60,7 +60,7 @@ def test_fetch_image_by_alias(api_client: TestClient, existing_study, uuid: str)
         "name": f"{uuid}_test_2"
     }
 
-    rsp = api_client.get(f"/api/images_by_aliases", params={
+    rsp = api_client.get(f"/api/study/{existing_study['uuid']}/images_by_aliases", params={
         'aliases': [f"{uuid}_test_1", f"{uuid}_test_2"]
     })
     assert rsp.status_code == 200

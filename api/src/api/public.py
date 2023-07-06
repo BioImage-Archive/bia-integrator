@@ -42,6 +42,13 @@ async def get_study_file_references(
     ) -> List[db_models.FileReference]:
     return await repository.file_references_for_study(study_uuid, start_uuid, limit)
 
+@router.get("/search/studies")
+async def search_studies(start_uuid: UUID | None = None, limit : Annotated[int, Query(gt=0)] = 10) -> List[db_models.BIAStudy]:
+    """
+    @TODO: Define search criteria for the general case
+    """
+    return await repository.search_studies({}, start_uuid, limit)
+
 @router.get("/search/images")
 async def search_images(
         alias: Optional[str] = None,

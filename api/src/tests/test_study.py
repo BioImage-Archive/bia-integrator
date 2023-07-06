@@ -5,7 +5,7 @@ def test_create_study(api_client: TestClient, uuid: str):
     study = {
         "uuid": uuid,
         "version": 0,
-        'accession_id': '123',
+        'accession_id': uuid,
         "title": "Test BIA study",
         "description": "description",
         "authors": [{
@@ -79,7 +79,7 @@ def test_update_study_wrong_version(api_client: TestClient, uuid: str):
     study = {
         "uuid": uuid,
         "version": 0,
-        'accession_id': '123',
+        'accession_id': uuid,
         "title": "Test BIA study",
         "description": "description",
         "authors": [{
@@ -126,7 +126,7 @@ def test_update_study_not_created(api_client: TestClient, uuid: str):
         study = {
             "uuid": uuid,
             "version": i,
-            'accession_id': '123',
+            'accession_id': uuid,
             "title": "Test BIA study",
             "description": "description",
             "authors": [{
@@ -178,3 +178,17 @@ def test_update_study_children_counts(api_client: TestClient, existing_study):
     existing_study = get_study(api_client, existing_study['uuid'])
     assert existing_study['file_references_count'] == 10
     assert existing_study['images_count'] == 5
+
+def test_search_studies_fetch_all(api_client: TestClient):
+    # workaround for not starting with a clean db
+    rsp = api_client.get(f"/api/search/studies?limit={1000}")
+    assert rsp.status_code == 200
+    initial_studies_count = len(rsp.json())
+    assert initial_studies_count
+
+    for _ in range(5):
+        make_study(api_client)
+    
+    rsp = api_client.get(f"/api/search/studies?limit={1000}")
+    assert rsp.status_code == 200
+    assert len(rsp.json()) - initial_studies_count == 5

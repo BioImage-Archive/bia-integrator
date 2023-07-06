@@ -10,8 +10,35 @@ docker inspect   -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $C
 
 ## Indexes
 ```
-use bia_integrator
-db.bia_integrator.createIndex({'uuid': 1}, {unique: true})
+use bia_integrator;
+db.bia_integrator.createIndex(
+    {'uuid': 1},
+    {
+        'unique': true,
+        'partialFilterExpression': {
+            'model.type_name': 'BIAStudy'
+        }
+    }
+);
+db.bia_integrator.createIndex(
+    {'accession_id': 1},
+    {
+        unique: true,
+        partialFilterExpression: {
+            'model.type_name': 'BIAStudy'
+        }
+    }
+);
+db.bia_integrator.createIndex(
+    {'study_uuid': 1, 'alias': 1},
+    {
+        unique: true,
+        partialFilterExpression: {
+            'model.type_name': 'BIAImage',
+            'alias': {'$type': ["string"]}
+        }
+    }
+);
 ```
 
 ima
@@ -37,7 +64,7 @@ TODO:
 ```sh
 # starting the api
 docker login ghcr.io
-docker compose --env-file ./.env up
+docker compose --env-file ./.env_compose up
 
 # docs available at http://localhost:8080/redoc
 ```

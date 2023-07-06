@@ -63,7 +63,7 @@ def make_study(api_client: TestClient, study_attributes_override = {}):
     study = {
         "uuid": uuid,
         "version": 0,
-        "accession_id": '123',
+        "accession_id": uuid,
         "title": "Test BIA study",
         "description": "description",
         "authors": [{
