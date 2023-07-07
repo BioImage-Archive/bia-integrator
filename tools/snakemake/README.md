@@ -37,4 +37,4 @@ Snakefile to implement BIA integrator snakemake workflow.
     2. Run command from of bia-integrator/tools/snakemake:
         snakemake --cores 6 work_dir/final_output_${ACCNO}.log
 
-![Schematic of workflow DAG](bia_integrator_snakemake_workflow.png)
+![Schematic of workflow DAG](bia_integrator_workflow.png)
