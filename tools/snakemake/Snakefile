@@ -1,18 +1,38 @@
 """
+
     To run this script the following are needed:
     1. export accession id of submission e.g. 
         export ACCNO="S-BIAD679"
-    2. env variables for convert_to_zarr
-        export bioformats2raw_java_home=/home/kola/miniconda3/envs/bia/
-        export bioformats2raw_bin=/home/kola/miniconda3/envs/bia/bin/bioformats2raw
-        export AWS_PROFILE=embassy && export AWS_SHARED_CREDENTIALS_FILE=/home/kola/.aws/embassy_s3_credentials && export AWS_CONFIG_FILE=/home/kola/.aws/embassy_s3_config
-        export BIA_INTEGRATOR_TOOLS_SCRIPT_DIR="/homes/aybuke/code/bia-integrator/tools/scripts/"
+    2. env variables for convert_to_zarr e.g.
+        export bioformats2raw_java_home=/miniconda3/envs/bia/
+        export bioformats2raw_bin=/miniconda3/envs/bia/bin/bioformats2raw
+    3. AWS S3 credentials for upload to Embassy s3 e.g.
+        export AWS_PROFILE=embassy 
+        export AWS_SHARED_CREDENTIALS_FILE=/.aws/embassy_s3_credentials
+        export AWS_CONFIG_FILE=/.aws/embassy_s3_config
+       OR
+        export AWS_ACCESS_KEY_ID=XXXXXXXXXXXXXXXXXXXXX
+        export AWS_SECRET_ACCESS_KEY=abcdefgh1234567890
 
-    # Activate virtual environment containing snakemake tools
+    The following are required if using Singularity container e.g.
+    1. export SINGULARITY_CONTAINER_PATH="/singularity/bia_v1.2.1.sif"
+    2. export CONTAINER_COMMAND_PREFIX="conda run -n bia"
+
+    The following are optional depending on your setup:
+    1. Overrides for default storage (esp. if running on EBI clusters) e.g.
+        export data_dirpath=/hps/nobackup/.bia-integrator-data/
+        export cache_root_dirpath=/hps/nobackup/.cache/bia-converter
+
+    2. Override default location of bia-integrator scripts:
+        export BIA_INTEGRATOR_TOOLS_SCRIPT_DIR="/bia-integrator/tools/scripts/"
+    3. Override default (6) number of images to convert:
+        export BIA_INTEGRATOR_N_IMAGES_TO_CONVERT=3
+
+    To run workflow
+    1. Activate virtual environment containing snakemake tools:
         source ${BIA_INTEGRATOR_TOOLS_SCRIPT_DIR}../venv/bin/activate
-    
-    run command example at the snakemake directory under the BIA_INTEGRATOR_TOOLS_SCRIPT_DIR:
-        snakemake --cores 3 work_dir/final_output_${ACCNO}.log
+    2. Run command from of bia-integrator/tools/snakemake:
+        snakemake --cores 6 work_dir/final_output_${ACCNO}.log
 
 """
 
@@ -22,8 +42,11 @@ import re
 import subprocess
 import os
 
-# ToDo: use variable for work_dir
+# Set directory for artefacts
 work_dir = "work_dir/" + os.environ["ACCNO"]
+
+# Get number of images to convert to zarr format
+n_images_to_convert = os.environ.get("BIA_INTEGRATOR_N_IMAGES_TO_CONVERT", 6)
 
 # Prefix to append when running in singularity container
 command_prefix = os.environ.get("CONTAINER_COMMAND_PREFIX", "")
@@ -129,8 +152,8 @@ rule generate_image_size_annotations:
         "{command_prefix} python {script_dir}/generate_image_download_size_annotations.py $ACCNO 2>&1 | tee {output}"
 
 # Get image_representations dynamically
-# It only does it for the first 6. Change the first line of the shell code if 
-# you want any other number or all of them to be converted in the next rule.
+# By default only first 6. Use BIA_INTEGRATOR_N_IMAGES_TO_CONVERT 
+# environment variable if you want any other number or all of them
 checkpoint get_image_reps_to_convert:
     input: work_dir + "/generate_image_size_annotations.log"
     output:
@@ -139,7 +162,7 @@ checkpoint get_image_reps_to_convert:
         singularity_container_path
     shell:
         """
-            head -n 6 {input} | grep "json" > {input}.temp
+            grep "json" {input} | head -n {n_images_to_convert} > {input}.temp
             OUTPUT_DIR='{output.im_rep_dir}'
             REGEX="([0-9|a-z]+-[0-9|a-z]+-[0-9|a-z]+-[0-9|a-z]+-[0-9|a-z]+)"
             mkdir $OUTPUT_DIR
