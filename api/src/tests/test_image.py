@@ -127,6 +127,20 @@ def test_add_image_representation_missing_image(api_client: TestClient, existing
     rsp = api_client.post(f"/api/private/images/00000000-0000-0000-0000-000000000000/representations/single", json=representation)
     assert rsp.status_code == 404, rsp.json()
 
+def test_study_with_images_and_filerefs_fetch_images(api_client: TestClient, existing_study: dict):
+    """
+    Images and filerefs go through the same code path mostly but are different. Check they are filtered properly
+    Initially found as a bug
+    """
+    images = make_images(api_client, existing_study, 2)
+    images_created = set([img['uuid'] for img in images])
+    make_file_references(api_client, existing_study, 2)
+
+    rsp = api_client.get(f"/api/{existing_study['uuid']}/images")
+    assert rsp.status_code == 200
+    images_fetched = set([img['uuid'] for img in rsp.json()])
+    assert images_fetched == images_created
+
 def test_image_pagination(api_client: TestClient, existing_study: dict):
     images = make_images(api_client, existing_study, 5)
     images.sort(key=lambda img: UUID(img['uuid']).hex)

@@ -37,7 +37,7 @@ class Settings(BaseSettings):
         return self.data_dirpath/"collections"
 
     @property
-    def api_client(self) -> Configuration:
+    def api_client(self) -> DefaultApi:
         if not self.bia_api:
             config = Configuration(
                 host = self.api_host

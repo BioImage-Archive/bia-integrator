@@ -14,10 +14,7 @@ use bia_integrator;
 db.bia_integrator.createIndex(
     {'uuid': 1},
     {
-        'unique': true,
-        'partialFilterExpression': {
-            'model.type_name': 'BIAStudy'
-        }
+        'unique': true
     }
 );
 db.bia_integrator.createIndex(
@@ -40,8 +37,6 @@ db.bia_integrator.createIndex(
     }
 );
 ```
-
-ima
 
 viewing old versions of documents/document changes
 

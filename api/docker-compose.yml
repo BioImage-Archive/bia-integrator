@@ -24,7 +24,7 @@ services:
     expose:
       - 8000
     volumes:
-      - "./.env:/integrator-api/.env"
+      - "./.env_compose:/integrator-api/.env"
 
     #networks:
     #  bia-integrator:

@@ -22,9 +22,10 @@ async def file_references_for_study(*args, **kwargs) -> List[models.FileReferenc
 async def images_for_study(*args, **kwargs) -> List[models.BIAImage]:
     return await _study_assets_find(*args, fn_model_factory=models.BIAImage, **kwargs)
 
-async def _study_assets_find(study_uuid: UUID, start_uuid: UUID | None, limit: int, fn_model_factory: Any) -> models.DocumentMixin:
+async def _study_assets_find(study_uuid: UUID, start_uuid: UUID | None, limit: int, fn_model_factory: models.BIABaseModel) -> models.DocumentMixin:
     mongo_query = {
-        'study_uuid': study_uuid
+        'study_uuid': study_uuid,
+        'model.type_name': fn_model_factory.__name__
     }
     if start_uuid:
         mongo_query['uuid'] = {
@@ -55,7 +56,7 @@ async def _get_doc_raw(id : str | ObjectId = None, **kwargs) -> Any:
 async def _get_docs_raw(query) -> Any:
     return await get_db().find(query)
 
-async def get_object_info(query: dict) -> api_models.ObjectInfo:
+async def get_object_info(query: dict) -> List[api_models.ObjectInfo]:
     object_info_projection = {
         'uuid': 1,
         'model': 1
