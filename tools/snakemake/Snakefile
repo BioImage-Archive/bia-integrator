@@ -169,6 +169,9 @@ checkpoint get_image_reps_to_convert:
             while read line; do if [[ $line =~ $REGEX ]]; then touch "$OUTPUT_DIR/${{BASH_REMATCH[1]}}"; fi; done < {input}.temp
         """
 
+# This step of the pipeline runs N (default 6) independent jobs. Some
+# of these may fail. The pipeline will continue regardless of failure
+# as long as at least one independent job completed successfully
 rule convert_to_zarr_and_upload:
     input:
         im_ref = work_dir + "/im_reps/{i,[a-z|\d|-]+}"
@@ -178,27 +181,52 @@ rule convert_to_zarr_and_upload:
         singularity_container_path
     shell:
         """
+            # Manipulate exit status to allow continuation in event of error
+            # See https://snakemake.readthedocs.io/en/stable/project_info/faq.html#my-shell-command-fails-with-exit-code-0-from-within-a-pipe-what-s-wrong
+            set +e
             IM_REF=$(basename {input.im_ref})
             {command_prefix} python {script_dir}/convert_to_zarr_and_upload.py $ACCNO $IM_REF > {output.im_ref}
+
+            exitcode=$?
+            if [ $exitcode -eq 0 ]
+            then
+                touch {output.im_ref}.success
+            fi
+            touch {output.im_ref}
+            exit 0
         """
 # The command for this rule could be placed in convert_to_zarr_and_upload
 # but putting it here to make the steps involved clearer
 rule generate_thumbnails:
     input:
-        work_dir + "/im_reps_output/{i,[a-z|\d|-]+}"
+        work_dir + "/im_reps_output/{i,[a-z|\d|-]+[^\.success]}"
     output:
         work_dir + "/gen_thumb_output/{i}"
     singularity:
         singularity_container_path
     shell:
         """
-            IM_REF=$(basename {input})
-            {command_prefix} python {script_dir}/generate_thumbnail.py $ACCNO $IM_REF > {output}
+            # Allow continuation in event of error - see comments in
+            # rule 'convet_to_zarr_and_upload' above
+            set +e
+            if [ -f {input}.success ]
+            then
+                IM_REF=$(basename {input})
+                {command_prefix} python {script_dir}/generate_thumbnail.py $ACCNO $IM_REF > {output}
+                
+                exitcode=$?
+                if [ $exitcode -eq 0 ]
+                then
+                    touch {output}.success
+                fi
+            fi
+            touch {output}
+            exit 0
         """
 def aggregate_converted_im_reps(wildcards):
     """Return converted image_representations"""
     checkpoint_output = checkpoints.get_image_reps_to_convert.get(**wildcards).output[0]
-    im_reps_paths = expand(work_dir + "/gen_thumb_output/{i}", i=glob_wildcards(os.path.join(checkpoint_output, '{i,[a-z|\d|-]+}')).i)
+    im_reps_paths = expand(work_dir + "/gen_thumb_output/{i}", i=glob_wildcards(os.path.join(checkpoint_output, '{i,[a-z|\d|-]+[^\.success]}')).i)
     return im_reps_paths
 
 rule generate_representative_image:
@@ -216,7 +244,7 @@ rule generate_representative_image:
         singularity_container_path
     shell:
         """
-            IM_REF=$(basename "{input}")
+            IM_REF=$(basename -s .success {input} | head -n 1)
             {command_prefix} python {script_dir}/generate_representative_image_and_set_to_default.py $ACCNO $IM_REF > {output}
         """
 
