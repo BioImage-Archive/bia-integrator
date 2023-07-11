@@ -35,6 +35,6 @@ Snakefile to implement BIA integrator snakemake workflow.
     1. Activate virtual environment containing snakemake tools:
         source ${BIA_INTEGRATOR_TOOLS_SCRIPT_DIR}../venv/bin/activate
     2. Run command from of bia-integrator/tools/snakemake:
-        snakemake --cores 6 work_dir/final_output_${ACCNO}.log
+        snakemake --cores 6 work_dir/${ACCNO}/final_output_${ACCNO}.log
 
 ![Schematic of workflow DAG](bia_integrator_workflow.png)
