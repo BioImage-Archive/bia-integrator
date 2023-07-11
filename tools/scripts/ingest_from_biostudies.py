@@ -100,7 +100,17 @@ def study_links_from_submission(submission: Submission) -> dict:
     return links
 
 
-def imaging_method_from_submission(submission: Submission) -> str:
+def _get_with_case_insensitive_key(dictionary: dict, key: str) -> str:
+    keys = [k.lower() for k in dictionary.keys()]
+    temp_key = key.lower()
+    if temp_key in keys:
+        key_index = keys.index(temp_key)
+        temp_key = list(dictionary.keys())[key_index]
+        return dictionary[temp_key]
+    else:
+        raise KeyError(f"{key} not in {dictionary.keys()}")
+
+def get_from_submission(submission: Submission, key: str) -> str:
 
     study_components = [
         section
@@ -109,12 +119,34 @@ def imaging_method_from_submission(submission: Submission) -> str:
     ]
 
     if len(study_components):
-        study_component_attr_dict = attributes_to_dict(study_components[0].attributes)
-        imaging_method = study_component_attr_dict.get('Imaging Method', "Unknown")
-    else:
-        imaging_method = "Unknown"
+        for study_component in study_components:
+            study_component_attr_dict = attributes_to_dict(study_component.attributes)
+            try:
+                imaging_method = _get_with_case_insensitive_key(
+                    study_component_attr_dict, key
+                )
+                return imaging_method
+            except KeyError:
+                continue
+    
+    # Check other subsections
+    other_subsections = [
+        section
+        for section in submission.section.subsections
+        if section.type != 'Study Component'
+    ]
 
-    return imaging_method
+    if len(other_subsections):
+        for other_subsection in other_subsections:
+            other_subsection_attr_dict = attributes_to_dict(other_subsection.attributes)
+            try:
+                imaging_method = _get_with_case_insensitive_key(
+                    other_subsection_attr_dict, key
+                )
+                return imaging_method
+            except KeyError:
+                continue
+    return "Unknown"
 
 
 def bst_submission_to_bia_study(submission: Submission) -> BIAStudy:
@@ -123,7 +155,8 @@ def bst_submission_to_bia_study(submission: Submission) -> BIAStudy:
     filerefs_list = filerefs_from_bst_submission(submission)
     filerefs_dict = {fileref.id: fileref for fileref in filerefs_list}
     study_title = study_title_from_submission(submission)
-    imaging_method = imaging_method_from_submission(submission)
+    imaging_method = get_from_submission(submission, "Imaging Method")
+    organism = get_from_submission(submission, "Organism")
 
     study_section_attr_dict = attributes_to_dict(submission.section.attributes)
     submission_attr_dict = attributes_to_dict(submission.attributes)
@@ -133,7 +166,7 @@ def bst_submission_to_bia_study(submission: Submission) -> BIAStudy:
         authors=find_authors_in_submission(submission),
         release_date=submission_attr_dict['ReleaseDate'],
         description=study_section_attr_dict['Description'],
-        organism=study_section_attr_dict.get('Organism', "Unknown"),
+        organism=organism,
         license=study_section_attr_dict.get('License', "CC0"),
         links=study_links_from_submission(submission),
         imaging_type=imaging_method,
