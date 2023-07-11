@@ -6,7 +6,9 @@ from bia_integrator_core.models import BIAImageRepresentation, StudyAnnotation, 
 from bia_integrator_core.interface import persist_image_representation, persist_study_annotation
 from bia_integrator_tools.utils import get_ome_ngff_rep_by_accession_and_image, get_example_image_uri
 from bia_integrator_tools.io import copy_local_to_s3
-from bia_integrator_tools.rendering import NGFFProxyImage, render_proxy_image
+from bia_integrator_tools.rendering import (
+    NGFFProxyImage, render_proxy_image, generate_padded_thumbnail_from_ngff_uri
+)
 
 logger = logging.getLogger(__file__)
 
@@ -24,9 +26,9 @@ def main(accession_id, image_id):
         return
     
     ome_ngff_rep = get_ome_ngff_rep_by_accession_and_image(accession_id, image_id)
-    proxy_im = NGFFProxyImage(ome_ngff_rep.uri)
-    im = render_proxy_image(proxy_im)
-    w, h = im.size
+    w = 512
+    h = 512
+    im = generate_padded_thumbnail_from_ngff_uri(ome_ngff_rep.uri, dims=(w,h))
     dst_key = f"{accession_id}/{image_id}/{image_id}-representative-{w}-{h}.png"
 
     with tempfile.NamedTemporaryFile(suffix=".png") as fh:
