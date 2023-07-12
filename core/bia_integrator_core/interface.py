@@ -46,15 +46,18 @@ def to_uuid(uuid_or_alternative: str | UUID, fn_fetch_object):
     else:
         raise Exception("Should never reach this")
 
-def get_image(accession_id: str, image_uuid: str) -> api_models.BIAImage:
+def get_image_by_uuid(image_uuid: str) -> api_models.BIAImage:
     """Get the given image from the study with the given accession identifier."""
 
-    study = load_and_annotate_study(accession_id)
+    img = settings.api_client.get_image_api_images_image_uuid_get(image_uuid)
 
-    images_with_accession = [image for image in study.images if image.uuid == image_uuid]
-    assert len(images_with_accession) == 1
+    return img
 
-    return images_with_accession[0]
+def get_image_by_alias(study_accno: str, img_alias: str) -> api_models.BIAImage:
+    images = settings.api_client.get_study_images_by_alias_api_study_study_accession_images_by_aliases_get(study_accession=study_accno, aliases=[img_alias])
+    assert len(images) == 1
+
+    return images.pop()
 
 # DELETEME: workaround to deprecate get_images_for_study
 get_images_for_study = get_images

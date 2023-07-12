@@ -28,7 +28,8 @@ def existing_file_reference(api_client: TestClient, existing_study: dict):
         "type": "file",
         "study_uuid": existing_study['uuid'],
         "name": "test",
-        "uri": "https://test.com/test"
+        "uri": "https://test.com/test",
+        "size_bytes": 100
     }
 
     rsp = api_client.post('/api/private/file_references', json=[file_reference])

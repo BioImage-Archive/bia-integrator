@@ -130,7 +130,7 @@ class FileReference(BIABaseModel, DocumentMixin):
     name: str = Field()
     uri: str = Field()
     type: str = Field()
-    size_bytes: Optional[int] = Field(default=None)
+    size_bytes: int = Field()
     attributes: Dict = Field(default={})
 
     class Config(BaseConfig):

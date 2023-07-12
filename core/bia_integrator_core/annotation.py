@@ -19,7 +19,7 @@ def get_study_tags(study_accession_id: str) -> Set[str]:
     """Load study tags from disk and return."""
 
     study = get_study(study_accession_id)
-    return set(study.tags.keys())
+    return set(study.tags)
 
 
 def get_image_annotations(image_uuid: str) -> List[api_models.ImageAnnotation]:
@@ -46,5 +46,5 @@ def add_study_tag(study_accession: str, tag_name: str):
     """Save the given study tag to disk."""
 
     study = get_study(study_accession)
-    study.tags[tag_name] = 1
+    study.tags.append(tag_name)
     update_study(study)

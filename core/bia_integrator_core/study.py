@@ -13,7 +13,7 @@ def get_study(accession_id: Optional[str] = None, study_uuid: Optional[str] = No
     if not study_uuid:
         assert accession_id
 
-        study_obj_info = settings.api_client.get_object_info_api_object_info_by_accessions_get([accession_id])
+        study_obj_info = settings.api_client.get_object_info_by_accession_api_object_info_by_accessions_get([accession_id])[0]
         study_uuid = study_obj_info.uuid
     bia_study = settings.api_client.get_study_api_study_uuid_get(study_uuid)
 

@@ -34,7 +34,7 @@ class FileReference(BaseModel):
     name: StrictStr = Field(...)
     uri: StrictStr = Field(...)
     type: StrictStr = Field(...)
-    size_bytes: Optional[StrictInt] = None
+    size_bytes: StrictInt = Field(...)
     attributes: Optional[Dict[str, Any]] = None
     __properties = ["_id", "uuid", "version", "model", "study_uuid", "name", "uri", "type", "size_bytes", "attributes"]
 

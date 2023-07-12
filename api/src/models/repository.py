@@ -11,10 +11,26 @@ import pymongo
 import json
 import os
 
-def get_db() -> AsyncIOMotorCollection:
+async def get_db() -> AsyncIOMotorCollection:
     mongo_connstring = os.environ["MONGO_CONNSTRING"]
-    client = AsyncIOMotorClient(mongo_connstring, uuidRepresentation='standard')
-    return client.bia_integrator.bia_integrator
+    db_client = AsyncIOMotorClient(mongo_connstring, uuidRepresentation='standard')
+
+    dbs = await db_client.list_databases()
+    dbs = [db['name'] async for db in dbs] # pull cursor items
+
+    db = db_client.bia_integrator.bia_integrator
+    if "bia_integrator" not in list(dbs):
+        "db was dropped - rebuild indexes (and views if any)"
+        await db.create_index( [ ('uuid', 1) ], unique=True )
+        await db.create_index( [ ('accession_id', 1) ], unique=True, partialFilterExpression={
+            'model.type_name': 'BIAStudy'
+        } )
+        await db.create_index( [ ('study_uuid', 1), ('alias', 1) ], unique=True, partialFilterExpression={
+            'model.type_name': 'BIAImage',
+            'alias': {'$type': ["string"]}
+        } )
+
+    return db
 
 async def file_references_for_study(*args, **kwargs) -> List[models.FileReference]:
     return await _study_assets_find(*args, fn_model_factory=models.FileReference, **kwargs)
@@ -23,6 +39,8 @@ async def images_for_study(*args, **kwargs) -> List[models.BIAImage]:
     return await _study_assets_find(*args, fn_model_factory=models.BIAImage, **kwargs)
 
 async def _study_assets_find(study_uuid: UUID, start_uuid: UUID | None, limit: int, fn_model_factory: models.BIABaseModel) -> models.DocumentMixin:
+    db = await get_db()
+    
     mongo_query = {
         'study_uuid': study_uuid,
         'model.type_name': fn_model_factory.__name__
@@ -38,32 +56,38 @@ async def _study_assets_find(study_uuid: UUID, start_uuid: UUID | None, limit: i
         }
 
     docs = []
-    async for doc in get_db().find(mongo_query, limit=limit, sort=[("uuid", 1)]):
+    async for doc in db.find(mongo_query, limit=limit, sort=[("uuid", 1)]):
         docs.append(fn_model_factory(**doc))
     
     return docs
 
 async def _get_doc_raw(id : str | ObjectId = None, **kwargs) -> Any:
+    db = await get_db()
+
     if id:
         kwargs['_id'] = id
 
     if type(kwargs.get('_id', None)) is str:
         kwargs['_id'] = ObjectId(kwargs['_id'])
     
-    doc = await get_db().find_one(kwargs)
+    doc = await db.find_one(kwargs)
     return doc
 
 async def _get_docs_raw(query) -> Any:
-    return await get_db().find(query)
+    db = await get_db()
+
+    return await db.find(query)
 
 async def get_object_info(query: dict) -> List[api_models.ObjectInfo]:
+    db = await get_db()
+
     object_info_projection = {
         'uuid': 1,
         'model': 1
     }
 
     documents = []
-    async for doc in get_db().find(query, object_info_projection):
+    async for doc in db.find(query, object_info_projection):
         documents.append(api_models.ObjectInfo(**doc))
     
     return documents
@@ -74,9 +98,11 @@ async def get_image(*args, **kwargs) -> models.BIAImage:
     return models.BIAImage(**doc)
 
 async def get_images(query) -> models.BIAImage:
+    db = await get_db()
+
     images = []
     
-    async for doc in get_db().find(query):
+    async for doc in db.find(query):
         images.append(models.BIAImage(**doc))
     
     return images
@@ -87,8 +113,10 @@ async def get_file_reference(*args, **kwargs) -> models.FileReference:
     return models.FileReference(**doc)
 
 async def _study_child_count(study_uuid: str, child_type_name: str):
+    db = await get_db()
+
     child_count = [ i async for i in
-        get_db().aggregate([
+        db.aggregate([
             {
                 "$match": {
                     "study_uuid": {
@@ -130,12 +158,15 @@ async def get_study(*args, **kwargs) -> models.BIAStudy:
     return models.BIAStudy(**doc)
 
 async def persist_doc(doc_model: models.DocumentMixin) -> Any:
+    db = await get_db()
+
     try:
-        return await get_db().insert_one(doc_model.dict())
+        return await db.insert_one(doc_model.dict())
     except pymongo.errors.DuplicateKeyError as e:
         raise exceptions.InvalidUpdateException(str(e))
 
 async def search_studies(query: dict, start_uuid: UUID | None = None, limit: int = 100) -> List[models.BIAStudy]:
+    db = await get_db()
     studies = []
 
     query["model.type_name"] = "BIAStudy"
@@ -148,7 +179,7 @@ async def search_studies(query: dict, start_uuid: UUID | None = None, limit: int
     #        "$gt": UUID(int=0)
     #    }
 
-    async for obj_study in get_db().find(query, limit=limit, sort=[("uuid", 1)]):
+    async for obj_study in db.find(query, limit=limit, sort=[("uuid", 1)]):
         studies.append(models.BIAStudy(**obj_study))
     
     return studies
@@ -157,6 +188,8 @@ async def persist_docs(doc_models: List[models.DocumentMixin], insert_errors_by_
     """
     @param insert_errors_by_uuid passed in because there might be type-specific errors
     """
+    db = await get_db()
+
     doc_dicts = []
 
     # preliminary validation
@@ -175,7 +208,7 @@ async def persist_docs(doc_models: List[models.DocumentMixin], insert_errors_by_
 
     try:
         # actual insert
-        rsp = await get_db().insert_many(doc_dicts, ordered=False)
+        rsp = await db.insert_many(doc_dicts, ordered=False)
     except pymongo.errors.BulkWriteError as e:
         doc_write_errors = [
             {
@@ -217,10 +250,12 @@ async def persist_docs(doc_models: List[models.DocumentMixin], insert_errors_by_
     return insert_results
 
 async def list_item_push(root_doc_uuid: str | UUID, location: str, new_list_item: pydantic.BaseModel):
+    db = await get_db()
+
     if isinstance(root_doc_uuid, str):
         root_doc_uuid = UUID(root_doc_uuid)
 
-    result = await get_db().update_one(
+    result = await db.update_one(
         {
             'uuid': root_doc_uuid
         },    
@@ -268,7 +303,9 @@ async def doc_dependency_verify_exists(
 
 
 async def update_doc(doc_model: models.DocumentMixin) -> Any:
-    result = await get_db().update_one(
+    db = await get_db()
+
+    result = await db.update_one(
         {
             'uuid': doc_model.uuid,
             'version': doc_model.version-1
@@ -298,6 +335,8 @@ async def persist_images(images: List[models.BIAImage]) -> None:
     pass
 
 async def search_collections(**kwargs) -> List[models.BIACollection]:
+    db = await get_db()
+
     mongo_query = {
         'model': {
             'type_name': 'BIACollection'
@@ -306,7 +345,7 @@ async def search_collections(**kwargs) -> List[models.BIACollection]:
     }
     
     collections = []
-    async for collection in get_db().find(mongo_query):
+    async for collection in db.find(mongo_query):
         collections.append(models.BIACollection(**collection))
     
     if not len(collections):

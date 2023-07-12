@@ -2,6 +2,7 @@ import logging
 from openapi_client import models as api_models
 from bia_integrator_core import models as core_models
 from bia_integrator_core.image import get_images
+from bia_integrator_core.fileref import get_filerefs
 from bia_integrator_core.annotation import get_study_annotations, get_image_annotations, get_study_tags
 from bia_integrator_core.representation import get_representations
 from bia_integrator_core.study import get_study
@@ -13,6 +14,7 @@ def load_and_annotate_study(accession_id: str) -> core_models.BIAStudy:
 
     api_study = get_study(accession_id)
     study_images = get_images(accession_id)
+    study_filerefs = get_filerefs(accession_id)
 
     # images dict indexed by image_id (uuid?)
     # annotations dict indexed by annotation_key (refactor if used, but to what? Annotations are lists in the image object, don't have accession/uuid)
@@ -23,6 +25,7 @@ def load_and_annotate_study(accession_id: str) -> core_models.BIAStudy:
         # DocumentMixin
         uuid = api_study.uuid,
         version = api_study.version,
+        model = api_study.model,
 
         # BIAStudy
         title = api_study.title,
@@ -41,7 +44,8 @@ def load_and_annotate_study(accession_id: str) -> core_models.BIAStudy:
         images_count = api_study.images_count,
 
         # extra
-        images = study_images
+        images = study_images,
+        filerefs = study_filerefs
     )
 
     """
