@@ -110,7 +110,7 @@ def _get_with_case_insensitive_key(dictionary: dict, key: str) -> str:
     else:
         raise KeyError(f"{key} not in {dictionary.keys()}")
 
-def get_from_submission(submission: Submission, key: str) -> str:
+def get_from_subsection(submission: Submission, key: str) -> str:
 
     study_components = [
         section
@@ -122,10 +122,10 @@ def get_from_submission(submission: Submission, key: str) -> str:
         for study_component in study_components:
             study_component_attr_dict = attributes_to_dict(study_component.attributes)
             try:
-                imaging_method = _get_with_case_insensitive_key(
+                value = _get_with_case_insensitive_key(
                     study_component_attr_dict, key
                 )
-                return imaging_method
+                return value
             except KeyError:
                 continue
     
@@ -140,10 +140,10 @@ def get_from_submission(submission: Submission, key: str) -> str:
         for other_subsection in other_subsections:
             other_subsection_attr_dict = attributes_to_dict(other_subsection.attributes)
             try:
-                imaging_method = _get_with_case_insensitive_key(
+                value = _get_with_case_insensitive_key(
                     other_subsection_attr_dict, key
                 )
-                return imaging_method
+                return value
             except KeyError:
                 continue
     return "Unknown"
@@ -155,11 +155,15 @@ def bst_submission_to_bia_study(submission: Submission) -> BIAStudy:
     filerefs_list = filerefs_from_bst_submission(submission)
     filerefs_dict = {fileref.id: fileref for fileref in filerefs_list}
     study_title = study_title_from_submission(submission)
-    imaging_method = get_from_submission(submission, "Imaging Method")
-    organism = get_from_submission(submission, "Organism")
+    imaging_method = get_from_subsection(submission, "Imaging Method")
 
     study_section_attr_dict = attributes_to_dict(submission.section.attributes)
     submission_attr_dict = attributes_to_dict(submission.attributes)
+    try:
+        organism = _get_with_case_insensitive_key(study_section_attr_dict, "Organism")
+    except KeyError:
+        organism = get_from_subsection(submission, "Organism")
+
     bia_study = BIAStudy(
         accession_id=accession_id,
         title=study_title,
