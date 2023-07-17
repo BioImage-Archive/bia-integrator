@@ -268,7 +268,7 @@ def create_collection(name: str, title: str, subtitle: str, accessions_list: str
 def add_study_to_collection(collection_name: str, accession_id: str):
     collection = get_collection(collection_name)
     
-    collection.accession_ids.append(accession_id)
+    collection.study_uuids.append(accession_id)
 
     update_collection(collection)
 
