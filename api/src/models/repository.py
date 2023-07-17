@@ -342,9 +342,7 @@ async def search_collections(**kwargs) -> List[models.BIACollection]:
     db = await get_db()
 
     mongo_query = {
-        'model': {
-            'type_name': 'BIACollection'
-        },
+        'model.type_name': 'BIACollection',
         **kwargs
     }
     

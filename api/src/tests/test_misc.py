@@ -67,9 +67,14 @@ def test_fetch_image_by_alias(api_client: TestClient, existing_study, uuid: str)
     # all images with the test_1 alias suffix will get rejected
     assert len(rsp.json()) == 1
 
-def test_get_collections(api_client: TestClient, existing_collection):
+def test_get_collection(api_client: TestClient, existing_collection):
     rsp = api_client.get(f"/api/collections/{existing_collection['uuid']}")
     assert rsp.status_code == 200
     assert rsp.json() == existing_collection
+
+def test_list_collections(api_client: TestClient):
+    rsp = api_client.get("/api/collections")
+    assert rsp.status_code == 200
+    assert len(rsp.json())
 
 # should image aliases be unique?
