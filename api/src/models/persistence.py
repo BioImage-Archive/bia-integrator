@@ -40,7 +40,8 @@ class DocumentMixin(BaseModel):
     # this is the document version, not the model version
     version: int = Field()
 
-    model: ModelMetadata = Field()
+    # model is actually always set on objects, but in __init__ since that's where we are aware of child classes
+    model: Optional[ModelMetadata] = Field(default=None)
 
     def __init__(self, **data):
         if not hasattr(self.__class__.Config, 'model_version_latest'):
@@ -64,7 +65,7 @@ class DocumentMixin(BaseModel):
         else:
             # document created now, will pe persisted later - add model
             if data.get("model", None):
-                raise ValueError("Expecting models without an _id field to not have a model either")
+                raise ValueError("Expecting models that were not persisted to not have a model either")
             data["model"] = model_metadata_expected
         
         super().__init__(**data)

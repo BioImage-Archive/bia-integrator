@@ -8,7 +8,7 @@ Name | Type | Description | Notes
 **id** | **str** |  | [optional] 
 **uuid** | **str** |  | 
 **version** | **int** |  | 
-**model** | [**ModelMetadata**](ModelMetadata.md) |  | 
+**model** | [**ModelMetadata**](ModelMetadata.md) |  | [optional] 
 **study_uuid** | **str** |  | 
 **name** | **str** |  | 
 **uri** | **str** |  | 

@@ -19,6 +19,10 @@ def existing_study(api_client: TestClient):
     return make_study(api_client)
 
 @pytest.fixture(scope="function")
+def existing_collection(api_client: TestClient):
+    return make_collection(api_client)
+
+@pytest.fixture(scope="function")
 def existing_file_reference(api_client: TestClient, existing_study: dict):
     uuid = get_uuid()
 
@@ -57,6 +61,30 @@ def existing_image(api_client: TestClient, existing_study: dict):
     assert rsp.status_code == 201, rsp.json()
 
     return image
+
+def get_collection(api_client: TestClient, collection_uuid: str, assert_status_code=200):
+    rsp = api_client.get(f'/api/collections/{collection_uuid}')
+    assert rsp.status_code == assert_status_code
+
+    return rsp.json()
+
+def make_collection(api_client: TestClient, collection_attributes_override = {}):
+    uuid = get_uuid()
+    collection = {
+        "uuid": uuid,
+        "version": 0,
+        "name": "test_collection_name",
+        "title": "test_collection_title",
+        "subtitle": "test_collection_subtitle",
+        "description": "test_collection_description",
+        "study_uuids": []
+    }
+    collection |= collection_attributes_override
+
+    rsp = api_client.post('/api/private/collections', json=collection)
+    assert rsp.status_code == 201, rsp.json()
+
+    return get_collection(api_client, uuid)
 
 def make_study(api_client: TestClient, study_attributes_override = {}):
     uuid = get_uuid()
@@ -136,7 +164,7 @@ def make_file_references(api_client: TestClient, existing_study: dict, n: int, f
     return file_references
 
 def get_study(api_client: TestClient, study_uuid: str, assert_status_code=200):
-    rsp = api_client.get(f'/api/{study_uuid}')
+    rsp = api_client.get(f'/api/studies/{study_uuid}')
     assert rsp.status_code == assert_status_code
 
     return rsp.json()

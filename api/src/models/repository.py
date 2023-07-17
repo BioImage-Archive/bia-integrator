@@ -25,9 +25,9 @@ async def get_db() -> AsyncIOMotorCollection:
         await db.create_index( [ ('accession_id', 1) ], unique=True, partialFilterExpression={
             'model.type_name': 'BIAStudy'
         } )
-        await db.create_index( [ ('study_uuid', 1), ('alias', 1) ], unique=True, partialFilterExpression={
+        await db.create_index( [ ('study_uuid', 1), ('alias.name', 1) ], unique=True, partialFilterExpression={
             'model.type_name': 'BIAImage',
-            'alias': {'$type': ["string"]}
+            'alias.name': {'$exists': True}
         } )
 
     return db
@@ -96,6 +96,10 @@ async def get_object_info(query: dict) -> List[api_models.ObjectInfo]:
 async def get_image(*args, **kwargs) -> models.BIAImage:
     doc = await _get_doc_raw(*args, **kwargs)
     return models.BIAImage(**doc)
+
+async def get_collection(*args, **kwargs) -> models.BIACollection:
+    doc = await _get_doc_raw(*args, **kwargs)
+    return models.BIACollection(**doc)
 
 async def get_images(query) -> models.BIAImage:
     db = await get_db()
@@ -258,7 +262,7 @@ async def list_item_push(root_doc_uuid: str | UUID, location: str, new_list_item
     result = await db.update_one(
         {
             'uuid': root_doc_uuid
-        },    
+        },
         {
             '$push': {
                 location: new_list_item.dict()

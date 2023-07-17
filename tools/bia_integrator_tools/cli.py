@@ -3,6 +3,7 @@ from pathlib import Path
 from openapi_client import models as api_models
 from typing import Optional
 from uuid import UUID
+import time
 
 logger = logging.getLogger("biaint")
 logging.basicConfig(level=logging.INFO)
@@ -18,9 +19,11 @@ from bia_integrator_core.interface import (
     get_study_annotations,
     persist_study_annotation,
     persist_image_representation,
+    get_representations,
     persist_image_annotation,
     persist_collection,
     update_collection,
+    get_collections,
     get_study_tags,
     add_study_tag,
     get_collection,
@@ -223,23 +226,36 @@ def create_study_tag(accession_id, value):
 
 @reps_app.command("register")
 def register_image_representation(accession_id: str, image_id: str, type: str, size: int, uri: str):
-    image_uuid = to_uuid(image_id, lambda: get_image(accession_id, image_id))
-
+    img = get_image_by_alias(accession_id, image_id)
+    
     rep = api_models.BIAImageRepresentation(
         size=size,
-        uri=uri,
+        uri=[uri],
         type=type,
         dimensions=None,
         attributes={}
     )    
-    persist_image_representation(image_uuid, rep)
+    persist_image_representation(img.uuid, rep)
 
+
+@reps_app.command("list")
+def list_image_representations(accession_id: str, image_id: str):
+    img = get_image_by_alias(accession_id, image_id)
+    
+    reprs = get_representations(img.uuid)
+
+    typer.echo(reprs)
+
+@collections_app.command("list")
+def list_collections():    
+    for collection in get_collections():
+        typer.echo(collection)
 
 @collections_app.command("create")
 def create_collection(name: str, title: str, subtitle: str, accessions_list: str):    
     collection = api_models.BIACollection(
-        uuid=UUID(),
-        version=1,
+        uuid=str(UUID(int=int(time.time()*1000000))),
+        version=0,
         name=name,
         title=title,
         subtitle=subtitle,

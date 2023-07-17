@@ -7,7 +7,7 @@ Name | Type | Description | Notes
 **id** | **str** |  | [optional] 
 **uuid** | **str** |  | 
 **version** | **int** |  | 
-**model** | [**ModelMetadata**](ModelMetadata.md) |  | 
+**model** | [**ModelMetadata**](ModelMetadata.md) |  | [optional] 
 **title** | **str** |  | 
 **description** | **str** |  | 
 **authors** | [**List[Author]**](Author.md) |  | [optional] [default to []]

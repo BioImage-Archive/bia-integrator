@@ -90,7 +90,7 @@ def test_file_reference_pagination_defaults(api_client: TestClient, existing_stu
     file_references = make_file_references(api_client, existing_study, 100)
     file_references.sort(key=lambda img: UUID(img['uuid']).hex)
 
-    rsp = api_client.get(f"/api/{existing_study['uuid']}/file_references")
+    rsp = api_client.get(f"/api/studies/{existing_study['uuid']}/file_references")
     assert rsp.status_code == 200
     file_references_fetched = rsp.json()
     for file_ref in file_references_fetched:
@@ -106,7 +106,7 @@ def test_file_reference_pagination(api_client: TestClient, existing_study: dict)
     chunk_size = 2
 
     #1,2
-    rsp = api_client.get(f"/api/{existing_study['uuid']}/file_references?limit={chunk_size}")
+    rsp = api_client.get(f"/api/studies/{existing_study['uuid']}/file_references?limit={chunk_size}")
     assert rsp.status_code == 200
     file_references_fetched = rsp.json()
     for file_ref in file_references_fetched:
@@ -117,7 +117,7 @@ def test_file_reference_pagination(api_client: TestClient, existing_study: dict)
     assert images_chunk == file_references_fetched
 
     #3,4
-    rsp = api_client.get(f"/api/{existing_study['uuid']}/file_references?start_uuid={file_references_fetched[-1]['uuid']}&limit={chunk_size}")
+    rsp = api_client.get(f"/api/studies/{existing_study['uuid']}/file_references?start_uuid={file_references_fetched[-1]['uuid']}&limit={chunk_size}")
     assert rsp.status_code == 200
     file_references_fetched = rsp.json()
     for file_ref in file_references_fetched:
@@ -128,7 +128,7 @@ def test_file_reference_pagination(api_client: TestClient, existing_study: dict)
     assert images_chunk == file_references_fetched
 
     #5
-    rsp = api_client.get(f"/api/{existing_study['uuid']}/file_references?start_uuid={file_references_fetched[-1]['uuid']}&limit={chunk_size}")
+    rsp = api_client.get(f"/api/studies/{existing_study['uuid']}/file_references?start_uuid={file_references_fetched[-1]['uuid']}&limit={chunk_size}")
     assert rsp.status_code == 200
     file_references_fetched = rsp.json()
     for file_ref in file_references_fetched:
@@ -142,7 +142,7 @@ def test_file_reference_large_page(api_client: TestClient, existing_study: dict)
     file_references = make_file_references(api_client, existing_study, 5)
     file_references.sort(key=lambda img: UUID(img['uuid']).hex)
 
-    rsp = api_client.get(f"/api/{existing_study['uuid']}/file_references?limit={10000}")
+    rsp = api_client.get(f"/api/studies/{existing_study['uuid']}/file_references?limit={10000}")
     assert rsp.status_code == 200
     file_references_fetched = rsp.json()
     for file_ref in file_references_fetched:
@@ -155,5 +155,5 @@ def test_file_reference_pagination_bad_limit(api_client: TestClient, existing_st
     file_references = make_file_references(api_client, existing_study, 5)
     file_references.sort(key=lambda img: UUID(img['uuid']).hex)
 
-    rsp = api_client.get(f"/api/{existing_study['uuid']}/file_references?limit={0}")
+    rsp = api_client.get(f"/api/studies/{existing_study['uuid']}/file_references?limit={0}")
     assert rsp.status_code == 422

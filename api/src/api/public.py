@@ -18,7 +18,10 @@ async def get_object_info_by_accession(accessions: List[str] = Query()) -> List[
     return await repository.get_object_info(query)
 
 @router.get("/study/{study_accession}/images_by_aliases")
-async def get_study_images_by_alias(study_accession: str, aliases: List[str] = Query()) -> List[db_models.BIAImage]:
+async def get_study_images_by_alias(
+        study_accession: str,
+        aliases: List[str] = Query()
+    ) -> List[db_models.BIAImage]:
     study_objects_info = await repository.get_object_info({'accession_id': study_accession})
     study_object_info = study_objects_info.pop()
 
@@ -31,11 +34,11 @@ async def get_study_images_by_alias(study_accession: str, aliases: List[str] = Q
 
     return await repository.get_images(query)
 
-@router.get("/{study_uuid}")
+@router.get("/studies/{study_uuid}")
 async def get_study(study_uuid: str) -> db_models.BIAStudy:
     return await repository.find_study_by_uuid(study_uuid)
 
-@router.get("/{study_uuid}/file_references")
+@router.get("/studies/{study_uuid}/file_references")
 async def get_study_file_references(
         study_uuid: UUID,
         start_uuid: UUID | None = None,
@@ -44,7 +47,10 @@ async def get_study_file_references(
     return await repository.file_references_for_study(study_uuid, start_uuid, limit)
 
 @router.get("/search/studies")
-async def search_studies(start_uuid: UUID | None = None, limit : Annotated[int, Query(gt=0)] = 10) -> List[db_models.BIAStudy]:
+async def search_studies(
+        start_uuid: UUID | None = None,
+        limit : Annotated[int, Query(gt=0)] = 10
+    ) -> List[db_models.BIAStudy]:
     """
     @TODO: Define search criteria for the general case
     """
@@ -59,8 +65,12 @@ async def search_images(
     raise Exception("TODO - trickier?")
     return None
 
-@router.get("/{study_uuid}/images")
-async def get_study_images(study_uuid: UUID, start_uuid: UUID | None = None, limit : Annotated[int, Query(gt=0)] = 10) -> List[db_models.BIAImage]:    
+@router.get("/studies/{study_uuid}/images")
+async def get_study_images(
+        study_uuid: UUID,
+        start_uuid: UUID | None = None,
+        limit : Annotated[int, Query(gt=0)] = 10
+    ) -> List[db_models.BIAImage]:    
     return await repository.images_for_study(study_uuid, start_uuid, limit)
 
 @router.get("/images/{image_uuid}")
@@ -79,5 +89,15 @@ async def get_image_ome_metadata(study_uuid: str, image_uuid: str) -> db_models.
 async def search_collections(
     name: Optional[str] = None
 ) -> List[db_models.BIACollection]:
-    return await repository.search_collections(name=name)
+    query = {}
+    if name:
+        query['name'] = name
+
+    return await repository.search_collections(**query)
+
+@router.get("/collections/{collection_uuid}")
+async def get_collection(
+    collection_uuid: UUID
+) -> db_models.BIACollection:
+    return await repository.get_collection(uuid=collection_uuid)
 

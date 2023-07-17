@@ -31,7 +31,7 @@ class BIAStudy(BaseModel):
     id: Optional[StrictStr] = Field(None, alias="_id")
     uuid: StrictStr = Field(...)
     version: StrictInt = Field(...)
-    model: ModelMetadata = Field(...)
+    model: Optional[ModelMetadata] = None
     title: StrictStr = Field(...)
     description: StrictStr = Field(...)
     authors: Optional[conlist(Author)] = None

@@ -8,7 +8,7 @@ Name | Type | Description | Notes
 **id** | **str** |  | [optional] 
 **uuid** | **str** |  | 
 **version** | **int** |  | 
-**model** | [**ModelMetadata**](ModelMetadata.md) |  | 
+**model** | [**ModelMetadata**](ModelMetadata.md) |  | [optional] 
 **name** | **str** |  | 
 **title** | **str** |  | 
 **subtitle** | **str** |  | 

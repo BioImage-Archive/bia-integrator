@@ -155,7 +155,7 @@ def test_update_study_nested_objects_overwritten(api_client: TestClient, existin
     rsp = api_client.patch('/api/private/study', json=existing_study)
     assert rsp.status_code == 201
 
-    study = api_client.get(f'/api/{existing_study["uuid"]}').json()
+    study = api_client.get(f'/api/studies/{existing_study["uuid"]}').json()
     assert study["authors"] == new_authors_list
     assert study["title"] == new_title
     assert study["version"] == 1

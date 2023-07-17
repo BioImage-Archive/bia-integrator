@@ -29,7 +29,7 @@ class BIACollection(BaseModel):
     id: Optional[StrictStr] = Field(None, alias="_id")
     uuid: StrictStr = Field(...)
     version: StrictInt = Field(...)
-    model: ModelMetadata = Field(...)
+    model: Optional[ModelMetadata] = None
     name: StrictStr = Field(...)
     title: StrictStr = Field(...)
     subtitle: StrictStr = Field(...)

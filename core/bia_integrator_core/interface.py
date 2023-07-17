@@ -16,7 +16,7 @@ from .config import settings
 from .integrator import load_and_annotate_study
 from .study import get_study, persist_study
 from .image import persist_image, get_images
-from .collection import get_collection, persist_collection, update_collection
+from .collection import get_collection, persist_collection, update_collection, get_collections
 from .representation import persist_image_representation, get_representations
 
 logger = logging.getLogger(__name__)

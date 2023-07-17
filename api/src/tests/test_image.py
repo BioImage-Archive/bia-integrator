@@ -136,7 +136,7 @@ def test_study_with_images_and_filerefs_fetch_images(api_client: TestClient, exi
     images_created = set([img['uuid'] for img in images])
     make_file_references(api_client, existing_study, 2)
 
-    rsp = api_client.get(f"/api/{existing_study['uuid']}/images")
+    rsp = api_client.get(f"/api/studies/{existing_study['uuid']}/images")
     assert rsp.status_code == 200
     images_fetched = set([img['uuid'] for img in rsp.json()])
     assert images_fetched == images_created
@@ -147,7 +147,7 @@ def test_image_pagination(api_client: TestClient, existing_study: dict):
     chunk_size = 2
 
     #1,2
-    rsp = api_client.get(f"/api/{existing_study['uuid']}/images?limit={chunk_size}")
+    rsp = api_client.get(f"/api/studies/{existing_study['uuid']}/images?limit={chunk_size}")
     assert rsp.status_code == 200
     images_fetched = rsp.json()
     for img in images_fetched:
@@ -158,7 +158,7 @@ def test_image_pagination(api_client: TestClient, existing_study: dict):
     assert images_chunk == images_fetched
 
     #3,4
-    rsp = api_client.get(f"/api/{existing_study['uuid']}/images?start_uuid={images_fetched[-1]['uuid']}&limit={chunk_size}")
+    rsp = api_client.get(f"/api/studies/{existing_study['uuid']}/images?start_uuid={images_fetched[-1]['uuid']}&limit={chunk_size}")
     assert rsp.status_code == 200
     images_fetched = rsp.json()
     for img in images_fetched:
@@ -169,7 +169,7 @@ def test_image_pagination(api_client: TestClient, existing_study: dict):
     assert images_chunk == images_fetched
 
     #5
-    rsp = api_client.get(f"/api/{existing_study['uuid']}/images?start_uuid={images_fetched[-1]['uuid']}&limit={chunk_size}")
+    rsp = api_client.get(f"/api/studies/{existing_study['uuid']}/images?start_uuid={images_fetched[-1]['uuid']}&limit={chunk_size}")
     assert rsp.status_code == 200
     images_fetched = rsp.json()
     for img in images_fetched:
@@ -183,7 +183,7 @@ def test_image_pagination_large_page(api_client: TestClient, existing_study: dic
     images = make_images(api_client, existing_study, 5)
     images.sort(key=lambda img: UUID(img['uuid']).hex)
 
-    rsp = api_client.get(f"/api/{existing_study['uuid']}/images?limit={10000}")
+    rsp = api_client.get(f"/api/studies/{existing_study['uuid']}/images?limit={10000}")
     assert rsp.status_code == 200
     images_fetched = rsp.json()
     for img in images_fetched:
@@ -196,5 +196,5 @@ def test_image_pagination_bad_limit(api_client: TestClient, existing_study: dict
     images = make_images(api_client, existing_study, 5)
     images.sort(key=lambda img: UUID(img['uuid']).hex)
 
-    rsp = api_client.get(f"/api/{existing_study['uuid']}/images?limit={0}")
+    rsp = api_client.get(f"/api/studies/{existing_study['uuid']}/images?limit={0}")
     assert rsp.status_code == 422

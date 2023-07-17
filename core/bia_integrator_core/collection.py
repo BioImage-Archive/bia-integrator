@@ -2,7 +2,7 @@ import logging
 
 from .config import settings
 from openapi_client import models as api_models
-
+from typing import List
 
 logger = logging.getLogger(__name__)
 
@@ -11,7 +11,9 @@ def get_collection(name: str) -> api_models.BIACollection:
     """Load the collection with the given name from disk and return."""
 
     return settings.api_client.search_collections_api_collections_get(name=name)
-    
+
+def get_collections() -> List[api_models.BIACollection]:
+    return settings.api_client.search_collections_api_collections_get()
 
 def persist_collection(collection: api_models.BIACollection):
     """Persist the given collection to disk."""

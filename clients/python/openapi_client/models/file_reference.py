@@ -29,7 +29,7 @@ class FileReference(BaseModel):
     id: Optional[StrictStr] = Field(None, alias="_id")
     uuid: StrictStr = Field(...)
     version: StrictInt = Field(...)
-    model: ModelMetadata = Field(...)
+    model: Optional[ModelMetadata] = None
     study_uuid: StrictStr = Field(...)
     name: StrictStr = Field(...)
     uri: StrictStr = Field(...)
