@@ -14,6 +14,11 @@ from utils import format_for_html
 logger = logging.getLogger(os.path.basename(__file__))
 
 
+LICENSE_URI_LOOKUP = {
+    "CC0": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "CC BY 4.0": "https://creativecommons.org/licenses/by/4.0/"
+}
+
 env = Environment(
     loader = FileSystemLoader("templates"),
     autoescape=select_autoescape()
@@ -131,8 +136,13 @@ def generate_image_page_html(accession_id: str, image_id):
     neuroglancer_uri = generate_neuroglancer_link(zarr_uri)
 
     bia_image.attributes = sort_dict(bia_image.attributes)
+
+
+    license_uri = LICENSE_URI_LOOKUP.get(bia_study.license, "Unknown")
+
     rendered = template.render(
         study=bia_study,
+        license_uri=license_uri,
         image=bia_image,
         image_alias=image_alias,
         zarr_uri=zarr_uri,

@@ -54,8 +54,7 @@
   <div><!-- empty --></div>
 
   <div class="vf-stack">
-
-  <h1 class="vf-intro__heading ">{{ study.accession_id }}</h1>
+  <h1 class="vf-intro__heading vf-intro__heading--has-tag">{{ study.accession_id }}<a href="JavaScript:Void(0);" class="vf-badge vf-badge--primary vf-badge--phases">alpha</a></h1>
   <h2 class="vf-intro__subheading">{{ study.title }}</h2>
      Released: {{ study.release_date }} <br>
     By: {{ authors }}
@@ -90,6 +89,12 @@
             <svg class="vf-icon vf-icon__arrown--down | vf-list__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M.249,7.207,11.233,19.678h0a1.066,1.066,0,0,0,1.539,0L23.751,7.207a.987.987,0,0,0-.107-1.414l-1.85-1.557a1.028,1.028,0,0,0-1.438.111L12.191,13.8a.25.25,0,0,1-.379,0L3.644,4.346A1.021,1.021,0,0,0,2.948,4a1,1,0,0,0-.741.238L.356,5.793A.988.988,0,0,0,0,6.478.978.978,0,0,0,.249,7.207Z"></path></svg>
           </a>
         </li>
+        <li class="vf-list__item">
+          <a class="vf-list__link" href="https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/pages/access_data_help.html">
+            How to access the data
+            <svg class="vf-icon vf-icon__arrown--down | vf-list__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M.249,7.207,11.233,19.678h0a1.066,1.066,0,0,0,1.539,0L23.751,7.207a.987.987,0,0,0-.107-1.414l-1.85-1.557a1.028,1.028,0,0,0-1.438.111L12.191,13.8a.25.25,0,0,1-.379,0L3.644,4.346A1.021,1.021,0,0,0,2.948,4a1,1,0,0,0-.741.238L.356,5.793A.988.988,0,0,0,0,6.478.978.978,0,0,0,.249,7.207Z"></path></svg>
+          </a>
+        </li>
       </ul>
     </div>
   </section>
@@ -100,17 +105,20 @@
       In a nutshell
       </h2>
 <ul class="vf-list">
-        {% if annotation_names|length > 0 %}
-        <li>{{ non_annotation_names|length }} images</li>
-        <li>{{ annotation_names|length }} annotations</li>
-        {% else %}
         <li>{{ study.images|length }} images</li>
+        {% if annotation_names|length > 0 %}
+        <li>{{ annotation_names|length }} annotations</li>
         {% endif %}
         {% if study.archive_files|length > 0 %}
         <li>{{ study.archive_files|length }} archive files</li>
         {% endif %}
         {% if study.other_files|length > 0 %}
        <li>{{ study.other_files|length }} other files</li>
+        {% endif %}
+        {% if "n_files_in_study" in study.attributes %}
+        <li>Study size: {{ study.attributes["study_size"] }}</li>
+        <li>No of files in study: {{ study.attributes["n_files_in_study"] }}</li>
+        <li>Filetype breakdown: {{ study.attributes["filetype_breakdown_html"] }}</li>
         {% endif %}
         <li><b>License : {{ study.license }} </b><li>
         </ul>
@@ -158,16 +166,23 @@
     <div class="vf-section-header">
       <h3 class="vf-section-header__heading" id="study">Study Information</h3>
       <p></p>
-       <a class="vf-card__link" href="https://www.ebi.ac.uk/biostudies/BioImages/studies/{{ study.accession_id }}" target=”_blank”> Original submission page </a>
+      <a class="vf-card__link" href="https://www.ebi.ac.uk/biostudies/BioImages/studies/{{ study.accession_id }}" target=”_blank”><button class="vf-button vf-button--primary vf-button--sm">Original submission page</button></a>
+     <!--  <a class="vf-card__link" href="https://www.ebi.ac.uk/biostudies/BioImages/studies/{{ study.accession_id }}" target=”_blank”> Original submission page </a> -->
     </div>
     <div class="vf-content">
       <div class="vf-grid vf-grid__col-2">
+            {% if study.attributes.get('one_summary') %}
             <div><b>Study Summary</b></div>
             <div>{{ study.attributes["one_summary"] }}</div>
+            {% endif %}
+            {% if study.attributes.get('annotation_summary') %}
+            <div><b>Annotation Summary</b></div>
+            <div>{{ study.attributes["annotation_summary"] }}</div>
+            {% endif %}
            <div><b>Organism</b></div>
             <div>{{ study.organism }}</div>
-            <div><b>Study type</b></div>
-            <div>{{ study.attributes["study_type"] }}</div>
+          <!--  <div><b>Study type</b></div>
+            <div>{{ study.attributes["study_type"] }}</div> -->
             <div><b>Imaging type</b></div>
             <div>{{ study.imaging_type }}</div>
         </div>
@@ -199,13 +214,19 @@
                                 <th>Preview</th>
                                 <th>Filename</th>
                                 <th>Dimensions<br>(T, C, Z, Y, X)</th>
+                                <th>Download Size</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for image in images %}
                             <tr>
-                                <td>{{ image_names[image.uuid] }}</td>
+                                {% if image_ann_aliases.get(image.id) %}
+                                <td>{{ image_names[image.id] }},{{ image_ann_aliases[image.id] }}</td>
+                                {% else %}
+                                <td>{{ image_names[image.id] }}</td>
+                                
+                                {% endif %}
                                 <td>
                                     <img class="vf-figure__image" src={{ image_thumbnails[image.uuid] }}>
                                 </td>
@@ -216,6 +237,11 @@
                                     <td> ({{ image.attributes['SizeT'] }}, {{ image.attributes['SizeC'] }}, {{ image.attributes['SizeZ'] }}, {{ image.attributes['SizeY'] }}, {{ image.attributes['SizeX'] }})</td>
                                 {% else %}
                                     <td> None </td>
+                                {% endif %}
+                                {% if "download_size" in image.attributes %}
+                                    <td>{{ image.attributes["download_size"] }}</td>
+                                {% else %}
+                                    <td>Unavailable</td>
                                 {% endif %}
                                 <td>
                                     <a href={{ landing_uris[image.uuid] }}><button class="vf-button vf-button--sm vf-button--icon">view</button><a>
@@ -253,17 +279,27 @@
                                 {% if annotation_names %}
                                 <th>Source Image</th>
                                 {% endif %}
+                                <th>Download Size</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% for image in annotation_names %}
-                                <td>{{ ann_names[image.uuid] }}</td>
-                                <td>{{ image.original_relpath }}</td>
-                                 {% if image.attributes.get('source image') %}
-                                <td>{{ image.attributes['source image'] }}</td>
+                            {% for annfile in annotation_names %}
+                                {% if annfile.attributes.get('alias')%}
+                                <td>{{ annfile.attributes['alias']}} </td>
+                                {% else %}
+                                <td>{{ annfile.id }}</td>
                                 {% endif %}
-                                <td><a href={{ annotation_download_uris[image.uuid] }}>Download</a></td>
+                                <td>{{ annfile.name }}</td>
+                                 {% if annfile.attributes.get('source image') %}
+                                <td>{{ annfile.attributes['source image'] }}</td>
+                                {% endif %}
+                                {% if annfile.attributes.get('download_size') %}
+                                    <td>{{ annfile.attributes["download_size"] }}</td>
+                                {% else %}
+                                    <td>Unavailable</td>
+                                {% endif %}
+                                <td><a href={{ annotation_download_uris[annfile.id] }}>Download</a></td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -304,6 +340,7 @@
                             <tr>
                                 <th>Image ID</th>
                                 <th>Filename</th>
+                                <th>Download Size</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -317,7 +354,12 @@
                             {% for image in non_annotation_names %}
                                 <td>{{ image_names[image.uuid] }}</td>
                                 <td>{{ image.original_relpath }}</td>
-                                <td><a href={{ image_download_uris[image.uuid] }}>Download</a></td>
+                                {% if "download_size" in image.attributes %}
+                                    <td>{{ image.attributes["download_size"] }}</td>
+                                {% else %}
+                                    <td>Unavailable</td>
+                                {% endif %}
+                                <td><a href={{ image_download_uris[image.id] }}>Download</a></td>
                             </tr>
                             {% endfor %}
                         </tbody>
