@@ -23,7 +23,7 @@ def get_images(study_accession_id: str) -> List[api_models.BIAImage]:
     """Return all images stored on disk for the given accession."""
     
     study_obj_info = settings.api_client.get_object_info_by_accession_api_object_info_by_accessions_get([study_accession_id]).pop()
-    images_list = settings.api_client.get_study_images_api_study_uuid_images_get(study_obj_info.uuid, limit=10**6)
+    images_list = settings.api_client.get_study_images_api_studies_study_uuid_images_get(study_obj_info.uuid, limit=10**6)
 
     return images_list
 

@@ -43,7 +43,7 @@ class DocumentMixin(BaseModel):
     # model is actually always set on objects, but in __init__ since that's where we are aware of child classes
     model: Optional[ModelMetadata] = Field(default=None)
 
-    def __init__(self, **data):
+    def __init__(self, apply_annotations = True, **data):
         if not hasattr(self.__class__.Config, 'model_version_latest'):
             raise ValueError(f"Class {self.__class__.__name__} missing 'model_version_latest' in its Config")
         model_metadata_expected = ModelMetadata(
@@ -68,7 +68,20 @@ class DocumentMixin(BaseModel):
                 raise ValueError("Expecting models that were not persisted to not have a model either")
             data["model"] = model_metadata_expected
         
+        # build the object before applying annotations so that model defaults get overwritten by annotations if necessary
         super().__init__(**data)
+
+        if apply_annotations and hasattr(self, 'annotations'):
+            document_attributes = set(self.__dict__.keys())
+
+            for annotation in self.annotations:
+                if annotation.key in ["model", "_id", "uuid"]:
+                    raise Exception(f"Annotation {annotation} of object {self.uuid} overwrites a read-only property")
+
+                if annotation.key in document_attributes:
+                    self.__dict__[annotation.key] = annotation.value
+                else:
+                    self.attributes[annotation.key] = annotation.value
 
     def dict(self, *args, **kwargs):
         doc_dict = super().dict(*args, **kwargs)

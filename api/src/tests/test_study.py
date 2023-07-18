@@ -38,6 +38,48 @@ def test_create_study(api_client: TestClient, uuid: str):
 
     assert study_created == study_with_defaults
 
+def test_study_annotations_applied(api_client: TestClient, uuid: str):
+    study = {
+        "uuid": uuid,
+        "version": 0,
+        'accession_id': uuid,
+        "title": "Test BIA study",
+        "description": "description",
+        "authors": [{
+            "name": "First Author"
+        }, {
+            "name": "Second Author"
+        }],
+        "organism": "test",
+        "release_date": "test",
+        "annotations": [{
+            "author_email": "test@gmail.com",
+            "key": "organism",
+            "value": "should_overwrite_existing_organism",
+            "state": "active"
+        },{
+            "author_email": "test@gmail.com",
+            "key": "custom_annotation",
+            "value": "should_only_be_added_as_an_attribute",
+            "state": "active"
+        },{
+            "author_email": "test@gmail.com",
+            "key": "example_image_uri",
+            "value": "should_overwrite_model-default_attributes_added_after_deserialization",
+            "state": "active"
+        }]
+    }
+    rsp = api_client.post('/api/private/study', json=study)
+    assert rsp.status_code == 201, str(rsp)
+
+    study_created = get_study(api_client, uuid)
+
+    assert study_created['organism'] == 'should_overwrite_existing_organism'
+    assert 'custom_annotation' not in study_created.keys()
+    assert study_created['attributes']['custom_annotation'] == 'should_only_be_added_as_an_attribute'
+    assert study_created['example_image_uri'] == 'should_overwrite_model-default_attributes_added_after_deserialization'
+
+
 def test_create_study_nonzero_version(api_client: TestClient, uuid: str):
     study = {
         "uuid": uuid,
