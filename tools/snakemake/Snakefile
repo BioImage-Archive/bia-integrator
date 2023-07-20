@@ -158,7 +158,14 @@ checkpoint get_image_reps_to_convert:
         singularity_container_path
     shell:
         """
-            grep "json" {input} | head -n {n_images_to_convert} > {input}.temp
+            # For some reason (probably as things move through the pipes?),
+            # this command causes snakemake to exit (as though bash 
+            # returned an error) when it has run OK. Therefore disable 
+            # exit on error just for this.
+            set +e
+                grep "json" {input} | head -n {n_images_to_convert} > {input}.temp
+            set -e
+
             OUTPUT_DIR='{output.im_rep_dir}'
             REGEX="([0-9|a-z]+-[0-9|a-z]+-[0-9|a-z]+-[0-9|a-z]+-[0-9|a-z]+)"
             mkdir $OUTPUT_DIR
