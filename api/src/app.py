@@ -4,16 +4,30 @@ from .api import admin
 
 import uvicorn
 from fastapi import FastAPI
+from starlette.requests import Request
+from starlette.responses import JSONResponse
+from starlette.status import HTTP_500_INTERNAL_SERVER_ERROR
 import os
+import logging
 
 from dotenv import load_dotenv
 load_dotenv(os.environ.get("DOTENV_PATH", None))
 
 app = FastAPI()
 
+@app.exception_handler(Exception)
+async def log_exception_handler(request: Request, exc: Exception): 
+    logging.error("Unhandled exception:", exc_info=True)
+
+    return JSONResponse(
+        {"detail": "Internal server error"},
+        status_code=HTTP_500_INTERNAL_SERVER_ERROR
+    )
+
 app.include_router(public.router)
 app.include_router(private.router)
 app.include_router(admin.router)
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.ERROR)
     uvicorn.run(app, host="0.0.0.0", port=8000)
