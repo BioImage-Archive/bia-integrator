@@ -6,9 +6,19 @@ import time
 
 import pytest
 
+#@pytest.fixture
+#def api_client_private() -> TestClient:
+#    client = get_client(raise_server_exceptions=False)
+#    authenticate_client(client)
+
+#    return client
+
 @pytest.fixture
 def api_client() -> TestClient:
-    return get_client(raise_server_exceptions=False)
+    client = get_client(raise_server_exceptions=False)
+    authenticate_client(client) #@TODO: DELETEME
+
+    return client
 
 @pytest.fixture(scope="function")
 def uuid() -> str:
@@ -61,6 +71,36 @@ def existing_image(api_client: TestClient, existing_study: dict):
     assert rsp.status_code == 201, rsp.json()
 
     return image
+
+def create_user_if_missing(email: str, password: str):
+    """
+    Exception from the general rule used in this project, of tests being as high-level as possible
+    Just to avoid compromising on security for easy test user creation / the logistics of a seed db 
+    """
+    from ..api.auth import create_user, get_user
+    import asyncio
+    loop = asyncio.get_event_loop()
+
+    async def create_test_user_if_missing():
+        if not await get_user(email):
+            await create_user(email, password)
+
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(create_test_user_if_missing())
+
+def authenticate_client(api_client: TestClient):
+    user_details = {
+        "username": "test@example.com",
+        "password": "test"
+    }
+    create_user_if_missing(user_details['username'], user_details['password'])
+
+    rsp = api_client.post("/auth/token", data=user_details)
+
+    assert rsp.status_code == 200
+    token = rsp.json()
+
+    api_client.headers["Authorization"] = f"Bearer {token['access_token']}"
 
 def get_collection(api_client: TestClient, collection_uuid: str, assert_status_code=200):
     rsp = api_client.get(f'/api/collections/{collection_uuid}')

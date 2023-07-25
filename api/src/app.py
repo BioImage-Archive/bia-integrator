@@ -1,6 +1,7 @@
 from .api import public
 from .api import private
 from .api import admin
+from .api import auth
 
 import uvicorn
 from fastapi import FastAPI
@@ -24,6 +25,7 @@ async def log_exception_handler(request: Request, exc: Exception):
         status_code=HTTP_500_INTERNAL_SERVER_ERROR
     )
 
+app.include_router(auth.router)
 app.include_router(public.router)
 app.include_router(private.router)
 app.include_router(admin.router)

@@ -11,26 +11,31 @@ import pymongo
 import json
 import os
 
-async def get_db() -> AsyncIOMotorCollection:
+COLLECTION_BIA_INTEGRATOR = "bia_integrator"
+COLLECTION_USERS = "users"
+
+async def get_db(collection_name: str = COLLECTION_BIA_INTEGRATOR) -> AsyncIOMotorCollection:
     mongo_connstring = os.environ["MONGO_CONNSTRING"]
     db_client = AsyncIOMotorClient(mongo_connstring, uuidRepresentation='standard')
 
     dbs = await db_client.list_databases()
     dbs = [db['name'] async for db in dbs] # pull cursor items
 
-    db = db_client.bia_integrator.bia_integrator
+    db = db_client.bia_integrator
     if "bia_integrator" not in list(dbs):
         "db was dropped - rebuild indexes (and views if any)"
-        await db.create_index( [ ('uuid', 1) ], unique=True )
-        await db.create_index( [ ('accession_id', 1) ], unique=True, partialFilterExpression={
+        await db[COLLECTION_BIA_INTEGRATOR].create_index( [ ('uuid', 1) ], unique=True )
+        await db[COLLECTION_BIA_INTEGRATOR].create_index( [ ('accession_id', 1) ], unique=True, partialFilterExpression={
             'model.type_name': 'BIAStudy'
         } )
-        await db.create_index( [ ('study_uuid', 1), ('alias.name', 1) ], unique=True, partialFilterExpression={
+        await db[COLLECTION_BIA_INTEGRATOR].create_index( [ ('study_uuid', 1), ('alias.name', 1) ], unique=True, partialFilterExpression={
             'model.type_name': 'BIAImage',
             'alias.name': {'$exists': True}
         } )
 
-    return db
+        await db[COLLECTION_USERS].create_index( [ ('email', 1) ], unique = True)
+
+    return db[collection_name]
 
 async def file_references_for_study(*args, **kwargs) -> List[models.FileReference]:
     return await _study_assets_find(*args, fn_model_factory=models.FileReference, **kwargs)

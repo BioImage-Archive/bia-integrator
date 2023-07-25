@@ -2,12 +2,13 @@ from ..models import persistence as db_models
 from ..models import repository  as repository
 from ..models import api as api_models
 from ..api import exceptions
+from .auth import get_current_user
 import logging
 
 from typing import List, Optional
-from fastapi import APIRouter, status
+from fastapi import APIRouter, status, Depends
 
-router = APIRouter(prefix="/api/private")
+router = APIRouter(prefix="/api/private", dependencies=[Depends(get_current_user)])
 
 @router.post("/study", status_code=status.HTTP_201_CREATED)
 async def create_study(study: db_models.BIAStudy) -> None:
