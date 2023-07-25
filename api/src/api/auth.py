@@ -106,7 +106,7 @@ async def register_user(
     password_plain: str,
     secret_token: str
 ) -> User: 
-    if not consteq(secret_token, "1234"):
+    if not consteq(secret_token, os.environ["USER_CREATE_SECRET_TOKEN"]):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
 
     new_user = await create_user(email, password_plain)
