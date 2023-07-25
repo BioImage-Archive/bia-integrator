@@ -8,10 +8,11 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 from passlib.utils import consteq
-from pydantic import BaseModel
 from typing import Optional
 
 from ..models.repository import get_db, COLLECTION_USERS
+from ..models.persistence import UserInDB, User
+from ..models.api import AuthenticationToken, TokenData
 import os
 
 router = APIRouter(prefix="/auth")
@@ -20,21 +21,7 @@ router = APIRouter(prefix="/auth")
 JWT_SECRET_KEY = os.environ["JWT_SECRET_KEY"]
 ALGORITHM = "HS256"
 
-class Token(BaseModel):
-    access_token: str
-    token_type: str
-
-class TokenData(BaseModel):
-    email: Union[str, None] = None
-
-class User(BaseModel):
-    email: Union[str, None] = None
-
-class UserInDB(User):
-    password: str
-
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 async def get_user(email: str) -> Optional[UserInDB]:
@@ -96,10 +83,7 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
         raise credentials_exception
     return user
 
-def get_password_hash(password: str):
-    return pwd_context.hash(password)
-
-@router.post("/token", response_model=Token)
+@router.post("/token", response_model=AuthenticationToken)
 async def login_for_access_token(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()]
 ):
@@ -128,9 +112,3 @@ async def register_user(
     new_user = await create_user(email, password_plain)
 
     return new_user 
-
-@router.get("/users/me/", response_model=User)
-async def read_users_me(
-    current_user: Annotated[User, Depends(get_current_user)]
-):
-    return current_user

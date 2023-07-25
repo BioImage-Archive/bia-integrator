@@ -6,6 +6,7 @@ from ome_types import OME, from_xml
 from urllib.parse import urlparse, urlunparse
 from bson import ObjectId, errors
 from uuid import UUID
+from .api import User
 import requests
 
 from src.api.exceptions import DocumentNotFound
@@ -253,6 +254,12 @@ class BIACollection(BIABaseModel, DocumentMixin):
     subtitle: str = Field()
     description: Optional[str] = Field(default=None)
     study_uuids: List[str] = Field(default=[])
+
+    class Config(BaseConfig):
+        model_version_latest = 1
+
+class UserInDB(User, DocumentMixin):
+    password: str
 
     class Config(BaseConfig):
         model_version_latest = 1

@@ -1,7 +1,7 @@
 from . import persistence as db_models
 
 from pydantic import BaseModel
-from typing import List, Optional, Dict
+from typing import List, Optional, Dict, Union
 from uuid import UUID
 
 class BIABaseModel(BaseModel):
@@ -28,3 +28,13 @@ class BulkOperationResponse(BIABaseModel):
 class ObjectInfo(BIABaseModel):
     uuid: UUID
     model: db_models.ModelMetadata
+
+class AuthenticationToken(BIABaseModel):
+    access_token: str
+    token_type: str
+
+class TokenData(BIABaseModel):
+    email: Union[str, None] = None
+
+class User(BIABaseModel):
+    email: Union[str, None] = None
