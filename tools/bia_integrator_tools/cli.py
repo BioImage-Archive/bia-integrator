@@ -101,7 +101,7 @@ def list_filerefs(accession_id: str):
 
     for fileref in bia_study.file_references.values():
         readable_size = sizeof_fmt(fileref.size_in_bytes)
-        typer.echo(f"{fileref.id}, {fileref.name}, {readable_size}")
+        typer.echo(f"{fileref.id}, {fileref.name}, {readable_size}, {fileref.type}")
 
 @filerefs_app.command("list-easily-convertable")
 def list_easily_convertable_filerefs(accession_id: str):

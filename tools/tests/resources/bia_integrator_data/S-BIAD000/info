@@ -1,0 +1,72 @@
+{
+  "columns": [
+    {
+      "name": "Name",
+      "title": "Name",
+      "visible": true,
+      "searchable": true,
+      "data": "Name",
+      "defaultContent": ""
+    },
+    {
+      "name": "Size",
+      "title": "Size",
+      "visible": true,
+      "searchable": false,
+      "data": "Size",
+      "defaultContent": ""
+    },
+    {
+      "name": "Section",
+      "title": "Section",
+      "visible": true,
+      "searchable": true,
+      "data": "Section",
+      "defaultContent": ""
+    },
+    {
+      "name": "age",
+      "title": "age",
+      "visible": true,
+      "searchable": true,
+      "data": "age",
+      "defaultContent": ""
+    },
+    {
+      "name": "mutation",
+      "title": "mutation",
+      "visible": true,
+      "searchable": true,
+      "data": "mutation",
+      "defaultContent": ""
+    },
+    {
+      "name": "staining",
+      "title": "staining",
+      "visible": true,
+      "searchable": true,
+      "data": "staining",
+      "defaultContent": ""
+    },
+    {
+      "name": "lab",
+      "title": "lab",
+      "visible": true,
+      "searchable": true,
+      "data": "lab",
+      "defaultContent": ""
+    }
+  ],
+  "files": 1,
+  "ftpLink": "ftp://ftp.ebi.ac.uk/biostudies/fire/S-BIAD/000/S-BIAD000",
+  "globusLink": "https://app.globus.org/file-manager?origin_id=47772002-3e5b-4fd3-b97c-18cee38d6df2&origin_path=/biostudies/fire/S-BIAD/000/S-BIAD000",
+  "isPublic": true,
+  "relPath": "S-BIAD/000/S-BIAD000",
+  "hasZippedFolders": true,
+  "views": 55,
+  "released": 1677542400000,
+  "modified": 1683033758333,
+  "sections": [
+    "StudyComponent-1"
+  ]
+}

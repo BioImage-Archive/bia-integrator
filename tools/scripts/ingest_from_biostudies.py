@@ -3,6 +3,7 @@ import uuid
 import logging
 import hashlib
 import requests
+from pathlib import Path
 from typing import List 
 
 import click
@@ -24,6 +25,13 @@ from bia_integrator_tools.biostudies import (
 
 logger = logging.getLogger(__file__)
 
+# ToDo: Discuss whether to put this somewhere common so it can be reused
+# e.g. bia-integrator-tools/utils.py? or create bia-integrator-tools/file_formats.py
+convertable_ext_path = Path(__file__).resolve().parent.parent / "resources" /"bioformats_curated_single_file_formats.txt"
+recognised_file_extensions = [ l for l in convertable_ext_path.read_text().split("\n") if len(l) > 0]
+other_ext_path = Path(__file__).resolve().parent.parent / "resources" /"bioformats_curated_other_file_formats.txt"
+recognised_file_extensions.extend([ l for l in other_ext_path.read_text().split("\n") if len(l) > 0])
+
 
 def bst_file_to_file_reference(accession_id: str, bst_file: File, file_uri_template: str) -> FileReference:
 
@@ -38,6 +46,23 @@ def bst_file_to_file_reference(accession_id: str, bst_file: File, file_uri_templ
         size_in_bytes=bst_file.size,
         attributes=fileref_attributes
     )
+
+    if fileref.name.endswith(".zarr.zip") or fileref.name.endswith(".zarr"):
+        # ToDo discuss with Matthew if this is strictly true? e.g. if 
+        # study on NFS
+        fileref.type = "zipped_zarr"
+    elif fileref_name.endswith(".zip") or fileref.uri.endswith(".zip"):
+        fileref.type = "zipped_archive"
+    else:
+        suffix = fileref.name.split(".")[-1]
+        if suffix not in recognised_file_extensions:
+            uri_to_fetch = fileref.uri + ".zip"
+            try:
+                response = requests.head(uri_to_fetch)
+                if response.status_code == 200:
+                    fileref.type = "zipped_directory"
+            except Exception:
+                pass
 
     return fileref
 
