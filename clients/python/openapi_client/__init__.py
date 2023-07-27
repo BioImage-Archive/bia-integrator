@@ -32,6 +32,7 @@ from openapi_client.exceptions import ApiException
 
 # import models into sdk package
 from openapi_client.models.annotation_state import AnnotationState
+from openapi_client.models.authentication_token import AuthenticationToken
 from openapi_client.models.author import Author
 from openapi_client.models.bia_collection import BIACollection
 from openapi_client.models.bia_image import BIAImage
@@ -50,4 +51,5 @@ from openapi_client.models.model_metadata import ModelMetadata
 from openapi_client.models.object_info import ObjectInfo
 from openapi_client.models.rendering_info import RenderingInfo
 from openapi_client.models.study_annotation import StudyAnnotation
+from openapi_client.models.user import User
 from openapi_client.models.validation_error import ValidationError

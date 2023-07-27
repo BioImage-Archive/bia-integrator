@@ -61,6 +61,12 @@ configuration = openapi_client.Configuration(
     host = "http://localhost"
 )
 
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+configuration.access_token = os.environ["ACCESS_TOKEN"]
 
 
 # Enter a context with an instance of the API client
@@ -101,6 +107,8 @@ Class | Method | HTTP request | Description
 *DefaultApi* | [**get_study_images_api_studies_study_uuid_images_get**](docs/DefaultApi.md#get_study_images_api_studies_study_uuid_images_get) | **GET** /api/studies/{study_uuid}/images | Get Study Images
 *DefaultApi* | [**get_study_images_by_alias_api_study_study_accession_images_by_aliases_get**](docs/DefaultApi.md#get_study_images_by_alias_api_study_study_accession_images_by_aliases_get) | **GET** /api/study/{study_accession}/images_by_aliases | Get Study Images By Alias
 *DefaultApi* | [**health_check_admin_health_check_get**](docs/DefaultApi.md#health_check_admin_health_check_get) | **GET** /admin/health-check | Health Check
+*DefaultApi* | [**login_for_access_token_auth_token_post**](docs/DefaultApi.md#login_for_access_token_auth_token_post) | **POST** /auth/token | Login For Access Token
+*DefaultApi* | [**register_user_auth_users_register_get**](docs/DefaultApi.md#register_user_auth_users_register_get) | **GET** /auth/users/register | Register User
 *DefaultApi* | [**search_collections_api_collections_get**](docs/DefaultApi.md#search_collections_api_collections_get) | **GET** /api/collections | Search Collections
 *DefaultApi* | [**search_images_api_search_images_get**](docs/DefaultApi.md#search_images_api_search_images_get) | **GET** /api/search/images | Search Images
 *DefaultApi* | [**search_studies_api_search_studies_get**](docs/DefaultApi.md#search_studies_api_search_studies_get) | **GET** /api/search/studies | Search Studies
@@ -113,6 +121,7 @@ Class | Method | HTTP request | Description
 ## Documentation For Models
 
  - [AnnotationState](docs/AnnotationState.md)
+ - [AuthenticationToken](docs/AuthenticationToken.md)
  - [Author](docs/Author.md)
  - [BIACollection](docs/BIACollection.md)
  - [BIAImage](docs/BIAImage.md)
@@ -131,13 +140,22 @@ Class | Method | HTTP request | Description
  - [ObjectInfo](docs/ObjectInfo.md)
  - [RenderingInfo](docs/RenderingInfo.md)
  - [StudyAnnotation](docs/StudyAnnotation.md)
+ - [User](docs/User.md)
  - [ValidationError](docs/ValidationError.md)
 
 
 <a id="documentation-for-authorization"></a>
 ## Documentation For Authorization
 
-Endpoints do not require authorization.
+
+Authentication schemes defined for the API:
+<a id="OAuth2PasswordBearer"></a>
+### OAuth2PasswordBearer
+
+- **Type**: OAuth
+- **Flow**: password
+- **Authorization URL**: 
+- **Scopes**: N/A
 
 
 ## Author

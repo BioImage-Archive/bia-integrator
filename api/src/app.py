@@ -1,3 +1,7 @@
+import os
+from dotenv import load_dotenv
+load_dotenv(os.environ.get("DOTENV_PATH", None))
+
 from .api import public
 from .api import private
 from .api import admin
@@ -8,11 +12,7 @@ from fastapi import FastAPI
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 from starlette.status import HTTP_500_INTERNAL_SERVER_ERROR
-import os
 import logging
-
-from dotenv import load_dotenv
-load_dotenv(os.environ.get("DOTENV_PATH", None))
 
 app = FastAPI()
 

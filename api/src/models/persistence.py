@@ -6,7 +6,6 @@ from ome_types import OME, from_xml
 from urllib.parse import urlparse, urlunparse
 from bson import ObjectId, errors
 from uuid import UUID
-from .api import User
 import requests
 
 from src.api.exceptions import DocumentNotFound
@@ -258,7 +257,8 @@ class BIACollection(BIABaseModel, DocumentMixin):
     class Config(BaseConfig):
         model_version_latest = 1
 
-class UserInDB(User, DocumentMixin):
+class User(BIABaseModel, DocumentMixin):
+    email: Union[str, None] = None
     password: str
 
     class Config(BaseConfig):

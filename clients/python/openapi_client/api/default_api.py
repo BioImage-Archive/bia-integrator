@@ -19,10 +19,11 @@ import warnings
 from pydantic import validate_arguments, ValidationError
 from typing_extensions import Annotated
 
-from pydantic import StrictInt, StrictStr, conlist
+from pydantic import StrictInt, StrictStr, conlist, constr, validator
 
 from typing import Any, Dict, List, Optional
 
+from openapi_client.models.authentication_token import AuthenticationToken
 from openapi_client.models.bia_collection import BIACollection
 from openapi_client.models.bia_image import BIAImage
 from openapi_client.models.bia_image_representation import BIAImageRepresentation
@@ -31,6 +32,7 @@ from openapi_client.models.body_search_images_api_search_images_get import BodyS
 from openapi_client.models.bulk_operation_response import BulkOperationResponse
 from openapi_client.models.file_reference import FileReference
 from openapi_client.models.object_info import ObjectInfo
+from openapi_client.models.user import User
 
 from openapi_client.api_client import ApiClient
 from openapi_client.api_response import ApiResponse
@@ -173,7 +175,7 @@ class DefaultApi(object):
                 _header_params['Content-Type'] = _content_types_list
 
         # authentication setting
-        _auth_settings = []  # noqa: E501
+        _auth_settings = ['OAuth2PasswordBearer']  # noqa: E501
 
         _response_types_map = {
             '201': "object",
@@ -318,7 +320,7 @@ class DefaultApi(object):
                 _header_params['Content-Type'] = _content_types_list
 
         # authentication setting
-        _auth_settings = []  # noqa: E501
+        _auth_settings = ['OAuth2PasswordBearer']  # noqa: E501
 
         _response_types_map = {
             '201': "BulkOperationResponse",
@@ -471,7 +473,7 @@ class DefaultApi(object):
                 _header_params['Content-Type'] = _content_types_list
 
         # authentication setting
-        _auth_settings = []  # noqa: E501
+        _auth_settings = ['OAuth2PasswordBearer']  # noqa: E501
 
         _response_types_map = {
             '201': "object",
@@ -603,7 +605,7 @@ class DefaultApi(object):
             ['application/json'])  # noqa: E501
 
         # authentication setting
-        _auth_settings = []  # noqa: E501
+        _auth_settings = ['OAuth2PasswordBearer']  # noqa: E501
 
         _response_types_map = {
             '200': "object",
@@ -747,7 +749,7 @@ class DefaultApi(object):
                 _header_params['Content-Type'] = _content_types_list
 
         # authentication setting
-        _auth_settings = []  # noqa: E501
+        _auth_settings = ['OAuth2PasswordBearer']  # noqa: E501
 
         _response_types_map = {
             '201': "BulkOperationResponse",
@@ -892,7 +894,7 @@ class DefaultApi(object):
                 _header_params['Content-Type'] = _content_types_list
 
         # authentication setting
-        _auth_settings = []  # noqa: E501
+        _auth_settings = ['OAuth2PasswordBearer']  # noqa: E501
 
         _response_types_map = {
             '201': "object",
@@ -2338,6 +2340,345 @@ class DefaultApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
+    def login_for_access_token_auth_token_post(self, username : StrictStr, password : StrictStr, grant_type : Optional[constr(strict=True)] = None, scope : Optional[StrictStr] = None, client_id : Optional[StrictStr] = None, client_secret : Optional[StrictStr] = None, **kwargs) -> AuthenticationToken:  # noqa: E501
+        """Login For Access Token  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.login_for_access_token_auth_token_post(username, password, grant_type, scope, client_id, client_secret, async_req=True)
+        >>> result = thread.get()
+
+        :param username: (required)
+        :type username: str
+        :param password: (required)
+        :type password: str
+        :param grant_type:
+        :type grant_type: str
+        :param scope:
+        :type scope: str
+        :param client_id:
+        :type client_id: str
+        :param client_secret:
+        :type client_secret: str
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :return: Returns the result object.
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: AuthenticationToken
+        """
+        kwargs['_return_http_data_only'] = True
+        if '_preload_content' in kwargs:
+            raise ValueError("Error! Please call the login_for_access_token_auth_token_post_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
+        return self.login_for_access_token_auth_token_post_with_http_info(username, password, grant_type, scope, client_id, client_secret, **kwargs)  # noqa: E501
+
+    @validate_arguments
+    def login_for_access_token_auth_token_post_with_http_info(self, username : StrictStr, password : StrictStr, grant_type : Optional[constr(strict=True)] = None, scope : Optional[StrictStr] = None, client_id : Optional[StrictStr] = None, client_secret : Optional[StrictStr] = None, **kwargs) -> ApiResponse:  # noqa: E501
+        """Login For Access Token  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.login_for_access_token_auth_token_post_with_http_info(username, password, grant_type, scope, client_id, client_secret, async_req=True)
+        >>> result = thread.get()
+
+        :param username: (required)
+        :type username: str
+        :param password: (required)
+        :type password: str
+        :param grant_type:
+        :type grant_type: str
+        :param scope:
+        :type scope: str
+        :param client_id:
+        :type client_id: str
+        :param client_secret:
+        :type client_secret: str
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _preload_content: if False, the ApiResponse.data will
+                                 be set to none and raw_data will store the 
+                                 HTTP response body without reading/decoding.
+                                 Default is True.
+        :type _preload_content: bool, optional
+        :param _return_http_data_only: response data instead of ApiResponse
+                                       object with status code, headers, etc
+        :type _return_http_data_only: bool, optional
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the authentication
+                              in the spec for a single request.
+        :type _request_auth: dict, optional
+        :type _content_type: string, optional: force content-type for the request
+        :return: Returns the result object.
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: tuple(AuthenticationToken, status_code(int), headers(HTTPHeaderDict))
+        """
+
+        _params = locals()
+
+        _all_params = [
+            'username',
+            'password',
+            'grant_type',
+            'scope',
+            'client_id',
+            'client_secret'
+        ]
+        _all_params.extend(
+            [
+                'async_req',
+                '_return_http_data_only',
+                '_preload_content',
+                '_request_timeout',
+                '_request_auth',
+                '_content_type',
+                '_headers'
+            ]
+        )
+
+        # validate the arguments
+        for _key, _val in _params['kwargs'].items():
+            if _key not in _all_params:
+                raise ApiTypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method login_for_access_token_auth_token_post" % _key
+                )
+            _params[_key] = _val
+        del _params['kwargs']
+
+        _collection_formats = {}
+
+        # process the path parameters
+        _path_params = {}
+
+        # process the query parameters
+        _query_params = []
+        # process the header parameters
+        _header_params = dict(_params.get('_headers', {}))
+        # process the form parameters
+        _form_params = []
+        _files = {}
+        if _params['grant_type']:
+            _form_params.append(('grant_type', _params['grant_type']))
+
+        if _params['username']:
+            _form_params.append(('username', _params['username']))
+
+        if _params['password']:
+            _form_params.append(('password', _params['password']))
+
+        if _params['scope']:
+            _form_params.append(('scope', _params['scope']))
+
+        if _params['client_id']:
+            _form_params.append(('client_id', _params['client_id']))
+
+        if _params['client_secret']:
+            _form_params.append(('client_secret', _params['client_secret']))
+
+        # process the body parameter
+        _body_params = None
+        # set the HTTP header `Accept`
+        _header_params['Accept'] = self.api_client.select_header_accept(
+            ['application/json'])  # noqa: E501
+
+        # set the HTTP header `Content-Type`
+        _content_types_list = _params.get('_content_type',
+            self.api_client.select_header_content_type(
+                ['application/x-www-form-urlencoded']))
+        if _content_types_list:
+                _header_params['Content-Type'] = _content_types_list
+
+        # authentication setting
+        _auth_settings = []  # noqa: E501
+
+        _response_types_map = {
+            '200': "AuthenticationToken",
+            '422': "HTTPValidationError",
+        }
+
+        return self.api_client.call_api(
+            '/auth/token', 'POST',
+            _path_params,
+            _query_params,
+            _header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            response_types_map=_response_types_map,
+            auth_settings=_auth_settings,
+            async_req=_params.get('async_req'),
+            _return_http_data_only=_params.get('_return_http_data_only'),  # noqa: E501
+            _preload_content=_params.get('_preload_content', True),
+            _request_timeout=_params.get('_request_timeout'),
+            collection_formats=_collection_formats,
+            _request_auth=_params.get('_request_auth'))
+
+    @validate_arguments
+    def register_user_auth_users_register_get(self, email : StrictStr, password_plain : StrictStr, secret_token : StrictStr, **kwargs) -> User:  # noqa: E501
+        """Register User  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.register_user_auth_users_register_get(email, password_plain, secret_token, async_req=True)
+        >>> result = thread.get()
+
+        :param email: (required)
+        :type email: str
+        :param password_plain: (required)
+        :type password_plain: str
+        :param secret_token: (required)
+        :type secret_token: str
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :return: Returns the result object.
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: User
+        """
+        kwargs['_return_http_data_only'] = True
+        if '_preload_content' in kwargs:
+            raise ValueError("Error! Please call the register_user_auth_users_register_get_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
+        return self.register_user_auth_users_register_get_with_http_info(email, password_plain, secret_token, **kwargs)  # noqa: E501
+
+    @validate_arguments
+    def register_user_auth_users_register_get_with_http_info(self, email : StrictStr, password_plain : StrictStr, secret_token : StrictStr, **kwargs) -> ApiResponse:  # noqa: E501
+        """Register User  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.register_user_auth_users_register_get_with_http_info(email, password_plain, secret_token, async_req=True)
+        >>> result = thread.get()
+
+        :param email: (required)
+        :type email: str
+        :param password_plain: (required)
+        :type password_plain: str
+        :param secret_token: (required)
+        :type secret_token: str
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _preload_content: if False, the ApiResponse.data will
+                                 be set to none and raw_data will store the 
+                                 HTTP response body without reading/decoding.
+                                 Default is True.
+        :type _preload_content: bool, optional
+        :param _return_http_data_only: response data instead of ApiResponse
+                                       object with status code, headers, etc
+        :type _return_http_data_only: bool, optional
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the authentication
+                              in the spec for a single request.
+        :type _request_auth: dict, optional
+        :type _content_type: string, optional: force content-type for the request
+        :return: Returns the result object.
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: tuple(User, status_code(int), headers(HTTPHeaderDict))
+        """
+
+        _params = locals()
+
+        _all_params = [
+            'email',
+            'password_plain',
+            'secret_token'
+        ]
+        _all_params.extend(
+            [
+                'async_req',
+                '_return_http_data_only',
+                '_preload_content',
+                '_request_timeout',
+                '_request_auth',
+                '_content_type',
+                '_headers'
+            ]
+        )
+
+        # validate the arguments
+        for _key, _val in _params['kwargs'].items():
+            if _key not in _all_params:
+                raise ApiTypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method register_user_auth_users_register_get" % _key
+                )
+            _params[_key] = _val
+        del _params['kwargs']
+
+        _collection_formats = {}
+
+        # process the path parameters
+        _path_params = {}
+
+        # process the query parameters
+        _query_params = []
+        if _params.get('email') is not None:  # noqa: E501
+            _query_params.append(('email', _params['email']))
+
+        if _params.get('password_plain') is not None:  # noqa: E501
+            _query_params.append(('password_plain', _params['password_plain']))
+
+        if _params.get('secret_token') is not None:  # noqa: E501
+            _query_params.append(('secret_token', _params['secret_token']))
+
+        # process the header parameters
+        _header_params = dict(_params.get('_headers', {}))
+        # process the form parameters
+        _form_params = []
+        _files = {}
+        # process the body parameter
+        _body_params = None
+        # set the HTTP header `Accept`
+        _header_params['Accept'] = self.api_client.select_header_accept(
+            ['application/json'])  # noqa: E501
+
+        # authentication setting
+        _auth_settings = []  # noqa: E501
+
+        _response_types_map = {
+            '200': "User",
+            '422': "HTTPValidationError",
+        }
+
+        return self.api_client.call_api(
+            '/auth/users/register', 'GET',
+            _path_params,
+            _query_params,
+            _header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            response_types_map=_response_types_map,
+            auth_settings=_auth_settings,
+            async_req=_params.get('async_req'),
+            _return_http_data_only=_params.get('_return_http_data_only'),  # noqa: E501
+            _preload_content=_params.get('_preload_content', True),
+            _request_timeout=_params.get('_request_timeout'),
+            collection_formats=_collection_formats,
+            _request_auth=_params.get('_request_auth'))
+
+    @validate_arguments
     def search_collections_api_collections_get(self, name : Optional[StrictStr] = None, **kwargs) -> List[BIACollection]:  # noqa: E501
         """Search Collections  # noqa: E501
 
@@ -2892,7 +3233,7 @@ class DefaultApi(object):
             ['application/json'])  # noqa: E501
 
         # authentication setting
-        _auth_settings = []  # noqa: E501
+        _auth_settings = ['OAuth2PasswordBearer']  # noqa: E501
 
         _response_types_map = {
             '201': "object",
@@ -3037,7 +3378,7 @@ class DefaultApi(object):
                 _header_params['Content-Type'] = _content_types_list
 
         # authentication setting
-        _auth_settings = []  # noqa: E501
+        _auth_settings = ['OAuth2PasswordBearer']  # noqa: E501
 
         _response_types_map = {
             '200': "object",
@@ -3184,7 +3525,7 @@ class DefaultApi(object):
                 _header_params['Content-Type'] = _content_types_list
 
         # authentication setting
-        _auth_settings = []  # noqa: E501
+        _auth_settings = ['OAuth2PasswordBearer']  # noqa: E501
 
         _response_types_map = {
             '200': "object",
@@ -3329,7 +3670,7 @@ class DefaultApi(object):
                 _header_params['Content-Type'] = _content_types_list
 
         # authentication setting
-        _auth_settings = []  # noqa: E501
+        _auth_settings = ['OAuth2PasswordBearer']  # noqa: E501
 
         _response_types_map = {
             '201': "object",

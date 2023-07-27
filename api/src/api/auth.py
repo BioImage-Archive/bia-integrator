@@ -9,36 +9,38 @@ from jose import JWTError, jwt
 from passlib.context import CryptContext
 from passlib.utils import consteq
 from typing import Optional
+import uuid
 
 from ..models.repository import get_db, COLLECTION_USERS
-from ..models.persistence import UserInDB, User
+from ..models.persistence import User
 from ..models.api import AuthenticationToken, TokenData
 import os
 
 router = APIRouter(prefix="/auth")
 
-# openssl rand -hex 32
 JWT_SECRET_KEY = os.environ["JWT_SECRET_KEY"]
 ALGORITHM = "HS256"
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
-async def get_user(email: str) -> Optional[UserInDB]:
+async def get_user(email: str) -> Optional[User]:
     db = await get_db(COLLECTION_USERS)
 
     obj_user = await db.find_one({'email': email})
 
     if obj_user:
-        return UserInDB(**obj_user)
+        return User(**obj_user)
     else:
         return None
 
-async def create_user(email: str, password_plain: str) -> UserInDB:
+async def create_user(email: str, password_plain: str) -> User:
     db = await get_db(COLLECTION_USERS)
-    user = UserInDB(
+    user = User(
         email=email,
-        password=pwd_context.hash(password_plain)
+        password=pwd_context.hash(password_plain),
+        uuid=str(uuid.uuid4()),
+        version=1
     )
 
     await db.insert_one(user.dict())

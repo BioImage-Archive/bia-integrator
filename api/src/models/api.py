@@ -1,4 +1,4 @@
-from . import persistence as db_models
+from .persistence import ModelMetadata as ModelMetadata
 
 from pydantic import BaseModel
 from typing import List, Optional, Dict, Union
@@ -27,14 +27,11 @@ class BulkOperationResponse(BIABaseModel):
 
 class ObjectInfo(BIABaseModel):
     uuid: UUID
-    model: db_models.ModelMetadata
+    model: ModelMetadata
 
 class AuthenticationToken(BIABaseModel):
     access_token: str
     token_type: str
 
 class TokenData(BIABaseModel):
-    email: Union[str, None] = None
-
-class User(BIABaseModel):
     email: Union[str, None] = None
