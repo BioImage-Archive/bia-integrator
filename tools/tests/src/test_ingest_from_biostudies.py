@@ -42,15 +42,11 @@ def test_ingest_basic_study_from_biostuides(mock_head, mock_get, monkeypatch, tm
     assert (data_dirpath / "studies" / f"{test_accession_id}.json").is_file()
 
     # Were correct number of filerefs created?
-    # 1 - zipped zarr
-    # 2 - normal files
-    # 3 - zip archives
-    # 4 - zip directories
+    # 4 - files
+    # 6 - directories
     expected_fileref_types = {
-        "zipped_zarr": 1,
-        None: 2,
-        "zipped_archive": 3,
-        "zipped_directory": 4,
+        "file": 6,
+        "directory": 4,
     }
     test_study = load_and_annotate_study(test_accession_id)
     assert len(test_study.file_references) == 10
@@ -62,3 +58,7 @@ def test_ingest_basic_study_from_biostuides(mock_head, mock_get, monkeypatch, tm
     actual_fileref_types = dict(Counter(fileref_types))
     assert actual_fileref_types == expected_fileref_types
     
+    # Were zips appended to uris of directories?
+    for file_reference in test_study.file_references.values():
+        if file_reference.type == "directory":
+            assert file_reference.uri.endswith(".zip")

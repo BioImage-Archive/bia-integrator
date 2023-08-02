@@ -21,17 +21,10 @@ from bia_integrator_tools.biostudies import (
     find_files_in_submission,
     get_file_uri_template_for_accession
 )
+from bia_integrator_tools.utils import url_exists
 
 
 logger = logging.getLogger(__file__)
-
-# ToDo: Discuss whether to put this somewhere common so it can be reused
-# e.g. bia-integrator-tools/utils.py? or create bia-integrator-tools/file_formats.py
-convertable_ext_path = Path(__file__).resolve().parent.parent / "resources" /"bioformats_curated_single_file_formats.txt"
-recognised_file_extensions = [ l for l in convertable_ext_path.read_text().split("\n") if len(l) > 0]
-other_ext_path = Path(__file__).resolve().parent.parent / "resources" /"bioformats_curated_other_file_formats.txt"
-recognised_file_extensions.extend([ l for l in other_ext_path.read_text().split("\n") if len(l) > 0])
-
 
 def bst_file_to_file_reference(accession_id: str, bst_file: File, file_uri_template: str) -> FileReference:
 
@@ -44,25 +37,18 @@ def bst_file_to_file_reference(accession_id: str, bst_file: File, file_uri_templ
         name=fileref_name,
         uri=file_uri(accession_id, bst_file, file_uri_template=file_uri_template),
         size_in_bytes=bst_file.size,
-        attributes=fileref_attributes
+        attributes=fileref_attributes,
+        type=bst_file.type
     )
 
-    if fileref.name.endswith(".zarr.zip") or fileref.name.endswith(".zarr"):
-        # ToDo discuss with Matthew if this is strictly true? e.g. if 
-        # study on NFS
-        fileref.type = "zipped_zarr"
-    elif fileref_name.endswith(".zip") or fileref.uri.endswith(".zip"):
-        fileref.type = "zipped_archive"
-    else:
-        suffix = fileref.name.split(".")[-1]
-        if suffix not in recognised_file_extensions:
-            uri_to_fetch = fileref.uri + ".zip"
-            try:
-                response = requests.head(uri_to_fetch)
-                if response.status_code == 200:
-                    fileref.type = "zipped_directory"
-            except Exception:
-                pass
+    # If fileref type is directory we may need to append '.zip' to 
+    # its uri because FIRE zips directories, but the uri returned by
+    # biostudies API as of 02/08/2023 does not include the zip suffix
+    if fileref.type == "directory" and not fileref.uri.endswith(".zip"):
+        if url_exists(fileref.uri + ".zip"):
+            fileref.uri += ".zip"
+            logger.info(f"Appended '.zip' to uri of fileref {fileref.id}")
+        
 
     return fileref
 

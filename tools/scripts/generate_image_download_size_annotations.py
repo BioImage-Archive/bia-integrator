@@ -30,8 +30,7 @@ def get_image_download_size(accession_id: str) -> dict:
 
     zip_sizes = {}
     for fileref in bia_study.file_references.values():
-        if fileref.type == "zipped_archive" or fileref.type == "zipped_directory":
-            fileref_uri = fileref.uri if fileref.uri.endswith(".zip") else fileref.uri + ".zip"
+        if fileref.uri.endswith(".zip") and fileref.type != "file_in_zip":
             zip_sizes[fileref_uri] = sizeof_fmt(fileref.size_in_bytes)
 
     for bia_image in bia_study.images.values():

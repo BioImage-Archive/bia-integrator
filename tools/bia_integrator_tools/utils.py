@@ -3,6 +3,7 @@ import logging
 import hashlib
 import pathlib
 from typing import Optional
+import requests
 
 from ome_zarr.io import parse_url
 from ome_zarr.reader import Reader
@@ -113,3 +114,11 @@ def create_and_persist_image_from_fileref(accession_id, fileref, rep_type="fire_
     persist_image(image)
 
     return image_id
+
+def url_exists(url: str) -> bool:
+    
+    try:
+        response = requests.head(url)
+        return response.status_code == 200
+    except requests.exceptions.RequestException:
+        return False

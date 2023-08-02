@@ -77,7 +77,7 @@ rule index_zips_in_study:
         singularity_container_path
     shell:
         r"""
-            for ZIP_FILEREF_ID in `biaint filerefs list $ACCNO | grep -P '\bzipped_directory\b|\bzipped_archive\b' | cut -d',' -f1`; do python {script_dir}/index_zip_in_study.py $ACCNO $ZIP_FILEREF_ID 2>&1 | tee -a {output}; done
+            for ZIP_FILEREF_ID in `biaint filerefs list $ACCNO | grep -P '\.zip|\bdirectory\b' | grep -v '\.zarr' | grep -v 'file_in_zip' | cut -d',' -f1`; do python {script_dir}/index_zip_in_study.py $ACCNO $ZIP_FILEREF_ID 2>&1 | tee -a {output}; done
             touch {output}
         """
 
