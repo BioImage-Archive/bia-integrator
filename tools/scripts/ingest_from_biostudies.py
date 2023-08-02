@@ -19,7 +19,8 @@ from bia_integrator_tools.biostudies import (
     load_submission,
     file_uri,
     find_files_in_submission,
-    get_file_uri_template_for_accession
+    get_file_uri_template_for_accession,
+    get_with_case_insensitive_key,
 )
 from bia_integrator_tools.utils import url_exists
 
@@ -111,17 +112,12 @@ def study_links_from_submission(submission: Submission) -> dict:
     return links
 
 
-def _get_with_case_insensitive_key(dictionary: dict, key: str) -> str:
-    keys = [k.lower() for k in dictionary.keys()]
-    temp_key = key.lower()
-    if temp_key in keys:
-        key_index = keys.index(temp_key)
-        temp_key = list(dictionary.keys())[key_index]
-        return dictionary[temp_key]
-    else:
-        raise KeyError(f"{key} not in {dictionary.keys()}")
+def get_attr_from_submission(submission: Submission, attr: str) -> str:
+    """Search for attr in submission section and if necessary subsections
 
-def get_from_subsection(submission: Submission, key: str) -> str:
+        Case insensitive search for an attribute in main submission section
+        and if not found, search other subsections
+    """
 
     study_components = [
         section
@@ -133,13 +129,16 @@ def get_from_subsection(submission: Submission, key: str) -> str:
         for study_component in study_components:
             study_component_attr_dict = attributes_to_dict(study_component.attributes)
             try:
-                value = _get_with_case_insensitive_key(
-                    study_component_attr_dict, key
+                value = get_with_case_insensitive_key(
+                    study_component_attr_dict, attr
                 )
                 return value
             except KeyError:
                 continue
     
+    # ToDo: Change search of subsections below to use recursive search
+    # similar to bia_integrator_tools.biostudies.find_file_lists_in_section
+
     # Check other subsections
     other_subsections = [
         section
@@ -147,16 +146,16 @@ def get_from_subsection(submission: Submission, key: str) -> str:
         if section.type != 'Study Component'
     ]
 
-    if len(other_subsections):
-        for other_subsection in other_subsections:
-            other_subsection_attr_dict = attributes_to_dict(other_subsection.attributes)
-            try:
-                value = _get_with_case_insensitive_key(
-                    other_subsection_attr_dict, key
-                )
-                return value
-            except KeyError:
-                continue
+    for other_subsection in other_subsections:
+        other_subsection_attr_dict = attributes_to_dict(other_subsection.attributes)
+        try:
+            value = get_with_case_insensitive_key(
+                other_subsection_attr_dict, attr
+            )
+            return value
+        except KeyError:
+            continue
+
     return "Unknown"
 
 
@@ -166,14 +165,14 @@ def bst_submission_to_bia_study(submission: Submission) -> BIAStudy:
     filerefs_list = filerefs_from_bst_submission(submission)
     filerefs_dict = {fileref.id: fileref for fileref in filerefs_list}
     study_title = study_title_from_submission(submission)
-    imaging_method = get_from_subsection(submission, "Imaging Method")
+    imaging_method = get_attr_from_submission(submission, "Imaging Method")
 
     study_section_attr_dict = attributes_to_dict(submission.section.attributes)
     submission_attr_dict = attributes_to_dict(submission.attributes)
     try:
-        organism = _get_with_case_insensitive_key(study_section_attr_dict, "Organism")
+        organism = get_with_case_insensitive_key(study_section_attr_dict, "Organism")
     except KeyError:
-        organism = get_from_subsection(submission, "Organism")
+        organism = get_attr_from_submission(submission, "Organism")
 
     bia_study = BIAStudy(
         accession_id=accession_id,

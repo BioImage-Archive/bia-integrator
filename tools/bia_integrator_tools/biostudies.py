@@ -260,3 +260,13 @@ def find_files_in_submission(submission: Submission) -> List[File]:
     descend_and_find_files(submission.section, all_files)
     
     return all_files
+
+def get_with_case_insensitive_key(dictionary: dict, key: str) -> str:
+    keys = [k.lower() for k in dictionary.keys()]
+    temp_key = key.lower()
+    if temp_key in keys:
+        key_index = keys.index(temp_key)
+        temp_key = list(dictionary.keys())[key_index]
+        return dictionary[temp_key]
+    else:
+        raise KeyError(f"{key} not in {dictionary.keys()}")
