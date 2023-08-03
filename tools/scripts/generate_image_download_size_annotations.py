@@ -28,12 +28,10 @@ def get_image_download_size(accession_id: str) -> dict:
     images = bia_study.images
     download_sizes = {}
 
-    # Create lookup for sizes of zipfiles
-    zip_sizes = {
-        fileref.uri: sizeof_fmt(fileref.size_in_bytes)
-        for fileref in bia_study.file_references.values()
-        if fileref.name.endswith(".zip")
-    }
+    zip_sizes = {}
+    for fileref in bia_study.file_references.values():
+        if fileref.uri.endswith(".zip") and fileref.type != "file_in_zip":
+            zip_sizes[fileref_uri] = sizeof_fmt(fileref.size_in_bytes)
 
     for bia_image in bia_study.images.values():
         for image_representation in bia_image.representations:

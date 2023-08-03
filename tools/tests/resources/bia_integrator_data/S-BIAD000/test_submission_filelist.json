@@ -1,0 +1,115 @@
+[
+  {
+    "path": "Figure 1A and Quant EVF1C",
+    "size": 12583832,
+    "attributes": [
+      {
+        "name": "Figure",
+        "value": "1A"
+      }
+    ],
+    "type": "directory"
+  },
+  {
+    "path": "PONE-D-23-00773 source data/PONE Figure 1/1B/ILEI construct transient expression Dox test WB_uncropped.ppt",
+    "size": 162816,
+    "attributes": [
+      {
+        "name": "Figure",
+        "value": "1B"
+      }
+    ],
+    "type": "file"
+  },
+  {
+    "path": "PONE-D-23-00773 source data/PONE Figure 1/1D/KH2-ILEI-ESclones Dox WB.zip",
+    "size": 339068,
+    "attributes": [
+      {
+        "name": "Figure",
+        "value": "1D"
+      }
+    ],
+    "type": "file"
+  },
+  {
+    "path": "Figure 1D and Quant EVF1E",
+    "size": 126117990,
+    "attributes": [
+      {
+        "name": "Comparitor",
+        "value": "Spike: - vs +"
+      }
+    ],
+    "type": "directory"
+  },
+  {
+    "path": "PONE-D-23-00773 source data/PONE Figure 2/2C/ILEI OE-Dox skin_inlet_97adj.jpg",
+    "size": 632984,
+    "attributes": [
+      {
+        "name": "Figure",
+        "value": "2C"
+      }
+    ],
+    "type": "file"
+  },
+  {
+    "path": "PONE-D-23-00773 source data/PONE Figure 1/1E",
+    "size": 654755,
+    "attributes": [
+      {
+        "name": "Figure",
+        "value": "1E"
+      }
+    ],
+    "type": "directory"
+  },
+  {
+    "path": "PONE-D-23-00773 source data/PONE Figure 2/2A/uncropped_exvivo bone marrow Dox inductionWestern.zip",
+    "size": 776356,
+    "attributes": [
+      {
+        "name": "Figure",
+        "value": "2A"
+      }
+    ],
+    "type": "file"
+  },
+  {
+    "path": "PONE-D-23-00773 source data/PONE Figure 2/2B/in vivo Dox_spleen_BM_serum ILEI.zip",
+    "size": 375309,
+    "attributes": [
+      {
+        "name": "Figure",
+        "value": "2B"
+      }
+    ],
+    "type": "file"
+  },
+  {
+    "path": "PONE-D-23-00773 source data/PONE Figure 2/2C/ILEI OE-dox skin_Uluca_048adj.ome.zarr.zip",
+    "size": 2734053,
+    "attributes": [
+      {
+        "name": "Figure",
+        "value": "2C"
+      }
+    ],
+    "type": "file"
+  },
+  {
+    "path": "PONE-D-23-00773 source data/PONE Figure 2/2C/ILEI OE-Dox lung_Uluca_035adj",
+    "size": 2997197,
+    "attributes": [
+      {
+        "name": "Figure",
+        "value": "2C"
+      }
+    ],
+    "type": "directory"
+  }
+
+
+
+]

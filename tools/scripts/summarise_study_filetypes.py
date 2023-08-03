@@ -50,12 +50,13 @@ def get_study_filetypes(accession_id: str) -> dict:
     for f in file_references.values():
         ext = _get_extension(f.name)
         uri_ext = _get_extension(f.uri)
-        #if len(ext) == 0 and f.size_in_bytes == 0:
         if f.size_in_bytes == 0:
             continue
         if len(ext) == 0:
             ext = "none"
-        if ext != uri_ext:
+        if  f.type == "directory":
+            ext = uri_ext
+        elif f.type == "file_in_zip":
             ext = f"{ext} in {uri_ext}"
         if ext in ftypes:
             ftypes[ext]["n"] = ftypes[ext]["n"] + 1

@@ -1,18 +1,38 @@
 """
+
     To run this script the following are needed:
     1. export accession id of submission e.g. 
         export ACCNO="S-BIAD679"
-    2. env variables for convert_to_zarr
-        export bioformats2raw_java_home=/home/kola/miniconda3/envs/bia/
-        export bioformats2raw_bin=/home/kola/miniconda3/envs/bia/bin/bioformats2raw
-        export AWS_PROFILE=embassy && export AWS_SHARED_CREDENTIALS_FILE=/home/kola/.aws/embassy_s3_credentials && export AWS_CONFIG_FILE=/home/kola/.aws/embassy_s3_config
-        export BIA_INTEGRATOR_TOOLS_SCRIPT_DIR="/homes/aybuke/code/bia-integrator/tools/scripts/"
+    2. env variables for convert_to_zarr e.g.
+        export bioformats2raw_java_home=/miniconda3/envs/bia/
+        export bioformats2raw_bin=/miniconda3/envs/bia/bin/bioformats2raw
+    3. AWS S3 credentials for upload to Embassy s3 e.g.
+        export AWS_PROFILE=embassy 
+        export AWS_SHARED_CREDENTIALS_FILE=/.aws/embassy_s3_credentials
+        export AWS_CONFIG_FILE=/.aws/embassy_s3_config
+       OR
+        export AWS_ACCESS_KEY_ID=XXXXXXXXXXXXXXXXXXXXX
+        export AWS_SECRET_ACCESS_KEY=abcdefgh1234567890
 
-    # Activate virtual environment containing snakemake tools
+    The following are required if using Singularity container e.g.
+    1. export SINGULARITY_CONTAINER_PATH="/singularity/bia_v1.2.1.sif"
+    2. export CONTAINER_COMMAND_PREFIX="conda run -n bia"
+
+    The following are optional depending on your setup:
+    1. Overrides for default storage (esp. if running on EBI clusters) e.g.
+        export data_dirpath=/hps/nobackup/.bia-integrator-data/
+        export cache_root_dirpath=/hps/nobackup/.cache/bia-converter
+
+    2. Override default location of bia-integrator scripts:
+        export BIA_INTEGRATOR_TOOLS_SCRIPT_DIR="/bia-integrator/tools/scripts/"
+    3. Override default (6) number of images to convert:
+        export BIA_INTEGRATOR_N_IMAGES_TO_CONVERT=3
+
+    To run workflow
+    1. Activate virtual environment containing snakemake tools:
         source ${BIA_INTEGRATOR_TOOLS_SCRIPT_DIR}../venv/bin/activate
-    
-    run command example at the snakemake directory under the BIA_INTEGRATOR_TOOLS_SCRIPT_DIR:
-        snakemake --cores 3 work_dir/final_output_${ACCNO}.log
+    2. Run command from of bia-integrator/tools/snakemake:
+        snakemake --cores 6 work_dir/${ACCNO}/final_output_${ACCNO}.log
 
 """
 
@@ -22,8 +42,11 @@ import re
 import subprocess
 import os
 
-# ToDo: use variable for work_dir
+# Set directory for artefacts
 work_dir = "work_dir/" + os.environ["ACCNO"]
+
+# Get number of images to convert to zarr format
+n_images_to_convert = os.environ.get("BIA_INTEGRATOR_N_IMAGES_TO_CONVERT", "6")
 
 # Prefix to append when running in singularity container
 command_prefix = os.environ.get("CONTAINER_COMMAND_PREFIX", "")
@@ -53,16 +76,9 @@ rule index_zips_in_study:
     singularity:
         singularity_container_path
     shell:
-        # ToDo set bash so pipeline non-zero exit does not propagate
-        # Then I can use 'head' in line below
-        #"biaint filerefs list $ACCNO | grep '\.zip2," | cut -d',' -f1 | xargs -L1 python {script_dir}/index_zip_in_study.py $ACCNO 2>&1 | tee {output}"
-        """
-            for ZIP_FILEREF_ID in `biaint filerefs list $ACCNO | grep '\.zip,' | cut -d',' -f1`; do python ../scripts/index_zip_in_study.py $ACCNO $ZIP_FILEREF_ID 2>&1 | tee -a {output}; done
-            
-            # Repeat for directories (assume no '.' in name)
-            for ZIP_FILEREF_ID in `biaint filerefs list $ACCNO | grep -v ',.*\..*,' | cut -d',' -f1`; do python ../scripts/index_zip_in_study.py $ACCNO $ZIP_FILEREF_ID 2>&1 | tee -a {output}; done
+        r"""
+            for ZIP_FILEREF_ID in `biaint filerefs list $ACCNO | grep -P '\.zip|\bdirectory\b' | grep -v '\.zarr' | grep -v 'file_in_zip' | cut -d',' -f1`; do python {script_dir}/index_zip_in_study.py $ACCNO $ZIP_FILEREF_ID 2>&1 | tee -a {output}; done
             touch {output}
-
         """
 
 rule summarise_study_filetypes:
@@ -129,8 +145,8 @@ rule generate_image_size_annotations:
         "{command_prefix} python {script_dir}/generate_image_download_size_annotations.py $ACCNO 2>&1 | tee {output}"
 
 # Get image_representations dynamically
-# It only does it for the first 6. Change the first line of the shell code if 
-# you want any other number or all of them to be converted in the next rule.
+# By default only first 6. Use BIA_INTEGRATOR_N_IMAGES_TO_CONVERT 
+# environment variable if you want any other number or all of them
 checkpoint get_image_reps_to_convert:
     input: work_dir + "/generate_image_size_annotations.log"
     output:
@@ -139,13 +155,23 @@ checkpoint get_image_reps_to_convert:
         singularity_container_path
     shell:
         """
-            head -n 6 {input} | grep "json" > {input}.temp
+            # For some reason (probably as things move through the pipes?),
+            # this command causes snakemake to exit (as though bash 
+            # returned an error) when it has run OK. Therefore disable 
+            # exit on error just for this.
+            set +e
+                grep "json" {input} | head -n {n_images_to_convert} > {input}.temp
+            set -e
+
             OUTPUT_DIR='{output.im_rep_dir}'
             REGEX="([0-9|a-z]+-[0-9|a-z]+-[0-9|a-z]+-[0-9|a-z]+-[0-9|a-z]+)"
             mkdir $OUTPUT_DIR
             while read line; do if [[ $line =~ $REGEX ]]; then touch "$OUTPUT_DIR/${{BASH_REMATCH[1]}}"; fi; done < {input}.temp
         """
 
+# This step of the pipeline runs N (default 6) independent jobs. Some
+# of these may fail. The pipeline will continue regardless of failure
+# as long as at least one independent job completed successfully
 rule convert_to_zarr_and_upload:
     input:
         im_ref = work_dir + "/im_reps/{i,[a-z|\d|-]+}"
@@ -155,27 +181,52 @@ rule convert_to_zarr_and_upload:
         singularity_container_path
     shell:
         """
+            # Manipulate exit status to allow continuation in event of error
+            # See https://snakemake.readthedocs.io/en/stable/project_info/faq.html#my-shell-command-fails-with-exit-code-0-from-within-a-pipe-what-s-wrong
+            set +e
             IM_REF=$(basename {input.im_ref})
             {command_prefix} python {script_dir}/convert_to_zarr_and_upload.py $ACCNO $IM_REF > {output.im_ref}
+
+            exitcode=$?
+            if [ $exitcode -eq 0 ]
+            then
+                touch {output.im_ref}.success
+            fi
+            touch {output.im_ref}
+            exit 0
         """
 # The command for this rule could be placed in convert_to_zarr_and_upload
 # but putting it here to make the steps involved clearer
 rule generate_thumbnails:
     input:
-        work_dir + "/im_reps_output/{i,[a-z|\d|-]+}"
+        work_dir + "/im_reps_output/{i,[a-z|\d|-]+[^\.success]}"
     output:
         work_dir + "/gen_thumb_output/{i}"
     singularity:
         singularity_container_path
     shell:
         """
-            IM_REF=$(basename {input})
-            {command_prefix} python {script_dir}/generate_thumbnail.py $ACCNO $IM_REF > {output}
+            # Allow continuation in event of error - see comments in
+            # rule 'convet_to_zarr_and_upload' above
+            set +e
+            if [ -f {input}.success ]
+            then
+                IM_REF=$(basename {input})
+                {command_prefix} python {script_dir}/generate_thumbnail.py $ACCNO $IM_REF > {output}
+
+                exitcode=$?
+                if [ $exitcode -eq 0 ]
+                then
+                    touch {output}.success
+                fi
+            fi
+            touch {output}
+            exit 0
         """
 def aggregate_converted_im_reps(wildcards):
     """Return converted image_representations"""
     checkpoint_output = checkpoints.get_image_reps_to_convert.get(**wildcards).output[0]
-    im_reps_paths = expand(work_dir + "/gen_thumb_output/{i}", i=glob_wildcards(os.path.join(checkpoint_output, '{i,[a-z|\d|-]+}')).i)
+    im_reps_paths = expand(work_dir + "/gen_thumb_output/{i}", i=glob_wildcards(os.path.join(checkpoint_output, '{i,[a-z|\d|-]+[^\.success]}')).i)
     return im_reps_paths
 
 rule generate_representative_image:
@@ -193,7 +244,7 @@ rule generate_representative_image:
         singularity_container_path
     shell:
         """
-            IM_REF=$(basename "{input}")
+            IM_REF=$(basename -s .success {input} | head -n 1)
             {command_prefix} python {script_dir}/generate_representative_image_and_set_to_default.py $ACCNO $IM_REF > {output}
         """
 

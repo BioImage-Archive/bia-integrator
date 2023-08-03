@@ -67,7 +67,7 @@ def main(accession_id, zip_fileref_id):
 
     new_filerefs = {}
     for item in info_list:
-        if not item.filename.startswith("__MACOSX"):
+        if not item.filename.startswith("__MACOSX") and not item.is_dir():
             new_fileref = FileReference(
                 id=zipfile_item_to_id(accession_id, zip_fileref.name, item.filename),
                 name=item.filename,
