@@ -232,10 +232,9 @@ def aggregate_converted_im_reps(wildcards):
 rule generate_representative_image:
     # Although the aggregate function returns a space separated list
     # of paths for the converted image representations,
-    # We use 'basename' in the shell to get the reference of the
-    # last image representation only.
-    # i.e. basename of "dir/111-111-111 dir/222-222-222 dir/333-333-333"
-    # is 333-333-333
+    # We loop through the returned paths checking for the first one
+    # that was successfully converted. We then use 'basename' in the
+    # shell to get the reference of the image representation.
     input:
         aggregate_converted_im_reps
     output:
@@ -244,8 +243,20 @@ rule generate_representative_image:
         singularity_container_path
     shell:
         """
-            IM_REF=$(basename -s .success {input} | head -n 1)
-            {command_prefix} python {script_dir}/generate_representative_image_and_set_to_default.py $ACCNO $IM_REF > {output}
+            for IM_REF in {input}
+            do
+                if [ -f ${{IM_REF}}.success ]
+                then
+                    IMAGE_ID=$(basename $IM_REF)
+                    {command_prefix} python {script_dir}/generate_representative_image_and_set_to_default.py $ACCNO $IMAGE_ID > {output}
+                    exit 0
+                fi
+            done
+            
+            # Code reaches here if no succesfully converted images
+            # therefore, cause bash error (or have generic image?)
+            echo "ERROR: No successfully converted images in IM_REFS supplied - exiting"
+            exit 1
         """
 
 rule fetch_ome_metadata_for_all_images_in_study:
