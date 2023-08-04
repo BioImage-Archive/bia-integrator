@@ -1,0 +1,165 @@
+<html lang="en" class="vf-no-js">
+    <head>
+        <title>
+            {% block title %}{% endblock %} &lt;BioImageArchive&gt; 
+        </title>
+        {% block header_extras %}
+            <!-- EXTRA ENTRIES FOR HEADER -->
+        {% endblock %}
+
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="https://assets.emblstatic.net/vf/v2.5.8/css/styles.css">
+        <meta charset="UTF-8">
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="BioImageArchive &lt; The European Bioinformatics Institute &lt; EMBL-EBI" />
+        <meta property="og:description" content="The BioImageArchive – a free, publicly available online resource which stores and distributes biological images" />
+        <meta name="description" content="The BioImageArchive – a free, publicly available online resource which stores and distributes biological images" />
+        <meta name="keywords" content="bioinformatics, europe, institute, biostudies, images" />
+        <meta name="author" content="BioImageArchive" />
+        <meta name="HandheldFriendly" content="true" />
+        <meta name="MobileOptimized" content="width" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <meta name="theme-color" content="#75C8EC" /> <!-- Android Chrome mobile browser tab color -->
+        <meta http-equiv="pragma" content="no-cache" />
+
+        <!-- shared variables -->
+        <script>
+            var contextPath = '/biostudies';
+            var collection = 'BioImages';
+            if (collection==='undefined') collection = undefined;
+        </script>
+
+        <!-- If you link to any other sites frequently, consider optimising performance with a DNS prefetch -->
+        <link rel="dns-prefetch" href="//embl.de" />
+
+        <!-- If you have custom icon, replace these as appropriate.
+             You can generate them at realfavicongenerator.net -->
+        <link rel="icon" type="image/x-icon" href="https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/logos/bioimage-archive/favicons/favicon.ico" />
+        <link rel="icon" type="image/png" href=""https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/logos/bioimage-archive/favicons/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="192×192" href=""https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/logos/bioimage-archive/favicons/android-chrome-192x192.png" /> <!-- Android (192px) -->
+        <link rel="apple-touch-icon-precomposed" href=""https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/logos/bioimage-archive/favicons/apple-touch-icon.png" /> <!-- Apple? -->
+        <link rel="mask-icon" href=""https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/logos/bioimage-archive/favicons/safari-pinned-tab.svg" color="#ffffff" /> <!-- Safari icon for pinned tab -->
+        <meta name="msapplication-TileColor" content="#2b5797"> <!-- MS Icons -->
+        <meta name="msapplication-TileImage" content=""https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/logos/bioimage-archive/favicons/mstile-150x150.png" />
+
+        <!-- CSS: implied media=all -->
+        <!-- CSS concatenated and minified via ant build script-->
+        <link rel="stylesheet" href="https://www.ebi.ac.uk/web_guidelines/EBI-Framework/v1.4/css/ebi-global.css" type="text/css" media="all" />
+        <link rel="stylesheet" href="https://www.ebi.ac.uk/web_guidelines/EBI-Icon-fonts/v1.2/fonts.css" type="text/css" media="all" />
+
+
+        <!-- Use this CSS file for any custom styling -->
+        <!--
+          <link rel="stylesheet" href="css/custom.css" type="text/css" media="all">
+        -->
+
+        <!-- If you have a custom header image or colour -->
+        <!--
+        <meta name="ebi:localmasthead-color" content="#000">
+        <meta name="ebi:localmasthead-image" content="https://www.ebi.ac.uk/web_guidelines/EBI-Framework/images/backgrounds/embl-ebi-background.jpg">
+        -->
+
+        <!-- you can replace this with theme-[projectname].css. See http://www.ebi.ac.uk/web/style/colour for details of how to do this -->
+        <!-- also inform ES so we can host your colour palette file -->
+        <link rel="stylesheet" href="https://www.ebi.ac.uk/biostudies/css/theme-biostudies.css" type="text/css" media="all" />
+        <link rel="stylesheet" href="https://www.ebi.ac.uk/biostudies/css/common.css" type="text/css" media="all" />
+
+        <!-- for production the above can be replaced with -->
+        <!--
+        <link rel="stylesheet" href="//www.ebi.ac.uk/web_guidelines/css/compliance/mini/ebi-fluid-embl.css">
+        -->
+
+        <!-- end CSS-->
+
+        <meta class="foundation-mq" />
+        <link rel="stylesheet" href="https://www.ebi.ac.uk/biostudies/css/jquery.dataTables.css">
+        <link rel="stylesheet" href="https://www.ebi.ac.uk/biostudies/css/detail.css" type="text/css">
+        <!--script type="text/javascript" src="https://www.ebi.ac.uk/biostudies/gzip_N1305990095/js/common.min.js" ></script>
+        <script type="text/javascript" src="https://www.ebi.ac.uk/biostudies/gzip_342799686/js/detail.min.js" ></script-->
+    </head>
+
+    <body>
+
+
+<div id="skip-to">
+    <a href="#content">Skip to main content</a>
+</div>
+<header id="masthead-black-bar" class="clearfix masthead-black-bar"></header>
+<div id="content">
+    <div data-sticky-container>
+    <header id="masthead" class="masthead" style="background-image: url(&quot;https://www.ebi.ac.uk/biostudies/images/collections/bioimages/background.jpg&quot;); background-color: rgb(0, 124, 130);">
+            <div class="masthead-inner row">
+
+                <!-- local-title -->
+                <div class="columns medium-7" id="local-title"><h1><a href="https://www.ebi.ac.uk/bioimage-archive"><img src="https://www.ebi.ac.uk/biostudies/images/collections/bioimages/logo.png"></a></h1></div>
+                <!-- Add local-title -->
+                <!-- Add local-description -->
+            </div>
+        </header>
+    </div>
+
+
+
+    <div id="collection-banner"></div>
+    <script id='collection-banner-template' type='text/x-handlebars-template'>
+        <div class="collection-banner-content columns medium-12 clearfix row">
+                <span class="collection-logo">
+                    <a class="no-border" href="{{url}}" target="_blank">
+                        <img src="{{logo}}"></a>
+                </span>
+            <span class="collection-text">
+                    <span class="collection-description">{{description}}</span>
+                </span>
+        </div>
+    </script>
+    <!-- Suggested layout containers -->
+
+        <section id="main-content-area" class="row" role="main">
+                
+    <!--START OF EBI TEMPLATE WRAPPER -->
+    
+        <!--CONTENT GOES HERE -->
+        {% block content %}
+        {% endblock %}
+
+    <!--END OF EBI TEMPLATE WRAPPER -->
+
+        </section>
+    <!-- End suggested layout containers -->
+
+</div>
+
+
+
+          <footer>
+    <div id="elixir-banner" data-color="grey" data-name="BioStudies" data-description="BioStudies is a recommended ELIXIR Deposition Database" data-more-information-link="https://www.elixir-europe.org/platforms/data/elixir-deposition-databases" data-use-basic-styles="false"></div>
+    <script defer="defer" src="https://ebi.emblstatic.net/web_guidelines/EBI-Framework/v1.4/js/elixirBanner.js"></script>
+    <div id="global-footer" class="global-footer">
+        <nav id="global-nav-expanded" class="global-nav-expanded row">
+            <!-- Footer will be automatically inserted by footer.js -->
+        </nav>
+        <section id="ebi-footer-meta" class="ebi-footer-meta row">
+            <!-- Footer meta will be automatically inserted by footer.js -->
+        </section>
+    </div>
+</footer>
+
+<!-- JavaScript -->
+{% block post_body_scripts %} {% endblock %}
+<!-- Grab Google CDN's jQuery, with a protocol relative URL; fall back to local if offline -->
+<!--
+<script>window.jQuery || document.write('<script src="../js/libs/jquery-1.10.2.min.js"><\/script>')</script>
+-->
+<!-- Your custom JavaScript file scan go here... change names accordingly -->
+<!--
+<script defer="defer" src="//www.ebi.ac.uk/web_guidelines/js/plugins.js"></script>
+<script defer="defer" src="//www.ebi.ac.uk/web_guidelines/js/script.js"></script>
+-->
+<script defer="defer" src="//www.ebi.ac.uk/web_guidelines/EBI-Framework/v1.4/js/script.js"></script>
+<!-- The Foundation theme JavaScript -->
+<script src="//www.ebi.ac.uk/web_guidelines/EBI-Framework/v1.4/libraries/foundation-6/js/foundation.js"></script>
+<script src="//www.ebi.ac.uk/web_guidelines/EBI-Framework/v1.4/js/foundationExtendEBI.js"></script>
+<script>$(document).foundation();</script>
+<script>$(document).foundationExtendEBI();</script>
+    </body>
+</html>

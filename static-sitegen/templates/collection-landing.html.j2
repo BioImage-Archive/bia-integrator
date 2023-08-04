@@ -1,29 +1,8 @@
-<html lang="en" class="vf-no-js">
-    <head>
-        <meta charset="UTF-8">
-        <link rel="stylesheet" href="https://assets.emblstatic.net/vf/v2.5.8/css/styles.css">
-        <meta charset="UTF-8">
-        <title>Collection landing</title>
-    </head>
+{% extends "base.html.j2" %}
 
-    <body>
-        <!-- Header -->
-        <header class="vf-global-header">
+{% block title %} Collection landing {% endblock %}
 
-            <header class="vf-global-header">
-
-                <div class="vf-global-header__inner">
-          
-                  <a href="https://www.ebi.ac.uk/bioimage-archive" class="vf-logo">
-                    <img class="vf-logo__image" src="/bia-integrator-data/pages/assets/BIA-Logo.png" alt="BioImage Archive">
-                    <span class="vf-logo__text">   BioImage Archive</span>
-                  </a>
-          
-                </div>
-          
-            </header>
-        </header>
-
+{% block content %}
         <!-- Collection summary -->
         <div class="vf-stack vf-stack--500">
             <section class="vf-intro | embl-grid embl-grid--has-centered-content">
@@ -95,5 +74,4 @@
             </section>
 
           </div>
-    </body>
-</html>
+{% endblock %}
