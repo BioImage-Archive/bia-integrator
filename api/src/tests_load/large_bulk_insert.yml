@@ -1,0 +1,55 @@
+config:
+  target: "http://localhost:8080"
+  timeout: 10
+  phases:
+    # Need to keep arrivals to less than 1/sec for requests that take a long time anyway so the API wouldn't get backed up
+    #   keep this fixed at 1 arrival/3s and vary bulkImageCount to get sizing
+    - duration: 60
+      arrivalCount: 20
+  plugins:
+    expect: {
+      outputFormat: prettyError
+    }
+    ensure: {}
+  processor: "./util.js"
+  variables:
+    study_uuid: 00000000-0000-0000-0006-005ec17073bb
+  ensure:
+    thresholds:
+      - "http.response_time.p99": 2500
+      - "http.response_time.median": 2500
+    conditions:
+      - expression: "not errors.ETIMEDOUT or errors.ETIMEDOUT == 0"
+
+before:
+  flow:
+    # use a shared jwt for all vUsers, since user-related info necessary to handling the request should be contained in the jwt anyway,
+    #   authentication takes time disproportionate to normal requests (300ms/request to hash, 50ms for a get)
+    #   and massively parallel authentication is out of scope
+    - post:
+        url: "/auth/token"
+        # formData fixed in the OAuth spec for the username/password flow
+        formData:
+          username: "test@example.com"
+          password: "test"
+        capture:
+          - json: "$.access_token"
+            as: "jwt"
+
+scenarios:
+  - name: ""
+    flow:
+      - post:
+          url: "/api/private/images"
+          beforeRequest: "bulkInsertImagesGenerate"
+          custom:
+            # Just to have a single parameter to fix for sizing purposes,
+            #   make this as large as possible until any of the ensure checks fail 
+            bulkImageCount: 10000
+          headers:
+            Authorization: "Bearer {{ jwt }}"
+          expect:
+            - statusCode: 201
+          afterResponse: "bulkInsertValidateResponse"
+          # @TODO: Toggle this with api on Embassy, check timing difference - especially for bulk operations
+          gzip: true

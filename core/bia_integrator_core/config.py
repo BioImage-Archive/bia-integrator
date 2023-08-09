@@ -8,7 +8,6 @@ from typing import Optional
 from openapi_client import Configuration, ApiClient
 from openapi_client.api import DefaultApi
 from dotenv import dotenv_values
-from jose import jwt
 from base64 import b64decode
 
 # @TODO: If credentials are missing from config, build public-only unauthenticated client
@@ -81,7 +80,7 @@ class Settings(BaseSettings):
             )
 
             # override access_token which is static and used in the api client for authentication
-            #   with a dynamic property s.t. the token gets refreshed automatically before it expired, for any api calls
+            #   with a dynamic property s.t. the token gets refreshed automatically before it expires, for any api call
             Configuration.access_token = property(access_token_auto_refresh_bearer)
 
             api_client = ApiClient(configuration=api_config)

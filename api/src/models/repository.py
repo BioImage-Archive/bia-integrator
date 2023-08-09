@@ -16,7 +16,7 @@ COLLECTION_USERS = "users"
 
 async def get_db(collection_name: str = COLLECTION_BIA_INTEGRATOR) -> AsyncIOMotorCollection:
     mongo_connstring = os.environ["MONGO_CONNSTRING"]
-    db_client = AsyncIOMotorClient(mongo_connstring, uuidRepresentation='standard')
+    db_client = AsyncIOMotorClient(mongo_connstring, uuidRepresentation='standard', maxPoolSize=100)
 
     dbs = await db_client.list_databases()
     dbs = [db['name'] async for db in dbs] # pull cursor items

@@ -1,0 +1,45 @@
+config:
+  target: "http://localhost:8080"
+  timeout: 10
+  phases:
+    # vary this until an assert breaks
+    - duration: 30
+      arrivalRate: 80
+  plugins:
+    expect: {
+      outputFormat: prettyError
+    }
+    ensure: {}
+  processor: "./util.js"
+  variables:
+    study_uuid: 00000000-0000-0000-0006-005ec17073bb
+    image_uuids:
+      - 00000000-0000-0000-0006-005ec1720722
+      - 80d1fb99-d67c-42b9-b86e-c5a9eafa19bd
+      - b4685f6b-a81b-4c1f-9418-605c856d811d
+  ensure:
+    thresholds:
+      - "http.response_time.p99": 100
+    conditions:
+      - expression: "not errors.ETIMEDOUT or errors.ETIMEDOUT == 0"
+
+scenarios:
+  - name: "Get a single study"
+    flow:
+      - get:
+          url: "/api/studies/{{ study_uuid }}"
+  - name: "Get a series of images associated with the study"
+    flow:
+      - loop:
+        - get:
+            url: "/api/images/{{ loopItem }}"
+        over: ${{ image_uuids }}
+  # commented because this is different than a simple fetch, so it takes longer and swamps the other tests
+  #- name: "Get a page of images associated with a study"
+  #  flow:
+  #    - get:
+  #        url: "/api/studies/{{ study_uuid }}/images"
+  - name: "Get a single image by alias"
+    flow:
+      - get:
+          url: "/api/study/00000000-0000-0000-0006-005ec20ae711/images_by_aliases?aliases=00000000-0000-0000-0006-005ec20b788d_test_1"
