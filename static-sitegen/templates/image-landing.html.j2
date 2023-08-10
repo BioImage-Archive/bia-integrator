@@ -1,5 +1,9 @@
 {% extends "base.html.j2" %}
 
+{% block header_extras %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+{% endblock %}
+
 {% block title %} {{ study.accession_id }}:{{ image_alias }} {% endblock %}
 
 {% block content %}
@@ -40,25 +44,25 @@
             <p></p>
             <b> Image Dimensions </b>: {{ dimensions }}
             {% if pdims != None %}
-                <div> <b> Physical Dimensions </b>: {{ pdims }} </div>
+            <div> <b> Physical Dimensions </b>: {{ pdims }} </div>
             {% endif %}
             {% if psize != None %}
-                <div> <b> Pixel/Voxel Size </b>: {{ psize }} </div>
+            <div> <b> Pixel/Voxel Size </b>: {{ psize }} </div>
             {% endif %}
             {% if image.attributes.get('SizeC') %}
-                <div> <b> Number of Channels</b> : {{ image.attributes['SizeC'] }} </div>
+            <div> <b> Number of Channels</b> : {{ image.attributes['SizeC'] }} </div>
             {% endif %}
             {% if image.attributes.get('SizeT') %}
-                {% if image.attributes['SizeT'] != 1 %}
-                    <div> <b> Number of Time Points </b>: {{ image.attributes['SizeT'] }} </div>
-                {% endif %}
+            {% if image.attributes['SizeT'] != 1 %}
+            <div> <b> Number of Time Points </b>: {{ image.attributes['SizeT'] }} </div>
+            {% endif %}
             {% endif %}
             {% for key, value in image.attributes.items() %}
-                {% if 'Size' not in key %} 
-                    {% if key not in ['DimensionOrder','md5'] %}
-                        <div> <b>{{key}}</b> : {{value}} </div>
-                    {% endif %}
-                {% endif %}
+            {% if 'Size' not in key %} 
+            {% if key not in ['DimensionOrder','md5'] %}
+            <div> <b>{{key}}</b> : {{value}} </div>
+            {% endif %}
+            {% endif %}
             {% endfor %}
         </div>
         <div>
@@ -72,43 +76,43 @@
     </section>
 </div>
 {% endblock %}
-    
+
 
 
 {% block post_body_scripts %}
-    <script>
-        function copyTextToClipboard(text) {
-            var textArea = document.createElement("textarea");
-            // Place in the top-left corner of screen regardless of scroll position.
-            textArea.style.position = 'fixed';
+<script>
+    function copyTextToClipboard(text) {
+        var textArea = document.createElement("textarea");
+        // Place in the top-left corner of screen regardless of scroll position.
+        textArea.style.position = 'fixed';
 
-            textArea.value = text;
+        textArea.value = text;
 
-            document.body.appendChild(textArea);
-            textArea.focus();
-            textArea.select();
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
 
-            var successful;
-            try {
-                successful = document.execCommand('copy');
-            } catch (err) {
-                console.log('Oops, unable to copy');
-            }
-            document.body.removeChild(textArea);
-
-            if (successful) {
-                // show user that copying happened - update text on element (e.g. button)
-                let target = event.target;
-                let html = target.innerHTML;
-                target.classList.add("shake");
-                setTimeout(() => {
-                    // reset after 1 second
-                    target.classList.remove("shake");
-                }, 1000)
-            } else {
-                console.log("Copying failed")
-            }
+        var successful;
+        try {
+            successful = document.execCommand('copy');
+        } catch (err) {
+            console.log('Oops, unable to copy');
         }
-    </script>
-    <script type="text/javascript" src="https://kitware.github.io/itk-vtk-viewer/app/itkVtkViewerCDN.js"></script>
+        document.body.removeChild(textArea);
+
+        if (successful) {
+            // show user that copying happened - update text on element (e.g. button)
+            let target = event.target;
+            let html = target.innerHTML;
+            target.classList.add("shake");
+            setTimeout(() => {
+                // reset after 1 second
+                target.classList.remove("shake");
+            }, 1000)
+        } else {
+            console.log("Copying failed")
+        }
+    }
+</script>
+<script type="text/javascript" src="https://kitware.github.io/itk-vtk-viewer/app/itkVtkViewerCDN.js"></script>
 {% endblock %}
