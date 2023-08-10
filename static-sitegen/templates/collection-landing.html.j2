@@ -1,6 +1,13 @@
 {% extends "base.html.j2" %}
 
-{% block title %} Collection landing {% endblock %}
+{% block header_extras %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.11.5/datatables.min.css"/>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.11.5/datatables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.13.1/sorting/natural.js"></script>
+{% endblock %}
+
+{% block title %} {{ collection.title }} {% endblock %}
 
 {% block content %}
         <!-- Collection summary -->
@@ -16,27 +23,26 @@
             </section>
  
             <!-- Images -->
-            <section class="vf-content | embl-grid embl-grid--has-centered-content">
-                <div>
-
-                </div>
-                <div>
-
-                    <section>
-                        
-                    <table class="vf-table--striped">
+            <!--section class="vf-content | embl-grid embl-grid--has-centered-content"-->
+            <section class="vf-content">
+                    <table class="vf-table--striped" id="collectionItems">
                         <colgroup>
-                              <col span="1" style="width: 20%;">
-                              <col span="1" style="width: 35%;">
-                              <col span="1" style="width: 10%;">
-                              <col span="1" style="width: 35%;">
+                              <col span="1" style="width: 12%;">
+                              <col span="1" style="width: 33%;">
+                              <col span="1" style="width: 12%;">
+                              <col span="1" style="width: 28%;">
+                              <col span="1" style="width: 15%;">
                         </colgroup>
+                        <thead>
                             <tr class="vf-table__row">
                                 <th class="vf-table__heading">Summary</th>
                                 <th class="vf-table__heading">Study title</th>
+                                <th class="vf-table__heading">Release date</th>
                                 <th class="vf-table__heading">Imaging method / organism</th>
                                 <th class="vf-table__heading">Example</th>
                             </tr>
+                        </thead>
+                        <tbody>
                             {% for study in studies %}
                             <tr class="vf-table__row">
                               <td class="vf-table__cell">
@@ -54,6 +60,7 @@
                                   <a href="{{ study.accession_id }}{{ page_suffix }}"><button class="vf-button vf-button--sm">view</button></a>
                               </td>
                               <td class="vf-table__cell">{{ study.title }}</td>
+                              <td class="vf-table__cell">{{ study.release_date }}</td>
 
                               <td class="vf-table__cell">
                                 {{ study.imaging_type }}
@@ -66,12 +73,19 @@
                                   </figure>  
                               </td>                              
                             </tr>
- 
                             {% endfor %}
+                        </tbody>
                       </table>
                       </section>
-                </div>
-            </section>
-
           </div>
+          <script>
+        $(document).ready( function () {
+            $('#collectionItems').DataTable( {
+                columnDefs: [
+                    { type: 'natural', targets: 0 },
+                    { orderable: false, targets: 4}
+                ]
+            });
+        } );
+    </script>
 {% endblock %}

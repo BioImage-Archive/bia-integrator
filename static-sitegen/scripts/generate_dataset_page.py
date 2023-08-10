@@ -27,10 +27,16 @@ DEFAULT_TEMPLATE = "dataset-landing.html.j2"
 # Attributes to display in study content section
 # Use list for backward compatibility with different annotation names
 # Most recent names come first in list
-STUDY_CONTENT_ANNOTATIONS = {
+STUDY_WITH_ZIP_CONTENT_ANNOTATIONS = {
     "Study size:": ["study_size_human_readable", "study_size"],
     "N files (exc zip contents):": ["n_files_excluding_zip_contents", "n_files_in_study",],
     "N files (inc zip contents):": ["n_files_including_zip_contents",],
+    "Filetype breakdown:": ["filetype_breakdown_html",],
+}
+
+STUDY_NO_ZIP_CONTENT_ANNOTATIONS = {
+    "Study size:": ["study_size_human_readable", "study_size"],
+    "N files:": ["n_files_including_zip_contents", "n_files_in_study",],
     "Filetype breakdown:": ["filetype_breakdown_html",],
 }
 
@@ -90,6 +96,15 @@ def generate_dataset_page_html(accession_id, template_fname: str):
     template = env.get_template(template_fname)
 
     # Get the keys to use for rendering study contents section
+    try:
+        if bia_study.attributes["n_files_including_zip_contents"] != bia_study.attributes["n_files_excluding_zip_contents"]:
+            STUDY_CONTENT_ANNOTATIONS = STUDY_WITH_ZIP_CONTENT_ANNOTATIONS
+        else:
+            STUDY_CONTENT_ANNOTATIONS = STUDY_NO_ZIP_CONTENT_ANNOTATIONS
+    except KeyError:
+        STUDY_CONTENT_ANNOTATIONS = STUDY_NO_ZIP_CONTENT_ANNOTATIONS
+        
+            
     study_content_annotations = {}
     for label, keys in STUDY_CONTENT_ANNOTATIONS.items():
         for key in keys:

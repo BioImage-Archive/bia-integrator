@@ -1,6 +1,6 @@
 {% extends "base.html.j2" %}
 
-{% block title %} {{ image_alias }} {% endblock %}
+{% block title %} {{ study.accession_id }}:{{ image_alias }} {% endblock %}
 
 {% block content %}
 <div class="vf-stack vf-stack--500">
@@ -24,9 +24,10 @@
     <section class="vf-content | embl-grid embl-grid--has-centered-content">
         <div>
             <button class="vf-button vf-button--primary vf-button--sm" onclick="copyTextToClipboard('{{ zarr_uri }}')">Copy S3 URI to clipboard</button>
-            <button class="vf-button vf-button--primary vf-button--sm" onclick="location.href='https://kitware.github.io/itk-vtk-viewer/app/?fileToLoad={{ zarr_uri }}';">Open in ITK viewer</button>
-            <button class="vf-button vf-button--primary vf-button--sm" onclick="location.href='https://hms-dbmi.github.io/vizarr/?source={{ zarr_uri }}';">Open fullscreen in Vizarr</button>
-            <button class="vf-button vf-button--primary vf-button--sm" onclick="location.href='{{ neuroglancer_uri }}';">Open in Neuroglancer</button>
+
+            <a href='https://kitware.github.io/itk-vtk-viewer/app/?fileToLoad={{ zarr_uri }}'><button class="vf-button vf-button--primary vf-button--sm">Open in ITK viewer</button></a>
+            <a href='https://hms-dbmi.github.io/vizarr/?source={{ zarr_uri }}'><button class="vf-button vf-button--primary vf-button--sm">Open fullscreen in Vizarr</button></a>
+            <a href='{{ neuroglancer_uri }}'><button class="vf-button vf-button--primary vf-button--sm">Open in Neuroglancer</button></a>
 
             <a href={{ download_uri }}><button class="vf-button vf-button--primary vf-button--sm">Download original ({{ download_size }})</button></a>
         </div>

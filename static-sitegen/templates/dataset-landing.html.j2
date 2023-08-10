@@ -53,16 +53,18 @@
         <section class="vf-content | embl-grid embl-grid--has-centered-content">
             <div>
                 <h2 class="vf-section-header__heading">Study information</h2>
+                <p></p>
+                <a class="vf-card__link" href="https://www.ebi.ac.uk/biostudies/BioImages/studies/{{ study.accession_id }}" target=”_blank”><button class="vf-button vf-button--primary vf-button--sm">Original submission page</button></a>
             </div>
             <div>
                 <div class="vf-content">
                     <div class="vf-grid vf-grid__col-2">
                         <div><b>Organism</b></div>
                         <div>{{ study.organism }}</div>
-                        <div><b>Study type</b></div>
-                        <div>{{ study.attributes["study_type"] }}</div>
                         <div><b>Imaging type</b></div>
                         <div>{{ study.imaging_type }}</div>
+                        <div><b>License</b></div>
+                        <div>{{ study.license }}</div>
                     </div>
                 </div>
             </div>
