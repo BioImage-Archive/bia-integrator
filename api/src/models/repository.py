@@ -107,10 +107,10 @@ async def get_collection(*args, **kwargs) -> models.BIACollection:
     return models.BIACollection(**doc)
 
 async def get_images(query) -> models.BIAImage:
+    query['model.type_name'] = 'BIAImage'
     db = await get_db()
 
     images = []
-    
     async for doc in db.find(query):
         images.append(models.BIAImage(**doc))
     

@@ -22,7 +22,10 @@ async def get_study_images_by_alias(
         study_accession: str,
         aliases: List[str] = Query()
     ) -> List[db_models.BIAImage]:
-    study_objects_info = await repository.get_object_info({'accession_id': study_accession})
+    study_objects_info = await repository.get_object_info({
+        'accession_id': study_accession,
+        'model.type_name': 'BIAStudy'
+    })
     study_object_info = study_objects_info.pop()
 
     query = {
