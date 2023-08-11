@@ -20,9 +20,9 @@ services:
     container_name: api
     hostname: api
     ports:
-      - 8080:8000
+      - 8080:8080
     expose:
-      - 8000
+      - 8080
     volumes:
       - "./.env_compose:/integrator-api/.env"
 

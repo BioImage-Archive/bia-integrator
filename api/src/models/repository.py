@@ -23,15 +23,40 @@ async def get_db(collection_name: str = COLLECTION_BIA_INTEGRATOR) -> AsyncIOMot
 
     db = db_client.bia_integrator
     if "bia_integrator" not in list(dbs):
-        "db was dropped - rebuild indexes (and views if any)"
-        await db[COLLECTION_BIA_INTEGRATOR].create_index( [ ('uuid', 1) ], unique=True )
-        await db[COLLECTION_BIA_INTEGRATOR].create_index( [ ('accession_id', 1) ], unique=True, partialFilterExpression={
-            'model.type_name': 'BIAStudy'
-        } )
-        await db[COLLECTION_BIA_INTEGRATOR].create_index( [ ('study_uuid', 1), ('alias.name', 1) ], unique=True, partialFilterExpression={
-            'model.type_name': 'BIAImage',
-            'alias.name': {'$exists': True}
-        } )
+        #db was dropped - rebuild indexes (and views if any)
+        
+        # Single collection to let mongo enforce uuid uniqueness => documents have different shape BUT
+        #   indexes targeting a specific type should filter by the indexed attributes, not type
+        #   so that queries don't need to be aware of the type they expect, while still hitting the index if it exists
+        await db[COLLECTION_BIA_INTEGRATOR].create_index(
+            [ ('uuid', 1) ],
+            unique=True,
+            name='doc_uuid'
+        )
+        await db[COLLECTION_BIA_INTEGRATOR].create_index(
+            [ ('accession_id', 1) ],
+            unique=True,
+            partialFilterExpression={
+                'accession_id': {'$exists': True}
+            },
+            name='img_accession_id'
+        )
+        await db[COLLECTION_BIA_INTEGRATOR].create_index(
+            [ ('study_uuid', 1), ('alias.name', 1) ],
+            unique=True,
+            partialFilterExpression={
+                'study_uuid': {'$exists': True},
+                'alias.name': {'$exists': True}
+            },
+            name='img_alias'
+        )
+        await db[COLLECTION_BIA_INTEGRATOR].create_index(
+            [ ('study_uuid', 1) ],
+            partialFilterExpression={
+                'study_uuid': {'$exists': True}
+            },
+            name='study_assets'
+        )
 
         await db[COLLECTION_USERS].create_index( [ ('email', 1) ], unique = True)
 
@@ -107,7 +132,6 @@ async def get_collection(*args, **kwargs) -> models.BIACollection:
     return models.BIACollection(**doc)
 
 async def get_images(query) -> models.BIAImage:
-    query['model.type_name'] = 'BIAImage'
     db = await get_db()
 
     images = []

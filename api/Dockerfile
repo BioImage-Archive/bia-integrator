@@ -1,7 +1,7 @@
 # Define base image
 FROM python:3.10.0
 
-EXPOSE 8000
+EXPOSE 8080
 
 
 # Override default shell and use bash and bia env
