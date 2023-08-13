@@ -35,23 +35,24 @@ def get_image_download_size(accession_id: str) -> dict:
 
     for bia_image in bia_study.images.values():
         for image_representation in bia_image.representations:
-            # TODO: Revisit this when we start dealing with representations
-            # composed of more than one file reference
-            fileref_ids = image_representation.attributes["fileref_ids"]
-            n_fileref_ids = len(fileref_ids)
-            if n_fileref_ids > 1:
-                warning_str = [
-                    f"image_representation in {bia_image.accession_id} "
-                    f"with ID: {bia_image.id} has {n_fileref_ids} file "
-                    "references. However, only the first one is being "
-                    "used to compute download size"
-                ]
-                logger.warning(warning_str)
-            if image_representation.type == "fire_object" and image_representation.uri.endswith(".zip"):
-                download_size = f"In {zip_sizes[image_representation.uri]} zip"
-            else:
-                download_size = sizeof_fmt(bia_study.file_references[fileref_ids[0]].size_in_bytes)
-                
+            if image_representation.type in ["zipped_zarr", "fire_object"]:
+                # TODO: Revisit this when we start dealing with representations
+                # composed of more than one file reference
+                fileref_ids = image_representation.attributes["fileref_ids"]
+                n_fileref_ids = len(fileref_ids)
+                if n_fileref_ids > 1:
+                    warning_str = [
+                        f"image_representation in {bia_image.accession_id} "
+                        f"with ID: {bia_image.id} has {n_fileref_ids} file "
+                        "references. However, only the first one is being "
+                        "used to compute download size"
+                    ]
+                    logger.warning(warning_str)
+                if image_representation.type == "fire_object" and image_representation.uri.endswith(".zip"):
+                    download_size = f"In {zip_sizes[image_representation.uri]} zip"
+                else:
+                    download_size = sizeof_fmt(bia_study.file_references[fileref_ids[0]].size_in_bytes)
+                    
             download_sizes[bia_image.id] = download_size
                 
     return download_sizes
