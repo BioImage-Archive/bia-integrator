@@ -61,6 +61,9 @@ TODO:
 docker login ghcr.io
 docker compose --env-file ./.env_compose up
 
+# docker kill api
+# poetry run uvicorn --port 8080 src.app:app
+
 # docs available at http://localhost:8080/redoc
 ```
 
