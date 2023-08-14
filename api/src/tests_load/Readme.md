@@ -1,0 +1,1 @@
+poetry run locust --config=bulk_create/local.conf
