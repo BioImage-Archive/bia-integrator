@@ -4,7 +4,7 @@ config:
   phases:
     # vary this until an assert breaks
     - duration: 30
-      arrivalRate: 80
+      arrivalRate: 200
   plugins:
     expect: {
       outputFormat: prettyError
@@ -17,6 +17,8 @@ config:
       - 00000000-0000-0000-0006-005ec1720722
       - 80d1fb99-d67c-42b9-b86e-c5a9eafa19bd
       - b4685f6b-a81b-4c1f-9418-605c856d811d
+    study_with_images_uuid: 00000000-0000-0000-0006-005ec20ae711
+    image_alias: 00000000-0000-0000-0006-005ec20b788d_test_1
   ensure:
     thresholds:
       - "http.response_time.p99": 100
@@ -34,12 +36,11 @@ scenarios:
         - get:
             url: "/api/images/{{ loopItem }}"
         over: ${{ image_uuids }}
-  # commented because this is different than a simple fetch, so it takes longer and swamps the other tests
-  #- name: "Get a page of images associated with a study"
-  #  flow:
-  #    - get:
-  #        url: "/api/studies/{{ study_uuid }}/images"
+  - name: "Get a page of images associated with a study"
+    flow:
+      - get:
+          url: "/api/studies/{{ study_uuid }}/images"
   - name: "Get a single image by alias"
     flow:
       - get:
-          url: "/api/study/00000000-0000-0000-0006-005ec20ae711/images_by_aliases?aliases=00000000-0000-0000-0006-005ec20b788d_test_1"
+          url: "/api/study/{{ study_with_images_uuid }}/images_by_aliases?aliases={{ image_alias }}"

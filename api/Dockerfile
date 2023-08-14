@@ -25,4 +25,4 @@ RUN poetry install
 ADD ./ /integrator-api
 
 ENTRYPOINT ["/root/.local/bin/poetry"]
-CMD ["run", "python", "-m", "src.app"]
+CMD ["uvicorn", "--workers 4", "--port 8080", "src.app:app"]
