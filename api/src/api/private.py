@@ -61,7 +61,7 @@ async def update_image(study_image: db_models.BIAImage) -> None:
     return None
 
 @router.post("/images/bulk")
-async def create_images() -> None:
+async def create_images_bulk() -> None:
     """TODO: Maybe file-based async?"""
     raise Exception("Not implemented")
 

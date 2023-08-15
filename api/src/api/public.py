@@ -17,7 +17,7 @@ async def get_object_info_by_accession(accessions: List[str] = Query()) -> List[
     }
     return await repository.get_object_info(query)
 
-@router.get("/study/{study_accession}/images_by_aliases")
+@router.get("/studies/{study_accession}/images_by_aliases")
 async def get_study_images_by_alias(
         study_accession: str,
         aliases: List[str] = Query()
@@ -80,7 +80,7 @@ async def get_image(image_uuid: UUID) -> db_models.BIAImage:
     return await repository.get_image(uuid=image_uuid)
     
 @router.get("/file_references/{file_reference_uuid}")
-async def get_image(file_reference_uuid: str) -> db_models.FileReference:
+async def get_file_reference(file_reference_uuid: str) -> db_models.FileReference:
     return await repository.get_file_reference(uuid=UUID(file_reference_uuid))
 
 @router.get("/images/{image_uuid}/ome_metadata")
