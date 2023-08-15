@@ -1,5 +1,5 @@
 from locust import task, HttpUser, events
-import json
+import yaml
 
 from common.util import authenticate, batch_response_status_all, make_image_payload
 
@@ -23,7 +23,7 @@ class APIUser(HttpUser):
 
     def on_start(self):
         with open(self.environment.parsed_options.test_fixtures, 'r') as f:
-            self._config = json.load(f)
+            self._config = yaml.safe_load(f)
 
         jwt = authenticate(
             self.environment.parsed_options.host,
