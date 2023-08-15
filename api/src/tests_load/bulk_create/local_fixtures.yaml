@@ -2,4 +2,4 @@ study_uuid: "00000000-0000-0000-0006-005ec17073bb"
 username: "test@example.com"
 password: "test"
 # tweak below for test sizing
-n_img_count: 100
+n_img_count: 10000

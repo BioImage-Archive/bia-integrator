@@ -12,9 +12,11 @@ from fastapi import FastAPI
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 from starlette.status import HTTP_500_INTERNAL_SERVER_ERROR
+from fastapi.middleware.gzip import GZipMiddleware
 import logging
 
 app = FastAPI()
+app.add_middleware(GZipMiddleware, minimum_size=1000)
 
 @app.exception_handler(Exception)
 async def log_exception_handler(request: Request, exc: Exception): 
