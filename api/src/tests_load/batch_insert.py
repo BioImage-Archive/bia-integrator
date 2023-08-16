@@ -21,5 +21,5 @@ class APIUser(APIUserBase):
             rsp_json = rsp.json()
             if not batch_response_status_all(rsp_json['items'], 201):
                 raise ResponseError("Unexpected status code")
-            if rsp.elapsed.total_seconds() > 10:
+            if rsp.request_meta["response_time"] > 10000:
                 raise ResponseError("Took too long")
