@@ -22,7 +22,7 @@ def main(accession_id):
     filerefs = bia_study.file_references
 
     for fileref in filerefs.values():
-        if "ome.zarr" in fileref.name:
+        if ".zarr" in fileref.name:
             name = fileref.name
 
             hash_input = fileref.id

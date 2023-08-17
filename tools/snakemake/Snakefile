@@ -89,6 +89,9 @@ rule summarise_study_filetypes:
     shell:
         "{command_prefix} python {script_dir}/summarise_study_filetypes.py $ACCNO 2>&1 | tee {output}"
 
+# Create image representations for filerefs that can be converted to zarrs
+# in a straightforward manner by bioformats2raw 'easily convertable', then
+# for (zipped) zarr files
 rule auto_create_image_representations:
     input:
         work_dir + "/summarise_study_filetypes.log"
@@ -97,7 +100,10 @@ rule auto_create_image_representations:
     singularity:
         singularity_container_path
     shell:
-        "{command_prefix} python {script_dir}/assign_all_easily_convertible_images_from_filerefs.py $ACCNO 2>&1 | tee {output}"
+        """
+            {command_prefix} python {script_dir}/assign_all_easily_convertible_images_from_filerefs.py $ACCNO 2>&1 | tee {output} && \
+            {command_prefix} python {script_dir}/assign_zipped_zarr_from_filerefs.py $ACCNO 2>&1 | tee --append {output}
+        """
 
 # Set source image for file references which are AI annotations and has a source image.
 # This is the way to set which files are annotations in a dataset. 
@@ -185,7 +191,16 @@ rule convert_to_zarr_and_upload:
             # See https://snakemake.readthedocs.io/en/stable/project_info/faq.html#my-shell-command-fails-with-exit-code-0-from-within-a-pipe-what-s-wrong
             set +e
             IM_REF=$(basename {input.im_ref})
-            {command_prefix} python {script_dir}/convert_to_zarr_and_upload.py $ACCNO $IM_REF > {output.im_ref}
+            # If zipped_zarr use remote_zipped_zarr_to_s3
+            biaint images show $ACCNO $IM_REF | grep zipped_zarr
+            exitcode=$?
+            if [ $exitcode -eq 0 ]
+            then
+                {command_prefix} python {script_dir}/remote_zipped_zarr_to_s3.py $ACCNO $IM_REF > {output.im_ref}
+            else
+                # Otherwise convert and upload
+                {command_prefix} python {script_dir}/convert_to_zarr_and_upload.py $ACCNO $IM_REF > {output.im_ref}
+            fi
 
             exitcode=$?
             if [ $exitcode -eq 0 ]

@@ -21,6 +21,19 @@ logger = logging.getLogger(__file__)
 def _get_extension(p):
     """Return the standardized file extension for a given file path."""
 
+    special_cases = {
+        ".ome.zarr.zip": ".ome.zarr.zip",
+        ".zarr.zip": ".zarr.zip",
+        ".ome.zarr": ".ome.zarr",
+        ".ome.tiff": ".ome.tiff",
+        ".ome.tif" : ".ome.tiff",
+        ".tar.gz": ".tar.gz",
+    }
+
+    for special_ext, mapped_value in special_cases.items():
+        if p.lower().endswith(special_ext):
+            return mapped_value
+    
     ext_map = {
         ".jpeg": ".jpg",
         ".tiff": ".tif",
