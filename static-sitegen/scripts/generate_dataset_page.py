@@ -81,7 +81,7 @@ def generate_dataset_page_html(accession_id, template_fname: str):
                 image_landing_uris[image.id] = f"{accession_id}/{image.id}.html"
             if representation.type == "thumbnail":
                 image_thumbnails[image.id] = representation.uri
-            if representation.type == "fire_object":
+            if representation.type in ["fire_object", "zipped_zarr"]:
                 image_download_uris[image.id] = urllib.parse.quote(representation.uri, safe=":/")
 
     for annfile in annotation_files:
