@@ -189,7 +189,17 @@ def flist_from_flist_fname(accession_id: str, flist_fname: str, extra_attribute=
     logger.info(f"Fetching file list from {flist_url}")
     assert r.status_code == 200
 
-    fl = parse_raw_as(List[File], r.content)
+    #fl = parse_raw_as(List[File], r.content)
+    # KB 18/08/2023 - Hack to fix error due to null values in attributes
+    # Remove attribute entries with {"value": "null"}
+    dict_content = json.loads(r.content)
+    for d in dict_content:
+        if "attributes" in d:
+            d["attributes"] = [i for i in filter(lambda x: x != {"value": "null"} and x != {}, d["attributes"])]
+            if len(d["attributes"]) == 0:
+                d.pop("attributes")
+    filtered_content = bytes(json.dumps(dict_content), "utf-8")
+    fl = parse_raw_as(List[File], filtered_content)
 
     if extra_attribute:
         for file in fl:
