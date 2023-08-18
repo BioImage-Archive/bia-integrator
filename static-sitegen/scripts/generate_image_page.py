@@ -9,7 +9,7 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 from bia_integrator_core.integrator import load_and_annotate_study
 from bia_integrator_core.interface import get_aliases
 
-from utils import format_for_html
+from utils import format_for_html, DOWNLOADABLE_REPRESENTATIONS
 
 logger = logging.getLogger(os.path.basename(__file__))
 
@@ -131,10 +131,12 @@ def generate_image_page_html(accession_id, image_id):
         except Exception:
             # Skip if any errors
             continue
-    try:
-        download_uri = urllib.parse.quote(reps_by_type["fire_object"].uri, safe=":/")
-    except KeyError:
-        download_uri = None
+
+    download_uri = None
+    for rep_type in DOWNLOADABLE_REPRESENTATIONS:
+        if rep_type in reps_by_type:
+            download_uri = urllib.parse.quote(reps_by_type[rep_type].uri, safe=":/")
+            break
     
     try:
         download_size = bia_study.images[image_id].attributes["download_size"]
