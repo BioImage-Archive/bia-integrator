@@ -17,7 +17,7 @@ class APIUser(APIUserBase):
     def batch_create_image(self):
         payload = make_image_payload(self._config['study_uuid'], self._config['n_img_count'])
 
-        with self.client.post("api/private/images", json=payload, catch_response=True, headers={"Accept-Encoding":"gzip, deflate"}) as rsp:
+        with self.client.post("api/private/images", json=payload, headers={"Accept-Encoding":"gzip, deflate"}, catch_response=True) as rsp:
             rsp_json = rsp.json()
             if not batch_response_status_all(rsp_json['items'], 201):
                 raise ResponseError("Unexpected status code")

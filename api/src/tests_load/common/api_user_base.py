@@ -19,18 +19,21 @@ class APIUserBase(FastHttpUser):
         with open(self.environment.parsed_options.test_fixtures, 'r') as f:
             self._config = yaml.safe_load(f)
 
-        jwt = authenticate(
-            self.environment.parsed_options.host,
-            '/auth/token',
-            self._config['username'],
-            self._config['password']
-        )
-        
-        # ! Might break on a different version of Locust
-        #   Only Basic authentication supported by Locust natively.
-        #   This isn't documented, but it's how the FastHttpSession saves credentials internally
-        # Workaround for authentication needing to happen after we have an instance of FastHttpUser (so we have self.environment.parsed_options), 
-        # And also before building a FastHttpUser instance since it builds its client (passing default_headers to it) in the constructor
-        self.client.auth_header = f"Bearer {jwt}"
+        # to opt out from authenticating / adding the auth header (as an external client would) or guarantee that the test is always readonly,
+        #   just don't specify username/password in the test class
+        if self._config.get('username', None) and self._config.get('password', None):
+            jwt = authenticate(
+                self.environment.parsed_options.host,
+                '/auth/token',
+                self._config['username'],
+                self._config['password']
+            )
+            
+            # ! Might break on a different version of Locust
+            #   Only Basic authentication supported by Locust natively.
+            #   This isn't documented, but it's how the FastHttpSession saves credentials internally
+            # Workaround for authentication needing to happen after we have an instance of FastHttpUser (so we have self.environment.parsed_options), 
+            # And also before building a FastHttpUser instance since it builds its client (passing default_headers to it) in the constructor
+            self.client.auth_header = f"Bearer {jwt}"
 
         return super().on_start()
