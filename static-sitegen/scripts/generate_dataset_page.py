@@ -9,7 +9,8 @@ from bia_integrator_core.integrator import load_and_annotate_study
 from bia_integrator_core.interface import get_aliases
 from utils import ( get_annotation_files_in_study, 
                    get_non_annotation_images_in_study,
-                   add_annotation_download_size_attributes
+                   add_annotation_download_size_attributes,
+                   DOWNLOADABLE_REPRESENTATIONS,
 )
 
 logger = logging.getLogger(os.path.basename(__file__))
@@ -81,7 +82,7 @@ def generate_dataset_page_html(accession_id, template_fname: str):
                 image_landing_uris[image.id] = f"{accession_id}/{image.id}.html"
             if representation.type == "thumbnail":
                 image_thumbnails[image.id] = representation.uri
-            if representation.type in ["fire_object", "zipped_zarr"]:
+            if representation.type in DOWNLOADABLE_REPRESENTATIONS:
                 image_download_uris[image.id] = urllib.parse.quote(representation.uri, safe=":/")
 
     for annfile in annotation_files:
