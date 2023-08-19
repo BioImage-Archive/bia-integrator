@@ -46,9 +46,14 @@ class NGFFProxyImage(object):
 
     def __init__(self, uri):
         self.uri = uri
-        self._init_darray()
         self.zgroup = zarr.open_group(self.uri)
+        try:
+            get_base_path = lambda name, obj: name if "Array" in obj.__str__() else None
+            self.base_path_key = self.zgroup.visititems(get_base_path)
+        except Exception:
+            self.base_path_key = "0"
 
+        self._init_darray()
         self.ngff_metadata = ZMeta.parse_obj(self.zgroup.attrs.asdict())
     
     @classmethod
@@ -58,7 +63,7 @@ class NGFFProxyImage(object):
 
 
     def _init_darray(self):
-        self.darray = dask_array_from_ome_ngff_uri(self.uri)
+        self.darray = dask_array_from_ome_ngff_uri(self.uri, self.base_path_key)
 
         # FIXME - this is not a reliable way to determine which dimensions are present in which
         # order, we should be parsing the NGFF metadata to do this
