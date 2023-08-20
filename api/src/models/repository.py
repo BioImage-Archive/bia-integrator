@@ -51,7 +51,7 @@ async def get_db(collection_name: str = COLLECTION_BIA_INTEGRATOR) -> AsyncIOMot
             name='img_alias'
         )
         await db[COLLECTION_BIA_INTEGRATOR].create_index(
-            [ ('study_uuid', 1) ],
+            [ ('study_uuid', 1), ('model.type_name', 1) ],
             partialFilterExpression={
                 'study_uuid': {'$exists': True}
             },
@@ -72,7 +72,8 @@ async def _study_assets_find(study_uuid: UUID, start_uuid: UUID | None, limit: i
     db = await get_db()
     
     mongo_query = {
-        'study_uuid': study_uuid
+        'study_uuid': study_uuid,
+        'model.type_name': fn_model_factory.__name__
     }
     if start_uuid:
         mongo_query['uuid'] = {
