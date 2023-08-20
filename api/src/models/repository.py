@@ -72,8 +72,7 @@ async def _study_assets_find(study_uuid: UUID, start_uuid: UUID | None, limit: i
     db = await get_db()
     
     mongo_query = {
-        'study_uuid': study_uuid,
-        'model.type_name': fn_model_factory.__name__
+        'study_uuid': study_uuid
     }
     if start_uuid:
         mongo_query['uuid'] = {
