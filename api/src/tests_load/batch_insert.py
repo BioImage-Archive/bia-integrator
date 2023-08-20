@@ -1,6 +1,6 @@
 from locust import task
 
-from common.util import batch_response_status_all, make_image_payload
+from common.util import batch_response_status_all, make_fileref_payload
 from common.api_user_base import APIUserBase
 from locust.exception import ResponseError
 
@@ -15,9 +15,9 @@ class APIUser(APIUserBase):
 
     @task
     def batch_create_image(self):
-        payload = make_image_payload(self._config['study_uuid'], self._config['n_img_count'])
+        payload = make_fileref_payload(self._config['study_uuid'], self._config['n_img_count'])
 
-        with self.client.post("api/private/images", json=payload, headers={"Accept-Encoding":"gzip, deflate"}, catch_response=True) as rsp:
+        with self.client.post("api/private/file_references", json=payload, headers={"Accept-Encoding":"gzip, deflate"}, catch_response=True) as rsp:
             rsp_json = rsp.json()
             if not batch_response_status_all(rsp_json['items'], 201):
                 raise ResponseError("Unexpected status code")

@@ -16,8 +16,7 @@ class APIUserBase(FastHttpUser):
     abstract = True
 
     def on_start(self):
-        with open(self.environment.parsed_options.test_fixtures, 'r') as f:
-            self._config = yaml.safe_load(f)
+        self._config = APIUserBase._config
 
         # to opt out from authenticating / adding the auth header (as an external client would) or guarantee that the test is always readonly,
         #   just don't specify username/password in the test class
@@ -37,3 +36,8 @@ class APIUserBase(FastHttpUser):
             self.client.auth_header = f"Bearer {jwt}"
 
         return super().on_start()
+
+@events.init.add_listener
+def on_locust_init(environment, **_kwargs):
+    with open(environment.parsed_options.test_fixtures, 'r') as f:
+        APIUserBase._config = yaml.safe_load(f)
