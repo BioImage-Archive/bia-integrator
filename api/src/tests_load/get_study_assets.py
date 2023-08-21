@@ -4,11 +4,6 @@ from common.api_user_base import APIUserBase
 from locust.exception import ResponseError
 
 class APIUser(APIUserBase):
-    _config = {
-        # keep this up to date as a template, even though it's overwritten
-        'study_uuid': None
-    }
-
     @task
     def get_study_images(self):
         with self.client.get(f"api/studies/{ self._config['study_uuid'] }/images?limit=1000", catch_response=True) as rsp:

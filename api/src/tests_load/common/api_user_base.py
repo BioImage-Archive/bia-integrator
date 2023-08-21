@@ -6,9 +6,9 @@ from common.util import authenticate
 @events.init_command_line_parser.add_listener
 def setup_command_line_parser(parser):
     parser.add_argument(
-        '--test_fixtures',
+        '--test_config',
         type=str,
-        help='Path to a json independent of Locust that configures the tests with things like credentials',
+        help='Path to a yaml file independent of Locust that configures the tests with things like credentials',
         required=True
     )
 
@@ -16,16 +16,16 @@ class APIUserBase(FastHttpUser):
     abstract = True
 
     def on_start(self):
-        self._config = APIUserBase._config
+        self.test_config = APIUserBase.test_config
 
         # to opt out from authenticating / adding the auth header (as an external client would) or guarantee that the test is always readonly,
         #   just don't specify username/password in the test class
-        if self._config.get('username', None) and self._config.get('password', None):
+        if self.test_config.get('username', None) and self.test_config.get('password', None):
             jwt = authenticate(
                 self.environment.parsed_options.host,
                 '/auth/token',
-                self._config['username'],
-                self._config['password']
+                self.test_config['username'],
+                self.test_config['password']
             )
             
             # ! Might break on a different version of Locust
@@ -39,5 +39,5 @@ class APIUserBase(FastHttpUser):
 
 @events.init.add_listener
 def on_locust_init(environment, **_kwargs):
-    with open(environment.parsed_options.test_fixtures, 'r') as f:
-        APIUserBase._config = yaml.safe_load(f)
+    with open(environment.parsed_options.test_config, 'r') as f:
+        APIUserBase.test_config = yaml.safe_load(f)

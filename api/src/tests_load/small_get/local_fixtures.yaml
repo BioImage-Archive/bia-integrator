@@ -1,8 +1,0 @@
-# {"model.type_name": "BIAImage", alias: {$ne: null}}
-
-# copy from result image
-study_uuid: 00000000-0000-0000-0006-005ec20ae711
-# accession_id same as study_uuid for test-generated studies
-study_accession: 00000000-0000-0000-0006-005ec20ae711
-image_uuid: 00000000-0000-0000-0006-005ec20b7b03
-image_alias: 00000000-0000-0000-0006-005ec20b788d_test_1
