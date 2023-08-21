@@ -26,7 +26,7 @@ class APIUser(APIUserBase):
         self._file_reference['size_bytes'] += 1
 
         with self.client.patch(f"api/private/file_references/single", json=self._file_reference, catch_response=True) as rsp:
-            if rsp.request_meta["response_time"] > 2000:
+            if rsp.request_meta["response_time"] > 150:
                 raise ResponseError("Took too long")
 
 @events.init.add_listener
