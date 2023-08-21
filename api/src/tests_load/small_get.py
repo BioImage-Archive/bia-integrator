@@ -38,6 +38,6 @@ class APIUser(APIUserBase):
 
     @task
     def image_by_alias(self):
-        with self.client.get(f"api/studies/{self.study_uuid}/images_by_aliases?aliases={self.image_alias}", catch_response=True) as rsp:
+        with self.client.get(f"api/studies/{self.study_accession}/images_by_aliases?aliases={self.image_alias}", catch_response=True) as rsp:
             if rsp.request_meta["response_time"] > 600:
                 raise ResponseError("Took too long")
