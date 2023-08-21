@@ -66,7 +66,7 @@ def make_fileref_payload(study_uuid, n_filerefs):
     return filerefs
 
 def get_test_filerefs(locust_user: APIUserBase, n_filerefs):
-    study_uuid = get_test_study()
+    study_uuid = get_test_study(locust_user)
     rsp = locust_user.client.get(f"api/studies/{study_uuid}/file_references?limit={n_filerefs}")
     assert rsp.status_code == 200
     
@@ -90,4 +90,14 @@ def make_image_payload(study_uuid, n_images):
                 "name": img_alias_from_uuid(uuid)
             }
         })
+    return images
+
+def get_test_images(locust_user: APIUserBase, n_images):
+    study_uuid = get_test_study(locust_user)
+    rsp = locust_user.client.get(f"api/studies/{study_uuid}/images?limit={n_images}")
+    assert rsp.status_code == 200
+    
+    images = rsp.json()
+    assert len(images) == n_images, f"Study {study_uuid} has {len(images)} file references, but {n_images} were requested."
+
     return images

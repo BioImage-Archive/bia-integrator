@@ -1,21 +1,23 @@
 from locust import task
 
-from common.util import batch_response_status_all, make_fileref_payload
+from common.util import batch_response_status_all
+import common.fixtures as fixtures
 from common.api_user_base import APIUserBase
 from locust.exception import ResponseError
 
 class APIUser(APIUserBase):
-    _config = {
-        # keep this up to date as a template, even though it's overwritten
-        'study_uuid': None,
-        'n_img_count': None,
-        'username': None,
-        'password': None
-    }
+    study_uuid = None
+    n_img_count = None
+
+    def on_start(self):
+        super().on_start()
+
+        self.study_uuid = fixtures.get_test_study(self)
+        self.n_img_count = self.test_config['n_img_count']
 
     @task
     def batch_create_image(self):
-        payload = make_fileref_payload(self._config['study_uuid'], self._config['n_img_count'])
+        payload = fixtures.make_fileref_payload(self.study_uuid, self.n_img_count)
 
         with self.client.post("api/private/file_references", json=payload, headers={"Accept-Encoding":"gzip, deflate"}, catch_response=True) as rsp:
             rsp_json = rsp.json()

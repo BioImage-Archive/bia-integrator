@@ -1,22 +1,19 @@
-from locust import task, events, runners
+from locust import task
 
 from common.api_user_base import APIUserBase
-from common.util import get_study_filerefs
+import common.fixtures as fixtures
 from locust.exception import ResponseError
 import random
 
 class APIUser(APIUserBase):
-    _config = {
-        # keep this up to date as a template, even though it's overwritten
-        'study_uuid': None
-    }
     _file_reference = None
 
     def on_start(self):
         super().on_start()
 
-        # workaround to avoid synchronising multiple users
-        global file_references
+        # new users created only when the tests ramp up, afterwards the same user instances are used
+        #   overhead acceptable to getting the filerefs in on_init
+        file_references = fixtures.get_test_filerefs(self, 1000)
         fileref_idx = random.randint(0, len(file_references)-1)
         self._file_reference = file_references[fileref_idx]
 
@@ -28,12 +25,3 @@ class APIUser(APIUserBase):
         with self.client.patch(f"api/private/file_references/single", json=self._file_reference, catch_response=True) as rsp:
             if rsp.request_meta["response_time"] > 150:
                 raise ResponseError("Took too long")
-
-@events.init.add_listener
-def on_locust_init(environment, **_kwargs):    
-    global file_references
-    file_references = get_study_filerefs(
-        environment.parsed_options.host,
-        APIUserBase._config['study_uuid'],
-        1000
-    )

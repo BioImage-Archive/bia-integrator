@@ -9,11 +9,12 @@ def setup_command_line_parser(parser):
         '--test_config',
         type=str,
         help='Path to a yaml file independent of Locust that configures the tests with things like credentials',
-        required=True
+        required=False
     )
 
 class APIUserBase(FastHttpUser):
     abstract = True
+    test_config = {}
 
     def on_start(self):
         self.test_config = APIUserBase.test_config
@@ -39,5 +40,6 @@ class APIUserBase(FastHttpUser):
 
 @events.init.add_listener
 def on_locust_init(environment, **_kwargs):
-    with open(environment.parsed_options.test_config, 'r') as f:
-        APIUserBase.test_config = yaml.safe_load(f)
+    if getattr(environment.parsed_options, 'test_config'):
+        with open(environment.parsed_options.test_config, 'r') as f:
+            APIUserBase.test_config = yaml.safe_load(f)
