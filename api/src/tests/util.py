@@ -145,7 +145,7 @@ def make_study(api_client: TestClient, study_attributes_override = {}):
     }
     study |= study_attributes_override
 
-    rsp = api_client.post('/api/private/study', json=study)
+    rsp = api_client.post('/api/private/studies', json=study)
     assert rsp.status_code == 201, rsp.json()
 
     return get_study(api_client, uuid)

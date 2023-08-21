@@ -10,7 +10,7 @@ from fastapi import APIRouter, status, Depends
 
 router = APIRouter(prefix="/api/private", dependencies=[Depends(get_current_user)])
 
-@router.post("/study", status_code=status.HTTP_201_CREATED)
+@router.post("/studies", status_code=status.HTTP_201_CREATED)
 async def create_study(study: db_models.BIAStudy) -> None:
     logging.info(f"Creating study {study.accession_id}")
 
@@ -21,7 +21,7 @@ async def create_study(study: db_models.BIAStudy) -> None:
     
     return None
 
-@router.patch("/study", status_code=status.HTTP_201_CREATED)
+@router.patch("/studies", status_code=status.HTTP_201_CREATED)
 async def update_study(study: db_models.BIAStudy) -> None:
     logging.info(f"Updating study {study.accession_id}. New version: {study.version}")
 
