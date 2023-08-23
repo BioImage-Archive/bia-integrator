@@ -8,6 +8,9 @@ from pydantic import BaseModel
 from microfilm.colorify import multichannel_to_rgb
 from matplotlib.colors import LinearSegmentedColormap
 
+from urllib.parse import urlparse
+import s3fs
+
 from bia_integrator_tools.utils import get_ome_ngff_rep_by_accession_and_image
 from .omezarrmeta import ZMeta
 
@@ -46,16 +49,24 @@ class NGFFProxyImage(object):
 
     def __init__(self, uri):
         self.uri = uri
-        self.zgroup = zarr.open_group(self.uri)
+        self.zgroup = open_zarr_wrapper(uri)
+        self.array_paths = []
         try:
-            get_base_path = lambda name, obj: name if "Array" in obj.__str__() else None
-            self.base_path_key = self.zgroup.visititems(get_base_path)
-        except Exception:
-            self.base_path_key = "0"
+            self.zgroup.visititems(self._get_array_paths)
+        except Exception as e:
+            print(f"Exception {e} when trying to get array_paths. Setting array_paths to ['0,']")
+
+        if len(self.array_paths) == 0: self.array_paths = ["0",]
 
         self._init_darray()
         self.ngff_metadata = ZMeta.parse_obj(self.zgroup.attrs.asdict())
     
+    def _get_array_paths(self, name, obj):
+        """Get the paths of groups containing array data"""
+        if obj and "Array" in obj.__str__():
+            self.array_paths.append(name)
+        return None
+
     @classmethod
     def from_bia_accession_and_image_ids(cls, accession_id, image_id):
         ome_ngff_rep = get_ome_ngff_rep_by_accession_and_image(accession_id, image_id)
@@ -63,7 +74,7 @@ class NGFFProxyImage(object):
 
 
     def _init_darray(self):
-        self.darray = dask_array_from_ome_ngff_uri(self.uri, self.base_path_key)
+        self.darray = dask_array_from_ome_ngff_uri(self.uri, self.array_paths[0])
 
         # FIXME - this is not a reliable way to determine which dimensions are present in which
         # order, we should be parsing the NGFF metadata to do this
@@ -72,6 +83,11 @@ class NGFFProxyImage(object):
             size_t, size_c, size_z, size_y, size_x = self.darray.shape
         elif len(self.darray.shape) == 3:
             size_z, size_y, size_x = self.darray.shape
+            size_t = 1
+            size_c = 1
+        elif len(self.darray.shape) == 2:
+            size_y, size_x = self.darray.shape
+            size_z = 1
             size_t = 1
             size_c = 1
         else:
@@ -85,7 +101,8 @@ class NGFFProxyImage(object):
 
     def get_dask_array_with_min_dimensions(self, dims):
         ydim, xdim = dims
-        path_keys = [dataset.path for dataset in self.ngff_metadata.multiscales[0].datasets]
+        #path_keys = [dataset.path for dataset in self.ngff_metadata.multiscales[0].datasets]
+        path_keys = self.array_paths
 
         for path_key in reversed(path_keys):
             zarr_array = self.zgroup[path_key]
@@ -149,6 +166,20 @@ class RenderingView(BaseModel):
 
     channel_rendering: Dict[int, ChannelRenderingSettings]
 
+def open_zarr_wrapper(uri):
+    """Wrapper using s3fs to open a S3 zarr or normal method for file zarr
+
+    """
+
+    if uri.startswith("http"):
+        uri_parts = urlparse(uri)
+        endpoint_url = f"{uri_parts.scheme}://{uri_parts.netloc}"
+        s3_bucket = f"s3:/{uri_parts.path}"
+        fs = s3fs.S3FileSystem(anon=True, endpoint_url=endpoint_url)
+        return zarr.open(s3fs.S3Map(s3_bucket, s3=fs), mode="r", path=r"/")
+    else:
+        return zarr.open(uri)
+
 
 def scale_to_uint8(array):
     """Given an input array, convert to uint8, including scaling to fill the
@@ -198,7 +229,9 @@ def generate_channel_renderings(n_channels):
 def dask_array_from_ome_ngff_uri(uri, path_key='0'):
     """Get a dask array from a specific OME-NGFF uri"""
 
-    zgroup = zarr.open(uri)
+    #zgroup = zarr.open(uri)
+    fs = s3fs.S3FileSystem(anon=True, endpoint_url="https://uk1s3.embassy.ebi.ac.uk")
+    zgroup = open_zarr_wrapper(uri)
     darray = da.from_zarr(zgroup[path_key])
 
     return darray
@@ -207,7 +240,7 @@ def dask_array_from_ome_ngff_uri(uri, path_key='0'):
 def dask_array_from_ome_ngff_rep(ome_ngff_rep, path_key='0'):
     """Get a dask array from an OME-NGFF image representation."""
 
-    zgroup = zarr.open(ome_ngff_rep.uri)
+    zgroup = open_zarr_wrapper(ome_ngff_rep.uri)
     darray = da.from_zarr(zgroup[path_key])
 
     return darray
