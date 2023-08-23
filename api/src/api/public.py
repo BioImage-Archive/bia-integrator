@@ -1,6 +1,7 @@
 from ..models import persistence as db_models
 from ..models import api as api_models
 from ..models import repository  as repository
+from .exceptions import DocumentNotFound
 
 from typing import List, Optional, Annotated
 from fastapi import APIRouter, Query
@@ -25,6 +26,9 @@ async def get_study_images_by_alias(
     study_objects_info = await repository.get_object_info({
         'accession_id': study_accession
     })
+    if not len(study_objects_info):
+        raise DocumentNotFound(f"Study with accession {study_accession} does not exist.")
+
     study_object_info = study_objects_info.pop()
 
     query = {

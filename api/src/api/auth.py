@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Body
 
 from datetime import datetime, timedelta
 from typing import Annotated, Union
@@ -102,15 +102,15 @@ async def login_for_access_token(
     )
     return {"access_token": access_token, "token_type": "bearer"}
 
-@router.get("/users/register")
+@router.post("/users/register")
 async def register_user(
-    email: str,
-    password_plain: str,
-    secret_token: str
-) -> User: 
+    email: Annotated[str, Body()],
+    password_plain: Annotated[str, Body()],
+    secret_token: Annotated[str, Body()],
+) -> None: 
     if not consteq(secret_token, os.environ["USER_CREATE_SECRET_TOKEN"]):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
 
-    new_user = await create_user(email, password_plain)
+    await create_user(email, password_plain)
 
-    return new_user 
+    return None

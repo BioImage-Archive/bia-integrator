@@ -24,5 +24,4 @@ RUN poetry install
 # add the actual project, which is what is often changed in between two different container builds
 ADD ./ /integrator-api
 
-ENTRYPOINT ["/root/.local/bin/poetry"]
-CMD ["uvicorn", "--workers 4", "--port 8080", "src.app:app"]
+CMD ["poetry", "run", "uvicorn", "--workers", "4", "--port", "8080", "src.app:app"]
