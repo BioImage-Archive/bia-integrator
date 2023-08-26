@@ -48,7 +48,7 @@ class NGFFProxyImage(object):
     resolutions."""
 
     def __init__(self, uri):
-        self.uri = uri
+        self.uri = uri.rstrip("/0")
         self.zgroup = open_zarr_wrapper(uri)
         self.array_paths = []
         try:
