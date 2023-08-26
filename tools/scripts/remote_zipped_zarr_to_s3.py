@@ -7,6 +7,7 @@ from zipfile import ZipFile
 
 import click
 
+from bia_integrator_core.config import Settings
 from bia_integrator_core.models import BIAImageRepresentation
 from bia_integrator_core.integrator import load_and_annotate_study
 from bia_integrator_core.interface import persist_image_representation
@@ -46,7 +47,10 @@ def main(accession_id, image_id):
 
     zip_fpath = stage_fileref_and_get_fpath(accession_id, fileref)
 
-    with tempfile.TemporaryDirectory() as td:
+    # Use configurable cache location because /tmp on some codon nodes
+    # run out of memory when unzipping large zarr archives    
+    cache_dirpath = Settings().cache_root_dirpath
+    with tempfile.TemporaryDirectory(dir=cache_dirpath) as td:
         src_dirpath = unzip_and_get_path_of_contents(zip_fpath, td)
 
         logger.info(f"Unzipped to {src_dirpath}")
