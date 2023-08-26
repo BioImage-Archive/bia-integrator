@@ -63,8 +63,15 @@ class NGFFProxyImage(object):
     
     def _get_array_paths(self, name, obj):
         """Get the paths of groups containing array data"""
-        if obj and "Array" in obj.__str__():
+        if not obj:
+            return None
+        if "Array" in obj.__str__():
             self.array_paths.append(name)
+        elif len(self.array_paths) > 0:
+            # We terminate once we have array paths for a subgroup to 
+            # prevent recursively traversing groups which may take a while
+            # especially when a store has a large number of groups
+            return obj
         return None
 
     @classmethod
