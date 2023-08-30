@@ -96,7 +96,7 @@ Class | Method | HTTP request | Description
 *DefaultApi* | [**create_image_representation**](docs/DefaultApi.md#create_image_representation) | **POST** /api/private/images/{image_uuid}/representations/single | Create Image Representation
 *DefaultApi* | [**create_images**](docs/DefaultApi.md#create_images) | **POST** /api/private/images | Create Images
 *DefaultApi* | [**create_images_bulk**](docs/DefaultApi.md#create_images_bulk) | **POST** /api/private/images/bulk | Create Images Bulk
-*DefaultApi* | [**create_study**](docs/DefaultApi.md#create_study) | **POST** /api/private/study | Create Study
+*DefaultApi* | [**create_study**](docs/DefaultApi.md#create_study) | **POST** /api/private/studies | Create Study
 *DefaultApi* | [**get_collection**](docs/DefaultApi.md#get_collection) | **GET** /api/collections/{collection_uuid} | Get Collection
 *DefaultApi* | [**get_file_reference**](docs/DefaultApi.md#get_file_reference) | **GET** /api/file_references/{file_reference_uuid} | Get File Reference
 *DefaultApi* | [**get_image**](docs/DefaultApi.md#get_image) | **GET** /api/images/{image_uuid} | Get Image
@@ -108,14 +108,14 @@ Class | Method | HTTP request | Description
 *DefaultApi* | [**get_study_images_by_alias**](docs/DefaultApi.md#get_study_images_by_alias) | **GET** /api/studies/{study_accession}/images_by_aliases | Get Study Images By Alias
 *DefaultApi* | [**health_check**](docs/DefaultApi.md#health_check) | **GET** /admin/health-check | Health Check
 *DefaultApi* | [**login_for_access_token**](docs/DefaultApi.md#login_for_access_token) | **POST** /auth/token | Login For Access Token
-*DefaultApi* | [**register_user**](docs/DefaultApi.md#register_user) | **GET** /auth/users/register | Register User
+*DefaultApi* | [**register_user**](docs/DefaultApi.md#register_user) | **POST** /auth/users/register | Register User
 *DefaultApi* | [**search_collections**](docs/DefaultApi.md#search_collections) | **GET** /api/collections | Search Collections
 *DefaultApi* | [**search_images**](docs/DefaultApi.md#search_images) | **GET** /api/search/images | Search Images
 *DefaultApi* | [**search_studies**](docs/DefaultApi.md#search_studies) | **GET** /api/search/studies | Search Studies
 *DefaultApi* | [**study_refresh_counts**](docs/DefaultApi.md#study_refresh_counts) | **POST** /api/private/studies/{study_uuid}/refresh_counts | Study Refresh Counts
 *DefaultApi* | [**update_file_reference**](docs/DefaultApi.md#update_file_reference) | **PATCH** /api/private/file_references/single | Update File Reference
 *DefaultApi* | [**update_image**](docs/DefaultApi.md#update_image) | **PATCH** /api/private/images/single | Update Image
-*DefaultApi* | [**update_study**](docs/DefaultApi.md#update_study) | **PATCH** /api/private/study | Update Study
+*DefaultApi* | [**update_study**](docs/DefaultApi.md#update_study) | **PATCH** /api/private/studies | Update Study
 
 
 ## Documentation For Models
@@ -128,6 +128,7 @@ Class | Method | HTTP request | Description
  - [BIAImageAlias](docs/BIAImageAlias.md)
  - [BIAImageRepresentation](docs/BIAImageRepresentation.md)
  - [BIAStudy](docs/BIAStudy.md)
+ - [BodyRegisterUserAuthUsersRegisterPost](docs/BodyRegisterUserAuthUsersRegisterPost.md)
  - [BodySearchImagesApiSearchImagesGet](docs/BodySearchImagesApiSearchImagesGet.md)
  - [BulkOperationItem](docs/BulkOperationItem.md)
  - [BulkOperationResponse](docs/BulkOperationResponse.md)
@@ -140,7 +141,6 @@ Class | Method | HTTP request | Description
  - [ObjectInfo](docs/ObjectInfo.md)
  - [RenderingInfo](docs/RenderingInfo.md)
  - [StudyAnnotation](docs/StudyAnnotation.md)
- - [User](docs/User.md)
  - [ValidationError](docs/ValidationError.md)
 
 

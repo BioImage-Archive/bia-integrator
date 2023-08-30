@@ -28,11 +28,11 @@ from openapi_client.models.bia_collection import BIACollection
 from openapi_client.models.bia_image import BIAImage
 from openapi_client.models.bia_image_representation import BIAImageRepresentation
 from openapi_client.models.bia_study import BIAStudy
+from openapi_client.models.body_register_user_auth_users_register_post import BodyRegisterUserAuthUsersRegisterPost
 from openapi_client.models.body_search_images_api_search_images_get import BodySearchImagesApiSearchImagesGet
 from openapi_client.models.bulk_operation_response import BulkOperationResponse
 from openapi_client.models.file_reference import FileReference
 from openapi_client.models.object_info import ObjectInfo
-from openapi_client.models.user import User
 
 from openapi_client.api_client import ApiClient
 from openapi_client.api_response import ApiResponse
@@ -902,7 +902,7 @@ class DefaultApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/private/study', 'POST',
+            '/api/private/studies', 'POST',
             _path_params,
             _query_params,
             _header_params,
@@ -2525,21 +2525,17 @@ class DefaultApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def register_user(self, email : StrictStr, password_plain : StrictStr, secret_token : StrictStr, **kwargs) -> User:  # noqa: E501
+    def register_user(self, body_register_user_auth_users_register_post : BodyRegisterUserAuthUsersRegisterPost, **kwargs) -> object:  # noqa: E501
         """Register User  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.register_user(email, password_plain, secret_token, async_req=True)
+        >>> thread = api.register_user(body_register_user_auth_users_register_post, async_req=True)
         >>> result = thread.get()
 
-        :param email: (required)
-        :type email: str
-        :param password_plain: (required)
-        :type password_plain: str
-        :param secret_token: (required)
-        :type secret_token: str
+        :param body_register_user_auth_users_register_post: (required)
+        :type body_register_user_auth_users_register_post: BodyRegisterUserAuthUsersRegisterPost
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _request_timeout: timeout setting for this request. If one
@@ -2549,29 +2545,25 @@ class DefaultApi(object):
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: User
+        :rtype: object
         """
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
             raise ValueError("Error! Please call the register_user_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
-        return self.register_user_with_http_info(email, password_plain, secret_token, **kwargs)  # noqa: E501
+        return self.register_user_with_http_info(body_register_user_auth_users_register_post, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def register_user_with_http_info(self, email : StrictStr, password_plain : StrictStr, secret_token : StrictStr, **kwargs) -> ApiResponse:  # noqa: E501
+    def register_user_with_http_info(self, body_register_user_auth_users_register_post : BodyRegisterUserAuthUsersRegisterPost, **kwargs) -> ApiResponse:  # noqa: E501
         """Register User  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.register_user_with_http_info(email, password_plain, secret_token, async_req=True)
+        >>> thread = api.register_user_with_http_info(body_register_user_auth_users_register_post, async_req=True)
         >>> result = thread.get()
 
-        :param email: (required)
-        :type email: str
-        :param password_plain: (required)
-        :type password_plain: str
-        :param secret_token: (required)
-        :type secret_token: str
+        :param body_register_user_auth_users_register_post: (required)
+        :type body_register_user_auth_users_register_post: BodyRegisterUserAuthUsersRegisterPost
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _preload_content: if False, the ApiResponse.data will
@@ -2594,15 +2586,13 @@ class DefaultApi(object):
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: tuple(User, status_code(int), headers(HTTPHeaderDict))
+        :rtype: tuple(object, status_code(int), headers(HTTPHeaderDict))
         """
 
         _params = locals()
 
         _all_params = [
-            'email',
-            'password_plain',
-            'secret_token'
+            'body_register_user_auth_users_register_post'
         ]
         _all_params.extend(
             [
@@ -2633,15 +2623,6 @@ class DefaultApi(object):
 
         # process the query parameters
         _query_params = []
-        if _params.get('email') is not None:  # noqa: E501
-            _query_params.append(('email', _params['email']))
-
-        if _params.get('password_plain') is not None:  # noqa: E501
-            _query_params.append(('password_plain', _params['password_plain']))
-
-        if _params.get('secret_token') is not None:  # noqa: E501
-            _query_params.append(('secret_token', _params['secret_token']))
-
         # process the header parameters
         _header_params = dict(_params.get('_headers', {}))
         # process the form parameters
@@ -2649,20 +2630,30 @@ class DefaultApi(object):
         _files = {}
         # process the body parameter
         _body_params = None
+        if _params['body_register_user_auth_users_register_post'] is not None:
+            _body_params = _params['body_register_user_auth_users_register_post']
+
         # set the HTTP header `Accept`
         _header_params['Accept'] = self.api_client.select_header_accept(
             ['application/json'])  # noqa: E501
+
+        # set the HTTP header `Content-Type`
+        _content_types_list = _params.get('_content_type',
+            self.api_client.select_header_content_type(
+                ['application/json']))
+        if _content_types_list:
+                _header_params['Content-Type'] = _content_types_list
 
         # authentication setting
         _auth_settings = []  # noqa: E501
 
         _response_types_map = {
-            '200': "User",
+            '200': "object",
             '422': "HTTPValidationError",
         }
 
         return self.api_client.call_api(
-            '/auth/users/register', 'GET',
+            '/auth/users/register', 'POST',
             _path_params,
             _query_params,
             _header_params,
@@ -3678,7 +3669,7 @@ class DefaultApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/private/study', 'PATCH',
+            '/api/private/studies', 'PATCH',
             _path_params,
             _query_params,
             _header_params,

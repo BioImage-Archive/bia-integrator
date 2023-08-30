@@ -39,6 +39,7 @@ from openapi_client.models.bia_image import BIAImage
 from openapi_client.models.bia_image_alias import BIAImageAlias
 from openapi_client.models.bia_image_representation import BIAImageRepresentation
 from openapi_client.models.bia_study import BIAStudy
+from openapi_client.models.body_register_user_auth_users_register_post import BodyRegisterUserAuthUsersRegisterPost
 from openapi_client.models.body_search_images_api_search_images_get import BodySearchImagesApiSearchImagesGet
 from openapi_client.models.bulk_operation_item import BulkOperationItem
 from openapi_client.models.bulk_operation_response import BulkOperationResponse
@@ -51,5 +52,4 @@ from openapi_client.models.model_metadata import ModelMetadata
 from openapi_client.models.object_info import ObjectInfo
 from openapi_client.models.rendering_info import RenderingInfo
 from openapi_client.models.study_annotation import StudyAnnotation
-from openapi_client.models.user import User
 from openapi_client.models.validation_error import ValidationError

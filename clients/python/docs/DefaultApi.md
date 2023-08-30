@@ -9,7 +9,7 @@ Method | HTTP request | Description
 [**create_image_representation**](DefaultApi.md#create_image_representation) | **POST** /api/private/images/{image_uuid}/representations/single | Create Image Representation
 [**create_images**](DefaultApi.md#create_images) | **POST** /api/private/images | Create Images
 [**create_images_bulk**](DefaultApi.md#create_images_bulk) | **POST** /api/private/images/bulk | Create Images Bulk
-[**create_study**](DefaultApi.md#create_study) | **POST** /api/private/study | Create Study
+[**create_study**](DefaultApi.md#create_study) | **POST** /api/private/studies | Create Study
 [**get_collection**](DefaultApi.md#get_collection) | **GET** /api/collections/{collection_uuid} | Get Collection
 [**get_file_reference**](DefaultApi.md#get_file_reference) | **GET** /api/file_references/{file_reference_uuid} | Get File Reference
 [**get_image**](DefaultApi.md#get_image) | **GET** /api/images/{image_uuid} | Get Image
@@ -21,14 +21,14 @@ Method | HTTP request | Description
 [**get_study_images_by_alias**](DefaultApi.md#get_study_images_by_alias) | **GET** /api/studies/{study_accession}/images_by_aliases | Get Study Images By Alias
 [**health_check**](DefaultApi.md#health_check) | **GET** /admin/health-check | Health Check
 [**login_for_access_token**](DefaultApi.md#login_for_access_token) | **POST** /auth/token | Login For Access Token
-[**register_user**](DefaultApi.md#register_user) | **GET** /auth/users/register | Register User
+[**register_user**](DefaultApi.md#register_user) | **POST** /auth/users/register | Register User
 [**search_collections**](DefaultApi.md#search_collections) | **GET** /api/collections | Search Collections
 [**search_images**](DefaultApi.md#search_images) | **GET** /api/search/images | Search Images
 [**search_studies**](DefaultApi.md#search_studies) | **GET** /api/search/studies | Search Studies
 [**study_refresh_counts**](DefaultApi.md#study_refresh_counts) | **POST** /api/private/studies/{study_uuid}/refresh_counts | Study Refresh Counts
 [**update_file_reference**](DefaultApi.md#update_file_reference) | **PATCH** /api/private/file_references/single | Update File Reference
 [**update_image**](DefaultApi.md#update_image) | **PATCH** /api/private/images/single | Update Image
-[**update_study**](DefaultApi.md#update_study) | **PATCH** /api/private/study | Update Study
+[**update_study**](DefaultApi.md#update_study) | **PATCH** /api/private/studies | Update Study
 
 
 # **create_collection**
@@ -1211,7 +1211,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **register_user**
-> User register_user(email, password_plain, secret_token)
+> object register_user(body_register_user_auth_users_register_post)
 
 Register User
 
@@ -1221,7 +1221,7 @@ Register User
 import time
 import os
 import openapi_client
-from openapi_client.models.user import User
+from openapi_client.models.body_register_user_auth_users_register_post import BodyRegisterUserAuthUsersRegisterPost
 from openapi_client.rest import ApiException
 from pprint import pprint
 
@@ -1236,13 +1236,11 @@ configuration = openapi_client.Configuration(
 with openapi_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = openapi_client.DefaultApi(api_client)
-    email = 'email_example' # str | 
-    password_plain = 'password_plain_example' # str | 
-    secret_token = 'secret_token_example' # str | 
+    body_register_user_auth_users_register_post = openapi_client.BodyRegisterUserAuthUsersRegisterPost() # BodyRegisterUserAuthUsersRegisterPost | 
 
     try:
         # Register User
-        api_response = api_instance.register_user(email, password_plain, secret_token)
+        api_response = api_instance.register_user(body_register_user_auth_users_register_post)
         print("The response of DefaultApi->register_user:\n")
         pprint(api_response)
     except Exception as e:
@@ -1255,13 +1253,11 @@ with openapi_client.ApiClient(configuration) as api_client:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **email** | **str**|  | 
- **password_plain** | **str**|  | 
- **secret_token** | **str**|  | 
+ **body_register_user_auth_users_register_post** | [**BodyRegisterUserAuthUsersRegisterPost**](BodyRegisterUserAuthUsersRegisterPost.md)|  | 
 
 ### Return type
 
-[**User**](User.md)
+**object**
 
 ### Authorization
 
@@ -1269,7 +1265,7 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
+ - **Content-Type**: application/json
  - **Accept**: application/json
 
 ### HTTP response details
