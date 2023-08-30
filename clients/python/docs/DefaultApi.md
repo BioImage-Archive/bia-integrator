@@ -76,6 +76,7 @@ with openapi_client.ApiClient(configuration) as api_client:
 ```
 
 
+
 ### Parameters
 
 Name | Type | Description  | Notes
@@ -149,6 +150,7 @@ with openapi_client.ApiClient(configuration) as api_client:
 ```
 
 
+
 ### Parameters
 
 Name | Type | Description  | Notes
@@ -220,6 +222,7 @@ with openapi_client.ApiClient(configuration) as api_client:
     except Exception as e:
         print("Exception when calling DefaultApi->create_image_representation: %s\n" % e)
 ```
+
 
 
 ### Parameters
@@ -296,6 +299,7 @@ with openapi_client.ApiClient(configuration) as api_client:
 ```
 
 
+
 ### Parameters
 
 Name | Type | Description  | Notes
@@ -368,6 +372,7 @@ with openapi_client.ApiClient(configuration) as api_client:
 ```
 
 
+
 ### Parameters
 This endpoint does not need any parameter.
 
@@ -436,6 +441,7 @@ with openapi_client.ApiClient(configuration) as api_client:
 ```
 
 
+
 ### Parameters
 
 Name | Type | Description  | Notes
@@ -499,6 +505,7 @@ with openapi_client.ApiClient(configuration) as api_client:
     except Exception as e:
         print("Exception when calling DefaultApi->get_collection: %s\n" % e)
 ```
+
 
 
 ### Parameters
@@ -566,6 +573,7 @@ with openapi_client.ApiClient(configuration) as api_client:
 ```
 
 
+
 ### Parameters
 
 Name | Type | Description  | Notes
@@ -631,6 +639,7 @@ with openapi_client.ApiClient(configuration) as api_client:
 ```
 
 
+
 ### Parameters
 
 Name | Type | Description  | Notes
@@ -694,6 +703,7 @@ with openapi_client.ApiClient(configuration) as api_client:
     except Exception as e:
         print("Exception when calling DefaultApi->get_image_ome_metadata: %s\n" % e)
 ```
+
 
 
 ### Parameters
@@ -762,6 +772,7 @@ with openapi_client.ApiClient(configuration) as api_client:
 ```
 
 
+
 ### Parameters
 
 Name | Type | Description  | Notes
@@ -825,6 +836,7 @@ with openapi_client.ApiClient(configuration) as api_client:
     except Exception as e:
         print("Exception when calling DefaultApi->get_study: %s\n" % e)
 ```
+
 
 
 ### Parameters
@@ -892,6 +904,7 @@ with openapi_client.ApiClient(configuration) as api_client:
     except Exception as e:
         print("Exception when calling DefaultApi->get_study_file_references: %s\n" % e)
 ```
+
 
 
 ### Parameters
@@ -963,6 +976,7 @@ with openapi_client.ApiClient(configuration) as api_client:
 ```
 
 
+
 ### Parameters
 
 Name | Type | Description  | Notes
@@ -1031,6 +1045,7 @@ with openapi_client.ApiClient(configuration) as api_client:
 ```
 
 
+
 ### Parameters
 
 Name | Type | Description  | Notes
@@ -1093,6 +1108,7 @@ with openapi_client.ApiClient(configuration) as api_client:
     except Exception as e:
         print("Exception when calling DefaultApi->health_check: %s\n" % e)
 ```
+
 
 
 ### Parameters
@@ -1159,6 +1175,7 @@ with openapi_client.ApiClient(configuration) as api_client:
     except Exception as e:
         print("Exception when calling DefaultApi->login_for_access_token: %s\n" % e)
 ```
+
 
 
 ### Parameters
@@ -1233,6 +1250,7 @@ with openapi_client.ApiClient(configuration) as api_client:
 ```
 
 
+
 ### Parameters
 
 Name | Type | Description  | Notes
@@ -1298,6 +1316,7 @@ with openapi_client.ApiClient(configuration) as api_client:
     except Exception as e:
         print("Exception when calling DefaultApi->search_collections: %s\n" % e)
 ```
+
 
 
 ### Parameters
@@ -1367,6 +1386,7 @@ with openapi_client.ApiClient(configuration) as api_client:
 ```
 
 
+
 ### Parameters
 
 Name | Type | Description  | Notes
@@ -1434,6 +1454,7 @@ with openapi_client.ApiClient(configuration) as api_client:
     except Exception as e:
         print("Exception when calling DefaultApi->search_studies: %s\n" % e)
 ```
+
 
 
 ### Parameters
@@ -1510,6 +1531,7 @@ with openapi_client.ApiClient(configuration) as api_client:
 ```
 
 
+
 ### Parameters
 
 Name | Type | Description  | Notes
@@ -1580,6 +1602,7 @@ with openapi_client.ApiClient(configuration) as api_client:
     except Exception as e:
         print("Exception when calling DefaultApi->update_file_reference: %s\n" % e)
 ```
+
 
 
 ### Parameters
@@ -1656,6 +1679,7 @@ with openapi_client.ApiClient(configuration) as api_client:
 ```
 
 
+
 ### Parameters
 
 Name | Type | Description  | Notes
@@ -1726,6 +1750,7 @@ with openapi_client.ApiClient(configuration) as api_client:
     except Exception as e:
         print("Exception when calling DefaultApi->update_study: %s\n" % e)
 ```
+
 
 
 ### Parameters

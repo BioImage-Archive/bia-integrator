@@ -7,6 +7,7 @@ license = "NoLicense"
 readme = "README.md"
 repository = "https://github.com/GIT_USER_ID/GIT_REPO_ID"
 keywords = ["OpenAPI", "OpenAPI-Generator", "FastAPI"]
+include = ["openapi_client/py.typed"]
 
 [tool.poetry.dependencies]
 python = "^3.7"

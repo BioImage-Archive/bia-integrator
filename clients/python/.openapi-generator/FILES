@@ -57,6 +57,7 @@ openapi_client/models/rendering_info.py
 openapi_client/models/study_annotation.py
 openapi_client/models/user.py
 openapi_client/models/validation_error.py
+openapi_client/py.typed
 openapi_client/rest.py
 pyproject.toml
 requirements.txt
