@@ -1,6 +1,7 @@
 from openapi_client import Configuration, ApiClient
 from openapi_client.api import DefaultApi
 from base64 import b64decode
+from typing import Optional
 import time
 import json
 
@@ -33,14 +34,15 @@ def access_token_auto_refresh_bearer(username: str, password: str):
 
     return _access_token_auto_refresh_bearer
 
-def simple_client(api_base_url: str, username: str, password: str) -> DefaultApi:
+def simple_client(api_base_url: str, username: Optional[str], password: Optional[str]) -> DefaultApi:
     api_config = Configuration(
         host = api_base_url
     )
 
-    # override access_token which is static and used in the api client for authentication
-    #   with a dynamic property s.t. the token gets refreshed automatically before it expires, for any api call
-    Configuration.access_token = property(access_token_auto_refresh_bearer(username, password))
+    if username and password:
+        # override access_token which is static and used in the api client for authentication
+        #   with a dynamic property s.t. the token gets refreshed automatically before it expires, for any api call
+        Configuration.access_token = property(access_token_auto_refresh_bearer(username, password))
 
     api_client = ApiClient(configuration=api_config)
     client = DefaultApi(api_client=api_client)

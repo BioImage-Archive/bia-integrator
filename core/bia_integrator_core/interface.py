@@ -30,7 +30,7 @@ def get_all_study_identifiers() -> List[api_models.BIAStudy]:
     return [fp.stem for fp in settings.studies_dirpath.iterdir()]
 
 def get_all_studies() -> List[api_models.BIAStudy]:
-    studies = settings.api_client.search_studies_api_search_studies_get(limit=10**6)
+    studies = settings.api_client.search_studies(limit=10**6)
     return studies
 
 def to_uuid(uuid_or_alternative: str | UUID, fn_fetch_object):
@@ -49,12 +49,12 @@ def to_uuid(uuid_or_alternative: str | UUID, fn_fetch_object):
 def get_image_by_uuid(image_uuid: str) -> api_models.BIAImage:
     """Get the given image from the study with the given accession identifier."""
 
-    img = settings.api_client.get_image_api_images_image_uuid_get(image_uuid)
+    img = settings.api_client.get_image(image_uuid)
 
     return img
 
 def get_image_by_alias(study_accno: str, img_alias: str) -> api_models.BIAImage:
-    images = settings.api_client.get_study_images_by_alias_api_study_study_accession_images_by_aliases_get(study_accession=study_accno, aliases=[img_alias])
+    images = settings.api_client.get_study_images_by_alias(study_accession=study_accno, aliases=[img_alias])
     assert len(images) == 1
 
     return images.pop()

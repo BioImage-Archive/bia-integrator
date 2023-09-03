@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 def persist_image_representation(image_uuid: str, representation: api_models.BIAImageRepresentation):
     """Persist the representation to disk."""
 
-    settings.api_client.create_image_representation_api_private_images_image_uuid_representations_single_post(image_uuid, representation)
+    settings.api_client.create_image_representation(image_uuid, representation)
 
 def get_representations(image_uuid: str) -> List[api_models.BIAImageRepresentation]:
     """Return all representations stored on disk for the given accession/image."""
