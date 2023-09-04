@@ -28,16 +28,14 @@ def get_image_download_size(accession_id: str) -> dict:
     images = bia_study.images
     download_sizes = {}
 
-    # Create lookup for sizes of zipfiles
-    zip_sizes = {
-        fileref.uri: sizeof_fmt(fileref.size_in_bytes)
-        for fileref in bia_study.file_references.values()
-        if fileref.name.endswith(".zip")
-    }
+    zip_sizes = {}
+    for fileref in bia_study.file_references.values():
+        if fileref.uri.endswith(".zip") and fileref.type != "file_in_zip":
+            zip_sizes[fileref.uri] = sizeof_fmt(fileref.size_in_bytes)
 
     for bia_image in bia_study.images.values():
         for image_representation in bia_image.representations:
-            if image_representation.type == "fire_object":
+            if image_representation.type in ["zipped_zarr", "fire_object"]:
                 # TODO: Revisit this when we start dealing with representations
                 # composed of more than one file reference
                 fileref_ids = image_representation.attributes["fileref_ids"]
@@ -50,11 +48,12 @@ def get_image_download_size(accession_id: str) -> dict:
                         "used to compute download size"
                     ]
                     logger.warning(warning_str)
-                if image_representation.uri.endswith(".zip"):
+                if image_representation.type == "fire_object" and image_representation.uri.endswith(".zip"):
                     download_size = f"In {zip_sizes[image_representation.uri]} zip"
                 else:
                     download_size = sizeof_fmt(bia_study.file_references[fileref_ids[0]].size_in_bytes)
-            download_sizes[bia_image.uuid] = download_size
+                    
+            download_sizes[bia_image.id] = download_size
                 
     return download_sizes
 

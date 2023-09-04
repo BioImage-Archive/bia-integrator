@@ -66,15 +66,16 @@
         , {{ study.attributes["no_of_annotations"] }} annotations
         {% endif %}
         <p>
-        <b>Tags: </b>
+        {% set new_tags = [] %}
         {% for value in study.tags %}
         {% if value.startswith('AI') %}
-        {{ value[2:] }},
+        {{ new_tags.append(value[2:]) or "" }}
         {% else %}
-        {{ value }},
+        {{ new_tags.append(value) or "" }}
         {% endif %}
         {% endfor %}
-        <!-- {{ study.tags|join(", ") }} -->
+        <b>Tags: </b>
+        {{ new_tags|join(", ") }}
         <br><br>
         </p>
         </div>

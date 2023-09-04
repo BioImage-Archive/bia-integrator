@@ -1,0 +1,5 @@
+{
+  "accession_id": "S-BSST1053",
+  "key": "filetype_breakdown",
+  "value": "{'.zip': {'n': 1, 'size_in_bytes': 6923976982, 'size_human_readable': '6.4GiB'}, 'none in .zip': {'n': 10, 'size_in_bytes': 63528, 'size_human_readable': '62.0KiB'}, '.tif in .zip': {'n': 72, 'size_in_bytes': 8066596751, 'size_human_readable': '7.5GiB'}}"
+}

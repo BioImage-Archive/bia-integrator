@@ -8,6 +8,7 @@ import click
 from bia_integrator_core.models import BIAImageRepresentation
 from bia_integrator_core.interface import persist_image_representation
 from bia_integrator_core.integrator import load_and_annotate_study
+from bia_integrator_core.config import Settings
 
 from bia_integrator_tools.conversion import run_zarr_conversion
 from bia_integrator_tools.io import copy_uri_to_local, copy_local_zarr_to_s3
@@ -29,7 +30,7 @@ def main(accession_id, image_id):
 
     logging.basicConfig(level=logging.INFO)
 
-    cache_dirpath = Path.home()/".cache"/"bia-converter"
+    cache_dirpath = Settings().cache_root_dirpath
     cache_dirpath.mkdir(exist_ok=True, parents=True)
 
     bia_study = load_and_annotate_study(accession_id)

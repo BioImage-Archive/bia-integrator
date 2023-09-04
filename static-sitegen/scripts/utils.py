@@ -1,6 +1,12 @@
 import ast
 import json
 
+# BIA image representation types that we add download uris for
+DOWNLOADABLE_REPRESENTATIONS = [
+    "fire_object",
+    "zipped_zarr",
+]
+
 # From https://stackoverflow.com/questions/1094841/get-human-readable-version-of-file-size
 def sizeof_fmt(num, suffix="B"):
     for unit in ["", "Ki", "Mi", "Gi", "Ti", "Pi", "Ei", "Zi"]:

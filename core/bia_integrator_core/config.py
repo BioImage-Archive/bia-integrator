@@ -1,3 +1,4 @@
+from pathlib import Path
 from pydantic import BaseSettings
 from typing import Optional
 from openapi_client.util import simple_client
@@ -7,6 +8,7 @@ class Settings(BaseSettings):
     bia_api_basepath: str = "http://localhost:8080"
     bia_username: Optional[str] = None
     bia_password: Optional[str] = None
+    cache_root_dirpath: Path = Path.home()/".cache"/"bia-converter"
 
     bia_api_client: Optional[DefaultApi] = None
 

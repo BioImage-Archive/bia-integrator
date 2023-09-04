@@ -1,3 +1,10 @@
+"""Script and helper functions to save annotations of filetype info
+
+The main function saves annotations of information about the types of files
+in the study referenced by the accession_id supplied. This includes the
+content of zip files.
+"""
+
 import sys
 from pathlib import Path
 import logging
@@ -10,6 +17,33 @@ from bia_integrator_core.models import StudyAnnotation
 from bia_integrator_core.interface import persist_study_annotation
 
 logger = logging.getLogger(__file__)
+
+def _get_extension(p):
+    """Return the standardized file extension for a given file path."""
+
+    special_cases = {
+        ".ome.zarr.zip": ".ome.zarr.zip",
+        ".zarr.zip": ".zarr.zip",
+        ".ome.zarr": ".ome.zarr",
+        ".ome.tiff": ".ome.tiff",
+        ".ome.tif" : ".ome.tiff",
+        ".tar.gz": ".tar.gz",
+    }
+
+    for special_ext, mapped_value in special_cases.items():
+        if p.lower().endswith(special_ext):
+            return mapped_value
+    
+    ext_map = {
+        ".jpeg": ".jpg",
+        ".tiff": ".tif",
+    }
+    ext = Path(p).suffix.lower()
+    if ext in ext_map:
+        return ext_map[ext]
+    else:
+        return ext
+
 
 def get_study_filetypes(accession_id: str) -> dict:
     """Return number of files of each type and sum of their sizes
@@ -27,14 +61,15 @@ def get_study_filetypes(accession_id: str) -> dict:
     ftypes = {}
 
     for f in file_references.values():
-        ext = Path(f.name).suffix.lower()
-        uri_ext = Path(f.uri).suffix.lower()
-        #if len(ext) == 0 and f.size_in_bytes == 0:
+        ext = _get_extension(f.name)
+        uri_ext = _get_extension(f.uri)
         if f.size_in_bytes == 0:
             continue
         if len(ext) == 0:
             ext = "none"
-        if ext != uri_ext:
+        if  f.type == "directory":
+            ext = uri_ext
+        elif f.type == "file_in_zip":
             ext = f"{ext} in {uri_ext}"
         if ext in ftypes:
             ftypes[ext]["n"] = ftypes[ext]["n"] + 1
@@ -44,7 +79,7 @@ def get_study_filetypes(accession_id: str) -> dict:
 
     # Create human readable sizes with appropriate units
     for ftype, details in ftypes.items():
-        ftypes[ftype]["size"] = sizeof_fmt(details["size_in_bytes"])
+        ftypes[ftype]["size_human_readable"] = sizeof_fmt(details["size_in_bytes"])
 
     return ftypes
 
@@ -55,7 +90,7 @@ def study_filetypes_as_html(ftypes: dict) -> str:
     html = ""
     zip_html = ""
     for k in sorted(ftypes):
-        line = f"<li>{k}: {ftypes[k]['n']} ({ftypes[k]['size']})</li>"
+        line = f"<li>{k}: {ftypes[k]['n']} ({ftypes[k]['size_human_readable']})</li>"
         if "in .zip" in k:
             zip_html += line
         else:
@@ -63,7 +98,7 @@ def study_filetypes_as_html(ftypes: dict) -> str:
 
     html = "<ul>" + html
     if len(zip_html) > 0:
-        html += f"<li>Zip contents (not included it study totals above):<ul>{zip_html}</ul>"
+        html += f"<li>Zip contents:<ul>{zip_html}</ul>"
     html += "</ul>"
     
     return html
@@ -79,14 +114,20 @@ def summarise_study_filetypes(ftypes: dict) -> dict:
         for k, v in ftypes.items()
         if not k.endswith(" in .zip")
     ])
-    total_n = sum([
+    n_files_excluding_zip_contents = sum([
         v["n"] 
         for k, v in ftypes.items()
         if not k.endswith(" in .zip")
     ])
+    n_files_including_zip_contents = sum([
+        v["n"] 
+        for k, v in ftypes.items()
+    ])
     return {
-        "n_files_in_study": total_n,
+        "n_files_including_zip_contents": n_files_including_zip_contents,
+        "n_files_excluding_zip_contents": n_files_excluding_zip_contents,
         "study_size_in_bytes": total_size_in_bytes, 
+        "study_size_human_readable": sizeof_fmt(total_size_in_bytes), 
         "study_size": sizeof_fmt(total_size_in_bytes)
     }
 

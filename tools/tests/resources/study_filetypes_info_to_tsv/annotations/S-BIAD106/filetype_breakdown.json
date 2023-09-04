@@ -1,0 +1,5 @@
+{
+  "accession_id": "S-BIAD106",
+  "key": "filetype_breakdown",
+  "value": "{'.zip': {'n': 59, 'size_in_bytes': 63730284285, 'size_human_readable': '59.4GiB'}, '.tif in .zip': {'n': 19306, 'size_in_bytes': 163903461909, 'size_human_readable': '152.6GiB'}, '.txt in .zip': {'n': 61, 'size_in_bytes': 9759, 'size_human_readable': '9.5KiB'}, 'none in .zip': {'n': 6, 'size_in_bytes': 43032, 'size_human_readable': '42.0KiB'}, '.xml in .zip': {'n': 1, 'size_in_bytes': 185560, 'size_human_readable': '181.2KiB'}}"
+}

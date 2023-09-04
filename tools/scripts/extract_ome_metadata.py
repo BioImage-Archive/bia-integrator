@@ -21,7 +21,7 @@ def sanitise_image_metadata(metadata: dict) -> dict:
     sanitised = {}
     for metadata_key in metadata_keys:
         metadata_value = metadata[metadata_key]
-        if metadata_value is None:
+        if metadata_value is None or metadata_value == "null":
             continue
         elif type(metadata_value) is list:
             if len(metadata_value) == 0:

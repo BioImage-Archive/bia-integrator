@@ -48,11 +48,10 @@
                         {% if study.other_files|length > 0 %}
                         <li>{{ study.other_files|length }} other files</li>
                         {% endif %}
-                        {% if "n_files_in_study" in study.attributes %}
-                        <li>Study size: {{ study.attributes["study_size"] }}</li>
-                        <li>N files in study: {{ study.attributes["n_files_in_study"] }}</li>
-                        <li>Filetype breakdown: {{ study.attributes["filetype_breakdown_html"] }}</li>
-                        {% endif %}
+
+                        {% for label, key in study_content_annotations.items() %}
+                            <li>{{ label }} {{ study.attributes[key] }}</li>
+                        {% endfor %}
                     </ul>
                 {% if 'bia_binder_url' in study.attributes %}
                     <a href={{ study.attributes['bia_binder_url'] }}><button class="vf-button vf-button--primary vf-button--sm">Explore in BIA Binder</button></a>

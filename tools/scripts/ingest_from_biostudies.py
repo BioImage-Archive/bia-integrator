@@ -3,6 +3,7 @@ import uuid
 import logging
 import hashlib
 import requests
+from pathlib import Path
 from typing import List 
 
 import click
@@ -18,12 +19,13 @@ from bia_integrator_tools.biostudies import (
     load_submission,
     file_uri,
     find_files_in_submission,
-    get_file_uri_template_for_accession
+    get_file_uri_template_for_accession,
+    get_with_case_insensitive_key,
 )
+from bia_integrator_tools.utils import url_exists
 
 
 logger = logging.getLogger(__file__)
-
 
 def bst_file_to_file_reference(accession_id: str, bst_file: File, file_uri_template: str) -> FileReference:
 
@@ -36,8 +38,18 @@ def bst_file_to_file_reference(accession_id: str, bst_file: File, file_uri_templ
         name=fileref_name,
         uri=file_uri(accession_id, bst_file, file_uri_template=file_uri_template),
         size_in_bytes=bst_file.size,
-        attributes=fileref_attributes
+        attributes=fileref_attributes,
+        type=bst_file.type
     )
+
+    # If fileref type is directory we may need to append '.zip' to 
+    # its uri because FIRE zips directories, but the uri returned by
+    # biostudies API as of 02/08/2023 does not include the zip suffix
+    if fileref.type == "directory" and not fileref.uri.endswith(".zip"):
+        if url_exists(fileref.uri + ".zip"):
+            fileref.uri += ".zip"
+            logger.info(f"Appended '.zip' to uri of fileref {fileref.id}")
+        
 
     return fileref
 
@@ -100,7 +112,12 @@ def study_links_from_submission(submission: Submission) -> dict:
     return links
 
 
-def imaging_method_from_submission(submission: Submission) -> str:
+def get_attr_from_submission(submission: Submission, attr: str) -> str:
+    """Search for attr in submission section and if necessary subsections
+
+        Case insensitive search for an attribute in main submission section
+        and if not found, search other subsections
+    """
 
     study_components = [
         section
@@ -109,12 +126,37 @@ def imaging_method_from_submission(submission: Submission) -> str:
     ]
 
     if len(study_components):
-        study_component_attr_dict = attributes_to_dict(study_components[0].attributes)
-        imaging_method = study_component_attr_dict.get('Imaging Method', "Unknown")
-    else:
-        imaging_method = "Unknown"
+        for study_component in study_components:
+            study_component_attr_dict = attributes_to_dict(study_component.attributes)
+            try:
+                value = get_with_case_insensitive_key(
+                    study_component_attr_dict, attr
+                )
+                return value
+            except KeyError:
+                continue
+    
+    # ToDo: Change search of subsections below to use recursive search
+    # similar to bia_integrator_tools.biostudies.find_file_lists_in_section
 
-    return imaging_method
+    # Check other subsections
+    other_subsections = [
+        section
+        for section in submission.section.subsections
+        if section.type != 'Study Component'
+    ]
+
+    for other_subsection in other_subsections:
+        other_subsection_attr_dict = attributes_to_dict(other_subsection.attributes)
+        try:
+            value = get_with_case_insensitive_key(
+                other_subsection_attr_dict, attr
+            )
+            return value
+        except KeyError:
+            continue
+
+    return "Unknown"
 
 
 def bst_submission_to_bia_study(submission: Submission) -> BIAStudy:
@@ -123,17 +165,22 @@ def bst_submission_to_bia_study(submission: Submission) -> BIAStudy:
     filerefs_list = filerefs_from_bst_submission(submission)
     filerefs_dict = {fileref.id: fileref for fileref in filerefs_list}
     study_title = study_title_from_submission(submission)
-    imaging_method = imaging_method_from_submission(submission)
+    imaging_method = get_attr_from_submission(submission, "Imaging Method")
 
     study_section_attr_dict = attributes_to_dict(submission.section.attributes)
     submission_attr_dict = attributes_to_dict(submission.attributes)
+    try:
+        organism = get_with_case_insensitive_key(study_section_attr_dict, "Organism")
+    except KeyError:
+        organism = get_attr_from_submission(submission, "Organism")
+
     bia_study = BIAStudy(
         accession_id=accession_id,
         title=study_title,
         authors=find_authors_in_submission(submission),
         release_date=submission_attr_dict['ReleaseDate'],
         description=study_section_attr_dict['Description'],
-        organism=study_section_attr_dict.get('Organism', "Unknown"),
+        organism=organism,
         license=study_section_attr_dict.get('License', "CC0"),
         links=study_links_from_submission(submission),
         imaging_type=imaging_method,

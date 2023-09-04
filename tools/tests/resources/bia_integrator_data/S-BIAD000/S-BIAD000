@@ -1,0 +1,115 @@
+{
+  "accno" : "S-BIAD000",
+  "attributes" : [ {
+    "name" : "Template",
+    "value" : "BioImages"
+  }, {
+    "name" : "Title",
+    "value" : "Mock submission to facillitate testing of bia-integrator"
+  }, {
+    "name" : "ReleaseDate",
+    "value" : "2023-02-28"
+  }, {
+    "name" : "AttachTo",
+    "value" : "BioImages"
+  } ],
+  "section" : {
+    "type" : "Study",
+    "attributes" : [ {
+      "name" : "Description",
+      "value" : "Mock submission to facillitate testing of bia-integrator with mock filelist and mock data based on S-BIAD324 but with other elements thrown in."
+    }, {
+      "name" : "Study Type",
+      "value" : "electron microscopy volume map"
+    }, {
+      "name" : "Organism",
+      "value" : "Platynereis dumerilii"
+    } ],
+    "subsections" : [ {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Test author"
+      }, {
+        "name" : "E-mail",
+        "value" : "test_author@ebi.ac.uk"
+      }, {
+        "name" : "affiliation",
+        "value" : "o1",
+        "reference" : true
+      } ]
+    }, {
+      "accno" : "o1",
+      "type" : "organisation",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "European Bioinformatics Institute"
+      } ]
+    }, {
+      "type" : "Study Protocols",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "SEM"
+      }, {
+        "name" : "Type",
+        "value" : "image acquisition and feature extraction protocol"
+      } ]
+    }, [ {
+      "type" : "Keywords",
+      "attributes" : [ {
+        "name" : "Keyword",
+        "value" : "planktonzoom"
+      } ]
+    }, {
+      "type" : "Keywords",
+      "attributes" : [ {
+        "name" : "Keyword",
+        "value" : "SEM"
+      } ]
+    } ], [ {
+      "type" : "Platy extra",
+      "attributes" : [ {
+        "name" : "Column 1",
+        "value" : "body part"
+      }, {
+        "name" : "Column 2",
+        "value" : "head"
+      } ]
+    }, {
+      "type" : "Platy extra",
+      "attributes" : [ {
+        "name" : "Column 1",
+        "value" : "age"
+      }, {
+        "name" : "Column 2",
+        "value" : "72hpf"
+      } ]
+    } ], {
+      "accno" : "Study Component-1",
+      "type" : "Study Component",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "planktonzoom Platy"
+      }, {
+        "name" : "Description",
+        "value" : "planktonzoom 3-day-old Platy"
+      }, {
+        "name" : "Type",
+        "value" : "primary screen"
+      }, {
+        "name" : "Imaging Method",
+        "value" : "scanning electron microscopy (SEM)"
+      }, {
+        "name" : "Technology Type",
+        "value" : "geographic screen"
+      }, {
+        "name" : "Comment",
+        "value" : "head structures"
+      }, {
+        "name" : "File List",
+        "value" : "test_submission_filelist.json"
+      } ]
+    } ]
+  },
+  "type" : "submission"
+}
