@@ -10,7 +10,7 @@ EXPOSE 8080
 #ENV PATH=/opt/conda/bin:$PATH
 #RUN conda env create -f conda_env.yml
 
-# add files that poetry needs first so layers up to (including) pulling dependencies get cached
+# add files that poetry needs first so layers up to (including) pulling dependencies get reused
 ADD ./poetry.lock /integrator-api/poetry.lock
 ADD ./pyproject.toml /integrator-api/pyproject.toml
 WORKDIR /integrator-api
@@ -19,7 +19,7 @@ RUN curl -sSL https://install.python-poetry.org | python3 -
 ENV PATH=/root/.local/bin:$PATH
 RUN poetry install
 
-# Everything up to here should be cached most times
+# Everything up to here should be reused most times
 
 # add the actual project, which is what is often changed in between two different container builds
 ADD ./ /integrator-api
