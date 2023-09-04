@@ -1,0 +1,301 @@
+<html lang="en" class="vf-no-js">
+    <head>
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-NH1CCYVM6V"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+
+gtag('config', 'G-NH1CCYVM6V');
+        </script>
+        <title>
+            {% block title %}{% endblock %} &lt;BioImage Archive&gt; 
+        </title>
+        {% block header_extras %}
+        <!-- EXTRA ENTRIES FOR HEADER -->
+        {% endblock %}
+
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="https://assets.emblstatic.net/vf/v2.5.8/css/styles.css">
+        <meta charset="UTF-8">
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="BioImageArchive &lt; The European Bioinformatics Institute &lt; EMBL-EBI" />
+        <meta property="og:description" content="The BioImageArchive – a free, publicly available online resource which stores and distributes biological images" />
+        <meta name="description" content="The BioImageArchive – a free, publicly available online resource which stores and distributes biological images" />
+        <meta name="keywords" content="bioinformatics, europe, institute, biostudies, images" />
+        <meta name="author" content="BioImageArchive" />
+        <meta name="HandheldFriendly" content="true" />
+        <meta name="MobileOptimized" content="width" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <meta name="theme-color" content="#75C8EC" /> <!-- Android Chrome mobile browser tab color -->
+        <meta http-equiv="pragma" content="no-cache" />
+
+        <!-- If you link to any other sites frequently, consider optimising performance with a DNS prefetch -->
+        <link rel="dns-prefetch" href="//embl.de" />
+
+        <!-- If you have custom icon, replace these as appropriate.
+            You can generate them at realfavicongenerator.net -->
+            <link rel="icon" type="image/x-icon" href="https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/logos/bioimage-archive/favicons/favicon.ico" />
+            <link rel="icon" type="image/png" href=""https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/logos/bioimage-archive/favicons/favicon-32x32.png" />
+            <link rel="icon" type="image/png" sizes="192×192" href=""https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/logos/bioimage-archive/favicons/android-chrome-192x192.png" /> <!-- Android (192px) -->
+            <link rel="apple-touch-icon-precomposed" href=""https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/logos/bioimage-archive/favicons/apple-touch-icon.png" /> <!-- Apple? -->
+            <link rel="mask-icon" href=""https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/logos/bioimage-archive/favicons/safari-pinned-tab.svg" color="#ffffff" /> <!-- Safari icon for pinned tab -->
+            <meta name="msapplication-TileColor" content="#2b5797"> <!-- MS Icons -->
+            <meta name="msapplication-TileImage" content=""https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/logos/bioimage-archive/favicons/mstile-150x150.png" />
+
+            <!-- CSS: implied media=all -->
+            <!-- CSS concatenated and minified via ant build script-->
+            <link rel="stylesheet" href="https://www.ebi.ac.uk/web_guidelines/EBI-Framework/v1.4/css/ebi-global.css" type="text/css" media="all" />
+            <link rel="stylesheet" href="https://www.ebi.ac.uk/web_guidelines/EBI-Icon-fonts/v1.2/fonts.css" type="text/css" media="all" />
+
+
+            <!-- Use this CSS file for any custom styling -->
+            <link rel="stylesheet" href="https://ebi.emblstatic.net/web_guidelines/EBI-Framework/v1.4/css/theme-embl-petrol.css" type="text/css" media="all">
+
+            <!-- If you have a custom header image or colour -->
+            <!--
+                <meta name="ebi:localmasthead-color" content="#000">
+                <meta name="ebi:localmasthead-image" content="https://www.ebi.ac.uk/web_guidelines/EBI-Framework/images/backgrounds/embl-ebi-background.jpg">
+                            -->
+
+                            <!-- you can replace this with theme-[projectname].css. See http://www.ebi.ac.uk/web/style/colour for details of how to do this -->
+                            <!-- also inform ES so we can host your colour palette file -->
+                            <link rel="stylesheet" href="https://www.ebi.ac.uk/biostudies/css/theme-biostudies.css" type="text/css" media="all" />
+                            <link rel="stylesheet" href="https://www.ebi.ac.uk/biostudies/css/common.css" type="text/css" media="all" />
+
+                            <!-- for production the above can be replaced with -->
+                            <!--
+                                <link rel="stylesheet" href="//www.ebi.ac.uk/web_guidelines/css/compliance/mini/ebi-fluid-embl.css">
+                                           -->
+
+                                           <!-- end CSS-->
+
+                                           <meta class="foundation-mq" />
+                                           <link rel="stylesheet" href="https://www.ebi.ac.uk/biostudies/css/jquery.dataTables.css">
+                                           <link rel="stylesheet" href="https://www.ebi.ac.uk/biostudies/css/detail.css" type="text/css">
+                                           <!--script type="text/javascript" src="https://www.ebi.ac.uk/biostudies/gzip_N1305990095/js/common.min.js" ></script>
+        <script type="text/javascript" src="https://www.ebi.ac.uk/biostudies/gzip_342799686/js/detail.min.js" ></script-->
+    </head>
+
+    <body class="level2 ebi-black-bar-loaded no-global-search" style="">
+
+        <div id="skip-to">
+            <ul>
+                <li><a href="https://www.ebi.ac.uk/bioimage-archive/#content">Skip to main content</a></li>
+                <li><a href="https://www.ebi.ac.uk/bioimage-archive/#local-nav">Skip to local navigation</a></li>
+                <li><a href="https://www.ebi.ac.uk/bioimage-archive/#global-nav">Skip to EBI global navigation menu</a></li>
+                <li><a href="https://www.ebi.ac.uk/bioimage-archive/#global-nav-expanded">Skip to expanded EBI global navigation menu (includes all sub-sections)</a></li>
+            </ul>
+        </div>
+
+        <header id="masthead-black-bar" class="clearfix masthead-black-bar"><div></div><div><nav class="row"><ul id="global-nav" class="menu global-nav text-right" data-vf-google-analytics-region="Black bar"><li class="float-right show-for-medium embl-selector embl-ebi"><a class="button float-right custom-ebi-logo-bg custom-ebi-logo-bg-transparent-text" style="color: transparent;" href="https://www.ebi.ac.uk/">EMBL-EBI</a></li><li class="float-right search"><a href="https://www.ebi.ac.uk/bioimage-archive/#" class="inline-block collpased float-left search-toggle"><span class="show-for-small-only">Search</span></a></li><li class="what about"><a href="https://www.ebi.ac.uk/about">About us</a></li><li class="what training"><a href="https://www.ebi.ac.uk/training">Training</a></li><li class="what research"><a href="https://www.ebi.ac.uk/research">Research</a></li><li class="what services"><a href="https://www.ebi.ac.uk/services">Services</a></li><li class="where ebi"><a href="https://www.ebi.ac.uk/">EMBL-EBI home</a></li></ul></nav></div></header>
+
+
+        <div id="content" role="main">
+            <div data-sticky-container>
+                <header id="masthead" class="masthead" style="background-image: url(&quot;https://www.ebi.ac.uk/biostudies/images/collections/bioimages/background.jpg&quot;); background-color: rgb(0, 124, 130);">
+                    <div class="masthead-inner row">
+
+                        <div class="columns medium-7" id="local-title"><h1><a href="https://www.ebi.ac.uk/bioimage-archive"><img src="https://www.ebi.ac.uk/biostudies/images/collections/bioimages/logo.png"></a></h1></div>
+                    </div>
+
+                    <!-- /local-title -->
+                    <!-- local-nav -->
+                    <div class="row">
+                        <nav>
+                            <ul id="local-nav" class="dropdown menu float-left" data-description="navigational" data-dropdown-menu="inl31y-dropdown-menu" role="menubar">
+                                <li role="none"><a href="https://www.ebi.ac.uk/bioimage-archive/" role="menuitem">Home</a></li>
+                                <li role="none"><a href="https://www.ebi.ac.uk/biostudies/BioImages/studies" role="menuitem">Browse</a></li>
+                                <li role="none"><a href="https://www.ebi.ac.uk/bioimage-archive/submit/" role="menuitem">Submit</a></li>
+                                <li class="active" role="none"><a href="https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/pages/jan2023-to-may-2023.html" class="active" role="menuitem">Visual pages</a></li>
+                                <li role="none" class="is-dropdown-submenu-parent opens-right" aria-haspopup="true" aria-label="Help" data-is-click="false">
+                                    <a href="https://www.ebi.ac.uk/bioimage-archive/#" role="menuitem">Help</a>
+                                    <ul class="menu submenu is-dropdown-submenu first-sub vertical" data-submenu="" role="menubar" style="">
+                                        <li role="none" class="is-submenu-item is-dropdown-submenu-item"><a href="https://www.ebi.ac.uk/bioimage-archive/help-faq" role="menuitem">FAQs</a></li>
+                                        <li role="none" class="is-submenu-item is-dropdown-submenu-item"><a href="https://www.ebi.ac.uk/bioimage-archive/help-search/" role="menuitem">Searching the archive</a></li>
+                                        <li role="none" class="is-submenu-item is-dropdown-submenu-item"><a href="https://www.ebi.ac.uk/bioimage-archive/help-download/" role="menuitem">Downloading data</a></li>
+                                        <!-- <li><a href='/bioimage-archive/rembi-model-reference/'>Submission data model reference</a></li> -->
+                                        <li role="none" class="is-submenu-item is-dropdown-submenu-item"><a href="https://www.ebi.ac.uk/bioimage-archive/help-file-list/" role="menuitem">Submission File List guide</a></li>
+                                        <li role="none" class="is-submenu-item is-dropdown-submenu-item"><a href="https://www.ebi.ac.uk/bioimage-archive/help-tools/" role="menuitem">Supporting Tools</a></li>
+                                    </ul>
+                                </li>
+                                <li role="none" class="is-dropdown-submenu-parent opens-right" aria-haspopup="true" aria-label="REMBI Help">
+                                    <a href="https://www.ebi.ac.uk/bioimage-archive/#" role="menuitem">REMBI Help</a>
+                                    <ul class="menu submenu is-dropdown-submenu first-sub vertical" data-submenu="" role="menubar">
+                                        <li role="none" class="is-submenu-item is-dropdown-submenu-item"><a href="https://www.ebi.ac.uk/bioimage-archive/rembi-help-overview" role="menuitem">REMBI Overview</a></li>
+                                        <li role="none" class="is-submenu-item is-dropdown-submenu-item"><a href="https://www.ebi.ac.uk/bioimage-archive/rembi-help-lab/" role="menuitem">REMBI Lab Guidance</a></li>
+                                        <li role="none" class="is-submenu-item is-dropdown-submenu-item"><a href="https://www.ebi.ac.uk/bioimage-archive/rembi-help-examples/" role="menuitem">Study Component Guidance</a></li>
+                                        <!-- <li><a href='/bioimage-archive/rembi-help-spreadsheets/'>REMBI Spreadsheets</a></li> -->
+                                        <li role="none" class="is-submenu-item is-dropdown-submenu-item"><a href="https://www.ebi.ac.uk/bioimage-archive/rembi-model-reference/" role="menuitem">REMBI Model Reference</a></li>
+                                    </ul>
+                                </li>
+                                <li role="none" class="is-dropdown-submenu-parent opens-right" aria-haspopup="true" aria-label="Policies">
+                                    <a href="https://www.ebi.ac.uk/bioimage-archive/#" role="menuitem">Policies</a>
+                                    <ul class="menu submenu is-dropdown-submenu first-sub vertical" data-submenu="" role="menubar">
+                                        <li role="none" class="is-submenu-item is-dropdown-submenu-item"><a href="https://www.ebi.ac.uk/bioimage-archive/help-policies/" role="menuitem">Archive policies</a></li>
+                                        <li role="none" class="is-submenu-item is-dropdown-submenu-item"><a href="https://www.ebi.ac.uk/bioimage-archive/help-images-at-ebi/" role="menuitem">Depositing image data to EBI resources</a></li>
+                                    </ul>
+                                </li>
+                                <li role="none" class="is-dropdown-submenu-parent opens-right" aria-haspopup="true" aria-label="About us">
+                                    <a href="https://www.ebi.ac.uk/bioimage-archive/#" role="menuitem">About us</a>
+                                    <ul class="menu submenu is-dropdown-submenu first-sub vertical" data-submenu="" role="menubar">
+                                        <li role="none" class="is-submenu-item is-dropdown-submenu-item"><a href="https://www.ebi.ac.uk/bioimage-archive/project-developments/" role="menuitem">Project developments</a></li>
+                                        <li role="none" class="is-submenu-item is-dropdown-submenu-item"><a href="https://www.ebi.ac.uk/bioimage-archive/case-studies/" role="menuitem">Case studies</a></li>
+                                        <li role="none" class="is-submenu-item is-dropdown-submenu-item"><a href="https://www.ebi.ac.uk/bioimage-archive/contact-us/" role="menuitem">Contact us</a></li>
+                                    </ul>
+                                </li>
+                                <li class="extra-items-menu is-dropdown-submenu-parent opens-right" style="display: none;" role="none" aria-haspopup="true" aria-label="Also in this section"><a href="https://www.ebi.ac.uk/bioimage-archive/#" role="menuitem">Also in this section</a><ul class="menu submenu is-dropdown-submenu first-sub vertical" data-submenu="" role="menubar"><li class="bug-fix-placeholder is-dropdown-submenu-parent is-submenu-item is-dropdown-submenu-item opens-right" style="display:none !important;" role="none" aria-haspopup="true" aria-label="A workaround"><a href="https://www.ebi.ac.uk/bioimage-archive/#" role="menuitem">A workaround</a> <ul class="menu submenu is-dropdown-submenu vertical" data-submenu="" role="menubar"> <li role="none" class="is-submenu-item is-dropdown-submenu-item"><a href="https://www.ebi.ac.uk/bioimage-archive/#" role="menuitem">for a bug where the dropdown menu fails sometimes unless there are two submenus in the submenu</a></li></ul>  </li></ul></li></ul>
+                        </nav>
+                    </div>
+                    <!-- /local-nav -->
+                </header>
+            </div>
+
+
+            <!-- Suggested layout containers -->
+
+            <section id="main-content-area" class="row" role="main">
+
+                <!--START OF EBI TEMPLATE WRAPPER -->
+                <div class="medium-12 columns"> 
+                    <!--CONTENT GOES HERE -->
+                    {% block content %}
+                    {% endblock %}
+                </div>
+
+                <!--END OF EBI TEMPLATE WRAPPER -->
+
+            </section>
+            <!-- End suggested layout containers -->
+
+        </div>
+
+        <footer>
+            <div id="elixir-ribbon" class="elixir-ribbon">
+                <div class="row">
+                    <div class="column">
+
+                        <div class="eubi-logo-kite"></div>
+                        <div class="elixir-logo-kite"></div>
+                        <h5>
+                            <span class="elixir-banner-name">The BioImage Archive is developed in close collaboration with <a href="http://www.eurobioimaging.eu/">Euro-BioImaging</a> and <a href="https://elixir-europe.org/">Elixir</a>.</span></h5>
+                        <div id="elixir-banner-info">
+                            <small>
+                                <!--<span class="elixir-banner-description">I am a super cool service</span>
+                                    <span class="readmore">Learn more ›</span>-->
+                            </small>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <style>
+.elixir-ribbon {
+    padding: 1rem 0;
+    /*background-color: rgb(77, 77, 72); */
+    background-color: #fff;
+    border-top: 5px solid #eee;
+    ;
+}
+
+    .elixir-ribbon {
+        font-family: Helvetica, Arial, FreeSans, 'Liberation Sans', sans-serif;
+        clear: both;
+    }
+
+    .elixir-ribbon .row {
+        /*max-width: 1200px;*/
+        margin: 0 auto 1rem;
+    }
+
+    .elixir-ribbon .row::before,
+    .elixir-ribbon .row::after {
+        display: table;
+        content: ' ';
+    }
+
+    .elixir-ribbon h5 {
+        font-size: 1.3rem;
+        padding: 0;
+        display: inline-block;
+    }
+
+    .elixir-ribbon,
+    .elixir-ribbon h5,
+    .elixir-ribbon a,
+    .elixir-ribbon a:active,
+    .elixir-ribbon a:visited,
+    .elixir-ribbon a:hover {
+        color: rgb(77, 77, 72);
+        text-decoration: none;
+    }
+
+    .elixir-ribbon a:hover {
+        opacity: .8;
+    }
+
+    .elixir-ribbon .readmore {
+        border-bottom: 1px dotted rgb(77, 77, 72);
+    }
+
+    .elixir-ribbon h5 {
+        margin: 0;
+    }
+
+    .elixir-ribbon .eubi-logo-kite {
+        background: 80% 58% url("https://www.ebi.ac.uk/bioimage-archive/static/euro_bio_imaging_logo.jpg") no-repeat;
+        position: relative;
+        top: -5px;
+        margin: 0 1rem -.5rem 0;
+        height: 60px;
+        width: 60px;
+        display: inline-block;
+        float: left;
+        background-size: 60px;
+    }
+
+    .elixir-ribbon .elixir-logo-kite {
+        background: 80% 58% url("https://ebi.emblstatic.net/web_guidelines/EBI-Framework/v1.2/images/logos/assorted/elixir_kitemark-60px.png") no-repeat;
+        position: relative;
+        top: -5px;
+        margin: 0 1rem -.5rem 0;
+        height: 60px;
+        width: 60px;
+        display: inline-block;
+        float: left;
+        background-size: 60px;
+    }
+            </style>
+
+            <script defer="defer" src="https://ebi.emblstatic.net/web_guidelines/EBI-Framework/v1.4/js/elixirBanner.js"></script>
+            <div id="global-footer" class="global-footer">
+                <nav id="global-nav-expanded" class="global-nav-expanded row">
+                    <!-- Footer will be automatically inserted by footer.js -->
+                </nav>
+                <section id="ebi-footer-meta" class="ebi-footer-meta row">
+                    <!-- Footer meta will be automatically inserted by footer.js -->
+                </section>
+            </div>
+        </footer>
+
+        <!-- JavaScript -->
+        {% block post_body_scripts %} {% endblock %}
+        <!-- Grab Google CDN's jQuery, with a protocol relative URL; fall back to local if offline -->
+        <!--
+            <script>window.jQuery || document.write('<script src="../js/libs/jquery-1.10.2.min.js"><\/script>')</script>
+            -->
+            <!-- Your custom JavaScript file scan go here... change names accordingly -->
+            <!--
+                <script defer="defer" src="//www.ebi.ac.uk/web_guidelines/js/plugins.js"></script>
+                <script defer="defer" src="//www.ebi.ac.uk/web_guidelines/js/script.js"></script>
+                -->
+                <script defer="defer" src="//www.ebi.ac.uk/web_guidelines/EBI-Framework/v1.4/js/script.js"></script>
+                <!-- The Foundation theme JavaScript -->
+                <script src="//www.ebi.ac.uk/web_guidelines/EBI-Framework/v1.4/libraries/foundation-6/js/foundation.js"></script>
+                <script src="//www.ebi.ac.uk/web_guidelines/EBI-Framework/v1.4/js/foundationExtendEBI.js"></script>
+                <script>$(document).foundation();</script>
+                <script>$(document).foundationExtendEBI();</script>
+                <style id="dynamic-stuck-height" type="text/css"> .masthead.sticky.is-stuck{ margin-top: -132px !important;} </style>
+    </body>
+</html>
