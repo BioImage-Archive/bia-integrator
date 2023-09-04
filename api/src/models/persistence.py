@@ -151,6 +151,7 @@ class FileReference(BIABaseModel, DocumentMixin):
         model_version_latest = 1
 
 class ChannelRendering(BIABaseModel):
+    channel_label: Optional[str]
     colormap_start: List[float]
     colormap_end: List[float]
     scale_factor: float = 1.0
