@@ -1,9 +1,7 @@
 services:
-  bia-integrator-mongo:
+  biaint-mongo:
     image: mongo:6.0
-    hostname: mongo1
-    container_name: biaint-mongo
-    restart: "no"
+    restart: no
     environment:
       MONGO_INITDB_ROOT_USERNAME: "${MONGO_INITDB_ROOT_USERNAME}"
       MONGO_INITDB_ROOT_PASSWORD: "${MONGO_INITDB_ROOT_PASSWORD}"
@@ -13,10 +11,8 @@ services:
       - 27017
     volumes:
       - api_data:/data/db
-  bia-integrator-api:
+  biaint-api:
     image: ghcr.io/bioimage-archive/integrator-api:0.1
-    container_name: api
-    hostname: api
     ports:
       - 8080:8080
     expose:
