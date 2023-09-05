@@ -3,6 +3,7 @@
 ```sh
 # starting the api
 # Create a github personal access token here: https://github.com/settings/tokens
+#   with write:packages scope
 docker login ghcr.io # use personal access token created above
 docker compose --env-file ./.env_compose up
 ```
@@ -11,6 +12,8 @@ docker compose --env-file ./.env_compose up
 ## Development
 
 For test/debugger integration to work, **the api directory must be the root project directory in vscode**, not the bia-integrator directory 
+
+`.env_compose` was added for reference and 
 
 ```sh
 # building the api image
