@@ -5,9 +5,21 @@
 # Create a github personal access token here: https://github.com/settings/tokens
 #   with write:packages scope
 docker login ghcr.io # use personal access token created above
-docker compose --env-file ./.env_compose up
+docker compose --env-file ./.env_compose up -d # remove -d when first setting up, to make any problems obvious 
 ```
 
+To check if everything worked, go to `http://localhost:8080/openapi.json` and the response should be a json of the openapi spec
+
+Create a local-only test user with:
+
+```bash
+curl -H "Content-Type: application/json" \
+    --request POST \
+    --data '{"email": "test@example.com", "password_plain": "test", "secret_token": "DUMMY1234" }' \
+    http://localhost:8080/auth/users/register
+```
+
+The response should be just `null` and there should be no errors in the api container.
 
 ## Development
 

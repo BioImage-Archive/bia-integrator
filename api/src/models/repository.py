@@ -5,7 +5,7 @@ from ..api import exceptions
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorCollection
 from bson import ObjectId
 import pydantic
-from typing import List, Any, Callable, Optional
+from typing import List, Any, Callable
 from uuid import UUID
 import pymongo
 import json

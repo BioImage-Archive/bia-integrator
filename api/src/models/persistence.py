@@ -1,5 +1,5 @@
 from enum import Enum
-from pydantic import BaseModel, Field, BaseConfig, PrivateAttr, validator
+from pydantic import BaseModel, Field, BaseConfig
 from typing import Dict, List, Optional, Union, AnyStr
 from pathlib import Path
 from ome_types import OME, from_xml

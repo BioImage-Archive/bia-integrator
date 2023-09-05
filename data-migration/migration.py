@@ -2,11 +2,10 @@
 ! Maintain existing uuids to avoid breaking Embassy paths
 """
 
-import os
 from openapi_client import models as api_models
 from openapi_client.util import simple_client
 from bia_integrator_core import models as core_models, interface, study
-
+import sys
 
 import uuid as uuid_lib
 import time
@@ -149,6 +148,54 @@ def image_core_to_api(image_core: core_models.BIAImage, study_uuid, image_uuid =
     
     return image
 
+def migrate_study(study_id):
+    study_core = study.get_study(study_id)
+    study_api = study_core_to_api(study_core)
+
+    study_filerefs_api = []
+    for k_fileref, fileref_core in study_core.file_references.items():
+        fileref_uuid = k_fileref if is_uuid(k_fileref) else None
+
+        fileref_api = file_reference_core_to_api(fileref_core, study_api.uuid, fileref_uuid)
+        study_filerefs_api.append(fileref_api)
+    
+    for k_archive_file, archive_file_core in study_core.archive_files.items():
+        archive_file_uuid = k_archive_file if is_uuid(k_archive_file) else None
+
+        study_filerefs_api += bia_file_core_to_api(archive_file_core, study_api.uuid, archive_file_uuid, "archive")
+    
+    for k_other_file, other_file_core in study_core.other_files.items():
+        other_file_uuid = k_other_file if is_uuid(k_other_file) else None
+
+        study_filerefs_api += bia_file_core_to_api(other_file_core, study_api.uuid, other_file_uuid, "file")
+    
+    study_images_api = []
+    for k_image, image_core in study_core.images.items():
+        image_uuid = k_image if is_uuid(k_image) else None
+        image_aliases = [
+            alias.name
+            for alias in study_core.image_aliases.values()
+            if alias.image_id == k_image
+        ]
+        assert len(image_aliases) <= 1
+        image_alias = image_aliases[0] if len(image_aliases) else None
+
+        image_api = image_core_to_api(image_core, study_api.uuid, image_uuid, image_alias_core=image_alias)
+        study_images_api.append(image_api)
+    
+    print(f"Creating study {study_id}")
+    api_client.create_study(study_api)
+
+    print(f"Creating {len(study_filerefs_api)} filerefs for study {study_id}")
+    if len(study_filerefs_api):
+        api_client.create_file_reference(study_filerefs_api)
+
+    print(f"Creating {len(study_images_api)} images for study {study_id}")
+    if len(study_images_api):
+        api_client.create_images(study_images_api)
+
+    print(f"DONE migrating study {study_id}\n")
+
 config = {
     "biaint_api_url": "http://127.0.0.1:8080",
     "biaint_username": "test@example.com",
@@ -158,44 +205,19 @@ config = {
 if __name__ == "__main__":
     api_client = simple_client(
         config["biaint_api_url"],
-        config['biaint_username'],
-        config['biaint_password']
+        config["biaint_username"],
+        config["biaint_password"]
     )
 
-    for study_id in interface.get_all_study_identifiers():
-        study_core = study.get_study(study_id)
-        study_api = study_core_to_api(study_core)
+    if len(sys.argv) >= 2:
+        for study_id in sys.argv[1:]:
+            migrate_study(study_id)
+    else:
+        print("Migrating all studies")
+        for study_id in interface.get_all_study_identifiers():
+            if study_id == "S-BIAD599_orig":
+                # @TODO: NOT SURE skip this one because there is another study S-BIAD599 with the same accession
+                continue
 
-        api_client.create_study(study_api)
-
-        #study_filerefs_api = []
-        #for k_fileref, fileref_core in study_core.file_references.items():
-        #    fileref_uuid = k_fileref if is_uuid(k_fileref) else None
-
-        #    fileref_api = file_reference_core_to_api(fileref_core, study_api.uuid, fileref_uuid)
-        #    study_filerefs_api.append(fileref_api)
-        
-        #for k_archive_file, archive_file_core in study_core.archive_files.items():
-        #    archive_file_uuid = k_archive_file if is_uuid(k_archive_file) else None
-
-        #    study_filerefs_api += bia_file_core_to_api(archive_file_core, study_api.uuid, archive_file_uuid, "archive")
-        
-        #for k_other_file, other_file_core in study_core.other_files.items():
-        #    other_file_uuid = k_other_file if is_uuid(k_other_file) else None
-
-        #    study_filerefs_api += bia_file_core_to_api(other_file_core, study_api.uuid, other_file_uuid, "file")
-        
-        #study_images_api = []
-        #for k_image, image_core in study_core.images.items():
-        #    image_uuid = k_image if is_uuid(k_image) else None
-        #    image_aliases = [
-        #        alias.name
-        #        for alias in study_core.image_aliases.values()
-        #        if alias.image_id == k_image
-        #    ]
-        #    assert len(image_aliases) <= 1
-        #    image_alias = image_aliases[0] if len(image_aliases) else None
-
-        #    image_api = image_core_to_api(image_core, study_api.uuid, image_uuid, image_alias_core=image_alias)
-        #    study_images_api.append(image_api)
-        break
+            print(f"Migrating study {study_id}")
+            migrate_study(study_id)

@@ -1,4 +1,4 @@
-from .persistence import ModelMetadata as ModelMetadata
+from .persistence import ModelMetadata
 
 from pydantic import BaseModel
 from typing import List, Optional, Dict, Union

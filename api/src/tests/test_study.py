@@ -5,7 +5,7 @@ def test_create_study(api_client: TestClient, uuid: str):
     study = {
         "uuid": uuid,
         "version": 0,
-        'accession_id': uuid,
+        "accession_id": uuid,
         "title": "Test BIA study",
         "description": "description",
         "authors": [{
