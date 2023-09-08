@@ -1,5 +1,6 @@
-<html lang="en" class="vf-no-js">
-    <head>
+{% extends "base.html.j2" %}
+
+{% block header_extras %}
         <meta charset="UTF-8">
         <link rel="stylesheet" href="https://assets.emblstatic.net/vf/v2.5.8/css/styles.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -7,48 +8,16 @@
         <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.11.5/datatables.min.js"></script>
         <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.13.1/sorting/natural.js"></script>
         <meta charset="UTF-8">
-        <title>{{ accession_id }}</title>
-    </head>
+        <style>
+        .help {
+          cursor: help;
+          }
+        </style>
+{% endblock %}
 
-    <body>
-        <header class="vf-global-header">
-            <header class="vf-global-header">
+{% block title %} {{ accession_id }} {% endblock %}
 
-                <div class="vf-global-header__inner">
-          
-                  <a href="https://www.ebi.ac.uk/bioimage-archive/" class="vf-logo">
-                    <img class="vf-logo__image" src="/bia-integrator-data/pages/assets/BIA-Logo.png" alt="BioImage Archive"> 
-                    <!-- <img class="vf-logo__image" src="/Users/aybuke/work/ebi/BIA_curated_sets/BIA-Logo.png" alt="BioImage Archive"> -->
-                    <span class="vf-logo__text">   BioImage Archive</span>
-                  </a>
-          
-                </div>
-          
-            </header>
-        </header>
-
-<!-- <nav class="vf-navigation vf-navigation--main | vf-cluster">
-  <ul class="vf-navigation__list | vf-list | vf-cluster__inner">
-    <li class="vf-navigation__item">
-      <a href="JavaScript:Void(0);" class="vf-navigation__link" aria-current="page">Home</a>
-    </li>    <li class="vf-navigation__item">
-      <a href="JavaScript:Void(0);" class="vf-navigation__link">Download</a>
-    </li>    <li class="vf-navigation__item">
-      <a href="JavaScript:Void(0);" class="vf-navigation__link">Release Notes</a>
-    </li>    <li class="vf-navigation__item">
-      <a href="JavaScript:Void(0);" class="vf-navigation__link">FAQ</a>
-    </li>    <li class="vf-navigation__item">
-      <a href="JavaScript:Void(0);" class="vf-navigation__link">Help</a>
-    </li>    <li class="vf-navigation__item">
-      <a href="JavaScript:Void(0);" class="vf-navigation__link">Licence</a>
-    </li>    <li class="vf-navigation__item">
-      <a href="JavaScript:Void(0);" class="vf-navigation__link">About</a>
-    </li>    <li class="vf-navigation__item">
-      <a href="JavaScript:Void(0);" class="vf-navigation__link">Feedback</a>
-    </li>  </ul>
-</nav>
--->
-
+{% block content %}
 <section class="vf-intro">
 
   <div><!-- empty --></div>
@@ -261,7 +230,7 @@
     <!-- Annotations --> 
   <section class="embl-grid embl-grid--has-centered-content">
     <div class="vf-section-header">
-      <h3 class="vf-section-header__heading" id="annotations">Annotations</h3>
+      <span class="help" title="Annotation in the context of AI, is the task of marking up data, such as images, so it can be recognised by models and used to make predictions. "><h3 class="vf-section-header__heading" id="annotations">Annotations</h3></span>
       <ul class="vf-list">
         {% if study.attributes.get('annotation_type') %}
         <li><b>Annotation type(s):</b> {{ study.attributes['annotation_type'] }}</li>
@@ -392,5 +361,4 @@
                 });
             } );
         </script>
-    </body>
-</html>
+{% endblock %}

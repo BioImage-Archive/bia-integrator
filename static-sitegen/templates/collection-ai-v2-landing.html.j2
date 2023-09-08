@@ -1,46 +1,25 @@
-<html lang="en" class="vf-no-js">
-    <head>
-        <meta charset="UTF-8">
-        <link rel="stylesheet" href="https://assets.emblstatic.net/vf/v2.5.8/css/styles.css">
-        <meta charset="UTF-8">
-        <title>Collection landing</title>
-    </head>
+{% extends "base.html.j2" %}
 
-<body>
+{% block header_extras %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.11.5/datatables.min.css"/>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.11.5/datatables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.13.1/sorting/natural.js"></script>
+{% endblock %}
 
-<!-- <div class="vf-banner vf-banner--fixed vf-banner--bottom vf-banner--notice" data-vf-js-banner data-vf-js-banner-state="dismissible" data-vf-js-banner-button-text="I agree, dismiss this banner" data-vf-js-banner-cookie-name="emblebibia" data-vf-js-banner-cookie-version="0.1" data-vf-js-banner-auto-accept="false">
-  <div class="vf-banner__content | vf-grid" data-vf-js-banner-text>
-    <p class="vf-banner__text vf-banner__text--lg">
-      This website uses cookies, and the limiting processing of your personal data to function. By using the site you are agreeing to this as outlined in our <a class="vf-banner__link" href="https://www.ebi.ac.uk/data-protection/privacy-notice/embl-ebi-public-website">Privacy Notice</a> and <a class="vf-banner__link" href="https://www.ebi.ac.uk/about/terms-of-use">Terms Of Use</a>.
-    </p>
-  </div>
-</div>
--->    
-    <header class="vf-global-header">
+{% block title %} {{ collection.title }} {% endblock %}
 
-                <div class="vf-global-header__inner">
-          
-                  <a href="https://www.ebi.ac.uk/bioimage-archive" class="vf-logo">
-                    <img class="vf-logo__image" src="/bia-integrator-data/pages/assets/BIA-Logo.png" alt="BioImage Archive"> 
-                    <!-- <img class="vf-logo__image" src="/Users/aybuke/work/ebi/BIA_curated_sets/BIA-Logo.png" alt="BioImage Archive"> -->
-                    <span class="vf-logo__text">   BioImage Archive</span>
-                  </a>
-          
-                </div>
-          
-            </header>
-        </header>
-
+{% block content %}
 <!-- Collection summary -->
-<section class="vf-hero vf-hero--800 | vf-u-fullbleed" style="--vf-hero--bg-image: url('https://www.ebi.ac.uk/bioimage-archive/static/background_bioimage_archive.jpg');">
-<div class="vf-hero__content | vf-card__content | vf-stack vf-stack--400">
-        <h1 class="vf-hero__heading">{{ collection.title }}</h1>
-        <p class="vf-hero__subheading">{{ collection.subtitle }}</p>
-        <p class="vf-hero__text">{{ collection.description }}</p>
+    <section class="vf-intro | embl-grid embl-grid--has-centered-content">
+        <div></div>
+        <div>
+            <h1 class="vf-intro__heading vf-intro__heading--has-tag">{{ collection.title }}<a href="JavaScript:Void(0);" class="vf-badge vf-badge--primary vf-badge--phases">alpha</a></h1>
+            <h2 class="vf-intro__subheading">{{ collection.subtitle }}</h2>
+            <p class="vf-hero__text">{{ collection.description }}</p>
         </div>
-
-</section>
- 
+        <div></div>
+    </section> 
 <!-- Images -->
 <section class="vf-card-container vf-card-container__col-3 | vf-u-background-color-ui--white vf-u-fullbleed" style="--vf-card__image--aspect-ratio: 16 / 9;">
   <div class="vf-card-container__inner">
@@ -88,5 +67,4 @@
 
 
           </div>
-    </body>
-</html>
+{% endblock %}
