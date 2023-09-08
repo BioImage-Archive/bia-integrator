@@ -3,6 +3,7 @@ import logging
 import pathlib
 import datetime
 from typing import List, Union, Optional
+from copy import deepcopy
 
 import requests
 from pydantic import BaseModel, parse_raw_as
@@ -197,12 +198,8 @@ def flist_from_flist_fname(accession_id: str, flist_fname: str, extra_attribute=
     # KB 18/08/2023 - Hack to fix error due to null values in attributes
     # Remove attribute entries with {"value": "null"}
     dict_content = json.loads(r.content)
-    for d in dict_content:
-        if "attributes" in d:
-            d["attributes"] = [i for i in filter(lambda x: x != {"value": "null"} and x != {}, d["attributes"])]
-            if len(d["attributes"]) == 0:
-                d.pop("attributes")
-    filtered_content = bytes(json.dumps(dict_content), "utf-8")
+    dict_filtered_content = filter_filelist_content(dict_content)
+    filtered_content = bytes(json.dumps(dict_filtered_content), "utf-8")
     fl = parse_raw_as(List[File], filtered_content)
 
     if extra_attribute:
@@ -288,3 +285,16 @@ def get_with_case_insensitive_key(dictionary: dict, key: str) -> str:
         return dictionary[temp_key]
     else:
         raise KeyError(f"{key} not in {dictionary.keys()}")
+
+def filter_filelist_content(dictionary: dict):
+    """Remove attributes in filelist with null or empty values
+
+    """
+    dict_copy = deepcopy(dictionary)
+    for d in dict_copy:
+        if "attributes" in d:
+            d["attributes"] = [i for i in filter(lambda x: x != {"value": "null"} and x != {}, d["attributes"])]
+            if len(d["attributes"]) == 0:
+                d.pop("attributes")
+    
+    return dict_copy
