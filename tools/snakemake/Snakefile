@@ -102,7 +102,7 @@ rule auto_create_image_representations:
     shell:
         """
             {command_prefix} python {script_dir}/assign_all_easily_convertible_images_from_filerefs.py $ACCNO 2>&1 | tee {output} && \
-            {command_prefix} python {script_dir}/assign_zipped_zarr_from_filerefs.py $ACCNO 2>&1 | tee --append {output}
+            {command_prefix} python {script_dir}/assign_zipped_zarr_from_filerefs.py $ACCNO 2>&1 | tee -a {output}
         """
 
 # Set source image for file references which are AI annotations and has a source image.
