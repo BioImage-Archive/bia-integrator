@@ -49,7 +49,7 @@ class NGFFProxyImage(object):
 
     def __init__(self, uri):
         self.uri = uri.rstrip("/0")
-        self.zgroup = open_zarr_wrapper(uri)
+        self.zgroup = open_zarr_wrapper(self.uri)
         self.array_paths = []
         try:
             self.zgroup.visititems(self._get_array_paths)
@@ -88,6 +88,9 @@ class NGFFProxyImage(object):
 
         if len(self.darray.shape) == 5:
             size_t, size_c, size_z, size_y, size_x = self.darray.shape
+        if len(self.darray.shape) == 4:
+            size_t = 1
+            size_c, size_z, size_y, size_x = self.darray.shape
         elif len(self.darray.shape) == 3:
             size_z, size_y, size_x = self.darray.shape
             size_t = 1
@@ -113,10 +116,8 @@ class NGFFProxyImage(object):
 
         for path_key in reversed(path_keys):
             zarr_array = self.zgroup[path_key]
-            if len(self.darray.shape) == 5:
-                _, _, _, size_y, size_x = zarr_array.shape
-            elif len(self.darray.shape) == 3:
-                _, size_y, size_x = zarr_array.shape
+            if len(zarr_array.shape) >= 2:
+                size_y, size_x = zarr_array.shape[-2:]
             else:
                 raise Exception("Can't handle this array shape")
 
@@ -271,10 +272,8 @@ def pad_to_target_dims(im, target_dims, fill=(0, 0, 0)):
 def select_region_from_dask_array(darray, region):
     """Select a single plane from a Dask array, and compute it."""
 
-    if len(darray.shape) == 5:
-        _, _, _, ydim, xdim = darray.shape
-    elif len(darray.shape) == 3:
-        _, ydim, xdim = darray.shape
+    if len(darray.shape) >= 2:
+        ydim, xdim = darray.shape[-2:]
     else:
         raise Exception("Can't handle this array shape")
     
@@ -286,8 +285,12 @@ def select_region_from_dask_array(darray, region):
 
     if len(darray.shape) == 5:
         return darray[region.t, region.c, region.z, ymin:ymax, xmin:xmax].compute()
+    elif len(darray.shape) == 4:
+        return darray[region.c, region.z, ymin:ymax, xmin:xmax].compute()
     elif len(darray.shape) == 3:
         return darray[region.z, ymin:ymax, xmin:xmax].compute()
+    elif len(darray.shape) == 2:
+        return darray[ymin:ymax, xmin:xmax].compute()
     else:
         raise Exception("Can't handle this array shape")    
 
