@@ -99,8 +99,6 @@ def study_title_from_submission(submission: Submission) -> str:
 
 def study_links_from_submission(submission: Submission) -> dict:
 
-
-
     links = {}
     for l in submission.section.links:
         study_link = l.url
@@ -111,6 +109,16 @@ def study_links_from_submission(submission: Submission) -> dict:
 
     return links
 
+def study_description_from_submission(submission: Submission) -> str:
+    """Return study description or abstract if no description
+
+    """
+    
+    description = get_attr_from_submission(submission, "description")
+    if description == "Unknown":
+        description = get_attr_from_submission(submission, "abstract")
+        
+    return description
 
 def get_attr_from_submission(submission: Submission, attr: str) -> str:
     """Search for attr in submission section and if necessary subsections
@@ -119,11 +127,12 @@ def get_attr_from_submission(submission: Submission, attr: str) -> str:
         and if not found, search other subsections
     """
 
-    study_components = [
+    study_components = [submission.section,]
+    study_components.extend([
         section
         for section in submission.section.subsections
         if section.type == 'Study Component'
-    ]
+    ])
 
     if len(study_components):
         for study_component in study_components:
@@ -179,7 +188,7 @@ def bst_submission_to_bia_study(submission: Submission) -> BIAStudy:
         title=study_title,
         authors=find_authors_in_submission(submission),
         release_date=submission_attr_dict['ReleaseDate'],
-        description=study_section_attr_dict['Description'],
+        description=study_description_from_submission(submission),
         organism=organism,
         license=study_section_attr_dict.get('License', "CC0"),
         links=study_links_from_submission(submission),
