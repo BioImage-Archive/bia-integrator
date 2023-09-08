@@ -163,7 +163,8 @@
     <!-- Images -->
     <section class="vf-content | embl-grid embl-grid--has-centered-content">
     <div>
-      <h2 class="vf-section-header__heading" id="images">Viewable images</h2>
+    <span class="help" title="Images that have been converted to ome-ngff for in-browser viewing">  
+      <h2 class="vf-section-header__heading" id="images">Viewable images</h2></span>
     </div>
     <div>
 
@@ -280,7 +281,7 @@
     <!-- Models used --> 
   <section class="embl-grid embl-grid--has-centered-content">
     <div class="vf-section-header">
-      <h3 class="vf-section-header__heading" id="models">Models</h3>
+      <span class="help" title="Models can mean two things: models that are used to derive the annotations in this study, OR this dataset is used to train these models"><h3 class="vf-section-header__heading" id="models">Models</h3></span>
     </div>
     <div class="vf-content">
     {% if study.attributes.get('models_uri') %}
@@ -301,7 +302,7 @@
         <!-- All Images -->
         <section class="embl-grid embl-grid--has-centered-content">
                     <div class="vf-section-header">
-                        <h2 class="vf-section-header__heading">All images</h2>
+                       <span class="help" title="All images in the study in their original format"><h2 class="vf-section-header__heading">All images</h2></span>
                     </div>
                     <div class="vf-content">
                       <table class="display table" id="table">
@@ -314,23 +315,17 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- {% for image in study.images.values() %}
-                                <td>{{ image_names[image.id] }}</td>
-                                <td>{{ image.original_relpath }}</td>
-                                <td><a href={{ image_download_uris[image.id] }}>Download</a></td>
-                            </tr>
-                            {% endfor %}-->
-                            {% for image in non_annotation_names %}
-                                <td>{{ image_names[image.id] }}</td>
-                                <td>{{ image.original_relpath }}</td>
-                                {% if "download_size" in image.attributes %}
-                                    <td>{{ image.attributes["download_size"] }}</td>
-                                {% else %}
-                                    <td>Unavailable</td>
-                                {% endif %}
-                                <td><a href={{ image_download_uris[image.id] }}>Download</a></td>
-                            </tr>
-                            {% endfor %}
+                          {% for image in study.images.values() %}
+                          <td>{{ image_names[image.id] }}</td>
+                          <td>{{ image.original_relpath }}</td>
+                          {% if "download_size" in image.attributes %}
+                          <td>{{ image.attributes["download_size"] }}</td>
+                          {% else %}
+                          <td>Unavailable</td>
+                          {% endif %}
+                          <td><a href={{ image_download_uris[image.id] }}>Download</a></td>
+                          </tr>
+                          {% endfor %}
                         </tbody>
                       </table>                      
                       </div>

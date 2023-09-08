@@ -5,6 +5,11 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.11.5/datatables.min.css"/>
 <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.11.5/datatables.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.13.1/sorting/natural.js"></script>
+<style>
+.help {
+    cursor: help;
+    }
+</style>
 {% endblock %}
 
 {% block title %} {{ study.accession_id }} {% endblock %}
@@ -73,7 +78,8 @@
     <!-- Images -->
     <section class="vf-content | embl-grid embl-grid--has-centered-content">
         <div>
-            <h2 class="vf-section-header__heading">Viewable images</h2>
+        <span class="help" title="Images that have been converted to ome-ngff for in-browser viewing"> 
+            <h2 class="vf-section-header__heading">Viewable images</h2></span>
 
         </div>
         <div>
@@ -130,7 +136,7 @@
         </div>
         <div></div>
         <div>
-            <h2 class="vf-section-header__heading">All images</h2>
+            <span class="help" title="All images in the study in their original format"><h2 class="vf-section-header__heading">All images</h2></span>
         </div>
         <div>
             <table class="display table" id="table">
