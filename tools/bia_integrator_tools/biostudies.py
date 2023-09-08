@@ -168,7 +168,11 @@ def find_file_lists_in_section(section, flists) -> list:
         flists.append(attr_dict)
 
     for subsection in section.subsections:
-        find_file_lists_in_section(subsection, flists)
+        subsection_type = type(subsection)
+        if subsection_type == Section:
+            find_file_lists_in_section(subsection, flists)
+        else:
+            logger.warning(f"Not processing subsection as type is {subsection_type}, not 'Section'. Contents={subsection}")
 
 
     return flists
@@ -258,15 +262,19 @@ def find_files_in_submission(submission: Submission) -> List[File]:
     
     def descend_and_find_files(section, files_list=[]):
         
-        for file in section.files:
-            if isinstance(file, List):
-                files_list += file
-            else:
-                files_list.append(file)
-            
-        for subsection in section.subsections:
-            descend_and_find_files(subsection, files_list)
-            
+        section_type = type(section)
+        if section_type == Section:
+            for file in section.files:
+                if isinstance(file, List):
+                    files_list += file
+                else:
+                    files_list.append(file)
+                
+            for subsection in section.subsections:
+                descend_and_find_files(subsection, files_list)
+        else:
+            logger.warning(f"Not processing subsection as type is {section_type}, not 'Section'. Contents={section}")
+
     descend_and_find_files(submission.section, all_files)
     
     return all_files
