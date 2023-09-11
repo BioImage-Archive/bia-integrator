@@ -5,6 +5,7 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.11.5/datatables.min.css"/>
 <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.11.5/datatables.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.13.1/sorting/natural.js"></script>
+<script src="https://kit.fontawesome.com/1d1848da05.js" crossorigin="anonymous"></script>
 <style>
 .help {
     cursor: help;
@@ -77,9 +78,10 @@
     </section>
     <!-- Images -->
     <section class="vf-content | embl-grid embl-grid--has-centered-content">
-        <div>
-        <span class="help" title="Images that have been converted to ome-ngff for in-browser viewing"> 
-            <h2 class="vf-section-header__heading">Viewable images</h2></span>
+        <div> 
+            <h2 class="vf-section-header__heading">Viewable images
+            <i class="fa-solid fa-circle-info" title="Images that have been converted to ome-ngff for in-browser viewing"></i>
+            </h2>
 
         </div>
         <div>
@@ -98,10 +100,10 @@
                         <tr>
                             <th>Image ID</th>
                             <th>Preview</th>
-                            <th>Filename</th>
+                            <th>Filename <i class="fa-solid fa-circle-info" title="Orginial filepath and filename prior to ome-ngff conversion"></i></th>
                             <th>Dimensions<br>(T, C, Z, Y, X)</th>
                             <th>Download Size</th>
-                            <th>Actions</th>
+                            <th>Actions <i class="fa-solid fa-circle-info" title="view will open the ome-ngff image in-browser, download will download the image in its original unconverted format"></i></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -136,7 +138,7 @@
         </div>
         <div></div>
         <div>
-            <span class="help" title="All images in the study in their original format"><h2 class="vf-section-header__heading">All images</h2></span>
+            <h2 class="vf-section-header__heading">All images <i class="fa-solid fa-circle-info" title="All images in the study in their original format"></i></h2><
         </div>
         <div>
             <table class="display table" id="table">

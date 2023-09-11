@@ -7,6 +7,7 @@
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.11.5/datatables.min.css"/>
         <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.11.5/datatables.min.js"></script>
         <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.13.1/sorting/natural.js"></script>
+        <script src="https://kit.fontawesome.com/1d1848da05.js" crossorigin="anonymous"></script>
         <meta charset="UTF-8">
         <style>
         .help {
@@ -162,9 +163,10 @@
         
     <!-- Images -->
     <section class="vf-content | embl-grid embl-grid--has-centered-content">
-    <div>
-    <span class="help" title="Images that have been converted to ome-ngff for in-browser viewing">  
-      <h2 class="vf-section-header__heading" id="images">Viewable images</h2></span>
+    <div> 
+      <h2 class="vf-section-header__heading" id="images">Viewable images 
+      <i class="fa-solid fa-circle-info" title="Images that have been converted to ome-ngff for in-browser viewing"></i>
+      </h2> 
     </div>
     <div>
 
@@ -182,10 +184,10 @@
                             <tr>
                                 <th>Image ID</th>
                                 <th>Preview</th>
-                                <th>Filename</th>
+                                <th>Filename <i class="fa-solid fa-circle-info" title="Orginial filepath and filename prior to ome-ngff conversion"></i></th>
                                 <th>Dimensions<br>(T, C, Z, Y, X)</th>
                                 <th>Download Size</th>
-                                <th>Actions</th>
+                                <th>Actions <i class="fa-solid fa-circle-info" title="view will open the ome-ngff image in-browser, download will download the image in its original unconverted format"></i></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -231,7 +233,8 @@
     <!-- Annotations --> 
   <section class="embl-grid embl-grid--has-centered-content">
     <div class="vf-section-header">
-      <span class="help" title="Annotation in the context of AI, is the task of marking up data, such as images, so it can be recognised by models and used to make predictions. "><h3 class="vf-section-header__heading" id="annotations">Annotations</h3></span>
+      <h3 class="vf-section-header__heading" id="annotations">Annotations
+      <i class="fa-solid fa-circle-info" title="Annotation in the context of AI, is the task of marking up data, such as images, so it can be recognised by models and used to make predictions."></i></h3>
       <ul class="vf-list">
         {% if study.attributes.get('annotation_type') %}
         <li><b>Annotation type(s):</b> {{ study.attributes['annotation_type'] }}</li>
@@ -281,7 +284,7 @@
     <!-- Models used --> 
   <section class="embl-grid embl-grid--has-centered-content">
     <div class="vf-section-header">
-      <span class="help" title="Models can mean two things: models that are used to derive the annotations in this study, OR this dataset is used to train these models"><h3 class="vf-section-header__heading" id="models">Models</h3></span>
+    <h3 class="vf-section-header__heading" id="models">Models <i class="fa-solid fa-circle-info" title="Models can mean two things: models that are used to derive the annotations in this study, OR this dataset is used to train these models"></i></h3>
     </div>
     <div class="vf-content">
     {% if study.attributes.get('models_uri') %}
@@ -302,7 +305,7 @@
         <!-- All Images -->
         <section class="embl-grid embl-grid--has-centered-content">
                     <div class="vf-section-header">
-                       <span class="help" title="All images in the study in their original format"><h2 class="vf-section-header__heading">All images</h2></span>
+                      <h2 class="vf-section-header__heading">All images <i class="fa-solid fa-circle-info" title="All images in the study in their original format"></i></h2>
                     </div>
                     <div class="vf-content">
                       <table class="display table" id="table">
