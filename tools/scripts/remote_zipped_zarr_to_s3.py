@@ -1,4 +1,3 @@
-
 import logging
 import pathlib
 import tempfile
@@ -17,6 +16,14 @@ from bia_integrator_tools.io import (
 from bia_integrator_tools.utils import get_image_rep_by_type
 
 logger = logging.getLogger(__file__)
+
+def concatenate_files(input_list: list[str], output_path: str):
+    """Concatenate files (binary assumed) in input_list to output_path"""
+
+    command = f"cat {' '.join(input_list)} > {output_path}"
+    logger.info(f"Concatenating files with command: {command}")
+    retval = subprocess.run(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    assert retval.returncode == 0, f"Error concatenating files: {retval.stderr.decode('utf-8')}"
 
 
 def unzip_and_get_path_of_contents(zip_fpath, td):
@@ -40,12 +47,19 @@ def main(accession_id, image_id):
 
     bia_study = load_and_annotate_study(accession_id)
     zipped_zarr_rep = get_image_rep_by_type(accession_id, image_id, "zipped_zarr")
-    fileref_id = zipped_zarr_rep.attributes["fileref_ids"][0]
-    fileref = bia_study.file_references[fileref_id]
+    # We may have split zips!
+    zip_fpath_list = []
+    for fileref_id in zipped_zarr_rep.attributes["fileref_ids"]:
+        fileref = bia_study.file_references[fileref_id]
+        zip_fpath_list.append(str(stage_fileref_and_get_fpath(accession_id, fileref)))
 
     path_in_zarr = zipped_zarr_rep.attributes.get("path_in_zarr", "")
-
-    zip_fpath = stage_fileref_and_get_fpath(accession_id, fileref)
+    
+    if len(zip_fpath_list) == 1:
+        zip_fpath = zip_fpath_list[0]
+    else:
+        zip_fpath = str(pathlib.Path(zip_fpath_list[0]).parent / f"{image_id}.zip")
+        concatenate_files(input_list=zip_fpath_list, output_path=zip_fpath)
 
     # Use configurable cache location because /tmp on some codon nodes
     # run out of memory when unzipping large zarr archives    
