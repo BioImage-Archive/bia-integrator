@@ -1,3 +1,13 @@
+## Setup
+
+In this directory, run:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -e .
+```
+
 ## Migrating data repo to api on local
 
 1. Follow the api readme to get an api instance running.

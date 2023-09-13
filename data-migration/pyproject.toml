@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "data-migration"
+version = "0.1.0"
+description = ""
+authors = ["Liviu Anita <liviu@ebi.ac.uk>"]
+readme = "Readme.md"
+packages = [{include = "migration.py"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+openapi-client = { path = "../clients/python/", develop = true }
+bia-integrator-core = { path = "../core/", develop = true }
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
