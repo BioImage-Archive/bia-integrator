@@ -88,7 +88,7 @@ class NGFFProxyImage(object):
 
         if len(self.darray.shape) == 5:
             size_t, size_c, size_z, size_y, size_x = self.darray.shape
-        if len(self.darray.shape) == 4:
+        elif len(self.darray.shape) == 4:
             size_t = 1
             size_c, size_z, size_y, size_x = self.darray.shape
         elif len(self.darray.shape) == 3:
