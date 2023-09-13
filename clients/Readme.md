@@ -1,7 +1,6 @@
 ## Generating clients
 
 ```sh
-# assumes api runs on 45.88.80.182
 wget -O openapi.json http://localhost:8080/openapi.json
 
 docker run -it --rm \

@@ -19,16 +19,17 @@ import json
 
 
 from typing import List, Optional, Union
-from pydantic import BaseModel, Field, StrictFloat, StrictInt, conlist
+from pydantic import BaseModel, Field, StrictFloat, StrictInt, StrictStr, conlist
 
 class ChannelRendering(BaseModel):
     """
     ChannelRendering
     """
+    channel_label: Optional[StrictStr] = None
     colormap_start: conlist(Union[StrictFloat, StrictInt]) = Field(...)
     colormap_end: conlist(Union[StrictFloat, StrictInt]) = Field(...)
     scale_factor: Optional[Union[StrictFloat, StrictInt]] = 1.0
-    __properties = ["colormap_start", "colormap_end", "scale_factor"]
+    __properties = ["channel_label", "colormap_start", "colormap_end", "scale_factor"]
 
     class Config:
         """Pydantic configuration"""
@@ -66,6 +67,7 @@ class ChannelRendering(BaseModel):
             return ChannelRendering.parse_obj(obj)
 
         _obj = ChannelRendering.parse_obj({
+            "channel_label": obj.get("channel_label"),
             "colormap_start": obj.get("colormap_start"),
             "colormap_end": obj.get("colormap_end"),
             "scale_factor": obj.get("scale_factor") if obj.get("scale_factor") is not None else 1.0

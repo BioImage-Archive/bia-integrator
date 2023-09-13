@@ -65,5 +65,4 @@ setup.cfg
 setup.py
 test-requirements.txt
 test/__init__.py
-test/test_body_register_user_auth_users_register_post.py
 tox.ini

@@ -38,7 +38,7 @@ class BIAStudy(BaseModel):
     organism: StrictStr = Field(...)
     release_date: StrictStr = Field(...)
     accession_id: StrictStr = Field(...)
-    imaging_type: Optional[conlist(StrictStr)] = None
+    imaging_type: Optional[StrictStr] = None
     attributes: Optional[Dict[str, Any]] = None
     annotations: Optional[conlist(StudyAnnotation)] = None
     example_image_uri: Optional[StrictStr] = ''

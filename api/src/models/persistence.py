@@ -78,8 +78,12 @@ class DocumentMixin(BaseModel):
                 if annotation.key in ["model", "_id", "uuid"]:
                     raise Exception(f"Annotation {annotation} of object {self.uuid} overwrites a read-only property")
 
+                # annotations that don't overwrite a field are 'annotation attributes'
                 if annotation.key in document_attributes:
-                    self.__dict__[annotation.key] = annotation.value
+                    if type(self.__dict__[annotation.key]) is list:
+                        self.__dict__[annotation.key].append(annotation.value)
+                    else:
+                        self.__dict__[annotation.key] = annotation.value
                 else:
                     self.attributes[annotation.key] = annotation.value
 
@@ -124,7 +128,7 @@ class BIAStudy(BIABaseModel, DocumentMixin):
     release_date: str = Field()
     accession_id: str = Field()
     
-    imaging_type: List[str] = Field(default=[])
+    imaging_type: Optional[str] = Field(default=None)
     attributes: Dict = Field(default={})
     annotations: List[StudyAnnotation] = Field(default=[])
     example_image_uri: str = Field(default="")

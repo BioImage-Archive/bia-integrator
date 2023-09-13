@@ -21,7 +21,7 @@ def test_create_study(api_client: TestClient, uuid: str):
 
     study_with_defaults = {
         **study,
-        'imaging_type': [],
+        'imaging_type': None,
         'attributes': {},
         'annotations': [],
         'example_image_uri': "",

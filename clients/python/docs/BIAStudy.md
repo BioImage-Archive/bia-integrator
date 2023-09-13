@@ -14,7 +14,7 @@ Name | Type | Description | Notes
 **organism** | **str** |  | 
 **release_date** | **str** |  | 
 **accession_id** | **str** |  | 
-**imaging_type** | **List[str]** |  | [optional] [default to []]
+**imaging_type** | **str** |  | [optional] 
 **attributes** | **object** |  | [optional] 
 **annotations** | [**List[StudyAnnotation]**](StudyAnnotation.md) |  | [optional] [default to []]
 **example_image_uri** | **str** |  | [optional] [default to '']
