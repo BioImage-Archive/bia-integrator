@@ -34,9 +34,9 @@ class FileReference(BaseModel):
     name: StrictStr = Field(...)
     uri: StrictStr = Field(...)
     type: StrictStr = Field(...)
-    size_bytes: StrictInt = Field(...)
+    size_in_bytes: StrictInt = Field(...)
     attributes: Optional[Dict[str, Any]] = None
-    __properties = ["_id", "uuid", "version", "model", "study_uuid", "name", "uri", "type", "size_bytes", "attributes"]
+    __properties = ["_id", "uuid", "version", "model", "study_uuid", "name", "uri", "type", "size_in_bytes", "attributes"]
 
     class Config:
         """Pydantic configuration"""
@@ -85,7 +85,7 @@ class FileReference(BaseModel):
             "name": obj.get("name"),
             "uri": obj.get("uri"),
             "type": obj.get("type"),
-            "size_bytes": obj.get("size_bytes"),
+            "size_in_bytes": obj.get("size_in_bytes"),
             "attributes": obj.get("attributes")
         })
         return _obj

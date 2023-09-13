@@ -45,7 +45,7 @@ def load_and_annotate_study(accession_id: str) -> core_models.BIAStudy:
 
         # extra
         images = study_images,
-        filerefs = study_filerefs
+        file_references = study_filerefs
     )
 
     return core_study

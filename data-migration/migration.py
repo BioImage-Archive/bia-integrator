@@ -56,7 +56,7 @@ def file_reference_core_to_api(file_reference_core: core_models.FileReference, s
         name = file_reference_core.name,
         uri = file_reference_core.uri,
         type = file_reference_core.type if file_reference_core.type else "TODO - What do we do with null fileref types? Direct / in archive",
-        size_bytes = file_reference_core.size_in_bytes,
+        size_in_bytes = file_reference_core.size_in_bytes,
         attributes = file_reference_core.attributes.copy()
     )
 
@@ -77,7 +77,7 @@ def bia_file_core_to_api(bia_file_core: core_models.BIAFile, study_uuid, file_uu
             name = bia_file_core.id,
             uri = representation.uri,
             type = file_type, #@TODO: Is this actually the type? 
-            size_bytes = representation.size, # bytes?
+            size_in_bytes = representation.size, # bytes?
             attributes = bia_file_core.attributes.copy()
         )
         filerefs.append(fileref)

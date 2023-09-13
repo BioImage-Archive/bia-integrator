@@ -61,7 +61,7 @@ def make_fileref_payload(study_uuid, n_filerefs):
         "study_uuid": study_uuid,
         "name": "test",
         "uri": "https://test.com/test",
-        "size_bytes": 100
+        "size_in_bytes": 100
     } for _ in range(n_filerefs)]
     return filerefs
 

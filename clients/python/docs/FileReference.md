@@ -13,7 +13,7 @@ Name | Type | Description | Notes
 **name** | **str** |  | 
 **uri** | **str** |  | 
 **type** | **str** |  | 
-**size_bytes** | **int** |  | 
+**size_in_bytes** | **int** |  | 
 **attributes** | **object** |  | [optional] 
 
 ## Example

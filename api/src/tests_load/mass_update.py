@@ -20,7 +20,7 @@ class APIUser(APIUserBase):
     @task
     def update_file_reference(self):
         self._file_reference['version'] += 1
-        self._file_reference['size_bytes'] += 1
+        self._file_reference['size_in_bytes'] += 1
 
         with self.client.patch(f"api/private/file_references/single", json=self._file_reference, catch_response=True) as rsp:
             if rsp.request_meta["response_time"] > 150:

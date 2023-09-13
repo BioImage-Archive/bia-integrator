@@ -3,4 +3,4 @@ from typing import List
 
 class BIAStudy(api_models.BIAStudy):
     images: List[api_models.BIAImage]
-    filerefs: List[api_models.FileReference]
+    file_references: List[api_models.FileReference]

@@ -14,7 +14,7 @@ def test_create_file_references(api_client: TestClient, existing_study: dict):
             "study_uuid": existing_study['uuid'],
             "name": "test",
             "uri": "https://test.com/test",
-            "size_bytes": 100
+            "size_in_bytes": 100
         }
         for uuid in uuids
     ]
@@ -38,7 +38,7 @@ def test_create_file_references_multiple_errors(api_client: TestClient, existing
             "study_uuid": existing_study['uuid'],
             "name": "test",
             "uri": "https://test.com/test",
-            "size_bytes": 100
+            "size_in_bytes": 100
         }
         for uuid in uuids
     ]

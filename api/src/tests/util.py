@@ -43,7 +43,7 @@ def existing_file_reference(api_client: TestClient, existing_study: dict):
         "study_uuid": existing_study['uuid'],
         "name": "test",
         "uri": "https://test.com/test",
-        "size_bytes": 100
+        "size_in_bytes": 100
     }
 
     rsp = api_client.post('/api/private/file_references', json=[file_reference])
@@ -185,7 +185,7 @@ def make_file_references(api_client: TestClient, existing_study: dict, n: int, f
             "study_uuid": existing_study['uuid'],
             "name": "test",
             "uri": "https://test.com/test",
-            "size_bytes": 2,
+            "size_in_bytes": 2,
             "attributes": {
                 "k": "v"
             },
