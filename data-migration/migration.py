@@ -2,13 +2,20 @@
 ! Maintain existing uuids to avoid breaking Embassy paths
 """
 
-from openapi_client import models as api_models
+from openapi_client import models as api_models, exceptions as api_exceptions
 from openapi_client.util import simple_client
 from bia_integrator_core import models as core_models, interface, study
 import sys
+import os
+from pathlib import Path
 
 import uuid as uuid_lib
 import time
+import re
+
+class SkipStudyException(Exception):
+    pass
+
 def get_uuid() -> str:
     # @TODO: make this constant and require mongo to always be clean?
     generated = uuid_lib.UUID(int=int(time.time()*1000000))
@@ -57,7 +64,7 @@ def study_core_to_api(study_core: core_models.BIAStudy):
 
 def file_reference_core_to_api(file_reference_core: core_models.FileReference, study_uuid, fileref_uuid = None):
     if not fileref_uuid:
-        fileref_uuid = get_uuid()
+        raise SkipStudyException("No fileref uuid")
     
     fileref = api_models.FileReference(
         uuid = fileref_uuid,
@@ -80,6 +87,9 @@ def bia_file_core_to_api(bia_file_core: core_models.BIAFile, study_uuid, file_uu
     #   original_relpath ?
     filerefs = []
     for representation in bia_file_core.representations:
+        if file_uuid != bia_file_core.id and not re.match("https://www.ebi.ac.uk/biostudies/files.*", representation.uri):
+            raise SkipStudyException("No file uuid and not a biostudies download link")
+
         fileref = api_models.FileReference(
             uuid = file_uuid,
             version = 0,
@@ -94,8 +104,44 @@ def bia_file_core_to_api(bia_file_core: core_models.BIAFile, study_uuid, file_uu
     
     return filerefs
 
+def representation_core_to_api(representation_core: core_models.BIAImageRepresentation, skip_study_if_on_embassy = False):
+    file_in_biostudies = re.match("https://www.ebi.ac.uk/biostudies/files.*", str(representation_core.uri)) # if it's something other than str, it just won't match
+    file_not_in_s3 = file_in_biostudies or representation_core.type in ["fire_object"]
+
+    if skip_study_if_on_embassy and not file_not_in_s3 :
+        raise SkipStudyException(f"Image representation type {representation_core.type} not known to not have external dependencies")
+
+    rendering = None
+    if representation_core.rendering:
+        channel_renders_api = [
+            api_models.ChannelRendering(
+                colormap_start = channel_render_core.colormap_start,
+                colormap_end = channel_render_core.colormap_end,
+                scale_factor = channel_render_core.scale_factor
+            )
+            for channel_render_core in representation_core.rendering.channel_renders
+        ]
+
+        rendering = api_models.RenderingInfo(
+            channel_renders = channel_renders_api,
+            default_z = representation_core.rendering.default_z,
+            default_t = representation_core.rendering.default_t
+        )
+
+    representation = api_models.BIAImageRepresentation(
+        size = representation_core.size,
+        uri = representation_core.uri if type(representation_core.uri) is list else [representation_core.uri],
+        type = representation_core.type,
+        dimensions = representation_core.dimensions,
+        attributes = representation_core.attributes,
+        rendering = rendering
+    )
+
+    return representation
+
 def image_core_to_api(image_core: core_models.BIAImage, study_uuid, image_uuid = None, image_alias_core = None):
     if not image_uuid:
+        # skipping is decided only from the representations / files associated with the image/study
         image_uuid = get_uuid()
 
     image_alias = None
@@ -106,32 +152,9 @@ def image_core_to_api(image_core: core_models.BIAImage, study_uuid, image_uuid =
 
     image_representations = []
     for representation_core in image_core.representations:
-        rendering = None
-        if representation_core.rendering:
-            channel_renders_api = [
-                api_models.ChannelRendering(
-                    colormap_start = channel_render_core.colormap_start,
-                    colormap_end = channel_render_core.colormap_end,
-                    scale_factor = channel_render_core.scale_factor
-                )
-                for channel_render_core in representation_core.rendering.channel_renders
-            ]
-
-            rendering = api_models.RenderingInfo(
-                channel_renders = channel_renders_api,
-                default_z = representation_core.rendering.default_z,
-                default_t = representation_core.rendering.default_t
-            )
-
-        representation = api_models.BIAImageRepresentation(
-            size = representation_core.size,
-            uri = representation_core.uri if type(representation_core.uri) is list else [representation_core.uri],
-            type = representation_core.type,
-            dimensions = representation_core.dimensions,
-            attributes = representation_core.attributes,
-            rendering = rendering
-        )
-        image_representations.append(representation)
+        image_had_uuid = image_core.id == image_uuid
+        representation_api = representation_core_to_api(representation_core, skip_study_if_on_embassy = not image_had_uuid)
+        image_representations.append(representation_api)
 
     accession_id = image_core.accession_id if image_core.accession_id else image_core.representations[0].accession_id
     image_annotations_core = interface.get_image_annotations(accession_id, image_core.id)
@@ -235,4 +258,37 @@ if __name__ == "__main__":
                 continue
 
             print(f"Migrating study {study_id}")
-            migrate_study(study_id)
+            try:
+                migrate_study(study_id)
+            except SkipStudyException:
+                print(f"Adding study {study_id} to skip list")
+                with open("skip.txt", "a") as f:
+                    f.write(study_id + "\n")
+
+    data_dir_abspath = os.path.expanduser("~/.bia-integrator-data/collections")
+    collection_files = os.listdir(data_dir_abspath)
+    collection_names = [filename.rsplit(".", 1)[0] for filename in collection_files]
+    for collection_name in collection_names:
+        collection_exists = True
+        try:
+            api_client.search_collections(name=collection_name)
+        except api_exceptions.NotFoundException:
+            collection_exists = False
+
+        if not collection_exists:
+            collection_core = interface.get_collection(collection_name)
+            
+            collection_study_uuids = []
+            for study_objinfo in api_client.get_object_info_by_accession(collection_core.accession_ids):
+                collection_study_uuids.append(study_objinfo.uuid)
+            
+            collection_api = api_models.BIACollection(
+                uuid = get_uuid(),
+                version = 0,
+                name=collection_name,
+                title=collection_core.title,
+                subtitle=collection_core.subtitle,
+                description=collection_core.description,
+                study_uuids=collection_study_uuids
+            )
+            api_client.create_collection(collection_api)
