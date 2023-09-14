@@ -23,6 +23,16 @@ def is_uuid(maybe_uuid):
         return False
 
 def study_core_to_api(study_core: core_models.BIAStudy):
+    study_annotations_api = []
+    for study_annotation_core in interface.get_study_annotations(study_core.accession_id):
+        study_annotation_api = api_models.StudyAnnotation(
+            author_email = "TODO: Placeholder?", #@TODO
+            key = study_annotation_core.key,
+            value = study_annotation_core.value,
+            state = api_models.AnnotationState.ACTIVE
+        )
+        study_annotations_api.append(study_annotation_api)
+    
     study = api_models.BIAStudy(
         uuid = get_uuid(),
         version = 0,
@@ -35,9 +45,9 @@ def study_core_to_api(study_core: core_models.BIAStudy):
         organism = study_core.organism,
         release_date = study_core.release_date,
         accession_id = study_core.accession_id,
-        imaging_type = [study_core.imaging_type] if study_core.imaging_type else [],
+        imaging_type = study_core.imaging_type,
         attributes = study_core.attributes.copy(),
-        annotations = [], #todo
+        annotations = study_annotations_api,
         example_image_uri = study_core.example_image_uri,
         example_image_annotation_uri = study_core.example_annotation_uri, # different attribute name?
         tags = study_core.tags.copy()
@@ -84,7 +94,7 @@ def bia_file_core_to_api(bia_file_core: core_models.BIAFile, study_uuid, file_uu
     
     return filerefs
 
-def image_core_to_api(image_core: core_models.BIAImage, study_uuid, image_uuid = None, image_alias_core = None, image_annotations_core = []):
+def image_core_to_api(image_core: core_models.BIAImage, study_uuid, image_uuid = None, image_alias_core = None):
     if not image_uuid:
         image_uuid = get_uuid()
 
@@ -123,6 +133,8 @@ def image_core_to_api(image_core: core_models.BIAImage, study_uuid, image_uuid =
         )
         image_representations.append(representation)
 
+    accession_id = image_core.accession_id if image_core.accession_id else image_core.representations[0].accession_id
+    image_annotations_core = interface.get_image_annotations(accession_id, image_core.id)
     image_annotations = []
     for image_annotation_core in image_annotations_core:
         image_annotation = api_models.ImageAnnotation(
@@ -182,7 +194,7 @@ def migrate_study(study_id):
 
         image_api = image_core_to_api(image_core, study_api.uuid, image_uuid, image_alias_core=image_alias)
         study_images_api.append(image_api)
-    
+
     print(f"Creating study {study_id}")
     api_client.create_study(study_api)
 
@@ -209,13 +221,16 @@ if __name__ == "__main__":
         config["biaint_password"]
     )
 
+    with open("skip.txt") as f:
+        skip_accnos = f.readlines()
+
     if len(sys.argv) >= 2:
         for study_id in sys.argv[1:]:
             migrate_study(study_id)
     else:
         print("Migrating all studies")
         for study_id in interface.get_all_study_identifiers():
-            if study_id == "S-BIAD599_orig":
+            if study_id in skip_accnos:
                 # @TODO: NOT SURE skip this one because there is another study S-BIAD599 with the same accession
                 continue
 
