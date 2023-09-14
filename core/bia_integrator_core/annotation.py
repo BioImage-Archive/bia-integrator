@@ -30,7 +30,7 @@ def get_image_annotations(image_uuid: str) -> List[api_models.ImageAnnotation]:
 
 def persist_study_annotation(study_uuid: str, annotation: api_models.StudyAnnotation):
     """Save the given annotation to disk."""
-    study = get_study(study_uuid)
+    study = get_study(study_uuid=study_uuid)
     study.annotations.append(annotation)
     update_study(study)
 
