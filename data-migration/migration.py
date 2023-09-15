@@ -109,6 +109,7 @@ def representation_core_to_api(representation_core: core_models.BIAImageRepresen
     file_not_in_s3 = file_in_biostudies or representation_core.type in ["fire_object"]
 
     if skip_study_if_on_embassy and not file_not_in_s3 :
+        print(representation_core)
         raise SkipStudyException(f"Image representation type {representation_core.type} not known to not have external dependencies")
 
     rendering = None
@@ -184,7 +185,8 @@ def image_core_to_api(image_core: core_models.BIAImage, study_uuid, image_uuid =
     return image
 
 def migrate_study(study_id):
-    study_core = study.get_study(study_id)
+    #study_core = study.get_study(study_id)
+    study_core = interface.load_and_annotate_study(study_id)
     study_api = study_core_to_api(study_core)
 
     study_filerefs_api = []
@@ -245,7 +247,7 @@ if __name__ == "__main__":
     )
 
     with open("skip.txt") as f:
-        skip_accnos = f.readlines()
+        skip_accnos = [l.strip() for l in f.readlines()]
 
     if len(sys.argv) >= 2:
         for study_id in sys.argv[1:]:
@@ -253,7 +255,7 @@ if __name__ == "__main__":
     else:
         print("Migrating all studies")
         for study_id in interface.get_all_study_identifiers():
-            if study_id in skip_accnos:
+            if study_id.strip() in skip_accnos:
                 # @TODO: NOT SURE skip this one because there is another study S-BIAD599 with the same accession
                 continue
 
