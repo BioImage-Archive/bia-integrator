@@ -26,11 +26,11 @@
     <div class="vf-news-container__content | vf-grid vf-grid__col-4">
         {% for collection in collections %}
             <article class="vf-summary vf-summary--news">
-                <span class="vf-summary__date">
+                <span class="vf-summary__date text-center">
                     {{ collection.subtitle }}
                 </span>
                 <img class="vf-summary__image" src="{{ collection.attributes['example_image_uri'] }}"  style="border-radius: 50%" alt="Example image from collection" loading="lazy">
-                    <h3 class="vf-summary__title">
+                    <h3 class="vf-summary__title text-center" >
                         <a class="vf-summary__link" href="{{ collection.name }}.html">
                             {{ collection.title }}
                         </a>
