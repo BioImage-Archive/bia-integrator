@@ -39,6 +39,20 @@ def generate_galleries_landing_page_html(collections: list[BIACollection]) -> st
 @click.command()
 @click.argument("collection_names")
 def main(collection_names: str):
+    """Create html for a gallery landing page for specified collections
+
+    COLLECTION_NAMES is a comma separated list of names of the collections
+    to include in the gallery landing page. They MUST correspond to the names
+    of the respective json files in the collections directory.
+
+    Note that the representative images for each collection should be specified
+    using the 'example_image_uri' key in the collection 'attributes'. e.g.
+
+    \b
+        "attributes": {
+            "example_image_uri": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD620/33f28bc2-ed36-45aa-85bd-9fa6f098f38d/33f28bc2-ed36-45aa-85bd-9fa6f098f38d-representative-512-512.png"
+        }
+    """
 
     logging.basicConfig(level=logging.INFO)
     collections = []
