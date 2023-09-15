@@ -10,30 +10,31 @@
 {% block title %} BIA Galleries {% endblock %}
 
 {% block content %}
-<!-- Collection summary -->
-<section class="vf-intro | embl-grid embl-grid--has-centered-content">
-    <div>The BioImage Archive explorer</div>
-</section> 
 
-<!-- Images -->
-<section class="vf-card-container vf-card-container__col-4 | vf-u-background-color-ui--white vf-u-fullbleed" style="--vf-card__image--aspect-ratio: 16 / 9;">
-    <div class="vf-card-container__inner">
+<section class="vf-news-container vf-news-container--featured | vf-stack">
+<!-- 
+    Collection summary Example below is from
+    https://stable.visual-framework.dev/patterns/landing-page/
+    [Projects - with news article summary (hence use of summary_date below)]
+-->
+    <div class="vf-section-header">
+        <h2 class="vf-section-header__heading">
+            <br><br>The BioImage Archive explorer
+        </h2>
+    </div>
+    <!-- Images -->
+    <div class="vf-news-container__content | vf-grid vf-grid__col-4">
         {% for collection in collections %}
-            <article class="vf-card vf-card--brand vf-card--bordered">
-                <!--img src="{{ collection.example_image_uri }}" alt="" class="vf-card__image" loading="lazy"-->
-                <img src="{{ collection.attributes['example_image_uri'] }}" style="border-radius: 50%" alt="" class="" loading="lazy">
-                <div class="vf-card__content | vf-stack vf-stack--400">
-                    <h3 class="vf-card__heading">
-                        <a class="vf-card__link" href="{{ collection.landing_page_url }}">
+            <article class="vf-summary vf-summary--news">
+                <span class="vf-summary__date">
+                    {{ collection.subtitle }}
+                </span>
+                <img class="vf-summary__image" src="{{ collection.attributes['example_image_uri'] }}"  style="border-radius: 50%" alt="Example image from collection" loading="lazy">
+                    <h3 class="vf-summary__title">
+                        <a class="vf-summary__link" href="{{ collection.name }}.html">
                             {{ collection.title }}
-                            <svg aria-hidden="true" class="vf-card__heading__icon | vf-icon vf-icon-arrow--inline-end" width="1em" height="1em" xmlns="http://www.w3.org/2000/svg"><path d="M0 12c0 6.627 5.373 12 12 12s12-5.373 12-12S18.627 0 12 0C5.376.008.008 5.376 0 12zm13.707-5.209l4.5 4.5a1 1 0 010 1.414l-4.5 4.5a1 1 0 01-1.414-1.414l2.366-2.367a.25.25 0 00-.177-.424H6a1 1 0 010-2h8.482a.25.25 0 00.177-.427l-2.366-2.368a1 1 0 011.414-1.414z" fill="currentColor" fill-rule="nonzero"></path></svg>
                         </a>
                     </h3>
-                    <h4>
-                        {{ loop.index % 4}} {{ collection.subtitle }}
-                    </h4>
-                    <br>
-                </div>
             </article>
         {% endfor %}
     </div>
