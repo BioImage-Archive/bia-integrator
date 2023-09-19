@@ -8,11 +8,40 @@
         <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.11.5/datatables.min.js"></script>
         <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.13.1/sorting/natural.js"></script>
         <script src="https://kit.fontawesome.com/1d1848da05.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <meta charset="UTF-8">
         <style>
         .help {
           cursor: help;
           }
+        .section-spacing {
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 20px; /* Adjust as needed for spacing */
+            margin-bottom: 20px; /* Adjust as needed for spacing */
+        }
+                /* Add class to shrink table layout when columns are hidden */
+        .shrink-table {
+            table-layout: fixed;
+            min-width: 600px;
+            width: auto !important; 
+        }
+        /* Add classes to hide columns in the table */
+        .hidden {
+            display: none;
+        }
+        .wrapper {
+          max-width: 1200px; 
+        }
+        .shrunk{
+          width: 50% !important; 
+        }
+        /* Set a fixed width for cell content */
+        .cell-content {
+            width: 100px; /* Adjust as needed */
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis; /* Truncate long content with ellipsis */
+        }
         </style>
 {% endblock %}
 
@@ -132,7 +161,7 @@
   </div>
 
     <!-- Study Information --> 
-  <section class="embl-grid embl-grid--has-centered-content">
+  <section class="embl-grid embl-grid--has-centered-content section-spacing">
     <div class="vf-section-header">
       <h3 class="vf-section-header__heading" id="study">Study Information</h3>
       <p></p>
@@ -162,16 +191,18 @@
 <p></p>
         
     <!-- Images -->
-    <section class="vf-content | embl-grid embl-grid--has-centered-content">
+    <section class="vf-content | embl-grid embl-grid--has-centered-content section-spacing">
     <div> 
       <h2 class="vf-section-header__heading" id="images">Viewable images 
       <i class="fa-solid fa-circle-info" title="Images that have been converted to ome-ngff for in-browser viewing"></i>
       </h2> 
     </div>
     <div>
-
-        {# <section> #}
-                        
+    <div class="btn-group" role="group" aria-label="Show/Hide Columns">
+      <button class="vf-button--small" id="toggle-images-column-2">Show/Hide Filename</button>
+      <button type="button" class="btn btn-primary" id="toggleButton" style="float: right;">Expand/Shrink Table</button>
+    </div>
+      <div id="table_wrapper" class="wrapper" style="display: block">                
                     <table id="viewable">
                         {# <caption class="vf-table__caption">Images with OME-NGFF representations</caption> #}
                         {# <colgroup>
@@ -200,7 +231,9 @@
                                 
                                 {% endif %}
                                 <td>
+                                  <div class="cell-content">
                                     <img class="vf-figure__image" src={{ image_thumbnails[image.id] }}>
+                                    </div>
                                 </td>
                                 <td>{{ image.original_relpath }}</td>
                                 {% if image.dimensions %}
@@ -223,7 +256,7 @@
                             {% endfor %}
                         </tbody>
                       </table>
-                      {# </section> #}
+                    </div>
                     </div>
                     
                     <div>
@@ -231,7 +264,7 @@
             </section>
 
     <!-- Annotations --> 
-  <section class="embl-grid embl-grid--has-centered-content">
+  <section class="embl-grid embl-grid--has-centered-content section-spacing">
     <div class="vf-section-header">
       <h3 class="vf-section-header__heading" id="annotations">Annotations
       <i class="fa-solid fa-circle-info" title="Annotation in the context of AI, is the task of marking up data, such as images, so it can be recognised by models and used to make predictions."></i></h3>
@@ -244,6 +277,10 @@
         {% endif %}
     </div>
     <div class="vf-content">
+        <div class="btn-group" role="group" aria-label="Show/Hide Columns">
+              <button type="button" class="btn btn-primary" id="toggle-annot-column-2">Show/Hide Filename</button>
+              <button type="button" class="btn btn-primary" id="toggle-annot-column-3">Show/Hide Source Image</button>
+        </div>
             <table class="display table" id="annot_table">
                         <thead>
                             <tr>
@@ -282,7 +319,7 @@
   </section>
 
     <!-- Models used --> 
-  <section class="embl-grid embl-grid--has-centered-content">
+  <section class="embl-grid embl-grid--has-centered-content section-spacing">
     <div class="vf-section-header">
     <h3 class="vf-section-header__heading" id="models">Models <i class="fa-solid fa-circle-info" title="Models can mean two things: models that are used to derive the annotations in this study, OR this dataset is used to train these models"></i></h3>
     </div>
@@ -303,11 +340,12 @@
   </section>
 
         <!-- All Images -->
-        <section class="embl-grid embl-grid--has-centered-content">
+        <section class="embl-grid embl-grid--has-centered-content section-spacing">
                     <div class="vf-section-header">
                       <h2 class="vf-section-header__heading">All images <i class="fa-solid fa-circle-info" title="All images in the study in their original format"></i></h2>
                     </div>
                     <div class="vf-content">
+                      <div id="table_wrapper" class="wrapper" style="display: block"> 
                       <table class="display table" id="table">
                         <thead>
                             <tr>
@@ -330,7 +368,8 @@
                           </tr>
                           {% endfor %}
                         </tbody>
-                      </table>                      
+                      </table> 
+                      </div>                     
                       </div>
                     </div>
             </section>
@@ -339,24 +378,55 @@
         <script>
             $(document).ready( function () {
                 $('#table').DataTable( {
+                    scrollX: true,
                     columnDefs: [
                         { type: 'natural', targets: 0 }
                     ]
                 });
-            } );
-            $(document).ready( function () {
-                $('#annot_table').DataTable( {
+          
+                var annotTable = $('#annot_table').DataTable( {
                     columnDefs: [
-                        { type: 'natural', targets: 0 }
+                        { type: 'natural', width: '10%', targets: 0 },
+                        { targets: [1, 2], visible: false }
                     ]
                 });
-            } );
-            $(document).ready( function () {
-                $('#viewable').DataTable( {
+            
+                var imagesTable = $('#viewable').DataTable( {
+                    scrollX: true,
                     columnDefs: [
-                        { type: 'natural', targets: 0 }
+                        { type: 'natural', width: '10%', targets: 0 },
+                        { targets: 2, visible: false }
                     ]
                 });
+
+                // Toggle button click event
+                $("#toggleButton").click( function() {
+                  $("#table_wrapper").toggleClass("shrunk");
+                });     
+
+                // Toggle button for column 2 and column 3 in annot_table
+                $('#toggle-annot-column-2').on('click', function () {
+                    var column = annotTable.column(1);
+                    column.visible(!column.visible());
+                    $('#annot_table').toggleClass('shrink-table');
+                    annotTable.columns.adjust().draw();
+                });
+
+                $('#toggle-annot-column-3').on('click', function () {
+                    var column = annotTable.column(2);
+                    column.visible(!column.visible());
+                    $('#annot_table').toggleClass('shrink-table');
+                    annotTable.columns.adjust().draw();
+                });
+
+                // Toggle button for column 2 in viewable table (images)
+                $('#toggle-images-column-2').on('click', function () {
+                    var column = imagesTable.column(2);
+                    column.visible(!column.visible());
+                    $('#viewable').toggleClass('shrink-table');
+                    imagesTable.columns.adjust().draw();
+                });
+
             } );
         </script>
 {% endblock %}
