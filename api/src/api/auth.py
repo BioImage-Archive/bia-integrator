@@ -25,6 +25,17 @@ ALGORITHM = "HS256"
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
+def validate_secret_token(token):
+    # If the token is empty (or short/not b64 due to a bug, e.g. None)
+    #   Don't allow any user creation/authentication.
+    #   In the common case this is the case for the readonly endpoint
+    if len(token) < 10:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
+    try:
+        base64.b64decode(token, validate=True)
+    except:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
+
 async def get_user(email: str) -> Optional[User]:
     db = await get_db(COLLECTION_USERS)
 
@@ -58,6 +69,8 @@ async def authenticate_user(email: str, password: str):
     return user
 
 def create_access_token(data: dict, expires_delta: Union[timedelta, None] = None):
+    validate_secret_token(JWT_SECRET_KEY)
+
     to_encode = data.copy()
     if expires_delta:
         expire = datetime.utcnow() + expires_delta
@@ -68,11 +81,14 @@ def create_access_token(data: dict, expires_delta: Union[timedelta, None] = None
     return encoded_jwt
 
 async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
+    validate_secret_token(JWT_SECRET_KEY)
+    
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
         headers={"WWW-Authenticate": "Bearer"},
     )
+
     try:
         payload = jwt.decode(token, JWT_SECRET_KEY, algorithms=[ALGORITHM])
         email: str = payload.get("sub")
@@ -110,16 +126,7 @@ async def register_user(
     secret_token: Annotated[str, Body()],
 ) -> None:
     user_create_token = os.environ["USER_CREATE_SECRET_TOKEN"]
-
-    # If the token is empty (or short/not b64 due to a bug, e.g. None)
-    #   Don't allow any user creation.
-    #   In the common case this is the case for the readonly endpoint
-    if len(user_create_token) < 10:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
-    try:
-        base64.b64decode(user_create_token, validate=True)
-    except:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
+    validate_secret_token(user_create_token)
 
     if not consteq(secret_token, user_create_token):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
