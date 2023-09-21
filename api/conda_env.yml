@@ -1,8 +1,0 @@
-name: bia-integrator-api
-
-channels:
-  - default
-  - conda-forge
-
-dependencies:
-  - python=3.10

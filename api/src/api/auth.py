@@ -15,6 +15,7 @@ from ..models.repository import get_db, COLLECTION_USERS
 from ..models.persistence import User
 from ..models.api import AuthenticationToken, TokenData
 import os
+import base64
 
 router = APIRouter(prefix="/auth")
 
@@ -107,8 +108,20 @@ async def register_user(
     email: Annotated[str, Body()],
     password_plain: Annotated[str, Body()],
     secret_token: Annotated[str, Body()],
-) -> None: 
-    if not consteq(secret_token, os.environ["USER_CREATE_SECRET_TOKEN"]):
+) -> None:
+    user_create_token = os.environ["USER_CREATE_SECRET_TOKEN"]
+
+    # If the token is empty (or short/not b64 due to a bug, e.g. None)
+    #   Don't allow any user creation.
+    #   In the common case this is the case for the readonly endpoint
+    if len(user_create_token) < 10:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
+    try:
+        base64.b64decode(user_create_token, validate=True)
+    except:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
+
+    if not consteq(secret_token, user_create_token):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
 
     await create_user(email, password_plain)
