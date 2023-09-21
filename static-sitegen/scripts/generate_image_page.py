@@ -83,7 +83,7 @@ def generate_image_page_html(accession_id, image_id):
 
     # Format physical dimensions to X unit x Y unit x Z unit format before passing on to the template
     psize = None
-    px = py = px = None
+    px = py = pz = None
     if bia_image.attributes.get('PhysicalSizeX'):
         px = sig_format(float(bia_image.attributes['PhysicalSizeX']))
         py = sig_format(float(bia_image.attributes['PhysicalSizeY']))  
