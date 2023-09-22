@@ -4,3 +4,4 @@ static-sitegen/.DS_Store
 poetry.lock
 tools/.DS_Store
 .DS_Store
+**/__pycache__

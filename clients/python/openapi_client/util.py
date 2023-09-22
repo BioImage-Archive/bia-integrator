@@ -34,7 +34,7 @@ def access_token_auto_refresh_bearer(username: str, password: str):
 
     return _access_token_auto_refresh_bearer
 
-def simple_client(api_base_url: str, username: Optional[str], password: Optional[str]) -> DefaultApi:
+def simple_client(api_base_url: str, username: Optional[str] = None, password: Optional[str] = None) -> DefaultApi:
     api_config = Configuration(
         host = api_base_url
     )
