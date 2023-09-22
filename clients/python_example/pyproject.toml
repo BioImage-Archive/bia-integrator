@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "python-example"
+version = "0.1.0"
+description = ""
+authors = ["Liviu Anita <liviu@ebi.ac.uk>"]
+readme = "README.md"
+packages = [{include = "python_example"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+openapi-client = { git = "https://github.com/BioImage-Archive/bia-integrator.git", subdirectory = "clients/python", branch = "biaint-api-backend" }
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
