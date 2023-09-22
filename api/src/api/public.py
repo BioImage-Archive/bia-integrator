@@ -50,6 +50,10 @@ async def get_study_file_references(
         start_uuid: UUID | None = None,
         limit : Annotated[int, Query(gt=0)] = 10
     ) -> List[db_models.FileReference]:
+    """
+    First item in response is the next item with uuid greater than start_uuid.
+    start_uuid is part of the response
+    """
     return await repository.file_references_for_study(study_uuid, start_uuid, limit)
 
 @router.get("/search/studies")
@@ -59,6 +63,9 @@ async def search_studies(
     ) -> List[db_models.BIAStudy]:
     """
     @TODO: Define search criteria for the general case
+
+    First item in response is the next item with uuid greater than start_uuid.
+    start_uuid is part of the response
     """
     return await repository.search_studies({}, start_uuid, limit)
 
@@ -76,7 +83,11 @@ async def get_study_images(
         study_uuid: UUID,
         start_uuid: UUID | None = None,
         limit : Annotated[int, Query(gt=0)] = 10
-    ) -> List[db_models.BIAImage]:    
+    ) -> List[db_models.BIAImage]:
+    """
+    First item in response is the next item with uuid greater than start_uuid.
+    start_uuid is part of the response
+    """
     return await repository.images_for_study(study_uuid, start_uuid, limit)
 
 @router.get("/images/{image_uuid}")
