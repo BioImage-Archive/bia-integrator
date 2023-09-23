@@ -31,8 +31,9 @@
 
             <a href='https://kitware.github.io/itk-vtk-viewer/app/?fileToLoad={{ zarr_uri }}'><button class="vf-button vf-button--primary vf-button--sm">Open in ITK viewer</button></a>
             <a href='https://hms-dbmi.github.io/vizarr/?source={{ zarr_uri }}'><button class="vf-button vf-button--primary vf-button--sm">Open fullscreen in Vizarr</button></a>
-            <a href='{{ neuroglancer_uri }}'><button class="vf-button vf-button--primary vf-button--sm">Open in Neuroglancer</button></a>
-
+            {% if image.attributes.get("neuroglancer_link") %}
+                <a href='{{ neuroglancer_uri }}'><button class="vf-button vf-button--primary vf-button--sm">Open in Neuroglancer</button></a>
+            {% endif %}
             <a href={{ download_uri }}><button class="vf-button vf-button--primary vf-button--sm">Download original ({{ download_size }})</button></a>
         </div>
         <div>

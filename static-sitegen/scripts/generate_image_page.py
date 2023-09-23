@@ -145,10 +145,9 @@ def generate_image_page_html(accession_id, image_id):
 
     zarr_uri = reps_by_type["ome_ngff"].uri
 
-    neuroglancer_uri = generate_neuroglancer_link(zarr_uri)
+    neuroglancer_uri = bia_image.attributes.get("neuroglancer_link", None)
 
     bia_image.attributes = sort_dict(bia_image.attributes)
-
 
     license_uri = LICENSE_URI_LOOKUP.get(bia_study.license, "Unknown")
 
