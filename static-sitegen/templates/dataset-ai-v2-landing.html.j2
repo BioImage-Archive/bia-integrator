@@ -116,13 +116,16 @@
         {% endif %}
         {% if "n_files_in_study" in study.attributes %}
         <li>Study size: {{ study.attributes["study_size"] }}</li>
-        <li>No of files in study: {{ study.attributes["n_files_in_study"] }}</li>
+        <!-- <li>No of files in study: {{ study.attributes["n_files_in_study"] }}</li> -->
         <li>Filetype breakdown: {{ study.attributes["filetype_breakdown_html"] }}</li>
         {% endif %}
         <li><b>License : {{ study.license }} </b><li>
         </ul>
         <h2 class="vf-section-header__heading">This dataset has</h2>
         <ul class="vf-list">
+        {% for value in study.attributes['annotation_type'].split(',') %}
+        <li>{{ value }}</li>
+        {% endfor %}
         {% for value in study.tags %}
         {% if value.startswith('AI') %}
         <li>{{ value[2:] }}</li>
@@ -174,10 +177,10 @@
             <div><b>Study Summary</b></div>
             <div>{{ study.attributes["one_summary"] }}</div>
             {% endif %}
-            {% if study.attributes.get('annotation_summary') %}
+            <!-- {% if study.attributes.get('annotation_summary') %}
             <div><b>Annotation Summary</b></div>
             <div>{{ study.attributes["annotation_summary"] }}</div>
-            {% endif %}
+            {% endif %} -->
            <div><b>Organism</b></div>
             <div>{{ study.organism }}</div>
           <!--  <div><b>Study type</b></div>
