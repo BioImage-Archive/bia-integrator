@@ -4,4 +4,4 @@
 
 ## Run
 
-`poetry run python everything.py`
+`poetry run python start_here.py`
