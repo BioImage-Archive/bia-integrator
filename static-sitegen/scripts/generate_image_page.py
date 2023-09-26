@@ -145,10 +145,7 @@ def generate_image_page_html(accession_id, image_id):
 
     zarr_uri = reps_by_type["ome_ngff"].uri
 
-    neuroglancer_uri = generate_neuroglancer_link(zarr_uri)
-
     bia_image.attributes = sort_dict(bia_image.attributes)
-
 
     license_uri = LICENSE_URI_LOOKUP.get(bia_study.license, "Unknown")
 
@@ -163,7 +160,6 @@ def generate_image_page_html(accession_id, image_id):
         dimensions=dims,
         authors=author_names,
         download_uri=download_uri,
-        neuroglancer_uri=neuroglancer_uri,
         download_size=download_size
     )
 
