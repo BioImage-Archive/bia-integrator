@@ -194,13 +194,14 @@ rule convert_to_zarr_and_upload:
             # If zipped_zarr use remote_zipped_zarr_to_s3
             biaint images show $ACCNO $IM_REF | grep zipped_zarr
             exitcode=$?
-            if [ $exitcode -eq 0 ]
-            then
-                {command_prefix} python {script_dir}/remote_zipped_zarr_to_s3.py $ACCNO $IM_REF > {output.im_ref}
-            else
-                # Otherwise convert and upload
-                {command_prefix} python {script_dir}/convert_to_zarr_and_upload.py $ACCNO $IM_REF > {output.im_ref}
-            fi
+            ##if [ $exitcode -eq 0 ]
+            ##then
+            ##    {command_prefix} python {script_dir}/remote_zipped_zarr_to_s3.py $ACCNO $IM_REF > {output.im_ref}
+            ##else
+            ##    # Otherwise convert and upload
+            ##    {command_prefix} python {script_dir}/convert_to_zarr_and_upload.py $ACCNO $IM_REF > {output.im_ref}
+            ##fi
+                touch {output.im_ref}.success
 
             exitcode=$?
             if [ $exitcode -eq 0 ]
@@ -241,8 +242,8 @@ rule generate_thumbnails:
 def aggregate_converted_im_reps(wildcards):
     """Return converted image_representations"""
     checkpoint_output = checkpoints.get_image_reps_to_convert.get(**wildcards).output[0]
-    im_reps_paths = expand(work_dir + "/gen_thumb_output/{i}", i=glob_wildcards(os.path.join(checkpoint_output, '{i,[a-z|\d|-]+[^\.success]}')).i)
-    return im_reps_paths
+    im_reps_paths = expand(work_dir + "/gen_thumb_output/{i}", i=glob_wildcards(os.path.join(checkpoint_output, '{i,[a-z|\d|-]+}')).i)
+    return [i for i in filter(lambda p: not p.endswith("success"), im_reps_paths)]
 
 rule generate_representative_image:
     # Although the aggregate function returns a space separated list
