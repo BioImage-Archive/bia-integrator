@@ -194,14 +194,13 @@ rule convert_to_zarr_and_upload:
             # If zipped_zarr use remote_zipped_zarr_to_s3
             biaint images show $ACCNO $IM_REF | grep zipped_zarr
             exitcode=$?
-            ##if [ $exitcode -eq 0 ]
-            ##then
-            ##    {command_prefix} python {script_dir}/remote_zipped_zarr_to_s3.py $ACCNO $IM_REF > {output.im_ref}
-            ##else
-            ##    # Otherwise convert and upload
-            ##    {command_prefix} python {script_dir}/convert_to_zarr_and_upload.py $ACCNO $IM_REF > {output.im_ref}
-            ##fi
-                touch {output.im_ref}.success
+            if [ $exitcode -eq 0 ]
+            then
+                {command_prefix} python {script_dir}/remote_zipped_zarr_to_s3.py $ACCNO $IM_REF > {output.im_ref}
+            else
+                # Otherwise convert and upload
+                {command_prefix} python {script_dir}/convert_to_zarr_and_upload.py $ACCNO $IM_REF > {output.im_ref}
+            fi
 
             exitcode=$?
             if [ $exitcode -eq 0 ]
