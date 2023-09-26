@@ -327,10 +327,14 @@
     <h3 class="vf-section-header__heading" id="models">Models <i class="fa-solid fa-circle-info" title="Models can mean two things: models that are used to derive the annotations in this study, OR this dataset is used to train these models"></i></h3>
     </div>
     <div class="vf-content">
-    {% if study.attributes.get('models_uri') %}
+    {% if study.attributes.get('models_uri') or study.attributes.get('models_description')%}
+      {% if study.attributes.get('models_description') %}
         <li><b>Model description:</b> {{ study.attributes['models_description'] }}</li>
-        <li><b>Model link:</b> <a href={{ study.attributes['models_uri'] }}>{{ study.attributes['models_uri'] }}</a> </li> 
-    {%else %}
+      {% endif %}
+      {% if study.attributes.get('models_uri') %}
+        <li><b>Model link:</b> <a href={{ study.attributes['models_uri'] }}>{{ study.attributes['models_uri'] }}</a> </li>
+      {% endif %} 
+    {% else %}
       {% for k,v in study.links.items() %}
       {% if 'model' in k or 'code' in k %}
         <div>  {{ k }} :  <a href={{ v }}> {{ v }} </a></div>
