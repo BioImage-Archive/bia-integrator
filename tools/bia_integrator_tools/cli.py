@@ -28,7 +28,8 @@ from bia_integrator_core.interface import (
     add_study_tag,
     get_collection,
     persist_image_alias,
-    to_uuid
+    to_uuid,
+    get_bia_user
 )
 from bia_integrator_core.integrator import load_and_annotate_study
 
@@ -172,8 +173,7 @@ def list_study_annotations(accession_id: str):
 @annotations_app.command("create-study")
 def create_study_annotation(accession_id: str, key: str, value: str):
     annotation = api_models.StudyAnnotation(
-        # @TODO: Fix this when we add authentication
-        author_email='cli',
+        author_email=get_bia_user(),
         key=key,
         value=value,
         state=api_models.AnnotationState.ACTIVE
@@ -191,8 +191,7 @@ def create_image_annotation(key: str, value: str, image_uuid_or_alias: str, acce
         image_uuid = img.uuid
 
     annotation = api_models.ImageAnnotation(
-        # @TODO: Fix this when we add authentication
-        author_email='cli',
+        author_email=get_bia_user(),
         key=key,
         value=value,
         state=api_models.AnnotationState.ACTIVE

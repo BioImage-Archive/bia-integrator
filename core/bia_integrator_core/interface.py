@@ -1,5 +1,5 @@
 import logging
-from typing import List
+from typing import List, Optional
 from uuid import UUID
 
 from .alias import persist_image_alias
@@ -58,6 +58,9 @@ def get_image_by_alias(study_accno: str, img_alias: str) -> api_models.BIAImage:
     assert len(images) == 1
 
     return images.pop()
+
+def get_bia_user() -> Optional[str]:
+    return settings.bia_username
 
 # DELETEME: workaround to deprecate get_images_for_study
 get_images_for_study = get_images

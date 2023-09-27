@@ -33,7 +33,7 @@ def study_core_to_api(study_core: core_models.BIAStudy):
     study_annotations_api = []
     for study_annotation_core in interface.get_study_annotations(study_core.accession_id):
         study_annotation_api = api_models.StudyAnnotation(
-            author_email = "TODO: Placeholder?", #@TODO
+            author_email = getattr(study_annotation_core, "author_email", "migration@ebi.ac.uk"), 
             key = study_annotation_core.key,
             value = study_annotation_core.value,
             state = api_models.AnnotationState.ACTIVE
@@ -162,7 +162,7 @@ def image_core_to_api(image_core: core_models.BIAImage, study_uuid, image_uuid =
     image_annotations = []
     for image_annotation_core in image_annotations_core:
         image_annotation = api_models.ImageAnnotation(
-            author_email = "TODO: Placeholder?", #@TODO
+            author_email = getattr(image_annotation_core, "author_email", "migration@ebi.ac.uk"),
             key = image_annotation_core.key,
             value = image_annotation_core.value,
             state = api_models.AnnotationState.ACTIVE
@@ -247,7 +247,7 @@ if __name__ == "__main__":
     )
 
     with open("skip.txt") as f:
-        skip_accnos = [l.strip() for l in f.readlines()]
+        skip_accnos = set([l.strip() for l in f.readlines()])
 
     if len(sys.argv) >= 2:
         for study_id in sys.argv[1:]:
@@ -264,8 +264,9 @@ if __name__ == "__main__":
                 migrate_study(study_id)
             except SkipStudyException:
                 print(f"Adding study {study_id} to skip list")
+                skip_accnos.add(study_id)
                 with open("skip.txt", "a") as f:
-                    f.write(study_id + "\n")
+                    f.writelines(skip_accnos)
 
     data_dir_abspath = os.path.expanduser("~/.bia-integrator-data/collections")
     collection_files = os.listdir(data_dir_abspath)

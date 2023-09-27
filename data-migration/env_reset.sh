@@ -7,5 +7,5 @@ sleep 5
 
 curl -H "Content-Type: application/json" \
     --request POST \
-    --data '{"email": "test@example.com", "password_plain": "test", "secret_token": "DUMMY1234" }' \
+    --data '{"email": "test@example.com", "password_plain": "test", "secret_token": "00123456789==" }' \
     http://127.0.0.1:8080/auth/users/register
