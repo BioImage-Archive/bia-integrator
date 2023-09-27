@@ -12,7 +12,9 @@ from util import get_uuid
 rw_client = simple_client(
     "http://127.0.0.1:8080",
     "test@example.com",
-    "test"
+    "test",
+    # FIXME: Re-enable and remove this flag once api is on publicly accessible infra
+    disable_ssl_host_check=True
 )
 # Known issue of being unable to have multiple api client instances
 #ro_client = simple_client("production:8080")
