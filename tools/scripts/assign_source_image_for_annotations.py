@@ -27,6 +27,8 @@ def main(accession_id,fname_separator):
             name = str(fileref.name)
             if fname_separator == '_seg' and fname_separator in name :
                 source_image = name.replace('_seg','')
+            elif fname_separator == '_segmented' and fname_separator in name :
+                source_image = name.replace('_segmented','')
             elif fname_separator == 'ome_' and fname_separator in name :
                 source_image = name.split('ome_')[0] + 'ome.tif'
             elif fname_separator == '_rgb_labels': 
