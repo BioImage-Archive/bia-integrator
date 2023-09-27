@@ -17,7 +17,7 @@ def main(accession_id,fname_separator):
     bia_study = load_and_annotate_study(accession_id)
 
     fname_dict = {'S-BIAD633':'xml', 'S-BIAD599':'_seg','S-BIAD463':'_rgb_labels',
-                  'S-BIAD531':'ome_'}
+                  'S-BIAD531':'ome_','S-BIAD843':'_segmented'}
     if fname_separator == '_seg' and accession_id in fname_dict.keys():
         fname_separator = fname_dict[accession_id]
 
