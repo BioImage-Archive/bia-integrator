@@ -53,17 +53,17 @@ def test_study_annotations_applied(api_client: TestClient, uuid: str):
         "organism": "test",
         "release_date": "test",
         "annotations": [{
-            "author_email": "test@gmail.com",
+            "author_email": "test@ebi.ac.uk",
             "key": "organism",
             "value": "should_overwrite_existing_organism",
             "state": "active"
         },{
-            "author_email": "test@gmail.com",
+            "author_email": "test@ebi.ac.uk",
             "key": "custom_annotation",
             "value": "should_only_be_added_as_an_attribute",
             "state": "active"
         },{
-            "author_email": "test@gmail.com",
+            "author_email": "test@ebi.ac.uk",
             "key": "example_image_uri",
             "value": "should_overwrite_model-default_attributes_added_after_deserialization",
             "state": "active"

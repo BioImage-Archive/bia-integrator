@@ -109,7 +109,8 @@ class AnnotationState(str, Enum):
     deleted = "deleted"
 
 class Annotation(BIABaseModel):
-    author_email: str = Field()
+    # @FIXME: Allow other emails in future, added just to weed out unatributed annotations
+    author_email: str = Field(regex=".*@ebi\.ac\.uk")
     key: str = Field()
     value: str = Field()
     state: AnnotationState = Field()

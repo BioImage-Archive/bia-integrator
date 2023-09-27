@@ -39,12 +39,12 @@ def test_image_annotations_applied(api_client: TestClient, existing_study: dict)
                 "image_uuid": uuid
             },
             "annotations": [{
-                "author_email": "test@gmail.com",
+                "author_email": "test@ebi.ac.uk",
                 "key": "custom_annotation",
                 "value": "should_only_be_added_as_an_attribute",
                 "state": "active"
             }, {
-                "author_email": "test@gmail.com",
+                "author_email": "test@ebi.ac.uk",
                 "key": "original_relpath",
                 "value": "this/should/overwrite/original",
                 "state": "active"
