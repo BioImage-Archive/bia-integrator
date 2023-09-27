@@ -34,10 +34,11 @@ def access_token_auto_refresh_bearer(username: str, password: str):
 
     return _access_token_auto_refresh_bearer
 
-def simple_client(api_base_url: str, username: Optional[str] = None, password: Optional[str] = None) -> DefaultApi:
+def simple_client(api_base_url: str, username: Optional[str] = None, password: Optional[str] = None, disable_ssl_host_check: bool = False) -> DefaultApi:
     api_config = Configuration(
         host = api_base_url
     )
+    api_config.verify_ssl = not disable_ssl_host_check
 
     if username and password:
         # override access_token which is static and used in the api client for authentication

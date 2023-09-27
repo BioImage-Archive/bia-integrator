@@ -8,6 +8,7 @@ class Settings(BaseSettings):
     bia_api_basepath: str = "http://localhost:8080"
     bia_username: Optional[str] = None
     bia_password: Optional[str] = None
+    bia_disable_ssl_host_check: bool = False
     cache_root_dirpath: Path = Path.home()/".cache"/"bia-converter"
 
     bia_api_client: Optional[DefaultApi] = None
@@ -18,7 +19,8 @@ class Settings(BaseSettings):
             self.bia_api_client = simple_client(
                 self.bia_api_basepath,
                 self.bia_username,
-                self.bia_password
+                self.bia_password,
+                self.bia_disable_ssl_host_check
             )
         
         return self.bia_api_client
