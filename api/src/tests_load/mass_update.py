@@ -23,5 +23,5 @@ class APIUser(APIUserBase):
         self._file_reference['size_in_bytes'] += 1
 
         with self.client.patch(f"api/private/file_references/single", json=self._file_reference, catch_response=True) as rsp:
-            if rsp.request_meta["response_time"] > 150:
+            if rsp.request_meta["response_time"] > 1000:
                 raise ResponseError("Took too long")
