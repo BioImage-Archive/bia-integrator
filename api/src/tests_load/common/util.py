@@ -11,10 +11,14 @@ def get_uuid():
 
 def authenticate(host, path, username, password):
     url = urljoin(host, path)
-    response = requests.post(url, data={
-        "username": username,
-        "password": password
-    })
+    response = requests.post(
+        url,
+        data={
+            "username": username,
+            "password": password
+        },
+        verify=False
+    )
     assert response.status_code == 200, response
 
     return response.json()['access_token']
@@ -24,7 +28,7 @@ def batch_response_status_all(arr_batch_op_result, expected_status_code):
 
 def get_study_filerefs(host, study_uuid, n_filerefs=100):
     url = urljoin(host, f"/api/studies/{study_uuid}/file_references") + f"?limit={n_filerefs}"
-    rsp = requests.get(url)
+    rsp = requests.get(url, verify=False)
 
     assert rsp.status_code == 200
 
