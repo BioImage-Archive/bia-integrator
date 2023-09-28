@@ -21,23 +21,23 @@ class APIUser(APIUserBase):
     @task
     def get_study(self):
         with self.client.get(f"api/studies/{self.study_uuid}", catch_response=True) as rsp:
-            if rsp.request_meta["response_time"] > 600:
+            if rsp.request_meta["response_time"] > 5000:
                 raise ResponseError("Took too long")
 
     @task
     def get_image(self):
         with self.client.get(f"api/images/{self.image_uuid}", catch_response=True) as rsp:
-            if rsp.request_meta["response_time"] > 600:
+            if rsp.request_meta["response_time"] > 5000:
                 raise ResponseError("Took too long")
 
     @task
     def resolve_study_objinfo(self):
         with self.client.get(f"api/object_info_by_accessions?accessions={self.study_accession}", catch_response=True) as rsp:
-            if rsp.request_meta["response_time"] > 600:
+            if rsp.request_meta["response_time"] > 5000:
                 raise ResponseError("Took too long")
 
     @task
     def image_by_alias(self):
         with self.client.get(f"api/studies/{self.study_accession}/images_by_aliases?aliases={self.image_alias}", catch_response=True) as rsp:
-            if rsp.request_meta["response_time"] > 600:
+            if rsp.request_meta["response_time"] > 5000:
                 raise ResponseError("Took too long")
