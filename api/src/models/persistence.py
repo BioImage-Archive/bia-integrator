@@ -1,10 +1,9 @@
 from enum import Enum
 from pydantic import BaseModel, Field, BaseConfig, Extra
-from typing import Dict, List, Optional, Union, AnyStr
+from typing import Dict, List, Optional, AnyStr
 from pathlib import Path
 from ome_types import OME, from_xml
 from urllib.parse import urlparse, urlunparse
-from bson import ObjectId, errors
 from uuid import UUID
 import requests
 
@@ -15,18 +14,6 @@ class BIABaseModel(BaseModel):
         """ensure_ascii defaults to False instead of True to handle the common case of non-ascii names"""
 
         return super().json(ensure_ascii=ensure_ascii, **kwargs)
-
-class OID(str):
-  @classmethod
-  def __get_validators__(cls):
-      yield cls.validate
-
-  @classmethod
-  def validate(cls, v):
-      try:
-          return ObjectId(str(v))
-      except errors.InvalidId:
-          raise ValueError("Not a valid ObjectId")
 
 class ModelMetadata(BaseModel):
     type_name: str = Field()
@@ -254,8 +241,8 @@ class BIACollection(BIABaseModel, DocumentMixin):
         model_version_latest = 1
 
 class User(BIABaseModel, DocumentMixin):
-    email: Union[str, None] = None
-    password: str
+    email: str = Field()
+    password: str = Field()
 
     class Config(BaseConfig):
         model_version_latest = 1
