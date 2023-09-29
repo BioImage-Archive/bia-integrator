@@ -3,14 +3,12 @@ from ..models import repository  as repository
 from ..models import api as api_models
 from ..api import exceptions
 from .auth import get_current_user
-from .util import model_exclude_id_field
 import logging
 
 from typing import List, Optional
 from fastapi import APIRouter, status, Depends
 
 router = APIRouter(prefix="/api/private", dependencies=[Depends(get_current_user)])
-model_exclude_id_field(router)
 
 @router.post("/studies", status_code=status.HTTP_201_CREATED)
 async def create_study(study: db_models.BIAStudy) -> None:

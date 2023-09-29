@@ -119,7 +119,6 @@ def test_create_images_multiple_errors(api_client: TestClient, existing_study: d
 def test_update_image(api_client: TestClient, existing_image: dict):
     existing_image['version'] = 1
     existing_image['name'] = 'some_other_name'
-    existing_image['type'] = 'some_other_name'
 
     rsp = api_client.patch("/api/private/images/single", json=existing_image)
     assert rsp.status_code == 200, rsp.json()
@@ -189,7 +188,6 @@ def test_image_pagination(api_client: TestClient, existing_study: dict):
     assert rsp.status_code == 200
     images_fetched = rsp.json()
     for img in images_fetched:
-        del img['_id']
         del img['model']
     assert len(images_fetched) == chunk_size
     images_chunk = images[:2]
@@ -200,7 +198,6 @@ def test_image_pagination(api_client: TestClient, existing_study: dict):
     assert rsp.status_code == 200
     images_fetched = rsp.json()
     for img in images_fetched:
-        del img['_id']
         del img['model']
     assert len(images_fetched) == chunk_size
     images_chunk = images[2:4]
@@ -211,7 +208,6 @@ def test_image_pagination(api_client: TestClient, existing_study: dict):
     assert rsp.status_code == 200
     images_fetched = rsp.json()
     for img in images_fetched:
-        del img['_id']
         del img['model']
     assert len(images_fetched) == 1
     images_chunk = images[4:5]
@@ -225,7 +221,6 @@ def test_image_pagination_large_page(api_client: TestClient, existing_study: dic
     assert rsp.status_code == 200
     images_fetched = rsp.json()
     for img in images_fetched:
-        del img['_id']
         del img['model']
     assert len(images_fetched) == 5
     assert images == images_fetched

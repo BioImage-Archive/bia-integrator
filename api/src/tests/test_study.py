@@ -33,8 +33,6 @@ def test_create_study(api_client: TestClient, uuid: str):
     }
 
     study_created = get_study(api_client, uuid)
-    assert type(study_created['_id']) == str
-    del study_created['_id']
 
     assert study_created == study_with_defaults
 

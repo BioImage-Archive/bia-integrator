@@ -94,7 +94,6 @@ def test_file_reference_pagination_defaults(api_client: TestClient, existing_stu
     assert rsp.status_code == 200
     file_references_fetched = rsp.json()
     for file_ref in file_references_fetched:
-        del file_ref['_id']
         del file_ref['model']
 
     assert len(file_references_fetched) == 10
@@ -110,7 +109,6 @@ def test_file_reference_pagination(api_client: TestClient, existing_study: dict)
     assert rsp.status_code == 200
     file_references_fetched = rsp.json()
     for file_ref in file_references_fetched:
-        del file_ref['_id']
         del file_ref['model']
     assert len(file_references_fetched) == chunk_size
     images_chunk = file_references[:2]
@@ -121,7 +119,6 @@ def test_file_reference_pagination(api_client: TestClient, existing_study: dict)
     assert rsp.status_code == 200
     file_references_fetched = rsp.json()
     for file_ref in file_references_fetched:
-        del file_ref['_id']
         del file_ref['model']
     assert len(file_references_fetched) == chunk_size
     images_chunk = file_references[2:4]
@@ -132,7 +129,6 @@ def test_file_reference_pagination(api_client: TestClient, existing_study: dict)
     assert rsp.status_code == 200
     file_references_fetched = rsp.json()
     for file_ref in file_references_fetched:
-        del file_ref['_id']
         del file_ref['model']
     assert len(file_references_fetched) == 1
     images_chunk = file_references[4:5]
@@ -146,7 +142,6 @@ def test_file_reference_large_page(api_client: TestClient, existing_study: dict)
     assert rsp.status_code == 200
     file_references_fetched = rsp.json()
     for file_ref in file_references_fetched:
-        del file_ref['_id']
         del file_ref['model']
     assert len(file_references_fetched) == 5
     assert file_references == file_references_fetched

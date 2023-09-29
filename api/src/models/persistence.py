@@ -1,5 +1,5 @@
 from enum import Enum
-from pydantic import BaseModel, Field, BaseConfig
+from pydantic import BaseModel, Field, BaseConfig, Extra
 from typing import Dict, List, Optional, Union, AnyStr
 from pathlib import Path
 from ome_types import OME, from_xml
@@ -35,7 +35,6 @@ class ModelMetadata(BaseModel):
 class DocumentMixin(BaseModel):
     # id optional only when creating documents, in all other cases it is required and gets manually verified
     # so it's OR(no id no model defined, both defined)
-    id: Optional[OID] = Field(alias="_id")
     uuid: UUID = Field()
     # this is the document version, not the model version
     version: int = Field()
@@ -64,18 +63,18 @@ class DocumentMixin(BaseModel):
                 raise ValueError(f"Document missing model attribute")
         else:
             # document created now, will pe persisted later - add model
-            if data.get("model", None):
-                raise ValueError("Expecting models that were not persisted to not have a model either")
-            data["model"] = model_metadata_expected
+            if data.get("model", None) is None:
+                data["model"] = model_metadata_expected
         
         # build the object before applying annotations so that model defaults get overwritten by annotations if necessary
+        data.pop("_id", None)
         super().__init__(**data)
 
         if apply_annotations and hasattr(self, 'annotations'):
             document_attributes = set(self.__dict__.keys())
 
             for annotation in self.annotations:
-                if annotation.key in ["model", "_id", "uuid"]:
+                if annotation.key in ["model", "uuid"]:
                     raise Exception(f"Annotation {annotation} of object {self.uuid} overwrites a read-only property")
 
                 # annotations that don't overwrite a field are 'annotation attributes'
@@ -87,19 +86,10 @@ class DocumentMixin(BaseModel):
                 else:
                     self.attributes[annotation.key] = annotation.value
 
-    def dict(self, *args, **kwargs):
-        doc_dict = super().dict(*args, **kwargs)
-        if 'id' in doc_dict:
-            del doc_dict['id']
-
-        return doc_dict
-
     class Config(BaseConfig):
         allow_population_by_field_name = True
-        json_encoders = {
-            #datetime: lambda dt: dt.isoformat(),
-            ObjectId: lambda oid: str(oid)
-        }
+        # Try enforcing strict models. Changes should go into the model, not added ad-hoc
+        extra = Extra.forbid
 
 class Author(BIABaseModel):
     name: str
