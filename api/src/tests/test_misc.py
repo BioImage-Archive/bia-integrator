@@ -77,4 +77,16 @@ def test_list_collections(api_client: TestClient):
     assert rsp.status_code == 200
     assert len(rsp.json())
 
-# should image aliases be unique?
+def test_no_id_in_single_objects(api_client: TestClient, existing_study):
+    rsp = api_client.get(f"/api/studies/{ existing_study['uuid'] }")
+    assert rsp.status_code == 200
+    
+    assert 'id' not in rsp.json().keys()
+    assert '_id' not in rsp.json().keys()
+
+def test_no_id_in_list(api_client: TestClient, existing_image):
+    rsp = api_client.get(f"/api/studies/{ existing_image['study_uuid'] }/images")
+    assert rsp.status_code == 200
+    
+    assert not any(["id" in img.keys() for img in rsp.json()])
+    assert not any(["_id" in img.keys() for img in rsp.json()])

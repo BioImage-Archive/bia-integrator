@@ -2,12 +2,14 @@ from ..models import persistence as db_models
 from ..models import api as api_models
 from ..models import repository  as repository
 from .exceptions import DocumentNotFound
+from .util import model_exclude_id_field
 
 from typing import List, Optional, Annotated
 from fastapi import APIRouter, Query
 from uuid import UUID
 
 router = APIRouter(prefix="/api")
+model_exclude_id_field(router)
 
 @router.get("/object_info_by_accessions")
 async def get_object_info_by_accession(accessions: List[str] = Query()) -> List[api_models.ObjectInfo]:
