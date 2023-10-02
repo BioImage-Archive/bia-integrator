@@ -100,7 +100,6 @@ def main(accession_id, image_id):
     )
     persist_study_annotation(annotation)
 
-    generate_annotation_representative(accession_id, image_id)
 
 
 
