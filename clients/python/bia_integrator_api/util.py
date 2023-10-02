@@ -39,7 +39,7 @@ def simple_client(
         api_base_url: str,
         username: Optional[str] = None,
         password: Optional[str] = None,
-        disable_ssl_host_check: bool = False,
+        disable_ssl_host_check: bool = True,
         auto_refresh_jwt = True
     ) -> PrivateApi:
     api_config = Configuration(
