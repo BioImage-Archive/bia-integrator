@@ -1,0 +1,69 @@
+{% extends "base.html.j2" %}
+
+{% block header_extras %}
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="https://assets.emblstatic.net/vf/v2.5.8/css/styles.css">
+    </head>
+
+{% endblock %}
+
+{% block title %}  Annotation Types Glossary  {% endblock %}
+
+{% block content %}
+    <section class="vf-content | embl-grid embl-grid--has-centered-content">
+       <div></div>
+        <div>
+        <h3 class="vf-intro_subheading">Annotation Types</h3>           
+        <p></p>
+        <li><b>Class labels: </b>tags that identify specific features, patterns or classes in images. They can be given for a whole image or for individual structures within it. </li>
+        <li><b> Bounding boxes:</b> rectangles completely enclosing a structure of interest within an image.</li>
+        <li><b>Counts:</b> number of objects, such as cells, found in an image.</li>
+<li><b>Derived annotations:</b> additional analytical data extracted from the images. For example, the image point spread function,the signal to noise ratio, focus information...</li> 
+<li><b>Geometrical annotations:</b> polygons and shapes that outline a region of interest in the image. These can be geometrical primitives, 2D polygons, 3D meshes...</li>
+<li><b>Graphs:</b> graphical representations of the morphology, connectivity, or spatial arrangement of biological structures in an image. Graphs, such as skeletons or connectivity diagrams, typically consist of nodes and edges, where nodes represent individual elements or regions and edges represent the connections or interactions between them.</li>
+<li><b>Point annotations:</b> X, Y, and Z coordinates of a point of interest in an image (for example an object’s centroid or landmarks).</li>
+<li><b>Segmentation masks:</b> an image, the same size as the source image, with the value of each pixel representing some biological identity or background region.</li>
+<li><b>Tracks:</b> annotations marking the movement or trajectory of objects within a sequence of bioimages.</li>
+<li><b>Weak annotations:</b> rough imprecise annotations that are fast to generate. These annotations are used, for example,  to detect an object without providing accurate boundaries. </li>
+
+            </div>
+            <div></div>
+        </section>
+        </div>
+    </body>
+    <script>
+        function copyTextToClipboard(text) {
+            var textArea = document.createElement("textarea");
+            // Place in the top-left corner of screen regardless of scroll position.
+            textArea.style.position = 'fixed';
+
+            textArea.value = text;
+
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+
+            var successful;
+            try {
+                successful = document.execCommand('copy');
+            } catch (err) {
+                console.log('Oops, unable to copy');
+            }
+            document.body.removeChild(textArea);
+
+            if (successful) {
+                // show user that copying happened - update text on element (e.g. button)
+                let target = event.target;
+                let html = target.innerHTML;
+                target.classList.add("shake");
+                setTimeout(() => {
+                    // reset after 1 second
+                    target.classList.remove("shake");
+                }, 1000)
+            } else {
+                console.log("Copying failed")
+            }
+        }
+    </script>
+    
+{% endblock %}

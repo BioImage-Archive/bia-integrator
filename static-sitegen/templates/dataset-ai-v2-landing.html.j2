@@ -273,7 +273,8 @@
       <i class="fa-solid fa-circle-info" title="Annotation in the context of AI, is the task of marking up data, such as images, so it can be recognised by models and used to make predictions."></i></h3>
       <ul class="vf-list">
         {% if study.attributes.get('annotation_type') %}
-        <li><b>Annotation type(s):</b> {{ study.attributes['annotation_type'] }}</li>
+        <li><b><a href='https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/pages/ai-glossary.html' target=”_blank”>Annotation type(s)</a>:</b><i class="fa-solid fa-circle-info" title="Click on the Annotation type(s) to go to the page with a glossary"></i>
+        {{ study.attributes['annotation_type'] }}</li>
         {% endif %}
         {% if study.attributes.get('annotation_method') %}
         <li><b>Annotation method(s):</b> {{ study.attributes['annotation_method'] }}</li>
