@@ -8,7 +8,7 @@ packages = [{include = "migration.py"}]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-openapi-client = { path = "../clients/python/", develop = true }
+bia-integrator-api = { path = "../clients/python/", develop = true }
 bia-integrator-core = { path = "../core/", develop = true }
 
 
