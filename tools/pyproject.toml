@@ -16,6 +16,7 @@ typer = {extras = ["all"], version = "^0.7.0"}
 fs = "^2.4.16"
 jose = "^1.0.0"
 bia-integrator-api = { git = "https://github.com/BioImage-Archive/bia-integrator.git", subdirectory = "clients/python", branch = "biaint-api-backend" }
+bia-integrator-core = { git = "https://github.com/BioImage-Archive/bia-integrator.git", subdirectory = "core", branch = "biaint-api-backend" }
 
 
 [build-system]
