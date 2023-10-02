@@ -7,7 +7,7 @@ readme = "Readme.md"
 packages = [{include = "migration.py"}]
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.10"
 bia-integrator-api = { path = "../clients/python/", develop = true }
 bia-integrator-core = { path = "../core/", develop = true }
 
