@@ -23,6 +23,15 @@ def get_annotation_files_by_accession(accession_id):
         if "source image" in fileref.attributes
     ]
 
+def get_annotation_images_in_study(accession_id):
+    """Generate list of images in study that are annotations of another image."""
+
+    bia_study = load_and_annotate_study(accession_id)
+    return [
+        image for image in bia_study.images.values()
+        if "source image" in image.attributes
+    ]
+
 
 def get_image_rep_by_type(accession_id, image_id, rep_type):
 
@@ -61,10 +70,11 @@ def get_annotation_ome_ngff_rep_by_sourceimage(accession_id: str, image_id: str)
     bia_study = load_and_annotate_study(accession_id)
     source_image = bia_study.images[image_id]
 
-    for image in bia_study.images.values():
-        if "source image" in image.attributes:
-            if image.attributes['source image'] == source_image.name:
-                ome_ngff_rep = get_ome_ngff_rep(image)
+    annot_images = get_annotation_images_in_study(accession_id)
+    image = [ image for image in annot_images 
+            if image.attributes['source image'] == source_image.name
+    ]
+    ome_ngff_rep = get_ome_ngff_rep(image)
     
     return ome_ngff_rep
 

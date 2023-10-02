@@ -6,6 +6,7 @@ from bia_integrator_core.models import BIAImageRepresentation, StudyAnnotation, 
 from bia_integrator_core.interface import persist_image_representation, persist_study_annotation
 from bia_integrator_tools.utils import (
     get_ome_ngff_rep_by_accession_and_image, get_annotation_ome_ngff_rep_by_sourceimage,
+    get_annotation_images_in_study,
     get_example_image_uri, get_example_annotation_uri
 )
 from bia_integrator_tools.io import copy_local_to_s3
@@ -64,6 +65,9 @@ def main(accession_id, image_id):
     if get_example_image_uri(accession_id):
         logging.info(f"There is a representative image already. Terminating the script")
         return
+    
+    if get_annotation_images_in_study(accession_id):
+        generate_annotation_representative(accession_id, image_id)
     
     ome_ngff_rep = get_ome_ngff_rep_by_accession_and_image(accession_id, image_id)
     w = 512
