@@ -1,7 +1,7 @@
 import logging
 from typing import List, Set
 
-from openapi_client import models as api_models
+from bia_integrator_api import models as api_models
 from .config import settings
 from .study import get_study, update_study
 from .image import get_image, update_image

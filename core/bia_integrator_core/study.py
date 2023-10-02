@@ -1,7 +1,7 @@
 import logging
 
 from .config import settings
-from openapi_client import models as api_models
+from bia_integrator_api import models as api_models
 from typing import Optional
 
 

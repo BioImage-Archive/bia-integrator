@@ -1,5 +1,5 @@
 import logging
-from openapi_client import models as api_models
+from bia_integrator_api import models as api_models
 from bia_integrator_core import models as core_models
 from bia_integrator_core.image import get_images
 from bia_integrator_core.fileref import get_filerefs

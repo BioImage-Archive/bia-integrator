@@ -1,7 +1,7 @@
 import logging
 from typing import List
 
-from openapi_client import models as api_models
+from bia_integrator_api import models as api_models
 from bia_integrator_core.image import get_image, update_image
 
 

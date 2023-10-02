@@ -2,7 +2,7 @@ import logging
 from typing import List
 
 from .config import settings
-from openapi_client import models as api_models
+from bia_integrator_api import models as api_models
 
 logger = logging.getLogger(__name__)
 

@@ -11,7 +11,7 @@ from .annotation import (
     get_study_tags,
     get_image_annotations,
 )
-from openapi_client import models as api_models
+from bia_integrator_api import models as api_models
 from .config import settings
 from .integrator import load_and_annotate_study
 from .study import get_study, persist_study

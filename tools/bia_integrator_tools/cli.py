@@ -1,6 +1,6 @@
 import logging
 from pathlib import Path
-from openapi_client import models as api_models
+from bia_integrator_api import models as api_models
 from typing import Optional
 from uuid import UUID
 import time

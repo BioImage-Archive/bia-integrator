@@ -1,4 +1,4 @@
-from openapi_client import models as api_models
+from bia_integrator_api import models as api_models
 from typing import List
 
 class BIAStudy(api_models.BIAStudy):

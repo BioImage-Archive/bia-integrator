@@ -2,12 +2,11 @@
 ! Maintain existing uuids to avoid breaking Embassy paths
 """
 
-from openapi_client import models as api_models, exceptions as api_exceptions
-from openapi_client.util import simple_client
-from bia_integrator_core import models as core_models, interface, study
+from bia_integrator_api import models as api_models, exceptions as api_exceptions
+from bia_integrator_api.util import simple_client
+from bia_integrator_core import models as core_models, interface
 import sys
 import os
-from pathlib import Path
 
 import uuid as uuid_lib
 import time
