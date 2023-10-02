@@ -242,7 +242,8 @@ if __name__ == "__main__":
     api_client = simple_client(
         config["biaint_api_url"],
         config["biaint_username"],
-        config["biaint_password"]
+        config["biaint_password"],
+        disable_ssl_host_check = True
     )
 
     with open("skip.txt") as f:
