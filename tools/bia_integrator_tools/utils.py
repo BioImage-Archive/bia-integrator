@@ -45,6 +45,10 @@ def get_example_image_uri(accession_id):
     bia_study = load_and_annotate_study(accession_id)
     return bia_study.example_image_uri
 
+def get_example_annotation_uri(accession_id):
+    bia_study = load_and_annotate_study(accession_id)
+    return bia_study.example_annotation_uri
+
 def get_ome_ngff_rep_by_accession_and_image(accession_id: str, image_id: str) -> Optional[BIAImageRepresentation]:
     bia_study = load_and_annotate_study(accession_id)
     image = bia_study.images[image_id]
@@ -52,6 +56,18 @@ def get_ome_ngff_rep_by_accession_and_image(accession_id: str, image_id: str) ->
     ome_ngff_rep = get_ome_ngff_rep(image)
     
     return ome_ngff_rep
+
+def get_annotation_ome_ngff_rep_by_sourceimage(accession_id: str, image_id: str) -> Optional[BIAImageRepresentation]:
+    bia_study = load_and_annotate_study(accession_id)
+    source_image = bia_study.images[image_id]
+
+    for image in bia_study.images.values():
+        if "source image" in image.attributes:
+            if image.attributes['source image'] == source_image.name:
+                ome_ngff_rep = get_ome_ngff_rep(image)
+    
+    return ome_ngff_rep
+
 
 
 def set_rendering_info_for_ome_ngff_rep(ome_ngff_rep):
