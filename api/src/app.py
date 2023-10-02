@@ -9,14 +9,15 @@ from .api import auth
 
 import uvicorn
 from fastapi import FastAPI
-from fastapi_utils.openapi import simplify_operation_ids
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 from starlette.status import HTTP_500_INTERNAL_SERVER_ERROR
 from fastapi.middleware.gzip import GZipMiddleware
 import logging
 
-app = FastAPI()
+app = FastAPI(
+    generate_unique_id_function=lambda route: route.name
+)
 app.add_middleware(GZipMiddleware, minimum_size=1000)
 
 @app.exception_handler(Exception)
@@ -32,8 +33,6 @@ app.include_router(auth.router)
 app.include_router(public.router)
 app.include_router(private.router)
 app.include_router(admin.router)
-
-simplify_operation_ids(app)
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.ERROR)

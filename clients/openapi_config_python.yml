@@ -1,0 +1,4 @@
+packageName: bia_integrator_api
+projectName: bia_integrator_api
+packageVersion: 0.1.0
+generateSourceCodeOnly: true

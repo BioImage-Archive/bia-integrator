@@ -11,13 +11,14 @@ from passlib.utils import consteq
 from typing import Optional
 import uuid
 
+from . import constants
 from ..models.repository import get_db, COLLECTION_USERS
 from ..models.persistence import User
 from ..models.api import AuthenticationToken, TokenData
 import os
 import base64
 
-router = APIRouter(prefix="/auth")
+router = APIRouter(prefix="/auth", tags=[constants.OPENAPI_TAG_PRIVATE])
 
 JWT_SECRET_KEY = os.environ["JWT_SECRET_KEY"]
 ALGORITHM = "HS256"
