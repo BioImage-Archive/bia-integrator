@@ -3,7 +3,6 @@ from . import api as api_models
 from ..api import exceptions
 
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorCollection
-from bson import ObjectId
 import pydantic
 from typing import List, Any, Callable
 from uuid import UUID
@@ -91,14 +90,8 @@ async def _study_assets_find(study_uuid: UUID, start_uuid: UUID | None, limit: i
     
     return docs
 
-async def _get_doc_raw(id : str | ObjectId = None, **kwargs) -> Any:
+async def _get_doc_raw(**kwargs) -> Any:
     db = await get_db()
-
-    if id:
-        kwargs['_id'] = id
-
-    if type(kwargs.get('_id', None)) is str:
-        kwargs['_id'] = ObjectId(kwargs['_id'])
     
     doc = await db.find_one(kwargs)
     return doc

@@ -16,7 +16,8 @@ from fastapi.middleware.gzip import GZipMiddleware
 import logging
 
 app = FastAPI(
-    generate_unique_id_function=lambda route: route.name
+    generate_unique_id_function=lambda route: route.name,
+    root_path="/api/v1"
 )
 app.add_middleware(GZipMiddleware, minimum_size=1000)
 
@@ -30,9 +31,10 @@ async def log_exception_handler(request: Request, exc: Exception):
     )
 
 app.include_router(auth.router)
-app.include_router(public.router)
 app.include_router(private.router)
 app.include_router(admin.router)
+# routes applied in the order they are declared
+app.include_router(public.router)
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.ERROR)

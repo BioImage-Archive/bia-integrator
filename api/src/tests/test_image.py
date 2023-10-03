@@ -19,11 +19,11 @@ def test_create_images(api_client: TestClient, existing_study: dict):
         }
         for uuid in uuids
     ]
-    rsp = api_client.post("/api/private/images", json=images)
+    rsp = api_client.post("/private/images", json=images)
     assert rsp.status_code == 201, rsp.json()
 
     for uuid in uuids:
-        rsp = api_client.get(f"/api/images/{uuid}")
+        rsp = api_client.get(f"/images/{uuid}")
         assert rsp.status_code == 200
 
 def test_image_annotations_applied(api_client: TestClient, existing_study: dict):
@@ -52,11 +52,11 @@ def test_image_annotations_applied(api_client: TestClient, existing_study: dict)
         }
         for uuid in uuids
     ]
-    rsp = api_client.post("/api/private/images", json=images)
+    rsp = api_client.post("/private/images", json=images)
     assert rsp.status_code == 201, rsp.json()
 
     for uuid in uuids:
-        rsp = api_client.get(f"/api/images/{uuid}")
+        rsp = api_client.get(f"/images/{uuid}")
         assert rsp.status_code == 200
         img = rsp.json()
 
@@ -85,7 +85,7 @@ def test_create_images_multiple_errors(api_client: TestClient, existing_study: d
     images[7]['uuid'] = images[0]['uuid']
     images[3]['study_uuid'] = "00000000-0000-0000-0000-000000000000"
 
-    rsp = api_client.post("/api/private/images", json=images)
+    rsp = api_client.post("/private/images", json=images)
     assert rsp.status_code == 201, rsp.json()
 
     # groupby expects sorted list
@@ -102,7 +102,7 @@ def test_create_images_multiple_errors(api_client: TestClient, existing_study: d
     # check all acknowledged docs were actually persisted
     for write_result in bulk_write_results_by_status[201]:
         written_item_uuid = uuids[write_result['idx_in_request']]
-        rsp = api_client.get(f"/api/images/{written_item_uuid}")
+        rsp = api_client.get(f"/images/{written_item_uuid}")
         assert rsp.status_code == 200, rsp.json()
     
     # check that failed docs have correct errors
@@ -120,7 +120,7 @@ def test_update_image(api_client: TestClient, existing_image: dict):
     existing_image['version'] = 1
     existing_image['name'] = 'some_other_name'
 
-    rsp = api_client.patch("/api/private/images/single", json=existing_image)
+    rsp = api_client.patch("/private/images/single", json=existing_image)
     assert rsp.status_code == 200, rsp.json()
 
 def test_image_change_study_to_existing_study(api_client: TestClient, existing_image: dict):
@@ -130,7 +130,7 @@ def test_image_change_study_to_existing_study(api_client: TestClient, existing_i
     assert existing_image['study_uuid'] != other_study['uuid']
     existing_image['study_uuid'] = other_study['uuid']
 
-    rsp = api_client.patch("/api/private/images/single", json=existing_image)
+    rsp = api_client.patch("/private/images/single", json=existing_image)
     assert rsp.status_code == 200, rsp.json()
 
 def test_image_change_study_to_missing_study(api_client: TestClient, existing_image: dict):
@@ -140,7 +140,7 @@ def test_image_change_study_to_missing_study(api_client: TestClient, existing_im
     get_study(api_client, other_study_uuid, assert_status_code=404)
     existing_image['study_uuid'] = other_study_uuid
 
-    rsp = api_client.patch("/api/private/images/single", json=existing_image)
+    rsp = api_client.patch("/private/images/single", json=existing_image)
     assert rsp.status_code == 404, rsp.json()
 
 def test_add_image_representation(api_client: TestClient, existing_image: dict):
@@ -153,7 +153,7 @@ def test_add_image_representation(api_client: TestClient, existing_image: dict):
     representation = {
         "size": 1
     }
-    rsp = api_client.post(f"/api/private/images/{existing_image['uuid']}/representations/single", json=representation)
+    rsp = api_client.post(f"/private/images/{existing_image['uuid']}/representations/single", json=representation)
     assert rsp.status_code == 201, rsp.json()
 
 def test_add_image_representation_missing_image(api_client: TestClient, existing_study: dict):
@@ -161,7 +161,7 @@ def test_add_image_representation_missing_image(api_client: TestClient, existing
         "accession_id": "test-representation",
         "size": 1
     }
-    rsp = api_client.post(f"/api/private/images/00000000-0000-0000-0000-000000000000/representations/single", json=representation)
+    rsp = api_client.post(f"/private/images/00000000-0000-0000-0000-000000000000/representations/single", json=representation)
     assert rsp.status_code == 404, rsp.json()
 
 def test_study_with_images_and_filerefs_fetch_images(api_client: TestClient, existing_study: dict):
@@ -173,7 +173,7 @@ def test_study_with_images_and_filerefs_fetch_images(api_client: TestClient, exi
     images_created = set([img['uuid'] for img in images])
     make_file_references(api_client, existing_study, 2)
 
-    rsp = api_client.get(f"/api/studies/{existing_study['uuid']}/images")
+    rsp = api_client.get(f"/studies/{existing_study['uuid']}/images")
     assert rsp.status_code == 200
     images_fetched = set([img['uuid'] for img in rsp.json()])
     assert images_fetched == images_created
@@ -184,7 +184,7 @@ def test_image_pagination(api_client: TestClient, existing_study: dict):
     chunk_size = 2
 
     #1,2
-    rsp = api_client.get(f"/api/studies/{existing_study['uuid']}/images?limit={chunk_size}")
+    rsp = api_client.get(f"/studies/{existing_study['uuid']}/images?limit={chunk_size}")
     assert rsp.status_code == 200
     images_fetched = rsp.json()
     for img in images_fetched:
@@ -194,7 +194,7 @@ def test_image_pagination(api_client: TestClient, existing_study: dict):
     assert images_chunk == images_fetched
 
     #3,4
-    rsp = api_client.get(f"/api/studies/{existing_study['uuid']}/images?start_uuid={images_fetched[-1]['uuid']}&limit={chunk_size}")
+    rsp = api_client.get(f"/studies/{existing_study['uuid']}/images?start_uuid={images_fetched[-1]['uuid']}&limit={chunk_size}")
     assert rsp.status_code == 200
     images_fetched = rsp.json()
     for img in images_fetched:
@@ -204,7 +204,7 @@ def test_image_pagination(api_client: TestClient, existing_study: dict):
     assert images_chunk == images_fetched
 
     #5
-    rsp = api_client.get(f"/api/studies/{existing_study['uuid']}/images?start_uuid={images_fetched[-1]['uuid']}&limit={chunk_size}")
+    rsp = api_client.get(f"/studies/{existing_study['uuid']}/images?start_uuid={images_fetched[-1]['uuid']}&limit={chunk_size}")
     assert rsp.status_code == 200
     images_fetched = rsp.json()
     for img in images_fetched:
@@ -217,7 +217,7 @@ def test_image_pagination_large_page(api_client: TestClient, existing_study: dic
     images = make_images(api_client, existing_study, 5)
     images.sort(key=lambda img: UUID(img['uuid']).hex)
 
-    rsp = api_client.get(f"/api/studies/{existing_study['uuid']}/images?limit={10000}")
+    rsp = api_client.get(f"/studies/{existing_study['uuid']}/images?limit={10000}")
     assert rsp.status_code == 200
     images_fetched = rsp.json()
     for img in images_fetched:
@@ -229,5 +229,5 @@ def test_image_pagination_bad_limit(api_client: TestClient, existing_study: dict
     images = make_images(api_client, existing_study, 5)
     images.sort(key=lambda img: UUID(img['uuid']).hex)
 
-    rsp = api_client.get(f"/api/studies/{existing_study['uuid']}/images?limit={0}")
+    rsp = api_client.get(f"/studies/{existing_study['uuid']}/images?limit={0}")
     assert rsp.status_code == 422

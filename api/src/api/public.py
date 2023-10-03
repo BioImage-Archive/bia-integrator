@@ -8,7 +8,7 @@ from typing import List, Optional, Annotated
 from fastapi import APIRouter, Query
 from uuid import UUID
 
-router = APIRouter(prefix="/api", tags=[constants.OPENAPI_TAG_PUBLIC, constants.OPENAPI_TAG_PRIVATE])
+router = APIRouter(tags=[constants.OPENAPI_TAG_PUBLIC, constants.OPENAPI_TAG_PRIVATE])
 
 @router.get("/object_info_by_accessions")
 async def get_object_info_by_accession(accessions: List[str] = Query()) -> List[api_models.ObjectInfo]:
