@@ -75,6 +75,15 @@ def generate_dataset_page_html(accession_id, template_fname: str):
         for image in bia_study.images.values()
     }     
     
+    ann_aliases_by_sourcename = {
+        annfile.attributes['source name']: annfile.attributes['alias'] 
+        for annfile in annotation_files
+        }
+    
+    corresponding_ann_aliases = {
+        image.id: ann_aliases_by_sourcename.get(image.name)
+        for image in bia_study.images.values()
+    }
 
     images_with_ome_ngff = []
     image_landing_uris = {}
@@ -124,7 +133,8 @@ def generate_dataset_page_html(accession_id, template_fname: str):
             annotation_download_uris=annotation_download_uris,
             authors=author_names,
             study_content_annotations=study_content_annotations,
-            image_ann_aliases=ann_aliases_for_images
+            image_ann_aliases=ann_aliases_for_images,
+            corresponding_ann_aliases=corresponding_ann_aliases
     )
 
     return rendered

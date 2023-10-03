@@ -218,6 +218,9 @@
                             <tr>
                                 <th>Image ID</th>
                                 <th>Preview</th>
+                                {% if corresponding_ann_aliases %}
+                                <th>Corresponding Annotation ID</th>
+                                {% endif %}
                                 <th>Filename <i class="fa-solid fa-circle-info" title="Orginial filepath and filename prior to ome-ngff conversion"></i></th>
                                 <th>Dimensions<br>(T, C, Z, Y, X)</th>
                                 <th>Download Size</th>
@@ -238,6 +241,13 @@
                                     <img class="vf-figure__image" src={{ image_thumbnails[image.id] }}>
                                     </div>
                                 </td>
+                                {% if corresponding_ann_aliases %}
+                                  {% if corresponding_ann_aliases.get(image.id) %}
+                                  <td>{{ corresponding_ann_aliases[image.id] }}</td>
+                                  {% else %}
+                                  <td> None </td>
+                                  {% endif %}
+                                {% endif %}
                                 <td>{{ image.original_relpath }}</td>
                                 {% if image.dimensions %}
                                     <td>{{ image.dimensions }}</td>
@@ -358,6 +368,9 @@
                         <thead>
                             <tr>
                                 <th>Image ID</th>
+                                {% if corresponding_ann_aliases %}
+                                <th>Corresponding Annotation ID</th>
+                                {% endif %}
                                 <th>Filename</th>
                                 <th>Download Size</th>
                                 <th>Actions</th>
@@ -366,6 +379,13 @@
                         <tbody>
                           {% for image in study.images.values() %}
                           <td>{{ image_names[image.id] }}</td>
+                          {% if corresponding_ann_aliases %}
+                            {% if corresponding_ann_aliases.get(image.id) %}
+                            <td>{{ corresponding_ann_aliases[image.id] }}</td>
+                            {% else %}
+                            <td> None </td>
+                            {% endif %}
+                          {% endif %}
                           <td>{{ image.original_relpath }}</td>
                           {% if "download_size" in image.attributes %}
                           <td>{{ image.attributes["download_size"] }}</td>
