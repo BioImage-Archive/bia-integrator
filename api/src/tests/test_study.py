@@ -229,6 +229,6 @@ def test_search_studies_fetch_all(api_client: TestClient):
     for _ in range(5):
         make_study(api_client)
     
-    rsp = api_client.get(f"/studies?limit={1000}")
+    rsp = api_client.get(f"/search/studies?limit={1000}")
     assert rsp.status_code == 200
     assert len(rsp.json()) - initial_studies_count == 5
