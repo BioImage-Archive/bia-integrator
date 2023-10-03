@@ -7,10 +7,10 @@ from pathlib import Path
 from typing import List 
 
 import click
-from bia_integrator_core.models import BIAStudy, FileReference, Author
+from bia_integrator_api.models import BIAStudy, FileReference, Author
 from bia_integrator_core.interface import persist_study
 
-from bia_integrator_tools.identifiers import file_to_id
+from bia_integrator_tools.identifiers import file_to_id, dict_to_uuid
 from bia_integrator_tools.biostudies import (
     File,
     Submission,
@@ -29,17 +29,20 @@ logger = logging.getLogger(__file__)
 
 def bst_file_to_file_reference(accession_id: str, bst_file: File, file_uri_template: str) -> FileReference:
 
+    study_uuid = dict_to_uuid({"accession_id": accession_id,}, attributes_to_consider=["accession_id",])
     fileref_id = file_to_id(accession_id, bst_file)
     fileref_name = str(bst_file.path)
     fileref_attributes = attributes_to_dict(bst_file.attributes)
 
     fileref = FileReference(
-        id=fileref_id,
+        uuid=fileref_id,
         name=fileref_name,
         uri=file_uri(accession_id, bst_file, file_uri_template=file_uri_template),
         size_in_bytes=bst_file.size,
         attributes=fileref_attributes,
-        type=bst_file.type
+        type=bst_file.type,
+        version=0, # For initial creation
+        study_uuid=study_uuid
     )
 
     # If fileref type is directory we may need to append '.zip' to 
@@ -162,8 +165,9 @@ def get_attr_from_submission(submission: Submission, attr: str) -> str:
 def bst_submission_to_bia_study(submission: Submission) -> BIAStudy:
 
     accession_id = submission.accno
+    study_uuid = dict_to_uuid({"accession_id": accession_id,}, attributes_to_consider=["accession_id",])
     filerefs_list = filerefs_from_bst_submission(submission)
-    filerefs_dict = {fileref.id: fileref for fileref in filerefs_list}
+    filerefs_dict = {fileref.uuid: fileref for fileref in filerefs_list}
     study_title = study_title_from_submission(submission)
     imaging_method = get_attr_from_submission(submission, "Imaging Method")
 
@@ -175,6 +179,7 @@ def bst_submission_to_bia_study(submission: Submission) -> BIAStudy:
         organism = get_attr_from_submission(submission, "Organism")
 
     bia_study = BIAStudy(
+        uuid=study_uuid,
         accession_id=accession_id,
         title=study_title,
         authors=find_authors_in_submission(submission),
@@ -184,7 +189,8 @@ def bst_submission_to_bia_study(submission: Submission) -> BIAStudy:
         license=study_section_attr_dict.get('License', "CC0"),
         links=study_links_from_submission(submission),
         imaging_type=imaging_method,
-        file_references=filerefs_dict
+        file_references=filerefs_dict,
+        version=0
     )
 
     return bia_study

@@ -4,6 +4,15 @@ import hashlib
 from .biostudies import File
 
 
+def dict_to_uuid(my_dict: dict, attributes_to_consider: list) -> str:
+    """Create uuid from specific keys in a dictionary
+
+    """
+
+    seed = "".join([my_dict[attr] for attr in attributes_to_consider])
+    hexdigest = hashlib.md5(seed.encode("utf-8")).hexdigest()
+    return str(uuid.UUID(version=4, hex=hexdigest))
+
 def uri_to_id(accession_id: str, uri: str):
 
     hash_input = accession_id

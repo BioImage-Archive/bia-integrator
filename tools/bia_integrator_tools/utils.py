@@ -8,8 +8,8 @@ import requests
 from ome_zarr.io import parse_url
 from ome_zarr.reader import Reader
 from bia_integrator_core.integrator import load_and_annotate_study
-from bia_integrator_core.models import BIAImageRepresentation, BIAImage
-from bia_integrator_core.models import RenderingInfo, ChannelRendering
+from bia_integrator_api.models import BIAImageRepresentation, BIAImage
+from bia_integrator_api.models import RenderingInfo, ChannelRendering
 from bia_integrator_core.interface import persist_image_representation, persist_image
 
 logger = logging.getLogger(__name__)
