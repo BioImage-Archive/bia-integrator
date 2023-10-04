@@ -1,25 +1,24 @@
-BIA integrator tools
-====================
+# BIA integrator tools
 
 Tools, including a command line interface (CLI) for working with the BIA integrator.
 
-Installation
-------------
+## Installation
 
-First install requirements with:
+In this directory, run `poetry install` to install the stable version of biaint.
 
-    pip install -r requirements 
+**If already in a virtualenv**, then all packages and the `biaint` utility will be added to the current virtualenv.
 
-This should also install the bia-integrator-core repository. Then install with:
+**If not in a virtualenv**, then poetry will create one, and `poetry run biaint [command_here]` executed in this directory will have the same effect as running `biaint` if installed globally.
 
-    pip install -e .
+### Development install
 
-To get an initial set of data for experimentation/testing, you can also install `bia-integrator-data` from [here](https://github.com/BioImage-Archive/bia-integrator-data), or:
+To install all BIA dependencies in editable mode, go to `dev/`, exit from any virtualenvs to isolate the dev biaint installation, and run `poetry install`.
 
-    git clone git@github.com:BioImage-Archive/bia-integrator-data.git ~/.bia-integrator-data
+To run the biaint with dev dependencies, either:
+* always run `poetry run biaint [command]` in the `dev/` directory
+* or run `poetry env list --full-path` in the `dev/` directory, and then activate the project-specific virtualenv, to make the global `biaint` command be the development version
 
-First steps
------------
+## First steps
 
 After installation, including the data repository, you should be able to run:
 
@@ -31,8 +30,18 @@ to list known studies, and:
 
 to show known information for a specific images. If the `biaint` command isn't found, you may need to run `rehash`.
 
-CLI examples
-------------
+### Authenticated users
+
+Set the following environment variables, changing them as appropriate:
+
+```sh
+export BIA_API_BASEPATH='https://bia-cron-1.ebi.ac.uk:8080/api/v1'
+export BIA_USERNAME='username@ebi.ac.uk'
+export BIA_PASSWORD='password_for_user_above'
+export BIA_DISABLE_SSL_HOST_CHECK=1
+```
+
+## CLI examples
 
 ### Tags
 

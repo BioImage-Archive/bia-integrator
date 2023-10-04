@@ -1,10 +1,9 @@
 [tool.poetry]
-name = "bia-integrator-tools"
+name = "dev_bia-integrator-tools"
 version = "0.1.0"
 description = ""
 authors = ["Matthew Hartley <matthewh@ebi.ac.uk>"]
-readme = "README.md"
-packages = [{include = "bia_integrator_tools"}]
+packages = [{include = "bia_integrator_tools", from="../"}]
 
 [tool.poetry.scripts]
 biaint = "bia_integrator_tools.cli:app"
@@ -14,8 +13,8 @@ biaconv = "bia_integrator_tools.biaconv:app"
 python = "^3.10"
 typer = {extras = ["all"], version = "^0.7.0"}
 fs = "^2.4.16"
-bia-integrator-api = { git = "https://github.com/BioImage-Archive/bia-integrator.git", subdirectory = "clients/python", branch = "biaint-api-backend" }
-bia-integrator-core = { git = "https://github.com/BioImage-Archive/bia-integrator.git", subdirectory = "core", branch = "biaint-api-backend" }
+dev_bia-integrator-core = { path = "../../core/dev", develop = true }
+bia-integrator-api = { path = "../../clients/python/", develop = true }
 
 [build-system]
 requires = ["poetry-core"]
