@@ -245,7 +245,7 @@
                                   {% if corresponding_ann_aliases.get(image.id) %}
                                   <td>{{ corresponding_ann_aliases[image.id] }}</td>
                                   {% else %}
-                                  <td> None </td>
+                                  <td>  </td>
                                   {% endif %}
                                 {% endif %}
                                 <td>{{ image.original_relpath }}</td>
@@ -383,7 +383,7 @@
                             {% if corresponding_ann_aliases.get(image.id) %}
                             <td>{{ corresponding_ann_aliases[image.id] }}</td>
                             {% else %}
-                            <td> None </td>
+                            <td>  </td>
                             {% endif %}
                           {% endif %}
                           <td>{{ image.original_relpath }}</td>
@@ -423,7 +423,7 @@
                     scrollX: true,
                     columnDefs: [
                         { type: 'natural', width: '10%', targets: 0 },
-                        { targets: 2, visible: false }
+                        { targets: 3, visible: false }
                     ]
                 });
 
@@ -447,9 +447,9 @@
                     annotTable.columns.adjust().draw();
                 });
 
-                // Toggle button for column 2 in viewable table (images)
+                // Toggle button for column 3 in viewable table (images)
                 $('#toggle-images-column-2').on('click', function () {
-                    var column = imagesTable.column(2);
+                    var column = imagesTable.column(3);
                     column.visible(!column.visible());
                     $('#viewable').toggleClass('shrink-table');
                     imagesTable.columns.adjust().draw();

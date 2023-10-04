@@ -76,7 +76,7 @@ def generate_dataset_page_html(accession_id, template_fname: str):
     }     
     
     ann_aliases_by_sourcename = {
-        annfile.attributes['source name']: annfile.attributes['alias'] 
+        annfile.attributes['source image']: annfile.attributes['alias'] 
         for annfile in annotation_files
         }
     
