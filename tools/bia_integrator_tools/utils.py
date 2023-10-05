@@ -66,19 +66,6 @@ def get_ome_ngff_rep_by_accession_and_image(accession_id: str, image_id: str) ->
     
     return ome_ngff_rep
 
-def get_annotation_ome_ngff_rep_by_sourceimage(accession_id: str, image_id: str) -> Optional[BIAImageRepresentation]:
-    bia_study = load_and_annotate_study(accession_id)
-    source_image = bia_study.images[image_id]
-
-    annot_images = get_annotation_images_in_study(accession_id)
-    image = [ image for image in annot_images 
-            if image.attributes['source image'] == source_image.name
-    ]
-    ome_ngff_rep = get_ome_ngff_rep(image)
-    
-    return ome_ngff_rep
-
-
 
 def set_rendering_info_for_ome_ngff_rep(ome_ngff_rep):
     if not ome_ngff_rep.rendering:

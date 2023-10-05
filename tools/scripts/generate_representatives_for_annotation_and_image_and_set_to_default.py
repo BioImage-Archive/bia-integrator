@@ -4,8 +4,9 @@ import tempfile
 import click
 from bia_integrator_core.models import BIAImageRepresentation, StudyAnnotation, RenderingInfo, ChannelRendering
 from bia_integrator_core.interface import persist_image_representation, persist_study_annotation
+from bia_integrator_core.integrator import load_and_annotate_study
 from bia_integrator_tools.utils import (
-    get_ome_ngff_rep_by_accession_and_image, get_annotation_ome_ngff_rep_by_sourceimage,
+    get_ome_ngff_rep_by_accession_and_image,
     get_annotation_images_in_study,
     get_example_image_uri, get_example_annotation_uri
 )
@@ -19,11 +20,12 @@ logger = logging.getLogger(__file__)
 def generate_annotation_representative(accession_id: str, image_id: str):
     """Generate representative annotation image from source image id and persist it"""
 
+    # Check if there's already a representative annotation. If so do not overwrite.
     if get_example_annotation_uri(accession_id):
         logging.info(f"There is a representative annotation already. Terminating the script")
         return
     
-    ome_ngff_rep = get_annotation_ome_ngff_rep_by_sourceimage(accession_id, image_id)
+    ome_ngff_rep = get_ome_ngff_rep_by_accession_and_image(accession_id, image_id)
     w = 512
     h = 512
     im = generate_padded_thumbnail_from_ngff_uri(ome_ngff_rep.uri, dims=(w,h))
@@ -54,20 +56,13 @@ def generate_annotation_representative(accession_id: str, image_id: str):
     )
     persist_study_annotation(annotation)
 
-@click.command()
-@click.argument('accession_id')
-@click.argument('image_id')
-def main(accession_id, image_id):
-
-    logging.basicConfig(level=logging.INFO)
+def generate_image_representative(accession_id: str, image_id: str):
+    """Generate representative image from image id and persist it"""
 
     # Check if there's already a representative image. If so do not overwrite.
     if get_example_image_uri(accession_id):
         logging.info(f"There is a representative image already. Terminating the script")
         return
-    
-    if get_annotation_images_in_study(accession_id):
-        generate_annotation_representative(accession_id, image_id)
     
     ome_ngff_rep = get_ome_ngff_rep_by_accession_and_image(accession_id, image_id)
     w = 512
@@ -100,6 +95,33 @@ def main(accession_id, image_id):
     )
     persist_study_annotation(annotation)
 
+@click.command()
+@click.argument('accession_id')
+@click.argument('image_id')
+def main(accession_id, image_id):
+
+    logging.basicConfig(level=logging.INFO)
+    
+    if get_annotation_images_in_study(accession_id):
+        annot_images = get_annotation_images_in_study(accession_id)
+        bia_study = load_and_annotate_study(accession_id)
+        annot_image = None
+        for im in annot_images:
+            if im.id == image_id:
+                annot_image = im
+        if annot_image:
+            generate_annotation_representative(accession_id, image_id)
+            for image in bia_study.images.values():
+                if annot_image.attributes['source image'] == image.name:
+                    generate_image_representative(accession_id,image.id)
+        else:
+            generate_image_representative(accession_id,image_id)
+            source_image = bia_study.images[image_id]
+            for image in annot_images:
+                if image.attributes['source image'] == source_image.name:
+                    generate_annotation_representative(accession_id,image.id)
+    else:
+        generate_image_representative(accession_id,image_id)
 
 
 
