@@ -30,6 +30,8 @@ to list known studies, and:
 
 to show known information for a specific images. If the `biaint` command isn't found, you may need to run `rehash`.
 
+**For scripting with `biaint`** always use `poetry -q run` or switch into the project virtualenv. Poetry occasionally outputs logs regarding the python version or virtualenv being used to stdout.
+
 ### Authenticated users
 
 Set the following environment variables, changing them as appropriate:
