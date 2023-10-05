@@ -17,7 +17,7 @@ def main(accession_id,fname_separator):
     bia_study = load_and_annotate_study(accession_id)
 
     fname_dict = {'S-BIAD633':'xml', 'S-BIAD599':'_seg','S-BIAD463':'_rgb_labels',
-                  'S-BIAD531':'ome_','S-BIAD843':'_segmented'}
+                  'S-BIAD531':'ome_','S-BIAD843':'_segmented','S-BIAD900':'_mask'}
     if fname_separator == '_seg' and accession_id in fname_dict.keys():
         fname_separator = fname_dict[accession_id]
 
@@ -36,6 +36,8 @@ def main(accession_id,fname_separator):
                     source_image = name
             elif fname_separator == 'xml' and fname_separator in name:
                 source_image = name.replace('xml','tif')
+            elif fname_separator == '_mask' and fname_separator in name :
+                source_image = name.split('_mask.png')[0] + '.tif'
             if source_image:
                 fileref.attributes['source image'] = source_image
     persist_study(bia_study)
