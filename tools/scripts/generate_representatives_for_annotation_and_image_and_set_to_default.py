@@ -7,7 +7,7 @@ from bia_integrator_core.interface import persist_image_representation, persist_
 from bia_integrator_core.integrator import load_and_annotate_study
 from bia_integrator_tools.utils import (
     get_ome_ngff_rep_by_accession_and_image,
-    get_annotation_images_in_study,
+    get_annotation_files_by_accession,
     get_example_image_uri, get_example_annotation_uri
 )
 from bia_integrator_tools.io import copy_local_to_s3
@@ -102,8 +102,9 @@ def main(accession_id, image_id):
 
     logging.basicConfig(level=logging.INFO)
     
-    if get_annotation_images_in_study(accession_id):
-        annot_images = get_annotation_images_in_study(accession_id)
+    if get_annotation_files_by_accession(accession_id):
+        logging.info(f"This dataset has annotation images")
+        annot_images = get_annotation_files_by_accession(accession_id)
         bia_study = load_and_annotate_study(accession_id)
         annot_image = None
         for im in annot_images:
