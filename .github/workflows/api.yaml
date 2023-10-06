@@ -26,7 +26,6 @@ jobs:
           key: ${{ runner.os }}-buildx-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-buildx-
-      - name:
       - name: Docker Compose Up
         run: |
           docker-compose up --build -d  # Build and start your Docker containers in the background
