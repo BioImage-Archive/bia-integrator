@@ -21,6 +21,20 @@ def main(accession_id,fname_separator):
     if fname_separator == '_seg' and accession_id in fname_dict.keys():
         fname_separator = fname_dict[accession_id]
 
+    # workaround for S-BIAD531
+    if fname_separator == 'ome_':
+        image_names = {str(image.name).split('/')[-1]: image.name for image in bia_study.images.values()}
+        for fileref in bia_study.file_references.values():
+            name = str(fileref.name)
+            source_image = None
+            if fname_separator == 'ome_' and fname_separator in name:           
+                name = name.split('/')[-1]
+                source_image_name = name.split('ome_')[0] + 'ome.tif'
+                if source_image_name in image_names.keys():
+                    source_image = image_names[source_image_name]
+            if source_image:
+                    fileref.attributes['source image'] = source_image
+    
     for fileref in bia_study.file_references.values():
         if not fileref.attributes.get('source image'):
             source_image = None
@@ -28,7 +42,10 @@ def main(accession_id,fname_separator):
             if fname_separator in ['_seg','_segmented'] and fname_separator in name :
                 source_image = name.replace(fname_separator,'')
             elif fname_separator == 'ome_' and fname_separator in name :
-                source_image = name.split('ome_')[0] + 'ome.tif'
+                name = name.split('/')[-1]
+                source_image_name = name.split('ome_')[0] + 'ome.tif'
+                if source_image_name in image_names.keys():
+                    source_image = image_names[source_image_name]
             elif fname_separator == '_rgb_labels': 
                 if fname_separator in name:
                     source_image = name.replace('_rgb_labels','')
