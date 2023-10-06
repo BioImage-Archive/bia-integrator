@@ -16,7 +16,7 @@ def test_create_study(api_client: TestClient, uuid: str):
         "organism": "test",
         "release_date": "test"
     }
-    rsp = api_client.post('/private/studies', json=study)
+    rsp = api_client.post('private/studies', json=study)
     assert rsp.status_code == 201, str(rsp)
 
     study_with_defaults = {
@@ -67,7 +67,7 @@ def test_study_annotations_applied(api_client: TestClient, uuid: str):
             "state": "active"
         }]
     }
-    rsp = api_client.post('/private/studies', json=study)
+    rsp = api_client.post('private/studies', json=study)
     assert rsp.status_code == 201, str(rsp)
 
     study_created = get_study(api_client, uuid)
@@ -92,7 +92,7 @@ def test_create_study_nonzero_version(api_client: TestClient, uuid: str):
         "organism": "test",
         "release_date": "test"
     }
-    rsp = api_client.post('/private/studies', json=study)
+    rsp = api_client.post('private/studies', json=study)
     assert rsp.status_code == 422
 
 
@@ -112,7 +112,7 @@ def test_create_study_missing_version(api_client: TestClient, uuid: str):
         "organism": "test",
         "release_date": "test"
     }
-    rsp = api_client.post('/private/studies', json=study)
+    rsp = api_client.post('private/studies', json=study)
     assert rsp.status_code == 422
 
 def test_update_study_wrong_version(api_client: TestClient, uuid: str):
@@ -130,35 +130,35 @@ def test_update_study_wrong_version(api_client: TestClient, uuid: str):
         "organism": "test",
         "release_date": "test"
     }
-    rsp = api_client.post('/private/studies', json=study)
+    rsp = api_client.post('private/studies', json=study)
     assert rsp.status_code == 201, rsp.json()
 
     # re-issuing a create request shouldn't create a new object
-    rsp = api_client.post('/private/studies', json=study)
+    rsp = api_client.post('private/studies', json=study)
     assert rsp.status_code == 409
 
     # updating an existing object with the current version number shouldn't work
-    rsp = api_client.patch('/private/studies', json=study)
+    rsp = api_client.patch('private/studies', json=study)
     assert rsp.status_code == 404
 
     # skipping a version when updating an object shouldn't work
     study['version'] = 2
-    rsp = api_client.patch('/private/studies', json=study)
+    rsp = api_client.patch('private/studies', json=study)
     assert rsp.status_code == 404
 
     # updating with an incremented version number should work
     study['version'] = 1
-    rsp = api_client.patch('/private/studies', json=study)
+    rsp = api_client.patch('private/studies', json=study)
     assert rsp.status_code == 201
 
     # updating with an old version number shouldn't work
     study['version'] = 0
-    rsp = api_client.patch('/private/studies', json=study)
+    rsp = api_client.patch('private/studies', json=study)
     assert rsp.status_code == 404
 
     # trying to create a study was already updated shouldn't work
     study['version'] = 0
-    rsp = api_client.post('/private/studies', json=study)
+    rsp = api_client.post('private/studies', json=study)
     assert rsp.status_code == 409
 
 def test_update_study_not_created(api_client: TestClient, uuid: str):
@@ -177,7 +177,7 @@ def test_update_study_not_created(api_client: TestClient, uuid: str):
             "organism": "test",
             "release_date": "test"
         }
-        rsp = api_client.patch('/private/studies', json=study)
+        rsp = api_client.patch('private/studies', json=study)
         assert rsp.status_code == 404, str(rsp)
 
 def test_update_study_nested_objects_overwritten(api_client: TestClient, existing_study: dict):
@@ -192,10 +192,10 @@ def test_update_study_nested_objects_overwritten(api_client: TestClient, existin
     existing_study["authors"] = new_authors_list
     existing_study["version"] = 1
 
-    rsp = api_client.patch('/private/studies', json=existing_study)
+    rsp = api_client.patch('private/studies', json=existing_study)
     assert rsp.status_code == 201
 
-    study = api_client.get(f'/studies/{existing_study["uuid"]}').json()
+    study = api_client.get(f'studies/{existing_study["uuid"]}').json()
     assert study["authors"] == new_authors_list
     assert study["title"] == new_title
     assert study["version"] == 1
@@ -212,7 +212,7 @@ def test_update_study_children_counts(api_client: TestClient, existing_study):
 
     make_file_references(api_client, existing_study, 10)
     make_images(api_client, existing_study, 5)
-    rsp = api_client.post(f"/private/studies/{existing_study['uuid']}/refresh_counts")
+    rsp = api_client.post(f"private/studies/{existing_study['uuid']}/refresh_counts")
     assert rsp.status_code, 201
 
     existing_study = get_study(api_client, existing_study['uuid'])
@@ -221,7 +221,7 @@ def test_update_study_children_counts(api_client: TestClient, existing_study):
 
 def test_search_studies_fetch_all(api_client: TestClient):
     # workaround for not starting with a clean db
-    rsp = api_client.get(f"/search/studies?limit={1000}")
+    rsp = api_client.get(f"search/studies?limit={1000}")
     assert rsp.status_code == 200
     initial_studies_count = len(rsp.json())
     assert initial_studies_count
@@ -229,6 +229,6 @@ def test_search_studies_fetch_all(api_client: TestClient):
     for _ in range(5):
         make_study(api_client)
     
-    rsp = api_client.get(f"/search/studies?limit={1000}")
+    rsp = api_client.get(f"search/studies?limit={1000}")
     assert rsp.status_code == 200
     assert len(rsp.json()) - initial_studies_count == 5

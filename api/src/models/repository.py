@@ -10,6 +10,7 @@ import pymongo
 import json
 import os
 
+DB_NAME = os.environ["DB_NAME"]
 COLLECTION_BIA_INTEGRATOR = "bia_integrator"
 COLLECTION_USERS = "users"
 
@@ -20,10 +21,9 @@ async def get_db(collection_name: str = COLLECTION_BIA_INTEGRATOR) -> AsyncIOMot
     dbs = await db_client.list_databases()
     dbs = [db['name'] async for db in dbs] # pull cursor items
 
-    db = db_client.bia_integrator
-    if "bia_integrator" not in list(dbs):
-        #db was dropped - rebuild indexes (and views if any)
-        
+    db = db_client.get_database(DB_NAME)
+    collections = await db.list_collection_names()
+    if COLLECTION_BIA_INTEGRATOR not in collections:
         # Single collection to let mongo enforce uuid uniqueness => documents have different shape BUT
         #   indexes targeting a specific type should filter by the indexed attributes, not type
         #   so that queries don't need to be aware of the type they expect, while still hitting the index if it exists
@@ -57,6 +57,7 @@ async def get_db(collection_name: str = COLLECTION_BIA_INTEGRATOR) -> AsyncIOMot
             name='study_assets'
         )
 
+    if COLLECTION_USERS not in collections:
         await db[COLLECTION_USERS].create_index( [ ('email', 1) ], unique = True)
 
     return db[collection_name]

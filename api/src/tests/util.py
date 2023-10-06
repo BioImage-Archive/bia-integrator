@@ -46,7 +46,7 @@ def existing_file_reference(api_client: TestClient, existing_study: dict):
         "size_in_bytes": 100
     }
 
-    rsp = api_client.post('/private/file_references', json=[file_reference])
+    rsp = api_client.post('private/file_references', json=[file_reference])
     assert rsp.status_code == 201, rsp.json()
 
     return file_reference
@@ -67,7 +67,7 @@ def existing_image(api_client: TestClient, existing_study: dict):
         }
     }
 
-    rsp = api_client.post('/private/images', json=[image])
+    rsp = api_client.post('private/images', json=[image])
     assert rsp.status_code == 201, rsp.json()
 
     return image
@@ -95,7 +95,7 @@ def authenticate_client(api_client: TestClient):
     }
     create_user_if_missing(user_details['username'], user_details['password'])
 
-    rsp = api_client.post("/auth/token", data=user_details)
+    rsp = api_client.post("auth/token", data=user_details)
 
     assert rsp.status_code == 200
     token = rsp.json()
@@ -103,7 +103,7 @@ def authenticate_client(api_client: TestClient):
     api_client.headers["Authorization"] = f"Bearer {token['access_token']}"
 
 def get_collection(api_client: TestClient, collection_uuid: str, assert_status_code=200):
-    rsp = api_client.get(f'/collections/{collection_uuid}')
+    rsp = api_client.get(f'collections/{collection_uuid}')
     assert rsp.status_code == assert_status_code
 
     return rsp.json()
@@ -121,7 +121,7 @@ def make_collection(api_client: TestClient, collection_attributes_override = {})
     }
     collection |= collection_attributes_override
 
-    rsp = api_client.post('/private/collections', json=collection)
+    rsp = api_client.post('private/collections', json=collection)
     assert rsp.status_code == 201, rsp.json()
 
     return get_collection(api_client, uuid)
@@ -145,7 +145,7 @@ def make_study(api_client: TestClient, study_attributes_override = {}):
     }
     study |= study_attributes_override
 
-    rsp = api_client.post('/private/studies', json=study)
+    rsp = api_client.post('private/studies', json=study)
     assert rsp.status_code == 201, rsp.json()
 
     return get_study(api_client, uuid)
@@ -172,7 +172,7 @@ def make_images(api_client: TestClient, existing_study: dict, n: int, image_temp
         img['uuid'] = get_uuid()
         images.append(img)
     
-    rsp = api_client.post("/private/images", json=images)
+    rsp = api_client.post("private/images", json=images)
     assert rsp.status_code == 201, rsp.json()
 
     return images
@@ -198,13 +198,13 @@ def make_file_references(api_client: TestClient, existing_study: dict, n: int, f
         file_ref['uuid'] = get_uuid()
         file_references.append(file_ref)
     
-    rsp = api_client.post("/private/file_references", json=file_references)
+    rsp = api_client.post("private/file_references", json=file_references)
     assert rsp.status_code == 201, rsp.json()
 
     return file_references
 
 def get_study(api_client: TestClient, study_uuid: str, assert_status_code=200):
-    rsp = api_client.get(f'/studies/{study_uuid}')
+    rsp = api_client.get(f'studies/{study_uuid}')
     assert rsp.status_code == assert_status_code
 
     return rsp.json()
@@ -222,7 +222,7 @@ def get_client(**kwargs) -> TestClient:
             content=traceback.format_exception(exc, value=exc, tb=exc.__traceback__),
         )
 
-    return TestClient(app.app, root_path="/api/v1", **kwargs)
+    return TestClient(app.app, base_url="http://testserver/api/v1", **kwargs)
 
 def get_uuid() -> str:
     # @TODO: make this constant and require mongo to always be clean?
