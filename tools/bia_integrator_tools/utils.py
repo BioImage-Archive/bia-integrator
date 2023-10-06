@@ -24,13 +24,40 @@ def get_annotation_files_by_accession(accession_id):
     ]
 
 def get_annotation_images_in_study(accession_id):
-    """Generate list of images in study that are annotations of another image."""
+    """Generate a dictionary of images in study that are annotations of another image."""
 
     bia_study = load_and_annotate_study(accession_id)
-    return [
-        image for image in bia_study.images.values()
-        if "source image" in image.attributes
+    annot_fileref_names = [
+        fileref.name for fileref in bia_study.file_references.values()
+        if "source image" in fileref.attributes
     ]
+    
+    return {
+        image.id: image for image in bia_study.images.values()
+        if image.name in annot_fileref_names 
+    }
+
+def get_annotation_image_name_and_source_image_name(accession_id):
+    """Generate a dictionary of name and source image name of annotations images in a study."""
+
+    bia_study = load_and_annotate_study(accession_id)
+    return {
+        fileref.name: fileref.attributes['source image'] for fileref in bia_study.file_references.values()
+        if "source image" in fileref.attributes
+    }
+    
+
+def get_source_images_in_study(accession_id):
+    """Generate a dictionary of images in study that are source images of an annotation file."""
+
+    bia_study = load_and_annotate_study(accession_id)
+    annot_and_image = get_annotation_image_name_and_source_image_name(accession_id)
+
+    return {
+        image.id: image 
+        for image in bia_study.images.values() 
+        if image.name in annot_and_image.values()
+    }
 
 
 def get_image_rep_by_type(accession_id, image_id, rep_type):
