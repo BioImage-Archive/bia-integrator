@@ -4,8 +4,7 @@ on:
     branches:
       - main
       - master
-   pull_request: ~
-
+  pull_request: ~
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
