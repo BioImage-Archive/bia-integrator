@@ -35,30 +35,26 @@ async def get_db(collection_name: str = COLLECTION_BIA_INTEGRATOR) -> AsyncIOMot
         await db[COLLECTION_BIA_INTEGRATOR].create_index(
             [ ('accession_id', 1) ],
             unique=True,
-            partialFilterExpression={
-                'accession_id': {'$exists': True}
-            },
+            sparse=True,
             name='img_accession_id'
         )
         await db[COLLECTION_BIA_INTEGRATOR].create_index(
             [ ('study_uuid', 1), ('alias.name', 1) ],
             unique=True,
-            partialFilterExpression={
-                'study_uuid': {'$exists': True},
-                'alias.name': {'$exists': True}
-            },
+            sparse=True,
             name='img_alias'
         )
         await db[COLLECTION_BIA_INTEGRATOR].create_index(
             [ ('study_uuid', 1), ('model.type_name', 1) ],
-            partialFilterExpression={
-                'study_uuid': {'$exists': True}
-            },
+            sparse=True,
             name='study_assets'
         )
 
     if COLLECTION_USERS not in collections:
-        await db[COLLECTION_USERS].create_index( [ ('email', 1) ], unique = True)
+        await db[COLLECTION_USERS].create_index(
+            [ ('email', 1) ],
+            unique = True
+        )
 
     return db[collection_name]
 
@@ -102,6 +98,15 @@ async def _get_docs_raw(query) -> Any:
 
     return await db.find(query)
 
+async def _doc_exists(doc_model: models.DocumentMixin) -> bool:
+    result = await _get_doc_raw(uuid=doc_model.uuid)
+    if not hasattr(result, "pop"):
+        return False
+
+    result.pop('_id', None)    
+
+    return result == doc_model.dict()
+
 async def get_object_info(query: dict) -> List[api_models.ObjectInfo]:
     db = await get_db()
 
@@ -115,7 +120,6 @@ async def get_object_info(query: dict) -> List[api_models.ObjectInfo]:
         documents.append(api_models.ObjectInfo(**doc))
     
     return documents
-
 
 async def get_image(*args, **kwargs) -> models.BIAImage:
     doc = await _get_doc_raw(*args, **kwargs)
@@ -184,12 +188,15 @@ async def get_study(*args, **kwargs) -> models.BIAStudy:
     
     return models.BIAStudy(**doc)
 
-async def persist_doc(doc_model: models.DocumentMixin) -> Any:
+async def persist_doc(doc_model: models.DocumentMixin) -> None:
     db = await get_db()
 
     try:
         return await db.insert_one(doc_model.dict())
     except pymongo.errors.DuplicateKeyError as e:
+        if await _doc_exists(doc_model):
+            return
+        
         raise exceptions.InvalidUpdateException(str(e))
 
 async def search_studies(query: dict, start_uuid: UUID | None = None, limit: int = 100) -> List[models.BIAStudy]:
@@ -328,8 +335,7 @@ async def doc_dependency_verify_exists(
 
     return dependency_errors_by_model_uuid
 
-
-async def update_doc(doc_model: models.DocumentMixin) -> Any:
+async def update_doc(doc_model: models.DocumentMixin) -> None:
     db = await get_db()
 
     result = await db.update_one(
@@ -343,8 +349,10 @@ async def update_doc(doc_model: models.DocumentMixin) -> Any:
         upsert=False
     )
     if not result.matched_count:
+        if await _doc_exists(doc_model):
+            return
+        
         raise exceptions.DocumentNotFound(f"Could not find document with uuid {doc_model.uuid} and version {doc_model.version}")
-    return result
 
 async def find_image_by_uuid(uuid: str | UUID) -> models.BIAImage:
     if isinstance(uuid, str):

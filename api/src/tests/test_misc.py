@@ -90,3 +90,22 @@ def test_no_id_in_list(api_client: TestClient, existing_image):
     
     assert not any(["id" in img.keys() for img in rsp.json()])
     assert not any(["_id" in img.keys() for img in rsp.json()])
+
+def test_single_doc_create_idempotent(api_client: TestClient, existing_study):
+    rsp = api_client.post('private/studies', json=existing_study)
+    assert rsp.status_code == 201
+
+def test_single_doc_update_no_change_idempotent(api_client: TestClient, existing_study):
+    rsp = api_client.patch('private/studies', json=existing_study)
+    assert rsp.status_code == 201
+
+def test_single_doc_update_some_change_fails(api_client: TestClient, existing_study):
+    existing_study['annotations'].append({
+        "author_email": "test@ebi.ac.uk",
+        "key": "test",
+        "value": "test",
+        "state": "active"
+    })
+
+    rsp = api_client.patch('private/studies', json=existing_study)
+    assert rsp.status_code == 404

@@ -133,13 +133,13 @@ def test_update_study_wrong_version(api_client: TestClient, uuid: str):
     rsp = api_client.post('private/studies', json=study)
     assert rsp.status_code == 201, rsp.json()
 
-    # re-issuing a create request shouldn't create a new object
+    # re-issuing a create request is idempotent
     rsp = api_client.post('private/studies', json=study)
-    assert rsp.status_code == 409
+    assert rsp.status_code == 201
 
-    # updating an existing object with the current version number shouldn't work
+    # updating an existing object is idempotent
     rsp = api_client.patch('private/studies', json=study)
-    assert rsp.status_code == 404
+    assert rsp.status_code == 201
 
     # skipping a version when updating an object shouldn't work
     study['version'] = 2
