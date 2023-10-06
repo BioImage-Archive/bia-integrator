@@ -11,27 +11,26 @@ services:
       - 27017:27017
     expose:
       - 27017
-        # command: "mongod --config /etc/mongo.conf --oplogMinRetentionHours 10"
-        # volumes:
-        #   - "./.share/mongo.conf:/etc/mongo.conf"
-        #     #- "./.share/keyfile.secret:/home/share/keyfile/keyfile.secret"
+      # command: "mongod --config /etc/mongo.conf --oplogMinRetentionHours 10"
+      # volumes:
+      #   - "./.share/mongo.conf:/etc/mongo.conf"
+      #     #- "./.share/keyfile.secret:/home/share/keyfile/keyfile.secret"
   bia-integrator-api:
-    image: ghcr.io/bioimage-archive/integrator-api:0.1
+    build: .
     container_name: api
-    hostname:  api
+    hostname: api
     ports:
       - 8080:8000
     expose:
       - 8000
     volumes:
       - "./.env:/integrator-api/.env"
+      #networks:
+      #  bia-integrator:
+      #    ipv4_address: 172.20.0.2
 
-    #networks:
-    #  bia-integrator:
-    #    ipv4_address: 172.20.0.2
-
-    #volumes:
-    #  - config_share:/home/share
+      #volumes:
+      #  - config_share:/home/share
   #mongoinit:
   #  image: mongo:6.0
   #  restart: "no"
