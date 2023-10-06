@@ -123,9 +123,11 @@
         </ul>
         <h2 class="vf-section-header__heading">This dataset has</h2>
         <ul class="vf-list">
+        {% if study.attributes.get('annotation_type') %}
         {% for value in study.attributes['annotation_type'].split(',') %}
         <li>{{ value }}</li>
         {% endfor %}
+        {% endif %}
         {% for value in study.tags %}
         {% if value.startswith('AI') %}
         <li>{{ value[2:] }}</li>

@@ -80,6 +80,9 @@ def generate_dataset_page_html(accession_id, template_fname: str):
         for annfile in annotation_files
         }
     
+    # This assumes one-to-one correspondence between images and annotation files.
+    # But we have cases of one source image per multiple annotation files and
+    # one annotation file per multiple images (e.g. COCO)
     corresponding_ann_aliases = {
         image.id: ann_aliases_by_sourcename.get(image.name)
         for image in bia_study.images.values()
