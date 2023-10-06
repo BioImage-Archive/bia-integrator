@@ -31,7 +31,7 @@ jobs:
         with:
           create-tag: false # Do not create new tag
           version-command: |
-            bash -o pipefail -c "cat pyproject.toml | yj -tj | jq -r '.tool.poetry.version'"
+            bash -o pipefail -c "grep -m 1 version pyproject.toml | grep -e '\d.\d.\d' -o"
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v4.6.0
