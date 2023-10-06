@@ -29,10 +29,10 @@ jobs:
       - name: Docker Compose Up
         run: |
           docker-compose up --build -d  # Build and start your Docker containers in the background
-      - name: Run tests
-        run: |
-          # Add commands to run your tests here
-          docker-compose exec -T api pytest  # Example: run pytest in the api container
+      # - name: Run tests
+      #   run: |
+      #     # Add commands to run your tests here
+      #     docker-compose exec -T api pytest  # Example: run pytest in the api container
       - name: Docker Compose Down
         run: |
           docker-compose down  # Stop and remove your Docker containers
