@@ -123,9 +123,11 @@
         </ul>
         <h2 class="vf-section-header__heading">This dataset has</h2>
         <ul class="vf-list">
+        {% if study.attributes.get('annotation_type') %}
         {% for value in study.attributes['annotation_type'].split(',') %}
         <li>{{ value }}</li>
         {% endfor %}
+        {% endif %}
         {% for value in study.tags %}
         {% if value.startswith('AI') %}
         <li>{{ value[2:] }}</li>
@@ -218,6 +220,9 @@
                             <tr>
                                 <th>Image ID</th>
                                 <th>Preview</th>
+                                {% if corresponding_ann_aliases %}
+                                <th>Corresponding Annotation ID</th>
+                                {% endif %}
                                 <th>Filename <i class="fa-solid fa-circle-info" title="Orginial filepath and filename prior to ome-ngff conversion"></i></th>
                                 <th>Dimensions<br>(T, C, Z, Y, X)</th>
                                 <th>Download Size</th>
@@ -238,6 +243,13 @@
                                     <img class="vf-figure__image" src={{ image_thumbnails[image.id] }}>
                                     </div>
                                 </td>
+                                {% if corresponding_ann_aliases %}
+                                  {% if corresponding_ann_aliases.get(image.id) %}
+                                  <td>{{ corresponding_ann_aliases[image.id] }}</td>
+                                  {% else %}
+                                  <td>  </td>
+                                  {% endif %}
+                                {% endif %}
                                 <td>{{ image.original_relpath }}</td>
                                 {% if image.dimensions %}
                                     <td>{{ image.dimensions }}</td>
@@ -289,6 +301,9 @@
                         <thead>
                             <tr>
                                 <th>Annotation ID</th>
+                                {% if corresponding_im_aliases %}
+                                <th>Corresponding Image ID</th>
+                                {% endif %}
                                 <th>Filename</th>
                                 {% if annotation_names %}
                                 <th>Source Image</th>
@@ -303,6 +318,13 @@
                                 <td>{{ annfile.attributes['alias']}} </td>
                                 {% else %}
                                 <td>{{ annfile.id }}</td>
+                                {% endif %}
+                                {% if corresponding_im_aliases %}
+                                  {% if corresponding_im_aliases.get(annfile.attributes['alias']) %}
+                                  <td>{{ corresponding_im_aliases[annfile.attributes['alias']] }}</td>
+                                  {% else %}
+                                  <td>  </td>
+                                {% endif %}
                                 {% endif %}
                                 <td>{{ annfile.name }}</td>
                                  {% if annfile.attributes.get('source image') %}
@@ -358,6 +380,9 @@
                         <thead>
                             <tr>
                                 <th>Image ID</th>
+                                {% if corresponding_ann_aliases %}
+                                <th>Corresponding Annotation ID</th>
+                                {% endif %}
                                 <th>Filename</th>
                                 <th>Download Size</th>
                                 <th>Actions</th>
@@ -366,6 +391,13 @@
                         <tbody>
                           {% for image in study.images.values() %}
                           <td>{{ image_names[image.id] }}</td>
+                          {% if corresponding_ann_aliases %}
+                            {% if corresponding_ann_aliases.get(image.id) %}
+                            <td>{{ corresponding_ann_aliases[image.id] }}</td>
+                            {% else %}
+                            <td>  </td>
+                            {% endif %}
+                          {% endif %}
                           <td>{{ image.original_relpath }}</td>
                           {% if "download_size" in image.attributes %}
                           <td>{{ image.attributes["download_size"] }}</td>
@@ -395,7 +427,7 @@
                 var annotTable = $('#annot_table').DataTable( {
                     columnDefs: [
                         { type: 'natural', width: '10%', targets: 0 },
-                        { targets: [1, 2], visible: false }
+                        { targets: [2, 3], visible: false }
                     ]
                 });
             
@@ -403,7 +435,7 @@
                     scrollX: true,
                     columnDefs: [
                         { type: 'natural', width: '10%', targets: 0 },
-                        { targets: 2, visible: false }
+                        { targets: 3, visible: false }
                     ]
                 });
 
@@ -412,24 +444,24 @@
                   $("#table_wrapper").toggleClass("shrunk");
                 });     
 
-                // Toggle button for column 2 and column 3 in annot_table
+                // Toggle button for column 3 and column 4 in annot_table
                 $('#toggle-annot-column-2').on('click', function () {
-                    var column = annotTable.column(1);
-                    column.visible(!column.visible());
-                    $('#annot_table').toggleClass('shrink-table');
-                    annotTable.columns.adjust().draw();
-                });
-
-                $('#toggle-annot-column-3').on('click', function () {
                     var column = annotTable.column(2);
                     column.visible(!column.visible());
                     $('#annot_table').toggleClass('shrink-table');
                     annotTable.columns.adjust().draw();
                 });
 
-                // Toggle button for column 2 in viewable table (images)
+                $('#toggle-annot-column-3').on('click', function () {
+                    var column = annotTable.column(3);
+                    column.visible(!column.visible());
+                    $('#annot_table').toggleClass('shrink-table');
+                    annotTable.columns.adjust().draw();
+                });
+
+                // Toggle button for column 3 in viewable table (images)
                 $('#toggle-images-column-2').on('click', function () {
-                    var column = imagesTable.column(2);
+                    var column = imagesTable.column(3);
                     column.visible(!column.visible());
                     $('#viewable').toggleClass('shrink-table');
                     imagesTable.columns.adjust().draw();

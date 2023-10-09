@@ -263,7 +263,7 @@ rule generate_representative_image:
                 if [ -f ${{IM_REF}}.success ]
                 then
                     IMAGE_ID=$(basename $IM_REF)
-                    {command_prefix} python {script_dir}/generate_representative_image_and_set_to_default.py $ACCNO $IMAGE_ID > {output}
+                    {command_prefix} python {script_dir}/generate_representatives_for_annotation_and_image_and_set_to_default.py $ACCNO $IMAGE_ID > {output}
                     exit 0
                 fi
             done

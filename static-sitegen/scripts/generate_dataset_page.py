@@ -75,6 +75,29 @@ def generate_dataset_page_html(accession_id, template_fname: str):
         for image in bia_study.images.values()
     }     
     
+    im_aliases_by_name = {
+        image.name: aliases_by_id.get(image.id, image.id)
+        for image in bia_study.images.values()
+    }
+
+    ann_aliases_by_sourcename = {}
+    for annfile in annotation_files:
+        if ann_aliases_by_sourcename.get(annfile.attributes['source image']):
+            ann_aliases_by_sourcename[annfile.attributes['source image']] += ', ' + annfile.attributes['alias']
+        else:
+            ann_aliases_by_sourcename[annfile.attributes['source image']] = annfile.attributes['alias'] 
+    
+    # This assumes one-to-one or one-to-many correspondence between images and annotation files.
+    # But we have cases of one annotation file per multiple images (e.g. COCO)
+    corresponding_ann_aliases = {
+        image.id: ann_aliases_by_sourcename.get(image.name)
+        for image in bia_study.images.values()
+    }
+
+    corresponding_im_aliases ={
+        annfile.attributes['alias'] : im_aliases_by_name.get(annfile.attributes['source image'])
+        for annfile in annotation_files
+    }
 
     images_with_ome_ngff = []
     image_landing_uris = {}
@@ -124,7 +147,9 @@ def generate_dataset_page_html(accession_id, template_fname: str):
             annotation_download_uris=annotation_download_uris,
             authors=author_names,
             study_content_annotations=study_content_annotations,
-            image_ann_aliases=ann_aliases_for_images
+            image_ann_aliases=ann_aliases_for_images,
+            corresponding_ann_aliases=corresponding_ann_aliases,
+            corresponding_im_aliases=corresponding_im_aliases
     )
 
     return rendered

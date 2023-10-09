@@ -2,7 +2,8 @@ import click
 
 from bia_integrator_core.integrator import load_and_annotate_study
 
-from utils import get_annotation_images_in_study, get_non_annotation_images_in_study
+from bia_integrator_tools.utils import get_annotation_images_in_study
+from utils import get_non_annotation_images_in_study
 
 
 @click.command()
@@ -11,7 +12,7 @@ def main(accession_id):
 
     bia_study = load_and_annotate_study(accession_id)
 
-    annotation_images = get_annotation_images_in_study(bia_study)
+    annotation_images = get_annotation_images_in_study(accession_id)
     non_annotation_images = get_non_annotation_images_in_study(bia_study)
 
     print(f"Study has {len(annotation_images)} annotations and {len(non_annotation_images)} images")
