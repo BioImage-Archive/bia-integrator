@@ -370,8 +370,11 @@ def render_proxy_image(proxy_im, bbrel=DEFAULT_BB, dims=(512, 512), t=None, z=No
             windowed_array = apply_window(channel_array, csettings[c].window_start, csettings[c].window_end)
             channel_arrays[c] = windowed_array
 
+    # ToDo: Discuss whether to create global DEFAULT_COLORMAPS constant
+    #       so we do not call create_linear_cmap_dict too many times...
+    #       OR use hex values: https://stackoverflow.com/questions/38147997/how-to-change-a-linearsegmentedcolormap-to-a-different-distribution-of-color
     colormaps = {
-        c: LinearSegmentedColormap.from_list(f'n{n}', ([0, 0, 0], csetting.colormap_end))
+        c: LinearSegmentedColormap(f'n{n}', create_linear_cmap_dict([0, 0, 0], csetting.colormap_end))
         for n, (c, csetting) in enumerate(csettings.items())
     }
 
@@ -398,3 +401,15 @@ def generate_padded_thumbnail_from_ngff_uri(ngff_uri, dims=(256, 256), autocontr
 
     return padded
 
+def create_linear_cmap_dict(
+        start_rgb=[0.0, 0.0, 0.0,], end_rgb=[1.0, 1.0, 1.0,]):
+    """Return a colormap dict for 'segmentedData' of LinearSegmentedColormap
+
+    """
+    cdict = {"red": None, "green": None, "blue": None,}
+    for i, key in enumerate(cdict.keys()):
+        cdict[key] = [
+            (0.0, start_rgb[i], start_rgb[i]),(1.0, end_rgb[i], end_rgb[i])
+        ]
+
+    return cdict
