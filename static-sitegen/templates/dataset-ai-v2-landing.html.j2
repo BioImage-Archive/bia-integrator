@@ -88,12 +88,6 @@
             <svg class="vf-icon vf-icon__arrown--down | vf-list__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M.249,7.207,11.233,19.678h0a1.066,1.066,0,0,0,1.539,0L23.751,7.207a.987.987,0,0,0-.107-1.414l-1.85-1.557a1.028,1.028,0,0,0-1.438.111L12.191,13.8a.25.25,0,0,1-.379,0L3.644,4.346A1.021,1.021,0,0,0,2.948,4a1,1,0,0,0-.741.238L.356,5.793A.988.988,0,0,0,0,6.478.978.978,0,0,0,.249,7.207Z"></path></svg>
           </a>
         </li>
-        <li class="vf-list__item">
-          <a class="vf-list__link" href="https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/pages/access_data_help.html">
-            How to access the data
-            <svg class="vf-icon vf-icon__arrown--down | vf-list__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M.249,7.207,11.233,19.678h0a1.066,1.066,0,0,0,1.539,0L23.751,7.207a.987.987,0,0,0-.107-1.414l-1.85-1.557a1.028,1.028,0,0,0-1.438.111L12.191,13.8a.25.25,0,0,1-.379,0L3.644,4.346A1.021,1.021,0,0,0,2.948,4a1,1,0,0,0-.741.238L.356,5.793A.988.988,0,0,0,0,6.478.978.978,0,0,0,.249,7.207Z"></path></svg>
-          </a>
-        </li>
       </ul>
     </div>
   </section>
@@ -172,6 +166,12 @@
       <p></p>
       <a class="vf-card__link" href="https://www.ebi.ac.uk/biostudies/BioImages/studies/{{ study.accession_id }}" target=”_blank”><button class="vf-button vf-button--primary vf-button--sm">Original submission page</button></a>
      <!--  <a class="vf-card__link" href="https://www.ebi.ac.uk/biostudies/BioImages/studies/{{ study.accession_id }}" target=”_blank”> Original submission page </a> -->
+     <p></p>
+     <ul class="vf-list">
+     <li><b>
+        <a href="access_data_help.html">How to access the data </a>
+      </b></li>
+      </ul>
     </div>
     <div class="vf-content">
       <div class="vf-grid vf-grid__col-2">
@@ -285,7 +285,7 @@
       <i class="fa-solid fa-circle-info" title="Annotation in the context of AI, is the task of marking up data, such as images, so it can be recognised by models and used to make predictions."></i></h3>
       <ul class="vf-list">
         {% if study.attributes.get('annotation_type') %}
-        <li><b><a href='https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/pages/ai-glossary.html' target=”_blank”>Annotation type(s)</a>:</b><i class="fa-solid fa-circle-info" title="Click on the Annotation type(s) to go to the page with a glossary"></i>
+        <li><b><a href='ai-glossary.html' target=”_blank”>Annotation type(s)</a>:</b><i class="fa-solid fa-circle-info" title="Click on the Annotation type(s) to go to the page with a glossary"></i>
         {{ study.attributes['annotation_type'] }}</li>
         {% endif %}
         {% if study.attributes.get('annotation_method') %}
