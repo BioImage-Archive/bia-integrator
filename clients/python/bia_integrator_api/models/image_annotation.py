@@ -18,26 +18,19 @@ import re  # noqa: F401
 import json
 
 
-
-from pydantic import BaseModel, Field, StrictStr, constr, validator
+from typing import Any, Optional
+from pydantic import BaseModel, Field
 from bia_integrator_api.models.annotation_state import AnnotationState
 
 class ImageAnnotation(BaseModel):
     """
     ImageAnnotation
     """
-    author_email: constr(strict=True) = Field(...)
-    key: StrictStr = Field(...)
-    value: StrictStr = Field(...)
+    author_email: Optional[Any] = Field(...)
+    key: Optional[Any] = Field(...)
+    value: Optional[Any] = Field(...)
     state: AnnotationState = Field(...)
     __properties = ["author_email", "key", "value", "state"]
-
-    @validator('author_email')
-    def author_email_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if not re.match(r".*@ebi\.ac\.uk", value):
-            raise ValueError(r"must validate the regular expression /.*@ebi\.ac\.uk/")
-        return value
 
     class Config:
         """Pydantic configuration"""
@@ -63,6 +56,21 @@ class ImageAnnotation(BaseModel):
                           exclude={
                           },
                           exclude_none=True)
+        # set to None if author_email (nullable) is None
+        # and __fields_set__ contains the field
+        if self.author_email is None and "author_email" in self.__fields_set__:
+            _dict['author_email'] = None
+
+        # set to None if key (nullable) is None
+        # and __fields_set__ contains the field
+        if self.key is None and "key" in self.__fields_set__:
+            _dict['key'] = None
+
+        # set to None if value (nullable) is None
+        # and __fields_set__ contains the field
+        if self.value is None and "value" in self.__fields_set__:
+            _dict['value'] = None
+
         return _dict
 
     @classmethod

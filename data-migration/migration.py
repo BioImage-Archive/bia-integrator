@@ -224,7 +224,7 @@ def migrate_study(study_id):
 
     print(f"Creating {len(study_filerefs_api)} filerefs for study {study_id}")
     if len(study_filerefs_api):
-        api_client.create_file_reference(study_filerefs_api)
+        api_client.create_file_references(study_filerefs_api)
 
     print(f"Creating {len(study_images_api)} images for study {study_id}")
     if len(study_images_api):

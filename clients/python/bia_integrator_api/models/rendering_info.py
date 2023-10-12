@@ -18,17 +18,16 @@ import re  # noqa: F401
 import json
 
 
-from typing import List, Optional
-from pydantic import BaseModel, StrictInt, conlist
-from bia_integrator_api.models.channel_rendering import ChannelRendering
+from typing import Any, Optional
+from pydantic import BaseModel
 
 class RenderingInfo(BaseModel):
     """
     RenderingInfo
     """
-    channel_renders: Optional[conlist(ChannelRendering)] = None
-    default_z: Optional[StrictInt] = None
-    default_t: Optional[StrictInt] = None
+    channel_renders: Optional[Any] = None
+    default_z: Optional[Any] = None
+    default_t: Optional[Any] = None
     __properties = ["channel_renders", "default_z", "default_t"]
 
     class Config:
@@ -55,13 +54,21 @@ class RenderingInfo(BaseModel):
                           exclude={
                           },
                           exclude_none=True)
-        # override the default output from pydantic by calling `to_dict()` of each item in channel_renders (list)
-        _items = []
-        if self.channel_renders:
-            for _item in self.channel_renders:
-                if _item:
-                    _items.append(_item.to_dict())
-            _dict['channel_renders'] = _items
+        # set to None if channel_renders (nullable) is None
+        # and __fields_set__ contains the field
+        if self.channel_renders is None and "channel_renders" in self.__fields_set__:
+            _dict['channel_renders'] = None
+
+        # set to None if default_z (nullable) is None
+        # and __fields_set__ contains the field
+        if self.default_z is None and "default_z" in self.__fields_set__:
+            _dict['default_z'] = None
+
+        # set to None if default_t (nullable) is None
+        # and __fields_set__ contains the field
+        if self.default_t is None and "default_t" in self.__fields_set__:
+            _dict['default_t'] = None
+
         return _dict
 
     @classmethod
@@ -74,7 +81,7 @@ class RenderingInfo(BaseModel):
             return RenderingInfo.parse_obj(obj)
 
         _obj = RenderingInfo.parse_obj({
-            "channel_renders": [ChannelRendering.from_dict(_item) for _item in obj.get("channel_renders")] if obj.get("channel_renders") is not None else None,
+            "channel_renders": obj.get("channel_renders"),
             "default_z": obj.get("default_z"),
             "default_t": obj.get("default_t")
         })

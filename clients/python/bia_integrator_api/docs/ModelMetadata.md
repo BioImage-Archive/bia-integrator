@@ -4,8 +4,8 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**type_name** | **str** |  | 
-**version** | **int** |  | 
+**type_name** | **object** |  | 
+**version** | **object** |  | 
 
 ## Example
 

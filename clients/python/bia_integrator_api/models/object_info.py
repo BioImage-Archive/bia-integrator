@@ -18,15 +18,15 @@ import re  # noqa: F401
 import json
 
 
-
-from pydantic import BaseModel, Field, StrictStr
+from typing import Any, Optional
+from pydantic import BaseModel, Field
 from bia_integrator_api.models.model_metadata import ModelMetadata
 
 class ObjectInfo(BaseModel):
     """
     ObjectInfo
     """
-    uuid: StrictStr = Field(...)
+    uuid: Optional[Any] = Field(...)
     model: ModelMetadata = Field(...)
     __properties = ["uuid", "model"]
 
@@ -57,6 +57,11 @@ class ObjectInfo(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of model
         if self.model:
             _dict['model'] = self.model.to_dict()
+        # set to None if uuid (nullable) is None
+        # and __fields_set__ contains the field
+        if self.uuid is None and "uuid" in self.__fields_set__:
+            _dict['uuid'] = None
+
         return _dict
 
     @classmethod

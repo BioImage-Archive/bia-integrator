@@ -47,12 +47,30 @@ async def study_refresh_counts(study_uuid: str) -> None:
 async def create_images(study_images: List[db_models.BIAImage]) -> api_models.BulkOperationResponse:
     logging.info(f"Creating {len(study_images)} images. First image attached to study: {study_images[0].study_uuid if len(study_images) else 'EMPTY LIST'}")
 
-    insert_errors_by_uuid = await repository.doc_dependency_verify_exists(study_images, lambda img: img.study_uuid, repository.find_study_by_uuid)
-    insert_results = await repository.persist_docs(study_images, insert_errors_by_uuid=insert_errors_by_uuid)
+    # always report errors based on idx not uuid, for cases where we have multiple documents with the same uuid (they will always have different indices)
+    create_bulk_response = api_models.BulkOperationResponse(
+        items=[
+            api_models.BulkOperationItem(
+                status = 0,
+                idx_in_request = idx,
+                message = ""
+            )
+            for idx in range(len(study_images))
+        ]
+    )
 
-    rsp = api_models.BulkOperationResponse(items=insert_results)
+    await repository.doc_dependency_verify_exists(
+        study_images,
+        lambda img: img.study_uuid,
+        repository.find_study_by_uuid,
+        ref_bulk_operation_response = create_bulk_response
+    )
+    await repository.persist_docs(
+        study_images,
+        ref_bulk_operation_response = create_bulk_response
+    )
 
-    return rsp
+    return create_bulk_response
 
 @router.patch("/images/single", status_code=status.HTTP_200_OK)
 async def update_image(study_image: db_models.BIAImage) -> None:
@@ -79,14 +97,30 @@ async def create_image_representation(image_uuid: str, representation : db_model
     return None
 
 @router.post("/file_references", status_code=status.HTTP_201_CREATED)
-async def create_file_reference(file_references: List[db_models.FileReference]) -> api_models.BulkOperationResponse:
+async def create_file_references(file_references: List[db_models.FileReference]) -> api_models.BulkOperationResponse:
     logging.info(f"Creating {len(file_references)} file references. First file reference attached to study: {file_references[0].study_uuid if len(file_references) else 'EMPTY LIST'}")
 
-    insert_errors_by_uuid = await repository.doc_dependency_verify_exists(file_references, lambda fr: fr.study_uuid, repository.find_study_by_uuid)
-    insert_results = await repository.persist_docs(file_references, insert_errors_by_uuid=insert_errors_by_uuid)
+    # always report errors based on idx not uuid, for cases where we have multiple documents with the same uuid (they will always have different indices)
+    create_bulk_response = api_models.BulkOperationResponse(
+        items=[
+            api_models.BulkOperationItem(
+                status = 0,
+                idx_in_request = idx,
+                message = ""
+            )
+            for idx in range(len(file_references))
+        ]
+    )
 
-    rsp = api_models.BulkOperationResponse(items=insert_results)
-    return rsp
+    await repository.doc_dependency_verify_exists(
+        file_references,
+        lambda fr: fr.study_uuid,
+        repository.find_study_by_uuid,
+        ref_bulk_operation_response=create_bulk_response
+    )
+    await repository.persist_docs(file_references, ref_bulk_operation_response=create_bulk_response)
+
+    return create_bulk_response
 
 @router.patch("/file_references/single", status_code=status.HTTP_200_OK)
 async def update_file_reference(file_reference: db_models.FileReference) -> None:

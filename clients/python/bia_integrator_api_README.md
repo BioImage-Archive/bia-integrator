@@ -34,10 +34,10 @@ import bia_integrator_api
 from bia_integrator_api.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to /api/v1
+# Defining the host is optional and defaults to http://localhost
 # See configuration.py for a list of all supported configuration parameters.
 configuration = bia_integrator_api.Configuration(
-    host = "/api/v1"
+    host = "http://localhost"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -52,11 +52,11 @@ configuration.access_token = os.environ["ACCESS_TOKEN"]
 with bia_integrator_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = bia_integrator_api.PrivateApi(api_client)
-    bia_collection = bia_integrator_api.BIACollection() # BIACollection | 
+    request_body = None # Dict[str, object] | 
 
     try:
         # Create Collection
-        api_response = api_instance.create_collection(bia_collection)
+        api_response = api_instance.create_collection(request_body)
         print("The response of PrivateApi->create_collection:\n")
         pprint(api_response)
     except ApiException as e:
@@ -66,47 +66,45 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
 
 ## Documentation for API Endpoints
 
-All URIs are relative to */api/v1*
+All URIs are relative to *http://localhost*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
-*PrivateApi* | [**create_collection**](bia_integrator_api/docs/PrivateApi.md#create_collection) | **POST** /private/collections | Create Collection
-*PrivateApi* | [**create_file_reference**](bia_integrator_api/docs/PrivateApi.md#create_file_reference) | **POST** /private/file_references | Create File Reference
-*PrivateApi* | [**create_image_representation**](bia_integrator_api/docs/PrivateApi.md#create_image_representation) | **POST** /private/images/{image_uuid}/representations/single | Create Image Representation
-*PrivateApi* | [**create_images**](bia_integrator_api/docs/PrivateApi.md#create_images) | **POST** /private/images | Create Images
-*PrivateApi* | [**create_images_bulk**](bia_integrator_api/docs/PrivateApi.md#create_images_bulk) | **POST** /private/images/bulk | Create Images Bulk
-*PrivateApi* | [**create_study**](bia_integrator_api/docs/PrivateApi.md#create_study) | **POST** /private/studies | Create Study
-*PrivateApi* | [**get_collection**](bia_integrator_api/docs/PrivateApi.md#get_collection) | **GET** /collections/{collection_uuid} | Get Collection
-*PrivateApi* | [**get_file_reference**](bia_integrator_api/docs/PrivateApi.md#get_file_reference) | **GET** /file_references/{file_reference_uuid} | Get File Reference
-*PrivateApi* | [**get_image**](bia_integrator_api/docs/PrivateApi.md#get_image) | **GET** /images/{image_uuid} | Get Image
-*PrivateApi* | [**get_image_ome_metadata**](bia_integrator_api/docs/PrivateApi.md#get_image_ome_metadata) | **GET** /images/{image_uuid}/ome_metadata | Get Image Ome Metadata
-*PrivateApi* | [**get_object_info_by_accession**](bia_integrator_api/docs/PrivateApi.md#get_object_info_by_accession) | **GET** /object_info_by_accessions | Get Object Info By Accession
-*PrivateApi* | [**get_study**](bia_integrator_api/docs/PrivateApi.md#get_study) | **GET** /studies/{study_uuid} | Get Study
-*PrivateApi* | [**get_study_file_references**](bia_integrator_api/docs/PrivateApi.md#get_study_file_references) | **GET** /studies/{study_uuid}/file_references | Get Study File References
-*PrivateApi* | [**get_study_images**](bia_integrator_api/docs/PrivateApi.md#get_study_images) | **GET** /studies/{study_uuid}/images | Get Study Images
-*PrivateApi* | [**get_study_images_by_alias**](bia_integrator_api/docs/PrivateApi.md#get_study_images_by_alias) | **GET** /studies/{study_accession}/images_by_aliases | Get Study Images By Alias
-*PrivateApi* | [**health_check**](bia_integrator_api/docs/PrivateApi.md#health_check) | **GET** /admin/health-check | Health Check
-*PrivateApi* | [**login_for_access_token**](bia_integrator_api/docs/PrivateApi.md#login_for_access_token) | **POST** /auth/token | Login For Access Token
-*PrivateApi* | [**register_user**](bia_integrator_api/docs/PrivateApi.md#register_user) | **POST** /auth/users/register | Register User
-*PrivateApi* | [**search_collections**](bia_integrator_api/docs/PrivateApi.md#search_collections) | **GET** /collections | Search Collections
-*PrivateApi* | [**search_images**](bia_integrator_api/docs/PrivateApi.md#search_images) | **GET** /search/images | Search Images
-*PrivateApi* | [**search_studies**](bia_integrator_api/docs/PrivateApi.md#search_studies) | **GET** /search/studies | Search Studies
-*PrivateApi* | [**study_refresh_counts**](bia_integrator_api/docs/PrivateApi.md#study_refresh_counts) | **POST** /private/studies/{study_uuid}/refresh_counts | Study Refresh Counts
-*PrivateApi* | [**update_file_reference**](bia_integrator_api/docs/PrivateApi.md#update_file_reference) | **PATCH** /private/file_references/single | Update File Reference
-*PrivateApi* | [**update_image**](bia_integrator_api/docs/PrivateApi.md#update_image) | **PATCH** /private/images/single | Update Image
-*PrivateApi* | [**update_study**](bia_integrator_api/docs/PrivateApi.md#update_study) | **PATCH** /private/studies | Update Study
-*PublicApi* | [**get_collection**](bia_integrator_api/docs/PublicApi.md#get_collection) | **GET** /collections/{collection_uuid} | Get Collection
-*PublicApi* | [**get_file_reference**](bia_integrator_api/docs/PublicApi.md#get_file_reference) | **GET** /file_references/{file_reference_uuid} | Get File Reference
-*PublicApi* | [**get_image**](bia_integrator_api/docs/PublicApi.md#get_image) | **GET** /images/{image_uuid} | Get Image
-*PublicApi* | [**get_image_ome_metadata**](bia_integrator_api/docs/PublicApi.md#get_image_ome_metadata) | **GET** /images/{image_uuid}/ome_metadata | Get Image Ome Metadata
-*PublicApi* | [**get_object_info_by_accession**](bia_integrator_api/docs/PublicApi.md#get_object_info_by_accession) | **GET** /object_info_by_accessions | Get Object Info By Accession
-*PublicApi* | [**get_study**](bia_integrator_api/docs/PublicApi.md#get_study) | **GET** /studies/{study_uuid} | Get Study
-*PublicApi* | [**get_study_file_references**](bia_integrator_api/docs/PublicApi.md#get_study_file_references) | **GET** /studies/{study_uuid}/file_references | Get Study File References
-*PublicApi* | [**get_study_images**](bia_integrator_api/docs/PublicApi.md#get_study_images) | **GET** /studies/{study_uuid}/images | Get Study Images
-*PublicApi* | [**get_study_images_by_alias**](bia_integrator_api/docs/PublicApi.md#get_study_images_by_alias) | **GET** /studies/{study_accession}/images_by_aliases | Get Study Images By Alias
-*PublicApi* | [**search_collections**](bia_integrator_api/docs/PublicApi.md#search_collections) | **GET** /collections | Search Collections
-*PublicApi* | [**search_images**](bia_integrator_api/docs/PublicApi.md#search_images) | **GET** /search/images | Search Images
-*PublicApi* | [**search_studies**](bia_integrator_api/docs/PublicApi.md#search_studies) | **GET** /search/studies | Search Studies
+*PrivateApi* | [**create_collection**](bia_integrator_api/docs/PrivateApi.md#create_collection) | **POST** /api/v1/private/collections | Create Collection
+*PrivateApi* | [**create_file_reference**](bia_integrator_api/docs/PrivateApi.md#create_file_reference) | **POST** /api/v1/private/file_references | Create File Reference
+*PrivateApi* | [**create_image_representation**](bia_integrator_api/docs/PrivateApi.md#create_image_representation) | **POST** /api/v1/private/images/{image_uuid}/representations/single | Create Image Representation
+*PrivateApi* | [**create_images**](bia_integrator_api/docs/PrivateApi.md#create_images) | **POST** /api/v1/private/images | Create Images
+*PrivateApi* | [**create_images_bulk**](bia_integrator_api/docs/PrivateApi.md#create_images_bulk) | **POST** /api/v1/private/images/bulk | Create Images Bulk
+*PrivateApi* | [**create_study**](bia_integrator_api/docs/PrivateApi.md#create_study) | **POST** /api/v1/private/studies | Create Study
+*PrivateApi* | [**get_collection**](bia_integrator_api/docs/PrivateApi.md#get_collection) | **GET** /api/v1/collections/{collection_uuid} | Get Collection
+*PrivateApi* | [**get_file_reference**](bia_integrator_api/docs/PrivateApi.md#get_file_reference) | **GET** /api/v1/file_references/{file_reference_uuid} | Get File Reference
+*PrivateApi* | [**get_image**](bia_integrator_api/docs/PrivateApi.md#get_image) | **GET** /api/v1/images/{image_uuid} | Get Image
+*PrivateApi* | [**get_object_info_by_accession**](bia_integrator_api/docs/PrivateApi.md#get_object_info_by_accession) | **GET** /api/v1/object_info_by_accessions | Get Object Info By Accession
+*PrivateApi* | [**get_study**](bia_integrator_api/docs/PrivateApi.md#get_study) | **GET** /api/v1/studies/{study_uuid} | Get Study
+*PrivateApi* | [**get_study_file_references**](bia_integrator_api/docs/PrivateApi.md#get_study_file_references) | **GET** /api/v1/studies/{study_uuid}/file_references | Get Study File References
+*PrivateApi* | [**get_study_images**](bia_integrator_api/docs/PrivateApi.md#get_study_images) | **GET** /api/v1/studies/{study_uuid}/images | Get Study Images
+*PrivateApi* | [**get_study_images_by_alias**](bia_integrator_api/docs/PrivateApi.md#get_study_images_by_alias) | **GET** /api/v1/studies/{study_accession}/images_by_aliases | Get Study Images By Alias
+*PrivateApi* | [**health_check**](bia_integrator_api/docs/PrivateApi.md#health_check) | **GET** /api/v1/admin/health-check | Health Check
+*PrivateApi* | [**login_for_access_token**](bia_integrator_api/docs/PrivateApi.md#login_for_access_token) | **POST** /api/v1/auth/token | Login For Access Token
+*PrivateApi* | [**register_user**](bia_integrator_api/docs/PrivateApi.md#register_user) | **POST** /api/v1/auth/users/register | Register User
+*PrivateApi* | [**search_collections**](bia_integrator_api/docs/PrivateApi.md#search_collections) | **GET** /api/v1/collections | Search Collections
+*PrivateApi* | [**search_images**](bia_integrator_api/docs/PrivateApi.md#search_images) | **GET** /api/v1/search/images | Search Images
+*PrivateApi* | [**search_studies**](bia_integrator_api/docs/PrivateApi.md#search_studies) | **GET** /api/v1/search/studies | Search Studies
+*PrivateApi* | [**study_refresh_counts**](bia_integrator_api/docs/PrivateApi.md#study_refresh_counts) | **POST** /api/v1/private/studies/{study_uuid}/refresh_counts | Study Refresh Counts
+*PrivateApi* | [**update_file_reference**](bia_integrator_api/docs/PrivateApi.md#update_file_reference) | **PATCH** /api/v1/private/file_references/single | Update File Reference
+*PrivateApi* | [**update_image**](bia_integrator_api/docs/PrivateApi.md#update_image) | **PATCH** /api/v1/private/images/single | Update Image
+*PrivateApi* | [**update_study**](bia_integrator_api/docs/PrivateApi.md#update_study) | **PATCH** /api/v1/private/studies | Update Study
+*PublicApi* | [**get_collection**](bia_integrator_api/docs/PublicApi.md#get_collection) | **GET** /api/v1/collections/{collection_uuid} | Get Collection
+*PublicApi* | [**get_file_reference**](bia_integrator_api/docs/PublicApi.md#get_file_reference) | **GET** /api/v1/file_references/{file_reference_uuid} | Get File Reference
+*PublicApi* | [**get_image**](bia_integrator_api/docs/PublicApi.md#get_image) | **GET** /api/v1/images/{image_uuid} | Get Image
+*PublicApi* | [**get_object_info_by_accession**](bia_integrator_api/docs/PublicApi.md#get_object_info_by_accession) | **GET** /api/v1/object_info_by_accessions | Get Object Info By Accession
+*PublicApi* | [**get_study**](bia_integrator_api/docs/PublicApi.md#get_study) | **GET** /api/v1/studies/{study_uuid} | Get Study
+*PublicApi* | [**get_study_file_references**](bia_integrator_api/docs/PublicApi.md#get_study_file_references) | **GET** /api/v1/studies/{study_uuid}/file_references | Get Study File References
+*PublicApi* | [**get_study_images**](bia_integrator_api/docs/PublicApi.md#get_study_images) | **GET** /api/v1/studies/{study_uuid}/images | Get Study Images
+*PublicApi* | [**get_study_images_by_alias**](bia_integrator_api/docs/PublicApi.md#get_study_images_by_alias) | **GET** /api/v1/studies/{study_accession}/images_by_aliases | Get Study Images By Alias
+*PublicApi* | [**search_collections**](bia_integrator_api/docs/PublicApi.md#search_collections) | **GET** /api/v1/collections | Search Collections
+*PublicApi* | [**search_images**](bia_integrator_api/docs/PublicApi.md#search_images) | **GET** /api/v1/search/images | Search Images
+*PublicApi* | [**search_studies**](bia_integrator_api/docs/PublicApi.md#search_studies) | **GET** /api/v1/search/studies | Search Studies
 
 
 ## Documentation For Models
@@ -115,10 +113,13 @@ Class | Method | HTTP request | Description
  - [AuthenticationToken](bia_integrator_api/docs/AuthenticationToken.md)
  - [Author](bia_integrator_api/docs/Author.md)
  - [BIACollection](bia_integrator_api/docs/BIACollection.md)
- - [BIAImage](bia_integrator_api/docs/BIAImage.md)
  - [BIAImageAlias](bia_integrator_api/docs/BIAImageAlias.md)
- - [BIAImageRepresentation](bia_integrator_api/docs/BIAImageRepresentation.md)
- - [BIAStudy](bia_integrator_api/docs/BIAStudy.md)
+ - [BIAImageInput](bia_integrator_api/docs/BIAImageInput.md)
+ - [BIAImageOutput](bia_integrator_api/docs/BIAImageOutput.md)
+ - [BIAImageRepresentationInput](bia_integrator_api/docs/BIAImageRepresentationInput.md)
+ - [BIAImageRepresentationOutput](bia_integrator_api/docs/BIAImageRepresentationOutput.md)
+ - [BIAStudyInput](bia_integrator_api/docs/BIAStudyInput.md)
+ - [BIAStudyOutput](bia_integrator_api/docs/BIAStudyOutput.md)
  - [BodyRegisterUser](bia_integrator_api/docs/BodyRegisterUser.md)
  - [BodySearchImages](bia_integrator_api/docs/BodySearchImages.md)
  - [BulkOperationItem](bia_integrator_api/docs/BulkOperationItem.md)
@@ -127,7 +128,6 @@ Class | Method | HTTP request | Description
  - [FileReference](bia_integrator_api/docs/FileReference.md)
  - [HTTPValidationError](bia_integrator_api/docs/HTTPValidationError.md)
  - [ImageAnnotation](bia_integrator_api/docs/ImageAnnotation.md)
- - [LocationInner](bia_integrator_api/docs/LocationInner.md)
  - [ModelMetadata](bia_integrator_api/docs/ModelMetadata.md)
  - [ObjectInfo](bia_integrator_api/docs/ObjectInfo.md)
  - [RenderingInfo](bia_integrator_api/docs/RenderingInfo.md)

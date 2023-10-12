@@ -18,15 +18,15 @@ import re  # noqa: F401
 import json
 
 
-
-from pydantic import BaseModel, Field, StrictInt, StrictStr
+from typing import Any, Optional
+from pydantic import BaseModel, Field
 
 class ModelMetadata(BaseModel):
     """
     ModelMetadata
     """
-    type_name: StrictStr = Field(...)
-    version: StrictInt = Field(...)
+    type_name: Optional[Any] = Field(...)
+    version: Optional[Any] = Field(...)
     __properties = ["type_name", "version"]
 
     class Config:
@@ -53,6 +53,16 @@ class ModelMetadata(BaseModel):
                           exclude={
                           },
                           exclude_none=True)
+        # set to None if type_name (nullable) is None
+        # and __fields_set__ contains the field
+        if self.type_name is None and "type_name" in self.__fields_set__:
+            _dict['type_name'] = None
+
+        # set to None if version (nullable) is None
+        # and __fields_set__ contains the field
+        if self.version is None and "version" in self.__fields_set__:
+            _dict['version'] = None
+
         return _dict
 
     @classmethod

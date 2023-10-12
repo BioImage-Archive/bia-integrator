@@ -18,14 +18,14 @@ import re  # noqa: F401
 import json
 
 
-
-from pydantic import BaseModel, Field, StrictStr
+from typing import Any, Optional
+from pydantic import BaseModel, Field
 
 class BIAImageAlias(BaseModel):
     """
     An alias for an image - a more convenient way to refer to the image than the full accession ID / UUID pair
     """
-    name: StrictStr = Field(...)
+    name: Optional[Any] = Field(...)
     __properties = ["name"]
 
     class Config:
@@ -52,6 +52,11 @@ class BIAImageAlias(BaseModel):
                           exclude={
                           },
                           exclude_none=True)
+        # set to None if name (nullable) is None
+        # and __fields_set__ contains the field
+        if self.name is None and "name" in self.__fields_set__:
+            _dict['name'] = None
+
         return _dict
 
     @classmethod

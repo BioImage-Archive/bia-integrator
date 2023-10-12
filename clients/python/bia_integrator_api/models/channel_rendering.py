@@ -18,17 +18,17 @@ import re  # noqa: F401
 import json
 
 
-from typing import List, Optional, Union
-from pydantic import BaseModel, Field, StrictFloat, StrictInt, StrictStr, conlist
+from typing import Any, Optional
+from pydantic import BaseModel, Field
 
 class ChannelRendering(BaseModel):
     """
     ChannelRendering
     """
-    channel_label: Optional[StrictStr] = None
-    colormap_start: conlist(Union[StrictFloat, StrictInt]) = Field(...)
-    colormap_end: conlist(Union[StrictFloat, StrictInt]) = Field(...)
-    scale_factor: Optional[Union[StrictFloat, StrictInt]] = 1.0
+    channel_label: Optional[Any] = Field(...)
+    colormap_start: Optional[Any] = Field(...)
+    colormap_end: Optional[Any] = Field(...)
+    scale_factor: Optional[Any] = None
     __properties = ["channel_label", "colormap_start", "colormap_end", "scale_factor"]
 
     class Config:
@@ -55,6 +55,26 @@ class ChannelRendering(BaseModel):
                           exclude={
                           },
                           exclude_none=True)
+        # set to None if channel_label (nullable) is None
+        # and __fields_set__ contains the field
+        if self.channel_label is None and "channel_label" in self.__fields_set__:
+            _dict['channel_label'] = None
+
+        # set to None if colormap_start (nullable) is None
+        # and __fields_set__ contains the field
+        if self.colormap_start is None and "colormap_start" in self.__fields_set__:
+            _dict['colormap_start'] = None
+
+        # set to None if colormap_end (nullable) is None
+        # and __fields_set__ contains the field
+        if self.colormap_end is None and "colormap_end" in self.__fields_set__:
+            _dict['colormap_end'] = None
+
+        # set to None if scale_factor (nullable) is None
+        # and __fields_set__ contains the field
+        if self.scale_factor is None and "scale_factor" in self.__fields_set__:
+            _dict['scale_factor'] = None
+
         return _dict
 
     @classmethod
@@ -70,7 +90,7 @@ class ChannelRendering(BaseModel):
             "channel_label": obj.get("channel_label"),
             "colormap_start": obj.get("colormap_start"),
             "colormap_end": obj.get("colormap_end"),
-            "scale_factor": obj.get("scale_factor") if obj.get("scale_factor") is not None else 1.0
+            "scale_factor": obj.get("scale_factor")
         })
         return _obj
 

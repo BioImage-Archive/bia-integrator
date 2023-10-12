@@ -5,7 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **attributes** | **object** |  | [optional] 
-**annotations** | **List[object]** |  | [optional] [default to []]
+**annotations** | **object** |  | [optional] 
 
 ## Example
 

@@ -18,16 +18,16 @@ import re  # noqa: F401
 import json
 
 
-from typing import Optional
-from pydantic import BaseModel, Field, StrictInt, StrictStr
+from typing import Any, Optional
+from pydantic import BaseModel, Field
 
 class BulkOperationItem(BaseModel):
     """
     BulkOperationItem
     """
-    status: StrictInt = Field(...)
-    idx_in_request: StrictInt = Field(...)
-    message: Optional[StrictStr] = None
+    status: Optional[Any] = Field(...)
+    idx_in_request: Optional[Any] = Field(...)
+    message: Optional[Any] = Field(...)
     __properties = ["status", "idx_in_request", "message"]
 
     class Config:
@@ -54,6 +54,21 @@ class BulkOperationItem(BaseModel):
                           exclude={
                           },
                           exclude_none=True)
+        # set to None if status (nullable) is None
+        # and __fields_set__ contains the field
+        if self.status is None and "status" in self.__fields_set__:
+            _dict['status'] = None
+
+        # set to None if idx_in_request (nullable) is None
+        # and __fields_set__ contains the field
+        if self.idx_in_request is None and "idx_in_request" in self.__fields_set__:
+            _dict['idx_in_request'] = None
+
+        # set to None if message (nullable) is None
+        # and __fields_set__ contains the field
+        if self.message is None and "message" in self.__fields_set__:
+            _dict['message'] = None
+
         return _dict
 
     @classmethod

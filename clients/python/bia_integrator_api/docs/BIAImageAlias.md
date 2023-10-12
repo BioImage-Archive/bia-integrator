@@ -5,7 +5,7 @@ An alias for an image - a more convenient way to refer to the image than the ful
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**name** | **str** |  | 
+**name** | **object** |  | 
 
 ## Example
 

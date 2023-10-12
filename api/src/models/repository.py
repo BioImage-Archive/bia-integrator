@@ -16,7 +16,11 @@ COLLECTION_USERS = "users"
 
 async def get_db(collection_name: str = COLLECTION_BIA_INTEGRATOR) -> AsyncIOMotorCollection:
     mongo_connstring = os.environ["MONGO_CONNSTRING"]
-    db_client = AsyncIOMotorClient(mongo_connstring, uuidRepresentation='standard', maxPoolSize=10)
+    db_client = AsyncIOMotorClient(
+        mongo_connstring,
+        uuidRepresentation='standard',
+        maxPoolSize=10
+    )
 
     dbs = await db_client.list_databases()
     dbs = [db['name'] async for db in dbs] # pull cursor items
@@ -98,14 +102,20 @@ async def _get_docs_raw(query) -> Any:
 
     return await db.find(query)
 
-async def _doc_exists(doc_model: models.DocumentMixin) -> bool:
-    result = await _get_doc_raw(uuid=doc_model.uuid)
+async def _doc_exists(doc: dict) -> bool:
+    result = await _get_doc_raw(uuid = doc['uuid'])
     if not hasattr(result, "pop"):
         return False
 
-    result.pop('_id', None)    
+    result.pop('_id', None)
+    # usually documents we attempt to insert/modify don't have ids, but pymongo modifies the passed dict and adds _id
+    #   so if doing insert(doc), then on failure calling this, doc will actually have _id even if it didn't have it before insert
+    doc.pop('_id', None)
 
-    return result == doc_model.dict()
+    return result == doc
+
+async def _model_doc_exists(doc_model: models.DocumentMixin) -> bool:
+    return await _doc_exists(doc_model.dict())
 
 async def get_object_info(query: dict) -> List[api_models.ObjectInfo]:
     db = await get_db()
@@ -123,10 +133,18 @@ async def get_object_info(query: dict) -> List[api_models.ObjectInfo]:
 
 async def get_image(*args, **kwargs) -> models.BIAImage:
     doc = await _get_doc_raw(*args, **kwargs)
+    
+    if doc is None:
+        raise exceptions.DocumentNotFound('Image does not exist')
+    
     return models.BIAImage(**doc)
 
 async def get_collection(*args, **kwargs) -> models.BIACollection:
     doc = await _get_doc_raw(*args, **kwargs)
+    
+    if doc is None:
+        raise exceptions.DocumentNotFound('Collection does not exist')
+    
     return models.BIACollection(**doc)
 
 async def get_images(query) -> models.BIAImage:
@@ -141,6 +159,10 @@ async def get_images(query) -> models.BIAImage:
 
 async def get_file_reference(*args, **kwargs) -> models.FileReference:
     doc = await _get_doc_raw(*args, **kwargs)
+    
+    if doc is None:
+        raise exceptions.DocumentNotFound('File Reference does not exist')
+    
     return models.FileReference(**doc)
 
 async def _study_child_count(study_uuid: str, child_type_name: str):
@@ -194,7 +216,7 @@ async def persist_doc(doc_model: models.DocumentMixin) -> None:
     try:
         return await db.insert_one(doc_model.dict())
     except pymongo.errors.DuplicateKeyError as e:
-        if await _doc_exists(doc_model):
+        if await _model_doc_exists(doc_model):
             return
         
         raise exceptions.InvalidUpdateException(str(e))
@@ -218,70 +240,58 @@ async def search_studies(query: dict, start_uuid: UUID | None = None, limit: int
     
     return studies
 
-async def persist_docs(doc_models: List[models.DocumentMixin], insert_errors_by_uuid = {}) -> List[api_models.BulkOperationItem]:
+def _bulk_insert_validate_version(
+        doc_models: List[models.DocumentMixin],
+        ref_bulk_operation_response: api_models.BulkOperationResponse
+    ) -> None:
+    for idx, doc_model in enumerate(doc_models):
+        if doc_model.version != 0:
+            ref_bulk_operation_response.items[idx].status = 400
+            ref_bulk_operation_response.items[idx].message = f"Error: Expected version to be 0, got {doc_model.version} instead"
+
+async def persist_docs(
+        doc_models: List[models.DocumentMixin],
+        ref_bulk_operation_response: api_models.BulkOperationResponse
+    ) -> List[api_models.BulkOperationItem]:
     """
     @param insert_errors_by_uuid passed in because there might be type-specific errors
+
+    Ideally, we should just refuse any batch inserts of the same documents, but that would call for a different response type,
+        since we refuse the whole request
     """
     db = await get_db()
 
-    doc_dicts = []
+    _bulk_insert_validate_version(doc_models, ref_bulk_operation_response)
 
-    # preliminary validation
-    for doc_model in doc_models:
-        if insert_errors_by_uuid.get(doc_model.uuid, None):
-            # skip documents already known to have errors
-            continue
-        else:
-            if doc_model.version == 0:
-                insert_errors_by_uuid[doc_model.uuid] = {}
-                doc_dicts.append(doc_model.dict())
-            else:
-                insert_errors_by_uuid[doc_model.uuid] = {
-                    'errmsg': f'Error: Expected version to be 0, got {doc_model.version} instead'
-                }
-
+    insert_attempt_docs = []
+    insert_attempt_docs_idx_to_doc_models_idx = []
+    for idx, doc in enumerate(doc_models):
+        if ref_bulk_operation_response.items[idx].status == 0: # no error yet
+            insert_attempt_docs_idx_to_doc_models_idx.append(idx)
+            insert_attempt_docs.append(doc.model_dump())
+    
+    # actual insert
     try:
-        # actual insert
-        rsp = await db.insert_many(doc_dicts, ordered=False)
+        await db.insert_many(insert_attempt_docs, ordered=False)
     except pymongo.errors.BulkWriteError as e:
-        doc_write_errors = [
-            {
-                'index': doc_write_error['index'],
-                'errmsg': doc_write_error['errmsg'],
-                'uuid': doc_write_error['op']['uuid']
-            }
-            for doc_write_error in e.details['writeErrors']
-        ]
-        documents_with_insert_info = len(doc_write_errors) + e.details['nInserted']
-        if documents_with_insert_info != len(doc_dicts):
-            # this should never happen, but maybe something behaves unexpectedly under load?
-            raise Exception(f"""Tried to bulk insert {len(doc_dicts)} documents, received information on only {documents_with_insert_info}
-                            Successfully inserted: {e.details['nInserted']}
-                            Documents with errors, but accounted for: {json.dumps(doc_write_errors)}
-                            """)
+        for doc_write_error in e.details['writeErrors']:
+            if doc_write_error['code'] == 11000 and await _doc_exists(doc_write_error['op']):
+                # got a duplicate key error (so doc exists) but is identical to the pushed one => idempotent
+                pass
+            else:
+                # either a different error, or trying to push a different version of an existing doc => error
+                insert_attempt_index = doc_write_error['index']
+                doc_model_index = insert_attempt_docs_idx_to_doc_models_idx[insert_attempt_index]
+                
+                ref_bulk_operation_response.items[doc_model_index].status = 400
+                ref_bulk_operation_response.items[doc_model_index].message = doc_write_error['errmsg']
 
-        for write_error in doc_write_errors:
-            insert_errors_by_uuid[write_error['uuid']] = write_error
-    else:
-        pass
+    # remaining unchanged status codes are all for documents that were persisted
+    for insert_response_item in ref_bulk_operation_response.items:
+        if insert_response_item.status == 0:
+            insert_response_item.status = 201
 
-    # map errors to insert items
-    insert_results = []
-    for idx, doc_model in enumerate(doc_models):
-        if insert_errors_by_uuid[doc_model.uuid] == {}:
-            insert_results.append(api_models.BulkOperationItem(
-                status=201,
-                idx_in_request=idx,
-                message=''
-            ))
-        else:
-            insert_results.append(api_models.BulkOperationItem(
-                status=400,
-                idx_in_request=idx,
-                message=insert_errors_by_uuid[doc_model.uuid]['errmsg']
-            ))
-
-    return insert_results
+    return
 
 async def list_item_push(root_doc_uuid: str | UUID, location: str, new_list_item: pydantic.BaseModel):
     db = await get_db()
@@ -307,33 +317,31 @@ async def list_item_push(root_doc_uuid: str | UUID, location: str, new_list_item
 async def doc_dependency_verify_exists(
         models_to_verify: List[models.DocumentMixin],
         fn_model_extract_dependency: Callable[[models.BIABaseModel], UUID],
-        fn_dependency_fetch: Callable[[str | UUID], models.BIABaseModel]
-    ) -> dict:
-    """
-    @return 
-    """
-    dependency_errors_by_model_uuid = {}
+        fn_dependency_fetch: Callable[[str | UUID], models.BIABaseModel],
+        ref_bulk_operation_response: api_models.BulkOperationResponse
+    ) -> None:
+    # we always insert a large number of filerefs/images associated with a single dependency (study)
+    # so groupby dependency before checking if it exists
+    models_idx_by_dependency = {}
+    for idx, model in enumerate(models_to_verify):
+        model_dependency_uuid = fn_model_extract_dependency(model)
+        
+        if models_idx_by_dependency.get(model_dependency_uuid, None) is None:
+            models_idx_by_dependency[model_dependency_uuid] = []
+        
+        models_idx_by_dependency[model_dependency_uuid].append(idx)
 
-    dependency_errors_by_dependency_uuid = {
-        fn_model_extract_dependency(model): None
-        for model in models_to_verify
-    }
-
-    for dependency_uuid in dependency_errors_by_dependency_uuid.keys():
+    # check dependency exists
+    for dependency_uuid, models_with_dependency_idx in models_idx_by_dependency.items():
         try:
             await fn_dependency_fetch(dependency_uuid)
         except exceptions.DocumentNotFound as e:
-            dependency_errors_by_dependency_uuid[dependency_uuid] = e
-    if any([v for v in dependency_errors_by_dependency_uuid if v is not None]):
-        for model in models_to_verify:
-            dependency_uuid = fn_model_extract_dependency(model)
-            dependency_error = dependency_errors_by_dependency_uuid[dependency_uuid]
-            if dependency_error:
-                dependency_errors_by_model_uuid[model.uuid] = {
-                    'errmsg': dependency_error.detail
-                }
+            # if it doesn't update corresponding response item for all requested documents with the specific dependency
+            for model_with_dependency_idx in models_with_dependency_idx:
+                ref_bulk_operation_response.items[model_with_dependency_idx].status = 400
+                ref_bulk_operation_response.items[model_with_dependency_idx].message = e.detail
 
-    return dependency_errors_by_model_uuid
+    return
 
 async def update_doc(doc_model: models.DocumentMixin) -> None:
     db = await get_db()
@@ -349,7 +357,7 @@ async def update_doc(doc_model: models.DocumentMixin) -> None:
         upsert=False
     )
     if not result.matched_count:
-        if await _doc_exists(doc_model):
+        if await _model_doc_exists(doc_model):
             return
         
         raise exceptions.DocumentNotFound(f"Could not find document with uuid {doc_model.uuid} and version {doc_model.version}")

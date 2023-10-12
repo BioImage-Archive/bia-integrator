@@ -16,7 +16,7 @@ To install all BIA dependencies in editable mode, go to `dev/`, exit from any vi
 
 To run the biaint with dev dependencies, either:
 * always run `poetry run biaint [command]` in the `dev/` directory
-* or run `poetry env list --full-path` in the `dev/` directory, and then activate the project-specific virtualenv, to make the global `biaint` command be the development version
+* or run `poetry run bash` in the `dev/` directory to switch to the project-specific virtualenv with the dev dependencies (still running biaint as `poetry run biaint`)
 
 ## First steps
 

@@ -2,6 +2,7 @@ from fastapi.testclient import TestClient
 
 from .. import app
 import uuid as uuid_lib
+from typing import List
 import time
 
 import pytest
@@ -34,43 +35,27 @@ def existing_collection(api_client: TestClient):
 
 @pytest.fixture(scope="function")
 def existing_file_reference(api_client: TestClient, existing_study: dict):
-    uuid = get_uuid()
-
-    file_reference = {
-        "uuid": uuid,
-        "version": 0,
-        "type": "file",
-        "study_uuid": existing_study['uuid'],
-        "name": "test",
-        "uri": "https://test.com/test",
-        "size_in_bytes": 100
-    }
+    file_reference = get_template_file_reference(existing_study, add_uuid=True)
 
     rsp = api_client.post('private/file_references', json=[file_reference])
     assert rsp.status_code == 201, rsp.json()
 
-    return file_reference
+    rsp_get_fileref = api_client.get(f"file_references/{file_reference['uuid']}")
+    assert rsp_get_fileref.status_code == 200
 
+    return rsp_get_fileref.json()
 
 @pytest.fixture(scope="function")
 def existing_image(api_client: TestClient, existing_study: dict):
-    uuid = get_uuid()
-
-    image = {
-        "uuid": uuid,
-        "version": 0,
-        "study_uuid": existing_study['uuid'],
-        "name": f"image_{uuid}",
-        "original_relpath": f"/home/test/{uuid}",
-        "attributes": {
-            "image_uuid": uuid
-        }
-    }
+    image = get_template_image(existing_study, add_uuid=True)
 
     rsp = api_client.post('private/images', json=[image])
     assert rsp.status_code == 201, rsp.json()
 
-    return image
+    rsp_get_image = api_client.get(f"images/{image['uuid']}")
+    assert rsp_get_image.status_code == 200
+
+    return rsp_get_image.json()
 
 def create_user_if_missing(email: str, password: str):
     """
@@ -150,26 +135,46 @@ def make_study(api_client: TestClient, study_attributes_override = {}):
 
     return get_study(api_client, uuid)
 
+def get_template_file_reference(existing_study: dict, add_uuid = False):
+    return {
+        "uuid": None if not add_uuid else get_uuid(),
+        "version": 0,
+        "study_uuid": existing_study['uuid'],
+        'model': {'type_name': 'FileReference', 'version': 1},
+        "name": "test",
+        "uri": "https://test.com/test",
+        "size_in_bytes": 2,
+        "attributes": {},
+        "type": "file"
+    }
+
+def get_template_image(existing_study: dict, add_uuid = False):
+    return {
+        "uuid": None if not add_uuid else get_uuid(),
+        "version": 0,
+        "study_uuid": existing_study['uuid'],
+        'model': {'type_name': 'BIAImage', 'version': 1},
+        "name": f"image_name_value",
+        "original_relpath": f"/home/test/image_path_value",
+        "attributes": {
+            "k": "v"
+        },
+        "annotations": [],
+        "dimensions": None,
+        "alias": None,  
+        "representations": []
+    }
+
 def make_images(api_client: TestClient, existing_study: dict, n: int, image_template = None):
     if image_template is None:
-        image_template = {
-            "uuid": None,
-            "version": 0,
-            "study_uuid": existing_study['uuid'],
-            "name": f"image_name_value",
-            "original_relpath": f"/home/test/image_path_value",
-            "attributes": {
-                "k": "v"
-            },
-            "annotations": [],
-            "dimensions": None,
-            "alias": None,  
-            "representations": []
-        }
+        image_template = get_template_image(existing_study)
+
     images = []
     for _ in range(n):
         img = image_template.copy()
-        img['uuid'] = get_uuid()
+        if not img['uuid']:
+            img['uuid'] = get_uuid()
+
         images.append(img)
     
     rsp = api_client.post("private/images", json=images)
@@ -179,23 +184,14 @@ def make_images(api_client: TestClient, existing_study: dict, n: int, image_temp
 
 def make_file_references(api_client: TestClient, existing_study: dict, n: int, file_reference_template = None):
     if file_reference_template is None:
-        file_reference_template = {
-            "uuid": None,
-            "version": 0,
-            "study_uuid": existing_study['uuid'],
-            "name": "test",
-            "uri": "https://test.com/test",
-            "size_in_bytes": 2,
-            "attributes": {
-                "k": "v"
-            },
-            "type": "file"
-        }
+        file_reference_template = get_template_file_reference(existing_study)
     
     file_references = []
     for _ in range(n):
         file_ref = file_reference_template.copy()
-        file_ref['uuid'] = get_uuid()
+        if not file_ref['uuid']:
+            file_ref['uuid'] = get_uuid()
+
         file_references.append(file_ref)
     
     rsp = api_client.post("private/file_references", json=file_references)
@@ -229,3 +225,34 @@ def get_uuid() -> str:
     generated = uuid_lib.UUID(int=int(time.time()*1000000))
 
     return str(generated)
+
+def assert_bulk_response_items_correct(
+        api_client: TestClient,
+        bulk_create_payload: List[dict],
+        bulk_create_response: dict,
+        single_item_get_path: str
+    ):
+    for response_item in bulk_create_response['items']:
+        created_item = bulk_create_payload[response_item['idx_in_request']]
+        rsp = api_client.get(f"{single_item_get_path}/{created_item['uuid']}")
+        
+        if response_item['status'] == 201:
+            assert rsp.status_code == 200
+            fetched_item = rsp.json()
+            assert fetched_item == created_item
+        elif response_item['status'] == 400:
+            if response_item['message'].startswith("E11000 duplicate key error collection"):
+                # clashing with existing document
+                # check that the other document exists and is different from the attempted insert 
+                assert rsp.status_code == 200
+
+                # only check the attributes in the request item, to avoid the check always passing due to model changes
+                existing_item = rsp.json()
+                existing_item_shaped_as_request = {
+                    k: existing_item[k]
+                    for k in created_item.keys()
+                }
+                assert existing_item_shaped_as_request != created_item
+            else:
+                # if there was no clash but the insert was rejected, the object shouldn't exist at all
+                assert rsp.status_code == 404

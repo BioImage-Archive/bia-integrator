@@ -5,14 +5,14 @@ A reference to an externally hosted file.
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**uuid** | **str** |  | 
-**version** | **int** |  | 
-**model** | [**ModelMetadata**](ModelMetadata.md) |  | [optional] 
-**study_uuid** | **str** |  | 
-**name** | **str** |  | 
-**uri** | **str** |  | 
-**type** | **str** |  | 
-**size_in_bytes** | **int** |  | 
+**uuid** | **object** |  | 
+**version** | **object** |  | 
+**model** | **object** |  | [optional] 
+**study_uuid** | **object** |  | 
+**name** | **object** |  | 
+**uri** | **object** |  | 
+**type** | **object** |  | 
+**size_in_bytes** | **object** |  | 
 **attributes** | **object** |  | [optional] 
 
 ## Example

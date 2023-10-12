@@ -18,23 +18,23 @@ import re  # noqa: F401
 import json
 
 
-from typing import Any, Dict, Optional
-from pydantic import BaseModel, Field, StrictInt, StrictStr
-from bia_integrator_api.models.model_metadata import ModelMetadata
+from typing import Any, Optional
+from pydantic import BaseModel, Field
 
 class FileReference(BaseModel):
     """
     A reference to an externally hosted file.
     """
-    uuid: StrictStr = Field(...)
-    version: StrictInt = Field(...)
-    model: Optional[ModelMetadata] = None
-    study_uuid: StrictStr = Field(...)
-    name: StrictStr = Field(...)
-    uri: StrictStr = Field(...)
-    type: StrictStr = Field(...)
-    size_in_bytes: StrictInt = Field(...)
-    attributes: Optional[Dict[str, Any]] = None
+    uuid: Optional[Any] = Field(...)
+    version: Optional[Any] = Field(...)
+    model: Optional[Any] = None
+    study_uuid: Optional[Any] = Field(...)
+    name: Optional[Any] = Field(...)
+    uri: Optional[Any] = Field(...)
+    type: Optional[Any] = Field(...)
+    size_in_bytes: Optional[Any] = Field(...)
+    attributes: Optional[Any] = None
+    additional_properties: Dict[str, Any] = {}
     __properties = ["uuid", "version", "model", "study_uuid", "name", "uri", "type", "size_in_bytes", "attributes"]
 
     class Config:
@@ -59,11 +59,59 @@ class FileReference(BaseModel):
         """Returns the dictionary representation of the model using alias"""
         _dict = self.dict(by_alias=True,
                           exclude={
+                            "additional_properties"
                           },
                           exclude_none=True)
-        # override the default output from pydantic by calling `to_dict()` of model
-        if self.model:
-            _dict['model'] = self.model.to_dict()
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
+        # set to None if uuid (nullable) is None
+        # and __fields_set__ contains the field
+        if self.uuid is None and "uuid" in self.__fields_set__:
+            _dict['uuid'] = None
+
+        # set to None if version (nullable) is None
+        # and __fields_set__ contains the field
+        if self.version is None and "version" in self.__fields_set__:
+            _dict['version'] = None
+
+        # set to None if model (nullable) is None
+        # and __fields_set__ contains the field
+        if self.model is None and "model" in self.__fields_set__:
+            _dict['model'] = None
+
+        # set to None if study_uuid (nullable) is None
+        # and __fields_set__ contains the field
+        if self.study_uuid is None and "study_uuid" in self.__fields_set__:
+            _dict['study_uuid'] = None
+
+        # set to None if name (nullable) is None
+        # and __fields_set__ contains the field
+        if self.name is None and "name" in self.__fields_set__:
+            _dict['name'] = None
+
+        # set to None if uri (nullable) is None
+        # and __fields_set__ contains the field
+        if self.uri is None and "uri" in self.__fields_set__:
+            _dict['uri'] = None
+
+        # set to None if type (nullable) is None
+        # and __fields_set__ contains the field
+        if self.type is None and "type" in self.__fields_set__:
+            _dict['type'] = None
+
+        # set to None if size_in_bytes (nullable) is None
+        # and __fields_set__ contains the field
+        if self.size_in_bytes is None and "size_in_bytes" in self.__fields_set__:
+            _dict['size_in_bytes'] = None
+
+        # set to None if attributes (nullable) is None
+        # and __fields_set__ contains the field
+        if self.attributes is None and "attributes" in self.__fields_set__:
+            _dict['attributes'] = None
+
         return _dict
 
     @classmethod
@@ -78,7 +126,7 @@ class FileReference(BaseModel):
         _obj = FileReference.parse_obj({
             "uuid": obj.get("uuid"),
             "version": obj.get("version"),
-            "model": ModelMetadata.from_dict(obj.get("model")) if obj.get("model") is not None else None,
+            "model": obj.get("model"),
             "study_uuid": obj.get("study_uuid"),
             "name": obj.get("name"),
             "uri": obj.get("uri"),
@@ -86,6 +134,11 @@ class FileReference(BaseModel):
             "size_in_bytes": obj.get("size_in_bytes"),
             "attributes": obj.get("attributes")
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 

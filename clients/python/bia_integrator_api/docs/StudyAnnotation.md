@@ -4,9 +4,9 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**author_email** | **str** |  | 
-**key** | **str** |  | 
-**value** | **str** |  | 
+**author_email** | **object** |  | 
+**key** | **object** |  | 
+**value** | **object** |  | 
 **state** | [**AnnotationState**](AnnotationState.md) |  | 
 
 ## Example

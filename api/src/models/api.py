@@ -1,6 +1,6 @@
 from .persistence import ModelMetadata
 
-from pydantic import BaseModel
+from pydantic import BaseModel, computed_field
 from typing import List, Optional, Dict, Union
 from uuid import UUID
 
@@ -14,15 +14,16 @@ class BulkOperationItem(BIABaseModel):
 
 class BulkOperationResponse(BIABaseModel):
     items: List[BulkOperationItem]
-
+    
+    @computed_field
     @property
-    def items_by_status(self) -> Dict[int, BulkOperationItem]:
+    def item_idx_by_status(self) -> Dict[int, List[int]]:
         """Utility for clients to easily assess if they should retry/correct some items"""
         by_status = {}
-        for item in self.items:
+        for idx, item in enumerate(self.items):
             by_status[item.status] = by_status.get(item.status, [])
-            by_status[item.status].append(item)
-
+            by_status[item.status].append(idx)
+        
         return by_status
 
 class ObjectInfo(BIABaseModel):

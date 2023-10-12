@@ -99,9 +99,9 @@ async def get_image(image_uuid: UUID) -> db_models.BIAImage:
 async def get_file_reference(file_reference_uuid: str) -> db_models.FileReference:
     return await repository.get_file_reference(uuid=UUID(file_reference_uuid))
 
-@router.get("/images/{image_uuid}/ome_metadata")
-async def get_image_ome_metadata(study_uuid: str, image_uuid: str) -> db_models.BIAOmeMetadata:
-    return repository.find_image_by_uuid(image_uuid)
+#@router.get("/images/{image_uuid}/ome_metadata")
+#async def get_image_ome_metadata(study_uuid: str, image_uuid: str) -> db_models.BIAOmeMetadata:
+#    return repository.find_image_by_uuid(image_uuid)
 
 @router.get("/collections")
 async def search_collections(

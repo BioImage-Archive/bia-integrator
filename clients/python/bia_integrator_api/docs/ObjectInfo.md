@@ -4,7 +4,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**uuid** | **str** |  | 
+**uuid** | **object** |  | 
 **model** | [**ModelMetadata**](ModelMetadata.md) |  | 
 
 ## Example

@@ -18,15 +18,15 @@ import re  # noqa: F401
 import json
 
 
-from typing import Any, Dict, List, Optional
-from pydantic import BaseModel, conlist
+from typing import Any, Optional
+from pydantic import BaseModel
 
 class BodySearchImages(BaseModel):
     """
     BodySearchImages
     """
-    attributes: Optional[Dict[str, Any]] = None
-    annotations: Optional[conlist(Dict[str, Any])] = None
+    attributes: Optional[Any] = None
+    annotations: Optional[Any] = None
     __properties = ["attributes", "annotations"]
 
     class Config:
@@ -53,6 +53,16 @@ class BodySearchImages(BaseModel):
                           exclude={
                           },
                           exclude_none=True)
+        # set to None if attributes (nullable) is None
+        # and __fields_set__ contains the field
+        if self.attributes is None and "attributes" in self.__fields_set__:
+            _dict['attributes'] = None
+
+        # set to None if annotations (nullable) is None
+        # and __fields_set__ contains the field
+        if self.annotations is None and "annotations" in self.__fields_set__:
+            _dict['annotations'] = None
+
         return _dict
 
     @classmethod

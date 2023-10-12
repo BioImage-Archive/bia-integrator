@@ -4,7 +4,8 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**items** | [**List[BulkOperationItem]**](BulkOperationItem.md) |  | 
+**items** | **object** |  | 
+**item_idx_by_status** | **Dict[str, object]** | Utility for clients to easily assess if they should retry/correct some items | [readonly] 
 
 ## Example
 

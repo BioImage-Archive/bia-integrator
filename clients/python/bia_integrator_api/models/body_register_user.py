@@ -18,16 +18,16 @@ import re  # noqa: F401
 import json
 
 
-
-from pydantic import BaseModel, Field, StrictStr
+from typing import Any, Optional
+from pydantic import BaseModel, Field
 
 class BodyRegisterUser(BaseModel):
     """
     BodyRegisterUser
     """
-    email: StrictStr = Field(...)
-    password_plain: StrictStr = Field(...)
-    secret_token: StrictStr = Field(...)
+    email: Optional[Any] = Field(...)
+    password_plain: Optional[Any] = Field(...)
+    secret_token: Optional[Any] = Field(...)
     __properties = ["email", "password_plain", "secret_token"]
 
     class Config:
@@ -54,6 +54,21 @@ class BodyRegisterUser(BaseModel):
                           exclude={
                           },
                           exclude_none=True)
+        # set to None if email (nullable) is None
+        # and __fields_set__ contains the field
+        if self.email is None and "email" in self.__fields_set__:
+            _dict['email'] = None
+
+        # set to None if password_plain (nullable) is None
+        # and __fields_set__ contains the field
+        if self.password_plain is None and "password_plain" in self.__fields_set__:
+            _dict['password_plain'] = None
+
+        # set to None if secret_token (nullable) is None
+        # and __fields_set__ contains the field
+        if self.secret_token is None and "secret_token" in self.__fields_set__:
+            _dict['secret_token'] = None
+
         return _dict
 
     @classmethod

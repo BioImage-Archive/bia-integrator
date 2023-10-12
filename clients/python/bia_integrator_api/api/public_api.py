@@ -19,16 +19,12 @@ import warnings
 from pydantic import validate_arguments, ValidationError
 from typing_extensions import Annotated
 
-from pydantic import StrictInt, StrictStr, conlist
-
-from typing import Any, Dict, List, Optional
+from typing import Any, Optional
 
 from bia_integrator_api.models.bia_collection import BIACollection
-from bia_integrator_api.models.bia_image import BIAImage
-from bia_integrator_api.models.bia_study import BIAStudy
-from bia_integrator_api.models.body_search_images import BodySearchImages
+from bia_integrator_api.models.bia_image_output import BIAImageOutput
+from bia_integrator_api.models.bia_study_output import BIAStudyOutput
 from bia_integrator_api.models.file_reference import FileReference
-from bia_integrator_api.models.object_info import ObjectInfo
 
 from bia_integrator_api.api_client import ApiClient
 from bia_integrator_api.api_response import ApiResponse
@@ -51,7 +47,7 @@ class PublicApi(object):
         self.api_client = api_client
 
     @validate_arguments
-    def get_collection(self, collection_uuid : StrictStr, **kwargs) -> BIACollection:  # noqa: E501
+    def get_collection(self, collection_uuid : Any, **kwargs) -> BIACollection:  # noqa: E501
         """Get Collection  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
@@ -61,7 +57,7 @@ class PublicApi(object):
         >>> result = thread.get()
 
         :param collection_uuid: (required)
-        :type collection_uuid: str
+        :type collection_uuid: object
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _request_timeout: timeout setting for this request. If one
@@ -79,7 +75,7 @@ class PublicApi(object):
         return self.get_collection_with_http_info(collection_uuid, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def get_collection_with_http_info(self, collection_uuid : StrictStr, **kwargs) -> ApiResponse:  # noqa: E501
+    def get_collection_with_http_info(self, collection_uuid : Any, **kwargs) -> ApiResponse:  # noqa: E501
         """Get Collection  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
@@ -89,7 +85,7 @@ class PublicApi(object):
         >>> result = thread.get()
 
         :param collection_uuid: (required)
-        :type collection_uuid: str
+        :type collection_uuid: object
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _preload_content: if False, the ApiResponse.data will
@@ -172,7 +168,7 @@ class PublicApi(object):
         }
 
         return self.api_client.call_api(
-            '/collections/{collection_uuid}', 'GET',
+            '/api/v1/collections/{collection_uuid}', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -189,7 +185,7 @@ class PublicApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def get_file_reference(self, file_reference_uuid : StrictStr, **kwargs) -> FileReference:  # noqa: E501
+    def get_file_reference(self, file_reference_uuid : Any, **kwargs) -> FileReference:  # noqa: E501
         """Get File Reference  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
@@ -199,7 +195,7 @@ class PublicApi(object):
         >>> result = thread.get()
 
         :param file_reference_uuid: (required)
-        :type file_reference_uuid: str
+        :type file_reference_uuid: object
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _request_timeout: timeout setting for this request. If one
@@ -217,7 +213,7 @@ class PublicApi(object):
         return self.get_file_reference_with_http_info(file_reference_uuid, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def get_file_reference_with_http_info(self, file_reference_uuid : StrictStr, **kwargs) -> ApiResponse:  # noqa: E501
+    def get_file_reference_with_http_info(self, file_reference_uuid : Any, **kwargs) -> ApiResponse:  # noqa: E501
         """Get File Reference  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
@@ -227,7 +223,7 @@ class PublicApi(object):
         >>> result = thread.get()
 
         :param file_reference_uuid: (required)
-        :type file_reference_uuid: str
+        :type file_reference_uuid: object
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _preload_content: if False, the ApiResponse.data will
@@ -310,7 +306,7 @@ class PublicApi(object):
         }
 
         return self.api_client.call_api(
-            '/file_references/{file_reference_uuid}', 'GET',
+            '/api/v1/file_references/{file_reference_uuid}', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -327,7 +323,7 @@ class PublicApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def get_image(self, image_uuid : StrictStr, **kwargs) -> BIAImage:  # noqa: E501
+    def get_image(self, image_uuid : Any, **kwargs) -> BIAImageOutput:  # noqa: E501
         """Get Image  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
@@ -337,7 +333,7 @@ class PublicApi(object):
         >>> result = thread.get()
 
         :param image_uuid: (required)
-        :type image_uuid: str
+        :type image_uuid: object
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _request_timeout: timeout setting for this request. If one
@@ -347,7 +343,7 @@ class PublicApi(object):
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: BIAImage
+        :rtype: BIAImageOutput
         """
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
@@ -355,7 +351,7 @@ class PublicApi(object):
         return self.get_image_with_http_info(image_uuid, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def get_image_with_http_info(self, image_uuid : StrictStr, **kwargs) -> ApiResponse:  # noqa: E501
+    def get_image_with_http_info(self, image_uuid : Any, **kwargs) -> ApiResponse:  # noqa: E501
         """Get Image  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
@@ -365,7 +361,7 @@ class PublicApi(object):
         >>> result = thread.get()
 
         :param image_uuid: (required)
-        :type image_uuid: str
+        :type image_uuid: object
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _preload_content: if False, the ApiResponse.data will
@@ -388,7 +384,7 @@ class PublicApi(object):
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: tuple(BIAImage, status_code(int), headers(HTTPHeaderDict))
+        :rtype: tuple(BIAImageOutput, status_code(int), headers(HTTPHeaderDict))
         """
 
         _params = locals()
@@ -443,12 +439,12 @@ class PublicApi(object):
         _auth_settings = []  # noqa: E501
 
         _response_types_map = {
-            '200': "BIAImage",
+            '200': "BIAImageOutput",
             '422': "HTTPValidationError",
         }
 
         return self.api_client.call_api(
-            '/images/{image_uuid}', 'GET',
+            '/api/v1/images/{image_uuid}', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -465,19 +461,17 @@ class PublicApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def get_image_ome_metadata(self, image_uuid : StrictStr, study_uuid : StrictStr, **kwargs) -> object:  # noqa: E501
-        """Get Image Ome Metadata  # noqa: E501
+    def get_object_info_by_accession(self, accessions : Any, **kwargs) -> object:  # noqa: E501
+        """Get Object Info By Accession  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.get_image_ome_metadata(image_uuid, study_uuid, async_req=True)
+        >>> thread = api.get_object_info_by_accession(accessions, async_req=True)
         >>> result = thread.get()
 
-        :param image_uuid: (required)
-        :type image_uuid: str
-        :param study_uuid: (required)
-        :type study_uuid: str
+        :param accessions: (required)
+        :type accessions: object
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _request_timeout: timeout setting for this request. If one
@@ -491,23 +485,21 @@ class PublicApi(object):
         """
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
-            raise ValueError("Error! Please call the get_image_ome_metadata_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
-        return self.get_image_ome_metadata_with_http_info(image_uuid, study_uuid, **kwargs)  # noqa: E501
+            raise ValueError("Error! Please call the get_object_info_by_accession_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
+        return self.get_object_info_by_accession_with_http_info(accessions, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def get_image_ome_metadata_with_http_info(self, image_uuid : StrictStr, study_uuid : StrictStr, **kwargs) -> ApiResponse:  # noqa: E501
-        """Get Image Ome Metadata  # noqa: E501
+    def get_object_info_by_accession_with_http_info(self, accessions : Any, **kwargs) -> ApiResponse:  # noqa: E501
+        """Get Object Info By Accession  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.get_image_ome_metadata_with_http_info(image_uuid, study_uuid, async_req=True)
+        >>> thread = api.get_object_info_by_accession_with_http_info(accessions, async_req=True)
         >>> result = thread.get()
 
-        :param image_uuid: (required)
-        :type image_uuid: str
-        :param study_uuid: (required)
-        :type study_uuid: str
+        :param accessions: (required)
+        :type accessions: object
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _preload_content: if False, the ApiResponse.data will
@@ -531,148 +523,6 @@ class PublicApi(object):
                  If the method is called asynchronously,
                  returns the request thread.
         :rtype: tuple(object, status_code(int), headers(HTTPHeaderDict))
-        """
-
-        _params = locals()
-
-        _all_params = [
-            'image_uuid',
-            'study_uuid'
-        ]
-        _all_params.extend(
-            [
-                'async_req',
-                '_return_http_data_only',
-                '_preload_content',
-                '_request_timeout',
-                '_request_auth',
-                '_content_type',
-                '_headers'
-            ]
-        )
-
-        # validate the arguments
-        for _key, _val in _params['kwargs'].items():
-            if _key not in _all_params:
-                raise ApiTypeError(
-                    "Got an unexpected keyword argument '%s'"
-                    " to method get_image_ome_metadata" % _key
-                )
-            _params[_key] = _val
-        del _params['kwargs']
-
-        _collection_formats = {}
-
-        # process the path parameters
-        _path_params = {}
-        if _params['image_uuid']:
-            _path_params['image_uuid'] = _params['image_uuid']
-
-
-        # process the query parameters
-        _query_params = []
-        if _params.get('study_uuid') is not None:  # noqa: E501
-            _query_params.append(('study_uuid', _params['study_uuid']))
-
-        # process the header parameters
-        _header_params = dict(_params.get('_headers', {}))
-        # process the form parameters
-        _form_params = []
-        _files = {}
-        # process the body parameter
-        _body_params = None
-        # set the HTTP header `Accept`
-        _header_params['Accept'] = self.api_client.select_header_accept(
-            ['application/json'])  # noqa: E501
-
-        # authentication setting
-        _auth_settings = []  # noqa: E501
-
-        _response_types_map = {
-            '200': "object",
-            '422': "HTTPValidationError",
-        }
-
-        return self.api_client.call_api(
-            '/images/{image_uuid}/ome_metadata', 'GET',
-            _path_params,
-            _query_params,
-            _header_params,
-            body=_body_params,
-            post_params=_form_params,
-            files=_files,
-            response_types_map=_response_types_map,
-            auth_settings=_auth_settings,
-            async_req=_params.get('async_req'),
-            _return_http_data_only=_params.get('_return_http_data_only'),  # noqa: E501
-            _preload_content=_params.get('_preload_content', True),
-            _request_timeout=_params.get('_request_timeout'),
-            collection_formats=_collection_formats,
-            _request_auth=_params.get('_request_auth'))
-
-    @validate_arguments
-    def get_object_info_by_accession(self, accessions : conlist(StrictStr), **kwargs) -> List[ObjectInfo]:  # noqa: E501
-        """Get Object Info By Accession  # noqa: E501
-
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
-
-        >>> thread = api.get_object_info_by_accession(accessions, async_req=True)
-        >>> result = thread.get()
-
-        :param accessions: (required)
-        :type accessions: List[str]
-        :param async_req: Whether to execute the request asynchronously.
-        :type async_req: bool, optional
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :return: Returns the result object.
-                 If the method is called asynchronously,
-                 returns the request thread.
-        :rtype: List[ObjectInfo]
-        """
-        kwargs['_return_http_data_only'] = True
-        if '_preload_content' in kwargs:
-            raise ValueError("Error! Please call the get_object_info_by_accession_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
-        return self.get_object_info_by_accession_with_http_info(accessions, **kwargs)  # noqa: E501
-
-    @validate_arguments
-    def get_object_info_by_accession_with_http_info(self, accessions : conlist(StrictStr), **kwargs) -> ApiResponse:  # noqa: E501
-        """Get Object Info By Accession  # noqa: E501
-
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
-
-        >>> thread = api.get_object_info_by_accession_with_http_info(accessions, async_req=True)
-        >>> result = thread.get()
-
-        :param accessions: (required)
-        :type accessions: List[str]
-        :param async_req: Whether to execute the request asynchronously.
-        :type async_req: bool, optional
-        :param _preload_content: if False, the ApiResponse.data will
-                                 be set to none and raw_data will store the 
-                                 HTTP response body without reading/decoding.
-                                 Default is True.
-        :type _preload_content: bool, optional
-        :param _return_http_data_only: response data instead of ApiResponse
-                                       object with status code, headers, etc
-        :type _return_http_data_only: bool, optional
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the authentication
-                              in the spec for a single request.
-        :type _request_auth: dict, optional
-        :type _content_type: string, optional: force content-type for the request
-        :return: Returns the result object.
-                 If the method is called asynchronously,
-                 returns the request thread.
-        :rtype: tuple(List[ObjectInfo], status_code(int), headers(HTTPHeaderDict))
         """
 
         _params = locals()
@@ -711,7 +561,6 @@ class PublicApi(object):
         _query_params = []
         if _params.get('accessions') is not None:  # noqa: E501
             _query_params.append(('accessions', _params['accessions']))
-            _collection_formats['accessions'] = 'multi'
 
         # process the header parameters
         _header_params = dict(_params.get('_headers', {}))
@@ -728,12 +577,12 @@ class PublicApi(object):
         _auth_settings = []  # noqa: E501
 
         _response_types_map = {
-            '200': "List[ObjectInfo]",
+            '200': "object",
             '422': "HTTPValidationError",
         }
 
         return self.api_client.call_api(
-            '/object_info_by_accessions', 'GET',
+            '/api/v1/object_info_by_accessions', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -750,7 +599,7 @@ class PublicApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def get_study(self, study_uuid : StrictStr, **kwargs) -> BIAStudy:  # noqa: E501
+    def get_study(self, study_uuid : Any, **kwargs) -> BIAStudyOutput:  # noqa: E501
         """Get Study  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
@@ -760,7 +609,7 @@ class PublicApi(object):
         >>> result = thread.get()
 
         :param study_uuid: (required)
-        :type study_uuid: str
+        :type study_uuid: object
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _request_timeout: timeout setting for this request. If one
@@ -770,7 +619,7 @@ class PublicApi(object):
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: BIAStudy
+        :rtype: BIAStudyOutput
         """
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
@@ -778,7 +627,7 @@ class PublicApi(object):
         return self.get_study_with_http_info(study_uuid, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def get_study_with_http_info(self, study_uuid : StrictStr, **kwargs) -> ApiResponse:  # noqa: E501
+    def get_study_with_http_info(self, study_uuid : Any, **kwargs) -> ApiResponse:  # noqa: E501
         """Get Study  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
@@ -788,7 +637,7 @@ class PublicApi(object):
         >>> result = thread.get()
 
         :param study_uuid: (required)
-        :type study_uuid: str
+        :type study_uuid: object
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _preload_content: if False, the ApiResponse.data will
@@ -811,7 +660,7 @@ class PublicApi(object):
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: tuple(BIAStudy, status_code(int), headers(HTTPHeaderDict))
+        :rtype: tuple(BIAStudyOutput, status_code(int), headers(HTTPHeaderDict))
         """
 
         _params = locals()
@@ -866,12 +715,12 @@ class PublicApi(object):
         _auth_settings = []  # noqa: E501
 
         _response_types_map = {
-            '200': "BIAStudy",
+            '200': "BIAStudyOutput",
             '422': "HTTPValidationError",
         }
 
         return self.api_client.call_api(
-            '/studies/{study_uuid}', 'GET',
+            '/api/v1/studies/{study_uuid}', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -888,7 +737,7 @@ class PublicApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def get_study_file_references(self, study_uuid : StrictStr, start_uuid : Optional[StrictStr] = None, limit : Optional[StrictInt] = None, **kwargs) -> List[FileReference]:  # noqa: E501
+    def get_study_file_references(self, study_uuid : Any, start_uuid : Optional[Any] = None, limit : Optional[Any] = None, **kwargs) -> object:  # noqa: E501
         """Get Study File References  # noqa: E501
 
         First item in response is the next item with uuid greater than start_uuid. start_uuid is part of the response  # noqa: E501
@@ -899,11 +748,11 @@ class PublicApi(object):
         >>> result = thread.get()
 
         :param study_uuid: (required)
-        :type study_uuid: str
+        :type study_uuid: object
         :param start_uuid:
-        :type start_uuid: str
+        :type start_uuid: object
         :param limit:
-        :type limit: int
+        :type limit: object
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _request_timeout: timeout setting for this request. If one
@@ -913,7 +762,7 @@ class PublicApi(object):
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: List[FileReference]
+        :rtype: object
         """
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
@@ -921,7 +770,7 @@ class PublicApi(object):
         return self.get_study_file_references_with_http_info(study_uuid, start_uuid, limit, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def get_study_file_references_with_http_info(self, study_uuid : StrictStr, start_uuid : Optional[StrictStr] = None, limit : Optional[StrictInt] = None, **kwargs) -> ApiResponse:  # noqa: E501
+    def get_study_file_references_with_http_info(self, study_uuid : Any, start_uuid : Optional[Any] = None, limit : Optional[Any] = None, **kwargs) -> ApiResponse:  # noqa: E501
         """Get Study File References  # noqa: E501
 
         First item in response is the next item with uuid greater than start_uuid. start_uuid is part of the response  # noqa: E501
@@ -932,11 +781,11 @@ class PublicApi(object):
         >>> result = thread.get()
 
         :param study_uuid: (required)
-        :type study_uuid: str
+        :type study_uuid: object
         :param start_uuid:
-        :type start_uuid: str
+        :type start_uuid: object
         :param limit:
-        :type limit: int
+        :type limit: object
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _preload_content: if False, the ApiResponse.data will
@@ -959,7 +808,7 @@ class PublicApi(object):
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: tuple(List[FileReference], status_code(int), headers(HTTPHeaderDict))
+        :rtype: tuple(object, status_code(int), headers(HTTPHeaderDict))
         """
 
         _params = locals()
@@ -1022,12 +871,12 @@ class PublicApi(object):
         _auth_settings = []  # noqa: E501
 
         _response_types_map = {
-            '200': "List[FileReference]",
+            '200': "object",
             '422': "HTTPValidationError",
         }
 
         return self.api_client.call_api(
-            '/studies/{study_uuid}/file_references', 'GET',
+            '/api/v1/studies/{study_uuid}/file_references', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -1044,7 +893,7 @@ class PublicApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def get_study_images(self, study_uuid : StrictStr, start_uuid : Optional[StrictStr] = None, limit : Optional[StrictInt] = None, **kwargs) -> List[BIAImage]:  # noqa: E501
+    def get_study_images(self, study_uuid : Any, start_uuid : Optional[Any] = None, limit : Optional[Any] = None, **kwargs) -> object:  # noqa: E501
         """Get Study Images  # noqa: E501
 
         First item in response is the next item with uuid greater than start_uuid. start_uuid is part of the response  # noqa: E501
@@ -1055,11 +904,11 @@ class PublicApi(object):
         >>> result = thread.get()
 
         :param study_uuid: (required)
-        :type study_uuid: str
+        :type study_uuid: object
         :param start_uuid:
-        :type start_uuid: str
+        :type start_uuid: object
         :param limit:
-        :type limit: int
+        :type limit: object
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _request_timeout: timeout setting for this request. If one
@@ -1069,7 +918,7 @@ class PublicApi(object):
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: List[BIAImage]
+        :rtype: object
         """
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
@@ -1077,7 +926,7 @@ class PublicApi(object):
         return self.get_study_images_with_http_info(study_uuid, start_uuid, limit, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def get_study_images_with_http_info(self, study_uuid : StrictStr, start_uuid : Optional[StrictStr] = None, limit : Optional[StrictInt] = None, **kwargs) -> ApiResponse:  # noqa: E501
+    def get_study_images_with_http_info(self, study_uuid : Any, start_uuid : Optional[Any] = None, limit : Optional[Any] = None, **kwargs) -> ApiResponse:  # noqa: E501
         """Get Study Images  # noqa: E501
 
         First item in response is the next item with uuid greater than start_uuid. start_uuid is part of the response  # noqa: E501
@@ -1088,11 +937,11 @@ class PublicApi(object):
         >>> result = thread.get()
 
         :param study_uuid: (required)
-        :type study_uuid: str
+        :type study_uuid: object
         :param start_uuid:
-        :type start_uuid: str
+        :type start_uuid: object
         :param limit:
-        :type limit: int
+        :type limit: object
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _preload_content: if False, the ApiResponse.data will
@@ -1115,7 +964,7 @@ class PublicApi(object):
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: tuple(List[BIAImage], status_code(int), headers(HTTPHeaderDict))
+        :rtype: tuple(object, status_code(int), headers(HTTPHeaderDict))
         """
 
         _params = locals()
@@ -1178,12 +1027,12 @@ class PublicApi(object):
         _auth_settings = []  # noqa: E501
 
         _response_types_map = {
-            '200': "List[BIAImage]",
+            '200': "object",
             '422': "HTTPValidationError",
         }
 
         return self.api_client.call_api(
-            '/studies/{study_uuid}/images', 'GET',
+            '/api/v1/studies/{study_uuid}/images', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -1200,7 +1049,7 @@ class PublicApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def get_study_images_by_alias(self, study_accession : StrictStr, aliases : conlist(StrictStr), **kwargs) -> List[BIAImage]:  # noqa: E501
+    def get_study_images_by_alias(self, study_accession : Any, aliases : Any, **kwargs) -> object:  # noqa: E501
         """Get Study Images By Alias  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
@@ -1210,9 +1059,9 @@ class PublicApi(object):
         >>> result = thread.get()
 
         :param study_accession: (required)
-        :type study_accession: str
+        :type study_accession: object
         :param aliases: (required)
-        :type aliases: List[str]
+        :type aliases: object
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _request_timeout: timeout setting for this request. If one
@@ -1222,7 +1071,7 @@ class PublicApi(object):
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: List[BIAImage]
+        :rtype: object
         """
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
@@ -1230,7 +1079,7 @@ class PublicApi(object):
         return self.get_study_images_by_alias_with_http_info(study_accession, aliases, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def get_study_images_by_alias_with_http_info(self, study_accession : StrictStr, aliases : conlist(StrictStr), **kwargs) -> ApiResponse:  # noqa: E501
+    def get_study_images_by_alias_with_http_info(self, study_accession : Any, aliases : Any, **kwargs) -> ApiResponse:  # noqa: E501
         """Get Study Images By Alias  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
@@ -1240,9 +1089,9 @@ class PublicApi(object):
         >>> result = thread.get()
 
         :param study_accession: (required)
-        :type study_accession: str
+        :type study_accession: object
         :param aliases: (required)
-        :type aliases: List[str]
+        :type aliases: object
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _preload_content: if False, the ApiResponse.data will
@@ -1265,7 +1114,7 @@ class PublicApi(object):
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: tuple(List[BIAImage], status_code(int), headers(HTTPHeaderDict))
+        :rtype: tuple(object, status_code(int), headers(HTTPHeaderDict))
         """
 
         _params = locals()
@@ -1308,7 +1157,6 @@ class PublicApi(object):
         _query_params = []
         if _params.get('aliases') is not None:  # noqa: E501
             _query_params.append(('aliases', _params['aliases']))
-            _collection_formats['aliases'] = 'multi'
 
         # process the header parameters
         _header_params = dict(_params.get('_headers', {}))
@@ -1325,12 +1173,12 @@ class PublicApi(object):
         _auth_settings = []  # noqa: E501
 
         _response_types_map = {
-            '200': "List[BIAImage]",
+            '200': "object",
             '422': "HTTPValidationError",
         }
 
         return self.api_client.call_api(
-            '/studies/{study_accession}/images_by_aliases', 'GET',
+            '/api/v1/studies/{study_accession}/images_by_aliases', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -1347,7 +1195,7 @@ class PublicApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def search_collections(self, name : Optional[StrictStr] = None, **kwargs) -> List[BIACollection]:  # noqa: E501
+    def search_collections(self, name : Optional[Any] = None, **kwargs) -> object:  # noqa: E501
         """Search Collections  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
@@ -1357,7 +1205,7 @@ class PublicApi(object):
         >>> result = thread.get()
 
         :param name:
-        :type name: str
+        :type name: object
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _request_timeout: timeout setting for this request. If one
@@ -1367,7 +1215,7 @@ class PublicApi(object):
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: List[BIACollection]
+        :rtype: object
         """
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
@@ -1375,7 +1223,7 @@ class PublicApi(object):
         return self.search_collections_with_http_info(name, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def search_collections_with_http_info(self, name : Optional[StrictStr] = None, **kwargs) -> ApiResponse:  # noqa: E501
+    def search_collections_with_http_info(self, name : Optional[Any] = None, **kwargs) -> ApiResponse:  # noqa: E501
         """Search Collections  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
@@ -1385,7 +1233,7 @@ class PublicApi(object):
         >>> result = thread.get()
 
         :param name:
-        :type name: str
+        :type name: object
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _preload_content: if False, the ApiResponse.data will
@@ -1408,7 +1256,7 @@ class PublicApi(object):
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: tuple(List[BIACollection], status_code(int), headers(HTTPHeaderDict))
+        :rtype: tuple(object, status_code(int), headers(HTTPHeaderDict))
         """
 
         _params = locals()
@@ -1463,12 +1311,12 @@ class PublicApi(object):
         _auth_settings = []  # noqa: E501
 
         _response_types_map = {
-            '200': "List[BIACollection]",
+            '200': "object",
             '422': "HTTPValidationError",
         }
 
         return self.api_client.call_api(
-            '/collections', 'GET',
+            '/api/v1/collections', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -1485,19 +1333,19 @@ class PublicApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def search_images(self, alias : Optional[StrictStr] = None, body_search_images : Optional[BodySearchImages] = None, **kwargs) -> List[BIAImage]:  # noqa: E501
+    def search_images(self, alias : Optional[Any] = None, body : Optional[Any] = None, **kwargs) -> object:  # noqa: E501
         """Search Images  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.search_images(alias, body_search_images, async_req=True)
+        >>> thread = api.search_images(alias, body, async_req=True)
         >>> result = thread.get()
 
         :param alias:
-        :type alias: str
-        :param body_search_images:
-        :type body_search_images: BodySearchImages
+        :type alias: object
+        :param body:
+        :type body: BodySearchImages
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _request_timeout: timeout setting for this request. If one
@@ -1507,27 +1355,27 @@ class PublicApi(object):
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: List[BIAImage]
+        :rtype: object
         """
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
             raise ValueError("Error! Please call the search_images_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
-        return self.search_images_with_http_info(alias, body_search_images, **kwargs)  # noqa: E501
+        return self.search_images_with_http_info(alias, body, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def search_images_with_http_info(self, alias : Optional[StrictStr] = None, body_search_images : Optional[BodySearchImages] = None, **kwargs) -> ApiResponse:  # noqa: E501
+    def search_images_with_http_info(self, alias : Optional[Any] = None, body : Optional[Any] = None, **kwargs) -> ApiResponse:  # noqa: E501
         """Search Images  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.search_images_with_http_info(alias, body_search_images, async_req=True)
+        >>> thread = api.search_images_with_http_info(alias, body, async_req=True)
         >>> result = thread.get()
 
         :param alias:
-        :type alias: str
-        :param body_search_images:
-        :type body_search_images: BodySearchImages
+        :type alias: object
+        :param body:
+        :type body: BodySearchImages
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _preload_content: if False, the ApiResponse.data will
@@ -1550,14 +1398,14 @@ class PublicApi(object):
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: tuple(List[BIAImage], status_code(int), headers(HTTPHeaderDict))
+        :rtype: tuple(object, status_code(int), headers(HTTPHeaderDict))
         """
 
         _params = locals()
 
         _all_params = [
             'alias',
-            'body_search_images'
+            'body'
         ]
         _all_params.extend(
             [
@@ -1598,8 +1446,8 @@ class PublicApi(object):
         _files = {}
         # process the body parameter
         _body_params = None
-        if _params['body_search_images'] is not None:
-            _body_params = _params['body_search_images']
+        if _params['body'] is not None:
+            _body_params = _params['body']
 
         # set the HTTP header `Accept`
         _header_params['Accept'] = self.api_client.select_header_accept(
@@ -1616,12 +1464,12 @@ class PublicApi(object):
         _auth_settings = []  # noqa: E501
 
         _response_types_map = {
-            '200': "List[BIAImage]",
+            '200': "object",
             '422': "HTTPValidationError",
         }
 
         return self.api_client.call_api(
-            '/search/images', 'GET',
+            '/api/v1/search/images', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -1638,7 +1486,7 @@ class PublicApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def search_studies(self, start_uuid : Optional[StrictStr] = None, limit : Optional[StrictInt] = None, **kwargs) -> List[BIAStudy]:  # noqa: E501
+    def search_studies(self, start_uuid : Optional[Any] = None, limit : Optional[Any] = None, **kwargs) -> object:  # noqa: E501
         """Search Studies  # noqa: E501
 
         @TODO: Define search criteria for the general case  First item in response is the next item with uuid greater than start_uuid. start_uuid is part of the response  # noqa: E501
@@ -1649,9 +1497,9 @@ class PublicApi(object):
         >>> result = thread.get()
 
         :param start_uuid:
-        :type start_uuid: str
+        :type start_uuid: object
         :param limit:
-        :type limit: int
+        :type limit: object
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _request_timeout: timeout setting for this request. If one
@@ -1661,7 +1509,7 @@ class PublicApi(object):
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: List[BIAStudy]
+        :rtype: object
         """
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
@@ -1669,7 +1517,7 @@ class PublicApi(object):
         return self.search_studies_with_http_info(start_uuid, limit, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def search_studies_with_http_info(self, start_uuid : Optional[StrictStr] = None, limit : Optional[StrictInt] = None, **kwargs) -> ApiResponse:  # noqa: E501
+    def search_studies_with_http_info(self, start_uuid : Optional[Any] = None, limit : Optional[Any] = None, **kwargs) -> ApiResponse:  # noqa: E501
         """Search Studies  # noqa: E501
 
         @TODO: Define search criteria for the general case  First item in response is the next item with uuid greater than start_uuid. start_uuid is part of the response  # noqa: E501
@@ -1680,9 +1528,9 @@ class PublicApi(object):
         >>> result = thread.get()
 
         :param start_uuid:
-        :type start_uuid: str
+        :type start_uuid: object
         :param limit:
-        :type limit: int
+        :type limit: object
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _preload_content: if False, the ApiResponse.data will
@@ -1705,7 +1553,7 @@ class PublicApi(object):
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: tuple(List[BIAStudy], status_code(int), headers(HTTPHeaderDict))
+        :rtype: tuple(object, status_code(int), headers(HTTPHeaderDict))
         """
 
         _params = locals()
@@ -1764,12 +1612,12 @@ class PublicApi(object):
         _auth_settings = []  # noqa: E501
 
         _response_types_map = {
-            '200': "List[BIAStudy]",
+            '200': "object",
             '422': "HTTPValidationError",
         }
 
         return self.api_client.call_api(
-            '/search/studies', 'GET',
+            '/api/v1/search/studies', 'GET',
             _path_params,
             _query_params,
             _header_params,
