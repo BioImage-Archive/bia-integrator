@@ -22,8 +22,8 @@ from typing_extensions import Annotated
 from typing import Any, Optional
 
 from bia_integrator_api.models.bia_collection import BIACollection
-from bia_integrator_api.models.bia_image_output import BIAImageOutput
-from bia_integrator_api.models.bia_study_output import BIAStudyOutput
+from bia_integrator_api.models.bia_image import BIAImage
+from bia_integrator_api.models.bia_study import BIAStudy
 from bia_integrator_api.models.file_reference import FileReference
 
 from bia_integrator_api.api_client import ApiClient
@@ -323,7 +323,7 @@ class PublicApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def get_image(self, image_uuid : Any, **kwargs) -> BIAImageOutput:  # noqa: E501
+    def get_image(self, image_uuid : Any, **kwargs) -> BIAImage:  # noqa: E501
         """Get Image  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
@@ -343,7 +343,7 @@ class PublicApi(object):
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: BIAImageOutput
+        :rtype: BIAImage
         """
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
@@ -384,7 +384,7 @@ class PublicApi(object):
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: tuple(BIAImageOutput, status_code(int), headers(HTTPHeaderDict))
+        :rtype: tuple(BIAImage, status_code(int), headers(HTTPHeaderDict))
         """
 
         _params = locals()
@@ -439,7 +439,7 @@ class PublicApi(object):
         _auth_settings = []  # noqa: E501
 
         _response_types_map = {
-            '200': "BIAImageOutput",
+            '200': "BIAImage",
             '422': "HTTPValidationError",
         }
 
@@ -599,7 +599,7 @@ class PublicApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def get_study(self, study_uuid : Any, **kwargs) -> BIAStudyOutput:  # noqa: E501
+    def get_study(self, study_uuid : Any, **kwargs) -> BIAStudy:  # noqa: E501
         """Get Study  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
@@ -619,7 +619,7 @@ class PublicApi(object):
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: BIAStudyOutput
+        :rtype: BIAStudy
         """
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
@@ -660,7 +660,7 @@ class PublicApi(object):
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: tuple(BIAStudyOutput, status_code(int), headers(HTTPHeaderDict))
+        :rtype: tuple(BIAStudy, status_code(int), headers(HTTPHeaderDict))
         """
 
         _params = locals()
@@ -715,7 +715,7 @@ class PublicApi(object):
         _auth_settings = []  # noqa: E501
 
         _response_types_map = {
-            '200': "BIAStudyOutput",
+            '200': "BIAStudy",
             '422': "HTTPValidationError",
         }
 

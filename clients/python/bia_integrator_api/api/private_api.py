@@ -23,9 +23,9 @@ from typing import Any, Dict, Optional
 
 from bia_integrator_api.models.authentication_token import AuthenticationToken
 from bia_integrator_api.models.bia_collection import BIACollection
-from bia_integrator_api.models.bia_image_output import BIAImageOutput
-from bia_integrator_api.models.bia_image_representation_input import BIAImageRepresentationInput
-from bia_integrator_api.models.bia_study_output import BIAStudyOutput
+from bia_integrator_api.models.bia_image import BIAImage
+from bia_integrator_api.models.bia_image_representation import BIAImageRepresentation
+from bia_integrator_api.models.bia_study import BIAStudy
 from bia_integrator_api.models.body_register_user import BodyRegisterUser
 from bia_integrator_api.models.bulk_operation_response import BulkOperationResponse
 from bia_integrator_api.models.file_reference import FileReference
@@ -196,13 +196,13 @@ class PrivateApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def create_file_reference(self, body : Optional[Any], **kwargs) -> BulkOperationResponse:  # noqa: E501
-        """Create File Reference  # noqa: E501
+    def create_file_references(self, body : Optional[Any], **kwargs) -> BulkOperationResponse:  # noqa: E501
+        """Create File References  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.create_file_reference(body, async_req=True)
+        >>> thread = api.create_file_references(body, async_req=True)
         >>> result = thread.get()
 
         :param body: (required)
@@ -220,17 +220,17 @@ class PrivateApi(object):
         """
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
-            raise ValueError("Error! Please call the create_file_reference_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
-        return self.create_file_reference_with_http_info(body, **kwargs)  # noqa: E501
+            raise ValueError("Error! Please call the create_file_references_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
+        return self.create_file_references_with_http_info(body, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def create_file_reference_with_http_info(self, body : Optional[Any], **kwargs) -> ApiResponse:  # noqa: E501
-        """Create File Reference  # noqa: E501
+    def create_file_references_with_http_info(self, body : Optional[Any], **kwargs) -> ApiResponse:  # noqa: E501
+        """Create File References  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.create_file_reference_with_http_info(body, async_req=True)
+        >>> thread = api.create_file_references_with_http_info(body, async_req=True)
         >>> result = thread.get()
 
         :param body: (required)
@@ -282,7 +282,7 @@ class PrivateApi(object):
             if _key not in _all_params:
                 raise ApiTypeError(
                     "Got an unexpected keyword argument '%s'"
-                    " to method create_file_reference" % _key
+                    " to method create_file_references" % _key
                 )
             _params[_key] = _val
         del _params['kwargs']
@@ -341,19 +341,19 @@ class PrivateApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def create_image_representation(self, image_uuid : Any, bia_image_representation_input : BIAImageRepresentationInput, **kwargs) -> object:  # noqa: E501
+    def create_image_representation(self, image_uuid : Any, bia_image_representation : BIAImageRepresentation, **kwargs) -> object:  # noqa: E501
         """Create Image Representation  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.create_image_representation(image_uuid, bia_image_representation_input, async_req=True)
+        >>> thread = api.create_image_representation(image_uuid, bia_image_representation, async_req=True)
         >>> result = thread.get()
 
         :param image_uuid: (required)
         :type image_uuid: object
-        :param bia_image_representation_input: (required)
-        :type bia_image_representation_input: BIAImageRepresentationInput
+        :param bia_image_representation: (required)
+        :type bia_image_representation: BIAImageRepresentation
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _request_timeout: timeout setting for this request. If one
@@ -368,22 +368,22 @@ class PrivateApi(object):
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
             raise ValueError("Error! Please call the create_image_representation_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
-        return self.create_image_representation_with_http_info(image_uuid, bia_image_representation_input, **kwargs)  # noqa: E501
+        return self.create_image_representation_with_http_info(image_uuid, bia_image_representation, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def create_image_representation_with_http_info(self, image_uuid : Any, bia_image_representation_input : BIAImageRepresentationInput, **kwargs) -> ApiResponse:  # noqa: E501
+    def create_image_representation_with_http_info(self, image_uuid : Any, bia_image_representation : BIAImageRepresentation, **kwargs) -> ApiResponse:  # noqa: E501
         """Create Image Representation  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.create_image_representation_with_http_info(image_uuid, bia_image_representation_input, async_req=True)
+        >>> thread = api.create_image_representation_with_http_info(image_uuid, bia_image_representation, async_req=True)
         >>> result = thread.get()
 
         :param image_uuid: (required)
         :type image_uuid: object
-        :param bia_image_representation_input: (required)
-        :type bia_image_representation_input: BIAImageRepresentationInput
+        :param bia_image_representation: (required)
+        :type bia_image_representation: BIAImageRepresentation
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _preload_content: if False, the ApiResponse.data will
@@ -413,7 +413,7 @@ class PrivateApi(object):
 
         _all_params = [
             'image_uuid',
-            'bia_image_representation_input'
+            'bia_image_representation'
         ]
         _all_params.extend(
             [
@@ -454,8 +454,8 @@ class PrivateApi(object):
         _files = {}
         # process the body parameter
         _body_params = None
-        if _params['bia_image_representation_input'] is not None:
-            _body_params = _params['bia_image_representation_input']
+        if _params['bia_image_representation'] is not None:
+            _body_params = _params['bia_image_representation']
 
         # set the HTTP header `Accept`
         _header_params['Accept'] = self.api_client.select_header_accept(
@@ -1191,7 +1191,7 @@ class PrivateApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def get_image(self, image_uuid : Any, **kwargs) -> BIAImageOutput:  # noqa: E501
+    def get_image(self, image_uuid : Any, **kwargs) -> BIAImage:  # noqa: E501
         """Get Image  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
@@ -1211,7 +1211,7 @@ class PrivateApi(object):
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: BIAImageOutput
+        :rtype: BIAImage
         """
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
@@ -1252,7 +1252,7 @@ class PrivateApi(object):
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: tuple(BIAImageOutput, status_code(int), headers(HTTPHeaderDict))
+        :rtype: tuple(BIAImage, status_code(int), headers(HTTPHeaderDict))
         """
 
         _params = locals()
@@ -1307,7 +1307,7 @@ class PrivateApi(object):
         _auth_settings = []  # noqa: E501
 
         _response_types_map = {
-            '200': "BIAImageOutput",
+            '200': "BIAImage",
             '422': "HTTPValidationError",
         }
 
@@ -1467,7 +1467,7 @@ class PrivateApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def get_study(self, study_uuid : Any, **kwargs) -> BIAStudyOutput:  # noqa: E501
+    def get_study(self, study_uuid : Any, **kwargs) -> BIAStudy:  # noqa: E501
         """Get Study  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
@@ -1487,7 +1487,7 @@ class PrivateApi(object):
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: BIAStudyOutput
+        :rtype: BIAStudy
         """
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
@@ -1528,7 +1528,7 @@ class PrivateApi(object):
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: tuple(BIAStudyOutput, status_code(int), headers(HTTPHeaderDict))
+        :rtype: tuple(BIAStudy, status_code(int), headers(HTTPHeaderDict))
         """
 
         _params = locals()
@@ -1583,7 +1583,7 @@ class PrivateApi(object):
         _auth_settings = []  # noqa: E501
 
         _response_types_map = {
-            '200': "BIAStudyOutput",
+            '200': "BIAStudy",
             '422': "HTTPValidationError",
         }
 

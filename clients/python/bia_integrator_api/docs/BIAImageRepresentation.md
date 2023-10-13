@@ -5,10 +5,10 @@ A particular representation of a BIAImage. Examples:  * A single HTTP accessible
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**size** | **int** |  | 
-**uri** | **List[str]** |  | [optional] [default to []]
-**type** | **str** |  | [optional] 
-**dimensions** | **str** |  | [optional] 
+**size** | **object** |  | 
+**uri** | **object** |  | [optional] 
+**type** | **object** |  | [optional] 
+**dimensions** | **object** |  | [optional] 
 **attributes** | **object** |  | [optional] 
 **rendering** | [**RenderingInfo**](RenderingInfo.md) |  | [optional] 
 

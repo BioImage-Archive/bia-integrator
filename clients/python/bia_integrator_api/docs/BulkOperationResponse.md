@@ -5,7 +5,6 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **items** | **object** |  | 
-**item_idx_by_status** | **Dict[str, object]** | Utility for clients to easily assess if they should retry/correct some items | [readonly] 
 
 ## Example
 

@@ -1,1 +1,2019 @@
-{"openapi":"3.1.0","info":{"title":"FastAPI","version":"0.1.0"},"paths":{"/api/v1/auth/token":{"post":{"tags":["private"],"summary":"Login For Access Token","operationId":"login_for_access_token","requestBody":{"content":{"application/x-www-form-urlencoded":{"schema":{"$ref":"#/components/schemas/Body_login_for_access_token"}}},"required":true},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/AuthenticationToken"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/v1/auth/users/register":{"post":{"tags":["private"],"summary":"Register User","operationId":"register_user","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/Body_register_user"}}},"required":true},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/v1/private/studies":{"post":{"tags":["private"],"summary":"Create Study","operationId":"create_study","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/BIAStudy-Input"}}},"required":true},"responses":{"201":{"description":"Successful Response","content":{"application/json":{"schema":{}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}},"security":[{"OAuth2PasswordBearer":[]}]},"patch":{"tags":["private"],"summary":"Update Study","operationId":"update_study","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/BIAStudy-Input"}}},"required":true},"responses":{"201":{"description":"Successful Response","content":{"application/json":{"schema":{}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}},"security":[{"OAuth2PasswordBearer":[]}]}},"/api/v1/private/studies/{study_uuid}/refresh_counts":{"post":{"tags":["private"],"summary":"Study Refresh Counts","description":"Recalculate and persist counts for other objects pointing to this study.","operationId":"study_refresh_counts","security":[{"OAuth2PasswordBearer":[]}],"parameters":[{"name":"study_uuid","in":"path","required":true,"schema":{"type":"string","title":"Study Uuid"}}],"responses":{"201":{"description":"Successful Response","content":{"application/json":{"schema":{}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/v1/private/images":{"post":{"tags":["private"],"summary":"Create Images","operationId":"create_images","requestBody":{"content":{"application/json":{"schema":{"items":{"$ref":"#/components/schemas/BIAImage-Input"},"type":"array","title":"Study Images"}}},"required":true},"responses":{"201":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/BulkOperationResponse"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}},"security":[{"OAuth2PasswordBearer":[]}]}},"/api/v1/private/images/single":{"patch":{"tags":["private"],"summary":"Update Image","description":"Bulk update not available - update_many only has one filter for the entire update\n@TODO: Find common bulk update usecases and map them to mongo operations","operationId":"update_image","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/BIAImage-Input"}}},"required":true},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}},"security":[{"OAuth2PasswordBearer":[]}]}},"/api/v1/private/images/bulk":{"post":{"tags":["private"],"summary":"Create Images Bulk","description":"TODO: Maybe file-based async?","operationId":"create_images_bulk","responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}}},"security":[{"OAuth2PasswordBearer":[]}]}},"/api/v1/private/images/{image_uuid}/representations/single":{"post":{"tags":["private"],"summary":"Create Image Representation","operationId":"create_image_representation","security":[{"OAuth2PasswordBearer":[]}],"parameters":[{"name":"image_uuid","in":"path","required":true,"schema":{"type":"string","title":"Image Uuid"}}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/BIAImageRepresentation-Input"}}}},"responses":{"201":{"description":"Successful Response","content":{"application/json":{"schema":{}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/v1/private/file_references":{"post":{"tags":["private"],"summary":"Create File Reference","operationId":"create_file_reference","requestBody":{"content":{"application/json":{"schema":{"items":{"$ref":"#/components/schemas/FileReference"},"type":"array","title":"File References"}}},"required":true},"responses":{"201":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/BulkOperationResponse"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}},"security":[{"OAuth2PasswordBearer":[]}]}},"/api/v1/private/file_references/single":{"patch":{"tags":["private"],"summary":"Update File Reference","operationId":"update_file_reference","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/FileReference"}}},"required":true},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}},"security":[{"OAuth2PasswordBearer":[]}]}},"/api/v1/private/collections":{"post":{"tags":["private"],"summary":"Create Collection","operationId":"create_collection","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/BIACollection"}}},"required":true},"responses":{"201":{"description":"Successful Response","content":{"application/json":{"schema":{}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}},"security":[{"OAuth2PasswordBearer":[]}]}},"/api/v1/admin/health-check":{"get":{"tags":["private"],"summary":"Health Check","operationId":"health_check","responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}}},"security":[{"OAuth2PasswordBearer":[]}]}},"/api/v1/object_info_by_accessions":{"get":{"tags":["public","private"],"summary":"Get Object Info By Accession","operationId":"get_object_info_by_accession","parameters":[{"name":"accessions","in":"query","required":true,"schema":{"type":"array","items":{"type":"string"},"title":"Accessions"}}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/ObjectInfo"},"title":"Response Get Object Info By Accession"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/v1/studies/{study_accession}/images_by_aliases":{"get":{"tags":["public","private"],"summary":"Get Study Images By Alias","operationId":"get_study_images_by_alias","parameters":[{"name":"study_accession","in":"path","required":true,"schema":{"type":"string","title":"Study Accession"}},{"name":"aliases","in":"query","required":true,"schema":{"type":"array","items":{"type":"string"},"title":"Aliases"}}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/BIAImage-Output"},"title":"Response Get Study Images By Alias"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/v1/studies/{study_uuid}":{"get":{"tags":["public","private"],"summary":"Get Study","operationId":"get_study","parameters":[{"name":"study_uuid","in":"path","required":true,"schema":{"type":"string","title":"Study Uuid"}}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/BIAStudy-Output"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/v1/studies/{study_uuid}/file_references":{"get":{"tags":["public","private"],"summary":"Get Study File References","description":"First item in response is the next item with uuid greater than start_uuid.\nstart_uuid is part of the response","operationId":"get_study_file_references","parameters":[{"name":"study_uuid","in":"path","required":true,"schema":{"type":"string","format":"uuid","title":"Study Uuid"}},{"name":"start_uuid","in":"query","required":false,"schema":{"anyOf":[{"type":"string","format":"uuid"},{"type":"null"}],"title":"Start Uuid"}},{"name":"limit","in":"query","required":false,"schema":{"type":"integer","exclusiveMinimum":0,"default":10,"title":"Limit"}}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/FileReference"},"title":"Response Get Study File References"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/v1/search/studies":{"get":{"tags":["public","private"],"summary":"Search Studies","description":"@TODO: Define search criteria for the general case\n\nFirst item in response is the next item with uuid greater than start_uuid.\nstart_uuid is part of the response","operationId":"search_studies","parameters":[{"name":"start_uuid","in":"query","required":false,"schema":{"anyOf":[{"type":"string","format":"uuid"},{"type":"null"}],"title":"Start Uuid"}},{"name":"limit","in":"query","required":false,"schema":{"type":"integer","exclusiveMinimum":0,"default":10,"title":"Limit"}}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/BIAStudy-Output"},"title":"Response Search Studies"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/v1/search/images":{"get":{"tags":["public","private"],"summary":"Search Images","operationId":"search_images","parameters":[{"name":"alias","in":"query","required":false,"schema":{"anyOf":[{"type":"string"},{"type":"null"}],"title":"Alias"}}],"requestBody":{"content":{"application/json":{"schema":{"allOf":[{"$ref":"#/components/schemas/Body_search_images"}],"title":"Body"}}}},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/BIAImage-Output"},"title":"Response Search Images"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/v1/studies/{study_uuid}/images":{"get":{"tags":["public","private"],"summary":"Get Study Images","description":"First item in response is the next item with uuid greater than start_uuid.\nstart_uuid is part of the response","operationId":"get_study_images","parameters":[{"name":"study_uuid","in":"path","required":true,"schema":{"type":"string","format":"uuid","title":"Study Uuid"}},{"name":"start_uuid","in":"query","required":false,"schema":{"anyOf":[{"type":"string","format":"uuid"},{"type":"null"}],"title":"Start Uuid"}},{"name":"limit","in":"query","required":false,"schema":{"type":"integer","exclusiveMinimum":0,"default":10,"title":"Limit"}}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/BIAImage-Output"},"title":"Response Get Study Images"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/v1/images/{image_uuid}":{"get":{"tags":["public","private"],"summary":"Get Image","operationId":"get_image","parameters":[{"name":"image_uuid","in":"path","required":true,"schema":{"type":"string","format":"uuid","title":"Image Uuid"}}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/BIAImage-Output"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/v1/file_references/{file_reference_uuid}":{"get":{"tags":["public","private"],"summary":"Get File Reference","operationId":"get_file_reference","parameters":[{"name":"file_reference_uuid","in":"path","required":true,"schema":{"type":"string","title":"File Reference Uuid"}}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/FileReference"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/v1/collections":{"get":{"tags":["public","private"],"summary":"Search Collections","operationId":"search_collections","parameters":[{"name":"name","in":"query","required":false,"schema":{"anyOf":[{"type":"string"},{"type":"null"}],"title":"Name"}}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/BIACollection"},"title":"Response Search Collections"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/api/v1/collections/{collection_uuid}":{"get":{"tags":["public","private"],"summary":"Get Collection","operationId":"get_collection","parameters":[{"name":"collection_uuid","in":"path","required":true,"schema":{"type":"string","format":"uuid","title":"Collection Uuid"}}],"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/BIACollection"}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}}},"components":{"schemas":{"AnnotationState":{"type":"string","enum":["active","deleted"],"title":"AnnotationState"},"AuthenticationToken":{"properties":{"access_token":{"type":"string","title":"Access Token"},"token_type":{"type":"string","title":"Token Type"}},"type":"object","required":["access_token","token_type"],"title":"AuthenticationToken"},"Author":{"properties":{"name":{"type":"string","title":"Name"}},"type":"object","required":["name"],"title":"Author"},"BIACollection":{"properties":{"uuid":{"type":"string","format":"uuid","title":"Uuid"},"version":{"type":"integer","title":"Version"},"model":{"anyOf":[{"$ref":"#/components/schemas/ModelMetadata"},{"type":"null"}]},"name":{"type":"string","title":"Name"},"title":{"type":"string","title":"Title"},"subtitle":{"type":"string","title":"Subtitle"},"description":{"anyOf":[{"type":"string"},{"type":"null"}],"title":"Description"},"study_uuids":{"items":{"type":"string"},"type":"array","title":"Study Uuids","default":[]}},"additionalProperties":false,"type":"object","required":["uuid","version","name","title","subtitle"],"title":"BIACollection","description":"A collection of studies with a coherent purpose. Studies can be in\nmultiple collections."},"BIAImage-Input":{"properties":{"uuid":{"type":"string","format":"uuid","title":"Uuid"},"version":{"type":"integer","title":"Version"},"model":{"anyOf":[{"$ref":"#/components/schemas/ModelMetadata"},{"type":"null"}]},"study_uuid":{"type":"string","format":"uuid","title":"Study Uuid"},"original_relpath":{"type":"string","title":"Original Relpath"},"name":{"anyOf":[{"type":"string"},{"type":"null"}],"title":"Name"},"dimensions":{"anyOf":[{"type":"string"},{"type":"null"}],"title":"Dimensions"},"representations":{"items":{"$ref":"#/components/schemas/BIAImageRepresentation-Input"},"type":"array","title":"Representations","default":[]},"attributes":{"type":"object","title":"Attributes","default":{}},"annotations":{"items":{"$ref":"#/components/schemas/ImageAnnotation"},"type":"array","title":"Annotations","default":[]},"alias":{"anyOf":[{"$ref":"#/components/schemas/BIAImageAlias"},{"type":"null"}]}},"additionalProperties":false,"type":"object","required":["uuid","version","study_uuid","original_relpath"],"title":"BIAImage","description":"This class represents the abstract concept of an image. Images are\ngenerated by acquisition by instruments.\n\nExamples:\n\n* A single plane bright-field image of a bacterium.\n* A confocal fluorescence image of cells, with two channels.\n* A volume EM stack of a cell.\n\nImages are distinct from their representation as files, since the same\nimage can be represented in different file formats and in some cases\ndifferent file structures."},"BIAImage-Output":{"properties":{"uuid":{"type":"string","format":"uuid","title":"Uuid"},"version":{"type":"integer","title":"Version"},"model":{"anyOf":[{"$ref":"#/components/schemas/ModelMetadata"},{"type":"null"}]},"study_uuid":{"type":"string","format":"uuid","title":"Study Uuid"},"original_relpath":{"type":"string","title":"Original Relpath"},"name":{"anyOf":[{"type":"string"},{"type":"null"}],"title":"Name"},"dimensions":{"anyOf":[{"type":"string"},{"type":"null"}],"title":"Dimensions"},"representations":{"items":{"$ref":"#/components/schemas/BIAImageRepresentation-Output"},"type":"array","title":"Representations","default":[]},"attributes":{"type":"object","title":"Attributes","default":{}},"annotations":{"items":{"$ref":"#/components/schemas/ImageAnnotation"},"type":"array","title":"Annotations","default":[]},"alias":{"anyOf":[{"$ref":"#/components/schemas/BIAImageAlias"},{"type":"null"}]}},"additionalProperties":false,"type":"object","required":["uuid","version","study_uuid","original_relpath"],"title":"BIAImage","description":"This class represents the abstract concept of an image. Images are\ngenerated by acquisition by instruments.\n\nExamples:\n\n* A single plane bright-field image of a bacterium.\n* A confocal fluorescence image of cells, with two channels.\n* A volume EM stack of a cell.\n\nImages are distinct from their representation as files, since the same\nimage can be represented in different file formats and in some cases\ndifferent file structures."},"BIAImageAlias":{"properties":{"name":{"type":"string","title":"Name"}},"type":"object","required":["name"],"title":"BIAImageAlias","description":"An alias for an image - a more convenient way to refer to the image than\nthe full accession ID / UUID pair"},"BIAImageRepresentation-Input":{"properties":{"size":{"type":"integer","title":"Size"},"uri":{"items":{"type":"string"},"type":"array","title":"Uri","default":[]},"type":{"anyOf":[{"type":"string"},{"type":"null"}],"title":"Type"},"dimensions":{"anyOf":[{"type":"string"},{"type":"null"}],"title":"Dimensions"},"attributes":{"type":"object","title":"Attributes","default":{}},"rendering":{"anyOf":[{"$ref":"#/components/schemas/RenderingInfo"},{"type":"null"}]}},"type":"object","required":["size"],"title":"BIAImageRepresentation","description":"A particular representation of a BIAImage. Examples:\n\n* A single HTTP accessible file.\n* Multiple HTTP accessible files, representing different channels, planes and time points.\n* An S3 accessible OME-Zarr.\n* A thumbnail."},"BIAImageRepresentation-Output":{"properties":{"size":{"type":"integer","title":"Size"},"uri":{"items":{"type":"string"},"type":"array","title":"Uri","default":[]},"type":{"anyOf":[{"type":"string"},{"type":"null"}],"title":"Type"},"dimensions":{"anyOf":[{"type":"string"},{"type":"null"}],"title":"Dimensions"},"attributes":{"type":"object","title":"Attributes","default":{}},"rendering":{"anyOf":[{"$ref":"#/components/schemas/RenderingInfo"},{"type":"null"}]}},"type":"object","required":["size"],"title":"BIAImageRepresentation","description":"A particular representation of a BIAImage. Examples:\n\n* A single HTTP accessible file.\n* Multiple HTTP accessible files, representing different channels, planes and time points.\n* An S3 accessible OME-Zarr.\n* A thumbnail."},"BIAStudy-Input":{"properties":{"uuid":{"type":"string","format":"uuid","title":"Uuid"},"version":{"type":"integer","title":"Version"},"model":{"anyOf":[{"$ref":"#/components/schemas/ModelMetadata"},{"type":"null"}]},"title":{"type":"string","title":"Title"},"description":{"type":"string","title":"Description"},"authors":{"anyOf":[{"items":{"$ref":"#/components/schemas/Author"},"type":"array"},{"type":"null"}],"title":"Authors","default":[]},"organism":{"type":"string","title":"Organism"},"release_date":{"type":"string","title":"Release Date"},"accession_id":{"type":"string","title":"Accession Id"},"imaging_type":{"anyOf":[{"type":"string"},{"type":"null"}],"title":"Imaging Type"},"attributes":{"type":"object","title":"Attributes","default":{}},"annotations":{"items":{"$ref":"#/components/schemas/StudyAnnotation"},"type":"array","title":"Annotations","default":[]},"example_image_uri":{"type":"string","title":"Example Image Uri","default":""},"example_image_annotation_uri":{"type":"string","title":"Example Image Annotation Uri","default":""},"tags":{"items":{"type":"string"},"type":"array","title":"Tags","default":[]},"file_references_count":{"type":"integer","title":"File References Count","default":0},"images_count":{"type":"integer","title":"Images Count","default":0}},"additionalProperties":false,"type":"object","required":["uuid","version","title","description","organism","release_date","accession_id"],"title":"BIAStudy"},"BIAStudy-Output":{"properties":{"uuid":{"type":"string","format":"uuid","title":"Uuid"},"version":{"type":"integer","title":"Version"},"model":{"anyOf":[{"$ref":"#/components/schemas/ModelMetadata"},{"type":"null"}]},"title":{"type":"string","title":"Title"},"description":{"type":"string","title":"Description"},"authors":{"anyOf":[{"items":{"$ref":"#/components/schemas/Author"},"type":"array"},{"type":"null"}],"title":"Authors","default":[]},"organism":{"type":"string","title":"Organism"},"release_date":{"type":"string","title":"Release Date"},"accession_id":{"type":"string","title":"Accession Id"},"imaging_type":{"anyOf":[{"type":"string"},{"type":"null"}],"title":"Imaging Type"},"attributes":{"type":"object","title":"Attributes","default":{}},"annotations":{"items":{"$ref":"#/components/schemas/StudyAnnotation"},"type":"array","title":"Annotations","default":[]},"example_image_uri":{"type":"string","title":"Example Image Uri","default":""},"example_image_annotation_uri":{"type":"string","title":"Example Image Annotation Uri","default":""},"tags":{"items":{"type":"string"},"type":"array","title":"Tags","default":[]},"file_references_count":{"type":"integer","title":"File References Count","default":0},"images_count":{"type":"integer","title":"Images Count","default":0}},"additionalProperties":false,"type":"object","required":["uuid","version","title","description","organism","release_date","accession_id"],"title":"BIAStudy"},"Body_login_for_access_token":{"properties":{"grant_type":{"anyOf":[{"type":"string","pattern":"password"},{"type":"null"}],"title":"Grant Type"},"username":{"type":"string","title":"Username"},"password":{"type":"string","title":"Password"},"scope":{"type":"string","title":"Scope","default":""},"client_id":{"anyOf":[{"type":"string"},{"type":"null"}],"title":"Client Id"},"client_secret":{"anyOf":[{"type":"string"},{"type":"null"}],"title":"Client Secret"}},"type":"object","required":["username","password"],"title":"Body_login_for_access_token"},"Body_register_user":{"properties":{"email":{"type":"string","title":"Email"},"password_plain":{"type":"string","title":"Password Plain"},"secret_token":{"type":"string","title":"Secret Token"}},"type":"object","required":["email","password_plain","secret_token"],"title":"Body_register_user"},"Body_search_images":{"properties":{"attributes":{"anyOf":[{"type":"object"},{"type":"null"}],"title":"Attributes"},"annotations":{"items":{"type":"object"},"type":"array","title":"Annotations","default":[]}},"type":"object","title":"Body_search_images"},"BulkOperationItem":{"properties":{"status":{"type":"integer","title":"Status"},"idx_in_request":{"type":"integer","title":"Idx In Request"},"message":{"anyOf":[{"type":"string"},{"type":"null"}],"title":"Message"}},"type":"object","required":["status","idx_in_request","message"],"title":"BulkOperationItem"},"BulkOperationResponse":{"properties":{"items":{"items":{"$ref":"#/components/schemas/BulkOperationItem"},"type":"array","title":"Items"},"item_idx_by_status":{"additionalProperties":{"items":{"type":"integer"},"type":"array"},"type":"object","title":"Item Idx By Status","description":"Utility for clients to easily assess if they should retry/correct some items","readOnly":true}},"type":"object","required":["items","item_idx_by_status"],"title":"BulkOperationResponse"},"ChannelRendering":{"properties":{"channel_label":{"anyOf":[{"type":"string"},{"type":"null"}],"title":"Channel Label"},"colormap_start":{"items":{"type":"number"},"type":"array","title":"Colormap Start"},"colormap_end":{"items":{"type":"number"},"type":"array","title":"Colormap End"},"scale_factor":{"type":"number","title":"Scale Factor","default":1.0}},"type":"object","required":["channel_label","colormap_start","colormap_end"],"title":"ChannelRendering"},"FileReference":{"properties":{"uuid":{"type":"string","format":"uuid","title":"Uuid"},"version":{"type":"integer","title":"Version"},"model":{"anyOf":[{"$ref":"#/components/schemas/ModelMetadata"},{"type":"null"}]},"study_uuid":{"type":"string","format":"uuid","title":"Study Uuid"},"name":{"type":"string","title":"Name"},"uri":{"type":"string","title":"Uri"},"type":{"type":"string","title":"Type"},"size_in_bytes":{"type":"integer","title":"Size In Bytes"},"attributes":{"type":"object","title":"Attributes","default":{}}},"additionalProperties":false,"type":"object","required":["uuid","version","study_uuid","name","uri","type","size_in_bytes"],"title":"FileReference","description":"A reference to an externally hosted file."},"HTTPValidationError":{"properties":{"detail":{"items":{"$ref":"#/components/schemas/ValidationError"},"type":"array","title":"Detail"}},"type":"object","title":"HTTPValidationError"},"ImageAnnotation":{"properties":{"author_email":{"type":"string","title":"Author Email"},"key":{"type":"string","title":"Key"},"value":{"type":"string","title":"Value"},"state":{"$ref":"#/components/schemas/AnnotationState"}},"type":"object","required":["author_email","key","value","state"],"title":"ImageAnnotation"},"ModelMetadata":{"properties":{"type_name":{"type":"string","title":"Type Name"},"version":{"type":"integer","title":"Version"}},"type":"object","required":["type_name","version"],"title":"ModelMetadata"},"ObjectInfo":{"properties":{"uuid":{"type":"string","format":"uuid","title":"Uuid"},"model":{"$ref":"#/components/schemas/ModelMetadata"}},"type":"object","required":["uuid","model"],"title":"ObjectInfo"},"RenderingInfo":{"properties":{"channel_renders":{"items":{"$ref":"#/components/schemas/ChannelRendering"},"type":"array","title":"Channel Renders","default":[]},"default_z":{"anyOf":[{"type":"integer"},{"type":"null"}],"title":"Default Z"},"default_t":{"anyOf":[{"type":"integer"},{"type":"null"}],"title":"Default T"}},"type":"object","title":"RenderingInfo"},"StudyAnnotation":{"properties":{"author_email":{"type":"string","title":"Author Email"},"key":{"type":"string","title":"Key"},"value":{"type":"string","title":"Value"},"state":{"$ref":"#/components/schemas/AnnotationState"}},"type":"object","required":["author_email","key","value","state"],"title":"StudyAnnotation"},"ValidationError":{"properties":{"loc":{"items":{"anyOf":[{"type":"string"},{"type":"integer"}]},"type":"array","title":"Location"},"msg":{"type":"string","title":"Message"},"type":{"type":"string","title":"Error Type"}},"type":"object","required":["loc","msg","type"],"title":"ValidationError"}},"securitySchemes":{"OAuth2PasswordBearer":{"type":"oauth2","flows":{"password":{"scopes":{},"tokenUrl":"token"}}}}}}
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "FastAPI",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/api/v1/auth/token": {
+      "post": {
+        "tags": [
+          "private"
+        ],
+        "summary": "Login For Access Token",
+        "operationId": "login_for_access_token",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_login_for_access_token"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthenticationToken"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/users/register": {
+      "post": {
+        "tags": [
+          "private"
+        ],
+        "summary": "Register User",
+        "operationId": "register_user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_register_user"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/private/studies": {
+      "post": {
+        "tags": [
+          "private"
+        ],
+        "summary": "Create Study",
+        "operationId": "create_study",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BIAStudy"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "private"
+        ],
+        "summary": "Update Study",
+        "operationId": "update_study",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BIAStudy"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/private/studies/{study_uuid}/refresh_counts": {
+      "post": {
+        "tags": [
+          "private"
+        ],
+        "summary": "Study Refresh Counts",
+        "description": "Recalculate and persist counts for other objects pointing to this study.",
+        "operationId": "study_refresh_counts",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "study_uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Study Uuid"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/private/images": {
+      "post": {
+        "tags": [
+          "private"
+        ],
+        "summary": "Create Images",
+        "operationId": "create_images",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "items": {
+                  "$ref": "#/components/schemas/BIAImage"
+                },
+                "type": "array",
+                "title": "Study Images"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BulkOperationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/private/images/single": {
+      "patch": {
+        "tags": [
+          "private"
+        ],
+        "summary": "Update Image",
+        "description": "Bulk update not available - update_many only has one filter for the entire update\n@TODO: Find common bulk update usecases and map them to mongo operations",
+        "operationId": "update_image",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BIAImage"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/private/images/bulk": {
+      "post": {
+        "tags": [
+          "private"
+        ],
+        "summary": "Create Images Bulk",
+        "description": "TODO: Maybe file-based async?",
+        "operationId": "create_images_bulk",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/private/images/{image_uuid}/representations/single": {
+      "post": {
+        "tags": [
+          "private"
+        ],
+        "summary": "Create Image Representation",
+        "operationId": "create_image_representation",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "image_uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Image Uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BIAImageRepresentation"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/private/file_references": {
+      "post": {
+        "tags": [
+          "private"
+        ],
+        "summary": "Create File References",
+        "operationId": "create_file_references",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "items": {
+                  "$ref": "#/components/schemas/FileReference"
+                },
+                "type": "array",
+                "title": "File References"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BulkOperationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/private/file_references/single": {
+      "patch": {
+        "tags": [
+          "private"
+        ],
+        "summary": "Update File Reference",
+        "operationId": "update_file_reference",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FileReference"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/private/collections": {
+      "post": {
+        "tags": [
+          "private"
+        ],
+        "summary": "Create Collection",
+        "operationId": "create_collection",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BIACollection"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/admin/health-check": {
+      "get": {
+        "tags": [
+          "private"
+        ],
+        "summary": "Health Check",
+        "operationId": "health_check",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/object_info_by_accessions": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Get Object Info By Accession",
+        "operationId": "get_object_info_by_accession",
+        "parameters": [
+          {
+            "name": "accessions",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "title": "Accessions"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ObjectInfo"
+                  },
+                  "title": "Response Get Object Info By Accession"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/studies/{study_accession}/images_by_aliases": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Get Study Images By Alias",
+        "operationId": "get_study_images_by_alias",
+        "parameters": [
+          {
+            "name": "study_accession",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Study Accession"
+            }
+          },
+          {
+            "name": "aliases",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "title": "Aliases"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BIAImage"
+                  },
+                  "title": "Response Get Study Images By Alias"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/studies/{study_uuid}": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Get Study",
+        "operationId": "get_study",
+        "parameters": [
+          {
+            "name": "study_uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Study Uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BIAStudy"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/studies/{study_uuid}/file_references": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Get Study File References",
+        "description": "First item in response is the next item with uuid greater than start_uuid.\nstart_uuid is part of the response",
+        "operationId": "get_study_file_references",
+        "parameters": [
+          {
+            "name": "study_uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Study Uuid"
+            }
+          },
+          {
+            "name": "start_uuid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start Uuid"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "exclusiveMinimum": 0,
+              "default": 10,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FileReference"
+                  },
+                  "title": "Response Get Study File References"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/search/studies": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Search Studies",
+        "description": "@TODO: Define search criteria for the general case\n\nFirst item in response is the next item with uuid greater than start_uuid.\nstart_uuid is part of the response",
+        "operationId": "search_studies",
+        "parameters": [
+          {
+            "name": "start_uuid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start Uuid"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "exclusiveMinimum": 0,
+              "default": 10,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BIAStudy"
+                  },
+                  "title": "Response Search Studies"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/search/images": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Search Images",
+        "operationId": "search_images",
+        "parameters": [
+          {
+            "name": "alias",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Alias"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Body_search_images"
+                  }
+                ],
+                "title": "Body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BIAImage"
+                  },
+                  "title": "Response Search Images"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/studies/{study_uuid}/images": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Get Study Images",
+        "description": "First item in response is the next item with uuid greater than start_uuid.\nstart_uuid is part of the response",
+        "operationId": "get_study_images",
+        "parameters": [
+          {
+            "name": "study_uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Study Uuid"
+            }
+          },
+          {
+            "name": "start_uuid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start Uuid"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "exclusiveMinimum": 0,
+              "default": 10,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BIAImage"
+                  },
+                  "title": "Response Get Study Images"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/images/{image_uuid}": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Get Image",
+        "operationId": "get_image",
+        "parameters": [
+          {
+            "name": "image_uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Image Uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BIAImage"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/file_references/{file_reference_uuid}": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Get File Reference",
+        "operationId": "get_file_reference",
+        "parameters": [
+          {
+            "name": "file_reference_uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "File Reference Uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileReference"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/collections": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Search Collections",
+        "operationId": "search_collections",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Name"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BIACollection"
+                  },
+                  "title": "Response Search Collections"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/collections/{collection_uuid}": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Get Collection",
+        "operationId": "get_collection",
+        "parameters": [
+          {
+            "name": "collection_uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Collection Uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BIACollection"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AnnotationState": {
+        "type": "string",
+        "enum": [
+          "active",
+          "deleted"
+        ],
+        "title": "AnnotationState"
+      },
+      "AuthenticationToken": {
+        "properties": {
+          "access_token": {
+            "type": "string",
+            "title": "Access Token"
+          },
+          "token_type": {
+            "type": "string",
+            "title": "Token Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "access_token",
+          "token_type"
+        ],
+        "title": "AuthenticationToken"
+      },
+      "Author": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "title": "Author"
+      },
+      "BIACollection": {
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Uuid"
+          },
+          "version": {
+            "type": "integer",
+            "title": "Version"
+          },
+          "model": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ModelMetadata"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "subtitle": {
+            "type": "string",
+            "title": "Subtitle"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "study_uuids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Study Uuids",
+            "default": []
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "uuid",
+          "version",
+          "name",
+          "title",
+          "subtitle"
+        ],
+        "title": "BIACollection",
+        "description": "A collection of studies with a coherent purpose. Studies can be in\nmultiple collections."
+      },
+      "BIAImage": {
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Uuid"
+          },
+          "version": {
+            "type": "integer",
+            "title": "Version"
+          },
+          "model": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ModelMetadata"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "study_uuid": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Study Uuid"
+          },
+          "original_relpath": {
+            "type": "string",
+            "title": "Original Relpath"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "dimensions": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dimensions"
+          },
+          "representations": {
+            "items": {
+              "$ref": "#/components/schemas/BIAImageRepresentation"
+            },
+            "type": "array",
+            "title": "Representations",
+            "default": []
+          },
+          "attributes": {
+            "type": "object",
+            "title": "Attributes",
+            "default": {}
+          },
+          "annotations": {
+            "items": {
+              "$ref": "#/components/schemas/ImageAnnotation"
+            },
+            "type": "array",
+            "title": "Annotations",
+            "default": []
+          },
+          "alias": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BIAImageAlias"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "uuid",
+          "version",
+          "study_uuid",
+          "original_relpath"
+        ],
+        "title": "BIAImage",
+        "description": "This class represents the abstract concept of an image. Images are\ngenerated by acquisition by instruments.\n\nExamples:\n\n* A single plane bright-field image of a bacterium.\n* A confocal fluorescence image of cells, with two channels.\n* A volume EM stack of a cell.\n\nImages are distinct from their representation as files, since the same\nimage can be represented in different file formats and in some cases\ndifferent file structures."
+      },
+      "BIAImageAlias": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "title": "BIAImageAlias",
+        "description": "An alias for an image - a more convenient way to refer to the image than\nthe full accession ID / UUID pair"
+      },
+      "BIAImageRepresentation": {
+        "properties": {
+          "size": {
+            "type": "integer",
+            "title": "Size"
+          },
+          "uri": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Uri",
+            "default": []
+          },
+          "type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Type"
+          },
+          "dimensions": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dimensions"
+          },
+          "attributes": {
+            "type": "object",
+            "title": "Attributes",
+            "default": {}
+          },
+          "rendering": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RenderingInfo"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "size"
+        ],
+        "title": "BIAImageRepresentation",
+        "description": "A particular representation of a BIAImage. Examples:\n\n* A single HTTP accessible file.\n* Multiple HTTP accessible files, representing different channels, planes and time points.\n* An S3 accessible OME-Zarr.\n* A thumbnail."
+      },
+      "BIAStudy": {
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Uuid"
+          },
+          "version": {
+            "type": "integer",
+            "title": "Version"
+          },
+          "model": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ModelMetadata"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "authors": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Author"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Authors",
+            "default": []
+          },
+          "organism": {
+            "type": "string",
+            "title": "Organism"
+          },
+          "release_date": {
+            "type": "string",
+            "title": "Release Date"
+          },
+          "accession_id": {
+            "type": "string",
+            "title": "Accession Id"
+          },
+          "imaging_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Imaging Type"
+          },
+          "attributes": {
+            "type": "object",
+            "title": "Attributes",
+            "default": {}
+          },
+          "annotations": {
+            "items": {
+              "$ref": "#/components/schemas/StudyAnnotation"
+            },
+            "type": "array",
+            "title": "Annotations",
+            "default": []
+          },
+          "example_image_uri": {
+            "type": "string",
+            "title": "Example Image Uri",
+            "default": ""
+          },
+          "example_image_annotation_uri": {
+            "type": "string",
+            "title": "Example Image Annotation Uri",
+            "default": ""
+          },
+          "tags": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Tags",
+            "default": []
+          },
+          "file_references_count": {
+            "type": "integer",
+            "title": "File References Count",
+            "default": 0
+          },
+          "images_count": {
+            "type": "integer",
+            "title": "Images Count",
+            "default": 0
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "uuid",
+          "version",
+          "title",
+          "description",
+          "organism",
+          "release_date",
+          "accession_id"
+        ],
+        "title": "BIAStudy"
+      },
+      "Body_login_for_access_token": {
+        "properties": {
+          "grant_type": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "password"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Grant Type"
+          },
+          "username": {
+            "type": "string",
+            "title": "Username"
+          },
+          "password": {
+            "type": "string",
+            "title": "Password"
+          },
+          "scope": {
+            "type": "string",
+            "title": "Scope",
+            "default": ""
+          },
+          "client_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Client Id"
+          },
+          "client_secret": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Client Secret"
+          }
+        },
+        "type": "object",
+        "required": [
+          "username",
+          "password"
+        ],
+        "title": "Body_login_for_access_token"
+      },
+      "Body_register_user": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "title": "Email"
+          },
+          "password_plain": {
+            "type": "string",
+            "title": "Password Plain"
+          },
+          "secret_token": {
+            "type": "string",
+            "title": "Secret Token"
+          }
+        },
+        "type": "object",
+        "required": [
+          "email",
+          "password_plain",
+          "secret_token"
+        ],
+        "title": "Body_register_user"
+      },
+      "Body_search_images": {
+        "properties": {
+          "attributes": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Attributes"
+          },
+          "annotations": {
+            "items": {
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Annotations",
+            "default": []
+          }
+        },
+        "type": "object",
+        "title": "Body_search_images"
+      },
+      "BulkOperationItem": {
+        "properties": {
+          "status": {
+            "type": "integer",
+            "title": "Status"
+          },
+          "idx_in_request": {
+            "type": "integer",
+            "title": "Idx In Request"
+          },
+          "message": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "idx_in_request",
+          "message"
+        ],
+        "title": "BulkOperationItem"
+      },
+      "BulkOperationResponse": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/BulkOperationItem"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items"
+        ],
+        "title": "BulkOperationResponse"
+      },
+      "ChannelRendering": {
+        "properties": {
+          "channel_label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Channel Label"
+          },
+          "colormap_start": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array",
+            "title": "Colormap Start"
+          },
+          "colormap_end": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array",
+            "title": "Colormap End"
+          },
+          "scale_factor": {
+            "type": "number",
+            "title": "Scale Factor",
+            "default": 1
+          }
+        },
+        "type": "object",
+        "required": [
+          "channel_label",
+          "colormap_start",
+          "colormap_end"
+        ],
+        "title": "ChannelRendering"
+      },
+      "FileReference": {
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Uuid"
+          },
+          "version": {
+            "type": "integer",
+            "title": "Version"
+          },
+          "model": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ModelMetadata"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "study_uuid": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Study Uuid"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "uri": {
+            "type": "string",
+            "title": "Uri"
+          },
+          "type": {
+            "type": "string",
+            "title": "Type"
+          },
+          "size_in_bytes": {
+            "type": "integer",
+            "title": "Size In Bytes"
+          },
+          "attributes": {
+            "type": "object",
+            "title": "Attributes",
+            "default": {}
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "uuid",
+          "version",
+          "study_uuid",
+          "name",
+          "uri",
+          "type",
+          "size_in_bytes"
+        ],
+        "title": "FileReference",
+        "description": "A reference to an externally hosted file."
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ImageAnnotation": {
+        "properties": {
+          "author_email": {
+            "type": "string",
+            "title": "Author Email"
+          },
+          "key": {
+            "type": "string",
+            "title": "Key"
+          },
+          "value": {
+            "type": "string",
+            "title": "Value"
+          },
+          "state": {
+            "$ref": "#/components/schemas/AnnotationState"
+          }
+        },
+        "type": "object",
+        "required": [
+          "author_email",
+          "key",
+          "value",
+          "state"
+        ],
+        "title": "ImageAnnotation"
+      },
+      "ModelMetadata": {
+        "properties": {
+          "type_name": {
+            "type": "string",
+            "title": "Type Name"
+          },
+          "version": {
+            "type": "integer",
+            "title": "Version"
+          }
+        },
+        "type": "object",
+        "required": [
+          "type_name",
+          "version"
+        ],
+        "title": "ModelMetadata"
+      },
+      "ObjectInfo": {
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Uuid"
+          },
+          "model": {
+            "$ref": "#/components/schemas/ModelMetadata"
+          }
+        },
+        "type": "object",
+        "required": [
+          "uuid",
+          "model"
+        ],
+        "title": "ObjectInfo"
+      },
+      "RenderingInfo": {
+        "properties": {
+          "channel_renders": {
+            "items": {
+              "$ref": "#/components/schemas/ChannelRendering"
+            },
+            "type": "array",
+            "title": "Channel Renders",
+            "default": []
+          },
+          "default_z": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Default Z"
+          },
+          "default_t": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Default T"
+          }
+        },
+        "type": "object",
+        "title": "RenderingInfo"
+      },
+      "StudyAnnotation": {
+        "properties": {
+          "author_email": {
+            "type": "string",
+            "title": "Author Email"
+          },
+          "key": {
+            "type": "string",
+            "title": "Key"
+          },
+          "value": {
+            "type": "string",
+            "title": "Value"
+          },
+          "state": {
+            "$ref": "#/components/schemas/AnnotationState"
+          }
+        },
+        "type": "object",
+        "required": [
+          "author_email",
+          "key",
+          "value",
+          "state"
+        ],
+        "title": "StudyAnnotation"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    },
+    "securitySchemes": {
+      "OAuth2PasswordBearer": {
+        "type": "oauth2",
+        "flows": {
+          "password": {
+            "scopes": {},
+            "tokenUrl": "token"
+          }
+        }
+      }
+    }
+  }
+}

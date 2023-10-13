@@ -71,7 +71,7 @@ All URIs are relative to *http://localhost*
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *PrivateApi* | [**create_collection**](bia_integrator_api/docs/PrivateApi.md#create_collection) | **POST** /api/v1/private/collections | Create Collection
-*PrivateApi* | [**create_file_reference**](bia_integrator_api/docs/PrivateApi.md#create_file_reference) | **POST** /api/v1/private/file_references | Create File Reference
+*PrivateApi* | [**create_file_references**](bia_integrator_api/docs/PrivateApi.md#create_file_references) | **POST** /api/v1/private/file_references | Create File References
 *PrivateApi* | [**create_image_representation**](bia_integrator_api/docs/PrivateApi.md#create_image_representation) | **POST** /api/v1/private/images/{image_uuid}/representations/single | Create Image Representation
 *PrivateApi* | [**create_images**](bia_integrator_api/docs/PrivateApi.md#create_images) | **POST** /api/v1/private/images | Create Images
 *PrivateApi* | [**create_images_bulk**](bia_integrator_api/docs/PrivateApi.md#create_images_bulk) | **POST** /api/v1/private/images/bulk | Create Images Bulk
@@ -113,13 +113,10 @@ Class | Method | HTTP request | Description
  - [AuthenticationToken](bia_integrator_api/docs/AuthenticationToken.md)
  - [Author](bia_integrator_api/docs/Author.md)
  - [BIACollection](bia_integrator_api/docs/BIACollection.md)
+ - [BIAImage](bia_integrator_api/docs/BIAImage.md)
  - [BIAImageAlias](bia_integrator_api/docs/BIAImageAlias.md)
- - [BIAImageInput](bia_integrator_api/docs/BIAImageInput.md)
- - [BIAImageOutput](bia_integrator_api/docs/BIAImageOutput.md)
- - [BIAImageRepresentationInput](bia_integrator_api/docs/BIAImageRepresentationInput.md)
- - [BIAImageRepresentationOutput](bia_integrator_api/docs/BIAImageRepresentationOutput.md)
- - [BIAStudyInput](bia_integrator_api/docs/BIAStudyInput.md)
- - [BIAStudyOutput](bia_integrator_api/docs/BIAStudyOutput.md)
+ - [BIAImageRepresentation](bia_integrator_api/docs/BIAImageRepresentation.md)
+ - [BIAStudy](bia_integrator_api/docs/BIAStudy.md)
  - [BodyRegisterUser](bia_integrator_api/docs/BodyRegisterUser.md)
  - [BodySearchImages](bia_integrator_api/docs/BodySearchImages.md)
  - [BulkOperationItem](bia_integrator_api/docs/BulkOperationItem.md)

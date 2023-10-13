@@ -5,7 +5,7 @@ All URIs are relative to *http://localhost*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**create_collection**](PrivateApi.md#create_collection) | **POST** /api/v1/private/collections | Create Collection
-[**create_file_reference**](PrivateApi.md#create_file_reference) | **POST** /api/v1/private/file_references | Create File Reference
+[**create_file_references**](PrivateApi.md#create_file_references) | **POST** /api/v1/private/file_references | Create File References
 [**create_image_representation**](PrivateApi.md#create_image_representation) | **POST** /api/v1/private/images/{image_uuid}/representations/single | Create Image Representation
 [**create_images**](PrivateApi.md#create_images) | **POST** /api/v1/private/images | Create Images
 [**create_images_bulk**](PrivateApi.md#create_images_bulk) | **POST** /api/v1/private/images/bulk | Create Images Bulk
@@ -102,10 +102,10 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **create_file_reference**
-> BulkOperationResponse create_file_reference(body)
+# **create_file_references**
+> BulkOperationResponse create_file_references(body)
 
-Create File Reference
+Create File References
 
 ### Example
 
@@ -138,12 +138,12 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     body = None # object | 
 
     try:
-        # Create File Reference
-        api_response = api_instance.create_file_reference(body)
-        print("The response of PrivateApi->create_file_reference:\n")
+        # Create File References
+        api_response = api_instance.create_file_references(body)
+        print("The response of PrivateApi->create_file_references:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling PrivateApi->create_file_reference: %s\n" % e)
+        print("Exception when calling PrivateApi->create_file_references: %s\n" % e)
 ```
 
 
@@ -176,7 +176,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **create_image_representation**
-> object create_image_representation(image_uuid, bia_image_representation_input)
+> object create_image_representation(image_uuid, bia_image_representation)
 
 Create Image Representation
 
@@ -187,7 +187,7 @@ Create Image Representation
 import time
 import os
 import bia_integrator_api
-from bia_integrator_api.models.bia_image_representation_input import BIAImageRepresentationInput
+from bia_integrator_api.models.bia_image_representation import BIAImageRepresentation
 from bia_integrator_api.rest import ApiException
 from pprint import pprint
 
@@ -209,11 +209,11 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = bia_integrator_api.PrivateApi(api_client)
     image_uuid = None # object | 
-    bia_image_representation_input = bia_integrator_api.BIAImageRepresentationInput() # BIAImageRepresentationInput | 
+    bia_image_representation = bia_integrator_api.BIAImageRepresentation() # BIAImageRepresentation | 
 
     try:
         # Create Image Representation
-        api_response = api_instance.create_image_representation(image_uuid, bia_image_representation_input)
+        api_response = api_instance.create_image_representation(image_uuid, bia_image_representation)
         print("The response of PrivateApi->create_image_representation:\n")
         pprint(api_response)
     except Exception as e:
@@ -227,7 +227,7 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **image_uuid** | [**object**](.md)|  | 
- **bia_image_representation_input** | [**BIAImageRepresentationInput**](BIAImageRepresentationInput.md)|  | 
+ **bia_image_representation** | [**BIAImageRepresentation**](BIAImageRepresentation.md)|  | 
 
 ### Return type
 
@@ -597,7 +597,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_image**
-> BIAImageOutput get_image(image_uuid)
+> BIAImage get_image(image_uuid)
 
 Get Image
 
@@ -607,7 +607,7 @@ Get Image
 import time
 import os
 import bia_integrator_api
-from bia_integrator_api.models.bia_image_output import BIAImageOutput
+from bia_integrator_api.models.bia_image import BIAImage
 from bia_integrator_api.rest import ApiException
 from pprint import pprint
 
@@ -643,7 +643,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**BIAImageOutput**](BIAImageOutput.md)
+[**BIAImage**](BIAImage.md)
 
 ### Authorization
 
@@ -728,7 +728,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_study**
-> BIAStudyOutput get_study(study_uuid)
+> BIAStudy get_study(study_uuid)
 
 Get Study
 
@@ -738,7 +738,7 @@ Get Study
 import time
 import os
 import bia_integrator_api
-from bia_integrator_api.models.bia_study_output import BIAStudyOutput
+from bia_integrator_api.models.bia_study import BIAStudy
 from bia_integrator_api.rest import ApiException
 from pprint import pprint
 
@@ -774,7 +774,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**BIAStudyOutput**](BIAStudyOutput.md)
+[**BIAStudy**](BIAStudy.md)
 
 ### Authorization
 

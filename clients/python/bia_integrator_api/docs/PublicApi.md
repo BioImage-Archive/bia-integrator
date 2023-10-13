@@ -150,7 +150,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_image**
-> BIAImageOutput get_image(image_uuid)
+> BIAImage get_image(image_uuid)
 
 Get Image
 
@@ -160,7 +160,7 @@ Get Image
 import time
 import os
 import bia_integrator_api
-from bia_integrator_api.models.bia_image_output import BIAImageOutput
+from bia_integrator_api.models.bia_image import BIAImage
 from bia_integrator_api.rest import ApiException
 from pprint import pprint
 
@@ -196,7 +196,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**BIAImageOutput**](BIAImageOutput.md)
+[**BIAImage**](BIAImage.md)
 
 ### Authorization
 
@@ -281,7 +281,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_study**
-> BIAStudyOutput get_study(study_uuid)
+> BIAStudy get_study(study_uuid)
 
 Get Study
 
@@ -291,7 +291,7 @@ Get Study
 import time
 import os
 import bia_integrator_api
-from bia_integrator_api.models.bia_study_output import BIAStudyOutput
+from bia_integrator_api.models.bia_study import BIAStudy
 from bia_integrator_api.rest import ApiException
 from pprint import pprint
 
@@ -327,7 +327,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**BIAStudyOutput**](BIAStudyOutput.md)
+[**BIAStudy**](BIAStudy.md)
 
 ### Authorization
 

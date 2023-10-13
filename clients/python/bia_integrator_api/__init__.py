@@ -36,13 +36,10 @@ from bia_integrator_api.models.annotation_state import AnnotationState
 from bia_integrator_api.models.authentication_token import AuthenticationToken
 from bia_integrator_api.models.author import Author
 from bia_integrator_api.models.bia_collection import BIACollection
+from bia_integrator_api.models.bia_image import BIAImage
 from bia_integrator_api.models.bia_image_alias import BIAImageAlias
-from bia_integrator_api.models.bia_image_input import BIAImageInput
-from bia_integrator_api.models.bia_image_output import BIAImageOutput
-from bia_integrator_api.models.bia_image_representation_input import BIAImageRepresentationInput
-from bia_integrator_api.models.bia_image_representation_output import BIAImageRepresentationOutput
-from bia_integrator_api.models.bia_study_input import BIAStudyInput
-from bia_integrator_api.models.bia_study_output import BIAStudyOutput
+from bia_integrator_api.models.bia_image_representation import BIAImageRepresentation
+from bia_integrator_api.models.bia_study import BIAStudy
 from bia_integrator_api.models.body_register_user import BodyRegisterUser
 from bia_integrator_api.models.body_search_images import BodySearchImages
 from bia_integrator_api.models.bulk_operation_item import BulkOperationItem

@@ -26,8 +26,7 @@ class BulkOperationResponse(BaseModel):
     BulkOperationResponse
     """
     items: Optional[Any] = Field(...)
-    item_idx_by_status: Optional[Any] = Field(..., description="Utility for clients to easily assess if they should retry/correct some items")
-    __properties = ["items", "item_idx_by_status"]
+    __properties = ["items"]
 
     class Config:
         """Pydantic configuration"""
@@ -51,18 +50,12 @@ class BulkOperationResponse(BaseModel):
         """Returns the dictionary representation of the model using alias"""
         _dict = self.dict(by_alias=True,
                           exclude={
-                            "item_idx_by_status",
                           },
                           exclude_none=True)
         # set to None if items (nullable) is None
         # and __fields_set__ contains the field
         if self.items is None and "items" in self.__fields_set__:
             _dict['items'] = None
-
-        # set to None if item_idx_by_status (nullable) is None
-        # and __fields_set__ contains the field
-        if self.item_idx_by_status is None and "item_idx_by_status" in self.__fields_set__:
-            _dict['item_idx_by_status'] = None
 
         return _dict
 
@@ -76,7 +69,7 @@ class BulkOperationResponse(BaseModel):
             return BulkOperationResponse.parse_obj(obj)
 
         _obj = BulkOperationResponse.parse_obj({
-            "items": obj.get("items"),
+            "items": obj.get("items")
         })
         return _obj
 
