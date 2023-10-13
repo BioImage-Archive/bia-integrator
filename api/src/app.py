@@ -16,7 +16,8 @@ from fastapi.middleware.gzip import GZipMiddleware
 import logging
 
 app = FastAPI(
-    generate_unique_id_function=lambda route: route.name
+    generate_unique_id_function=lambda route: route.name,
+    separate_input_output_schemas=False
 )
 app.add_middleware(GZipMiddleware, minimum_size=1000)
 
