@@ -7,7 +7,7 @@ readme = "Readme.md"
 packages = [{include = "bia_integrator_api"}]
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.9"
 urllib3 = ">= 1.25.3"
 python-dateutil = ">=2.8.2"
 pydantic = "^1.10.5, <2"

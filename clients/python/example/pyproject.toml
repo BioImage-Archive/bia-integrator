@@ -8,7 +8,7 @@ packages = [{include = "python_example"}]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-openapi-client = { git = "https://github.com/BioImage-Archive/bia-integrator.git", subdirectory = "clients/python", branch = "biaint-api-backend" }
+bia-integrator-api = { git = "https://github.com/BioImage-Archive/bia-integrator.git", subdirectory = "clients/python", branch = "biaint-api-backend" }
 
 [build-system]
 requires = ["poetry-core"]
