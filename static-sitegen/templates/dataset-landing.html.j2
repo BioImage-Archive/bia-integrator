@@ -10,6 +10,12 @@
 .help {
     cursor: help;
     }
+.shrink-table {
+    table-layout: fixed;
+    min-width: 600px;
+    width: auto !important; 
+    }
+
 </style>
 {% endblock %}
 
@@ -61,11 +67,6 @@
             <h2 class="vf-section-header__heading">Study information</h2>
             <p></p>
             <a class="vf-card__link" href="https://www.ebi.ac.uk/biostudies/BioImages/studies/{{ study.accession_id }}" target=”_blank”><button class="vf-button vf-button--primary vf-button--sm">Original submission page</button></a>
-             <ul class="vf-list">
-            <li><b>
-                <a href="access_data_help.html">How to access the data </a>
-            </b></li>
-            </ul>
         </div>
         <div>
             <div class="vf-content">
@@ -87,12 +88,20 @@
             <h2 class="vf-section-header__heading">Viewable images
             <i class="fa-solid fa-circle-info" title="Images that have been converted to ome-ngff for in-browser viewing"></i>
             </h2>
+            <p></p>
+            <ul class="vf-list">
+            <li><b>
+                <a href="access_data_help.html">How to access the data </a>
+            </b></li>
+            </ul>
 
         </div>
-        <div>
+        <div class="vf-content">
 
             {# <section> #}
-
+            <div class="btn-group" role="group" aria-label="Show/Hide Columns">
+              <button type="button" class="tag" id="toggle-images-column-2"> Show/Hide Filename </button>
+            </div>
                 <table id="viewable">
                     {# <caption class="vf-table__caption">Images with OME-NGFF representations</caption> #}
                     {# <colgroup>
@@ -143,7 +152,7 @@
         </div>
         <div></div>
         <div>
-            <h2 class="vf-section-header__heading">All images <i class="fa-solid fa-circle-info" title="All images in the study in their original format"></i></h2><
+            <h2 class="vf-section-header__heading">All images <i class="fa-solid fa-circle-info" title="All images in the study in their original format"></i></h2>
         </div>
         <div>
             <table class="display table" id="table">
@@ -188,13 +197,21 @@
                 { type: 'natural', targets: 0 }
             ]
         });
-    } );
-$(document).ready( function () {
-    $('#viewable').DataTable( {
+    var imagesTable = $('#viewable').DataTable( {
         columnDefs: [
-            { type: 'natural', targets: 0 }
+            { type: 'natural', targets: 0 },
+            { targets: 2, visible: false }
         ]
     });
+
+    // Toggle button for 3rd column in viewable table (images)
+    $('#toggle-images-column-2').on('click', function () {
+        var column = imagesTable.column(2);
+        column.visible(!column.visible());
+        $('#viewable').toggleClass('shrink-table');
+        imagesTable.columns.adjust().draw();
+    });
+
 } );
 </script>
 {% endblock %}

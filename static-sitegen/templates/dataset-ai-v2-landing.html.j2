@@ -1,7 +1,6 @@
 {% extends "base.html.j2" %}
 
 {% block header_extras %}
-        <meta charset="UTF-8">
         <link rel="stylesheet" href="https://assets.emblstatic.net/vf/v2.5.8/css/styles.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.11.5/datatables.min.css"/>
@@ -48,6 +47,7 @@
 {% block title %} {{ accession_id }} {% endblock %}
 
 {% block content %}
+<div class="vf-stack vf-stack--500">
 <section class="vf-intro">
 
   <div><!-- empty --></div>
@@ -166,12 +166,6 @@
       <p></p>
       <a class="vf-card__link" href="https://www.ebi.ac.uk/biostudies/BioImages/studies/{{ study.accession_id }}" target=”_blank”><button class="vf-button vf-button--primary vf-button--sm">Original submission page</button></a>
      <!--  <a class="vf-card__link" href="https://www.ebi.ac.uk/biostudies/BioImages/studies/{{ study.accession_id }}" target=”_blank”> Original submission page </a> -->
-     <p></p>
-     <ul class="vf-list">
-     <li><b>
-        <a href="access_data_help.html">How to access the data </a>
-      </b></li>
-      </ul>
     </div>
     <div class="vf-content">
       <div class="vf-grid vf-grid__col-2">
@@ -201,13 +195,19 @@
       <h2 class="vf-section-header__heading" id="images">Viewable images 
       <i class="fa-solid fa-circle-info" title="Images that have been converted to ome-ngff for in-browser viewing"></i>
       </h2> 
+      <p></p>
+     <ul class="vf-list">
+     <li><b>
+        <a href="access_data_help.html">How to access the data </a>
+      </b></li>
+      </ul>
     </div>
     <div>
     <div class="btn-group" role="group" aria-label="Show/Hide Columns">
-      <button class="vf-button--small" id="toggle-images-column-2">Show/Hide Filename</button>
-      <button type="button" class="btn btn-primary" id="toggleButton" style="float: right;">Expand/Shrink Table</button>
+      <button type="button" class="tag" id="toggle-images-column-2">Show/Hide Filename</button>
+<!--      <button type="button" class="tag" id="toggleButton" style="float: right;">Expand/Shrink Table</button> -->
     </div>
-      <div id="table_wrapper" class="wrapper" style="display: block">                
+<!--      <div id="table_wrapper" class="wrapper" style="display: block"> -->            
                     <table id="viewable">
                         {# <caption class="vf-table__caption">Images with OME-NGFF representations</caption> #}
                         {# <colgroup>
@@ -271,7 +271,7 @@
                             {% endfor %}
                         </tbody>
                       </table>
-                    </div>
+                    <!-- </div> -->
                     </div>
                     
                     <div>
@@ -294,8 +294,8 @@
     </div>
     <div class="vf-content">
         <div class="btn-group" role="group" aria-label="Show/Hide Columns">
-              <button type="button" class="btn btn-primary" id="toggle-annot-column-2">Show/Hide Filename</button>
-              <button type="button" class="btn btn-primary" id="toggle-annot-column-3">Show/Hide Source Image</button>
+              <button type="button" class="tag" id="toggle-annot-column-2">Show/Hide Filename</button>
+              <button type="button" class="tag" id="toggle-annot-column-3">Show/Hide Source Image</button>
         </div>
             <table class="display table" id="annot_table">
                         <thead>
@@ -341,7 +341,7 @@
                         </tbody>
                       </table>  
         </div>
-    </div>
+    <div></div>
   </section>
 
     <!-- Models used --> 
@@ -366,7 +366,7 @@
       {% endif %}
       <br>
         </div>
-    </div>
+    <div></div>
   </section>
 
         <!-- All Images -->
@@ -411,8 +411,9 @@
                       </table> 
                       </div>                     
                       </div>
-                    </div>
+                    <div></div>
             </section>
+            </div>
 
 
         <script>
@@ -432,7 +433,6 @@
                 });
             
                 var imagesTable = $('#viewable').DataTable( {
-                    scrollX: true,
                     columnDefs: [
                         { type: 'natural', width: '10%', targets: 0 },
                         { targets: 3, visible: false }
