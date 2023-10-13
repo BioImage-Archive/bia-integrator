@@ -5,14 +5,14 @@ A collection of studies with a coherent purpose. Studies can be in multiple coll
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**uuid** | **object** |  | 
-**version** | **object** |  | 
-**model** | **object** |  | [optional] 
-**name** | **object** |  | 
-**title** | **object** |  | 
-**subtitle** | **object** |  | 
-**description** | **object** |  | [optional] 
-**study_uuids** | **object** |  | [optional] 
+**uuid** | **str** |  | 
+**version** | **int** |  | 
+**model** | [**ModelMetadata**](ModelMetadata.md) |  | [optional] 
+**name** | **str** |  | 
+**title** | **str** |  | 
+**subtitle** | **str** |  | 
+**description** | **str** |  | [optional] 
+**study_uuids** | **List[str]** |  | [optional] [default to []]
 
 ## Example
 

@@ -32,6 +32,7 @@ from bia_integrator_api.exceptions import ApiAttributeError
 from bia_integrator_api.exceptions import ApiException
 
 # import models into sdk package
+from bia_integrator_api.models.alias import Alias
 from bia_integrator_api.models.annotation_state import AnnotationState
 from bia_integrator_api.models.authentication_token import AuthenticationToken
 from bia_integrator_api.models.author import Author
@@ -48,8 +49,11 @@ from bia_integrator_api.models.channel_rendering import ChannelRendering
 from bia_integrator_api.models.file_reference import FileReference
 from bia_integrator_api.models.http_validation_error import HTTPValidationError
 from bia_integrator_api.models.image_annotation import ImageAnnotation
+from bia_integrator_api.models.location_inner import LocationInner
 from bia_integrator_api.models.model_metadata import ModelMetadata
+from bia_integrator_api.models.name import Name
 from bia_integrator_api.models.object_info import ObjectInfo
 from bia_integrator_api.models.rendering_info import RenderingInfo
+from bia_integrator_api.models.start_uuid import StartUuid
 from bia_integrator_api.models.study_annotation import StudyAnnotation
 from bia_integrator_api.models.validation_error import ValidationError

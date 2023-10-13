@@ -4,9 +4,9 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**email** | **object** |  | 
-**password_plain** | **object** |  | 
-**secret_token** | **object** |  | 
+**email** | **str** |  | 
+**password_plain** | **str** |  | 
+**secret_token** | **str** |  | 
 
 ## Example
 

@@ -4,23 +4,23 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**uuid** | **object** |  | 
-**version** | **object** |  | 
-**model** | **object** |  | [optional] 
-**title** | **object** |  | 
-**description** | **object** |  | 
-**authors** | **object** |  | [optional] 
-**organism** | **object** |  | 
-**release_date** | **object** |  | 
-**accession_id** | **object** |  | 
-**imaging_type** | **object** |  | [optional] 
+**uuid** | **str** |  | 
+**version** | **int** |  | 
+**model** | [**ModelMetadata**](ModelMetadata.md) |  | [optional] 
+**title** | **str** |  | 
+**description** | **str** |  | 
+**authors** | [**List[Author]**](Author.md) |  | [optional] 
+**organism** | **str** |  | 
+**release_date** | **str** |  | 
+**accession_id** | **str** |  | 
+**imaging_type** | **str** |  | [optional] 
 **attributes** | **object** |  | [optional] 
-**annotations** | **object** |  | [optional] 
-**example_image_uri** | **object** |  | [optional] 
-**example_image_annotation_uri** | **object** |  | [optional] 
-**tags** | **object** |  | [optional] 
-**file_references_count** | **object** |  | [optional] 
-**images_count** | **object** |  | [optional] 
+**annotations** | [**List[StudyAnnotation]**](StudyAnnotation.md) |  | [optional] [default to []]
+**example_image_uri** | **str** |  | [optional] [default to '']
+**example_image_annotation_uri** | **str** |  | [optional] [default to '']
+**tags** | **List[str]** |  | [optional] [default to []]
+**file_references_count** | **int** |  | [optional] [default to 0]
+**images_count** | **int** |  | [optional] [default to 0]
 
 ## Example
 

@@ -18,14 +18,15 @@ import re  # noqa: F401
 import json
 
 
-from typing import Any, Optional
-from pydantic import BaseModel, Field
+from typing import List
+from pydantic import BaseModel, Field, conlist
+from bia_integrator_api.models.bulk_operation_item import BulkOperationItem
 
 class BulkOperationResponse(BaseModel):
     """
     BulkOperationResponse
     """
-    items: Optional[Any] = Field(...)
+    items: conlist(BulkOperationItem) = Field(...)
     __properties = ["items"]
 
     class Config:
@@ -52,11 +53,13 @@ class BulkOperationResponse(BaseModel):
                           exclude={
                           },
                           exclude_none=True)
-        # set to None if items (nullable) is None
-        # and __fields_set__ contains the field
-        if self.items is None and "items" in self.__fields_set__:
-            _dict['items'] = None
-
+        # override the default output from pydantic by calling `to_dict()` of each item in items (list)
+        _items = []
+        if self.items:
+            for _item in self.items:
+                if _item:
+                    _items.append(_item.to_dict())
+            _dict['items'] = _items
         return _dict
 
     @classmethod
@@ -69,7 +72,7 @@ class BulkOperationResponse(BaseModel):
             return BulkOperationResponse.parse_obj(obj)
 
         _obj = BulkOperationResponse.parse_obj({
-            "items": obj.get("items")
+            "items": [BulkOperationItem.from_dict(_item) for _item in obj.get("items")] if obj.get("items") is not None else None
         })
         return _obj
 

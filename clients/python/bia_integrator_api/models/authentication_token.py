@@ -18,15 +18,15 @@ import re  # noqa: F401
 import json
 
 
-from typing import Any, Optional
-from pydantic import BaseModel, Field
+
+from pydantic import BaseModel, Field, StrictStr
 
 class AuthenticationToken(BaseModel):
     """
     AuthenticationToken
     """
-    access_token: Optional[Any] = Field(...)
-    token_type: Optional[Any] = Field(...)
+    access_token: StrictStr = Field(...)
+    token_type: StrictStr = Field(...)
     __properties = ["access_token", "token_type"]
 
     class Config:
@@ -53,16 +53,6 @@ class AuthenticationToken(BaseModel):
                           exclude={
                           },
                           exclude_none=True)
-        # set to None if access_token (nullable) is None
-        # and __fields_set__ contains the field
-        if self.access_token is None and "access_token" in self.__fields_set__:
-            _dict['access_token'] = None
-
-        # set to None if token_type (nullable) is None
-        # and __fields_set__ contains the field
-        if self.token_type is None and "token_type" in self.__fields_set__:
-            _dict['token_type'] = None
-
         return _dict
 
     @classmethod

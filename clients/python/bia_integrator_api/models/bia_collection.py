@@ -18,22 +18,22 @@ import re  # noqa: F401
 import json
 
 
-from typing import Any, Optional
-from pydantic import BaseModel, Field
+from typing import List, Optional
+from pydantic import BaseModel, Field, StrictInt, StrictStr, conlist
+from bia_integrator_api.models.model_metadata import ModelMetadata
 
 class BIACollection(BaseModel):
     """
     A collection of studies with a coherent purpose. Studies can be in multiple collections.
     """
-    uuid: Optional[Any] = Field(...)
-    version: Optional[Any] = Field(...)
-    model: Optional[Any] = None
-    name: Optional[Any] = Field(...)
-    title: Optional[Any] = Field(...)
-    subtitle: Optional[Any] = Field(...)
-    description: Optional[Any] = None
-    study_uuids: Optional[Any] = None
-    additional_properties: Dict[str, Any] = {}
+    uuid: StrictStr = Field(...)
+    version: StrictInt = Field(...)
+    model: Optional[ModelMetadata] = None
+    name: StrictStr = Field(...)
+    title: StrictStr = Field(...)
+    subtitle: StrictStr = Field(...)
+    description: Optional[StrictStr] = None
+    study_uuids: Optional[conlist(StrictStr)] = None
     __properties = ["uuid", "version", "model", "name", "title", "subtitle", "description", "study_uuids"]
 
     class Config:
@@ -58,53 +58,20 @@ class BIACollection(BaseModel):
         """Returns the dictionary representation of the model using alias"""
         _dict = self.dict(by_alias=True,
                           exclude={
-                            "additional_properties"
                           },
                           exclude_none=True)
-        # puts key-value pairs in additional_properties in the top level
-        if self.additional_properties is not None:
-            for _key, _value in self.additional_properties.items():
-                _dict[_key] = _value
-
-        # set to None if uuid (nullable) is None
-        # and __fields_set__ contains the field
-        if self.uuid is None and "uuid" in self.__fields_set__:
-            _dict['uuid'] = None
-
-        # set to None if version (nullable) is None
-        # and __fields_set__ contains the field
-        if self.version is None and "version" in self.__fields_set__:
-            _dict['version'] = None
-
+        # override the default output from pydantic by calling `to_dict()` of model
+        if self.model:
+            _dict['model'] = self.model.to_dict()
         # set to None if model (nullable) is None
         # and __fields_set__ contains the field
         if self.model is None and "model" in self.__fields_set__:
             _dict['model'] = None
 
-        # set to None if name (nullable) is None
-        # and __fields_set__ contains the field
-        if self.name is None and "name" in self.__fields_set__:
-            _dict['name'] = None
-
-        # set to None if title (nullable) is None
-        # and __fields_set__ contains the field
-        if self.title is None and "title" in self.__fields_set__:
-            _dict['title'] = None
-
-        # set to None if subtitle (nullable) is None
-        # and __fields_set__ contains the field
-        if self.subtitle is None and "subtitle" in self.__fields_set__:
-            _dict['subtitle'] = None
-
         # set to None if description (nullable) is None
         # and __fields_set__ contains the field
         if self.description is None and "description" in self.__fields_set__:
             _dict['description'] = None
-
-        # set to None if study_uuids (nullable) is None
-        # and __fields_set__ contains the field
-        if self.study_uuids is None and "study_uuids" in self.__fields_set__:
-            _dict['study_uuids'] = None
 
         return _dict
 
@@ -120,18 +87,13 @@ class BIACollection(BaseModel):
         _obj = BIACollection.parse_obj({
             "uuid": obj.get("uuid"),
             "version": obj.get("version"),
-            "model": obj.get("model"),
+            "model": ModelMetadata.from_dict(obj.get("model")) if obj.get("model") is not None else None,
             "name": obj.get("name"),
             "title": obj.get("title"),
             "subtitle": obj.get("subtitle"),
             "description": obj.get("description"),
             "study_uuids": obj.get("study_uuids")
         })
-        # store additional fields in additional_properties
-        for _key in obj.keys():
-            if _key not in cls.__properties:
-                _obj.additional_properties[_key] = obj.get(_key)
-
         return _obj
 
 

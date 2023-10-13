@@ -4,9 +4,9 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**channel_renders** | **object** |  | [optional] 
-**default_z** | **object** |  | [optional] 
-**default_t** | **object** |  | [optional] 
+**channel_renders** | [**List[ChannelRendering]**](ChannelRendering.md) |  | [optional] [default to []]
+**default_z** | **int** |  | [optional] 
+**default_t** | **int** |  | [optional] 
 
 ## Example
 

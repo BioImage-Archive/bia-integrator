@@ -4,9 +4,9 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**status** | **object** |  | 
-**idx_in_request** | **object** |  | 
-**message** | **object** |  | 
+**status** | **int** |  | 
+**idx_in_request** | **int** |  | 
+**message** | **str** |  | 
 
 ## Example
 

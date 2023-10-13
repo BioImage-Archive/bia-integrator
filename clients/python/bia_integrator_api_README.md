@@ -52,11 +52,11 @@ configuration.access_token = os.environ["ACCESS_TOKEN"]
 with bia_integrator_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = bia_integrator_api.PrivateApi(api_client)
-    request_body = None # Dict[str, object] | 
+    bia_collection = bia_integrator_api.BIACollection() # BIACollection | 
 
     try:
         # Create Collection
-        api_response = api_instance.create_collection(request_body)
+        api_response = api_instance.create_collection(bia_collection)
         print("The response of PrivateApi->create_collection:\n")
         pprint(api_response)
     except ApiException as e:
@@ -109,6 +109,7 @@ Class | Method | HTTP request | Description
 
 ## Documentation For Models
 
+ - [Alias](bia_integrator_api/docs/Alias.md)
  - [AnnotationState](bia_integrator_api/docs/AnnotationState.md)
  - [AuthenticationToken](bia_integrator_api/docs/AuthenticationToken.md)
  - [Author](bia_integrator_api/docs/Author.md)
@@ -125,9 +126,12 @@ Class | Method | HTTP request | Description
  - [FileReference](bia_integrator_api/docs/FileReference.md)
  - [HTTPValidationError](bia_integrator_api/docs/HTTPValidationError.md)
  - [ImageAnnotation](bia_integrator_api/docs/ImageAnnotation.md)
+ - [LocationInner](bia_integrator_api/docs/LocationInner.md)
  - [ModelMetadata](bia_integrator_api/docs/ModelMetadata.md)
+ - [Name](bia_integrator_api/docs/Name.md)
  - [ObjectInfo](bia_integrator_api/docs/ObjectInfo.md)
  - [RenderingInfo](bia_integrator_api/docs/RenderingInfo.md)
+ - [StartUuid](bia_integrator_api/docs/StartUuid.md)
  - [StudyAnnotation](bia_integrator_api/docs/StudyAnnotation.md)
  - [ValidationError](bia_integrator_api/docs/ValidationError.md)
 

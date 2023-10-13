@@ -1,27 +1,26 @@
-# Author
+# StartUuid
 
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**name** | **str** |  | 
 
 ## Example
 
 ```python
-from bia_integrator_api.models.author import Author
+from bia_integrator_api.models.start_uuid import StartUuid
 
 # TODO update the JSON string below
 json = "{}"
-# create an instance of Author from a JSON string
-author_instance = Author.from_json(json)
+# create an instance of StartUuid from a JSON string
+start_uuid_instance = StartUuid.from_json(json)
 # print the JSON string representation of the object
-print Author.to_json()
+print StartUuid.to_json()
 
 # convert the object into a dict
-author_dict = author_instance.to_dict()
-# create an instance of Author from a dict
-author_form_dict = author.from_dict(author_dict)
+start_uuid_dict = start_uuid_instance.to_dict()
+# create an instance of StartUuid from a dict
+start_uuid_form_dict = start_uuid.from_dict(start_uuid_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

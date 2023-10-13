@@ -4,8 +4,8 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**access_token** | **object** |  | 
-**token_type** | **object** |  | 
+**access_token** | **str** |  | 
+**token_type** | **str** |  | 
 
 ## Example
 

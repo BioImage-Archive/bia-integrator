@@ -4,7 +4,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**items** | **object** |  | 
+**items** | [**List[BulkOperationItem]**](BulkOperationItem.md) |  | 
 
 ## Example
 

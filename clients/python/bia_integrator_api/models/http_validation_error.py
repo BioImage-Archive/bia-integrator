@@ -18,14 +18,15 @@ import re  # noqa: F401
 import json
 
 
-from typing import Any, Optional
-from pydantic import BaseModel
+from typing import List, Optional
+from pydantic import BaseModel, conlist
+from bia_integrator_api.models.validation_error import ValidationError
 
 class HTTPValidationError(BaseModel):
     """
     HTTPValidationError
     """
-    detail: Optional[Any] = None
+    detail: Optional[conlist(ValidationError)] = None
     __properties = ["detail"]
 
     class Config:
@@ -52,11 +53,13 @@ class HTTPValidationError(BaseModel):
                           exclude={
                           },
                           exclude_none=True)
-        # set to None if detail (nullable) is None
-        # and __fields_set__ contains the field
-        if self.detail is None and "detail" in self.__fields_set__:
-            _dict['detail'] = None
-
+        # override the default output from pydantic by calling `to_dict()` of each item in detail (list)
+        _items = []
+        if self.detail:
+            for _item in self.detail:
+                if _item:
+                    _items.append(_item.to_dict())
+            _dict['detail'] = _items
         return _dict
 
     @classmethod
@@ -69,7 +72,7 @@ class HTTPValidationError(BaseModel):
             return HTTPValidationError.parse_obj(obj)
 
         _obj = HTTPValidationError.parse_obj({
-            "detail": obj.get("detail")
+            "detail": [ValidationError.from_dict(_item) for _item in obj.get("detail")] if obj.get("detail") is not None else None
         })
         return _obj
 
