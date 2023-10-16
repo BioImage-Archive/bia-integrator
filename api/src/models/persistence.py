@@ -1,10 +1,7 @@
 from enum import Enum
-from pydantic import BaseModel, Field, BaseConfig, Extra
-from typing import Dict, List, Optional, AnyStr
-from pathlib import Path
-from urllib.parse import urlparse, urlunparse
+from pydantic import BaseModel, Field, ConfigDict
+from typing import Dict, List, Optional
 from uuid import UUID
-import requests
 
 from src.api.exceptions import DocumentNotFound
 
@@ -12,7 +9,7 @@ class BIABaseModel(BaseModel):
     def json(self, ensure_ascii=False, **kwargs):
         """ensure_ascii defaults to False instead of True to handle the common case of non-ascii names"""
 
-        return super().json(ensure_ascii=ensure_ascii, **kwargs)
+        return super().model_dump_json(ensure_ascii=ensure_ascii, **kwargs)
 
 class ModelMetadata(BaseModel):
     type_name: str = Field()
@@ -27,14 +24,15 @@ class DocumentMixin(BaseModel):
 
     # model is actually always set on objects, but in __init__ since that's where we are aware of child classes
     model: Optional[ModelMetadata] = Field(default=None)
+    model_config = ConfigDict(populate_by_name=True, extra="forbid")
 
     def __init__(self, apply_annotations = True, **data):
-        if not hasattr(self.__class__.Config, 'model_version_latest'):
-            raise ValueError(f"Class {self.__class__.__name__} missing 'model_version_latest' in its Config")
+        if self.model_config.get('model_version_latest') is None:
+            raise ValueError(f"Class {self.__class__.__name__} missing 'model_version_latest' in its model_config")
         model_metadata_expected = ModelMetadata(
             type_name=self.__class__.__name__,
             # @TODO: maybe eventually change model_version_latest to handle next-version migrations?
-            version=self.__class__.Config.model_version_latest
+            version=self.model_config['model_version_latest']
         )
 
         if data.get('_id', None):
@@ -71,11 +69,6 @@ class DocumentMixin(BaseModel):
                         self.__dict__[annotation.key] = annotation.value
                 else:
                     self.attributes[annotation.key] = annotation.value
-
-    class Config(BaseConfig):
-        populate_by_name = True
-        # Try enforcing strict models. Changes should go into the model, not added ad-hoc
-        extra = Extra.forbid
 
 class Author(BIABaseModel):
     name: str
@@ -117,8 +110,7 @@ class BIAStudy(BIABaseModel, DocumentMixin):
     file_references_count: int = Field(default=0)
     images_count: int = Field(default=0)
 
-    class Config(BaseConfig):
-        model_version_latest = 1
+    model_config = ConfigDict(model_version_latest = 1)
 
 class FileReference(BIABaseModel, DocumentMixin):
     """A reference to an externally hosted file."""
@@ -130,8 +122,7 @@ class FileReference(BIABaseModel, DocumentMixin):
     size_in_bytes: int = Field()
     attributes: Dict = Field(default={})
 
-    class Config(BaseConfig):
-        model_version_latest = 1
+    model_config = ConfigDict(model_version_latest = 1)
 
 class ChannelRendering(BIABaseModel):
     channel_label: Optional[str]
@@ -190,8 +181,7 @@ class BIAImage(BIABaseModel, DocumentMixin):
     annotations: List[ImageAnnotation] = Field(default=[])
     alias: Optional[BIAImageAlias] = Field(default=None)
 
-    class Config(BaseConfig):
-        model_version_latest = 1
+    model_config = ConfigDict(model_version_latest = 1)
 
 class BIACollection(BIABaseModel, DocumentMixin):
     """A collection of studies with a coherent purpose. Studies can be in
@@ -202,12 +192,10 @@ class BIACollection(BIABaseModel, DocumentMixin):
     description: Optional[str] = Field(default=None)
     study_uuids: List[str] = Field(default=[])
 
-    class Config(BaseConfig):
-        model_version_latest = 1
+    model_config = ConfigDict(model_version_latest = 1)
 
 class User(BIABaseModel, DocumentMixin):
     email: str = Field()
     password: str = Field()
 
-    class Config(BaseConfig):
-        model_version_latest = 1
+    model_config = ConfigDict(model_version_latest = 1)
