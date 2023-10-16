@@ -12,9 +12,9 @@ from typing import Optional
 import uuid
 
 from . import constants
-from ..models.repository import get_db, COLLECTION_USERS
+from ..models.repository import Repository
 from ..models.persistence import User
-from ..models.api import AuthenticationToken, TokenData
+from ..models.api import AuthenticationToken, TokenData, AuthResult
 import os
 import base64
 
@@ -37,18 +37,15 @@ def validate_secret_token(token):
     except:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
 
-async def get_user(email: str) -> Optional[User]:
-    db = await get_db(COLLECTION_USERS)
-
-    obj_user = await db.find_one({'email': email})
+async def get_user(db: Repository, email: str) -> Optional[User]:
+    obj_user = await db.users.find_one({'email': email})
 
     if obj_user:
         return User(**obj_user)
     else:
         return None
 
-async def create_user(email: str, password_plain: str) -> User:
-    db = await get_db(COLLECTION_USERS)
+async def create_user(db: Repository, email: str, password_plain: str) -> User:
     user = User(
         email=email,
         password=pwd_context.hash(password_plain),
@@ -56,12 +53,12 @@ async def create_user(email: str, password_plain: str) -> User:
         version=1
     )
 
-    await db.insert_one(user.dict())
+    await db.users.insert_one(user.dict())
 
     return user
 
-async def authenticate_user(email: str, password: str):
-    user = await get_user(email)
+async def authenticate_user(db: Repository, email: str, password: str):
+    user = await get_user(db, email)
 
     if not user:
         return False
@@ -81,7 +78,7 @@ def create_access_token(data: dict, expires_delta: Union[timedelta, None] = None
     encoded_jwt = jwt.encode(to_encode, JWT_SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
-async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
+async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)], db: Repository = Depends()):
     validate_secret_token(JWT_SECRET_KEY)
     
     credentials_exception = HTTPException(
@@ -98,16 +95,18 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
         token_data = TokenData(email=email)
     except JWTError:
         raise credentials_exception
-    user = get_user(email=token_data.email)
+    user = get_user(db, email=token_data.email)
     if user is None:
         raise credentials_exception
     return user
 
 @router.post("/token", response_model=AuthenticationToken)
 async def login_for_access_token(
-    form_data: Annotated[OAuth2PasswordRequestForm, Depends()]
-):
-    user = await authenticate_user(form_data.username, form_data.password)
+    form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
+    db: Repository = Depends()
+    ) -> AuthResult:
+
+    user = await authenticate_user(db, form_data.username, form_data.password)
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -118,20 +117,24 @@ async def login_for_access_token(
     access_token = create_access_token(
         data={"sub": user.email}, expires_delta=access_token_expires
     )
-    return {"access_token": access_token, "token_type": "bearer"}
+
+    auth_result = AuthResult(access_token=access_token)
+    return auth_result
 
 @router.post("/users/register")
 async def register_user(
     email: Annotated[str, Body()],
     password_plain: Annotated[str, Body()],
     secret_token: Annotated[str, Body()],
-) -> None:
+    db: Repository = Depends()
+    ) -> None:
+    
     user_create_token = os.environ["USER_CREATE_SECRET_TOKEN"]
     validate_secret_token(user_create_token)
 
     if not consteq(secret_token, user_create_token):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
 
-    await create_user(email, password_plain)
+    await create_user(db, email, password_plain)
 
     return None

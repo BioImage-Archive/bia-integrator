@@ -6,9 +6,10 @@ from .api import public
 from .api import private
 from .api import admin
 from .api import auth
+from .models.repository import repository_create
 
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 from starlette.status import HTTP_500_INTERNAL_SERVER_ERROR
@@ -39,11 +40,18 @@ async def log_exception_handler(request: Request, exc: Exception):
         status_code=HTTP_500_INTERNAL_SERVER_ERROR
     )
 
-app.include_router(auth.router, prefix="/api/v1")
-app.include_router(private.router, prefix="/api/v1")
-app.include_router(admin.router, prefix="/api/v1")
+def repository_dependency():
+    db = repository_create()
+    try:
+        yield db
+    finally:
+        db.close()
+
+app.include_router(auth.router, prefix="/api/v1", dependencies=[Depends(repository_dependency)])
+app.include_router(private.router, prefix="/api/v1", dependencies=[Depends(repository_dependency)])
+app.include_router(admin.router, prefix="/api/v1", dependencies=[Depends(repository_dependency)])
 # routes applied in the order they are declared
-app.include_router(public.router, prefix="/api/v1")
+app.include_router(public.router, prefix="/api/v1", dependencies=[Depends(repository_dependency)])
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.ERROR)

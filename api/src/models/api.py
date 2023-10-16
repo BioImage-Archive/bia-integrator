@@ -1,7 +1,7 @@
 from .persistence import ModelMetadata
 
 from pydantic import BaseModel, computed_field
-from typing import List, Optional, Dict, Union
+from typing import List, Optional, Dict, Union, Literal
 from uuid import UUID
 
 class BIABaseModel(BaseModel):
@@ -36,3 +36,7 @@ class AuthenticationToken(BIABaseModel):
 
 class TokenData(BIABaseModel):
     email: Union[str, None] = None
+
+class AuthResult(BIABaseModel):
+    access_token: str
+    token_type: Literal["bearer"] = "bearer"

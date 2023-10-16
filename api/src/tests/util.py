@@ -62,13 +62,17 @@ def create_user_if_missing(email: str, password: str):
     Exception from the general rule used in this project, of tests being as high-level as possible
     Just to avoid compromising on security for easy test user creation / the logistics of a seed db 
     """
+    from ..models.repository import repository_create
     from ..api.auth import create_user, get_user
     import asyncio
+
     loop = asyncio.get_event_loop()
 
     async def create_test_user_if_missing():
-        if not await get_user(email):
-            await create_user(email, password)
+        db = await repository_create()
+
+        if not await get_user(db, email):
+            await create_user(db, email, password)
 
     loop = asyncio.get_event_loop()
     loop.run_until_complete(create_test_user_if_missing())

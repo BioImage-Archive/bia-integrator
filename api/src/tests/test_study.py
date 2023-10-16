@@ -221,7 +221,7 @@ def test_update_study_children_counts(api_client: TestClient, existing_study):
 
 def test_search_studies_fetch_all(api_client: TestClient):
     # workaround for not starting with a clean db
-    rsp = api_client.get(f"search/studies?limit={1000}")
+    rsp = api_client.get(f"search/studies?limit={100000}")
     assert rsp.status_code == 200
     initial_studies_count = len(rsp.json())
     assert initial_studies_count
@@ -229,6 +229,6 @@ def test_search_studies_fetch_all(api_client: TestClient):
     for _ in range(5):
         make_study(api_client)
     
-    rsp = api_client.get(f"search/studies?limit={1000}")
+    rsp = api_client.get(f"search/studies?limit={100000}")
     assert rsp.status_code == 200
     assert len(rsp.json()) - initial_studies_count == 5
