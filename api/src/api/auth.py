@@ -53,7 +53,7 @@ async def create_user(db: Repository, email: str, password_plain: str) -> User:
         version=1
     )
 
-    await db.users.insert_one(user.dict())
+    await db.users.insert_one(user.model_dump())
 
     return user
 

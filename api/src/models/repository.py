@@ -119,7 +119,7 @@ class Repository:
         return result == doc
 
     async def _model_doc_exists(self, doc_model: models.DocumentMixin) -> bool:
-        return await self._doc_exists(doc_model.dict())
+        return await self._doc_exists(doc_model.model_dump())
 
     async def get_object_info(self, query: dict) -> List[api_models.ObjectInfo]:
         object_info_projection = {
@@ -209,7 +209,7 @@ class Repository:
 
     async def persist_doc(self, doc_model: models.DocumentMixin) -> None:
         try:
-            return await self.biaint.insert_one(doc_model.dict())
+            return await self.biaint.insert_one(doc_model.model_dump())
         except pymongo.errors.DuplicateKeyError as e:
             if await self._model_doc_exists(doc_model):
                 return
@@ -297,7 +297,7 @@ class Repository:
             },
             {
                 '$push': {
-                    location: new_list_item.dict()
+                    location: new_list_item.model_dump()
                 }
             },
             upsert=False
@@ -343,7 +343,7 @@ class Repository:
                 'version': doc_model.version-1
             },    
             {
-                '$set': doc_model.dict()
+                '$set': doc_model.model_dump()
             },
             upsert=False
         )
