@@ -18,19 +18,19 @@ import re  # noqa: F401
 import json
 
 
-from typing import Any, Dict, List, Optional
-from pydantic import BaseModel, Field, StrictInt, StrictStr, conlist
+from typing import Any, Optional
+from pydantic import BaseModel, Field
 from bia_integrator_api.models.rendering_info import RenderingInfo
 
-class BIAImageRepresentation(BaseModel):
+class BIAImageRepresentationInput(BaseModel):
     """
     A particular representation of a BIAImage. Examples:  * A single HTTP accessible file. * Multiple HTTP accessible files, representing different channels, planes and time points. * An S3 accessible OME-Zarr. * A thumbnail.
     """
-    size: StrictInt = Field(...)
-    uri: Optional[conlist(StrictStr)] = None
-    type: Optional[StrictStr] = None
-    dimensions: Optional[StrictStr] = None
-    attributes: Optional[Dict[str, Any]] = None
+    size: Optional[Any] = Field(...)
+    uri: Optional[Any] = None
+    type: Optional[Any] = None
+    dimensions: Optional[Any] = None
+    attributes: Optional[Any] = None
     rendering: Optional[RenderingInfo] = None
     __properties = ["size", "uri", "type", "dimensions", "attributes", "rendering"]
 
@@ -48,8 +48,8 @@ class BIAImageRepresentation(BaseModel):
         return json.dumps(self.to_dict())
 
     @classmethod
-    def from_json(cls, json_str: str) -> BIAImageRepresentation:
-        """Create an instance of BIAImageRepresentation from a JSON string"""
+    def from_json(cls, json_str: str) -> BIAImageRepresentationInput:
+        """Create an instance of BIAImageRepresentationInput from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self):
@@ -61,6 +61,16 @@ class BIAImageRepresentation(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of rendering
         if self.rendering:
             _dict['rendering'] = self.rendering.to_dict()
+        # set to None if size (nullable) is None
+        # and __fields_set__ contains the field
+        if self.size is None and "size" in self.__fields_set__:
+            _dict['size'] = None
+
+        # set to None if uri (nullable) is None
+        # and __fields_set__ contains the field
+        if self.uri is None and "uri" in self.__fields_set__:
+            _dict['uri'] = None
+
         # set to None if type (nullable) is None
         # and __fields_set__ contains the field
         if self.type is None and "type" in self.__fields_set__:
@@ -71,6 +81,11 @@ class BIAImageRepresentation(BaseModel):
         if self.dimensions is None and "dimensions" in self.__fields_set__:
             _dict['dimensions'] = None
 
+        # set to None if attributes (nullable) is None
+        # and __fields_set__ contains the field
+        if self.attributes is None and "attributes" in self.__fields_set__:
+            _dict['attributes'] = None
+
         # set to None if rendering (nullable) is None
         # and __fields_set__ contains the field
         if self.rendering is None and "rendering" in self.__fields_set__:
@@ -79,15 +94,15 @@ class BIAImageRepresentation(BaseModel):
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: dict) -> BIAImageRepresentation:
-        """Create an instance of BIAImageRepresentation from a dict"""
+    def from_dict(cls, obj: dict) -> BIAImageRepresentationInput:
+        """Create an instance of BIAImageRepresentationInput from a dict"""
         if obj is None:
             return None
 
         if not isinstance(obj, dict):
-            return BIAImageRepresentation.parse_obj(obj)
+            return BIAImageRepresentationInput.parse_obj(obj)
 
-        _obj = BIAImageRepresentation.parse_obj({
+        _obj = BIAImageRepresentationInput.parse_obj({
             "size": obj.get("size"),
             "uri": obj.get("uri"),
             "type": obj.get("type"),

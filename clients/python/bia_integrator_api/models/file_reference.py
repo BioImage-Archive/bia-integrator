@@ -64,6 +64,11 @@ class FileReference(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of model
         if self.model:
             _dict['model'] = self.model.to_dict()
+        # set to None if model (nullable) is None
+        # and __fields_set__ contains the field
+        if self.model is None and "model" in self.__fields_set__:
+            _dict['model'] = None
+
         return _dict
 
     @classmethod

@@ -9,7 +9,7 @@ Name | Type | Description | Notes
 **model** | [**ModelMetadata**](ModelMetadata.md) |  | [optional] 
 **title** | **str** |  | 
 **description** | **str** |  | 
-**authors** | [**List[Author]**](Author.md) |  | [optional] [default to []]
+**authors** | [**List[Author]**](Author.md) |  | [optional] 
 **organism** | **str** |  | 
 **release_date** | **str** |  | 
 **accession_id** | **str** |  | 

@@ -19,25 +19,18 @@ import json
 
 
 
-from pydantic import BaseModel, Field, StrictStr, constr, validator
+from pydantic import BaseModel, Field, StrictStr
 from bia_integrator_api.models.annotation_state import AnnotationState
 
 class ImageAnnotation(BaseModel):
     """
     ImageAnnotation
     """
-    author_email: constr(strict=True) = Field(...)
+    author_email: StrictStr = Field(...)
     key: StrictStr = Field(...)
     value: StrictStr = Field(...)
     state: AnnotationState = Field(...)
     __properties = ["author_email", "key", "value", "state"]
-
-    @validator('author_email')
-    def author_email_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if not re.match(r".*@ebi\.ac\.uk", value):
-            raise ValueError(r"must validate the regular expression /.*@ebi\.ac\.uk/")
-        return value
 
     class Config:
         """Pydantic configuration"""

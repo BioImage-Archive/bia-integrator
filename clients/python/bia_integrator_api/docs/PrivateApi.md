@@ -1,34 +1,33 @@
 # bia_integrator_api.PrivateApi
 
-All URIs are relative to */api/v1*
+All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**create_collection**](PrivateApi.md#create_collection) | **POST** /private/collections | Create Collection
-[**create_file_reference**](PrivateApi.md#create_file_reference) | **POST** /private/file_references | Create File Reference
-[**create_image_representation**](PrivateApi.md#create_image_representation) | **POST** /private/images/{image_uuid}/representations/single | Create Image Representation
-[**create_images**](PrivateApi.md#create_images) | **POST** /private/images | Create Images
-[**create_images_bulk**](PrivateApi.md#create_images_bulk) | **POST** /private/images/bulk | Create Images Bulk
-[**create_study**](PrivateApi.md#create_study) | **POST** /private/studies | Create Study
-[**get_collection**](PrivateApi.md#get_collection) | **GET** /collections/{collection_uuid} | Get Collection
-[**get_file_reference**](PrivateApi.md#get_file_reference) | **GET** /file_references/{file_reference_uuid} | Get File Reference
-[**get_image**](PrivateApi.md#get_image) | **GET** /images/{image_uuid} | Get Image
-[**get_image_ome_metadata**](PrivateApi.md#get_image_ome_metadata) | **GET** /images/{image_uuid}/ome_metadata | Get Image Ome Metadata
-[**get_object_info_by_accession**](PrivateApi.md#get_object_info_by_accession) | **GET** /object_info_by_accessions | Get Object Info By Accession
-[**get_study**](PrivateApi.md#get_study) | **GET** /studies/{study_uuid} | Get Study
-[**get_study_file_references**](PrivateApi.md#get_study_file_references) | **GET** /studies/{study_uuid}/file_references | Get Study File References
-[**get_study_images**](PrivateApi.md#get_study_images) | **GET** /studies/{study_uuid}/images | Get Study Images
-[**get_study_images_by_alias**](PrivateApi.md#get_study_images_by_alias) | **GET** /studies/{study_accession}/images_by_aliases | Get Study Images By Alias
-[**health_check**](PrivateApi.md#health_check) | **GET** /admin/health-check | Health Check
-[**login_for_access_token**](PrivateApi.md#login_for_access_token) | **POST** /auth/token | Login For Access Token
-[**register_user**](PrivateApi.md#register_user) | **POST** /auth/users/register | Register User
-[**search_collections**](PrivateApi.md#search_collections) | **GET** /collections | Search Collections
-[**search_images**](PrivateApi.md#search_images) | **GET** /search/images | Search Images
-[**search_studies**](PrivateApi.md#search_studies) | **GET** /search/studies | Search Studies
-[**study_refresh_counts**](PrivateApi.md#study_refresh_counts) | **POST** /private/studies/{study_uuid}/refresh_counts | Study Refresh Counts
-[**update_file_reference**](PrivateApi.md#update_file_reference) | **PATCH** /private/file_references/single | Update File Reference
-[**update_image**](PrivateApi.md#update_image) | **PATCH** /private/images/single | Update Image
-[**update_study**](PrivateApi.md#update_study) | **PATCH** /private/studies | Update Study
+[**create_collection**](PrivateApi.md#create_collection) | **POST** /api/v1/private/collections | Create Collection
+[**create_file_references**](PrivateApi.md#create_file_references) | **POST** /api/v1/private/file_references | Create File References
+[**create_image_representation**](PrivateApi.md#create_image_representation) | **POST** /api/v1/private/images/{image_uuid}/representations/single | Create Image Representation
+[**create_images**](PrivateApi.md#create_images) | **POST** /api/v1/private/images | Create Images
+[**create_images_bulk**](PrivateApi.md#create_images_bulk) | **POST** /api/v1/private/images/bulk | Create Images Bulk
+[**create_study**](PrivateApi.md#create_study) | **POST** /api/v1/private/studies | Create Study
+[**get_collection**](PrivateApi.md#get_collection) | **GET** /api/v1/collections/{collection_uuid} | Get Collection
+[**get_file_reference**](PrivateApi.md#get_file_reference) | **GET** /api/v1/file_references/{file_reference_uuid} | Get File Reference
+[**get_image**](PrivateApi.md#get_image) | **GET** /api/v1/images/{image_uuid} | Get Image
+[**get_object_info_by_accession**](PrivateApi.md#get_object_info_by_accession) | **GET** /api/v1/object_info_by_accessions | Get Object Info By Accession
+[**get_study**](PrivateApi.md#get_study) | **GET** /api/v1/studies/{study_uuid} | Get Study
+[**get_study_file_references**](PrivateApi.md#get_study_file_references) | **GET** /api/v1/studies/{study_uuid}/file_references | Get Study File References
+[**get_study_images**](PrivateApi.md#get_study_images) | **GET** /api/v1/studies/{study_uuid}/images | Get Study Images
+[**get_study_images_by_alias**](PrivateApi.md#get_study_images_by_alias) | **GET** /api/v1/studies/{study_accession}/images_by_aliases | Get Study Images By Alias
+[**health_check**](PrivateApi.md#health_check) | **GET** /api/v1/admin/health-check | Health Check
+[**login_for_access_token**](PrivateApi.md#login_for_access_token) | **POST** /api/v1/auth/token | Login For Access Token
+[**register_user**](PrivateApi.md#register_user) | **POST** /api/v1/auth/users/register | Register User
+[**search_collections**](PrivateApi.md#search_collections) | **GET** /api/v1/collections | Search Collections
+[**search_images**](PrivateApi.md#search_images) | **GET** /api/v1/search/images | Search Images
+[**search_studies**](PrivateApi.md#search_studies) | **GET** /api/v1/search/studies | Search Studies
+[**study_refresh_counts**](PrivateApi.md#study_refresh_counts) | **POST** /api/v1/private/studies/{study_uuid}/refresh_counts | Study Refresh Counts
+[**update_file_reference**](PrivateApi.md#update_file_reference) | **PATCH** /api/v1/private/file_references/single | Update File Reference
+[**update_image**](PrivateApi.md#update_image) | **PATCH** /api/v1/private/images/single | Update Image
+[**update_study**](PrivateApi.md#update_study) | **PATCH** /api/v1/private/studies | Update Study
 
 
 # **create_collection**
@@ -47,10 +46,10 @@ from bia_integrator_api.models.bia_collection import BIACollection
 from bia_integrator_api.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to /api/v1
+# Defining the host is optional and defaults to http://localhost
 # See configuration.py for a list of all supported configuration parameters.
 configuration = bia_integrator_api.Configuration(
-    host = "/api/v1"
+    host = "http://localhost"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -104,10 +103,10 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **create_file_reference**
-> BulkOperationResponse create_file_reference(file_reference)
+# **create_file_references**
+> BulkOperationResponse create_file_references(file_reference)
 
-Create File Reference
+Create File References
 
 ### Example
 
@@ -121,10 +120,10 @@ from bia_integrator_api.models.file_reference import FileReference
 from bia_integrator_api.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to /api/v1
+# Defining the host is optional and defaults to http://localhost
 # See configuration.py for a list of all supported configuration parameters.
 configuration = bia_integrator_api.Configuration(
-    host = "/api/v1"
+    host = "http://localhost"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -141,12 +140,12 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     file_reference = [bia_integrator_api.FileReference()] # List[FileReference] | 
 
     try:
-        # Create File Reference
-        api_response = api_instance.create_file_reference(file_reference)
-        print("The response of PrivateApi->create_file_reference:\n")
+        # Create File References
+        api_response = api_instance.create_file_references(file_reference)
+        print("The response of PrivateApi->create_file_references:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling PrivateApi->create_file_reference: %s\n" % e)
+        print("Exception when calling PrivateApi->create_file_references: %s\n" % e)
 ```
 
 
@@ -194,10 +193,10 @@ from bia_integrator_api.models.bia_image_representation import BIAImageRepresent
 from bia_integrator_api.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to /api/v1
+# Defining the host is optional and defaults to http://localhost
 # See configuration.py for a list of all supported configuration parameters.
 configuration = bia_integrator_api.Configuration(
-    host = "/api/v1"
+    host = "http://localhost"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -270,10 +269,10 @@ from bia_integrator_api.models.bulk_operation_response import BulkOperationRespo
 from bia_integrator_api.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to /api/v1
+# Defining the host is optional and defaults to http://localhost
 # See configuration.py for a list of all supported configuration parameters.
 configuration = bia_integrator_api.Configuration(
-    host = "/api/v1"
+    host = "http://localhost"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -344,10 +343,10 @@ import bia_integrator_api
 from bia_integrator_api.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to /api/v1
+# Defining the host is optional and defaults to http://localhost
 # See configuration.py for a list of all supported configuration parameters.
 configuration = bia_integrator_api.Configuration(
-    host = "/api/v1"
+    host = "http://localhost"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -412,10 +411,10 @@ from bia_integrator_api.models.bia_study import BIAStudy
 from bia_integrator_api.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to /api/v1
+# Defining the host is optional and defaults to http://localhost
 # See configuration.py for a list of all supported configuration parameters.
 configuration = bia_integrator_api.Configuration(
-    host = "/api/v1"
+    host = "http://localhost"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -484,10 +483,10 @@ from bia_integrator_api.models.bia_collection import BIACollection
 from bia_integrator_api.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to /api/v1
+# Defining the host is optional and defaults to http://localhost
 # See configuration.py for a list of all supported configuration parameters.
 configuration = bia_integrator_api.Configuration(
-    host = "/api/v1"
+    host = "http://localhost"
 )
 
 
@@ -550,10 +549,10 @@ from bia_integrator_api.models.file_reference import FileReference
 from bia_integrator_api.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to /api/v1
+# Defining the host is optional and defaults to http://localhost
 # See configuration.py for a list of all supported configuration parameters.
 configuration = bia_integrator_api.Configuration(
-    host = "/api/v1"
+    host = "http://localhost"
 )
 
 
@@ -616,10 +615,10 @@ from bia_integrator_api.models.bia_image import BIAImage
 from bia_integrator_api.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to /api/v1
+# Defining the host is optional and defaults to http://localhost
 # See configuration.py for a list of all supported configuration parameters.
 configuration = bia_integrator_api.Configuration(
-    host = "/api/v1"
+    host = "http://localhost"
 )
 
 
@@ -667,73 +666,6 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **get_image_ome_metadata**
-> object get_image_ome_metadata(image_uuid, study_uuid)
-
-Get Image Ome Metadata
-
-### Example
-
-```python
-import time
-import os
-import bia_integrator_api
-from bia_integrator_api.rest import ApiException
-from pprint import pprint
-
-# Defining the host is optional and defaults to /api/v1
-# See configuration.py for a list of all supported configuration parameters.
-configuration = bia_integrator_api.Configuration(
-    host = "/api/v1"
-)
-
-
-# Enter a context with an instance of the API client
-with bia_integrator_api.ApiClient(configuration) as api_client:
-    # Create an instance of the API class
-    api_instance = bia_integrator_api.PrivateApi(api_client)
-    image_uuid = 'image_uuid_example' # str | 
-    study_uuid = 'study_uuid_example' # str | 
-
-    try:
-        # Get Image Ome Metadata
-        api_response = api_instance.get_image_ome_metadata(image_uuid, study_uuid)
-        print("The response of PrivateApi->get_image_ome_metadata:\n")
-        pprint(api_response)
-    except Exception as e:
-        print("Exception when calling PrivateApi->get_image_ome_metadata: %s\n" % e)
-```
-
-
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **image_uuid** | **str**|  | 
- **study_uuid** | **str**|  | 
-
-### Return type
-
-**object**
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: application/json
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-**200** | Successful Response |  -  |
-**422** | Validation Error |  -  |
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
 # **get_object_info_by_accession**
 > List[ObjectInfo] get_object_info_by_accession(accessions)
 
@@ -749,10 +681,10 @@ from bia_integrator_api.models.object_info import ObjectInfo
 from bia_integrator_api.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to /api/v1
+# Defining the host is optional and defaults to http://localhost
 # See configuration.py for a list of all supported configuration parameters.
 configuration = bia_integrator_api.Configuration(
-    host = "/api/v1"
+    host = "http://localhost"
 )
 
 
@@ -815,10 +747,10 @@ from bia_integrator_api.models.bia_study import BIAStudy
 from bia_integrator_api.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to /api/v1
+# Defining the host is optional and defaults to http://localhost
 # See configuration.py for a list of all supported configuration parameters.
 configuration = bia_integrator_api.Configuration(
-    host = "/api/v1"
+    host = "http://localhost"
 )
 
 
@@ -883,10 +815,10 @@ from bia_integrator_api.models.file_reference import FileReference
 from bia_integrator_api.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to /api/v1
+# Defining the host is optional and defaults to http://localhost
 # See configuration.py for a list of all supported configuration parameters.
 configuration = bia_integrator_api.Configuration(
-    host = "/api/v1"
+    host = "http://localhost"
 )
 
 
@@ -895,7 +827,7 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = bia_integrator_api.PrivateApi(api_client)
     study_uuid = 'study_uuid_example' # str | 
-    start_uuid = 'start_uuid_example' # str |  (optional)
+    start_uuid = bia_integrator_api.StartUuid() # StartUuid |  (optional)
     limit = 10 # int |  (optional) (default to 10)
 
     try:
@@ -914,7 +846,7 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **study_uuid** | **str**|  | 
- **start_uuid** | **str**|  | [optional] 
+ **start_uuid** | [**StartUuid**](.md)|  | [optional] 
  **limit** | **int**|  | [optional] [default to 10]
 
 ### Return type
@@ -955,10 +887,10 @@ from bia_integrator_api.models.bia_image import BIAImage
 from bia_integrator_api.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to /api/v1
+# Defining the host is optional and defaults to http://localhost
 # See configuration.py for a list of all supported configuration parameters.
 configuration = bia_integrator_api.Configuration(
-    host = "/api/v1"
+    host = "http://localhost"
 )
 
 
@@ -967,7 +899,7 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = bia_integrator_api.PrivateApi(api_client)
     study_uuid = 'study_uuid_example' # str | 
-    start_uuid = 'start_uuid_example' # str |  (optional)
+    start_uuid = bia_integrator_api.StartUuid() # StartUuid |  (optional)
     limit = 10 # int |  (optional) (default to 10)
 
     try:
@@ -986,7 +918,7 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **study_uuid** | **str**|  | 
- **start_uuid** | **str**|  | [optional] 
+ **start_uuid** | [**StartUuid**](.md)|  | [optional] 
  **limit** | **int**|  | [optional] [default to 10]
 
 ### Return type
@@ -1025,10 +957,10 @@ from bia_integrator_api.models.bia_image import BIAImage
 from bia_integrator_api.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to /api/v1
+# Defining the host is optional and defaults to http://localhost
 # See configuration.py for a list of all supported configuration parameters.
 configuration = bia_integrator_api.Configuration(
-    host = "/api/v1"
+    host = "http://localhost"
 )
 
 
@@ -1093,10 +1025,10 @@ import bia_integrator_api
 from bia_integrator_api.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to /api/v1
+# Defining the host is optional and defaults to http://localhost
 # See configuration.py for a list of all supported configuration parameters.
 configuration = bia_integrator_api.Configuration(
-    host = "/api/v1"
+    host = "http://localhost"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -1160,10 +1092,10 @@ from bia_integrator_api.models.authentication_token import AuthenticationToken
 from bia_integrator_api.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to /api/v1
+# Defining the host is optional and defaults to http://localhost
 # See configuration.py for a list of all supported configuration parameters.
 configuration = bia_integrator_api.Configuration(
-    host = "/api/v1"
+    host = "http://localhost"
 )
 
 
@@ -1236,10 +1168,10 @@ from bia_integrator_api.models.body_register_user import BodyRegisterUser
 from bia_integrator_api.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to /api/v1
+# Defining the host is optional and defaults to http://localhost
 # See configuration.py for a list of all supported configuration parameters.
 configuration = bia_integrator_api.Configuration(
-    host = "/api/v1"
+    host = "http://localhost"
 )
 
 
@@ -1302,10 +1234,10 @@ from bia_integrator_api.models.bia_collection import BIACollection
 from bia_integrator_api.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to /api/v1
+# Defining the host is optional and defaults to http://localhost
 # See configuration.py for a list of all supported configuration parameters.
 configuration = bia_integrator_api.Configuration(
-    host = "/api/v1"
+    host = "http://localhost"
 )
 
 
@@ -1313,7 +1245,7 @@ configuration = bia_integrator_api.Configuration(
 with bia_integrator_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = bia_integrator_api.PrivateApi(api_client)
-    name = 'name_example' # str |  (optional)
+    name = bia_integrator_api.Name() # Name |  (optional)
 
     try:
         # Search Collections
@@ -1330,7 +1262,7 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **name** | **str**|  | [optional] 
+ **name** | [**Name**](.md)|  | [optional] 
 
 ### Return type
 
@@ -1354,7 +1286,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **search_images**
-> List[BIAImage] search_images(alias=alias, body_search_images=body_search_images)
+> List[BIAImage] search_images(alias=alias, unknown_base_type=unknown_base_type)
 
 Search Images
 
@@ -1365,14 +1297,13 @@ import time
 import os
 import bia_integrator_api
 from bia_integrator_api.models.bia_image import BIAImage
-from bia_integrator_api.models.body_search_images import BodySearchImages
 from bia_integrator_api.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to /api/v1
+# Defining the host is optional and defaults to http://localhost
 # See configuration.py for a list of all supported configuration parameters.
 configuration = bia_integrator_api.Configuration(
-    host = "/api/v1"
+    host = "http://localhost"
 )
 
 
@@ -1380,12 +1311,12 @@ configuration = bia_integrator_api.Configuration(
 with bia_integrator_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = bia_integrator_api.PrivateApi(api_client)
-    alias = 'alias_example' # str |  (optional)
-    body_search_images = bia_integrator_api.BodySearchImages() # BodySearchImages |  (optional)
+    alias = bia_integrator_api.Alias() # Alias |  (optional)
+    unknown_base_type = bia_integrator_api.UNKNOWN_BASE_TYPE() # UNKNOWN_BASE_TYPE |  (optional)
 
     try:
         # Search Images
-        api_response = api_instance.search_images(alias=alias, body_search_images=body_search_images)
+        api_response = api_instance.search_images(alias=alias, unknown_base_type=unknown_base_type)
         print("The response of PrivateApi->search_images:\n")
         pprint(api_response)
     except Exception as e:
@@ -1398,8 +1329,8 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **alias** | **str**|  | [optional] 
- **body_search_images** | [**BodySearchImages**](BodySearchImages.md)|  | [optional] 
+ **alias** | [**Alias**](.md)|  | [optional] 
+ **unknown_base_type** | [**UNKNOWN_BASE_TYPE**](UNKNOWN_BASE_TYPE.md)|  | [optional] 
 
 ### Return type
 
@@ -1439,10 +1370,10 @@ from bia_integrator_api.models.bia_study import BIAStudy
 from bia_integrator_api.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to /api/v1
+# Defining the host is optional and defaults to http://localhost
 # See configuration.py for a list of all supported configuration parameters.
 configuration = bia_integrator_api.Configuration(
-    host = "/api/v1"
+    host = "http://localhost"
 )
 
 
@@ -1450,7 +1381,7 @@ configuration = bia_integrator_api.Configuration(
 with bia_integrator_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = bia_integrator_api.PrivateApi(api_client)
-    start_uuid = 'start_uuid_example' # str |  (optional)
+    start_uuid = bia_integrator_api.StartUuid() # StartUuid |  (optional)
     limit = 10 # int |  (optional) (default to 10)
 
     try:
@@ -1468,7 +1399,7 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **start_uuid** | **str**|  | [optional] 
+ **start_uuid** | [**StartUuid**](.md)|  | [optional] 
  **limit** | **int**|  | [optional] [default to 10]
 
 ### Return type
@@ -1509,10 +1440,10 @@ import bia_integrator_api
 from bia_integrator_api.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to /api/v1
+# Defining the host is optional and defaults to http://localhost
 # See configuration.py for a list of all supported configuration parameters.
 configuration = bia_integrator_api.Configuration(
-    host = "/api/v1"
+    host = "http://localhost"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -1582,10 +1513,10 @@ from bia_integrator_api.models.file_reference import FileReference
 from bia_integrator_api.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to /api/v1
+# Defining the host is optional and defaults to http://localhost
 # See configuration.py for a list of all supported configuration parameters.
 configuration = bia_integrator_api.Configuration(
-    host = "/api/v1"
+    host = "http://localhost"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -1657,10 +1588,10 @@ from bia_integrator_api.models.bia_image import BIAImage
 from bia_integrator_api.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to /api/v1
+# Defining the host is optional and defaults to http://localhost
 # See configuration.py for a list of all supported configuration parameters.
 configuration = bia_integrator_api.Configuration(
-    host = "/api/v1"
+    host = "http://localhost"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -1730,10 +1661,10 @@ from bia_integrator_api.models.bia_study import BIAStudy
 from bia_integrator_api.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to /api/v1
+# Defining the host is optional and defaults to http://localhost
 # See configuration.py for a list of all supported configuration parameters.
 configuration = bia_integrator_api.Configuration(
-    host = "/api/v1"
+    host = "http://localhost"
 )
 
 # The client must configure the authentication and authorization parameters

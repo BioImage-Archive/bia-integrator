@@ -53,6 +53,11 @@ class BodySearchImages(BaseModel):
                           exclude={
                           },
                           exclude_none=True)
+        # set to None if attributes (nullable) is None
+        # and __fields_set__ contains the field
+        if self.attributes is None and "attributes" in self.__fields_set__:
+            _dict['attributes'] = None
+
         return _dict
 
     @classmethod

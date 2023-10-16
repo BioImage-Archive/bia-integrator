@@ -62,6 +62,16 @@ class RenderingInfo(BaseModel):
                 if _item:
                     _items.append(_item.to_dict())
             _dict['channel_renders'] = _items
+        # set to None if default_z (nullable) is None
+        # and __fields_set__ contains the field
+        if self.default_z is None and "default_z" in self.__fields_set__:
+            _dict['default_z'] = None
+
+        # set to None if default_t (nullable) is None
+        # and __fields_set__ contains the field
+        if self.default_t is None and "default_t" in self.__fields_set__:
+            _dict['default_t'] = None
+
         return _dict
 
     @classmethod

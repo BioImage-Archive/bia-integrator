@@ -14,9 +14,11 @@ In this directory, run `poetry install` to install the stable version of biaint.
 
 To install all BIA dependencies in editable mode, go to `dev/`, exit from any virtualenvs to isolate the dev biaint installation, and run `poetry install`.
 
+Run `poetry config virtualenvs.in-project true` before installing to get a .venv in the same directory as pyproject.toml. Point VSCode to the python executable there to make Ctrl+Click jump to the correct definition.
+
 To run the biaint with dev dependencies, either:
 * always run `poetry run biaint [command]` in the `dev/` directory
-* or run `poetry env list --full-path` in the `dev/` directory, and then activate the project-specific virtualenv, to make the global `biaint` command be the development version
+* or run `poetry run bash` in the `dev/` directory to switch to the project-specific virtualenv with the dev dependencies (still running biaint as `poetry run biaint`)
 
 ## First steps
 
@@ -37,7 +39,7 @@ to show known information for a specific images. If the `biaint` command isn't f
 Set the following environment variables, changing them as appropriate:
 
 ```sh
-export BIA_API_BASEPATH='https://bia-cron-1.ebi.ac.uk:8080/api/v1'
+export BIA_API_BASEPATH='https://bia-cron-1.ebi.ac.uk:8080'
 export BIA_USERNAME='username@ebi.ac.uk'
 export BIA_PASSWORD='password_for_user_above'
 export BIA_DISABLE_SSL_HOST_CHECK=1

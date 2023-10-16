@@ -21,7 +21,7 @@ from typing_extensions import Annotated
 
 from pydantic import StrictInt, StrictStr, conlist, constr, validator
 
-from typing import Any, Dict, List, Optional
+from typing import Any, List, Optional
 
 from bia_integrator_api.models.authentication_token import AuthenticationToken
 from bia_integrator_api.models.bia_collection import BIACollection
@@ -29,7 +29,6 @@ from bia_integrator_api.models.bia_image import BIAImage
 from bia_integrator_api.models.bia_image_representation import BIAImageRepresentation
 from bia_integrator_api.models.bia_study import BIAStudy
 from bia_integrator_api.models.body_register_user import BodyRegisterUser
-from bia_integrator_api.models.body_search_images import BodySearchImages
 from bia_integrator_api.models.bulk_operation_response import BulkOperationResponse
 from bia_integrator_api.models.file_reference import FileReference
 from bia_integrator_api.models.object_info import ObjectInfo
@@ -183,7 +182,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/private/collections', 'POST',
+            '/api/v1/private/collections', 'POST',
             _path_params,
             _query_params,
             _header_params,
@@ -200,13 +199,13 @@ class PrivateApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def create_file_reference(self, file_reference : conlist(FileReference), **kwargs) -> BulkOperationResponse:  # noqa: E501
-        """Create File Reference  # noqa: E501
+    def create_file_references(self, file_reference : conlist(FileReference), **kwargs) -> BulkOperationResponse:  # noqa: E501
+        """Create File References  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.create_file_reference(file_reference, async_req=True)
+        >>> thread = api.create_file_references(file_reference, async_req=True)
         >>> result = thread.get()
 
         :param file_reference: (required)
@@ -224,17 +223,17 @@ class PrivateApi(object):
         """
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
-            raise ValueError("Error! Please call the create_file_reference_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
-        return self.create_file_reference_with_http_info(file_reference, **kwargs)  # noqa: E501
+            raise ValueError("Error! Please call the create_file_references_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
+        return self.create_file_references_with_http_info(file_reference, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def create_file_reference_with_http_info(self, file_reference : conlist(FileReference), **kwargs) -> ApiResponse:  # noqa: E501
-        """Create File Reference  # noqa: E501
+    def create_file_references_with_http_info(self, file_reference : conlist(FileReference), **kwargs) -> ApiResponse:  # noqa: E501
+        """Create File References  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.create_file_reference_with_http_info(file_reference, async_req=True)
+        >>> thread = api.create_file_references_with_http_info(file_reference, async_req=True)
         >>> result = thread.get()
 
         :param file_reference: (required)
@@ -286,7 +285,7 @@ class PrivateApi(object):
             if _key not in _all_params:
                 raise ApiTypeError(
                     "Got an unexpected keyword argument '%s'"
-                    " to method create_file_reference" % _key
+                    " to method create_file_references" % _key
                 )
             _params[_key] = _val
         del _params['kwargs']
@@ -328,7 +327,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/private/file_references', 'POST',
+            '/api/v1/private/file_references', 'POST',
             _path_params,
             _query_params,
             _header_params,
@@ -481,7 +480,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/private/images/{image_uuid}/representations/single', 'POST',
+            '/api/v1/private/images/{image_uuid}/representations/single', 'POST',
             _path_params,
             _query_params,
             _header_params,
@@ -626,7 +625,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/private/images', 'POST',
+            '/api/v1/private/images', 'POST',
             _path_params,
             _query_params,
             _header_params,
@@ -757,7 +756,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/private/images/bulk', 'POST',
+            '/api/v1/private/images/bulk', 'POST',
             _path_params,
             _query_params,
             _header_params,
@@ -902,7 +901,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/private/studies', 'POST',
+            '/api/v1/private/studies', 'POST',
             _path_params,
             _query_params,
             _header_params,
@@ -1040,7 +1039,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/collections/{collection_uuid}', 'GET',
+            '/api/v1/collections/{collection_uuid}', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -1178,7 +1177,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/file_references/{file_reference_uuid}', 'GET',
+            '/api/v1/file_references/{file_reference_uuid}', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -1316,153 +1315,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/images/{image_uuid}', 'GET',
-            _path_params,
-            _query_params,
-            _header_params,
-            body=_body_params,
-            post_params=_form_params,
-            files=_files,
-            response_types_map=_response_types_map,
-            auth_settings=_auth_settings,
-            async_req=_params.get('async_req'),
-            _return_http_data_only=_params.get('_return_http_data_only'),  # noqa: E501
-            _preload_content=_params.get('_preload_content', True),
-            _request_timeout=_params.get('_request_timeout'),
-            collection_formats=_collection_formats,
-            _request_auth=_params.get('_request_auth'))
-
-    @validate_arguments
-    def get_image_ome_metadata(self, image_uuid : StrictStr, study_uuid : StrictStr, **kwargs) -> object:  # noqa: E501
-        """Get Image Ome Metadata  # noqa: E501
-
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
-
-        >>> thread = api.get_image_ome_metadata(image_uuid, study_uuid, async_req=True)
-        >>> result = thread.get()
-
-        :param image_uuid: (required)
-        :type image_uuid: str
-        :param study_uuid: (required)
-        :type study_uuid: str
-        :param async_req: Whether to execute the request asynchronously.
-        :type async_req: bool, optional
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :return: Returns the result object.
-                 If the method is called asynchronously,
-                 returns the request thread.
-        :rtype: object
-        """
-        kwargs['_return_http_data_only'] = True
-        if '_preload_content' in kwargs:
-            raise ValueError("Error! Please call the get_image_ome_metadata_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
-        return self.get_image_ome_metadata_with_http_info(image_uuid, study_uuid, **kwargs)  # noqa: E501
-
-    @validate_arguments
-    def get_image_ome_metadata_with_http_info(self, image_uuid : StrictStr, study_uuid : StrictStr, **kwargs) -> ApiResponse:  # noqa: E501
-        """Get Image Ome Metadata  # noqa: E501
-
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
-
-        >>> thread = api.get_image_ome_metadata_with_http_info(image_uuid, study_uuid, async_req=True)
-        >>> result = thread.get()
-
-        :param image_uuid: (required)
-        :type image_uuid: str
-        :param study_uuid: (required)
-        :type study_uuid: str
-        :param async_req: Whether to execute the request asynchronously.
-        :type async_req: bool, optional
-        :param _preload_content: if False, the ApiResponse.data will
-                                 be set to none and raw_data will store the 
-                                 HTTP response body without reading/decoding.
-                                 Default is True.
-        :type _preload_content: bool, optional
-        :param _return_http_data_only: response data instead of ApiResponse
-                                       object with status code, headers, etc
-        :type _return_http_data_only: bool, optional
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the authentication
-                              in the spec for a single request.
-        :type _request_auth: dict, optional
-        :type _content_type: string, optional: force content-type for the request
-        :return: Returns the result object.
-                 If the method is called asynchronously,
-                 returns the request thread.
-        :rtype: tuple(object, status_code(int), headers(HTTPHeaderDict))
-        """
-
-        _params = locals()
-
-        _all_params = [
-            'image_uuid',
-            'study_uuid'
-        ]
-        _all_params.extend(
-            [
-                'async_req',
-                '_return_http_data_only',
-                '_preload_content',
-                '_request_timeout',
-                '_request_auth',
-                '_content_type',
-                '_headers'
-            ]
-        )
-
-        # validate the arguments
-        for _key, _val in _params['kwargs'].items():
-            if _key not in _all_params:
-                raise ApiTypeError(
-                    "Got an unexpected keyword argument '%s'"
-                    " to method get_image_ome_metadata" % _key
-                )
-            _params[_key] = _val
-        del _params['kwargs']
-
-        _collection_formats = {}
-
-        # process the path parameters
-        _path_params = {}
-        if _params['image_uuid']:
-            _path_params['image_uuid'] = _params['image_uuid']
-
-
-        # process the query parameters
-        _query_params = []
-        if _params.get('study_uuid') is not None:  # noqa: E501
-            _query_params.append(('study_uuid', _params['study_uuid']))
-
-        # process the header parameters
-        _header_params = dict(_params.get('_headers', {}))
-        # process the form parameters
-        _form_params = []
-        _files = {}
-        # process the body parameter
-        _body_params = None
-        # set the HTTP header `Accept`
-        _header_params['Accept'] = self.api_client.select_header_accept(
-            ['application/json'])  # noqa: E501
-
-        # authentication setting
-        _auth_settings = []  # noqa: E501
-
-        _response_types_map = {
-            '200': "object",
-            '422': "HTTPValidationError",
-        }
-
-        return self.api_client.call_api(
-            '/images/{image_uuid}/ome_metadata', 'GET',
+            '/api/v1/images/{image_uuid}', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -1601,7 +1454,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/object_info_by_accessions', 'GET',
+            '/api/v1/object_info_by_accessions', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -1739,7 +1592,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/studies/{study_uuid}', 'GET',
+            '/api/v1/studies/{study_uuid}', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -1756,7 +1609,7 @@ class PrivateApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def get_study_file_references(self, study_uuid : StrictStr, start_uuid : Optional[StrictStr] = None, limit : Optional[StrictInt] = None, **kwargs) -> List[FileReference]:  # noqa: E501
+    def get_study_file_references(self, study_uuid : StrictStr, start_uuid : Optional[Any] = None, limit : Optional[StrictInt] = None, **kwargs) -> List[FileReference]:  # noqa: E501
         """Get Study File References  # noqa: E501
 
         First item in response is the next item with uuid greater than start_uuid. start_uuid is part of the response  # noqa: E501
@@ -1769,7 +1622,7 @@ class PrivateApi(object):
         :param study_uuid: (required)
         :type study_uuid: str
         :param start_uuid:
-        :type start_uuid: str
+        :type start_uuid: StartUuid
         :param limit:
         :type limit: int
         :param async_req: Whether to execute the request asynchronously.
@@ -1789,7 +1642,7 @@ class PrivateApi(object):
         return self.get_study_file_references_with_http_info(study_uuid, start_uuid, limit, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def get_study_file_references_with_http_info(self, study_uuid : StrictStr, start_uuid : Optional[StrictStr] = None, limit : Optional[StrictInt] = None, **kwargs) -> ApiResponse:  # noqa: E501
+    def get_study_file_references_with_http_info(self, study_uuid : StrictStr, start_uuid : Optional[Any] = None, limit : Optional[StrictInt] = None, **kwargs) -> ApiResponse:  # noqa: E501
         """Get Study File References  # noqa: E501
 
         First item in response is the next item with uuid greater than start_uuid. start_uuid is part of the response  # noqa: E501
@@ -1802,7 +1655,7 @@ class PrivateApi(object):
         :param study_uuid: (required)
         :type study_uuid: str
         :param start_uuid:
-        :type start_uuid: str
+        :type start_uuid: StartUuid
         :param limit:
         :type limit: int
         :param async_req: Whether to execute the request asynchronously.
@@ -1895,7 +1748,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/studies/{study_uuid}/file_references', 'GET',
+            '/api/v1/studies/{study_uuid}/file_references', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -1912,7 +1765,7 @@ class PrivateApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def get_study_images(self, study_uuid : StrictStr, start_uuid : Optional[StrictStr] = None, limit : Optional[StrictInt] = None, **kwargs) -> List[BIAImage]:  # noqa: E501
+    def get_study_images(self, study_uuid : StrictStr, start_uuid : Optional[Any] = None, limit : Optional[StrictInt] = None, **kwargs) -> List[BIAImage]:  # noqa: E501
         """Get Study Images  # noqa: E501
 
         First item in response is the next item with uuid greater than start_uuid. start_uuid is part of the response  # noqa: E501
@@ -1925,7 +1778,7 @@ class PrivateApi(object):
         :param study_uuid: (required)
         :type study_uuid: str
         :param start_uuid:
-        :type start_uuid: str
+        :type start_uuid: StartUuid
         :param limit:
         :type limit: int
         :param async_req: Whether to execute the request asynchronously.
@@ -1945,7 +1798,7 @@ class PrivateApi(object):
         return self.get_study_images_with_http_info(study_uuid, start_uuid, limit, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def get_study_images_with_http_info(self, study_uuid : StrictStr, start_uuid : Optional[StrictStr] = None, limit : Optional[StrictInt] = None, **kwargs) -> ApiResponse:  # noqa: E501
+    def get_study_images_with_http_info(self, study_uuid : StrictStr, start_uuid : Optional[Any] = None, limit : Optional[StrictInt] = None, **kwargs) -> ApiResponse:  # noqa: E501
         """Get Study Images  # noqa: E501
 
         First item in response is the next item with uuid greater than start_uuid. start_uuid is part of the response  # noqa: E501
@@ -1958,7 +1811,7 @@ class PrivateApi(object):
         :param study_uuid: (required)
         :type study_uuid: str
         :param start_uuid:
-        :type start_uuid: str
+        :type start_uuid: StartUuid
         :param limit:
         :type limit: int
         :param async_req: Whether to execute the request asynchronously.
@@ -2051,7 +1904,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/studies/{study_uuid}/images', 'GET',
+            '/api/v1/studies/{study_uuid}/images', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -2198,7 +2051,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/studies/{study_accession}/images_by_aliases', 'GET',
+            '/api/v1/studies/{study_accession}/images_by_aliases', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -2327,7 +2180,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/admin/health-check', 'GET',
+            '/api/v1/admin/health-check', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -2512,7 +2365,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/auth/token', 'POST',
+            '/api/v1/auth/token', 'POST',
             _path_params,
             _query_params,
             _header_params,
@@ -2657,7 +2510,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/auth/users/register', 'POST',
+            '/api/v1/auth/users/register', 'POST',
             _path_params,
             _query_params,
             _header_params,
@@ -2674,7 +2527,7 @@ class PrivateApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def search_collections(self, name : Optional[StrictStr] = None, **kwargs) -> List[BIACollection]:  # noqa: E501
+    def search_collections(self, name : Optional[Any] = None, **kwargs) -> List[BIACollection]:  # noqa: E501
         """Search Collections  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
@@ -2684,7 +2537,7 @@ class PrivateApi(object):
         >>> result = thread.get()
 
         :param name:
-        :type name: str
+        :type name: Name
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _request_timeout: timeout setting for this request. If one
@@ -2702,7 +2555,7 @@ class PrivateApi(object):
         return self.search_collections_with_http_info(name, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def search_collections_with_http_info(self, name : Optional[StrictStr] = None, **kwargs) -> ApiResponse:  # noqa: E501
+    def search_collections_with_http_info(self, name : Optional[Any] = None, **kwargs) -> ApiResponse:  # noqa: E501
         """Search Collections  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
@@ -2712,7 +2565,7 @@ class PrivateApi(object):
         >>> result = thread.get()
 
         :param name:
-        :type name: str
+        :type name: Name
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _preload_content: if False, the ApiResponse.data will
@@ -2795,7 +2648,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/collections', 'GET',
+            '/api/v1/collections', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -2812,19 +2665,19 @@ class PrivateApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def search_images(self, alias : Optional[StrictStr] = None, body_search_images : Optional[BodySearchImages] = None, **kwargs) -> List[BIAImage]:  # noqa: E501
+    def search_images(self, alias : Optional[Any] = None, unknown_base_type : Optional[Any] = None, **kwargs) -> List[BIAImage]:  # noqa: E501
         """Search Images  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.search_images(alias, body_search_images, async_req=True)
+        >>> thread = api.search_images(alias, unknown_base_type, async_req=True)
         >>> result = thread.get()
 
         :param alias:
-        :type alias: str
-        :param body_search_images:
-        :type body_search_images: BodySearchImages
+        :type alias: Alias
+        :param unknown_base_type:
+        :type unknown_base_type: UNKNOWN_BASE_TYPE
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _request_timeout: timeout setting for this request. If one
@@ -2839,22 +2692,22 @@ class PrivateApi(object):
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
             raise ValueError("Error! Please call the search_images_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
-        return self.search_images_with_http_info(alias, body_search_images, **kwargs)  # noqa: E501
+        return self.search_images_with_http_info(alias, unknown_base_type, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def search_images_with_http_info(self, alias : Optional[StrictStr] = None, body_search_images : Optional[BodySearchImages] = None, **kwargs) -> ApiResponse:  # noqa: E501
+    def search_images_with_http_info(self, alias : Optional[Any] = None, unknown_base_type : Optional[Any] = None, **kwargs) -> ApiResponse:  # noqa: E501
         """Search Images  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.search_images_with_http_info(alias, body_search_images, async_req=True)
+        >>> thread = api.search_images_with_http_info(alias, unknown_base_type, async_req=True)
         >>> result = thread.get()
 
         :param alias:
-        :type alias: str
-        :param body_search_images:
-        :type body_search_images: BodySearchImages
+        :type alias: Alias
+        :param unknown_base_type:
+        :type unknown_base_type: UNKNOWN_BASE_TYPE
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _preload_content: if False, the ApiResponse.data will
@@ -2884,7 +2737,7 @@ class PrivateApi(object):
 
         _all_params = [
             'alias',
-            'body_search_images'
+            'unknown_base_type'
         ]
         _all_params.extend(
             [
@@ -2925,8 +2778,8 @@ class PrivateApi(object):
         _files = {}
         # process the body parameter
         _body_params = None
-        if _params['body_search_images'] is not None:
-            _body_params = _params['body_search_images']
+        if _params['unknown_base_type'] is not None:
+            _body_params = _params['unknown_base_type']
 
         # set the HTTP header `Accept`
         _header_params['Accept'] = self.api_client.select_header_accept(
@@ -2948,7 +2801,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/search/images', 'GET',
+            '/api/v1/search/images', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -2965,7 +2818,7 @@ class PrivateApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def search_studies(self, start_uuid : Optional[StrictStr] = None, limit : Optional[StrictInt] = None, **kwargs) -> List[BIAStudy]:  # noqa: E501
+    def search_studies(self, start_uuid : Optional[Any] = None, limit : Optional[StrictInt] = None, **kwargs) -> List[BIAStudy]:  # noqa: E501
         """Search Studies  # noqa: E501
 
         @TODO: Define search criteria for the general case  First item in response is the next item with uuid greater than start_uuid. start_uuid is part of the response  # noqa: E501
@@ -2976,7 +2829,7 @@ class PrivateApi(object):
         >>> result = thread.get()
 
         :param start_uuid:
-        :type start_uuid: str
+        :type start_uuid: StartUuid
         :param limit:
         :type limit: int
         :param async_req: Whether to execute the request asynchronously.
@@ -2996,7 +2849,7 @@ class PrivateApi(object):
         return self.search_studies_with_http_info(start_uuid, limit, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def search_studies_with_http_info(self, start_uuid : Optional[StrictStr] = None, limit : Optional[StrictInt] = None, **kwargs) -> ApiResponse:  # noqa: E501
+    def search_studies_with_http_info(self, start_uuid : Optional[Any] = None, limit : Optional[StrictInt] = None, **kwargs) -> ApiResponse:  # noqa: E501
         """Search Studies  # noqa: E501
 
         @TODO: Define search criteria for the general case  First item in response is the next item with uuid greater than start_uuid. start_uuid is part of the response  # noqa: E501
@@ -3007,7 +2860,7 @@ class PrivateApi(object):
         >>> result = thread.get()
 
         :param start_uuid:
-        :type start_uuid: str
+        :type start_uuid: StartUuid
         :param limit:
         :type limit: int
         :param async_req: Whether to execute the request asynchronously.
@@ -3096,7 +2949,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/search/studies', 'GET',
+            '/api/v1/search/studies', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -3236,7 +3089,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/private/studies/{study_uuid}/refresh_counts', 'POST',
+            '/api/v1/private/studies/{study_uuid}/refresh_counts', 'POST',
             _path_params,
             _query_params,
             _header_params,
@@ -3381,7 +3234,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/private/file_references/single', 'PATCH',
+            '/api/v1/private/file_references/single', 'PATCH',
             _path_params,
             _query_params,
             _header_params,
@@ -3528,7 +3381,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/private/images/single', 'PATCH',
+            '/api/v1/private/images/single', 'PATCH',
             _path_params,
             _query_params,
             _header_params,
@@ -3673,7 +3526,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/private/studies', 'PATCH',
+            '/api/v1/private/studies', 'PATCH',
             _path_params,
             _query_params,
             _header_params,

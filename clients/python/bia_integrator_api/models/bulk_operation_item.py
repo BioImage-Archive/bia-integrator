@@ -27,7 +27,7 @@ class BulkOperationItem(BaseModel):
     """
     status: StrictInt = Field(...)
     idx_in_request: StrictInt = Field(...)
-    message: Optional[StrictStr] = None
+    message: Optional[StrictStr] = Field(...)
     __properties = ["status", "idx_in_request", "message"]
 
     class Config:
@@ -54,6 +54,11 @@ class BulkOperationItem(BaseModel):
                           exclude={
                           },
                           exclude_none=True)
+        # set to None if message (nullable) is None
+        # and __fields_set__ contains the field
+        if self.message is None and "message" in self.__fields_set__:
+            _dict['message'] = None
+
         return _dict
 
     @classmethod

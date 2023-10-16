@@ -2,7 +2,7 @@
 
 ```sh
 # pull openapi.json
-wget -O openapi.json http://localhost:8080/openapi.json
+wget -q -O - http://localhost:8080/openapi.json | jq > openapi.json
 
 # generate client
 docker run -it --rm \

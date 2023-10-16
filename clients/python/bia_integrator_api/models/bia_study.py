@@ -88,6 +88,21 @@ class BIAStudy(BaseModel):
                 if _item:
                     _items.append(_item.to_dict())
             _dict['annotations'] = _items
+        # set to None if model (nullable) is None
+        # and __fields_set__ contains the field
+        if self.model is None and "model" in self.__fields_set__:
+            _dict['model'] = None
+
+        # set to None if authors (nullable) is None
+        # and __fields_set__ contains the field
+        if self.authors is None and "authors" in self.__fields_set__:
+            _dict['authors'] = None
+
+        # set to None if imaging_type (nullable) is None
+        # and __fields_set__ contains the field
+        if self.imaging_type is None and "imaging_type" in self.__fields_set__:
+            _dict['imaging_type'] = None
+
         return _dict
 
     @classmethod

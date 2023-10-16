@@ -86,6 +86,26 @@ class BIAImage(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of alias
         if self.alias:
             _dict['alias'] = self.alias.to_dict()
+        # set to None if model (nullable) is None
+        # and __fields_set__ contains the field
+        if self.model is None and "model" in self.__fields_set__:
+            _dict['model'] = None
+
+        # set to None if name (nullable) is None
+        # and __fields_set__ contains the field
+        if self.name is None and "name" in self.__fields_set__:
+            _dict['name'] = None
+
+        # set to None if dimensions (nullable) is None
+        # and __fields_set__ contains the field
+        if self.dimensions is None and "dimensions" in self.__fields_set__:
+            _dict['dimensions'] = None
+
+        # set to None if alias (nullable) is None
+        # and __fields_set__ contains the field
+        if self.alias is None and "alias" in self.__fields_set__:
+            _dict['alias'] = None
+
         return _dict
 
     @classmethod

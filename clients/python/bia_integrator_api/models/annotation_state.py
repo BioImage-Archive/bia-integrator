@@ -23,7 +23,7 @@ from aenum import Enum, no_arg
 
 class AnnotationState(str, Enum):
     """
-    An enumeration.
+    AnnotationState
     """
 
     """

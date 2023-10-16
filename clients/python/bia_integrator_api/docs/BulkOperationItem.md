@@ -6,7 +6,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **status** | **int** |  | 
 **idx_in_request** | **int** |  | 
-**message** | **str** |  | [optional] 
+**message** | **str** |  | 
 
 ## Example
 

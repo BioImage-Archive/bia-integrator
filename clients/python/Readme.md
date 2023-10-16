@@ -1,6 +1,6 @@
 # BIA integrator API client
 
-The [example](bia_integrator_api/example/) project shows the most common operations that can be performed with the API.
+The [example](example/) project shows the most common operations that can be performed with the API.
 
 The [generated documentation](bia_integrator_api_README.md) is a full reference of all the functionality in the api client.
 

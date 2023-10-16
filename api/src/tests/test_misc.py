@@ -17,18 +17,18 @@ def test_create_collection(api_client: TestClient, uuid: str):
         "study_uuids": study_uuids
     }
 
-    rsp = api_client.post(f"/private/collections", json=collection)
+    rsp = api_client.post(f"private/collections", json=collection)
     assert rsp.status_code == 201, rsp.json()
 
 def test_fetch_study_as_image(api_client: TestClient, existing_study):
-    rsp = api_client.get(f"/images/{existing_study['uuid']}")
+    rsp = api_client.get(f"images/{existing_study['uuid']}")
     assert rsp.status_code == 404
 
 def test_fetch_object_info(api_client: TestClient, uuid: str):
     created_study = make_study(api_client, {'accession_id': uuid})
 
-    #rsp = api_client.get(f"/object_info_by_accessions?accessions[]={uuid}")
-    rsp = api_client.get(f"/object_info_by_accessions", params={
+    #rsp = api_client.get(f"object_info_by_accessions?accessions[]={uuid}")
+    rsp = api_client.get(f"object_info_by_accessions", params={
         'accessions': [uuid]
     })
     assert rsp.status_code == 200
@@ -60,7 +60,7 @@ def test_fetch_image_by_alias(api_client: TestClient, existing_study, uuid: str)
         "name": f"{uuid}_test_2"
     }
 
-    rsp = api_client.get(f"/studies/{existing_study['uuid']}/images_by_aliases", params={
+    rsp = api_client.get(f"studies/{existing_study['uuid']}/images_by_aliases", params={
         'aliases': [f"{uuid}_test_1", f"{uuid}_test_2"]
     })
     assert rsp.status_code == 200
@@ -68,25 +68,44 @@ def test_fetch_image_by_alias(api_client: TestClient, existing_study, uuid: str)
     assert len(rsp.json()) == 1
 
 def test_get_collection(api_client: TestClient, existing_collection):
-    rsp = api_client.get(f"/collections/{existing_collection['uuid']}")
+    rsp = api_client.get(f"collections/{existing_collection['uuid']}")
     assert rsp.status_code == 200
     assert rsp.json() == existing_collection
 
 def test_list_collections(api_client: TestClient):
-    rsp = api_client.get("/collections")
+    rsp = api_client.get("collections")
     assert rsp.status_code == 200
     assert len(rsp.json())
 
 def test_no_id_in_single_objects(api_client: TestClient, existing_study):
-    rsp = api_client.get(f"/studies/{ existing_study['uuid'] }")
+    rsp = api_client.get(f"studies/{ existing_study['uuid'] }")
     assert rsp.status_code == 200
     
     assert 'id' not in rsp.json().keys()
     assert '_id' not in rsp.json().keys()
 
 def test_no_id_in_list(api_client: TestClient, existing_image):
-    rsp = api_client.get(f"/studies/{ existing_image['study_uuid'] }/images")
+    rsp = api_client.get(f"studies/{ existing_image['study_uuid'] }/images")
     assert rsp.status_code == 200
     
     assert not any(["id" in img.keys() for img in rsp.json()])
     assert not any(["_id" in img.keys() for img in rsp.json()])
+
+def test_single_doc_create_idempotent(api_client: TestClient, existing_study):
+    rsp = api_client.post('private/studies', json=existing_study)
+    assert rsp.status_code == 201
+
+def test_single_doc_update_no_change_idempotent(api_client: TestClient, existing_study):
+    rsp = api_client.patch('private/studies', json=existing_study)
+    assert rsp.status_code == 201
+
+def test_single_doc_update_some_change_fails(api_client: TestClient, existing_study):
+    existing_study['annotations'].append({
+        "author_email": "test@ebi.ac.uk",
+        "key": "test",
+        "value": "test",
+        "state": "active"
+    })
+
+    rsp = api_client.patch('private/studies', json=existing_study)
+    assert rsp.status_code == 404

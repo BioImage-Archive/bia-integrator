@@ -4,10 +4,10 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**channel_label** | **str** |  | [optional] 
+**channel_label** | **str** |  | 
 **colormap_start** | **List[float]** |  | 
 **colormap_end** | **List[float]** |  | 
-**scale_factor** | **float** |  | [optional] [default to 1.0]
+**scale_factor** | **float** |  | [optional] [default to 1]
 
 ## Example
 
