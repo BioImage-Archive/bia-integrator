@@ -3,6 +3,7 @@ from bia_integrator_api.api import PrivateApi
 from base64 import b64decode
 from typing import Optional
 import time
+import urllib3
 import json
 
 def get_access_token(api_config: Configuration, username: str, password: str) -> str:
@@ -46,6 +47,8 @@ def simple_client(
         host = api_base_url
     )
     api_config.verify_ssl = not disable_ssl_host_check
+    if disable_ssl_host_check:
+        urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
     if auto_refresh_jwt:
         if username and password:

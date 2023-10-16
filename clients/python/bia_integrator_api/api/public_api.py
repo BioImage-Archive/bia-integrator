@@ -172,7 +172,7 @@ class PublicApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/collections/{collection_uuid}', 'GET',
+            '/collections/{collection_uuid}', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -310,7 +310,7 @@ class PublicApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/file_references/{file_reference_uuid}', 'GET',
+            '/file_references/{file_reference_uuid}', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -448,7 +448,7 @@ class PublicApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/images/{image_uuid}', 'GET',
+            '/images/{image_uuid}', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -594,7 +594,7 @@ class PublicApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/images/{image_uuid}/ome_metadata', 'GET',
+            '/images/{image_uuid}/ome_metadata', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -733,7 +733,7 @@ class PublicApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/object_info_by_accessions', 'GET',
+            '/object_info_by_accessions', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -871,7 +871,7 @@ class PublicApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/studies/{study_uuid}', 'GET',
+            '/studies/{study_uuid}', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -1027,7 +1027,7 @@ class PublicApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/studies/{study_uuid}/file_references', 'GET',
+            '/studies/{study_uuid}/file_references', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -1183,7 +1183,7 @@ class PublicApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/studies/{study_uuid}/images', 'GET',
+            '/studies/{study_uuid}/images', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -1330,7 +1330,7 @@ class PublicApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/studies/{study_accession}/images_by_aliases', 'GET',
+            '/studies/{study_accession}/images_by_aliases', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -1468,7 +1468,7 @@ class PublicApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/collections', 'GET',
+            '/collections', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -1621,7 +1621,7 @@ class PublicApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/search/images', 'GET',
+            '/search/images', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -1769,7 +1769,7 @@ class PublicApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/search/studies', 'GET',
+            '/search/studies', 'GET',
             _path_params,
             _query_params,
             _header_params,

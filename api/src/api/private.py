@@ -10,7 +10,7 @@ from typing import List
 from fastapi import APIRouter, status, Depends
 
 router = APIRouter(
-    prefix="/api/private",
+    prefix="/private",
     dependencies=[Depends(get_current_user)],
     tags=[constants.OPENAPI_TAG_PRIVATE]
 )

@@ -29,7 +29,8 @@ from bia_integrator_core.interface import (
     get_collection,
     persist_image_alias,
     to_uuid,
-    get_bia_user
+    get_bia_user,
+    study_recount
 )
 from bia_integrator_core.integrator import load_and_annotate_study
 
@@ -154,6 +155,11 @@ def show(accession_id: str):
 
     typer.echo(study)
 
+@studies_app.command("recount")
+def show(accession_id: str):
+    study_recount(accession_id)
+
+    typer.echo("DONE")
 
 @studies_app.command("list")
 def list():

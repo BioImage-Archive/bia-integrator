@@ -229,6 +229,8 @@ def migrate_study(study_id):
     print(f"Creating {len(study_images_api)} images for study {study_id}")
     if len(study_images_api):
         api_client.create_images(study_images_api)
+    
+    api_client.study_refresh_counts(study_api.uuid)
 
     print(f"DONE migrating study {study_id}\n")
 
