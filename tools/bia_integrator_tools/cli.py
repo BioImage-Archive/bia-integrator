@@ -15,7 +15,7 @@ from bia_integrator_core.interface import (
     get_all_studies,
     get_image_by_alias,
     get_image_by_uuid,
-    get_images_for_study,
+    get_images,
     get_study_annotations,
     persist_study_annotation,
     persist_image_representation,
@@ -81,7 +81,7 @@ def list_alias(image_uuid: str):
 
 @aliases_app.command("list-for-study")
 def list_aliases_for_study(accession_id: str):
-    study_images = get_images_for_study(accession_id)
+    study_images = get_images(accession_id)
 
     if len(study_images):
         study = get_study(accession_id)
@@ -108,7 +108,7 @@ def list_filerefs(accession_id: str):
 
     for fileref in bia_study.file_references:
         readable_size = sizeof_fmt(fileref.size_in_bytes)
-        typer.echo(f"{fileref.id}, {fileref.name}, {readable_size}, {fileref.type}")
+        typer.echo(f"{fileref.uuid}, {fileref.name}, {readable_size}, {fileref.type}")
 
 @filerefs_app.command("list-easily-convertable")
 def list_easily_convertable_filerefs(accession_id: str):
@@ -118,19 +118,19 @@ def list_easily_convertable_filerefs(accession_id: str):
     for fileref in bia_study.file_references:
         if Path(fileref.name).suffix.lower() in easily_convertable_exts:
             readable_size = sizeof_fmt(fileref.size_in_bytes)
-            typer.echo(f"{fileref.id}, {fileref.name}, {readable_size}")
+            typer.echo(f"{fileref.uuid}, {fileref.name}, {readable_size}")
 
 @images_app.command("list")
 def images_list(accession_id: str):
-    images = get_images_for_study(accession_id)
+    images = get_images(accession_id)
 
     for image in images:
-        rep_rep = ','.join(rep.type for rep in image.representations)
+        rep_rep = ','.join(rep.type for rep in image.representations) if image.representations else "NO REPRESENTATIONS"
         typer.echo(f"{image.uuid} {image.original_relpath} {rep_rep}")
 
 
 @images_app.command("show")
-def images_show(image_uuid_or_alias: str, accession_id: str = None):
+def images_show(image_uuid_or_alias: str, accession_id: Optional[str] = None):
 
     img = None
     if accession_id:
