@@ -62,9 +62,6 @@ def get_image_by_alias(study_accno: str, img_alias: str) -> api_models.BIAImage:
 def get_bia_user() -> Optional[str]:
     return settings.bia_username
 
-# DELETEME: workaround to deprecate get_images_for_study
-get_images_for_study = get_images
-
 def study_recount(study_accession: str):
     study = get_study(study_accession)
     settings.api_client.study_refresh_counts(study.uuid)

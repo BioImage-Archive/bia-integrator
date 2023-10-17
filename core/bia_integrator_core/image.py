@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 def persist_image(image: api_models.BIAImage):
     """Persist the image to disk."""
 
-    logger.info(f"Writing image to {image.accession_id}")
+    logger.info(f"Writing image to {image.study_uuid}")
     settings.api_client.create_images([image])
 
 def update_image(image: api_models.BIAImage):
