@@ -93,7 +93,7 @@ def list_aliases_for_study(accession_id: str):
         print(f"Study {accession_id} has no images")
 
 
-# From https://stackoverflow.com/questions/1094841/get-human-readable-version-of-file-size
+# From https://stackoverflow.com/questions/1094841/get-human-readable-version-of-file-size 
 def sizeof_fmt(num, suffix="B"):
     for unit in ["", "Ki", "Mi", "Gi", "Ti", "Pi", "Ei", "Zi"]:
         if abs(num) < 1024.0:
