@@ -14,7 +14,7 @@ The [generated documentation](bia_integrator_api_README.md#documentation-for-api
 
 Read-only operations are generally public (unauthenticated) and read-write ones are private (authenticated). Two client classes exist, one for the public and one for the private modes of the API. This is mostly for editor support, since the private client includes all the public methods (and in addition to that, the write methods). This isn't done for read/write separation, so please use a single client throughout an app.
 
-Both classes can be found [here](bia_integrator-api/api) and can be used as a reference. If using these as a reference, please ignore the methods with the `_with_http_info` suffix.
+Both classes can be found [here](bia_integrator_api/api) and can be used as a reference. If using these as a reference, please ignore the methods with the `_with_http_info` suffix.
 
 An alternative reference for the client methods is the [generated README](bia_integrator_api_README.md#documentation-for-api-endpoints), with methods tagged with their appropriate class.
 
