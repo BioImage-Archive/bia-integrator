@@ -4,7 +4,9 @@ The [example](example/) project shows the most common operations that can be per
 
 The [generated documentation](bia_integrator_api_README.md#documentation-for-api-endpoints) is a full reference of all the functionality in the api client.
 
-⚠️**Important**⚠️ This client and some of the documentation are automatically generated, with some manual additions. This can lead to conflicting information. Please only use this Readme and the [example](example/) project for information, and everything else only as a reference. This Readme aims to separate the important/less important generated docs, so if something is unclear, suggestions for improving this file are welcome. 
+⚠️**Important**⚠️
+* ⚠️ This client and some of the documentation are automatically generated, with some manual additions. This can lead to conflicting information. Please only use this Readme and the [example](example/) project for information, and everything else only as a reference. This Readme aims to separate the important/less important generated docs, so if something is unclear, suggestions for improving this file are welcome. 
+* ⚠️ Because of the variety of usecases to accommotate, validations focus on maintaing db structure and some consistency but focus on flexibility. Please treat users with write access as you would a `root` user.
 
 ## Notes on using the API
 
@@ -18,6 +20,41 @@ An alternative reference for the client methods is the [generated README](bia_in
 
 ### Model hierarchy
 
+Nested models are preferred and duplication is avoided, with exceptions where required. This results in a distinction between **toplevel** and **nested** objects.
+* **Toplevel** objects always have a `uuid` and `version` field, and they are one change unit most times (creating/updating objects only applies to them)
+* **Nested** objects never have the `uuid` and `version` fields, and are always nested in toplevel objects or other nested objects (eventually rooted in a toplevel object).
+
+In the [example](./example/start_here.py) project (snippet below), `BIAStudy` is a toplevel object, and `Author` is nested in `BIAStudy`. Authors cannot be created independently, and in order to modify an author (or any nested/toplevel object) a push-update-pull for its root toplevel object must happen. The update will only be accepted if `version` is incremented.
+
+⚠️Note: `version` here is the object version, used to exclude concurrent writes. Type information, including version, is in the `model` attribute of all objects, managed by the server and should never be used or relied upon by client apps.
+
+```python
+my_study = api_models.BIAStudy(
+    uuid = study_uuid,
+    version = 0,
+    title = "Study title",
+    description = "Study description",
+    release_date = "@TODO: Check format",
+    accession_id = f"accessions_must_be_unique_{study_uuid}",
+    organism = "test",
+    authors = [
+        api_models.Author(name="Study Author 1"),
+        api_models.Author(name="Study Author 2")
+    ]
+)
+```
+
+Currently, `BIACollection`, `BIAStudy`, `BIAImage`, `FileReference` are toplevel objects, with everything else being nested. Some toplevel objects refer other objects, for example the BIAImage attribute `study_uuid` references the `uuid` field of a BIAStudy object. Generally, attributes named `TYPE_uuid` refer the `uuid` field of an object of that type.
+
+### Batch operations
+
+Bulk creation is supported for objects of type `BIAImage` [create_images](bia_integrator_api/docs/PrivateApi.md#create_images) and `FileReference` [create_file_references](bia_integrator_api/docs/PrivateApi.md#create_file_references).
+
+These endpoint always respond with a 201 status to avoid generated clients raising an exception, and return a [BulkOperationResponse](bia_integrator_api/docs/BulkOperationResponse.md) object with the actual result for each item written. **Individual writes are atomic** so if the BulkOperationResponseItem for a particular object has a 201 status, then it was written to the database, but **the operation as a wole is not atomic**. Some items might have been written and some might have failed, and the client must explicitly check if all items was written, and either do a partial or full retry (operations here are are idempotent, provided the documents being written are identical).
+
+The `item_idx_by_status` attribute of BulkOperationResponse is a dictionary mapping the operation status (either 201 or 400) to the index of the document in the list passed to `create_images` (or `create_file_references`).
+
+Please see the [example script](./example/start_here.py) for an example before using this.
 
 ### Environments
 
