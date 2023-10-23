@@ -81,30 +81,30 @@ def set_rendering_info_for_ome_ngff_rep(ome_ngff_rep):
         persist_image_representation(ome_ngff_rep)
 
 
-def create_and_persist_image_from_fileref(accession_id, fileref, rep_type="fire_object"):
+def create_and_persist_image_from_fileref(study_uuid, fileref, rep_type="fire_object"):
     """Create a new image, together with a single representation from one file
     reference."""
 
     name = fileref.name
     logger.info(f"Assigned name {name}")
 
-    hash_input = fileref.id
+    hash_input = fileref.uuid
     hexdigest = hashlib.md5(hash_input.encode("utf-8")).hexdigest()
     image_id_as_uuid = uuid.UUID(version=4, hex=hexdigest)
     image_id = str(image_id_as_uuid)
 
     image_rep = BIAImageRepresentation(
-        accession_id=accession_id,
         image_id=image_id,
         size=fileref.size_in_bytes,
-        uri=fileref.uri,
-        attributes={"fileref_ids": [fileref.id]},
+        uri=[fileref.uri,],
+        attributes={"fileref_ids": [fileref.uuid]},
         type=rep_type
     )
 
     image = BIAImage(
-        id=image_id,
-        accession_id=accession_id,
+        uuid=image_id,
+        version=0,
+        study_uuid=study_uuid,
         original_relpath=name,
         name=name,
         representations=[image_rep],
