@@ -4,6 +4,7 @@ from bia_integrator_api import models as api_models
 from typing import Optional
 from uuid import UUID
 import time
+from typing_extensions import Annotated
 
 logger = logging.getLogger("biaint")
 logging.basicConfig(level=logging.INFO)
@@ -130,12 +131,17 @@ def images_list(accession_id: str):
 
 
 @images_app.command("show")
-def images_show(image_uuid_or_alias: str, accession_id: Optional[str] = None):
+def images_show(image_uuid_or_alias: str, accession_id: Annotated[Optional[str], typer.Argument(default=None)] = None):
+    """
+    Single argument: Must be the image UUID
+    Two arguments: Image alias first, then accession_id
+    """
 
     img = None
     if accession_id:
         img = get_image_by_alias(accession_id, image_uuid_or_alias)
     else:
+        UUID(image_uuid_or_alias)
         img = get_image_by_uuid(image_uuid_or_alias)
 
     typer.echo(img.uuid)
