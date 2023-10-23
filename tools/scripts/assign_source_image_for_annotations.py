@@ -3,7 +3,7 @@ import click
 import logging
 
 from bia_integrator_core.integrator import load_and_annotate_study
-from bia_integrator_core.interface import persist_study
+from bia_integrator_core.interface import persist_study, persist_filerefs
 
 logger = logging.getLogger(__file__)
 
@@ -21,7 +21,7 @@ def main(accession_id,fname_separator):
     if fname_separator == '_seg' and accession_id in fname_dict.keys():
         fname_separator = fname_dict[accession_id]
 
-    for fileref in bia_study.file_references.values():
+    for fileref in bia_study.file_references:
         if not fileref.attributes.get('source image'):
             source_image = None
             name = str(fileref.name)
@@ -38,7 +38,7 @@ def main(accession_id,fname_separator):
                 source_image = name.replace('xml','tif')
             if source_image:
                 fileref.attributes['source image'] = source_image
-    persist_study(bia_study)
+    persist_filerefs(bia_study.file_references)
 
 
 if __name__ == "__main__":
