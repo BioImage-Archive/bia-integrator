@@ -8,8 +8,12 @@ from typing import List
 
 import click
 from bia_integrator_api.models import BIAStudy, FileReference, Author
-from bia_integrator_core.interface import persist_study
-from bia_integrator_core.fileref import persist_filerefs
+from bia_integrator_api.exceptions import ApiException 
+from bia_integrator_core.interface import (
+    persist_study,
+    update_study,
+    persist_filerefs,
+)
 
 from bia_integrator_tools.identifiers import file_to_id, dict_to_uuid
 from bia_integrator_tools.biostudies import (
@@ -204,7 +208,11 @@ def main(accession_id):
     bia_study = bst_submission_to_bia_study(bst_submission)
     filerefs_list = filerefs_from_bst_submission(bst_submission)
 
-    persist_study(bia_study)
+    try:
+        persist_study(bia_study)
+    except ApiException as api_exception:
+        bia_study.version += 1
+        update_study(bia_study)
     persist_filerefs(filerefs_list)
 
 
