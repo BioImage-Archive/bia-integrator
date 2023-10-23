@@ -62,5 +62,4 @@ env
 # Project-specific
 ####
 .env
-poetry.lock
 .venv
