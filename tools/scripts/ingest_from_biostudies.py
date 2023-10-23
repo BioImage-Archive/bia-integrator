@@ -4,11 +4,12 @@ import logging
 import hashlib
 import requests
 from pathlib import Path
-from typing import List 
+from typing import List
 
 import click
 from bia_integrator_api.models import BIAStudy, FileReference, Author
 from bia_integrator_core.interface import persist_study
+from bia_integrator_core.fileref import persist_filerefs
 
 from bia_integrator_tools.identifiers import file_to_id, dict_to_uuid
 from bia_integrator_tools.biostudies import (
@@ -166,8 +167,6 @@ def bst_submission_to_bia_study(submission: Submission) -> BIAStudy:
 
     accession_id = submission.accno
     study_uuid = dict_to_uuid({"accession_id": accession_id,}, attributes_to_consider=["accession_id",])
-    filerefs_list = filerefs_from_bst_submission(submission)
-    filerefs_dict = {fileref.uuid: fileref for fileref in filerefs_list}
     study_title = study_title_from_submission(submission)
     imaging_method = get_attr_from_submission(submission, "Imaging Method")
 
@@ -189,7 +188,6 @@ def bst_submission_to_bia_study(submission: Submission) -> BIAStudy:
         license=study_section_attr_dict.get('License', "CC0"),
         links=study_links_from_submission(submission),
         imaging_type=imaging_method,
-        file_references=filerefs_dict,
         version=0
     )
 
@@ -204,8 +202,10 @@ def main(accession_id):
 
     bst_submission = load_submission(accession_id)
     bia_study = bst_submission_to_bia_study(bst_submission)
+    filerefs_list = filerefs_from_bst_submission(bst_submission)
 
     persist_study(bia_study)
+    persist_filerefs(filerefs_list)
 
 
 if __name__ == "__main__":
