@@ -1,8 +1,8 @@
 import logging
 from typing import List
 
-from bia_integrator_core.config import settings
-from bia_integrator_core.models import BIAImageAlias
+from .config import settings
+from .models import BIAImageAlias
 
 
 logger = logging.getLogger(__name__)

@@ -1,9 +1,9 @@
 import logging
-from bia_integrator_core.models import BIAImage, BIAStudy
-from bia_integrator_core.image import get_images
-from bia_integrator_core.annotation import get_study_annotations, get_image_annotations, get_study_tags
-from bia_integrator_core.representation import get_representations
-from bia_integrator_core.study import get_study
+from .models import BIAImage, BIAStudy
+from .image import get_images
+from .annotation import get_study_annotations, get_image_annotations, get_study_tags
+from .representation import get_representations
+from .study import get_study
 
 logger = logging.getLogger(__name__)
 

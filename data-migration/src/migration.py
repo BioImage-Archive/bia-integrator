@@ -4,7 +4,7 @@
 
 from bia_integrator_api import models as api_models, exceptions as api_exceptions
 from bia_integrator_api.util import simple_client
-from bia_integrator_core import models as core_models, interface
+from src.bia_integrator_core import models as core_models, interface
 import sys
 import os
 
@@ -64,6 +64,13 @@ def study_core_to_api(study_core: core_models.BIAStudy):
 def file_reference_core_to_api(file_reference_core: core_models.FileReference, study_uuid, fileref_uuid = None):
     if not fileref_uuid:
         raise SkipStudyException("No fileref uuid")
+
+    fileref_type = file_reference_core.type
+    if fileref_type is None:
+        if file_reference_core.uri.startswith("https://ftp.ebi.ac.uk"):
+            fileref_type = "fire_object"
+        else:
+            fileref_type = "TODO - What do we do with null fileref types? Direct / in archive"
     
     fileref = api_models.FileReference(
         uuid = fileref_uuid,
@@ -71,7 +78,7 @@ def file_reference_core_to_api(file_reference_core: core_models.FileReference, s
         study_uuid = study_uuid,
         name = file_reference_core.name,
         uri = file_reference_core.uri,
-        type = file_reference_core.type if file_reference_core.type else "TODO - What do we do with null fileref types? Direct / in archive",
+        type = fileref_type,
         size_in_bytes = file_reference_core.size_in_bytes,
         attributes = file_reference_core.attributes.copy()
     )
