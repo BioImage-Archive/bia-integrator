@@ -340,8 +340,9 @@ class Repository:
         result = await self.biaint.update_one(
             {
                 'uuid': doc_model.uuid,
-                'version': doc_model.version-1
-            },    
+                'version': doc_model.version-1,
+                'model': doc_model.model.model_dump()
+            },
             {
                 '$set': doc_model.model_dump()
             },

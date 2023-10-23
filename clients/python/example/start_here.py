@@ -23,7 +23,11 @@ my_study = api_models.BIAStudy(
     description = "Study description",
     release_date = "@TODO: Check format",
     accession_id = f"accessions_must_be_unique_{study_uuid}",
-    organism = "test"
+    organism = "test",
+    authors = [
+        api_models.Author(name="Study Author 1"),
+        api_models.Author(name="Study Author 2")
+    ]
 )
 rw_client.create_study(my_study)
 

@@ -1,8 +1,8 @@
 import logging
 from typing import List
 
-from bia_integrator_core.config import settings
-from bia_integrator_core.models import BIAImageRepresentation
+from .config import settings
+from .models import BIAImageRepresentation
 
 
 logger = logging.getLogger(__name__)

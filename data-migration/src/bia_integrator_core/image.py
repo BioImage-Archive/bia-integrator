@@ -20,7 +20,7 @@ def persist_image(image: BIAImage):
         fh.write(image.json(indent=2))
 
 
-def get_images(accession_id: str) -> List[BIAImage]:
+def get_images(accession_id: str) -> dict[str, BIAImage]:
     """Return all images stored on disk for the given accession."""
     
     images_dirpath = settings.images_dirpath/accession_id
