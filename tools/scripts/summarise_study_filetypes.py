@@ -13,7 +13,7 @@ import click
 
 from bia_integrator_core.integrator import load_and_annotate_study
 from bia_integrator_tools.cli import sizeof_fmt
-from bia_integrator_core.models import StudyAnnotation
+from bia_integrator_api.models import StudyAnnotation, FileReference
 from bia_integrator_core.interface import persist_study_annotation
 
 logger = logging.getLogger(__file__)
@@ -45,7 +45,7 @@ def _get_extension(p):
         return ext
 
 
-def get_study_filetypes(accession_id: str) -> dict:
+def summarise_fileref_filetypes(filerefs: list[FileReference]) -> dict:
     """Return number of files of each type and sum of their sizes
 
     Return a dict with filetype extension as keys and a dict of
@@ -55,12 +55,9 @@ def get_study_filetypes(accession_id: str) -> dict:
         - formatted total size
     """
 
-    bia_study = load_and_annotate_study(accession_id)
-    
-    file_references = bia_study.file_references
     ftypes = {}
 
-    for f in file_references.values():
+    for f in filerefs:
         ext = _get_extension(f.name)
         uri_ext = _get_extension(f.uri)
         if f.size_in_bytes == 0:
@@ -83,7 +80,7 @@ def get_study_filetypes(accession_id: str) -> dict:
 
     return ftypes
 
-def study_filetypes_as_html(ftypes: dict) -> str:
+def filetypes_as_html(ftypes: dict) -> str:
     """Convert values of each file type to html - display as list
 
     """
@@ -143,16 +140,20 @@ def main(accession_id: str) -> None:
     logging.basicConfig(level=logging.INFO)
 
     accession_id = sys.argv[1]
-    ftypes = get_study_filetypes(accession_id)
-    ftypes_html = study_filetypes_as_html(ftypes)
+
+    bia_study = load_and_annotate_study(accession_id)
+    ftypes = summarise_fileref_filetypes(bia_study.file_references)
+    ftypes_html = filetypes_as_html(ftypes)
     ftypes_summary = {"filetype_breakdown": ftypes} | {"filetype_breakdown_html": ftypes_html} | summarise_study_filetypes(ftypes) 
     for k, v in ftypes_summary.items():
         annotation = StudyAnnotation(
+            author_email="snakemake_pipeline@ebi.ac.uk",
             accession_id=accession_id,
             key=k,
-            value=str(v)
+            value=str(v),
+            state="active"
         )
-        persist_study_annotation(annotation)
+        persist_study_annotation(bia_study.uuid, annotation)
     logger.info(ftypes_summary)
 
 if __name__ == "__main__":
