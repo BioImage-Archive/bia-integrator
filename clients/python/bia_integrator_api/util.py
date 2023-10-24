@@ -5,6 +5,8 @@ from typing import Optional
 import time
 import urllib3
 import json
+import hashlib
+import uuid
 
 def get_access_token(api_config: Configuration, username: str, password: str) -> str:
     api_client = ApiClient(configuration=api_config)
@@ -63,3 +65,24 @@ def simple_client(
     client = PrivateApi(api_client=api_client)
 
     return client
+
+def uuid_from_str(doc_stable_string: str) -> str:
+    hexdigest = hashlib.md5(doc_stable_string.encode("utf-8")).hexdigest()
+    doc_uuid = uuid.UUID(version=4, hex=hexdigest)
+
+    return str(doc_uuid)
+
+def uuid_from_dict(doc_stable_dict: dict) -> str:
+    """
+    Get a stable uuid when multiple attributes are needed to identify an item
+
+    Example:
+    uuid_from_dict({
+        'local_file_path': my_file_path,
+        'current_hostname': my_hostname
+    })
+    """
+    hexdigest = hashlib.md5(str(doc_stable_dict).encode("utf-8")).hexdigest()
+    doc_uuid = uuid.UUID(version=4, hex=hexdigest)
+
+    return str(doc_uuid)
