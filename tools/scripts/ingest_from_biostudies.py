@@ -217,7 +217,8 @@ def main(accession_id):
         bia_study.version = bia_study_from_api.version
         bia_study.uuid = bia_study_from_api.uuid
         update_study(bia_study)
-    except ApiException as api_exception:
+    #except ApiException as api_exception:
+    except IndexError as exception:
         persist_study(bia_study)
 
     filerefs_list = filerefs_from_bst_submission(bst_submission, bia_study.uuid)
