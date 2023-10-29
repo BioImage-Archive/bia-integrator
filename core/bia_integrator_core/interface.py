@@ -16,7 +16,7 @@ from .config import settings
 from .integrator import load_and_annotate_study
 from .study import get_study, persist_study, update_study
 from .image import persist_image, get_images, update_image
-from .fileref import persist_filerefs
+from .fileref import get_filerefs, persist_filerefs
 from .collection import get_collection, persist_collection, update_collection, get_collections
 from .representation import persist_image_representation, get_representations
 
