@@ -19,7 +19,7 @@ def get_annotation_files_by_accession(accession_id):
     
     bia_study = load_and_annotate_study(accession_id)
     return [
-        fileref for fileref in bia_study.file_references.values()
+        fileref for fileref in bia_study.file_references
         if "source image" in fileref.attributes
     ]
 
@@ -81,7 +81,7 @@ def set_rendering_info_for_ome_ngff_rep(ome_ngff_rep):
         persist_image_representation(ome_ngff_rep)
 
 
-def create_and_persist_image_from_fileref(study_uuid, fileref, rep_type="fire_object"):
+def create_and_persist_image_from_fileref(study_uuid, fileref, rep_type="fire_object", extra_attributes={}):
     """Create a new image, together with a single representation from one file
     reference."""
 
@@ -100,6 +100,9 @@ def create_and_persist_image_from_fileref(study_uuid, fileref, rep_type="fire_ob
         attributes={"fileref_ids": [fileref.uuid]},
         type=rep_type
     )
+    if extra_attributes:
+        for key, value in extra_attributes.items():
+            image_rep.attributes["key"] = value
 
     image = BIAImage(
         uuid=image_id,

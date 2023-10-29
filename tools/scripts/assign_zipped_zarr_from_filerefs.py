@@ -1,13 +1,10 @@
 """Assign images from zipped ome.zarr file references."""
 
-import uuid
 import logging
-import hashlib
 
 import click
 from bia_integrator_core.integrator import load_and_annotate_study
-from bia_integrator_core.models import BIAImage, BIAImageRepresentation
-from bia_integrator_core.image import persist_image
+from bia_integrator_tools.utils import create_and_persist_image_from_fileref
 
 logger = logging.getLogger(__file__)
 
@@ -21,37 +18,14 @@ def main(accession_id):
 
     filerefs = bia_study.file_references
 
-    for fileref in filerefs.values():
+    for fileref in filerefs:
         if ".zarr" in fileref.name:
-            name = fileref.name
-
-            hash_input = fileref.id
-            hexdigest = hashlib.md5(hash_input.encode("utf-8")).hexdigest()
-            image_id_as_uuid = uuid.UUID(version=4, hex=hexdigest)
-            image_id = str(image_id_as_uuid)
-
-            image_rep = BIAImageRepresentation(
-                accession_id=accession_id,
-                image_id=image_id,
-                size=fileref.size_in_bytes,
-                uri=fileref.uri,
-                attributes={
-                    "fileref_ids": [fileref.id],
-                    "path_in_zarr": "/0"
-                },
-                type="zipped_zarr"
+            create_and_persist_image_from_fileref(
+                bia_study.uuid,
+                fileref,
+                rep_type="zipped_zarr", 
+                extra_attributes = {"path_in_zarr": "/0"}
             )
-
-            image = BIAImage(
-                id=image_id,
-                accession_id=accession_id,
-                original_relpath=name,
-                name=name,
-                representations=[image_rep],
-                attributes=fileref.attributes
-            )
-
-            persist_image(image)
 
 
 if __name__ == "__main__":
