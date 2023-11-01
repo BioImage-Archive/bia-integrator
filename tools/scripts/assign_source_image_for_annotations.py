@@ -3,7 +3,7 @@ import click
 import logging
 
 from bia_integrator_core.integrator import load_and_annotate_study
-from bia_integrator_core.interface import persist_study, persist_filerefs
+from bia_integrator_core.interface import update_fileref
 
 logger = logging.getLogger(__file__)
 
@@ -38,7 +38,7 @@ def main(accession_id,fname_separator):
                 source_image = name.replace('xml','tif')
             if source_image:
                 fileref.attributes['source image'] = source_image
-    persist_filerefs(bia_study.file_references)
+                update_fileref(fileref)
 
 
 if __name__ == "__main__":
