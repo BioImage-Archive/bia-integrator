@@ -12,6 +12,7 @@ import os
 DB_NAME = os.environ["DB_NAME"]
 COLLECTION_BIA_INTEGRATOR = "bia_integrator"
 COLLECTION_USERS = "users"
+COLLECTION_OME_METADATA = "ome_metadata"
 
 class Repository:
     connection: AsyncIOMotorClient
@@ -29,6 +30,7 @@ class Repository:
         self.db = self.connection.get_database(DB_NAME)
         self.users = self.db[COLLECTION_USERS]
         self.biaint = self.db[COLLECTION_BIA_INTEGRATOR]
+        self.ome_metadata = self.db[COLLECTION_OME_METADATA]
 
     async def _init_collection_biaint(self) -> None:
         # Single collection to let mongo enforce uuid uniqueness => documents have different shape BUT
@@ -39,27 +41,41 @@ class Repository:
             unique=True,
             name='doc_uuid'
         )
-        self.biaint.create_index(
+        await self.biaint.create_index(
             [ ('accession_id', 1) ],
             unique=True,
-            sparse=True,
+            partialFilterExpression={
+                'accession_id': {'$exists': True}
+            },
             name='img_accession_id'
         )
-        self.biaint.create_index(
+        await self.biaint.create_index(
             [ ('study_uuid', 1), ('alias.name', 1) ],
             unique=True,
-            sparse=True,
+            partialFilterExpression={
+                'study_uuid': {'$exists': True},
+                'alias.name': {'$exists': True},
+            },
             name='img_alias'
         )
-        self.biaint.create_index(
+        await self.biaint.create_index(
             [ ('study_uuid', 1), ('model.type_name', 1) ],
-            sparse=True,
+            partialFilterExpression={
+                'study_uuid': {'$exists': True},
+                'model.type_name': {'$exists': True}
+            },
             name='study_assets'
         )
     
     async def _init_collection_users(self) -> None:
         await self.users.create_index(
             [ ('email', 1) ],
+            unique = True
+        )
+    
+    async def _init_collection_ome_metadata(self) -> None:
+        await self.ome_metadata.create_index(
+            [ ('bia_image_uuid', 1) ],
             unique = True
         )
 
@@ -381,6 +397,30 @@ class Repository:
         
         return collections
 
+    async def upsert_ome_metadata_for_image(self, image_uuid: UUID, ome_metadata_file_url: str, ome_metadata: dict) -> models.BIAImageOmeMetadata:
+        self.get_image(uuid=image_uuid)
+
+        ome_metadata_model = models.BIAImageOmeMetadata(
+            uuid = UUID(),
+            version = 0,
+            bia_image_uuid = image_uuid,
+            ome_metadata_file_url = ome_metadata_file_url,
+            ome_metadata = ome_metadata
+        )
+
+        await self.ome_metadata.update_one(
+            {'bia_image_uuid': image_uuid},
+            ome_metadata_model.model_dump(),
+            upsert = True
+        )
+
+        return ome_metadata_model
+
+    async def get_ome_metadata_for_image(self, image_uuid) -> models.BIAImageOmeMetadata:
+        obj_image_ome_metadata = await self.ome_metadata.find_one({'bia_image_uuid': image_uuid})
+
+        return obj_image_ome_metadata
+
 async def repository_create() -> Repository:
     repository = Repository()
 
@@ -389,5 +429,7 @@ async def repository_create() -> Repository:
         await repository._init_collection_biaint()
     if COLLECTION_USERS not in collections:
         await repository._init_collection_users()
+    if COLLECTION_OME_METADATA not in collections:
+        await repository._init_collection_ome_metadata()
 
     return repository

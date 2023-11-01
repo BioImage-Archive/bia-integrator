@@ -166,7 +166,8 @@ def get_template_image(existing_study: dict, add_uuid = False):
         "annotations": [],
         "dimensions": None,
         "alias": None,  
-        "representations": []
+        "representations": [],
+        "ome_metadata_file_url": None
     }
 
 def make_images(api_client: TestClient, existing_study: dict, n: int, image_template = None):
@@ -209,7 +210,7 @@ def get_study(api_client: TestClient, study_uuid: str, assert_status_code=200):
 
     return rsp.json()
 
-
+TEST_SERVER_BASE_URL = "http://localhost.com/api/v1"
 def get_client(**kwargs) -> TestClient:
     from fastapi.responses import JSONResponse
     from fastapi import Request
@@ -222,7 +223,7 @@ def get_client(**kwargs) -> TestClient:
             content=traceback.format_exception(exc, value=exc, tb=exc.__traceback__),
         )
 
-    return TestClient(app.app, base_url="http://testserver/api/v1", **kwargs)
+    return TestClient(app.app, base_url=TEST_SERVER_BASE_URL, **kwargs)
 
 def get_uuid() -> str:
     # @TODO: make this constant and require mongo to always be clean?
