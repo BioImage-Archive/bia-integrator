@@ -40,12 +40,16 @@ async def log_exception_handler(request: Request, exc: Exception):
         status_code=HTTP_500_INTERNAL_SERVER_ERROR
     )
 
-def repository_dependency():
-    db = repository_create()
+async def repository_dependency():
+    db = await repository_create()
     try:
         yield db
     finally:
         db.close()
+
+@app.on_event("startup")
+async def startup_event():
+    await repository_create()
 
 app.include_router(auth.router, prefix="/api/v1", dependencies=[Depends(repository_dependency)])
 app.include_router(private.router, prefix="/api/v1", dependencies=[Depends(repository_dependency)])

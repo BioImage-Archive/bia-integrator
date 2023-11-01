@@ -16,3 +16,8 @@ STATUS_INVALID_UPDATE=409
 class InvalidUpdateException(HTTPException):
     def __init__(self, detail, **kwargs) -> None:
         super().__init__(STATUS_INVALID_UPDATE, detail, **kwargs)
+
+STATUS_SERVER_ERROR=500
+class InternalServerError(HTTPException):
+    def __init__(self, detail, **kwargs) -> None:
+        super().__init__(STATUS_SERVER_ERROR, detail, **kwargs)

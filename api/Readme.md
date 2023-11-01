@@ -15,8 +15,8 @@ Create a local-only test user with:
 ```bash
 curl -H "Content-Type: application/json" \
     --request POST \
-    --data '{"email": "test@example.com", "password_plain": "test", "secret_token": "DUMMY1234" }' \
-    http://localhost:8080/auth/users/register
+    --data '{"email": "test@example.com", "password_plain": "test", "secret_token": "00123456789==" }' \
+    http://localhost:8080/api/v1/auth/users/register
 ```
 
 The response should be just `null` and there should be no errors in the api container.
