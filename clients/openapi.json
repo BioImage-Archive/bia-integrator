@@ -535,8 +535,8 @@
         "tags": [
           "private"
         ],
-        "summary": "Set Image Ome Metadata Url",
-        "operationId": "set_image_ome_metadata_url",
+        "summary": "Set Image Ome Metadata",
+        "operationId": "set_image_ome_metadata",
         "security": [
           {
             "OAuth2PasswordBearer": []
@@ -557,15 +557,15 @@
         "requestBody": {
           "required": true,
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/OmeMetadatSource"
+                "$ref": "#/components/schemas/Body_set_image_ome_metadata"
               }
             }
           }
         },
         "responses": {
-          "200": {
+          "201": {
             "description": "Successful Response",
             "content": {
               "application/json": {
@@ -1471,17 +1471,6 @@
                 "type": "null"
               }
             ]
-          },
-          "ome_metadata_file_url": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Ome Metadata File Url"
           }
         },
         "additionalProperties": false,
@@ -1538,11 +1527,7 @@
           "ome_metadata": {
             "type": "object",
             "title": "Ome Metadata",
-            "description": "The OME metadata in json format. Can be used as a dictionary or directly parsed with the ome-types module."
-          },
-          "ome_metadata_file_url": {
-            "type": "string",
-            "title": "Ome Metadata File Url"
+            "description": "The OME metadata as a json-compatible object. Can be used as a dictionary or directly parsed with the ome-types module."
           }
         },
         "additionalProperties": false,
@@ -1551,8 +1536,7 @@
           "uuid",
           "version",
           "bia_image_uuid",
-          "ome_metadata",
-          "ome_metadata_file_url"
+          "ome_metadata"
         ],
         "title": "BIAImageOmeMetadata"
       },
@@ -1842,6 +1826,20 @@
         "type": "object",
         "title": "Body_search_images"
       },
+      "Body_set_image_ome_metadata": {
+        "properties": {
+          "ome_metadata_file": {
+            "type": "string",
+            "format": "binary",
+            "title": "Ome Metadata File"
+          }
+        },
+        "type": "object",
+        "required": [
+          "ome_metadata_file"
+        ],
+        "title": "Body_set_image_ome_metadata"
+      },
       "BulkOperationItem": {
         "properties": {
           "status": {
@@ -2066,19 +2064,6 @@
           "model"
         ],
         "title": "ObjectInfo"
-      },
-      "OmeMetadatSource": {
-        "properties": {
-          "ome_metadata_url": {
-            "type": "string",
-            "title": "Ome Metadata Url"
-          }
-        },
-        "type": "object",
-        "required": [
-          "ome_metadata_url"
-        ],
-        "title": "OmeMetadatSource"
       },
       "RenderingInfo": {
         "properties": {

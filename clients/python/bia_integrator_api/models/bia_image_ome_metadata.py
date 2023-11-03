@@ -30,9 +30,8 @@ class BIAImageOmeMetadata(BaseModel):
     version: StrictInt = Field(...)
     model: Optional[ModelMetadata] = None
     bia_image_uuid: StrictStr = Field(...)
-    ome_metadata: Dict[str, Any] = Field(..., description="The OME metadata in json format. Can be used as a dictionary or directly parsed with the ome-types module.")
-    ome_metadata_file_url: StrictStr = Field(...)
-    __properties = ["uuid", "version", "model", "bia_image_uuid", "ome_metadata", "ome_metadata_file_url"]
+    ome_metadata: Dict[str, Any] = Field(..., description="The OME metadata as a json-compatible object. Can be used as a dictionary or directly parsed with the ome-types module.")
+    __properties = ["uuid", "version", "model", "bia_image_uuid", "ome_metadata"]
 
     class Config:
         """Pydantic configuration"""
@@ -82,8 +81,7 @@ class BIAImageOmeMetadata(BaseModel):
             "version": obj.get("version"),
             "model": ModelMetadata.from_dict(obj.get("model")) if obj.get("model") is not None else None,
             "bia_image_uuid": obj.get("bia_image_uuid"),
-            "ome_metadata": obj.get("ome_metadata"),
-            "ome_metadata_file_url": obj.get("ome_metadata_file_url")
+            "ome_metadata": obj.get("ome_metadata")
         })
         return _obj
 

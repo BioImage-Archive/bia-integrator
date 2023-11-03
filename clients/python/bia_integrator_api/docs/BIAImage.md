@@ -16,7 +16,6 @@ Name | Type | Description | Notes
 **attributes** | **object** |  | [optional] 
 **annotations** | [**List[ImageAnnotation]**](ImageAnnotation.md) |  | [optional] [default to []]
 **alias** | [**BIAImageAlias**](BIAImageAlias.md) |  | [optional] 
-**ome_metadata_file_url** | **str** |  | [optional] 
 
 ## Example
 

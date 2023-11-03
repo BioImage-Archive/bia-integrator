@@ -91,7 +91,7 @@ Class | Method | HTTP request | Description
 *PrivateApi* | [**search_collections**](bia_integrator_api/docs/PrivateApi.md#search_collections) | **GET** /api/v1/collections | Search Collections
 *PrivateApi* | [**search_images**](bia_integrator_api/docs/PrivateApi.md#search_images) | **GET** /api/v1/search/images | Search Images
 *PrivateApi* | [**search_studies**](bia_integrator_api/docs/PrivateApi.md#search_studies) | **GET** /api/v1/search/studies | Search Studies
-*PrivateApi* | [**set_image_ome_metadata_url**](bia_integrator_api/docs/PrivateApi.md#set_image_ome_metadata_url) | **POST** /api/v1/private/images/{image_uuid}/ome_metadata | Set Image Ome Metadata Url
+*PrivateApi* | [**set_image_ome_metadata**](bia_integrator_api/docs/PrivateApi.md#set_image_ome_metadata) | **POST** /api/v1/private/images/{image_uuid}/ome_metadata | Set Image Ome Metadata
 *PrivateApi* | [**study_refresh_counts**](bia_integrator_api/docs/PrivateApi.md#study_refresh_counts) | **POST** /api/v1/private/studies/{study_uuid}/refresh_counts | Study Refresh Counts
 *PrivateApi* | [**update_file_reference**](bia_integrator_api/docs/PrivateApi.md#update_file_reference) | **PATCH** /api/v1/private/file_references/single | Update File Reference
 *PrivateApi* | [**update_image**](bia_integrator_api/docs/PrivateApi.md#update_image) | **PATCH** /api/v1/private/images/single | Update Image
@@ -134,7 +134,6 @@ Class | Method | HTTP request | Description
  - [ModelMetadata](bia_integrator_api/docs/ModelMetadata.md)
  - [Name](bia_integrator_api/docs/Name.md)
  - [ObjectInfo](bia_integrator_api/docs/ObjectInfo.md)
- - [OmeMetadatSource](bia_integrator_api/docs/OmeMetadatSource.md)
  - [RenderingInfo](bia_integrator_api/docs/RenderingInfo.md)
  - [StartUuid](bia_integrator_api/docs/StartUuid.md)
  - [StudyAnnotation](bia_integrator_api/docs/StudyAnnotation.md)

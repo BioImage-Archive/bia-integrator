@@ -25,7 +25,7 @@ Method | HTTP request | Description
 [**search_collections**](PrivateApi.md#search_collections) | **GET** /api/v1/collections | Search Collections
 [**search_images**](PrivateApi.md#search_images) | **GET** /api/v1/search/images | Search Images
 [**search_studies**](PrivateApi.md#search_studies) | **GET** /api/v1/search/studies | Search Studies
-[**set_image_ome_metadata_url**](PrivateApi.md#set_image_ome_metadata_url) | **POST** /api/v1/private/images/{image_uuid}/ome_metadata | Set Image Ome Metadata Url
+[**set_image_ome_metadata**](PrivateApi.md#set_image_ome_metadata) | **POST** /api/v1/private/images/{image_uuid}/ome_metadata | Set Image Ome Metadata
 [**study_refresh_counts**](PrivateApi.md#study_refresh_counts) | **POST** /api/v1/private/studies/{study_uuid}/refresh_counts | Study Refresh Counts
 [**update_file_reference**](PrivateApi.md#update_file_reference) | **PATCH** /api/v1/private/file_references/single | Update File Reference
 [**update_image**](PrivateApi.md#update_image) | **PATCH** /api/v1/private/images/single | Update Image
@@ -1491,10 +1491,10 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **set_image_ome_metadata_url**
-> BIAImageOmeMetadata set_image_ome_metadata_url(image_uuid, ome_metadat_source)
+# **set_image_ome_metadata**
+> BIAImageOmeMetadata set_image_ome_metadata(image_uuid, ome_metadata_file)
 
-Set Image Ome Metadata Url
+Set Image Ome Metadata
 
 ### Example
 
@@ -1504,7 +1504,6 @@ import time
 import os
 import bia_integrator_api
 from bia_integrator_api.models.bia_image_ome_metadata import BIAImageOmeMetadata
-from bia_integrator_api.models.ome_metadat_source import OmeMetadatSource
 from bia_integrator_api.rest import ApiException
 from pprint import pprint
 
@@ -1526,15 +1525,15 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = bia_integrator_api.PrivateApi(api_client)
     image_uuid = 'image_uuid_example' # str | 
-    ome_metadat_source = bia_integrator_api.OmeMetadatSource() # OmeMetadatSource | 
+    ome_metadata_file = None # bytearray | 
 
     try:
-        # Set Image Ome Metadata Url
-        api_response = api_instance.set_image_ome_metadata_url(image_uuid, ome_metadat_source)
-        print("The response of PrivateApi->set_image_ome_metadata_url:\n")
+        # Set Image Ome Metadata
+        api_response = api_instance.set_image_ome_metadata(image_uuid, ome_metadata_file)
+        print("The response of PrivateApi->set_image_ome_metadata:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling PrivateApi->set_image_ome_metadata_url: %s\n" % e)
+        print("Exception when calling PrivateApi->set_image_ome_metadata: %s\n" % e)
 ```
 
 
@@ -1544,7 +1543,7 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **image_uuid** | **str**|  | 
- **ome_metadat_source** | [**OmeMetadatSource**](OmeMetadatSource.md)|  | 
+ **ome_metadata_file** | **bytearray**|  | 
 
 ### Return type
 
@@ -1556,13 +1555,13 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
+ - **Content-Type**: multipart/form-data
  - **Accept**: application/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**200** | Successful Response |  -  |
+**201** | Successful Response |  -  |
 **422** | Validation Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)

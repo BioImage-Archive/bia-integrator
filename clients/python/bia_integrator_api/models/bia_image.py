@@ -40,8 +40,7 @@ class BIAImage(BaseModel):
     attributes: Optional[Dict[str, Any]] = None
     annotations: Optional[conlist(ImageAnnotation)] = None
     alias: Optional[BIAImageAlias] = None
-    ome_metadata_file_url: Optional[StrictStr] = None
-    __properties = ["uuid", "version", "model", "study_uuid", "original_relpath", "name", "dimensions", "representations", "attributes", "annotations", "alias", "ome_metadata_file_url"]
+    __properties = ["uuid", "version", "model", "study_uuid", "original_relpath", "name", "dimensions", "representations", "attributes", "annotations", "alias"]
 
     class Config:
         """Pydantic configuration"""
@@ -107,11 +106,6 @@ class BIAImage(BaseModel):
         if self.alias is None and "alias" in self.__fields_set__:
             _dict['alias'] = None
 
-        # set to None if ome_metadata_file_url (nullable) is None
-        # and __fields_set__ contains the field
-        if self.ome_metadata_file_url is None and "ome_metadata_file_url" in self.__fields_set__:
-            _dict['ome_metadata_file_url'] = None
-
         return _dict
 
     @classmethod
@@ -134,8 +128,7 @@ class BIAImage(BaseModel):
             "representations": [BIAImageRepresentation.from_dict(_item) for _item in obj.get("representations")] if obj.get("representations") is not None else None,
             "attributes": obj.get("attributes"),
             "annotations": [ImageAnnotation.from_dict(_item) for _item in obj.get("annotations")] if obj.get("annotations") is not None else None,
-            "alias": BIAImageAlias.from_dict(obj.get("alias")) if obj.get("alias") is not None else None,
-            "ome_metadata_file_url": obj.get("ome_metadata_file_url")
+            "alias": BIAImageAlias.from_dict(obj.get("alias")) if obj.get("alias") is not None else None
         })
         return _obj
 

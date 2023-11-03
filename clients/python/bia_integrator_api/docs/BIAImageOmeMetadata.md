@@ -8,8 +8,7 @@ Name | Type | Description | Notes
 **version** | **int** |  | 
 **model** | [**ModelMetadata**](ModelMetadata.md) |  | [optional] 
 **bia_image_uuid** | **str** |  | 
-**ome_metadata** | **object** | The OME metadata in json format. Can be used as a dictionary or directly parsed with the ome-types module. | 
-**ome_metadata_file_url** | **str** |  | 
+**ome_metadata** | **object** | The OME metadata as a json-compatible object. Can be used as a dictionary or directly parsed with the ome-types module. | 
 
 ## Example
 

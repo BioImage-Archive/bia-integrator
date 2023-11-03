@@ -36,7 +36,6 @@ from bia_integrator_api.models.location_inner import LocationInner
 from bia_integrator_api.models.model_metadata import ModelMetadata
 from bia_integrator_api.models.name import Name
 from bia_integrator_api.models.object_info import ObjectInfo
-from bia_integrator_api.models.ome_metadat_source import OmeMetadatSource
 from bia_integrator_api.models.rendering_info import RenderingInfo
 from bia_integrator_api.models.start_uuid import StartUuid
 from bia_integrator_api.models.study_annotation import StudyAnnotation

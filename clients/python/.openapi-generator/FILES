@@ -27,7 +27,6 @@ bia_integrator_api/docs/LocationInner.md
 bia_integrator_api/docs/ModelMetadata.md
 bia_integrator_api/docs/Name.md
 bia_integrator_api/docs/ObjectInfo.md
-bia_integrator_api/docs/OmeMetadatSource.md
 bia_integrator_api/docs/PrivateApi.md
 bia_integrator_api/docs/PublicApi.md
 bia_integrator_api/docs/RenderingInfo.md
@@ -58,7 +57,6 @@ bia_integrator_api/models/location_inner.py
 bia_integrator_api/models/model_metadata.py
 bia_integrator_api/models/name.py
 bia_integrator_api/models/object_info.py
-bia_integrator_api/models/ome_metadat_source.py
 bia_integrator_api/models/rendering_info.py
 bia_integrator_api/models/start_uuid.py
 bia_integrator_api/models/study_annotation.py

@@ -19,9 +19,9 @@ import warnings
 from pydantic import validate_arguments, ValidationError
 from typing_extensions import Annotated
 
-from pydantic import StrictInt, StrictStr, conlist, constr, validator
+from pydantic import StrictBytes, StrictInt, StrictStr, conlist, constr, validator
 
-from typing import Any, List, Optional
+from typing import Any, List, Optional, Union
 
 from bia_integrator_api.models.authentication_token import AuthenticationToken
 from bia_integrator_api.models.bia_collection import BIACollection
@@ -33,7 +33,6 @@ from bia_integrator_api.models.body_register_user import BodyRegisterUser
 from bia_integrator_api.models.bulk_operation_response import BulkOperationResponse
 from bia_integrator_api.models.file_reference import FileReference
 from bia_integrator_api.models.object_info import ObjectInfo
-from bia_integrator_api.models.ome_metadat_source import OmeMetadatSource
 
 from bia_integrator_api.api_client import ApiClient
 from bia_integrator_api.api_response import ApiResponse
@@ -3106,19 +3105,19 @@ class PrivateApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def set_image_ome_metadata_url(self, image_uuid : StrictStr, ome_metadat_source : OmeMetadatSource, **kwargs) -> BIAImageOmeMetadata:  # noqa: E501
-        """Set Image Ome Metadata Url  # noqa: E501
+    def set_image_ome_metadata(self, image_uuid : StrictStr, ome_metadata_file : Union[StrictBytes, StrictStr], **kwargs) -> BIAImageOmeMetadata:  # noqa: E501
+        """Set Image Ome Metadata  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.set_image_ome_metadata_url(image_uuid, ome_metadat_source, async_req=True)
+        >>> thread = api.set_image_ome_metadata(image_uuid, ome_metadata_file, async_req=True)
         >>> result = thread.get()
 
         :param image_uuid: (required)
         :type image_uuid: str
-        :param ome_metadat_source: (required)
-        :type ome_metadat_source: OmeMetadatSource
+        :param ome_metadata_file: (required)
+        :type ome_metadata_file: bytearray
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _request_timeout: timeout setting for this request. If one
@@ -3132,23 +3131,23 @@ class PrivateApi(object):
         """
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
-            raise ValueError("Error! Please call the set_image_ome_metadata_url_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
-        return self.set_image_ome_metadata_url_with_http_info(image_uuid, ome_metadat_source, **kwargs)  # noqa: E501
+            raise ValueError("Error! Please call the set_image_ome_metadata_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
+        return self.set_image_ome_metadata_with_http_info(image_uuid, ome_metadata_file, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def set_image_ome_metadata_url_with_http_info(self, image_uuid : StrictStr, ome_metadat_source : OmeMetadatSource, **kwargs) -> ApiResponse:  # noqa: E501
-        """Set Image Ome Metadata Url  # noqa: E501
+    def set_image_ome_metadata_with_http_info(self, image_uuid : StrictStr, ome_metadata_file : Union[StrictBytes, StrictStr], **kwargs) -> ApiResponse:  # noqa: E501
+        """Set Image Ome Metadata  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.set_image_ome_metadata_url_with_http_info(image_uuid, ome_metadat_source, async_req=True)
+        >>> thread = api.set_image_ome_metadata_with_http_info(image_uuid, ome_metadata_file, async_req=True)
         >>> result = thread.get()
 
         :param image_uuid: (required)
         :type image_uuid: str
-        :param ome_metadat_source: (required)
-        :type ome_metadat_source: OmeMetadatSource
+        :param ome_metadata_file: (required)
+        :type ome_metadata_file: bytearray
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _preload_content: if False, the ApiResponse.data will
@@ -3178,7 +3177,7 @@ class PrivateApi(object):
 
         _all_params = [
             'image_uuid',
-            'ome_metadat_source'
+            'ome_metadata_file'
         ]
         _all_params.extend(
             [
@@ -3197,7 +3196,7 @@ class PrivateApi(object):
             if _key not in _all_params:
                 raise ApiTypeError(
                     "Got an unexpected keyword argument '%s'"
-                    " to method set_image_ome_metadata_url" % _key
+                    " to method set_image_ome_metadata" % _key
                 )
             _params[_key] = _val
         del _params['kwargs']
@@ -3217,11 +3216,11 @@ class PrivateApi(object):
         # process the form parameters
         _form_params = []
         _files = {}
+        if _params['ome_metadata_file']:
+            _files['ome_metadata_file'] = _params['ome_metadata_file']
+
         # process the body parameter
         _body_params = None
-        if _params['ome_metadat_source'] is not None:
-            _body_params = _params['ome_metadat_source']
-
         # set the HTTP header `Accept`
         _header_params['Accept'] = self.api_client.select_header_accept(
             ['application/json'])  # noqa: E501
@@ -3229,7 +3228,7 @@ class PrivateApi(object):
         # set the HTTP header `Content-Type`
         _content_types_list = _params.get('_content_type',
             self.api_client.select_header_content_type(
-                ['application/json']))
+                ['multipart/form-data']))
         if _content_types_list:
                 _header_params['Content-Type'] = _content_types_list
 
@@ -3237,7 +3236,7 @@ class PrivateApi(object):
         _auth_settings = ['OAuth2PasswordBearer']  # noqa: E501
 
         _response_types_map = {
-            '200': "BIAImageOmeMetadata",
+            '201': "BIAImageOmeMetadata",
             '422': "HTTPValidationError",
         }
 
