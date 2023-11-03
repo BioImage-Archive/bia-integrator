@@ -73,7 +73,7 @@ def generate_image_page_html(accession_id: str, image_id):
 
     # Format physical dimensions to X unit x Y unit x Z unit format before passing on to the template
     psize = None
-    px = py = px = None
+    px = py = pz = None
     if bia_image.attributes.get('PhysicalSizeX'):
         px = sig_format(float(bia_image.attributes['PhysicalSizeX']))
         py = sig_format(float(bia_image.attributes['PhysicalSizeY']))  
@@ -135,10 +135,7 @@ def generate_image_page_html(accession_id: str, image_id):
 
     zarr_uri = reps_by_type["ome_ngff"].uri
 
-    neuroglancer_uri = generate_neuroglancer_link(zarr_uri)
-
     bia_image.attributes = sort_dict(bia_image.attributes)
-
 
     license_uri = LICENSE_URI_LOOKUP.get(bia_study.license, "Unknown")
 
@@ -153,7 +150,6 @@ def generate_image_page_html(accession_id: str, image_id):
         dimensions=dims,
         authors=author_names,
         download_uri=download_uri,
-        neuroglancer_uri=neuroglancer_uri,
         download_size=download_size
     )
 

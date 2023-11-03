@@ -1,0 +1,58 @@
+{% extends "base.html.j2" %}
+
+{% block header_extras %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.11.5/datatables.min.css"/>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.11.5/datatables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.13.1/sorting/natural.js"></script>
+{% endblock %}
+
+{% block title %} {{ collection.title }} {% endblock %}
+
+{% block content %}
+<!-- Collection summary -->
+    <section class="vf-intro | embl-grid embl-grid--has-centered-content">
+        <div></div>
+        <div>
+            <h1 class="vf-intro__heading vf-intro__heading--has-tag">{{ collection.title }}<a href="JavaScript:Void(0);" class="vf-badge vf-badge--primary vf-badge--phases">alpha</a></h1>
+            <h2 class="vf-intro__subheading">{{ collection.subtitle }}</h2>
+            <p class="vf-hero__text">{{ collection.description }}</p>
+        </div>
+        <div></div>
+    </section> 
+<!-- Images -->
+<section class="vf-card-container vf-card-container__col-3 | vf-u-background-color-ui--white vf-u-fullbleed" style="--vf-card__image--aspect-ratio: 16 / 9;">
+  <div class="vf-card-container__inner">
+ 
+
+        {% for study in studies %}
+
+        <article class="vf-card vf-card--brand vf-card--bordered">
+        <img src="{{ study.example_image_uri }}" alt="" class="vf-card__image" loading="lazy">
+        <div class="vf-card__content | vf-stack vf-stack--400">
+            <h3 class="vf-card__heading">
+                <a class="vf-card__link" href="{{ study.accession_id }}{{ page_suffix }}">{{ study.accession_id }}       <svg aria-hidden="true" class="vf-card__heading__icon | vf-icon vf-icon-arrow--inline-end" width="1em" height="1em" xmlns="http://www.w3.org/2000/svg"><path d="M0 12c0 6.627 5.373 12 12 12s12-5.373 12-12S18.627 0 12 0C5.376.008.008 5.376 0 12zm13.707-5.209l4.5 4.5a1 1 0 010 1.414l-4.5 4.5a1 1 0 01-1.414-1.414l2.366-2.367a.25.25 0 00-.177-.424H6a1 1 0 010-2h8.482a.25.25 0 00.177-.427l-2.366-2.368a1 1 0 011.414-1.414z" fill="currentColor" fill-rule="nonzero"></path></svg>
+                </a>
+            </h3>
+            {% if study.attributes.get('one_summary') %}
+                <p class="vf-card__text">{{ study.attributes["one_summary"] }}</p>
+            {% else %}
+                {{ study.title }}
+                <p class="vf-card__text">
+                    <b>{{ study.imaging_type }}</b>
+                    <br>
+                    <i>{{ study.organism }}</i>
+                </p>
+            {% endif %}
+        <br>
+        </div>
+        </article>
+                  
+        {% endfor %}
+
+</section>        
+
+
+
+          </div>
+{% endblock %}

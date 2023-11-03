@@ -1,99 +1,93 @@
-<html lang="en" class="vf-no-js">
-    <head>
-        <meta charset="UTF-8">
-        <link rel="stylesheet" href="https://assets.emblstatic.net/vf/v2.5.8/css/styles.css">
-        <meta charset="UTF-8">
-        <title>Collection landing</title>
-    </head>
+{% extends "base.html.j2" %}
 
-    <body>
-        <!-- Header -->
-        <header class="vf-global-header">
+{% block header_extras %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.11.5/datatables.min.css"/>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.11.5/datatables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.13.1/sorting/natural.js"></script>
+{% endblock %}
 
-            <header class="vf-global-header">
+{% block title %} {{ collection.title }} {% endblock %}
 
-                <div class="vf-global-header__inner">
-          
-                  <a href="https://www.ebi.ac.uk/bioimage-archive" class="vf-logo">
-                    <img class="vf-logo__image" src="/bia-integrator-data/pages/assets/BIA-Logo.png" alt="BioImage Archive">
-                    <span class="vf-logo__text">   BioImage Archive</span>
-                  </a>
-          
-                </div>
-          
-            </header>
-        </header>
+{% block content %}
+<!-- Collection summary -->
+<div class="vf-stack vf-stack--500">
+    <section class="vf-intro | embl-grid embl-grid--has-centered-content">
+        <div></div>
+        <div>
+            <h1 class="vf-intro__heading vf-intro__heading--has-tag">{{ collection.title }}<a href="JavaScript:Void(0);" class="vf-badge vf-badge--primary vf-badge--phases">alpha</a></h1>
+            <h2 class="vf-intro__subheading">{{ collection.subtitle }}</h2>
+            {{ collection.description }}
+            <p></p>
+            <p class="vf-hero__text"> <a href="how_to_contribute.html">Check here </a> for how to contribute</p>
+        </div>
+        <div></div>
+    </section>
 
-        <!-- Collection summary -->
-        <div class="vf-stack vf-stack--500">
-            <section class="vf-intro | embl-grid embl-grid--has-centered-content">
-                <div></div>
-                <div>
-                    <h1 class="vf-intro__heading vf-intro__heading--has-tag">{{ collection.title }}<a href="JavaScript:Void(0);" class="vf-badge vf-badge--primary vf-badge--phases">alpha</a></h1>
-                    <h2 class="vf-intro__subheading">{{ collection.subtitle }}</h2>
-                    {{ collection.description }}
-                </div>
-                <div></div>
-            </section>
- 
-            <!-- Images -->
-            <section class="vf-content | embl-grid embl-grid--has-centered-content">
-                <div>
+    <!-- Images -->
+    <!--section class="vf-content | embl-grid embl-grid--has-centered-content"-->
+    <section class="vf-content">
+        <table class="vf-table--striped" id="collectionItems">
+            <colgroup>
+                <col span="1" style="width: 12%;">
+                <col span="1" style="width: 33%;">
+                <col span="1" style="width: 12%;">
+                <col span="1" style="width: 28%;">
+                <col span="1" style="width: 15%;">
+            </colgroup>
+            <thead>
+                <tr class="vf-table__row">
+                    <th class="vf-table__heading">Summary</th>
+                    <th class="vf-table__heading">Study title</th>
+                    <th class="vf-table__heading">Release date</th>
+                    <th class="vf-table__heading">Imaging method / organism</th>
+                    <th class="vf-table__heading">Example</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for study in studies %}
+                <tr class="vf-table__row">
+                    <td class="vf-table__cell">
+                        <b>{{ study.accession_id }}</b>
+                        <br><br>
+                        {{ study.images|length }} images
+                        <br><br>
+                        <!-- <b>Tags: </b>{{ study.tags|join(", ") }} -->
+                        {% for value in study.tags %}
+                        {% if not value.startswith('AI') %}
+                        {{ value }},
+                        {% endif %}
+                        {% endfor %}
+                        <br><br>
+                        <a href="{{ study.accession_id }}{{ page_suffix }}"><button class="vf-button vf-button--sm">view</button></a>
+                    </td>
+                    <td class="vf-table__cell">{{ study.title }}</td>
+                    <td class="vf-table__cell">{{ study.release_date }}</td>
 
-                </div>
-                <div>
-
-                    <section>
-                        
-                    <table class="vf-table--striped">
-                        <colgroup>
-                              <col span="1" style="width: 20%;">
-                              <col span="1" style="width: 35%;">
-                              <col span="1" style="width: 10%;">
-                              <col span="1" style="width: 35%;">
-                        </colgroup>
-                            <tr class="vf-table__row">
-                                <th class="vf-table__heading">Summary</th>
-                                <th class="vf-table__heading">Study title</th>
-                                <th class="vf-table__heading">Imaging method / organism</th>
-                                <th class="vf-table__heading">Example</th>
-                            </tr>
-                            {% for study in studies %}
-                            <tr class="vf-table__row">
-                              <td class="vf-table__cell">
-                                  <b>{{ study.accession_id }}</b>
-                                  <br><br>
-                                  {{ study.images|length }} images
-                                  <br><br>
-                                  <!-- <b>Tags: </b>{{ study.tags|join(", ") }} -->
-                                    {% for value in study.tags %}
-                                    {% if not value.startswith('AI') %}
-                                    {{ value }},
-                                    {% endif %}
-                                    {% endfor %}
-                                  <br><br>
-                                  <a href="{{ study.accession_id }}{{ page_suffix }}"><button class="vf-button vf-button--sm">view</button></a>
-                              </td>
-                              <td class="vf-table__cell">{{ study.title }}</td>
-
-                              <td class="vf-table__cell">
-                                {{ study.imaging_type }}
-                                <br><hr>
-                                {{ study.organism }}
-                              </td>
-                              <td class="vf-table__cell">
-                                  <figure class="vf-figure vf-figure--align vf-figure--align-centered">
-                                    <img class="vf-figure__image" src="{{ study.example_image_uri }}">
-                                  </figure>  
-                              </td>                              
-                            </tr>
- 
-                            {% endfor %}
-                      </table>
-                      </section>
-                </div>
-            </section>
-
-          </div>
-    </body>
-</html>
+                    <td class="vf-table__cell">
+                        {{ study.imaging_type }}
+                        <br><hr>
+                        {{ study.organism }}
+                    </td>
+                    <td class="vf-table__cell">
+                        <figure class="vf-figure vf-figure--align vf-figure--align-centered">
+                            <img class="vf-figure__image" src="{{ study.example_image_uri }}">
+                        </figure>  
+                    </td>                              
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+</div>
+<script>
+    $(document).ready( function () {
+        $('#collectionItems').DataTable( {
+            columnDefs: [
+                { type: 'natural', targets: 0 },
+                { orderable: false, targets: 4}
+            ]
+        });
+    } );
+</script>
+{% endblock %}

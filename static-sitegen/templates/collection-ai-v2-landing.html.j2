@@ -1,46 +1,27 @@
-<html lang="en" class="vf-no-js">
-    <head>
-        <meta charset="UTF-8">
-        <link rel="stylesheet" href="https://assets.emblstatic.net/vf/v2.5.8/css/styles.css">
-        <meta charset="UTF-8">
-        <title>Collection landing</title>
-    </head>
+{% extends "base.html.j2" %}
 
-<body>
+{% block header_extras %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.11.5/datatables.min.css"/>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.11.5/datatables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.13.1/sorting/natural.js"></script>
+{% endblock %}
 
-<!-- <div class="vf-banner vf-banner--fixed vf-banner--bottom vf-banner--notice" data-vf-js-banner data-vf-js-banner-state="dismissible" data-vf-js-banner-button-text="I agree, dismiss this banner" data-vf-js-banner-cookie-name="emblebibia" data-vf-js-banner-cookie-version="0.1" data-vf-js-banner-auto-accept="false">
-  <div class="vf-banner__content | vf-grid" data-vf-js-banner-text>
-    <p class="vf-banner__text vf-banner__text--lg">
-      This website uses cookies, and the limiting processing of your personal data to function. By using the site you are agreeing to this as outlined in our <a class="vf-banner__link" href="https://www.ebi.ac.uk/data-protection/privacy-notice/embl-ebi-public-website">Privacy Notice</a> and <a class="vf-banner__link" href="https://www.ebi.ac.uk/about/terms-of-use">Terms Of Use</a>.
-    </p>
-  </div>
-</div>
--->    
-    <header class="vf-global-header">
+{% block title %} {{ collection.title }} {% endblock %}
 
-                <div class="vf-global-header__inner">
-          
-                  <a href="https://www.ebi.ac.uk/bioimage-archive" class="vf-logo">
-                    <img class="vf-logo__image" src="/bia-integrator-data/pages/assets/BIA-Logo.png" alt="BioImage Archive"> 
-                    <!-- <img class="vf-logo__image" src="/Users/aybuke/work/ebi/BIA_curated_sets/BIA-Logo.png" alt="BioImage Archive"> -->
-                    <span class="vf-logo__text">   BioImage Archive</span>
-                  </a>
-          
-                </div>
-          
-            </header>
-        </header>
-
+{% block content %}
 <!-- Collection summary -->
-<section class="vf-hero vf-hero--800 | vf-u-fullbleed" style="--vf-hero--bg-image: url('https://www.ebi.ac.uk/bioimage-archive/static/background_bioimage_archive.jpg');">
-<div class="vf-hero__content | vf-card__content | vf-stack vf-stack--400">
-        <h1 class="vf-hero__heading">{{ collection.title }}</h1>
-        <p class="vf-hero__subheading">{{ collection.subtitle }}</p>
-        <p class="vf-hero__text">{{ collection.description }}</p>
+    <section class="vf-intro | embl-grid embl-grid--has-centered-content">
+        <div></div>
+        <div>
+            <h1 class="vf-intro__heading vf-intro__heading--has-tag">{{ collection.title }}<a href="JavaScript:Void(0);" class="vf-badge vf-badge--primary vf-badge--phases">alpha</a></h1>
+            <h2 class="vf-intro__subheading">{{ collection.subtitle }}</h2>
+            <p class="vf-hero__text">{{ collection.description }}</p>
+            <p></p>
+            <p class="vf-hero__text"> <a href="how_to_contribute.html">Check here </a> for how to contribute</p>
         </div>
-
-</section>
- 
+        <div></div>
+    </section> 
 <!-- Images -->
 <section class="vf-card-container vf-card-container__col-3 | vf-u-background-color-ui--white vf-u-fullbleed" style="--vf-card__image--aspect-ratio: 16 / 9;">
   <div class="vf-card-container__inner">
@@ -52,24 +33,29 @@
         <img src="{{ study.example_image_uri }}" alt="" class="vf-card__image" loading="lazy">
         <div class="vf-card__content | vf-stack vf-stack--400"><h3 class="vf-card__heading"><a class="vf-card__link" href="{{ study.accession_id }}{{ page_suffix }}">{{ study.accession_id }}       <svg aria-hidden="true" class="vf-card__heading__icon | vf-icon vf-icon-arrow--inline-end" width="1em" height="1em" xmlns="http://www.w3.org/2000/svg"><path d="M0 12c0 6.627 5.373 12 12 12s12-5.373 12-12S18.627 0 12 0C5.376.008.008 5.376 0 12zm13.707-5.209l4.5 4.5a1 1 0 010 1.414l-4.5 4.5a1 1 0 01-1.414-1.414l2.366-2.367a.25.25 0 00-.177-.424H6a1 1 0 010-2h8.482a.25.25 0 00.177-.427l-2.366-2.368a1 1 0 011.414-1.414z" fill="currentColor" fill-rule="nonzero"></path></svg>
         </a></h3>
+        <p class="vf-card__text">
         {% if study.attributes.get('one_summary') %}
-        <p class="vf-card__text">{{ study.attributes["one_summary"] }}</p>
-        {% else %}
-        <p class="vf-card__text">{{ study.imaging_type }}
-        <br>
-        {{ study.organism }}
-        </p>
+        {{ study.attributes["one_summary"] }}
         {% endif %}
+        </p>
+        <!-- <p>
+        <i>{{ study.imaging_type }}</i>
         <br>
+        <i>{{ study.organism }}</i>
+        </p> -->
+        <p>
         {{ study.attributes["no_of_images"] }} images
         {% if study.attributes.get('no_of_annotations') %}
         , {{ study.attributes["no_of_annotations"] }} annotations
         {% endif %}
-        <p>
+        </p><p>
         {% set new_tags = [] %}
+        {{ new_tags.append(study.attributes.get('annotation_type')) or "" }}
         {% for value in study.tags %}
         {% if value.startswith('AI') %}
-        {{ new_tags.append(value[2:]) or "" }}
+            {% if value not in ['AI training data', 'AI test data'] %} 
+            {{ new_tags.append(value[2:]) or "" }}
+            {% endif %}
         {% else %}
         {{ new_tags.append(value) or "" }}
         {% endif %}
@@ -88,5 +74,4 @@
 
 
           </div>
-    </body>
-</html>
+{% endblock %}

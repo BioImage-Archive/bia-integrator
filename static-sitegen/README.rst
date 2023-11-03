@@ -16,3 +16,10 @@ Use
 Build a collection site with:
 
     python scripts/build_collection_site.py visualisation
+
+Deployment
+----------
+
+Deploy to staging with:
+
+    bash deploy-pages-staging.sh

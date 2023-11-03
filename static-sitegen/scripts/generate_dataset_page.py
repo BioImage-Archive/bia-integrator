@@ -28,10 +28,16 @@ DEFAULT_TEMPLATE = "dataset-landing.html.j2"
 # Attributes to display in study content section
 # Use list for backward compatibility with different annotation names
 # Most recent names come first in list
-STUDY_CONTENT_ANNOTATIONS = {
+STUDY_WITH_ZIP_CONTENT_ANNOTATIONS = {
     "Study size:": ["study_size_human_readable", "study_size"],
     "N files (exc zip contents):": ["n_files_excluding_zip_contents", "n_files_in_study",],
     "N files (inc zip contents):": ["n_files_including_zip_contents",],
+    "Filetype breakdown:": ["filetype_breakdown_html",],
+}
+
+STUDY_NO_ZIP_CONTENT_ANNOTATIONS = {
+    "Study size:": ["study_size_human_readable", "study_size"],
+    "N files:": ["n_files_including_zip_contents", "n_files_in_study",],
     "Filetype breakdown:": ["filetype_breakdown_html",],
 }
 
@@ -64,6 +70,29 @@ def generate_dataset_page_html(accession_id, template_fname: str):
         for image in bia_study.images.values()
     }     
     
+    im_aliases_by_name = {
+        image.name: aliases_by_id.get(image.id, image.id)
+        for image in bia_study.images.values()
+    }
+
+    ann_aliases_by_sourcename = {}
+    for annfile in annotation_files:
+        if ann_aliases_by_sourcename.get(annfile.attributes['source image']):
+            ann_aliases_by_sourcename[annfile.attributes['source image']] += ', ' + annfile.attributes['alias']
+        else:
+            ann_aliases_by_sourcename[annfile.attributes['source image']] = annfile.attributes['alias'] 
+    
+    # This assumes one-to-one or one-to-many correspondence between images and annotation files.
+    # But we have cases of one annotation file per multiple images (e.g. COCO)
+    corresponding_ann_aliases = {
+        image.id: ann_aliases_by_sourcename.get(image.name)
+        for image in bia_study.images.values()
+    }
+
+    corresponding_im_aliases ={
+        annfile.attributes['alias'] : im_aliases_by_name.get(annfile.attributes['source image'])
+        for annfile in annotation_files
+    }
 
     images_with_ome_ngff = []
     image_landing_uris = {}
@@ -86,6 +115,15 @@ def generate_dataset_page_html(accession_id, template_fname: str):
     template = env.get_template(template_fname)
 
     # Get the keys to use for rendering study contents section
+    try:
+        if bia_study.attributes["n_files_including_zip_contents"] != bia_study.attributes["n_files_excluding_zip_contents"]:
+            STUDY_CONTENT_ANNOTATIONS = STUDY_WITH_ZIP_CONTENT_ANNOTATIONS
+        else:
+            STUDY_CONTENT_ANNOTATIONS = STUDY_NO_ZIP_CONTENT_ANNOTATIONS
+    except KeyError:
+        STUDY_CONTENT_ANNOTATIONS = STUDY_NO_ZIP_CONTENT_ANNOTATIONS
+        
+            
     study_content_annotations = {}
     for label, keys in STUDY_CONTENT_ANNOTATIONS.items():
         for key in keys:
@@ -104,7 +142,9 @@ def generate_dataset_page_html(accession_id, template_fname: str):
             annotation_download_uris=annotation_download_uris,
             authors=author_names,
             study_content_annotations=study_content_annotations,
-            image_ann_aliases=ann_aliases_for_images
+            image_ann_aliases=ann_aliases_for_images,
+            corresponding_ann_aliases=corresponding_ann_aliases,
+            corresponding_im_aliases=corresponding_im_aliases
     )
 
     return rendered

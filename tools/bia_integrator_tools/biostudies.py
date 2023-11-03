@@ -3,6 +3,7 @@ import logging
 import pathlib
 import datetime
 from typing import List, Union, Optional
+from copy import deepcopy
 
 import requests
 from pydantic import BaseModel, parse_raw_as
@@ -168,7 +169,11 @@ def find_file_lists_in_section(section, flists) -> list:
         flists.append(attr_dict)
 
     for subsection in section.subsections:
-        find_file_lists_in_section(subsection, flists)
+        subsection_type = type(subsection)
+        if subsection_type == Section:
+            find_file_lists_in_section(subsection, flists)
+        else:
+            logger.warning(f"Not processing subsection as type is {subsection_type}, not 'Section'. Contents={subsection}")
 
 
     return flists
@@ -189,7 +194,13 @@ def flist_from_flist_fname(accession_id: str, flist_fname: str, extra_attribute=
     logger.info(f"Fetching file list from {flist_url}")
     assert r.status_code == 200
 
-    fl = parse_raw_as(List[File], r.content)
+    #fl = parse_raw_as(List[File], r.content)
+    # KB 18/08/2023 - Hack to fix error due to null values in attributes
+    # Remove attribute entries with {"value": "null"}
+    dict_content = json.loads(r.content)
+    dict_filtered_content = filter_filelist_content(dict_content)
+    filtered_content = bytes(json.dumps(dict_filtered_content), "utf-8")
+    fl = parse_raw_as(List[File], filtered_content)
 
     if extra_attribute:
         for file in fl:
@@ -248,15 +259,19 @@ def find_files_in_submission(submission: Submission) -> List[File]:
     
     def descend_and_find_files(section, files_list=[]):
         
-        for file in section.files:
-            if isinstance(file, List):
-                files_list += file
-            else:
-                files_list.append(file)
-            
-        for subsection in section.subsections:
-            descend_and_find_files(subsection, files_list)
-            
+        section_type = type(section)
+        if section_type == Section:
+            for file in section.files:
+                if isinstance(file, List):
+                    files_list += file
+                else:
+                    files_list.append(file)
+                
+            for subsection in section.subsections:
+                descend_and_find_files(subsection, files_list)
+        else:
+            logger.warning(f"Not processing subsection as type is {section_type}, not 'Section'. Contents={section}")
+
     descend_and_find_files(submission.section, all_files)
     
     return all_files
@@ -270,3 +285,16 @@ def get_with_case_insensitive_key(dictionary: dict, key: str) -> str:
         return dictionary[temp_key]
     else:
         raise KeyError(f"{key} not in {dictionary.keys()}")
+
+def filter_filelist_content(dictionary: dict):
+    """Remove attributes in filelist with null or empty values
+
+    """
+    dict_copy = deepcopy(dictionary)
+    for d in dict_copy:
+        if "attributes" in d:
+            d["attributes"] = [i for i in filter(lambda x: x != {"value": "null"} and x != {}, d["attributes"])]
+            if len(d["attributes"]) == 0:
+                d.pop("attributes")
+    
+    return dict_copy

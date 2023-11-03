@@ -1,54 +1,53 @@
-<html lang="en" class="vf-no-js">
-    <head>
-        <meta charset="UTF-8">
+{% extends "base.html.j2" %}
+
+{% block header_extras %}
         <link rel="stylesheet" href="https://assets.emblstatic.net/vf/v2.5.8/css/styles.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.11.5/datatables.min.css"/>
         <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.11.5/datatables.min.js"></script>
         <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.13.1/sorting/natural.js"></script>
+        <script src="https://kit.fontawesome.com/1d1848da05.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <meta charset="UTF-8">
-        <title>{{ accession_id }}</title>
-    </head>
+        <style>
+        .help {
+          cursor: help;
+          }
+        .section-spacing {
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 20px; /* Adjust as needed for spacing */
+            margin-bottom: 20px; /* Adjust as needed for spacing */
+        }
+                /* Add class to shrink table layout when columns are hidden */
+        .shrink-table {
+            table-layout: fixed;
+            min-width: 600px;
+            width: auto !important; 
+        }
+        /* Add classes to hide columns in the table */
+        .hidden {
+            display: none;
+        }
+        .wrapper {
+          max-width: 1200px; 
+        }
+        .shrunk{
+          width: 50% !important; 
+        }
+        /* Set a fixed width for cell content */
+        .cell-content {
+            width: 100px; /* Adjust as needed */
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis; /* Truncate long content with ellipsis */
+        }
+        </style>
+{% endblock %}
 
-    <body>
-        <header class="vf-global-header">
-            <header class="vf-global-header">
+{% block title %} {{ accession_id }} {% endblock %}
 
-                <div class="vf-global-header__inner">
-          
-                  <a href="https://www.ebi.ac.uk/bioimage-archive/" class="vf-logo">
-                    <img class="vf-logo__image" src="/bia-integrator-data/pages/assets/BIA-Logo.png" alt="BioImage Archive"> 
-                    <!-- <img class="vf-logo__image" src="/Users/aybuke/work/ebi/BIA_curated_sets/BIA-Logo.png" alt="BioImage Archive"> -->
-                    <span class="vf-logo__text">   BioImage Archive</span>
-                  </a>
-          
-                </div>
-          
-            </header>
-        </header>
-
-<!-- <nav class="vf-navigation vf-navigation--main | vf-cluster">
-  <ul class="vf-navigation__list | vf-list | vf-cluster__inner">
-    <li class="vf-navigation__item">
-      <a href="JavaScript:Void(0);" class="vf-navigation__link" aria-current="page">Home</a>
-    </li>    <li class="vf-navigation__item">
-      <a href="JavaScript:Void(0);" class="vf-navigation__link">Download</a>
-    </li>    <li class="vf-navigation__item">
-      <a href="JavaScript:Void(0);" class="vf-navigation__link">Release Notes</a>
-    </li>    <li class="vf-navigation__item">
-      <a href="JavaScript:Void(0);" class="vf-navigation__link">FAQ</a>
-    </li>    <li class="vf-navigation__item">
-      <a href="JavaScript:Void(0);" class="vf-navigation__link">Help</a>
-    </li>    <li class="vf-navigation__item">
-      <a href="JavaScript:Void(0);" class="vf-navigation__link">Licence</a>
-    </li>    <li class="vf-navigation__item">
-      <a href="JavaScript:Void(0);" class="vf-navigation__link">About</a>
-    </li>    <li class="vf-navigation__item">
-      <a href="JavaScript:Void(0);" class="vf-navigation__link">Feedback</a>
-    </li>  </ul>
-</nav>
--->
-
+{% block content %}
+<div class="vf-stack vf-stack--500">
 <section class="vf-intro">
 
   <div><!-- empty --></div>
@@ -89,12 +88,6 @@
             <svg class="vf-icon vf-icon__arrown--down | vf-list__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M.249,7.207,11.233,19.678h0a1.066,1.066,0,0,0,1.539,0L23.751,7.207a.987.987,0,0,0-.107-1.414l-1.85-1.557a1.028,1.028,0,0,0-1.438.111L12.191,13.8a.25.25,0,0,1-.379,0L3.644,4.346A1.021,1.021,0,0,0,2.948,4a1,1,0,0,0-.741.238L.356,5.793A.988.988,0,0,0,0,6.478.978.978,0,0,0,.249,7.207Z"></path></svg>
           </a>
         </li>
-        <li class="vf-list__item">
-          <a class="vf-list__link" href="https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/pages/access_data_help.html">
-            How to access the data
-            <svg class="vf-icon vf-icon__arrown--down | vf-list__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M.249,7.207,11.233,19.678h0a1.066,1.066,0,0,0,1.539,0L23.751,7.207a.987.987,0,0,0-.107-1.414l-1.85-1.557a1.028,1.028,0,0,0-1.438.111L12.191,13.8a.25.25,0,0,1-.379,0L3.644,4.346A1.021,1.021,0,0,0,2.948,4a1,1,0,0,0-.741.238L.356,5.793A.988.988,0,0,0,0,6.478.978.978,0,0,0,.249,7.207Z"></path></svg>
-          </a>
-        </li>
       </ul>
     </div>
   </section>
@@ -117,13 +110,18 @@
         {% endif %}
         {% if "n_files_in_study" in study.attributes %}
         <li>Study size: {{ study.attributes["study_size"] }}</li>
-        <li>No of files in study: {{ study.attributes["n_files_in_study"] }}</li>
+        <!-- <li>No of files in study: {{ study.attributes["n_files_in_study"] }}</li> -->
         <li>Filetype breakdown: {{ study.attributes["filetype_breakdown_html"] }}</li>
         {% endif %}
         <li><b>License : {{ study.license }} </b><li>
         </ul>
         <h2 class="vf-section-header__heading">This dataset has</h2>
         <ul class="vf-list">
+        {% if study.attributes.get('annotation_type') %}
+        {% for value in study.attributes['annotation_type'].split(',') %}
+        <li>{{ value }}</li>
+        {% endfor %}
+        {% endif %}
         {% for value in study.tags %}
         {% if value.startswith('AI') %}
         <li>{{ value[2:] }}</li>
@@ -162,7 +160,7 @@
   </div>
 
     <!-- Study Information --> 
-  <section class="embl-grid embl-grid--has-centered-content">
+  <section class="embl-grid embl-grid--has-centered-content section-spacing">
     <div class="vf-section-header">
       <h3 class="vf-section-header__heading" id="study">Study Information</h3>
       <p></p>
@@ -175,10 +173,10 @@
             <div><b>Study Summary</b></div>
             <div>{{ study.attributes["one_summary"] }}</div>
             {% endif %}
-            {% if study.attributes.get('annotation_summary') %}
+            <!-- {% if study.attributes.get('annotation_summary') %}
             <div><b>Annotation Summary</b></div>
             <div>{{ study.attributes["annotation_summary"] }}</div>
-            {% endif %}
+            {% endif %} -->
            <div><b>Organism</b></div>
             <div>{{ study.organism }}</div>
           <!--  <div><b>Study type</b></div>
@@ -192,14 +190,24 @@
 <p></p>
         
     <!-- Images -->
-    <section class="vf-content | embl-grid embl-grid--has-centered-content">
-    <div>
-      <h2 class="vf-section-header__heading" id="images">Viewable images</h2>
+    <section class="vf-content | embl-grid embl-grid--has-centered-content section-spacing">
+    <div> 
+      <h2 class="vf-section-header__heading" id="images">Viewable images 
+      <i class="fa-solid fa-circle-info" title="Images that have been converted to ome-ngff for in-browser viewing"></i>
+      </h2> 
+      <p></p>
+     <ul class="vf-list">
+     <li><b>
+        <a href="access_data_help.html">How to access the data </a>
+      </b></li>
+      </ul>
     </div>
     <div>
-
-        {# <section> #}
-                        
+    <div class="btn-group" role="group" aria-label="Show/Hide Columns">
+      <button type="button" class="tag" id="toggle-images-column-2">Show/Hide Filename</button>
+<!--      <button type="button" class="tag" id="toggleButton" style="float: right;">Expand/Shrink Table</button> -->
+    </div>
+<!--      <div id="table_wrapper" class="wrapper" style="display: block"> -->            
                     <table id="viewable">
                         {# <caption class="vf-table__caption">Images with OME-NGFF representations</caption> #}
                         {# <colgroup>
@@ -212,10 +220,13 @@
                             <tr>
                                 <th>Image ID</th>
                                 <th>Preview</th>
-                                <th>Filename</th>
+                                {% if corresponding_ann_aliases %}
+                                <th>Corresponding Annotation ID</th>
+                                {% endif %}
+                                <th>Filename <i class="fa-solid fa-circle-info" title="Orginial filepath and filename prior to ome-ngff conversion"></i></th>
                                 <th>Dimensions<br>(T, C, Z, Y, X)</th>
                                 <th>Download Size</th>
-                                <th>Actions</th>
+                                <th>Actions <i class="fa-solid fa-circle-info" title="view will open the ome-ngff image in-browser, download will download the image in its original unconverted format"></i></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -228,8 +239,17 @@
                                 
                                 {% endif %}
                                 <td>
-                                    <img class="vf-figure__image" src={{ image_thumbnails[image.uuid] }}>
+                                  <div class="cell-content">
+                                    <img class="vf-figure__image" src={{ image_thumbnails[image.id] }}>
+                                    </div>
                                 </td>
+                                {% if corresponding_ann_aliases %}
+                                  {% if corresponding_ann_aliases.get(image.id) %}
+                                  <td>{{ corresponding_ann_aliases[image.id] }}</td>
+                                  {% else %}
+                                  <td>  </td>
+                                  {% endif %}
+                                {% endif %}
                                 <td>{{ image.original_relpath }}</td>
                                 {% if image.dimensions %}
                                     <td>{{ image.dimensions }}</td>
@@ -251,7 +271,7 @@
                             {% endfor %}
                         </tbody>
                       </table>
-                      {# </section> #}
+                    <!-- </div> -->
                     </div>
                     
                     <div>
@@ -259,22 +279,31 @@
             </section>
 
     <!-- Annotations --> 
-  <section class="embl-grid embl-grid--has-centered-content">
+  <section class="embl-grid embl-grid--has-centered-content section-spacing">
     <div class="vf-section-header">
-      <h3 class="vf-section-header__heading" id="annotations">Annotations</h3>
+      <h3 class="vf-section-header__heading" id="annotations">Annotations
+      <i class="fa-solid fa-circle-info" title="Annotation in the context of AI, is the task of marking up data, such as images, so it can be recognised by models and used to make predictions."></i></h3>
       <ul class="vf-list">
         {% if study.attributes.get('annotation_type') %}
-        <li><b>Annotation type(s):</b> {{ study.attributes['annotation_type'] }}</li>
+        <li><b><a href='ai-glossary.html' target=”_blank”>Annotation type(s)</a>:</b><i class="fa-solid fa-circle-info" title="Click on the Annotation type(s) to go to the page with a glossary"></i>
+        {{ study.attributes['annotation_type'] }}</li>
         {% endif %}
         {% if study.attributes.get('annotation_method') %}
         <li><b>Annotation method(s):</b> {{ study.attributes['annotation_method'] }}</li>
         {% endif %}
     </div>
     <div class="vf-content">
+        <div class="btn-group" role="group" aria-label="Show/Hide Columns">
+              <button type="button" class="tag" id="toggle-annot-column-2">Show/Hide Filename</button>
+              <button type="button" class="tag" id="toggle-annot-column-3">Show/Hide Source Image</button>
+        </div>
             <table class="display table" id="annot_table">
                         <thead>
                             <tr>
                                 <th>Annotation ID</th>
+                                {% if corresponding_im_aliases %}
+                                <th>Corresponding Image ID</th>
+                                {% endif %}
                                 <th>Filename</th>
                                 {% if annotation_names %}
                                 <th>Source Image</th>
@@ -289,6 +318,13 @@
                                 <td>{{ annfile.attributes['alias']}} </td>
                                 {% else %}
                                 <td>{{ annfile.id }}</td>
+                                {% endif %}
+                                {% if corresponding_im_aliases %}
+                                  {% if corresponding_im_aliases.get(annfile.attributes['alias']) %}
+                                  <td>{{ corresponding_im_aliases[annfile.attributes['alias']] }}</td>
+                                  {% else %}
+                                  <td>  </td>
+                                {% endif %}
                                 {% endif %}
                                 <td>{{ annfile.name }}</td>
                                  {% if annfile.attributes.get('source image') %}
@@ -305,19 +341,23 @@
                         </tbody>
                       </table>  
         </div>
-    </div>
+    <div></div>
   </section>
 
     <!-- Models used --> 
-  <section class="embl-grid embl-grid--has-centered-content">
+  <section class="embl-grid embl-grid--has-centered-content section-spacing">
     <div class="vf-section-header">
-      <h3 class="vf-section-header__heading" id="models">Models</h3>
+    <h3 class="vf-section-header__heading" id="models">Models <i class="fa-solid fa-circle-info" title="Models can mean two things: models that are used to derive the annotations in this study, OR this dataset is used to train these models"></i></h3>
     </div>
     <div class="vf-content">
-    {% if study.attributes.get('models_uri') %}
+    {% if study.attributes.get('models_uri') or study.attributes.get('models_description')%}
+      {% if study.attributes.get('models_description') %}
         <li><b>Model description:</b> {{ study.attributes['models_description'] }}</li>
-        <li><b>Model link:</b> <a href={{ study.attributes['models_uri'] }}>{{ study.attributes['models_uri'] }}</a> </li> 
-    {%else %}
+      {% endif %}
+      {% if study.attributes.get('models_uri') %}
+        <li><b>Model link:</b> <a href={{ study.attributes['models_uri'] }}>{{ study.attributes['models_uri'] }}</a> </li>
+      {% endif %} 
+    {% else %}
       {% for k,v in study.links.items() %}
       {% if 'model' in k or 'code' in k %}
         <div>  {{ k }} :  <a href={{ v }}> {{ v }} </a></div>
@@ -326,71 +366,107 @@
       {% endif %}
       <br>
         </div>
-    </div>
+    <div></div>
   </section>
 
         <!-- All Images -->
-        <section class="embl-grid embl-grid--has-centered-content">
+        <section class="embl-grid embl-grid--has-centered-content section-spacing">
                     <div class="vf-section-header">
-                        <h2 class="vf-section-header__heading">All images</h2>
+                      <h2 class="vf-section-header__heading">All images <i class="fa-solid fa-circle-info" title="All images in the study in their original format"></i></h2>
                     </div>
                     <div class="vf-content">
+                      <div id="table_wrapper" class="wrapper" style="display: block"> 
                       <table class="display table" id="table">
                         <thead>
                             <tr>
                                 <th>Image ID</th>
+                                {% if corresponding_ann_aliases %}
+                                <th>Corresponding Annotation ID</th>
+                                {% endif %}
                                 <th>Filename</th>
                                 <th>Download Size</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- {% for image in study.images.values() %}
-                                <td>{{ image_names[image.uuid] }}</td>
-                                <td>{{ image.original_relpath }}</td>
-                                <td><a href={{ image_download_uris[image.uuid] }}>Download</a></td>
-                            </tr>
-                            {% endfor %}-->
-                            {% for image in non_annotation_names %}
-                                <td>{{ image_names[image.uuid] }}</td>
-                                <td>{{ image.original_relpath }}</td>
-                                {% if "download_size" in image.attributes %}
-                                    <td>{{ image.attributes["download_size"] }}</td>
-                                {% else %}
-                                    <td>Unavailable</td>
-                                {% endif %}
-                                <td><a href={{ image_download_uris[image.id] }}>Download</a></td>
-                            </tr>
-                            {% endfor %}
+                          {% for image in study.images.values() %}
+                          <td>{{ image_names[image.id] }}</td>
+                          {% if corresponding_ann_aliases %}
+                            {% if corresponding_ann_aliases.get(image.id) %}
+                            <td>{{ corresponding_ann_aliases[image.id] }}</td>
+                            {% else %}
+                            <td>  </td>
+                            {% endif %}
+                          {% endif %}
+                          <td>{{ image.original_relpath }}</td>
+                          {% if "download_size" in image.attributes %}
+                          <td>{{ image.attributes["download_size"] }}</td>
+                          {% else %}
+                          <td>Unavailable</td>
+                          {% endif %}
+                          <td><a href={{ image_download_uris[image.id] }}>Download</a></td>
+                          </tr>
+                          {% endfor %}
                         </tbody>
-                      </table>                      
+                      </table> 
+                      </div>                     
                       </div>
-                    </div>
+                    <div></div>
             </section>
+            </div>
 
 
         <script>
             $(document).ready( function () {
                 $('#table').DataTable( {
+                    scrollX: true,
                     columnDefs: [
                         { type: 'natural', targets: 0 }
                     ]
                 });
-            } );
-            $(document).ready( function () {
-                $('#annot_table').DataTable( {
+          
+                var annotTable = $('#annot_table').DataTable( {
                     columnDefs: [
-                        { type: 'natural', targets: 0 }
+                        { type: 'natural', width: '10%', targets: 0 },
+                        { targets: [2, 3], visible: false }
                     ]
                 });
-            } );
-            $(document).ready( function () {
-                $('#viewable').DataTable( {
+            
+                var imagesTable = $('#viewable').DataTable( {
                     columnDefs: [
-                        { type: 'natural', targets: 0 }
+                        { type: 'natural', width: '10%', targets: 0 },
+                        { targets: 3, visible: false }
                     ]
                 });
+
+                // Toggle button click event
+                $("#toggleButton").click( function() {
+                  $("#table_wrapper").toggleClass("shrunk");
+                });     
+
+                // Toggle button for column 3 and column 4 in annot_table
+                $('#toggle-annot-column-2').on('click', function () {
+                    var column = annotTable.column(2);
+                    column.visible(!column.visible());
+                    $('#annot_table').toggleClass('shrink-table');
+                    annotTable.columns.adjust().draw();
+                });
+
+                $('#toggle-annot-column-3').on('click', function () {
+                    var column = annotTable.column(3);
+                    column.visible(!column.visible());
+                    $('#annot_table').toggleClass('shrink-table');
+                    annotTable.columns.adjust().draw();
+                });
+
+                // Toggle button for column 3 in viewable table (images)
+                $('#toggle-images-column-2').on('click', function () {
+                    var column = imagesTable.column(3);
+                    column.visible(!column.visible());
+                    $('#viewable').toggleClass('shrink-table');
+                    imagesTable.columns.adjust().draw();
+                });
+
             } );
         </script>
-    </body>
-</html>
+{% endblock %}

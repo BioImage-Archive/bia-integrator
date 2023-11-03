@@ -102,7 +102,7 @@ rule auto_create_image_representations:
     shell:
         """
             {command_prefix} python {script_dir}/assign_all_easily_convertible_images_from_filerefs.py $ACCNO 2>&1 | tee {output} && \
-            {command_prefix} python {script_dir}/assign_zipped_zarr_from_filerefs.py $ACCNO 2>&1 | tee --append {output}
+            {command_prefix} python {script_dir}/assign_zipped_zarr_from_filerefs.py $ACCNO 2>&1 | tee -a {output}
         """
 
 # Set source image for file references which are AI annotations and has a source image.
@@ -241,8 +241,8 @@ rule generate_thumbnails:
 def aggregate_converted_im_reps(wildcards):
     """Return converted image_representations"""
     checkpoint_output = checkpoints.get_image_reps_to_convert.get(**wildcards).output[0]
-    im_reps_paths = expand(work_dir + "/gen_thumb_output/{i}", i=glob_wildcards(os.path.join(checkpoint_output, '{i,[a-z|\d|-]+[^\.success]}')).i)
-    return im_reps_paths
+    im_reps_paths = expand(work_dir + "/gen_thumb_output/{i}", i=glob_wildcards(os.path.join(checkpoint_output, '{i,[a-z|\d|-]+}')).i)
+    return [i for i in filter(lambda p: not p.endswith("success"), im_reps_paths)]
 
 rule generate_representative_image:
     # Although the aggregate function returns a space separated list
@@ -263,7 +263,7 @@ rule generate_representative_image:
                 if [ -f ${{IM_REF}}.success ]
                 then
                     IMAGE_ID=$(basename $IM_REF)
-                    {command_prefix} python {script_dir}/generate_representative_image_and_set_to_default.py $ACCNO $IMAGE_ID > {output}
+                    {command_prefix} python {script_dir}/generate_representatives_for_annotation_and_image_and_set_to_default.py $ACCNO $IMAGE_ID > {output}
                     exit 0
                 fi
             done

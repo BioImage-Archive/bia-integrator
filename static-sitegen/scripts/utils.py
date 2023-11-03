@@ -15,13 +15,6 @@ def sizeof_fmt(num, suffix="B"):
         num /= 1024.0
     return f"{num:.1f}Yi{suffix}"
 
-def get_annotation_images_in_study(bia_study):
-    """Generate list of images in study that are annotations of another image."""
-    
-    return [
-        image for image in bia_study.images
-        if "source image" in image.attributes
-    ]
 
 def get_annotation_files_in_study(bia_study):
     """Generate list of files in study that are annotations of another image."""

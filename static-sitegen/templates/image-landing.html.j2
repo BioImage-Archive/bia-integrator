@@ -1,128 +1,121 @@
-<html lang="en" class="vf-no-js">
-    <head>
-        <meta charset="UTF-8">
-        <link rel="stylesheet" href="https://assets.emblstatic.net/vf/v2.5.8/css/styles.css">
-        <title>{{ image.uuid }}</title>
-    </head>
+{% extends "base.html.j2" %}
 
-    <body>
-        <header class="vf-global-header">
-            <header class="vf-global-header">
+{% block header_extras %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+{% endblock %}
 
-                <div class="vf-global-header__inner">
-          
-                  <a href="http://www.embl.de" class="vf-logo">
-                    <img class="vf-logo__image" src="/bia-integrator-data/pages/assets/BIA-Logo.png" alt="BioImage Archive">
-                    <span class="vf-logo__text">   BioImage Archive</span>
-                  </a>
-          
-                </div>
-          
-            </header>
-        </header>
+{% block title %} {{ study.accession_id }}:{{ image_alias }} {% endblock %}
 
-        <div class="vf-stack vf-stack--500">
-            <section class="vf-intro | embl-grid embl-grid--has-centered-content">
-                <div></div>
-                <div>
-                    <h1 class="vf-intro__heading vf-intro__heading--has-tag">{{ study.accession_id }}:{{ image_alias }}<a href="JavaScript:Void(0);" class="vf-badge vf-badge--primary vf-badge--phases">alpha</a></h1>
-                    <h2 class="vf-intro__subheading">{{ image.original_relpath }}</h2>
-                    <p>Study Title: {{ study.title }}</p>
-                    <p>By: {{ authors }}</p>
-                    <p>Organism: {{ study.organism }}</p>
-                    <p>License: <a href={{ license_uri }}>{{ study.license }}</a></p>
-                    <figure class="vf-figure vf-figure--align vf-figure--align-centered">
-                        <img class="vf-figure__image" src="{{ image_uri }}">
-                    </figure>  
+{% block content %}
+<div class="vf-stack vf-stack--500">
+    <section class="vf-intro | embl-grid embl-grid--has-centered-content">
+        <div></div>
+        <div>
+            <h1 class="vf-intro__heading vf-intro__heading--has-tag">{{ study.accession_id }}:{{ image_alias }}<a href="JavaScript:Void(0);" class="vf-badge vf-badge--primary vf-badge--phases">alpha</a></h1>
+            <h2 class="vf-intro__subheading">{{ image.original_relpath }}</h2>
+            <p>Study Title: {{ study.title }}</p>
+            <p>By: {{ authors }}</p>
+            <p>Organism: {{ study.organism }}</p>
+            <p>License: <a href={{ license_uri }}>{{ study.license }}</a></p>
+            <figure class="vf-figure vf-figure--align vf-figure--align-centered">
+                <img class="vf-figure__image" src="{{ image_uri }}">
+            </figure>  
 
-                </div>
-                <div></div>
-            </section>
-            <!-- Study information -->
-            <section class="vf-content | embl-grid embl-grid--has-centered-content">
-                <div>
-                    <button class="vf-button vf-button--primary vf-button--sm" onclick="copyTextToClipboard('{{ zarr_uri }}')">Copy S3 URI to clipboard</button>
-                    <button class="vf-button vf-button--primary vf-button--sm" onclick="location.href='https://kitware.github.io/itk-vtk-viewer/app/?fileToLoad={{ zarr_uri }}';">Open in ITK viewer</button>
-                    <button class="vf-button vf-button--primary vf-button--sm" onclick="location.href='https://hms-dbmi.github.io/vizarr/?source={{ zarr_uri }}';">Open fullscreen in Vizarr</button>
-                    <button class="vf-button vf-button--primary vf-button--sm" onclick="location.href='{{ neuroglancer_uri }}';">Open in Neuroglancer</button>
-
-                    <a href={{ download_uri }}><button class="vf-button vf-button--primary vf-button--sm">Download original ({{ download_size }})</button></a>
-                </div>
-                <div>
-                    <iframe style="width: 100%; height: 500px" name="vizarr" src="https://uk1s3.embassy.ebi.ac.uk/bia-zarr-test/vizarr/index.html?source={{ zarr_uri }}"></iframe>
-                </div>
-
-                <div>
-                    <h2 class="vf-section-header__heading">Image metadata</h2>
-                    <p></p>
-                    <b> Image Dimensions </b>: {{ dimensions }}
-                    {% if pdims != None %}
-                        <div> <b> Physical Dimensions </b>: {{ pdims }} </div>
-                    {% endif %}
-                    {% if psize != None %}
-                        <div> <b> Pixel/Voxel Size </b>: {{ psize }} </div>
-                    {% endif %}
-                    {% if image.attributes.get('SizeC') %}
-                        <div> <b> Number of Channels</b> : {{ image.attributes['SizeC'] }} </div>
-                    {% endif %}
-                    {% if image.attributes.get('SizeT') %}
-                        {% if image.attributes['SizeT'] != 1 %}
-                            <div> <b> Number of Time Points </b>: {{ image.attributes['SizeT'] }} </div>
-                        {% endif %}
-                    {% endif %}
-                    {% for key, value in image.attributes.items() %}
-                        {% if 'Size' not in key %} 
-                            {% if key not in ['DimensionOrder','md5'] %}
-                                <div> <b>{{key}}</b> : {{value}} </div>
-                            {% endif %}
-                        {% endif %}
-                    {% endfor %}
-                </div>
-                <div>
-                    <div class="vf-content">
-                        <div class="vf-grid vf-grid__col-2">
-
-                        </div>
-                    </div>
-                </div>
-                <div></div>
-            </section>
- 
         </div>
-    </body>
-    <script>
-        function copyTextToClipboard(text) {
-            var textArea = document.createElement("textarea");
-            // Place in the top-left corner of screen regardless of scroll position.
-            textArea.style.position = 'fixed';
+        <div></div>
+    </section>
+    <!-- Study information -->
+    <section class="vf-content | embl-grid embl-grid--has-centered-content">
+        <div>
+            <button class="vf-button vf-button--primary vf-button--sm" onclick="copyTextToClipboard('{{ zarr_uri }}')">Copy S3 URI to clipboard</button>
 
-            textArea.value = text;
+            <a href='https://kitware.github.io/itk-vtk-viewer/app/?fileToLoad={{ zarr_uri }}'><button class="vf-button vf-button--primary vf-button--sm">Open in ITK viewer</button></a>
+            <a href='https://hms-dbmi.github.io/vizarr/?source={{ zarr_uri }}'><button class="vf-button vf-button--primary vf-button--sm">Open fullscreen in Vizarr</button></a>
+            {% if image.attributes.get("_neuroglancer_link") %}
+                <a href='{{ image.attributes.get("_neuroglancer_link") }}'><button class="vf-button vf-button--primary vf-button--sm">Open in Neuroglancer</button></a>
+            {% endif %}
+            <a href={{ download_uri }}><button class="vf-button vf-button--primary vf-button--sm">Download original ({{ download_size }})</button></a>
+        </div>
+        <div>
+            <iframe style="width: 100%; height: 500px" name="vizarr" src="https://uk1s3.embassy.ebi.ac.uk/bia-zarr-test/vizarr/index.html?source={{ zarr_uri }}"></iframe>
+        </div>
 
-            document.body.appendChild(textArea);
-            textArea.focus();
-            textArea.select();
+        <div>
+            <h2 class="vf-section-header__heading">Image metadata</h2>
+            <p></p>
+            <b> Image Dimensions </b>: {{ dimensions }}
+            {% if pdims != None %}
+            <div> <b> Physical Dimensions </b>: {{ pdims }} </div>
+            {% endif %}
+            {% if psize != None %}
+            <div> <b> Pixel/Voxel Size </b>: {{ psize }} </div>
+            {% endif %}
+            {% if image.attributes.get('SizeC') %}
+            <div> <b> Number of Channels</b> : {{ image.attributes['SizeC'] }} </div>
+            {% endif %}
+            {% if image.attributes.get('SizeT') %}
+            {% if image.attributes['SizeT'] != 1 %}
+            <div> <b> Number of Time Points </b>: {{ image.attributes['SizeT'] }} </div>
+            {% endif %}
+            {% endif %}
+            {% for key, value in image.attributes.items() %}
+            {% if 'Size' not in key %} 
+            {% if key not in ['DimensionOrder','md5'] %}
+              {% if not key.startswith("_") %}
+                <div> <b>{{key}}</b> : {{value}} </div>
+              {% endif %}
+            {% endif %}
+            {% endif %}
+            {% endfor %}
+        </div>
+        <div>
+            <div class="vf-content">
+                <div class="vf-grid vf-grid__col-2">
 
-            var successful;
-            try {
-                successful = document.execCommand('copy');
-            } catch (err) {
-                console.log('Oops, unable to copy');
-            }
-            document.body.removeChild(textArea);
+                </div>
+            </div>
+        </div>
+        <div></div>
+    </section>
+</div>
+{% endblock %}
 
-            if (successful) {
-                // show user that copying happened - update text on element (e.g. button)
-                let target = event.target;
-                let html = target.innerHTML;
-                target.classList.add("shake");
-                setTimeout(() => {
-                    // reset after 1 second
-                    target.classList.remove("shake");
-                }, 1000)
-            } else {
-                console.log("Copying failed")
-            }
+
+
+{% block post_body_scripts %}
+<script>
+    function copyTextToClipboard(text) {
+        var textArea = document.createElement("textarea");
+        // Place in the top-left corner of screen regardless of scroll position.
+        textArea.style.position = 'fixed';
+
+        textArea.value = text;
+
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+
+        var successful;
+        try {
+            successful = document.execCommand('copy');
+        } catch (err) {
+            console.log('Oops, unable to copy');
         }
-    </script>
-    <script type="text/javascript" src="https://kitware.github.io/itk-vtk-viewer/app/itkVtkViewerCDN.js"></script>
-</html>
+        document.body.removeChild(textArea);
+
+        if (successful) {
+            // show user that copying happened - update text on element (e.g. button)
+            let target = event.target;
+            let html = target.innerHTML;
+            target.classList.add("shake");
+            setTimeout(() => {
+                // reset after 1 second
+                target.classList.remove("shake");
+            }, 1000)
+        } else {
+            console.log("Copying failed")
+        }
+    }
+</script>
+<script type="text/javascript" src="https://kitware.github.io/itk-vtk-viewer/app/itkVtkViewerCDN.js"></script>
+{% endblock %}

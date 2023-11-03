@@ -1,0 +1,42 @@
+{% extends "base.html.j2" %}
+
+{% block header_extras %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.11.5/datatables.min.css"/>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.11.5/datatables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.13.1/sorting/natural.js"></script>
+{% endblock %}
+
+{% block title %} BIA Galleries {% endblock %}
+
+{% block content %}
+
+<section class="vf-news-container vf-news-container--featured | vf-stack">
+<!-- 
+    Collection summary Example below is from
+    https://stable.visual-framework.dev/patterns/landing-page/
+    [Projects - with news article summary (hence use of summary_date below)]
+-->
+    <div class="vf-section-header">
+        <h2 class="vf-section-header__heading">
+            <br><br>The BioImage Archive explorer
+        </h2>
+    </div>
+    <!-- Images -->
+    <div class="vf-news-container__content | vf-grid vf-grid__col-4">
+        {% for collection in collections %}
+            <article class="vf-summary vf-summary--news">
+                <span class="vf-summary__date text-center">
+                    {{ collection.subtitle }}
+                </span>
+                <img class="vf-summary__image" src="{{ collection.attributes['example_image_uri'] }}"  style="border-radius: 50%" alt="Example image from collection" loading="lazy">
+                    <h3 class="vf-summary__title text-center" >
+                        <a class="vf-summary__link" href="{{ collection.name }}.html">
+                            {{ collection.title }}
+                        </a>
+                    </h3>
+            </article>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}
