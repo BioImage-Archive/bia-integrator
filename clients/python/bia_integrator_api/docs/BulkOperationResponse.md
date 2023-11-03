@@ -5,6 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **items** | [**List[BulkOperationItem]**](BulkOperationItem.md) |  | 
+**item_idx_by_status** | **Dict[str, List[int]]** |  | [optional] 
 
 ## Example
 

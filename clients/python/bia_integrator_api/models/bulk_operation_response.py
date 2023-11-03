@@ -18,8 +18,8 @@ import re  # noqa: F401
 import json
 
 
-from typing import List
-from pydantic import BaseModel, Field, conlist
+from typing import Dict, List, Optional
+from pydantic import BaseModel, Field, StrictInt, conlist
 from bia_integrator_api.models.bulk_operation_item import BulkOperationItem
 
 class BulkOperationResponse(BaseModel):
@@ -27,7 +27,8 @@ class BulkOperationResponse(BaseModel):
     BulkOperationResponse
     """
     items: conlist(BulkOperationItem) = Field(...)
-    __properties = ["items"]
+    item_idx_by_status: Optional[Dict[str, conlist(StrictInt)]] = None
+    __properties = ["items", "item_idx_by_status"]
 
     class Config:
         """Pydantic configuration"""
@@ -60,6 +61,15 @@ class BulkOperationResponse(BaseModel):
                 if _item:
                     _items.append(_item.to_dict())
             _dict['items'] = _items
+        # override the default output from pydantic by calling `to_dict()` of each value in item_idx_by_status (dict of array)
+        _field_dict_of_array = {}
+        if self.item_idx_by_status:
+            for _key in self.item_idx_by_status:
+                if self.item_idx_by_status[_key]:
+                    _field_dict_of_array[_key] = [
+                        _item.to_dict() for _item in self.item_idx_by_status[_key]
+                    ]
+            _dict['item_idx_by_status'] = _field_dict_of_array
         return _dict
 
     @classmethod
@@ -72,7 +82,8 @@ class BulkOperationResponse(BaseModel):
             return BulkOperationResponse.parse_obj(obj)
 
         _obj = BulkOperationResponse.parse_obj({
-            "items": [BulkOperationItem.from_dict(_item) for _item in obj.get("items")] if obj.get("items") is not None else None
+            "items": [BulkOperationItem.from_dict(_item) for _item in obj.get("items")] if obj.get("items") is not None else None,
+            "item_idx_by_status": obj.get("item_idx_by_status")
         })
         return _obj
 
