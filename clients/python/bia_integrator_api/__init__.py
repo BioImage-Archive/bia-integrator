@@ -39,6 +39,7 @@ from bia_integrator_api.models.author import Author
 from bia_integrator_api.models.bia_collection import BIACollection
 from bia_integrator_api.models.bia_image import BIAImage
 from bia_integrator_api.models.bia_image_alias import BIAImageAlias
+from bia_integrator_api.models.bia_image_ome_metadata import BIAImageOmeMetadata
 from bia_integrator_api.models.bia_image_representation import BIAImageRepresentation
 from bia_integrator_api.models.bia_study import BIAStudy
 from bia_integrator_api.models.body_register_user import BodyRegisterUser
@@ -53,6 +54,7 @@ from bia_integrator_api.models.location_inner import LocationInner
 from bia_integrator_api.models.model_metadata import ModelMetadata
 from bia_integrator_api.models.name import Name
 from bia_integrator_api.models.object_info import ObjectInfo
+from bia_integrator_api.models.ome_metadat_source import OmeMetadatSource
 from bia_integrator_api.models.rendering_info import RenderingInfo
 from bia_integrator_api.models.start_uuid import StartUuid
 from bia_integrator_api.models.study_annotation import StudyAnnotation

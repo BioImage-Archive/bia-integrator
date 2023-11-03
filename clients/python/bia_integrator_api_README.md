@@ -79,6 +79,7 @@ Class | Method | HTTP request | Description
 *PrivateApi* | [**get_collection**](bia_integrator_api/docs/PrivateApi.md#get_collection) | **GET** /api/v1/collections/{collection_uuid} | Get Collection
 *PrivateApi* | [**get_file_reference**](bia_integrator_api/docs/PrivateApi.md#get_file_reference) | **GET** /api/v1/file_references/{file_reference_uuid} | Get File Reference
 *PrivateApi* | [**get_image**](bia_integrator_api/docs/PrivateApi.md#get_image) | **GET** /api/v1/images/{image_uuid} | Get Image
+*PrivateApi* | [**get_image_ome_metadata**](bia_integrator_api/docs/PrivateApi.md#get_image_ome_metadata) | **GET** /api/v1/images/{image_uuid}/ome_metadata | Get Image Ome Metadata
 *PrivateApi* | [**get_object_info_by_accession**](bia_integrator_api/docs/PrivateApi.md#get_object_info_by_accession) | **GET** /api/v1/object_info_by_accessions | Get Object Info By Accession
 *PrivateApi* | [**get_study**](bia_integrator_api/docs/PrivateApi.md#get_study) | **GET** /api/v1/studies/{study_uuid} | Get Study
 *PrivateApi* | [**get_study_file_references**](bia_integrator_api/docs/PrivateApi.md#get_study_file_references) | **GET** /api/v1/studies/{study_uuid}/file_references | Get Study File References
@@ -90,6 +91,7 @@ Class | Method | HTTP request | Description
 *PrivateApi* | [**search_collections**](bia_integrator_api/docs/PrivateApi.md#search_collections) | **GET** /api/v1/collections | Search Collections
 *PrivateApi* | [**search_images**](bia_integrator_api/docs/PrivateApi.md#search_images) | **GET** /api/v1/search/images | Search Images
 *PrivateApi* | [**search_studies**](bia_integrator_api/docs/PrivateApi.md#search_studies) | **GET** /api/v1/search/studies | Search Studies
+*PrivateApi* | [**set_image_ome_metadata_url**](bia_integrator_api/docs/PrivateApi.md#set_image_ome_metadata_url) | **POST** /api/v1/private/images/{image_uuid}/ome_metadata | Set Image Ome Metadata Url
 *PrivateApi* | [**study_refresh_counts**](bia_integrator_api/docs/PrivateApi.md#study_refresh_counts) | **POST** /api/v1/private/studies/{study_uuid}/refresh_counts | Study Refresh Counts
 *PrivateApi* | [**update_file_reference**](bia_integrator_api/docs/PrivateApi.md#update_file_reference) | **PATCH** /api/v1/private/file_references/single | Update File Reference
 *PrivateApi* | [**update_image**](bia_integrator_api/docs/PrivateApi.md#update_image) | **PATCH** /api/v1/private/images/single | Update Image
@@ -97,6 +99,7 @@ Class | Method | HTTP request | Description
 *PublicApi* | [**get_collection**](bia_integrator_api/docs/PublicApi.md#get_collection) | **GET** /api/v1/collections/{collection_uuid} | Get Collection
 *PublicApi* | [**get_file_reference**](bia_integrator_api/docs/PublicApi.md#get_file_reference) | **GET** /api/v1/file_references/{file_reference_uuid} | Get File Reference
 *PublicApi* | [**get_image**](bia_integrator_api/docs/PublicApi.md#get_image) | **GET** /api/v1/images/{image_uuid} | Get Image
+*PublicApi* | [**get_image_ome_metadata**](bia_integrator_api/docs/PublicApi.md#get_image_ome_metadata) | **GET** /api/v1/images/{image_uuid}/ome_metadata | Get Image Ome Metadata
 *PublicApi* | [**get_object_info_by_accession**](bia_integrator_api/docs/PublicApi.md#get_object_info_by_accession) | **GET** /api/v1/object_info_by_accessions | Get Object Info By Accession
 *PublicApi* | [**get_study**](bia_integrator_api/docs/PublicApi.md#get_study) | **GET** /api/v1/studies/{study_uuid} | Get Study
 *PublicApi* | [**get_study_file_references**](bia_integrator_api/docs/PublicApi.md#get_study_file_references) | **GET** /api/v1/studies/{study_uuid}/file_references | Get Study File References
@@ -116,6 +119,7 @@ Class | Method | HTTP request | Description
  - [BIACollection](bia_integrator_api/docs/BIACollection.md)
  - [BIAImage](bia_integrator_api/docs/BIAImage.md)
  - [BIAImageAlias](bia_integrator_api/docs/BIAImageAlias.md)
+ - [BIAImageOmeMetadata](bia_integrator_api/docs/BIAImageOmeMetadata.md)
  - [BIAImageRepresentation](bia_integrator_api/docs/BIAImageRepresentation.md)
  - [BIAStudy](bia_integrator_api/docs/BIAStudy.md)
  - [BodyRegisterUser](bia_integrator_api/docs/BodyRegisterUser.md)
@@ -130,6 +134,7 @@ Class | Method | HTTP request | Description
  - [ModelMetadata](bia_integrator_api/docs/ModelMetadata.md)
  - [Name](bia_integrator_api/docs/Name.md)
  - [ObjectInfo](bia_integrator_api/docs/ObjectInfo.md)
+ - [OmeMetadatSource](bia_integrator_api/docs/OmeMetadatSource.md)
  - [RenderingInfo](bia_integrator_api/docs/RenderingInfo.md)
  - [StartUuid](bia_integrator_api/docs/StartUuid.md)
  - [StudyAnnotation](bia_integrator_api/docs/StudyAnnotation.md)

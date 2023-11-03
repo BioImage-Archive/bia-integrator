@@ -26,12 +26,14 @@ from typing import Any, List, Optional
 from bia_integrator_api.models.authentication_token import AuthenticationToken
 from bia_integrator_api.models.bia_collection import BIACollection
 from bia_integrator_api.models.bia_image import BIAImage
+from bia_integrator_api.models.bia_image_ome_metadata import BIAImageOmeMetadata
 from bia_integrator_api.models.bia_image_representation import BIAImageRepresentation
 from bia_integrator_api.models.bia_study import BIAStudy
 from bia_integrator_api.models.body_register_user import BodyRegisterUser
 from bia_integrator_api.models.bulk_operation_response import BulkOperationResponse
 from bia_integrator_api.models.file_reference import FileReference
 from bia_integrator_api.models.object_info import ObjectInfo
+from bia_integrator_api.models.ome_metadat_source import OmeMetadatSource
 
 from bia_integrator_api.api_client import ApiClient
 from bia_integrator_api.api_response import ApiResponse
@@ -1316,6 +1318,144 @@ class PrivateApi(object):
 
         return self.api_client.call_api(
             '/api/v1/images/{image_uuid}', 'GET',
+            _path_params,
+            _query_params,
+            _header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            response_types_map=_response_types_map,
+            auth_settings=_auth_settings,
+            async_req=_params.get('async_req'),
+            _return_http_data_only=_params.get('_return_http_data_only'),  # noqa: E501
+            _preload_content=_params.get('_preload_content', True),
+            _request_timeout=_params.get('_request_timeout'),
+            collection_formats=_collection_formats,
+            _request_auth=_params.get('_request_auth'))
+
+    @validate_arguments
+    def get_image_ome_metadata(self, image_uuid : StrictStr, **kwargs) -> BIAImageOmeMetadata:  # noqa: E501
+        """Get Image Ome Metadata  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.get_image_ome_metadata(image_uuid, async_req=True)
+        >>> result = thread.get()
+
+        :param image_uuid: (required)
+        :type image_uuid: str
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :return: Returns the result object.
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: BIAImageOmeMetadata
+        """
+        kwargs['_return_http_data_only'] = True
+        if '_preload_content' in kwargs:
+            raise ValueError("Error! Please call the get_image_ome_metadata_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
+        return self.get_image_ome_metadata_with_http_info(image_uuid, **kwargs)  # noqa: E501
+
+    @validate_arguments
+    def get_image_ome_metadata_with_http_info(self, image_uuid : StrictStr, **kwargs) -> ApiResponse:  # noqa: E501
+        """Get Image Ome Metadata  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.get_image_ome_metadata_with_http_info(image_uuid, async_req=True)
+        >>> result = thread.get()
+
+        :param image_uuid: (required)
+        :type image_uuid: str
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _preload_content: if False, the ApiResponse.data will
+                                 be set to none and raw_data will store the 
+                                 HTTP response body without reading/decoding.
+                                 Default is True.
+        :type _preload_content: bool, optional
+        :param _return_http_data_only: response data instead of ApiResponse
+                                       object with status code, headers, etc
+        :type _return_http_data_only: bool, optional
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the authentication
+                              in the spec for a single request.
+        :type _request_auth: dict, optional
+        :type _content_type: string, optional: force content-type for the request
+        :return: Returns the result object.
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: tuple(BIAImageOmeMetadata, status_code(int), headers(HTTPHeaderDict))
+        """
+
+        _params = locals()
+
+        _all_params = [
+            'image_uuid'
+        ]
+        _all_params.extend(
+            [
+                'async_req',
+                '_return_http_data_only',
+                '_preload_content',
+                '_request_timeout',
+                '_request_auth',
+                '_content_type',
+                '_headers'
+            ]
+        )
+
+        # validate the arguments
+        for _key, _val in _params['kwargs'].items():
+            if _key not in _all_params:
+                raise ApiTypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method get_image_ome_metadata" % _key
+                )
+            _params[_key] = _val
+        del _params['kwargs']
+
+        _collection_formats = {}
+
+        # process the path parameters
+        _path_params = {}
+        if _params['image_uuid']:
+            _path_params['image_uuid'] = _params['image_uuid']
+
+
+        # process the query parameters
+        _query_params = []
+        # process the header parameters
+        _header_params = dict(_params.get('_headers', {}))
+        # process the form parameters
+        _form_params = []
+        _files = {}
+        # process the body parameter
+        _body_params = None
+        # set the HTTP header `Accept`
+        _header_params['Accept'] = self.api_client.select_header_accept(
+            ['application/json'])  # noqa: E501
+
+        # authentication setting
+        _auth_settings = []  # noqa: E501
+
+        _response_types_map = {
+            '200': "BIAImageOmeMetadata",
+            '422': "HTTPValidationError",
+        }
+
+        return self.api_client.call_api(
+            '/api/v1/images/{image_uuid}/ome_metadata', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -2950,6 +3090,159 @@ class PrivateApi(object):
 
         return self.api_client.call_api(
             '/api/v1/search/studies', 'GET',
+            _path_params,
+            _query_params,
+            _header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            response_types_map=_response_types_map,
+            auth_settings=_auth_settings,
+            async_req=_params.get('async_req'),
+            _return_http_data_only=_params.get('_return_http_data_only'),  # noqa: E501
+            _preload_content=_params.get('_preload_content', True),
+            _request_timeout=_params.get('_request_timeout'),
+            collection_formats=_collection_formats,
+            _request_auth=_params.get('_request_auth'))
+
+    @validate_arguments
+    def set_image_ome_metadata_url(self, image_uuid : StrictStr, ome_metadat_source : OmeMetadatSource, **kwargs) -> BIAImageOmeMetadata:  # noqa: E501
+        """Set Image Ome Metadata Url  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.set_image_ome_metadata_url(image_uuid, ome_metadat_source, async_req=True)
+        >>> result = thread.get()
+
+        :param image_uuid: (required)
+        :type image_uuid: str
+        :param ome_metadat_source: (required)
+        :type ome_metadat_source: OmeMetadatSource
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :return: Returns the result object.
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: BIAImageOmeMetadata
+        """
+        kwargs['_return_http_data_only'] = True
+        if '_preload_content' in kwargs:
+            raise ValueError("Error! Please call the set_image_ome_metadata_url_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
+        return self.set_image_ome_metadata_url_with_http_info(image_uuid, ome_metadat_source, **kwargs)  # noqa: E501
+
+    @validate_arguments
+    def set_image_ome_metadata_url_with_http_info(self, image_uuid : StrictStr, ome_metadat_source : OmeMetadatSource, **kwargs) -> ApiResponse:  # noqa: E501
+        """Set Image Ome Metadata Url  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.set_image_ome_metadata_url_with_http_info(image_uuid, ome_metadat_source, async_req=True)
+        >>> result = thread.get()
+
+        :param image_uuid: (required)
+        :type image_uuid: str
+        :param ome_metadat_source: (required)
+        :type ome_metadat_source: OmeMetadatSource
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _preload_content: if False, the ApiResponse.data will
+                                 be set to none and raw_data will store the 
+                                 HTTP response body without reading/decoding.
+                                 Default is True.
+        :type _preload_content: bool, optional
+        :param _return_http_data_only: response data instead of ApiResponse
+                                       object with status code, headers, etc
+        :type _return_http_data_only: bool, optional
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the authentication
+                              in the spec for a single request.
+        :type _request_auth: dict, optional
+        :type _content_type: string, optional: force content-type for the request
+        :return: Returns the result object.
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: tuple(BIAImageOmeMetadata, status_code(int), headers(HTTPHeaderDict))
+        """
+
+        _params = locals()
+
+        _all_params = [
+            'image_uuid',
+            'ome_metadat_source'
+        ]
+        _all_params.extend(
+            [
+                'async_req',
+                '_return_http_data_only',
+                '_preload_content',
+                '_request_timeout',
+                '_request_auth',
+                '_content_type',
+                '_headers'
+            ]
+        )
+
+        # validate the arguments
+        for _key, _val in _params['kwargs'].items():
+            if _key not in _all_params:
+                raise ApiTypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method set_image_ome_metadata_url" % _key
+                )
+            _params[_key] = _val
+        del _params['kwargs']
+
+        _collection_formats = {}
+
+        # process the path parameters
+        _path_params = {}
+        if _params['image_uuid']:
+            _path_params['image_uuid'] = _params['image_uuid']
+
+
+        # process the query parameters
+        _query_params = []
+        # process the header parameters
+        _header_params = dict(_params.get('_headers', {}))
+        # process the form parameters
+        _form_params = []
+        _files = {}
+        # process the body parameter
+        _body_params = None
+        if _params['ome_metadat_source'] is not None:
+            _body_params = _params['ome_metadat_source']
+
+        # set the HTTP header `Accept`
+        _header_params['Accept'] = self.api_client.select_header_accept(
+            ['application/json'])  # noqa: E501
+
+        # set the HTTP header `Content-Type`
+        _content_types_list = _params.get('_content_type',
+            self.api_client.select_header_content_type(
+                ['application/json']))
+        if _content_types_list:
+                _header_params['Content-Type'] = _content_types_list
+
+        # authentication setting
+        _auth_settings = ['OAuth2PasswordBearer']  # noqa: E501
+
+        _response_types_map = {
+            '200': "BIAImageOmeMetadata",
+            '422': "HTTPValidationError",
+        }
+
+        return self.api_client.call_api(
+            '/api/v1/private/images/{image_uuid}/ome_metadata', 'POST',
             _path_params,
             _query_params,
             _header_params,

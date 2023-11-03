@@ -7,6 +7,7 @@ Method | HTTP request | Description
 [**get_collection**](PublicApi.md#get_collection) | **GET** /api/v1/collections/{collection_uuid} | Get Collection
 [**get_file_reference**](PublicApi.md#get_file_reference) | **GET** /api/v1/file_references/{file_reference_uuid} | Get File Reference
 [**get_image**](PublicApi.md#get_image) | **GET** /api/v1/images/{image_uuid} | Get Image
+[**get_image_ome_metadata**](PublicApi.md#get_image_ome_metadata) | **GET** /api/v1/images/{image_uuid}/ome_metadata | Get Image Ome Metadata
 [**get_object_info_by_accession**](PublicApi.md#get_object_info_by_accession) | **GET** /api/v1/object_info_by_accessions | Get Object Info By Accession
 [**get_study**](PublicApi.md#get_study) | **GET** /api/v1/studies/{study_uuid} | Get Study
 [**get_study_file_references**](PublicApi.md#get_study_file_references) | **GET** /api/v1/studies/{study_uuid}/file_references | Get Study File References
@@ -197,6 +198,72 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**BIAImage**](BIAImage.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **get_image_ome_metadata**
+> BIAImageOmeMetadata get_image_ome_metadata(image_uuid)
+
+Get Image Ome Metadata
+
+### Example
+
+```python
+import time
+import os
+import bia_integrator_api
+from bia_integrator_api.models.bia_image_ome_metadata import BIAImageOmeMetadata
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PublicApi(api_client)
+    image_uuid = 'image_uuid_example' # str | 
+
+    try:
+        # Get Image Ome Metadata
+        api_response = api_instance.get_image_ome_metadata(image_uuid)
+        print("The response of PublicApi->get_image_ome_metadata:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PublicApi->get_image_ome_metadata: %s\n" % e)
+```
+
+
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **image_uuid** | **str**|  | 
+
+### Return type
+
+[**BIAImageOmeMetadata**](BIAImageOmeMetadata.md)
 
 ### Authorization
 

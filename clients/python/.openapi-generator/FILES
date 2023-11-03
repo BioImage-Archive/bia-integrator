@@ -12,6 +12,7 @@ bia_integrator_api/docs/Author.md
 bia_integrator_api/docs/BIACollection.md
 bia_integrator_api/docs/BIAImage.md
 bia_integrator_api/docs/BIAImageAlias.md
+bia_integrator_api/docs/BIAImageOmeMetadata.md
 bia_integrator_api/docs/BIAImageRepresentation.md
 bia_integrator_api/docs/BIAStudy.md
 bia_integrator_api/docs/BodyRegisterUser.md
@@ -26,6 +27,7 @@ bia_integrator_api/docs/LocationInner.md
 bia_integrator_api/docs/ModelMetadata.md
 bia_integrator_api/docs/Name.md
 bia_integrator_api/docs/ObjectInfo.md
+bia_integrator_api/docs/OmeMetadatSource.md
 bia_integrator_api/docs/PrivateApi.md
 bia_integrator_api/docs/PublicApi.md
 bia_integrator_api/docs/RenderingInfo.md
@@ -41,6 +43,7 @@ bia_integrator_api/models/author.py
 bia_integrator_api/models/bia_collection.py
 bia_integrator_api/models/bia_image.py
 bia_integrator_api/models/bia_image_alias.py
+bia_integrator_api/models/bia_image_ome_metadata.py
 bia_integrator_api/models/bia_image_representation.py
 bia_integrator_api/models/bia_study.py
 bia_integrator_api/models/body_register_user.py
@@ -55,6 +58,7 @@ bia_integrator_api/models/location_inner.py
 bia_integrator_api/models/model_metadata.py
 bia_integrator_api/models/name.py
 bia_integrator_api/models/object_info.py
+bia_integrator_api/models/ome_metadat_source.py
 bia_integrator_api/models/rendering_info.py
 bia_integrator_api/models/start_uuid.py
 bia_integrator_api/models/study_annotation.py

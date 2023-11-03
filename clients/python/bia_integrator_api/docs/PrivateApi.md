@@ -13,6 +13,7 @@ Method | HTTP request | Description
 [**get_collection**](PrivateApi.md#get_collection) | **GET** /api/v1/collections/{collection_uuid} | Get Collection
 [**get_file_reference**](PrivateApi.md#get_file_reference) | **GET** /api/v1/file_references/{file_reference_uuid} | Get File Reference
 [**get_image**](PrivateApi.md#get_image) | **GET** /api/v1/images/{image_uuid} | Get Image
+[**get_image_ome_metadata**](PrivateApi.md#get_image_ome_metadata) | **GET** /api/v1/images/{image_uuid}/ome_metadata | Get Image Ome Metadata
 [**get_object_info_by_accession**](PrivateApi.md#get_object_info_by_accession) | **GET** /api/v1/object_info_by_accessions | Get Object Info By Accession
 [**get_study**](PrivateApi.md#get_study) | **GET** /api/v1/studies/{study_uuid} | Get Study
 [**get_study_file_references**](PrivateApi.md#get_study_file_references) | **GET** /api/v1/studies/{study_uuid}/file_references | Get Study File References
@@ -24,6 +25,7 @@ Method | HTTP request | Description
 [**search_collections**](PrivateApi.md#search_collections) | **GET** /api/v1/collections | Search Collections
 [**search_images**](PrivateApi.md#search_images) | **GET** /api/v1/search/images | Search Images
 [**search_studies**](PrivateApi.md#search_studies) | **GET** /api/v1/search/studies | Search Studies
+[**set_image_ome_metadata_url**](PrivateApi.md#set_image_ome_metadata_url) | **POST** /api/v1/private/images/{image_uuid}/ome_metadata | Set Image Ome Metadata Url
 [**study_refresh_counts**](PrivateApi.md#study_refresh_counts) | **POST** /api/v1/private/studies/{study_uuid}/refresh_counts | Study Refresh Counts
 [**update_file_reference**](PrivateApi.md#update_file_reference) | **PATCH** /api/v1/private/file_references/single | Update File Reference
 [**update_image**](PrivateApi.md#update_image) | **PATCH** /api/v1/private/images/single | Update Image
@@ -648,6 +650,72 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**BIAImage**](BIAImage.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **get_image_ome_metadata**
+> BIAImageOmeMetadata get_image_ome_metadata(image_uuid)
+
+Get Image Ome Metadata
+
+### Example
+
+```python
+import time
+import os
+import bia_integrator_api
+from bia_integrator_api.models.bia_image_ome_metadata import BIAImageOmeMetadata
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PrivateApi(api_client)
+    image_uuid = 'image_uuid_example' # str | 
+
+    try:
+        # Get Image Ome Metadata
+        api_response = api_instance.get_image_ome_metadata(image_uuid)
+        print("The response of PrivateApi->get_image_ome_metadata:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PrivateApi->get_image_ome_metadata: %s\n" % e)
+```
+
+
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **image_uuid** | **str**|  | 
+
+### Return type
+
+[**BIAImageOmeMetadata**](BIAImageOmeMetadata.md)
 
 ### Authorization
 
@@ -1413,6 +1481,82 @@ No authorization required
 ### HTTP request headers
 
  - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **set_image_ome_metadata_url**
+> BIAImageOmeMetadata set_image_ome_metadata_url(image_uuid, ome_metadat_source)
+
+Set Image Ome Metadata Url
+
+### Example
+
+* OAuth Authentication (OAuth2PasswordBearer):
+```python
+import time
+import os
+import bia_integrator_api
+from bia_integrator_api.models.bia_image_ome_metadata import BIAImageOmeMetadata
+from bia_integrator_api.models.ome_metadat_source import OmeMetadatSource
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PrivateApi(api_client)
+    image_uuid = 'image_uuid_example' # str | 
+    ome_metadat_source = bia_integrator_api.OmeMetadatSource() # OmeMetadatSource | 
+
+    try:
+        # Set Image Ome Metadata Url
+        api_response = api_instance.set_image_ome_metadata_url(image_uuid, ome_metadat_source)
+        print("The response of PrivateApi->set_image_ome_metadata_url:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PrivateApi->set_image_ome_metadata_url: %s\n" % e)
+```
+
+
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **image_uuid** | **str**|  | 
+ **ome_metadat_source** | [**OmeMetadatSource**](OmeMetadatSource.md)|  | 
+
+### Return type
+
+[**BIAImageOmeMetadata**](BIAImageOmeMetadata.md)
+
+### Authorization
+
+[OAuth2PasswordBearer](../README.md#OAuth2PasswordBearer)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
  - **Accept**: application/json
 
 ### HTTP response details

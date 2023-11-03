@@ -530,6 +530,64 @@
         ]
       }
     },
+    "/api/v1/private/images/{image_uuid}/ome_metadata": {
+      "post": {
+        "tags": [
+          "private"
+        ],
+        "summary": "Set Image Ome Metadata Url",
+        "operationId": "set_image_ome_metadata_url",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "image_uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Image Uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OmeMetadatSource"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BIAImageOmeMetadata"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/admin/health-check": {
       "get": {
         "tags": [
@@ -1039,6 +1097,50 @@
         }
       }
     },
+    "/api/v1/images/{image_uuid}/ome_metadata": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Get Image Ome Metadata",
+        "operationId": "get_image_ome_metadata",
+        "parameters": [
+          {
+            "name": "image_uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Image Uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BIAImageOmeMetadata"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/file_references/{file_reference_uuid}": {
       "get": {
         "tags": [
@@ -1369,6 +1471,17 @@
                 "type": "null"
               }
             ]
+          },
+          "ome_metadata_file_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ome Metadata File Url"
           }
         },
         "additionalProperties": false,
@@ -1395,6 +1508,53 @@
         ],
         "title": "BIAImageAlias",
         "description": "An alias for an image - a more convenient way to refer to the image than\nthe full accession ID / UUID pair"
+      },
+      "BIAImageOmeMetadata": {
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Uuid"
+          },
+          "version": {
+            "type": "integer",
+            "title": "Version"
+          },
+          "model": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ModelMetadata"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "bia_image_uuid": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Bia Image Uuid"
+          },
+          "ome_metadata": {
+            "type": "object",
+            "title": "Ome Metadata",
+            "description": "The OME metadata in json format. Can be used as a dictionary or directly parsed with the ome-types module."
+          },
+          "ome_metadata_file_url": {
+            "type": "string",
+            "title": "Ome Metadata File Url"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "uuid",
+          "version",
+          "bia_image_uuid",
+          "ome_metadata",
+          "ome_metadata_file_url"
+        ],
+        "title": "BIAImageOmeMetadata"
       },
       "BIAImageRepresentation": {
         "properties": {
@@ -1906,6 +2066,19 @@
           "model"
         ],
         "title": "ObjectInfo"
+      },
+      "OmeMetadatSource": {
+        "properties": {
+          "ome_metadata_url": {
+            "type": "string",
+            "title": "Ome Metadata Url"
+          }
+        },
+        "type": "object",
+        "required": [
+          "ome_metadata_url"
+        ],
+        "title": "OmeMetadatSource"
       },
       "RenderingInfo": {
         "properties": {
