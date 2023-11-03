@@ -281,20 +281,21 @@ class Repository:
                 insert_attempt_docs.append(doc.model_dump())
         
         # actual insert
-        try:
-            await self.biaint.insert_many(insert_attempt_docs, ordered=False)
-        except pymongo.errors.BulkWriteError as e:
-            for doc_write_error in e.details['writeErrors']:
-                if doc_write_error['code'] == 11000 and await self._doc_exists(doc_write_error['op']):
-                    # got a duplicate key error (so doc exists) but is identical to the pushed one => idempotent
-                    pass
-                else:
-                    # either a different error, or trying to push a different version of an existing doc => error
-                    insert_attempt_index = doc_write_error['index']
-                    doc_model_index = insert_attempt_docs_idx_to_doc_models_idx[insert_attempt_index]
-                    
-                    ref_bulk_operation_response.items[doc_model_index].status = 400
-                    ref_bulk_operation_response.items[doc_model_index].message = doc_write_error['errmsg']
+        if len(insert_attempt_docs):
+            try:
+                await self.biaint.insert_many(insert_attempt_docs, ordered=False)
+            except pymongo.errors.BulkWriteError as e:
+                for doc_write_error in e.details['writeErrors']:
+                    if doc_write_error['code'] == 11000 and await self._doc_exists(doc_write_error['op']):
+                        # got a duplicate key error (so doc exists) but is identical to the pushed one => idempotent
+                        pass
+                    else:
+                        # either a different error, or trying to push a different version of an existing doc => error
+                        insert_attempt_index = doc_write_error['index']
+                        doc_model_index = insert_attempt_docs_idx_to_doc_models_idx[insert_attempt_index]
+                        
+                        ref_bulk_operation_response.items[doc_model_index].status = 400
+                        ref_bulk_operation_response.items[doc_model_index].message = doc_write_error['errmsg']
 
         # remaining unchanged status codes are all for documents that were persisted
         for insert_response_item in ref_bulk_operation_response.items:
