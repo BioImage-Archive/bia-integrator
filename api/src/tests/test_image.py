@@ -2,6 +2,7 @@ from fastapi.testclient import TestClient
 from .util import *
 import itertools
 from uuid import UUID
+import os
 
 def test_create_images(api_client: TestClient, existing_study: dict):
     uuids = [get_uuid() for _ in range(2)]
@@ -395,3 +396,40 @@ def test_image_pagination_bad_limit(api_client: TestClient, existing_study: dict
 
     rsp = api_client.get(f"studies/{existing_study['uuid']}/images?limit={0}")
     assert rsp.status_code == 422
+
+def test_image_ome_metadata_create_get(api_client: TestClient, existing_image: dict):
+    script_dir = os.path.dirname(os.path.realpath(__file__))
+    with open(os.path.join(script_dir, "data/simple.ome.xml")) as f:
+        rsp = api_client.post(f"private/images/{existing_image['uuid']}/ome_metadata", files={"ome_metadata_file": f.read()})
+        assert rsp.status_code == 201
+
+        bia_image_ome_metadata = rsp.json()
+        assert bia_image_ome_metadata['bia_image_uuid'] == existing_image['uuid']
+        assert bia_image_ome_metadata['ome_metadata']['images'][0]['name'] == "XY-ch-02"
+
+    rsp = api_client.get(f"images/{existing_image['uuid']}/ome_metadata")
+    assert rsp.status_code == 200
+    bia_image_ome_metadata = rsp.json()
+    assert bia_image_ome_metadata['bia_image_uuid'] == existing_image['uuid']
+    assert bia_image_ome_metadata['ome_metadata']['images'][0]['name'] == "XY-ch-02"
+
+def test_post_invalid_ome_metadata(api_client: TestClient, existing_image: dict):
+    with open(os.path.realpath(__file__)) as f:
+        rsp = api_client.post(f"private/images/{existing_image['uuid']}/ome_metadata", files={"ome_metadata_file": f.read()})
+        assert rsp.status_code == 500
+
+    # check no ome metadata object was created
+    rsp = api_client.get(f"images/{existing_image['uuid']}/ome_metadata")
+    assert rsp.status_code == 404
+
+def test_image_ome_metadata_update(api_client: TestClient, existing_image: dict):
+    script_dir = os.path.dirname(os.path.realpath(__file__))
+    with open(os.path.join(script_dir, "data/simple.ome.xml")) as f:
+        rsp = api_client.post(f"private/images/{existing_image['uuid']}/ome_metadata", files={"ome_metadata_file": f.read()})
+        assert rsp.status_code == 201
+    with open(os.path.join(script_dir, "data/simple.ome.xml")) as f:
+        rsp = api_client.post(f"private/images/{existing_image['uuid']}/ome_metadata", files={"ome_metadata_file": f.read()})
+        assert rsp.status_code == 201
+
+    rsp = api_client.get(f"images/{existing_image['uuid']}/ome_metadata")
+    assert rsp.status_code == 200

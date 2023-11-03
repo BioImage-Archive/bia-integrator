@@ -4,10 +4,13 @@ from ..models import api as api_models
 from ..api import exceptions
 from .auth import get_current_user
 from . import constants
+from uuid import UUID
 import logging
 
 from typing import List
-from fastapi import APIRouter, status, Depends
+from fastapi import APIRouter, status, Depends, UploadFile
+
+from ome_types import from_xml
 
 router = APIRouter(
     prefix="/private",
@@ -173,3 +176,15 @@ async def create_collection(
         await db.update_doc(collection)
 
     return None
+
+@router.post("/images/{image_uuid}/ome_metadata", status_code=status.HTTP_201_CREATED)
+async def set_image_ome_metadata_url(
+    image_uuid: UUID,
+    ome_metadata_file: UploadFile,
+    db: Repository = Depends()
+    ) -> db_models.BIAImageOmeMetadata:
+
+    ome_metadata = from_xml(ome_metadata_file.file._file, parser='lxml', validate=True)
+    bia_image_ome_metadata = await db.upsert_ome_metadata_for_image(image_uuid, ome_metadata.model_dump(mode='json'))
+
+    return bia_image_ome_metadata

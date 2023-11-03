@@ -166,8 +166,7 @@ def get_template_image(existing_study: dict, add_uuid = False):
         "annotations": [],
         "dimensions": None,
         "alias": None,  
-        "representations": [],
-        "ome_metadata_file_url": None
+        "representations": []
     }
 
 def make_images(api_client: TestClient, existing_study: dict, n: int, image_template = None):

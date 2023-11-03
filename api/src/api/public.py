@@ -114,6 +114,15 @@ async def get_image(
     ) -> db_models.BIAImage:
     
     return await db.get_image(uuid=image_uuid)
+
+@router.get("/images/{image_uuid}/ome_metadata")
+async def get_image_ome_metadata(
+    image_uuid: UUID,
+    db: Repository = Depends()
+    ) -> db_models.BIAImageOmeMetadata:
+    ome_metadata = await db.get_ome_metadata_for_image(image_uuid)
+
+    return ome_metadata
     
 @router.get("/file_references/{file_reference_uuid}")
 async def get_file_reference(

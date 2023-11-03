@@ -5,7 +5,7 @@ from ..api import exceptions
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorCollection, AsyncIOMotorDatabase
 import pydantic
 from typing import List, Any, Callable
-from uuid import UUID
+import uuid
 import pymongo
 import os
 
@@ -94,7 +94,7 @@ class Repository:
     async def images_for_study(self, *args, **kwargs) -> List[models.BIAImage]:
         return await self._study_assets_find(*args, fn_model_factory=models.BIAImage, **kwargs)
 
-    async def _study_assets_find(self, study_uuid: UUID, start_uuid: UUID | None, limit: int, fn_model_factory: models.BIABaseModel) -> models.DocumentMixin:
+    async def _study_assets_find(self, study_uuid: uuid.UUID, start_uuid: uuid.UUID | None, limit: int, fn_model_factory: models.BIABaseModel) -> models.DocumentMixin:
         mongo_query = {
             'study_uuid': study_uuid,
             'model.type_name': fn_model_factory.__name__
@@ -106,7 +106,7 @@ class Repository:
         else:
             # explicitly start from the first uuid (by sorted order) if none specified
             mongo_query['uuid'] = {
-                '$gt': UUID(int=0)
+                '$gt': uuid.UUID(int=0)
             }
 
         docs = []
@@ -186,7 +186,7 @@ class Repository:
                 {
                     "$match": {
                         "study_uuid": {
-                            "$eq": UUID(study_uuid)
+                            "$eq": uuid.UUID(study_uuid)
                         },
                         "model.type_name": {
                             "$eq": child_type_name
@@ -232,7 +232,7 @@ class Repository:
             
             raise exceptions.InvalidUpdateException(str(e))
 
-    async def search_studies(self, query: dict, start_uuid: UUID | None = None, limit: int = 100) -> List[models.BIAStudy]:
+    async def search_studies(self, query: dict, start_uuid: uuid.UUID | None = None, limit: int = 100) -> List[models.BIAStudy]:
         studies = []
 
         query["model.type_name"] = "BIAStudy"
@@ -303,9 +303,9 @@ class Repository:
 
         return
 
-    async def list_item_push(self, root_doc_uuid: str | UUID, location: str, new_list_item: pydantic.BaseModel):
+    async def list_item_push(self, root_doc_uuid: str | uuid.UUID, location: str, new_list_item: pydantic.BaseModel):
         if isinstance(root_doc_uuid, str):
-            root_doc_uuid = UUID(root_doc_uuid)
+            root_doc_uuid = uuid.UUID(root_doc_uuid)
 
         result = await self.biaint.update_one(
             {
@@ -325,8 +325,8 @@ class Repository:
     async def doc_dependency_verify_exists(
             self,
             models_to_verify: List[models.DocumentMixin],
-            fn_model_extract_dependency: Callable[[models.BIABaseModel], UUID],
-            fn_dependency_fetch: Callable[[str | UUID], models.BIABaseModel],
+            fn_model_extract_dependency: Callable[[models.BIABaseModel], uuid.UUID],
+            fn_dependency_fetch: Callable[[str | uuid.UUID], models.BIABaseModel],
             ref_bulk_operation_response: api_models.BulkOperationResponse
         ) -> None:
         # we always insert a large number of filerefs/images associated with a single dependency (study)
@@ -370,17 +370,17 @@ class Repository:
             
             raise exceptions.DocumentNotFound(f"Could not find document with uuid {doc_model.uuid} and version {doc_model.version}")
 
-    async def find_image_by_uuid(self, uuid: str | UUID) -> models.BIAImage:
-        if isinstance(uuid, str):
-            uuid = UUID(uuid)
+    async def find_image_by_uuid(self, image_uuid: str | uuid.UUID) -> models.BIAImage:
+        if isinstance(image_uuid, str):
+            image_uuid = uuid.UUID(image_uuid)
         
-        return await self.get_image(uuid=uuid)
+        return await self.get_image(uuid=image_uuid)
 
-    async def find_study_by_uuid(self, uuid: str | UUID) -> models.BIAStudy:
-        if isinstance(uuid, str):
-            uuid = UUID(uuid)
+    async def find_study_by_uuid(self, study_uuid: str | uuid.UUID) -> models.BIAStudy:
+        if isinstance(study_uuid, str):
+            study_uuid = uuid.UUID(study_uuid)
 
-        return await self.get_study(uuid=uuid)
+        return await self.get_study(uuid=study_uuid)
 
     async def search_collections(self, **kwargs) -> List[models.BIACollection]:
         mongo_query = {
@@ -397,29 +397,34 @@ class Repository:
         
         return collections
 
-    async def upsert_ome_metadata_for_image(self, image_uuid: UUID, ome_metadata_file_url: str, ome_metadata: dict) -> models.BIAImageOmeMetadata:
-        self.get_image(uuid=image_uuid)
+    async def upsert_ome_metadata_for_image(self, image_uuid: uuid.UUID, ome_metadata: dict) -> models.BIAImageOmeMetadata:
+        self.get_image(uuid=image_uuid) # just to check it exists
 
         ome_metadata_model = models.BIAImageOmeMetadata(
-            uuid = UUID(),
+            uuid = uuid.uuid4(),
             version = 0,
             bia_image_uuid = image_uuid,
-            ome_metadata_file_url = ome_metadata_file_url,
             ome_metadata = ome_metadata
         )
 
+        ome_metadata_dict = ome_metadata_model.model_dump()
         await self.ome_metadata.update_one(
             {'bia_image_uuid': image_uuid},
-            ome_metadata_model.model_dump(),
+            {'$set': ome_metadata_dict},
             upsert = True
         )
 
         return ome_metadata_model
 
-    async def get_ome_metadata_for_image(self, image_uuid) -> models.BIAImageOmeMetadata:
-        obj_image_ome_metadata = await self.ome_metadata.find_one({'bia_image_uuid': image_uuid})
+    async def get_ome_metadata_for_image(self, image_uuid: uuid.UUID | str) -> models.BIAImageOmeMetadata:
+        if isinstance(image_uuid, str):
+            image_uuid = uuid.UUID(image_uuid)
 
-        return obj_image_ome_metadata
+        obj_image_ome_metadata = await self.ome_metadata.find_one({'bia_image_uuid': image_uuid})
+        if not obj_image_ome_metadata:
+            raise exceptions.DocumentNotFound(f"No ome metadata found for image {image_uuid}")
+
+        return models.BIAImageOmeMetadata(**obj_image_ome_metadata)
 
 async def repository_create() -> Repository:
     repository = Repository()

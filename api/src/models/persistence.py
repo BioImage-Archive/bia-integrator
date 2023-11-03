@@ -199,3 +199,10 @@ class User(BIABaseModel, DocumentMixin):
     password: str = Field()
 
     model_config = ConfigDict(model_version_latest = 1)
+
+class BIAImageOmeMetadata(BIABaseModel, DocumentMixin):
+    bia_image_uuid: UUID = Field()
+    # just a dict to avoid cluttering openapi models in client/generated docs
+    ome_metadata: dict = Field(description="The OME metadata as a json-compatible object. Can be used as a dictionary or directly parsed with the ome-types module.")
+
+    model_config = ConfigDict(model_version_latest = 1)
