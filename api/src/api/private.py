@@ -8,7 +8,7 @@ from uuid import UUID
 import logging
 
 from typing import List
-from fastapi import APIRouter, status, Depends, UploadFile
+from fastapi import APIRouter, status, Depends, UploadFile, Response
 
 from ome_types import from_xml
 
@@ -58,6 +58,7 @@ async def study_refresh_counts(
 @router.post("/images", status_code=status.HTTP_201_CREATED)
 async def create_images(
     study_images: List[db_models.BIAImage],
+    response: Response,
     db: Repository = Depends()
     ) -> api_models.BulkOperationResponse:
     
@@ -84,6 +85,11 @@ async def create_images(
         study_images,
         ref_bulk_operation_response = create_bulk_response
     )
+
+    create_bulk_response.build_item_idx_by_status()
+    
+    if create_bulk_response.item_idx_by_status.keys() != {201}:
+        response.status_code = 400
 
     return create_bulk_response
 
@@ -122,6 +128,7 @@ async def create_image_representation(
 @router.post("/file_references", status_code=status.HTTP_201_CREATED)
 async def create_file_references(
     file_references: List[db_models.FileReference],
+    response: Response,
     db: Repository = Depends()
     ) -> api_models.BulkOperationResponse:
     
@@ -145,6 +152,11 @@ async def create_file_references(
         ref_bulk_operation_response=create_bulk_response
     )
     await db.persist_docs(file_references, ref_bulk_operation_response=create_bulk_response)
+
+    create_bulk_response.build_item_idx_by_status()
+    
+    if create_bulk_response.item_idx_by_status.keys() != {201}:
+        response.status_code = 400
 
     return create_bulk_response
 

@@ -87,7 +87,7 @@ def test_create_images_multiple_errors(api_client: TestClient, existing_study: d
     images[3]['study_uuid'] = "00000000-0000-0000-0000-000000000000"
 
     rsp = api_client.post("private/images", json=images)
-    assert rsp.status_code == 201, rsp.json()
+    assert rsp.status_code == 400, rsp.json()
 
     # groupby expects sorted list
     bulk_write_results = rsp.json()['items']
@@ -147,7 +147,7 @@ def test_create_images_existing_changed(api_client: TestClient, existing_study: 
     images[1]['dimensions'] = "only_in_test_object"
 
     rsp = api_client.post("private/images", json=images)
-    assert rsp.status_code == 201, rsp.json()
+    assert rsp.status_code == 400, rsp.json()
 
     create_result = rsp.json()
     # Object attributes can only be strings (from json spec)
@@ -170,7 +170,7 @@ def test_create_images_missing_study(api_client: TestClient, existing_study: dic
     images[1]['study_uuid'] = "00000000-0000-0000-0000-000000000000"
 
     rsp = api_client.post("private/images", json=images)
-    assert rsp.status_code == 201, rsp.json()
+    assert rsp.status_code == 400, rsp.json()
 
     create_result = rsp.json()
     # Object attributes can only be strings (from json spec)
@@ -193,7 +193,7 @@ def test_create_images_nonzero_version(api_client: TestClient, existing_study: d
     images[1]['version'] = 1
 
     rsp = api_client.post("private/images", json=images)
-    assert rsp.status_code == 201, rsp.json()
+    assert rsp.status_code == 400, rsp.json()
 
     create_result = rsp.json()
     # Object attributes can only be strings (from json spec)
@@ -243,7 +243,7 @@ def test_create_images_same_request_almost_duplicates(api_client: TestClient, ex
     images.append(almost_duplicate_image)
 
     rsp = api_client.post("private/images", json=images)
-    assert rsp.status_code == 201, rsp.json()
+    assert rsp.status_code == 400, rsp.json()
 
     create_result = rsp.json()
     # Object attributes can only be strings (from json spec)

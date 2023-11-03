@@ -53,7 +53,7 @@ def test_create_file_references_multiple_errors(api_client: TestClient, existing
     file_references[3]['study_uuid'] = "00000000-0000-0000-0000-000000000000"
 
     rsp = api_client.post("private/file_references", json=file_references)
-    assert rsp.status_code == 201, rsp.json()
+    assert rsp.status_code == 400, rsp.json()
 
     # groupby expects sorted list
     bulk_write_results = rsp.json()['items']
@@ -136,7 +136,7 @@ def test_create_file_references_existing_changed(api_client: TestClient, existin
     file_references[1]['uri'] += "_only_in_test_object"
 
     rsp = api_client.post("private/file_references", json=file_references)
-    assert rsp.status_code == 201, rsp.json()
+    assert rsp.status_code == 400, rsp.json()
 
     create_result = rsp.json()
     # Object attributes can only be strings (from json spec)
@@ -159,7 +159,7 @@ def test_create_file_references_missing_study(api_client: TestClient, existing_s
     file_references[1]['study_uuid'] = "00000000-0000-0000-0000-000000000000"
 
     rsp = api_client.post("private/file_references", json=file_references)
-    assert rsp.status_code == 201, rsp.json()
+    assert rsp.status_code == 400, rsp.json()
 
     create_result = rsp.json()
     # Object attributes can only be strings (from json spec)
@@ -182,7 +182,7 @@ def test_create_file_references_nonzero_version(api_client: TestClient, existing
     file_references[1]['version'] = 1
 
     rsp = api_client.post("private/file_references", json=file_references)
-    assert rsp.status_code == 201, rsp.json()
+    assert rsp.status_code == 400, rsp.json()
 
     create_result = rsp.json()
     # Object attributes can only be strings (from json spec)
@@ -232,7 +232,7 @@ def test_create_file_references_same_request_almost_duplicates(api_client: TestC
     file_references.append(almost_duplicate_fileref)
 
     rsp = api_client.post("private/file_references", json=file_references)
-    assert rsp.status_code == 201, rsp.json()
+    assert rsp.status_code == 400, rsp.json()
 
     create_result = rsp.json()
     # Object attributes can only be strings (from json spec)

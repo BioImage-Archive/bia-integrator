@@ -169,7 +169,7 @@ def get_template_image(existing_study: dict, add_uuid = False):
         "representations": []
     }
 
-def make_images(api_client: TestClient, existing_study: dict, n: int, image_template = None):
+def make_images(api_client: TestClient, existing_study: dict, n: int, image_template = None, expect_status = 201):
     if image_template is None:
         image_template = get_template_image(existing_study)
 
@@ -182,7 +182,7 @@ def make_images(api_client: TestClient, existing_study: dict, n: int, image_temp
         images.append(img)
     
     rsp = api_client.post("private/images", json=images)
-    assert rsp.status_code == 201, rsp.json()
+    assert rsp.status_code == expect_status, rsp.json()
 
     return images
 

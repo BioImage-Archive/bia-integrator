@@ -1878,6 +1878,17 @@
             },
             "type": "array",
             "title": "Items"
+          },
+          "item_idx_by_status": {
+            "additionalProperties": {
+              "items": {
+                "type": "integer"
+              },
+              "type": "array"
+            },
+            "type": "object",
+            "title": "Item Idx By Status",
+            "default": {}
           }
         },
         "type": "object",
