@@ -178,7 +178,7 @@ async def create_collection(
     return None
 
 @router.post("/images/{image_uuid}/ome_metadata", status_code=status.HTTP_201_CREATED)
-async def set_image_ome_metadata_url(
+async def set_image_ome_metadata(
     image_uuid: UUID,
     ome_metadata_file: UploadFile,
     db: Repository = Depends()

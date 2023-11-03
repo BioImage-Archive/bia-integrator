@@ -206,7 +206,7 @@ class Repository:
         file_references_count = await self._study_child_count(study_uuid, models.FileReference.__name__)
         images_count = await self._study_child_count(study_uuid, models.BIAImage.__name__)
 
-        study = await self.find_study_by_uuid(uuid=study_uuid)
+        study = await self.find_study_by_uuid(study_uuid)
         study.file_references_count = file_references_count
         study.images_count = images_count
 

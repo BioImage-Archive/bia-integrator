@@ -122,6 +122,7 @@ def representation_core_to_api(representation_core: core_models.BIAImageRepresen
     if representation_core.rendering:
         channel_renders_api = [
             api_models.ChannelRendering(
+                channel_label = None,
                 colormap_start = channel_render_core.colormap_start,
                 colormap_end = channel_render_core.colormap_end,
                 scale_factor = channel_render_core.scale_factor
