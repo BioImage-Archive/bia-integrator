@@ -6,6 +6,7 @@ from bia_integrator_core.fileref import get_filerefs
 from bia_integrator_core.annotation import get_study_annotations, get_image_annotations, get_study_tags
 from bia_integrator_core.representation import get_representations
 from bia_integrator_core.study import get_study
+from bia_integrator_core.config import settings
 
 logger = logging.getLogger(__name__)
 
