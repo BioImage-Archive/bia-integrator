@@ -117,7 +117,7 @@ def generate_filerefs_for_empiar_entry(accession_no: str):
 
     empiar_files = empiar_files_by_pyfilesystem(accession_no)
 
-    accession_id = f"EMPIAE-{accession_no}"
+    accession_id = f"EMPIAR-{accession_no}"
     filerefs = [
         empiar_file_to_file_reference(accession_id, empiar_file)
         for empiar_file in empiar_files
@@ -151,7 +151,8 @@ def main(accession_id):
         authors = [Author.parse_obj(a.__dict__) for a in empiar_authors]
     )
 
-    persist_study(bia_study)
+    print(bia_study)
+    # persist_study(bia_study)
 
 
 if __name__ == "__main__":
