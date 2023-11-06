@@ -89,5 +89,5 @@ There are two important things to consider when creating or modifying objects:
 
 ## Setup
 
-`poetry add openapi-client git+https://github.com/BioImage-Archive/bia-integrator.git@biaint-api-backend#subdirectory=clients/python`
+`poetry add bia-integrator-api git+https://github.com/BioImage-Archive/bia-integrator.git@biaint-api-backend#subdirectory=clients/python`
 
