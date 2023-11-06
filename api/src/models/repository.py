@@ -430,12 +430,8 @@ class Repository:
 async def repository_create() -> Repository:
     repository = Repository()
 
-    collections = await repository.db.list_collection_names()
-    if COLLECTION_BIA_INTEGRATOR not in collections:
-        await repository._init_collection_biaint()
-    if COLLECTION_USERS not in collections:
-        await repository._init_collection_users()
-    if COLLECTION_OME_METADATA not in collections:
-        await repository._init_collection_ome_metadata()
+    await repository._init_collection_biaint()
+    await repository._init_collection_users()
+    await repository._init_collection_ome_metadata()
 
     return repository
