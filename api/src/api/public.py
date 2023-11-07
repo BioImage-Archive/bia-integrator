@@ -1,7 +1,7 @@
 from ..models import persistence as db_models
 from ..models import api as api_models
 from ..models.repository import Repository
-from .exceptions import DocumentNotFound
+from .exceptions import DocumentNotFound, InvalidRequestException
 from . import constants
 
 from typing import List, Optional, Annotated
@@ -84,14 +84,29 @@ async def search_studies(
     
     return await db.search_studies({}, start_uuid, limit)
 
-@router.get("/search/images")
-async def search_images(
-        alias: Optional[str] = None,
-        attributes: Optional[dict] = None,
-        annotations: List[dict] = []
+@router.get("/search/images/by_attribute")
+async def search_images_by_attribute(
+        original_relpath: Optional[str] = None,
+        study_uuid: Optional[UUID] = None,
+        start_uuid: UUID | None = None,
+        limit : Annotated[int, Query(gt=0)] = 10,
+        db: Repository = Depends()
     ) -> List[db_models.BIAImage]:
-    raise Exception("TODO - trickier?")
-    return None
+    """
+    Exact match search of images with a specific attribute. Multiple parameters mean AND (as in, p1 AND p2).
+    
+    ! This is likely to change fast, please use named arguments in client apps instead of positional if possible to prevent downstream breakage
+    """
+    query = {}
+    if original_relpath:
+        query['original_relpath'] = original_relpath
+    if study_uuid:
+        query['study_uuid'] = study_uuid
+    
+    if query == {}:
+        raise InvalidRequestException("Expecting at least one filter when searching")
+
+    return await db.search_images(query, start_uuid=start_uuid, limit=limit)
 
 @router.get("/studies/{study_uuid}/images")
 async def get_study_images(

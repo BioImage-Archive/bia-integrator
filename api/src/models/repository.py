@@ -232,23 +232,31 @@ class Repository:
             
             raise exceptions.InvalidUpdateException(str(e))
 
-    async def search_studies(self, query: dict, start_uuid: uuid.UUID | None = None, limit: int = 100) -> List[models.BIAStudy]:
-        studies = []
-
-        query["model.type_name"] = "BIAStudy"
+    async def search_objects(self, query: dict, start_uuid: uuid.UUID | None = None, limit: int = 100):
         if start_uuid:
             query["uuid"] = {
                 "$gt": start_uuid
             }
-        #else:
-        #    query["uuid"] = {
-        #        "$gt": UUID(int=0)
-        #    }
-
-        async for obj_study in self.biaint.find(query, limit=limit, sort=[("uuid", 1)]):
-            studies.append(models.BIAStudy(**obj_study))
         
+        return await self.biaint.find(filter=query, limit=limit, sort=[("uuid", 1)]).to_list(limit)
+
+    async def search_studies(self, query: dict, start_uuid: uuid.UUID | None = None, limit: int = 100) -> List[models.BIAStudy]:
+        query["model.type_name"] = "BIAStudy"
+
+        studies = []
+        for study_raw in await self.search_objects(query=query, start_uuid=start_uuid, limit=limit):
+            studies.append(models.BIAStudy(**study_raw))
+
         return studies
+
+    async def search_images(self, query: dict, start_uuid: uuid.UUID | None = None, limit: int = 100) -> List[models.BIAImage]:
+        query["model.type_name"] = "BIAImage"
+
+        images = []
+        for image_raw in await self.search_objects(query=query, start_uuid=start_uuid, limit=limit):
+            images.append(models.BIAImage(**image_raw))
+        
+        return images
 
     def _bulk_insert_validate_version(
             self,

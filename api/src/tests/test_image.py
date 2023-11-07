@@ -433,3 +433,27 @@ def test_image_ome_metadata_update(api_client: TestClient, existing_image: dict)
 
     rsp = api_client.get(f"images/{existing_image['uuid']}/ome_metadata")
     assert rsp.status_code == 200
+
+def test_search_images_by_attribute_empty_query(api_client: TestClient):
+    rsp = api_client.get(f"search/images/by_attribute")
+    assert rsp.status_code == 422
+
+def test_search_images_by_attribute_empty_result(api_client: TestClient, existing_study: dict):
+    rsp = api_client.get(f"search/images/by_attribute?study_uuid={existing_study['uuid']}")
+    assert rsp.status_code == 200
+    assert rsp.json() == []
+
+def test_search_images_by_attribute_original_relpath(api_client: TestClient, existing_image: dict):
+    rsp = api_client.get(f"search/images/by_attribute?original_relpath={existing_image['original_relpath']}")
+    assert rsp.status_code == 200
+    # lots of images with the same original relpath - constant in the template
+    assert len(rsp.json()) != 0
+
+def test_search_images_by_attribute_all_filters(api_client: TestClient, existing_image: dict):
+    rsp = api_client.get(f"search/images/by_attribute?original_relpath={existing_image['original_relpath']}&study_uuid={existing_image['study_uuid']}")
+    assert rsp.status_code == 200
+    # lots of images with the same original relpath - constant in the template
+    arr_images = rsp.json()
+    assert len(arr_images) == 1
+
+    assert arr_images.pop() == existing_image
