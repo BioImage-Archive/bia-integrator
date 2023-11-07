@@ -908,17 +908,18 @@
         }
       }
     },
-    "/api/v1/search/images": {
+    "/api/v1/search/images/by_attribute": {
       "get": {
         "tags": [
           "public",
           "private"
         ],
-        "summary": "Search Images",
-        "operationId": "search_images",
+        "summary": "Search Images By Attribute",
+        "description": "Exact match search of images with a specific attribute. Multiple parameters mean AND (as in, p1 AND p2).\n\n! This is likely to change fast, please use named arguments in client apps instead of positional if possible to prevent downstream breakage",
+        "operationId": "search_images_by_attribute",
         "parameters": [
           {
-            "name": "alias",
+            "name": "original_relpath",
             "in": "query",
             "required": false,
             "schema": {
@@ -930,24 +931,55 @@
                   "type": "null"
                 }
               ],
-              "title": "Alias"
+              "title": "Original Relpath"
+            }
+          },
+          {
+            "name": "study_uuid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Study Uuid"
+            }
+          },
+          {
+            "name": "start_uuid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start Uuid"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "exclusiveMinimum": 0,
+              "default": 10,
+              "title": "Limit"
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/Body_search_images"
-                  }
-                ],
-                "title": "Body"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -958,7 +990,7 @@
                   "items": {
                     "$ref": "#/components/schemas/BIAImage"
                   },
-                  "title": "Response Search Images"
+                  "title": "Response Search Images By Attribute"
                 }
               }
             }
@@ -1800,31 +1832,6 @@
           "secret_token"
         ],
         "title": "Body_register_user"
-      },
-      "Body_search_images": {
-        "properties": {
-          "attributes": {
-            "anyOf": [
-              {
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Attributes"
-          },
-          "annotations": {
-            "items": {
-              "type": "object"
-            },
-            "type": "array",
-            "title": "Annotations",
-            "default": []
-          }
-        },
-        "type": "object",
-        "title": "Body_search_images"
       },
       "Body_set_image_ome_metadata": {
         "properties": {

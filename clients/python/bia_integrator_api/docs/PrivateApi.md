@@ -23,7 +23,7 @@ Method | HTTP request | Description
 [**login_for_access_token**](PrivateApi.md#login_for_access_token) | **POST** /api/v1/auth/token | Login For Access Token
 [**register_user**](PrivateApi.md#register_user) | **POST** /api/v1/auth/users/register | Register User
 [**search_collections**](PrivateApi.md#search_collections) | **GET** /api/v1/collections | Search Collections
-[**search_images**](PrivateApi.md#search_images) | **GET** /api/v1/search/images | Search Images
+[**search_images_by_attribute**](PrivateApi.md#search_images_by_attribute) | **GET** /api/v1/search/images/by_attribute | Search Images By Attribute
 [**search_studies**](PrivateApi.md#search_studies) | **GET** /api/v1/search/studies | Search Studies
 [**set_image_ome_metadata**](PrivateApi.md#set_image_ome_metadata) | **POST** /api/v1/private/images/{image_uuid}/ome_metadata | Set Image Ome Metadata
 [**study_refresh_counts**](PrivateApi.md#study_refresh_counts) | **POST** /api/v1/private/studies/{study_uuid}/refresh_counts | Study Refresh Counts
@@ -1353,10 +1353,12 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **search_images**
-> List[BIAImage] search_images(alias=alias, unknown_base_type=unknown_base_type)
+# **search_images_by_attribute**
+> List[BIAImage] search_images_by_attribute(original_relpath=original_relpath, study_uuid=study_uuid, start_uuid=start_uuid, limit=limit)
 
-Search Images
+Search Images By Attribute
+
+Exact match search of images with a specific attribute. Multiple parameters mean AND (as in, p1 AND p2).  ! This is likely to change fast, please use named arguments in client apps instead of positional if possible to prevent downstream breakage
 
 ### Example
 
@@ -1379,16 +1381,18 @@ configuration = bia_integrator_api.Configuration(
 with bia_integrator_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = bia_integrator_api.PrivateApi(api_client)
-    alias = bia_integrator_api.Alias() # Alias |  (optional)
-    unknown_base_type = bia_integrator_api.UNKNOWN_BASE_TYPE() # UNKNOWN_BASE_TYPE |  (optional)
+    original_relpath = bia_integrator_api.OriginalRelpath() # OriginalRelpath |  (optional)
+    study_uuid = bia_integrator_api.StudyUuid() # StudyUuid |  (optional)
+    start_uuid = bia_integrator_api.StartUuid() # StartUuid |  (optional)
+    limit = 10 # int |  (optional) (default to 10)
 
     try:
-        # Search Images
-        api_response = api_instance.search_images(alias=alias, unknown_base_type=unknown_base_type)
-        print("The response of PrivateApi->search_images:\n")
+        # Search Images By Attribute
+        api_response = api_instance.search_images_by_attribute(original_relpath=original_relpath, study_uuid=study_uuid, start_uuid=start_uuid, limit=limit)
+        print("The response of PrivateApi->search_images_by_attribute:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling PrivateApi->search_images: %s\n" % e)
+        print("Exception when calling PrivateApi->search_images_by_attribute: %s\n" % e)
 ```
 
 
@@ -1397,8 +1401,10 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **alias** | [**Alias**](.md)|  | [optional] 
- **unknown_base_type** | [**UNKNOWN_BASE_TYPE**](UNKNOWN_BASE_TYPE.md)|  | [optional] 
+ **original_relpath** | [**OriginalRelpath**](.md)|  | [optional] 
+ **study_uuid** | [**StudyUuid**](.md)|  | [optional] 
+ **start_uuid** | [**StartUuid**](.md)|  | [optional] 
+ **limit** | **int**|  | [optional] [default to 10]
 
 ### Return type
 
@@ -1410,7 +1416,7 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
+ - **Content-Type**: Not defined
  - **Accept**: application/json
 
 ### HTTP response details

@@ -2,7 +2,7 @@
 
 ```sh
 # pull openapi.json
-wget --no-check-certificate -q -O - https://localhost:8080/openapi.json | jq > openapi.json
+wget --no-check-certificate -q -O - http://localhost:8080/openapi.json | jq > openapi.json
 
 # generate client
 docker run -it --rm \

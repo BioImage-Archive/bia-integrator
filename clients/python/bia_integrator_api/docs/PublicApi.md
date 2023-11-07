@@ -14,7 +14,7 @@ Method | HTTP request | Description
 [**get_study_images**](PublicApi.md#get_study_images) | **GET** /api/v1/studies/{study_uuid}/images | Get Study Images
 [**get_study_images_by_alias**](PublicApi.md#get_study_images_by_alias) | **GET** /api/v1/studies/{study_accession}/images_by_aliases | Get Study Images By Alias
 [**search_collections**](PublicApi.md#search_collections) | **GET** /api/v1/collections | Search Collections
-[**search_images**](PublicApi.md#search_images) | **GET** /api/v1/search/images | Search Images
+[**search_images_by_attribute**](PublicApi.md#search_images_by_attribute) | **GET** /api/v1/search/images/by_attribute | Search Images By Attribute
 [**search_studies**](PublicApi.md#search_studies) | **GET** /api/v1/search/studies | Search Studies
 
 
@@ -692,10 +692,12 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **search_images**
-> List[BIAImage] search_images(alias=alias, unknown_base_type=unknown_base_type)
+# **search_images_by_attribute**
+> List[BIAImage] search_images_by_attribute(original_relpath=original_relpath, study_uuid=study_uuid, start_uuid=start_uuid, limit=limit)
 
-Search Images
+Search Images By Attribute
+
+Exact match search of images with a specific attribute. Multiple parameters mean AND (as in, p1 AND p2).  ! This is likely to change fast, please use named arguments in client apps instead of positional if possible to prevent downstream breakage
 
 ### Example
 
@@ -718,16 +720,18 @@ configuration = bia_integrator_api.Configuration(
 with bia_integrator_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = bia_integrator_api.PublicApi(api_client)
-    alias = bia_integrator_api.Alias() # Alias |  (optional)
-    unknown_base_type = bia_integrator_api.UNKNOWN_BASE_TYPE() # UNKNOWN_BASE_TYPE |  (optional)
+    original_relpath = bia_integrator_api.OriginalRelpath() # OriginalRelpath |  (optional)
+    study_uuid = bia_integrator_api.StudyUuid() # StudyUuid |  (optional)
+    start_uuid = bia_integrator_api.StartUuid() # StartUuid |  (optional)
+    limit = 10 # int |  (optional) (default to 10)
 
     try:
-        # Search Images
-        api_response = api_instance.search_images(alias=alias, unknown_base_type=unknown_base_type)
-        print("The response of PublicApi->search_images:\n")
+        # Search Images By Attribute
+        api_response = api_instance.search_images_by_attribute(original_relpath=original_relpath, study_uuid=study_uuid, start_uuid=start_uuid, limit=limit)
+        print("The response of PublicApi->search_images_by_attribute:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling PublicApi->search_images: %s\n" % e)
+        print("Exception when calling PublicApi->search_images_by_attribute: %s\n" % e)
 ```
 
 
@@ -736,8 +740,10 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **alias** | [**Alias**](.md)|  | [optional] 
- **unknown_base_type** | [**UNKNOWN_BASE_TYPE**](UNKNOWN_BASE_TYPE.md)|  | [optional] 
+ **original_relpath** | [**OriginalRelpath**](.md)|  | [optional] 
+ **study_uuid** | [**StudyUuid**](.md)|  | [optional] 
+ **start_uuid** | [**StartUuid**](.md)|  | [optional] 
+ **limit** | **int**|  | [optional] [default to 10]
 
 ### Return type
 
@@ -749,7 +755,7 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
+ - **Content-Type**: Not defined
  - **Accept**: application/json
 
 ### HTTP response details

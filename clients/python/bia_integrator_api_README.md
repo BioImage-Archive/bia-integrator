@@ -89,7 +89,7 @@ Class | Method | HTTP request | Description
 *PrivateApi* | [**login_for_access_token**](bia_integrator_api/docs/PrivateApi.md#login_for_access_token) | **POST** /api/v1/auth/token | Login For Access Token
 *PrivateApi* | [**register_user**](bia_integrator_api/docs/PrivateApi.md#register_user) | **POST** /api/v1/auth/users/register | Register User
 *PrivateApi* | [**search_collections**](bia_integrator_api/docs/PrivateApi.md#search_collections) | **GET** /api/v1/collections | Search Collections
-*PrivateApi* | [**search_images**](bia_integrator_api/docs/PrivateApi.md#search_images) | **GET** /api/v1/search/images | Search Images
+*PrivateApi* | [**search_images_by_attribute**](bia_integrator_api/docs/PrivateApi.md#search_images_by_attribute) | **GET** /api/v1/search/images/by_attribute | Search Images By Attribute
 *PrivateApi* | [**search_studies**](bia_integrator_api/docs/PrivateApi.md#search_studies) | **GET** /api/v1/search/studies | Search Studies
 *PrivateApi* | [**set_image_ome_metadata**](bia_integrator_api/docs/PrivateApi.md#set_image_ome_metadata) | **POST** /api/v1/private/images/{image_uuid}/ome_metadata | Set Image Ome Metadata
 *PrivateApi* | [**study_refresh_counts**](bia_integrator_api/docs/PrivateApi.md#study_refresh_counts) | **POST** /api/v1/private/studies/{study_uuid}/refresh_counts | Study Refresh Counts
@@ -106,13 +106,12 @@ Class | Method | HTTP request | Description
 *PublicApi* | [**get_study_images**](bia_integrator_api/docs/PublicApi.md#get_study_images) | **GET** /api/v1/studies/{study_uuid}/images | Get Study Images
 *PublicApi* | [**get_study_images_by_alias**](bia_integrator_api/docs/PublicApi.md#get_study_images_by_alias) | **GET** /api/v1/studies/{study_accession}/images_by_aliases | Get Study Images By Alias
 *PublicApi* | [**search_collections**](bia_integrator_api/docs/PublicApi.md#search_collections) | **GET** /api/v1/collections | Search Collections
-*PublicApi* | [**search_images**](bia_integrator_api/docs/PublicApi.md#search_images) | **GET** /api/v1/search/images | Search Images
+*PublicApi* | [**search_images_by_attribute**](bia_integrator_api/docs/PublicApi.md#search_images_by_attribute) | **GET** /api/v1/search/images/by_attribute | Search Images By Attribute
 *PublicApi* | [**search_studies**](bia_integrator_api/docs/PublicApi.md#search_studies) | **GET** /api/v1/search/studies | Search Studies
 
 
 ## Documentation For Models
 
- - [Alias](bia_integrator_api/docs/Alias.md)
  - [AnnotationState](bia_integrator_api/docs/AnnotationState.md)
  - [AuthenticationToken](bia_integrator_api/docs/AuthenticationToken.md)
  - [Author](bia_integrator_api/docs/Author.md)
@@ -123,7 +122,6 @@ Class | Method | HTTP request | Description
  - [BIAImageRepresentation](bia_integrator_api/docs/BIAImageRepresentation.md)
  - [BIAStudy](bia_integrator_api/docs/BIAStudy.md)
  - [BodyRegisterUser](bia_integrator_api/docs/BodyRegisterUser.md)
- - [BodySearchImages](bia_integrator_api/docs/BodySearchImages.md)
  - [BulkOperationItem](bia_integrator_api/docs/BulkOperationItem.md)
  - [BulkOperationResponse](bia_integrator_api/docs/BulkOperationResponse.md)
  - [ChannelRendering](bia_integrator_api/docs/ChannelRendering.md)
@@ -134,9 +132,11 @@ Class | Method | HTTP request | Description
  - [ModelMetadata](bia_integrator_api/docs/ModelMetadata.md)
  - [Name](bia_integrator_api/docs/Name.md)
  - [ObjectInfo](bia_integrator_api/docs/ObjectInfo.md)
+ - [OriginalRelpath](bia_integrator_api/docs/OriginalRelpath.md)
  - [RenderingInfo](bia_integrator_api/docs/RenderingInfo.md)
  - [StartUuid](bia_integrator_api/docs/StartUuid.md)
  - [StudyAnnotation](bia_integrator_api/docs/StudyAnnotation.md)
+ - [StudyUuid](bia_integrator_api/docs/StudyUuid.md)
  - [ValidationError](bia_integrator_api/docs/ValidationError.md)
 
 

@@ -1477,19 +1477,24 @@ class PublicApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def search_images(self, alias : Optional[Any] = None, unknown_base_type : Optional[Any] = None, **kwargs) -> List[BIAImage]:  # noqa: E501
-        """Search Images  # noqa: E501
+    def search_images_by_attribute(self, original_relpath : Optional[Any] = None, study_uuid : Optional[Any] = None, start_uuid : Optional[Any] = None, limit : Optional[StrictInt] = None, **kwargs) -> List[BIAImage]:  # noqa: E501
+        """Search Images By Attribute  # noqa: E501
 
+        Exact match search of images with a specific attribute. Multiple parameters mean AND (as in, p1 AND p2).  ! This is likely to change fast, please use named arguments in client apps instead of positional if possible to prevent downstream breakage  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.search_images(alias, unknown_base_type, async_req=True)
+        >>> thread = api.search_images_by_attribute(original_relpath, study_uuid, start_uuid, limit, async_req=True)
         >>> result = thread.get()
 
-        :param alias:
-        :type alias: Alias
-        :param unknown_base_type:
-        :type unknown_base_type: UNKNOWN_BASE_TYPE
+        :param original_relpath:
+        :type original_relpath: OriginalRelpath
+        :param study_uuid:
+        :type study_uuid: StudyUuid
+        :param start_uuid:
+        :type start_uuid: StartUuid
+        :param limit:
+        :type limit: int
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _request_timeout: timeout setting for this request. If one
@@ -1503,23 +1508,28 @@ class PublicApi(object):
         """
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
-            raise ValueError("Error! Please call the search_images_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
-        return self.search_images_with_http_info(alias, unknown_base_type, **kwargs)  # noqa: E501
+            raise ValueError("Error! Please call the search_images_by_attribute_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
+        return self.search_images_by_attribute_with_http_info(original_relpath, study_uuid, start_uuid, limit, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def search_images_with_http_info(self, alias : Optional[Any] = None, unknown_base_type : Optional[Any] = None, **kwargs) -> ApiResponse:  # noqa: E501
-        """Search Images  # noqa: E501
+    def search_images_by_attribute_with_http_info(self, original_relpath : Optional[Any] = None, study_uuid : Optional[Any] = None, start_uuid : Optional[Any] = None, limit : Optional[StrictInt] = None, **kwargs) -> ApiResponse:  # noqa: E501
+        """Search Images By Attribute  # noqa: E501
 
+        Exact match search of images with a specific attribute. Multiple parameters mean AND (as in, p1 AND p2).  ! This is likely to change fast, please use named arguments in client apps instead of positional if possible to prevent downstream breakage  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.search_images_with_http_info(alias, unknown_base_type, async_req=True)
+        >>> thread = api.search_images_by_attribute_with_http_info(original_relpath, study_uuid, start_uuid, limit, async_req=True)
         >>> result = thread.get()
 
-        :param alias:
-        :type alias: Alias
-        :param unknown_base_type:
-        :type unknown_base_type: UNKNOWN_BASE_TYPE
+        :param original_relpath:
+        :type original_relpath: OriginalRelpath
+        :param study_uuid:
+        :type study_uuid: StudyUuid
+        :param start_uuid:
+        :type start_uuid: StartUuid
+        :param limit:
+        :type limit: int
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _preload_content: if False, the ApiResponse.data will
@@ -1548,8 +1558,10 @@ class PublicApi(object):
         _params = locals()
 
         _all_params = [
-            'alias',
-            'unknown_base_type'
+            'original_relpath',
+            'study_uuid',
+            'start_uuid',
+            'limit'
         ]
         _all_params.extend(
             [
@@ -1568,7 +1580,7 @@ class PublicApi(object):
             if _key not in _all_params:
                 raise ApiTypeError(
                     "Got an unexpected keyword argument '%s'"
-                    " to method search_images" % _key
+                    " to method search_images_by_attribute" % _key
                 )
             _params[_key] = _val
         del _params['kwargs']
@@ -1580,8 +1592,17 @@ class PublicApi(object):
 
         # process the query parameters
         _query_params = []
-        if _params.get('alias') is not None:  # noqa: E501
-            _query_params.append(('alias', _params['alias']))
+        if _params.get('original_relpath') is not None:  # noqa: E501
+            _query_params.append(('original_relpath', _params['original_relpath']))
+
+        if _params.get('study_uuid') is not None:  # noqa: E501
+            _query_params.append(('study_uuid', _params['study_uuid']))
+
+        if _params.get('start_uuid') is not None:  # noqa: E501
+            _query_params.append(('start_uuid', _params['start_uuid']))
+
+        if _params.get('limit') is not None:  # noqa: E501
+            _query_params.append(('limit', _params['limit']))
 
         # process the header parameters
         _header_params = dict(_params.get('_headers', {}))
@@ -1590,19 +1611,9 @@ class PublicApi(object):
         _files = {}
         # process the body parameter
         _body_params = None
-        if _params['unknown_base_type'] is not None:
-            _body_params = _params['unknown_base_type']
-
         # set the HTTP header `Accept`
         _header_params['Accept'] = self.api_client.select_header_accept(
             ['application/json'])  # noqa: E501
-
-        # set the HTTP header `Content-Type`
-        _content_types_list = _params.get('_content_type',
-            self.api_client.select_header_content_type(
-                ['application/json']))
-        if _content_types_list:
-                _header_params['Content-Type'] = _content_types_list
 
         # authentication setting
         _auth_settings = []  # noqa: E501
@@ -1613,7 +1624,7 @@ class PublicApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/search/images', 'GET',
+            '/api/v1/search/images/by_attribute', 'GET',
             _path_params,
             _query_params,
             _header_params,
