@@ -1,11 +1,8 @@
 ## Running the api
 
 ```sh
-# starting the api
-# Create a github personal access token here: https://github.com/settings/tokens
-#   with write:packages scope
-docker login ghcr.io # use personal access token created above
-docker compose --env-file ./.env_compose up -d # remove -d when first setting up, to make any problems obvious 
+# note the --build, otherwise the api image doesn't actually get rebuilt to reflect changes
+docker compose --env-file ./.env_compose up --build -d # remove -d when first setting up, to make any problems obvious 
 ```
 
 To check if everything worked, go to `http://localhost:8080/openapi.json` and the response should be a json of the openapi spec
@@ -28,6 +25,9 @@ For test/debugger integration to work, **the api directory must be the root proj
 `.env_compose` was added for reference and 
 
 ```sh
+# Create a github personal access token here: https://github.com/settings/tokens
+#   with write:packages scope
+
 # building the api image
 docker login ghcr.io
 docker build -t bioimage-archive/integrator-api:0.1 .

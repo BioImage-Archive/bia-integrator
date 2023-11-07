@@ -14,7 +14,8 @@ services:
       #   - "./.share/mongo.conf:/etc/mongo.conf"
       #     #- "./.share/keyfile.secret:/home/share/keyfile/keyfile.secret"
   bia-integrator-api:
-    build: .
+    build:
+      context: .
     container_name: api
     hostname: api
     ports:
