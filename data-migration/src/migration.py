@@ -11,6 +11,9 @@ import os
 import uuid as uuid_lib
 import time
 import re
+from urllib.request import urlopen
+from urllib.error import HTTPError
+import tempfile
 
 class SkipStudyException(Exception):
     pass
@@ -69,8 +72,11 @@ def file_reference_core_to_api(file_reference_core: core_models.FileReference, s
     if fileref_type is None:
         if file_reference_core.uri.startswith("https://ftp.ebi.ac.uk"):
             fileref_type = "fire_object"
+        elif file_reference_core.uri.endswith(".zarr.zip"):
+            fileref_type = "zipped_zarr"
         else:
             fileref_type = "TODO - What do we do with null fileref types? Direct / in archive"
+            #raise Exception("TODO - What do we do with null fileref types? Direct / in archive")
     
     fileref = api_models.FileReference(
         uuid = fileref_uuid,
@@ -191,6 +197,58 @@ def image_core_to_api(image_core: core_models.BIAImage, study_uuid, image_uuid =
     
     return image
 
+def image_set_ome_metadata_if_any(api_client, study_image_api: api_models.BIAImage):
+    """
+    Mostly duplicated from scripts/fetch_ome_metadata_for_all_images_in_study.py,
+        but tools isn't a dependency of the migration project
+    After fully moving to prod, this should be deleted anyway
+    """
+    if not study_image_api.representations:
+        return
+    
+    image_ome_ngff = [img_repr for img_repr in study_image_api.representations if img_repr.type == "ome_ngff"]
+    if len(image_ome_ngff) == 0:
+        # no ngff representation
+        return
+    elif len(image_ome_ngff) == 1:
+        image_ome_ngff = image_ome_ngff.pop()
+    else:
+        # @TODO: Can we have this case? Adding to make it obvious when we do and decide then
+        raise Exception(f"Image {study_image_api.uuid} has {len(image_ome_ngff)} ome_ngff representations. Which one to choose?")
+
+    # Odd regex to at least make it invariant to url path, as long as it has a directory with .zarr somewhere
+    #   e.g. sometimes urls end in myzarr.zarr, other times in myzarr.zarr/0
+    # @TODO: Make this more robust? 
+    ome_ngff_uri = re.sub(
+        r"\.zarr.*",
+        ".zarr/OME/METADATA.ome.xml",
+        image_ome_ngff.uri[0]
+    )
+    print(f"Setting {ome_ngff_uri} as the ome xml of image {study_image_api.uuid}")
+
+    ome_metadata_contents = b""
+    try:
+        ome_metadata_contents = urlopen(ome_ngff_uri).read()
+    except HTTPError as e:
+        if e.status == 403:
+            # TODO: What to do about this case? Does the ome xml really not exist?
+            print(f"UNABLE TO FETCH {ome_ngff_uri} - SKIPPING")
+            return
+
+    print(f"writing {len(ome_metadata_contents)} bytes to ome_metadata file")
+    with tempfile.NamedTemporaryFile() as tmp:
+        tmp.write(ome_metadata_contents)
+    
+        # THIS IS MEGA-IMPORTANT!
+        #   If the ome xml is small, it doesn't get flushed to disk
+        #   but openapi-client independently opens the file passed by path and reads it when posting
+        #   so it will post a file with 0 length
+        tmp.flush()
+
+        api_client.set_image_ome_metadata(image_uuid=study_image_api.uuid, ome_metadata_file = tmp.name)
+
+
+
 def migrate_study(study_id):
     #study_core = study.get_study(study_id)
     study_core = interface.load_and_annotate_study(study_id)
@@ -239,6 +297,10 @@ def migrate_study(study_id):
         api_client.create_images(study_images_api)
     
     api_client.study_refresh_counts(study_api.uuid)
+
+    print("DONE saving study info. Setting image OME metadata...")
+    for study_image_api in study_images_api:
+        image_set_ome_metadata_if_any(api_client, study_image_api)
 
     print(f"DONE migrating study {study_id}\n")
 

@@ -1,9 +1,9 @@
 cd ../api
 docker compose down -v
-docker compose --env-file ./.env_compose up -d
+docker compose --env-file ./.env_compose up -d --build
 
 echo "Waiting for the api to start"
-sleep 5
+sleep 10
 
 curl -H "Content-Type: application/json" \
     --request POST \

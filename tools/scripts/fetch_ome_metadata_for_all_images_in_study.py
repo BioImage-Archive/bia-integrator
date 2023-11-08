@@ -49,6 +49,12 @@ def main(accession_id):
         ome_metadata_contents = urlopen(ome_ngff_uri).read()
         with tempfile.NamedTemporaryFile() as tmp:
             tmp.write(ome_metadata_contents)
+            # THIS IS MEGA-IMPORTANT!
+            #   If the ome xml is small, it doesn't get flushed to disk
+            #   but openapi-client independently opens the file passed by path and reads it when posting
+            #   so it will post a file with 0 length
+            tmp.flush()
+
 
             ome_metadata = settings.api_client.set_image_ome_metadata(image_uuid=image.uuid, ome_metadata_file = tmp.name)
             
