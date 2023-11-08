@@ -236,6 +236,10 @@ def image_set_ome_metadata_if_any(api_client, study_image_api: api_models.BIAIma
             return
 
     print(f"writing {len(ome_metadata_contents)} bytes to ome_metadata file")
+    if not len(ome_metadata_contents):
+        print("Skipping empty ome xml")
+        return
+
     with tempfile.NamedTemporaryFile() as tmp:
         tmp.write(ome_metadata_contents)
     
