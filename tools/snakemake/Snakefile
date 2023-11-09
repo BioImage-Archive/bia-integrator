@@ -66,7 +66,14 @@ rule ingest_from_biostudies:
     singularity:
         singularity_container_path
     shell:
-        "{command_prefix} python {script_dir}/ingest_from_biostudies.py $ACCNO > {output}"
+        r"""
+            if [[ $ACCNO =~ "EMPIAR" ]]
+            then
+                touch {output}
+            else
+                {command_prefix} python {script_dir}/ingest_from_biostudies.py $ACCNO > {output}
+            fi
+        """
 
 rule index_zips_in_study:
     input:
@@ -263,7 +270,7 @@ rule generate_representative_image:
                 if [ -f ${{IM_REF}}.success ]
                 then
                     IMAGE_ID=$(basename $IM_REF)
-                    {command_prefix} python {script_dir}/generate_representative_image_and_set_to_default.py $ACCNO $IMAGE_ID > {output}
+                    {command_prefix} python {script_dir}/generate_representatives_for_annotation_and_image_and_set_to_default.py $ACCNO $IMAGE_ID > {output}
                     exit 0
                 fi
             done
