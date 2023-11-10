@@ -1,9 +1,8 @@
 from .persistence import ModelMetadata
 
-from pydantic import BaseModel, validator, ConfigDict
+from pydantic import BaseModel
 from typing import List, Optional, Dict, Union, Literal
 from uuid import UUID
-from functools import cached_property
 
 class BIABaseModel(BaseModel):
     pass
@@ -42,3 +41,19 @@ class TokenData(BIABaseModel):
 class AuthResult(BIABaseModel):
     access_token: str
     token_type: Literal["bearer"] = "bearer"
+
+# @TODO: Make Partial[db_models.Annotation] when pydantinc adds partial types
+#   see https://github.com/pydantic/pydantic/issues/1673
+class SearchAnnotation(BIABaseModel):
+    author_email: Optional[str] = None
+    key: Optional[str] = None
+    value: Optional[str] = None
+    state: Optional[str] = None
+
+class SearchFileRepresentation(BIABaseModel):
+    size_bounds_lte: Optional[int] = None
+    size_bounds_gte: Optional[int] = None
+    type: Optional[str] = None
+    # @TODO: Simplify this. Too much variability, https://www.google.com or google.com or www.google.com or https://google.com for the same thing
+    #   all might be present even though just two are actual urls
+    uri_prefix: Optional[str] = None

@@ -238,7 +238,12 @@ class Repository:
                 "$gt": start_uuid
             }
         
-        return await self.biaint.find(filter=query, limit=limit, sort=[("uuid", 1)]).to_list(limit)
+        try:
+            return await self.biaint.find(filter=query, limit=limit, sort=[("uuid", 1)], max_time_ms=2000).to_list(limit)
+        except pymongo.errors.ExecutionTimeout as e:
+            # Try to allow searching by most things, but set bounds on duration
+            #   see */search/* before changing this
+            raise exceptions.InvalidRequestException("Query timeout. Add indexed fields to reduce search set or simplify query")
 
     async def search_studies(self, query: dict, start_uuid: uuid.UUID | None = None, limit: int = 100) -> List[models.BIAStudy]:
         query["model.type_name"] = "BIAStudy"

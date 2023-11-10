@@ -5,8 +5,9 @@ from .exceptions import DocumentNotFound, InvalidRequestException
 from . import constants
 
 from typing import List, Optional, Annotated
-from fastapi import APIRouter, Query, Depends
+from fastapi import APIRouter, Query, Depends, Body
 from uuid import UUID
+import re
 
 router = APIRouter(tags=[constants.OPENAPI_TAG_PUBLIC, constants.OPENAPI_TAG_PRIVATE])
 
@@ -84,24 +85,64 @@ async def search_studies(
     
     return await db.search_studies({}, start_uuid, limit)
 
-@router.get("/search/images/by_attribute")
-async def search_images_by_attribute(
-        original_relpath: Optional[str] = None,
-        study_uuid: Optional[UUID] = None,
-        start_uuid: UUID | None = None,
-        limit : Annotated[int, Query(gt=0)] = 10,
+# post because fastapi there aren't any nice ways to get fastapi to accept objects (annotations_any) in querystring
+@router.post("/search/images/exact_match")
+async def search_images_exact_match(
+        original_relpath: Annotated[Optional[str], Body()] = None,
+        annotations_any: Annotated[List[api_models.SearchAnnotation], Body()] = [],
+        image_representations_any: Annotated[List[api_models.SearchFileRepresentation], Body()] = [],
+        study_uuid: Annotated[Optional[UUID], Body()] = None,
+        start_uuid: Annotated[Optional[UUID], Body()] = None,
+        limit : Annotated[int, Body(gt=0)] = 10,
         db: Repository = Depends()
     ) -> List[db_models.BIAImage]:
     """
-    Exact match search of images with a specific attribute. Multiple parameters mean AND (as in, p1 AND p2).
+    Exact match search of images with a specific attribute.
+    Multiple parameters mean AND (as in, p1 AND p2).
+    Items in lists with the `_any` suffix are ORed.
+
+    Although `study_uuid` is optional, passing it if known is highly recommended and results in faster queries.
     
-    ! This is likely to change fast, please use named arguments in client apps instead of positional if possible to prevent downstream breakage
+    This is likely to change fast, so **named arguments are recommended** in client apps instead of positional if possible to prevent downstream breakage.
     """
     query = {}
     if original_relpath:
         query['original_relpath'] = original_relpath
     if study_uuid:
         query['study_uuid'] = study_uuid
+    if annotations_any:
+        obj_annotations_any = [query_term.model_dump(exclude_defaults=True) for query_term in annotations_any]
+
+        query['annotations'] = {
+            '$elemMatch': {
+                '$or': obj_annotations_any
+            }
+        }
+    if image_representations_any:
+        representation_filters = []
+        for representation_filter in image_representations_any:
+            img_representation_list_item_filter = {}
+            if representation_filter.type:
+                img_representation_list_item_filter['type'] = representation_filter.type
+            if representation_filter.uri_prefix:
+                img_representation_list_item_filter['uri'] = {
+                    '$regex': f"^{re.escape(representation_filter.uri_prefix)}",
+                    '$options': 'i'
+                }
+            if any([representation_filter.size_bounds_gte, representation_filter.size_bounds_lte]):
+                img_representation_list_item_filter['size'] = {}
+                if representation_filter.size_bounds_gte:
+                    img_representation_list_item_filter['size']['$gte'] = representation_filter.size_bounds_gte
+                if representation_filter.size_bounds_lte:
+                    img_representation_list_item_filter['size']['$lte'] = representation_filter.size_bounds_lte
+
+            representation_filters.append(img_representation_list_item_filter)
+
+        query['representations'] = {
+            '$elemMatch': {
+                '$or': representation_filters
+            }
+        }
     
     if query == {}:
         raise InvalidRequestException("Expecting at least one filter when searching")
