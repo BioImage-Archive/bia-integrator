@@ -67,6 +67,7 @@ def empiar_file_to_file_reference(accession_id: str, file: EMPIARFile) -> FileRe
         name=fileref_name,
         uri=empiar_file_uri(accession_id, file),
         size_in_bytes=file.size,
+        type="fire_obj",
         attributes={}
     )
 
@@ -151,8 +152,7 @@ def main(accession_id):
         authors = [Author.parse_obj(a.__dict__) for a in empiar_authors]
     )
 
-    print(bia_study)
-    # persist_study(bia_study)
+    persist_study(bia_study)
 
 
 if __name__ == "__main__":
