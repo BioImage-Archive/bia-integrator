@@ -15,6 +15,7 @@ from bia_integrator_core.integrator import load_and_annotate_study
 from bia_integrator_tools.cli import sizeof_fmt
 from bia_integrator_api.models import StudyAnnotation, FileReference
 from bia_integrator_core.interface import persist_study_annotation
+from bia_integrator_core.config import settings
 
 logger = logging.getLogger(__file__)
 
@@ -147,7 +148,9 @@ def main(accession_id: str) -> None:
     ftypes_summary = {"filetype_breakdown": ftypes} | {"filetype_breakdown_html": ftypes_html} | summarise_study_filetypes(ftypes) 
     for k, v in ftypes_summary.items():
         annotation = StudyAnnotation(
-            author_email="snakemake_pipeline@ebi.ac.uk",
+            #ToDo: Should we configure env variable for snakemat_pipeline email?
+            #author_email="snakemake_pipeline@ebi.ac.uk",
+            author_email=settings.bia_username,
             accession_id=accession_id,
             key=k,
             value=str(v),

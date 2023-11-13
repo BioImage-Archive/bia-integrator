@@ -165,3 +165,9 @@ def url_exists(url: str) -> bool:
         return response.status_code == 200
     except requests.exceptions.RequestException:
         return False
+
+
+def list_of_objects_to_dict(object_list: list, key: str = "uuid") -> dict:
+    """Convert list of objs to dict with keys from specifed obj property"""
+
+    return { obj.__dict__[key]: obj for obj in object_list }
