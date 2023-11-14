@@ -1,12 +1,10 @@
 import logging
 
 import click
-from bia_integrator_core.integrator import load_and_annotate_study
+from bia_integrator_core.interface import load_and_annotate_study
 from bia_integrator_core.interface import settings
-from bia_integrator_api import models as api_models
+from bia_integrator_core.interface import api_models
 
-from bia_integrator_tools.utils import get_ome_ngff_rep
-#from extract_ome_metadata import get_image_metadata
 import re
 from urllib.request import urlopen
 import tempfile
