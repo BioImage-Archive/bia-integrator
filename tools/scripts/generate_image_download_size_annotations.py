@@ -50,8 +50,8 @@ def get_image_download_size(accession_id: str) -> dict:
                         "used to compute download size"
                     ]
                     logger.warning(warning_str)
-                if image_representation.type == "fire_object" and image_representation.uri.endswith(".zip"):
-                    download_size = f"In {zip_sizes[image_representation.uri]} zip"
+                if image_representation.type == "fire_object" and image_representation.uri[0].endswith(".zip"):
+                    download_size = f"In {zip_sizes[image_representation.uri[0]]} zip"
                 else:
                     download_size = sizeof_fmt(file_references[fileref_ids[0]].size_in_bytes)
                     
