@@ -69,7 +69,7 @@ def create_user_if_missing(email: str, password: str):
     loop = asyncio.get_event_loop()
 
     async def create_test_user_if_missing():
-        db = await repository_create()
+        db = await repository_create(init = True)
 
         if not await get_user(db, email):
             await create_user(db, email, password)
