@@ -345,3 +345,141 @@ def test_file_reference_pagination_bad_limit(api_client: TestClient, existing_st
 
     rsp = api_client.get(f"studies/{existing_study['uuid']}/file_references?limit={0}")
     assert rsp.status_code == 422
+
+import copy
+class TestSearchFilerefExactMatch:
+    @pytest.fixture
+    def fileref_fixtures(self, api_client: TestClient, existing_study: dict) -> List[dict]:
+        first_fileref = get_template_file_reference(existing_study=existing_study, add_uuid=True)
+        first_fileref |= {
+            "uri": "https://google.com/first_fileref/placeholder",
+            "size_in_bytes": 10,
+            "attributes": {
+                "some_attr": "some_value"
+            },
+            "type": "file"
+        }
+
+        second_fileref = get_template_file_reference(existing_study=existing_study, add_uuid=True)
+        second_fileref |= {
+            "uri": "https://google.com/second_fileref/placeholder",
+            "size_in_bytes": 100,
+            "attributes": {
+                "some_attr": "some_value",
+                "other_attr": "other_value"
+            },
+            "type": "second_file_type"
+        }
+
+        dummy_fileref = get_template_file_reference(existing_study=existing_study, add_uuid=True)
+
+        filerefs_created = [first_fileref, second_fileref, dummy_fileref]
+        rsp = api_client.post("private/file_references", json=filerefs_created)
+        assert rsp.status_code == 201, rsp.json()
+
+        return filerefs_created
+
+    def test_search_no_match(self, api_client: TestClient, fileref_fixtures: List[dict], existing_study: dict):
+        rsp = api_client.post("search/file_references/exact_match", json={
+            "file_reference_match": {
+                "type": "some_type_that_does_not_exist"
+            },
+            "study_uuid": existing_study['uuid']
+        })
+        assert rsp.status_code == 200
+        assert rsp.json() == []
+    
+    def test_search_size(self, api_client: TestClient, fileref_fixtures: List[dict], existing_study: dict):
+        rsp = api_client.post("search/file_references/exact_match", json={
+            "file_reference_match": {
+                "size_bounds_lte": 10
+            },
+            "study_uuid": existing_study['uuid']
+        })
+        assert rsp.status_code == 200
+        assert rsp.json() == [fileref_fixtures[0], fileref_fixtures[2]]
+
+        rsp = api_client.post("search/file_references/exact_match", json={
+            "file_reference_match": {
+                "size_bounds_lte": 10,
+                "size_bounds_gte": 10,
+            },
+            "study_uuid": existing_study['uuid']
+        })
+        assert rsp.status_code == 200
+        assert rsp.json() == [fileref_fixtures[0]]
+
+        rsp = api_client.post("search/file_references/exact_match", json={
+            "file_reference_match": {
+                "size_bounds_gte": 1,
+            },
+            "study_uuid": existing_study['uuid']
+        })
+        assert rsp.status_code == 200
+        assert rsp.json() == fileref_fixtures
+
+        rsp = api_client.post("search/file_references/exact_match", json={
+            "file_reference_match": {
+                "size_bounds_lte": 1000,
+            },
+            "study_uuid": existing_study['uuid']
+        })
+        assert rsp.status_code == 200
+        assert rsp.json() == fileref_fixtures
+    
+    def test_search_uri_prefix(self, api_client: TestClient, fileref_fixtures: List[dict], existing_study: dict):
+        rsp = api_client.post("search/file_references/exact_match", json={
+            "file_reference_match": {
+                "uri_prefix": "https://google.com"
+            },
+            "study_uuid": existing_study['uuid']
+        })
+        assert rsp.status_code == 200
+        assert rsp.json() == [fileref_fixtures[0], fileref_fixtures[1]]
+    
+    def test_search_uri_prefix_not_substring(self, api_client: TestClient, fileref_fixtures: List[dict], existing_study: dict):
+        rsp = api_client.post("search/file_references/exact_match", json={
+            "file_reference_match": {
+                "uri_prefix": "://www.google.com/test"
+            },
+            "study_uuid": existing_study['uuid']
+        })
+        assert rsp.status_code == 200
+        assert rsp.json() == []
+
+    def test_search_type(self, api_client: TestClient, fileref_fixtures: List[dict], existing_study: dict):
+        rsp = api_client.post("search/file_references/exact_match", json={
+            "file_reference_match": {
+                "type": "second_file_type",
+            },
+            "study_uuid": existing_study['uuid']
+        })
+        assert rsp.status_code == 200
+        assert rsp.json() == [fileref_fixtures[1]]
+    
+    def test_search_pagination(self, api_client: TestClient):
+        rsp = api_client.post("search/file_references/exact_match", json={
+            "file_reference_match": {
+                "size_bounds_gte": 0,
+            },
+            "limit": 2
+        })
+        assert rsp.status_code == 200
+
+        filerefs_fetched = rsp.json()
+        assert len(filerefs_fetched) == 2
+
+        last_img_first_page = filerefs_fetched[-1]["uuid"]
+        rsp = api_client.post("search/file_references/exact_match", json={
+            "file_reference_match": {
+                "size_bounds_gte": 0,
+            },
+            "limit": 2,
+            "start_uuid": last_img_first_page
+        })
+        assert rsp.status_code == 200
+
+        next_page_images = rsp.json()
+        assert len(next_page_images) == 2
+
+        assert last_img_first_page not in [img["uuid"] for img in next_page_images]

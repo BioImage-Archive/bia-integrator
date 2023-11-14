@@ -47,7 +47,7 @@ class Repository:
             partialFilterExpression={
                 'accession_id': {'$exists': True}
             },
-            name='img_accession_id'
+            name='study_accession_id'
         )
         await self.biaint.create_index(
             [ ('study_uuid', 1), ('alias.name', 1) ],
@@ -246,6 +246,8 @@ class Repository:
             raise exceptions.InvalidRequestException("Query timeout. Add indexed fields to reduce search set or simplify query")
 
     async def search_studies(self, query: dict, start_uuid: uuid.UUID | None = None, limit: int = 100) -> List[models.BIAStudy]:
+        # add a study_uuid filter if it doesn't exist, so the index gets hit
+        query['accession_id'] = query.get('accession_id', {"$exists": True})
         query["model.type_name"] = "BIAStudy"
 
         studies = []
@@ -255,6 +257,8 @@ class Repository:
         return studies
 
     async def search_images(self, query: dict, start_uuid: uuid.UUID | None = None, limit: int = 100) -> List[models.BIAImage]:
+        # add a study_uuid filter if it doesn't exist, so the index gets hit
+        query["study_uuid"] = query.get("study_uuid", {"$exists": True})
         query["model.type_name"] = "BIAImage"
 
         images = []
@@ -262,6 +266,17 @@ class Repository:
             images.append(models.BIAImage(**image_raw))
         
         return images
+
+    async def search_filerefs(self, query: dict, start_uuid: uuid.UUID | None = None, limit: int = 100) -> List[models.FileReference]:
+        # add a study_uuid filter if it doesn't exist, so the index gets hit
+        query["study_uuid"] = query.get("study_uuid", {"$exists": True})
+        query["model.type_name"] = "FileReference"
+
+        filerefs = []
+        for fileref_raw in await self.search_objects(query=query, start_uuid=start_uuid, limit=limit):
+            filerefs.append(models.FileReference(**fileref_raw))
+        
+        return filerefs
 
     def _bulk_insert_validate_version(
             self,
@@ -440,11 +455,12 @@ class Repository:
 
         return models.BIAImageOmeMetadata(**obj_image_ome_metadata)
 
-async def repository_create() -> Repository:
+async def repository_create(init: bool) -> Repository:
     repository = Repository()
 
-    await repository._init_collection_biaint()
-    await repository._init_collection_users()
-    await repository._init_collection_ome_metadata()
+    if init:
+        await repository._init_collection_biaint()
+        await repository._init_collection_users()
+        await repository._init_collection_ome_metadata()
 
     return repository

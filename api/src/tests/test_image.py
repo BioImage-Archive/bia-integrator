@@ -517,7 +517,7 @@ def test_search_images_exact_match_by_annotation(api_client: TestClient, existin
     assert second_img in fetched_img
 
 import copy
-class TestSearchImagesExactMatchByRepresentation:
+class TestSearchImagesExactMatch:
     @pytest.fixture
     def img_fixtures(self, api_client: TestClient, existing_study: dict) -> List[dict]:
         template_representation = {
@@ -573,7 +573,8 @@ class TestSearchImagesExactMatchByRepresentation:
             "study_uuid": existing_study['uuid']
         })
         assert rsp.status_code == 200
-        assert rsp.json() == [img_fixtures[0]]
+        img_fetched = rsp.json()
+        assert img_fetched == [img_fixtures[0]]
 
         rsp = api_client.post("search/images/exact_match", json={
             "image_representations_any": [{
@@ -624,7 +625,6 @@ class TestSearchImagesExactMatchByRepresentation:
         assert rsp.status_code == 200
         assert rsp.json() == []
 
-
     def test_search_type(self, api_client: TestClient, img_fixtures: List[dict], existing_study: dict):
         rsp = api_client.post("search/images/exact_match", json={
             "image_representations_any": [{
@@ -634,3 +634,30 @@ class TestSearchImagesExactMatchByRepresentation:
         })
         assert rsp.status_code == 200
         assert rsp.json() == [img_fixtures[1]]
+    
+    def test_search_pagination(self, api_client: TestClient):
+        rsp = api_client.post("search/images/exact_match", json={
+            "image_representations_any": [{
+                "size_bounds_gte": 0,
+            }],
+            "limit": 2
+        })
+        assert rsp.status_code == 200
+
+        images_fetched = rsp.json()
+        assert len(images_fetched) == 2
+
+        last_img_first_page = images_fetched[-1]["uuid"]
+        rsp = api_client.post("search/images/exact_match", json={
+            "image_representations_any": [{
+                "size_bounds_gte": 0,
+            }],
+            "limit": 2,
+            "start_uuid": last_img_first_page
+        })
+        assert rsp.status_code == 200
+
+        next_page_images = rsp.json()
+        assert len(next_page_images) == 2
+
+        assert last_img_first_page not in [img["uuid"] for img in next_page_images]

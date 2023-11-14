@@ -57,3 +57,9 @@ class SearchFileRepresentation(BIABaseModel):
     # @TODO: Simplify this. Too much variability, https://www.google.com or google.com or www.google.com or https://google.com for the same thing
     #   all might be present even though just two are actual urls
     uri_prefix: Optional[str] = None
+
+class SearchFileReference(BIABaseModel):
+    uri_prefix: Optional[str] = None
+    type: Optional[str] = None
+    size_bounds_lte: Optional[int] = None
+    size_bounds_gte: Optional[int] = None

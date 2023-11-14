@@ -101,7 +101,7 @@ async def search_images_exact_match(
     Multiple parameters mean AND (as in, p1 AND p2).
     Items in lists with the `_any` suffix are ORed.
 
-    Although `study_uuid` is optional, passing it if known is highly recommended and results in faster queries.
+    Although `study_uuid` is optional, passing it if known is highly recommended and results in faster queries. Queries time out after 2 seconds, which should be enough for any search filtered by study.
     
     This is likely to change fast, so **named arguments are recommended** in client apps instead of positional if possible to prevent downstream breakage.
     """
@@ -129,11 +129,11 @@ async def search_images_exact_match(
                     '$regex': f"^{re.escape(representation_filter.uri_prefix)}",
                     '$options': 'i'
                 }
-            if any([representation_filter.size_bounds_gte, representation_filter.size_bounds_lte]):
+            if any([representation_filter.size_bounds_gte is not None, representation_filter.size_bounds_lte is not None]):
                 img_representation_list_item_filter['size'] = {}
-                if representation_filter.size_bounds_gte:
+                if representation_filter.size_bounds_gte is not None:
                     img_representation_list_item_filter['size']['$gte'] = representation_filter.size_bounds_gte
-                if representation_filter.size_bounds_lte:
+                if representation_filter.size_bounds_lte is not None:
                     img_representation_list_item_filter['size']['$lte'] = representation_filter.size_bounds_lte
 
             representation_filters.append(img_representation_list_item_filter)
@@ -148,6 +148,56 @@ async def search_images_exact_match(
         raise InvalidRequestException("Expecting at least one filter when searching")
 
     return await db.search_images(query, start_uuid=start_uuid, limit=limit)
+
+@router.post("/search/file_references/exact_match")
+async def search_file_references_exact_match(
+        annotations_any: Annotated[List[api_models.SearchAnnotation], Body()] = [],
+        file_reference_match: Annotated[Optional[api_models.SearchFileReference], Body()] = None,
+        study_uuid: Annotated[Optional[UUID], Body()] = None,
+        start_uuid: Annotated[Optional[UUID], Body()] = None,
+        limit : Annotated[int, Body(gt=0)] = 10,
+        db: Repository = Depends()
+    ) -> List[db_models.FileReference]:
+    """
+    Exact match search of file references with a specific attribute.
+    Multiple parameters mean AND (as in, p1 AND p2).
+    Items in lists with the `_any` suffix are ORed.
+
+    Although `study_uuid` is optional, passing it if known is highly recommended and results in faster queries. Queries time out after 2 seconds, which should be enough for any search filtered by study.
+    
+    This is likely to change fast, so **named arguments are recommended** in client apps instead of positional if possible to prevent downstream breakage.
+    """
+    query = {}
+    if study_uuid:
+        query['study_uuid'] = study_uuid
+    if annotations_any:
+        obj_annotations_any = [query_term.model_dump(exclude_defaults=True) for query_term in annotations_any]
+
+        query['annotations'] = {
+            '$elemMatch': {
+                '$or': obj_annotations_any
+            }
+        }
+    if file_reference_match:
+        if file_reference_match.uri_prefix:
+            query['uri'] = {
+                '$regex': f"^{re.escape(file_reference_match.uri_prefix)}",
+                '$options': 'i'
+            }
+        if file_reference_match.type:
+            query['type'] = file_reference_match.type
+        
+        if any([file_reference_match.size_bounds_gte is not None, file_reference_match.size_bounds_lte is not None]):
+            query['size_in_bytes'] = {}
+            if file_reference_match.size_bounds_gte is not None:
+                query['size_in_bytes']['$gte'] = file_reference_match.size_bounds_gte
+            if file_reference_match.size_bounds_lte is not None:
+                query['size_in_bytes']['$lte'] = file_reference_match.size_bounds_lte
+
+    if query == {}:
+        raise InvalidRequestException("Expecting at least one filter when searching")
+
+    return await db.search_filerefs(query, start_uuid=start_uuid, limit=limit)
 
 @router.get("/studies/{study_uuid}/images")
 async def get_study_images(

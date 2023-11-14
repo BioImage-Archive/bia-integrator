@@ -41,7 +41,7 @@ async def log_exception_handler(request: Request, exc: Exception):
     )
 
 async def repository_dependency():
-    db = await repository_create()
+    db = await repository_create(init = False)
     try:
         yield db
     finally:
@@ -49,7 +49,7 @@ async def repository_dependency():
 
 @app.on_event("startup")
 async def startup_event():
-    await repository_create()
+    await repository_create(init = True)
 
 app.include_router(auth.router, prefix="/api/v1", dependencies=[Depends(repository_dependency)])
 app.include_router(private.router, prefix="/api/v1", dependencies=[Depends(repository_dependency)])
