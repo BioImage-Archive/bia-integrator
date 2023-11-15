@@ -85,8 +85,7 @@ def get_example_annotation_uri(accession_id):
     return bia_study.example_annotation_uri
 
 def get_ome_ngff_rep_by_accession_and_image(accession_id: str, image_id: str) -> Optional[BIAImageRepresentation]:
-    bia_study = load_and_annotate_study(accession_id)
-    image = bia_study.images[image_id]
+    image = get_image(image_id)
     
     ome_ngff_rep = get_ome_ngff_rep(image)
     
