@@ -9,9 +9,8 @@ import boto3
 import requests
 from pydantic import BaseSettings
 from remotezip import RemoteZip
-from bia_integrator_core.models import FileReference
+from bia_integrator_core.interface import api_models 
 from bia_integrator_core.config import Settings
-
     
 logger = logging.getLogger(__name__)
 
@@ -114,7 +113,7 @@ def copy_local_zarr_to_s3(zarr_fpath: Path, accession_id: str, image_id: str) ->
     return zarr_image_uri
 
 
-def copy_file_in_remote_zip_to_local(fileref: FileReference, dst_fpath: Path):
+def copy_file_in_remote_zip_to_local(fileref: api_models.FileReference, dst_fpath: Path):
 
     tmpdir = tempfile.TemporaryDirectory()
 
@@ -130,13 +129,13 @@ def fetch_fileref_to_local(fileref, dst_fpath):
         copy_uri_to_local(fileref.uri, dst_fpath)
 
 
-def stage_fileref_and_get_fpath(accession_id: str, fileref: FileReference) -> Path:
+def stage_fileref_and_get_fpath(accession_id: str, fileref: api_models.FileReference) -> Path:
 
     cache_dirpath = Settings().cache_root_dirpath/accession_id
     cache_dirpath.mkdir(exist_ok=True, parents=True)
 
     suffix = Path(urlparse(fileref.name).path).suffix
-    dst_fname = fileref.id+suffix
+    dst_fname = fileref.uuid+suffix
     dst_fpath = cache_dirpath/dst_fname
     logger.info(f"Checking cache for {fileref.name}")
 
