@@ -63,3 +63,12 @@ class SearchFileReference(BIABaseModel):
     type: Optional[str] = None
     size_bounds_lte: Optional[int] = None
     size_bounds_gte: Optional[int] = None
+
+class SearchStudy(BIABaseModel):
+    author_name_fragment: Optional[str] = None
+    accession_id: Optional[str] = None
+    file_references_count_lte: Optional[int] = None
+    file_references_count_gte: Optional[int] = None
+    images_count_lte: Optional[int] = None
+    images_count_gte: Optional[int] = None
+    tag: Optional[str] = None

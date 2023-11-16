@@ -346,7 +346,6 @@ def test_file_reference_pagination_bad_limit(api_client: TestClient, existing_st
     rsp = api_client.get(f"studies/{existing_study['uuid']}/file_references?limit={0}")
     assert rsp.status_code == 422
 
-import copy
 class TestSearchFilerefExactMatch:
     @pytest.fixture
     def fileref_fixtures(self, api_client: TestClient, existing_study: dict) -> List[dict]:

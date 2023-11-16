@@ -115,29 +115,41 @@ def make_collection(api_client: TestClient, collection_attributes_override = {})
 
     return get_collection(api_client, uuid)
 
-def make_study(api_client: TestClient, study_attributes_override = {}):
-    uuid = get_uuid()
-
-    study = {
-        "uuid": uuid,
+def get_template_study(add_uuid = False):
+    study_uuid = None if not add_uuid else get_uuid()
+    return {
+        "uuid": study_uuid,
         "version": 0,
-        "accession_id": uuid,
+        "model": {"type_name": "BIAStudy", "version": 1},
+        "accession_id": study_uuid,
         "title": "Test BIA study",
         "description": "description",
-        "authors": [{
-            "name": "First Author"
-        }, {
-            "name": "Second Author"
-        }],
+        "attributes": {},
+        "example_image_annotation_uri": '',
+        "example_image_uri": '',
+        "imaging_type": None,
+        "authors": [],
+        "tags": [],
         "organism": "test",
         "release_date": "test"
     }
+
+def make_study(api_client: TestClient, study_attributes_override = {}):
+    study = get_template_study(add_uuid=True)
     study |= study_attributes_override
+
+    """
+    {
+        "name": "First Author"
+    }, {
+        "name": "Second Author"
+    }
+    """
 
     rsp = api_client.post('private/studies', json=study)
     assert rsp.status_code == 201, rsp.json()
 
-    return get_study(api_client, uuid)
+    return get_study(api_client, study['uuid'])
 
 def get_template_file_reference(existing_study: dict, add_uuid = False):
     return {

@@ -232,3 +232,187 @@ def test_search_studies_fetch_all(api_client: TestClient):
     rsp = api_client.get(f"search/studies?limit={100000}")
     assert rsp.status_code == 200
     assert len(rsp.json()) - initial_studies_count == 5
+
+class TestSearchStudiesExactMatch:
+    _test_distinct_uuid: str
+
+    @pytest.fixture
+    def study_fixtures(self, api_client: TestClient) -> List[dict]:
+        self._test_distinct_uuid = get_uuid()
+
+        first_study = get_template_study(add_uuid=True)
+        first_study |= {
+            "file_references_count": 10,
+            "images_count": 10,
+            "authors": [
+                {"name": "Study1 First Author"},
+                {"name": "Study1 Second Author"},
+            ],
+            "attributes": {
+                "test_distinct_uuid": self._test_distinct_uuid
+            },
+            "annotations": [self._build_test_unique_annotation()],
+            "tags": [
+                "first_study",
+                "numbered_study"
+            ]
+        }
+
+        second_study = get_template_study(add_uuid=True)
+        second_study |= {
+            "file_references_count": 100,
+            "images_count": 100,
+            "authors": [
+                {"name": "Study2 First Author"},
+                {"name": "Study2 Second Author"},
+            ],
+            "attributes": {
+                "test_distinct_uuid": self._test_distinct_uuid
+            },
+            "annotations": [self._build_test_unique_annotation()],
+            "tags": [
+                "second_study",
+                "numbered_study"
+            ]
+        }
+
+        dummy_study = get_template_study(add_uuid=True)
+        dummy_study |= {
+            "file_references_count": 50,
+            "images_count": 50,
+            "attributes": {
+                "test_distinct_uuid": self._test_distinct_uuid
+            },
+            "annotations": [self._build_test_unique_annotation()]
+        }
+
+        studies_created = [first_study, second_study, dummy_study]
+        for study in studies_created:
+            rsp = api_client.post("private/studies", json=study)
+            assert rsp.status_code == 201, rsp.json()
+
+        return studies_created
+
+    def _build_test_unique_payload(self):
+        # this exists just to isolate tests
+        return {
+            'annotations_any': [{
+                'key': 'test_distinct_uuid',
+                'value': self._test_distinct_uuid
+            }]
+        }
+    def _build_test_unique_annotation(self):
+        # this exists just to isolate tests
+        return {
+            "author_email": "test@ebi.ac.uk",
+            "key": "test_distinct_uuid",
+            "value": self._test_distinct_uuid,
+            "state": "active"
+        }
+
+    def test_search_no_match(self, api_client: TestClient, study_fixtures: List[dict]):
+        rsp = api_client.post("search/studies/exact_match", json = self._build_test_unique_payload() | {
+            "study_match": {
+                "file_references_count_gte": 100,
+                "file_references_count_lte": 10
+            }
+        })
+        assert rsp.status_code == 200
+        assert rsp.json() == []
+    
+    def test_search_size(self, api_client: TestClient, study_fixtures: List[dict]):
+        rsp = api_client.post("search/studies/exact_match", json = self._build_test_unique_payload() | {
+            "study_match": {
+                "file_references_count_lte": 10,
+                "images_count_lte": 10
+            }
+        })
+        assert rsp.status_code == 200
+        assert len(rsp.json()) == 1
+        assert rsp.json()[0] == study_fixtures[0]
+
+        rsp = api_client.post("search/studies/exact_match", json = self._build_test_unique_payload() | {
+            "study_match": {
+                "file_references_count_gte": 100,
+                "images_count_gte": 100
+            }
+        })
+        assert rsp.status_code == 200
+        assert rsp.json() == [study_fixtures[1]]
+
+        rsp = api_client.post("search/studies/exact_match", json = self._build_test_unique_payload() | {
+            "study_match": {
+                "file_references_count_gte": 1,
+                "images_count_gte": 1
+            }
+        })
+        assert rsp.status_code == 200
+        assert rsp.json()[2] == study_fixtures[2]
+        assert rsp.json() == study_fixtures
+
+    def test_search_author(self, api_client: TestClient, study_fixtures: List[dict]):
+        rsp = api_client.post("search/studies/exact_match", json = self._build_test_unique_payload() | {
+            "study_match": {
+                "author_name_fragment": "Author"
+            }
+        })
+        assert rsp.status_code == 200
+        assert rsp.json() == study_fixtures[:-1]
+
+        rsp = api_client.post("search/studies/exact_match", json = self._build_test_unique_payload() | {
+            "study_match": {
+                "author_name_fragment": "Study1 First"
+            }
+        })
+        assert rsp.status_code == 200
+        assert rsp.json() == [study_fixtures[0]]
+
+        rsp = api_client.post("search/studies/exact_match", json = self._build_test_unique_payload() | {
+            "study_match": {
+                "author_name_fragment": "MISSING"
+            }
+        })
+        assert rsp.status_code == 200
+        assert rsp.json() == []
+    
+    def test_search_tag(self, api_client: TestClient, study_fixtures: List[dict]):
+        rsp = api_client.post("search/studies/exact_match", json = self._build_test_unique_payload() | {
+            "study_match": {
+                "tag": "MISSING"
+            }
+        })
+        assert rsp.status_code == 200
+        assert rsp.json() == []
+
+        rsp = api_client.post("search/studies/exact_match", json = self._build_test_unique_payload() | {
+            "study_match": {
+                "tag": "second_study"
+            }
+        })
+        assert rsp.status_code == 200
+        assert rsp.json() == [study_fixtures[1]]
+
+        rsp = api_client.post("search/studies/exact_match", json = self._build_test_unique_payload() | {
+            "study_match": {
+                "tag": "numbered_STUDY"
+            }
+        })
+        assert rsp.status_code == 200
+        assert rsp.json() == study_fixtures[:-1]
+
+    def test_search_accession(self, api_client: TestClient, study_fixtures: List[dict]):
+        rsp = api_client.post("search/studies/exact_match", json = self._build_test_unique_payload() | {
+            "study_match": {
+                "accession_id": "MISSING"
+            }
+        })
+        assert rsp.status_code == 200
+        assert rsp.json() == []
+
+        rsp = api_client.post("search/studies/exact_match", json = self._build_test_unique_payload() | {
+            "study_match": {
+                "accession_id": study_fixtures[0]["accession_id"]
+            }
+        })
+        assert rsp.status_code == 200
+        assert rsp.json() == [study_fixtures[0]]
