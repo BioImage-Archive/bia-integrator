@@ -87,6 +87,25 @@ There are two important things to consider when creating or modifying objects:
 1. Toplevel objects are versioned, and the versions need to be consecutive. When creating an object, its version must be set to 0, and then when modifications are made the version needs to be incremented. **Gotcha:** Providing an incorrect version when updating currently results in a "Not found" error instead of a conflict.
 2. Object creation and modification are idempotent. This is to simplify retries if deterministic UUIDs were used, because the objects that were created in the previous run are ignored.
 
+### Basic search
+
+The API supports some basic search operations, aimed at simple usecases like "Which images in this study have representations bigger than 10TB?", "Which images have thumbnails", etc. Keep in mind that:
+* Queries are at the Image/Study/FileReference level, and they return the entire toplevel object. For example, if looking for all thumbnails in a study, a query for ImageRepresentions of type "thumbnail" would return *all BIAImage objects which have at least one thumbnail ImageRepresentation". The actual thumbnail ImageRepresentation needs to be extracted separately. 
+* Although not required, queries for Images/FileReferences should **always** include the study uuid, to limit the search space. Queries currently timeout after 2 seconds.
+
+In the API client, methods with names like `search_*` can be used for searching. See https://bia-cron-1.ebi.ac.uk:8080/redoc#tag/public/operation/search_images_exact_match an below for a reference of possible filters.
+
+**Example** body for a raw HTTP post. Client arguments are usually wrapped in `*Search` types. See the [search example](./example/image_search.py) for the api client equivalent.
+```json
+{
+    "annotations_any": [{"dimension_order": "XYZCT"} ],
+    "image_representations_any": [{"type": "thumbnail", "size_lte": 1000000000} ],
+    "study_uuid": "00000000-0000-0000-0006-09b5dbf57bdf",
+    "limit": 10
+}
+```
+
+
 ## Setup
 
 `poetry add bia-integrator-api git+https://github.com/BioImage-Archive/bia-integrator.git@biaint-api-backend#subdirectory=clients/python`

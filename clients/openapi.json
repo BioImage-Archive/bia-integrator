@@ -1022,15 +1022,11 @@
           "content": {
             "application/json": {
               "schema": {
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/Body_search_studies_exact_match"
-                  }
-                ],
-                "title": "Body"
+                "$ref": "#/components/schemas/SearchStudyFilter"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
@@ -2002,48 +1998,6 @@
         "type": "object",
         "title": "Body_search_images_exact_match"
       },
-      "Body_search_studies_exact_match": {
-        "properties": {
-          "annotations_any": {
-            "items": {
-              "$ref": "#/components/schemas/SearchAnnotation"
-            },
-            "type": "array",
-            "title": "Annotations Any",
-            "default": []
-          },
-          "study_match": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/SearchStudy"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "start_uuid": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "uuid"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Start Uuid"
-          },
-          "limit": {
-            "type": "integer",
-            "exclusiveMinimum": 0,
-            "title": "Limit",
-            "default": 10
-          }
-        },
-        "type": "object",
-        "title": "Body_search_studies_exact_match"
-      },
       "Body_set_image_ome_metadata": {
         "properties": {
           "ome_metadata_file": {
@@ -2562,6 +2516,47 @@
         },
         "type": "object",
         "title": "SearchStudy"
+      },
+      "SearchStudyFilter": {
+        "properties": {
+          "annotations_any": {
+            "items": {
+              "$ref": "#/components/schemas/SearchAnnotation"
+            },
+            "type": "array",
+            "title": "Annotations Any",
+            "default": []
+          },
+          "study_match": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SearchStudy"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "start_uuid": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Start Uuid"
+          },
+          "limit": {
+            "type": "integer",
+            "title": "Limit",
+            "default": 10
+          }
+        },
+        "type": "object",
+        "title": "SearchStudyFilter"
       },
       "StudyAnnotation": {
         "properties": {

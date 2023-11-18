@@ -901,7 +901,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **search_studies_exact_match**
-> List[BIAStudy] search_studies_exact_match(unknown_base_type=unknown_base_type)
+> List[BIAStudy] search_studies_exact_match(search_study_filter)
 
 Search Studies Exact Match
 
@@ -912,6 +912,7 @@ import time
 import os
 import bia_integrator_api
 from bia_integrator_api.models.bia_study import BIAStudy
+from bia_integrator_api.models.search_study_filter import SearchStudyFilter
 from bia_integrator_api.rest import ApiException
 from pprint import pprint
 
@@ -926,11 +927,11 @@ configuration = bia_integrator_api.Configuration(
 with bia_integrator_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = bia_integrator_api.PublicApi(api_client)
-    unknown_base_type = bia_integrator_api.UNKNOWN_BASE_TYPE() # UNKNOWN_BASE_TYPE |  (optional)
+    search_study_filter = bia_integrator_api.SearchStudyFilter() # SearchStudyFilter | 
 
     try:
         # Search Studies Exact Match
-        api_response = api_instance.search_studies_exact_match(unknown_base_type=unknown_base_type)
+        api_response = api_instance.search_studies_exact_match(search_study_filter)
         print("The response of PublicApi->search_studies_exact_match:\n")
         pprint(api_response)
     except Exception as e:
@@ -943,7 +944,7 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **unknown_base_type** | [**UNKNOWN_BASE_TYPE**](UNKNOWN_BASE_TYPE.md)|  | [optional] 
+ **search_study_filter** | [**SearchStudyFilter**](SearchStudyFilter.md)|  | 
 
 ### Return type
 

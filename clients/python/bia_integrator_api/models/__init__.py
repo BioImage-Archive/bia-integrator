@@ -26,7 +26,6 @@ from bia_integrator_api.models.bia_study import BIAStudy
 from bia_integrator_api.models.body_register_user import BodyRegisterUser
 from bia_integrator_api.models.body_search_file_references_exact_match import BodySearchFileReferencesExactMatch
 from bia_integrator_api.models.body_search_images_exact_match import BodySearchImagesExactMatch
-from bia_integrator_api.models.body_search_studies_exact_match import BodySearchStudiesExactMatch
 from bia_integrator_api.models.bulk_operation_item import BulkOperationItem
 from bia_integrator_api.models.bulk_operation_response import BulkOperationResponse
 from bia_integrator_api.models.channel_rendering import ChannelRendering
@@ -42,6 +41,7 @@ from bia_integrator_api.models.search_annotation import SearchAnnotation
 from bia_integrator_api.models.search_file_reference import SearchFileReference
 from bia_integrator_api.models.search_file_representation import SearchFileRepresentation
 from bia_integrator_api.models.search_study import SearchStudy
+from bia_integrator_api.models.search_study_filter import SearchStudyFilter
 from bia_integrator_api.models.start_uuid import StartUuid
 from bia_integrator_api.models.study_annotation import StudyAnnotation
 from bia_integrator_api.models.validation_error import ValidationError
