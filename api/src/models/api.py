@@ -72,3 +72,9 @@ class SearchStudy(BIABaseModel):
     images_count_lte: Optional[int] = None
     images_count_gte: Optional[int] = None
     tag: Optional[str] = None
+
+class SearchStudyFilter(BIABaseModel):
+    annotations_any: List[SearchAnnotation] = []
+    study_match: Optional[SearchStudy] = None
+    start_uuid: Optional[UUID] = None
+    limit : int = 10

@@ -201,54 +201,52 @@ async def search_file_references_exact_match(
 
 @router.post("/search/studies/exact_match")
 async def search_studies_exact_match(
-        annotations_any: Annotated[List[api_models.SearchAnnotation], Body()] = [],
-        study_match: Annotated[Optional[api_models.SearchStudy], Body()] = None,
-        start_uuid: Annotated[Optional[UUID], Body()] = None,
-        limit : Annotated[int, Body(gt=0)] = 10,
+        search_filter: Annotated[api_models.SearchStudyFilter, Body(embed=False)],
         db: Repository = Depends()
     ) -> List[db_models.BIAStudy]:
     query = {}
-    if annotations_any:
-        obj_annotations_any = [query_term.model_dump(exclude_defaults=True) for query_term in annotations_any]
+    if search_filter.annotations_any:
+        obj_annotations_any = [query_term.model_dump(exclude_defaults=True) for query_term in search_filter.annotations_any]
 
         query['annotations'] = {
             '$elemMatch': {
                 '$or': obj_annotations_any
             }
         }
-    if study_match:
-        if any([study_match.file_references_count_gte is not None, study_match.file_references_count_lte is not None]):
+    if search_filter.study_match:
+        if any([search_filter.study_match.file_references_count_gte is not None, search_filter.study_match.file_references_count_lte is not None]):
             query['file_references_count'] = {}
-            if study_match.file_references_count_gte is not None:
-                query['file_references_count']['$gte'] = study_match.file_references_count_gte
-            if study_match.file_references_count_lte is not None:
-                query['file_references_count']['$lte'] = study_match.file_references_count_lte
-        if any([study_match.images_count_gte is not None, study_match.images_count_lte is not None]):
+            if search_filter.study_match.file_references_count_gte is not None:
+                query['file_references_count']['$gte'] = search_filter.study_match.file_references_count_gte
+            if search_filter.study_match.file_references_count_lte is not None:
+                query['file_references_count']['$lte'] = search_filter.study_match.file_references_count_lte
+        if any([search_filter.study_match.images_count_gte is not None, search_filter.study_match.images_count_lte is not None]):
             query['images_count'] = {}
-            if study_match.images_count_gte is not None:
-                query['images_count']['$gte'] = study_match.images_count_gte
-            if study_match.images_count_lte is not None:
-                query['images_count']['$lte'] = study_match.images_count_lte
-        if study_match.author_name_fragment:
+            if search_filter.study_match.images_count_gte is not None:
+                query['images_count']['$gte'] = search_filter.study_match.images_count_gte
+            if search_filter.study_match.images_count_lte is not None:
+                query['images_count']['$lte'] = search_filter.study_match.images_count_lte
+        if search_filter.study_match.author_name_fragment:
             query['authors'] = {
                 '$elemMatch': {
                     'name': {
-                        '$regex': re.escape(study_match.author_name_fragment),
+                        '$regex': re.escape(search_filter.study_match.author_name_fragment),
                         '$options': 'i'
                     }
                 }
             }
-        if study_match.tag:
+        if search_filter.study_match.tag:
             query['tags'] = {
                 '$elemMatch': {
-                    '$regex': f"^{re.escape(study_match.tag)}$",
+                    '$regex': f"^{re.escape(search_filter.study_match.tag)}$",
                     '$options': 'i'
                 }
             }
-        if study_match.accession_id:
-            query['accession_id'] = study_match.accession_id
+        if search_filter.study_match.accession_id:
+            query['accession_id'] = search_filter.study_match.accession_id
 
-    return await db.search_studies(query, start_uuid=start_uuid, limit=limit)
+    asd = await db.search_studies(query, start_uuid=search_filter.start_uuid, limit=search_filter.limit)
+    return asd
 
 @router.get("/studies/{study_uuid}/images")
 async def get_study_images(
