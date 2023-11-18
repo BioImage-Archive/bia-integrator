@@ -2804,24 +2804,165 @@ class PrivateApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def search_images_by_attribute(self, original_relpath : Optional[Any] = None, study_uuid : Optional[Any] = None, start_uuid : Optional[Any] = None, limit : Optional[StrictInt] = None, **kwargs) -> List[BIAImage]:  # noqa: E501
-        """Search Images By Attribute  # noqa: E501
+    def search_file_references_exact_match(self, unknown_base_type : Optional[Any] = None, **kwargs) -> List[FileReference]:  # noqa: E501
+        """Search File References Exact Match  # noqa: E501
 
-        Exact match search of images with a specific attribute. Multiple parameters mean AND (as in, p1 AND p2).  ! This is likely to change fast, please use named arguments in client apps instead of positional if possible to prevent downstream breakage  # noqa: E501
+        Exact match search of file references with a specific attribute. Multiple parameters mean AND (as in, p1 AND p2). Items in lists with the `_any` suffix are ORed.  Although `study_uuid` is optional, passing it if known is highly recommended and results in faster queries. Queries time out after 2 seconds, which should be enough for any search filtered by study.  This is likely to change fast, so **named arguments are recommended** in client apps instead of positional if possible to prevent downstream breakage.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.search_images_by_attribute(original_relpath, study_uuid, start_uuid, limit, async_req=True)
+        >>> thread = api.search_file_references_exact_match(unknown_base_type, async_req=True)
         >>> result = thread.get()
 
-        :param original_relpath:
-        :type original_relpath: OriginalRelpath
-        :param study_uuid:
-        :type study_uuid: StudyUuid
-        :param start_uuid:
-        :type start_uuid: StartUuid
-        :param limit:
-        :type limit: int
+        :param unknown_base_type:
+        :type unknown_base_type: UNKNOWN_BASE_TYPE
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :return: Returns the result object.
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: List[FileReference]
+        """
+        kwargs['_return_http_data_only'] = True
+        if '_preload_content' in kwargs:
+            raise ValueError("Error! Please call the search_file_references_exact_match_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
+        return self.search_file_references_exact_match_with_http_info(unknown_base_type, **kwargs)  # noqa: E501
+
+    @validate_arguments
+    def search_file_references_exact_match_with_http_info(self, unknown_base_type : Optional[Any] = None, **kwargs) -> ApiResponse:  # noqa: E501
+        """Search File References Exact Match  # noqa: E501
+
+        Exact match search of file references with a specific attribute. Multiple parameters mean AND (as in, p1 AND p2). Items in lists with the `_any` suffix are ORed.  Although `study_uuid` is optional, passing it if known is highly recommended and results in faster queries. Queries time out after 2 seconds, which should be enough for any search filtered by study.  This is likely to change fast, so **named arguments are recommended** in client apps instead of positional if possible to prevent downstream breakage.  # noqa: E501
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.search_file_references_exact_match_with_http_info(unknown_base_type, async_req=True)
+        >>> result = thread.get()
+
+        :param unknown_base_type:
+        :type unknown_base_type: UNKNOWN_BASE_TYPE
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _preload_content: if False, the ApiResponse.data will
+                                 be set to none and raw_data will store the 
+                                 HTTP response body without reading/decoding.
+                                 Default is True.
+        :type _preload_content: bool, optional
+        :param _return_http_data_only: response data instead of ApiResponse
+                                       object with status code, headers, etc
+        :type _return_http_data_only: bool, optional
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the authentication
+                              in the spec for a single request.
+        :type _request_auth: dict, optional
+        :type _content_type: string, optional: force content-type for the request
+        :return: Returns the result object.
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: tuple(List[FileReference], status_code(int), headers(HTTPHeaderDict))
+        """
+
+        _params = locals()
+
+        _all_params = [
+            'unknown_base_type'
+        ]
+        _all_params.extend(
+            [
+                'async_req',
+                '_return_http_data_only',
+                '_preload_content',
+                '_request_timeout',
+                '_request_auth',
+                '_content_type',
+                '_headers'
+            ]
+        )
+
+        # validate the arguments
+        for _key, _val in _params['kwargs'].items():
+            if _key not in _all_params:
+                raise ApiTypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method search_file_references_exact_match" % _key
+                )
+            _params[_key] = _val
+        del _params['kwargs']
+
+        _collection_formats = {}
+
+        # process the path parameters
+        _path_params = {}
+
+        # process the query parameters
+        _query_params = []
+        # process the header parameters
+        _header_params = dict(_params.get('_headers', {}))
+        # process the form parameters
+        _form_params = []
+        _files = {}
+        # process the body parameter
+        _body_params = None
+        if _params['unknown_base_type'] is not None:
+            _body_params = _params['unknown_base_type']
+
+        # set the HTTP header `Accept`
+        _header_params['Accept'] = self.api_client.select_header_accept(
+            ['application/json'])  # noqa: E501
+
+        # set the HTTP header `Content-Type`
+        _content_types_list = _params.get('_content_type',
+            self.api_client.select_header_content_type(
+                ['application/json']))
+        if _content_types_list:
+                _header_params['Content-Type'] = _content_types_list
+
+        # authentication setting
+        _auth_settings = []  # noqa: E501
+
+        _response_types_map = {
+            '200': "List[FileReference]",
+            '422': "HTTPValidationError",
+        }
+
+        return self.api_client.call_api(
+            '/api/v1/search/file_references/exact_match', 'POST',
+            _path_params,
+            _query_params,
+            _header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            response_types_map=_response_types_map,
+            auth_settings=_auth_settings,
+            async_req=_params.get('async_req'),
+            _return_http_data_only=_params.get('_return_http_data_only'),  # noqa: E501
+            _preload_content=_params.get('_preload_content', True),
+            _request_timeout=_params.get('_request_timeout'),
+            collection_formats=_collection_formats,
+            _request_auth=_params.get('_request_auth'))
+
+    @validate_arguments
+    def search_images_exact_match(self, unknown_base_type : Optional[Any] = None, **kwargs) -> List[BIAImage]:  # noqa: E501
+        """Search Images Exact Match  # noqa: E501
+
+        Exact match search of images with a specific attribute. Multiple parameters mean AND (as in, p1 AND p2). Items in lists with the `_any` suffix are ORed.  Although `study_uuid` is optional, passing it if known is highly recommended and results in faster queries. Queries time out after 2 seconds, which should be enough for any search filtered by study.  This is likely to change fast, so **named arguments are recommended** in client apps instead of positional if possible to prevent downstream breakage.  # noqa: E501
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.search_images_exact_match(unknown_base_type, async_req=True)
+        >>> result = thread.get()
+
+        :param unknown_base_type:
+        :type unknown_base_type: UNKNOWN_BASE_TYPE
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _request_timeout: timeout setting for this request. If one
@@ -2835,28 +2976,22 @@ class PrivateApi(object):
         """
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
-            raise ValueError("Error! Please call the search_images_by_attribute_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
-        return self.search_images_by_attribute_with_http_info(original_relpath, study_uuid, start_uuid, limit, **kwargs)  # noqa: E501
+            raise ValueError("Error! Please call the search_images_exact_match_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
+        return self.search_images_exact_match_with_http_info(unknown_base_type, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def search_images_by_attribute_with_http_info(self, original_relpath : Optional[Any] = None, study_uuid : Optional[Any] = None, start_uuid : Optional[Any] = None, limit : Optional[StrictInt] = None, **kwargs) -> ApiResponse:  # noqa: E501
-        """Search Images By Attribute  # noqa: E501
+    def search_images_exact_match_with_http_info(self, unknown_base_type : Optional[Any] = None, **kwargs) -> ApiResponse:  # noqa: E501
+        """Search Images Exact Match  # noqa: E501
 
-        Exact match search of images with a specific attribute. Multiple parameters mean AND (as in, p1 AND p2).  ! This is likely to change fast, please use named arguments in client apps instead of positional if possible to prevent downstream breakage  # noqa: E501
+        Exact match search of images with a specific attribute. Multiple parameters mean AND (as in, p1 AND p2). Items in lists with the `_any` suffix are ORed.  Although `study_uuid` is optional, passing it if known is highly recommended and results in faster queries. Queries time out after 2 seconds, which should be enough for any search filtered by study.  This is likely to change fast, so **named arguments are recommended** in client apps instead of positional if possible to prevent downstream breakage.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.search_images_by_attribute_with_http_info(original_relpath, study_uuid, start_uuid, limit, async_req=True)
+        >>> thread = api.search_images_exact_match_with_http_info(unknown_base_type, async_req=True)
         >>> result = thread.get()
 
-        :param original_relpath:
-        :type original_relpath: OriginalRelpath
-        :param study_uuid:
-        :type study_uuid: StudyUuid
-        :param start_uuid:
-        :type start_uuid: StartUuid
-        :param limit:
-        :type limit: int
+        :param unknown_base_type:
+        :type unknown_base_type: UNKNOWN_BASE_TYPE
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _preload_content: if False, the ApiResponse.data will
@@ -2885,10 +3020,7 @@ class PrivateApi(object):
         _params = locals()
 
         _all_params = [
-            'original_relpath',
-            'study_uuid',
-            'start_uuid',
-            'limit'
+            'unknown_base_type'
         ]
         _all_params.extend(
             [
@@ -2907,7 +3039,7 @@ class PrivateApi(object):
             if _key not in _all_params:
                 raise ApiTypeError(
                     "Got an unexpected keyword argument '%s'"
-                    " to method search_images_by_attribute" % _key
+                    " to method search_images_exact_match" % _key
                 )
             _params[_key] = _val
         del _params['kwargs']
@@ -2919,18 +3051,6 @@ class PrivateApi(object):
 
         # process the query parameters
         _query_params = []
-        if _params.get('original_relpath') is not None:  # noqa: E501
-            _query_params.append(('original_relpath', _params['original_relpath']))
-
-        if _params.get('study_uuid') is not None:  # noqa: E501
-            _query_params.append(('study_uuid', _params['study_uuid']))
-
-        if _params.get('start_uuid') is not None:  # noqa: E501
-            _query_params.append(('start_uuid', _params['start_uuid']))
-
-        if _params.get('limit') is not None:  # noqa: E501
-            _query_params.append(('limit', _params['limit']))
-
         # process the header parameters
         _header_params = dict(_params.get('_headers', {}))
         # process the form parameters
@@ -2938,9 +3058,19 @@ class PrivateApi(object):
         _files = {}
         # process the body parameter
         _body_params = None
+        if _params['unknown_base_type'] is not None:
+            _body_params = _params['unknown_base_type']
+
         # set the HTTP header `Accept`
         _header_params['Accept'] = self.api_client.select_header_accept(
             ['application/json'])  # noqa: E501
+
+        # set the HTTP header `Content-Type`
+        _content_types_list = _params.get('_content_type',
+            self.api_client.select_header_content_type(
+                ['application/json']))
+        if _content_types_list:
+                _header_params['Content-Type'] = _content_types_list
 
         # authentication setting
         _auth_settings = []  # noqa: E501
@@ -2951,7 +3081,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/search/images/by_attribute', 'GET',
+            '/api/v1/search/images/exact_match', 'POST',
             _path_params,
             _query_params,
             _header_params,
@@ -3100,6 +3230,151 @@ class PrivateApi(object):
 
         return self.api_client.call_api(
             '/api/v1/search/studies', 'GET',
+            _path_params,
+            _query_params,
+            _header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            response_types_map=_response_types_map,
+            auth_settings=_auth_settings,
+            async_req=_params.get('async_req'),
+            _return_http_data_only=_params.get('_return_http_data_only'),  # noqa: E501
+            _preload_content=_params.get('_preload_content', True),
+            _request_timeout=_params.get('_request_timeout'),
+            collection_formats=_collection_formats,
+            _request_auth=_params.get('_request_auth'))
+
+    @validate_arguments
+    def search_studies_exact_match(self, unknown_base_type : Optional[Any] = None, **kwargs) -> List[BIAStudy]:  # noqa: E501
+        """Search Studies Exact Match  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.search_studies_exact_match(unknown_base_type, async_req=True)
+        >>> result = thread.get()
+
+        :param unknown_base_type:
+        :type unknown_base_type: UNKNOWN_BASE_TYPE
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :return: Returns the result object.
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: List[BIAStudy]
+        """
+        kwargs['_return_http_data_only'] = True
+        if '_preload_content' in kwargs:
+            raise ValueError("Error! Please call the search_studies_exact_match_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
+        return self.search_studies_exact_match_with_http_info(unknown_base_type, **kwargs)  # noqa: E501
+
+    @validate_arguments
+    def search_studies_exact_match_with_http_info(self, unknown_base_type : Optional[Any] = None, **kwargs) -> ApiResponse:  # noqa: E501
+        """Search Studies Exact Match  # noqa: E501
+
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.search_studies_exact_match_with_http_info(unknown_base_type, async_req=True)
+        >>> result = thread.get()
+
+        :param unknown_base_type:
+        :type unknown_base_type: UNKNOWN_BASE_TYPE
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _preload_content: if False, the ApiResponse.data will
+                                 be set to none and raw_data will store the 
+                                 HTTP response body without reading/decoding.
+                                 Default is True.
+        :type _preload_content: bool, optional
+        :param _return_http_data_only: response data instead of ApiResponse
+                                       object with status code, headers, etc
+        :type _return_http_data_only: bool, optional
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the authentication
+                              in the spec for a single request.
+        :type _request_auth: dict, optional
+        :type _content_type: string, optional: force content-type for the request
+        :return: Returns the result object.
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: tuple(List[BIAStudy], status_code(int), headers(HTTPHeaderDict))
+        """
+
+        _params = locals()
+
+        _all_params = [
+            'unknown_base_type'
+        ]
+        _all_params.extend(
+            [
+                'async_req',
+                '_return_http_data_only',
+                '_preload_content',
+                '_request_timeout',
+                '_request_auth',
+                '_content_type',
+                '_headers'
+            ]
+        )
+
+        # validate the arguments
+        for _key, _val in _params['kwargs'].items():
+            if _key not in _all_params:
+                raise ApiTypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method search_studies_exact_match" % _key
+                )
+            _params[_key] = _val
+        del _params['kwargs']
+
+        _collection_formats = {}
+
+        # process the path parameters
+        _path_params = {}
+
+        # process the query parameters
+        _query_params = []
+        # process the header parameters
+        _header_params = dict(_params.get('_headers', {}))
+        # process the form parameters
+        _form_params = []
+        _files = {}
+        # process the body parameter
+        _body_params = None
+        if _params['unknown_base_type'] is not None:
+            _body_params = _params['unknown_base_type']
+
+        # set the HTTP header `Accept`
+        _header_params['Accept'] = self.api_client.select_header_accept(
+            ['application/json'])  # noqa: E501
+
+        # set the HTTP header `Content-Type`
+        _content_types_list = _params.get('_content_type',
+            self.api_client.select_header_content_type(
+                ['application/json']))
+        if _content_types_list:
+                _header_params['Content-Type'] = _content_types_list
+
+        # authentication setting
+        _auth_settings = []  # noqa: E501
+
+        _response_types_map = {
+            '200': "List[BIAStudy]",
+            '422': "HTTPValidationError",
+        }
+
+        return self.api_client.call_api(
+            '/api/v1/search/studies/exact_match', 'POST',
             _path_params,
             _query_params,
             _header_params,

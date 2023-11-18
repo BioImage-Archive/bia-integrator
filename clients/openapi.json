@@ -908,89 +908,141 @@
         }
       }
     },
-    "/api/v1/search/images/by_attribute": {
-      "get": {
+    "/api/v1/search/images/exact_match": {
+      "post": {
         "tags": [
           "public",
           "private"
         ],
-        "summary": "Search Images By Attribute",
-        "description": "Exact match search of images with a specific attribute. Multiple parameters mean AND (as in, p1 AND p2).\n\n! This is likely to change fast, please use named arguments in client apps instead of positional if possible to prevent downstream breakage",
-        "operationId": "search_images_by_attribute",
-        "parameters": [
-          {
-            "name": "original_relpath",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Original Relpath"
-            }
-          },
-          {
-            "name": "study_uuid",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "format": "uuid"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Study Uuid"
-            }
-          },
-          {
-            "name": "start_uuid",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "format": "uuid"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Start Uuid"
-            }
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "exclusiveMinimum": 0,
-              "default": 10,
-              "title": "Limit"
+        "summary": "Search Images Exact Match",
+        "description": "Exact match search of images with a specific attribute.\nMultiple parameters mean AND (as in, p1 AND p2).\nItems in lists with the `_any` suffix are ORed.\n\nAlthough `study_uuid` is optional, passing it if known is highly recommended and results in faster queries. Queries time out after 2 seconds, which should be enough for any search filtered by study.\n\nThis is likely to change fast, so **named arguments are recommended** in client apps instead of positional if possible to prevent downstream breakage.",
+        "operationId": "search_images_exact_match",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Body_search_images_exact_match"
+                  }
+                ],
+                "title": "Body"
+              }
             }
           }
-        ],
+        },
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/BIAImage"
                   },
-                  "title": "Response Search Images By Attribute"
+                  "type": "array",
+                  "title": "Response Search Images Exact Match"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/search/file_references/exact_match": {
+      "post": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Search File References Exact Match",
+        "description": "Exact match search of file references with a specific attribute.\nMultiple parameters mean AND (as in, p1 AND p2).\nItems in lists with the `_any` suffix are ORed.\n\nAlthough `study_uuid` is optional, passing it if known is highly recommended and results in faster queries. Queries time out after 2 seconds, which should be enough for any search filtered by study.\n\nThis is likely to change fast, so **named arguments are recommended** in client apps instead of positional if possible to prevent downstream breakage.",
+        "operationId": "search_file_references_exact_match",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Body_search_file_references_exact_match"
+                  }
+                ],
+                "title": "Body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/FileReference"
+                  },
+                  "type": "array",
+                  "title": "Response Search File References Exact Match"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/search/studies/exact_match": {
+      "post": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Search Studies Exact Match",
+        "operationId": "search_studies_exact_match",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Body_search_studies_exact_match"
+                  }
+                ],
+                "title": "Body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/BIAStudy"
+                  },
+                  "type": "array",
+                  "title": "Response Search Studies Exact Match"
                 }
               }
             }
@@ -1833,6 +1885,165 @@
         ],
         "title": "Body_register_user"
       },
+      "Body_search_file_references_exact_match": {
+        "properties": {
+          "annotations_any": {
+            "items": {
+              "$ref": "#/components/schemas/SearchAnnotation"
+            },
+            "type": "array",
+            "title": "Annotations Any",
+            "default": []
+          },
+          "file_reference_match": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SearchFileReference"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "study_uuid": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Study Uuid"
+          },
+          "start_uuid": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Start Uuid"
+          },
+          "limit": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "title": "Limit",
+            "default": 10
+          }
+        },
+        "type": "object",
+        "title": "Body_search_file_references_exact_match"
+      },
+      "Body_search_images_exact_match": {
+        "properties": {
+          "original_relpath": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Original Relpath"
+          },
+          "annotations_any": {
+            "items": {
+              "$ref": "#/components/schemas/SearchAnnotation"
+            },
+            "type": "array",
+            "title": "Annotations Any",
+            "default": []
+          },
+          "image_representations_any": {
+            "items": {
+              "$ref": "#/components/schemas/SearchFileRepresentation"
+            },
+            "type": "array",
+            "title": "Image Representations Any",
+            "default": []
+          },
+          "study_uuid": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Study Uuid"
+          },
+          "start_uuid": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Start Uuid"
+          },
+          "limit": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "title": "Limit",
+            "default": 10
+          }
+        },
+        "type": "object",
+        "title": "Body_search_images_exact_match"
+      },
+      "Body_search_studies_exact_match": {
+        "properties": {
+          "annotations_any": {
+            "items": {
+              "$ref": "#/components/schemas/SearchAnnotation"
+            },
+            "type": "array",
+            "title": "Annotations Any",
+            "default": []
+          },
+          "study_match": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SearchStudy"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "start_uuid": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Start Uuid"
+          },
+          "limit": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "title": "Limit",
+            "default": 10
+          }
+        },
+        "type": "object",
+        "title": "Body_search_studies_exact_match"
+      },
       "Body_set_image_ome_metadata": {
         "properties": {
           "ome_metadata_file": {
@@ -2118,6 +2329,239 @@
         },
         "type": "object",
         "title": "RenderingInfo"
+      },
+      "SearchAnnotation": {
+        "properties": {
+          "author_email": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Author Email"
+          },
+          "key": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Key"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          },
+          "state": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "State"
+          }
+        },
+        "type": "object",
+        "title": "SearchAnnotation"
+      },
+      "SearchFileReference": {
+        "properties": {
+          "uri_prefix": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Uri Prefix"
+          },
+          "type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Type"
+          },
+          "size_bounds_lte": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Size Bounds Lte"
+          },
+          "size_bounds_gte": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Size Bounds Gte"
+          }
+        },
+        "type": "object",
+        "title": "SearchFileReference"
+      },
+      "SearchFileRepresentation": {
+        "properties": {
+          "size_bounds_lte": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Size Bounds Lte"
+          },
+          "size_bounds_gte": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Size Bounds Gte"
+          },
+          "type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Type"
+          },
+          "uri_prefix": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Uri Prefix"
+          }
+        },
+        "type": "object",
+        "title": "SearchFileRepresentation"
+      },
+      "SearchStudy": {
+        "properties": {
+          "author_name_fragment": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Author Name Fragment"
+          },
+          "accession_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Accession Id"
+          },
+          "file_references_count_lte": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "File References Count Lte"
+          },
+          "file_references_count_gte": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "File References Count Gte"
+          },
+          "images_count_lte": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Images Count Lte"
+          },
+          "images_count_gte": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Images Count Gte"
+          },
+          "tag": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tag"
+          }
+        },
+        "type": "object",
+        "title": "SearchStudy"
       },
       "StudyAnnotation": {
         "properties": {

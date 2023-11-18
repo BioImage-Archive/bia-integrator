@@ -23,8 +23,10 @@ Method | HTTP request | Description
 [**login_for_access_token**](PrivateApi.md#login_for_access_token) | **POST** /api/v1/auth/token | Login For Access Token
 [**register_user**](PrivateApi.md#register_user) | **POST** /api/v1/auth/users/register | Register User
 [**search_collections**](PrivateApi.md#search_collections) | **GET** /api/v1/collections | Search Collections
-[**search_images_by_attribute**](PrivateApi.md#search_images_by_attribute) | **GET** /api/v1/search/images/by_attribute | Search Images By Attribute
+[**search_file_references_exact_match**](PrivateApi.md#search_file_references_exact_match) | **POST** /api/v1/search/file_references/exact_match | Search File References Exact Match
+[**search_images_exact_match**](PrivateApi.md#search_images_exact_match) | **POST** /api/v1/search/images/exact_match | Search Images Exact Match
 [**search_studies**](PrivateApi.md#search_studies) | **GET** /api/v1/search/studies | Search Studies
+[**search_studies_exact_match**](PrivateApi.md#search_studies_exact_match) | **POST** /api/v1/search/studies/exact_match | Search Studies Exact Match
 [**set_image_ome_metadata**](PrivateApi.md#set_image_ome_metadata) | **POST** /api/v1/private/images/{image_uuid}/ome_metadata | Set Image Ome Metadata
 [**study_refresh_counts**](PrivateApi.md#study_refresh_counts) | **POST** /api/v1/private/studies/{study_uuid}/refresh_counts | Study Refresh Counts
 [**update_file_reference**](PrivateApi.md#update_file_reference) | **PATCH** /api/v1/private/file_references/single | Update File Reference
@@ -1353,12 +1355,80 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **search_images_by_attribute**
-> List[BIAImage] search_images_by_attribute(original_relpath=original_relpath, study_uuid=study_uuid, start_uuid=start_uuid, limit=limit)
+# **search_file_references_exact_match**
+> List[FileReference] search_file_references_exact_match(unknown_base_type=unknown_base_type)
 
-Search Images By Attribute
+Search File References Exact Match
 
-Exact match search of images with a specific attribute. Multiple parameters mean AND (as in, p1 AND p2).  ! This is likely to change fast, please use named arguments in client apps instead of positional if possible to prevent downstream breakage
+Exact match search of file references with a specific attribute. Multiple parameters mean AND (as in, p1 AND p2). Items in lists with the `_any` suffix are ORed.  Although `study_uuid` is optional, passing it if known is highly recommended and results in faster queries. Queries time out after 2 seconds, which should be enough for any search filtered by study.  This is likely to change fast, so **named arguments are recommended** in client apps instead of positional if possible to prevent downstream breakage.
+
+### Example
+
+```python
+import time
+import os
+import bia_integrator_api
+from bia_integrator_api.models.file_reference import FileReference
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PrivateApi(api_client)
+    unknown_base_type = bia_integrator_api.UNKNOWN_BASE_TYPE() # UNKNOWN_BASE_TYPE |  (optional)
+
+    try:
+        # Search File References Exact Match
+        api_response = api_instance.search_file_references_exact_match(unknown_base_type=unknown_base_type)
+        print("The response of PrivateApi->search_file_references_exact_match:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PrivateApi->search_file_references_exact_match: %s\n" % e)
+```
+
+
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **unknown_base_type** | [**UNKNOWN_BASE_TYPE**](UNKNOWN_BASE_TYPE.md)|  | [optional] 
+
+### Return type
+
+[**List[FileReference]**](FileReference.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **search_images_exact_match**
+> List[BIAImage] search_images_exact_match(unknown_base_type=unknown_base_type)
+
+Search Images Exact Match
+
+Exact match search of images with a specific attribute. Multiple parameters mean AND (as in, p1 AND p2). Items in lists with the `_any` suffix are ORed.  Although `study_uuid` is optional, passing it if known is highly recommended and results in faster queries. Queries time out after 2 seconds, which should be enough for any search filtered by study.  This is likely to change fast, so **named arguments are recommended** in client apps instead of positional if possible to prevent downstream breakage.
 
 ### Example
 
@@ -1381,18 +1451,15 @@ configuration = bia_integrator_api.Configuration(
 with bia_integrator_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = bia_integrator_api.PrivateApi(api_client)
-    original_relpath = bia_integrator_api.OriginalRelpath() # OriginalRelpath |  (optional)
-    study_uuid = bia_integrator_api.StudyUuid() # StudyUuid |  (optional)
-    start_uuid = bia_integrator_api.StartUuid() # StartUuid |  (optional)
-    limit = 10 # int |  (optional) (default to 10)
+    unknown_base_type = bia_integrator_api.UNKNOWN_BASE_TYPE() # UNKNOWN_BASE_TYPE |  (optional)
 
     try:
-        # Search Images By Attribute
-        api_response = api_instance.search_images_by_attribute(original_relpath=original_relpath, study_uuid=study_uuid, start_uuid=start_uuid, limit=limit)
-        print("The response of PrivateApi->search_images_by_attribute:\n")
+        # Search Images Exact Match
+        api_response = api_instance.search_images_exact_match(unknown_base_type=unknown_base_type)
+        print("The response of PrivateApi->search_images_exact_match:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling PrivateApi->search_images_by_attribute: %s\n" % e)
+        print("Exception when calling PrivateApi->search_images_exact_match: %s\n" % e)
 ```
 
 
@@ -1401,10 +1468,7 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **original_relpath** | [**OriginalRelpath**](.md)|  | [optional] 
- **study_uuid** | [**StudyUuid**](.md)|  | [optional] 
- **start_uuid** | [**StartUuid**](.md)|  | [optional] 
- **limit** | **int**|  | [optional] [default to 10]
+ **unknown_base_type** | [**UNKNOWN_BASE_TYPE**](UNKNOWN_BASE_TYPE.md)|  | [optional] 
 
 ### Return type
 
@@ -1416,7 +1480,7 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
+ - **Content-Type**: application/json
  - **Accept**: application/json
 
 ### HTTP response details
@@ -1487,6 +1551,72 @@ No authorization required
 ### HTTP request headers
 
  - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **search_studies_exact_match**
+> List[BIAStudy] search_studies_exact_match(unknown_base_type=unknown_base_type)
+
+Search Studies Exact Match
+
+### Example
+
+```python
+import time
+import os
+import bia_integrator_api
+from bia_integrator_api.models.bia_study import BIAStudy
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PrivateApi(api_client)
+    unknown_base_type = bia_integrator_api.UNKNOWN_BASE_TYPE() # UNKNOWN_BASE_TYPE |  (optional)
+
+    try:
+        # Search Studies Exact Match
+        api_response = api_instance.search_studies_exact_match(unknown_base_type=unknown_base_type)
+        print("The response of PrivateApi->search_studies_exact_match:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PrivateApi->search_studies_exact_match: %s\n" % e)
+```
+
+
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **unknown_base_type** | [**UNKNOWN_BASE_TYPE**](UNKNOWN_BASE_TYPE.md)|  | [optional] 
+
+### Return type
+
+[**List[BIAStudy]**](BIAStudy.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
  - **Accept**: application/json
 
 ### HTTP response details
