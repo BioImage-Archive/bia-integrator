@@ -1,6 +1,6 @@
 from .persistence import ModelMetadata
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import List, Optional, Dict, Union, Literal
 from uuid import UUID
 
@@ -77,4 +77,11 @@ class SearchStudyFilter(BIABaseModel):
     annotations_any: List[SearchAnnotation] = []
     study_match: Optional[SearchStudy] = None
     start_uuid: Optional[UUID] = None
-    limit : int = 10
+    limit : int = Field(10, ge=0)
+
+class SearchFileReferenceFilter(BIABaseModel):
+    annotations_any: List[SearchAnnotation] = []
+    file_reference_match: Optional[SearchFileReference] = None
+    study_uuid: Optional[UUID] = None
+    start_uuid: Optional[UUID] = None
+    limit : int = Field(10, ge=0)
