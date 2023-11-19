@@ -21,17 +21,19 @@ import json
 from typing import List, Optional
 from pydantic import BaseModel, StrictStr, conint, conlist
 from bia_integrator_api.models.search_annotation import SearchAnnotation
-from bia_integrator_api.models.search_study import SearchStudy
+from bia_integrator_api.models.search_file_representation import SearchFileRepresentation
 
-class SearchStudyFilter(BaseModel):
+class SearchImageFilter(BaseModel):
     """
-    SearchStudyFilter
+    SearchImageFilter
     """
+    original_relpath: Optional[StrictStr] = None
     annotations_any: Optional[conlist(SearchAnnotation)] = None
-    study_match: Optional[SearchStudy] = None
+    image_representations_any: Optional[conlist(SearchFileRepresentation)] = None
+    study_uuid: Optional[StrictStr] = None
     start_uuid: Optional[StrictStr] = None
     limit: Optional[conint(strict=True, ge=0)] = 10
-    __properties = ["annotations_any", "study_match", "start_uuid", "limit"]
+    __properties = ["original_relpath", "annotations_any", "image_representations_any", "study_uuid", "start_uuid", "limit"]
 
     class Config:
         """Pydantic configuration"""
@@ -47,8 +49,8 @@ class SearchStudyFilter(BaseModel):
         return json.dumps(self.to_dict())
 
     @classmethod
-    def from_json(cls, json_str: str) -> SearchStudyFilter:
-        """Create an instance of SearchStudyFilter from a JSON string"""
+    def from_json(cls, json_str: str) -> SearchImageFilter:
+        """Create an instance of SearchImageFilter from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self):
@@ -64,13 +66,22 @@ class SearchStudyFilter(BaseModel):
                 if _item:
                     _items.append(_item.to_dict())
             _dict['annotations_any'] = _items
-        # override the default output from pydantic by calling `to_dict()` of study_match
-        if self.study_match:
-            _dict['study_match'] = self.study_match.to_dict()
-        # set to None if study_match (nullable) is None
+        # override the default output from pydantic by calling `to_dict()` of each item in image_representations_any (list)
+        _items = []
+        if self.image_representations_any:
+            for _item in self.image_representations_any:
+                if _item:
+                    _items.append(_item.to_dict())
+            _dict['image_representations_any'] = _items
+        # set to None if original_relpath (nullable) is None
         # and __fields_set__ contains the field
-        if self.study_match is None and "study_match" in self.__fields_set__:
-            _dict['study_match'] = None
+        if self.original_relpath is None and "original_relpath" in self.__fields_set__:
+            _dict['original_relpath'] = None
+
+        # set to None if study_uuid (nullable) is None
+        # and __fields_set__ contains the field
+        if self.study_uuid is None and "study_uuid" in self.__fields_set__:
+            _dict['study_uuid'] = None
 
         # set to None if start_uuid (nullable) is None
         # and __fields_set__ contains the field
@@ -80,17 +91,19 @@ class SearchStudyFilter(BaseModel):
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: dict) -> SearchStudyFilter:
-        """Create an instance of SearchStudyFilter from a dict"""
+    def from_dict(cls, obj: dict) -> SearchImageFilter:
+        """Create an instance of SearchImageFilter from a dict"""
         if obj is None:
             return None
 
         if not isinstance(obj, dict):
-            return SearchStudyFilter.parse_obj(obj)
+            return SearchImageFilter.parse_obj(obj)
 
-        _obj = SearchStudyFilter.parse_obj({
+        _obj = SearchImageFilter.parse_obj({
+            "original_relpath": obj.get("original_relpath"),
             "annotations_any": [SearchAnnotation.from_dict(_item) for _item in obj.get("annotations_any")] if obj.get("annotations_any") is not None else None,
-            "study_match": SearchStudy.from_dict(obj.get("study_match")) if obj.get("study_match") is not None else None,
+            "image_representations_any": [SearchFileRepresentation.from_dict(_item) for _item in obj.get("image_representations_any")] if obj.get("image_representations_any") is not None else None,
+            "study_uuid": obj.get("study_uuid"),
             "start_uuid": obj.get("start_uuid"),
             "limit": obj.get("limit") if obj.get("limit") is not None else 10
         })

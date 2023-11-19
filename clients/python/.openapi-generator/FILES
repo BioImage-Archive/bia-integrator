@@ -15,8 +15,6 @@ bia_integrator_api/docs/BIAImageOmeMetadata.md
 bia_integrator_api/docs/BIAImageRepresentation.md
 bia_integrator_api/docs/BIAStudy.md
 bia_integrator_api/docs/BodyRegisterUser.md
-bia_integrator_api/docs/BodySearchFileReferencesExactMatch.md
-bia_integrator_api/docs/BodySearchImagesExactMatch.md
 bia_integrator_api/docs/BulkOperationItem.md
 bia_integrator_api/docs/BulkOperationResponse.md
 bia_integrator_api/docs/ChannelRendering.md
@@ -32,7 +30,9 @@ bia_integrator_api/docs/PublicApi.md
 bia_integrator_api/docs/RenderingInfo.md
 bia_integrator_api/docs/SearchAnnotation.md
 bia_integrator_api/docs/SearchFileReference.md
+bia_integrator_api/docs/SearchFileReferenceFilter.md
 bia_integrator_api/docs/SearchFileRepresentation.md
+bia_integrator_api/docs/SearchImageFilter.md
 bia_integrator_api/docs/SearchStudy.md
 bia_integrator_api/docs/SearchStudyFilter.md
 bia_integrator_api/docs/StartUuid.md
@@ -50,8 +50,6 @@ bia_integrator_api/models/bia_image_ome_metadata.py
 bia_integrator_api/models/bia_image_representation.py
 bia_integrator_api/models/bia_study.py
 bia_integrator_api/models/body_register_user.py
-bia_integrator_api/models/body_search_file_references_exact_match.py
-bia_integrator_api/models/body_search_images_exact_match.py
 bia_integrator_api/models/bulk_operation_item.py
 bia_integrator_api/models/bulk_operation_response.py
 bia_integrator_api/models/channel_rendering.py
@@ -65,7 +63,9 @@ bia_integrator_api/models/object_info.py
 bia_integrator_api/models/rendering_info.py
 bia_integrator_api/models/search_annotation.py
 bia_integrator_api/models/search_file_reference.py
+bia_integrator_api/models/search_file_reference_filter.py
 bia_integrator_api/models/search_file_representation.py
+bia_integrator_api/models/search_image_filter.py
 bia_integrator_api/models/search_study.py
 bia_integrator_api/models/search_study_filter.py
 bia_integrator_api/models/start_uuid.py

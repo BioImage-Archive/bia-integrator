@@ -1356,7 +1356,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **search_file_references_exact_match**
-> List[FileReference] search_file_references_exact_match(unknown_base_type=unknown_base_type)
+> List[FileReference] search_file_references_exact_match(search_file_reference_filter)
 
 Search File References Exact Match
 
@@ -1369,6 +1369,7 @@ import time
 import os
 import bia_integrator_api
 from bia_integrator_api.models.file_reference import FileReference
+from bia_integrator_api.models.search_file_reference_filter import SearchFileReferenceFilter
 from bia_integrator_api.rest import ApiException
 from pprint import pprint
 
@@ -1383,11 +1384,11 @@ configuration = bia_integrator_api.Configuration(
 with bia_integrator_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = bia_integrator_api.PrivateApi(api_client)
-    unknown_base_type = bia_integrator_api.UNKNOWN_BASE_TYPE() # UNKNOWN_BASE_TYPE |  (optional)
+    search_file_reference_filter = bia_integrator_api.SearchFileReferenceFilter() # SearchFileReferenceFilter | 
 
     try:
         # Search File References Exact Match
-        api_response = api_instance.search_file_references_exact_match(unknown_base_type=unknown_base_type)
+        api_response = api_instance.search_file_references_exact_match(search_file_reference_filter)
         print("The response of PrivateApi->search_file_references_exact_match:\n")
         pprint(api_response)
     except Exception as e:
@@ -1400,7 +1401,7 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **unknown_base_type** | [**UNKNOWN_BASE_TYPE**](UNKNOWN_BASE_TYPE.md)|  | [optional] 
+ **search_file_reference_filter** | [**SearchFileReferenceFilter**](SearchFileReferenceFilter.md)|  | 
 
 ### Return type
 
@@ -1424,7 +1425,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **search_images_exact_match**
-> List[BIAImage] search_images_exact_match(unknown_base_type=unknown_base_type)
+> List[BIAImage] search_images_exact_match(search_image_filter)
 
 Search Images Exact Match
 
@@ -1437,6 +1438,7 @@ import time
 import os
 import bia_integrator_api
 from bia_integrator_api.models.bia_image import BIAImage
+from bia_integrator_api.models.search_image_filter import SearchImageFilter
 from bia_integrator_api.rest import ApiException
 from pprint import pprint
 
@@ -1451,11 +1453,11 @@ configuration = bia_integrator_api.Configuration(
 with bia_integrator_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = bia_integrator_api.PrivateApi(api_client)
-    unknown_base_type = bia_integrator_api.UNKNOWN_BASE_TYPE() # UNKNOWN_BASE_TYPE |  (optional)
+    search_image_filter = bia_integrator_api.SearchImageFilter() # SearchImageFilter | 
 
     try:
         # Search Images Exact Match
-        api_response = api_instance.search_images_exact_match(unknown_base_type=unknown_base_type)
+        api_response = api_instance.search_images_exact_match(search_image_filter)
         print("The response of PrivateApi->search_images_exact_match:\n")
         pprint(api_response)
     except Exception as e:
@@ -1468,7 +1470,7 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **unknown_base_type** | [**UNKNOWN_BASE_TYPE**](UNKNOWN_BASE_TYPE.md)|  | [optional] 
+ **search_image_filter** | [**SearchImageFilter**](SearchImageFilter.md)|  | 
 
 ### Return type
 

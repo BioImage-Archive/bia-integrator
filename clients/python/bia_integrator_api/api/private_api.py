@@ -33,6 +33,8 @@ from bia_integrator_api.models.body_register_user import BodyRegisterUser
 from bia_integrator_api.models.bulk_operation_response import BulkOperationResponse
 from bia_integrator_api.models.file_reference import FileReference
 from bia_integrator_api.models.object_info import ObjectInfo
+from bia_integrator_api.models.search_file_reference_filter import SearchFileReferenceFilter
+from bia_integrator_api.models.search_image_filter import SearchImageFilter
 from bia_integrator_api.models.search_study_filter import SearchStudyFilter
 
 from bia_integrator_api.api_client import ApiClient
@@ -2805,18 +2807,18 @@ class PrivateApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def search_file_references_exact_match(self, unknown_base_type : Optional[Any] = None, **kwargs) -> List[FileReference]:  # noqa: E501
+    def search_file_references_exact_match(self, search_file_reference_filter : SearchFileReferenceFilter, **kwargs) -> List[FileReference]:  # noqa: E501
         """Search File References Exact Match  # noqa: E501
 
         Exact match search of file references with a specific attribute. Multiple parameters mean AND (as in, p1 AND p2). Items in lists with the `_any` suffix are ORed.  Although `study_uuid` is optional, passing it if known is highly recommended and results in faster queries. Queries time out after 2 seconds, which should be enough for any search filtered by study.  This is likely to change fast, so **named arguments are recommended** in client apps instead of positional if possible to prevent downstream breakage.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.search_file_references_exact_match(unknown_base_type, async_req=True)
+        >>> thread = api.search_file_references_exact_match(search_file_reference_filter, async_req=True)
         >>> result = thread.get()
 
-        :param unknown_base_type:
-        :type unknown_base_type: UNKNOWN_BASE_TYPE
+        :param search_file_reference_filter: (required)
+        :type search_file_reference_filter: SearchFileReferenceFilter
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _request_timeout: timeout setting for this request. If one
@@ -2831,21 +2833,21 @@ class PrivateApi(object):
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
             raise ValueError("Error! Please call the search_file_references_exact_match_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
-        return self.search_file_references_exact_match_with_http_info(unknown_base_type, **kwargs)  # noqa: E501
+        return self.search_file_references_exact_match_with_http_info(search_file_reference_filter, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def search_file_references_exact_match_with_http_info(self, unknown_base_type : Optional[Any] = None, **kwargs) -> ApiResponse:  # noqa: E501
+    def search_file_references_exact_match_with_http_info(self, search_file_reference_filter : SearchFileReferenceFilter, **kwargs) -> ApiResponse:  # noqa: E501
         """Search File References Exact Match  # noqa: E501
 
         Exact match search of file references with a specific attribute. Multiple parameters mean AND (as in, p1 AND p2). Items in lists with the `_any` suffix are ORed.  Although `study_uuid` is optional, passing it if known is highly recommended and results in faster queries. Queries time out after 2 seconds, which should be enough for any search filtered by study.  This is likely to change fast, so **named arguments are recommended** in client apps instead of positional if possible to prevent downstream breakage.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.search_file_references_exact_match_with_http_info(unknown_base_type, async_req=True)
+        >>> thread = api.search_file_references_exact_match_with_http_info(search_file_reference_filter, async_req=True)
         >>> result = thread.get()
 
-        :param unknown_base_type:
-        :type unknown_base_type: UNKNOWN_BASE_TYPE
+        :param search_file_reference_filter: (required)
+        :type search_file_reference_filter: SearchFileReferenceFilter
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _preload_content: if False, the ApiResponse.data will
@@ -2874,7 +2876,7 @@ class PrivateApi(object):
         _params = locals()
 
         _all_params = [
-            'unknown_base_type'
+            'search_file_reference_filter'
         ]
         _all_params.extend(
             [
@@ -2912,8 +2914,8 @@ class PrivateApi(object):
         _files = {}
         # process the body parameter
         _body_params = None
-        if _params['unknown_base_type'] is not None:
-            _body_params = _params['unknown_base_type']
+        if _params['search_file_reference_filter'] is not None:
+            _body_params = _params['search_file_reference_filter']
 
         # set the HTTP header `Accept`
         _header_params['Accept'] = self.api_client.select_header_accept(
@@ -2952,18 +2954,18 @@ class PrivateApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def search_images_exact_match(self, unknown_base_type : Optional[Any] = None, **kwargs) -> List[BIAImage]:  # noqa: E501
+    def search_images_exact_match(self, search_image_filter : SearchImageFilter, **kwargs) -> List[BIAImage]:  # noqa: E501
         """Search Images Exact Match  # noqa: E501
 
         Exact match search of images with a specific attribute. Multiple parameters mean AND (as in, p1 AND p2). Items in lists with the `_any` suffix are ORed.  Although `study_uuid` is optional, passing it if known is highly recommended and results in faster queries. Queries time out after 2 seconds, which should be enough for any search filtered by study.  This is likely to change fast, so **named arguments are recommended** in client apps instead of positional if possible to prevent downstream breakage.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.search_images_exact_match(unknown_base_type, async_req=True)
+        >>> thread = api.search_images_exact_match(search_image_filter, async_req=True)
         >>> result = thread.get()
 
-        :param unknown_base_type:
-        :type unknown_base_type: UNKNOWN_BASE_TYPE
+        :param search_image_filter: (required)
+        :type search_image_filter: SearchImageFilter
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _request_timeout: timeout setting for this request. If one
@@ -2978,21 +2980,21 @@ class PrivateApi(object):
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
             raise ValueError("Error! Please call the search_images_exact_match_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
-        return self.search_images_exact_match_with_http_info(unknown_base_type, **kwargs)  # noqa: E501
+        return self.search_images_exact_match_with_http_info(search_image_filter, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def search_images_exact_match_with_http_info(self, unknown_base_type : Optional[Any] = None, **kwargs) -> ApiResponse:  # noqa: E501
+    def search_images_exact_match_with_http_info(self, search_image_filter : SearchImageFilter, **kwargs) -> ApiResponse:  # noqa: E501
         """Search Images Exact Match  # noqa: E501
 
         Exact match search of images with a specific attribute. Multiple parameters mean AND (as in, p1 AND p2). Items in lists with the `_any` suffix are ORed.  Although `study_uuid` is optional, passing it if known is highly recommended and results in faster queries. Queries time out after 2 seconds, which should be enough for any search filtered by study.  This is likely to change fast, so **named arguments are recommended** in client apps instead of positional if possible to prevent downstream breakage.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.search_images_exact_match_with_http_info(unknown_base_type, async_req=True)
+        >>> thread = api.search_images_exact_match_with_http_info(search_image_filter, async_req=True)
         >>> result = thread.get()
 
-        :param unknown_base_type:
-        :type unknown_base_type: UNKNOWN_BASE_TYPE
+        :param search_image_filter: (required)
+        :type search_image_filter: SearchImageFilter
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _preload_content: if False, the ApiResponse.data will
@@ -3021,7 +3023,7 @@ class PrivateApi(object):
         _params = locals()
 
         _all_params = [
-            'unknown_base_type'
+            'search_image_filter'
         ]
         _all_params.extend(
             [
@@ -3059,8 +3061,8 @@ class PrivateApi(object):
         _files = {}
         # process the body parameter
         _body_params = None
-        if _params['unknown_base_type'] is not None:
-            _body_params = _params['unknown_base_type']
+        if _params['search_image_filter'] is not None:
+            _body_params = _params['search_image_filter']
 
         # set the HTTP header `Accept`
         _header_params['Accept'] = self.api_client.select_header_accept(

@@ -921,15 +921,11 @@
           "content": {
             "application/json": {
               "schema": {
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/Body_search_images_exact_match"
-                  }
-                ],
-                "title": "Body"
+                "$ref": "#/components/schemas/SearchImageFilter"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
@@ -972,15 +968,11 @@
           "content": {
             "application/json": {
               "schema": {
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/Body_search_file_references_exact_match"
-                  }
-                ],
-                "title": "Body"
+                "$ref": "#/components/schemas/SearchFileReferenceFilter"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
@@ -1881,123 +1873,6 @@
         ],
         "title": "Body_register_user"
       },
-      "Body_search_file_references_exact_match": {
-        "properties": {
-          "annotations_any": {
-            "items": {
-              "$ref": "#/components/schemas/SearchAnnotation"
-            },
-            "type": "array",
-            "title": "Annotations Any",
-            "default": []
-          },
-          "file_reference_match": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/SearchFileReference"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "study_uuid": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "uuid"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Study Uuid"
-          },
-          "start_uuid": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "uuid"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Start Uuid"
-          },
-          "limit": {
-            "type": "integer",
-            "exclusiveMinimum": 0,
-            "title": "Limit",
-            "default": 10
-          }
-        },
-        "type": "object",
-        "title": "Body_search_file_references_exact_match"
-      },
-      "Body_search_images_exact_match": {
-        "properties": {
-          "original_relpath": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Original Relpath"
-          },
-          "annotations_any": {
-            "items": {
-              "$ref": "#/components/schemas/SearchAnnotation"
-            },
-            "type": "array",
-            "title": "Annotations Any",
-            "default": []
-          },
-          "image_representations_any": {
-            "items": {
-              "$ref": "#/components/schemas/SearchFileRepresentation"
-            },
-            "type": "array",
-            "title": "Image Representations Any",
-            "default": []
-          },
-          "study_uuid": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "uuid"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Study Uuid"
-          },
-          "start_uuid": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "uuid"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Start Uuid"
-          },
-          "limit": {
-            "type": "integer",
-            "exclusiveMinimum": 0,
-            "title": "Limit",
-            "default": 10
-          }
-        },
-        "type": "object",
-        "title": "Body_search_images_exact_match"
-      },
       "Body_set_image_ome_metadata": {
         "properties": {
           "ome_metadata_file": {
@@ -2384,6 +2259,60 @@
         "type": "object",
         "title": "SearchFileReference"
       },
+      "SearchFileReferenceFilter": {
+        "properties": {
+          "annotations_any": {
+            "items": {
+              "$ref": "#/components/schemas/SearchAnnotation"
+            },
+            "type": "array",
+            "title": "Annotations Any",
+            "default": []
+          },
+          "file_reference_match": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SearchFileReference"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "study_uuid": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Study Uuid"
+          },
+          "start_uuid": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Start Uuid"
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 0,
+            "title": "Limit",
+            "default": 10
+          }
+        },
+        "type": "object",
+        "title": "SearchFileReferenceFilter"
+      },
       "SearchFileRepresentation": {
         "properties": {
           "size_bounds_lte": {
@@ -2433,6 +2362,69 @@
         },
         "type": "object",
         "title": "SearchFileRepresentation"
+      },
+      "SearchImageFilter": {
+        "properties": {
+          "original_relpath": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Original Relpath"
+          },
+          "annotations_any": {
+            "items": {
+              "$ref": "#/components/schemas/SearchAnnotation"
+            },
+            "type": "array",
+            "title": "Annotations Any",
+            "default": []
+          },
+          "image_representations_any": {
+            "items": {
+              "$ref": "#/components/schemas/SearchFileRepresentation"
+            },
+            "type": "array",
+            "title": "Image Representations Any",
+            "default": []
+          },
+          "study_uuid": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Study Uuid"
+          },
+          "start_uuid": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Start Uuid"
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 0,
+            "title": "Limit",
+            "default": 10
+          }
+        },
+        "type": "object",
+        "title": "SearchImageFilter"
       },
       "SearchStudy": {
         "properties": {
@@ -2551,6 +2543,7 @@
           },
           "limit": {
             "type": "integer",
+            "minimum": 0,
             "title": "Limit",
             "default": 10
           }
