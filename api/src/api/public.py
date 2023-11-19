@@ -88,12 +88,7 @@ async def search_studies(
 # post because fastapi there aren't any nice ways to get fastapi to accept objects (annotations_any) in querystring
 @router.post("/search/images/exact_match")
 async def search_images_exact_match(
-        original_relpath: Annotated[Optional[str], Body()] = None,
-        annotations_any: Annotated[List[api_models.SearchAnnotation], Body()] = [],
-        image_representations_any: Annotated[List[api_models.SearchFileRepresentation], Body()] = [],
-        study_uuid: Annotated[Optional[UUID], Body()] = None,
-        start_uuid: Annotated[Optional[UUID], Body()] = None,
-        limit : Annotated[int, Body(gt=0)] = 10,
+        search_filter: Annotated[api_models.SearchImageFilter, Body(embed=False)],
         db: Repository = Depends()
     ) -> List[db_models.BIAImage]:
     """
@@ -106,21 +101,21 @@ async def search_images_exact_match(
     This is likely to change fast, so **named arguments are recommended** in client apps instead of positional if possible to prevent downstream breakage.
     """
     query = {}
-    if original_relpath:
-        query['original_relpath'] = original_relpath
-    if study_uuid:
-        query['study_uuid'] = study_uuid
-    if annotations_any:
-        obj_annotations_any = [query_term.model_dump(exclude_defaults=True) for query_term in annotations_any]
+    if search_filter.original_relpath:
+        query['original_relpath'] = search_filter.original_relpath
+    if search_filter.study_uuid:
+        query['study_uuid'] = search_filter.study_uuid
+    if search_filter.annotations_any:
+        obj_annotations_any = [query_term.model_dump(exclude_defaults=True) for query_term in search_filter.annotations_any]
 
         query['annotations'] = {
             '$elemMatch': {
                 '$or': obj_annotations_any
             }
         }
-    if image_representations_any:
+    if search_filter.image_representations_any:
         representation_filters = []
-        for representation_filter in image_representations_any:
+        for representation_filter in search_filter.image_representations_any:
             img_representation_list_item_filter = {}
             if representation_filter.type:
                 img_representation_list_item_filter['type'] = representation_filter.type
@@ -147,7 +142,7 @@ async def search_images_exact_match(
     if query == {}:
         raise InvalidRequestException("Expecting at least one filter when searching")
 
-    return await db.search_images(query, start_uuid=start_uuid, limit=limit)
+    return await db.search_images(query, start_uuid=search_filter.start_uuid, limit=search_filter.limit)
 
 @router.post("/search/file_references/exact_match")
 async def search_file_references_exact_match(

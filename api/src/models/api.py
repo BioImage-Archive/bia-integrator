@@ -85,3 +85,11 @@ class SearchFileReferenceFilter(BIABaseModel):
     study_uuid: Optional[UUID] = None
     start_uuid: Optional[UUID] = None
     limit : int = Field(10, ge=0)
+
+class SearchImageFilter(BIABaseModel):
+    original_relpath: Optional[str] = None
+    annotations_any: List[SearchAnnotation] = []
+    image_representations_any: List[SearchFileRepresentation] = []
+    study_uuid: Optional[UUID] = None
+    start_uuid: Optional[UUID] = None
+    limit : int = Field(10, ge=0)
