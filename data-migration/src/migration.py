@@ -251,8 +251,6 @@ def image_set_ome_metadata_if_any(api_client, study_image_api: api_models.BIAIma
 
         api_client.set_image_ome_metadata(image_uuid=study_image_api.uuid, ome_metadata_file = tmp.name)
 
-
-
 def migrate_study(study_id):
     #study_core = study.get_study(study_id)
     study_core = interface.load_and_annotate_study(study_id)
@@ -308,11 +306,11 @@ def migrate_study(study_id):
 
     print(f"DONE migrating study {study_id}\n")
 
-config = {
-    "biaint_api_url": "http://127.0.0.1:8080",
-    "biaint_username": "test@example.com",
-    "biaint_password": "test"
-}
+import json
+import os
+SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
+with open(os.path.join(SCRIPT_DIR, "config.json"), "r") as f:
+    config = json.load(f)["dev"]
 
 if __name__ == "__main__":
     api_client = simple_client(
