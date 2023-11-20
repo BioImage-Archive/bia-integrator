@@ -27,7 +27,7 @@ search_result = rw_client.search_images_exact_match(
 
 search_result = rw_client.search_images_exact_match(
     api_models.SearchImageFilter(
-        attr=[api_models.SearchAnnotation(
+        annotations_any=[api_models.SearchAnnotation(
             key="_neuroglancer_link"
         )],
         limit=10
