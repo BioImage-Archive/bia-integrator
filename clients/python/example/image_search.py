@@ -23,4 +23,17 @@ search_result = rw_client.search_images_exact_match(
     )
 )
 
-print(search_result)
+#print(search_result)
+
+search_result = rw_client.search_images_exact_match(
+    api_models.SearchImageFilter(
+        attr=[api_models.SearchAnnotation(
+            key="_neuroglancer_link"
+        )],
+        limit=10
+    )
+)
+if len(search_result):
+    print(search_result[0].attributes['_neuroglancer_link'])
+else:
+    print("No images found for the query")
