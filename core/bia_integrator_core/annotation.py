@@ -21,19 +21,16 @@ def get_study_tags(study_accession_id: str) -> Set[str]:
     study = get_study(study_accession_id)
     return set(study.tags)
 
-
 def get_image_annotations(image_uuid: str) -> List[api_models.ImageAnnotation]:
     """Load image annotations from disk and return."""
     image = get_image(image_uuid)
     return image.annotations
 
-
-def persist_study_annotation(study_uuid: str, annotation: api_models.StudyAnnotation):
+def persist_study_annotation(study_accession: str, annotation: api_models.StudyAnnotation):
     """Save the given annotation to disk."""
-    study = get_study(study_uuid=study_uuid)
+    study = get_study(accession_id=study_accession)
     study.annotations.append(annotation)
     update_study(study)
-
 
 def persist_image_annotation(image_uuid: str, annotation: api_models.ImageAnnotation):
     """Save the given image annotation to disk."""

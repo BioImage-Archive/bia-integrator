@@ -156,7 +156,7 @@ def main(accession_id: str) -> None:
             value=str(v),
             state="active"
         )
-        persist_study_annotation(bia_study.uuid, annotation)
+        persist_study_annotation(accession_id, annotation)
     logger.info(ftypes_summary)
 
 if __name__ == "__main__":
