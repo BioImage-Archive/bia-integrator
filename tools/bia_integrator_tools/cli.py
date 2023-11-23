@@ -191,8 +191,7 @@ def create_study_annotation(accession_id: str, key: str, value: str):
         state=api_models.AnnotationState.ACTIVE
     )
 
-    study = get_study(accession_id=accession_id)
-    persist_study_annotation(study.uuid, annotation)
+    persist_study_annotation(accession_id, annotation)
 
 
 @annotations_app.command("create-image")
