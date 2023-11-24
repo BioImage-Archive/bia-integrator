@@ -12,7 +12,7 @@ from .annotation import (
 )
 from .models import BIAImage, BIAStudy, StudyAnnotation
 from .config import settings
-from .integrator import load_and_annotate_study
+from .integrator import load_study_with_linked_objects_not_annotated
 from .study import get_study, persist_study
 from .image import persist_image
 from .collection import get_collection, persist_collection
@@ -30,7 +30,7 @@ def get_all_study_identifiers() -> List[str]:
 def get_image(accession_id: str, image_id: str) -> BIAImage:
     """Get the given image from the study with the given accession identifier."""
 
-    study = load_and_annotate_study(accession_id)
+    study = load_study_with_linked_objects_not_annotated(accession_id)
 
     return study.images[image_id]
 
@@ -38,7 +38,7 @@ def get_image(accession_id: str, image_id: str) -> BIAImage:
 def get_images_for_study(accession_id) -> List[BIAImage]:
     """Get all images from the study with the given accession identifier."""
 
-    study = load_and_annotate_study(accession_id)
+    study = load_study_with_linked_objects_not_annotated(accession_id)
 
     return list(study.images.values())
 
