@@ -3,9 +3,8 @@
 """
 
 from bia_integrator_api import models as api_models, exceptions as api_exceptions
-from bia_integrator_api.util import simple_client
+from bia_integrator_api.util import simple_client, PrivateApi
 from src.bia_integrator_core import models as core_models, interface
-import sys
 import os
 
 import uuid as uuid_lib
@@ -13,7 +12,28 @@ import time
 import re
 from urllib.request import urlopen
 from urllib.error import HTTPError
-import tempfile
+
+import typer
+app = typer.Typer()
+
+studies_app = typer.Typer()
+app.add_typer(studies_app, name="studies")
+
+ome_metadata_app = typer.Typer()
+app.add_typer(ome_metadata_app, name="ome")
+
+import json
+import os
+SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
+with open(os.path.join(SCRIPT_DIR, "config.json"), "r") as f:
+    config = json.load(f)["dev"]
+
+api_client = simple_client(
+    config["biaint_api_url"],
+    config["biaint_username"],
+    config["biaint_password"],
+    disable_ssl_host_check = True
+)
 
 class SkipStudyException(Exception):
     pass
@@ -197,7 +217,7 @@ def image_core_to_api(image_core: core_models.BIAImage, study_uuid, image_uuid =
     
     return image
 
-def image_set_ome_metadata_if_any(api_client, study_image_api: api_models.BIAImage):
+def image_set_ome_metadata_if_any(api_client: PrivateApi, study_image_api: api_models.BIAImage):
     """
     Mostly duplicated from scripts/fetch_ome_metadata_for_all_images_in_study.py,
         but tools isn't a dependency of the migration project
@@ -226,34 +246,35 @@ def image_set_ome_metadata_if_any(api_client, study_image_api: api_models.BIAIma
     )
     print(f"Setting {ome_ngff_uri} as the ome xml of image {study_image_api.uuid}")
 
-    ome_metadata_contents = b""
-    try:
-        ome_metadata_contents = urlopen(ome_ngff_uri).read()
-    except HTTPError as e:
-        if e.status == 403:
-            # TODO: What to do about this case? Does the ome xml really not exist?
-            print(f"UNABLE TO FETCH {ome_ngff_uri} - SKIPPING")
+    ome_xml_basedir = "/tmp/ome_xml"
+    if not os.path.isdir(ome_xml_basedir):
+        os.makedirs(ome_xml_basedir)
+
+    ome_xml_path = os.path.join(ome_xml_basedir, ome_ngff_uri.replace("/","_"))
+    if not os.path.isfile(ome_xml_path):
+        ome_metadata_contents = b""
+        try:
+            ome_metadata_contents = urlopen(ome_ngff_uri).read()
+        except HTTPError as e:
+            if e.status == 403:
+                # TODO: What to do about this case? Does the ome xml really not exist?
+                print(f"UNABLE TO FETCH {ome_ngff_uri} - SKIPPING")
+                return
+
+        if not len(ome_metadata_contents):
+            print("Skipping empty ome xml")
             return
+        ome_metadata_contents = str(ome_metadata_contents.decode())
 
-    print(f"writing {len(ome_metadata_contents)} bytes to ome_metadata file")
-    if not len(ome_metadata_contents):
-        print("Skipping empty ome xml")
-        return
+        print(f"writing {len(ome_metadata_contents)} bytes to ome_metadata file {ome_xml_path}")
+        with open(ome_xml_path, "w+") as f:
+            f.write(ome_metadata_contents)
 
-    with tempfile.NamedTemporaryFile() as tmp:
-        tmp.write(ome_metadata_contents)
-    
-        # THIS IS MEGA-IMPORTANT!
-        #   If the ome xml is small, it doesn't get flushed to disk
-        #   but openapi-client independently opens the file passed by path and reads it when posting
-        #   so it will post a file with 0 length
-        tmp.flush()
-
-        api_client.set_image_ome_metadata(image_uuid=study_image_api.uuid, ome_metadata_file = tmp.name)
+    api_client.set_image_ome_metadata(image_uuid=study_image_api.uuid, ome_metadata_file = ome_xml_path)
 
 def migrate_study(study_id):
     #study_core = study.get_study(study_id)
-    study_core = interface.load_and_annotate_study(study_id)
+    study_core = interface.load_study_with_linked_objects_not_annotated(study_id)
     study_api = study_core_to_api(study_core)
 
     study_filerefs_api = []
@@ -300,48 +321,33 @@ def migrate_study(study_id):
     
     api_client.study_refresh_counts(study_api.uuid)
 
-    print("DONE saving study info. Setting image OME metadata...")
-    for study_image_api in study_images_api:
-        image_set_ome_metadata_if_any(api_client, study_image_api)
-
     print(f"DONE migrating study {study_id}\n")
 
-import json
-import os
-SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
-with open(os.path.join(SCRIPT_DIR, "config.json"), "r") as f:
-    config = json.load(f)["dev"]
+@studies_app.command("migrate_one")
+def migrate_one_study(study_accession: str):
+    migrate_study(study_accession)
 
-if __name__ == "__main__":
-    api_client = simple_client(
-        config["biaint_api_url"],
-        config["biaint_username"],
-        config["biaint_password"],
-        disable_ssl_host_check = True
-    )
-
+@studies_app.command("migrate_all")
+def migrate_all_studies():
     with open("skip.txt") as f:
         skip_accnos = set([l.strip() for l in f.readlines()])
+    
+    for study_id in interface.get_all_study_identifiers():
+        if study_id.strip() in skip_accnos:
+            # @TODO: NOT SURE skip this one because there is another study S-BIAD599 with the same accession
+            continue
 
-    if len(sys.argv) >= 2:
-        for study_id in sys.argv[1:]:
+        print(f"Migrating study {study_id}")
+        try:
             migrate_study(study_id)
-    else:
-        print("Migrating all studies")
-        for study_id in interface.get_all_study_identifiers():
-            if study_id.strip() in skip_accnos:
-                # @TODO: NOT SURE skip this one because there is another study S-BIAD599 with the same accession
-                continue
+        except SkipStudyException:
+            print(f"Adding study {study_id} to skip list")
+            skip_accnos.add(study_id)
+            with open("skip.txt", "a") as f:
+                f.writelines(skip_accnos)
 
-            print(f"Migrating study {study_id}")
-            try:
-                migrate_study(study_id)
-            except SkipStudyException:
-                print(f"Adding study {study_id} to skip list")
-                skip_accnos.add(study_id)
-                with open("skip.txt", "a") as f:
-                    f.writelines(skip_accnos)
-
+@studies_app.command("collections_rebuild")
+def rebuild_collection():
     data_dir_abspath = os.path.expanduser("~/.bia-integrator-data/collections")
     collection_files = os.listdir(data_dir_abspath)
     collection_names = [filename.rsplit(".", 1)[0] for filename in collection_files]
@@ -369,3 +375,12 @@ if __name__ == "__main__":
                 study_uuids=collection_study_uuids
             )
             api_client.create_collection(collection_api)
+
+@studies_app.command("set_ome_xml_all")
+def set_ome_xml_all():
+    for study_api in api_client.search_studies(limit=1000000):
+        for study_image in api_client.get_study_images(study_uuid=study_api.uuid, limit=1000000000):
+            image_set_ome_metadata_if_any(api_client, study_image)
+
+if __name__ == "__main__":
+    app()

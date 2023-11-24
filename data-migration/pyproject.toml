@@ -9,6 +9,7 @@ packages = [{include = "migration.py"}]
 [tool.poetry.dependencies]
 python = "^3.10"
 bia-integrator-api = { path = "../clients/python/", develop = true }
+typer = {extras = ["all"], version = "^0.7.0"}
 
 
 [build-system]
