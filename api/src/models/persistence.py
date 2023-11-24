@@ -49,8 +49,7 @@ class DocumentMixin(BaseModel):
             # document created now, will pe persisted later - add model
             if data.get("model", None) is None:
                 data["model"] = model_metadata_expected
-        
-        # build the object before applying annotations so that model defaults get overwritten by annotations if necessary
+
         data.pop("_id", None)
         super().__init__(**data)
 
@@ -92,6 +91,9 @@ class ImageAnnotation(Annotation):
 class StudyAnnotation(Annotation):
     pass
 
+class FileReferenceAnnotation(Annotation):
+    pass
+
 class BIAStudy(BIABaseModel, DocumentMixin):
     title: str = Field()
     description: str = Field()
@@ -121,6 +123,7 @@ class FileReference(BIABaseModel, DocumentMixin):
     type: str = Field()
     size_in_bytes: int = Field()
     attributes: Dict = Field(default={})
+    annotations: List[FileReferenceAnnotation] = Field(default=[])
 
     model_config = ConfigDict(model_version_latest = 1)
 

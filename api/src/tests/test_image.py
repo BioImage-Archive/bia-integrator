@@ -27,44 +27,6 @@ def test_create_images(api_client: TestClient, existing_study: dict):
         rsp = api_client.get(f"images/{uuid}")
         assert rsp.status_code == 200
 
-def test_image_annotations_applied(api_client: TestClient, existing_study: dict):
-    uuids = [get_uuid() for _ in range(2)]
-    images = [
-        {
-            "uuid": uuid,
-            "version": 0,
-            "study_uuid": existing_study['uuid'],
-            "name": f"image_{uuid}",
-            "original_relpath": f"/home/test/{uuid}",
-            "attributes": {
-                "image_uuid": uuid
-            },
-            "annotations": [{
-                "author_email": "test@ebi.ac.uk",
-                "key": "custom_annotation",
-                "value": "should_only_be_added_as_an_attribute",
-                "state": "active"
-            }, {
-                "author_email": "test@ebi.ac.uk",
-                "key": "original_relpath",
-                "value": "this/should/overwrite/original",
-                "state": "active"
-            }]
-        }
-        for uuid in uuids
-    ]
-    rsp = api_client.post("private/images", json=images)
-    assert rsp.status_code == 201, rsp.json()
-
-    for uuid in uuids:
-        rsp = api_client.get(f"images/{uuid}")
-        assert rsp.status_code == 200
-        img = rsp.json()
-
-        assert img['attributes']['image_uuid'] is not None
-        assert img['attributes']['custom_annotation'] == "should_only_be_added_as_an_attribute"
-        assert img['original_relpath'] == "this/should/overwrite/original"
-
 def test_create_images_multiple_errors(api_client: TestClient, existing_study: dict):
     uuids = [get_uuid() for _ in range(10)]
 

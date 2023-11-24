@@ -6,6 +6,10 @@ from typing import List
 import time
 
 import pytest
+import pytest_asyncio
+from ..models.repository import repository_create, Repository
+from ..api.auth import create_user, get_user
+import asyncio
 
 #@pytest.fixture
 #def api_client_private() -> TestClient:
@@ -57,15 +61,16 @@ def existing_image(api_client: TestClient, existing_study: dict):
 
     return rsp_get_image.json()
 
+class DBTestMixin:
+    @pytest_asyncio.fixture
+    async def db(self) -> Repository:
+        return await repository_create(init = True)
+
 def create_user_if_missing(email: str, password: str):
     """
     Exception from the general rule used in this project, of tests being as high-level as possible
     Just to avoid compromising on security for easy test user creation / the logistics of a seed db 
     """
-    from ..models.repository import repository_create
-    from ..api.auth import create_user, get_user
-    import asyncio
-
     loop = asyncio.get_event_loop()
 
     async def create_test_user_if_missing():
@@ -131,7 +136,9 @@ def get_template_study(add_uuid = False):
         "authors": [],
         "tags": [],
         "organism": "test",
-        "release_date": "test"
+        "release_date": "test",
+        "file_references_count": 0,
+        "images_count": 0
     }
 
 def make_study(api_client: TestClient, study_attributes_override = {}):
@@ -161,6 +168,7 @@ def get_template_file_reference(existing_study: dict, add_uuid = False):
         "uri": "https://test.com/test",
         "size_in_bytes": 2,
         "attributes": {},
+        "annotations": [],
         "type": "file"
     }
 

@@ -411,6 +411,12 @@ class Repository:
 
         return await self.get_study(uuid=study_uuid)
 
+    async def find_fileref_by_uuid(self, fileref_uuid: str | uuid.UUID) -> models.FileReference:
+        if isinstance(fileref_uuid, str):
+            fileref_uuid = uuid.UUID(fileref_uuid)
+        
+        return await self.get_file_reference(uuid=fileref_uuid)
+
     async def search_collections(self, **kwargs) -> List[models.BIACollection]:
         mongo_query = {
             'model.type_name': 'BIACollection',
@@ -427,7 +433,7 @@ class Repository:
         return collections
 
     async def upsert_ome_metadata_for_image(self, image_uuid: uuid.UUID, ome_metadata: dict) -> models.BIAImageOmeMetadata:
-        self.get_image(uuid=image_uuid) # just to check it exists
+        await self.get_image(uuid=image_uuid) # just to check it exists
 
         ome_metadata_model = models.BIAImageOmeMetadata(
             uuid = uuid.uuid4(),
