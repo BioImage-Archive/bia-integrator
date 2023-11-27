@@ -236,8 +236,8 @@ async def search_studies_exact_match(
         if search_filter.study_match.accession_id:
             query['accession_id'] = search_filter.study_match.accession_id
 
-    asd = await db.search_studies(query, start_uuid=search_filter.start_uuid, limit=search_filter.limit)
-    return asd
+    studies = await db.search_studies(query, start_uuid=search_filter.start_uuid, limit=search_filter.limit)
+    return studies
 
 @router.get("/studies/{study_uuid}/images")
 async def get_study_images(

@@ -130,6 +130,7 @@ Class | Method | HTTP request | Description
  - [BulkOperationResponse](bia_integrator_api/docs/BulkOperationResponse.md)
  - [ChannelRendering](bia_integrator_api/docs/ChannelRendering.md)
  - [FileReference](bia_integrator_api/docs/FileReference.md)
+ - [FileReferenceAnnotation](bia_integrator_api/docs/FileReferenceAnnotation.md)
  - [HTTPValidationError](bia_integrator_api/docs/HTTPValidationError.md)
  - [ImageAnnotation](bia_integrator_api/docs/ImageAnnotation.md)
  - [LocationInner](bia_integrator_api/docs/LocationInner.md)

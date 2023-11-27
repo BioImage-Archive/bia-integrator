@@ -1,6 +1,7 @@
 from enum import Enum
 from pydantic import BaseModel, Field, ConfigDict
-from typing import Dict, List, Optional
+from pydantic.generics import GenericModel
+from typing import Dict, List, Optional, TypeVar, Generic
 from uuid import UUID
 
 from src.api.exceptions import DocumentNotFound
@@ -26,7 +27,7 @@ class DocumentMixin(BaseModel):
     model: Optional[ModelMetadata] = Field(default=None)
     model_config = ConfigDict(populate_by_name=True, extra="forbid")
 
-    def __init__(self, apply_annotations = True, **data):
+    def __init__(self, **data):
         if self.model_config.get('model_version_latest') is None:
             raise ValueError(f"Class {self.__class__.__name__} missing 'model_version_latest' in its model_config")
         model_metadata_expected = ModelMetadata(
@@ -53,25 +54,6 @@ class DocumentMixin(BaseModel):
         data.pop("_id", None)
         super().__init__(**data)
 
-        if apply_annotations and hasattr(self, 'annotations'):
-            document_attributes = set(self.__dict__.keys())
-
-            for annotation in self.annotations:
-                if annotation.key in ["model", "uuid"]:
-                    raise Exception(f"Annotation {annotation} of object {self.uuid} overwrites a read-only property")
-
-                # annotations that don't overwrite a field are 'annotation attributes'
-                if annotation.key in document_attributes:
-                    if type(self.__dict__[annotation.key]) is list:
-                        self.__dict__[annotation.key].append(annotation.value)
-                    else:
-                        self.__dict__[annotation.key] = annotation.value
-                else:
-                    self.attributes[annotation.key] = annotation.value
-
-class Author(BIABaseModel):
-    name: str
-
 class AnnotationState(str, Enum):
     active = "active",
     deleted = "deleted"
@@ -94,7 +76,46 @@ class StudyAnnotation(Annotation):
 class FileReferenceAnnotation(Annotation):
     pass
 
-class BIAStudy(BIABaseModel, DocumentMixin):
+TAnnotation = TypeVar("TAnnotation", Annotation, StudyAnnotation, ImageAnnotation, FileReferenceAnnotation)
+class AnnotatedMixin(GenericModel, Generic[TAnnotation]):
+    attributes: Dict = Field(default={}, description="""
+        When annotations are applied, the ones that have a key different than an object attribute (so they don't overwrite it) get saved here.
+    """)
+    annotations_applied: bool = Field(False, description="""
+        This acts as a dirty flag, with the purpose of telling apart objects that had some fields overwritten by applying annotations (so should be rejected when writing), and those that didn't.
+    """)
+    annotations: List[TAnnotation] = Field(default=[])
+
+    def __init__(self):
+        super.__init__(self)
+
+        if self.annotations_applied:
+            raise Exception(f"Trying to load object after annotations were applied! This is not allowed, to avoid overwriting object fields. Object: {self.model_dump()}")
+
+    def apply_annotations(self):
+        self.annotations_applied = True
+
+        document_attributes = set(self.__dict__.keys())
+
+        for annotation in self.annotations:
+            # @TODO: Refactor as annotation.apply(self)
+
+            if annotation.key in ["model", "uuid"]:
+                raise Exception(f"Annotation {annotation} of object {self.uuid} overwrites a read-only property")
+
+            # annotations that don't overwrite a field are 'annotation attributes'
+            if annotation.key in document_attributes:
+                if type(self.__dict__[annotation.key]) is list:
+                    self.__dict__[annotation.key].append(annotation.value)
+                else:
+                    self.__dict__[annotation.key] = annotation.value
+            else:
+                self.attributes[annotation.key] = annotation.value
+
+class Author(BIABaseModel):
+    name: str
+
+class BIAStudy(BIABaseModel, DocumentMixin, AnnotatedMixin[StudyAnnotation]):
     title: str = Field()
     description: str = Field()
     authors: Optional[List[Author]] = Field(default=[])
@@ -103,8 +124,6 @@ class BIAStudy(BIABaseModel, DocumentMixin):
     accession_id: str = Field()
     
     imaging_type: Optional[str] = Field(default=None)
-    attributes: Dict = Field(default={})
-    annotations: List[StudyAnnotation] = Field(default=[])
     example_image_uri: str = Field(default="")
     example_image_annotation_uri: str = Field(default="")
     tags: List[str] = Field(default=[])
@@ -114,7 +133,7 @@ class BIAStudy(BIABaseModel, DocumentMixin):
 
     model_config = ConfigDict(model_version_latest = 1)
 
-class FileReference(BIABaseModel, DocumentMixin):
+class FileReference(BIABaseModel, DocumentMixin, AnnotatedMixin[FileReferenceAnnotation]):
     """A reference to an externally hosted file."""
 
     study_uuid: UUID = Field()
@@ -122,8 +141,6 @@ class FileReference(BIABaseModel, DocumentMixin):
     uri: str = Field()
     type: str = Field()
     size_in_bytes: int = Field()
-    attributes: Dict = Field(default={})
-    annotations: List[FileReferenceAnnotation] = Field(default=[])
 
     model_config = ConfigDict(model_version_latest = 1)
 
@@ -159,7 +176,7 @@ class BIAImageRepresentation(BIABaseModel):
     attributes: Dict = Field(default={})
     rendering: Optional[RenderingInfo] = Field(default=None)
 
-class BIAImage(BIABaseModel, DocumentMixin):
+class BIAImage(BIABaseModel, DocumentMixin, AnnotatedMixin[ImageAnnotation]):
     """This class represents the abstract concept of an image. Images are
     generated by acquisition by instruments.
 
@@ -180,8 +197,6 @@ class BIAImage(BIABaseModel, DocumentMixin):
 
     dimensions: Optional[str] = Field(default=None)
     representations: List[BIAImageRepresentation] = Field(default=[])
-    attributes: Dict = Field(default={})
-    annotations: List[ImageAnnotation] = Field(default=[])
     alias: Optional[BIAImageAlias] = Field(default=None)
 
     model_config = ConfigDict(model_version_latest = 1)
