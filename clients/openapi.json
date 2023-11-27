@@ -1673,6 +1673,24 @@
       },
       "BIAStudy": {
         "properties": {
+          "attributes": {
+            "type": "object",
+            "title": "Attributes",
+            "default": {}
+          },
+          "annotations_applied": {
+            "type": "boolean",
+            "title": "Annotations Applied",
+            "default": false
+          },
+          "annotations": {
+            "items": {
+              "$ref": "#/components/schemas/StudyAnnotation"
+            },
+            "type": "array",
+            "title": "Annotations",
+            "default": []
+          },
           "uuid": {
             "type": "string",
             "format": "uuid",
@@ -1737,19 +1755,6 @@
               }
             ],
             "title": "Imaging Type"
-          },
-          "attributes": {
-            "type": "object",
-            "title": "Attributes",
-            "default": {}
-          },
-          "annotations": {
-            "items": {
-              "$ref": "#/components/schemas/StudyAnnotation"
-            },
-            "type": "array",
-            "title": "Annotations",
-            "default": []
           },
           "example_image_uri": {
             "type": "string",
