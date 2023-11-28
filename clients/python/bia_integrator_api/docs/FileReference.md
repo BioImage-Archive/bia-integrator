@@ -14,6 +14,7 @@ Name | Type | Description | Notes
 **type** | **str** |  | 
 **size_in_bytes** | **int** |  | 
 **attributes** | **object** |  | [optional] 
+**annotations** | [**List[FileReferenceAnnotation]**](FileReferenceAnnotation.md) |  | [optional] [default to []]
 
 ## Example
 

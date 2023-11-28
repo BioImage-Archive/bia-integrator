@@ -1673,6 +1673,24 @@
       },
       "BIAStudy": {
         "properties": {
+          "attributes": {
+            "type": "object",
+            "title": "Attributes",
+            "default": {}
+          },
+          "annotations_applied": {
+            "type": "boolean",
+            "title": "Annotations Applied",
+            "default": false
+          },
+          "annotations": {
+            "items": {
+              "$ref": "#/components/schemas/StudyAnnotation"
+            },
+            "type": "array",
+            "title": "Annotations",
+            "default": []
+          },
           "uuid": {
             "type": "string",
             "format": "uuid",
@@ -1737,19 +1755,6 @@
               }
             ],
             "title": "Imaging Type"
-          },
-          "attributes": {
-            "type": "object",
-            "title": "Attributes",
-            "default": {}
-          },
-          "annotations": {
-            "items": {
-              "$ref": "#/components/schemas/StudyAnnotation"
-            },
-            "type": "array",
-            "title": "Annotations",
-            "default": []
           },
           "example_image_uri": {
             "type": "string",
@@ -2031,6 +2036,14 @@
             "type": "object",
             "title": "Attributes",
             "default": {}
+          },
+          "annotations": {
+            "items": {
+              "$ref": "#/components/schemas/FileReferenceAnnotation"
+            },
+            "type": "array",
+            "title": "Annotations",
+            "default": []
           }
         },
         "additionalProperties": false,
@@ -2046,6 +2059,33 @@
         ],
         "title": "FileReference",
         "description": "A reference to an externally hosted file."
+      },
+      "FileReferenceAnnotation": {
+        "properties": {
+          "author_email": {
+            "type": "string",
+            "title": "Author Email"
+          },
+          "key": {
+            "type": "string",
+            "title": "Key"
+          },
+          "value": {
+            "type": "string",
+            "title": "Value"
+          },
+          "state": {
+            "$ref": "#/components/schemas/AnnotationState"
+          }
+        },
+        "type": "object",
+        "required": [
+          "author_email",
+          "key",
+          "value",
+          "state"
+        ],
+        "title": "FileReferenceAnnotation"
       },
       "HTTPValidationError": {
         "properties": {

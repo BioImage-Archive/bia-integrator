@@ -28,6 +28,7 @@ from bia_integrator_api.models.bulk_operation_item import BulkOperationItem
 from bia_integrator_api.models.bulk_operation_response import BulkOperationResponse
 from bia_integrator_api.models.channel_rendering import ChannelRendering
 from bia_integrator_api.models.file_reference import FileReference
+from bia_integrator_api.models.file_reference_annotation import FileReferenceAnnotation
 from bia_integrator_api.models.http_validation_error import HTTPValidationError
 from bia_integrator_api.models.image_annotation import ImageAnnotation
 from bia_integrator_api.models.location_inner import LocationInner
