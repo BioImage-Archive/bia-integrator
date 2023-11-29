@@ -3,13 +3,16 @@ from ..models import api as api_models
 from ..models.repository import Repository
 from .exceptions import DocumentNotFound, InvalidRequestException
 from . import constants
+from .annotator import annotator, Annotator
 
 from typing import List, Optional, Annotated
 from fastapi import APIRouter, Query, Depends, Body
 from uuid import UUID
 import re
 
-router = APIRouter(tags=[constants.OPENAPI_TAG_PUBLIC, constants.OPENAPI_TAG_PRIVATE])
+router = APIRouter(
+    tags=[constants.OPENAPI_TAG_PUBLIC, constants.OPENAPI_TAG_PRIVATE]
+)
 
 @router.get("/object_info_by_accessions")
 async def get_object_info_by_accession(
@@ -51,10 +54,14 @@ async def get_study_images_by_alias(
 @router.get("/studies/{study_uuid}")
 async def get_study(
     study_uuid: str,
-    db: Repository = Depends()
+    annotator: Annotated[Annotator, Depends(annotator)],
+    db: Repository = Depends(),
     ) -> db_models.BIAStudy:
     
-    return await db.find_study_by_uuid(study_uuid)
+    study = await db.find_study_by_uuid(study_uuid)
+    annotator.annotate_if_needed(study)
+    
+    return study
 
 @router.get("/studies/{study_uuid}/file_references")
 async def get_study_file_references(

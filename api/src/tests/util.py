@@ -138,7 +138,8 @@ def get_template_study(add_uuid = False):
         "organism": "test",
         "release_date": "test",
         "file_references_count": 0,
-        "images_count": 0
+        "images_count": 0,
+        "annotations_applied": False
     }
 
 def make_study(api_client: TestClient, study_attributes_override = {}):

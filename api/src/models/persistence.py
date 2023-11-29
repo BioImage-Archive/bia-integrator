@@ -27,7 +27,7 @@ class DocumentMixin(BaseModel):
     model: Optional[ModelMetadata] = Field(default=None)
     model_config = ConfigDict(populate_by_name=True, extra="forbid")
 
-    def __init__(self, **data):
+    def __init__(self, *args, **data):
         if self.model_config.get('model_version_latest') is None:
             raise ValueError(f"Class {self.__class__.__name__} missing 'model_version_latest' in its model_config")
         model_metadata_expected = ModelMetadata(
@@ -52,7 +52,7 @@ class DocumentMixin(BaseModel):
                 data["model"] = model_metadata_expected
 
         data.pop("_id", None)
-        super().__init__(**data)
+        super().__init__(*args, **data)
 
 class AnnotationState(str, Enum):
     active = "active",
@@ -86,31 +86,12 @@ class AnnotatedMixin(GenericModel, Generic[TAnnotation]):
     """)
     annotations: List[TAnnotation] = Field(default=[])
 
-    def __init__(self):
-        super.__init__(self)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
+        # Any instance of an Annotateable object getting created is assumed to from a client, not the db
         if self.annotations_applied:
             raise Exception(f"Trying to load object after annotations were applied! This is not allowed, to avoid overwriting object fields. Object: {self.model_dump()}")
-
-    def apply_annotations(self):
-        self.annotations_applied = True
-
-        document_attributes = set(self.__dict__.keys())
-
-        for annotation in self.annotations:
-            # @TODO: Refactor as annotation.apply(self)
-
-            if annotation.key in ["model", "uuid"]:
-                raise Exception(f"Annotation {annotation} of object {self.uuid} overwrites a read-only property")
-
-            # annotations that don't overwrite a field are 'annotation attributes'
-            if annotation.key in document_attributes:
-                if type(self.__dict__[annotation.key]) is list:
-                    self.__dict__[annotation.key].append(annotation.value)
-                else:
-                    self.__dict__[annotation.key] = annotation.value
-            else:
-                self.attributes[annotation.key] = annotation.value
 
 class Author(BIABaseModel):
     name: str

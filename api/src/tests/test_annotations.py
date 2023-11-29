@@ -74,8 +74,28 @@ class TestStudyAnnotations(DBTestMixin):
         assert study_in_db['attributes'][attribute_annotation['key']] != attribute_annotation['value']
 
     @pytest.mark.parametrize('update', [False, True])
-    def test_annotations_applied_when_explicit(self, study: dict):
-        raise Exception("TODO")
+    def test_annotations_applied_when_explicit(self, study: dict, api_client: TestClient, study_initial: dict, field_annotation: dict, attribute_annotation: dict):
+        rsp = api_client.get(f"studies/{study_initial['uuid']}?apply_annotations=true")
+        assert rsp.status_code == 200
+
+        study_with_annotations = rsp.json()
+        assert study_with_annotations[field_annotation["key"]] == field_annotation["value"]
+        assert study_with_annotations["attributes"][attribute_annotation["key"]] == attribute_annotation["value"]
+    
+    @pytest.mark.parametrize('update', [False, True])
+    def test_annotations_not_applied_when_explicit(self, study: dict, api_client: TestClient, study_initial: dict):
+        rsp = api_client.get(f"studies/{study_initial['uuid']}?apply_annotations=false")
+        assert rsp.status_code == 200
+
+        study_without_annotations = rsp.json()
+        assert study_without_annotations == study
+        assert study_without_annotations == study_initial
+    
+    def test_search_annotations_applied_when_explicit(self):
+        raise Exception("TODO - same for everything else")
+
+    def test_accession_to_objectinfo_no_apply_annotations(self):
+        raise Exception("TODO - This should be deprecated anyway. Also, no need to \"annotate\" a barebones object.")
 
 @pytest.mark.asyncio
 class TestImageAnnotations(DBTestMixin):
