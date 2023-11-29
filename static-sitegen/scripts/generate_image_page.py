@@ -8,6 +8,7 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 from bia_integrator_core.integrator import load_and_annotate_study
 from bia_integrator_core.interface import get_image, to_uuid
+from scripts.extract_ome_metadata import sanitise_image_metadata
 
 from utils import format_for_html, DOWNLOADABLE_REPRESENTATIONS
 
@@ -59,10 +60,14 @@ def generate_neuroglancer_link(uri: str):
     return neuroglancer_uri
 
 
-def generate_image_page_html(accession_id: str, image_id):
+def generate_image_page_html(accession_id: str, image_uuid):
 
     bia_study = load_and_annotate_study(accession_id)
-    bia_image = get_image(accession_id, image_id)
+    bia_image = get_image(image_uuid)
+    author_names = ', '.join([ 
+        author.name
+        for author in bia_study.authors
+    ])
 
     reps_by_type = {
         representation.type: representation
@@ -114,6 +119,7 @@ def generate_image_page_html(accession_id: str, image_id):
 
 
     # If an attribute is in form of json format to display indented in html
+    bia_image.attributes = sort_dict(sanitise_image_metadata(bia_image.attributes))
     for key, attribute in bia_image.attributes.items():
         try:
             if attribute.find("{") >= 0:
@@ -125,19 +131,23 @@ def generate_image_page_html(accession_id: str, image_id):
     download_uri = None
     for rep_type in DOWNLOADABLE_REPRESENTATIONS:
         if rep_type in reps_by_type:
-            download_uri = urllib.parse.quote(reps_by_type[rep_type].uri, safe=":/")
+            download_uri = urllib.parse.quote(reps_by_type[rep_type].uri[0], safe=":/")
             break
     
     try:
-        download_size = bia_study.images[image_id].attributes["download_size"]
+        download_size = bia_image.attributes["download_size"]
     except KeyError:
         download_size = "?MiB"
 
-    zarr_uri = reps_by_type["ome_ngff"].uri
+    zarr_uri = reps_by_type["ome_ngff"].uri[0]
 
-    bia_image.attributes = sort_dict(bia_image.attributes)
 
-    license_uri = LICENSE_URI_LOOKUP.get(bia_study.license, "Unknown")
+    #TODO: Discuss with LA/MH
+    try:
+        license_uri = LICENSE_URI_LOOKUP.get(bia_study.license, "Unknown")
+    except AttributeError:
+        license_uri = "Unknown"
+
 
     rendered = template.render(
         study=bia_study,
@@ -158,12 +168,10 @@ def generate_image_page_html(accession_id: str, image_id):
 
 @click.command()
 @click.argument("accession_id")
-@click.argument("image_id")
-def main(accession_id, image_id):
+@click.argument("image_uuid")
+def main(accession_id, image_uuid):
 
     logging.basicConfig(level=logging.INFO)
-
-    image_uuid = to_uuid(image_id, lambda: get_image(accession_id, image_id))
 
     rendered = generate_image_page_html(accession_id, image_uuid)
 
