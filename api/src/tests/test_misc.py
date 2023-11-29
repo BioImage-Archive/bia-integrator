@@ -107,3 +107,16 @@ def test_single_doc_update_some_change_fails(api_client: TestClient, existing_st
 
     rsp = api_client.patch('private/studies', json=existing_study)
     assert rsp.status_code == 404
+
+def test_fetch_image_by_alias(api_client: TestClient):
+    template_study = get_template_study(add_uuid=True)
+    template_study["description"] = "A unicode Ǝ string ñ"
+
+    rsp = api_client.post('private/studies', json=template_study)
+    assert rsp.status_code == 201
+
+    rsp = api_client.get(f'studies/{template_study["uuid"]}')
+    assert rsp.status_code == 200
+
+    fetched_study = rsp.json()
+    assert fetched_study == template_study

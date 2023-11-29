@@ -7,10 +7,7 @@ from uuid import UUID
 from src.api.exceptions import DocumentNotFound, InvalidRequestException
 
 class BIABaseModel(BaseModel):
-    def json(self, ensure_ascii=False, **kwargs):
-        """ensure_ascii defaults to False instead of True to handle the common case of non-ascii names"""
-
-        return super().model_dump_json(ensure_ascii=ensure_ascii, **kwargs)
+    pass
 
 class ModelMetadata(BaseModel):
     type_name: str = Field()
