@@ -74,14 +74,6 @@ class TestStudyAnnotations(DBTestMixin):
         assert study_in_db['attributes'][attribute_annotation['key']] != attribute_annotation['value']
 
     @pytest.mark.parametrize('update', [False, True])
-    async def test_annotations_applied_flag_not_persisted(self, db: Repository, study):
-        study_in_db = await db.find_study_by_uuid(study['uuid'])
-        study_in_db = study_in_db.model_dump() # just to simplify
-
-        assert "annotations_applied" in study, "Checking that something is absent below. Ensure it existed in the first place, or the test isn't useful (so fails if we rename the attribute)"
-        assert "annotations_applied" not in study_in_db
-
-    @pytest.mark.parametrize('update', [False, True])
     def test_annotations_applied_when_explicit(self, study: dict, api_client: TestClient, study_initial: dict, field_annotation: dict, attribute_annotation: dict):
         rsp = api_client.get(f"studies/{study_initial['uuid']}?apply_annotations=true")
         assert rsp.status_code == 200

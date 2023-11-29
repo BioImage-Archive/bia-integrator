@@ -6,7 +6,7 @@ from .api import public
 from .api import private
 from .api import admin
 from .api import auth
-from .models.repository import repository_create
+from .models.repository import repository_create, Repository
 
 import uvicorn
 from fastapi import FastAPI, Depends
@@ -40,7 +40,7 @@ async def log_exception_handler(request: Request, exc: Exception):
         status_code=HTTP_500_INTERNAL_SERVER_ERROR
     )
 
-async def repository_dependency():
+async def repository_dependency() -> Repository:
     db = await repository_create(init = False)
     try:
         yield db
