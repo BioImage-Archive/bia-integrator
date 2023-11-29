@@ -130,6 +130,7 @@ def get_template_study(add_uuid = False):
         "title": "Test BIA study",
         "description": "description",
         "attributes": {},
+        "annotations": [],
         "example_image_annotation_uri": '',
         "example_image_uri": '',
         "imaging_type": None,

@@ -4,7 +4,7 @@ from pydantic.generics import GenericModel
 from typing import Dict, List, Optional, TypeVar, Generic
 from uuid import UUID
 
-from src.api.exceptions import DocumentNotFound
+from src.api.exceptions import DocumentNotFound, InvalidRequestException
 
 class BIABaseModel(BaseModel):
     def json(self, ensure_ascii=False, **kwargs):
@@ -89,9 +89,15 @@ class AnnotatedMixin(GenericModel, Generic[TAnnotation]):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        # Any instance of an Annotateable object getting created is assumed to from a client, not the db
         if self.annotations_applied:
-            raise Exception(f"Trying to load object after annotations were applied! This is not allowed, to avoid overwriting object fields. Object: {self.model_dump()}")
+            """
+            This is to ensure objects aren't pushed accidentally to the api, after having annotations applied.
+            The way all objects pass through the api when writing is: json -> dict -> Model (here) -> dict -> db
+                Dict always gets loaded into a model because this is where (any) validation happens.
+                ! Might not always be true in the future.
+            """
+
+            raise InvalidRequestException(f"Unable to create new instance of object with annotations applied, because it *might* be persisted. Object: {self.model_dump()}")
 
 class Author(BIABaseModel):
     name: str

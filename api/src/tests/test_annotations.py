@@ -74,6 +74,14 @@ class TestStudyAnnotations(DBTestMixin):
         assert study_in_db['attributes'][attribute_annotation['key']] != attribute_annotation['value']
 
     @pytest.mark.parametrize('update', [False, True])
+    async def test_annotations_applied_flag_not_persisted(self, db: Repository, study):
+        study_in_db = await db.find_study_by_uuid(study['uuid'])
+        study_in_db = study_in_db.model_dump() # just to simplify
+
+        assert "annotations_applied" in study, "Checking that something is absent below. Ensure it existed in the first place, or the test isn't useful (so fails if we rename the attribute)"
+        assert "annotations_applied" not in study_in_db
+
+    @pytest.mark.parametrize('update', [False, True])
     def test_annotations_applied_when_explicit(self, study: dict, api_client: TestClient, study_initial: dict, field_annotation: dict, attribute_annotation: dict):
         rsp = api_client.get(f"studies/{study_initial['uuid']}?apply_annotations=true")
         assert rsp.status_code == 200
@@ -81,7 +89,8 @@ class TestStudyAnnotations(DBTestMixin):
         study_with_annotations = rsp.json()
         assert study_with_annotations[field_annotation["key"]] == field_annotation["value"]
         assert study_with_annotations["attributes"][attribute_annotation["key"]] == attribute_annotation["value"]
-    
+        assert study_with_annotations["annotations_applied"] == True, "annotations_applied field should always be set to True if annotations were applied"
+
     @pytest.mark.parametrize('update', [False, True])
     def test_annotations_not_applied_when_explicit(self, study: dict, api_client: TestClient, study_initial: dict):
         rsp = api_client.get(f"studies/{study_initial['uuid']}?apply_annotations=false")
@@ -90,12 +99,52 @@ class TestStudyAnnotations(DBTestMixin):
         study_without_annotations = rsp.json()
         assert study_without_annotations == study
         assert study_without_annotations == study_initial
+        assert study_without_annotations["annotations_applied"] == False, "annotations_applied field should always be set to False if annotations were applied"
     
+    def test_object_fetch_sets_annotations_applied_flag_even_if_no_annotations_set(self, study_initial: dict, api_client: TestClient):
+        assert study_initial["annotations"] == [], "This test assumes the object has no annotations"
+
+        rsp = api_client.post('private/studies', json=study_initial)
+        assert rsp.status_code == 201, rsp.json()
+
+        rsp = api_client.get(f"studies/{study_initial['uuid']}?apply_annotations=true")
+        assert rsp.status_code == 200
+        study_fetched = rsp.json()
+
+        assert study_fetched["annotations_applied"] == True, "Study doesn't have annotations, but was fetched with apply_annotations=true"
+
+        del study_fetched["annotations_applied"]
+        del study_initial["annotations_applied"]
+        assert study_fetched == study_initial, "No annotations should have been applied (there are none), so the object should be unchanged"
+
     def test_search_annotations_applied_when_explicit(self):
         raise Exception("TODO - same for everything else")
 
     def test_accession_to_objectinfo_no_apply_annotations(self):
         raise Exception("TODO - This should be deprecated anyway. Also, no need to \"annotate\" a barebones object.")
+
+    def test_object_create_annotations_applied_rejected(self, study_initial: dict, api_client: TestClient):
+        study_initial['annotations_applied'] = True
+
+        rsp = api_client.post('private/studies', json=study_initial)
+        assert rsp.status_code == 422, rsp.json()
+
+        # double-check object not created
+        rsp = api_client.get(f"studies/{study_initial['uuid']}")
+        assert rsp.status_code == 404
+
+    @pytest.mark.parametrize('update', [False, True])
+    def test_object_update_annotations_applied_rejected(self, study: dict, api_client: TestClient):
+        study["annotations_applied"] = True
+        study["version"] += 1
+
+        rsp = api_client.patch('private/studies', json=study)
+        assert rsp.status_code == 422, rsp.json()
+
+        # double-check object not updated
+        rsp = api_client.get(f"studies/{study['uuid']}")
+        assert rsp.status_code == 200
+        assert rsp.json()['version'] == study['version']-1
 
 @pytest.mark.asyncio
 class TestImageAnnotations(DBTestMixin):
