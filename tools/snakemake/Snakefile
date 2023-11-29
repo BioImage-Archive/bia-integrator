@@ -173,13 +173,12 @@ checkpoint get_image_reps_to_convert:
             # returned an error) when it has run OK. Therefore disable 
             # exit on error just for this.
             set +e
-                grep "json" {input} | head -n {n_images_to_convert} > {input}.temp
+                biaint images list ${{ACCNO}} | cut -d' ' -f1 | head -n {n_images_to_convert} > {input}.temp
             set -e
 
             OUTPUT_DIR='{output.im_rep_dir}'
-            REGEX="([0-9|a-z]+-[0-9|a-z]+-[0-9|a-z]+-[0-9|a-z]+-[0-9|a-z]+)"
             mkdir $OUTPUT_DIR
-            while read line; do if [[ $line =~ $REGEX ]]; then touch "$OUTPUT_DIR/${{BASH_REMATCH[1]}}"; fi; done < {input}.temp
+            while read line; do touch "$OUTPUT_DIR/${{line}}"; done < {input}.temp
         """
 
 # This step of the pipeline runs N (default 6) independent jobs. Some
@@ -199,7 +198,7 @@ rule convert_to_zarr_and_upload:
             set +e
             IM_REF=$(basename {input.im_ref})
             # If zipped_zarr use remote_zipped_zarr_to_s3
-            biaint images show $ACCNO $IM_REF | grep zipped_zarr
+            biaint images show $IM_REF | grep zipped_zarr
             exitcode=$?
             if [ $exitcode -eq 0 ]
             then
@@ -229,7 +228,7 @@ rule generate_thumbnails:
     shell:
         """
             # Allow continuation in event of error - see comments in
-            # rule 'convet_to_zarr_and_upload' above
+            # rule 'convert_to_zarr_and_upload' above
             set +e
             if [ -f {input}.success ]
             then
@@ -305,23 +304,11 @@ rule annotate_study_from_zarr:
             {command_prefix} python {script_dir}/annotate_study_from_zarr.py $ACCNO > {output}
         """
 
-rule run_post_conversion_annotation:
-    input:
-        work_dir + "/annotate_study_from_zarr.log"
-    output:
-        work_dir + "/post_conversion_annotation.log"
-    singularity:
-        singularity_container_path
-    shell:
-        """
-            {command_prefix} python {script_dir}/run_post_conversion_annotation.py $ACCNO > {output}
-        """
-
 # Collect the output logs so we have one file for 'all' rule
 rule combine_output:
     output:
         combined = work_dir + "/final_output_{accno}.log"
     input:
-        work_dir + "/post_conversion_annotation.log"
+        work_dir + "/annotate_study_from_zarr.log"
     shell:
         "echo {input} > {output.combined}"
