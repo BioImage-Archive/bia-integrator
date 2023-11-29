@@ -20,7 +20,7 @@ def get_annotation_files_in_study(bia_study):
     """Generate list of files in study that are annotations of another image."""
     
     return [
-        fileref for fileref in bia_study.file_references.values()
+        fileref for fileref in bia_study.file_references
         if "source image" in fileref.attributes
     ]
 

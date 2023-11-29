@@ -6,7 +6,6 @@ import click
 from jinja2 import Environment, FileSystemLoader, select_autoescape # type: ignore
 
 from bia_integrator_core.integrator import load_and_annotate_study
-from bia_integrator_core.interface import get_aliases
 from utils import ( get_annotation_files_in_study, 
                    get_non_annotation_images_in_study,
                    add_annotation_download_size_attributes,
@@ -66,13 +65,13 @@ def generate_dataset_page_html(accession_id, template_fname: str):
         }
 
     ann_aliases_for_images = {
-        image.id: an_aliases_by_name.get(image.name)
-        for image in bia_study.images.values()
+        image.uuid: an_aliases_by_name.get(image.name)
+        for image in bia_study.images
     }     
     
     im_aliases_by_name = {
-        image.name: aliases_by_id.get(image.id, image.id)
-        for image in bia_study.images.values()
+        image.name: image.alias.name if image.alias.name else ""
+        for image in bia_study.images
     }
 
     ann_aliases_by_sourcename = {}
@@ -85,8 +84,8 @@ def generate_dataset_page_html(accession_id, template_fname: str):
     # This assumes one-to-one or one-to-many correspondence between images and annotation files.
     # But we have cases of one annotation file per multiple images (e.g. COCO)
     corresponding_ann_aliases = {
-        image.id: ann_aliases_by_sourcename.get(image.name)
-        for image in bia_study.images.values()
+        image.uuid: ann_aliases_by_sourcename.get(image.name)
+        for image in bia_study.images
     }
 
     corresponding_im_aliases ={
@@ -99,18 +98,18 @@ def generate_dataset_page_html(accession_id, template_fname: str):
     image_thumbnails = {}
     image_download_uris = {}
     annotation_download_uris = {}
-    for image in bia_study.images.values():
+    for image in bia_study.images:
         for representation in image.representations:
             if representation.type == "ome_ngff": 
                 images_with_ome_ngff.append(image)
                 image_landing_uris[image.uuid] = f"{accession_id}/{image.uuid}.html"
             if representation.type == "thumbnail":
-                image_thumbnails[image.id] = representation.uri
+                image_thumbnails[image.uuid] = representation.uri[0]
             if representation.type in DOWNLOADABLE_REPRESENTATIONS:
-                image_download_uris[image.id] = urllib.parse.quote(representation.uri, safe=":/")
+                image_download_uris[image.uuid] = urllib.parse.quote(representation.uri[0], safe=":/")
 
     for annfile in annotation_files:
-        annotation_download_uris[annfile.id] = urllib.parse.quote(annfile.uri, safe=":/")
+        annotation_download_uris[annfile.uuid] = urllib.parse.quote(annfile.uri[0], safe=":/")
 
     template = env.get_template(template_fname)
 
