@@ -16,7 +16,10 @@ typer = {extras = ["all"], version = "^0.7.0"}
 fs = "^2.4.16"
 bia-integrator-api = { git = "https://github.com/BioImage-Archive/bia-integrator.git", subdirectory = "clients/python", branch = "biaint-api-backend" }
 bia-integrator-core = { git = "https://github.com/BioImage-Archive/bia-integrator.git", subdirectory = "core", branch = "biaint-api-backend" }
-ome-zarr = "^0.8.2"
+ome-zarr = "^0.8.3"
+
+# pin transitive dependency to get poetry's solver to not freeze. Not a direct dependency. Remove this when possible.
+botocore = "^1.31.0"
 
 [build-system]
 requires = ["poetry-core"]
