@@ -8,9 +8,9 @@ import requests
 from ome_zarr.io import parse_url
 from ome_zarr.reader import Reader
 from bia_integrator_core.integrator import load_and_annotate_study
-from bia_integrator_core.models import BIAImageRepresentation, BIAImage
-from bia_integrator_core.models import RenderingInfo, ChannelRendering
-from bia_integrator_core.interface import persist_image_representation, persist_image
+from bia_integrator_api.models import BIAImageRepresentation, BIAImage
+from bia_integrator_api.models import RenderingInfo, ChannelRendering
+from bia_integrator_core.interface import persist_image_representation, persist_image, get_image
 
 logger = logging.getLogger(__name__)
 
@@ -19,7 +19,7 @@ def get_annotation_files_by_accession(accession_id):
     
     bia_study = load_and_annotate_study(accession_id)
     return [
-        fileref for fileref in bia_study.file_references.values()
+        fileref for fileref in bia_study.file_references
         if "source image" in fileref.attributes
     ]
 
@@ -60,11 +60,10 @@ def get_source_images_in_study(accession_id):
     }
 
 
-def get_image_rep_by_type(accession_id, image_id, rep_type):
+def get_image_rep_by_type(image_uuid, rep_type):
 
-    bia_study = load_and_annotate_study(accession_id)
-
-    for image_rep in bia_study.images[image_id].representations:
+    image = get_image(image_uuid)
+    for image_rep in image.representations:
         if image_rep.type == rep_type:
             return image_rep
 
@@ -86,8 +85,7 @@ def get_example_annotation_uri(accession_id):
     return bia_study.example_annotation_uri
 
 def get_ome_ngff_rep_by_accession_and_image(accession_id: str, image_id: str) -> Optional[BIAImageRepresentation]:
-    bia_study = load_and_annotate_study(accession_id)
-    image = bia_study.images[image_id]
+    image = get_image(image_id)
     
     ome_ngff_rep = get_ome_ngff_rep(image)
     
@@ -121,30 +119,33 @@ def set_rendering_info_for_ome_ngff_rep(ome_ngff_rep):
         persist_image_representation(ome_ngff_rep)
 
 
-def create_and_persist_image_from_fileref(accession_id, fileref, rep_type="fire_object"):
+def create_and_persist_image_from_fileref(study_uuid, fileref, rep_type="fire_object", extra_attributes={}):
     """Create a new image, together with a single representation from one file
     reference."""
 
     name = fileref.name
     logger.info(f"Assigned name {name}")
 
-    hash_input = fileref.id
+    hash_input = fileref.uuid
     hexdigest = hashlib.md5(hash_input.encode("utf-8")).hexdigest()
     image_id_as_uuid = uuid.UUID(version=4, hex=hexdigest)
     image_id = str(image_id_as_uuid)
 
     image_rep = BIAImageRepresentation(
-        accession_id=accession_id,
         image_id=image_id,
         size=fileref.size_in_bytes,
-        uri=fileref.uri,
-        attributes={"fileref_ids": [fileref.id]},
+        uri=[fileref.uri,],
+        attributes={"fileref_ids": [fileref.uuid]},
         type=rep_type
     )
+    if extra_attributes:
+        for key, value in extra_attributes.items():
+            image_rep.attributes["key"] = value
 
     image = BIAImage(
-        id=image_id,
-        accession_id=accession_id,
+        uuid=image_id,
+        version=0,
+        study_uuid=study_uuid,
         original_relpath=name,
         name=name,
         representations=[image_rep],
@@ -162,3 +163,9 @@ def url_exists(url: str) -> bool:
         return response.status_code == 200
     except requests.exceptions.RequestException:
         return False
+
+
+def list_of_objects_to_dict(object_list: list, key: str = "uuid") -> dict:
+    """Convert list of objs to dict with keys from specifed obj property"""
+
+    return { obj.__dict__[key]: obj for obj in object_list }

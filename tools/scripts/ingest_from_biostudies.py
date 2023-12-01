@@ -4,13 +4,21 @@ import logging
 import hashlib
 import requests
 from pathlib import Path
-from typing import List 
+from typing import List
 
 import click
-from bia_integrator_core.models import BIAStudy, FileReference, Author
-from bia_integrator_core.interface import persist_study
+from bia_integrator_api.models import BIAStudy, FileReference, Author
+from bia_integrator_api.exceptions import ApiException 
 
-from bia_integrator_tools.identifiers import file_to_id
+from bia_integrator_core.interface import (
+    get_study,
+    persist_study,
+    update_study,
+    persist_filerefs,
+)
+from bia_integrator_core.config import settings
+
+from bia_integrator_tools.identifiers import file_to_id, dict_to_uuid
 from bia_integrator_tools.biostudies import (
     File,
     Submission,
@@ -27,19 +35,21 @@ from bia_integrator_tools.utils import url_exists
 
 logger = logging.getLogger(__file__)
 
-def bst_file_to_file_reference(accession_id: str, bst_file: File, file_uri_template: str) -> FileReference:
+def bst_file_to_file_reference(study_uuid: str, accession_id: str, bst_file: File, file_uri_template: str) -> FileReference:
 
     fileref_id = file_to_id(accession_id, bst_file)
     fileref_name = str(bst_file.path)
     fileref_attributes = attributes_to_dict(bst_file.attributes)
 
     fileref = FileReference(
-        id=fileref_id,
+        uuid=fileref_id,
         name=fileref_name,
         uri=file_uri(accession_id, bst_file, file_uri_template=file_uri_template),
         size_in_bytes=bst_file.size,
         attributes=fileref_attributes,
-        type=bst_file.type
+        type=bst_file.type,
+        version=0, # For initial creation
+        study_uuid=study_uuid
     )
 
     # If fileref type is directory we may need to append '.zip' to 
@@ -54,7 +64,7 @@ def bst_file_to_file_reference(accession_id: str, bst_file: File, file_uri_templ
     return fileref
 
 
-def filerefs_from_bst_submission(submission: Submission) -> List[FileReference]:
+def filerefs_from_bst_submission(submission: Submission, study_uuid: str) -> List[FileReference]:
 
     all_files = find_files_in_submission(submission)
 
@@ -63,7 +73,7 @@ def filerefs_from_bst_submission(submission: Submission) -> List[FileReference]:
     file_uri_template = get_file_uri_template_for_accession(accession_id)
 
     filerefs = [
-        bst_file_to_file_reference(accession_id, bst_file, file_uri_template) for bst_file in all_files
+        bst_file_to_file_reference(study_uuid, accession_id, bst_file, file_uri_template) for bst_file in all_files
     ]
 
     return filerefs
@@ -171,8 +181,7 @@ def get_attr_from_submission(submission: Submission, attr: str) -> str:
 def bst_submission_to_bia_study(submission: Submission) -> BIAStudy:
 
     accession_id = submission.accno
-    filerefs_list = filerefs_from_bst_submission(submission)
-    filerefs_dict = {fileref.id: fileref for fileref in filerefs_list}
+    study_uuid = dict_to_uuid({"accession_id": accession_id,}, attributes_to_consider=["accession_id",])
     study_title = study_title_from_submission(submission)
     imaging_method = get_attr_from_submission(submission, "Imaging Method")
 
@@ -184,6 +193,7 @@ def bst_submission_to_bia_study(submission: Submission) -> BIAStudy:
         organism = get_attr_from_submission(submission, "Organism")
 
     bia_study = BIAStudy(
+        uuid=study_uuid,
         accession_id=accession_id,
         title=study_title,
         authors=find_authors_in_submission(submission),
@@ -193,7 +203,7 @@ def bst_submission_to_bia_study(submission: Submission) -> BIAStudy:
         license=study_section_attr_dict.get('License', "CC0"),
         links=study_links_from_submission(submission),
         imaging_type=imaging_method,
-        file_references=filerefs_dict
+        version=0
     )
 
     return bia_study
@@ -207,9 +217,22 @@ def main(accession_id):
 
     bst_submission = load_submission(accession_id)
     bia_study = bst_submission_to_bia_study(bst_submission)
+    
+    # Check if we have study already in API database. If so use uuid of this
+    # As uuid of migrated studies generated in a different manner from
+    # ingested studies
+    try:
+        bia_study_from_api = get_study(accession_id)
+        bia_study.version = bia_study_from_api.version
+        bia_study.uuid = bia_study_from_api.uuid
+        update_study(bia_study)
+    #except ApiException as api_exception:
+    except IndexError as exception:
+        persist_study(bia_study)
 
-    persist_study(bia_study)
-
+    filerefs_list = filerefs_from_bst_submission(bst_submission, bia_study.uuid)
+    persist_filerefs(filerefs_list)
+    settings.api_client.study_refresh_counts(bia_study.uuid)
 
 if __name__ == "__main__":
     main()

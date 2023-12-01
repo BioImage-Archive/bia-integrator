@@ -1,0 +1,4 @@
+username: "test@example.com"
+password: "test"
+# tweak below for test sizing
+n_img_count: 10000

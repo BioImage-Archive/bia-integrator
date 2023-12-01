@@ -50,6 +50,25 @@ class MultiScaleImage(BaseModel):
     axes: Optional[List[Axis]]
     version: str
 
+class Column(BaseModel):
+    name: str
+
+class Row(BaseModel):
+    name: str
+
+class Well(BaseModel):
+    columnIndex: int
+    path: str
+    rowIndex: int
+
+class Plate(BaseModel):
+    columns: List[Column]
+    rows: List[Row]
+    wells: List[Well]
+    version: str
+
+
 class ZMeta(BaseModel):
     omero: Optional[Omero]
-    multiscales: List[MultiScaleImage]
+    multiscales: Optional[List[MultiScaleImage]]
+    plates: Optional[Plate]

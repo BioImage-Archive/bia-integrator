@@ -7,17 +7,24 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-pydantic = "^1.10.7"
-fastapi = "^0.95.1"
-ome-types = "^0.3.4"
+pydantic = "^2.4.0"
+fastapi = "^0.103.2"
 motor = "^3.1.2"
 requests = "^2.29.0"
 uvicorn = "^0.22.0"
 httpx = "^0.24.0"
 python-dotenv = "^1.0.0"
+passlib = {extras = ["bcrypt"], version = "^1.7.4"}
+python-jose = {extras = ["cryptography"], version = "^3.3.0"}
+python-multipart = "^0.0.6"
+ome-types = "^0.4.2"
+lxml = "^4.9.3"
 
-[tool.poetry.dev-dependencies]
-pytest = "^6.2.1"
+[tool.poetry.group.dev.dependencies]
+locust = "^2.16.1"
+pyyaml = "^6.0.1"
+pytest = "^7"
+pytest-asyncio = "^0.21.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

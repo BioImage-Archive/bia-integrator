@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "dev_bia-integrator-tools"
+version = "0.1.0"
+description = ""
+authors = ["Matthew Hartley <matthewh@ebi.ac.uk>"]
+packages = [{include = "bia_integrator_tools", from="../"}]
+
+[tool.poetry.scripts]
+biaint = "bia_integrator_tools.cli:app"
+biaconv = "bia_integrator_tools.biaconv:app"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+typer = {extras = ["all"], version = "^0.7.0"}
+fs = "^2.4.16"
+dev_bia-integrator-core = { path = "../../core/dev", develop = true }
+bia-integrator-api = { path = "../../clients/python/", develop = true }
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

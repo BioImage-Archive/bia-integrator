@@ -1,5 +1,4 @@
 -e .
--e ../core
 aiobotocore==2.5.0
 aiohttp==3.8.4
 aioitertools==0.11.0

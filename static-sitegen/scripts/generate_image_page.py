@@ -7,7 +7,7 @@ import click
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 from bia_integrator_core.integrator import load_and_annotate_study
-from bia_integrator_core.interface import get_aliases
+from bia_integrator_core.interface import get_image, to_uuid
 
 from utils import format_for_html, DOWNLOADABLE_REPRESENTATIONS
 
@@ -59,27 +59,17 @@ def generate_neuroglancer_link(uri: str):
     return neuroglancer_uri
 
 
-def generate_image_page_html(accession_id, image_id):
+def generate_image_page_html(accession_id: str, image_id):
 
     bia_study = load_and_annotate_study(accession_id)
-    bia_image = bia_study.images[image_id]
-    author_names = ', '.join([ 
-        author.name
-        for author in bia_study.authors
-    ])
+    bia_image = get_image(accession_id, image_id)
 
     reps_by_type = {
         representation.type: representation
         for representation in bia_image.representations
     }
 
-    aliases = get_aliases(accession_id)
-    aliases_by_id = {
-        alias.image_id: alias.name
-        for alias in aliases
-    }
-    image_alias = aliases_by_id.get(image_id, image_id)
-
+    image_alias = bia_image.alias.name if bia_image.alias else None
 
     # Format physical dimensions to X unit x Y unit x Z unit format before passing on to the template
     psize = None
@@ -173,7 +163,9 @@ def main(accession_id, image_id):
 
     logging.basicConfig(level=logging.INFO)
 
-    rendered = generate_image_page_html(accession_id, image_id)
+    image_uuid = to_uuid(image_id, lambda: get_image(accession_id, image_id))
+
+    rendered = generate_image_page_html(accession_id, image_uuid)
 
     print(rendered)
 

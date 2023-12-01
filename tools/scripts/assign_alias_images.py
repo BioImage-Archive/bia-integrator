@@ -1,15 +1,11 @@
 """Assign aliases to all images in a study. Needs update for zips"""
-
+ 
 import click
 import logging
 
-from bia_integrator_core.models import BIAImageAlias
-from bia_integrator_core.config import settings
+from bia_integrator_api.models import BIAImageAlias
 from bia_integrator_core.integrator import load_and_annotate_study
-from bia_integrator_core.interface import (
-    persist_image_alias,
-    get_aliases
-)
+from bia_integrator_core.interface import update_image, get_images
 
 logger = logging.getLogger(__file__)
 
@@ -21,36 +17,27 @@ def main(accession_id):
 
     logging.basicConfig(level=logging.INFO)
 
-    bia_study = load_and_annotate_study(accession_id)
-    all_aliases = get_aliases(accession_id)
+    images = get_images(accession_id)
     # check if there is any image aliases, if not, go through the list and assign all images, assuming they're not zipped:
-    if not all_aliases:
-        j = 1
-        for image_id in bia_study.images.keys():
-            al_id = "IM"+str(j)
-            alias = BIAImageAlias(
-                    accession_id=accession_id,
-                    name=al_id,
-                    image_id=image_id
-                )
-            persist_image_alias(alias)
-            j += 1 
-            
+    assigned_aliases = [image.alias.name for image in images if image.alias]
+    if not assigned_aliases:
+        for alias_counter, image in enumerate(images, start=1):
+            image.alias = BIAImageAlias(name=f"IM{alias_counter}")
+            update_image(image)
     else:
-        all_image_ids = {fr.image_id: fr for fr in all_aliases}
-        last_im_alias = len(all_image_ids)
-        for image_id, image in bia_study.images.items():
-            if not image_id in all_image_ids.keys():
-                # TO CHECK
-                # how to assign alias for studies that have *some* images with aliases and some without
-                al_id = "IM"+ str(last_im_alias + 1)
-                last_im_alias +=1
-                alias = BIAImageAlias(
-                    accession_id=accession_id,
-                    name=al_id,
-                    image_id=image_id
-                    )
-                persist_image_alias(alias)
+        alias_counter = 1
+        for image in images:
+            if image.alias:
+                continue
+            while True:
+                alias = f"IM{alias_counter}"
+                if alias in assigned_aliases:
+                    alias_counter += 1
+                else:
+                    break
+            image.alias = BIAImageAlias(name=alias)
+            assigned_aliases.append(alias)
+            update_image(image)
 
 if __name__ == "__main__":
     main()

@@ -91,7 +91,7 @@ def main():
                     entry = image_to_catalogue_entry(image)
                     entries.append(entry)
                 except KeyError as e:
-                    logging.info(f"Can't find {e} for {accession_id}:{image.id}")
+                    logging.info(f"Can't find {e} for {accession_id}:{image.uuid}")
                     pass
 
     # print(entries)

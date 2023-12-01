@@ -9,8 +9,8 @@ import parse
 from remotezip import RemoteZip
 
 from bia_integrator_core.integrator import load_and_annotate_study
-from bia_integrator_core.interface import persist_study
-from bia_integrator_core.models import BIAFile, FileReference
+from bia_integrator_core.interface import persist_study, persist_filerefs
+from bia_integrator_api.models import FileReference
 
 
 FIRE_FTP_ENDPOINT = "https://ftp.ebi.ac.uk/biostudies/fire"
@@ -53,7 +53,8 @@ def main(accession_id, zip_fileref_id):
 
     bia_study = load_and_annotate_study(accession_id)
 
-    zip_fileref = bia_study.file_references[zip_fileref_id]
+    dict_filerefs = {f.uuid: f for f in bia_study.file_references}
+    zip_fileref = dict_filerefs[zip_fileref_id]
 
     if not zip_fileref.uri.endswith(".zip"):
         uri_to_fetch = zip_fileref.uri + ".zip"
@@ -65,26 +66,24 @@ def main(accession_id, zip_fileref_id):
     with RemoteZip(uri_to_fetch) as zipf:
         info_list = zipf.infolist()
 
-    new_filerefs = {}
+    new_filerefs = []
     for item in info_list:
         if not item.filename.startswith("__MACOSX") and not item.is_dir():
             new_fileref = FileReference(
-                id=zipfile_item_to_id(accession_id, zip_fileref.name, item.filename),
+                uuid=zipfile_item_to_id(accession_id, zip_fileref.name, item.filename),
                 name=item.filename,
                 uri=uri_to_fetch,
                 type="file_in_zip",
                 size_in_bytes=item.file_size,
-                attributes=zip_fileref.attributes
+                attributes=zip_fileref.attributes,
+                study_uuid=bia_study.uuid,
+                version=0
             )
 
-            new_filerefs[new_fileref.id] = new_fileref
+            new_filerefs.append(new_fileref)
 
     logger.info(f"Adding {len(new_filerefs)} new file references from archive")
-    bia_study.file_references.update(new_filerefs)
-
-    persist_study(bia_study)
-    
-
+    persist_filerefs(new_filerefs)
 
 if __name__ == "__main__":
     main()

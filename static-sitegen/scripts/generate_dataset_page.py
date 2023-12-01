@@ -50,14 +50,9 @@ def generate_dataset_page_html(accession_id, template_fname: str):
         for author in bia_study.authors
     ])
 
-    aliases = get_aliases(accession_id)
-    aliases_by_id = {
-        alias.image_id: alias.name
-        for alias in aliases
-    }
     image_names = {
-        image_id: aliases_by_id.get(image_id, image_id)
-        for image_id in bia_study.images
+        img.uuid: img.alias.name if img.alias else img.uuid
+        for img in bia_study.images
     }
 
 
@@ -108,7 +103,7 @@ def generate_dataset_page_html(accession_id, template_fname: str):
         for representation in image.representations:
             if representation.type == "ome_ngff": 
                 images_with_ome_ngff.append(image)
-                image_landing_uris[image.id] = f"{accession_id}/{image.id}.html"
+                image_landing_uris[image.uuid] = f"{accession_id}/{image.uuid}.html"
             if representation.type == "thumbnail":
                 image_thumbnails[image.id] = representation.uri
             if representation.type in DOWNLOADABLE_REPRESENTATIONS:

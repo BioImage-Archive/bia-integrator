@@ -1,9 +1,7 @@
 services:
-  bia-integrator-mongo:
+  biaint-mongo:
     image: mongo:6.0
-    hostname: mongo1
-    container_name: biaint-mongo
-    restart: "no"
+    restart: no
     environment:
       MONGO_INITDB_ROOT_USERNAME: "${MONGO_INITDB_ROOT_USERNAME}"
       MONGO_INITDB_ROOT_PASSWORD: "${MONGO_INITDB_ROOT_PASSWORD}"
@@ -16,42 +14,18 @@ services:
       #   - "./.share/mongo.conf:/etc/mongo.conf"
       #     #- "./.share/keyfile.secret:/home/share/keyfile/keyfile.secret"
   bia-integrator-api:
-    build: .
+    build:
+      context: .
     container_name: api
     hostname: api
     ports:
-      - 8080:8000
+      - 8080:8080
     expose:
-      - 8000
+      - 8080
     volumes:
-      - "./.env:/integrator-api/.env"
-      #networks:
-      #  bia-integrator:
-      #    ipv4_address: 172.20.0.2
+      - "./.env_compose:/integrator-api/.env"
 
-      #volumes:
-      #  - config_share:/home/share
-  #mongoinit:
-  #  image: mongo:6.0
-  #  restart: "no"
-  #  depends_on:
-  #    - bia-integrator-mongo
-  #  command: >
-  #    mongosh "mongodb://root:example@127.0.0.2:27018?directConnection=true" --eval 'db.runCommand({ping: 1})'
-  #  networks:
-  #    - new 
-
-  #dummy:
-  #  image: alpine
-  #  command: ls -lrt  /share/keyfile/keyfile.secret
-  #  volumes:
-  #    - config_share:/share
-
-#volumes:
-#  config_share:
-#    driver: local
-#    driver_opts:
-#      o: bind
-#      type: none
-#      # @TODO: Fixme
-#      device: /home/liviu/Documents/bia-integrator/api/.share
+volumes:
+  api_data:
+    #? do we always want a 'seed db'?
+    #external: true

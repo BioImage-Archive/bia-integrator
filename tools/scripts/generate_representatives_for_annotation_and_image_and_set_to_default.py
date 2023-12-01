@@ -2,8 +2,8 @@ import logging
 import tempfile
 
 import click
-from bia_integrator_core.models import BIAImageRepresentation, StudyAnnotation, RenderingInfo, ChannelRendering
-from bia_integrator_core.interface import persist_image_representation, persist_study_annotation
+from bia_integrator_core.config import settings
+from bia_integrator_core.interface import persist_image_representation, persist_study_annotation, api_models
 from bia_integrator_core.integrator import load_and_annotate_study
 from bia_integrator_tools.utils import (
     get_ome_ngff_rep_by_accession_and_image,
@@ -40,25 +40,23 @@ def generate_annotation_representative(accession_id: str, image_id: str):
         uri = copy_local_to_s3(fh.name, dst_key)
         logger.info(f"Wrote representative image to {uri}")
 
-    rep = BIAImageRepresentation(
-        accession_id=accession_id,
-        image_id=image_id,
+    rep = api_models.BIAImageRepresentation(
         size=0,
-        uri=uri,
+        uri=[uri,],
         type="representative",
         dimensions=str((w, h)),
         attributes=None,
         rendering=None
     )
+    persist_image_representation(image_id, rep)
 
-    persist_image_representation(rep)
-
-    annotation = StudyAnnotation(
-        accession_id=accession_id,
+    annotation = api_models.StudyAnnotation(
+        author_email=settings.bia_username,
         key="example_annotation_uri",
-        value=uri
+        value=uri,
+        state="active"
     )
-    persist_study_annotation(annotation)
+    persist_study_annotation(accession_id, annotation)
 
 def generate_image_representative(accession_id: str, image_id: str):
     """Generate representative image from image id and persist it"""
@@ -72,7 +70,8 @@ def generate_image_representative(accession_id: str, image_id: str):
     ome_ngff_rep = get_ome_ngff_rep_by_accession_and_image(accession_id, image_id)
     w = 512
     h = 512
-    im = generate_padded_thumbnail_from_ngff_uri(ome_ngff_rep.uri, dims=(w,h))
+    
+    im = generate_padded_thumbnail_from_ngff_uri(ome_ngff_rep.uri[0], dims=(w,h))
     dst_key = f"{accession_id}/{accession_id}-representative-{w}-{h}.png"
 
     with tempfile.NamedTemporaryFile(suffix=".png") as fh:
@@ -80,25 +79,24 @@ def generate_image_representative(accession_id: str, image_id: str):
         uri = copy_local_to_s3(fh.name, dst_key)
         logger.info(f"Wrote representative image to {uri}")
 
-    rep = BIAImageRepresentation(
-        accession_id=accession_id,
-        image_id=image_id,
+    rep = api_models.BIAImageRepresentation(
         size=0,
-        uri=uri,
+        uri=[uri,],
         type="representative",
         dimensions=str((w, h)),
         attributes=None,
         rendering=None
     )
 
-    persist_image_representation(rep)
+    persist_image_representation(image_id, rep)
 
-    annotation = StudyAnnotation(
-        accession_id=accession_id,
+    annotation = api_models.StudyAnnotation(
+        author_email=settings.bia_username,
         key="example_image_uri",
-        value=uri
+        value=uri,
+        state="active"
     )
-    persist_study_annotation(annotation)
+    persist_study_annotation(accession_id, annotation)
 
 @click.command()
 @click.argument('accession_id')

@@ -1,12 +1,7 @@
 from enum import Enum
-from pydantic import BaseModel, Field, BaseConfig, PrivateAttr, validator
-from typing import Dict, List, Optional, Union, AnyStr
-from pathlib import Path
-from ome_types import OME, from_xml
-from urllib.parse import urlparse, urlunparse
-from bson import ObjectId, errors
+from pydantic import BaseModel, Field, ConfigDict
+from typing import Dict, List, Optional
 from uuid import UUID
-import requests
 
 from src.api.exceptions import DocumentNotFound
 
@@ -14,19 +9,7 @@ class BIABaseModel(BaseModel):
     def json(self, ensure_ascii=False, **kwargs):
         """ensure_ascii defaults to False instead of True to handle the common case of non-ascii names"""
 
-        return super().json(ensure_ascii=ensure_ascii, **kwargs)
-
-class OID(str):
-  @classmethod
-  def __get_validators__(cls):
-      yield cls.validate
-
-  @classmethod
-  def validate(cls, v):
-      try:
-          return ObjectId(str(v))
-      except errors.InvalidId:
-          raise ValueError("Not a valid ObjectId")
+        return super().model_dump_json(ensure_ascii=ensure_ascii, **kwargs)
 
 class ModelMetadata(BaseModel):
     type_name: str = Field()
@@ -35,20 +18,21 @@ class ModelMetadata(BaseModel):
 class DocumentMixin(BaseModel):
     # id optional only when creating documents, in all other cases it is required and gets manually verified
     # so it's OR(no id no model defined, both defined)
-    id: Optional[OID] = Field(alias="_id")
     uuid: UUID = Field()
     # this is the document version, not the model version
     version: int = Field()
 
-    model: ModelMetadata = Field()
+    # model is actually always set on objects, but in __init__ since that's where we are aware of child classes
+    model: Optional[ModelMetadata] = Field(default=None)
+    model_config = ConfigDict(populate_by_name=True, extra="forbid")
 
-    def __init__(self, **data):
-        if not hasattr(self.__class__.Config, 'model_version_latest'):
-            raise ValueError(f"Class {self.__class__.__name__} missing 'model_version_latest' in its Config")
+    def __init__(self, apply_annotations = True, **data):
+        if self.model_config.get('model_version_latest') is None:
+            raise ValueError(f"Class {self.__class__.__name__} missing 'model_version_latest' in its model_config")
         model_metadata_expected = ModelMetadata(
             type_name=self.__class__.__name__,
             # @TODO: maybe eventually change model_version_latest to handle next-version migrations?
-            version=self.__class__.Config.model_version_latest
+            version=self.model_config['model_version_latest']
         )
 
         if data.get('_id', None):
@@ -63,25 +47,27 @@ class DocumentMixin(BaseModel):
                 raise ValueError(f"Document missing model attribute")
         else:
             # document created now, will pe persisted later - add model
-            if data.get("model", None):
-                raise ValueError("Expecting models without an _id field to not have a model either")
-            data["model"] = model_metadata_expected
-        
+            if data.get("model", None) is None:
+                data["model"] = model_metadata_expected
+
+        data.pop("_id", None)
         super().__init__(**data)
 
-    def dict(self, *args, **kwargs):
-        doc_dict = super().dict(*args, **kwargs)
-        if 'id' in doc_dict:
-            del doc_dict['id']
+        if apply_annotations and hasattr(self, 'annotations'):
+            document_attributes = set(self.__dict__.keys())
 
-        return doc_dict
+            for annotation in self.annotations:
+                if annotation.key in ["model", "uuid"]:
+                    raise Exception(f"Annotation {annotation} of object {self.uuid} overwrites a read-only property")
 
-    class Config(BaseConfig):
-        allow_population_by_field_name = True
-        json_encoders = {
-            #datetime: lambda dt: dt.isoformat(),
-            ObjectId: lambda oid: str(oid)
-        }
+                # annotations that don't overwrite a field are 'annotation attributes'
+                if annotation.key in document_attributes:
+                    if type(self.__dict__[annotation.key]) is list:
+                        self.__dict__[annotation.key].append(annotation.value)
+                    else:
+                        self.__dict__[annotation.key] = annotation.value
+                else:
+                    self.attributes[annotation.key] = annotation.value
 
 class Author(BIABaseModel):
     name: str
@@ -91,8 +77,10 @@ class AnnotationState(str, Enum):
     deleted = "deleted"
 
 class Annotation(BIABaseModel):
+    # @TODO:
+    # pattern=".*@ebi\.ac\.uk"
+    # openapi only supports perl-style regexes, but Pydantic/FastAPI doesn't translate
     author_email: str = Field()
-    accession_id: str = Field()
     key: str = Field()
     value: str = Field()
     state: AnnotationState = Field()
@@ -103,6 +91,9 @@ class ImageAnnotation(Annotation):
 class StudyAnnotation(Annotation):
     pass
 
+class FileReferenceAnnotation(Annotation):
+    pass
+
 class BIAStudy(BIABaseModel, DocumentMixin):
     title: str = Field()
     description: str = Field()
@@ -111,7 +102,7 @@ class BIAStudy(BIABaseModel, DocumentMixin):
     release_date: str = Field()
     accession_id: str = Field()
     
-    imaging_type: List[str] = Field(default=[])
+    imaging_type: Optional[str] = Field(default=None)
     attributes: Dict = Field(default={})
     annotations: List[StudyAnnotation] = Field(default=[])
     example_image_uri: str = Field(default="")
@@ -121,8 +112,7 @@ class BIAStudy(BIABaseModel, DocumentMixin):
     file_references_count: int = Field(default=0)
     images_count: int = Field(default=0)
 
-    class Config(BaseConfig):
-        model_version_latest = 1
+    model_config = ConfigDict(model_version_latest = 1)
 
 class FileReference(BIABaseModel, DocumentMixin):
     """A reference to an externally hosted file."""
@@ -131,13 +121,14 @@ class FileReference(BIABaseModel, DocumentMixin):
     name: str = Field()
     uri: str = Field()
     type: str = Field()
-    size_bytes: Optional[int] = Field(default=None)
+    size_in_bytes: int = Field()
     attributes: Dict = Field(default={})
+    annotations: List[FileReferenceAnnotation] = Field(default=[])
 
-    class Config(BaseConfig):
-        model_version_latest = 1
+    model_config = ConfigDict(model_version_latest = 1)
 
 class ChannelRendering(BIABaseModel):
+    channel_label: Optional[str]
     colormap_start: List[float]
     colormap_end: List[float]
     scale_factor: float = 1.0
@@ -152,7 +143,6 @@ class BIAImageAlias(BIABaseModel):
     the full accession ID / UUID pair"""
 
     name: str = Field()
-    accession_id: str = Field()
     
 class BIAImageRepresentation(BIABaseModel):
     """A particular representation of a BIAImage. Examples:
@@ -162,16 +152,12 @@ class BIAImageRepresentation(BIABaseModel):
     * An S3 accessible OME-Zarr.
     * A thumbnail."""
     
-    accession_id: str = Field()
     size: int = Field()
     uri: List[str] = Field(default=[])
     type: Optional[str] = Field(default=None)
     dimensions: Optional[str] = Field(default=None)
     attributes: Dict = Field(default={})
     rendering: Optional[RenderingInfo] = Field(default=None)
-
-class BIAOmeMetadata(dict):
-    pass
 
 class BIAImage(BIABaseModel, DocumentMixin):
     """This class represents the abstract concept of an image. Images are
@@ -192,48 +178,13 @@ class BIAImage(BIABaseModel, DocumentMixin):
     original_relpath: str = Field() # originally Path
     name: Optional[str] = Field(default=None)
 
-    accession_id: str = Field()
     dimensions: Optional[str] = Field(default=None)
     representations: List[BIAImageRepresentation] = Field(default=[])
     attributes: Dict = Field(default={})
     annotations: List[ImageAnnotation] = Field(default=[])
-    image_aliases: List[BIAImageAlias] = Field(default=[])
+    alias: Optional[BIAImageAlias] = Field(default=None)
 
-    @property
-    def ome_metadata(self) -> Optional[BIAOmeMetadata]:
-        metadata = self.__dict__.get('ome_metadata', None)
-        if metadata is None:
-            ngff_rep = [rep for rep in self.representations if rep.type == "ome_ngff"]
-            if not ngff_rep:
-                return None
-            else:
-                # If the same image has multiple ngff representations, assume metadata is the same
-                ngff_rep = ngff_rep.pop()
-                parsed_url = urlparse(ngff_rep.uri)
-                ome_metadata_path = Path(parsed_url.path).parent/"OME/METADATA.ome.xml"
-                ome_metadata_uri = urlunparse((
-                    parsed_url.scheme, parsed_url.netloc, str(ome_metadata_path),
-                    None,
-                    None,
-                    None
-                ))
-
-                metadata = BIAImage._ome_xml_url_parse(ome_metadata_uri)
-                self.__dict__['ome_metadata'] = metadata
-
-        return metadata
-
-    @classmethod
-    def _ome_xml_url_parse(cls, ome_metadata_uri: AnyStr) -> Optional[OME]:    
-        r = requests.get(ome_metadata_uri)
-        assert r.status_code == 200, f"Error {r.status_code} fetching URI '{ome_metadata_uri}: {r.content}"
-
-        ome_metadata = from_xml(r.content, parser='lxml', validate=False)
-
-        return ome_metadata
-
-    class Config(BaseConfig):
-        model_version_latest = 1
+    model_config = ConfigDict(model_version_latest = 1)
 
 class BIACollection(BIABaseModel, DocumentMixin):
     """A collection of studies with a coherent purpose. Studies can be in
@@ -244,5 +195,17 @@ class BIACollection(BIABaseModel, DocumentMixin):
     description: Optional[str] = Field(default=None)
     study_uuids: List[str] = Field(default=[])
 
-    class Config(BaseConfig):
-        model_version_latest = 1
+    model_config = ConfigDict(model_version_latest = 1)
+
+class User(BIABaseModel, DocumentMixin):
+    email: str = Field()
+    password: str = Field()
+
+    model_config = ConfigDict(model_version_latest = 1)
+
+class BIAImageOmeMetadata(BIABaseModel, DocumentMixin):
+    bia_image_uuid: UUID = Field()
+    # just a dict to avoid cluttering openapi models in client/generated docs
+    ome_metadata: dict = Field(description="The OME metadata as a json-compatible object. Can be used as a dictionary or directly parsed with the ome-types module.")
+
+    model_config = ConfigDict(model_version_latest = 1)

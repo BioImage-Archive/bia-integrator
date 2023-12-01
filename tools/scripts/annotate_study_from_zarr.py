@@ -2,8 +2,8 @@ from ast import literal_eval
 import logging
 
 import click
-from bia_integrator_core.interface import load_and_annotate_study, persist_image_annotation
-from bia_integrator_core.annotation import ImageAnnotation
+from bia_integrator_core.interface import load_and_annotate_study, persist_image_annotation, api_models
+from bia_integrator_core.config import settings
 
 from get_dimensions_from_bia_zarr import zarr_rep_to_dimension_annotation
 
@@ -13,10 +13,10 @@ logger = logging.getLogger(__file__)
 def get_all_zarr_representations(bia_study):
 
     zarr_reps = []
-    for image in bia_study.images.values():
+    for image in bia_study.images:
         for rep in image.representations:
             if rep.type == "ome_ngff":
-                zarr_reps.append(rep)
+                zarr_reps.append((image.uuid, rep))
 
     return zarr_reps
 
@@ -33,21 +33,21 @@ def main(accession_id):
     zarr_reps = get_all_zarr_representations(bia_study)
     logger.info(f"Found {len(zarr_reps)} Zarr represenations")
 
-    for rep in zarr_reps:
+    for image_uuid, rep in zarr_reps:
         try:
             annotation = zarr_rep_to_dimension_annotation(rep)
-            persist_image_annotation(annotation)
+            persist_image_annotation(image_uuid, annotation)
             # FIXME - this is an ugly way to do this, should parse properly somewhere else
             dims_tuple = literal_eval(annotation.value)
 
             def make_and_persist_annotation(key, value):
-                ann = ImageAnnotation(
-                    accession_id=annotation.accession_id,
-                    image_id=annotation.image_id,
+                ann = api_models.ImageAnnotation(
+                    author_email=settings.bia_username,
                     key=key,
-                    value=value
+                    value=str(value),
+                    state="active"
                 )
-                persist_image_annotation(ann)
+                persist_image_annotation(image_uuid, ann)
 
             if len(dims_tuple) == 5:
                 tdim, cdim, zdim, ydim, xdim = dims_tuple

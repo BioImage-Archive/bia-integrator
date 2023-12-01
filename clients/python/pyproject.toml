@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "bia-integrator-api"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+readme = "Readme.md"
+packages = [{include = "bia_integrator_api"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+urllib3 = ">= 1.25.3"
+python-dateutil = ">=2.8.2"
+pydantic = "^1.10.5, <2"
+aenum = ">=3.1.11"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

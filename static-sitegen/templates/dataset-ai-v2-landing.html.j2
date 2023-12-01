@@ -264,8 +264,8 @@
                                     <td>Unavailable</td>
                                 {% endif %}
                                 <td>
-                                    <a href={{ landing_uris[image.id] }}><button class="vf-button vf-button--sm vf-button--icon">view</button><a>
-                                    <a href={{ image_download_uris[image.id] }}><button class="vf-button vf-button--sm vf-button--icon">download</button></a>
+                                    <a href={{ landing_uris[image.uuid] }}><button class="vf-button vf-button--sm vf-button--icon">view</button><a>
+                                    <a href={{ image_download_uris[image.uuid] }}><button class="vf-button vf-button--sm vf-button--icon">download</button></a>
                                 </td>                            
                             </tr>
                             {% endfor %}

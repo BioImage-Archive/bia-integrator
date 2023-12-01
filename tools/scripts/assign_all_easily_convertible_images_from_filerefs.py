@@ -25,13 +25,9 @@ def main(accession_id):
     convertable_ext_path = Path(__file__).resolve().parent.parent / "resources" /"bioformats_curated_single_file_formats.txt"
 
     easily_convertable_exts = [ l for l in convertable_ext_path.read_text().split("\n") if len(l) > 0]
-    for fileref in bia_study.file_references.values():
+    for fileref in bia_study.file_references:
         if Path(fileref.name).suffix.lower() in easily_convertable_exts:
-             create_and_persist_image_from_fileref(accession_id, fileref)
-
-
-        
-
+             create_and_persist_image_from_fileref(bia_study.uuid, fileref)
 
 if __name__ == "__main__":
     main()

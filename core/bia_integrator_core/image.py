@@ -1,36 +1,35 @@
 import logging
 from typing import List
 
-from .models import BIAImage
 from .config import settings
+from bia_integrator_api import models as api_models
 
 logger = logging.getLogger(__name__)
 
 
-def persist_image(image: BIAImage):
+def persist_image(image: api_models.BIAImage):
     """Persist the image to disk."""
 
-    image_dirpath = settings.images_dirpath/image.accession_id
-    image_dirpath.mkdir(exist_ok=True, parents=True)
+    logger.info(f"Writing image to {image.study_uuid}")
+    settings.api_client.create_images([image])
 
-    image_fpath = image_dirpath/f"{image.id}.json"
+def update_image(image: api_models.BIAImage):
+    """Persist the image to disk."""
 
-    logger.info(f"Writing image to {image_fpath}")
-    with open(image_fpath, "w") as fh:
-        fh.write(image.json(indent=2))
+    image.version += 1
+    settings.api_client.update_image(image)
 
-
-def get_images(accession_id: str) -> List[BIAImage]:
+def get_images(study_accession_id: str) -> List[api_models.BIAImage]:
     """Return all images stored on disk for the given accession."""
     
-    images_dirpath = settings.images_dirpath/accession_id
-    if images_dirpath.exists():
-        images_list = [
-            BIAImage.parse_file(fp)
-            for fp in images_dirpath.iterdir()
-            if fp.is_file()
-        ]
-    else:
-        images_list = []
+    study_obj_info = settings.api_client.get_object_info_by_accession([study_accession_id]).pop()
+    images_list = settings.api_client.get_study_images(study_obj_info.uuid, limit=10**6)
 
-    return {image.id: image for image in images_list}
+    return images_list
+
+def get_image(image_uuid: str) -> api_models.BIAImage:
+    """Return all images stored on disk for the given accession."""
+    
+    image = settings.api_client.get_image(image_uuid)
+
+    return image

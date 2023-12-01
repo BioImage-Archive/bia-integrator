@@ -1,0 +1,10 @@
+# OpenAPI Generator Ignore
+# gitignore-like format. Files here don't get overwritten by openapi-generator
+
+## Generated but removed
+bia_integrator_api/test/**
+
+## Manually added
+util.py
+Readme.md
+bia_integrator_api/example

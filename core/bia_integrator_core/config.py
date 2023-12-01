@@ -1,36 +1,31 @@
-import os
 from pathlib import Path
-
 from pydantic import BaseSettings
-
+from typing import Optional
+from bia_integrator_api.util import simple_client
+from bia_integrator_api.api import PrivateApi
 
 class Settings(BaseSettings):
-    data_dirpath: Path = Path.home()/".bia-integrator-data"
+    bia_api_basepath: str = "http://localhost:8080"
+    bia_username: Optional[str] = None
+    bia_password: Optional[str] = None
+    bia_disable_ssl_host_check: bool = False
     cache_root_dirpath: Path = Path.home()/".cache"/"bia-converter"
 
-    @property
-    def studies_dirpath(self):
-        return self.data_dirpath/"studies"
+    bia_api_client: Optional[PrivateApi] = None
 
     @property
-    def aliases_dirpath(self):
-        return self.data_dirpath/"aliases"
-
-    @property
-    def annotations_dirpath(self):
-        return self.data_dirpath/"annotations"
-
-    @property
-    def images_dirpath(self):
-        return self.data_dirpath/"images"
-
-    @property
-    def representations_dirpath(self):
-        return self.data_dirpath/"representations"
-
-    @property
-    def collections_dirpath(self):
-        return self.data_dirpath/"collections"
-
+    def api_client(self) -> PrivateApi:
+        if not self.bia_api_client:
+            self.bia_api_client = simple_client(
+                self.bia_api_basepath,
+                self.bia_username,
+                self.bia_password,
+                self.bia_disable_ssl_host_check
+            )
+        
+        return self.bia_api_client
+    
+    class Config:
+        case_sensitive: True
 
 settings = Settings()

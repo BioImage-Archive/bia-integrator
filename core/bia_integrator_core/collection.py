@@ -1,29 +1,25 @@
 import logging
 
 from .config import settings
-from .models import BIACollection
-
+from bia_integrator_api import models as api_models
+from typing import List
 
 logger = logging.getLogger(__name__)
 
 
-def get_collection(name: str) -> BIACollection:
+def get_collection(name: str) -> api_models.BIACollection:
     """Load the collection with the given name from disk and return."""
 
-    collections_dirpath = settings.data_dirpath/"collections"
-    collection_fpath = collections_dirpath/f"{name}.json"
+    return settings.api_client.search_collections(name)[0]
 
-    return BIACollection.parse_file(collection_fpath)
-    
+def get_collections() -> List[api_models.BIACollection]:
+    return settings.api_client.search_collections()
 
-def persist_collection(collection: BIACollection):
+def persist_collection(collection: api_models.BIACollection):
     """Persist the given collection to disk."""
 
-    collections_dirpath = settings.data_dirpath/"collections"
-    collections_dirpath.mkdir(exist_ok=True, parents=True)
+    settings.api_client.create_collection(collection)
 
-    collection_fpath = collections_dirpath/f"{collection.name}.json"
-    logger.info(f"Writing collection to {collection_fpath}")
-
-    with open(collection_fpath, "w") as fh:
-        fh.write(collection.json(indent=2))
+def update_collection(collection: api_models.BIACollection):
+    collection.version += 1
+    settings.api_client.create_collection(collection)

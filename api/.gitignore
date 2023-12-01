@@ -62,3 +62,4 @@ env
 # Project-specific
 ####
 .env
+.venv

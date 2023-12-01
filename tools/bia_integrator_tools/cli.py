@@ -1,35 +1,37 @@
 import logging
 from pathlib import Path
+from bia_integrator_api import models as api_models
+from typing import Optional
+from uuid import UUID
+import time
+from typing_extensions import Annotated
 
 logger = logging.getLogger("biaint")
 logging.basicConfig(level=logging.INFO)
 
 import typer
 
-from bia_integrator_core.models import (
-    StudyAnnotation,
-    BIAImageRepresentation,
-    ImageAnnotation,
-    BIACollection,
-    StudyTag,
-    BIAImageAlias
-)
-
 from bia_integrator_core.interface import (
     get_study,
-    get_all_study_identifiers,
-    get_image,
-    get_images_for_study,
+    get_all_studies,
+    get_image_by_alias,
+    get_image_by_uuid,
+    get_images,
     get_study_annotations,
     persist_study_annotation,
     persist_image_representation,
+    get_representations,
     persist_image_annotation,
     persist_collection,
+    update_collection,
+    get_collections,
     get_study_tags,
-    persist_study_tag,
+    add_study_tag,
     get_collection,
-    get_aliases,
-    persist_image_alias
+    persist_image_alias,
+    to_uuid,
+    get_bia_user,
+    study_recount
 )
 from bia_integrator_core.integrator import load_and_annotate_study
 
@@ -59,34 +61,40 @@ app.add_typer(filerefs_app, name="filerefs")
 
 
 @aliases_app.command("add")
-def add_alias(accession_id: str, image_id: str, name: str):
-    alias = BIAImageAlias(
-        accession_id=accession_id,
-        image_id=image_id,
+def add_alias(image_uuid: str, name: str, overwrite: bool = False):
+    alias = api_models.BIAImageAlias(
         name=name
     )
 
-    persist_image_alias(alias)
+    persist_image_alias(image_uuid, alias, overwrite=overwrite)
 
 
 @aliases_app.command("list")
-def list_aliases(accession_id: str, image_id: str):
-    aliases = get_aliases(accession_id)
+def list_alias(image_uuid: str):
+    """
+    Accepts either the image uuid, or a (image_alias, accession_id) pair 
+    """
 
-    for alias in aliases:
-        if image_id == alias.image_id:
-            print(alias.name, alias.accession_id, alias.image_id)
+    image = get_image_by_uuid(image_uuid)
+    image_alias = image.alias.name if image.alias else "NO_ALIAS"
 
+    print(image_alias)
 
 @aliases_app.command("list-for-study")
 def list_aliases_for_study(accession_id: str):
-    aliases = get_aliases(accession_id)
+    study_images = get_images(accession_id)
 
-    for alias in aliases:
-        typer.echo(f"{alias.name}, {alias.accession_id}, {alias.image_id}")
+    if len(study_images):
+        study = get_study(accession_id)
+        for image in study_images:
+            image_alias = image.alias.name if image.alias else "NO_ALIAS"
+
+            typer.echo(f"{image_alias}, {study.accession_id}, {image.uuid}")
+    else:
+        print(f"Study {accession_id} has no images")
 
 
-# From https://stackoverflow.com/questions/1094841/get-human-readable-version-of-file-size
+# From https://stackoverflow.com/questions/1094841/get-human-readable-version-of-file-size 
 def sizeof_fmt(num, suffix="B"):
     for unit in ["", "Ki", "Mi", "Gi", "Ti", "Pi", "Ei", "Zi"]:
         if abs(num) < 1024.0:
@@ -99,43 +107,51 @@ def sizeof_fmt(num, suffix="B"):
 def list_filerefs(accession_id: str):
     bia_study = load_and_annotate_study(accession_id)
 
-    for fileref in bia_study.file_references.values():
+    for fileref in bia_study.file_references:
         readable_size = sizeof_fmt(fileref.size_in_bytes)
-        typer.echo(f"{fileref.id}, {fileref.name}, {readable_size}, {fileref.type}")
+        typer.echo(f"{fileref.uuid}, {fileref.name}, {readable_size}, {fileref.type}")
 
 @filerefs_app.command("list-easily-convertable")
 def list_easily_convertable_filerefs(accession_id: str):
     bia_study = load_and_annotate_study(accession_id)
     convertable_ext_path = Path(__file__).resolve().parent.parent / "resources" /"bioformats_curated_single_file_formats.txt"
     easily_convertable_exts = [ l for l in convertable_ext_path.read_text().split("\n") if len(l) > 0]
-    for fileref in bia_study.file_references.values():
+    for fileref in bia_study.file_references:
         if Path(fileref.name).suffix.lower() in easily_convertable_exts:
             readable_size = sizeof_fmt(fileref.size_in_bytes)
-            typer.echo(f"{fileref.id}, {fileref.name}, {readable_size}")
-
+            typer.echo(f"{fileref.uuid}, {fileref.name}, {readable_size}")
 
 @images_app.command("list")
 def images_list(accession_id: str):
-    images = get_images_for_study(accession_id)
+    images = get_images(accession_id)
 
     for image in images:
-        rep_rep = ','.join(rep.type for rep in image.representations)
-        typer.echo(f"{image.id} {image.original_relpath} {rep_rep}")
+        rep_rep = ','.join(rep.type for rep in image.representations) if image.representations else "NO REPRESENTATIONS"
+        typer.echo(f"{image.uuid} {image.original_relpath} {rep_rep}")
 
 
 @images_app.command("show")
-def images_show(accession_id: str, image_id: str):
-    study = load_and_annotate_study(accession_id)
-    image = study.images[image_id]
+def images_show(image_uuid_or_alias: str, accession_id: Annotated[Optional[str], typer.Argument(default=None)] = None):
+    """
+    Single argument: Must be the image UUID
+    Two arguments: Image alias first, then accession_id
+    """
 
-    typer.echo(image.id)
-    typer.echo(image.original_relpath)
-    typer.echo(f"Dimensions: {image.dimensions}")
+    img = None
+    if accession_id:
+        img = get_image_by_alias(accession_id, image_uuid_or_alias)
+    else:
+        UUID(image_uuid_or_alias)
+        img = get_image_by_uuid(image_uuid_or_alias)
+
+    typer.echo(img.uuid)
+    typer.echo(img.original_relpath)
+    typer.echo(f"Dimensions: {img.dimensions}")
     typer.echo("Attributes:")
-    for k, v in image.attributes.items():
+    for k, v in img.attributes.items():
         typer.echo(f"  {k}={v}")
     typer.echo("Representations:")
-    for rep in image.representations:
+    for rep in img.representations:
         typer.echo(f"  {rep}")
 
     
@@ -145,15 +161,21 @@ def show(accession_id: str):
 
     typer.echo(study)
 
+@studies_app.command("recount")
+def show(accession_id: str):
+    study_recount(accession_id)
+
+    typer.echo("DONE")
 
 @studies_app.command("list")
 def list():
-    studies = get_all_study_identifiers()
+    studies = get_all_studies()
+    study_accnos = [study.accession_id for study in studies]
 
-    typer.echo('\n'.join(sorted(studies)))
+    typer.echo('\n'.join(sorted(study_accnos)))
 
 
-@annotations_app.command("list-studies")
+@annotations_app.command("list-study")
 def list_study_annotations(accession_id: str):
     annotations = get_study_annotations(accession_id)
 
@@ -162,26 +184,42 @@ def list_study_annotations(accession_id: str):
 
 @annotations_app.command("create-study")
 def create_study_annotation(accession_id: str, key: str, value: str):
-
-    annotation = StudyAnnotation(
-        accession_id=accession_id,
+    annotation = api_models.StudyAnnotation(
+        author_email=get_bia_user(),
         key=key,
-        value=value
+        value=value,
+        state=api_models.AnnotationState.ACTIVE
     )
 
-    persist_study_annotation(annotation)
+    persist_study_annotation(accession_id, annotation)
 
 
 @annotations_app.command("create-image")
-def create_image_annotation(accession_id: str, image_id: str, key: str, value: str):
-    annotation = ImageAnnotation(
-        accession_id=accession_id,
-        image_id=image_id,
+def create_image_annotation(key: str, value: str, image_uuid_or_alias: str, accession_id: Optional[str] = None):    
+    image_uuid = image_uuid_or_alias
+    if accession_id:
+        img = get_image_by_alias(accession_id, image_uuid_or_alias)
+        image_uuid = img.uuid
+
+    annotation = api_models.ImageAnnotation(
+        author_email=get_bia_user(),
         key=key,
-        value=value
+        value=value,
+        state=api_models.AnnotationState.ACTIVE
     )
 
-    persist_image_annotation(annotation)
+    persist_image_annotation(image_uuid, annotation)
+
+
+@annotations_app.command("list-image")
+def create_image_annotation(image_uuid_or_alias: str, accession_id: Optional[str] = None):    
+    img = None
+    if accession_id:
+        img = get_image_by_alias(accession_id, image_uuid_or_alias)
+    else:
+        img = get_image_by_uuid(image_uuid_or_alias)
+        
+    typer.echo(img.annotations)
 
 
 @annotations_app.command("list-study-tags")
@@ -193,35 +231,45 @@ def list_study_tags(accession_id):
 
 @annotations_app.command("create-study-tag")
 def create_study_tag(accession_id, value):
-    tag = StudyTag(
-        accession_id=accession_id,
-        value=value
-    )
-    persist_study_tag(tag)
+    add_study_tag(accession_id, value)
 
 
 @reps_app.command("register")
 def register_image_representation(accession_id: str, image_id: str, type: str, size: int, uri: str):
-    rep = BIAImageRepresentation(
-        accession_id=accession_id,
-        image_id=image_id,
-        type=type,
-        uri=uri,
+    img = get_image_by_alias(accession_id, image_id)
+    
+    rep = api_models.BIAImageRepresentation(
         size=size,
+        uri=[uri],
+        type=type,
         dimensions=None,
         attributes={}
-    )
-    persist_image_representation(rep)
+    )    
+    persist_image_representation(img.uuid, rep)
 
+
+@reps_app.command("list")
+def list_image_representations(accession_id: str, image_id: str):
+    img = get_image_by_alias(accession_id, image_id)
+    
+    reprs = get_representations(img.uuid)
+
+    typer.echo(reprs)
+
+@collections_app.command("list")
+def list_collections():    
+    for collection in get_collections():
+        typer.echo(collection)
 
 @collections_app.command("create")
-def create_collection(name: str, title: str, subtitle: str, accessions_list: str):
-    collection = BIACollection(
-        name=name,  
+def create_collection(name: str, title: str, subtitle: str, accessions_list: str):    
+    collection = api_models.BIACollection(
+        uuid=str(UUID(int=int(time.time()*1000000))),
+        version=0,
+        name=name,
         title=title,
         subtitle=subtitle,
-        accession_ids=accessions_list.split(","),
-        description=None
+        study_uuids=accessions_list.split(",")
     )
     persist_collection(collection)
 
@@ -230,12 +278,9 @@ def create_collection(name: str, title: str, subtitle: str, accessions_list: str
 def add_study_to_collection(collection_name: str, accession_id: str):
     collection = get_collection(collection_name)
     
-    collection.accession_ids.append(accession_id)
+    collection.study_uuids.append(accession_id)
 
-    persist_collection(collection)
-
-    
-
+    update_collection(collection)
 
 if __name__ == "__main__":
     app()

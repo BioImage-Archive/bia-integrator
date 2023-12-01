@@ -3,7 +3,7 @@ import click
 import logging
 
 from bia_integrator_core.integrator import load_and_annotate_study
-from bia_integrator_core.interface import persist_study
+from bia_integrator_core.interface import update_fileref
 
 logger = logging.getLogger(__file__)
 
@@ -23,8 +23,8 @@ def main(accession_id,fname_separator):
 
     # workaround for S-BIAD531
     if fname_separator == 'ome_':
-        image_names = {str(image.name).split('/')[-1]: image.name for image in bia_study.images.values()}
-        for fileref in bia_study.file_references.values():
+        image_names = {str(image.name).split('/')[-1]: image.name for image in bia_study.images}
+        for fileref in bia_study.file_references:
             name = str(fileref.name)
             source_image = None
             if fname_separator == 'ome_' and fname_separator in name:           
@@ -35,7 +35,7 @@ def main(accession_id,fname_separator):
             if source_image:
                     fileref.attributes['source image'] = source_image
     
-    for fileref in bia_study.file_references.values():
+    for fileref in bia_study.file_references:
         if not fileref.attributes.get('source image'):
             source_image = None
             name = str(fileref.name)
@@ -57,7 +57,7 @@ def main(accession_id,fname_separator):
                 source_image = name.split('_mask.png')[0] + '.tif'
             if source_image:
                 fileref.attributes['source image'] = source_image
-    persist_study(bia_study)
+                update_fileref(fileref)
 
 
 if __name__ == "__main__":
