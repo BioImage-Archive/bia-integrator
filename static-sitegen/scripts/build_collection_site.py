@@ -42,12 +42,15 @@ def main(collection_name):
     output_base_dirpath = Path("tmp/pages")
     output_base_dirpath.mkdir(exist_ok=True, parents=True)
 
-    dataset_template_fname = collection.attributes.get(
-        "dataset_landing_template", DEFAULT_DATASET_TEMPLATE
-    )
+    dataset_template_fname = DEFAULT_DATASET_TEMPLATE 
+    #dataset_template_fname = collection.attributes.get(
+    #    "dataset_landing_template", DEFAULT_DATASET_TEMPLATE
+    #)
 
-    page_suffix = collection.attributes.get("page-suffix", ".html")
-    for accession_id in collection.accession_ids:
+    page_suffix = ".html"
+    #page_suffix = collection.attributes.get("page-suffix", ".html")
+    #for accession_id in collection.accession_ids:
+    for accession_id in ("S-BIAD171",):
         logger.info(f"Generating dataset page for {accession_id}")
         rendered_html = generate_dataset_page_html(accession_id, dataset_template_fname)
         output_fpath = output_base_dirpath/f"{accession_id}{page_suffix}"
