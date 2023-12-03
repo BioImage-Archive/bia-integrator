@@ -4,6 +4,7 @@ from pathlib import Path
 import click
 
 from bia_integrator_core.collection import get_collection
+from bia_integrator_core.study import get_study
 from bia_integrator_core.integrator import load_and_annotate_study
 
 from generate_collection_page import generate_collection_page_html
