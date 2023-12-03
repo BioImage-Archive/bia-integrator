@@ -5,6 +5,7 @@ import click
 from jinja2 import Environment, FileSystemLoader, select_autoescape # type: ignore 
 
 from bia_integrator_core.collection import get_collection
+from bia_integrator_core.study import get_study
 from bia_integrator_core._models import BIACollection
 from bia_integrator_core.interface import load_and_annotate_study
 from utils import ( get_annotation_files_in_study, 
@@ -26,8 +27,8 @@ def generate_collection_page_html(collection: BIACollection) -> str:
     #template_fname = collection.attributes.get("collection_landing_template", DEFAULT_TEMPLATE)
     template_fname = DEFAULT_TEMPLATE
     
-    #bia_studies = [load_and_annotate_study(accession_id) for accession_id in collection.accession_ids]
-    bia_studies = [load_and_annotate_study(accession_id) for accession_id in ("S-BIAD171",)]
+    accession_ids = [get_study(study_uuid=study_uuid).accession_id for study_uuid in collection.study_uuids]
+    bia_studies = [load_and_annotate_study(accession_id) for accession_id in accession_ids]
 
     #page_suffix = collection.attributes.get("page-suffix", ".html")
     page_suffix = ".html"

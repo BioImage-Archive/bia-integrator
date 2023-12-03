@@ -49,8 +49,9 @@ def main(collection_name):
 
     page_suffix = ".html"
     #page_suffix = collection.attributes.get("page-suffix", ".html")
-    #for accession_id in collection.accession_ids:
-    for accession_id in ("S-BIAD171",):
+    
+    accession_ids = [get_study(study_uuid=study_uuid).accession_id for study_uuid in collection.study_uuids]
+    for accession_id in accession_ids:
         logger.info(f"Generating dataset page for {accession_id}")
         rendered_html = generate_dataset_page_html(accession_id, dataset_template_fname)
         output_fpath = output_base_dirpath/f"{accession_id}{page_suffix}"
@@ -63,10 +64,6 @@ def main(collection_name):
     collection_page_fpath = output_base_dirpath/f"{collection.name}.html"
     with open(collection_page_fpath, "w") as fh:
         fh.write(collection_page_html)
-
-                
-
-
 
 if __name__ == "__main__":
     main()
