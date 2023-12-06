@@ -6,7 +6,7 @@ import urllib.parse
 import click
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
-from bia_integrator_core.integrator import load_and_annotate_study
+from bia_integrator_core.study import get_study
 from bia_integrator_core.interface import get_image, to_uuid
 from scripts.extract_ome_metadata import sanitise_image_metadata
 
@@ -62,7 +62,7 @@ def generate_neuroglancer_link(uri: str):
 
 def generate_image_page_html(accession_id: str, image_uuid):
 
-    bia_study = load_and_annotate_study(accession_id)
+    bia_study = get_study(accession_id)
     bia_image = get_image(image_uuid)
     author_names = ', '.join([ 
         author.name
