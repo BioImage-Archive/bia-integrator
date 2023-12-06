@@ -20,8 +20,8 @@ class Channel(BaseModel):
     active: bool
     label: str
     window: Window
-    family: str
-    inverted: bool
+    family: Optional[str] = None
+    inverted: Optional[bool] = None
 
 class Omero(BaseModel):
     rdefs: RDefs

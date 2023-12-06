@@ -67,6 +67,7 @@ def empiar_file_to_file_reference(accession_id: str, file: EMPIARFile) -> FileRe
         name=fileref_name,
         uri=empiar_file_uri(accession_id, file),
         size_in_bytes=file.size,
+        type="fire_obj",
         attributes={}
     )
 
@@ -117,7 +118,7 @@ def generate_filerefs_for_empiar_entry(accession_no: str):
 
     empiar_files = empiar_files_by_pyfilesystem(accession_no)
 
-    accession_id = f"EMPIAE-{accession_no}"
+    accession_id = f"EMPIAR-{accession_no}"
     filerefs = [
         empiar_file_to_file_reference(accession_id, empiar_file)
         for empiar_file in empiar_files

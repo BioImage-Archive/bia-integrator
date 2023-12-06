@@ -11,10 +11,13 @@ app = typer.Typer()
 
 
 @app.command()
-def main(accession_id: str, image_id: str, output_fname: str):
+def main(accession_id: str, image_id: str, output_fname: str, rdim: int=512, cdim: int=512):
+
+    dims = rdim, cdim
+
     ome_ngff_rep = get_ome_ngff_rep_by_accession_and_image(accession_id, image_id)
 
-    im = generate_padded_thumbnail_from_ngff_uri(ome_ngff_rep.uri)
+    im = generate_padded_thumbnail_from_ngff_uri(ome_ngff_rep.uri, dims)
 
     im.save(output_fname)
 
