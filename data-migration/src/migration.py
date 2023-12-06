@@ -272,11 +272,7 @@ def image_set_ome_metadata_if_any(api_client: PrivateApi, study_image_api: api_m
 
     api_client.set_image_ome_metadata(image_uuid=study_image_api.uuid, ome_metadata_file = ome_xml_path)
 
-def migrate_study(study_id):
-    #study_core = study.get_study(study_id)
-    study_core = interface.load_study_with_linked_objects_not_annotated(study_id)
-    study_api = study_core_to_api(study_core)
-
+def study_core_filerefs_to_api(study_core, study_api):
     study_filerefs_api = []
     for k_fileref, fileref_core in study_core.file_references.items():
         fileref_uuid = k_fileref if is_uuid(k_fileref) else None
@@ -294,7 +290,11 @@ def migrate_study(study_id):
 
         study_filerefs_api += bia_file_core_to_api(other_file_core, study_api.uuid, other_file_uuid, "file")
     
+    return study_filerefs_api
+
+def study_core_images_to_api(study_core, study_api):
     study_images_api = []
+
     for k_image, image_core in study_core.images.items():
         image_uuid = k_image if is_uuid(k_image) else None
         image_aliases = [
@@ -307,6 +307,17 @@ def migrate_study(study_id):
 
         image_api = image_core_to_api(image_core, study_api.uuid, image_uuid, image_alias_core=image_alias)
         study_images_api.append(image_api)
+    
+    return study_images_api
+
+
+def migrate_study(study_id):
+    #study_core = study.get_study(study_id)
+    study_core = interface.load_study_with_linked_objects_not_annotated(study_id)
+    study_api = study_core_to_api(study_core)
+
+    study_filerefs_api = study_core_filerefs_to_api(study_core=study_core, study_api=study_api)
+    study_images_api = study_core_images_to_api(study_core=study_core, study_api=study_api)
 
     print(f"Creating study {study_id}")
     api_client.create_study(study_api)
@@ -326,6 +337,22 @@ def migrate_study(study_id):
 @studies_app.command("migrate_one")
 def migrate_one_study(study_accession: str):
     migrate_study(study_accession)
+
+@studies_app.command("migrate_images_only")
+def study_migrate_images_only(study_accession: str):
+    study_core = interface.load_study_with_linked_objects_not_annotated(study_accession)
+    #study_api = study_core_to_api(study_core)
+
+    study_api = api_client.search_studies_exact_match(api_models.SearchStudyFilter(
+        study_match = api_models.SearchStudy(
+            accession_id = study_accession
+        )
+    ))[0]
+
+    study_images_api = study_core_images_to_api(study_core=study_core, study_api=study_api)
+    print(f"Creating {len(study_images_api)} images for study {study_accession}")
+    if len(study_images_api):
+        api_client.create_images(study_images_api)
 
 @studies_app.command("migrate_all")
 def migrate_all_studies():
