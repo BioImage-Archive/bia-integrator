@@ -8,6 +8,22 @@ source .venv/bin/activate
 pip install -e .
 ```
 
+## Setup local
+
+```sh
+# Note that only config.json is gitignored
+cp template_config.json config.json
+
+# change with actual credentials
+# object key is environment name
+vim config.json
+
+## Example run
+# note --env position (it's an option for the main "app")
+# defaults to dev
+poetry run python src/migration.py --env=beta studies recount EMPIAR-10988
+```
+
 ## Migrating data repo to api on local
 
 1. Follow the api readme to get an api instance running.

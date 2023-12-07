@@ -6,34 +6,66 @@ from bia_integrator_api import models as api_models, exceptions as api_exception
 from bia_integrator_api.util import simple_client, PrivateApi
 from src.bia_integrator_core import models as core_models, interface
 import os
+import json
 
 import uuid as uuid_lib
 import time
 import re
 from urllib.request import urlopen
 from urllib.error import HTTPError
+from dataclasses import dataclass
 
 import typer
 app = typer.Typer()
+
+SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
+
+@dataclass
+class AppContext:
+    """
+    This is defined just for nice editor support
+    """
+    env_name: str
+    config: dict
+    api_client: PrivateApi
+
+# Too big of a refactor to pass context everywhere, keep the (old) global variable for the client
+api_client: PrivateApi = None
+
+@app.callback()
+def my_callback(
+    ctx: typer.Context,
+    env: str = typer.Option(default="dev"),
+    config_path: str = typer.Option(default=os.path.join(SCRIPT_DIR, "config.json"))
+):
+    assert os.path.isfile(config_path)
+
+    with open(config_path, "r") as f:
+        configs = json.load(f)
+
+    if env not in configs:
+        raise Exception(f"Unexpected environment {env}. Expecting one of: {','.join(configs.keys())} configured in {config_path}")
+
+    config = configs[env]
+    ctx.obj = AppContext(
+        env_name=env,
+        config=config,
+        api_client=simple_client(
+            config["biaint_api_url"],
+            config["biaint_username"],
+            config["biaint_password"],
+            disable_ssl_host_check = True
+        )
+    )
+
+    global api_client
+    api_client = ctx.obj.api_client
 
 studies_app = typer.Typer()
 app.add_typer(studies_app, name="studies")
 
 ome_metadata_app = typer.Typer()
 app.add_typer(ome_metadata_app, name="ome")
-
-import json
-import os
-SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
-with open(os.path.join(SCRIPT_DIR, "config.json"), "r") as f:
-    config = json.load(f)["dev"]
-
-api_client = simple_client(
-    config["biaint_api_url"],
-    config["biaint_username"],
-    config["biaint_password"],
-    disable_ssl_host_check = True
-)
 
 class SkipStudyException(Exception):
     pass
@@ -339,9 +371,8 @@ def migrate_one_study(study_accession: str):
     migrate_study(study_accession)
 
 @studies_app.command("migrate_images_only")
-def study_migrate_images_only(study_accession: str):
+def study_migrate_images_only(study_accession: str, bypass_duplication_check: bool = False):
     study_core = interface.load_study_with_linked_objects_not_annotated(study_accession)
-    #study_api = study_core_to_api(study_core)
 
     study_api = api_client.search_studies_exact_match(api_models.SearchStudyFilter(
         study_match = api_models.SearchStudy(
@@ -349,10 +380,26 @@ def study_migrate_images_only(study_accession: str):
         )
     ))[0]
 
+    api_client.study_refresh_counts(study_api.uuid)
+    study_api = api_client.get_study(study_api.uuid)
+    if study_api.images_count and not bypass_duplication_check:
+        raise Exception(f"Study already has {study_api.images_count} images. Stopping to avoid duplicating")
+
     study_images_api = study_core_images_to_api(study_core=study_core, study_api=study_api)
+
     print(f"Creating {len(study_images_api)} images for study {study_accession}")
     if len(study_images_api):
         api_client.create_images(study_images_api)
+
+@studies_app.command("recount")
+def study_migrate_images_only(study_accession: str):
+    study_api = api_client.search_studies_exact_match(api_models.SearchStudyFilter(
+        study_match = api_models.SearchStudy(
+            accession_id = study_accession
+        )
+    ))[0]
+
+    api_client.study_refresh_counts(study_api.uuid)
 
 @studies_app.command("migrate_all")
 def migrate_all_studies():
