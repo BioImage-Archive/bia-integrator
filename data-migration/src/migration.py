@@ -5,35 +5,65 @@
 from bia_integrator_api import models as api_models, exceptions as api_exceptions
 from bia_integrator_api.util import simple_client, PrivateApi
 from src.bia_integrator_core import models as core_models, interface
-import os
+import json
 
 import uuid as uuid_lib
 import time
 import re
 from urllib.request import urlopen
 from urllib.error import HTTPError
+from dataclasses import dataclass
+from pathlib import Path
 
 import typer
 app = typer.Typer()
+
+SCRIPT_DIR = Path(__file__).parent
+
+@dataclass
+class AppContext:
+    """
+    This is defined just for nice editor support
+    """
+    env_name: str
+    config: dict
+    api_client: PrivateApi
+
+# Too big of a refactor to pass context everywhere, keep the (old) global variable for the client
+api_client: PrivateApi = None
+
+@app.callback()
+def my_callback(
+    ctx: typer.Context,
+    env: str = typer.Option(default="dev"),
+    config_path: Path = typer.Option(default=SCRIPT_DIR / "config.json", exists=True)
+):
+    with open(config_path, "r") as f:
+        configs = json.load(f)
+
+    if env not in configs:
+        raise Exception(f"Unexpected environment {env}. Expecting one of: {','.join(configs.keys())} configured in {config_path}")
+
+    config = configs[env]
+    ctx.obj = AppContext(
+        env_name=env,
+        config=config,
+        api_client=simple_client(
+            config["biaint_api_url"],
+            config["biaint_username"],
+            config["biaint_password"],
+            disable_ssl_host_check = True
+        )
+    )
+
+    global api_client
+    api_client = ctx.obj.api_client
 
 studies_app = typer.Typer()
 app.add_typer(studies_app, name="studies")
 
 ome_metadata_app = typer.Typer()
 app.add_typer(ome_metadata_app, name="ome")
-
-import json
-import os
-SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
-with open(os.path.join(SCRIPT_DIR, "config.json"), "r") as f:
-    config = json.load(f)["dev"]
-
-api_client = simple_client(
-    config["biaint_api_url"],
-    config["biaint_username"],
-    config["biaint_password"],
-    disable_ssl_host_check = True
-)
 
 class SkipStudyException(Exception):
     pass
@@ -246,12 +276,11 @@ def image_set_ome_metadata_if_any(api_client: PrivateApi, study_image_api: api_m
     )
     print(f"Setting {ome_ngff_uri} as the ome xml of image {study_image_api.uuid}")
 
-    ome_xml_basedir = "/tmp/ome_xml"
-    if not os.path.isdir(ome_xml_basedir):
-        os.makedirs(ome_xml_basedir)
+    ome_xml_basedir = Path("/tmp/ome_xml")
+    ome_xml_basedir.mkdir(parents=True)
 
-    ome_xml_path = os.path.join(ome_xml_basedir, ome_ngff_uri.replace("/","_"))
-    if not os.path.isfile(ome_xml_path):
+    ome_xml_file = ome_xml_basedir / ome_ngff_uri.replace("/","_")
+    if not ome_xml_file.is_file():
         ome_metadata_contents = b""
         try:
             ome_metadata_contents = urlopen(ome_ngff_uri).read()
@@ -266,17 +295,13 @@ def image_set_ome_metadata_if_any(api_client: PrivateApi, study_image_api: api_m
             return
         ome_metadata_contents = str(ome_metadata_contents.decode())
 
-        print(f"writing {len(ome_metadata_contents)} bytes to ome_metadata file {ome_xml_path}")
-        with open(ome_xml_path, "w+") as f:
+        print(f"writing {len(ome_metadata_contents)} bytes to ome_metadata file {ome_xml_file}")
+        with ome_xml_file.open() as f:
             f.write(ome_metadata_contents)
 
-    api_client.set_image_ome_metadata(image_uuid=study_image_api.uuid, ome_metadata_file = ome_xml_path)
+    api_client.set_image_ome_metadata(image_uuid=study_image_api.uuid, ome_metadata_file = str(ome_xml_file.resolve()))
 
-def migrate_study(study_id):
-    #study_core = study.get_study(study_id)
-    study_core = interface.load_study_with_linked_objects_not_annotated(study_id)
-    study_api = study_core_to_api(study_core)
-
+def study_core_filerefs_to_api(study_core, study_api):
     study_filerefs_api = []
     for k_fileref, fileref_core in study_core.file_references.items():
         fileref_uuid = k_fileref if is_uuid(k_fileref) else None
@@ -294,7 +319,11 @@ def migrate_study(study_id):
 
         study_filerefs_api += bia_file_core_to_api(other_file_core, study_api.uuid, other_file_uuid, "file")
     
+    return study_filerefs_api
+
+def study_core_images_to_api(study_core, study_api):
     study_images_api = []
+
     for k_image, image_core in study_core.images.items():
         image_uuid = k_image if is_uuid(k_image) else None
         image_aliases = [
@@ -307,6 +336,17 @@ def migrate_study(study_id):
 
         image_api = image_core_to_api(image_core, study_api.uuid, image_uuid, image_alias_core=image_alias)
         study_images_api.append(image_api)
+    
+    return study_images_api
+
+
+def migrate_study(study_id):
+    #study_core = study.get_study(study_id)
+    study_core = interface.load_study_with_linked_objects_not_annotated(study_id)
+    study_api = study_core_to_api(study_core)
+
+    study_filerefs_api = study_core_filerefs_to_api(study_core=study_core, study_api=study_api)
+    study_images_api = study_core_images_to_api(study_core=study_core, study_api=study_api)
 
     print(f"Creating study {study_id}")
     api_client.create_study(study_api)
@@ -326,6 +366,37 @@ def migrate_study(study_id):
 @studies_app.command("migrate_one")
 def migrate_one_study(study_accession: str):
     migrate_study(study_accession)
+
+@studies_app.command("migrate_images_only")
+def study_migrate_images_only(study_accession: str, bypass_duplication_check: bool = False):
+    study_core = interface.load_study_with_linked_objects_not_annotated(study_accession)
+
+    study_api = api_client.search_studies_exact_match(api_models.SearchStudyFilter(
+        study_match = api_models.SearchStudy(
+            accession_id = study_accession
+        )
+    ))[0]
+
+    api_client.study_refresh_counts(study_api.uuid)
+    study_api = api_client.get_study(study_api.uuid)
+    if study_api.images_count and not bypass_duplication_check:
+        raise Exception(f"Study already has {study_api.images_count} images. Stopping to avoid duplicating")
+
+    study_images_api = study_core_images_to_api(study_core=study_core, study_api=study_api)
+
+    print(f"Creating {len(study_images_api)} images for study {study_accession}")
+    if len(study_images_api):
+        api_client.create_images(study_images_api)
+
+@studies_app.command("recount")
+def study_migrate_images_only(study_accession: str):
+    study_api = api_client.search_studies_exact_match(api_models.SearchStudyFilter(
+        study_match = api_models.SearchStudy(
+            accession_id = study_accession
+        )
+    ))[0]
+
+    api_client.study_refresh_counts(study_api.uuid)
 
 @studies_app.command("migrate_all")
 def migrate_all_studies():
@@ -348,9 +419,10 @@ def migrate_all_studies():
 
 @studies_app.command("collections_rebuild")
 def rebuild_collection():
-    data_dir_abspath = os.path.expanduser("~/.bia-integrator-data/collections")
-    collection_files = os.listdir(data_dir_abspath)
-    collection_names = [filename.rsplit(".", 1)[0] for filename in collection_files]
+    data_dir = Path.home() / ".bia-integrator-data/collections"
+
+    collection_files = data_dir.glob("**/*.json")
+    collection_names = [collection_file.stem for collection_file in collection_files]
     for collection_name in collection_names:
         collection_exists = True
         try:
