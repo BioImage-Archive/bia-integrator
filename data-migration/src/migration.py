@@ -5,7 +5,6 @@
 from bia_integrator_api import models as api_models, exceptions as api_exceptions
 from bia_integrator_api.util import simple_client, PrivateApi
 from src.bia_integrator_core import models as core_models, interface
-import os
 import json
 
 import uuid as uuid_lib
@@ -14,11 +13,12 @@ import re
 from urllib.request import urlopen
 from urllib.error import HTTPError
 from dataclasses import dataclass
+from pathlib import Path
 
 import typer
 app = typer.Typer()
 
-SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
+SCRIPT_DIR = Path(__file__).parent
 
 @dataclass
 class AppContext:
@@ -36,10 +36,8 @@ api_client: PrivateApi = None
 def my_callback(
     ctx: typer.Context,
     env: str = typer.Option(default="dev"),
-    config_path: str = typer.Option(default=os.path.join(SCRIPT_DIR, "config.json"))
+    config_path: Path = typer.Option(default=SCRIPT_DIR / "config.json", exists=True)
 ):
-    assert os.path.isfile(config_path)
-
     with open(config_path, "r") as f:
         configs = json.load(f)
 
@@ -278,12 +276,11 @@ def image_set_ome_metadata_if_any(api_client: PrivateApi, study_image_api: api_m
     )
     print(f"Setting {ome_ngff_uri} as the ome xml of image {study_image_api.uuid}")
 
-    ome_xml_basedir = "/tmp/ome_xml"
-    if not os.path.isdir(ome_xml_basedir):
-        os.makedirs(ome_xml_basedir)
+    ome_xml_basedir = Path("/tmp/ome_xml")
+    ome_xml_basedir.mkdir(parents=True)
 
-    ome_xml_path = os.path.join(ome_xml_basedir, ome_ngff_uri.replace("/","_"))
-    if not os.path.isfile(ome_xml_path):
+    ome_xml_file = ome_xml_basedir / ome_ngff_uri.replace("/","_")
+    if not ome_xml_file.is_file():
         ome_metadata_contents = b""
         try:
             ome_metadata_contents = urlopen(ome_ngff_uri).read()
@@ -298,11 +295,11 @@ def image_set_ome_metadata_if_any(api_client: PrivateApi, study_image_api: api_m
             return
         ome_metadata_contents = str(ome_metadata_contents.decode())
 
-        print(f"writing {len(ome_metadata_contents)} bytes to ome_metadata file {ome_xml_path}")
-        with open(ome_xml_path, "w+") as f:
+        print(f"writing {len(ome_metadata_contents)} bytes to ome_metadata file {ome_xml_file}")
+        with ome_xml_file.open() as f:
             f.write(ome_metadata_contents)
 
-    api_client.set_image_ome_metadata(image_uuid=study_image_api.uuid, ome_metadata_file = ome_xml_path)
+    api_client.set_image_ome_metadata(image_uuid=study_image_api.uuid, ome_metadata_file = str(ome_xml_file.resolve()))
 
 def study_core_filerefs_to_api(study_core, study_api):
     study_filerefs_api = []
@@ -422,9 +419,10 @@ def migrate_all_studies():
 
 @studies_app.command("collections_rebuild")
 def rebuild_collection():
-    data_dir_abspath = os.path.expanduser("~/.bia-integrator-data/collections")
-    collection_files = os.listdir(data_dir_abspath)
-    collection_names = [filename.rsplit(".", 1)[0] for filename in collection_files]
+    data_dir = Path.home() / ".bia-integrator-data/collections"
+
+    collection_files = data_dir.glob("**/*.json")
+    collection_names = [collection_file.stem for collection_file in collection_files]
     for collection_name in collection_names:
         collection_exists = True
         try:
