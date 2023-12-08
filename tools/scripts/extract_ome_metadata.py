@@ -2,7 +2,7 @@ import logging
 import click
 import json
 from bia_integrator_core.integrator import load_and_annotate_study
-from bia_integrator_core.models import BIAImage, ImageAnnotation
+from bia_integrator_api.models import BIAImage, ImageAnnotation
 from bia_integrator_core.interface import persist_image_annotation
 
 logger = logging.getLogger(__file__)
@@ -16,12 +16,13 @@ def sanitise_image_metadata(metadata: dict) -> dict:
 
     # Get keys and exclude those ending with '_unit' for special treatment
     # The are only included if associated with a value.
-    metadata_keys = [k for k in metadata.keys() if not k.endswith("_unit")]
+    metadata_keys = [k for k in metadata.keys() if not k.endswith("_unit") and not k.startswith("http")]
 
+    to_exclude = ("null", "None", "[]")
     sanitised = {}
     for metadata_key in metadata_keys:
         metadata_value = metadata[metadata_key]
-        if metadata_value is None or metadata_value == "null":
+        if metadata_value is None or metadata_value in to_exclude:
             continue
         elif type(metadata_value) is list:
             if len(metadata_value) == 0:
