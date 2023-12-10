@@ -43,6 +43,7 @@ def copy_uri_to_local(src_uri: str, dst_fpath: Path):
     logger.info(f"Fetching {src_uri} to {dst_fpath}")
 
     with requests.get(src_uri, stream=True) as r:
+        r.raise_for_status()
         with open(dst_fpath, "wb") as fh:
             shutil.copyfileobj(r.raw, fh)
 
@@ -128,7 +129,20 @@ def fetch_fileref_to_local(fileref, dst_fpath):
         copy_file_in_remote_zip_to_local(fileref, dst_fpath)
     else:
         copy_uri_to_local(fileref.uri, dst_fpath)
+        # Check size after download and retry if necessary
+        expected_size = requests.header(fileref.uri)["content-length"] if fileref.size_in_bytes == 0 else fileref.size_in_bytes
+        for attempt in range(1, max_retries+1):
+            try:
+                copy_uri_to_local(fileref.uri, dst_fpath)
+                download_size = dst_fpath.stat().st_size
+                if download_size == expected_size:
+                    break
 
+                logger.warning(f"Download attempt {attempt} did not give expected size. Got {download_size} expected {expected_size}")
+            except requests.exceptions.HTTPError as err:
+                logger.warning(f"HTTP error occured on attempt {attempt}: {err}")
+            if attempt == max_retries:
+                raise Exception(f"{attempt} download attempt(s) did not give expected size. Got {download_size} expected {expected_size}. Maximum retries reached")
 
 def stage_fileref_and_get_fpath(accession_id: str, fileref: FileReference) -> Path:
 
@@ -141,8 +155,13 @@ def stage_fileref_and_get_fpath(accession_id: str, fileref: FileReference) -> Pa
     logger.info(f"Checking cache for {fileref.name}")
 
     if not dst_fpath.exists():
+        logger.info(f"File not in cache. Downloading file to {dst_fpath}")
         fetch_fileref_to_local(fileref, dst_fpath)
-        logger.info(f"Downloading file to {dst_fpath}")
+    elif dst_fpath.stat().st_size != fileref.size_in_bytes:
+        # ToDo: As of 04/12/2023 filerefs for type file_in_zip have size_in_bytes=0
+        # Need to modify index_from_zips to get filesize info
+        logger.info(f"File in cache with size {dst_fpath.stat().st_size}. Expected size={fileref.size_in_bytes}. Downloading again to {dst_fpath}")
+        fetch_fileref_to_local(fileref, dst_fpath)
     else:
         logger.info(f"File exists at {dst_fpath}")
 
