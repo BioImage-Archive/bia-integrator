@@ -124,7 +124,7 @@ def copy_file_in_remote_zip_to_local(fileref: FileReference, dst_fpath: Path):
         shutil.move(extracted_fpath, dst_fpath)
 
 
-def fetch_fileref_to_local(fileref, dst_fpath):
+def fetch_fileref_to_local(fileref, dst_fpath, max_retries=3):
     if fileref.type == "file_in_zip":
         copy_file_in_remote_zip_to_local(fileref, dst_fpath)
     else:
