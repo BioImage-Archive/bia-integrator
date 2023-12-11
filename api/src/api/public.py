@@ -66,6 +66,7 @@ async def get_study(
 @router.get("/studies/{study_uuid}/file_references")
 async def get_study_file_references(
         study_uuid: UUID,
+        annotator: Annotated[Annotator, Depends(annotator)],
         start_uuid: UUID | None = None,
         limit : Annotated[int, Query(gt=0)] = 10,
         db: Repository = Depends()
@@ -75,10 +76,14 @@ async def get_study_file_references(
     start_uuid is part of the response
     """
 
-    return await db.file_references_for_study(study_uuid, start_uuid, limit)
+    study_filerefs = await db.file_references_for_study(study_uuid, start_uuid, limit)
+    annotator.annotate_if_needed(study_filerefs)
+
+    return study_filerefs
 
 @router.get("/search/studies")
 async def search_studies(
+        annotator: Annotated[Annotator, Depends(annotator)],
         start_uuid: UUID | None = None,
         limit : Annotated[int, Query(gt=0)] = 10,
         db: Repository = Depends()
@@ -90,12 +95,16 @@ async def search_studies(
     start_uuid is part of the response
     """
     
-    return await db.search_studies({}, start_uuid, limit)
+    studies = await db.search_studies({}, start_uuid, limit)
+    annotator.annotate_if_needed(studies)
+
+    return studies
 
 # post because fastapi there aren't any nice ways to get fastapi to accept objects (annotations_any) in querystring
 @router.post("/search/images/exact_match")
 async def search_images_exact_match(
         search_filter: Annotated[api_models.SearchImageFilter, Body(embed=False)],
+        annotator: Annotated[Annotator, Depends(annotator)],
         db: Repository = Depends()
     ) -> List[db_models.BIAImage]:
     """
@@ -149,11 +158,15 @@ async def search_images_exact_match(
     if query == {}:
         raise InvalidRequestException("Expecting at least one filter when searching")
 
-    return await db.search_images(query, start_uuid=search_filter.start_uuid, limit=search_filter.limit)
+    images = await db.search_images(query, start_uuid=search_filter.start_uuid, limit=search_filter.limit)
+    annotator.annotate_if_needed(images)
+
+    return images
 
 @router.post("/search/file_references/exact_match")
 async def search_file_references_exact_match(
         search_filter: Annotated[api_models.SearchFileReferenceFilter, Body(embed=False)],
+        annotator: Annotated[Annotator, Depends(annotator)],
         db: Repository = Depends()
     ) -> List[db_models.FileReference]:
     """
@@ -195,11 +208,15 @@ async def search_file_references_exact_match(
     if query == {}:
         raise InvalidRequestException("Expecting at least one filter when searching")
 
-    return await db.search_filerefs(query, start_uuid=search_filter.start_uuid, limit=search_filter.limit)
+    file_references = await db.search_filerefs(query, start_uuid=search_filter.start_uuid, limit=search_filter.limit)
+    annotator.annotate_if_needed(file_references)
+
+    return file_references
 
 @router.post("/search/studies/exact_match")
 async def search_studies_exact_match(
         search_filter: Annotated[api_models.SearchStudyFilter, Body(embed=False)],
+        annotator: Annotated[Annotator, Depends(annotator)],
         db: Repository = Depends()
     ) -> List[db_models.BIAStudy]:
     query = {}
@@ -244,11 +261,14 @@ async def search_studies_exact_match(
             query['accession_id'] = search_filter.study_match.accession_id
 
     studies = await db.search_studies(query, start_uuid=search_filter.start_uuid, limit=search_filter.limit)
+    annotator.annotate_if_needed(studies)
+
     return studies
 
 @router.get("/studies/{study_uuid}/images")
 async def get_study_images(
         study_uuid: UUID,
+        annotator: Annotated[Annotator, Depends(annotator)],
         start_uuid: UUID | None = None,
         limit : Annotated[int, Query(gt=0)] = 10,
         db: Repository = Depends()
@@ -258,15 +278,23 @@ async def get_study_images(
     start_uuid is part of the response
     """
 
-    return await db.images_for_study(study_uuid, start_uuid, limit)
+    images = await db.images_for_study(study_uuid, start_uuid, limit)
+    annotator.annotate_if_needed(images)
+
+    return images
+
 
 @router.get("/images/{image_uuid}")
 async def get_image(
     image_uuid: UUID,
+    annotator: Annotated[Annotator, Depends(annotator)],
     db: Repository = Depends()
     ) -> db_models.BIAImage:
     
-    return await db.get_image(uuid=image_uuid)
+    image = await db.get_image(uuid=image_uuid)
+    annotator.annotate_if_needed(image)
+
+    return image
 
 @router.get("/images/{image_uuid}/ome_metadata")
 async def get_image_ome_metadata(
@@ -280,10 +308,14 @@ async def get_image_ome_metadata(
 @router.get("/file_references/{file_reference_uuid}")
 async def get_file_reference(
     file_reference_uuid: str,
+    annotator: Annotated[Annotator, Depends(annotator)],
     db: Repository = Depends()
     ) -> db_models.FileReference:
     
-    return await db.get_file_reference(uuid=UUID(file_reference_uuid))
+    file_reference = await db.get_file_reference(uuid=UUID(file_reference_uuid))
+    annotator.annotate_if_needed(file_reference)
+
+    return file_reference
 
 #@router.get("/images/{image_uuid}/ome_metadata")
 #async def get_image_ome_metadata(study_uuid: str, image_uuid: str) -> db_models.BIAOmeMetadata:
@@ -291,20 +323,28 @@ async def get_file_reference(
 
 @router.get("/collections")
 async def search_collections(
+    annotator: Annotated[Annotator, Depends(annotator)],
     name: Optional[str] = None,
     db: Repository = Depends()
 ) -> List[db_models.BIACollection]:
-    
+
     query = {}
     if name:
         query['name'] = name
 
-    return await db.search_collections(**query)
+    collections = await db.search_collections(**query)
+    annotator.annotate_if_needed(collections)
+
+    return collections
 
 @router.get("/collections/{collection_uuid}")
 async def get_collection(
     collection_uuid: UUID,
+    annotator: Annotated[Annotator, Depends(annotator)],
     db: Repository = Depends()
 ) -> db_models.BIACollection:
     
-    return await db.get_collection(uuid=collection_uuid)
+    collection = await db.get_collection(uuid=collection_uuid)
+    annotator.annotate_if_needed(collection)
+
+    return collection

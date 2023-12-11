@@ -73,7 +73,10 @@ class StudyAnnotation(Annotation):
 class FileReferenceAnnotation(Annotation):
     pass
 
-TAnnotation = TypeVar("TAnnotation", Annotation, StudyAnnotation, ImageAnnotation, FileReferenceAnnotation)
+class CollectionAnnotation(Annotation):
+    pass
+
+TAnnotation = TypeVar("TAnnotation", Annotation, StudyAnnotation, ImageAnnotation, FileReferenceAnnotation, CollectionAnnotation)
 class AnnotatedMixin(GenericModel, Generic[TAnnotation]):
     attributes: Dict = Field(default={}, description="""
         When annotations are applied, the ones that have a key different than an object attribute (so they don't overwrite it) get saved here.
@@ -185,7 +188,7 @@ class BIAImage(BIABaseModel, DocumentMixin, AnnotatedMixin[ImageAnnotation]):
 
     model_config = ConfigDict(model_version_latest = 1)
 
-class BIACollection(BIABaseModel, DocumentMixin):
+class BIACollection(BIABaseModel, DocumentMixin, AnnotatedMixin[CollectionAnnotation]):
     """A collection of studies with a coherent purpose. Studies can be in
     multiple collections."""
     name: str = Field()

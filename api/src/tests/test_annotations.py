@@ -5,11 +5,11 @@ Final invariants about the object (annotations not applied when they shouldn't b
     Basically what is needed is to have "different fixtures with the same name" for a study * all_possible_ways_to_change_a_study
 """
 
-
 import pytest
 from fastapi.testclient import TestClient
 from .util import *
 from ..models.repository import Repository
+import uuid as uuid_lib
 
 @pytest.mark.asyncio
 class TestStudyAnnotations(DBTestMixin):
@@ -117,11 +117,38 @@ class TestStudyAnnotations(DBTestMixin):
         del study_initial["annotations_applied"]
         assert study_fetched == study_initial, "No annotations should have been applied (there are none), so the object should be unchanged"
 
-    def test_search_annotations_applied_when_explicit(self):
-        raise Exception("TODO - same for everything else")
+    @pytest.mark.parametrize('update', [False, True])
+    def test_search_annotations_applied_when_explicit(self, study: dict, api_client: TestClient):
+        study_uuid = uuid_lib.UUID(study['uuid'])
+        prev_study_uuid = uuid_lib.UUID(
+            int=study_uuid.int-1
+        )
 
-    def test_accession_to_objectinfo_no_apply_annotations(self):
-        raise Exception("TODO - This should be deprecated anyway. Also, no need to \"annotate\" a barebones object.")
+        rsp = api_client.get(f"search/studies", params={
+            "apply_annotations": True,
+            "start_uuid": str(prev_study_uuid),
+            "limit": 1
+        })
+        assert rsp.status_code == 200
+        assert len(rsp.json()) == 1
+        study_fetched = rsp.json()[0]
+
+        # if annotations_applied, then all annotations applied correctly (tested separately)
+        assert study_fetched['annotations_applied'] == True
+
+    @pytest.mark.parametrize('update', [False, True])
+    def test_accession_to_objectinfo_no_apply_annotations(self, study: dict, api_client: TestClient):
+        rsp = api_client.get(f"object_info_by_accessions?apply_annotations=true", params={
+            'accessions': [study['uuid']]
+        })
+        study_annotated = rsp.json()
+
+        rsp = api_client.get(f"object_info_by_accessions", params={
+            'accessions': [study['uuid']]
+        })
+        study_not_annotated = rsp.json()
+
+        assert study_annotated == study_not_annotated
 
     def test_object_create_annotations_applied_rejected(self, study_initial: dict, api_client: TestClient):
         study_initial['annotations_applied'] = True
@@ -277,3 +304,67 @@ class TestFilerefAnnotations(DBTestMixin):
     @pytest.mark.parametrize('update', [False, True])
     def test_annotations_applied_when_explicit(self, fileref: dict):
         raise Exception("TODO")
+
+@pytest.mark.asyncio
+class TestCollectionAnnotation(DBTestMixin):
+    @pytest.fixture
+    def field_annotation(self):
+        return {
+            "author_email": "test@ebi.ac.uk",
+            "key": "title",
+            "value": "overwritten",
+            "state": "active"
+        }
+
+    @pytest.fixture
+    def attribute_annotation(self):
+        return {
+            "author_email": "test@ebi.ac.uk",
+            "key": "test_attribute",
+            "value": "new_attribute",
+            "state": "active"
+        }
+
+    @pytest.fixture
+    def collection_initial(self):
+        collection = get_template_collection(add_uuid=True)
+        collection["attributes"] = {
+            "test_attribute": "initial"
+        }
+
+        return collection
+
+    @pytest.fixture
+    def collection(self, api_client: TestClient, collection_initial: dict, field_annotation: dict, attribute_annotation: dict, update: bool):
+        collection_initial["annotations"] = [field_annotation, attribute_annotation]
+
+        rsp = api_client.post("private/collections", json=collection_initial)
+        assert rsp.status_code == 201, rsp.json()
+
+        if update:
+            collection_initial['version'] += 1
+            collection_initial["attributes"]["updated_attribute"] = "updated_value"
+            rsp = rsp = api_client.post("private/collections", json=collection_initial)
+            assert rsp.status_code == 201, rsp.json()
+
+        rsp = api_client.get(f"collections/{collection_initial['uuid']}")
+        assert rsp.status_code == 200
+
+        return rsp.json()
+
+    @pytest.mark.parametrize("update", [False, True])
+    def test_annotations_not_applied_implicit(self, collection: dict):
+        assert collection["annotations_applied"] == False
+    
+    @pytest.mark.parametrize("update", [False, True])
+    def test_annotations_applied_explicit(self, collection: dict, api_client: TestClient, field_annotation: dict, attribute_annotation: dict):
+        rsp = api_client.get(f"collections/{collection['uuid']}", params={
+            "apply_annotations": True
+        })
+        assert rsp.status_code == 200
+
+        collection_fetched = rsp.json()
+        assert collection_fetched["annotations_applied"] == True
+        assert collection_fetched[field_annotation["key"]] == field_annotation["value"]
+
+        assert collection_fetched["attributes"][attribute_annotation["key"]] == attribute_annotation["value"]

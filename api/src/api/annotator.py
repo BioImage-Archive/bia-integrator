@@ -32,7 +32,7 @@ class Annotator:
         if not self.apply_annotations:
             return
 
-        if type(response_object) is List:
+        if isinstance(response_object, list):
             for rsp_item in response_object:
                 self._apply_annotations(rsp_item)
         else:
