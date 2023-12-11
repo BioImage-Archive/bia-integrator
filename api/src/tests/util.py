@@ -172,6 +172,20 @@ def get_template_file_reference(existing_study: dict, add_uuid = False):
         "type": "file"
     }
 
+def get_template_collection(add_uuid = False):
+    return {
+        "uuid": None if not add_uuid else get_uuid(),
+        "version": 0,
+        "model": {"type_name": "BIACollection", "version": 1},
+        "name": "template_collection_name",
+        "title": "template_collection_title",
+        "subtitle": "template_collection_subtitle",
+        "description": "template_collection_description",
+        "study_uuids": [],
+        "attributes": {},
+        "annotations": []
+    }
+
 def get_template_image(existing_study: dict, add_uuid = False):
     return {
         "uuid": None if not add_uuid else get_uuid(),
