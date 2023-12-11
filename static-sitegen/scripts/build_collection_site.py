@@ -4,6 +4,7 @@ from pathlib import Path
 import click
 
 from bia_integrator_core.collection import get_collection
+from bia_integrator_core.study import get_study
 from bia_integrator_core.integrator import load_and_annotate_study
 
 from generate_collection_page import generate_collection_page_html
@@ -42,12 +43,16 @@ def main(collection_name):
     output_base_dirpath = Path("tmp/pages")
     output_base_dirpath.mkdir(exist_ok=True, parents=True)
 
-    dataset_template_fname = collection.attributes.get(
-        "dataset_landing_template", DEFAULT_DATASET_TEMPLATE
-    )
+    dataset_template_fname = DEFAULT_DATASET_TEMPLATE 
+    #dataset_template_fname = collection.attributes.get(
+    #    "dataset_landing_template", DEFAULT_DATASET_TEMPLATE
+    #)
 
-    page_suffix = collection.attributes.get("page-suffix", ".html")
-    for accession_id in collection.accession_ids:
+    page_suffix = ".html"
+    #page_suffix = collection.attributes.get("page-suffix", ".html")
+    
+    accession_ids = [get_study(study_uuid=study_uuid).accession_id for study_uuid in collection.study_uuids]
+    for accession_id in accession_ids:
         logger.info(f"Generating dataset page for {accession_id}")
         rendered_html = generate_dataset_page_html(accession_id, dataset_template_fname)
         output_fpath = output_base_dirpath/f"{accession_id}{page_suffix}"
@@ -60,10 +65,6 @@ def main(collection_name):
     collection_page_fpath = output_base_dirpath/f"{collection.name}.html"
     with open(collection_page_fpath, "w") as fh:
         fh.write(collection_page_html)
-
-                
-
-
 
 if __name__ == "__main__":
     main()
