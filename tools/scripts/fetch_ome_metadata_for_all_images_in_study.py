@@ -54,19 +54,8 @@ def main(accession_id):
             tmp.flush()
 
 
-            ome_metadata = settings.api_client.set_image_ome_metadata(image_uuid=image.uuid, ome_metadata_file = tmp.name)
+            settings.api_client.set_image_ome_metadata(image_uuid=image.uuid, ome_metadata_file = tmp.name)
             
-            # added as annotation, so uuid would clash with api models
-            ome_metadata.ome_metadata.pop('uuid', None)
-            
-            for ome_root_k, ome_root_v in ome_metadata.ome_metadata.items():
-                image.annotations.append(api_models.ImageAnnotation(
-                    author_email = "migration@ebi.ac.uk",
-                    key = ome_root_k,
-                    value = str(ome_root_v),
-                    state = api_models.AnnotationState.ACTIVE
-                ))
-        
         image.version += 1
         settings.api_client.update_image(image)
         logging.info(f"Updated image {image.uuid}")
