@@ -39,9 +39,15 @@ def unzip_and_get_path_of_contents(zip_fpath, td):
     logger.info(f"Unzipping to {dirpath}")
     zf.extractall(path=dirpath)
 
+    # Assume unzipped contents contain a single top level .zarr dir
+    # Otherwise check if zarr contents were zipped without top level .zarr dir
     dirpath_list = list(dirpath.glob("*"))
-    assert len(dirpath_list) == 1
-    src_dirpath = dirpath_list[0]
+    if len(dirpath_list) == 1:
+        src_dirpath = dirpath_list[0]
+    elif (dirpath / ".zattrs").exists() or (dirpath / ".zgroup").exists():
+        src_dirpath = dirpath
+    else:
+        raise (f"Unexpected zip contents structure: {dirpath_list}. Expected single top-level .zarr directory")
 
     return src_dirpath
 
