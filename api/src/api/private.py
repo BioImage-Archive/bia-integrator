@@ -199,6 +199,6 @@ async def set_image_ome_metadata(
         raise exceptions.InvalidRequestException("File has size 0")
 
     ome_metadata = from_xml(ome_metadata_file.file._file, parser='lxml', validate=True)
-    bia_image_ome_metadata = await db.upsert_ome_metadata_for_image(image_uuid, ome_metadata.model_dump(mode='json'))
+    bia_image_ome_metadata = await db.upsert_ome_metadata_for_image(image_uuid, ome_metadata.model_dump(mode='json', exclude_defaults=True))
 
     return bia_image_ome_metadata
