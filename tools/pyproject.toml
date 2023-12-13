@@ -14,8 +14,8 @@ biaconv = "bia_integrator_tools.biaconv:app"
 python = "^3.10"
 typer = {extras = ["all"], version = "^0.7.0"}
 fs = "^2.4.16"
-bia-integrator-api = { git = "https://github.com/BioImage-Archive/bia-integrator.git", subdirectory = "clients/python", branch = "biaint-api-backend" }
-bia-integrator-core = { git = "https://github.com/BioImage-Archive/bia-integrator.git", subdirectory = "core", branch = "biaint-api-backend" }
+bia-integrator-api = { git = "https://github.com/BioImage-Archive/bia-integrator.git", subdirectory = "clients/python" }
+bia-integrator-core = { git = "https://github.com/BioImage-Archive/bia-integrator.git", subdirectory = "core" }
 ome-zarr = "^0.8.2"
 
 [build-system]

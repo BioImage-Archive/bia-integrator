@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "bia-integrator-ingest"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+snakemake = "^7.32.4"
+parse = "^1.20.0"
+remotezip = "^0.12.1"
+microfilm = "^0.2.1"
+dev_bia-integrator-core = { path = "../../core/dev", develop = true }
+bia-integrator-api = { path = "../../clients/python/", develop = true }
+dev-bia-integrator-tools = { path = "../dev/", develop = true }
+botocore = "^1.31.0"
+ome-zarr = "^0.8.3"
+boto3 = "^1.33.12"
+ 
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
