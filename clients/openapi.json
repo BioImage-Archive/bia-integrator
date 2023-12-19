@@ -962,7 +962,7 @@
           "private"
         ],
         "summary": "Search File References Exact Match",
-        "description": "Exact match search of file references with a specific attribute.\nMultiple parameters mean AND (as in, p1 AND p2).\nItems in lists with the `_any` suffix are ORed.\n\nAlthough `study_uuid` is optional, passing it if known is highly recommended and results in faster queries. Queries time out after 2 seconds, which should be enough for any search filtered by study.\n\nThis is likely to change fast, so **named arguments are recommended** in client apps instead of positional if possible to prevent downstream breakage.",
+        "description": "Exact match search of file references with a specific attribute.\nMultiple parameters mean AND (as in, p1 AND p2).\nItems in lists with the `_any` suffix are ORed.\n\nAlthough `study_uuid` is optional, passing it if known is highly recommended and results in faster queries. Queries time out after 2 seconds, which should be enough for any search filtered by study.\n\nThis is likely to change fast, so **named arguments are recommended** in client apps instead of positional if possible to prevent downstream breakage.\n\n`name` and `uri_prefix` queries are case insensitive",
         "operationId": "search_file_references_exact_match",
         "requestBody": {
           "content": {
@@ -2031,6 +2031,14 @@
             "type": "object",
             "title": "Attributes",
             "default": {}
+          },
+          "annotations": {
+            "items": {
+              "$ref": "#/components/schemas/FileReferenceAnnotation"
+            },
+            "type": "array",
+            "title": "Annotations",
+            "default": []
           }
         },
         "additionalProperties": false,
@@ -2046,6 +2054,33 @@
         ],
         "title": "FileReference",
         "description": "A reference to an externally hosted file."
+      },
+      "FileReferenceAnnotation": {
+        "properties": {
+          "author_email": {
+            "type": "string",
+            "title": "Author Email"
+          },
+          "key": {
+            "type": "string",
+            "title": "Key"
+          },
+          "value": {
+            "type": "string",
+            "title": "Value"
+          },
+          "state": {
+            "$ref": "#/components/schemas/AnnotationState"
+          }
+        },
+        "type": "object",
+        "required": [
+          "author_email",
+          "key",
+          "value",
+          "state"
+        ],
+        "title": "FileReferenceAnnotation"
       },
       "HTTPValidationError": {
         "properties": {
@@ -2232,6 +2267,17 @@
               }
             ],
             "title": "Type"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
           },
           "size_bounds_lte": {
             "anyOf": [

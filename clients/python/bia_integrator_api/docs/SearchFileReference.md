@@ -6,6 +6,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **uri_prefix** | **str** |  | [optional] 
 **type** | **str** |  | [optional] 
+**name** | **str** |  | [optional] 
 **size_bounds_lte** | **int** |  | [optional] 
 **size_bounds_gte** | **int** |  | [optional] 
 

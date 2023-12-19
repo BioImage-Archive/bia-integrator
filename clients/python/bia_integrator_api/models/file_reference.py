@@ -18,8 +18,9 @@ import re  # noqa: F401
 import json
 
 
-from typing import Any, Dict, Optional
-from pydantic import BaseModel, Field, StrictInt, StrictStr
+from typing import Any, Dict, List, Optional
+from pydantic import BaseModel, Field, StrictInt, StrictStr, conlist
+from bia_integrator_api.models.file_reference_annotation import FileReferenceAnnotation
 from bia_integrator_api.models.model_metadata import ModelMetadata
 
 class FileReference(BaseModel):
@@ -35,7 +36,8 @@ class FileReference(BaseModel):
     type: StrictStr = Field(...)
     size_in_bytes: StrictInt = Field(...)
     attributes: Optional[Dict[str, Any]] = None
-    __properties = ["uuid", "version", "model", "study_uuid", "name", "uri", "type", "size_in_bytes", "attributes"]
+    annotations: Optional[conlist(FileReferenceAnnotation)] = None
+    __properties = ["uuid", "version", "model", "study_uuid", "name", "uri", "type", "size_in_bytes", "attributes", "annotations"]
 
     class Config:
         """Pydantic configuration"""
@@ -64,6 +66,13 @@ class FileReference(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of model
         if self.model:
             _dict['model'] = self.model.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of each item in annotations (list)
+        _items = []
+        if self.annotations:
+            for _item in self.annotations:
+                if _item:
+                    _items.append(_item.to_dict())
+            _dict['annotations'] = _items
         # set to None if model (nullable) is None
         # and __fields_set__ contains the field
         if self.model is None and "model" in self.__fields_set__:
@@ -89,7 +98,8 @@ class FileReference(BaseModel):
             "uri": obj.get("uri"),
             "type": obj.get("type"),
             "size_in_bytes": obj.get("size_in_bytes"),
-            "attributes": obj.get("attributes")
+            "attributes": obj.get("attributes"),
+            "annotations": [FileReferenceAnnotation.from_dict(_item) for _item in obj.get("annotations")] if obj.get("annotations") is not None else None
         })
         return _obj
 

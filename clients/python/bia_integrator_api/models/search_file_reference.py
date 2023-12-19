@@ -27,9 +27,10 @@ class SearchFileReference(BaseModel):
     """
     uri_prefix: Optional[StrictStr] = None
     type: Optional[StrictStr] = None
+    name: Optional[StrictStr] = None
     size_bounds_lte: Optional[StrictInt] = None
     size_bounds_gte: Optional[StrictInt] = None
-    __properties = ["uri_prefix", "type", "size_bounds_lte", "size_bounds_gte"]
+    __properties = ["uri_prefix", "type", "name", "size_bounds_lte", "size_bounds_gte"]
 
     class Config:
         """Pydantic configuration"""
@@ -65,6 +66,11 @@ class SearchFileReference(BaseModel):
         if self.type is None and "type" in self.__fields_set__:
             _dict['type'] = None
 
+        # set to None if name (nullable) is None
+        # and __fields_set__ contains the field
+        if self.name is None and "name" in self.__fields_set__:
+            _dict['name'] = None
+
         # set to None if size_bounds_lte (nullable) is None
         # and __fields_set__ contains the field
         if self.size_bounds_lte is None and "size_bounds_lte" in self.__fields_set__:
@@ -89,6 +95,7 @@ class SearchFileReference(BaseModel):
         _obj = SearchFileReference.parse_obj({
             "uri_prefix": obj.get("uri_prefix"),
             "type": obj.get("type"),
+            "name": obj.get("name"),
             "size_bounds_lte": obj.get("size_bounds_lte"),
             "size_bounds_gte": obj.get("size_bounds_gte")
         })
