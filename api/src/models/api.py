@@ -61,6 +61,7 @@ class SearchFileRepresentation(BIABaseModel):
 class SearchFileReference(BIABaseModel):
     uri_prefix: Optional[str] = None
     type: Optional[str] = None
+    name: Optional[str] = None
     size_bounds_lte: Optional[int] = None
     size_bounds_gte: Optional[int] = None
 

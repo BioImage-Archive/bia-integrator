@@ -357,6 +357,7 @@ class TestSearchFilerefExactMatch:
             "attributes": {
                 "some_attr": "some_value"
             },
+            "name": "first_fileref",
             "type": "file"
         }
 
@@ -368,6 +369,7 @@ class TestSearchFilerefExactMatch:
                 "some_attr": "some_value",
                 "other_attr": "other_value"
             },
+            "name": "second_fileref",
             "type": "second_file_type"
         }
 
@@ -427,6 +429,16 @@ class TestSearchFilerefExactMatch:
         assert rsp.status_code == 200
         assert rsp.json() == fileref_fixtures
     
+    def test_search_name(self, api_client: TestClient, fileref_fixtures: List[dict], existing_study: dict):
+        rsp = api_client.post("search/file_references/exact_match", json={
+            "file_reference_match": {
+                "name": fileref_fixtures[0]['name']
+            },
+            "study_uuid": existing_study['uuid']
+        })
+        assert rsp.status_code == 200
+        assert rsp.json() == [fileref_fixtures[0]]
+
     def test_search_uri_prefix(self, api_client: TestClient, fileref_fixtures: List[dict], existing_study: dict):
         rsp = api_client.post("search/file_references/exact_match", json={
             "file_reference_match": {
@@ -456,7 +468,7 @@ class TestSearchFilerefExactMatch:
         })
         assert rsp.status_code == 200
         assert rsp.json() == [fileref_fixtures[1]]
-    
+        
     def test_search_pagination(self, api_client: TestClient):
         rsp = api_client.post("search/file_references/exact_match", json={
             "file_reference_match": {

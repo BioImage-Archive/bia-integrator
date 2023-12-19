@@ -157,6 +157,8 @@ async def search_file_references_exact_match(
     Although `study_uuid` is optional, passing it if known is highly recommended and results in faster queries. Queries time out after 2 seconds, which should be enough for any search filtered by study.
     
     This is likely to change fast, so **named arguments are recommended** in client apps instead of positional if possible to prevent downstream breakage.
+    
+    `name` and `uri_prefix` queries are case insensitive
     """
     query = {}
     if search_filter.study_uuid:
@@ -170,6 +172,12 @@ async def search_file_references_exact_match(
             }
         }
     if search_filter.file_reference_match:
+        if search_filter.file_reference_match.name:
+            query['name'] = {
+                '$regex': f"^{re.escape(search_filter.file_reference_match.name)}$",
+                '$options': 'i'
+            }
+
         if search_filter.file_reference_match.uri_prefix:
             query['uri'] = {
                 '$regex': f"^{re.escape(search_filter.file_reference_match.uri_prefix)}",
