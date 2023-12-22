@@ -4,7 +4,7 @@ from pydantic.generics import GenericModel
 from typing import Dict, List, Optional, TypeVar, Generic
 from uuid import UUID
 
-from src.api.exceptions import DocumentNotFound
+from src.api.exceptions import DocumentNotFound, InvalidRequestException
 
 class BIABaseModel(BaseModel):
     def json(self, ensure_ascii=False, **kwargs):
@@ -94,7 +94,7 @@ class AnnotatedMixin(GenericModel, Generic[TAnnotation]):
 
         # Any instance of an Annotateable object getting created is assumed to from a client, not the db
         if self.annotations_applied:
-            raise Exception(f"Trying to load object after annotations were applied! This is not allowed, to avoid overwriting object fields. Object: {self.model_dump()}")
+            raise InvalidRequestException(f"Trying to load object after annotations were applied! This is not allowed, to avoid overwriting object fields. Object: {self.model_dump()}")
 
 class Author(BIABaseModel):
     name: str

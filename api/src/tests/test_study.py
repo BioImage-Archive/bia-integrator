@@ -14,7 +14,8 @@ def test_create_study(api_client: TestClient, uuid: str):
             "name": "Second Author"
         }],
         "organism": "test",
-        "release_date": "test"
+        "release_date": "test",
+        "annotations_applied": False
     }
     rsp = api_client.post('private/studies', json=study)
     assert rsp.status_code == 201, str(rsp)

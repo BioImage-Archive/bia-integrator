@@ -42,7 +42,8 @@ def test_create_file_references_multiple_errors(api_client: TestClient, existing
             "uri": "https://test.com/test",
             "size_in_bytes": 1,
             "attributes": {},
-            "annotations": []
+            "annotations": [],
+            "annotations_applied": False
         }
         for uuid in uuids
     ]

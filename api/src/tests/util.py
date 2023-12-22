@@ -139,7 +139,8 @@ def get_template_study(add_uuid = False):
         "release_date": "test",
         "file_references_count": 0,
         "images_count": 0,
-        "annotations_applied": False
+        "annotations_applied": False,
+        "annotations": []
     }
 
 def make_study(api_client: TestClient, study_attributes_override = {}):
@@ -170,6 +171,7 @@ def get_template_file_reference(existing_study: dict, add_uuid = False):
         "size_in_bytes": 2,
         "attributes": {},
         "annotations": [],
+        "annotations_applied": False,
         "type": "file"
     }
 
@@ -184,7 +186,8 @@ def get_template_collection(add_uuid = False):
         "description": "template_collection_description",
         "study_uuids": [],
         "attributes": {},
-        "annotations": []
+        "annotations": [],
+        "annotations_applied": False,
     }
 
 def get_template_image(existing_study: dict, add_uuid = False):
@@ -199,6 +202,7 @@ def get_template_image(existing_study: dict, add_uuid = False):
             "k": "v"
         },
         "annotations": [],
+        "annotations_applied": False,
         "dimensions": None,
         "alias": None,  
         "representations": []

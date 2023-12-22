@@ -59,7 +59,7 @@ class TestStudyAnnotations(DBTestMixin):
         return rsp.json()
     
     @pytest.mark.parametrize('update', [False, True])
-    async def test_annotations_not_applied_when_fetching(self, study_initial: dict, study: dict):
+    def test_annotations_not_applied_when_fetching(self, study_initial: dict, study: dict):
         assert study_initial == study
     
     @pytest.mark.parametrize('update', [False, True])
@@ -213,7 +213,7 @@ class TestImageAnnotations(DBTestMixin):
         return rsp.json()
     
     @pytest.mark.parametrize('update', [False, True])
-    async def test_annotations_not_applied_when_fetching(self, img_initial: dict, image: dict):
+    def test_annotations_not_applied_when_fetching(self, img_initial: dict, image: dict):
         assert img_initial == image
     
     @pytest.mark.parametrize('update', [False, True])
@@ -228,8 +228,16 @@ class TestImageAnnotations(DBTestMixin):
         assert img_in_db['attributes'][attribute_annotation['key']] != attribute_annotation['value']
 
     @pytest.mark.parametrize('update', [False, True])
-    def test_annotations_applied_when_explicit(self, image: dict):
-        raise Exception("TODO")
+    def test_annotations_applied_when_explicit(self, api_client: TestClient, image: dict, attribute_annotation: dict, field_annotation: dict):
+        rsp = api_client.get(f"images/{image['uuid']}", params={
+            "apply_annotations": True
+        })
+        assert rsp.status_code == 200
+        img_fetched = rsp.json()
+
+        assert img_fetched["annotations_applied"] == True
+        assert img_fetched["attributes"][attribute_annotation["key"]] == attribute_annotation["value"]
+        assert img_fetched[field_annotation["key"]] == field_annotation["value"]
 
 @pytest.mark.asyncio
 class TestFilerefAnnotations(DBTestMixin):
@@ -279,7 +287,7 @@ class TestFilerefAnnotations(DBTestMixin):
         return rsp.json()
     
     @pytest.mark.parametrize('update', [False, True])
-    async def test_annotations_not_applied_when_fetching(self, fileref_initial: dict, fileref: dict):
+    def test_annotations_not_applied_when_fetching(self, fileref_initial: dict, fileref: dict):
         assert fileref_initial == fileref
     
     @pytest.mark.parametrize('update', [False, True])
@@ -294,8 +302,16 @@ class TestFilerefAnnotations(DBTestMixin):
         assert fileref_in_db['attributes'][attribute_annotation['key']] != attribute_annotation['value']
 
     @pytest.mark.parametrize('update', [False, True])
-    def test_annotations_applied_when_explicit(self, fileref: dict):
-        raise Exception("TODO")
+    async def test_annotations_applied_when_explicit(self, api_client: TestClient, fileref: dict, attribute_annotation: dict, field_annotation: dict):
+        rsp = api_client.get(f"file_references/{fileref['uuid']}", params={
+            "apply_annotations": True
+        })
+        assert rsp.status_code == 200
+        fileref_fetched = rsp.json()
+
+        assert fileref_fetched["annotations_applied"] == True
+        assert fileref_fetched["attributes"][attribute_annotation["key"]] == attribute_annotation["value"]
+        assert fileref_fetched[field_annotation["key"]] == field_annotation["value"]
 
 @pytest.mark.asyncio
 class TestCollectionAnnotation(DBTestMixin):
@@ -349,7 +365,7 @@ class TestCollectionAnnotation(DBTestMixin):
         assert collection["annotations_applied"] == False
     
     @pytest.mark.parametrize("update", [False, True])
-    def test_annotations_applied_explicit(self, collection: dict, api_client: TestClient, field_annotation: dict, attribute_annotation: dict):
+    def test_annotations_applied_when_explicit(self, collection: dict, api_client: TestClient, field_annotation: dict, attribute_annotation: dict):
         rsp = api_client.get(f"collections/{collection['uuid']}", params={
             "apply_annotations": True
         })
