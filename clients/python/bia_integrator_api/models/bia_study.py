@@ -28,8 +28,8 @@ class BIAStudy(BaseModel):
     """
     BIAStudy
     """
-    attributes: Optional[Dict[str, Any]] = None
-    annotations_applied: Optional[StrictBool] = False
+    attributes: Optional[Dict[str, Any]] = Field(None, description="         When annotations are applied, the ones that have a key different than an object attribute (so they don't overwrite it) get saved here.     ")
+    annotations_applied: Optional[StrictBool] = Field(False, description="         This acts as a dirty flag, with the purpose of telling apart objects that had some fields overwritten by applying annotations (so should be rejected when writing), and those that didn't.     ")
     annotations: Optional[conlist(StudyAnnotation)] = None
     uuid: StrictStr = Field(...)
     version: StrictInt = Field(...)

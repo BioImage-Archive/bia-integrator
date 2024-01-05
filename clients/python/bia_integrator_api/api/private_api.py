@@ -19,7 +19,7 @@ import warnings
 from pydantic import validate_arguments, ValidationError
 from typing_extensions import Annotated
 
-from pydantic import StrictBytes, StrictInt, StrictStr, conlist, constr, validator
+from pydantic import StrictBool, StrictBytes, StrictInt, StrictStr, conlist, constr, validator
 
 from typing import Any, List, Optional, Union
 
@@ -1613,17 +1613,19 @@ class PrivateApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def get_study(self, study_uuid : StrictStr, **kwargs) -> BIAStudy:  # noqa: E501
+    def get_study(self, study_uuid : StrictStr, apply_annotations : Optional[StrictBool] = None, **kwargs) -> BIAStudy:  # noqa: E501
         """Get Study  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.get_study(study_uuid, async_req=True)
+        >>> thread = api.get_study(study_uuid, apply_annotations, async_req=True)
         >>> result = thread.get()
 
         :param study_uuid: (required)
         :type study_uuid: str
+        :param apply_annotations:
+        :type apply_annotations: bool
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _request_timeout: timeout setting for this request. If one
@@ -1638,20 +1640,22 @@ class PrivateApi(object):
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
             raise ValueError("Error! Please call the get_study_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
-        return self.get_study_with_http_info(study_uuid, **kwargs)  # noqa: E501
+        return self.get_study_with_http_info(study_uuid, apply_annotations, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def get_study_with_http_info(self, study_uuid : StrictStr, **kwargs) -> ApiResponse:  # noqa: E501
+    def get_study_with_http_info(self, study_uuid : StrictStr, apply_annotations : Optional[StrictBool] = None, **kwargs) -> ApiResponse:  # noqa: E501
         """Get Study  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.get_study_with_http_info(study_uuid, async_req=True)
+        >>> thread = api.get_study_with_http_info(study_uuid, apply_annotations, async_req=True)
         >>> result = thread.get()
 
         :param study_uuid: (required)
         :type study_uuid: str
+        :param apply_annotations:
+        :type apply_annotations: bool
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _preload_content: if False, the ApiResponse.data will
@@ -1680,7 +1684,8 @@ class PrivateApi(object):
         _params = locals()
 
         _all_params = [
-            'study_uuid'
+            'study_uuid',
+            'apply_annotations'
         ]
         _all_params.extend(
             [
@@ -1714,6 +1719,9 @@ class PrivateApi(object):
 
         # process the query parameters
         _query_params = []
+        if _params.get('apply_annotations') is not None:  # noqa: E501
+            _query_params.append(('apply_annotations', _params['apply_annotations']))
+
         # process the header parameters
         _header_params = dict(_params.get('_headers', {}))
         # process the form parameters

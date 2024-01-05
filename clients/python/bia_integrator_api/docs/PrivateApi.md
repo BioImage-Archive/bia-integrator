@@ -803,7 +803,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_study**
-> BIAStudy get_study(study_uuid)
+> BIAStudy get_study(study_uuid, apply_annotations=apply_annotations)
 
 Get Study
 
@@ -829,10 +829,11 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = bia_integrator_api.PrivateApi(api_client)
     study_uuid = 'study_uuid_example' # str | 
+    apply_annotations = False # bool |  (optional) (default to False)
 
     try:
         # Get Study
-        api_response = api_instance.get_study(study_uuid)
+        api_response = api_instance.get_study(study_uuid, apply_annotations=apply_annotations)
         print("The response of PrivateApi->get_study:\n")
         pprint(api_response)
     except Exception as e:
@@ -846,6 +847,7 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **study_uuid** | **str**|  | 
+ **apply_annotations** | **bool**|  | [optional] [default to False]
 
 ### Return type
 
