@@ -389,7 +389,7 @@ def study_migrate_images_only(study_accession: str, bypass_duplication_check: bo
         api_client.create_images(study_images_api)
 
 @studies_app.command("recount")
-def study_migrate_images_only(study_accession: str):
+def study_refresh_counts(study_accession: str):
     study_api = api_client.search_studies_exact_match(api_models.SearchStudyFilter(
         study_match = api_models.SearchStudy(
             accession_id = study_accession
@@ -453,6 +453,62 @@ def set_ome_xml_all():
     for study_api in api_client.search_studies(limit=1000000):
         for study_image in api_client.get_study_images(study_uuid=study_api.uuid, limit=1000000000):
             image_set_ome_metadata_if_any(api_client, study_image)
+
+@studies_app.command("fix_annotated_studies")
+def fix_annotated_studies():
+    """
+    For all studies that are both in the api and the data repo,
+        goes through all annotations of the api study
+        * if it would just be applied to attributes (not a field), deletes the attribute
+        * if applying it (as a field) makes it mismatch the known-not-overwritten value in the data repo, throws so it can be fixed manually
+            * ! "Unknown" values are just left overwritten
+    """
+    studies_in_api_only = []
+    annotations_not_applied_in_api = []
+
+    for api_study in api_client.search_studies(limit=1000000):
+        try:
+            data_repo_study = interface.load_study_with_linked_objects_not_annotated(api_study.accession_id)
+        except FileNotFoundError as e:
+            studies_in_api_only.append(api_study)
+            continue
+
+        if not api_study.annotations:
+            continue
+
+        # go from api study annotations to data repo annotations and then copy back,
+        #   to ensure there are no annotations that are only in the api (if there were, they would be handled separately)
+        for annotation in api_study.annotations:
+            if annotation.key in data_repo_study.__dict__:
+                if annotation.key not in api_study.__dict__:
+                    # annotation not applied?
+                    annotations_not_applied_in_api.append(annotation.key)
+                    continue
+
+                if api_study.__dict__[annotation.key] != data_repo_study.__dict__[annotation.key]:
+                    if data_repo_study.__dict__[annotation.key] in ["Unknown", ""]:
+                        # these are ok to overwrite - leave them overwritten
+                        continue
+
+                    if annotation.key in ["example_image_uri"]:
+                        # overwrite api attribute to the old data repo attribute
+                        api_study.__dict__[annotation.key] = data_repo_study.__dict__[annotation.key]
+                    else:
+                        raise Exception(f"{api_study.__dict__[annotation.key]} {data_repo_study.__dict__[annotation.key]}")
+            else:
+                # api-only annotation that was applied
+                # if same name as a field, raise (needs manual intervention to restore old value)
+                if annotation.key in api_study.__dict__:
+                    raise Exception(f"{annotation.key} possible overwrite of study field")
+                else:
+                    # annotation is in attributes, should just be deleted as an attribute
+                    if not api_study.attributes:
+                        continue
+                    
+                    del api_study.attributes[annotation.key]
+        
+        #api_study.version += 1
+        #api_client.update_study(api_study)
 
 if __name__ == "__main__":
     app()
