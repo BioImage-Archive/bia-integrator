@@ -15,8 +15,8 @@ def test_create_images(api_client: TestClient, existing_study: dict):
             "name": f"image_{uuid}",
             "original_relpath": f"/home/test/{uuid}",
             "attributes": {
-                "image_uuid": uuid
-            }
+                "image_uuid": uuid,
+            },
         }
         for uuid in uuids
     ]
@@ -38,8 +38,8 @@ def test_create_images_multiple_errors(api_client: TestClient, existing_study: d
             "name": f"image_{uuid}",
             "original_relpath": f"/home/test/{uuid}",
             "attributes": {
-                "image_uuid": uuid
-            }
+                "image_uuid": uuid,
+            },
         }
         for uuid in uuids
     ]
@@ -82,7 +82,7 @@ def test_create_images_multiple_errors(api_client: TestClient, existing_study: d
 def test_create_images_existing_unchaged(api_client: TestClient, existing_study: dict, existing_image: dict):
     # adds a file reference but pushes both, second one should get acked
     images = [
-        get_template_image(existing_study, add_uuid=True)
+        get_template_image(existing_study, add_uuid=True),
     ]
     images.append(existing_image)
 
@@ -103,7 +103,7 @@ def test_create_images_existing_unchaged(api_client: TestClient, existing_study:
 def test_create_images_existing_changed(api_client: TestClient, existing_study: dict, existing_image: dict):
     # change existing filered, should get rejected
     images = [
-        get_template_image(existing_study, add_uuid=True)
+        get_template_image(existing_study, add_uuid=True),
     ]
     images.append(existing_image)
     images[1]['dimensions'] = "only_in_test_object"
@@ -240,7 +240,7 @@ def test_create_images_idempotent_on_identical_ops_when_defaults_missing(api_cli
 
     images = [
         existing_image,
-        existing_image_without_default_field
+        existing_image_without_default_field,
     ]
     rsp = api_client.post("private/images", json=images)
     assert rsp.status_code == 201, rsp.json()
@@ -286,7 +286,7 @@ def test_add_image_representation(api_client: TestClient, existing_image: dict):
     Adding new representations works as a separate operation"""
 
     representation = {
-        "size": 1
+        "size": 1,
     }
     rsp = api_client.post(f"private/images/{existing_image['uuid']}/representations/single", json=representation)
     assert rsp.status_code == 201, rsp.json()
@@ -294,7 +294,7 @@ def test_add_image_representation(api_client: TestClient, existing_image: dict):
 def test_add_image_representation_missing_image(api_client: TestClient, existing_study: dict):
     representation = {
         "accession_id": "test-representation",
-        "size": 1
+        "size": 1,
     }
     rsp = api_client.post(f"private/images/00000000-0000-0000-0000-000000000000/representations/single", json=representation)
     assert rsp.status_code == 404, rsp.json()
@@ -402,14 +402,14 @@ def test_search_images_exact_match_empty_query(api_client: TestClient):
 
 def test_search_images_exact_match_empty_result(api_client: TestClient, existing_study: dict):
     rsp = api_client.post(f"search/images/exact_match", json={
-        'study_uuid': existing_study['uuid']
+        'study_uuid': existing_study['uuid'],
     })
     assert rsp.status_code == 200
     assert rsp.json() == []
 
 def test_search_images_exact_match_original_relpath(api_client: TestClient, existing_image: dict):
     rsp = api_client.post(f"search/images/exact_match", json={
-        'original_relpath': existing_image['original_relpath']
+        'original_relpath': existing_image['original_relpath'],
     })
     assert rsp.status_code == 200
     # lots of images with the same original relpath - constant in the template
@@ -418,7 +418,7 @@ def test_search_images_exact_match_original_relpath(api_client: TestClient, exis
 def test_search_images_exact_match_all_filters(api_client: TestClient, existing_image: dict):
     rsp = api_client.post(f"search/images/exact_match", json={
         'original_relpath': existing_image['original_relpath'],
-        'study_uuid': existing_image['study_uuid']
+        'study_uuid': existing_image['study_uuid'],
     })
     assert rsp.status_code == 200
     # lots of images with the same original relpath - constant in the template
@@ -435,7 +435,7 @@ def test_search_images_exact_match_by_annotation(api_client: TestClient, existin
         "author_email": test_unique_author_email,
         "key": "first_img_annotation_key",
         "value": "first_img_annotation_value",
-        "state": "active"
+        "state": "active",
     }]
     # adding this just to simplify equality check because annotations get applies when fetching
     first_img['attributes']['first_img_annotation_key'] = "first_img_annotation_value"
@@ -445,7 +445,7 @@ def test_search_images_exact_match_by_annotation(api_client: TestClient, existin
         "author_email": test_unique_author_email,
         "key": "second_img_annotation_key",
         "value": "second_img_annotation_value",
-        "state": "active"
+        "state": "active",
     }]
     # adding this just to simplify equality check because annotations get applies when fetching
     second_img['attributes']['second_img_annotation_key'] = "second_img_annotation_value"
@@ -458,8 +458,8 @@ def test_search_images_exact_match_by_annotation(api_client: TestClient, existin
     params = {
         'annotations_any': [{
             'key': 'first_img_annotation_key',
-            'author_email': test_unique_author_email
-        }]
+            'author_email': test_unique_author_email,
+        }],
     }
     rsp = api_client.post("search/images/exact_match", json=params)
     assert rsp.status_code == 200
@@ -467,7 +467,7 @@ def test_search_images_exact_match_by_annotation(api_client: TestClient, existin
 
     params['annotations_any'].append({
         'key': 'second_img_annotation_key',
-        'author_email': test_unique_author_email
+        'author_email': test_unique_author_email,
     })
     rsp = api_client.post("search/images/exact_match", json=params)
     assert rsp.status_code == 200
@@ -487,10 +487,10 @@ class TestSearchImagesExactMatch:
             "uri": ["https://www.google.com/test/abc"],
             "type": "test_representation",
             "attributes": {
-                "some_attr": "some_value"
+                "some_attr": "some_value",
             },
             "dimensions": None,
-            "rendering": None
+            "rendering": None,
         }
 
         first_img = get_template_image(existing_study=existing_study, add_uuid=True)
@@ -503,8 +503,8 @@ class TestSearchImagesExactMatch:
             "type": "other_test_representation",
             "attributes": {
                 "some_attr": "some_value",
-                "other_attr": "other_value"
-            } 
+                "other_attr": "other_value",
+            },
         }
         second_img['representations'] = [template_representation]
 
@@ -520,9 +520,9 @@ class TestSearchImagesExactMatch:
     def test_search_no_match(self, api_client: TestClient, img_fixtures: List[dict], existing_study: dict):
         rsp = api_client.post("search/images/exact_match", json={
             "image_representations_any": [{
-                "type": "some_type_that_does_not_exist"
+                "type": "some_type_that_does_not_exist",
             }],
-            "study_uuid": existing_study['uuid']
+            "study_uuid": existing_study['uuid'],
         })
         assert rsp.status_code == 200
         assert rsp.json() == []
@@ -530,9 +530,9 @@ class TestSearchImagesExactMatch:
     def test_search_size(self, api_client: TestClient, img_fixtures: List[dict], existing_study: dict):
         rsp = api_client.post("search/images/exact_match", json={
             "image_representations_any": [{
-                "size_bounds_lte": 100
+                "size_bounds_lte": 100,
             }],
-            "study_uuid": existing_study['uuid']
+            "study_uuid": existing_study['uuid'],
         })
         assert rsp.status_code == 200
         img_fetched = rsp.json()
@@ -543,7 +543,7 @@ class TestSearchImagesExactMatch:
                 "size_bounds_lte": 100,
                 "size_bounds_gte": 100,
             }],
-            "study_uuid": existing_study['uuid']
+            "study_uuid": existing_study['uuid'],
         })
         assert rsp.status_code == 200
         assert rsp.json() == [img_fixtures[0]]
@@ -552,7 +552,7 @@ class TestSearchImagesExactMatch:
             "image_representations_any": [{
                 "size_bounds_gte": 1,
             }],
-            "study_uuid": existing_study['uuid']
+            "study_uuid": existing_study['uuid'],
         })
         assert rsp.status_code == 200
         assert rsp.json() == [img_fixtures[0], img_fixtures[1]]
@@ -562,7 +562,7 @@ class TestSearchImagesExactMatch:
             "image_representations_any": [{
                 "size_bounds_lte": 1000,
             }],
-            "study_uuid": existing_study['uuid']
+            "study_uuid": existing_study['uuid'],
         })
         assert rsp.status_code == 200
         assert rsp.json() == [img_fixtures[0], img_fixtures[1]]
@@ -570,9 +570,9 @@ class TestSearchImagesExactMatch:
     def test_search_uri_prefix(self, api_client: TestClient, img_fixtures: List[dict], existing_study: dict):
         rsp = api_client.post("search/images/exact_match", json={
             "image_representations_any": [{
-                "uri_prefix": "https://www.google.com/test"
+                "uri_prefix": "https://www.google.com/test",
             }],
-            "study_uuid": existing_study['uuid']
+            "study_uuid": existing_study['uuid'],
         })
         assert rsp.status_code == 200
         assert rsp.json() == [img_fixtures[0], img_fixtures[1]]
@@ -580,9 +580,9 @@ class TestSearchImagesExactMatch:
     def test_search_uri_prefix_not_substring(self, api_client: TestClient, img_fixtures: List[dict], existing_study: dict):
         rsp = api_client.post("search/images/exact_match", json={
             "image_representations_any": [{
-                "uri_prefix": "://www.google.com/test"
+                "uri_prefix": "://www.google.com/test",
             }],
-            "study_uuid": existing_study['uuid']
+            "study_uuid": existing_study['uuid'],
         })
         assert rsp.status_code == 200
         assert rsp.json() == []
@@ -592,7 +592,7 @@ class TestSearchImagesExactMatch:
             "image_representations_any": [{
                 "type": "other_test_representation",
             }],
-            "study_uuid": existing_study['uuid']
+            "study_uuid": existing_study['uuid'],
         })
         assert rsp.status_code == 200
         assert rsp.json() == [img_fixtures[1]]
@@ -602,7 +602,7 @@ class TestSearchImagesExactMatch:
             "image_representations_any": [{
                 "size_bounds_gte": 0,
             }],
-            "limit": 2
+            "limit": 2,
         })
         assert rsp.status_code == 200
 
@@ -615,7 +615,7 @@ class TestSearchImagesExactMatch:
                 "size_bounds_gte": 0,
             }],
             "limit": 2,
-            "start_uuid": last_img_first_page
+            "start_uuid": last_img_first_page,
         })
         assert rsp.status_code == 200
 

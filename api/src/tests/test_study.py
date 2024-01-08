@@ -9,13 +9,13 @@ def test_create_study(api_client: TestClient, uuid: str):
         "title": "Test BIA study",
         "description": "description",
         "authors": [{
-            "name": "First Author"
+            "name": "First Author",
         }, {
-            "name": "Second Author"
+            "name": "Second Author",
         }],
         "organism": "test",
         "release_date": "test",
-        "annotations_applied": False
+        "annotations_applied": False,
     }
     rsp = api_client.post('private/studies', json=study)
     assert rsp.status_code == 201, str(rsp)
@@ -30,7 +30,7 @@ def test_create_study(api_client: TestClient, uuid: str):
         'tags': [],
         'file_references_count': 0,
         'images_count': 0,
-        'model': {'type_name': 'BIAStudy', 'version': 1}
+        'model': {'type_name': 'BIAStudy', 'version': 1},
     }
 
     study_created = get_study(api_client, uuid)
@@ -44,12 +44,12 @@ def test_create_study_nonzero_version(api_client: TestClient, uuid: str):
         "title": "Test BIA study",
         "description": "description",
         "authors": [{
-            "name": "First Author"
+            "name": "First Author",
         }, {
-            "name": "Second Author"
+            "name": "Second Author",
         }],
         "organism": "test",
-        "release_date": "test"
+        "release_date": "test",
     }
     rsp = api_client.post('private/studies', json=study)
     assert rsp.status_code == 422
@@ -64,12 +64,12 @@ def test_create_study_missing_version(api_client: TestClient, uuid: str):
         "title": "Test BIA study",
         "description": "description",
         "authors": [{
-            "name": "First Author"
+            "name": "First Author",
         }, {
-            "name": "Second Author"
+            "name": "Second Author",
         }],
         "organism": "test",
-        "release_date": "test"
+        "release_date": "test",
     }
     rsp = api_client.post('private/studies', json=study)
     assert rsp.status_code == 422
@@ -82,12 +82,12 @@ def test_update_study_wrong_version(api_client: TestClient, uuid: str):
         "title": "Test BIA study",
         "description": "description",
         "authors": [{
-            "name": "First Author"
+            "name": "First Author",
         }, {
-            "name": "Second Author"
+            "name": "Second Author",
         }],
         "organism": "test",
-        "release_date": "test"
+        "release_date": "test",
     }
     rsp = api_client.post('private/studies', json=study)
     assert rsp.status_code == 201, rsp.json()
@@ -129,12 +129,12 @@ def test_update_study_not_created(api_client: TestClient, uuid: str):
             "title": "Test BIA study",
             "description": "description",
             "authors": [{
-                "name": "First Author"
+                "name": "First Author",
             }, {
-                "name": "Second Author"
+                "name": "Second Author",
             }],
             "organism": "test",
-            "release_date": "test"
+            "release_date": "test",
         }
         rsp = api_client.patch('private/studies', json=study)
         assert rsp.status_code == 404, str(rsp)
@@ -142,9 +142,9 @@ def test_update_study_not_created(api_client: TestClient, uuid: str):
 def test_update_study_nested_objects_overwritten(api_client: TestClient, existing_study: dict):
     new_title = "Updated title"
     new_authors_list = [{
-        "name": "New author1"
+        "name": "New author1",
     },{
-        "name": "New author2"
+        "name": "New author2",
     }]
 
     existing_study["title"] = new_title
@@ -208,13 +208,13 @@ class TestSearchStudiesExactMatch:
                 {"name": "Study1 Second Author"},
             ],
             "attributes": {
-                "test_distinct_uuid": self._test_distinct_uuid
+                "test_distinct_uuid": self._test_distinct_uuid,
             },
             "annotations": [self._build_test_unique_annotation()],
             "tags": [
                 "first_study",
-                "numbered_study"
-            ]
+                "numbered_study",
+            ],
         }
 
         second_study = get_template_study(add_uuid=True)
@@ -226,13 +226,13 @@ class TestSearchStudiesExactMatch:
                 {"name": "Study2 Second Author"},
             ],
             "attributes": {
-                "test_distinct_uuid": self._test_distinct_uuid
+                "test_distinct_uuid": self._test_distinct_uuid,
             },
             "annotations": [self._build_test_unique_annotation()],
             "tags": [
                 "second_study",
-                "numbered_study"
-            ]
+                "numbered_study",
+            ],
         }
 
         dummy_study = get_template_study(add_uuid=True)
@@ -240,9 +240,9 @@ class TestSearchStudiesExactMatch:
             "file_references_count": 50,
             "images_count": 50,
             "attributes": {
-                "test_distinct_uuid": self._test_distinct_uuid
+                "test_distinct_uuid": self._test_distinct_uuid,
             },
-            "annotations": [self._build_test_unique_annotation()]
+            "annotations": [self._build_test_unique_annotation()],
         }
 
         studies_created = [first_study, second_study, dummy_study]
@@ -257,8 +257,8 @@ class TestSearchStudiesExactMatch:
         return {
             'annotations_any': [{
                 'key': 'test_distinct_uuid',
-                'value': self._test_distinct_uuid
-            }]
+                'value': self._test_distinct_uuid,
+            }],
         }
     def _build_test_unique_annotation(self):
         # this exists just to isolate tests
@@ -266,15 +266,15 @@ class TestSearchStudiesExactMatch:
             "author_email": "test@ebi.ac.uk",
             "key": "test_distinct_uuid",
             "value": self._test_distinct_uuid,
-            "state": "active"
+            "state": "active",
         }
 
     def test_search_no_match(self, api_client: TestClient, study_fixtures: List[dict]):
         rsp = api_client.post("search/studies/exact_match", json = self._build_test_unique_payload() | {
             "study_match": {
                 "file_references_count_gte": 100,
-                "file_references_count_lte": 10
-            }
+                "file_references_count_lte": 10,
+            },
         })
         assert rsp.status_code == 200
         assert rsp.json() == []
@@ -283,8 +283,8 @@ class TestSearchStudiesExactMatch:
         rsp = api_client.post("search/studies/exact_match", json = self._build_test_unique_payload() | {
             "study_match": {
                 "file_references_count_lte": 10,
-                "images_count_lte": 10
-            }
+                "images_count_lte": 10,
+            },
         })
         assert rsp.status_code == 200
         assert len(rsp.json()) == 1
@@ -293,8 +293,8 @@ class TestSearchStudiesExactMatch:
         rsp = api_client.post("search/studies/exact_match", json = self._build_test_unique_payload() | {
             "study_match": {
                 "file_references_count_gte": 100,
-                "images_count_gte": 100
-            }
+                "images_count_gte": 100,
+            },
         })
         assert rsp.status_code == 200
         assert rsp.json() == [study_fixtures[1]]
@@ -302,8 +302,8 @@ class TestSearchStudiesExactMatch:
         rsp = api_client.post("search/studies/exact_match", json = self._build_test_unique_payload() | {
             "study_match": {
                 "file_references_count_gte": 1,
-                "images_count_gte": 1
-            }
+                "images_count_gte": 1,
+            },
         })
         assert rsp.status_code == 200
         assert rsp.json()[2] == study_fixtures[2]
@@ -312,24 +312,24 @@ class TestSearchStudiesExactMatch:
     def test_search_author(self, api_client: TestClient, study_fixtures: List[dict]):
         rsp = api_client.post("search/studies/exact_match", json = self._build_test_unique_payload() | {
             "study_match": {
-                "author_name_fragment": "Author"
-            }
+                "author_name_fragment": "Author",
+            },
         })
         assert rsp.status_code == 200
         assert rsp.json() == study_fixtures[:-1]
 
         rsp = api_client.post("search/studies/exact_match", json = self._build_test_unique_payload() | {
             "study_match": {
-                "author_name_fragment": "Study1 First"
-            }
+                "author_name_fragment": "Study1 First",
+            },
         })
         assert rsp.status_code == 200
         assert rsp.json() == [study_fixtures[0]]
 
         rsp = api_client.post("search/studies/exact_match", json = self._build_test_unique_payload() | {
             "study_match": {
-                "author_name_fragment": "MISSING"
-            }
+                "author_name_fragment": "MISSING",
+            },
         })
         assert rsp.status_code == 200
         assert rsp.json() == []
@@ -337,24 +337,24 @@ class TestSearchStudiesExactMatch:
     def test_search_tag(self, api_client: TestClient, study_fixtures: List[dict]):
         rsp = api_client.post("search/studies/exact_match", json = self._build_test_unique_payload() | {
             "study_match": {
-                "tag": "MISSING"
-            }
+                "tag": "MISSING",
+            },
         })
         assert rsp.status_code == 200
         assert rsp.json() == []
 
         rsp = api_client.post("search/studies/exact_match", json = self._build_test_unique_payload() | {
             "study_match": {
-                "tag": "second_study"
-            }
+                "tag": "second_study",
+            },
         })
         assert rsp.status_code == 200
         assert rsp.json() == [study_fixtures[1]]
 
         rsp = api_client.post("search/studies/exact_match", json = self._build_test_unique_payload() | {
             "study_match": {
-                "tag": "numbered_STUDY"
-            }
+                "tag": "numbered_STUDY",
+            },
         })
         assert rsp.status_code == 200
         assert rsp.json() == study_fixtures[:-1]
@@ -362,16 +362,16 @@ class TestSearchStudiesExactMatch:
     def test_search_accession(self, api_client: TestClient, study_fixtures: List[dict]):
         rsp = api_client.post("search/studies/exact_match", json = self._build_test_unique_payload() | {
             "study_match": {
-                "accession_id": "MISSING"
-            }
+                "accession_id": "MISSING",
+            },
         })
         assert rsp.status_code == 200
         assert rsp.json() == []
 
         rsp = api_client.post("search/studies/exact_match", json = self._build_test_unique_payload() | {
             "study_match": {
-                "accession_id": study_fixtures[0]["accession_id"]
-            }
+                "accession_id": study_fixtures[0]["accession_id"],
+            },
         })
         assert rsp.status_code == 200
         assert rsp.json() == [study_fixtures[0]]

@@ -19,7 +19,7 @@ class TestStudyAnnotations(DBTestMixin):
             "author_email": "test@ebi.ac.uk",
             "key": "organism",
             "value": "overwritten",
-            "state": "active"
+            "state": "active",
         }
 
     @pytest.fixture
@@ -28,14 +28,14 @@ class TestStudyAnnotations(DBTestMixin):
             "author_email": "test@ebi.ac.uk",
             "key": "test_attribute",
             "value": "overwritten",
-            "state": "active"
+            "state": "active",
         }
 
     @pytest.fixture
     def study_initial(self):
         study = get_template_study(add_uuid=True)
         study["attributes"] = {
-            "test_attribute": "initial"
+            "test_attribute": "initial",
         }
 
         return study
@@ -119,7 +119,7 @@ class TestStudyAnnotations(DBTestMixin):
         rsp = api_client.get(f"search/studies", params={
             "apply_annotations": True,
             "start_uuid": str(prev_study_uuid),
-            "limit": 1
+            "limit": 1,
         })
         assert rsp.status_code == 200
         assert len(rsp.json()) == 1
@@ -131,12 +131,12 @@ class TestStudyAnnotations(DBTestMixin):
     @pytest.mark.parametrize('update', [False, True])
     def test_accession_to_objectinfo_no_apply_annotations(self, study: dict, api_client: TestClient):
         rsp = api_client.get(f"object_info_by_accessions?apply_annotations=true", params={
-            'accessions': [study['uuid']]
+            'accessions': [study['uuid']],
         })
         study_annotated = rsp.json()
 
         rsp = api_client.get(f"object_info_by_accessions", params={
-            'accessions': [study['uuid']]
+            'accessions': [study['uuid']],
         })
         study_not_annotated = rsp.json()
 
@@ -173,7 +173,7 @@ class TestImageAnnotations(DBTestMixin):
             "author_email": "test@ebi.ac.uk",
             "key": "original_relpath",
             "value": "overwritten",
-            "state": "active"
+            "state": "active",
         }
 
     @pytest.fixture
@@ -182,14 +182,14 @@ class TestImageAnnotations(DBTestMixin):
             "author_email": "test@ebi.ac.uk",
             "key": "test_attribute",
             "value": "overwritten",
-            "state": "active"
+            "state": "active",
         }
 
     @pytest.fixture
     def img_initial(self, existing_study):
         img = get_template_image(existing_study, add_uuid=True)
         img["attributes"] = {
-            "test_attribute": "initial"
+            "test_attribute": "initial",
         }
 
         return img
@@ -230,7 +230,7 @@ class TestImageAnnotations(DBTestMixin):
     @pytest.mark.parametrize('update', [False, True])
     def test_annotations_applied_when_explicit(self, api_client: TestClient, image: dict, attribute_annotation: dict, field_annotation: dict):
         rsp = api_client.get(f"images/{image['uuid']}", params={
-            "apply_annotations": True
+            "apply_annotations": True,
         })
         assert rsp.status_code == 200
         img_fetched = rsp.json()
@@ -247,7 +247,7 @@ class TestFilerefAnnotations(DBTestMixin):
             "author_email": "test@ebi.ac.uk",
             "key": "name",
             "value": "overwritten",
-            "state": "active"
+            "state": "active",
         }
 
     @pytest.fixture
@@ -256,14 +256,14 @@ class TestFilerefAnnotations(DBTestMixin):
             "author_email": "test@ebi.ac.uk",
             "key": "test_attribute",
             "value": "overwritten",
-            "state": "active"
+            "state": "active",
         }
 
     @pytest.fixture
     def fileref_initial(self, existing_study):
         fileref = get_template_file_reference(existing_study, add_uuid=True)
         fileref["attributes"] = {
-            "test_attribute": "initial"
+            "test_attribute": "initial",
         }
 
         return fileref
@@ -304,7 +304,7 @@ class TestFilerefAnnotations(DBTestMixin):
     @pytest.mark.parametrize('update', [False, True])
     async def test_annotations_applied_when_explicit(self, api_client: TestClient, fileref: dict, attribute_annotation: dict, field_annotation: dict):
         rsp = api_client.get(f"file_references/{fileref['uuid']}", params={
-            "apply_annotations": True
+            "apply_annotations": True,
         })
         assert rsp.status_code == 200
         fileref_fetched = rsp.json()
@@ -321,7 +321,7 @@ class TestCollectionAnnotation(DBTestMixin):
             "author_email": "test@ebi.ac.uk",
             "key": "title",
             "value": "overwritten",
-            "state": "active"
+            "state": "active",
         }
 
     @pytest.fixture
@@ -330,14 +330,14 @@ class TestCollectionAnnotation(DBTestMixin):
             "author_email": "test@ebi.ac.uk",
             "key": "test_attribute",
             "value": "new_attribute",
-            "state": "active"
+            "state": "active",
         }
 
     @pytest.fixture
     def collection_initial(self):
         collection = get_template_collection(add_uuid=True)
         collection["attributes"] = {
-            "test_attribute": "initial"
+            "test_attribute": "initial",
         }
 
         return collection
@@ -367,7 +367,7 @@ class TestCollectionAnnotation(DBTestMixin):
     @pytest.mark.parametrize("update", [False, True])
     def test_annotations_applied_when_explicit(self, collection: dict, api_client: TestClient, field_annotation: dict, attribute_annotation: dict):
         rsp = api_client.get(f"collections/{collection['uuid']}", params={
-            "apply_annotations": True
+            "apply_annotations": True,
         })
         assert rsp.status_code == 200
 

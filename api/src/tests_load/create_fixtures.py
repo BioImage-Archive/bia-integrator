@@ -9,7 +9,7 @@ from common.util import batch_response_status_all
 class FixturesUser(APIUserBase):
     _config = {
         'username': None,
-        'password': None
+        'password': None,
     }
     def on_start(self):
         super().on_start()

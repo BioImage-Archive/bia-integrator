@@ -3,7 +3,6 @@ from urllib.parse import urljoin
 import requests
 import uuid as uuid_lib
 import time
-from locust import FastHttpUser
 
 def get_uuid():
     uuid = uuid_lib.UUID(int=int(time.time()*1000000))
@@ -15,7 +14,7 @@ def authenticate(host, path, username, password):
         url,
         data={
             "username": username,
-            "password": password
+            "password": password,
         },
         verify=False
     )

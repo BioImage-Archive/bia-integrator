@@ -85,7 +85,7 @@ def create_user_if_missing(email: str, password: str):
 def authenticate_client(api_client: TestClient):
     user_details = {
         "username": "test@example.com",
-        "password": "test"
+        "password": "test",
     }
     create_user_if_missing(user_details['username'], user_details['password'])
 
@@ -111,7 +111,7 @@ def make_collection(api_client: TestClient, collection_attributes_override = {})
         "title": "test_collection_title",
         "subtitle": "test_collection_subtitle",
         "description": "test_collection_description",
-        "study_uuids": []
+        "study_uuids": [],
     }
     collection |= collection_attributes_override
 
@@ -140,7 +140,7 @@ def get_template_study(add_uuid = False):
         "file_references_count": 0,
         "images_count": 0,
         "annotations_applied": False,
-        "annotations": []
+        "annotations": [],
     }
 
 def make_study(api_client: TestClient, study_attributes_override = {}):
@@ -172,7 +172,7 @@ def get_template_file_reference(existing_study: dict, add_uuid = False):
         "attributes": {},
         "annotations": [],
         "annotations_applied": False,
-        "type": "file"
+        "type": "file",
     }
 
 def get_template_collection(add_uuid = False):
@@ -199,13 +199,13 @@ def get_template_image(existing_study: dict, add_uuid = False):
         "name": f"image_name_value",
         "original_relpath": f"/home/test/image_path_value",
         "attributes": {
-            "k": "v"
+            "k": "v",
         },
         "annotations": [],
         "annotations_applied": False,
         "dimensions": None,
         "alias": None,  
-        "representations": []
+        "representations": [],
     }
 
 def make_images(api_client: TestClient, existing_study: dict, n: int, image_template = None, expect_status = 201):

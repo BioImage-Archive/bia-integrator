@@ -22,8 +22,8 @@ async def get_object_info_by_accession(
     
     query = {
         'accession_id': {
-            '$in': accessions
-        }
+            '$in': accessions,
+        },
     }
     return await db.get_object_info(query)
 
@@ -35,7 +35,7 @@ async def get_study_images_by_alias(
     ) -> List[db_models.BIAImage]:
     
     study_objects_info = await db.get_object_info({
-        'accession_id': study_accession
+        'accession_id': study_accession,
     })
     if not len(study_objects_info):
         raise DocumentNotFound(f"Study with accession {study_accession} does not exist.")
@@ -44,9 +44,9 @@ async def get_study_images_by_alias(
 
     query = {
         'alias.name': {
-            '$in': aliases
+            '$in': aliases,
         },
-        'study_uuid': study_object_info.uuid
+        'study_uuid': study_object_info.uuid,
     }
 
     return await db.get_images(query)
@@ -126,8 +126,8 @@ async def search_images_exact_match(
 
         query['annotations'] = {
             '$elemMatch': {
-                '$or': obj_annotations_any
-            }
+                '$or': obj_annotations_any,
+            },
         }
     if search_filter.image_representations_any:
         representation_filters = []
@@ -138,7 +138,7 @@ async def search_images_exact_match(
             if representation_filter.uri_prefix:
                 img_representation_list_item_filter['uri'] = {
                     '$regex': f"^{re.escape(representation_filter.uri_prefix)}",
-                    '$options': 'i'
+                    '$options': 'i',
                 }
             if any([representation_filter.size_bounds_gte is not None, representation_filter.size_bounds_lte is not None]):
                 img_representation_list_item_filter['size'] = {}
@@ -151,8 +151,8 @@ async def search_images_exact_match(
 
         query['representations'] = {
             '$elemMatch': {
-                '$or': representation_filters
-            }
+                '$or': representation_filters,
+            },
         }
     
     if query == {}:
@@ -188,20 +188,20 @@ async def search_file_references_exact_match(
 
         query['annotations'] = {
             '$elemMatch': {
-                '$or': obj_annotations_any
-            }
+                '$or': obj_annotations_any,
+            },
         }
     if search_filter.file_reference_match:
         if search_filter.file_reference_match.name:
             query['name'] = {
                 '$regex': f"^{re.escape(search_filter.file_reference_match.name)}$",
-                '$options': 'i'
+                '$options': 'i',
             }
 
         if search_filter.file_reference_match.uri_prefix:
             query['uri'] = {
                 '$regex': f"^{re.escape(search_filter.file_reference_match.uri_prefix)}",
-                '$options': 'i'
+                '$options': 'i',
             }
         if search_filter.file_reference_match.type:
             query['type'] = search_filter.file_reference_match.type
@@ -233,8 +233,8 @@ async def search_studies_exact_match(
 
         query['annotations'] = {
             '$elemMatch': {
-                '$or': obj_annotations_any
-            }
+                '$or': obj_annotations_any,
+            },
         }
     if search_filter.study_match:
         if any([search_filter.study_match.file_references_count_gte is not None, search_filter.study_match.file_references_count_lte is not None]):
@@ -254,16 +254,16 @@ async def search_studies_exact_match(
                 '$elemMatch': {
                     'name': {
                         '$regex': re.escape(search_filter.study_match.author_name_fragment),
-                        '$options': 'i'
-                    }
-                }
+                        '$options': 'i',
+                    },
+                },
             }
         if search_filter.study_match.tag:
             query['tags'] = {
                 '$elemMatch': {
                     '$regex': f"^{re.escape(search_filter.study_match.tag)}$",
-                    '$options': 'i'
-                }
+                    '$options': 'i',
+                },
             }
         if search_filter.study_match.accession_id:
             query['accession_id'] = search_filter.study_match.accession_id

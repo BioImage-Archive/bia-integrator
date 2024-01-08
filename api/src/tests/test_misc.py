@@ -14,7 +14,7 @@ def test_create_collection(api_client: TestClient, uuid: str):
         "name": "test_collection_name",
         "title": "test_collection_title",
         "subtitle": "",
-        "study_uuids": study_uuids
+        "study_uuids": study_uuids,
     }
 
     rsp = api_client.post(f"private/collections", json=collection)
@@ -29,7 +29,7 @@ def test_fetch_object_info(api_client: TestClient, uuid: str):
 
     #rsp = api_client.get(f"object_info_by_accessions?accessions[]={uuid}")
     rsp = api_client.get(f"object_info_by_accessions", params={
-        'accessions': [uuid]
+        'accessions': [uuid],
     })
     assert rsp.status_code == 200
 
@@ -46,20 +46,20 @@ def test_fetch_image_by_alias(api_client: TestClient, existing_study, uuid: str)
             "name": f"image_name_value",
             "original_relpath": f"/home/test/image_path_value",
             "attributes": {
-                "k": "v"
+                "k": "v",
             },
             "annotations": [],
             "dimensions": None,
             "alias": {
-                "name": f"{uuid}_test_1"
+                "name": f"{uuid}_test_1",
             },
-            "representations": []
+            "representations": [],
         },
         expect_status= 400
     )
 
     rsp = api_client.get(f"studies/{existing_study['uuid']}/images_by_aliases", params={
-        'aliases': [f"{uuid}_test_1"]
+        'aliases': [f"{uuid}_test_1"],
     })
     assert rsp.status_code == 200
     # all images with the test_1 alias suffix will get rejected
@@ -102,7 +102,7 @@ def test_single_doc_update_some_change_fails(api_client: TestClient, existing_st
         "author_email": "test@ebi.ac.uk",
         "key": "test",
         "value": "test",
-        "state": "active"
+        "state": "active",
     })
 
     rsp = api_client.patch('private/studies', json=existing_study)

@@ -45,7 +45,7 @@ class Repository:
             [ ('accession_id', 1) ],
             unique=True,
             partialFilterExpression={
-                'accession_id': {'$exists': True}
+                'accession_id': {'$exists': True},
             },
             name='study_accession_id'
         )
@@ -62,7 +62,7 @@ class Repository:
             [ ('study_uuid', 1), ('model.type_name', 1) ],
             partialFilterExpression={
                 'study_uuid': {'$exists': True},
-                'model.type_name': {'$exists': True}
+                'model.type_name': {'$exists': True},
             },
             name='study_assets'
         )
@@ -97,16 +97,16 @@ class Repository:
     async def _study_assets_find(self, study_uuid: uuid.UUID, start_uuid: uuid.UUID | None, limit: int, fn_model_factory: models.BIABaseModel) -> models.DocumentMixin:
         mongo_query = {
             'study_uuid': study_uuid,
-            'model.type_name': fn_model_factory.__name__
+            'model.type_name': fn_model_factory.__name__,
         }
         if start_uuid:
             mongo_query['uuid'] = {
-                '$gt': start_uuid
+                '$gt': start_uuid,
             }
         else:
             # explicitly start from the first uuid (by sorted order) if none specified
             mongo_query['uuid'] = {
-                '$gt': uuid.UUID(int=0)
+                '$gt': uuid.UUID(int=0),
             }
 
         docs = []
@@ -140,7 +140,7 @@ class Repository:
     async def get_object_info(self, query: dict) -> List[api_models.ObjectInfo]:
         object_info_projection = {
             'uuid': 1,
-            'model': 1
+            'model': 1,
         }
 
         documents = []
@@ -186,16 +186,16 @@ class Repository:
                 {
                     "$match": {
                         "study_uuid": {
-                            "$eq": uuid.UUID(study_uuid)
+                            "$eq": uuid.UUID(study_uuid),
                         },
                         "model.type_name": {
-                            "$eq": child_type_name
-                        }
-                    }
+                            "$eq": child_type_name,
+                        },
+                    },
                 },
                 {
-                    "$count": "n_items"
-                }
+                    "$count": "n_items",
+                },
             ])
         ]
 
@@ -235,7 +235,7 @@ class Repository:
     async def search_objects(self, query: dict, start_uuid: uuid.UUID | None = None, limit: int = 100):
         if start_uuid:
             query["uuid"] = {
-                "$gt": start_uuid
+                "$gt": start_uuid,
             }
         
         try:
@@ -338,12 +338,12 @@ class Repository:
 
         result = await self.biaint.update_one(
             {
-                'uuid': root_doc_uuid
+                'uuid': root_doc_uuid,
             },
             {
                 '$push': {
-                    location: new_list_item.model_dump()
-                }
+                    location: new_list_item.model_dump(),
+                },
             },
             upsert=False
         )
@@ -386,10 +386,10 @@ class Repository:
             {
                 'uuid': doc_model.uuid,
                 'version': doc_model.version-1,
-                'model': doc_model.model.model_dump()
+                'model': doc_model.model.model_dump(),
             },
             {
-                '$set': doc_model.model_dump()
+                '$set': doc_model.model_dump(),
             },
             upsert=False
         )
@@ -420,7 +420,7 @@ class Repository:
     async def search_collections(self, **kwargs) -> List[models.BIACollection]:
         mongo_query = {
             'model.type_name': 'BIACollection',
-            **kwargs
+            **kwargs,
         }
         
         collections = []
