@@ -1,5 +1,6 @@
 import os
 from dotenv import load_dotenv
+
 load_dotenv(os.environ.get("DOTENV_PATH", None))
 
 from .api import public
@@ -31,31 +32,42 @@ app.openapi_version = "3.0.2"
 
 app.add_middleware(GZipMiddleware, minimum_size=1000)
 
+
 @app.exception_handler(Exception)
-async def log_exception_handler(request: Request, exc: Exception): 
+async def log_exception_handler(request: Request, exc: Exception):
     logging.error("Unhandled exception:", exc_info=True)
 
     return JSONResponse(
-        {"detail": "Internal server error"},
-        status_code=HTTP_500_INTERNAL_SERVER_ERROR
+        {"detail": "Internal server error"}, status_code=HTTP_500_INTERNAL_SERVER_ERROR
     )
 
+
 async def repository_dependency() -> Repository:
-    db = await repository_create(init = False)
+    db = await repository_create(init=False)
     try:
         yield db
     finally:
         db.close()
 
+
 @app.on_event("startup")
 async def startup_event():
-    await repository_create(init = True)
+    await repository_create(init=True)
 
-app.include_router(auth.router, prefix="/api/v1", dependencies=[Depends(repository_dependency)])
-app.include_router(private.router, prefix="/api/v1", dependencies=[Depends(repository_dependency)])
-app.include_router(admin.router, prefix="/api/v1", dependencies=[Depends(repository_dependency)])
+
+app.include_router(
+    auth.router, prefix="/api/v1", dependencies=[Depends(repository_dependency)]
+)
+app.include_router(
+    private.router, prefix="/api/v1", dependencies=[Depends(repository_dependency)]
+)
+app.include_router(
+    admin.router, prefix="/api/v1", dependencies=[Depends(repository_dependency)]
+)
 # routes applied in the order they are declared
-app.include_router(public.router, prefix="/api/v1", dependencies=[Depends(repository_dependency)])
+app.include_router(
+    public.router, prefix="/api/v1", dependencies=[Depends(repository_dependency)]
+)
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.ERROR)

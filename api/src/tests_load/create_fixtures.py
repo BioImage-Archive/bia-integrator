@@ -6,11 +6,13 @@ from common.api_user_base import APIUserBase
 import common.fixtures as fixtures
 from common.util import batch_response_status_all
 
+
 class FixturesUser(APIUserBase):
     _config = {
-        'username': None,
-        'password': None,
+        "username": None,
+        "password": None,
     }
+
     def on_start(self):
         super().on_start()
 
@@ -19,17 +21,25 @@ class FixturesUser(APIUserBase):
         assert rsp.status_code == 201, rsp.json()
 
         collection = fixtures.make_collection_payload()
-        collection['study_uuids'].append(study['uuid'])
+        collection["study_uuids"].append(study["uuid"])
         rsp = self.client.post("api/private/collections", json=collection)
         assert rsp.status_code == 201, rsp.json()
 
-        file_references = fixtures.make_fileref_payload(study['uuid'], 1000)
-        rsp = self.client.post("api/private/file_references", json=file_references, headers={"Accept-Encoding":"gzip, deflate"})
-        assert batch_response_status_all(rsp.json()['items'], 201)
+        file_references = fixtures.make_fileref_payload(study["uuid"], 1000)
+        rsp = self.client.post(
+            "api/private/file_references",
+            json=file_references,
+            headers={"Accept-Encoding": "gzip, deflate"},
+        )
+        assert batch_response_status_all(rsp.json()["items"], 201)
 
-        images = fixtures.make_image_payload(study['uuid'], 1000)
-        rsp = self.client.post("api/private/images", json=images, headers={"Accept-Encoding":"gzip, deflate"})
-        assert batch_response_status_all(rsp.json()['items'], 201)
+        images = fixtures.make_image_payload(study["uuid"], 1000)
+        rsp = self.client.post(
+            "api/private/images",
+            json=images,
+            headers={"Accept-Encoding": "gzip, deflate"},
+        )
+        assert batch_response_status_all(rsp.json()["items"], 201)
 
         # prevent locust from starting new users once this one finishes
         exit()
