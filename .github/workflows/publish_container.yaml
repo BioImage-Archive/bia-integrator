@@ -1,0 +1,39 @@
+name: Publish Docker
+on:
+  push:
+    branches:
+      - main
+      - master
+  # pull_request: ~
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: api
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.0
+        with:
+          fetch-depth: 2
+      - name: Get version from make api.version
+        id: get-version
+        run: echo "version=$(make api.version)" >> $GITHUB_OUTPUT
+      - name: Build and push Docker image (version tag)
+        uses: docker/build-push-action@v4.2.0
+        with:
+          context: api
+          push: true
+          tags: ghcr.io/${{ github.repository }}:${{ steps.get-version.outputs.version }}
+          labels: ${{ steps.meta.outputs.labels }}
+      - name: Build and push Docker image (latest tag)
+        if: steps.check-version.outputs.current-version
+        uses: docker/build-push-action@v4.2.0
+        with:
+          context: .
+          push: true
+          tags: ghcr.io/${{ github.repository }}:latest
+          labels: ${{ steps.meta.outputs.labels }}
