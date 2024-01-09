@@ -25,6 +25,7 @@ locust = "^2.16.1"
 pyyaml = "^6.0.1"
 pytest = "^7"
 pytest-asyncio = "^0.21.1"
+black = "^23.12.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

@@ -19,7 +19,7 @@ import json
 
 
 from typing import Any, Dict, List, Optional
-from pydantic import BaseModel, Field, StrictInt, StrictStr, conlist
+from pydantic import BaseModel, Field, StrictBool, StrictInt, StrictStr, conlist
 from bia_integrator_api.models.author import Author
 from bia_integrator_api.models.model_metadata import ModelMetadata
 from bia_integrator_api.models.study_annotation import StudyAnnotation
@@ -28,6 +28,9 @@ class BIAStudy(BaseModel):
     """
     BIAStudy
     """
+    attributes: Optional[Dict[str, Any]] = Field(None, description="         When annotations are applied, the ones that have a key different than an object attribute (so they don't overwrite it) get saved here.     ")
+    annotations_applied: Optional[StrictBool] = Field(False, description="         This acts as a dirty flag, with the purpose of telling apart objects that had some fields overwritten by applying annotations (so should be rejected when writing), and those that didn't.     ")
+    annotations: Optional[conlist(StudyAnnotation)] = None
     uuid: StrictStr = Field(...)
     version: StrictInt = Field(...)
     model: Optional[ModelMetadata] = None
@@ -38,14 +41,12 @@ class BIAStudy(BaseModel):
     release_date: StrictStr = Field(...)
     accession_id: StrictStr = Field(...)
     imaging_type: Optional[StrictStr] = None
-    attributes: Optional[Dict[str, Any]] = None
-    annotations: Optional[conlist(StudyAnnotation)] = None
     example_image_uri: Optional[StrictStr] = ''
     example_image_annotation_uri: Optional[StrictStr] = ''
     tags: Optional[conlist(StrictStr)] = None
     file_references_count: Optional[StrictInt] = 0
     images_count: Optional[StrictInt] = 0
-    __properties = ["uuid", "version", "model", "title", "description", "authors", "organism", "release_date", "accession_id", "imaging_type", "attributes", "annotations", "example_image_uri", "example_image_annotation_uri", "tags", "file_references_count", "images_count"]
+    __properties = ["attributes", "annotations_applied", "annotations", "uuid", "version", "model", "title", "description", "authors", "organism", "release_date", "accession_id", "imaging_type", "example_image_uri", "example_image_annotation_uri", "tags", "file_references_count", "images_count"]
 
     class Config:
         """Pydantic configuration"""
@@ -71,6 +72,13 @@ class BIAStudy(BaseModel):
                           exclude={
                           },
                           exclude_none=True)
+        # override the default output from pydantic by calling `to_dict()` of each item in annotations (list)
+        _items = []
+        if self.annotations:
+            for _item in self.annotations:
+                if _item:
+                    _items.append(_item.to_dict())
+            _dict['annotations'] = _items
         # override the default output from pydantic by calling `to_dict()` of model
         if self.model:
             _dict['model'] = self.model.to_dict()
@@ -81,13 +89,6 @@ class BIAStudy(BaseModel):
                 if _item:
                     _items.append(_item.to_dict())
             _dict['authors'] = _items
-        # override the default output from pydantic by calling `to_dict()` of each item in annotations (list)
-        _items = []
-        if self.annotations:
-            for _item in self.annotations:
-                if _item:
-                    _items.append(_item.to_dict())
-            _dict['annotations'] = _items
         # set to None if model (nullable) is None
         # and __fields_set__ contains the field
         if self.model is None and "model" in self.__fields_set__:
@@ -115,6 +116,9 @@ class BIAStudy(BaseModel):
             return BIAStudy.parse_obj(obj)
 
         _obj = BIAStudy.parse_obj({
+            "attributes": obj.get("attributes"),
+            "annotations_applied": obj.get("annotations_applied") if obj.get("annotations_applied") is not None else False,
+            "annotations": [StudyAnnotation.from_dict(_item) for _item in obj.get("annotations")] if obj.get("annotations") is not None else None,
             "uuid": obj.get("uuid"),
             "version": obj.get("version"),
             "model": ModelMetadata.from_dict(obj.get("model")) if obj.get("model") is not None else None,
@@ -125,8 +129,6 @@ class BIAStudy(BaseModel):
             "release_date": obj.get("release_date"),
             "accession_id": obj.get("accession_id"),
             "imaging_type": obj.get("imaging_type"),
-            "attributes": obj.get("attributes"),
-            "annotations": [StudyAnnotation.from_dict(_item) for _item in obj.get("annotations")] if obj.get("annotations") is not None else None,
             "example_image_uri": obj.get("example_image_uri") if obj.get("example_image_uri") is not None else '',
             "example_image_annotation_uri": obj.get("example_image_annotation_uri") if obj.get("example_image_annotation_uri") is not None else '',
             "tags": obj.get("tags"),

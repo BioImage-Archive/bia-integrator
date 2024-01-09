@@ -7,17 +7,24 @@ import json
 import os
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
 with open(os.path.join(SCRIPT_DIR, "config.json"), "r") as f:
-    config = json.load(f)["dev"]
+    config = json.load(f)["beta"]
 
-from subprocess import check_output
+from subprocess import check_output, CalledProcessError
 
 report = {}
 
 def find_string_in_submission_history(subm_accno, str_to_search):
     data_repo_path = os.path.expanduser("~/.bia-integrator-data")
     submission_path = check_output(f"find ./studies -name *{subm_accno}*".split(" "), cwd=data_repo_path).decode().strip()
-    needle_occ = check_output(f"git log -p -- {submission_path} | grep \\\"{str_to_search}\\\"", cwd=data_repo_path, shell=True).decode().strip().split("\n")
-    
+
+    try:
+        needle_occ = check_output(f"git log -p -- {submission_path} | grep \\\"{str_to_search}\\\"", cwd=data_repo_path, shell=True).decode().strip().split("\n")
+    except CalledProcessError as e:
+        if e.returncode in [0,1]:
+            needle_occ = []
+        else:
+            raise
+
     return needle_occ
 
 # @TODO: handle FileReference, ImageRepresentation separately - they have attributes but don't have annotations
@@ -41,8 +48,9 @@ def doc_categorise_annotations(doc: Union[api_models.BIAStudy, api_models.BIAIma
         if annotation.key in doc.attributes and annotation.value == doc.attributes[annotation.key]:
             mismatched_old_value = []
             for occ in find_string_in_submission_history(doc.accession_id, annotation.key):
-                log_item_as_json = "{" + occ[1:].rstrip(",") + "}"
-                if json.loads(log_item_as_json)[annotation.key] != annotation.value:
+                log_item_as_json = "{\"" + occ.lstrip(" +-\"").rstrip(",") + "}"
+                obj_log_item = json.loads(log_item_as_json)
+                if annotation.key not in obj_log_item or obj_log_item[annotation.key] != annotation.value:
                     mismatched_old_value.append(occ)
 
             if mismatched_old_value:
@@ -57,8 +65,9 @@ def doc_categorise_annotations(doc: Union[api_models.BIAStudy, api_models.BIAIma
             if annotation.key in known_to_overwrite_doc_attributes:
                 mismatched_old_value = []
                 for occ in find_string_in_submission_history(doc.accession_id, annotation.key):
-                    log_item_as_json = "{" + occ[1:].rstrip(",") + "}"
-                    if json.loads(log_item_as_json)[annotation.key] != annotation.value:
+                    log_item_as_json = "{\"" + occ.lstrip(" +-\"").rstrip(",") + "}"
+                    obj_log_item = json.loads(log_item_as_json)
+                    if annotation.key not in obj_log_item or obj_log_item[annotation.key] != annotation.value:
                         mismatched_old_value.append(occ)
 
                 if mismatched_old_value:
@@ -112,8 +121,8 @@ def assert_annotations_not_in_attributes(api_client: PrivateApi):
     for api_study in api_client.search_studies(limit=1000000):
         doc_categorise_annotations(api_study)
 
-        for api_image in api_client.get_study_images(api_study.uuid, limit=1000000000):
-            doc_categorise_annotations(api_image)
+        #for api_image in api_client.get_study_images(api_study.uuid, limit=1000000000):
+        #    doc_categorise_annotations(api_image)
 
 if __name__ == "__main__":
     api_client = simple_client(

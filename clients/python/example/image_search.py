@@ -2,13 +2,13 @@ from bia_integrator_api.util import simple_client, uuid_from_str
 from bia_integrator_api import models as api_models
 import os
 
-rw_client = simple_client(
+ro_client = simple_client(
     api_base_url = "https://bia-cron-1.ebi.ac.uk:8080",
     # FIXME: Re-enable and remove this flag once api is on publicly accessible infra
     disable_ssl_host_check = True
 )
 
-search_result = rw_client.search_images_exact_match(
+search_result = ro_client.search_images_exact_match(
     api_models.SearchImageFilter(
         annotations_any=[api_models.SearchAnnotation(
             key="dimension_order",
@@ -25,7 +25,7 @@ search_result = rw_client.search_images_exact_match(
 
 #print(search_result)
 
-search_result = rw_client.search_images_exact_match(
+search_result = ro_client.search_images_exact_match(
     api_models.SearchImageFilter(
         annotations_any=[api_models.SearchAnnotation(
             key="_neuroglancer_link"

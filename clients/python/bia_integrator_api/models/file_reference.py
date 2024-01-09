@@ -19,7 +19,7 @@ import json
 
 
 from typing import Any, Dict, List, Optional
-from pydantic import BaseModel, Field, StrictInt, StrictStr, conlist
+from pydantic import BaseModel, Field, StrictBool, StrictInt, StrictStr, conlist
 from bia_integrator_api.models.file_reference_annotation import FileReferenceAnnotation
 from bia_integrator_api.models.model_metadata import ModelMetadata
 
@@ -27,6 +27,9 @@ class FileReference(BaseModel):
     """
     A reference to an externally hosted file.
     """
+    attributes: Optional[Dict[str, Any]] = Field(None, description="         When annotations are applied, the ones that have a key different than an object attribute (so they don't overwrite it) get saved here.     ")
+    annotations_applied: Optional[StrictBool] = Field(False, description="         This acts as a dirty flag, with the purpose of telling apart objects that had some fields overwritten by applying annotations (so should be rejected when writing), and those that didn't.     ")
+    annotations: Optional[conlist(FileReferenceAnnotation)] = None
     uuid: StrictStr = Field(...)
     version: StrictInt = Field(...)
     model: Optional[ModelMetadata] = None
@@ -35,9 +38,7 @@ class FileReference(BaseModel):
     uri: StrictStr = Field(...)
     type: StrictStr = Field(...)
     size_in_bytes: StrictInt = Field(...)
-    attributes: Optional[Dict[str, Any]] = None
-    annotations: Optional[conlist(FileReferenceAnnotation)] = None
-    __properties = ["uuid", "version", "model", "study_uuid", "name", "uri", "type", "size_in_bytes", "attributes", "annotations"]
+    __properties = ["attributes", "annotations_applied", "annotations", "uuid", "version", "model", "study_uuid", "name", "uri", "type", "size_in_bytes"]
 
     class Config:
         """Pydantic configuration"""
@@ -63,9 +64,6 @@ class FileReference(BaseModel):
                           exclude={
                           },
                           exclude_none=True)
-        # override the default output from pydantic by calling `to_dict()` of model
-        if self.model:
-            _dict['model'] = self.model.to_dict()
         # override the default output from pydantic by calling `to_dict()` of each item in annotations (list)
         _items = []
         if self.annotations:
@@ -73,6 +71,9 @@ class FileReference(BaseModel):
                 if _item:
                     _items.append(_item.to_dict())
             _dict['annotations'] = _items
+        # override the default output from pydantic by calling `to_dict()` of model
+        if self.model:
+            _dict['model'] = self.model.to_dict()
         # set to None if model (nullable) is None
         # and __fields_set__ contains the field
         if self.model is None and "model" in self.__fields_set__:
@@ -90,6 +91,9 @@ class FileReference(BaseModel):
             return FileReference.parse_obj(obj)
 
         _obj = FileReference.parse_obj({
+            "attributes": obj.get("attributes"),
+            "annotations_applied": obj.get("annotations_applied") if obj.get("annotations_applied") is not None else False,
+            "annotations": [FileReferenceAnnotation.from_dict(_item) for _item in obj.get("annotations")] if obj.get("annotations") is not None else None,
             "uuid": obj.get("uuid"),
             "version": obj.get("version"),
             "model": ModelMetadata.from_dict(obj.get("model")) if obj.get("model") is not None else None,
@@ -97,9 +101,7 @@ class FileReference(BaseModel):
             "name": obj.get("name"),
             "uri": obj.get("uri"),
             "type": obj.get("type"),
-            "size_in_bytes": obj.get("size_in_bytes"),
-            "attributes": obj.get("attributes"),
-            "annotations": [FileReferenceAnnotation.from_dict(_item) for _item in obj.get("annotations")] if obj.get("annotations") is not None else None
+            "size_in_bytes": obj.get("size_in_bytes")
         })
         return _obj
 

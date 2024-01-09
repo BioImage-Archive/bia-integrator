@@ -4,6 +4,9 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**attributes** | **object** |          When annotations are applied, the ones that have a key different than an object attribute (so they don&#39;t overwrite it) get saved here.      | [optional] 
+**annotations_applied** | **bool** |          This acts as a dirty flag, with the purpose of telling apart objects that had some fields overwritten by applying annotations (so should be rejected when writing), and those that didn&#39;t.      | [optional] [default to False]
+**annotations** | [**List[StudyAnnotation]**](StudyAnnotation.md) |  | [optional] [default to []]
 **uuid** | **str** |  | 
 **version** | **int** |  | 
 **model** | [**ModelMetadata**](ModelMetadata.md) |  | [optional] 
@@ -14,8 +17,6 @@ Name | Type | Description | Notes
 **release_date** | **str** |  | 
 **accession_id** | **str** |  | 
 **imaging_type** | **str** |  | [optional] 
-**attributes** | **object** |  | [optional] 
-**annotations** | [**List[StudyAnnotation]**](StudyAnnotation.md) |  | [optional] [default to []]
 **example_image_uri** | **str** |  | [optional] [default to '']
 **example_image_annotation_uri** | **str** |  | [optional] [default to '']
 **tags** | **List[str]** |  | [optional] [default to []]
