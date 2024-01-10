@@ -270,7 +270,7 @@ rule generate_representative_image:
                 if [ -f ${{IM_REF}}.success ]
                 then
                     IMAGE_ID=$(basename $IM_REF)
-                    {command_prefix} python {script_dir}/generate_representatives_for_annotation_and_image_and_set_to_default.py $ACCNO $IMAGE_ID > {output}
+                    {command_prefix} python {script_dir}/generate_representative_image_and_set_to_default.py $ACCNO $IMAGE_ID > {output}
                     exit 0
                 fi
             done
@@ -305,23 +305,11 @@ rule annotate_study_from_zarr:
             {command_prefix} python {script_dir}/annotate_study_from_zarr.py $ACCNO > {output}
         """
 
-rule run_post_conversion_annotation:
-    input:
-        work_dir + "/annotate_study_from_zarr.log"
-    output:
-        work_dir + "/post_conversion_annotation.log"
-    singularity:
-        singularity_container_path
-    shell:
-        """
-            {command_prefix} python {script_dir}/run_post_conversion_annotation.py $ACCNO > {output}
-        """
-
 # Collect the output logs so we have one file for 'all' rule
 rule combine_output:
     output:
         combined = work_dir + "/final_output_{accno}.log"
     input:
-        work_dir + "/post_conversion_annotation.log"
+        work_dir + "/annotate_study_from_zarr.log"
     shell:
         "echo {input} > {output.combined}"
