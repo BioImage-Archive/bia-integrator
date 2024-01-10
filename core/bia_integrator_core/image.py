@@ -19,17 +19,17 @@ def update_image(image: api_models.BIAImage):
     image.version += 1
     settings.api_client.update_image(image)
 
-def get_images(study_accession_id: str) -> List[api_models.BIAImage]:
+def get_images(study_accession_id: str, apply_annotations: bool = False) -> List[api_models.BIAImage]:
     """Return all images stored on disk for the given accession."""
     
     study_obj_info = settings.api_client.get_object_info_by_accession([study_accession_id]).pop()
-    images_list = settings.api_client.get_study_images(study_obj_info.uuid, limit=10**6)
+    images_list = settings.api_client.get_study_images(study_obj_info.uuid, limit=10**6, apply_annotations=apply_annotations)
 
     return images_list
 
-def get_image(image_uuid: str) -> api_models.BIAImage:
+def get_image(image_uuid: str, apply_annotations: bool = False) -> api_models.BIAImage:
     """Return all images stored on disk for the given accession."""
     
-    image = settings.api_client.get_image(image_uuid)
+    image = settings.api_client.get_image(image_uuid, apply_annotations=apply_annotations)
 
     return image

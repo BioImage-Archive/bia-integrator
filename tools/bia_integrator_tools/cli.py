@@ -1,10 +1,14 @@
 import logging
 from pathlib import Path
 from bia_integrator_api import models as api_models
-from typing import Optional
+from typing import Optional, List
 from uuid import UUID
 import time
 from typing_extensions import Annotated
+from enum import Enum
+from pydantic import BaseModel
+from rich import print
+import json
 
 logger = logging.getLogger("biaint")
 logging.basicConfig(level=logging.INFO)
@@ -15,8 +19,9 @@ from bia_integrator_core.interface import (
     get_study,
     get_all_studies,
     get_image_by_alias,
-    get_image_by_uuid,
+    get_image,
     get_images,
+    get_filerefs,
     get_study_annotations,
     persist_study_annotation,
     persist_image_representation,
@@ -35,6 +40,36 @@ from bia_integrator_core.interface import (
 )
 from bia_integrator_core.integrator import load_and_annotate_study
 
+class OutputFormat(str, Enum):
+    PRETTY = "pretty"
+    JSON = "json"
+
+    @staticmethod
+    def fields_project(field_names: List[str], source: BaseModel):
+        """
+        To avoid having multiple schemas for the same thing,
+            output model when outputting json is either the original model, or a subset of it
+        """
+
+        return {
+            field_proj: source.__dict__[field_proj]
+            for field_proj in field_names
+        }
+
+    @staticmethod
+    def print_json(obj):
+        """
+        typer.echo(obj) uses single quotes for strings, resulting in invalid json
+        """
+        if isinstance(obj, BaseModel):
+            obj = obj.dict()
+        elif isinstance(obj, list):
+            obj = [
+                i.dict() if isinstance(i, BaseModel) else i
+                for i in obj
+            ]
+
+        typer.echo(json.dumps(obj, indent=4))
 
 app = typer.Typer()
 
@@ -75,7 +110,7 @@ def list_alias(image_uuid: str):
     Accepts either the image uuid, or a (image_alias, accession_id) pair 
     """
 
-    image = get_image_by_uuid(image_uuid)
+    image = get_image(image_uuid)
     image_alias = image.alias.name if image.alias else "NO_ALIAS"
 
     print(image_alias)
@@ -85,7 +120,7 @@ def list_aliases_for_study(accession_id: str):
     study_images = get_images(accession_id)
 
     if len(study_images):
-        study = get_study(accession_id)
+        study = get_study(accession_id=accession_id)
         for image in study_images:
             image_alias = image.alias.name if image.alias else "NO_ALIAS"
 
@@ -104,12 +139,19 @@ def sizeof_fmt(num, suffix="B"):
 
 
 @filerefs_app.command("list")
-def list_filerefs(accession_id: str):
-    bia_study = load_and_annotate_study(accession_id)
+def list_filerefs(accession_id: str, apply_annotations: bool = True, output: OutputFormat = OutputFormat.PRETTY):
+    bia_study = get_study(accession_id)
+    study_filerefs = get_filerefs(bia_study.uuid, apply_annotations=apply_annotations)
 
-    for fileref in bia_study.file_references:
+    for fileref in study_filerefs:
         readable_size = sizeof_fmt(fileref.size_in_bytes)
-        typer.echo(f"{fileref.uuid}, {fileref.name}, {readable_size}, {fileref.type}")
+
+        if output == OutputFormat.PRETTY:
+            typer.echo(f"{fileref.uuid}, {fileref.name}, {readable_size}, {fileref.type}")
+        elif output == OutputFormat.JSON:
+            OutputFormat.print_json(
+                OutputFormat.fields_project(["uuid", "name", "size_in_bytes", "type"], fileref)
+            )
 
 @filerefs_app.command("list-easily-convertable")
 def list_easily_convertable_filerefs(accession_id: str):
@@ -122,16 +164,28 @@ def list_easily_convertable_filerefs(accession_id: str):
             typer.echo(f"{fileref.uuid}, {fileref.name}, {readable_size}")
 
 @images_app.command("list")
-def images_list(accession_id: str):
+def images_list(accession_id: str, output: OutputFormat = OutputFormat.PRETTY):
     images = get_images(accession_id)
 
     for image in images:
         rep_rep = ','.join(rep.type for rep in image.representations) if image.representations else "NO REPRESENTATIONS"
         typer.echo(f"{image.uuid} {image.original_relpath} {rep_rep}")
 
+        if output == OutputFormat.PRETTY:
+            typer.echo(f"{image.uuid} {image.original_relpath} {rep_rep}")
+        elif output == OutputFormat.JSON:
+            OutputFormat.print_json(
+                OutputFormat.fields_project(["uuid", "original_relpath", "representations"], image)
+            )
+
 
 @images_app.command("show")
-def images_show(image_uuid_or_alias: str, accession_id: Annotated[Optional[str], typer.Argument(default=None)] = None):
+def images_show(
+        image_uuid_or_alias: str,
+        accession_id: Annotated[Optional[str], typer.Argument(default=None)],
+        apply_annotations: bool = True,
+        output: OutputFormat = OutputFormat.PRETTY
+    ):
     """
     Single argument: Must be the image UUID
     Two arguments: Image alias first, then accession_id
@@ -139,40 +193,48 @@ def images_show(image_uuid_or_alias: str, accession_id: Annotated[Optional[str],
 
     img = None
     if accession_id:
-        img = get_image_by_alias(accession_id, image_uuid_or_alias)
+        img = get_image_by_alias(accession_id, image_uuid_or_alias, apply_annotations=apply_annotations)
     else:
         UUID(image_uuid_or_alias)
-        img = get_image_by_uuid(image_uuid_or_alias)
+        img = get_image(image_uuid_or_alias, apply_annotations=apply_annotations)
 
-    typer.echo(img.uuid)
-    typer.echo(img.original_relpath)
-    typer.echo(f"Dimensions: {img.dimensions}")
-    typer.echo("Attributes:")
-    for k, v in img.attributes.items():
-        typer.echo(f"  {k}={v}")
-    typer.echo("Representations:")
-    for rep in img.representations:
-        typer.echo(f"  {rep}")
-
+    if output == OutputFormat.PRETTY:
+        typer.echo(img.uuid)
+        typer.echo(img.original_relpath)
+        typer.echo(f"Dimensions: {img.dimensions}")
+        typer.echo("Attributes:")
+        for k, v in img.attributes.items():
+            typer.echo(f"  {k}={v}")
+        typer.echo("Representations:")
+        for rep in img.representations:
+            typer.echo(f"  {rep}")
+    elif output == OutputFormat.JSON:
+        OutputFormat.print_json(img)
     
 @studies_app.command("show")
-def show(accession_id: str):
+def show(accession_id: str, output: OutputFormat = OutputFormat.PRETTY):
     study = load_and_annotate_study(accession_id)
 
-    typer.echo(study)
+    if output == OutputFormat.PRETTY:
+        typer.echo(study) # @TODO: Format for human-readable-ness
+    elif output == OutputFormat.JSON:
+        OutputFormat.print_json(study)
 
 @studies_app.command("recount")
-def show(accession_id: str):
+def recount(accession_id: str):
     study_recount(accession_id)
 
     typer.echo("DONE")
 
 @studies_app.command("list")
-def list():
+def studies_list(output: OutputFormat = OutputFormat.PRETTY):
     studies = get_all_studies()
     study_accnos = [study.accession_id for study in studies]
 
-    typer.echo('\n'.join(sorted(study_accnos)))
+    if output == OutputFormat.PRETTY:
+        typer.echo('\n'.join(sorted(study_accnos)))
+    elif output == OutputFormat.JSON:
+        OutputFormat.print_json(study_accnos)
 
 
 @annotations_app.command("list-study")
@@ -212,12 +274,12 @@ def create_image_annotation(key: str, value: str, image_uuid_or_alias: str, acce
 
 
 @annotations_app.command("list-image")
-def create_image_annotation(image_uuid_or_alias: str, accession_id: Optional[str] = None):    
+def list_image_annotations(image_uuid_or_alias: str, accession_id: Optional[str] = None):    
     img = None
     if accession_id:
         img = get_image_by_alias(accession_id, image_uuid_or_alias)
     else:
-        img = get_image_by_uuid(image_uuid_or_alias)
+        img = get_image(image_uuid_or_alias)
         
     typer.echo(img.annotations)
 
@@ -257,9 +319,13 @@ def list_image_representations(accession_id: str, image_id: str):
     typer.echo(reprs)
 
 @collections_app.command("list")
-def list_collections():    
-    for collection in get_collections():
-        typer.echo(collection)
+def list_collections(output: OutputFormat = OutputFormat.PRETTY):
+    collections = get_collections()
+    if output == OutputFormat.PRETTY:
+        for collection in collections:
+            typer.echo(collection)
+    elif output == OutputFormat.JSON:
+        OutputFormat.print_json(collections)
 
 @collections_app.command("create")
 def create_collection(name: str, title: str, subtitle: str, accessions_list: str):    
