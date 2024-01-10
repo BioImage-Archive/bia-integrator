@@ -922,17 +922,19 @@ class PrivateApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def get_collection(self, collection_uuid : StrictStr, **kwargs) -> BIACollection:  # noqa: E501
+    def get_collection(self, collection_uuid : StrictStr, apply_annotations : Optional[StrictBool] = None, **kwargs) -> BIACollection:  # noqa: E501
         """Get Collection  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.get_collection(collection_uuid, async_req=True)
+        >>> thread = api.get_collection(collection_uuid, apply_annotations, async_req=True)
         >>> result = thread.get()
 
         :param collection_uuid: (required)
         :type collection_uuid: str
+        :param apply_annotations:
+        :type apply_annotations: bool
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _request_timeout: timeout setting for this request. If one
@@ -947,20 +949,22 @@ class PrivateApi(object):
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
             raise ValueError("Error! Please call the get_collection_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
-        return self.get_collection_with_http_info(collection_uuid, **kwargs)  # noqa: E501
+        return self.get_collection_with_http_info(collection_uuid, apply_annotations, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def get_collection_with_http_info(self, collection_uuid : StrictStr, **kwargs) -> ApiResponse:  # noqa: E501
+    def get_collection_with_http_info(self, collection_uuid : StrictStr, apply_annotations : Optional[StrictBool] = None, **kwargs) -> ApiResponse:  # noqa: E501
         """Get Collection  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.get_collection_with_http_info(collection_uuid, async_req=True)
+        >>> thread = api.get_collection_with_http_info(collection_uuid, apply_annotations, async_req=True)
         >>> result = thread.get()
 
         :param collection_uuid: (required)
         :type collection_uuid: str
+        :param apply_annotations:
+        :type apply_annotations: bool
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _preload_content: if False, the ApiResponse.data will
@@ -989,7 +993,8 @@ class PrivateApi(object):
         _params = locals()
 
         _all_params = [
-            'collection_uuid'
+            'collection_uuid',
+            'apply_annotations'
         ]
         _all_params.extend(
             [
@@ -1023,6 +1028,9 @@ class PrivateApi(object):
 
         # process the query parameters
         _query_params = []
+        if _params.get('apply_annotations') is not None:  # noqa: E501
+            _query_params.append(('apply_annotations', _params['apply_annotations']))
+
         # process the header parameters
         _header_params = dict(_params.get('_headers', {}))
         # process the form parameters
@@ -1060,17 +1068,19 @@ class PrivateApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def get_file_reference(self, file_reference_uuid : StrictStr, **kwargs) -> FileReference:  # noqa: E501
+    def get_file_reference(self, file_reference_uuid : StrictStr, apply_annotations : Optional[StrictBool] = None, **kwargs) -> FileReference:  # noqa: E501
         """Get File Reference  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.get_file_reference(file_reference_uuid, async_req=True)
+        >>> thread = api.get_file_reference(file_reference_uuid, apply_annotations, async_req=True)
         >>> result = thread.get()
 
         :param file_reference_uuid: (required)
         :type file_reference_uuid: str
+        :param apply_annotations:
+        :type apply_annotations: bool
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _request_timeout: timeout setting for this request. If one
@@ -1085,20 +1095,22 @@ class PrivateApi(object):
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
             raise ValueError("Error! Please call the get_file_reference_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
-        return self.get_file_reference_with_http_info(file_reference_uuid, **kwargs)  # noqa: E501
+        return self.get_file_reference_with_http_info(file_reference_uuid, apply_annotations, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def get_file_reference_with_http_info(self, file_reference_uuid : StrictStr, **kwargs) -> ApiResponse:  # noqa: E501
+    def get_file_reference_with_http_info(self, file_reference_uuid : StrictStr, apply_annotations : Optional[StrictBool] = None, **kwargs) -> ApiResponse:  # noqa: E501
         """Get File Reference  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.get_file_reference_with_http_info(file_reference_uuid, async_req=True)
+        >>> thread = api.get_file_reference_with_http_info(file_reference_uuid, apply_annotations, async_req=True)
         >>> result = thread.get()
 
         :param file_reference_uuid: (required)
         :type file_reference_uuid: str
+        :param apply_annotations:
+        :type apply_annotations: bool
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _preload_content: if False, the ApiResponse.data will
@@ -1127,7 +1139,8 @@ class PrivateApi(object):
         _params = locals()
 
         _all_params = [
-            'file_reference_uuid'
+            'file_reference_uuid',
+            'apply_annotations'
         ]
         _all_params.extend(
             [
@@ -1161,6 +1174,9 @@ class PrivateApi(object):
 
         # process the query parameters
         _query_params = []
+        if _params.get('apply_annotations') is not None:  # noqa: E501
+            _query_params.append(('apply_annotations', _params['apply_annotations']))
+
         # process the header parameters
         _header_params = dict(_params.get('_headers', {}))
         # process the form parameters
@@ -1198,17 +1214,19 @@ class PrivateApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def get_image(self, image_uuid : StrictStr, **kwargs) -> BIAImage:  # noqa: E501
+    def get_image(self, image_uuid : StrictStr, apply_annotations : Optional[StrictBool] = None, **kwargs) -> BIAImage:  # noqa: E501
         """Get Image  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.get_image(image_uuid, async_req=True)
+        >>> thread = api.get_image(image_uuid, apply_annotations, async_req=True)
         >>> result = thread.get()
 
         :param image_uuid: (required)
         :type image_uuid: str
+        :param apply_annotations:
+        :type apply_annotations: bool
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _request_timeout: timeout setting for this request. If one
@@ -1223,20 +1241,22 @@ class PrivateApi(object):
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
             raise ValueError("Error! Please call the get_image_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
-        return self.get_image_with_http_info(image_uuid, **kwargs)  # noqa: E501
+        return self.get_image_with_http_info(image_uuid, apply_annotations, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def get_image_with_http_info(self, image_uuid : StrictStr, **kwargs) -> ApiResponse:  # noqa: E501
+    def get_image_with_http_info(self, image_uuid : StrictStr, apply_annotations : Optional[StrictBool] = None, **kwargs) -> ApiResponse:  # noqa: E501
         """Get Image  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.get_image_with_http_info(image_uuid, async_req=True)
+        >>> thread = api.get_image_with_http_info(image_uuid, apply_annotations, async_req=True)
         >>> result = thread.get()
 
         :param image_uuid: (required)
         :type image_uuid: str
+        :param apply_annotations:
+        :type apply_annotations: bool
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _preload_content: if False, the ApiResponse.data will
@@ -1265,7 +1285,8 @@ class PrivateApi(object):
         _params = locals()
 
         _all_params = [
-            'image_uuid'
+            'image_uuid',
+            'apply_annotations'
         ]
         _all_params.extend(
             [
@@ -1299,6 +1320,9 @@ class PrivateApi(object):
 
         # process the query parameters
         _query_params = []
+        if _params.get('apply_annotations') is not None:  # noqa: E501
+            _query_params.append(('apply_annotations', _params['apply_annotations']))
+
         # process the header parameters
         _header_params = dict(_params.get('_headers', {}))
         # process the form parameters
@@ -1759,14 +1783,14 @@ class PrivateApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def get_study_file_references(self, study_uuid : StrictStr, start_uuid : Optional[Any] = None, limit : Optional[StrictInt] = None, **kwargs) -> List[FileReference]:  # noqa: E501
+    def get_study_file_references(self, study_uuid : StrictStr, start_uuid : Optional[Any] = None, limit : Optional[StrictInt] = None, apply_annotations : Optional[StrictBool] = None, **kwargs) -> List[FileReference]:  # noqa: E501
         """Get Study File References  # noqa: E501
 
         First item in response is the next item with uuid greater than start_uuid. start_uuid is part of the response  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.get_study_file_references(study_uuid, start_uuid, limit, async_req=True)
+        >>> thread = api.get_study_file_references(study_uuid, start_uuid, limit, apply_annotations, async_req=True)
         >>> result = thread.get()
 
         :param study_uuid: (required)
@@ -1775,6 +1799,8 @@ class PrivateApi(object):
         :type start_uuid: StartUuid
         :param limit:
         :type limit: int
+        :param apply_annotations:
+        :type apply_annotations: bool
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _request_timeout: timeout setting for this request. If one
@@ -1789,17 +1815,17 @@ class PrivateApi(object):
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
             raise ValueError("Error! Please call the get_study_file_references_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
-        return self.get_study_file_references_with_http_info(study_uuid, start_uuid, limit, **kwargs)  # noqa: E501
+        return self.get_study_file_references_with_http_info(study_uuid, start_uuid, limit, apply_annotations, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def get_study_file_references_with_http_info(self, study_uuid : StrictStr, start_uuid : Optional[Any] = None, limit : Optional[StrictInt] = None, **kwargs) -> ApiResponse:  # noqa: E501
+    def get_study_file_references_with_http_info(self, study_uuid : StrictStr, start_uuid : Optional[Any] = None, limit : Optional[StrictInt] = None, apply_annotations : Optional[StrictBool] = None, **kwargs) -> ApiResponse:  # noqa: E501
         """Get Study File References  # noqa: E501
 
         First item in response is the next item with uuid greater than start_uuid. start_uuid is part of the response  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.get_study_file_references_with_http_info(study_uuid, start_uuid, limit, async_req=True)
+        >>> thread = api.get_study_file_references_with_http_info(study_uuid, start_uuid, limit, apply_annotations, async_req=True)
         >>> result = thread.get()
 
         :param study_uuid: (required)
@@ -1808,6 +1834,8 @@ class PrivateApi(object):
         :type start_uuid: StartUuid
         :param limit:
         :type limit: int
+        :param apply_annotations:
+        :type apply_annotations: bool
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _preload_content: if False, the ApiResponse.data will
@@ -1838,7 +1866,8 @@ class PrivateApi(object):
         _all_params = [
             'study_uuid',
             'start_uuid',
-            'limit'
+            'limit',
+            'apply_annotations'
         ]
         _all_params.extend(
             [
@@ -1878,6 +1907,9 @@ class PrivateApi(object):
         if _params.get('limit') is not None:  # noqa: E501
             _query_params.append(('limit', _params['limit']))
 
+        if _params.get('apply_annotations') is not None:  # noqa: E501
+            _query_params.append(('apply_annotations', _params['apply_annotations']))
+
         # process the header parameters
         _header_params = dict(_params.get('_headers', {}))
         # process the form parameters
@@ -1915,14 +1947,14 @@ class PrivateApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def get_study_images(self, study_uuid : StrictStr, start_uuid : Optional[Any] = None, limit : Optional[StrictInt] = None, **kwargs) -> List[BIAImage]:  # noqa: E501
+    def get_study_images(self, study_uuid : StrictStr, start_uuid : Optional[Any] = None, limit : Optional[StrictInt] = None, apply_annotations : Optional[StrictBool] = None, **kwargs) -> List[BIAImage]:  # noqa: E501
         """Get Study Images  # noqa: E501
 
         First item in response is the next item with uuid greater than start_uuid. start_uuid is part of the response  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.get_study_images(study_uuid, start_uuid, limit, async_req=True)
+        >>> thread = api.get_study_images(study_uuid, start_uuid, limit, apply_annotations, async_req=True)
         >>> result = thread.get()
 
         :param study_uuid: (required)
@@ -1931,6 +1963,8 @@ class PrivateApi(object):
         :type start_uuid: StartUuid
         :param limit:
         :type limit: int
+        :param apply_annotations:
+        :type apply_annotations: bool
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _request_timeout: timeout setting for this request. If one
@@ -1945,17 +1979,17 @@ class PrivateApi(object):
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
             raise ValueError("Error! Please call the get_study_images_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
-        return self.get_study_images_with_http_info(study_uuid, start_uuid, limit, **kwargs)  # noqa: E501
+        return self.get_study_images_with_http_info(study_uuid, start_uuid, limit, apply_annotations, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def get_study_images_with_http_info(self, study_uuid : StrictStr, start_uuid : Optional[Any] = None, limit : Optional[StrictInt] = None, **kwargs) -> ApiResponse:  # noqa: E501
+    def get_study_images_with_http_info(self, study_uuid : StrictStr, start_uuid : Optional[Any] = None, limit : Optional[StrictInt] = None, apply_annotations : Optional[StrictBool] = None, **kwargs) -> ApiResponse:  # noqa: E501
         """Get Study Images  # noqa: E501
 
         First item in response is the next item with uuid greater than start_uuid. start_uuid is part of the response  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.get_study_images_with_http_info(study_uuid, start_uuid, limit, async_req=True)
+        >>> thread = api.get_study_images_with_http_info(study_uuid, start_uuid, limit, apply_annotations, async_req=True)
         >>> result = thread.get()
 
         :param study_uuid: (required)
@@ -1964,6 +1998,8 @@ class PrivateApi(object):
         :type start_uuid: StartUuid
         :param limit:
         :type limit: int
+        :param apply_annotations:
+        :type apply_annotations: bool
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _preload_content: if False, the ApiResponse.data will
@@ -1994,7 +2030,8 @@ class PrivateApi(object):
         _all_params = [
             'study_uuid',
             'start_uuid',
-            'limit'
+            'limit',
+            'apply_annotations'
         ]
         _all_params.extend(
             [
@@ -2034,6 +2071,9 @@ class PrivateApi(object):
         if _params.get('limit') is not None:  # noqa: E501
             _query_params.append(('limit', _params['limit']))
 
+        if _params.get('apply_annotations') is not None:  # noqa: E501
+            _query_params.append(('apply_annotations', _params['apply_annotations']))
+
         # process the header parameters
         _header_params = dict(_params.get('_headers', {}))
         # process the form parameters
@@ -2071,19 +2111,21 @@ class PrivateApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def get_study_images_by_alias(self, study_accession : StrictStr, aliases : conlist(StrictStr), **kwargs) -> List[BIAImage]:  # noqa: E501
+    def get_study_images_by_alias(self, study_accession : StrictStr, aliases : conlist(StrictStr), apply_annotations : Optional[StrictBool] = None, **kwargs) -> List[BIAImage]:  # noqa: E501
         """Get Study Images By Alias  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.get_study_images_by_alias(study_accession, aliases, async_req=True)
+        >>> thread = api.get_study_images_by_alias(study_accession, aliases, apply_annotations, async_req=True)
         >>> result = thread.get()
 
         :param study_accession: (required)
         :type study_accession: str
         :param aliases: (required)
         :type aliases: List[str]
+        :param apply_annotations:
+        :type apply_annotations: bool
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _request_timeout: timeout setting for this request. If one
@@ -2098,22 +2140,24 @@ class PrivateApi(object):
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
             raise ValueError("Error! Please call the get_study_images_by_alias_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
-        return self.get_study_images_by_alias_with_http_info(study_accession, aliases, **kwargs)  # noqa: E501
+        return self.get_study_images_by_alias_with_http_info(study_accession, aliases, apply_annotations, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def get_study_images_by_alias_with_http_info(self, study_accession : StrictStr, aliases : conlist(StrictStr), **kwargs) -> ApiResponse:  # noqa: E501
+    def get_study_images_by_alias_with_http_info(self, study_accession : StrictStr, aliases : conlist(StrictStr), apply_annotations : Optional[StrictBool] = None, **kwargs) -> ApiResponse:  # noqa: E501
         """Get Study Images By Alias  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.get_study_images_by_alias_with_http_info(study_accession, aliases, async_req=True)
+        >>> thread = api.get_study_images_by_alias_with_http_info(study_accession, aliases, apply_annotations, async_req=True)
         >>> result = thread.get()
 
         :param study_accession: (required)
         :type study_accession: str
         :param aliases: (required)
         :type aliases: List[str]
+        :param apply_annotations:
+        :type apply_annotations: bool
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _preload_content: if False, the ApiResponse.data will
@@ -2143,7 +2187,8 @@ class PrivateApi(object):
 
         _all_params = [
             'study_accession',
-            'aliases'
+            'aliases',
+            'apply_annotations'
         ]
         _all_params.extend(
             [
@@ -2180,6 +2225,9 @@ class PrivateApi(object):
         if _params.get('aliases') is not None:  # noqa: E501
             _query_params.append(('aliases', _params['aliases']))
             _collection_formats['aliases'] = 'multi'
+
+        if _params.get('apply_annotations') is not None:  # noqa: E501
+            _query_params.append(('apply_annotations', _params['apply_annotations']))
 
         # process the header parameters
         _header_params = dict(_params.get('_headers', {}))
@@ -2677,17 +2725,19 @@ class PrivateApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def search_collections(self, name : Optional[Any] = None, **kwargs) -> List[BIACollection]:  # noqa: E501
+    def search_collections(self, name : Optional[Any] = None, apply_annotations : Optional[StrictBool] = None, **kwargs) -> List[BIACollection]:  # noqa: E501
         """Search Collections  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.search_collections(name, async_req=True)
+        >>> thread = api.search_collections(name, apply_annotations, async_req=True)
         >>> result = thread.get()
 
         :param name:
         :type name: Name
+        :param apply_annotations:
+        :type apply_annotations: bool
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _request_timeout: timeout setting for this request. If one
@@ -2702,20 +2752,22 @@ class PrivateApi(object):
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
             raise ValueError("Error! Please call the search_collections_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
-        return self.search_collections_with_http_info(name, **kwargs)  # noqa: E501
+        return self.search_collections_with_http_info(name, apply_annotations, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def search_collections_with_http_info(self, name : Optional[Any] = None, **kwargs) -> ApiResponse:  # noqa: E501
+    def search_collections_with_http_info(self, name : Optional[Any] = None, apply_annotations : Optional[StrictBool] = None, **kwargs) -> ApiResponse:  # noqa: E501
         """Search Collections  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.search_collections_with_http_info(name, async_req=True)
+        >>> thread = api.search_collections_with_http_info(name, apply_annotations, async_req=True)
         >>> result = thread.get()
 
         :param name:
         :type name: Name
+        :param apply_annotations:
+        :type apply_annotations: bool
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _preload_content: if False, the ApiResponse.data will
@@ -2744,7 +2796,8 @@ class PrivateApi(object):
         _params = locals()
 
         _all_params = [
-            'name'
+            'name',
+            'apply_annotations'
         ]
         _all_params.extend(
             [
@@ -2777,6 +2830,9 @@ class PrivateApi(object):
         _query_params = []
         if _params.get('name') is not None:  # noqa: E501
             _query_params.append(('name', _params['name']))
+
+        if _params.get('apply_annotations') is not None:  # noqa: E501
+            _query_params.append(('apply_annotations', _params['apply_annotations']))
 
         # process the header parameters
         _header_params = dict(_params.get('_headers', {}))
@@ -2815,18 +2871,20 @@ class PrivateApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def search_file_references_exact_match(self, search_file_reference_filter : SearchFileReferenceFilter, **kwargs) -> List[FileReference]:  # noqa: E501
+    def search_file_references_exact_match(self, search_file_reference_filter : SearchFileReferenceFilter, apply_annotations : Optional[StrictBool] = None, **kwargs) -> List[FileReference]:  # noqa: E501
         """Search File References Exact Match  # noqa: E501
 
         Exact match search of file references with a specific attribute. Multiple parameters mean AND (as in, p1 AND p2). Items in lists with the `_any` suffix are ORed.  Although `study_uuid` is optional, passing it if known is highly recommended and results in faster queries. Queries time out after 2 seconds, which should be enough for any search filtered by study.  This is likely to change fast, so **named arguments are recommended** in client apps instead of positional if possible to prevent downstream breakage.  `name` and `uri_prefix` queries are case insensitive  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.search_file_references_exact_match(search_file_reference_filter, async_req=True)
+        >>> thread = api.search_file_references_exact_match(search_file_reference_filter, apply_annotations, async_req=True)
         >>> result = thread.get()
 
         :param search_file_reference_filter: (required)
         :type search_file_reference_filter: SearchFileReferenceFilter
+        :param apply_annotations:
+        :type apply_annotations: bool
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _request_timeout: timeout setting for this request. If one
@@ -2841,21 +2899,23 @@ class PrivateApi(object):
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
             raise ValueError("Error! Please call the search_file_references_exact_match_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
-        return self.search_file_references_exact_match_with_http_info(search_file_reference_filter, **kwargs)  # noqa: E501
+        return self.search_file_references_exact_match_with_http_info(search_file_reference_filter, apply_annotations, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def search_file_references_exact_match_with_http_info(self, search_file_reference_filter : SearchFileReferenceFilter, **kwargs) -> ApiResponse:  # noqa: E501
+    def search_file_references_exact_match_with_http_info(self, search_file_reference_filter : SearchFileReferenceFilter, apply_annotations : Optional[StrictBool] = None, **kwargs) -> ApiResponse:  # noqa: E501
         """Search File References Exact Match  # noqa: E501
 
         Exact match search of file references with a specific attribute. Multiple parameters mean AND (as in, p1 AND p2). Items in lists with the `_any` suffix are ORed.  Although `study_uuid` is optional, passing it if known is highly recommended and results in faster queries. Queries time out after 2 seconds, which should be enough for any search filtered by study.  This is likely to change fast, so **named arguments are recommended** in client apps instead of positional if possible to prevent downstream breakage.  `name` and `uri_prefix` queries are case insensitive  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.search_file_references_exact_match_with_http_info(search_file_reference_filter, async_req=True)
+        >>> thread = api.search_file_references_exact_match_with_http_info(search_file_reference_filter, apply_annotations, async_req=True)
         >>> result = thread.get()
 
         :param search_file_reference_filter: (required)
         :type search_file_reference_filter: SearchFileReferenceFilter
+        :param apply_annotations:
+        :type apply_annotations: bool
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _preload_content: if False, the ApiResponse.data will
@@ -2884,7 +2944,8 @@ class PrivateApi(object):
         _params = locals()
 
         _all_params = [
-            'search_file_reference_filter'
+            'search_file_reference_filter',
+            'apply_annotations'
         ]
         _all_params.extend(
             [
@@ -2915,6 +2976,9 @@ class PrivateApi(object):
 
         # process the query parameters
         _query_params = []
+        if _params.get('apply_annotations') is not None:  # noqa: E501
+            _query_params.append(('apply_annotations', _params['apply_annotations']))
+
         # process the header parameters
         _header_params = dict(_params.get('_headers', {}))
         # process the form parameters
@@ -2962,18 +3026,20 @@ class PrivateApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def search_images_exact_match(self, search_image_filter : SearchImageFilter, **kwargs) -> List[BIAImage]:  # noqa: E501
+    def search_images_exact_match(self, search_image_filter : SearchImageFilter, apply_annotations : Optional[StrictBool] = None, **kwargs) -> List[BIAImage]:  # noqa: E501
         """Search Images Exact Match  # noqa: E501
 
         Exact match search of images with a specific attribute. Multiple parameters mean AND (as in, p1 AND p2). Items in lists with the `_any` suffix are ORed.  Although `study_uuid` is optional, passing it if known is highly recommended and results in faster queries. Queries time out after 2 seconds, which should be enough for any search filtered by study.  This is likely to change fast, so **named arguments are recommended** in client apps instead of positional if possible to prevent downstream breakage.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.search_images_exact_match(search_image_filter, async_req=True)
+        >>> thread = api.search_images_exact_match(search_image_filter, apply_annotations, async_req=True)
         >>> result = thread.get()
 
         :param search_image_filter: (required)
         :type search_image_filter: SearchImageFilter
+        :param apply_annotations:
+        :type apply_annotations: bool
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _request_timeout: timeout setting for this request. If one
@@ -2988,21 +3054,23 @@ class PrivateApi(object):
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
             raise ValueError("Error! Please call the search_images_exact_match_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
-        return self.search_images_exact_match_with_http_info(search_image_filter, **kwargs)  # noqa: E501
+        return self.search_images_exact_match_with_http_info(search_image_filter, apply_annotations, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def search_images_exact_match_with_http_info(self, search_image_filter : SearchImageFilter, **kwargs) -> ApiResponse:  # noqa: E501
+    def search_images_exact_match_with_http_info(self, search_image_filter : SearchImageFilter, apply_annotations : Optional[StrictBool] = None, **kwargs) -> ApiResponse:  # noqa: E501
         """Search Images Exact Match  # noqa: E501
 
         Exact match search of images with a specific attribute. Multiple parameters mean AND (as in, p1 AND p2). Items in lists with the `_any` suffix are ORed.  Although `study_uuid` is optional, passing it if known is highly recommended and results in faster queries. Queries time out after 2 seconds, which should be enough for any search filtered by study.  This is likely to change fast, so **named arguments are recommended** in client apps instead of positional if possible to prevent downstream breakage.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.search_images_exact_match_with_http_info(search_image_filter, async_req=True)
+        >>> thread = api.search_images_exact_match_with_http_info(search_image_filter, apply_annotations, async_req=True)
         >>> result = thread.get()
 
         :param search_image_filter: (required)
         :type search_image_filter: SearchImageFilter
+        :param apply_annotations:
+        :type apply_annotations: bool
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _preload_content: if False, the ApiResponse.data will
@@ -3031,7 +3099,8 @@ class PrivateApi(object):
         _params = locals()
 
         _all_params = [
-            'search_image_filter'
+            'search_image_filter',
+            'apply_annotations'
         ]
         _all_params.extend(
             [
@@ -3062,6 +3131,9 @@ class PrivateApi(object):
 
         # process the query parameters
         _query_params = []
+        if _params.get('apply_annotations') is not None:  # noqa: E501
+            _query_params.append(('apply_annotations', _params['apply_annotations']))
+
         # process the header parameters
         _header_params = dict(_params.get('_headers', {}))
         # process the form parameters
@@ -3109,20 +3181,22 @@ class PrivateApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def search_studies(self, start_uuid : Optional[Any] = None, limit : Optional[StrictInt] = None, **kwargs) -> List[BIAStudy]:  # noqa: E501
+    def search_studies(self, start_uuid : Optional[Any] = None, limit : Optional[StrictInt] = None, apply_annotations : Optional[StrictBool] = None, **kwargs) -> List[BIAStudy]:  # noqa: E501
         """Search Studies  # noqa: E501
 
         @TODO: Define search criteria for the general case  First item in response is the next item with uuid greater than start_uuid. start_uuid is part of the response  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.search_studies(start_uuid, limit, async_req=True)
+        >>> thread = api.search_studies(start_uuid, limit, apply_annotations, async_req=True)
         >>> result = thread.get()
 
         :param start_uuid:
         :type start_uuid: StartUuid
         :param limit:
         :type limit: int
+        :param apply_annotations:
+        :type apply_annotations: bool
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _request_timeout: timeout setting for this request. If one
@@ -3137,23 +3211,25 @@ class PrivateApi(object):
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
             raise ValueError("Error! Please call the search_studies_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
-        return self.search_studies_with_http_info(start_uuid, limit, **kwargs)  # noqa: E501
+        return self.search_studies_with_http_info(start_uuid, limit, apply_annotations, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def search_studies_with_http_info(self, start_uuid : Optional[Any] = None, limit : Optional[StrictInt] = None, **kwargs) -> ApiResponse:  # noqa: E501
+    def search_studies_with_http_info(self, start_uuid : Optional[Any] = None, limit : Optional[StrictInt] = None, apply_annotations : Optional[StrictBool] = None, **kwargs) -> ApiResponse:  # noqa: E501
         """Search Studies  # noqa: E501
 
         @TODO: Define search criteria for the general case  First item in response is the next item with uuid greater than start_uuid. start_uuid is part of the response  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.search_studies_with_http_info(start_uuid, limit, async_req=True)
+        >>> thread = api.search_studies_with_http_info(start_uuid, limit, apply_annotations, async_req=True)
         >>> result = thread.get()
 
         :param start_uuid:
         :type start_uuid: StartUuid
         :param limit:
         :type limit: int
+        :param apply_annotations:
+        :type apply_annotations: bool
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _preload_content: if False, the ApiResponse.data will
@@ -3183,7 +3259,8 @@ class PrivateApi(object):
 
         _all_params = [
             'start_uuid',
-            'limit'
+            'limit',
+            'apply_annotations'
         ]
         _all_params.extend(
             [
@@ -3219,6 +3296,9 @@ class PrivateApi(object):
 
         if _params.get('limit') is not None:  # noqa: E501
             _query_params.append(('limit', _params['limit']))
+
+        if _params.get('apply_annotations') is not None:  # noqa: E501
+            _query_params.append(('apply_annotations', _params['apply_annotations']))
 
         # process the header parameters
         _header_params = dict(_params.get('_headers', {}))
@@ -3257,17 +3337,19 @@ class PrivateApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def search_studies_exact_match(self, search_study_filter : SearchStudyFilter, **kwargs) -> List[BIAStudy]:  # noqa: E501
+    def search_studies_exact_match(self, search_study_filter : SearchStudyFilter, apply_annotations : Optional[StrictBool] = None, **kwargs) -> List[BIAStudy]:  # noqa: E501
         """Search Studies Exact Match  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.search_studies_exact_match(search_study_filter, async_req=True)
+        >>> thread = api.search_studies_exact_match(search_study_filter, apply_annotations, async_req=True)
         >>> result = thread.get()
 
         :param search_study_filter: (required)
         :type search_study_filter: SearchStudyFilter
+        :param apply_annotations:
+        :type apply_annotations: bool
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _request_timeout: timeout setting for this request. If one
@@ -3282,20 +3364,22 @@ class PrivateApi(object):
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
             raise ValueError("Error! Please call the search_studies_exact_match_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
-        return self.search_studies_exact_match_with_http_info(search_study_filter, **kwargs)  # noqa: E501
+        return self.search_studies_exact_match_with_http_info(search_study_filter, apply_annotations, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def search_studies_exact_match_with_http_info(self, search_study_filter : SearchStudyFilter, **kwargs) -> ApiResponse:  # noqa: E501
+    def search_studies_exact_match_with_http_info(self, search_study_filter : SearchStudyFilter, apply_annotations : Optional[StrictBool] = None, **kwargs) -> ApiResponse:  # noqa: E501
         """Search Studies Exact Match  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.search_studies_exact_match_with_http_info(search_study_filter, async_req=True)
+        >>> thread = api.search_studies_exact_match_with_http_info(search_study_filter, apply_annotations, async_req=True)
         >>> result = thread.get()
 
         :param search_study_filter: (required)
         :type search_study_filter: SearchStudyFilter
+        :param apply_annotations:
+        :type apply_annotations: bool
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _preload_content: if False, the ApiResponse.data will
@@ -3324,7 +3408,8 @@ class PrivateApi(object):
         _params = locals()
 
         _all_params = [
-            'search_study_filter'
+            'search_study_filter',
+            'apply_annotations'
         ]
         _all_params.extend(
             [
@@ -3355,6 +3440,9 @@ class PrivateApi(object):
 
         # process the query parameters
         _query_params = []
+        if _params.get('apply_annotations') is not None:  # noqa: E501
+            _query_params.append(('apply_annotations', _params['apply_annotations']))
+
         # process the header parameters
         _header_params = dict(_params.get('_headers', {}))
         # process the form parameters

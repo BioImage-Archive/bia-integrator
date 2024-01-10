@@ -30,8 +30,8 @@ def get_all_study_identifiers() -> List[api_models.BIAStudy]:
 
     return [fp.stem for fp in settings.studies_dirpath.iterdir()]
 
-def get_all_studies() -> List[api_models.BIAStudy]:
-    studies = settings.api_client.search_studies(limit=10**6)
+def get_all_studies(apply_annotations: bool = False) -> List[api_models.BIAStudy]:
+    studies = settings.api_client.search_studies(limit=10**6, apply_annotations=apply_annotations)
     return studies
 
 def to_uuid(uuid_or_alternative: str | UUID, fn_fetch_object):
@@ -47,15 +47,8 @@ def to_uuid(uuid_or_alternative: str | UUID, fn_fetch_object):
     else:
         raise Exception("Should never reach this")
 
-def get_image_by_uuid(image_uuid: str) -> api_models.BIAImage:
-    """Get the given image from the study with the given accession identifier."""
-
-    img = settings.api_client.get_image(image_uuid)
-
-    return img
-
-def get_image_by_alias(study_accno: str, img_alias: str) -> api_models.BIAImage:
-    images = settings.api_client.get_study_images_by_alias(study_accession=study_accno, aliases=[img_alias])
+def get_image_by_alias(study_accno: str, img_alias: str, apply_annotations: bool = False) -> api_models.BIAImage:
+    images = settings.api_client.get_study_images_by_alias(study_accession=study_accno, aliases=[img_alias], apply_annotations=apply_annotations)
     assert len(images) == 1
 
     return images.pop()

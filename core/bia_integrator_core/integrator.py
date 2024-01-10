@@ -13,9 +13,10 @@ logger = logging.getLogger(__name__)
 def load_and_annotate_study(accession_id: str) -> core_models.BIAStudy:
     """Load the study, merge annotations, and return the result."""
 
-    api_study = get_study(accession_id)
-    study_images = get_images(accession_id)
-    study_filerefs = get_filerefs(accession_id)
+    # annotations always applied, since this is backward-compatible, and resulting object is never written back anyway
+    api_study = get_study(accession_id, apply_annotations=True)
+    study_images = get_images(accession_id, apply_annotations=True)
+    study_filerefs = get_filerefs(accession_id, apply_annotations=True)
 
     # images dict indexed by image_id (uuid?)
     # annotations dict indexed by annotation_key (refactor if used, but to what? Annotations are lists in the image object, don't have accession/uuid)
@@ -46,7 +47,8 @@ def load_and_annotate_study(accession_id: str) -> core_models.BIAStudy:
 
         # extra
         images = study_images,
-        file_references = study_filerefs
+        file_references = study_filerefs,
+        annotations_applied=api_study.annotations_applied
     )
 
     return core_study

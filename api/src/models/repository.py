@@ -170,7 +170,7 @@ class Repository:
 
         return models.BIACollection(**doc)
 
-    async def get_images(self, query) -> models.BIAImage:
+    async def get_images(self, query) -> List[models.BIAImage]:
         images = []
         async for doc in self.biaint.find(query):
             images.append(models.BIAImage(**doc))
