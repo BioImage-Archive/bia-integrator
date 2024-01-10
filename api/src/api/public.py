@@ -27,7 +27,10 @@ async def get_object_info_by_accession(
 
 @router.get("/studies/{study_accession}/images_by_aliases")
 async def get_study_images_by_alias(
-    study_accession: str, aliases: List[str] = Query(), db: Repository = Depends()
+    study_accession: str,
+    annotator: Annotated[Annotator, Depends(annotator)],
+    aliases: List[str] = Query(),
+    db: Repository = Depends(),
 ) -> List[db_models.BIAImage]:
     study_objects_info = await db.get_object_info(
         {
@@ -48,7 +51,10 @@ async def get_study_images_by_alias(
         "study_uuid": study_object_info.uuid,
     }
 
-    return await db.get_images(query)
+    images = await db.get_images(query)
+    annotator.annotate_if_needed(images)
+
+    return images
 
 
 @router.get("/studies/{study_uuid}")
