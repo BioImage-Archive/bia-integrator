@@ -508,9 +508,9 @@ def fix_annotated_studies():
                         else:
                             raise Exception(f"{api_study.__dict__[annotation.key]} {data_repo_study.__dict__[annotation.key]}")
         
-        if b_any_changes:
-            api_study.version += 1
-            api_client.update_study(api_study)
+        #if b_any_changes:
+        #    api_study.version += 1
+        #    api_client.update_study(api_study)
 
 if __name__ == "__main__":
     app()
