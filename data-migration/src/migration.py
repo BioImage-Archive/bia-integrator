@@ -467,48 +467,50 @@ def fix_annotated_studies():
     annotations_not_applied_in_api = []
 
     for api_study in api_client.search_studies(limit=1000000):
-        try:
-            data_repo_study = interface.load_study_with_linked_objects_not_annotated(api_study.accession_id)
-        except FileNotFoundError as e:
-            studies_in_api_only.append(api_study)
-            continue
+        b_any_changes = False
+        b_in_data_repo = False
 
         if not api_study.annotations:
             continue
 
-        # go from api study annotations to data repo annotations and then copy back,
-        #   to ensure there are no annotations that are only in the api (if there were, they would be handled separately)
+        try:
+            data_repo_study = interface.load_study_with_linked_objects_not_annotated(api_study.accession_id)
+            b_in_data_repo = True
+        except FileNotFoundError as e:
+            b_in_data_repo = False
+
+        # Delete annotations that were applied as attributes
         for annotation in api_study.annotations:
-            if annotation.key in data_repo_study.__dict__:
-                if annotation.key not in api_study.__dict__:
-                    # annotation not applied?
-                    annotations_not_applied_in_api.append(annotation.key)
-                    continue
+            if annotation.key not in api_study.__dict__:
+                b_any_changes = b_any_changes or api_study.attributes.pop(annotation.key, None)
+            
+            continue
 
-                if api_study.__dict__[annotation.key] != data_repo_study.__dict__[annotation.key]:
-                    if data_repo_study.__dict__[annotation.key] in ["Unknown", ""]:
-                        # these are ok to overwrite - leave them overwritten
+        if b_in_data_repo:
+            # go from api study annotations to data repo annotations and then copy back,
+            #   to ensure there are no annotations that are only in the api (if there were, they would be handled separately)
+            for annotation in api_study.annotations:
+                if annotation.key in data_repo_study.__dict__:
+                    if annotation.key not in api_study.__dict__:
+                        # annotation not applied?
+                        annotations_not_applied_in_api.append(annotation.key)
                         continue
 
-                    if annotation.key in ["example_image_uri"]:
-                        # overwrite api attribute to the old data repo attribute
-                        api_study.__dict__[annotation.key] = data_repo_study.__dict__[annotation.key]
-                    else:
-                        raise Exception(f"{api_study.__dict__[annotation.key]} {data_repo_study.__dict__[annotation.key]}")
-            else:
-                # api-only annotation that was applied
-                # if same name as a field, raise (needs manual intervention to restore old value)
-                if annotation.key in api_study.__dict__:
-                    raise Exception(f"{annotation.key} possible overwrite of study field")
-                else:
-                    # annotation is in attributes, should just be deleted as an attribute
-                    if not api_study.attributes:
-                        continue
-                    
-                    del api_study.attributes[annotation.key]
+                    if api_study.__dict__[annotation.key] != data_repo_study.__dict__[annotation.key]:
+                        if data_repo_study.__dict__[annotation.key] in ["Unknown", ""]:
+                            # these are ok to overwrite - leave them overwritten
+                            continue
+
+                        if annotation.key in ["example_image_uri"]:
+                            # overwrite api attribute to the old data repo attribute
+                            b_any_changes = True
+                            api_study.__dict__[annotation.key] = data_repo_study.__dict__[annotation.key]
+                        else:
+                            raise Exception(f"{api_study.__dict__[annotation.key]} {data_repo_study.__dict__[annotation.key]}")
         
-        #api_study.version += 1
-        #api_client.update_study(api_study)
+        if b_any_changes:
+            api_study.version += 1
+            api_client.update_study(api_study)
 
 if __name__ == "__main__":
     app()
