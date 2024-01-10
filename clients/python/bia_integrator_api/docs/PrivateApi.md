@@ -473,7 +473,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_collection**
-> BIACollection get_collection(collection_uuid)
+> BIACollection get_collection(collection_uuid, apply_annotations=apply_annotations)
 
 Get Collection
 
@@ -499,10 +499,11 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = bia_integrator_api.PrivateApi(api_client)
     collection_uuid = 'collection_uuid_example' # str | 
+    apply_annotations = False # bool |  (optional) (default to False)
 
     try:
         # Get Collection
-        api_response = api_instance.get_collection(collection_uuid)
+        api_response = api_instance.get_collection(collection_uuid, apply_annotations=apply_annotations)
         print("The response of PrivateApi->get_collection:\n")
         pprint(api_response)
     except Exception as e:
@@ -516,6 +517,7 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **collection_uuid** | **str**|  | 
+ **apply_annotations** | **bool**|  | [optional] [default to False]
 
 ### Return type
 
@@ -539,7 +541,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_file_reference**
-> FileReference get_file_reference(file_reference_uuid)
+> FileReference get_file_reference(file_reference_uuid, apply_annotations=apply_annotations)
 
 Get File Reference
 
@@ -565,10 +567,11 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = bia_integrator_api.PrivateApi(api_client)
     file_reference_uuid = 'file_reference_uuid_example' # str | 
+    apply_annotations = False # bool |  (optional) (default to False)
 
     try:
         # Get File Reference
-        api_response = api_instance.get_file_reference(file_reference_uuid)
+        api_response = api_instance.get_file_reference(file_reference_uuid, apply_annotations=apply_annotations)
         print("The response of PrivateApi->get_file_reference:\n")
         pprint(api_response)
     except Exception as e:
@@ -582,6 +585,7 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **file_reference_uuid** | **str**|  | 
+ **apply_annotations** | **bool**|  | [optional] [default to False]
 
 ### Return type
 
@@ -605,7 +609,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_image**
-> BIAImage get_image(image_uuid)
+> BIAImage get_image(image_uuid, apply_annotations=apply_annotations)
 
 Get Image
 
@@ -631,10 +635,11 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = bia_integrator_api.PrivateApi(api_client)
     image_uuid = 'image_uuid_example' # str | 
+    apply_annotations = False # bool |  (optional) (default to False)
 
     try:
         # Get Image
-        api_response = api_instance.get_image(image_uuid)
+        api_response = api_instance.get_image(image_uuid, apply_annotations=apply_annotations)
         print("The response of PrivateApi->get_image:\n")
         pprint(api_response)
     except Exception as e:
@@ -648,6 +653,7 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **image_uuid** | **str**|  | 
+ **apply_annotations** | **bool**|  | [optional] [default to False]
 
 ### Return type
 
@@ -871,7 +877,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_study_file_references**
-> List[FileReference] get_study_file_references(study_uuid, start_uuid=start_uuid, limit=limit)
+> List[FileReference] get_study_file_references(study_uuid, start_uuid=start_uuid, limit=limit, apply_annotations=apply_annotations)
 
 Get Study File References
 
@@ -901,10 +907,11 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     study_uuid = 'study_uuid_example' # str | 
     start_uuid = bia_integrator_api.StartUuid() # StartUuid |  (optional)
     limit = 10 # int |  (optional) (default to 10)
+    apply_annotations = False # bool |  (optional) (default to False)
 
     try:
         # Get Study File References
-        api_response = api_instance.get_study_file_references(study_uuid, start_uuid=start_uuid, limit=limit)
+        api_response = api_instance.get_study_file_references(study_uuid, start_uuid=start_uuid, limit=limit, apply_annotations=apply_annotations)
         print("The response of PrivateApi->get_study_file_references:\n")
         pprint(api_response)
     except Exception as e:
@@ -920,6 +927,7 @@ Name | Type | Description  | Notes
  **study_uuid** | **str**|  | 
  **start_uuid** | [**StartUuid**](.md)|  | [optional] 
  **limit** | **int**|  | [optional] [default to 10]
+ **apply_annotations** | **bool**|  | [optional] [default to False]
 
 ### Return type
 
@@ -943,7 +951,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_study_images**
-> List[BIAImage] get_study_images(study_uuid, start_uuid=start_uuid, limit=limit)
+> List[BIAImage] get_study_images(study_uuid, start_uuid=start_uuid, limit=limit, apply_annotations=apply_annotations)
 
 Get Study Images
 
@@ -973,10 +981,11 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     study_uuid = 'study_uuid_example' # str | 
     start_uuid = bia_integrator_api.StartUuid() # StartUuid |  (optional)
     limit = 10 # int |  (optional) (default to 10)
+    apply_annotations = False # bool |  (optional) (default to False)
 
     try:
         # Get Study Images
-        api_response = api_instance.get_study_images(study_uuid, start_uuid=start_uuid, limit=limit)
+        api_response = api_instance.get_study_images(study_uuid, start_uuid=start_uuid, limit=limit, apply_annotations=apply_annotations)
         print("The response of PrivateApi->get_study_images:\n")
         pprint(api_response)
     except Exception as e:
@@ -992,6 +1001,7 @@ Name | Type | Description  | Notes
  **study_uuid** | **str**|  | 
  **start_uuid** | [**StartUuid**](.md)|  | [optional] 
  **limit** | **int**|  | [optional] [default to 10]
+ **apply_annotations** | **bool**|  | [optional] [default to False]
 
 ### Return type
 
@@ -1015,7 +1025,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_study_images_by_alias**
-> List[BIAImage] get_study_images_by_alias(study_accession, aliases)
+> List[BIAImage] get_study_images_by_alias(study_accession, aliases, apply_annotations=apply_annotations)
 
 Get Study Images By Alias
 
@@ -1042,10 +1052,11 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     api_instance = bia_integrator_api.PrivateApi(api_client)
     study_accession = 'study_accession_example' # str | 
     aliases = ['aliases_example'] # List[str] | 
+    apply_annotations = False # bool |  (optional) (default to False)
 
     try:
         # Get Study Images By Alias
-        api_response = api_instance.get_study_images_by_alias(study_accession, aliases)
+        api_response = api_instance.get_study_images_by_alias(study_accession, aliases, apply_annotations=apply_annotations)
         print("The response of PrivateApi->get_study_images_by_alias:\n")
         pprint(api_response)
     except Exception as e:
@@ -1060,6 +1071,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **study_accession** | **str**|  | 
  **aliases** | [**List[str]**](str.md)|  | 
+ **apply_annotations** | **bool**|  | [optional] [default to False]
 
 ### Return type
 
@@ -1292,7 +1304,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **search_collections**
-> List[BIACollection] search_collections(name=name)
+> List[BIACollection] search_collections(name=name, apply_annotations=apply_annotations)
 
 Search Collections
 
@@ -1318,10 +1330,11 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = bia_integrator_api.PrivateApi(api_client)
     name = bia_integrator_api.Name() # Name |  (optional)
+    apply_annotations = False # bool |  (optional) (default to False)
 
     try:
         # Search Collections
-        api_response = api_instance.search_collections(name=name)
+        api_response = api_instance.search_collections(name=name, apply_annotations=apply_annotations)
         print("The response of PrivateApi->search_collections:\n")
         pprint(api_response)
     except Exception as e:
@@ -1335,6 +1348,7 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **name** | [**Name**](.md)|  | [optional] 
+ **apply_annotations** | **bool**|  | [optional] [default to False]
 
 ### Return type
 
@@ -1358,7 +1372,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **search_file_references_exact_match**
-> List[FileReference] search_file_references_exact_match(search_file_reference_filter)
+> List[FileReference] search_file_references_exact_match(search_file_reference_filter, apply_annotations=apply_annotations)
 
 Search File References Exact Match
 
@@ -1387,10 +1401,11 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = bia_integrator_api.PrivateApi(api_client)
     search_file_reference_filter = bia_integrator_api.SearchFileReferenceFilter() # SearchFileReferenceFilter | 
+    apply_annotations = False # bool |  (optional) (default to False)
 
     try:
         # Search File References Exact Match
-        api_response = api_instance.search_file_references_exact_match(search_file_reference_filter)
+        api_response = api_instance.search_file_references_exact_match(search_file_reference_filter, apply_annotations=apply_annotations)
         print("The response of PrivateApi->search_file_references_exact_match:\n")
         pprint(api_response)
     except Exception as e:
@@ -1404,6 +1419,7 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **search_file_reference_filter** | [**SearchFileReferenceFilter**](SearchFileReferenceFilter.md)|  | 
+ **apply_annotations** | **bool**|  | [optional] [default to False]
 
 ### Return type
 
@@ -1427,7 +1443,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **search_images_exact_match**
-> List[BIAImage] search_images_exact_match(search_image_filter)
+> List[BIAImage] search_images_exact_match(search_image_filter, apply_annotations=apply_annotations)
 
 Search Images Exact Match
 
@@ -1456,10 +1472,11 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = bia_integrator_api.PrivateApi(api_client)
     search_image_filter = bia_integrator_api.SearchImageFilter() # SearchImageFilter | 
+    apply_annotations = False # bool |  (optional) (default to False)
 
     try:
         # Search Images Exact Match
-        api_response = api_instance.search_images_exact_match(search_image_filter)
+        api_response = api_instance.search_images_exact_match(search_image_filter, apply_annotations=apply_annotations)
         print("The response of PrivateApi->search_images_exact_match:\n")
         pprint(api_response)
     except Exception as e:
@@ -1473,6 +1490,7 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **search_image_filter** | [**SearchImageFilter**](SearchImageFilter.md)|  | 
+ **apply_annotations** | **bool**|  | [optional] [default to False]
 
 ### Return type
 
@@ -1496,7 +1514,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **search_studies**
-> List[BIAStudy] search_studies(start_uuid=start_uuid, limit=limit)
+> List[BIAStudy] search_studies(start_uuid=start_uuid, limit=limit, apply_annotations=apply_annotations)
 
 Search Studies
 
@@ -1525,10 +1543,11 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     api_instance = bia_integrator_api.PrivateApi(api_client)
     start_uuid = bia_integrator_api.StartUuid() # StartUuid |  (optional)
     limit = 10 # int |  (optional) (default to 10)
+    apply_annotations = False # bool |  (optional) (default to False)
 
     try:
         # Search Studies
-        api_response = api_instance.search_studies(start_uuid=start_uuid, limit=limit)
+        api_response = api_instance.search_studies(start_uuid=start_uuid, limit=limit, apply_annotations=apply_annotations)
         print("The response of PrivateApi->search_studies:\n")
         pprint(api_response)
     except Exception as e:
@@ -1543,6 +1562,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **start_uuid** | [**StartUuid**](.md)|  | [optional] 
  **limit** | **int**|  | [optional] [default to 10]
+ **apply_annotations** | **bool**|  | [optional] [default to False]
 
 ### Return type
 
@@ -1566,7 +1586,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **search_studies_exact_match**
-> List[BIAStudy] search_studies_exact_match(search_study_filter)
+> List[BIAStudy] search_studies_exact_match(search_study_filter, apply_annotations=apply_annotations)
 
 Search Studies Exact Match
 
@@ -1593,10 +1613,11 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = bia_integrator_api.PrivateApi(api_client)
     search_study_filter = bia_integrator_api.SearchStudyFilter() # SearchStudyFilter | 
+    apply_annotations = False # bool |  (optional) (default to False)
 
     try:
         # Search Studies Exact Match
-        api_response = api_instance.search_studies_exact_match(search_study_filter)
+        api_response = api_instance.search_studies_exact_match(search_study_filter, apply_annotations=apply_annotations)
         print("The response of PrivateApi->search_studies_exact_match:\n")
         pprint(api_response)
     except Exception as e:
@@ -1610,6 +1631,7 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **search_study_filter** | [**SearchStudyFilter**](SearchStudyFilter.md)|  | 
+ **apply_annotations** | **bool**|  | [optional] [default to False]
 
 ### Return type
 

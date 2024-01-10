@@ -18,6 +18,7 @@ bia_integrator_api/docs/BodyRegisterUser.md
 bia_integrator_api/docs/BulkOperationItem.md
 bia_integrator_api/docs/BulkOperationResponse.md
 bia_integrator_api/docs/ChannelRendering.md
+bia_integrator_api/docs/CollectionAnnotation.md
 bia_integrator_api/docs/FileReference.md
 bia_integrator_api/docs/FileReferenceAnnotation.md
 bia_integrator_api/docs/HTTPValidationError.md
@@ -54,6 +55,7 @@ bia_integrator_api/models/body_register_user.py
 bia_integrator_api/models/bulk_operation_item.py
 bia_integrator_api/models/bulk_operation_response.py
 bia_integrator_api/models/channel_rendering.py
+bia_integrator_api/models/collection_annotation.py
 bia_integrator_api/models/file_reference.py
 bia_integrator_api/models/file_reference_annotation.py
 bia_integrator_api/models/http_validation_error.py

@@ -691,6 +691,16 @@
               },
               "title": "Aliases"
             }
+          },
+          {
+            "name": "apply_annotations",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Apply Annotations"
+            }
           }
         ],
         "responses": {
@@ -821,6 +831,16 @@
               "default": 10,
               "title": "Limit"
             }
+          },
+          {
+            "name": "apply_annotations",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Apply Annotations"
+            }
           }
         ],
         "responses": {
@@ -888,6 +908,16 @@
               "default": 10,
               "title": "Limit"
             }
+          },
+          {
+            "name": "apply_annotations",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Apply Annotations"
+            }
           }
         ],
         "responses": {
@@ -927,15 +957,27 @@
         "summary": "Search Images Exact Match",
         "description": "Exact match search of images with a specific attribute.\nMultiple parameters mean AND (as in, p1 AND p2).\nItems in lists with the `_any` suffix are ORed.\n\nAlthough `study_uuid` is optional, passing it if known is highly recommended and results in faster queries. Queries time out after 2 seconds, which should be enough for any search filtered by study.\n\nThis is likely to change fast, so **named arguments are recommended** in client apps instead of positional if possible to prevent downstream breakage.",
         "operationId": "search_images_exact_match",
+        "parameters": [
+          {
+            "name": "apply_annotations",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Apply Annotations"
+            }
+          }
+        ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/SearchImageFilter"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -943,10 +985,10 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/BIAImage"
                   },
-                  "type": "array",
                   "title": "Response Search Images Exact Match"
                 }
               }
@@ -974,15 +1016,27 @@
         "summary": "Search File References Exact Match",
         "description": "Exact match search of file references with a specific attribute.\nMultiple parameters mean AND (as in, p1 AND p2).\nItems in lists with the `_any` suffix are ORed.\n\nAlthough `study_uuid` is optional, passing it if known is highly recommended and results in faster queries. Queries time out after 2 seconds, which should be enough for any search filtered by study.\n\nThis is likely to change fast, so **named arguments are recommended** in client apps instead of positional if possible to prevent downstream breakage.\n\n`name` and `uri_prefix` queries are case insensitive",
         "operationId": "search_file_references_exact_match",
+        "parameters": [
+          {
+            "name": "apply_annotations",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Apply Annotations"
+            }
+          }
+        ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/SearchFileReferenceFilter"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -990,10 +1044,10 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/FileReference"
                   },
-                  "type": "array",
                   "title": "Response Search File References Exact Match"
                 }
               }
@@ -1020,15 +1074,27 @@
         ],
         "summary": "Search Studies Exact Match",
         "operationId": "search_studies_exact_match",
+        "parameters": [
+          {
+            "name": "apply_annotations",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Apply Annotations"
+            }
+          }
+        ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/SearchStudyFilter"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -1036,10 +1102,10 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/BIAStudy"
                   },
-                  "type": "array",
                   "title": "Response Search Studies Exact Match"
                 }
               }
@@ -1105,6 +1171,16 @@
               "default": 10,
               "title": "Limit"
             }
+          },
+          {
+            "name": "apply_annotations",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Apply Annotations"
+            }
           }
         ],
         "responses": {
@@ -1152,6 +1228,16 @@
               "type": "string",
               "format": "uuid",
               "title": "Image Uuid"
+            }
+          },
+          {
+            "name": "apply_annotations",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Apply Annotations"
             }
           }
         ],
@@ -1240,6 +1326,16 @@
               "type": "string",
               "title": "File Reference Uuid"
             }
+          },
+          {
+            "name": "apply_annotations",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Apply Annotations"
+            }
           }
         ],
         "responses": {
@@ -1290,6 +1386,16 @@
               ],
               "title": "Name"
             }
+          },
+          {
+            "name": "apply_annotations",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Apply Annotations"
+            }
           }
         ],
         "responses": {
@@ -1337,6 +1443,16 @@
               "type": "string",
               "format": "uuid",
               "title": "Collection Uuid"
+            }
+          },
+          {
+            "name": "apply_annotations",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Apply Annotations"
             }
           }
         ],
@@ -1408,6 +1524,26 @@
       },
       "BIACollection": {
         "properties": {
+          "attributes": {
+            "type": "object",
+            "title": "Attributes",
+            "description": "\n        When annotations are applied, the ones that have a key different than an object attribute (so they don't overwrite it) get saved here.\n    ",
+            "default": {}
+          },
+          "annotations_applied": {
+            "type": "boolean",
+            "title": "Annotations Applied",
+            "description": "\n        This acts as a dirty flag, with the purpose of telling apart objects that had some fields overwritten by applying annotations (so should be rejected when writing), and those that didn't.\n    ",
+            "default": false
+          },
+          "annotations": {
+            "items": {
+              "$ref": "#/components/schemas/CollectionAnnotation"
+            },
+            "type": "array",
+            "title": "Annotations",
+            "default": []
+          },
           "uuid": {
             "type": "string",
             "format": "uuid",
@@ -2008,6 +2144,33 @@
           "colormap_end"
         ],
         "title": "ChannelRendering"
+      },
+      "CollectionAnnotation": {
+        "properties": {
+          "author_email": {
+            "type": "string",
+            "title": "Author Email"
+          },
+          "key": {
+            "type": "string",
+            "title": "Key"
+          },
+          "value": {
+            "type": "string",
+            "title": "Value"
+          },
+          "state": {
+            "$ref": "#/components/schemas/AnnotationState"
+          }
+        },
+        "type": "object",
+        "required": [
+          "author_email",
+          "key",
+          "value",
+          "state"
+        ],
+        "title": "CollectionAnnotation"
       },
       "FileReference": {
         "properties": {

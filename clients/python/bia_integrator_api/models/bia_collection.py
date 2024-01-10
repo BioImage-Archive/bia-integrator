@@ -18,14 +18,18 @@ import re  # noqa: F401
 import json
 
 
-from typing import List, Optional
-from pydantic import BaseModel, Field, StrictInt, StrictStr, conlist
+from typing import Any, Dict, List, Optional
+from pydantic import BaseModel, Field, StrictBool, StrictInt, StrictStr, conlist
+from bia_integrator_api.models.collection_annotation import CollectionAnnotation
 from bia_integrator_api.models.model_metadata import ModelMetadata
 
 class BIACollection(BaseModel):
     """
     A collection of studies with a coherent purpose. Studies can be in multiple collections.
     """
+    attributes: Optional[Dict[str, Any]] = Field(None, description="         When annotations are applied, the ones that have a key different than an object attribute (so they don't overwrite it) get saved here.     ")
+    annotations_applied: Optional[StrictBool] = Field(False, description="         This acts as a dirty flag, with the purpose of telling apart objects that had some fields overwritten by applying annotations (so should be rejected when writing), and those that didn't.     ")
+    annotations: Optional[conlist(CollectionAnnotation)] = None
     uuid: StrictStr = Field(...)
     version: StrictInt = Field(...)
     model: Optional[ModelMetadata] = None
@@ -34,7 +38,7 @@ class BIACollection(BaseModel):
     subtitle: StrictStr = Field(...)
     description: Optional[StrictStr] = None
     study_uuids: Optional[conlist(StrictStr)] = None
-    __properties = ["uuid", "version", "model", "name", "title", "subtitle", "description", "study_uuids"]
+    __properties = ["attributes", "annotations_applied", "annotations", "uuid", "version", "model", "name", "title", "subtitle", "description", "study_uuids"]
 
     class Config:
         """Pydantic configuration"""
@@ -60,6 +64,13 @@ class BIACollection(BaseModel):
                           exclude={
                           },
                           exclude_none=True)
+        # override the default output from pydantic by calling `to_dict()` of each item in annotations (list)
+        _items = []
+        if self.annotations:
+            for _item in self.annotations:
+                if _item:
+                    _items.append(_item.to_dict())
+            _dict['annotations'] = _items
         # override the default output from pydantic by calling `to_dict()` of model
         if self.model:
             _dict['model'] = self.model.to_dict()
@@ -85,6 +96,9 @@ class BIACollection(BaseModel):
             return BIACollection.parse_obj(obj)
 
         _obj = BIACollection.parse_obj({
+            "attributes": obj.get("attributes"),
+            "annotations_applied": obj.get("annotations_applied") if obj.get("annotations_applied") is not None else False,
+            "annotations": [CollectionAnnotation.from_dict(_item) for _item in obj.get("annotations")] if obj.get("annotations") is not None else None,
             "uuid": obj.get("uuid"),
             "version": obj.get("version"),
             "model": ModelMetadata.from_dict(obj.get("model")) if obj.get("model") is not None else None,

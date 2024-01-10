@@ -129,6 +129,7 @@ Class | Method | HTTP request | Description
  - [BulkOperationItem](bia_integrator_api/docs/BulkOperationItem.md)
  - [BulkOperationResponse](bia_integrator_api/docs/BulkOperationResponse.md)
  - [ChannelRendering](bia_integrator_api/docs/ChannelRendering.md)
+ - [CollectionAnnotation](bia_integrator_api/docs/CollectionAnnotation.md)
  - [FileReference](bia_integrator_api/docs/FileReference.md)
  - [FileReferenceAnnotation](bia_integrator_api/docs/FileReferenceAnnotation.md)
  - [HTTPValidationError](bia_integrator_api/docs/HTTPValidationError.md)
