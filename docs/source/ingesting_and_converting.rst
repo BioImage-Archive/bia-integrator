@@ -10,7 +10,7 @@ To start, run the initial ingest:
 
 .. code-block:: console
 
-    % python scripts/ingest_from_biostudies.py S-BIAD679
+    % python tools/scripts/ingest_from_biostudies.py S-BIAD679
     INFO:bia_integrator_tools.biostudies:Fetching submission from https://www.ebi.ac.uk/biostudies/api/v1/studies/S-BIAD679
     INFO:bia_integrator_tools.biostudies:Fetching file list from https://www.ebi.ac.uk/biostudies/files/S-BIAD679/NBS1_U2OS_exp.json
     INFO:/Users/matthewh/projects/bia-integrator/tools/scripts/ingest_from_biostudies.py:Creating references for 57 files
@@ -36,7 +36,7 @@ We can create an image from one of those file references with:
 
 .. code-block:: console
 
-    % python scripts/assign_single_image_from_fileref.py S-BIAD679 68c58d29-d2c1-4cc9-8eb0-99fcb4439f51
+    % python tools/scripts/assign_single_image_from_fileref.py S-BIAD679 68c58d29-d2c1-4cc9-8eb0-99fcb4439f51
     INFO:/Users/matthewh/projects/bia-integrator/tools/scripts/assign_single_image_from_fileref.py:Assigned name alpha_1.tif
     INFO:bia_integrator_core.image:Writing image to /Users/matthewh/.bia-integrator-data/images/S-BIAD679/c0191704-3bf0-45d3-bc15-d9ca7a8a42c8.json
 
@@ -71,16 +71,16 @@ We can now run the conversion and upload process:
 
 .. code-block:: console
 
-    % python scripts/convert_to_zarr_and_upload.py S-BIAD679 c0191704-3bf0-45d3-bc15-d9ca7a8a42c8
+    % python tools/scripts/convert_to_zarr_and_upload.py S-BIAD679 c0191704-3bf0-45d3-bc15-d9ca7a8a42c8
 
 The post-conversion annotation script creates thumbnails and sets internal rendering information for images:
 
 .. code-block:: console
 
-    % python scripts/run_post_conversion_annotation.py S-BIAD679
+    % python tools/scripts/run_post_conversion_annotation.py S-BIAD679
 
 This script will generate a representative 2D image, and set it to be used to represent the whole dataaset:
 
 .. code-block:: console
 
-    % python scripts/generate_representative_image_and_set_to_default.py S-BIAD679 c0191704-3bf0-45d3-bc15-d9ca7a8a42c8
+    % python tools/scripts/generate_representative_image_and_set_to_default.py S-BIAD679 c0191704-3bf0-45d3-bc15-d9ca7a8a42c8
