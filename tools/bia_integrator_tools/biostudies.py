@@ -137,12 +137,17 @@ class QueryResult(BaseModel):
 
 # API functions
 
+# modify request header as biostudies is currently (10/01/2024)
+# preventing requests with "python-request" in the user-agent
+# due to a dos attack
+HEADERS = {'User-Agent': 'bia-integrator'}
 
 def load_submission(accession_id: str) -> Submission:
 
     url = STUDY_URL_TEMPLATE.format(accession=accession_id)
     logger.info(f"Fetching submission from {url}")
-    r = requests.get(url)
+
+    r = requests.get(url, headers=HEADERS)
 
     assert r.status_code == 200
 
@@ -190,7 +195,7 @@ def flist_from_flist_fname(accession_id: str, flist_fname: str, extra_attribute=
         accession_id=accession_id, flist_fname=flist_fname
     )
 
-    r = requests.get(flist_url)
+    r = requests.get(flist_url, headers=HEADERS)
     logger.info(f"Fetching file list from {flist_url}")
     assert r.status_code == 200
 
@@ -225,7 +230,7 @@ def get_file_uri_template_for_accession(accession_id: str) -> str:
     the URI for a given file."""
 
     request_uri = f"https://www.ebi.ac.uk/biostudies/api/v1/studies/{accession_id}/info"
-    r = requests.get(request_uri)
+    r = requests.get(request_uri, headers=HEADERS)
     raw_obj = json.loads(r.content)
     # Strip the initial ftp from the ftp link, replace by http and add /Files
     accession_base_uri = "https" + raw_obj["ftpLink"][3:] + "/Files"
