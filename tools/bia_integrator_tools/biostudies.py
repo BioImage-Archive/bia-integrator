@@ -140,7 +140,7 @@ class QueryResult(BaseModel):
 # modify request header as biostudies is currently (10/01/2024)
 # preventing requests with "python-request" in the user-agent
 # due to a dos attack
-HEADERS = {'User-Agent': 'bia-api-request'}
+HEADERS = {'User-Agent': 'bia-integrator'}
 
 def load_submission(accession_id: str) -> Submission:
 
