@@ -7,6 +7,7 @@ from bia_integrator_core.interface import api_models
 
 import re
 from urllib.request import urlopen
+from urllib.error import HTTPError
 import tempfile
 
 @click.command()
@@ -44,7 +45,12 @@ def main(accession_id):
         )
         logging.info(f"Setting {ome_ngff_uri} as the ome xml of image {image.uuid}")
 
-        ome_metadata_contents = urlopen(ome_ngff_uri).read()
+        try:
+            ome_metadata_contents = urlopen(ome_ngff_uri).read()
+        except HTTPError as e:
+            error_message = f"Could not retrieve OME XML from {ome_ngff_uri} error message was {e}.\n\nImage {image.uuid} not updated with OME info."
+            logging.warn(error_message)
+            continue
         with tempfile.NamedTemporaryFile() as tmp:
             tmp.write(ome_metadata_contents)
             # THIS IS MEGA-IMPORTANT!

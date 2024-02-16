@@ -58,8 +58,8 @@ class NGFFProxyImage(object):
 
         if len(self.array_paths) == 0: self.array_paths = ["0",]
 
-        self._init_darray()
         self.ngff_metadata = ZMeta.parse_obj(self.zgroup.attrs.asdict())
+        self._init_darray()
     
     def _get_array_paths(self, name, obj):
         """Get the paths of groups containing array data"""
@@ -82,6 +82,38 @@ class NGFFProxyImage(object):
 
     def _init_darray(self):
         self.darray = dask_array_from_ome_ngff_uri(self.uri, self.array_paths[0])
+
+        # Try to get axes info from image metadata - if this goes wrong
+        # or if image is plate well, fallback to old method
+        try:
+            axes = self.ngff_metadata.multiscales[0].axes
+            if axes is not None and len(axes) > 2:
+                size_t, size_c, size_z, size_y, size_x = (1,1,1,1,1)
+                for index, axis in enumerate(axes):
+                    # The conditional statements below could be avoided
+                    # using eval(f"size_{axis.name} = self.darray.shape[index]")
+                    if axis.name == "t":
+                        size_t = self.darray.shape[index]
+                    elif axis.name == "c":
+                        size_c = self.darray.shape[index]
+                    elif axis.name == "z":
+                        size_z = self.darray.shape[index]
+                    elif axis.name == "y":
+                        size_y = self.darray.shape[index]
+                    elif axis.name == "x":
+                        size_x = self.darray.shape[index]
+
+                self.size_t = size_t
+                self.size_c = size_c
+                self.size_z = size_z
+                self.size_y = size_y
+                self.size_x = size_x
+                return
+            else:
+                raise Exception("NGFF metadata ({axes}) less than 2 entries")
+        except Exception as e:
+            message = f"Could not get axes info from NGFF. Message was {e}. Falling back to old method"
+        
 
         # FIXME - this is not a reliable way to determine which dimensions are present in which
         # order, we should be parsing the NGFF metadata to do this

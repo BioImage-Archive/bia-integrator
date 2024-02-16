@@ -182,13 +182,13 @@ def images_list(accession_id: str, output: OutputFormat = OutputFormat.PRETTY):
 @images_app.command("show")
 def images_show(
         image_uuid_or_alias: str,
-        accession_id: Annotated[Optional[str], typer.Argument(default=None)],
+        accession_id: Annotated[Optional[str], typer.Argument(default=None)] = None,
         apply_annotations: bool = True,
         output: OutputFormat = OutputFormat.PRETTY
     ):
     """
     Single argument: Must be the image UUID
-    Two arguments: Image alias first, then accession_id
+    If --accession_id used, then first argument must be Image alias
     """
 
     img = None
