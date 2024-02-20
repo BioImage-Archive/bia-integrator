@@ -140,8 +140,7 @@ def sizeof_fmt(num, suffix="B"):
 
 @filerefs_app.command("list")
 def list_filerefs(accession_id: str, apply_annotations: bool = True, output: OutputFormat = OutputFormat.PRETTY):
-    bia_study = get_study(accession_id)
-    study_filerefs = get_filerefs(bia_study.uuid, apply_annotations=apply_annotations)
+    study_filerefs = get_filerefs(accession_id, apply_annotations=apply_annotations)
 
     for fileref in study_filerefs:
         readable_size = sizeof_fmt(fileref.size_in_bytes)
