@@ -12,11 +12,11 @@ pip install -e .
 
 ```sh
 # Note that only config.json is gitignored
-cp template_config.json config.json
+cp src/template_config.json src/config.json
 
 # change with actual credentials
 # object key is environment name
-vim config.json
+vim src/config.json
 
 ## Example run
 # note --env position (it's an option for the main "app")
@@ -27,9 +27,9 @@ poetry run python src/migration.py --env=beta studies recount EMPIAR-10988
 ## Migrating data repo to api on local
 
 1. Follow the api readme to get an api instance running.
-2. Run `python migration.py` to migrate all studies
-3.  To avoid the start-from-scratch requirement during debugging, `python migration.py S-BIAD123 S-BIAD234` will only migrate the two studies (or any number of studies given as space-delimited parameters) but will still fail for any conflict and the environment will need to be recreated
-
+2. Run `python src/migration.py --env=beta studies migrate_all` to migrate all studies
+3. To avoid the start-from-scratch requirement during debugging, `python src/migration.py --env=beta studies migrate_one S-BIAD234` will only migrate the two studies (or any number of studies given as space-delimited parameters) but will still fail for any conflict and the environment will need to be recreated
+4. To see other options use the help `python src/migration.py studies --help`
 ## Recreating the environment
 
 The migration assumes everything works - either because necessary adjustments are already in the code or studies that need to be skipped are removed. If anything breaks, **all the api data needs to be deleted** before it can be re-run after fixing. This is to simplify this one-off operation.

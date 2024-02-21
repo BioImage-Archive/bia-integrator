@@ -4,12 +4,14 @@ version = "0.1.0"
 description = ""
 authors = ["Liviu Anita <liviu@ebi.ac.uk>"]
 readme = "Readme.md"
-packages = [{include = "migration.py"}]
+packages = [{include = "src/migration.py"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
 bia-integrator-api = { path = "../clients/python/", develop = true }
 typer = {extras = ["all"], version = "^0.7.0"}
+ome-types = "^0.5.0"
+requests = "^2.31.0"
 
 
 [build-system]
