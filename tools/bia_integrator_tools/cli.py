@@ -168,7 +168,6 @@ def images_list(accession_id: str, output: OutputFormat = OutputFormat.PRETTY):
 
     for image in images:
         rep_rep = ','.join(rep.type for rep in image.representations) if image.representations else "NO REPRESENTATIONS"
-        typer.echo(f"{image.uuid} {image.original_relpath} {rep_rep}")
 
         if output == OutputFormat.PRETTY:
             typer.echo(f"{image.uuid} {image.original_relpath} {rep_rep}")
@@ -228,12 +227,12 @@ def recount(accession_id: str):
 @studies_app.command("list")
 def studies_list(output: OutputFormat = OutputFormat.PRETTY):
     studies = get_all_studies()
-    study_accnos = [study.accession_id for study in studies]
+    study_ids = [f"{study.accession_id}:{study.uuid}" for study in studies]
 
     if output == OutputFormat.PRETTY:
-        typer.echo('\n'.join(sorted(study_accnos)))
+        typer.echo('\n'.join(sorted(study_ids)))
     elif output == OutputFormat.JSON:
-        OutputFormat.print_json(study_accnos)
+        OutputFormat.print_json(study_ids)
 
 
 @annotations_app.command("list-study")
@@ -327,23 +326,23 @@ def list_collections(output: OutputFormat = OutputFormat.PRETTY):
         OutputFormat.print_json(collections)
 
 @collections_app.command("create")
-def create_collection(name: str, title: str, subtitle: str, accessions_list: str):    
+def create_collection(name: str, title: str, subtitle: str, study_uuid_list: str):    
     collection = api_models.BIACollection(
         uuid=str(UUID(int=int(time.time()*1000000))),
         version=0,
         name=name,
         title=title,
         subtitle=subtitle,
-        study_uuids=accessions_list.split(",")
+        study_uuids=study_uuid_list.split(",")
     )
     persist_collection(collection)
 
 
 @collections_app.command("add-study")
-def add_study_to_collection(collection_name: str, accession_id: str):
+def add_study_to_collection(collection_name: str, study_uuid: str):
     collection = get_collection(collection_name)
     
-    collection.study_uuids.append(accession_id)
+    collection.study_uuids.append(study_uuid)
 
     update_collection(collection)
 
