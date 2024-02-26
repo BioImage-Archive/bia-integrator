@@ -201,7 +201,7 @@ class BIAImageRepresentation(BIABaseModel):
     rendering: Optional[RenderingInfo] = Field(default=None)
 
 
-class Biosample(BIABaseModel):
+class Biosample(BIABaseModel, DocumentMixin):
     title: str = (
         Field()
     )  # is this a ST-only concern, or does it make sense for it to be in the models?
@@ -218,7 +218,7 @@ class Biosample(BIABaseModel):
 
 
 class Specimen(BIABaseModel, DocumentMixin):
-    biosample: Biosample = Field()
+    biosample_uuid: Biosample = Field()
 
     title: str = (
         Field()
