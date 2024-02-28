@@ -224,6 +224,7 @@ def get_template_image(existing_study: dict, add_uuid=False):
         "dimensions": None,
         "alias": None,
         "representations": [],
+        "image_acquisition_methods_uuid": [],
     }
 
 

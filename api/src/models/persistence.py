@@ -62,7 +62,7 @@ class DocumentMixin(BaseModel):
         super().__init__(*args, **data)
 
 
-class AnnotationState(Enum):
+class AnnotationState(str, Enum):
     active = "active"
     deleted = "deleted"
 
