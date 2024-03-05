@@ -530,6 +530,264 @@
         ]
       }
     },
+    "/api/v1/private/image_acquisitions": {
+      "post": {
+        "tags": [
+          "private"
+        ],
+        "summary": "Create Image Acquisition",
+        "operationId": "create_image_acquisition",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageAcquisition"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "private"
+        ],
+        "summary": "Update Image Acquisition",
+        "operationId": "update_image_acquisition",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageAcquisition"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/private/specimens": {
+      "post": {
+        "tags": [
+          "private"
+        ],
+        "summary": "Create Specimen",
+        "operationId": "create_specimen",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageAcquisition"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "private"
+        ],
+        "summary": "Update Specimen",
+        "operationId": "update_specimen",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Specimen"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/private/biosamples": {
+      "post": {
+        "tags": [
+          "private"
+        ],
+        "summary": "Create Biosample",
+        "operationId": "create_biosample",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Biosample"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "private"
+        ],
+        "summary": "Update Biosample",
+        "operationId": "update_biosample",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Biosample"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
     "/api/v1/private/images/{image_uuid}/ome_metadata": {
       "post": {
         "tags": [
@@ -1265,6 +1523,138 @@
         }
       }
     },
+    "/api/v1/image_acquisitions/{image_acquisition_uuid}": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Get Image Acquisition",
+        "operationId": "get_image_acquisition",
+        "parameters": [
+          {
+            "name": "image_acquisition_uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Image Acquisition Uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImageAcquisition"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/biosamples/{biosample_uuid}": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Get Biosample",
+        "operationId": "get_biosample",
+        "parameters": [
+          {
+            "name": "biosample_uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Biosample Uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Biosample"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/specimens/{specimen_uuid}": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Get Specimen",
+        "operationId": "get_specimen",
+        "parameters": [
+          {
+            "name": "specimen_uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Specimen Uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Specimen"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/images/{image_uuid}/ome_metadata": {
       "get": {
         "tags": [
@@ -1696,6 +2086,16 @@
                 "type": "null"
               }
             ]
+          },
+          "image_acquisition_methods_uuid": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "title": "Image Acquisition Methods Uuid",
+            "description": "Context in which the image was acquired. This list often has one item, but it can occasionally have more (e.g. for multimodal imaging)",
+            "default": []
           }
         },
         "additionalProperties": false,
@@ -1952,6 +2352,104 @@
           "accession_id"
         ],
         "title": "BIAStudy"
+      },
+      "Biosample": {
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Uuid"
+          },
+          "version": {
+            "type": "integer",
+            "title": "Version"
+          },
+          "model": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ModelMetadata"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "organism_scientific_name": {
+            "type": "string",
+            "title": "Organism Scientific Name"
+          },
+          "organism_common_name": {
+            "type": "string",
+            "title": "Organism Common Name"
+          },
+          "organism_ncbi_taxon": {
+            "type": "string",
+            "title": "Organism Ncbi Taxon"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "biological_entity": {
+            "type": "string",
+            "title": "Biological Entity"
+          },
+          "experimental_variable": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Experimental Variable"
+          },
+          "extrinsic_variable": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Extrinsic Variable",
+            "description": "External treatment (e.g. reagent)."
+          },
+          "intrinsic_variable": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Intrinsic Variable",
+            "description": "Intrinsic (e.g. genetic) alteration."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "uuid",
+          "version",
+          "title",
+          "organism_scientific_name",
+          "organism_common_name",
+          "organism_ncbi_taxon",
+          "description",
+          "biological_entity",
+          "experimental_variable",
+          "extrinsic_variable",
+          "intrinsic_variable"
+        ],
+        "title": "Biosample"
       },
       "Body_login_for_access_token": {
         "properties": {
@@ -2288,6 +2786,64 @@
         },
         "type": "object",
         "title": "HTTPValidationError"
+      },
+      "ImageAcquisition": {
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Uuid"
+          },
+          "version": {
+            "type": "integer",
+            "title": "Version"
+          },
+          "model": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ModelMetadata"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "specimen_uuid": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Specimen Uuid"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "imaging_instrument": {
+            "type": "string",
+            "title": "Imaging Instrument",
+            "description": "Textual description of the instrument used to capture the images."
+          },
+          "image_acquisition_parameters": {
+            "type": "string",
+            "title": "Image Acquisition Parameters",
+            "description": "How the images were acquired, including instrument settings/parameters."
+          },
+          "imaging_method": {
+            "type": "string",
+            "title": "Imaging Method"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "uuid",
+          "version",
+          "specimen_uuid",
+          "title",
+          "imaging_instrument",
+          "image_acquisition_parameters",
+          "imaging_method"
+        ],
+        "title": "ImageAcquisition"
       },
       "ImageAnnotation": {
         "properties": {
@@ -2790,6 +3346,57 @@
         },
         "type": "object",
         "title": "SearchStudyFilter"
+      },
+      "Specimen": {
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Uuid"
+          },
+          "version": {
+            "type": "integer",
+            "title": "Version"
+          },
+          "model": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ModelMetadata"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "biosample_uuid": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Biosample Uuid"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "sample_preparation_protocol": {
+            "type": "string",
+            "title": "Sample Preparation Protocol"
+          },
+          "growth_protocol": {
+            "type": "string",
+            "title": "Growth Protocol"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "uuid",
+          "version",
+          "biosample_uuid",
+          "title",
+          "sample_preparation_protocol",
+          "growth_protocol"
+        ],
+        "title": "Specimen"
       },
       "StudyAnnotation": {
         "properties": {

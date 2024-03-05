@@ -52,15 +52,15 @@ configuration.access_token = os.environ["ACCESS_TOKEN"]
 with bia_integrator_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = bia_integrator_api.PrivateApi(api_client)
-    bia_collection = bia_integrator_api.BIACollection() # BIACollection | 
+    biosample = bia_integrator_api.Biosample() # Biosample | 
 
     try:
-        # Create Collection
-        api_response = api_instance.create_collection(bia_collection)
-        print("The response of PrivateApi->create_collection:\n")
+        # Create Biosample
+        api_response = api_instance.create_biosample(biosample)
+        print("The response of PrivateApi->create_biosample:\n")
         pprint(api_response)
     except ApiException as e:
-        print("Exception when calling PrivateApi->create_collection: %s\n" % e)
+        print("Exception when calling PrivateApi->create_biosample: %s\n" % e)
 
 ```
 
@@ -70,17 +70,23 @@ All URIs are relative to *http://localhost*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
+*PrivateApi* | [**create_biosample**](bia_integrator_api/docs/PrivateApi.md#create_biosample) | **POST** /api/v1/private/biosamples | Create Biosample
 *PrivateApi* | [**create_collection**](bia_integrator_api/docs/PrivateApi.md#create_collection) | **POST** /api/v1/private/collections | Create Collection
 *PrivateApi* | [**create_file_references**](bia_integrator_api/docs/PrivateApi.md#create_file_references) | **POST** /api/v1/private/file_references | Create File References
+*PrivateApi* | [**create_image_acquisition**](bia_integrator_api/docs/PrivateApi.md#create_image_acquisition) | **POST** /api/v1/private/image_acquisitions | Create Image Acquisition
 *PrivateApi* | [**create_image_representation**](bia_integrator_api/docs/PrivateApi.md#create_image_representation) | **POST** /api/v1/private/images/{image_uuid}/representations/single | Create Image Representation
 *PrivateApi* | [**create_images**](bia_integrator_api/docs/PrivateApi.md#create_images) | **POST** /api/v1/private/images | Create Images
 *PrivateApi* | [**create_images_bulk**](bia_integrator_api/docs/PrivateApi.md#create_images_bulk) | **POST** /api/v1/private/images/bulk | Create Images Bulk
+*PrivateApi* | [**create_specimen**](bia_integrator_api/docs/PrivateApi.md#create_specimen) | **POST** /api/v1/private/specimens | Create Specimen
 *PrivateApi* | [**create_study**](bia_integrator_api/docs/PrivateApi.md#create_study) | **POST** /api/v1/private/studies | Create Study
+*PrivateApi* | [**get_biosample**](bia_integrator_api/docs/PrivateApi.md#get_biosample) | **GET** /api/v1/biosamples/{biosample_uuid} | Get Biosample
 *PrivateApi* | [**get_collection**](bia_integrator_api/docs/PrivateApi.md#get_collection) | **GET** /api/v1/collections/{collection_uuid} | Get Collection
 *PrivateApi* | [**get_file_reference**](bia_integrator_api/docs/PrivateApi.md#get_file_reference) | **GET** /api/v1/file_references/{file_reference_uuid} | Get File Reference
 *PrivateApi* | [**get_image**](bia_integrator_api/docs/PrivateApi.md#get_image) | **GET** /api/v1/images/{image_uuid} | Get Image
+*PrivateApi* | [**get_image_acquisition**](bia_integrator_api/docs/PrivateApi.md#get_image_acquisition) | **GET** /api/v1/image_acquisitions/{image_acquisition_uuid} | Get Image Acquisition
 *PrivateApi* | [**get_image_ome_metadata**](bia_integrator_api/docs/PrivateApi.md#get_image_ome_metadata) | **GET** /api/v1/images/{image_uuid}/ome_metadata | Get Image Ome Metadata
 *PrivateApi* | [**get_object_info_by_accession**](bia_integrator_api/docs/PrivateApi.md#get_object_info_by_accession) | **GET** /api/v1/object_info_by_accessions | Get Object Info By Accession
+*PrivateApi* | [**get_specimen**](bia_integrator_api/docs/PrivateApi.md#get_specimen) | **GET** /api/v1/specimens/{specimen_uuid} | Get Specimen
 *PrivateApi* | [**get_study**](bia_integrator_api/docs/PrivateApi.md#get_study) | **GET** /api/v1/studies/{study_uuid} | Get Study
 *PrivateApi* | [**get_study_file_references**](bia_integrator_api/docs/PrivateApi.md#get_study_file_references) | **GET** /api/v1/studies/{study_uuid}/file_references | Get Study File References
 *PrivateApi* | [**get_study_images**](bia_integrator_api/docs/PrivateApi.md#get_study_images) | **GET** /api/v1/studies/{study_uuid}/images | Get Study Images
@@ -95,14 +101,20 @@ Class | Method | HTTP request | Description
 *PrivateApi* | [**search_studies_exact_match**](bia_integrator_api/docs/PrivateApi.md#search_studies_exact_match) | **POST** /api/v1/search/studies/exact_match | Search Studies Exact Match
 *PrivateApi* | [**set_image_ome_metadata**](bia_integrator_api/docs/PrivateApi.md#set_image_ome_metadata) | **POST** /api/v1/private/images/{image_uuid}/ome_metadata | Set Image Ome Metadata
 *PrivateApi* | [**study_refresh_counts**](bia_integrator_api/docs/PrivateApi.md#study_refresh_counts) | **POST** /api/v1/private/studies/{study_uuid}/refresh_counts | Study Refresh Counts
+*PrivateApi* | [**update_biosample**](bia_integrator_api/docs/PrivateApi.md#update_biosample) | **PATCH** /api/v1/private/biosamples | Update Biosample
 *PrivateApi* | [**update_file_reference**](bia_integrator_api/docs/PrivateApi.md#update_file_reference) | **PATCH** /api/v1/private/file_references/single | Update File Reference
 *PrivateApi* | [**update_image**](bia_integrator_api/docs/PrivateApi.md#update_image) | **PATCH** /api/v1/private/images/single | Update Image
+*PrivateApi* | [**update_image_acquisition**](bia_integrator_api/docs/PrivateApi.md#update_image_acquisition) | **PATCH** /api/v1/private/image_acquisitions | Update Image Acquisition
+*PrivateApi* | [**update_specimen**](bia_integrator_api/docs/PrivateApi.md#update_specimen) | **PATCH** /api/v1/private/specimens | Update Specimen
 *PrivateApi* | [**update_study**](bia_integrator_api/docs/PrivateApi.md#update_study) | **PATCH** /api/v1/private/studies | Update Study
+*PublicApi* | [**get_biosample**](bia_integrator_api/docs/PublicApi.md#get_biosample) | **GET** /api/v1/biosamples/{biosample_uuid} | Get Biosample
 *PublicApi* | [**get_collection**](bia_integrator_api/docs/PublicApi.md#get_collection) | **GET** /api/v1/collections/{collection_uuid} | Get Collection
 *PublicApi* | [**get_file_reference**](bia_integrator_api/docs/PublicApi.md#get_file_reference) | **GET** /api/v1/file_references/{file_reference_uuid} | Get File Reference
 *PublicApi* | [**get_image**](bia_integrator_api/docs/PublicApi.md#get_image) | **GET** /api/v1/images/{image_uuid} | Get Image
+*PublicApi* | [**get_image_acquisition**](bia_integrator_api/docs/PublicApi.md#get_image_acquisition) | **GET** /api/v1/image_acquisitions/{image_acquisition_uuid} | Get Image Acquisition
 *PublicApi* | [**get_image_ome_metadata**](bia_integrator_api/docs/PublicApi.md#get_image_ome_metadata) | **GET** /api/v1/images/{image_uuid}/ome_metadata | Get Image Ome Metadata
 *PublicApi* | [**get_object_info_by_accession**](bia_integrator_api/docs/PublicApi.md#get_object_info_by_accession) | **GET** /api/v1/object_info_by_accessions | Get Object Info By Accession
+*PublicApi* | [**get_specimen**](bia_integrator_api/docs/PublicApi.md#get_specimen) | **GET** /api/v1/specimens/{specimen_uuid} | Get Specimen
 *PublicApi* | [**get_study**](bia_integrator_api/docs/PublicApi.md#get_study) | **GET** /api/v1/studies/{study_uuid} | Get Study
 *PublicApi* | [**get_study_file_references**](bia_integrator_api/docs/PublicApi.md#get_study_file_references) | **GET** /api/v1/studies/{study_uuid}/file_references | Get Study File References
 *PublicApi* | [**get_study_images**](bia_integrator_api/docs/PublicApi.md#get_study_images) | **GET** /api/v1/studies/{study_uuid}/images | Get Study Images
@@ -125,6 +137,7 @@ Class | Method | HTTP request | Description
  - [BIAImageOmeMetadata](bia_integrator_api/docs/BIAImageOmeMetadata.md)
  - [BIAImageRepresentation](bia_integrator_api/docs/BIAImageRepresentation.md)
  - [BIAStudy](bia_integrator_api/docs/BIAStudy.md)
+ - [Biosample](bia_integrator_api/docs/Biosample.md)
  - [BodyRegisterUser](bia_integrator_api/docs/BodyRegisterUser.md)
  - [BulkOperationItem](bia_integrator_api/docs/BulkOperationItem.md)
  - [BulkOperationResponse](bia_integrator_api/docs/BulkOperationResponse.md)
@@ -133,6 +146,7 @@ Class | Method | HTTP request | Description
  - [FileReference](bia_integrator_api/docs/FileReference.md)
  - [FileReferenceAnnotation](bia_integrator_api/docs/FileReferenceAnnotation.md)
  - [HTTPValidationError](bia_integrator_api/docs/HTTPValidationError.md)
+ - [ImageAcquisition](bia_integrator_api/docs/ImageAcquisition.md)
  - [ImageAnnotation](bia_integrator_api/docs/ImageAnnotation.md)
  - [LocationInner](bia_integrator_api/docs/LocationInner.md)
  - [ModelMetadata](bia_integrator_api/docs/ModelMetadata.md)
@@ -146,6 +160,7 @@ Class | Method | HTTP request | Description
  - [SearchImageFilter](bia_integrator_api/docs/SearchImageFilter.md)
  - [SearchStudy](bia_integrator_api/docs/SearchStudy.md)
  - [SearchStudyFilter](bia_integrator_api/docs/SearchStudyFilter.md)
+ - [Specimen](bia_integrator_api/docs/Specimen.md)
  - [StartUuid](bia_integrator_api/docs/StartUuid.md)
  - [StudyAnnotation](bia_integrator_api/docs/StudyAnnotation.md)
  - [ValidationError](bia_integrator_api/docs/ValidationError.md)

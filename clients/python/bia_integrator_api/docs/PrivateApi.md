@@ -4,17 +4,23 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**create_biosample**](PrivateApi.md#create_biosample) | **POST** /api/v1/private/biosamples | Create Biosample
 [**create_collection**](PrivateApi.md#create_collection) | **POST** /api/v1/private/collections | Create Collection
 [**create_file_references**](PrivateApi.md#create_file_references) | **POST** /api/v1/private/file_references | Create File References
+[**create_image_acquisition**](PrivateApi.md#create_image_acquisition) | **POST** /api/v1/private/image_acquisitions | Create Image Acquisition
 [**create_image_representation**](PrivateApi.md#create_image_representation) | **POST** /api/v1/private/images/{image_uuid}/representations/single | Create Image Representation
 [**create_images**](PrivateApi.md#create_images) | **POST** /api/v1/private/images | Create Images
 [**create_images_bulk**](PrivateApi.md#create_images_bulk) | **POST** /api/v1/private/images/bulk | Create Images Bulk
+[**create_specimen**](PrivateApi.md#create_specimen) | **POST** /api/v1/private/specimens | Create Specimen
 [**create_study**](PrivateApi.md#create_study) | **POST** /api/v1/private/studies | Create Study
+[**get_biosample**](PrivateApi.md#get_biosample) | **GET** /api/v1/biosamples/{biosample_uuid} | Get Biosample
 [**get_collection**](PrivateApi.md#get_collection) | **GET** /api/v1/collections/{collection_uuid} | Get Collection
 [**get_file_reference**](PrivateApi.md#get_file_reference) | **GET** /api/v1/file_references/{file_reference_uuid} | Get File Reference
 [**get_image**](PrivateApi.md#get_image) | **GET** /api/v1/images/{image_uuid} | Get Image
+[**get_image_acquisition**](PrivateApi.md#get_image_acquisition) | **GET** /api/v1/image_acquisitions/{image_acquisition_uuid} | Get Image Acquisition
 [**get_image_ome_metadata**](PrivateApi.md#get_image_ome_metadata) | **GET** /api/v1/images/{image_uuid}/ome_metadata | Get Image Ome Metadata
 [**get_object_info_by_accession**](PrivateApi.md#get_object_info_by_accession) | **GET** /api/v1/object_info_by_accessions | Get Object Info By Accession
+[**get_specimen**](PrivateApi.md#get_specimen) | **GET** /api/v1/specimens/{specimen_uuid} | Get Specimen
 [**get_study**](PrivateApi.md#get_study) | **GET** /api/v1/studies/{study_uuid} | Get Study
 [**get_study_file_references**](PrivateApi.md#get_study_file_references) | **GET** /api/v1/studies/{study_uuid}/file_references | Get Study File References
 [**get_study_images**](PrivateApi.md#get_study_images) | **GET** /api/v1/studies/{study_uuid}/images | Get Study Images
@@ -29,10 +35,86 @@ Method | HTTP request | Description
 [**search_studies_exact_match**](PrivateApi.md#search_studies_exact_match) | **POST** /api/v1/search/studies/exact_match | Search Studies Exact Match
 [**set_image_ome_metadata**](PrivateApi.md#set_image_ome_metadata) | **POST** /api/v1/private/images/{image_uuid}/ome_metadata | Set Image Ome Metadata
 [**study_refresh_counts**](PrivateApi.md#study_refresh_counts) | **POST** /api/v1/private/studies/{study_uuid}/refresh_counts | Study Refresh Counts
+[**update_biosample**](PrivateApi.md#update_biosample) | **PATCH** /api/v1/private/biosamples | Update Biosample
 [**update_file_reference**](PrivateApi.md#update_file_reference) | **PATCH** /api/v1/private/file_references/single | Update File Reference
 [**update_image**](PrivateApi.md#update_image) | **PATCH** /api/v1/private/images/single | Update Image
+[**update_image_acquisition**](PrivateApi.md#update_image_acquisition) | **PATCH** /api/v1/private/image_acquisitions | Update Image Acquisition
+[**update_specimen**](PrivateApi.md#update_specimen) | **PATCH** /api/v1/private/specimens | Update Specimen
 [**update_study**](PrivateApi.md#update_study) | **PATCH** /api/v1/private/studies | Update Study
 
+
+# **create_biosample**
+> object create_biosample(biosample)
+
+Create Biosample
+
+### Example
+
+* OAuth Authentication (OAuth2PasswordBearer):
+```python
+import time
+import os
+import bia_integrator_api
+from bia_integrator_api.models.biosample import Biosample
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PrivateApi(api_client)
+    biosample = bia_integrator_api.Biosample() # Biosample | 
+
+    try:
+        # Create Biosample
+        api_response = api_instance.create_biosample(biosample)
+        print("The response of PrivateApi->create_biosample:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PrivateApi->create_biosample: %s\n" % e)
+```
+
+
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **biosample** | [**Biosample**](Biosample.md)|  | 
+
+### Return type
+
+**object**
+
+### Authorization
+
+[OAuth2PasswordBearer](../README.md#OAuth2PasswordBearer)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**201** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **create_collection**
 > object create_collection(bia_collection)
@@ -163,6 +245,79 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**BulkOperationResponse**](BulkOperationResponse.md)
+
+### Authorization
+
+[OAuth2PasswordBearer](../README.md#OAuth2PasswordBearer)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**201** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **create_image_acquisition**
+> object create_image_acquisition(image_acquisition)
+
+Create Image Acquisition
+
+### Example
+
+* OAuth Authentication (OAuth2PasswordBearer):
+```python
+import time
+import os
+import bia_integrator_api
+from bia_integrator_api.models.image_acquisition import ImageAcquisition
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PrivateApi(api_client)
+    image_acquisition = bia_integrator_api.ImageAcquisition() # ImageAcquisition | 
+
+    try:
+        # Create Image Acquisition
+        api_response = api_instance.create_image_acquisition(image_acquisition)
+        print("The response of PrivateApi->create_image_acquisition:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PrivateApi->create_image_acquisition: %s\n" % e)
+```
+
+
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **image_acquisition** | [**ImageAcquisition**](ImageAcquisition.md)|  | 
+
+### Return type
+
+**object**
 
 ### Authorization
 
@@ -399,6 +554,79 @@ This endpoint does not need any parameter.
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+# **create_specimen**
+> object create_specimen(image_acquisition)
+
+Create Specimen
+
+### Example
+
+* OAuth Authentication (OAuth2PasswordBearer):
+```python
+import time
+import os
+import bia_integrator_api
+from bia_integrator_api.models.image_acquisition import ImageAcquisition
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PrivateApi(api_client)
+    image_acquisition = bia_integrator_api.ImageAcquisition() # ImageAcquisition | 
+
+    try:
+        # Create Specimen
+        api_response = api_instance.create_specimen(image_acquisition)
+        print("The response of PrivateApi->create_specimen:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PrivateApi->create_specimen: %s\n" % e)
+```
+
+
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **image_acquisition** | [**ImageAcquisition**](ImageAcquisition.md)|  | 
+
+### Return type
+
+**object**
+
+### Authorization
+
+[OAuth2PasswordBearer](../README.md#OAuth2PasswordBearer)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**201** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **create_study**
 > object create_study(bia_study)
 
@@ -468,6 +696,72 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **201** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **get_biosample**
+> Biosample get_biosample(biosample_uuid)
+
+Get Biosample
+
+### Example
+
+```python
+import time
+import os
+import bia_integrator_api
+from bia_integrator_api.models.biosample import Biosample
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PrivateApi(api_client)
+    biosample_uuid = 'biosample_uuid_example' # str | 
+
+    try:
+        # Get Biosample
+        api_response = api_instance.get_biosample(biosample_uuid)
+        print("The response of PrivateApi->get_biosample:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PrivateApi->get_biosample: %s\n" % e)
+```
+
+
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **biosample_uuid** | **str**|  | 
+
+### Return type
+
+[**Biosample**](Biosample.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
 **422** | Validation Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -676,6 +970,72 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+# **get_image_acquisition**
+> ImageAcquisition get_image_acquisition(image_acquisition_uuid)
+
+Get Image Acquisition
+
+### Example
+
+```python
+import time
+import os
+import bia_integrator_api
+from bia_integrator_api.models.image_acquisition import ImageAcquisition
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PrivateApi(api_client)
+    image_acquisition_uuid = 'image_acquisition_uuid_example' # str | 
+
+    try:
+        # Get Image Acquisition
+        api_response = api_instance.get_image_acquisition(image_acquisition_uuid)
+        print("The response of PrivateApi->get_image_acquisition:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PrivateApi->get_image_acquisition: %s\n" % e)
+```
+
+
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **image_acquisition_uuid** | **str**|  | 
+
+### Return type
+
+[**ImageAcquisition**](ImageAcquisition.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **get_image_ome_metadata**
 > BIAImageOmeMetadata get_image_ome_metadata(image_uuid)
 
@@ -790,6 +1150,72 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**List[ObjectInfo]**](ObjectInfo.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **get_specimen**
+> Specimen get_specimen(specimen_uuid)
+
+Get Specimen
+
+### Example
+
+```python
+import time
+import os
+import bia_integrator_api
+from bia_integrator_api.models.specimen import Specimen
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PrivateApi(api_client)
+    specimen_uuid = 'specimen_uuid_example' # str | 
+
+    try:
+        # Get Specimen
+        api_response = api_instance.get_specimen(specimen_uuid)
+        print("The response of PrivateApi->get_specimen:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PrivateApi->get_specimen: %s\n" % e)
+```
+
+
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **specimen_uuid** | **str**|  | 
+
+### Return type
+
+[**Specimen**](Specimen.md)
 
 ### Authorization
 
@@ -1803,6 +2229,79 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+# **update_biosample**
+> object update_biosample(biosample)
+
+Update Biosample
+
+### Example
+
+* OAuth Authentication (OAuth2PasswordBearer):
+```python
+import time
+import os
+import bia_integrator_api
+from bia_integrator_api.models.biosample import Biosample
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PrivateApi(api_client)
+    biosample = bia_integrator_api.Biosample() # Biosample | 
+
+    try:
+        # Update Biosample
+        api_response = api_instance.update_biosample(biosample)
+        print("The response of PrivateApi->update_biosample:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PrivateApi->update_biosample: %s\n" % e)
+```
+
+
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **biosample** | [**Biosample**](Biosample.md)|  | 
+
+### Return type
+
+**object**
+
+### Authorization
+
+[OAuth2PasswordBearer](../README.md#OAuth2PasswordBearer)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**201** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **update_file_reference**
 > object update_file_reference(file_reference)
 
@@ -1947,6 +2446,152 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **update_image_acquisition**
+> object update_image_acquisition(image_acquisition)
+
+Update Image Acquisition
+
+### Example
+
+* OAuth Authentication (OAuth2PasswordBearer):
+```python
+import time
+import os
+import bia_integrator_api
+from bia_integrator_api.models.image_acquisition import ImageAcquisition
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PrivateApi(api_client)
+    image_acquisition = bia_integrator_api.ImageAcquisition() # ImageAcquisition | 
+
+    try:
+        # Update Image Acquisition
+        api_response = api_instance.update_image_acquisition(image_acquisition)
+        print("The response of PrivateApi->update_image_acquisition:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PrivateApi->update_image_acquisition: %s\n" % e)
+```
+
+
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **image_acquisition** | [**ImageAcquisition**](ImageAcquisition.md)|  | 
+
+### Return type
+
+**object**
+
+### Authorization
+
+[OAuth2PasswordBearer](../README.md#OAuth2PasswordBearer)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**201** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **update_specimen**
+> object update_specimen(specimen)
+
+Update Specimen
+
+### Example
+
+* OAuth Authentication (OAuth2PasswordBearer):
+```python
+import time
+import os
+import bia_integrator_api
+from bia_integrator_api.models.specimen import Specimen
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PrivateApi(api_client)
+    specimen = bia_integrator_api.Specimen() # Specimen | 
+
+    try:
+        # Update Specimen
+        api_response = api_instance.update_specimen(specimen)
+        print("The response of PrivateApi->update_specimen:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PrivateApi->update_specimen: %s\n" % e)
+```
+
+
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **specimen** | [**Specimen**](Specimen.md)|  | 
+
+### Return type
+
+**object**
+
+### Authorization
+
+[OAuth2PasswordBearer](../README.md#OAuth2PasswordBearer)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**201** | Successful Response |  -  |
 **422** | Validation Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
