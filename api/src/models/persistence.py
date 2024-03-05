@@ -279,7 +279,7 @@ class BIAImage(BIABaseModel, DocumentMixin, AnnotatedMixin[ImageAnnotation]):
         default=[],
     )
 
-    model_config = ConfigDict(model_version_latest=1)
+    model_config = ConfigDict(model_version_latest=2)
 
 
 class BIACollection(BIABaseModel, DocumentMixin, AnnotatedMixin[CollectionAnnotation]):
