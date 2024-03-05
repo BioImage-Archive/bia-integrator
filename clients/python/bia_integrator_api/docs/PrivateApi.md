@@ -555,7 +555,7 @@ This endpoint does not need any parameter.
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **create_specimen**
-> object create_specimen(image_acquisition)
+> object create_specimen(specimen)
 
 Create Specimen
 
@@ -566,7 +566,7 @@ Create Specimen
 import time
 import os
 import bia_integrator_api
-from bia_integrator_api.models.image_acquisition import ImageAcquisition
+from bia_integrator_api.models.specimen import Specimen
 from bia_integrator_api.rest import ApiException
 from pprint import pprint
 
@@ -587,11 +587,11 @@ configuration.access_token = os.environ["ACCESS_TOKEN"]
 with bia_integrator_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = bia_integrator_api.PrivateApi(api_client)
-    image_acquisition = bia_integrator_api.ImageAcquisition() # ImageAcquisition | 
+    specimen = bia_integrator_api.Specimen() # Specimen | 
 
     try:
         # Create Specimen
-        api_response = api_instance.create_specimen(image_acquisition)
+        api_response = api_instance.create_specimen(specimen)
         print("The response of PrivateApi->create_specimen:\n")
         pprint(api_response)
     except Exception as e:
@@ -604,7 +604,7 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **image_acquisition** | [**ImageAcquisition**](ImageAcquisition.md)|  | 
+ **specimen** | [**Specimen**](Specimen.md)|  | 
 
 ### Return type
 
@@ -2297,7 +2297,7 @@ Name | Type | Description  | Notes
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**201** | Successful Response |  -  |
+**200** | Successful Response |  -  |
 **422** | Validation Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -2518,7 +2518,7 @@ Name | Type | Description  | Notes
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**201** | Successful Response |  -  |
+**200** | Successful Response |  -  |
 **422** | Validation Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -2591,7 +2591,7 @@ Name | Type | Description  | Notes
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**201** | Successful Response |  -  |
+**200** | Successful Response |  -  |
 **422** | Validation Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -2664,7 +2664,7 @@ Name | Type | Description  | Notes
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**201** | Successful Response |  -  |
+**200** | Successful Response |  -  |
 **422** | Validation Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)

@@ -1070,17 +1070,17 @@ class PrivateApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def create_specimen(self, image_acquisition : ImageAcquisition, **kwargs) -> object:  # noqa: E501
+    def create_specimen(self, specimen : Specimen, **kwargs) -> object:  # noqa: E501
         """Create Specimen  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.create_specimen(image_acquisition, async_req=True)
+        >>> thread = api.create_specimen(specimen, async_req=True)
         >>> result = thread.get()
 
-        :param image_acquisition: (required)
-        :type image_acquisition: ImageAcquisition
+        :param specimen: (required)
+        :type specimen: Specimen
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _request_timeout: timeout setting for this request. If one
@@ -1095,20 +1095,20 @@ class PrivateApi(object):
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
             raise ValueError("Error! Please call the create_specimen_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
-        return self.create_specimen_with_http_info(image_acquisition, **kwargs)  # noqa: E501
+        return self.create_specimen_with_http_info(specimen, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def create_specimen_with_http_info(self, image_acquisition : ImageAcquisition, **kwargs) -> ApiResponse:  # noqa: E501
+    def create_specimen_with_http_info(self, specimen : Specimen, **kwargs) -> ApiResponse:  # noqa: E501
         """Create Specimen  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.create_specimen_with_http_info(image_acquisition, async_req=True)
+        >>> thread = api.create_specimen_with_http_info(specimen, async_req=True)
         >>> result = thread.get()
 
-        :param image_acquisition: (required)
-        :type image_acquisition: ImageAcquisition
+        :param specimen: (required)
+        :type specimen: Specimen
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _preload_content: if False, the ApiResponse.data will
@@ -1137,7 +1137,7 @@ class PrivateApi(object):
         _params = locals()
 
         _all_params = [
-            'image_acquisition'
+            'specimen'
         ]
         _all_params.extend(
             [
@@ -1175,8 +1175,8 @@ class PrivateApi(object):
         _files = {}
         # process the body parameter
         _body_params = None
-        if _params['image_acquisition'] is not None:
-            _body_params = _params['image_acquisition']
+        if _params['specimen'] is not None:
+            _body_params = _params['specimen']
 
         # set the HTTP header `Accept`
         _header_params['Accept'] = self.api_client.select_header_accept(
@@ -4758,7 +4758,7 @@ class PrivateApi(object):
         _auth_settings = ['OAuth2PasswordBearer']  # noqa: E501
 
         _response_types_map = {
-            '201': "object",
+            '200': "object",
             '422': "HTTPValidationError",
         }
 
@@ -5195,7 +5195,7 @@ class PrivateApi(object):
         _auth_settings = ['OAuth2PasswordBearer']  # noqa: E501
 
         _response_types_map = {
-            '201': "object",
+            '200': "object",
             '422': "HTTPValidationError",
         }
 
@@ -5340,7 +5340,7 @@ class PrivateApi(object):
         _auth_settings = ['OAuth2PasswordBearer']  # noqa: E501
 
         _response_types_map = {
-            '201': "object",
+            '200': "object",
             '422': "HTTPValidationError",
         }
 
@@ -5485,7 +5485,7 @@ class PrivateApi(object):
         _auth_settings = ['OAuth2PasswordBearer']  # noqa: E501
 
         _response_types_map = {
-            '201': "object",
+            '200': "object",
             '422': "HTTPValidationError",
         }
 
