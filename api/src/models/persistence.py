@@ -220,7 +220,7 @@ class Biosample(BIABaseModel, DocumentMixin):
 
 
 class Specimen(BIABaseModel, DocumentMixin):
-    biosample_uuid: Biosample = Field()
+    biosample_uuid: UUID = Field()
 
     title: str = (
         Field()

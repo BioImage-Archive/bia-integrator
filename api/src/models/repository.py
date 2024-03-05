@@ -316,9 +316,7 @@ class Repository:
         for idx, doc_model in enumerate(doc_models):
             if doc_model.version != 0:
                 ref_bulk_operation_response.items[idx].status = 400
-                ref_bulk_operation_response.items[
-                    idx
-                ].message = (
+                ref_bulk_operation_response.items[idx].message = (
                     f"Error: Expected version to be 0, got {doc_model.version} instead"
                 )
 
@@ -361,9 +359,9 @@ class Repository:
                         ]
 
                         ref_bulk_operation_response.items[doc_model_index].status = 400
-                        ref_bulk_operation_response.items[
-                            doc_model_index
-                        ].message = doc_write_error["errmsg"]
+                        ref_bulk_operation_response.items[doc_model_index].message = (
+                            doc_write_error["errmsg"]
+                        )
 
         # remaining unchanged status codes are all for documents that were persisted
         for insert_response_item in ref_bulk_operation_response.items:
