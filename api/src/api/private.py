@@ -32,7 +32,7 @@ async def create_study(study: db_models.BIAStudy, db: Repository = Depends()) ->
     return None
 
 
-@router.patch("/studies", status_code=status.HTTP_201_CREATED)
+@router.patch("/studies", status_code=status.HTTP_200_OK)
 async def update_study(study: db_models.BIAStudy, db: Repository = Depends()) -> None:
     logging.info(f"Updating study {study.accession_id}. New version: {study.version}")
     await db.update_doc(study)
@@ -198,7 +198,7 @@ async def create_image_acquisition(
     return None
 
 
-@router.patch("/image_acquisitions", status_code=status.HTTP_201_CREATED)
+@router.patch("/image_acquisitions", status_code=status.HTTP_200_OK)
 async def update_image_acquisition(
     image_acquisition: db_models.ImageAcquisition, db: Repository = Depends()
 ) -> None:
@@ -212,7 +212,7 @@ async def update_image_acquisition(
 
 @router.post("/specimens", status_code=status.HTTP_201_CREATED)
 async def create_specimen(
-    image_acquisition: db_models.ImageAcquisition, db: Repository = Depends()
+    image_acquisition: db_models.Specimen, db: Repository = Depends()
 ) -> None:
     logging.info(f"Creating specimen {image_acquisition.uuid}")
     await db.persist_doc(image_acquisition)
@@ -220,7 +220,7 @@ async def create_specimen(
     return None
 
 
-@router.patch("/specimens", status_code=status.HTTP_201_CREATED)
+@router.patch("/specimens", status_code=status.HTTP_200_OK)
 async def update_specimen(
     specimen: db_models.Specimen, db: Repository = Depends()
 ) -> None:
@@ -240,7 +240,7 @@ async def create_biosample(
     return None
 
 
-@router.patch("/biosamples", status_code=status.HTTP_201_CREATED)
+@router.patch("/biosamples", status_code=status.HTTP_200_OK)
 async def update_biosample(
     biosample: db_models.Biosample, db: Repository = Depends()
 ) -> None:

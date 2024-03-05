@@ -387,12 +387,13 @@ async def get_biosample(
 
     return biosample
 
+
 @router.get("/specimens/{specimen_uuid}")
 async def get_specimen(
     specimen_uuid: UUID,
     db: Repository = Depends(),
 ) -> db_models.Specimen:
-    specimen = await db.get_image_acquisition(uuid=specimen_uuid)
+    specimen = await db.get_specimen(uuid=specimen_uuid)
 
     return specimen
 

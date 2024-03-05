@@ -218,6 +218,8 @@ class Biosample(BIABaseModel, DocumentMixin):
         description="Intrinsic (e.g. genetic) alteration."
     )
 
+    model_config = ConfigDict(model_version_latest=1)
+
 
 class Specimen(BIABaseModel, DocumentMixin):
     biosample_uuid: UUID = Field()
@@ -227,6 +229,8 @@ class Specimen(BIABaseModel, DocumentMixin):
     )  # is this a ST-only concern, or does it make sense for it to be in the models?
     sample_preparation_protocol: str = Field()
     growth_protocol: str = Field()
+
+    model_config = ConfigDict(model_version_latest=1)
 
 
 class ImageAcquisition(BIABaseModel, DocumentMixin):
@@ -244,6 +248,8 @@ class ImageAcquisition(BIABaseModel, DocumentMixin):
     imaging_method: str = (
         Field()
     )  # make this an Enum / restrict some other way? Distinguishing between "somewhat close to a controlled vocabulary" vs "completely free text" might be useful
+
+    model_config = ConfigDict(model_version_latest=1)
 
 
 class BIAImage(BIABaseModel, DocumentMixin, AnnotatedMixin[ImageAnnotation]):

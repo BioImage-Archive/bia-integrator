@@ -525,6 +525,30 @@ class Repository:
 
         return models.BIAImageOmeMetadata(**obj_image_ome_metadata)
 
+    async def get_image_acquisition(self, *args, **kwargs) -> models.ImageAcquisition:
+        doc = await self._get_doc_raw(*args, **kwargs)
+
+        if doc is None:
+            raise exceptions.DocumentNotFound("ImageAcquisition does not exist")
+
+        return models.ImageAcquisition(**doc)
+
+    async def get_biosample(self, *args, **kwargs) -> models.Biosample:
+        doc = await self._get_doc_raw(*args, **kwargs)
+
+        if doc is None:
+            raise exceptions.DocumentNotFound("Biosample does not exist")
+
+        return models.Biosample(**doc)
+
+    async def get_specimen(self, *args, **kwargs) -> models.Specimen:
+        doc = await self._get_doc_raw(*args, **kwargs)
+
+        if doc is None:
+            raise exceptions.DocumentNotFound("Specimen does not exist")
+
+        return models.Specimen(**doc)
+
 
 async def repository_create(init: bool) -> Repository:
     repository = Repository()
