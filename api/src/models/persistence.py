@@ -205,7 +205,9 @@ class Biosample(BIABaseModel, DocumentMixin):
     title: str = (
         Field()
     )  # is this a ST-only concern, or does it make sense for it to be in the models?
-    organism: str = Field()
+    organism_scientific_name: str = Field()
+    organism_common_name: str = Field()
+    organism_ncbi_taxon: str = Field()
     description: str = Field()
     biological_entity: str = Field()
     experimental_variable: Optional[str] = Field()
