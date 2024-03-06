@@ -112,7 +112,7 @@ def test_single_doc_create_idempotent(api_client: TestClient, existing_study):
 
 def test_single_doc_update_no_change_idempotent(api_client: TestClient, existing_study):
     rsp = api_client.patch("private/studies", json=existing_study)
-    assert rsp.status_code == 201
+    assert rsp.status_code == 200
 
 
 def test_single_doc_update_some_change_fails(api_client: TestClient, existing_study):

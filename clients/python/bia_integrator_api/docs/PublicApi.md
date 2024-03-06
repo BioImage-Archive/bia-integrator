@@ -4,11 +4,14 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**get_biosample**](PublicApi.md#get_biosample) | **GET** /api/v1/biosamples/{biosample_uuid} | Get Biosample
 [**get_collection**](PublicApi.md#get_collection) | **GET** /api/v1/collections/{collection_uuid} | Get Collection
 [**get_file_reference**](PublicApi.md#get_file_reference) | **GET** /api/v1/file_references/{file_reference_uuid} | Get File Reference
 [**get_image**](PublicApi.md#get_image) | **GET** /api/v1/images/{image_uuid} | Get Image
+[**get_image_acquisition**](PublicApi.md#get_image_acquisition) | **GET** /api/v1/image_acquisitions/{image_acquisition_uuid} | Get Image Acquisition
 [**get_image_ome_metadata**](PublicApi.md#get_image_ome_metadata) | **GET** /api/v1/images/{image_uuid}/ome_metadata | Get Image Ome Metadata
 [**get_object_info_by_accession**](PublicApi.md#get_object_info_by_accession) | **GET** /api/v1/object_info_by_accessions | Get Object Info By Accession
+[**get_specimen**](PublicApi.md#get_specimen) | **GET** /api/v1/specimens/{specimen_uuid} | Get Specimen
 [**get_study**](PublicApi.md#get_study) | **GET** /api/v1/studies/{study_uuid} | Get Study
 [**get_study_file_references**](PublicApi.md#get_study_file_references) | **GET** /api/v1/studies/{study_uuid}/file_references | Get Study File References
 [**get_study_images**](PublicApi.md#get_study_images) | **GET** /api/v1/studies/{study_uuid}/images | Get Study Images
@@ -19,6 +22,72 @@ Method | HTTP request | Description
 [**search_studies**](PublicApi.md#search_studies) | **GET** /api/v1/search/studies | Search Studies
 [**search_studies_exact_match**](PublicApi.md#search_studies_exact_match) | **POST** /api/v1/search/studies/exact_match | Search Studies Exact Match
 
+
+# **get_biosample**
+> Biosample get_biosample(biosample_uuid)
+
+Get Biosample
+
+### Example
+
+```python
+import time
+import os
+import bia_integrator_api
+from bia_integrator_api.models.biosample import Biosample
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PublicApi(api_client)
+    biosample_uuid = 'biosample_uuid_example' # str | 
+
+    try:
+        # Get Biosample
+        api_response = api_instance.get_biosample(biosample_uuid)
+        print("The response of PublicApi->get_biosample:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PublicApi->get_biosample: %s\n" % e)
+```
+
+
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **biosample_uuid** | **str**|  | 
+
+### Return type
+
+[**Biosample**](Biosample.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_collection**
 > BIACollection get_collection(collection_uuid, apply_annotations=apply_annotations)
@@ -224,6 +293,72 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+# **get_image_acquisition**
+> ImageAcquisition get_image_acquisition(image_acquisition_uuid)
+
+Get Image Acquisition
+
+### Example
+
+```python
+import time
+import os
+import bia_integrator_api
+from bia_integrator_api.models.image_acquisition import ImageAcquisition
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PublicApi(api_client)
+    image_acquisition_uuid = 'image_acquisition_uuid_example' # str | 
+
+    try:
+        # Get Image Acquisition
+        api_response = api_instance.get_image_acquisition(image_acquisition_uuid)
+        print("The response of PublicApi->get_image_acquisition:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PublicApi->get_image_acquisition: %s\n" % e)
+```
+
+
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **image_acquisition_uuid** | **str**|  | 
+
+### Return type
+
+[**ImageAcquisition**](ImageAcquisition.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **get_image_ome_metadata**
 > BIAImageOmeMetadata get_image_ome_metadata(image_uuid)
 
@@ -338,6 +473,72 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**List[ObjectInfo]**](ObjectInfo.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **get_specimen**
+> Specimen get_specimen(specimen_uuid)
+
+Get Specimen
+
+### Example
+
+```python
+import time
+import os
+import bia_integrator_api
+from bia_integrator_api.models.specimen import Specimen
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PublicApi(api_client)
+    specimen_uuid = 'specimen_uuid_example' # str | 
+
+    try:
+        # Get Specimen
+        api_response = api_instance.get_specimen(specimen_uuid)
+        print("The response of PublicApi->get_specimen:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PublicApi->get_specimen: %s\n" % e)
+```
+
+
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **specimen_uuid** | **str**|  | 
+
+### Return type
+
+[**Specimen**](Specimen.md)
 
 ### Authorization
 

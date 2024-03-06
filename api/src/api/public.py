@@ -368,6 +368,36 @@ async def get_image(
     return image
 
 
+@router.get("/image_acquisitions/{image_acquisition_uuid}")
+async def get_image_acquisition(
+    image_acquisition_uuid: UUID,
+    db: Repository = Depends(),
+) -> db_models.ImageAcquisition:
+    image_acquisition = await db.get_image_acquisition(uuid=image_acquisition_uuid)
+
+    return image_acquisition
+
+
+@router.get("/biosamples/{biosample_uuid}")
+async def get_biosample(
+    biosample_uuid: UUID,
+    db: Repository = Depends(),
+) -> db_models.Biosample:
+    biosample = await db.get_biosample(uuid=biosample_uuid)
+
+    return biosample
+
+
+@router.get("/specimens/{specimen_uuid}")
+async def get_specimen(
+    specimen_uuid: UUID,
+    db: Repository = Depends(),
+) -> db_models.Specimen:
+    specimen = await db.get_specimen(uuid=specimen_uuid)
+
+    return specimen
+
+
 @router.get("/images/{image_uuid}/ome_metadata")
 async def get_image_ome_metadata(
     image_uuid: UUID, db: Repository = Depends()

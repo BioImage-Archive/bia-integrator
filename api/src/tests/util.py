@@ -38,6 +38,21 @@ def existing_study(api_client: TestClient):
 
 
 @pytest.fixture(scope="function")
+def existing_biosample(api_client: TestClient):
+    return make_biosample(api_client)
+
+
+@pytest.fixture(scope="function")
+def existing_specimen(api_client: TestClient, existing_biosample: dict):
+    return make_specimen(api_client, existing_biosample)
+
+
+@pytest.fixture(scope="function")
+def existing_image_acquisition(api_client: TestClient, existing_specimen: dict):
+    return make_image_acquisition(api_client, existing_specimen)
+
+
+@pytest.fixture(scope="function")
 def existing_collection(api_client: TestClient):
     return make_collection(api_client)
 
@@ -158,22 +173,92 @@ def get_template_study(add_uuid=False):
     }
 
 
+def get_template_biosample(add_uuid=False):
+    biosample_uuid = None if not add_uuid else get_uuid()
+    return {
+        "uuid": biosample_uuid,
+        "version": 0,
+        "title": "placeholder_title",
+        "organism_scientific_name": "placeholder_organism_scientific_name",
+        "organism_common_name": "placeholder_organism_common_name",
+        "organism_ncbi_taxon": "placeholder_organism_ncbi_taxon",
+        "description": "placeholder_description",
+        "biological_entity": "placeholder_biological_entity",
+        "experimental_variables": ["placeholder_experimental_variable"],
+        "extrinsic_variables": ["placeholder_extrinsic_variable"],
+        "intrinsic_variables": ["placeholder_intrinsic_variable"],
+    }
+
+
+def get_template_specimen(existing_biosample, add_uuid=False):
+    specimen_uuid = None if not add_uuid else get_uuid()
+    return {
+        "uuid": specimen_uuid,
+        "version": 0,
+        "biosample_uuid": existing_biosample["uuid"],
+        "title": "placeholder_title",
+        "sample_preparation_protocol": "placeholder_sample_preparation_protocol",
+        "growth_protocol": "placeholder_growth_protocol",
+    }
+
+
+def get_template_image_acquisition(existing_specimen, add_uuid=False):
+    image_acquisition_uuid = None if not add_uuid else get_uuid()
+    return {
+        "uuid": image_acquisition_uuid,
+        "version": 0,
+        "specimen_uuid": existing_specimen["uuid"],
+        "title": "placeholder_title",
+        "imaging_instrument": "placeholder_imaging_instrument",
+        "image_acquisition_parameters": "placeholder_image_acquisition_parameters",
+        "imaging_method": "placeholder_imaging_method",
+    }
+
+
 def make_study(api_client: TestClient, study_attributes_override={}):
     study = get_template_study(add_uuid=True)
     study |= study_attributes_override
-
-    """
-    {
-        "name": "First Author"
-    }, {
-        "name": "Second Author"
-    }
-    """
 
     rsp = api_client.post("private/studies", json=study)
     assert rsp.status_code == 201, rsp.json()
 
     return get_study(api_client, study["uuid"])
+
+
+def make_biosample(api_client: TestClient, biosample_attributes_override={}):
+    biosample = get_template_biosample(add_uuid=True)
+    biosample |= biosample_attributes_override
+
+    rsp = api_client.post("private/biosamples", json=biosample)
+    assert rsp.status_code == 201, rsp.json()
+
+    return get_biosample(api_client, biosample["uuid"])
+
+
+def make_specimen(
+    api_client: TestClient, existing_biosample: dict, specimen_attributes_override={}
+):
+    specimen = get_template_specimen(existing_biosample, add_uuid=True)
+    specimen |= specimen_attributes_override
+
+    rsp = api_client.post("private/specimens", json=specimen)
+    assert rsp.status_code == 201, rsp.json()
+
+    return get_specimen(api_client, specimen["uuid"])
+
+
+def make_image_acquisition(
+    api_client: TestClient,
+    existing_specimen: dict,
+    image_acquisition_attributes_override={},
+):
+    image_acquisition = get_template_image_acquisition(existing_specimen, add_uuid=True)
+    image_acquisition |= image_acquisition_attributes_override
+
+    rsp = api_client.post("private/image_acquisitions", json=image_acquisition)
+    assert rsp.status_code == 201, rsp.json()
+
+    return get_image_acquisition(api_client, image_acquisition["uuid"])
 
 
 def get_template_file_reference(existing_study: dict, add_uuid=False):
@@ -213,7 +298,7 @@ def get_template_image(existing_study: dict, add_uuid=False):
         "uuid": None if not add_uuid else get_uuid(),
         "version": 0,
         "study_uuid": existing_study["uuid"],
-        "model": {"type_name": "BIAImage", "version": 1},
+        "model": {"type_name": "BIAImage", "version": 2},
         "name": f"image_name_value",
         "original_relpath": f"/home/test/image_path_value",
         "attributes": {
@@ -224,6 +309,7 @@ def get_template_image(existing_study: dict, add_uuid=False):
         "dimensions": None,
         "alias": None,
         "representations": [],
+        "image_acquisition_methods_uuid": [],
     }
 
 
@@ -273,6 +359,29 @@ def make_file_references(
 
 def get_study(api_client: TestClient, study_uuid: str, assert_status_code=200):
     rsp = api_client.get(f"studies/{study_uuid}")
+    assert rsp.status_code == assert_status_code
+
+    return rsp.json()
+
+
+def get_biosample(api_client: TestClient, biosample_uuid: str, assert_status_code=200):
+    rsp = api_client.get(f"biosamples/{biosample_uuid}")
+    assert rsp.status_code == assert_status_code
+
+    return rsp.json()
+
+
+def get_specimen(api_client: TestClient, specimen_uuid: str, assert_status_code=200):
+    rsp = api_client.get(f"specimens/{specimen_uuid}")
+    assert rsp.status_code == assert_status_code
+
+    return rsp.json()
+
+
+def get_image_acquisition(
+    api_client: TestClient, image_acquisition_uuid: str, assert_status_code=200
+):
+    rsp = api_client.get(f"image_acquisitions/{image_acquisition_uuid}")
     assert rsp.status_code == assert_status_code
 
     return rsp.json()

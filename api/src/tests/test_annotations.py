@@ -59,7 +59,7 @@ class TestStudyAnnotations(DBTestMixin):
             study_initial["version"] += 1
             study_initial["attributes"]["updated_attribute"] = "updated_value"
             rsp = api_client.patch("private/studies", json=study_initial)
-            assert rsp.status_code == 201, rsp.json()
+            assert rsp.status_code == 200, rsp.json()
 
         rsp = api_client.get(f"studies/{study_initial['uuid']}")
         assert rsp.status_code == 200

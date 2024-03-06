@@ -316,9 +316,7 @@ class Repository:
         for idx, doc_model in enumerate(doc_models):
             if doc_model.version != 0:
                 ref_bulk_operation_response.items[idx].status = 400
-                ref_bulk_operation_response.items[
-                    idx
-                ].message = (
+                ref_bulk_operation_response.items[idx].message = (
                     f"Error: Expected version to be 0, got {doc_model.version} instead"
                 )
 
@@ -361,9 +359,9 @@ class Repository:
                         ]
 
                         ref_bulk_operation_response.items[doc_model_index].status = 400
-                        ref_bulk_operation_response.items[
-                            doc_model_index
-                        ].message = doc_write_error["errmsg"]
+                        ref_bulk_operation_response.items[doc_model_index].message = (
+                            doc_write_error["errmsg"]
+                        )
 
         # remaining unchanged status codes are all for documents that were persisted
         for insert_response_item in ref_bulk_operation_response.items:
@@ -526,6 +524,30 @@ class Repository:
             )
 
         return models.BIAImageOmeMetadata(**obj_image_ome_metadata)
+
+    async def get_image_acquisition(self, *args, **kwargs) -> models.ImageAcquisition:
+        doc = await self._get_doc_raw(*args, **kwargs)
+
+        if doc is None:
+            raise exceptions.DocumentNotFound("ImageAcquisition does not exist")
+
+        return models.ImageAcquisition(**doc)
+
+    async def get_biosample(self, *args, **kwargs) -> models.Biosample:
+        doc = await self._get_doc_raw(*args, **kwargs)
+
+        if doc is None:
+            raise exceptions.DocumentNotFound("Biosample does not exist")
+
+        return models.Biosample(**doc)
+
+    async def get_specimen(self, *args, **kwargs) -> models.Specimen:
+        doc = await self._get_doc_raw(*args, **kwargs)
+
+        if doc is None:
+            raise exceptions.DocumentNotFound("Specimen does not exist")
+
+        return models.Specimen(**doc)
 
 
 async def repository_create(init: bool) -> Repository:

@@ -113,7 +113,7 @@ def test_update_study_wrong_version(api_client: TestClient, uuid: str):
 
     # updating an existing object is idempotent
     rsp = api_client.patch("private/studies", json=study)
-    assert rsp.status_code == 201
+    assert rsp.status_code == 200
 
     # skipping a version when updating an object shouldn't work
     study["version"] = 2
@@ -123,7 +123,7 @@ def test_update_study_wrong_version(api_client: TestClient, uuid: str):
     # updating with an incremented version number should work
     study["version"] = 1
     rsp = api_client.patch("private/studies", json=study)
-    assert rsp.status_code == 201
+    assert rsp.status_code == 200
 
     # updating with an old version number shouldn't work
     study["version"] = 0
@@ -177,7 +177,7 @@ def test_update_study_nested_objects_overwritten(
     existing_study["version"] = 1
 
     rsp = api_client.patch("private/studies", json=existing_study)
-    assert rsp.status_code == 201
+    assert rsp.status_code == 200
 
     study = api_client.get(f'studies/{existing_study["uuid"]}').json()
     assert study["authors"] == new_authors_list
