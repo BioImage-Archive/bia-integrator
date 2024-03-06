@@ -210,12 +210,12 @@ class Biosample(BIABaseModel, DocumentMixin):
     organism_ncbi_taxon: str = Field()
     description: str = Field()
     biological_entity: str = Field()
-    experimental_variable: Optional[str] = Field()
-    extrinsic_variable: Optional[str] = Field(
-        description="External treatment (e.g. reagent)."
+    experimental_variables: List[str] = Field(default=[])
+    extrinsic_variables: List[str] = Field(
+        description="External treatment (e.g. reagent).", default=[]
     )
-    intrinsic_variable: Optional[str] = Field(
-        description="Intrinsic (e.g. genetic) alteration."
+    intrinsic_variables: List[str] = Field(
+        description="Intrinsic (e.g. genetic) alteration.", default=[]
     )
 
     model_config = ConfigDict(model_version_latest=1)

@@ -21,9 +21,9 @@ def test_biosample_create_retrieve_update(api_client: TestClient, uuid: str):
         "organism_ncbi_taxon": "placeholder_organism_ncbi_taxon",
         "description": "placeholder_description",
         "biological_entity": "placeholder_biological_entity",
-        "experimental_variable": "placeholder_experimental_variable",
-        "extrinsic_variable": "placeholder_extrinsic_variable",
-        "intrinsic_variable": "placeholder_intrinsic_variable",
+        "experimental_variables": ["placeholder_experimental_variable"],
+        "extrinsic_variables": ["placeholder_extrinsic_variable"],
+        "intrinsic_variables": ["placeholder_intrinsic_variable"],
     }
     rsp = api_client.post(f"private/biosamples", json=biosample)
     assert rsp.status_code == 201, rsp.json()

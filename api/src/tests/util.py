@@ -184,9 +184,9 @@ def get_template_biosample(add_uuid=False):
         "organism_ncbi_taxon": "placeholder_organism_ncbi_taxon",
         "description": "placeholder_description",
         "biological_entity": "placeholder_biological_entity",
-        "experimental_variable": "placeholder_experimental_variable",
-        "extrinsic_variable": "placeholder_extrinsic_variable",
-        "intrinsic_variable": "placeholder_intrinsic_variable",
+        "experimental_variables": ["placeholder_experimental_variable"],
+        "extrinsic_variables": ["placeholder_extrinsic_variable"],
+        "intrinsic_variables": ["placeholder_intrinsic_variable"],
     }
 
 
@@ -298,7 +298,7 @@ def get_template_image(existing_study: dict, add_uuid=False):
         "uuid": None if not add_uuid else get_uuid(),
         "version": 0,
         "study_uuid": existing_study["uuid"],
-        "model": {"type_name": "BIAImage", "version": 1},
+        "model": {"type_name": "BIAImage", "version": 2},
         "name": f"image_name_value",
         "original_relpath": f"/home/test/image_path_value",
         "attributes": {
