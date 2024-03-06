@@ -13,9 +13,9 @@ Name | Type | Description | Notes
 **organism_ncbi_taxon** | **str** |  | 
 **description** | **str** |  | 
 **biological_entity** | **str** |  | 
-**experimental_variable** | **str** |  | 
-**extrinsic_variable** | **str** |  | 
-**intrinsic_variable** | **str** |  | 
+**experimental_variables** | **List[str]** |  | [optional] [default to []]
+**extrinsic_variables** | **List[str]** | External treatment (e.g. reagent). | [optional] [default to []]
+**intrinsic_variables** | **List[str]** | Intrinsic (e.g. genetic) alteration. | [optional] [default to []]
 
 ## Example
 
