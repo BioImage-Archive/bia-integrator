@@ -2398,40 +2398,31 @@
             "type": "string",
             "title": "Biological Entity"
           },
-          "experimental_variable": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Experimental Variable"
+          "experimental_variables": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Experimental Variables",
+            "default": []
           },
-          "extrinsic_variable": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Extrinsic Variable",
-            "description": "External treatment (e.g. reagent)."
+          "extrinsic_variables": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Extrinsic Variables",
+            "description": "External treatment (e.g. reagent).",
+            "default": []
           },
-          "intrinsic_variable": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Intrinsic Variable",
-            "description": "Intrinsic (e.g. genetic) alteration."
+          "intrinsic_variables": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Intrinsic Variables",
+            "description": "Intrinsic (e.g. genetic) alteration.",
+            "default": []
           }
         },
         "additionalProperties": false,
@@ -2444,10 +2435,7 @@
           "organism_common_name",
           "organism_ncbi_taxon",
           "description",
-          "biological_entity",
-          "experimental_variable",
-          "extrinsic_variable",
-          "intrinsic_variable"
+          "biological_entity"
         ],
         "title": "Biosample"
       },

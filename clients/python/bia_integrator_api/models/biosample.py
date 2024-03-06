@@ -18,8 +18,8 @@ import re  # noqa: F401
 import json
 
 
-from typing import Optional
-from pydantic import BaseModel, Field, StrictInt, StrictStr
+from typing import List, Optional
+from pydantic import BaseModel, Field, StrictInt, StrictStr, conlist
 from bia_integrator_api.models.model_metadata import ModelMetadata
 
 class Biosample(BaseModel):
@@ -35,10 +35,10 @@ class Biosample(BaseModel):
     organism_ncbi_taxon: StrictStr = Field(...)
     description: StrictStr = Field(...)
     biological_entity: StrictStr = Field(...)
-    experimental_variable: Optional[StrictStr] = Field(...)
-    extrinsic_variable: Optional[StrictStr] = Field(...)
-    intrinsic_variable: Optional[StrictStr] = Field(...)
-    __properties = ["uuid", "version", "model", "title", "organism_scientific_name", "organism_common_name", "organism_ncbi_taxon", "description", "biological_entity", "experimental_variable", "extrinsic_variable", "intrinsic_variable"]
+    experimental_variables: Optional[conlist(StrictStr)] = None
+    extrinsic_variables: Optional[conlist(StrictStr)] = Field(None, description="External treatment (e.g. reagent).")
+    intrinsic_variables: Optional[conlist(StrictStr)] = Field(None, description="Intrinsic (e.g. genetic) alteration.")
+    __properties = ["uuid", "version", "model", "title", "organism_scientific_name", "organism_common_name", "organism_ncbi_taxon", "description", "biological_entity", "experimental_variables", "extrinsic_variables", "intrinsic_variables"]
 
     class Config:
         """Pydantic configuration"""
@@ -72,21 +72,6 @@ class Biosample(BaseModel):
         if self.model is None and "model" in self.__fields_set__:
             _dict['model'] = None
 
-        # set to None if experimental_variable (nullable) is None
-        # and __fields_set__ contains the field
-        if self.experimental_variable is None and "experimental_variable" in self.__fields_set__:
-            _dict['experimental_variable'] = None
-
-        # set to None if extrinsic_variable (nullable) is None
-        # and __fields_set__ contains the field
-        if self.extrinsic_variable is None and "extrinsic_variable" in self.__fields_set__:
-            _dict['extrinsic_variable'] = None
-
-        # set to None if intrinsic_variable (nullable) is None
-        # and __fields_set__ contains the field
-        if self.intrinsic_variable is None and "intrinsic_variable" in self.__fields_set__:
-            _dict['intrinsic_variable'] = None
-
         return _dict
 
     @classmethod
@@ -108,9 +93,9 @@ class Biosample(BaseModel):
             "organism_ncbi_taxon": obj.get("organism_ncbi_taxon"),
             "description": obj.get("description"),
             "biological_entity": obj.get("biological_entity"),
-            "experimental_variable": obj.get("experimental_variable"),
-            "extrinsic_variable": obj.get("extrinsic_variable"),
-            "intrinsic_variable": obj.get("intrinsic_variable")
+            "experimental_variables": obj.get("experimental_variables"),
+            "extrinsic_variables": obj.get("extrinsic_variables"),
+            "intrinsic_variables": obj.get("intrinsic_variables")
         })
         return _obj
 
