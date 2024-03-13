@@ -18,6 +18,9 @@ passlib = {extras = ["bcrypt"], version = "^1.7.4"}
 python-jose = {extras = ["cryptography"], version = "^3.3.0"}
 python-multipart = "^0.0.6"
 ome-types = "^0.4.2"
+# transitive dependency from ome-types
+#   not directly needed except the latest version crashes the api on start
+xsdata = "23.8"
 lxml = "^4.9.3"
 
 [tool.poetry.group.dev.dependencies]
