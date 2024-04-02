@@ -333,7 +333,6 @@ def test_study_with_images_and_filerefs_fetch_images(
     images_fetched = set([img["uuid"] for img in rsp.json()])
     assert images_fetched == images_created
 
-
 def test_image_pagination(api_client: TestClient, existing_study: dict):
     images = make_images(api_client, existing_study, 5)
     images.sort(key=lambda img: UUID(img["uuid"]).hex)
@@ -345,7 +344,7 @@ def test_image_pagination(api_client: TestClient, existing_study: dict):
     images_fetched = rsp.json()
     assert len(images_fetched) == chunk_size
     images_chunk = images[:2]
-    assert images_chunk[0] == images_fetched[0]
+    assert images_chunk == images_fetched
 
     # 3,4
     rsp = api_client.get(

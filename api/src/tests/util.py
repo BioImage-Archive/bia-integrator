@@ -324,10 +324,11 @@ def make_images(
         image_template = get_template_image(existing_study)
 
     images = []
-    for _ in range(n):
+    for i in range(n):
         img = image_template.copy()
         if not img["uuid"]:
             img["uuid"] = get_uuid()
+            img["name"] += str(i)
 
         images.append(img)
 
@@ -348,6 +349,7 @@ def make_file_references(
         file_ref = file_reference_template.copy()
         if not file_ref["uuid"]:
             file_ref["uuid"] = get_uuid()
+            file_ref["name"] += str(i)
 
         file_references.append(file_ref)
 
@@ -404,10 +406,12 @@ def get_client(**kwargs) -> TestClient:
 
     return TestClient(app.app, base_url=TEST_SERVER_BASE_URL, **kwargs)
 
-
+uuid_seed_current = int(time.time() * 1e9)
 def get_uuid() -> str:
     # @TODO: make this constant and require mongo to always be clean?
-    generated = uuid_lib.UUID(int=int(time.time() * 1000000))
+    global uuid_seed_current
+    uuid_seed_current += 1
+    generated = uuid_lib.UUID(int=int(uuid_seed_current))
 
     return str(generated)
 

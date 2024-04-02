@@ -1,3 +1,18 @@
+### First time setup
+
+Run
+```
+poetry install
+```
+Will generate the following warning:
+```
+Warning: The current project could not be installed: No file/folder found for package bia-integrator-api
+If you do not want to install the current project use --no-root.
+If you want to use Poetry only for dependency management but not for packaging, you can set the operating mode to "non-package" in your pyproject.toml file.
+In a future version of Poetry this warning will become an error!
+```
+This can be ignored.
+
 ## Running the api
 
 ```sh
@@ -20,9 +35,54 @@ The response should be just `null` and there should be no errors in the api cont
 
 ## Development
 
-For test/debugger integration to work, **the api directory must be the root project directory in vscode**, not the bia-integrator directory 
+### Testing with VS CODE
 
-`.env_compose` was added for reference and 
+The instructions below assume you use VS Code for development.
+
+For test/debugger integration to work, **the api directory must be the root project directory in vscode**, not the bia-integrator directory.
+
+In order to run tests, the database needs to be up, which you can do by running the docker compose command listed above.
+
+You also need to have a `.env` file under the `/api/` folder. This configures the API that is tested to be able to access your locally running database. This .env file should not be committed to the package, as it would interact with the production service. You can copy & fill in the `.env_template` and use the `.env_compose` for reference.
+
+### Adding new tests
+
+Tests need to be created in a file starting with `test_` under the `tests` folder. They should be functions that start with `test_` e.g `def test_study_creation()` in the `test_study.py` file. This will allow vscode to identify them. 
+
+### Updating API code while testing.
+
+Can perform some on-the-fly testing by running the following commands:
+
+Build images and run contains:
+
+`docker compose --env-file ./.env_compose up --build -d`
+
+Create user:
+
+`curl -H "Content-Type: application/json" --request POST --data '{"email": "test@example.com", "password_plain": "test", "secret_token": "00123456789==" }'  http://localhost:8080/api/v1/auth/users/register`
+
+Get auth token
+
+`curl -H "Content-Type: application/x-www-form-urlencoded" --request POST --data 'username=test@example.com&password=test'  http://localhost:8080/api/v1/auth/token`
+
+Copy auth token which you can then use to make calls to the api. E.g. create a study:
+
+`curl -H "Content-Type: application/json" -H "Authorization: Bearer <auth token>" --request POST http://localhost:8080/api/v1/private/studies -d @study_input.json`
+
+You should be able to make your changes & can rebuild the api image with the command:
+
+`docker build -t api-bia-integrator-api:latest .`
+
+And then update the running container with your code.
+
+`docker-compose up -d`
+
+Alternatively, if using VS Code, you can open the code that is running in the docker container and make changes there directly.
+
+
+### Pushing to docker hub image registry
+
+To rebuild the api image and push it to the docker container registry.
 
 ```sh
 # Create a github personal access token here: https://github.com/settings/tokens
