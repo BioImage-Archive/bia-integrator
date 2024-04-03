@@ -327,7 +327,7 @@ class TestSearchStudiesExactMatch:
         )
         assert rsp.status_code == 200
         assert len(rsp.json()) == 1
-        assert rsp.json()[0] == study_fixtures[0]
+        assert study_fixtures[0] in rsp.json()
 
         rsp = api_client.post(
             "search/studies/exact_match",
@@ -340,7 +340,7 @@ class TestSearchStudiesExactMatch:
             },
         )
         assert rsp.status_code == 200
-        assert rsp.json() == [study_fixtures[1]]
+        assert unorderd_lists_equality([study_fixtures[1]], rsp.json())
 
         rsp = api_client.post(
             "search/studies/exact_match",
@@ -353,8 +353,7 @@ class TestSearchStudiesExactMatch:
             },
         )
         assert rsp.status_code == 200
-        assert rsp.json()[2] == study_fixtures[2]
-        assert rsp.json() == study_fixtures
+        assert unorderd_lists_equality(study_fixtures, rsp.json())
 
     def test_search_author(self, api_client: TestClient, study_fixtures: List[dict]):
         rsp = api_client.post(
@@ -367,7 +366,7 @@ class TestSearchStudiesExactMatch:
             },
         )
         assert rsp.status_code == 200
-        assert rsp.json() == study_fixtures[:-1]
+        assert unorderd_lists_equality(study_fixtures[:-1], rsp.json())
 
         rsp = api_client.post(
             "search/studies/exact_match",
@@ -379,7 +378,7 @@ class TestSearchStudiesExactMatch:
             },
         )
         assert rsp.status_code == 200
-        assert rsp.json() == [study_fixtures[0]]
+        assert unorderd_lists_equality([study_fixtures[0]], rsp.json())
 
         rsp = api_client.post(
             "search/studies/exact_match",
@@ -416,7 +415,7 @@ class TestSearchStudiesExactMatch:
             },
         )
         assert rsp.status_code == 200
-        assert rsp.json() == [study_fixtures[1]]
+        assert unorderd_lists_equality([study_fixtures[1]], rsp.json())
 
         rsp = api_client.post(
             "search/studies/exact_match",
@@ -428,7 +427,7 @@ class TestSearchStudiesExactMatch:
             },
         )
         assert rsp.status_code == 200
-        assert rsp.json() == study_fixtures[:-1]
+        assert unorderd_lists_equality(study_fixtures[:-1], rsp.json())
 
     def test_search_accession(self, api_client: TestClient, study_fixtures: List[dict]):
         rsp = api_client.post(
@@ -453,4 +452,5 @@ class TestSearchStudiesExactMatch:
             },
         )
         assert rsp.status_code == 200
-        assert rsp.json() == [study_fixtures[0]]
+        assert len(rsp.json()) == 1
+        assert study_fixtures[0] in rsp.json()

@@ -625,8 +625,7 @@ class TestSearchImagesExactMatch:
             },
         )
         assert rsp.status_code == 200
-        img_fetched = rsp.json()
-        assert img_fetched == [img_fixtures[0]]
+        assert unorderd_lists_equality([img_fixtures[0]], rsp.json())
 
         rsp = api_client.post(
             "search/images/exact_match",
@@ -641,7 +640,7 @@ class TestSearchImagesExactMatch:
             },
         )
         assert rsp.status_code == 200
-        assert rsp.json() == [img_fixtures[0]]
+        assert unorderd_lists_equality([img_fixtures[0]], rsp.json())
 
         rsp = api_client.post(
             "search/images/exact_match",
@@ -655,7 +654,7 @@ class TestSearchImagesExactMatch:
             },
         )
         assert rsp.status_code == 200
-        assert rsp.json() == [img_fixtures[0], img_fixtures[1]]
+        assert unorderd_lists_equality(img_fixtures[:2], rsp.json())
 
         rsp = api_client.post(
             "search/images/exact_match",
@@ -669,7 +668,7 @@ class TestSearchImagesExactMatch:
             },
         )
         assert rsp.status_code == 200
-        assert rsp.json() == [img_fixtures[0], img_fixtures[1]]
+        assert unorderd_lists_equality(img_fixtures[:2], rsp.json())
 
     def test_search_uri_prefix(
         self, api_client: TestClient, img_fixtures: List[dict], existing_study: dict
@@ -686,8 +685,8 @@ class TestSearchImagesExactMatch:
             },
         )
         assert rsp.status_code == 200
-        assert rsp.json() == [img_fixtures[0], img_fixtures[1]]
-
+        assert unorderd_lists_equality(img_fixtures[:2], rsp.json())
+        
     def test_search_uri_prefix_not_substring(
         self, api_client: TestClient, img_fixtures: List[dict], existing_study: dict
     ):
@@ -720,6 +719,7 @@ class TestSearchImagesExactMatch:
             },
         )
         assert rsp.status_code == 200
+        assert unorderd_lists_equality([img_fixtures[1]], rsp.json())
         assert rsp.json() == [img_fixtures[1]]
 
     def test_search_pagination(self, api_client: TestClient):

@@ -3,7 +3,6 @@ from .util import *
 import itertools
 from uuid import UUID
 
-
 def test_create_file_references(api_client: TestClient, existing_study: dict):
     uuids = [get_uuid() for _ in range(2)]
 
@@ -465,7 +464,7 @@ class TestSearchFilerefExactMatch:
             },
         )
         assert rsp.status_code == 200
-        assert rsp.json() == [fileref_fixtures[0], fileref_fixtures[2]]
+        assert unorderd_lists_equality([fileref_fixtures[0], fileref_fixtures[2]], rsp.json())
 
         rsp = api_client.post(
             "search/file_references/exact_match",
@@ -478,7 +477,7 @@ class TestSearchFilerefExactMatch:
             },
         )
         assert rsp.status_code == 200
-        assert rsp.json() == [fileref_fixtures[0]]
+        assert unorderd_lists_equality([fileref_fixtures[0]], rsp.json())
 
         rsp = api_client.post(
             "search/file_references/exact_match",
@@ -490,7 +489,7 @@ class TestSearchFilerefExactMatch:
             },
         )
         assert rsp.status_code == 200
-        assert rsp.json() == fileref_fixtures
+        assert unorderd_lists_equality(fileref_fixtures, rsp.json())
 
         rsp = api_client.post(
             "search/file_references/exact_match",
@@ -502,7 +501,7 @@ class TestSearchFilerefExactMatch:
             },
         )
         assert rsp.status_code == 200
-        assert rsp.json() == fileref_fixtures
+        assert unorderd_lists_equality(fileref_fixtures, rsp.json())
 
     def test_search_name(
         self, api_client: TestClient, fileref_fixtures: List[dict], existing_study: dict
@@ -517,7 +516,7 @@ class TestSearchFilerefExactMatch:
             },
         )
         assert rsp.status_code == 200
-        assert rsp.json() == [fileref_fixtures[0]]
+        assert unorderd_lists_equality([fileref_fixtures[0]], rsp.json())
 
     def test_search_uri_prefix(
         self, api_client: TestClient, fileref_fixtures: List[dict], existing_study: dict
@@ -532,7 +531,7 @@ class TestSearchFilerefExactMatch:
             },
         )
         assert rsp.status_code == 200
-        assert rsp.json() == [fileref_fixtures[0], fileref_fixtures[1]]
+        assert unorderd_lists_equality(fileref_fixtures[:2], rsp.json())
 
     def test_search_uri_prefix_not_substring(
         self, api_client: TestClient, fileref_fixtures: List[dict], existing_study: dict
@@ -562,7 +561,7 @@ class TestSearchFilerefExactMatch:
             },
         )
         assert rsp.status_code == 200
-        assert rsp.json() == [fileref_fixtures[1]]
+        assert unorderd_lists_equality([fileref_fixtures[1]], rsp.json())
 
     def test_search_pagination(self, api_client: TestClient):
         rsp = api_client.post(

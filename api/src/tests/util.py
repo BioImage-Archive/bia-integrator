@@ -10,6 +10,7 @@ import pytest_asyncio
 from ..models.repository import repository_create, Repository
 from ..api.auth import create_user, get_user
 import asyncio
+from collections import Counter 
 
 # @pytest.fixture
 # def api_client_private() -> TestClient:
@@ -345,7 +346,7 @@ def make_file_references(
         file_reference_template = get_template_file_reference(existing_study)
 
     file_references = []
-    for _ in range(n):
+    for i in range(n):
         file_ref = file_reference_template.copy()
         if not file_ref["uuid"]:
             file_ref["uuid"] = get_uuid()
@@ -406,15 +407,20 @@ def get_client(**kwargs) -> TestClient:
 
     return TestClient(app.app, base_url=TEST_SERVER_BASE_URL, **kwargs)
 
-uuid_seed_current = int(time.time() * 1e9)
 def get_uuid() -> str:
     # @TODO: make this constant and require mongo to always be clean?
-    global uuid_seed_current
-    uuid_seed_current += 1
-    generated = uuid_lib.UUID(int=int(uuid_seed_current))
+    generated = uuid_lib.uuid4()
 
     return str(generated)
 
+
+def unorderd_lists_equality(list1, list2) -> bool:
+    if len(list1) == len(list2):
+        for elem1 in list1:
+            if list1.count(elem1) != list2.count(elem1):
+                return False
+        return True
+    return False
 
 def assert_bulk_response_items_correct(
     api_client: TestClient,
