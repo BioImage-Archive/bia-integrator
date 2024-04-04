@@ -1,5 +1,17 @@
 from fastapi.testclient import TestClient
-from .util import *
+import pytest
+from typing import List
+from .util import (
+    get_uuid, 
+    make_file_references, 
+    make_images, 
+    make_study, 
+    get_study,
+    get_template_study, 
+    unorderd_lists_equality,
+    api_client,
+    uuid,
+    existing_study)
 
 
 def test_create_study(api_client: TestClient, uuid: str):
@@ -19,7 +31,7 @@ def test_create_study(api_client: TestClient, uuid: str):
         ],
         "organism": "test",
         "release_date": "test",
-        "annotations_applied": False,
+        "annotations_applied": False
     }
     rsp = api_client.post("private/studies", json=study)
     assert rsp.status_code == 201, str(rsp)
@@ -35,6 +47,7 @@ def test_create_study(api_client: TestClient, uuid: str):
         "file_references_count": 0,
         "images_count": 0,
         "model": {"type_name": "BIAStudy", "version": 1},
+        "@context": "https://github.com/BioImage-Archive/bia-integrator/tree/main/api/src/models/jsonld/1.0/StudyContext.json"
     }
 
     study_created = get_study(api_client, uuid)
@@ -153,7 +166,7 @@ def test_update_study_not_created(api_client: TestClient, uuid: str):
                 },
             ],
             "organism": "test",
-            "release_date": "test",
+            "release_date": "test"
         }
         rsp = api_client.patch("private/studies", json=study)
         assert rsp.status_code == 404, str(rsp)

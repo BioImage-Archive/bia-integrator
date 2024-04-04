@@ -1,0 +1,13 @@
+{
+    "@vocab": "https://www.ebi.ac.uk/bioimage-archive/undefined.schema/",
+    "uuid": "@id",
+    "title": "http://purl.org/dc/terms/title",
+    "description": "http://purl.org/dc/terms/description",
+    "@base": "https://www.ebi.ac.uk/bioimage-archive/api/v1/studies/",
+    "authors": {
+        "@id": "http://purl.org/dc/terms/creator"
+    },
+    "organism": "https://schema.org/about",
+    "release_date": "https://schema.org/datePublished",
+    "tags": "https://schema.org/keywords"
+}

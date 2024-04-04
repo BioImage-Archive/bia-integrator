@@ -1,0 +1,14 @@
+{
+    "@vocab": "https://www.ebi.ac.uk/bioimage-archive/undefined.schema/",
+    "uuid": "@id",
+    "title": "http://purl.org/dc/terms/title",
+    "description": "http://purl.org/dc/terms/description",
+    "@base": "https://www.ebi.ac.uk/bioimage-archive/api/v1/collections/",
+    "study_uuids": {
+        "@id": "http://purl.org/dc/terms/hasPart",
+        "@context": {
+            "@base": "https://www.ebi.ac.uk/bioimage-archive/api/v1/studies/"
+        },
+        "@type": "@id"
+    }
+}

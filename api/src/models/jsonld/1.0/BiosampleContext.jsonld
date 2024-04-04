@@ -1,0 +1,9 @@
+{
+    "@vocab": "https://www.ebi.ac.uk/bioimage-archive/undefined.schema/",
+    "uuid": "@id",
+    "title": "http://purl.org/dc/terms/title",
+    "description": "http://purl.org/dc/terms/description",
+    "@base": "https://www.ebi.ac.uk/bioimage-archive/api/v1/biosamples/",
+    "organism_scientific_name": "https://www.wikidata.org/wiki/Q10753560",
+    "organism_common_name": "https://www.wikidata.org/wiki/Q502895"
+}

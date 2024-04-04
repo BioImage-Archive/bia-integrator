@@ -1,0 +1,21 @@
+{
+    "@vocab": "https://www.ebi.ac.uk/bioimage-archive/undefined.schema/",
+    "uuid": "@id",
+    "title": "http://purl.org/dc/terms/title",
+    "description": "http://purl.org/dc/terms/description",
+    "@base": "https://www.ebi.ac.uk/bioimage-archive/api/v1/images/",
+    "study_uuid": {
+        "@id": "http://purl.org/dc/terms/isPartOf",
+        "@context": {
+            "@base": "https://www.ebi.ac.uk/bioimage-archive/api/v1/biosamples/"
+        },
+        "@type": "@id"
+    },
+    "dimensions": "https://schema.org/size",
+    "image_acquisition_methods_uuid": {
+        "@context": {
+            "@base": "https://www.ebi.ac.uk/bioimage-archive/api/v1/image_acquisitions/"
+        },
+        "@type": "@id"
+    }
+}

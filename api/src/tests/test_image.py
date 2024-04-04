@@ -1,5 +1,18 @@
 from fastapi.testclient import TestClient
-from .util import *
+import pytest
+from typing import List
+from .util import (
+    get_uuid, 
+    make_file_references, 
+    make_images, 
+    make_study, 
+    get_study, 
+    get_template_image,
+    unorderd_lists_equality, 
+    assert_bulk_response_items_correct,
+    api_client,
+    existing_study,
+    existing_image)
 import itertools
 from uuid import UUID
 import os
@@ -17,7 +30,7 @@ def test_create_images(api_client: TestClient, existing_study: dict):
             "original_relpath": f"/home/test/{uuid}",
             "attributes": {
                 "image_uuid": uuid,
-            },
+            }
         }
         for uuid in uuids
     ]
@@ -41,7 +54,7 @@ def test_create_images_multiple_errors(api_client: TestClient, existing_study: d
             "original_relpath": f"/home/test/{uuid}",
             "attributes": {
                 "image_uuid": uuid,
-            },
+            }
         }
         for uuid in uuids
     ]

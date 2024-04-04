@@ -3,14 +3,12 @@ from fastapi.testclient import TestClient
 from .. import app
 import uuid as uuid_lib
 from typing import List
-import time
 
 import pytest
 import pytest_asyncio
 from ..models.repository import repository_create, Repository
 from ..api.auth import create_user, get_user
 import asyncio
-from collections import Counter 
 
 # @pytest.fixture
 # def api_client_private() -> TestClient:
@@ -20,7 +18,7 @@ from collections import Counter
 #    return client
 
 
-@pytest.fixture
+@pytest.fixture(scope="module")
 def api_client() -> TestClient:
     client = get_client(raise_server_exceptions=False)
     authenticate_client(client)  # @TODO: DELETEME
@@ -141,6 +139,7 @@ def make_collection(api_client: TestClient, collection_attributes_override={}):
         "subtitle": "test_collection_subtitle",
         "description": "test_collection_description",
         "study_uuids": [],
+        "@context": "placeholder_context"
     }
     collection |= collection_attributes_override
 
@@ -171,6 +170,7 @@ def get_template_study(add_uuid=False):
         "images_count": 0,
         "annotations_applied": False,
         "annotations": [],
+        "@context": "placeholder_context"
     }
 
 
@@ -188,6 +188,7 @@ def get_template_biosample(add_uuid=False):
         "experimental_variables": ["placeholder_experimental_variable"],
         "extrinsic_variables": ["placeholder_extrinsic_variable"],
         "intrinsic_variables": ["placeholder_intrinsic_variable"],
+        "@context": "placeholder_context"
     }
 
 
@@ -200,6 +201,7 @@ def get_template_specimen(existing_biosample, add_uuid=False):
         "title": "placeholder_title",
         "sample_preparation_protocol": "placeholder_sample_preparation_protocol",
         "growth_protocol": "placeholder_growth_protocol",
+        "@context": "placeholder_context"
     }
 
 
@@ -213,6 +215,7 @@ def get_template_image_acquisition(existing_specimen, add_uuid=False):
         "imaging_instrument": "placeholder_imaging_instrument",
         "image_acquisition_parameters": "placeholder_image_acquisition_parameters",
         "imaging_method": "placeholder_imaging_method",
+        "@context": "placeholder_context"
     }
 
 
@@ -274,7 +277,7 @@ def get_template_file_reference(existing_study: dict, add_uuid=False):
         "attributes": {},
         "annotations": [],
         "annotations_applied": False,
-        "type": "file",
+        "type": "file"
     }
 
 
@@ -291,6 +294,7 @@ def get_template_collection(add_uuid=False):
         "attributes": {},
         "annotations": [],
         "annotations_applied": False,
+        "@context": "placeholder_context"
     }
 
 
@@ -311,6 +315,7 @@ def get_template_image(existing_study: dict, add_uuid=False):
         "alias": None,
         "representations": [],
         "image_acquisition_methods_uuid": [],
+        "@context": "placeholder_context"
     }
 
 
@@ -414,7 +419,8 @@ def get_uuid() -> str:
     return str(generated)
 
 
-def unorderd_lists_equality(list1, list2) -> bool:
+def unorderd_lists_equality(list1: list[dict], list2: list[dict]) -> bool:
+    # verbose equality check to compare lists of dictionaries created from json objects
     if len(list1) == len(list2):
         for elem1 in list1:
             if list1.count(elem1) != list2.count(elem1):
