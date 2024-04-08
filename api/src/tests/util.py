@@ -9,6 +9,7 @@ import pytest_asyncio
 from ..models.repository import repository_create, Repository
 from ..api.auth import create_user, get_user
 import asyncio
+import os
 
 # @pytest.fixture
 # def api_client_private() -> TestClient:
@@ -130,23 +131,13 @@ def get_collection(
 
 
 def make_collection(api_client: TestClient, collection_attributes_override={}):
-    uuid = get_uuid()
-    collection = {
-        "uuid": uuid,
-        "version": 0,
-        "name": "test_collection_name",
-        "title": "test_collection_title",
-        "subtitle": "test_collection_subtitle",
-        "description": "test_collection_description",
-        "study_uuids": [],
-        "@context": "placeholder_context"
-    }
+    collection = get_template_collection(add_uuid=True)
     collection |= collection_attributes_override
 
     rsp = api_client.post("private/collections", json=collection)
     assert rsp.status_code == 201, rsp.json()
 
-    return get_collection(api_client, uuid)
+    return get_collection(api_client, collection["uuid"])
 
 
 def get_template_study(add_uuid=False):
@@ -170,7 +161,7 @@ def get_template_study(add_uuid=False):
         "images_count": 0,
         "annotations_applied": False,
         "annotations": [],
-        "@context": "placeholder_context"
+        "@context": f"file://{os.path.join(tests_base(), '../models/jsonld/1.0/StudyContext.jsonld')}",
     }
 
 
@@ -188,7 +179,7 @@ def get_template_biosample(add_uuid=False):
         "experimental_variables": ["placeholder_experimental_variable"],
         "extrinsic_variables": ["placeholder_extrinsic_variable"],
         "intrinsic_variables": ["placeholder_intrinsic_variable"],
-        "@context": "placeholder_context"
+        "@context": f"file://{os.path.join(tests_base(), '../models/jsonld/1.0/BiosampleContext.jsonld')}",
     }
 
 
@@ -201,7 +192,7 @@ def get_template_specimen(existing_biosample, add_uuid=False):
         "title": "placeholder_title",
         "sample_preparation_protocol": "placeholder_sample_preparation_protocol",
         "growth_protocol": "placeholder_growth_protocol",
-        "@context": "placeholder_context"
+        "@context": f"file://{os.path.join(tests_base(), '../models/jsonld/1.0/SpecimenContext.jsonld')}",
     }
 
 
@@ -215,7 +206,7 @@ def get_template_image_acquisition(existing_specimen, add_uuid=False):
         "imaging_instrument": "placeholder_imaging_instrument",
         "image_acquisition_parameters": "placeholder_image_acquisition_parameters",
         "imaging_method": "placeholder_imaging_method",
-        "@context": "placeholder_context"
+        "@context": f"file://{os.path.join(tests_base(), '../models/jsonld/1.0/ImageAcquisitionContext.jsonld')}",
     }
 
 
@@ -277,7 +268,8 @@ def get_template_file_reference(existing_study: dict, add_uuid=False):
         "attributes": {},
         "annotations": [],
         "annotations_applied": False,
-        "type": "file"
+        "type": "file",
+        "@context": f"file://{os.path.join(tests_base(), '../models/jsonld/1.0/StudyFileReferenceContext.jsonld')}",
     }
 
 
@@ -294,7 +286,7 @@ def get_template_collection(add_uuid=False):
         "attributes": {},
         "annotations": [],
         "annotations_applied": False,
-        "@context": "placeholder_context"
+        "@context": f"file://{os.path.join(tests_base(), '../models/jsonld/1.0/CollectionContext.jsonld')}",
     }
 
 
@@ -315,7 +307,7 @@ def get_template_image(existing_study: dict, add_uuid=False):
         "alias": None,
         "representations": [],
         "image_acquisition_methods_uuid": [],
-        "@context": "placeholder_context"
+        "@context": f"file://{os.path.join(tests_base(), '../models/jsonld/1.0/ImageContext.jsonld')}",
     }
 
 
@@ -412,6 +404,7 @@ def get_client(**kwargs) -> TestClient:
 
     return TestClient(app.app, base_url=TEST_SERVER_BASE_URL, **kwargs)
 
+
 def get_uuid() -> str:
     # @TODO: make this constant and require mongo to always be clean?
     generated = uuid_lib.uuid4()
@@ -427,6 +420,7 @@ def unorderd_lists_equality(list1: list[dict], list2: list[dict]) -> bool:
                 return False
         return True
     return False
+
 
 def assert_bulk_response_items_correct(
     api_client: TestClient,
@@ -459,3 +453,7 @@ def assert_bulk_response_items_correct(
             else:
                 # if there was no clash but the insert was rejected, the object shouldn't exist at all
                 assert rsp.status_code == 404
+
+
+def tests_base() -> str:
+    return os.path.dirname(os.path.realpath(__file__))

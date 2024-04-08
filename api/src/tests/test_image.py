@@ -2,17 +2,19 @@ from fastapi.testclient import TestClient
 import pytest
 from typing import List
 from .util import (
-    get_uuid, 
-    make_file_references, 
-    make_images, 
-    make_study, 
-    get_study, 
+    get_uuid,
+    make_file_references,
+    make_images,
+    make_study,
+    get_study,
     get_template_image,
-    unorderd_lists_equality, 
+    unorderd_lists_equality,
     assert_bulk_response_items_correct,
+    tests_base,
     api_client,
     existing_study,
-    existing_image)
+    existing_image,
+)
 import itertools
 from uuid import UUID
 import os
@@ -30,7 +32,7 @@ def test_create_images(api_client: TestClient, existing_study: dict):
             "original_relpath": f"/home/test/{uuid}",
             "attributes": {
                 "image_uuid": uuid,
-            }
+            },
         }
         for uuid in uuids
     ]
@@ -54,7 +56,7 @@ def test_create_images_multiple_errors(api_client: TestClient, existing_study: d
             "original_relpath": f"/home/test/{uuid}",
             "attributes": {
                 "image_uuid": uuid,
-            }
+            },
         }
         for uuid in uuids
     ]
@@ -346,6 +348,7 @@ def test_study_with_images_and_filerefs_fetch_images(
     images_fetched = set([img["uuid"] for img in rsp.json()])
     assert images_fetched == images_created
 
+
 def test_image_pagination(api_client: TestClient, existing_study: dict):
     images = make_images(api_client, existing_study, 5)
     images.sort(key=lambda img: UUID(img["uuid"]).hex)
@@ -400,8 +403,7 @@ def test_image_pagination_bad_limit(api_client: TestClient, existing_study: dict
 
 
 def test_image_ome_metadata_create_get(api_client: TestClient, existing_image: dict):
-    script_dir = os.path.dirname(os.path.realpath(__file__))
-    with open(os.path.join(script_dir, "data/simple.ome.xml")) as f:
+    with open(os.path.join(tests_base(), "data/simple.ome.xml")) as f:
         rsp = api_client.post(
             f"private/images/{existing_image['uuid']}/ome_metadata",
             files={"ome_metadata_file": f.read()},
@@ -433,14 +435,14 @@ def test_post_invalid_ome_metadata(api_client: TestClient, existing_image: dict)
 
 
 def test_image_ome_metadata_update(api_client: TestClient, existing_image: dict):
-    script_dir = os.path.dirname(os.path.realpath(__file__))
-    with open(os.path.join(script_dir, "data/simple.ome.xml")) as f:
+    ome_file_path = os.path.join(tests_base(), "data/simple.ome.xml")
+    with open(ome_file_path) as f:
         rsp = api_client.post(
             f"private/images/{existing_image['uuid']}/ome_metadata",
             files={"ome_metadata_file": f.read()},
         )
         assert rsp.status_code == 201
-    with open(os.path.join(script_dir, "data/simple.ome.xml")) as f:
+    with open(ome_file_path) as f:
         rsp = api_client.post(
             f"private/images/{existing_image['uuid']}/ome_metadata",
             files={"ome_metadata_file": f.read()},
@@ -699,7 +701,7 @@ class TestSearchImagesExactMatch:
         )
         assert rsp.status_code == 200
         assert unorderd_lists_equality(img_fixtures[:2], rsp.json())
-        
+
     def test_search_uri_prefix_not_substring(
         self, api_client: TestClient, img_fixtures: List[dict], existing_study: dict
     ):

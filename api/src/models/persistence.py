@@ -148,7 +148,10 @@ class BIAStudy(BIABaseModel, DocumentMixin, AnnotatedMixin[StudyAnnotation]):
     file_references_count: int = Field(default=0)
     images_count: int = Field(default=0)
 
-    context: str = Field(alias='@context', default="https://github.com/BioImage-Archive/bia-integrator/tree/main/api/src/models/jsonld/1.0/StudyContext.json")
+    context: str = Field(
+        alias="@context",
+        default="https://github.com/BioImage-Archive/bia-integrator/tree/main/api/src/models/jsonld/1.0/StudyContext.json",
+    )
 
     model_config = ConfigDict(model_version_latest=1)
 
@@ -163,6 +166,11 @@ class FileReference(
     uri: str = Field()
     type: str = Field()
     size_in_bytes: int = Field()
+
+    context: str = Field(
+        alias="@context",
+        default="https://github.com/BioImage-Archive/bia-integrator/tree/main/api/src/models/jsonld/1.0/FileReferenceContext.json",
+    )
 
     model_config = ConfigDict(model_version_latest=1)
 
@@ -219,7 +227,10 @@ class Biosample(BIABaseModel, DocumentMixin):
     intrinsic_variables: List[str] = Field(
         description="Intrinsic (e.g. genetic) alteration.", default=[]
     )
-    context: str = Field(alias='@context', default="https://github.com/BioImage-Archive/bia-integrator/tree/main/api/src/models/jsonld/1.0/SpecimenContext.json")
+    context: str = Field(
+        alias="@context",
+        default="https://github.com/BioImage-Archive/bia-integrator/tree/main/api/src/models/jsonld/1.0/SpecimenContext.json",
+    )
 
     model_config = ConfigDict(model_version_latest=1)
 
@@ -232,7 +243,10 @@ class Specimen(BIABaseModel, DocumentMixin):
     )  # is this a ST-only concern, or does it make sense for it to be in the models?
     sample_preparation_protocol: str = Field()
     growth_protocol: str = Field()
-    context: str = Field(alias='@context', default="https://github.com/BioImage-Archive/bia-integrator/tree/main/api/src/models/jsonld/1.0/SpecimenContext.json")
+    context: str = Field(
+        alias="@context",
+        default="https://github.com/BioImage-Archive/bia-integrator/tree/main/api/src/models/jsonld/1.0/SpecimenContext.json",
+    )
 
     model_config = ConfigDict(model_version_latest=1)
 
@@ -252,7 +266,10 @@ class ImageAcquisition(BIABaseModel, DocumentMixin):
     imaging_method: str = (
         Field()
     )  # make this an Enum / restrict some other way? Distinguishing between "somewhat close to a controlled vocabulary" vs "completely free text" might be useful
-    context: str = Field(alias='@context', default="https://github.com/BioImage-Archive/bia-integrator/tree/main/api/src/models/jsonld/1.0/ImageAcquisitionContext.json")
+    context: str = Field(
+        alias="@context",
+        default="https://github.com/BioImage-Archive/bia-integrator/tree/main/api/src/models/jsonld/1.0/ImageAcquisitionContext.json",
+    )
 
     model_config = ConfigDict(model_version_latest=1)
 
@@ -283,7 +300,10 @@ class BIAImage(BIABaseModel, DocumentMixin, AnnotatedMixin[ImageAnnotation]):
         description="Context in which the image was acquired. This list often has one item, but it can occasionally have more (e.g. for multimodal imaging)",
         default=[],
     )
-    context: str = Field(alias='@context', default="https://github.com/BioImage-Archive/bia-integrator/tree/main/api/src/models/jsonld/1.0/ImageContext.json")
+    context: str = Field(
+        alias="@context",
+        default="https://github.com/BioImage-Archive/bia-integrator/tree/main/api/src/models/jsonld/1.0/ImageContext.json",
+    )
 
     model_config = ConfigDict(model_version_latest=2)
 
@@ -297,7 +317,10 @@ class BIACollection(BIABaseModel, DocumentMixin, AnnotatedMixin[CollectionAnnota
     subtitle: str = Field()
     description: Optional[str] = Field(default=None)
     study_uuids: List[str] = Field(default=[])
-    context: str = Field(alias='@context', default="https://github.com/BioImage-Archive/bia-integrator/tree/main/api/src/models/jsonld/1.0/CollectionContext.json")
+    context: str = Field(
+        alias="@context",
+        default="https://github.com/BioImage-Archive/bia-integrator/tree/main/api/src/models/jsonld/1.0/CollectionContext.json",
+    )
 
     model_config = ConfigDict(model_version_latest=1)
 
