@@ -9,9 +9,6 @@ from .util import (
     get_study,
     get_template_study,
     unorderd_lists_equality,
-    api_client,
-    uuid,
-    existing_study,
 )
 
 
@@ -121,8 +118,14 @@ def test_update_study_wrong_version(api_client: TestClient, uuid: str):
     rsp = api_client.post("private/studies", json=study)
     assert rsp.status_code == 201, rsp.json()
 
-    # re-issuing a create request is idempotent
+    # re-issuing a create request fails by default
     rsp = api_client.post("private/studies", json=study)
+    assert rsp.status_code == 409
+
+    # re-issuing a create request is idempotent with the right flag
+    rsp = api_client.post(
+        "private/studies", json=study, params=[("overwrite_mode", "allow_idempotent")]
+    )
     assert rsp.status_code == 201
 
     # updating an existing object is idempotent
@@ -144,7 +147,7 @@ def test_update_study_wrong_version(api_client: TestClient, uuid: str):
     rsp = api_client.patch("private/studies", json=study)
     assert rsp.status_code == 404
 
-    # trying to create a study was already updated shouldn't work
+    # trying to create a study that was already updated shouldn't work
     study["version"] = 0
     rsp = api_client.post("private/studies", json=study)
     assert rsp.status_code == 409

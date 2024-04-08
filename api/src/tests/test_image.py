@@ -11,17 +11,16 @@ from .util import (
     unorderd_lists_equality,
     assert_bulk_response_items_correct,
     package_base,
-    api_client,
-    existing_study,
-    existing_image,
 )
 import itertools
 from uuid import UUID
 import os
 
 
-def test_create_images(api_client: TestClient, existing_study: dict):
-    uuids = [get_uuid() for _ in range(2)]
+def create_image_list(
+    image_count: int, existing_study: dict
+) -> tuple[list[str], list[dict]]:
+    uuids = [get_uuid() for _ in range(image_count)]
 
     images = [
         {
@@ -36,6 +35,13 @@ def test_create_images(api_client: TestClient, existing_study: dict):
         }
         for uuid in uuids
     ]
+
+    return uuids, images
+
+
+def test_create_images_valid(api_client: TestClient, existing_study: dict):
+
+    uuids, images = create_image_list(2, existing_study)
     rsp = api_client.post("private/images", json=images)
     assert rsp.status_code == 201, rsp.json()
 
@@ -45,21 +51,8 @@ def test_create_images(api_client: TestClient, existing_study: dict):
 
 
 def test_create_images_multiple_errors(api_client: TestClient, existing_study: dict):
-    uuids = [get_uuid() for _ in range(10)]
+    uuids, images = create_image_list(10, existing_study)
 
-    images = [
-        {
-            "uuid": uuid,
-            "version": 0,
-            "study_uuid": existing_study["uuid"],
-            "name": f"image_{uuid}",
-            "original_relpath": f"/home/test/{uuid}",
-            "attributes": {
-                "image_uuid": uuid,
-            },
-        }
-        for uuid in uuids
-    ]
     images[5]["version"] = 2
     # mongo rejects *both* documents that violate an index constraint in a multi-doc insert
     images[7]["uuid"] = images[0]["uuid"]
@@ -109,6 +102,11 @@ def test_create_images_existing_unchaged(
     images.append(existing_image)
 
     rsp = api_client.post("private/images", json=images)
+    assert rsp.status_code == 400, rsp.json()
+
+    rsp = api_client.post(
+        "private/images", json=images, params=[("overwrite_mode", "allow_idempotent")]
+    )
     assert rsp.status_code == 201, rsp.json()
 
     create_result = rsp.json()
@@ -192,7 +190,14 @@ def test_create_images_same_request_duplicates(
     images = [get_template_image(existing_study, add_uuid=True) for _ in range(2)]
     images.append(images[1])
 
+    # duplicates should fail without the idempotent flag set
     rsp = api_client.post("private/images", json=images)
+    assert rsp.status_code == 400, rsp.json()
+
+    # duplicates should fail without the idempotent flag set
+    rsp = api_client.post(
+        "private/images", json=images, params=[("overwrite_mode", "allow_idempotent")]
+    )
     assert rsp.status_code == 201, rsp.json()
 
     create_result = rsp.json()
@@ -257,7 +262,9 @@ def test_create_images_idempotent_on_identical_ops_when_defaults_missing(
         existing_image,
         existing_image_without_default_field,
     ]
-    rsp = api_client.post("private/images", json=images)
+    rsp = api_client.post(
+        "private/images", json=images, params=[("overwrite_mode", "allow_idempotent")]
+    )
     assert rsp.status_code == 201, rsp.json()
     rsp = rsp.json()
     # This would pass anyway since it's identical to an existing image
@@ -275,7 +282,7 @@ def test_update_image(api_client: TestClient, existing_image: dict):
     assert rsp.status_code == 200, rsp.json()
 
 
-def test_image_change_study_to_existing_study(
+def test_update_image_change_study_to_existing_study(
     api_client: TestClient, existing_image: dict
 ):
     existing_image["version"] = 1
@@ -288,7 +295,7 @@ def test_image_change_study_to_existing_study(
     assert rsp.status_code == 200, rsp.json()
 
 
-def test_image_change_study_to_missing_study(
+def test_update_image_change_study_to_missing_study(
     api_client: TestClient, existing_image: dict
 ):
     existing_image["version"] = 1
@@ -301,7 +308,7 @@ def test_image_change_study_to_missing_study(
     assert rsp.status_code == 404, rsp.json()
 
 
-def test_add_image_representation(api_client: TestClient, existing_image: dict):
+def test_create_image_representation(api_client: TestClient, existing_image: dict):
     """
     Would rather not add uuids for sub-objects because then we need to define what a sub-object is.
     Also, deleting/updating (a.i. the uncommon situations) don't make sense until we can identify specific sub-objects, allowing for parallel request
@@ -318,7 +325,7 @@ def test_add_image_representation(api_client: TestClient, existing_image: dict):
     assert rsp.status_code == 201, rsp.json()
 
 
-def test_add_image_representation_missing_image(
+def test_create_image_representation_missing_image(
     api_client: TestClient, existing_study: dict
 ):
     representation = {
@@ -332,11 +339,10 @@ def test_add_image_representation_missing_image(
     assert rsp.status_code == 404, rsp.json()
 
 
-def test_study_with_images_and_filerefs_fetch_images(
-    api_client: TestClient, existing_study: dict
-):
+def test_get_study_images_with_filerefs(api_client: TestClient, existing_study: dict):
     """
-    Images and filerefs go through the same code path mostly but are different. Check they are filtered properly
+    Get Images and filerefs mostly go through the same code path but there are differences.
+    This test checks that they are filtered properly.
     Initially found as a bug
     """
     images = make_images(api_client, existing_study, 2)
@@ -349,7 +355,7 @@ def test_study_with_images_and_filerefs_fetch_images(
     assert images_fetched == images_created
 
 
-def test_image_pagination(api_client: TestClient, existing_study: dict):
+def test_get_study_images_pagination(api_client: TestClient, existing_study: dict):
     images = make_images(api_client, existing_study, 5)
     images.sort(key=lambda img: UUID(img["uuid"]).hex)
     chunk_size = 2
@@ -383,7 +389,9 @@ def test_image_pagination(api_client: TestClient, existing_study: dict):
     assert images_chunk == images_fetched
 
 
-def test_image_pagination_large_page(api_client: TestClient, existing_study: dict):
+def test_get_study_images_pagination_large_page(
+    api_client: TestClient, existing_study: dict
+):
     images = make_images(api_client, existing_study, 5)
     images.sort(key=lambda img: UUID(img["uuid"]).hex)
 
@@ -394,7 +402,9 @@ def test_image_pagination_large_page(api_client: TestClient, existing_study: dic
     assert images == images_fetched
 
 
-def test_image_pagination_bad_limit(api_client: TestClient, existing_study: dict):
+def test_get_study_images_pagination_bad_limit(
+    api_client: TestClient, existing_study: dict
+):
     images = make_images(api_client, existing_study, 5)
     images.sort(key=lambda img: UUID(img["uuid"]).hex)
 
@@ -402,7 +412,7 @@ def test_image_pagination_bad_limit(api_client: TestClient, existing_study: dict
     assert rsp.status_code == 422
 
 
-def test_image_ome_metadata_create_get(api_client: TestClient, existing_image: dict):
+def test_set_image_ome_metadata_update(api_client: TestClient, existing_image: dict):
     with open(os.path.join(package_base(), "tests/data/simple.ome.xml")) as f:
         rsp = api_client.post(
             f"private/images/{existing_image['uuid']}/ome_metadata",
@@ -421,7 +431,7 @@ def test_image_ome_metadata_create_get(api_client: TestClient, existing_image: d
     assert bia_image_ome_metadata["ome_metadata"]["images"][0]["name"] == "XY-ch-02"
 
 
-def test_post_invalid_ome_metadata(api_client: TestClient, existing_image: dict):
+def test_set_image_ome_metadata_invalid(api_client: TestClient, existing_image: dict):
     with open(os.path.realpath(__file__)) as f:
         rsp = api_client.post(
             f"private/images/{existing_image['uuid']}/ome_metadata",
@@ -434,7 +444,9 @@ def test_post_invalid_ome_metadata(api_client: TestClient, existing_image: dict)
     assert rsp.status_code == 404
 
 
-def test_image_ome_metadata_update(api_client: TestClient, existing_image: dict):
+def test_set_image_ome_metadata_updateSylvaneth27(
+    api_client: TestClient, existing_image: dict
+):
     ome_file_path = os.path.join(package_base(), "tests/data/simple.ome.xml")
     with open(ome_file_path) as f:
         rsp = api_client.post(
@@ -608,7 +620,7 @@ class TestSearchImagesExactMatch:
 
         return images_created
 
-    def test_search_no_match(
+    def test_search_images_no_match(
         self, api_client: TestClient, img_fixtures: List[dict], existing_study: dict
     ):
         rsp = api_client.post(
@@ -737,7 +749,7 @@ class TestSearchImagesExactMatch:
         assert unorderd_lists_equality([img_fixtures[1]], rsp.json())
         assert rsp.json() == [img_fixtures[1]]
 
-    def test_search_pagination(self, api_client: TestClient):
+    def test_search_images_pagination(self, api_client: TestClient):
         rsp = api_client.post(
             "search/images/exact_match",
             json={

@@ -1,13 +1,8 @@
 from fastapi.testclient import TestClient
-from typing import List
+import pytest
 from .util import (
     make_images,
     make_study,
-    api_client,
-    uuid,
-    existing_study,
-    existing_collection,
-    existing_image,
 )
 
 
@@ -28,12 +23,12 @@ def test_create_collection(api_client: TestClient, uuid: str):
     assert rsp.status_code == 201, rsp.json()
 
 
-def test_fetch_study_as_image(api_client: TestClient, existing_study):
+def test_get_image_with_uuid_of_non_image(api_client: TestClient, existing_study):
     rsp = api_client.get(f"images/{existing_study['uuid']}")
     assert rsp.status_code == 404
 
 
-def test_fetch_object_info(api_client: TestClient, uuid: str):
+def test_get_object_info_by_accession(api_client: TestClient, uuid: str):
     created_study = make_study(api_client, {"accession_id": uuid})
 
     # rsp = api_client.get(f"object_info_by_accessions?accessions[]={uuid}")
@@ -51,7 +46,7 @@ def test_fetch_object_info(api_client: TestClient, uuid: str):
     assert created_study["uuid"] == accession_info["uuid"]
 
 
-def test_fetch_image_by_alias(api_client: TestClient, existing_study, uuid: str):
+def test_get_study_images_by_alias(api_client: TestClient, existing_study, uuid: str):
     make_images(
         api_client,
         existing_study,
@@ -92,7 +87,7 @@ def test_get_collection(api_client: TestClient, existing_collection):
     assert rsp.json() == existing_collection
 
 
-def test_list_collections(api_client: TestClient):
+def test_search_collections_no_filter(api_client: TestClient):
     rsp = api_client.get("collections")
     assert rsp.status_code == 200
     assert len(rsp.json())
@@ -114,11 +109,6 @@ def test_no_id_in_list(api_client: TestClient, existing_image):
     assert not any(["_id" in img.keys() for img in rsp.json()])
 
 
-def test_single_doc_create_idempotent(api_client: TestClient, existing_study):
-    rsp = api_client.post("private/studies", json=existing_study)
-    assert rsp.status_code == 201
-
-
 def test_single_doc_update_no_change_idempotent(api_client: TestClient, existing_study):
     rsp = api_client.patch("private/studies", json=existing_study)
     assert rsp.status_code == 200
@@ -136,3 +126,70 @@ def test_single_doc_update_some_change_fails(api_client: TestClient, existing_st
 
     rsp = api_client.patch("private/studies", json=existing_study)
     assert rsp.status_code == 404
+
+
+@pytest.mark.parametrize(
+    "endpoint, document_creator",
+    [
+        pytest.param("private/studies", "existing_study", id="create_study"),
+        pytest.param(
+            "private/collections", "existing_collection", id="create_collection"
+        ),
+        pytest.param(
+            "private/biosamples", "existing_biosample", id="create_biosamples"
+        ),
+        pytest.param("private/specimens", "existing_specimen", id="create_specimens"),
+        pytest.param(
+            "private/image_acquisitions",
+            "existing_image_acquisition",
+            id="create_image_acquisition",
+        ),
+    ],
+)
+def test_idempotent_create(
+    api_client: TestClient,
+    endpoint: str,
+    document_creator: str,
+    request,
+):
+    document = request.getfixturevalue(document_creator)
+    rsp = api_client.post(endpoint, json=document, params=[("overwrite_mode", "fail")])
+
+    rsp.status_code == 409
+
+    rsp = api_client.post(
+        endpoint, json=document, params=[("overwrite_mode", "allow_idempotent")]
+    )
+    assert rsp.status_code == 201
+
+
+@pytest.mark.parametrize(
+    "endpoint, document_creator",
+    [
+        pytest.param("private/images", "existing_image", id="create_images"),
+        pytest.param(
+            "private/file_references",
+            "existing_file_reference",
+            id="create_file_references",
+        ),
+    ],
+)
+def test_idempotent_create_bulk(
+    api_client: TestClient,
+    endpoint: str,
+    document_creator: str,
+    request,
+):
+    single_document_list = [request.getfixturevalue(document_creator)]
+    rsp = api_client.post(
+        endpoint, json=single_document_list, params=[("overwrite_mode", "fail")]
+    )
+
+    rsp.status_code == 400
+
+    rsp = api_client.post(
+        endpoint,
+        json=single_document_list,
+        params=[("overwrite_mode", "allow_idempotent")],
+    )
+    assert rsp.status_code == 201

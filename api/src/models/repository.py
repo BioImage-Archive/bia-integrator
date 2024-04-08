@@ -9,6 +9,7 @@ from motor.motor_asyncio import (
 )
 import pydantic
 from typing import List, Any, Callable
+from enum import Enum
 import uuid
 import pymongo
 import os
@@ -19,11 +20,26 @@ COLLECTION_USERS = "users"
 COLLECTION_OME_METADATA = "ome_metadata"
 
 
+class OverwriteMode(str, Enum):
+    FAIL = "fail"
+    ALLOW_IDEMPOTENT = "allow_idempotent"
+
+    # this enables FAIL to be mapped to fail.
+    @classmethod
+    def _missing_(cls, value):
+        value = value.lower()
+        for member in cls:
+            if member.lower() == value:
+                return member
+        return None
+
+
 class Repository:
     connection: AsyncIOMotorClient
     db: AsyncIOMotorDatabase
     users: AsyncIOMotorCollection
     biaint: AsyncIOMotorCollection
+    overwrite_mode: OverwriteMode = OverwriteMode.FAIL
 
     def __init__(self) -> None:
         mongo_connstring = os.environ["MONGO_CONNSTRING"]
@@ -239,7 +255,11 @@ class Repository:
         try:
             return await self.biaint.insert_one(doc_model.model_dump())
         except pymongo.errors.DuplicateKeyError as e:
-            if await self._model_doc_exists(doc_model):
+            if (
+                (e.details["code"] == 11000)
+                and (self.overwrite_mode == OverwriteMode.ALLOW_IDEMPOTENT)
+                and (await self._model_doc_exists(doc_model))
+            ):
                 return
 
             raise exceptions.InvalidUpdateException(str(e))
@@ -346,8 +366,10 @@ class Repository:
                 await self.biaint.insert_many(insert_attempt_docs, ordered=False)
             except pymongo.errors.BulkWriteError as e:
                 for doc_write_error in e.details["writeErrors"]:
-                    if doc_write_error["code"] == 11000 and await self._doc_exists(
-                        doc_write_error["op"]
+                    if (
+                        doc_write_error["code"] == 11000
+                        and self.overwrite_mode == OverwriteMode.ALLOW_IDEMPOTENT
+                        and await self._doc_exists(doc_write_error["op"])
                     ):
                         # got a duplicate key error (so doc exists) but is identical to the pushed one => idempotent
                         pass

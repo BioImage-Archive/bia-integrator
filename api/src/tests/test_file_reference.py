@@ -7,10 +7,6 @@ from .util import (
     make_file_references,
     unorderd_lists_equality,
     assert_bulk_response_items_correct,
-    api_client,
-    existing_study,
-    existing_file_reference,
-    uuid,
 )
 import itertools
 from uuid import UUID
@@ -71,7 +67,11 @@ def test_create_file_references_multiple_errors(
     file_references[7]["uuid"] = file_references[0]["uuid"]
     file_references[3]["study_uuid"] = "00000000-0000-0000-0000-000000000000"
 
-    rsp = api_client.post("private/file_references", json=file_references)
+    rsp = api_client.post(
+        "private/file_references",
+        json=file_references,
+        params=[("overwrite_mode", "allow_idempotent")],
+    )
     assert rsp.status_code == 400, rsp.json()
 
     # groupby expects sorted list
@@ -137,6 +137,13 @@ def test_create_file_references_existing_unchaged(
     file_references.append(existing_file_reference)
 
     rsp = api_client.post("private/file_references", json=file_references)
+    assert rsp.status_code == 400, rsp.json()
+
+    rsp = api_client.post(
+        "private/file_references",
+        json=file_references,
+        params=[("overwrite_mode", "allow_idempotent")],
+    )
     assert rsp.status_code == 201, rsp.json()
 
     create_result = rsp.json()
@@ -238,7 +245,15 @@ def test_create_file_references_same_request_duplicates(
     ]
     file_references.append(file_references[1])
 
+    # without idempotent flag should error
     rsp = api_client.post("private/file_references", json=file_references)
+    assert rsp.status_code == 400, rsp.json()
+
+    rsp = api_client.post(
+        "private/file_references",
+        json=file_references,
+        params=[("overwrite_mode", "allow_idempotent")],
+    )
     assert rsp.status_code == 201, rsp.json()
 
     create_result = rsp.json()
@@ -311,6 +326,13 @@ def test_create_file_references_idempotent_on_identical_ops_when_defaults_missin
         existing_file_reference_without_default_field,
     ]
     rsp = api_client.post("private/file_references", json=file_references)
+    assert rsp.status_code == 400, rsp.json()
+
+    rsp = api_client.post(
+        "private/file_references",
+        json=file_references,
+        params=[("overwrite_mode", "allow_idempotent")],
+    )
     assert rsp.status_code == 201, rsp.json()
     rsp = rsp.json()
     # This would pass anyway since it's identical to an existing fileref

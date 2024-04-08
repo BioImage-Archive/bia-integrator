@@ -1,5 +1,5 @@
 from ..models import persistence as db_models
-from ..models.repository import Repository
+from ..models.repository import Repository, OverwriteMode
 from ..models import api as api_models
 from ..api import exceptions
 from .auth import get_current_user
@@ -20,13 +20,17 @@ router = APIRouter(
 
 
 @router.post("/studies", status_code=status.HTTP_201_CREATED)
-async def create_study(study: db_models.BIAStudy, db: Repository = Depends()) -> None:
+async def create_study(
+    study: db_models.BIAStudy,
+    db: Repository = Depends(),
+    overwrite_mode: OverwriteMode = OverwriteMode.FAIL,
+) -> None:
     logging.info(f"Creating study {study.accession_id}")
+    db.overwrite_mode = overwrite_mode
     if study.version != 0:
         raise exceptions.InvalidRequestException(
             f"Expecting all newly created objects to have version 0. Got {study.version}"
         )
-
     await db.persist_doc(study)
 
     return None
@@ -57,10 +61,12 @@ async def create_images(
     study_images: List[db_models.BIAImage],
     response: Response,
     db: Repository = Depends(),
+    overwrite_mode: OverwriteMode = OverwriteMode.FAIL,
 ) -> api_models.BulkOperationResponse:
     logging.info(
         f"Creating {len(study_images)} images. First image attached to study: {study_images[0].study_uuid if len(study_images) else 'EMPTY LIST'}"
     )
+    db.overwrite_mode = overwrite_mode
     # always report errors based on idx not uuid, for cases where we have multiple documents with the same uuid (they will always have different indices)
     create_bulk_response = api_models.BulkOperationResponse(
         items=[
@@ -68,7 +74,6 @@ async def create_images(
             for idx in range(len(study_images))
         ]
     )
-
     await db.doc_dependency_verify_exists(
         study_images,
         lambda img: img.study_uuid,
@@ -129,10 +134,12 @@ async def create_file_references(
     file_references: List[db_models.FileReference],
     response: Response,
     db: Repository = Depends(),
+    overwrite_mode: OverwriteMode = OverwriteMode.FAIL,
 ) -> api_models.BulkOperationResponse:
     logging.info(
         f"Creating {len(file_references)} file references. First file reference attached to study: {file_references[0].study_uuid if len(file_references) else 'EMPTY LIST'}"
     )
+    db.overwrite_mode = overwrite_mode
     # always report errors based on idx not uuid, for cases where we have multiple documents with the same uuid (they will always have different indices)
     create_bulk_response = api_models.BulkOperationResponse(
         items=[
@@ -174,9 +181,12 @@ async def update_file_reference(
 
 @router.post("/collections", status_code=status.HTTP_201_CREATED)
 async def create_collection(
-    collection: db_models.BIACollection, db: Repository = Depends()
+    collection: db_models.BIACollection,
+    db: Repository = Depends(),
+    overwrite_mode: OverwriteMode = OverwriteMode.FAIL,
 ) -> None:
     logging.info(f"Creating collection {collection.uuid}")
+    db.overwrite_mode = overwrite_mode
     for study_uuid in collection.study_uuids:
         await db.find_study_by_uuid(study_uuid)
 
@@ -190,9 +200,12 @@ async def create_collection(
 
 @router.post("/image_acquisitions", status_code=status.HTTP_201_CREATED)
 async def create_image_acquisition(
-    image_acquisition: db_models.ImageAcquisition, db: Repository = Depends()
+    image_acquisition: db_models.ImageAcquisition,
+    db: Repository = Depends(),
+    overwrite_mode: OverwriteMode = OverwriteMode.FAIL,
 ) -> None:
     logging.info(f"Creating Image Acquisition {image_acquisition.uuid}")
+    db.overwrite_mode = overwrite_mode
     await db.persist_doc(image_acquisition)
 
     return None
@@ -212,9 +225,12 @@ async def update_image_acquisition(
 
 @router.post("/specimens", status_code=status.HTTP_201_CREATED)
 async def create_specimen(
-    image_acquisition: db_models.Specimen, db: Repository = Depends()
+    image_acquisition: db_models.Specimen,
+    db: Repository = Depends(),
+    overwrite_mode: OverwriteMode = OverwriteMode.FAIL,
 ) -> None:
     logging.info(f"Creating specimen {image_acquisition.uuid}")
+    db.overwrite_mode = overwrite_mode
     await db.persist_doc(image_acquisition)
 
     return None
@@ -232,9 +248,12 @@ async def update_specimen(
 
 @router.post("/biosamples", status_code=status.HTTP_201_CREATED)
 async def create_biosample(
-    biosample: db_models.Biosample, db: Repository = Depends()
+    biosample: db_models.Biosample,
+    db: Repository = Depends(),
+    overwrite_mode: OverwriteMode = OverwriteMode.FAIL,
 ) -> None:
     logging.info(f"Creating Biosample {biosample.uuid}")
+    db.overwrite_mode = overwrite_mode
     await db.persist_doc(biosample)
 
     return None
