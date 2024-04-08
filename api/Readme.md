@@ -15,7 +15,11 @@ This can be ignored.
 
 ### Install recommended extensions
 
-If doing any development on the project, consider installing the recommended extensions.
+If doing any development on the project, consider installing the recommended extensions:
+
+* ms-python.black-formatter
+* ms-python.debugpy
+* ms-python.python
 
 
 ## Running the api
