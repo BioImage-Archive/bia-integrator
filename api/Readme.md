@@ -13,6 +13,10 @@ In a future version of Poetry this warning will become an error!
 ```
 This can be ignored.
 
+### Install recommended extensions
+
+If doing any development on the project, consider installing the recommended extensions.
+
 
 ## Running the api
 
