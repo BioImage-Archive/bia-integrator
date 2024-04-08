@@ -1,13 +1,14 @@
 from fastapi.testclient import TestClient
 from typing import List
 from .util import (
-    make_images, 
+    make_images,
     make_study,
     api_client,
     uuid,
     existing_study,
     existing_collection,
-    existing_image)
+    existing_image,
+)
 
 
 def test_create_collection(api_client: TestClient, uuid: str):

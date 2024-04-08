@@ -65,7 +65,7 @@ async def get_study(
 ) -> db_models.BIAStudy:
     study = await db.find_study_by_uuid(study_uuid)
     annotator.annotate_if_needed(study)
-    
+
     return study
 
 

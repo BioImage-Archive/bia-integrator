@@ -24,11 +24,18 @@ def rdf_graph():
     [
         get_template_collection(add_uuid=True),
         get_template_study(add_uuid=True),
-        get_template_image({"uuid": uuid.uuid4()}, add_uuid=True),
-        get_template_file_reference({"uuid": uuid.uuid4()}, add_uuid=True),
+        # Passing in UUID in dicitionary as we don't need a study from the test db & Pytest's parametrised tests use fixture values
+        # rather than the function (see https://github.com/pytest-dev/pytest/issues/349). We could use https://github.com/tvorog/pytest-lazy-fixture
+        # if we need this feature.
+        get_template_image(existing_study={"uuid": uuid.uuid4()}, add_uuid=True),
+        get_template_file_reference(
+            existing_study={"uuid": uuid.uuid4()}, add_uuid=True
+        ),
         get_template_biosample(add_uuid=True),
-        get_template_specimen({"uuid": uuid.uuid4()}, add_uuid=True),
-        get_template_image_acquisition({"uuid": uuid.uuid4()}, add_uuid=True),
+        get_template_specimen(existing_biosample={"uuid": uuid.uuid4()}, add_uuid=True),
+        get_template_image_acquisition(
+            existing_specimen={"uuid": uuid.uuid4()}, add_uuid=True
+        ),
     ],
 )
 def test_context_creates_parseable_jsonld(

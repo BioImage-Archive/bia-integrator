@@ -161,7 +161,7 @@ def get_template_study(add_uuid=False):
         "images_count": 0,
         "annotations_applied": False,
         "annotations": [],
-        "@context": f"file://{os.path.join(tests_base(), '../models/jsonld/1.0/StudyContext.jsonld')}",
+        "@context": f"file://{os.path.join( package_base(), 'models/jsonld/1.0/StudyContext.jsonld')}",
     }
 
 
@@ -179,7 +179,7 @@ def get_template_biosample(add_uuid=False):
         "experimental_variables": ["placeholder_experimental_variable"],
         "extrinsic_variables": ["placeholder_extrinsic_variable"],
         "intrinsic_variables": ["placeholder_intrinsic_variable"],
-        "@context": f"file://{os.path.join(tests_base(), '../models/jsonld/1.0/BiosampleContext.jsonld')}",
+        "@context": f"file://{os.path.join(package_base(), 'models/jsonld/1.0/BiosampleContext.jsonld')}",
     }
 
 
@@ -192,7 +192,7 @@ def get_template_specimen(existing_biosample, add_uuid=False):
         "title": "placeholder_title",
         "sample_preparation_protocol": "placeholder_sample_preparation_protocol",
         "growth_protocol": "placeholder_growth_protocol",
-        "@context": f"file://{os.path.join(tests_base(), '../models/jsonld/1.0/SpecimenContext.jsonld')}",
+        "@context": f"file://{os.path.join(package_base(), 'models/jsonld/1.0/SpecimenContext.jsonld')}",
     }
 
 
@@ -206,7 +206,7 @@ def get_template_image_acquisition(existing_specimen, add_uuid=False):
         "imaging_instrument": "placeholder_imaging_instrument",
         "image_acquisition_parameters": "placeholder_image_acquisition_parameters",
         "imaging_method": "placeholder_imaging_method",
-        "@context": f"file://{os.path.join(tests_base(), '../models/jsonld/1.0/ImageAcquisitionContext.jsonld')}",
+        "@context": f"file://{os.path.join(package_base(), 'models/jsonld/1.0/ImageAcquisitionContext.jsonld')}",
     }
 
 
@@ -269,7 +269,7 @@ def get_template_file_reference(existing_study: dict, add_uuid=False):
         "annotations": [],
         "annotations_applied": False,
         "type": "file",
-        "@context": f"file://{os.path.join(tests_base(), '../models/jsonld/1.0/StudyFileReferenceContext.jsonld')}",
+        "@context": f"file://{os.path.join(package_base(), 'models/jsonld/1.0/StudyFileReferenceContext.jsonld')}",
     }
 
 
@@ -286,7 +286,7 @@ def get_template_collection(add_uuid=False):
         "attributes": {},
         "annotations": [],
         "annotations_applied": False,
-        "@context": f"file://{os.path.join(tests_base(), '../models/jsonld/1.0/CollectionContext.jsonld')}",
+        "@context": f"file://{os.path.join(package_base(), 'models/jsonld/1.0/CollectionContext.jsonld')}",
     }
 
 
@@ -307,7 +307,7 @@ def get_template_image(existing_study: dict, add_uuid=False):
         "alias": None,
         "representations": [],
         "image_acquisition_methods_uuid": [],
-        "@context": f"file://{os.path.join(tests_base(), '../models/jsonld/1.0/ImageContext.jsonld')}",
+        "@context": f"file://{os.path.join(package_base(), 'models/jsonld/1.0/ImageContext.jsonld')}",
     }
 
 
@@ -455,5 +455,7 @@ def assert_bulk_response_items_correct(
                 assert rsp.status_code == 404
 
 
-def tests_base() -> str:
-    return os.path.dirname(os.path.realpath(__file__))
+def package_base() -> str:
+    return os.path.abspath(
+        os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir)
+    )

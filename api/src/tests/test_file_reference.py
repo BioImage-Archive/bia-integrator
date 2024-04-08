@@ -49,7 +49,7 @@ def test_create_file_references_multiple_errors(
     uuids = [get_uuid() for _ in range(10)]
 
     file_references = [
-        # "use template but override everything" semantics, just to avoid this test breaking every time we change the FileReference model 
+        # "use template but override everything" semantics, just to avoid this test breaking every time we change the FileReference model
         get_template_file_reference(existing_study)
         | {
             "uuid": uuid,

@@ -15,8 +15,8 @@ from .util import (
     DBTestMixin,
     api_client,
     uuid,
-    existing_study
-    )
+    existing_study,
+)
 from ..models.repository import Repository
 import uuid as uuid_lib
 

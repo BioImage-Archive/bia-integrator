@@ -51,7 +51,7 @@ def test_specimen_create_retrieve_update(
         "title": "placeholder_title",
         "sample_preparation_protocol": "placeholder_sample_preparation_protocol",
         "growth_protocol": "placeholder_growth_protocol",
-        "@context": "placeholder_context",
+        "@context": "https://placeholder/context",
     }
     rsp = api_client.post(f"private/specimens", json=specimen)
     assert rsp.status_code == 201, rsp.json()
@@ -83,7 +83,7 @@ def test_image_acquisition_create_retrieve_update(
         "imaging_instrument": "placeholder_imaging_instrument",
         "image_acquisition_parameters": "placeholder_image_acquisition_parameters",
         "imaging_method": "placeholder_imaging_method",
-        "@context": "placeholder_context",
+        "@context": "https://placeholder/context",
     }
     rsp = api_client.post(f"private/image_acquisitions", json=image_acquisition)
     assert rsp.status_code == 201, rsp.json()

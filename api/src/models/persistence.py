@@ -1,10 +1,16 @@
 from enum import Enum
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import BaseModel, Field, ConfigDict, field_serializer
 from pydantic.generics import GenericModel
 from typing import Dict, List, Optional, TypeVar, Generic
 from uuid import UUID
 
+from pydantic_core import Url
+
 from src.api.exceptions import DocumentNotFound, InvalidRequestException
+
+
+def url2str(self, val: Url) -> str:
+    return str(val)
 
 
 class BIABaseModel(BaseModel):
@@ -60,6 +66,15 @@ class DocumentMixin(BaseModel):
 
         data.pop("_id", None)
         super().__init__(*args, **data)
+
+
+class JSONLDDocument(DocumentMixin, BaseModel):
+    context: Url = Field(alias="@context", default="")
+
+    # custom field serializer for Urls to provide strings for mongoDB
+    @field_serializer("context")
+    def url2str(self, val) -> str:
+        return str(val)
 
 
 class AnnotationState(str, Enum):
@@ -132,7 +147,10 @@ class Author(BIABaseModel):
     name: str
 
 
-class BIAStudy(BIABaseModel, DocumentMixin, AnnotatedMixin[StudyAnnotation]):
+class BIAStudy(
+    JSONLDDocument,
+    AnnotatedMixin[StudyAnnotation],
+):
     title: str = Field()
     description: str = Field()
     authors: Optional[List[Author]] = Field(default=[])
@@ -148,17 +166,15 @@ class BIAStudy(BIABaseModel, DocumentMixin, AnnotatedMixin[StudyAnnotation]):
     file_references_count: int = Field(default=0)
     images_count: int = Field(default=0)
 
-    context: str = Field(
+    context: Url = Field(
         alias="@context",
-        default="https://github.com/BioImage-Archive/bia-integrator/tree/main/api/src/models/jsonld/1.0/StudyContext.json",
+        default="https://raw.githubusercontent.com/BioImage-Archive/bia-integrator/main/api/src/models/jsonld/1.0/StudyContext.jsonld",
     )
 
     model_config = ConfigDict(model_version_latest=1)
 
 
-class FileReference(
-    BIABaseModel, DocumentMixin, AnnotatedMixin[FileReferenceAnnotation]
-):
+class FileReference(JSONLDDocument, AnnotatedMixin[FileReferenceAnnotation]):
     """A reference to an externally hosted file."""
 
     study_uuid: UUID = Field()
@@ -167,9 +183,9 @@ class FileReference(
     type: str = Field()
     size_in_bytes: int = Field()
 
-    context: str = Field(
+    context: Url = Field(
         alias="@context",
-        default="https://github.com/BioImage-Archive/bia-integrator/tree/main/api/src/models/jsonld/1.0/FileReferenceContext.json",
+        default="https://raw.githubusercontent.com/BioImage-Archive/bia-integrator/main/api/src/models/jsonld/1.0/FileReferenceContext.jsonld",
     )
 
     model_config = ConfigDict(model_version_latest=1)
@@ -211,7 +227,7 @@ class BIAImageRepresentation(BIABaseModel):
     rendering: Optional[RenderingInfo] = Field(default=None)
 
 
-class Biosample(BIABaseModel, DocumentMixin):
+class Biosample(JSONLDDocument):
     title: str = (
         Field()
     )  # is this a ST-only concern, or does it make sense for it to be in the models?
@@ -227,15 +243,15 @@ class Biosample(BIABaseModel, DocumentMixin):
     intrinsic_variables: List[str] = Field(
         description="Intrinsic (e.g. genetic) alteration.", default=[]
     )
-    context: str = Field(
+    context: Url = Field(
         alias="@context",
-        default="https://github.com/BioImage-Archive/bia-integrator/tree/main/api/src/models/jsonld/1.0/SpecimenContext.json",
+        default="https://raw.githubusercontent.com/BioImage-Archive/bia-integrator/main/api/src/models/jsonld/1.0/SpecimenContext.jsonld",
     )
 
     model_config = ConfigDict(model_version_latest=1)
 
 
-class Specimen(BIABaseModel, DocumentMixin):
+class Specimen(JSONLDDocument):
     biosample_uuid: UUID = Field()
 
     title: str = (
@@ -243,15 +259,15 @@ class Specimen(BIABaseModel, DocumentMixin):
     )  # is this a ST-only concern, or does it make sense for it to be in the models?
     sample_preparation_protocol: str = Field()
     growth_protocol: str = Field()
-    context: str = Field(
+    context: Url = Field(
         alias="@context",
-        default="https://github.com/BioImage-Archive/bia-integrator/tree/main/api/src/models/jsonld/1.0/SpecimenContext.json",
+        default="https://raw.githubusercontent.com/BioImage-Archive/bia-integrator/main/api/src/models/jsonld/1.0/SpecimenContext.jsonld",
     )
 
     model_config = ConfigDict(model_version_latest=1)
 
 
-class ImageAcquisition(BIABaseModel, DocumentMixin):
+class ImageAcquisition(JSONLDDocument):
     specimen_uuid: UUID = Field()
 
     title: str = (
@@ -266,15 +282,15 @@ class ImageAcquisition(BIABaseModel, DocumentMixin):
     imaging_method: str = (
         Field()
     )  # make this an Enum / restrict some other way? Distinguishing between "somewhat close to a controlled vocabulary" vs "completely free text" might be useful
-    context: str = Field(
+    context: Url = Field(
         alias="@context",
-        default="https://github.com/BioImage-Archive/bia-integrator/tree/main/api/src/models/jsonld/1.0/ImageAcquisitionContext.json",
+        default="https://raw.githubusercontent.com/BioImage-Archive/bia-integrator/main/api/src/models/jsonld/1.0/ImageAcquisitionContext.jsonld",
     )
 
     model_config = ConfigDict(model_version_latest=1)
 
 
-class BIAImage(BIABaseModel, DocumentMixin, AnnotatedMixin[ImageAnnotation]):
+class BIAImage(JSONLDDocument, AnnotatedMixin[ImageAnnotation]):
     """This class represents the abstract concept of an image. Images are
     generated by acquisition by instruments.
 
@@ -300,15 +316,15 @@ class BIAImage(BIABaseModel, DocumentMixin, AnnotatedMixin[ImageAnnotation]):
         description="Context in which the image was acquired. This list often has one item, but it can occasionally have more (e.g. for multimodal imaging)",
         default=[],
     )
-    context: str = Field(
+    context: Url = Field(
         alias="@context",
-        default="https://github.com/BioImage-Archive/bia-integrator/tree/main/api/src/models/jsonld/1.0/ImageContext.json",
+        default="https://raw.githubusercontent.com/BioImage-Archive/bia-integrator/main/api/src/models/jsonld/1.0/ImageContext.jsonld",
     )
 
     model_config = ConfigDict(model_version_latest=2)
 
 
-class BIACollection(BIABaseModel, DocumentMixin, AnnotatedMixin[CollectionAnnotation]):
+class BIACollection(JSONLDDocument, AnnotatedMixin[CollectionAnnotation]):
     """A collection of studies with a coherent purpose. Studies can be in
     multiple collections."""
 
@@ -317,9 +333,9 @@ class BIACollection(BIABaseModel, DocumentMixin, AnnotatedMixin[CollectionAnnota
     subtitle: str = Field()
     description: Optional[str] = Field(default=None)
     study_uuids: List[str] = Field(default=[])
-    context: str = Field(
+    context: Url = Field(
         alias="@context",
-        default="https://github.com/BioImage-Archive/bia-integrator/tree/main/api/src/models/jsonld/1.0/CollectionContext.json",
+        default="https://raw.githubusercontent.com/BioImage-Archive/bia-integrator/main/api/src/models/jsonld/1.0/CollectionContext.jsonld",
     )
 
     model_config = ConfigDict(model_version_latest=1)
