@@ -333,6 +333,7 @@ def test_study_with_images_and_filerefs_fetch_images(
     images_fetched = set([img["uuid"] for img in rsp.json()])
     assert images_fetched == images_created
 
+
 def test_image_pagination(api_client: TestClient, existing_study: dict):
     images = make_images(api_client, existing_study, 5)
     images.sort(key=lambda img: UUID(img["uuid"]).hex)
@@ -412,7 +413,7 @@ def test_post_invalid_ome_metadata(api_client: TestClient, existing_image: dict)
             f"private/images/{existing_image['uuid']}/ome_metadata",
             files={"ome_metadata_file": f.read()},
         )
-        assert rsp.status_code == 500
+        assert rsp.status_code == 422
 
     # check no ome metadata object was created
     rsp = api_client.get(f"images/{existing_image['uuid']}/ome_metadata")
@@ -686,7 +687,7 @@ class TestSearchImagesExactMatch:
         )
         assert rsp.status_code == 200
         assert unorderd_lists_equality(img_fixtures[:2], rsp.json())
-        
+
     def test_search_uri_prefix_not_substring(
         self, api_client: TestClient, img_fixtures: List[dict], existing_study: dict
     ):
