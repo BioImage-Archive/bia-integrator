@@ -14,7 +14,7 @@ In a future version of Poetry this warning will become an error!
 This can be ignored.
 
 ## Running the api
-
+ 
 ```sh
 # note the --build, otherwise the api image doesn't actually get rebuilt to reflect changes
 docker compose --env-file ./.env_compose up --build -d # remove -d when first setting up, to make any problems obvious 
