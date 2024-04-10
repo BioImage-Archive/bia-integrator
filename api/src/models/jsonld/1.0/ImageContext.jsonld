@@ -17,5 +17,8 @@
             "@base": "https://www.ebi.ac.uk/bioimage-archive/api/v1/image_acquisitions/"
         },
         "@type": "@id"
+    },
+    "image_representation": {
+        "uri": "@id"
     }
 }

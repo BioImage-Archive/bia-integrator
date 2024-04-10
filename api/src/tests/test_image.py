@@ -10,7 +10,7 @@ from .util import (
     get_template_image,
     unorderd_lists_equality,
     assert_bulk_response_items_correct,
-    tests_base,
+    package_base,
     api_client,
     existing_study,
     existing_image,
@@ -403,7 +403,7 @@ def test_image_pagination_bad_limit(api_client: TestClient, existing_study: dict
 
 
 def test_image_ome_metadata_create_get(api_client: TestClient, existing_image: dict):
-    with open(os.path.join(tests_base(), "data/simple.ome.xml")) as f:
+    with open(os.path.join(package_base(), "tests/data/simple.ome.xml")) as f:
         rsp = api_client.post(
             f"private/images/{existing_image['uuid']}/ome_metadata",
             files={"ome_metadata_file": f.read()},
@@ -435,7 +435,7 @@ def test_post_invalid_ome_metadata(api_client: TestClient, existing_image: dict)
 
 
 def test_image_ome_metadata_update(api_client: TestClient, existing_image: dict):
-    ome_file_path = os.path.join(tests_base(), "data/simple.ome.xml")
+    ome_file_path = os.path.join(package_base(), "tests/data/simple.ome.xml")
     with open(ome_file_path) as f:
         rsp = api_client.post(
             f"private/images/{existing_image['uuid']}/ome_metadata",
