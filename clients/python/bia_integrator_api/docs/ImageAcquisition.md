@@ -4,6 +4,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**context** | **str** |  | [optional] [default to 'https://raw.githubusercontent.com/BioImage-Archive/bia-integrator/main/api/src/models/jsonld/1.0/ImageAcquisitionContext.jsonld']
 **uuid** | **str** |  | 
 **version** | **int** |  | 
 **model** | [**ModelMetadata**](ModelMetadata.md) |  | [optional] 
