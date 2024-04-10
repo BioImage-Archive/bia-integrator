@@ -19,13 +19,14 @@ import json
 
 
 from typing import List, Optional
-from pydantic import BaseModel, Field, StrictInt, StrictStr, conlist
+from pydantic import BaseModel, Field, StrictInt, StrictStr, conlist, constr
 from bia_integrator_api.models.model_metadata import ModelMetadata
 
 class Biosample(BaseModel):
     """
     Biosample
     """
+    context: Optional[constr(strict=True, min_length=1)] = Field('https://raw.githubusercontent.com/BioImage-Archive/bia-integrator/main/api/src/models/jsonld/1.0/SpecimenContext.jsonld', alias="@context")
     uuid: StrictStr = Field(...)
     version: StrictInt = Field(...)
     model: Optional[ModelMetadata] = None
@@ -38,7 +39,7 @@ class Biosample(BaseModel):
     experimental_variables: Optional[conlist(StrictStr)] = None
     extrinsic_variables: Optional[conlist(StrictStr)] = Field(None, description="External treatment (e.g. reagent).")
     intrinsic_variables: Optional[conlist(StrictStr)] = Field(None, description="Intrinsic (e.g. genetic) alteration.")
-    __properties = ["uuid", "version", "model", "title", "organism_scientific_name", "organism_common_name", "organism_ncbi_taxon", "description", "biological_entity", "experimental_variables", "extrinsic_variables", "intrinsic_variables"]
+    __properties = ["@context", "uuid", "version", "model", "title", "organism_scientific_name", "organism_common_name", "organism_ncbi_taxon", "description", "biological_entity", "experimental_variables", "extrinsic_variables", "intrinsic_variables"]
 
     class Config:
         """Pydantic configuration"""
@@ -84,6 +85,7 @@ class Biosample(BaseModel):
             return Biosample.parse_obj(obj)
 
         _obj = Biosample.parse_obj({
+            "context": obj.get("@context") if obj.get("@context") is not None else 'https://raw.githubusercontent.com/BioImage-Archive/bia-integrator/main/api/src/models/jsonld/1.0/SpecimenContext.jsonld',
             "uuid": obj.get("uuid"),
             "version": obj.get("version"),
             "model": ModelMetadata.from_dict(obj.get("model")) if obj.get("model") is not None else None,

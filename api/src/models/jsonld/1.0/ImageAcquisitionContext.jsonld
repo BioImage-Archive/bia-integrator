@@ -1,0 +1,13 @@
+{
+    "@vocab": "https://www.ebi.ac.uk/bioimage-archive/undefined.schema/",
+    "uuid": "@id",
+    "title": "http://purl.org/dc/terms/title",
+    "description": "http://purl.org/dc/terms/description",
+    "@base": "https://www.ebi.ac.uk/bioimage-archive/api/v1/image_acquisitions/",
+    "specimen_uuid": {
+        "@context": {
+            "@base": "https://www.ebi.ac.uk/bioimage-archive/api/v1/specimens/"
+        },
+        "@type": "@id"
+    }
+}

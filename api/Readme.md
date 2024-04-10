@@ -13,6 +13,15 @@ In a future version of Poetry this warning will become an error!
 ```
 This can be ignored.
 
+### Install recommended extensions
+
+If doing any development on the project, consider installing the recommended extensions:
+
+* ms-python.black-formatter
+* ms-python.debugpy
+* ms-python.python
+
+
 ## Running the api
  
 ```sh

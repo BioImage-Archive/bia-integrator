@@ -1934,6 +1934,13 @@
             "title": "Annotations",
             "default": []
           },
+          "@context": {
+            "type": "string",
+            "minLength": 1,
+            "format": "uri",
+            "title": "@Context",
+            "default": "https://raw.githubusercontent.com/BioImage-Archive/bia-integrator/main/api/src/models/jsonld/1.0/CollectionContext.jsonld"
+          },
           "uuid": {
             "type": "string",
             "format": "uuid",
@@ -2018,6 +2025,13 @@
             "type": "array",
             "title": "Annotations",
             "default": []
+          },
+          "@context": {
+            "type": "string",
+            "minLength": 1,
+            "format": "uri",
+            "title": "@Context",
+            "default": "https://raw.githubusercontent.com/BioImage-Archive/bia-integrator/main/api/src/models/jsonld/1.0/ImageContext.jsonld"
           },
           "uuid": {
             "type": "string",
@@ -2246,6 +2260,13 @@
             "title": "Annotations",
             "default": []
           },
+          "@context": {
+            "type": "string",
+            "minLength": 1,
+            "format": "uri",
+            "title": "@Context",
+            "default": "https://raw.githubusercontent.com/BioImage-Archive/bia-integrator/main/api/src/models/jsonld/1.0/StudyContext.jsonld"
+          },
           "uuid": {
             "type": "string",
             "format": "uuid",
@@ -2355,6 +2376,13 @@
       },
       "Biosample": {
         "properties": {
+          "@context": {
+            "type": "string",
+            "minLength": 1,
+            "format": "uri",
+            "title": "@Context",
+            "default": "https://raw.githubusercontent.com/BioImage-Archive/bia-integrator/main/api/src/models/jsonld/1.0/SpecimenContext.jsonld"
+          },
           "uuid": {
             "type": "string",
             "format": "uuid",
@@ -2620,7 +2648,7 @@
           "scale_factor": {
             "type": "number",
             "title": "Scale Factor",
-            "default": 1
+            "default": 1.0
           }
         },
         "type": "object",
@@ -2679,6 +2707,13 @@
             "type": "array",
             "title": "Annotations",
             "default": []
+          },
+          "@context": {
+            "type": "string",
+            "minLength": 1,
+            "format": "uri",
+            "title": "@Context",
+            "default": "https://raw.githubusercontent.com/BioImage-Archive/bia-integrator/main/api/src/models/jsonld/1.0/FileReferenceContext.jsonld"
           },
           "uuid": {
             "type": "string",
@@ -2777,6 +2812,13 @@
       },
       "ImageAcquisition": {
         "properties": {
+          "@context": {
+            "type": "string",
+            "minLength": 1,
+            "format": "uri",
+            "title": "@Context",
+            "default": "https://raw.githubusercontent.com/BioImage-Archive/bia-integrator/main/api/src/models/jsonld/1.0/ImageAcquisitionContext.jsonld"
+          },
           "uuid": {
             "type": "string",
             "format": "uuid",
@@ -3089,7 +3131,7 @@
           },
           "limit": {
             "type": "integer",
-            "minimum": 0,
+            "minimum": 0.0,
             "title": "Limit",
             "default": 10
           }
@@ -3202,7 +3244,7 @@
           },
           "limit": {
             "type": "integer",
-            "minimum": 0,
+            "minimum": 0.0,
             "title": "Limit",
             "default": 10
           }
@@ -3327,7 +3369,7 @@
           },
           "limit": {
             "type": "integer",
-            "minimum": 0,
+            "minimum": 0.0,
             "title": "Limit",
             "default": 10
           }
@@ -3337,6 +3379,13 @@
       },
       "Specimen": {
         "properties": {
+          "@context": {
+            "type": "string",
+            "minLength": 1,
+            "format": "uri",
+            "title": "@Context",
+            "default": "https://raw.githubusercontent.com/BioImage-Archive/bia-integrator/main/api/src/models/jsonld/1.0/SpecimenContext.jsonld"
+          },
           "uuid": {
             "type": "string",
             "format": "uuid",

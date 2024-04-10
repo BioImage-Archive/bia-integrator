@@ -1,7 +1,20 @@
 from fastapi.testclient import TestClient
-from .util import *
+import pytest
+from typing import List
+from .util import (
+    get_uuid,
+    get_template_file_reference,
+    make_file_references,
+    unorderd_lists_equality,
+    assert_bulk_response_items_correct,
+    api_client,
+    existing_study,
+    existing_file_reference,
+    uuid,
+)
 import itertools
 from uuid import UUID
+
 
 def test_create_file_references(api_client: TestClient, existing_study: dict):
     uuids = [get_uuid() for _ in range(2)]
@@ -36,7 +49,9 @@ def test_create_file_references_multiple_errors(
     uuids = [get_uuid() for _ in range(10)]
 
     file_references = [
-        {
+        # "use template but override everything" semantics, just to avoid this test breaking every time we change the FileReference model
+        get_template_file_reference(existing_study)
+        | {
             "uuid": uuid,
             "version": 0,
             "type": "file",
@@ -50,7 +65,6 @@ def test_create_file_references_multiple_errors(
         }
         for uuid in uuids
     ]
-    del existing_file_reference["model"]
     file_references.append(existing_file_reference)
 
     file_references[5]["version"] = 2
@@ -80,7 +94,6 @@ def test_create_file_references_multiple_errors(
         assert rsp.status_code == 200, rsp.json()
 
         doc_persisted = rsp.json()
-        del doc_persisted["model"]
 
         assert doc_persisted == doc_expected
 
@@ -464,7 +477,9 @@ class TestSearchFilerefExactMatch:
             },
         )
         assert rsp.status_code == 200
-        assert unorderd_lists_equality([fileref_fixtures[0], fileref_fixtures[2]], rsp.json())
+        assert unorderd_lists_equality(
+            [fileref_fixtures[0], fileref_fixtures[2]], rsp.json()
+        )
 
         rsp = api_client.post(
             "search/file_references/exact_match",

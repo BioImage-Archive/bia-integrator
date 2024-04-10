@@ -1,5 +1,18 @@
 from fastapi.testclient import TestClient
-from .util import *
+import pytest
+from typing import List
+from .util import (
+    get_uuid,
+    make_file_references,
+    make_images,
+    make_study,
+    get_study,
+    get_template_study,
+    unorderd_lists_equality,
+    api_client,
+    uuid,
+    existing_study,
+)
 
 
 def test_create_study(api_client: TestClient, uuid: str):
@@ -35,6 +48,7 @@ def test_create_study(api_client: TestClient, uuid: str):
         "file_references_count": 0,
         "images_count": 0,
         "model": {"type_name": "BIAStudy", "version": 1},
+        "@context": "https://raw.githubusercontent.com/BioImage-Archive/bia-integrator/main/api/src/models/jsonld/1.0/StudyContext.jsonld",
     }
 
     study_created = get_study(api_client, uuid)

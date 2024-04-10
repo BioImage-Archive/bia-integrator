@@ -19,13 +19,14 @@ import json
 
 
 from typing import Optional
-from pydantic import BaseModel, Field, StrictInt, StrictStr
+from pydantic import BaseModel, Field, StrictInt, StrictStr, constr
 from bia_integrator_api.models.model_metadata import ModelMetadata
 
 class ImageAcquisition(BaseModel):
     """
     ImageAcquisition
     """
+    context: Optional[constr(strict=True, min_length=1)] = Field('https://raw.githubusercontent.com/BioImage-Archive/bia-integrator/main/api/src/models/jsonld/1.0/ImageAcquisitionContext.jsonld', alias="@context")
     uuid: StrictStr = Field(...)
     version: StrictInt = Field(...)
     model: Optional[ModelMetadata] = None
@@ -34,7 +35,7 @@ class ImageAcquisition(BaseModel):
     imaging_instrument: StrictStr = Field(..., description="Textual description of the instrument used to capture the images.")
     image_acquisition_parameters: StrictStr = Field(..., description="How the images were acquired, including instrument settings/parameters.")
     imaging_method: StrictStr = Field(...)
-    __properties = ["uuid", "version", "model", "specimen_uuid", "title", "imaging_instrument", "image_acquisition_parameters", "imaging_method"]
+    __properties = ["@context", "uuid", "version", "model", "specimen_uuid", "title", "imaging_instrument", "image_acquisition_parameters", "imaging_method"]
 
     class Config:
         """Pydantic configuration"""
@@ -80,6 +81,7 @@ class ImageAcquisition(BaseModel):
             return ImageAcquisition.parse_obj(obj)
 
         _obj = ImageAcquisition.parse_obj({
+            "context": obj.get("@context") if obj.get("@context") is not None else 'https://raw.githubusercontent.com/BioImage-Archive/bia-integrator/main/api/src/models/jsonld/1.0/ImageAcquisitionContext.jsonld',
             "uuid": obj.get("uuid"),
             "version": obj.get("version"),
             "model": ModelMetadata.from_dict(obj.get("model")) if obj.get("model") is not None else None,

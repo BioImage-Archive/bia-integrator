@@ -19,7 +19,7 @@ import json
 
 
 from typing import Any, Dict, List, Optional
-from pydantic import BaseModel, Field, StrictBool, StrictInt, StrictStr, conlist
+from pydantic import BaseModel, Field, StrictBool, StrictInt, StrictStr, conlist, constr
 from bia_integrator_api.models.author import Author
 from bia_integrator_api.models.model_metadata import ModelMetadata
 from bia_integrator_api.models.study_annotation import StudyAnnotation
@@ -31,6 +31,7 @@ class BIAStudy(BaseModel):
     attributes: Optional[Dict[str, Any]] = Field(None, description="         When annotations are applied, the ones that have a key different than an object attribute (so they don't overwrite it) get saved here.     ")
     annotations_applied: Optional[StrictBool] = Field(False, description="         This acts as a dirty flag, with the purpose of telling apart objects that had some fields overwritten by applying annotations (so should be rejected when writing), and those that didn't.     ")
     annotations: Optional[conlist(StudyAnnotation)] = None
+    context: Optional[constr(strict=True, min_length=1)] = Field('https://raw.githubusercontent.com/BioImage-Archive/bia-integrator/main/api/src/models/jsonld/1.0/StudyContext.jsonld', alias="@context")
     uuid: StrictStr = Field(...)
     version: StrictInt = Field(...)
     model: Optional[ModelMetadata] = None
@@ -46,7 +47,7 @@ class BIAStudy(BaseModel):
     tags: Optional[conlist(StrictStr)] = None
     file_references_count: Optional[StrictInt] = 0
     images_count: Optional[StrictInt] = 0
-    __properties = ["attributes", "annotations_applied", "annotations", "uuid", "version", "model", "title", "description", "authors", "organism", "release_date", "accession_id", "imaging_type", "example_image_uri", "example_image_annotation_uri", "tags", "file_references_count", "images_count"]
+    __properties = ["attributes", "annotations_applied", "annotations", "@context", "uuid", "version", "model", "title", "description", "authors", "organism", "release_date", "accession_id", "imaging_type", "example_image_uri", "example_image_annotation_uri", "tags", "file_references_count", "images_count"]
 
     class Config:
         """Pydantic configuration"""
@@ -119,6 +120,7 @@ class BIAStudy(BaseModel):
             "attributes": obj.get("attributes"),
             "annotations_applied": obj.get("annotations_applied") if obj.get("annotations_applied") is not None else False,
             "annotations": [StudyAnnotation.from_dict(_item) for _item in obj.get("annotations")] if obj.get("annotations") is not None else None,
+            "context": obj.get("@context") if obj.get("@context") is not None else 'https://raw.githubusercontent.com/BioImage-Archive/bia-integrator/main/api/src/models/jsonld/1.0/StudyContext.jsonld',
             "uuid": obj.get("uuid"),
             "version": obj.get("version"),
             "model": ModelMetadata.from_dict(obj.get("model")) if obj.get("model") is not None else None,
