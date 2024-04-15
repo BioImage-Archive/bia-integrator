@@ -28,7 +28,7 @@ class ChannelRendering(BaseModel):
     channel_label: Optional[StrictStr] = Field(...)
     colormap_start: conlist(Union[StrictFloat, StrictInt]) = Field(...)
     colormap_end: conlist(Union[StrictFloat, StrictInt]) = Field(...)
-    scale_factor: Optional[Union[StrictFloat, StrictInt]] = 1.0
+    scale_factor: Optional[Union[StrictFloat, StrictInt]] = 1
     __properties = ["channel_label", "colormap_start", "colormap_end", "scale_factor"]
 
     class Config:
@@ -75,7 +75,7 @@ class ChannelRendering(BaseModel):
             "channel_label": obj.get("channel_label"),
             "colormap_start": obj.get("colormap_start"),
             "colormap_end": obj.get("colormap_end"),
-            "scale_factor": obj.get("scale_factor") if obj.get("scale_factor") is not None else 1.0
+            "scale_factor": obj.get("scale_factor") if obj.get("scale_factor") is not None else 1
         })
         return _obj
 

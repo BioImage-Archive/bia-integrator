@@ -24,6 +24,7 @@ from bia_integrator_api.models.bia_image_ome_metadata import BIAImageOmeMetadata
 from bia_integrator_api.models.bia_image_representation import BIAImageRepresentation
 from bia_integrator_api.models.bia_study import BIAStudy
 from bia_integrator_api.models.biosample import Biosample
+from bia_integrator_api.models.biosample_annotation import BiosampleAnnotation
 from bia_integrator_api.models.body_register_user import BodyRegisterUser
 from bia_integrator_api.models.bulk_operation_item import BulkOperationItem
 from bia_integrator_api.models.bulk_operation_response import BulkOperationResponse
@@ -33,6 +34,7 @@ from bia_integrator_api.models.file_reference import FileReference
 from bia_integrator_api.models.file_reference_annotation import FileReferenceAnnotation
 from bia_integrator_api.models.http_validation_error import HTTPValidationError
 from bia_integrator_api.models.image_acquisition import ImageAcquisition
+from bia_integrator_api.models.image_acquisition_annotation import ImageAcquisitionAnnotation
 from bia_integrator_api.models.image_annotation import ImageAnnotation
 from bia_integrator_api.models.location_inner import LocationInner
 from bia_integrator_api.models.model_metadata import ModelMetadata
@@ -48,6 +50,7 @@ from bia_integrator_api.models.search_image_filter import SearchImageFilter
 from bia_integrator_api.models.search_study import SearchStudy
 from bia_integrator_api.models.search_study_filter import SearchStudyFilter
 from bia_integrator_api.models.specimen import Specimen
+from bia_integrator_api.models.specimen_annotation import SpecimenAnnotation
 from bia_integrator_api.models.start_uuid import StartUuid
 from bia_integrator_api.models.study_annotation import StudyAnnotation
 from bia_integrator_api.models.validation_error import ValidationError
