@@ -24,15 +24,6 @@ class OverwriteMode(str, Enum):
     FAIL = "fail"
     ALLOW_IDEMPOTENT = "allow_idempotent"
 
-    # this enables FAIL to be mapped to fail.
-    @classmethod
-    def _missing_(cls, value):
-        value = value.lower()
-        for member in cls:
-            if member.lower() == value:
-                return member
-        return None
-
 
 class Repository:
     connection: AsyncIOMotorClient

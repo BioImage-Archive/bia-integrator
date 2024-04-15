@@ -152,6 +152,7 @@ def test_idempotent_create(
     document_creator: str,
     request,
 ):
+    # have to manually request fixtures values when they are different for the various parametered tests
     document = request.getfixturevalue(document_creator)
     rsp = api_client.post(endpoint, json=document, params=[("overwrite_mode", "fail")])
 

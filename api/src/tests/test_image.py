@@ -444,9 +444,7 @@ def test_set_image_ome_metadata_invalid(api_client: TestClient, existing_image: 
     assert rsp.status_code == 404
 
 
-def test_set_image_ome_metadata_updateSylvaneth27(
-    api_client: TestClient, existing_image: dict
-):
+def test_set_image_ome_metadata_update(api_client: TestClient, existing_image: dict):
     ome_file_path = os.path.join(package_base(), "tests/data/simple.ome.xml")
     with open(ome_file_path) as f:
         rsp = api_client.post(

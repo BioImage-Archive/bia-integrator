@@ -1,3 +1,7 @@
+# conftest files are read by pytest and fixtures get imported at the directory level and deeper.
+# features in conftests files in deeper folders can overwrite features in higher level directories.
+# see more here: https://docs.pytest.org/en/6.2.x/fixture.html#conftest-py-sharing-fixtures-across-multiple-files
+
 from fastapi.testclient import TestClient
 
 import pytest
