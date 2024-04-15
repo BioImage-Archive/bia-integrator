@@ -107,6 +107,9 @@ def get_template_biosample(add_uuid=False):
         "experimental_variables": ["placeholder_experimental_variable"],
         "extrinsic_variables": ["placeholder_extrinsic_variable"],
         "intrinsic_variables": ["placeholder_intrinsic_variable"],
+        "annotations_applied": False,
+        "attributes": {},
+        "annotations": [],
         "@context": f"file://{os.path.join(package_base(), 'models/jsonld/1.0/BiosampleContext.jsonld')}",
     }
 
@@ -120,6 +123,9 @@ def get_template_specimen(existing_biosample, add_uuid=False):
         "title": "placeholder_title",
         "sample_preparation_protocol": "placeholder_sample_preparation_protocol",
         "growth_protocol": "placeholder_growth_protocol",
+        "annotations_applied": False,
+        "attributes": {},
+        "annotations": [],
         "@context": f"file://{os.path.join(package_base(), 'models/jsonld/1.0/SpecimenContext.jsonld')}",
     }
 
@@ -134,6 +140,9 @@ def get_template_image_acquisition(existing_specimen, add_uuid=False):
         "imaging_instrument": "placeholder_imaging_instrument",
         "image_acquisition_parameters": "placeholder_image_acquisition_parameters",
         "imaging_method": "placeholder_imaging_method",
+        "annotations_applied": False,
+        "attributes": {},
+        "annotations": [],
         "@context": f"file://{os.path.join(package_base(), 'models/jsonld/1.0/ImageAcquisitionContext.jsonld')}",
     }
 
@@ -234,7 +243,7 @@ def get_template_image(existing_study: dict, add_uuid=False):
         "dimensions": None,
         "alias": None,
         "representations": [],
-        "image_acquisition_methods_uuid": [],
+        "image_acquisitions_uuid": [],
         "@context": f"file://{os.path.join(package_base(), 'models/jsonld/1.0/ImageContext.jsonld')}",
     }
 
