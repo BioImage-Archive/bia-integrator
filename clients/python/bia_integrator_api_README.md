@@ -53,10 +53,11 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = bia_integrator_api.PrivateApi(api_client)
     biosample = bia_integrator_api.Biosample() # Biosample | 
+    overwrite_mode = bia_integrator_api.OverwriteMode() # OverwriteMode |  (optional)
 
     try:
         # Create Biosample
-        api_response = api_instance.create_biosample(biosample)
+        api_response = api_instance.create_biosample(biosample, overwrite_mode=overwrite_mode)
         print("The response of PrivateApi->create_biosample:\n")
         pprint(api_response)
     except ApiException as e:
@@ -152,6 +153,7 @@ Class | Method | HTTP request | Description
  - [ModelMetadata](bia_integrator_api/docs/ModelMetadata.md)
  - [Name](bia_integrator_api/docs/Name.md)
  - [ObjectInfo](bia_integrator_api/docs/ObjectInfo.md)
+ - [OverwriteMode](bia_integrator_api/docs/OverwriteMode.md)
  - [RenderingInfo](bia_integrator_api/docs/RenderingInfo.md)
  - [SearchAnnotation](bia_integrator_api/docs/SearchAnnotation.md)
  - [SearchFileReference](bia_integrator_api/docs/SearchFileReference.md)
