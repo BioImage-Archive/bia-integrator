@@ -61,17 +61,19 @@ class PrivateApi(object):
         self.api_client = api_client
 
     @validate_arguments
-    def create_biosample(self, biosample : Biosample, **kwargs) -> object:  # noqa: E501
+    def create_biosample(self, biosample : Biosample, overwrite_mode : Optional[Any] = None, **kwargs) -> object:  # noqa: E501
         """Create Biosample  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.create_biosample(biosample, async_req=True)
+        >>> thread = api.create_biosample(biosample, overwrite_mode, async_req=True)
         >>> result = thread.get()
 
         :param biosample: (required)
         :type biosample: Biosample
+        :param overwrite_mode:
+        :type overwrite_mode: OverwriteMode
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _request_timeout: timeout setting for this request. If one
@@ -86,20 +88,22 @@ class PrivateApi(object):
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
             raise ValueError("Error! Please call the create_biosample_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
-        return self.create_biosample_with_http_info(biosample, **kwargs)  # noqa: E501
+        return self.create_biosample_with_http_info(biosample, overwrite_mode, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def create_biosample_with_http_info(self, biosample : Biosample, **kwargs) -> ApiResponse:  # noqa: E501
+    def create_biosample_with_http_info(self, biosample : Biosample, overwrite_mode : Optional[Any] = None, **kwargs) -> ApiResponse:  # noqa: E501
         """Create Biosample  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.create_biosample_with_http_info(biosample, async_req=True)
+        >>> thread = api.create_biosample_with_http_info(biosample, overwrite_mode, async_req=True)
         >>> result = thread.get()
 
         :param biosample: (required)
         :type biosample: Biosample
+        :param overwrite_mode:
+        :type overwrite_mode: OverwriteMode
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _preload_content: if False, the ApiResponse.data will
@@ -128,7 +132,8 @@ class PrivateApi(object):
         _params = locals()
 
         _all_params = [
-            'biosample'
+            'biosample',
+            'overwrite_mode'
         ]
         _all_params.extend(
             [
@@ -159,6 +164,9 @@ class PrivateApi(object):
 
         # process the query parameters
         _query_params = []
+        if _params.get('overwrite_mode') is not None:  # noqa: E501
+            _query_params.append(('overwrite_mode', _params['overwrite_mode'].value))
+
         # process the header parameters
         _header_params = dict(_params.get('_headers', {}))
         # process the form parameters
@@ -206,17 +214,19 @@ class PrivateApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def create_collection(self, bia_collection : BIACollection, **kwargs) -> object:  # noqa: E501
+    def create_collection(self, bia_collection : BIACollection, overwrite_mode : Optional[Any] = None, **kwargs) -> object:  # noqa: E501
         """Create Collection  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.create_collection(bia_collection, async_req=True)
+        >>> thread = api.create_collection(bia_collection, overwrite_mode, async_req=True)
         >>> result = thread.get()
 
         :param bia_collection: (required)
         :type bia_collection: BIACollection
+        :param overwrite_mode:
+        :type overwrite_mode: OverwriteMode
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _request_timeout: timeout setting for this request. If one
@@ -231,20 +241,22 @@ class PrivateApi(object):
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
             raise ValueError("Error! Please call the create_collection_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
-        return self.create_collection_with_http_info(bia_collection, **kwargs)  # noqa: E501
+        return self.create_collection_with_http_info(bia_collection, overwrite_mode, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def create_collection_with_http_info(self, bia_collection : BIACollection, **kwargs) -> ApiResponse:  # noqa: E501
+    def create_collection_with_http_info(self, bia_collection : BIACollection, overwrite_mode : Optional[Any] = None, **kwargs) -> ApiResponse:  # noqa: E501
         """Create Collection  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.create_collection_with_http_info(bia_collection, async_req=True)
+        >>> thread = api.create_collection_with_http_info(bia_collection, overwrite_mode, async_req=True)
         >>> result = thread.get()
 
         :param bia_collection: (required)
         :type bia_collection: BIACollection
+        :param overwrite_mode:
+        :type overwrite_mode: OverwriteMode
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _preload_content: if False, the ApiResponse.data will
@@ -273,7 +285,8 @@ class PrivateApi(object):
         _params = locals()
 
         _all_params = [
-            'bia_collection'
+            'bia_collection',
+            'overwrite_mode'
         ]
         _all_params.extend(
             [
@@ -304,6 +317,9 @@ class PrivateApi(object):
 
         # process the query parameters
         _query_params = []
+        if _params.get('overwrite_mode') is not None:  # noqa: E501
+            _query_params.append(('overwrite_mode', _params['overwrite_mode'].value))
+
         # process the header parameters
         _header_params = dict(_params.get('_headers', {}))
         # process the form parameters
@@ -351,17 +367,19 @@ class PrivateApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def create_file_references(self, file_reference : conlist(FileReference), **kwargs) -> BulkOperationResponse:  # noqa: E501
+    def create_file_references(self, file_reference : conlist(FileReference), overwrite_mode : Optional[Any] = None, **kwargs) -> BulkOperationResponse:  # noqa: E501
         """Create File References  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.create_file_references(file_reference, async_req=True)
+        >>> thread = api.create_file_references(file_reference, overwrite_mode, async_req=True)
         >>> result = thread.get()
 
         :param file_reference: (required)
         :type file_reference: List[FileReference]
+        :param overwrite_mode:
+        :type overwrite_mode: OverwriteMode
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _request_timeout: timeout setting for this request. If one
@@ -376,20 +394,22 @@ class PrivateApi(object):
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
             raise ValueError("Error! Please call the create_file_references_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
-        return self.create_file_references_with_http_info(file_reference, **kwargs)  # noqa: E501
+        return self.create_file_references_with_http_info(file_reference, overwrite_mode, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def create_file_references_with_http_info(self, file_reference : conlist(FileReference), **kwargs) -> ApiResponse:  # noqa: E501
+    def create_file_references_with_http_info(self, file_reference : conlist(FileReference), overwrite_mode : Optional[Any] = None, **kwargs) -> ApiResponse:  # noqa: E501
         """Create File References  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.create_file_references_with_http_info(file_reference, async_req=True)
+        >>> thread = api.create_file_references_with_http_info(file_reference, overwrite_mode, async_req=True)
         >>> result = thread.get()
 
         :param file_reference: (required)
         :type file_reference: List[FileReference]
+        :param overwrite_mode:
+        :type overwrite_mode: OverwriteMode
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _preload_content: if False, the ApiResponse.data will
@@ -418,7 +438,8 @@ class PrivateApi(object):
         _params = locals()
 
         _all_params = [
-            'file_reference'
+            'file_reference',
+            'overwrite_mode'
         ]
         _all_params.extend(
             [
@@ -449,6 +470,9 @@ class PrivateApi(object):
 
         # process the query parameters
         _query_params = []
+        if _params.get('overwrite_mode') is not None:  # noqa: E501
+            _query_params.append(('overwrite_mode', _params['overwrite_mode'].value))
+
         # process the header parameters
         _header_params = dict(_params.get('_headers', {}))
         # process the form parameters
@@ -496,17 +520,19 @@ class PrivateApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def create_image_acquisition(self, image_acquisition : ImageAcquisition, **kwargs) -> object:  # noqa: E501
+    def create_image_acquisition(self, image_acquisition : ImageAcquisition, overwrite_mode : Optional[Any] = None, **kwargs) -> object:  # noqa: E501
         """Create Image Acquisition  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.create_image_acquisition(image_acquisition, async_req=True)
+        >>> thread = api.create_image_acquisition(image_acquisition, overwrite_mode, async_req=True)
         >>> result = thread.get()
 
         :param image_acquisition: (required)
         :type image_acquisition: ImageAcquisition
+        :param overwrite_mode:
+        :type overwrite_mode: OverwriteMode
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _request_timeout: timeout setting for this request. If one
@@ -521,20 +547,22 @@ class PrivateApi(object):
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
             raise ValueError("Error! Please call the create_image_acquisition_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
-        return self.create_image_acquisition_with_http_info(image_acquisition, **kwargs)  # noqa: E501
+        return self.create_image_acquisition_with_http_info(image_acquisition, overwrite_mode, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def create_image_acquisition_with_http_info(self, image_acquisition : ImageAcquisition, **kwargs) -> ApiResponse:  # noqa: E501
+    def create_image_acquisition_with_http_info(self, image_acquisition : ImageAcquisition, overwrite_mode : Optional[Any] = None, **kwargs) -> ApiResponse:  # noqa: E501
         """Create Image Acquisition  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.create_image_acquisition_with_http_info(image_acquisition, async_req=True)
+        >>> thread = api.create_image_acquisition_with_http_info(image_acquisition, overwrite_mode, async_req=True)
         >>> result = thread.get()
 
         :param image_acquisition: (required)
         :type image_acquisition: ImageAcquisition
+        :param overwrite_mode:
+        :type overwrite_mode: OverwriteMode
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _preload_content: if False, the ApiResponse.data will
@@ -563,7 +591,8 @@ class PrivateApi(object):
         _params = locals()
 
         _all_params = [
-            'image_acquisition'
+            'image_acquisition',
+            'overwrite_mode'
         ]
         _all_params.extend(
             [
@@ -594,6 +623,9 @@ class PrivateApi(object):
 
         # process the query parameters
         _query_params = []
+        if _params.get('overwrite_mode') is not None:  # noqa: E501
+            _query_params.append(('overwrite_mode', _params['overwrite_mode'].value))
+
         # process the header parameters
         _header_params = dict(_params.get('_headers', {}))
         # process the form parameters
@@ -794,17 +826,19 @@ class PrivateApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def create_images(self, bia_image : conlist(BIAImage), **kwargs) -> BulkOperationResponse:  # noqa: E501
+    def create_images(self, bia_image : conlist(BIAImage), overwrite_mode : Optional[Any] = None, **kwargs) -> BulkOperationResponse:  # noqa: E501
         """Create Images  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.create_images(bia_image, async_req=True)
+        >>> thread = api.create_images(bia_image, overwrite_mode, async_req=True)
         >>> result = thread.get()
 
         :param bia_image: (required)
         :type bia_image: List[BIAImage]
+        :param overwrite_mode:
+        :type overwrite_mode: OverwriteMode
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _request_timeout: timeout setting for this request. If one
@@ -819,20 +853,22 @@ class PrivateApi(object):
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
             raise ValueError("Error! Please call the create_images_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
-        return self.create_images_with_http_info(bia_image, **kwargs)  # noqa: E501
+        return self.create_images_with_http_info(bia_image, overwrite_mode, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def create_images_with_http_info(self, bia_image : conlist(BIAImage), **kwargs) -> ApiResponse:  # noqa: E501
+    def create_images_with_http_info(self, bia_image : conlist(BIAImage), overwrite_mode : Optional[Any] = None, **kwargs) -> ApiResponse:  # noqa: E501
         """Create Images  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.create_images_with_http_info(bia_image, async_req=True)
+        >>> thread = api.create_images_with_http_info(bia_image, overwrite_mode, async_req=True)
         >>> result = thread.get()
 
         :param bia_image: (required)
         :type bia_image: List[BIAImage]
+        :param overwrite_mode:
+        :type overwrite_mode: OverwriteMode
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _preload_content: if False, the ApiResponse.data will
@@ -861,7 +897,8 @@ class PrivateApi(object):
         _params = locals()
 
         _all_params = [
-            'bia_image'
+            'bia_image',
+            'overwrite_mode'
         ]
         _all_params.extend(
             [
@@ -892,6 +929,9 @@ class PrivateApi(object):
 
         # process the query parameters
         _query_params = []
+        if _params.get('overwrite_mode') is not None:  # noqa: E501
+            _query_params.append(('overwrite_mode', _params['overwrite_mode'].value))
+
         # process the header parameters
         _header_params = dict(_params.get('_headers', {}))
         # process the form parameters
@@ -1070,17 +1110,19 @@ class PrivateApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def create_specimen(self, specimen : Specimen, **kwargs) -> object:  # noqa: E501
+    def create_specimen(self, specimen : Specimen, overwrite_mode : Optional[Any] = None, **kwargs) -> object:  # noqa: E501
         """Create Specimen  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.create_specimen(specimen, async_req=True)
+        >>> thread = api.create_specimen(specimen, overwrite_mode, async_req=True)
         >>> result = thread.get()
 
         :param specimen: (required)
         :type specimen: Specimen
+        :param overwrite_mode:
+        :type overwrite_mode: OverwriteMode
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _request_timeout: timeout setting for this request. If one
@@ -1095,20 +1137,22 @@ class PrivateApi(object):
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
             raise ValueError("Error! Please call the create_specimen_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
-        return self.create_specimen_with_http_info(specimen, **kwargs)  # noqa: E501
+        return self.create_specimen_with_http_info(specimen, overwrite_mode, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def create_specimen_with_http_info(self, specimen : Specimen, **kwargs) -> ApiResponse:  # noqa: E501
+    def create_specimen_with_http_info(self, specimen : Specimen, overwrite_mode : Optional[Any] = None, **kwargs) -> ApiResponse:  # noqa: E501
         """Create Specimen  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.create_specimen_with_http_info(specimen, async_req=True)
+        >>> thread = api.create_specimen_with_http_info(specimen, overwrite_mode, async_req=True)
         >>> result = thread.get()
 
         :param specimen: (required)
         :type specimen: Specimen
+        :param overwrite_mode:
+        :type overwrite_mode: OverwriteMode
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _preload_content: if False, the ApiResponse.data will
@@ -1137,7 +1181,8 @@ class PrivateApi(object):
         _params = locals()
 
         _all_params = [
-            'specimen'
+            'specimen',
+            'overwrite_mode'
         ]
         _all_params.extend(
             [
@@ -1168,6 +1213,9 @@ class PrivateApi(object):
 
         # process the query parameters
         _query_params = []
+        if _params.get('overwrite_mode') is not None:  # noqa: E501
+            _query_params.append(('overwrite_mode', _params['overwrite_mode'].value))
+
         # process the header parameters
         _header_params = dict(_params.get('_headers', {}))
         # process the form parameters
@@ -1215,17 +1263,19 @@ class PrivateApi(object):
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def create_study(self, bia_study : BIAStudy, **kwargs) -> object:  # noqa: E501
+    def create_study(self, bia_study : BIAStudy, overwrite_mode : Optional[Any] = None, **kwargs) -> object:  # noqa: E501
         """Create Study  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.create_study(bia_study, async_req=True)
+        >>> thread = api.create_study(bia_study, overwrite_mode, async_req=True)
         >>> result = thread.get()
 
         :param bia_study: (required)
         :type bia_study: BIAStudy
+        :param overwrite_mode:
+        :type overwrite_mode: OverwriteMode
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _request_timeout: timeout setting for this request. If one
@@ -1240,20 +1290,22 @@ class PrivateApi(object):
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
             raise ValueError("Error! Please call the create_study_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data")
-        return self.create_study_with_http_info(bia_study, **kwargs)  # noqa: E501
+        return self.create_study_with_http_info(bia_study, overwrite_mode, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def create_study_with_http_info(self, bia_study : BIAStudy, **kwargs) -> ApiResponse:  # noqa: E501
+    def create_study_with_http_info(self, bia_study : BIAStudy, overwrite_mode : Optional[Any] = None, **kwargs) -> ApiResponse:  # noqa: E501
         """Create Study  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.create_study_with_http_info(bia_study, async_req=True)
+        >>> thread = api.create_study_with_http_info(bia_study, overwrite_mode, async_req=True)
         >>> result = thread.get()
 
         :param bia_study: (required)
         :type bia_study: BIAStudy
+        :param overwrite_mode:
+        :type overwrite_mode: OverwriteMode
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _preload_content: if False, the ApiResponse.data will
@@ -1282,7 +1334,8 @@ class PrivateApi(object):
         _params = locals()
 
         _all_params = [
-            'bia_study'
+            'bia_study',
+            'overwrite_mode'
         ]
         _all_params.extend(
             [
@@ -1313,6 +1366,9 @@ class PrivateApi(object):
 
         # process the query parameters
         _query_params = []
+        if _params.get('overwrite_mode') is not None:  # noqa: E501
+            _query_params.append(('overwrite_mode', _params['overwrite_mode'].value))
+
         # process the header parameters
         _header_params = dict(_params.get('_headers', {}))
         # process the form parameters

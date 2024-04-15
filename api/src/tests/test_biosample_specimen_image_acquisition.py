@@ -8,13 +8,6 @@ So they were grouped in the same test file
 
 from fastapi.testclient import TestClient
 from .util import (
-    api_client,
-    uuid,
-    existing_biosample,
-    existing_specimen,
-    existing_image_acquisition,
-    existing_study,
-    existing_image,
     get_template_biosample,
 )
 

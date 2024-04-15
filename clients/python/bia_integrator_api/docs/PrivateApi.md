@@ -44,7 +44,7 @@ Method | HTTP request | Description
 
 
 # **create_biosample**
-> object create_biosample(biosample)
+> object create_biosample(biosample, overwrite_mode=overwrite_mode)
 
 Create Biosample
 
@@ -77,10 +77,11 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = bia_integrator_api.PrivateApi(api_client)
     biosample = bia_integrator_api.Biosample() # Biosample | 
+    overwrite_mode = bia_integrator_api.OverwriteMode() # OverwriteMode |  (optional)
 
     try:
         # Create Biosample
-        api_response = api_instance.create_biosample(biosample)
+        api_response = api_instance.create_biosample(biosample, overwrite_mode=overwrite_mode)
         print("The response of PrivateApi->create_biosample:\n")
         pprint(api_response)
     except Exception as e:
@@ -94,6 +95,7 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **biosample** | [**Biosample**](Biosample.md)|  | 
+ **overwrite_mode** | [**OverwriteMode**](.md)|  | [optional] 
 
 ### Return type
 
@@ -117,7 +119,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **create_collection**
-> object create_collection(bia_collection)
+> object create_collection(bia_collection, overwrite_mode=overwrite_mode)
 
 Create Collection
 
@@ -150,10 +152,11 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = bia_integrator_api.PrivateApi(api_client)
     bia_collection = bia_integrator_api.BIACollection() # BIACollection | 
+    overwrite_mode = bia_integrator_api.OverwriteMode() # OverwriteMode |  (optional)
 
     try:
         # Create Collection
-        api_response = api_instance.create_collection(bia_collection)
+        api_response = api_instance.create_collection(bia_collection, overwrite_mode=overwrite_mode)
         print("The response of PrivateApi->create_collection:\n")
         pprint(api_response)
     except Exception as e:
@@ -167,6 +170,7 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **bia_collection** | [**BIACollection**](BIACollection.md)|  | 
+ **overwrite_mode** | [**OverwriteMode**](.md)|  | [optional] 
 
 ### Return type
 
@@ -190,7 +194,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **create_file_references**
-> BulkOperationResponse create_file_references(file_reference)
+> BulkOperationResponse create_file_references(file_reference, overwrite_mode=overwrite_mode)
 
 Create File References
 
@@ -224,10 +228,11 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = bia_integrator_api.PrivateApi(api_client)
     file_reference = [bia_integrator_api.FileReference()] # List[FileReference] | 
+    overwrite_mode = bia_integrator_api.OverwriteMode() # OverwriteMode |  (optional)
 
     try:
         # Create File References
-        api_response = api_instance.create_file_references(file_reference)
+        api_response = api_instance.create_file_references(file_reference, overwrite_mode=overwrite_mode)
         print("The response of PrivateApi->create_file_references:\n")
         pprint(api_response)
     except Exception as e:
@@ -241,6 +246,7 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **file_reference** | [**List[FileReference]**](FileReference.md)|  | 
+ **overwrite_mode** | [**OverwriteMode**](.md)|  | [optional] 
 
 ### Return type
 
@@ -264,7 +270,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **create_image_acquisition**
-> object create_image_acquisition(image_acquisition)
+> object create_image_acquisition(image_acquisition, overwrite_mode=overwrite_mode)
 
 Create Image Acquisition
 
@@ -297,10 +303,11 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = bia_integrator_api.PrivateApi(api_client)
     image_acquisition = bia_integrator_api.ImageAcquisition() # ImageAcquisition | 
+    overwrite_mode = bia_integrator_api.OverwriteMode() # OverwriteMode |  (optional)
 
     try:
         # Create Image Acquisition
-        api_response = api_instance.create_image_acquisition(image_acquisition)
+        api_response = api_instance.create_image_acquisition(image_acquisition, overwrite_mode=overwrite_mode)
         print("The response of PrivateApi->create_image_acquisition:\n")
         pprint(api_response)
     except Exception as e:
@@ -314,6 +321,7 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **image_acquisition** | [**ImageAcquisition**](ImageAcquisition.md)|  | 
+ **overwrite_mode** | [**OverwriteMode**](.md)|  | [optional] 
 
 ### Return type
 
@@ -412,7 +420,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **create_images**
-> BulkOperationResponse create_images(bia_image)
+> BulkOperationResponse create_images(bia_image, overwrite_mode=overwrite_mode)
 
 Create Images
 
@@ -446,10 +454,11 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = bia_integrator_api.PrivateApi(api_client)
     bia_image = [bia_integrator_api.BIAImage()] # List[BIAImage] | 
+    overwrite_mode = bia_integrator_api.OverwriteMode() # OverwriteMode |  (optional)
 
     try:
         # Create Images
-        api_response = api_instance.create_images(bia_image)
+        api_response = api_instance.create_images(bia_image, overwrite_mode=overwrite_mode)
         print("The response of PrivateApi->create_images:\n")
         pprint(api_response)
     except Exception as e:
@@ -463,6 +472,7 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **bia_image** | [**List[BIAImage]**](BIAImage.md)|  | 
+ **overwrite_mode** | [**OverwriteMode**](.md)|  | [optional] 
 
 ### Return type
 
@@ -555,7 +565,7 @@ This endpoint does not need any parameter.
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **create_specimen**
-> object create_specimen(specimen)
+> object create_specimen(specimen, overwrite_mode=overwrite_mode)
 
 Create Specimen
 
@@ -588,10 +598,11 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = bia_integrator_api.PrivateApi(api_client)
     specimen = bia_integrator_api.Specimen() # Specimen | 
+    overwrite_mode = bia_integrator_api.OverwriteMode() # OverwriteMode |  (optional)
 
     try:
         # Create Specimen
-        api_response = api_instance.create_specimen(specimen)
+        api_response = api_instance.create_specimen(specimen, overwrite_mode=overwrite_mode)
         print("The response of PrivateApi->create_specimen:\n")
         pprint(api_response)
     except Exception as e:
@@ -605,6 +616,7 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **specimen** | [**Specimen**](Specimen.md)|  | 
+ **overwrite_mode** | [**OverwriteMode**](.md)|  | [optional] 
 
 ### Return type
 
@@ -628,7 +640,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **create_study**
-> object create_study(bia_study)
+> object create_study(bia_study, overwrite_mode=overwrite_mode)
 
 Create Study
 
@@ -661,10 +673,11 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = bia_integrator_api.PrivateApi(api_client)
     bia_study = bia_integrator_api.BIAStudy() # BIAStudy | 
+    overwrite_mode = bia_integrator_api.OverwriteMode() # OverwriteMode |  (optional)
 
     try:
         # Create Study
-        api_response = api_instance.create_study(bia_study)
+        api_response = api_instance.create_study(bia_study, overwrite_mode=overwrite_mode)
         print("The response of PrivateApi->create_study:\n")
         pprint(api_response)
     except Exception as e:
@@ -678,6 +691,7 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **bia_study** | [**BIAStudy**](BIAStudy.md)|  | 
+ **overwrite_mode** | [**OverwriteMode**](.md)|  | [optional] 
 
 ### Return type
 

@@ -56,6 +56,7 @@ from bia_integrator_api.models.location_inner import LocationInner
 from bia_integrator_api.models.model_metadata import ModelMetadata
 from bia_integrator_api.models.name import Name
 from bia_integrator_api.models.object_info import ObjectInfo
+from bia_integrator_api.models.overwrite_mode import OverwriteMode
 from bia_integrator_api.models.rendering_info import RenderingInfo
 from bia_integrator_api.models.search_annotation import SearchAnnotation
 from bia_integrator_api.models.search_file_reference import SearchFileReference

@@ -92,15 +92,36 @@
         ],
         "summary": "Create Study",
         "operationId": "create_study",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "overwrite_mode",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/OverwriteMode"
+                }
+              ],
+              "default": "fail",
+              "title": "Overwrite Mode"
+            }
+          }
+        ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/BIAStudy"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "201": {
@@ -121,12 +142,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
+        }
       },
       "patch": {
         "tags": [
@@ -134,15 +150,20 @@
         ],
         "summary": "Update Study",
         "operationId": "update_study",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/BIAStudy"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -163,12 +184,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
+        }
       }
     },
     "/api/v1/private/studies/{study_uuid}/refresh_counts": {
@@ -224,19 +240,40 @@
         ],
         "summary": "Create Images",
         "operationId": "create_images",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "overwrite_mode",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/OverwriteMode"
+                }
+              ],
+              "default": "fail",
+              "title": "Overwrite Mode"
+            }
+          }
+        ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
+                "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/BIAImage"
                 },
-                "type": "array",
                 "title": "Study Images"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "201": {
@@ -259,12 +296,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
+        }
       }
     },
     "/api/v1/private/images/single": {
@@ -399,19 +431,40 @@
         ],
         "summary": "Create File References",
         "operationId": "create_file_references",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "overwrite_mode",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/OverwriteMode"
+                }
+              ],
+              "default": "fail",
+              "title": "Overwrite Mode"
+            }
+          }
+        ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
+                "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/FileReference"
                 },
-                "type": "array",
                 "title": "File References"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "201": {
@@ -434,12 +487,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
+        }
       }
     },
     "/api/v1/private/file_references/single": {
@@ -493,15 +541,36 @@
         ],
         "summary": "Create Collection",
         "operationId": "create_collection",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "overwrite_mode",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/OverwriteMode"
+                }
+              ],
+              "default": "fail",
+              "title": "Overwrite Mode"
+            }
+          }
+        ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/BIACollection"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "201": {
@@ -522,12 +591,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
+        }
       }
     },
     "/api/v1/private/image_acquisitions": {
@@ -537,15 +601,36 @@
         ],
         "summary": "Create Image Acquisition",
         "operationId": "create_image_acquisition",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "overwrite_mode",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/OverwriteMode"
+                }
+              ],
+              "default": "fail",
+              "title": "Overwrite Mode"
+            }
+          }
+        ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/ImageAcquisition"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "201": {
@@ -566,12 +651,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
+        }
       },
       "patch": {
         "tags": [
@@ -579,15 +659,20 @@
         ],
         "summary": "Update Image Acquisition",
         "operationId": "update_image_acquisition",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/ImageAcquisition"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -608,12 +693,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
+        }
       }
     },
     "/api/v1/private/specimens": {
@@ -623,15 +703,36 @@
         ],
         "summary": "Create Specimen",
         "operationId": "create_specimen",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "overwrite_mode",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/OverwriteMode"
+                }
+              ],
+              "default": "fail",
+              "title": "Overwrite Mode"
+            }
+          }
+        ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/Specimen"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "201": {
@@ -652,12 +753,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
+        }
       },
       "patch": {
         "tags": [
@@ -665,15 +761,20 @@
         ],
         "summary": "Update Specimen",
         "operationId": "update_specimen",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/Specimen"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -694,12 +795,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
+        }
       }
     },
     "/api/v1/private/biosamples": {
@@ -709,15 +805,36 @@
         ],
         "summary": "Create Biosample",
         "operationId": "create_biosample",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "overwrite_mode",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/OverwriteMode"
+                }
+              ],
+              "default": "fail",
+              "title": "Overwrite Mode"
+            }
+          }
+        ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/Biosample"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "201": {
@@ -738,12 +855,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
+        }
       },
       "patch": {
         "tags": [
@@ -751,15 +863,20 @@
         ],
         "summary": "Update Biosample",
         "operationId": "update_biosample",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/Biosample"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -780,12 +897,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
+        }
       }
     },
     "/api/v1/private/images/{image_uuid}/ome_metadata": {
@@ -2937,6 +3049,14 @@
           "model"
         ],
         "title": "ObjectInfo"
+      },
+      "OverwriteMode": {
+        "type": "string",
+        "enum": [
+          "fail",
+          "allow_idempotent"
+        ],
+        "title": "OverwriteMode"
       },
       "RenderingInfo": {
         "properties": {
