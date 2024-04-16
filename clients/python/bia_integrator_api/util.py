@@ -8,6 +8,8 @@ import json
 import hashlib
 import uuid
 
+PUBLIC_API_URI = "https://45.88.81.209:8080"
+
 def get_access_token(api_config: Configuration, username: str, password: str) -> str:
     api_client = ApiClient(configuration=api_config)
     default_api = PrivateApi(api_client=api_client)
@@ -67,7 +69,7 @@ def simple_client(
     return client
 
 def get_client(
-    api_base_url: str = "https://45.88.81.209:8080"
+    api_base_url: str = PUBLIC_API_URI
 ) -> PublicApi:
     api_config = Configuration(
         host = api_base_url
