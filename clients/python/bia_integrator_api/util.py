@@ -1,5 +1,5 @@
 from bia_integrator_api import Configuration, ApiClient
-from bia_integrator_api.api import PrivateApi
+from bia_integrator_api.api import PrivateApi, PublicApi
 from base64 import b64decode
 from typing import Optional
 import time
@@ -7,6 +7,8 @@ import urllib3
 import json
 import hashlib
 import uuid
+
+PUBLIC_API_URI = "https://45.88.81.209:8080"
 
 def get_access_token(api_config: Configuration, username: str, password: str) -> str:
     api_client = ApiClient(configuration=api_config)
@@ -65,6 +67,18 @@ def simple_client(
     client = PrivateApi(api_client=api_client)
 
     return client
+
+def get_client(
+    api_base_url: str = PUBLIC_API_URI
+) -> PublicApi:
+    api_config = Configuration(
+        host = api_base_url
+    )
+    api_config.verify_ssl = False
+    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+    api_client = ApiClient(configuration=api_config)
+    return PublicApi(api_client=api_client)
 
 def uuid_from_str(doc_stable_string: str) -> str:
     hexdigest = hashlib.md5(doc_stable_string.encode("utf-8")).hexdigest()
