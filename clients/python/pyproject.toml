@@ -1,8 +1,9 @@
 [tool.poetry]
 name = "bia-integrator-api"
-version = "0.1.0"
 description = ""
-authors = ["Your Name <you@example.com>"]
+# managed by poetry-version-plugin
+version = "000"
+authors = []
 readme = "Readme.md"
 packages = [{include = "bia_integrator_api"}]
 
@@ -16,3 +17,6 @@ aenum = ">=3.1.11"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry-version-plugin]
+source = "git-tag"
