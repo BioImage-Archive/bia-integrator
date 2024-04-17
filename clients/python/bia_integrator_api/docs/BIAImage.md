@@ -18,7 +18,7 @@ Name | Type | Description | Notes
 **dimensions** | **str** |  | [optional] 
 **representations** | [**List[BIAImageRepresentation]**](BIAImageRepresentation.md) |  | [optional] [default to []]
 **alias** | [**BIAImageAlias**](BIAImageAlias.md) |  | [optional] 
-**image_acquisition_methods_uuid** | **List[str]** | Context in which the image was acquired. This list often has one item, but it can occasionally have more (e.g. for multimodal imaging) | [optional] [default to []]
+**image_acquisitions_uuid** | **List[str]** | Context in which the image was acquired. This list often has one item, but it can occasionally have more (e.g. for multimodal imaging) | [optional] [default to []]
 
 ## Example
 

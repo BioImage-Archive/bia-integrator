@@ -1,6 +1,6 @@
 from bia_integrator_api.util import simple_client
 from bia_integrator_api import models as api_models, exceptions as api_exceptions
-from .util import get_uuid
+from util import get_uuid
 
 # This replaces the generated 'getting started' and any concern for authentication
 rw_client = simple_client(

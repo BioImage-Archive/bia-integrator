@@ -18,15 +18,19 @@ import re  # noqa: F401
 import json
 
 
-from typing import Optional
-from pydantic import BaseModel, Field, StrictInt, StrictStr, constr
+from typing import Any, Dict, List, Optional
+from pydantic import BaseModel, Field, StrictBool, StrictInt, StrictStr, conlist, constr
 from bia_integrator_api.models.model_metadata import ModelMetadata
+from bia_integrator_api.models.specimen_annotation import SpecimenAnnotation
 
 class Specimen(BaseModel):
     """
     Specimen
     """
     context: Optional[constr(strict=True, min_length=1)] = Field('https://raw.githubusercontent.com/BioImage-Archive/bia-integrator/main/api/src/models/jsonld/1.0/SpecimenContext.jsonld', alias="@context")
+    attributes: Optional[Dict[str, Any]] = Field(None, description="         When annotations are applied, the ones that have a key different than an object attribute (so they don't overwrite it) get saved here.     ")
+    annotations_applied: Optional[StrictBool] = Field(False, description="         This acts as a dirty flag, with the purpose of telling apart objects that had some fields overwritten by applying annotations (so should be rejected when writing), and those that didn't.     ")
+    annotations: Optional[conlist(SpecimenAnnotation)] = None
     uuid: StrictStr = Field(...)
     version: StrictInt = Field(...)
     model: Optional[ModelMetadata] = None
@@ -34,7 +38,7 @@ class Specimen(BaseModel):
     title: StrictStr = Field(...)
     sample_preparation_protocol: StrictStr = Field(...)
     growth_protocol: StrictStr = Field(...)
-    __properties = ["@context", "uuid", "version", "model", "biosample_uuid", "title", "sample_preparation_protocol", "growth_protocol"]
+    __properties = ["@context", "attributes", "annotations_applied", "annotations", "uuid", "version", "model", "biosample_uuid", "title", "sample_preparation_protocol", "growth_protocol"]
 
     class Config:
         """Pydantic configuration"""
@@ -60,6 +64,13 @@ class Specimen(BaseModel):
                           exclude={
                           },
                           exclude_none=True)
+        # override the default output from pydantic by calling `to_dict()` of each item in annotations (list)
+        _items = []
+        if self.annotations:
+            for _item in self.annotations:
+                if _item:
+                    _items.append(_item.to_dict())
+            _dict['annotations'] = _items
         # override the default output from pydantic by calling `to_dict()` of model
         if self.model:
             _dict['model'] = self.model.to_dict()
@@ -81,6 +92,9 @@ class Specimen(BaseModel):
 
         _obj = Specimen.parse_obj({
             "context": obj.get("@context") if obj.get("@context") is not None else 'https://raw.githubusercontent.com/BioImage-Archive/bia-integrator/main/api/src/models/jsonld/1.0/SpecimenContext.jsonld',
+            "attributes": obj.get("attributes"),
+            "annotations_applied": obj.get("annotations_applied") if obj.get("annotations_applied") is not None else False,
+            "annotations": [SpecimenAnnotation.from_dict(_item) for _item in obj.get("annotations")] if obj.get("annotations") is not None else None,
             "uuid": obj.get("uuid"),
             "version": obj.get("version"),
             "model": ModelMetadata.from_dict(obj.get("model")) if obj.get("model") is not None else None,

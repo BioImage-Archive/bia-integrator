@@ -2213,13 +2213,13 @@
               }
             ]
           },
-          "image_acquisition_methods_uuid": {
+          "image_acquisitions_uuid": {
             "items": {
               "type": "string",
               "format": "uuid"
             },
             "type": "array",
-            "title": "Image Acquisition Methods Uuid",
+            "title": "Image Acquisitions Uuid",
             "description": "Context in which the image was acquired. This list often has one item, but it can occasionally have more (e.g. for multimodal imaging)",
             "default": []
           }
@@ -2495,6 +2495,26 @@
             "title": "@Context",
             "default": "https://raw.githubusercontent.com/BioImage-Archive/bia-integrator/main/api/src/models/jsonld/1.0/SpecimenContext.jsonld"
           },
+          "attributes": {
+            "type": "object",
+            "title": "Attributes",
+            "description": "\n        When annotations are applied, the ones that have a key different than an object attribute (so they don't overwrite it) get saved here.\n    ",
+            "default": {}
+          },
+          "annotations_applied": {
+            "type": "boolean",
+            "title": "Annotations Applied",
+            "description": "\n        This acts as a dirty flag, with the purpose of telling apart objects that had some fields overwritten by applying annotations (so should be rejected when writing), and those that didn't.\n    ",
+            "default": false
+          },
+          "annotations": {
+            "items": {
+              "$ref": "#/components/schemas/BiosampleAnnotation"
+            },
+            "type": "array",
+            "title": "Annotations",
+            "default": []
+          },
           "uuid": {
             "type": "string",
             "format": "uuid",
@@ -2578,6 +2598,33 @@
           "biological_entity"
         ],
         "title": "Biosample"
+      },
+      "BiosampleAnnotation": {
+        "properties": {
+          "author_email": {
+            "type": "string",
+            "title": "Author Email"
+          },
+          "key": {
+            "type": "string",
+            "title": "Key"
+          },
+          "value": {
+            "type": "string",
+            "title": "Value"
+          },
+          "state": {
+            "$ref": "#/components/schemas/AnnotationState"
+          }
+        },
+        "type": "object",
+        "required": [
+          "author_email",
+          "key",
+          "value",
+          "state"
+        ],
+        "title": "BiosampleAnnotation"
       },
       "Body_login_for_access_token": {
         "properties": {
@@ -2760,7 +2807,7 @@
           "scale_factor": {
             "type": "number",
             "title": "Scale Factor",
-            "default": 1.0
+            "default": 1
           }
         },
         "type": "object",
@@ -2931,6 +2978,26 @@
             "title": "@Context",
             "default": "https://raw.githubusercontent.com/BioImage-Archive/bia-integrator/main/api/src/models/jsonld/1.0/ImageAcquisitionContext.jsonld"
           },
+          "attributes": {
+            "type": "object",
+            "title": "Attributes",
+            "description": "\n        When annotations are applied, the ones that have a key different than an object attribute (so they don't overwrite it) get saved here.\n    ",
+            "default": {}
+          },
+          "annotations_applied": {
+            "type": "boolean",
+            "title": "Annotations Applied",
+            "description": "\n        This acts as a dirty flag, with the purpose of telling apart objects that had some fields overwritten by applying annotations (so should be rejected when writing), and those that didn't.\n    ",
+            "default": false
+          },
+          "annotations": {
+            "items": {
+              "$ref": "#/components/schemas/ImageAcquisitionAnnotation"
+            },
+            "type": "array",
+            "title": "Annotations",
+            "default": []
+          },
           "uuid": {
             "type": "string",
             "format": "uuid",
@@ -2986,6 +3053,33 @@
           "imaging_method"
         ],
         "title": "ImageAcquisition"
+      },
+      "ImageAcquisitionAnnotation": {
+        "properties": {
+          "author_email": {
+            "type": "string",
+            "title": "Author Email"
+          },
+          "key": {
+            "type": "string",
+            "title": "Key"
+          },
+          "value": {
+            "type": "string",
+            "title": "Value"
+          },
+          "state": {
+            "$ref": "#/components/schemas/AnnotationState"
+          }
+        },
+        "type": "object",
+        "required": [
+          "author_email",
+          "key",
+          "value",
+          "state"
+        ],
+        "title": "ImageAcquisitionAnnotation"
       },
       "ImageAnnotation": {
         "properties": {
@@ -3251,7 +3345,7 @@
           },
           "limit": {
             "type": "integer",
-            "minimum": 0.0,
+            "minimum": 0,
             "title": "Limit",
             "default": 10
           }
@@ -3364,7 +3458,7 @@
           },
           "limit": {
             "type": "integer",
-            "minimum": 0.0,
+            "minimum": 0,
             "title": "Limit",
             "default": 10
           }
@@ -3489,7 +3583,7 @@
           },
           "limit": {
             "type": "integer",
-            "minimum": 0.0,
+            "minimum": 0,
             "title": "Limit",
             "default": 10
           }
@@ -3505,6 +3599,26 @@
             "format": "uri",
             "title": "@Context",
             "default": "https://raw.githubusercontent.com/BioImage-Archive/bia-integrator/main/api/src/models/jsonld/1.0/SpecimenContext.jsonld"
+          },
+          "attributes": {
+            "type": "object",
+            "title": "Attributes",
+            "description": "\n        When annotations are applied, the ones that have a key different than an object attribute (so they don't overwrite it) get saved here.\n    ",
+            "default": {}
+          },
+          "annotations_applied": {
+            "type": "boolean",
+            "title": "Annotations Applied",
+            "description": "\n        This acts as a dirty flag, with the purpose of telling apart objects that had some fields overwritten by applying annotations (so should be rejected when writing), and those that didn't.\n    ",
+            "default": false
+          },
+          "annotations": {
+            "items": {
+              "$ref": "#/components/schemas/SpecimenAnnotation"
+            },
+            "type": "array",
+            "title": "Annotations",
+            "default": []
           },
           "uuid": {
             "type": "string",
@@ -3554,6 +3668,33 @@
           "growth_protocol"
         ],
         "title": "Specimen"
+      },
+      "SpecimenAnnotation": {
+        "properties": {
+          "author_email": {
+            "type": "string",
+            "title": "Author Email"
+          },
+          "key": {
+            "type": "string",
+            "title": "Key"
+          },
+          "value": {
+            "type": "string",
+            "title": "Value"
+          },
+          "state": {
+            "$ref": "#/components/schemas/AnnotationState"
+          }
+        },
+        "type": "object",
+        "required": [
+          "author_email",
+          "key",
+          "value",
+          "state"
+        ],
+        "title": "SpecimenAnnotation"
       },
       "StudyAnnotation": {
         "properties": {

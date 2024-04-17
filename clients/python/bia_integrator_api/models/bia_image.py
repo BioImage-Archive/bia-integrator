@@ -42,8 +42,8 @@ class BIAImage(BaseModel):
     dimensions: Optional[StrictStr] = None
     representations: Optional[conlist(BIAImageRepresentation)] = None
     alias: Optional[BIAImageAlias] = None
-    image_acquisition_methods_uuid: Optional[conlist(StrictStr)] = Field(None, description="Context in which the image was acquired. This list often has one item, but it can occasionally have more (e.g. for multimodal imaging)")
-    __properties = ["attributes", "annotations_applied", "annotations", "@context", "uuid", "version", "model", "study_uuid", "original_relpath", "name", "dimensions", "representations", "alias", "image_acquisition_methods_uuid"]
+    image_acquisitions_uuid: Optional[conlist(StrictStr)] = Field(None, description="Context in which the image was acquired. This list often has one item, but it can occasionally have more (e.g. for multimodal imaging)")
+    __properties = ["attributes", "annotations_applied", "annotations", "@context", "uuid", "version", "model", "study_uuid", "original_relpath", "name", "dimensions", "representations", "alias", "image_acquisitions_uuid"]
 
     class Config:
         """Pydantic configuration"""
@@ -134,7 +134,7 @@ class BIAImage(BaseModel):
             "dimensions": obj.get("dimensions"),
             "representations": [BIAImageRepresentation.from_dict(_item) for _item in obj.get("representations")] if obj.get("representations") is not None else None,
             "alias": BIAImageAlias.from_dict(obj.get("alias")) if obj.get("alias") is not None else None,
-            "image_acquisition_methods_uuid": obj.get("image_acquisition_methods_uuid")
+            "image_acquisitions_uuid": obj.get("image_acquisitions_uuid")
         })
         return _obj
 

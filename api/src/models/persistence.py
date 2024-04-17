@@ -108,6 +108,18 @@ class CollectionAnnotation(Annotation):
     pass
 
 
+class ImageAcquisitionAnnotation(Annotation):
+    pass
+
+
+class SpecimenAnnotation(Annotation):
+    pass
+
+
+class BiosampleAnnotation(Annotation):
+    pass
+
+
 TAnnotation = TypeVar(
     "TAnnotation",
     Annotation,
@@ -228,7 +240,9 @@ class BIAImageRepresentation(BIABaseModel):
     rendering: Optional[RenderingInfo] = Field(default=None)
 
 
-class Biosample(BIABaseModel, DocumentMixin, JSONLDMixin):
+class Biosample(
+    BIABaseModel, DocumentMixin, AnnotatedMixin[BiosampleAnnotation], JSONLDMixin
+):
     title: str = (
         Field()
     )  # is this a ST-only concern, or does it make sense for it to be in the models?
@@ -252,7 +266,9 @@ class Biosample(BIABaseModel, DocumentMixin, JSONLDMixin):
     model_config = ConfigDict(model_version_latest=1)
 
 
-class Specimen(BIABaseModel, DocumentMixin, JSONLDMixin):
+class Specimen(
+    BIABaseModel, DocumentMixin, AnnotatedMixin[SpecimenAnnotation], JSONLDMixin
+):
     biosample_uuid: UUID = Field()
 
     title: str = (
@@ -268,7 +284,9 @@ class Specimen(BIABaseModel, DocumentMixin, JSONLDMixin):
     model_config = ConfigDict(model_version_latest=1)
 
 
-class ImageAcquisition(BIABaseModel, DocumentMixin, JSONLDMixin):
+class ImageAcquisition(
+    BIABaseModel, DocumentMixin, AnnotatedMixin[ImageAcquisitionAnnotation], JSONLDMixin
+):
     specimen_uuid: UUID = Field()
 
     title: str = (
@@ -315,7 +333,7 @@ class BIAImage(
     dimensions: Optional[str] = Field(default=None)
     representations: List[BIAImageRepresentation] = Field(default=[])
     alias: Optional[BIAImageAlias] = Field(default=None)
-    image_acquisition_methods_uuid: List[UUID] = Field(
+    image_acquisitions_uuid: List[UUID] = Field(
         description="Context in which the image was acquired. This list often has one item, but it can occasionally have more (e.g. for multimodal imaging)",
         default=[],
     )

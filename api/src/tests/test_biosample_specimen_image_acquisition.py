@@ -44,6 +44,9 @@ def test_specimen_create_retrieve_update(
         "title": "placeholder_title",
         "sample_preparation_protocol": "placeholder_sample_preparation_protocol",
         "growth_protocol": "placeholder_growth_protocol",
+        "attributes": {},
+        "annotations": [],
+        "annotations_applied": False,
         "@context": "https://placeholder/context",
     }
     rsp = api_client.post(f"private/specimens", json=specimen)
@@ -76,6 +79,9 @@ def test_image_acquisition_create_retrieve_update(
         "imaging_instrument": "placeholder_imaging_instrument",
         "image_acquisition_parameters": "placeholder_image_acquisition_parameters",
         "imaging_method": "placeholder_imaging_method",
+        "attributes": {},
+        "annotations": [],
+        "annotations_applied": False,
         "@context": "https://placeholder/context",
     }
     rsp = api_client.post(f"private/image_acquisitions", json=image_acquisition)
@@ -101,9 +107,7 @@ def test_image_add_image_acquisition(
     api_client: TestClient, existing_image, existing_image_acquisition
 ):
     existing_image["version"] += 1
-    existing_image["image_acquisition_methods_uuid"].append(
-        existing_image_acquisition["uuid"]
-    )
+    existing_image["image_acquisitions_uuid"].append(existing_image_acquisition["uuid"])
 
     rsp = api_client.patch(f"private/images/single", json=existing_image)
     assert rsp.status_code == 200, rsp.json()
@@ -116,7 +120,7 @@ def test_image_add_study_as_image_acquisition(
     This test fails on purpose! We need _uuid field type validation
     """
     existing_image["version"] += 1
-    existing_image["image_acquisition_methods_uuid"].append(existing_study["uuid"])
+    existing_image["image_acquisitions_uuid"].append(existing_study["uuid"])
 
     rsp = api_client.patch(f"private/images/single", json=existing_image)
     assert rsp.status_code == 400, rsp.json()
