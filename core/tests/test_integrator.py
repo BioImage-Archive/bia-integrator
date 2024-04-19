@@ -1,16 +1,8 @@
-from . import TEST_SAMPLE_DATA
-
-
-def test_load_and_annotate():
+def test_load_and_annotate(accession_id, expected_example_image_uri):
     
-    from bia_integrator_core.config import settings
-    settings.data_dirpath = TEST_SAMPLE_DATA
-
     from bia_integrator_core.integrator import load_and_annotate_study
-
-    accession_id = "S-BIAD144"
 
     bia_study = load_and_annotate_study(accession_id)
 
     assert bia_study.accession_id == accession_id
-    assert bia_study.example_image_uri == "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD144-example.png"
+    assert bia_study.example_image_uri == expected_example_image_uri
