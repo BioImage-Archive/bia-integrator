@@ -8,6 +8,9 @@ on:
     branches:
       - main # Trigger the action on push events to the main branch
       - dev
+env:
+  MONGO_INITDB_ROOT_PASSWORD: ${{ vars.MONGO_INITDB_ROOT_PASSWORD }}
+  MONGO_INITDB_ROOT_USERNAME: ${{ vars.MONGO_INITDB_ROOT_USERNAME }}
 jobs:
   docker-compose-test:
     runs-on: ubuntu-latest # Run the job on the latest Ubuntu VM
