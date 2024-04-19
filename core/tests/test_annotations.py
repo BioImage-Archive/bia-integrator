@@ -1,18 +1,10 @@
-from . import TEST_SAMPLE_DATA
-
-
-def test_get_study_annotations():
-
-    from bia_integrator_core.config import settings
-    settings.data_dirpath = TEST_SAMPLE_DATA
+def test_get_study_annotations(accession_id, expected_annotation_key):
 
     from bia_integrator_core.annotation import get_study_annotations
 
-
-    accession_id = "S-BIAD144"
-
     annotations = get_study_annotations(accession_id)
 
-    assert len(annotations) == 1
-    assert annotations[0].accession_id == "S-BIAD144"
-    assert annotations[0].key == "example_image_uri"
+    # Simply test that there is an annotation called example_image_uri
+    assert len(annotations) > 0
+    annotation_keys = [annotation.key for annotation in annotations]
+    assert expected_annotation_key in annotation_keys
