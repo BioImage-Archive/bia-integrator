@@ -84,7 +84,7 @@ You should be able to make your changes & can rebuild the api image with the com
 
 And then update the running container with your code.
 
-`docker-compose up -d`
+`docker compose up -d`
 
 Alternatively, if using VS Code, you can open the code that is running in the docker container and make changes there directly.
 
