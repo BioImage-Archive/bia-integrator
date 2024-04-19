@@ -32,9 +32,9 @@ jobs:
       - name: Docker Compose Up
         run: |
           docker compose up --build -d  # Build and start your Docker containers in the background
-       - name: Run tests
-         run: |
-           docker compose exec -T api poetry run pytest
+      - name: Run tests
+        run: |
+          docker compose exec -T api poetry run pytest
       - name: Docker Compose Down
         run: |
           docker compose down  # Stop and remove your Docker containers
