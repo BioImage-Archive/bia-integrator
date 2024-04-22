@@ -22,7 +22,7 @@ router = APIRouter(
 @router.post("/studies", status_code=status.HTTP_201_CREATED)
 async def create_study(
     study: db_models.BIAStudy,
-    db: Repository = Depends(use_cache=False),
+    db: Repository = Depends(use_cache=True),
     overwrite_mode: OverwriteMode = OverwriteMode.FAIL,
 ) -> None:
     logging.info(f"Creating study {study.accession_id}")
@@ -38,7 +38,7 @@ async def create_study(
 
 @router.patch("/studies", status_code=status.HTTP_200_OK)
 async def update_study(
-    study: db_models.BIAStudy, db: Repository = Depends(use_cache=False)
+    study: db_models.BIAStudy, db: Repository = Depends(use_cache=True)
 ) -> None:
     logging.info(f"Updating study {study.accession_id}. New version: {study.version}")
     await db.update_doc(study)
@@ -50,7 +50,7 @@ async def update_study(
     "/studies/{study_uuid}/refresh_counts", status_code=status.HTTP_201_CREATED
 )
 async def study_refresh_counts(
-    study_uuid: str, db: Repository = Depends(use_cache=False)
+    study_uuid: str, db: Repository = Depends(use_cache=True)
 ) -> None:
     """Recalculate and persist counts for other objects pointing to this study."""
 
@@ -64,7 +64,7 @@ async def study_refresh_counts(
 async def create_images(
     study_images: List[db_models.BIAImage],
     response: Response,
-    db: Repository = Depends(use_cache=False),
+    db: Repository = Depends(use_cache=True),
     overwrite_mode: OverwriteMode = OverwriteMode.FAIL,
 ) -> api_models.BulkOperationResponse:
     logging.info(
@@ -101,7 +101,7 @@ async def create_images(
 
 @router.patch("/images/single", status_code=status.HTTP_200_OK)
 async def update_image(
-    study_image: db_models.BIAImage, db: Repository = Depends(use_cache=False)
+    study_image: db_models.BIAImage, db: Repository = Depends(use_cache=True)
 ) -> None:
     """Bulk update not available - update_many only has one filter for the entire update
     @TODO: Find common bulk update usecases and map them to mongo operations"""
@@ -134,7 +134,7 @@ async def create_images_bulk() -> None:
 async def create_image_representation(
     image_uuid: str,
     representation: db_models.BIAImageRepresentation,
-    db: Repository = Depends(use_cache=False),
+    db: Repository = Depends(use_cache=True),
 ) -> None:
     logging.info(f"Adding an image representation to image {image_uuid}")
     await db.list_item_push(image_uuid, "representations", representation)
@@ -146,7 +146,7 @@ async def create_image_representation(
 async def create_file_references(
     file_references: List[db_models.FileReference],
     response: Response,
-    db: Repository = Depends(use_cache=False),
+    db: Repository = Depends(use_cache=True),
     overwrite_mode: OverwriteMode = OverwriteMode.FAIL,
 ) -> api_models.BulkOperationResponse:
     logging.info(
@@ -182,7 +182,7 @@ async def create_file_references(
 
 @router.patch("/file_references/single", status_code=status.HTTP_200_OK)
 async def update_file_reference(
-    file_reference: db_models.FileReference, db: Repository = Depends(use_cache=False)
+    file_reference: db_models.FileReference, db: Repository = Depends(use_cache=True)
 ) -> None:
     logging.info(
         f"Updating file reference {file_reference.uuid}. New version: {file_reference.version}"
@@ -202,7 +202,7 @@ async def update_file_reference(
 @router.post("/collections", status_code=status.HTTP_201_CREATED)
 async def create_collection(
     collection: db_models.BIACollection,
-    db: Repository = Depends(use_cache=False),
+    db: Repository = Depends(use_cache=True),
     overwrite_mode: OverwriteMode = OverwriteMode.FAIL,
 ) -> None:
     logging.info(f"Creating collection {collection.uuid}")
@@ -221,7 +221,7 @@ async def create_collection(
 @router.post("/image_acquisitions", status_code=status.HTTP_201_CREATED)
 async def create_image_acquisition(
     image_acquisition: db_models.ImageAcquisition,
-    db: Repository = Depends(use_cache=False),
+    db: Repository = Depends(use_cache=True),
     overwrite_mode: OverwriteMode = OverwriteMode.FAIL,
 ) -> None:
     logging.info(f"Creating Image Acquisition {image_acquisition.uuid}")
@@ -241,7 +241,7 @@ async def create_image_acquisition(
 @router.patch("/image_acquisitions", status_code=status.HTTP_200_OK)
 async def update_image_acquisition(
     image_acquisition: db_models.ImageAcquisition,
-    db: Repository = Depends(use_cache=False),
+    db: Repository = Depends(use_cache=True),
 ) -> None:
     logging.info(
         f"Updating Image acquisition {image_acquisition.uuid}. New version: {image_acquisition.version}"
@@ -280,7 +280,7 @@ async def create_specimen(
 
 @router.patch("/specimens", status_code=status.HTTP_200_OK)
 async def update_specimen(
-    specimen: db_models.Specimen, db: Repository = Depends(use_cache=False)
+    specimen: db_models.Specimen, db: Repository = Depends(use_cache=True)
 ) -> None:
     logging.info(f"Updating Specimen {specimen.uuid}. New version: {specimen.version}")
     # await db.validate_uuid_type(specimen.biosample_uuid, db_models.Biosample)
@@ -298,7 +298,7 @@ async def update_specimen(
 @router.post("/biosamples", status_code=status.HTTP_201_CREATED)
 async def create_biosample(
     biosample: db_models.Biosample,
-    db: Repository = Depends(use_cache=False),
+    db: Repository = Depends(use_cache=True),
     overwrite_mode: OverwriteMode = OverwriteMode.FAIL,
 ) -> None:
     logging.info(f"Creating Biosample {biosample.uuid}")
@@ -310,7 +310,7 @@ async def create_biosample(
 
 @router.patch("/biosamples", status_code=status.HTTP_200_OK)
 async def update_biosample(
-    biosample: db_models.Biosample, db: Repository = Depends(use_cache=False)
+    biosample: db_models.Biosample, db: Repository = Depends(use_cache=True)
 ) -> None:
     logging.info(
         f"Updating Biosample {biosample.uuid}. New version: {biosample.version}"
@@ -324,7 +324,7 @@ async def update_biosample(
 async def set_image_ome_metadata(
     image_uuid: UUID,
     ome_metadata_file: UploadFile,
-    db: Repository = Depends(use_cache=False),
+    db: Repository = Depends(use_cache=True),
 ) -> db_models.BIAImageOmeMetadata:
     if not ome_metadata_file.size:
         raise exceptions.InvalidRequestException("File has size 0")
