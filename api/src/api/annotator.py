@@ -19,7 +19,7 @@ class Annotator:
 
     async def __call__(
         self,
-        db: Repository = Depends(),
+        db: Repository = Depends(use_cache=True),
         apply_annotations: Annotated[bool, Query()] = False,
     ):
         """
@@ -33,8 +33,9 @@ class Annotator:
 
     def annotate_if_needed(
         self,
-        response_object: db_models.AnnotatedMixin
-        | List[db_models.AnnotatedMixin] = False,
+        response_object: (
+            db_models.AnnotatedMixin | List[db_models.AnnotatedMixin]
+        ) = False,
     ):
         self.db.close()
 
