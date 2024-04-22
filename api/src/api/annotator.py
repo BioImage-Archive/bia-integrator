@@ -37,11 +37,10 @@ class Annotator:
             db_models.AnnotatedMixin | List[db_models.AnnotatedMixin]
         ) = False,
     ):
-        self.db.close()
-
         if not self.apply_annotations:
             return
 
+        self.db.close()
         if isinstance(response_object, list):
             for rsp_item in response_object:
                 self._apply_annotations(rsp_item)
