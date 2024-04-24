@@ -334,7 +334,7 @@ class BIAImage(
     representations: List[BIAImageRepresentation] = Field(default=[])
     alias: Optional[BIAImageAlias] = Field(default=None)
     image_acquisitions_uuid: List[UUID] = Field(
-        description="Context in which the image was acquired. This list often has one item, but it can occasionally have more (e.g. for multimodal imaging)",
+        description="Context in which the image was acquired.",
         default=[],
     )
     context: Url = Field(
