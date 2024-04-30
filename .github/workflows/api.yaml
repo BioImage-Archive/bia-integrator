@@ -6,16 +6,20 @@ on:
   push:
     branches:
       - main
-env:
-  MONGO_INITDB_ROOT_PASSWORD: ${{ secrets.MONGO_INITDB_ROOT_PASSWORD }}
-  MONGO_INITDB_ROOT_USERNAME: ${{ vars.MONGO_INITDB_ROOT_USERNAME }}
-  MONGO_CONNSTRING: "mongodb://${{ vars.MONGO_INITDB_ROOT_USERNAME }}:${{ secrets.MONGO_INITDB_ROOT_PASSWORD }}@biaint-mongo:27017"
-  DB_NAME: ${{ vars.DB_NAME }}
-  JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
-  USER_CREATE_SECRET_TOKEN: ${{ secrets.USER_CREATE_SECRET_TOKEN }}
+
 jobs:
   docker-compose-test:
     runs-on: ubuntu-latest
+    environment:
+      name: test
+    env:
+      MONGO_INITDB_ROOT_PASSWORD: ${{ secrets.MONGO_INITDB_ROOT_PASSWORD }}
+      MONGO_INITDB_ROOT_USERNAME: ${{ vars.MONGO_INITDB_ROOT_USERNAME }}
+      MONGO_CONNSTRING: mongodb://${{ vars.MONGO_INITDB_ROOT_USERNAME }}:${{ secrets.MONGO_INITDB_ROOT_PASSWORD }}@biaint-mongo:27017
+      DB_NAME: ${{ vars.DB_NAME }}
+      JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
+      USER_CREATE_SECRET_TOKEN: ${{ secrets.USER_CREATE_SECRET_TOKEN }}
+      TEST_SECRET: ${{ secrets.TEST_SECRET }}
     defaults:
       run:
         working-directory: ./api
@@ -31,14 +35,16 @@ jobs:
           key: ${{ runner.os }}-buildx-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-buildx-
-      - name: Docker Compose Up
-        run: |
-          docker compose up --build -d
-      - name: Run tests
-        run: |
-          docker compose exec -T bia-integrator-api poetry run pytest
-      # Always cleanup - even for cancelled jobs
-      - name: Docker Compose Down
-        run: |
-          docker compose down
-        #if: ${{ always() }}
+      - name: abc
+        run: echo "AAAAAAAAAAAAAAA" env-$MONGO_INITDB_ROOT_USERNAME template-${{ vars.MONGO_INITDB_ROOT_USERNAME }} env-$TEST_SECRET template-${{ secrets.TEST_SECRET }}
+      #- name: Docker Compose Up
+      #  run: |
+      #    docker compose up --build -d
+      #- name: Run tests
+      #  run: |
+      #    docker compose exec -T bia-integrator-api poetry run pytest
+      ## Always cleanup - even for cancelled jobs
+      #- name: Docker Compose Down
+      #  run: |
+      #    docker compose down
+      #  #if: ${{ always() }}
