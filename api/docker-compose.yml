@@ -9,6 +9,11 @@ services:
       - 27017:27017
     expose:
       - 27017
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 1s
+      timeout: 1s
+      retries: 5
       # command: "mongod --config /etc/mongo.conf --oplogMinRetentionHours 10"
       # volumes:
       #   - "./.share/mongo.conf:/etc/mongo.conf"
@@ -24,6 +29,9 @@ services:
       - 8080
     volumes:
       - "./.env_compose:/integrator-api/.env"
+    depends_on:
+      - biaint-mongo
+
 
 volumes:
   api_data:

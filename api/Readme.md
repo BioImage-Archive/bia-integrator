@@ -109,8 +109,9 @@ docker push ghcr.io/bioimage-archive/integrator-api:0.1
 Install act (Ubuntu):
 * Install [github CLI](https://github.com/cli/cli/blob/trunk/docs/install_linux.md). 
 * `gh extension install https://github.com/nektos/gh-act`
+* set `act_vars.env`, `act_secret.env` to values equivalent to the ones in github
 
 Run:
 * Run everything: `gh extension exec act`
 * List workflows for an event: `gh extension exec act -l pull_request`
-* Run api tests `gh extension exec act -j docker-compose-test`
+* Run api tests `gh extension exec act push -j docker-compose-test --secret-file act_secret.env --var-file act_vars.env`

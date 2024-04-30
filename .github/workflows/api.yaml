@@ -19,7 +19,6 @@ jobs:
       DB_NAME: ${{ vars.DB_NAME }}
       JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
       USER_CREATE_SECRET_TOKEN: ${{ secrets.USER_CREATE_SECRET_TOKEN }}
-      TEST_SECRET: ${{ secrets.TEST_SECRET }}
     defaults:
       run:
         working-directory: ./api
@@ -35,16 +34,14 @@ jobs:
           key: ${{ runner.os }}-buildx-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-buildx-
-      - name: abc
-        run: echo "AAAAAAAAAAAAAAA" env-$MONGO_INITDB_ROOT_USERNAME template-${{ vars.MONGO_INITDB_ROOT_USERNAME }} env-$TEST_SECRET template-${{ secrets.TEST_SECRET }}
-      #- name: Docker Compose Up
-      #  run: |
-      #    docker compose up --build -d
-      #- name: Run tests
-      #  run: |
-      #    docker compose exec -T bia-integrator-api poetry run pytest
-      ## Always cleanup - even for cancelled jobs
-      #- name: Docker Compose Down
-      #  run: |
-      #    docker compose down
-      #  #if: ${{ always() }}
+      - name: Docker Compose Up
+        run: |
+          docker compose up -d --build 
+      - name: Run tests
+        run: |
+          docker compose exec -T bia-integrator-api poetry run pytest
+      # Always cleanup - even for cancelled jobs
+      - name: Docker Compose Down
+        run: |
+          docker compose down
+        if: ${{ always() }}
