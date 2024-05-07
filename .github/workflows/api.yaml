@@ -2,18 +2,26 @@ name: Docker Compose Test API
 on:
   pull_request:
     branches:
-      - main # Trigger the action on pull requests targeting the main branch
-      - dev
+      - main
   push:
     branches:
-      - main # Trigger the action on push events to the main branch
-      - dev
+      - main
+
 jobs:
   docker-compose-test:
-    runs-on: ubuntu-latest # Run the job on the latest Ubuntu VM
+    runs-on: ubuntu-latest
+    environment:
+      name: test
+    env:
+      MONGO_INITDB_ROOT_PASSWORD: ${{ secrets.MONGO_INITDB_ROOT_PASSWORD }}
+      MONGO_INITDB_ROOT_USERNAME: ${{ vars.MONGO_INITDB_ROOT_USERNAME }}
+      MONGO_CONNSTRING: mongodb://${{ vars.MONGO_INITDB_ROOT_USERNAME }}:${{ secrets.MONGO_INITDB_ROOT_PASSWORD }}@biaint-mongo:27017
+      DB_NAME: ${{ vars.DB_NAME }}
+      JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
+      USER_CREATE_SECRET_TOKEN: ${{ secrets.USER_CREATE_SECRET_TOKEN }}
     defaults:
       run:
-        working-directory: ./api # Set the working directory for all run steps in this job
+        working-directory: ./api
     steps:
       - name: Checkout code
         uses: actions/checkout@v2 # Checkout your repository to the GitHub Actions runner
@@ -28,11 +36,12 @@ jobs:
             ${{ runner.os }}-buildx-
       - name: Docker Compose Up
         run: |
-          docker-compose up --build -d  # Build and start your Docker containers in the background
-      # - name: Run tests
-      #   run: |
-      #     # Add commands to run your tests here
-      #     docker-compose exec -T api poetry run pytest  # Example: run pytest in the api container
+          docker compose up -d --build 
+      - name: Run tests
+        run: |
+          docker compose exec -T bia-integrator-api poetry run pytest
+      # Always cleanup - even for cancelled jobs
       - name: Docker Compose Down
         run: |
-          docker-compose down  # Stop and remove your Docker containers
+          docker compose down
+        if: ${{ always() }}

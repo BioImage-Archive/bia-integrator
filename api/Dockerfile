@@ -14,7 +14,8 @@ RUN curl -sSL https://install.python-poetry.org | python3 -
 ENV PATH=/root/.local/bin:$PATH
 
 # add files that poetry needs first so layers up to (including) pulling dependencies get reused
-ADD ./poetry.lock /integrator-api/poetry.lock
+#   only add poetry.lock if it exists (building on local)
+ADD ./poetry.lock* /integrator-api/poetry.lock
 ADD ./pyproject.toml /integrator-api/pyproject.toml
 WORKDIR /integrator-api
 

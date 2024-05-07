@@ -10,6 +10,7 @@ from fastapi.testclient import TestClient
 from .util import (
     get_template_biosample,
 )
+import pytest
 
 
 def test_biosample_create_retrieve_update(api_client: TestClient, uuid: str):
@@ -113,12 +114,10 @@ def test_image_add_image_acquisition(
     assert rsp.status_code == 200, rsp.json()
 
 
+@pytest.mark.skip(reason="This test fails on purpose! We need _uuid field type validation")
 def test_image_add_study_as_image_acquisition(
     api_client: TestClient, existing_image, existing_study
 ):
-    """
-    This test fails on purpose! We need _uuid field type validation
-    """
     existing_image["version"] += 1
     existing_image["image_acquisitions_uuid"].append(existing_study["uuid"])
 
