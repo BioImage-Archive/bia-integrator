@@ -178,7 +178,7 @@ class PublicApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/biosamples/{biosample_uuid}', 'GET',
+            '/v1/biosamples/{biosample_uuid}', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -324,7 +324,7 @@ class PublicApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/collections/{collection_uuid}', 'GET',
+            '/v1/collections/{collection_uuid}', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -470,7 +470,7 @@ class PublicApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/file_references/{file_reference_uuid}', 'GET',
+            '/v1/file_references/{file_reference_uuid}', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -616,7 +616,7 @@ class PublicApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/images/{image_uuid}', 'GET',
+            '/v1/images/{image_uuid}', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -754,7 +754,7 @@ class PublicApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/image_acquisitions/{image_acquisition_uuid}', 'GET',
+            '/v1/image_acquisitions/{image_acquisition_uuid}', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -892,7 +892,7 @@ class PublicApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/images/{image_uuid}/ome_metadata', 'GET',
+            '/v1/images/{image_uuid}/ome_metadata', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -1031,7 +1031,7 @@ class PublicApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/object_info_by_accessions', 'GET',
+            '/v1/object_info_by_accessions', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -1169,7 +1169,7 @@ class PublicApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/specimens/{specimen_uuid}', 'GET',
+            '/v1/specimens/{specimen_uuid}', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -1315,7 +1315,7 @@ class PublicApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/studies/{study_uuid}', 'GET',
+            '/v1/studies/{study_uuid}', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -1479,7 +1479,7 @@ class PublicApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/studies/{study_uuid}/file_references', 'GET',
+            '/v1/studies/{study_uuid}/file_references', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -1643,7 +1643,7 @@ class PublicApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/studies/{study_uuid}/images', 'GET',
+            '/v1/studies/{study_uuid}/images', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -1798,7 +1798,7 @@ class PublicApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/studies/{study_accession}/images_by_aliases', 'GET',
+            '/v1/studies/{study_accession}/images_by_aliases', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -1944,7 +1944,7 @@ class PublicApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/collections', 'GET',
+            '/v1/collections', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -2099,7 +2099,7 @@ class PublicApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/search/file_references/exact_match', 'POST',
+            '/v1/search/file_references/exact_match', 'POST',
             _path_params,
             _query_params,
             _header_params,
@@ -2254,7 +2254,7 @@ class PublicApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/search/images/exact_match', 'POST',
+            '/v1/search/images/exact_match', 'POST',
             _path_params,
             _query_params,
             _header_params,
@@ -2410,7 +2410,7 @@ class PublicApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/search/studies', 'GET',
+            '/v1/search/studies', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -2563,7 +2563,7 @@ class PublicApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/search/studies/exact_match', 'POST',
+            '/v1/search/studies/exact_match', 'POST',
             _path_params,
             _query_params,
             _header_params,

@@ -4,23 +4,23 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**get_biosample**](PublicApi.md#get_biosample) | **GET** /api/v1/biosamples/{biosample_uuid} | Get Biosample
-[**get_collection**](PublicApi.md#get_collection) | **GET** /api/v1/collections/{collection_uuid} | Get Collection
-[**get_file_reference**](PublicApi.md#get_file_reference) | **GET** /api/v1/file_references/{file_reference_uuid} | Get File Reference
-[**get_image**](PublicApi.md#get_image) | **GET** /api/v1/images/{image_uuid} | Get Image
-[**get_image_acquisition**](PublicApi.md#get_image_acquisition) | **GET** /api/v1/image_acquisitions/{image_acquisition_uuid} | Get Image Acquisition
-[**get_image_ome_metadata**](PublicApi.md#get_image_ome_metadata) | **GET** /api/v1/images/{image_uuid}/ome_metadata | Get Image Ome Metadata
-[**get_object_info_by_accession**](PublicApi.md#get_object_info_by_accession) | **GET** /api/v1/object_info_by_accessions | Get Object Info By Accession
-[**get_specimen**](PublicApi.md#get_specimen) | **GET** /api/v1/specimens/{specimen_uuid} | Get Specimen
-[**get_study**](PublicApi.md#get_study) | **GET** /api/v1/studies/{study_uuid} | Get Study
-[**get_study_file_references**](PublicApi.md#get_study_file_references) | **GET** /api/v1/studies/{study_uuid}/file_references | Get Study File References
-[**get_study_images**](PublicApi.md#get_study_images) | **GET** /api/v1/studies/{study_uuid}/images | Get Study Images
-[**get_study_images_by_alias**](PublicApi.md#get_study_images_by_alias) | **GET** /api/v1/studies/{study_accession}/images_by_aliases | Get Study Images By Alias
-[**search_collections**](PublicApi.md#search_collections) | **GET** /api/v1/collections | Search Collections
-[**search_file_references_exact_match**](PublicApi.md#search_file_references_exact_match) | **POST** /api/v1/search/file_references/exact_match | Search File References Exact Match
-[**search_images_exact_match**](PublicApi.md#search_images_exact_match) | **POST** /api/v1/search/images/exact_match | Search Images Exact Match
-[**search_studies**](PublicApi.md#search_studies) | **GET** /api/v1/search/studies | Search Studies
-[**search_studies_exact_match**](PublicApi.md#search_studies_exact_match) | **POST** /api/v1/search/studies/exact_match | Search Studies Exact Match
+[**get_biosample**](PublicApi.md#get_biosample) | **GET** /v1/biosamples/{biosample_uuid} | Get Biosample
+[**get_collection**](PublicApi.md#get_collection) | **GET** /v1/collections/{collection_uuid} | Get Collection
+[**get_file_reference**](PublicApi.md#get_file_reference) | **GET** /v1/file_references/{file_reference_uuid} | Get File Reference
+[**get_image**](PublicApi.md#get_image) | **GET** /v1/images/{image_uuid} | Get Image
+[**get_image_acquisition**](PublicApi.md#get_image_acquisition) | **GET** /v1/image_acquisitions/{image_acquisition_uuid} | Get Image Acquisition
+[**get_image_ome_metadata**](PublicApi.md#get_image_ome_metadata) | **GET** /v1/images/{image_uuid}/ome_metadata | Get Image Ome Metadata
+[**get_object_info_by_accession**](PublicApi.md#get_object_info_by_accession) | **GET** /v1/object_info_by_accessions | Get Object Info By Accession
+[**get_specimen**](PublicApi.md#get_specimen) | **GET** /v1/specimens/{specimen_uuid} | Get Specimen
+[**get_study**](PublicApi.md#get_study) | **GET** /v1/studies/{study_uuid} | Get Study
+[**get_study_file_references**](PublicApi.md#get_study_file_references) | **GET** /v1/studies/{study_uuid}/file_references | Get Study File References
+[**get_study_images**](PublicApi.md#get_study_images) | **GET** /v1/studies/{study_uuid}/images | Get Study Images
+[**get_study_images_by_alias**](PublicApi.md#get_study_images_by_alias) | **GET** /v1/studies/{study_accession}/images_by_aliases | Get Study Images By Alias
+[**search_collections**](PublicApi.md#search_collections) | **GET** /v1/collections | Search Collections
+[**search_file_references_exact_match**](PublicApi.md#search_file_references_exact_match) | **POST** /v1/search/file_references/exact_match | Search File References Exact Match
+[**search_images_exact_match**](PublicApi.md#search_images_exact_match) | **POST** /v1/search/images/exact_match | Search Images Exact Match
+[**search_studies**](PublicApi.md#search_studies) | **GET** /v1/search/studies | Search Studies
+[**search_studies_exact_match**](PublicApi.md#search_studies_exact_match) | **POST** /v1/search/studies/exact_match | Search Studies Exact Match
 
 
 # **get_biosample**
