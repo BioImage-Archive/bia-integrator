@@ -31,8 +31,7 @@ def batch_response_status_all(arr_batch_op_result, expected_status_code):
 
 def get_study_filerefs(host, study_uuid, n_filerefs=100):
     url = (
-        urljoin(host, f"/api/studies/{study_uuid}/file_references")
-        + f"?limit={n_filerefs}"
+        urljoin(host, f"/studies/{study_uuid}/file_references") + f"?limit={n_filerefs}"
     )
     rsp = requests.get(url, verify=False)
 
