@@ -5,7 +5,7 @@
     "version": "0.1.0"
   },
   "paths": {
-    "/api/v1/auth/token": {
+    "/v1/auth/token": {
       "post": {
         "tags": [
           "private"
@@ -46,7 +46,7 @@
         }
       }
     },
-    "/api/v1/auth/users/register": {
+    "/v1/auth/users/register": {
       "post": {
         "tags": [
           "private"
@@ -85,7 +85,7 @@
         }
       }
     },
-    "/api/v1/private/studies": {
+    "/v1/private/studies": {
       "post": {
         "tags": [
           "private"
@@ -187,7 +187,7 @@
         }
       }
     },
-    "/api/v1/private/studies/{study_uuid}/refresh_counts": {
+    "/v1/private/studies/{study_uuid}/refresh_counts": {
       "post": {
         "tags": [
           "private"
@@ -233,7 +233,7 @@
         }
       }
     },
-    "/api/v1/private/images": {
+    "/v1/private/images": {
       "post": {
         "tags": [
           "private"
@@ -299,7 +299,7 @@
         }
       }
     },
-    "/api/v1/private/images/single": {
+    "/v1/private/images/single": {
       "patch": {
         "tags": [
           "private"
@@ -344,7 +344,7 @@
         ]
       }
     },
-    "/api/v1/private/images/bulk": {
+    "/v1/private/images/bulk": {
       "post": {
         "tags": [
           "private"
@@ -369,7 +369,7 @@
         ]
       }
     },
-    "/api/v1/private/images/{image_uuid}/representations/single": {
+    "/v1/private/images/{image_uuid}/representations/single": {
       "post": {
         "tags": [
           "private"
@@ -424,7 +424,7 @@
         }
       }
     },
-    "/api/v1/private/file_references": {
+    "/v1/private/file_references": {
       "post": {
         "tags": [
           "private"
@@ -490,7 +490,7 @@
         }
       }
     },
-    "/api/v1/private/file_references/single": {
+    "/v1/private/file_references/single": {
       "patch": {
         "tags": [
           "private"
@@ -534,7 +534,7 @@
         ]
       }
     },
-    "/api/v1/private/collections": {
+    "/v1/private/collections": {
       "post": {
         "tags": [
           "private"
@@ -594,7 +594,7 @@
         }
       }
     },
-    "/api/v1/private/image_acquisitions": {
+    "/v1/private/image_acquisitions": {
       "post": {
         "tags": [
           "private"
@@ -696,7 +696,7 @@
         }
       }
     },
-    "/api/v1/private/specimens": {
+    "/v1/private/specimens": {
       "post": {
         "tags": [
           "private"
@@ -798,7 +798,7 @@
         }
       }
     },
-    "/api/v1/private/biosamples": {
+    "/v1/private/biosamples": {
       "post": {
         "tags": [
           "private"
@@ -900,7 +900,7 @@
         }
       }
     },
-    "/api/v1/private/images/{image_uuid}/ome_metadata": {
+    "/v1/private/images/{image_uuid}/ome_metadata": {
       "post": {
         "tags": [
           "private"
@@ -958,7 +958,7 @@
         }
       }
     },
-    "/api/v1/admin/health-check": {
+    "/v1/admin/health-check": {
       "get": {
         "tags": [
           "private"
@@ -982,7 +982,7 @@
         ]
       }
     },
-    "/api/v1/object_info_by_accessions": {
+    "/v1/object_info_by_accessions": {
       "get": {
         "tags": [
           "public",
@@ -1032,7 +1032,7 @@
         }
       }
     },
-    "/api/v1/studies/{study_accession}/images_by_aliases": {
+    "/v1/studies/{study_accession}/images_by_aliases": {
       "get": {
         "tags": [
           "public",
@@ -1101,7 +1101,7 @@
         }
       }
     },
-    "/api/v1/studies/{study_uuid}": {
+    "/v1/studies/{study_uuid}": {
       "get": {
         "tags": [
           "public",
@@ -1154,7 +1154,7 @@
         }
       }
     },
-    "/api/v1/studies/{study_uuid}/file_references": {
+    "/v1/studies/{study_uuid}/file_references": {
       "get": {
         "tags": [
           "public",
@@ -1241,7 +1241,7 @@
         }
       }
     },
-    "/api/v1/search/studies": {
+    "/v1/search/studies": {
       "get": {
         "tags": [
           "public",
@@ -1318,7 +1318,7 @@
         }
       }
     },
-    "/api/v1/search/images/exact_match": {
+    "/v1/search/images/exact_match": {
       "post": {
         "tags": [
           "public",
@@ -1377,7 +1377,7 @@
         }
       }
     },
-    "/api/v1/search/file_references/exact_match": {
+    "/v1/search/file_references/exact_match": {
       "post": {
         "tags": [
           "public",
@@ -1436,7 +1436,7 @@
         }
       }
     },
-    "/api/v1/search/studies/exact_match": {
+    "/v1/search/studies/exact_match": {
       "post": {
         "tags": [
           "public",
@@ -1494,7 +1494,7 @@
         }
       }
     },
-    "/api/v1/studies/{study_uuid}/images": {
+    "/v1/studies/{study_uuid}/images": {
       "get": {
         "tags": [
           "public",
@@ -1581,7 +1581,7 @@
         }
       }
     },
-    "/api/v1/images/{image_uuid}": {
+    "/v1/images/{image_uuid}": {
       "get": {
         "tags": [
           "public",
@@ -1635,7 +1635,7 @@
         }
       }
     },
-    "/api/v1/image_acquisitions/{image_acquisition_uuid}": {
+    "/v1/image_acquisitions/{image_acquisition_uuid}": {
       "get": {
         "tags": [
           "public",
@@ -1679,7 +1679,7 @@
         }
       }
     },
-    "/api/v1/biosamples/{biosample_uuid}": {
+    "/v1/biosamples/{biosample_uuid}": {
       "get": {
         "tags": [
           "public",
@@ -1723,7 +1723,7 @@
         }
       }
     },
-    "/api/v1/specimens/{specimen_uuid}": {
+    "/v1/specimens/{specimen_uuid}": {
       "get": {
         "tags": [
           "public",
@@ -1767,7 +1767,7 @@
         }
       }
     },
-    "/api/v1/images/{image_uuid}/ome_metadata": {
+    "/v1/images/{image_uuid}/ome_metadata": {
       "get": {
         "tags": [
           "public",
@@ -1811,7 +1811,7 @@
         }
       }
     },
-    "/api/v1/file_references/{file_reference_uuid}": {
+    "/v1/file_references/{file_reference_uuid}": {
       "get": {
         "tags": [
           "public",
@@ -1864,7 +1864,7 @@
         }
       }
     },
-    "/api/v1/collections": {
+    "/v1/collections": {
       "get": {
         "tags": [
           "public",
@@ -1928,7 +1928,7 @@
         }
       }
     },
-    "/api/v1/collections/{collection_uuid}": {
+    "/v1/collections/{collection_uuid}": {
       "get": {
         "tags": [
           "public",

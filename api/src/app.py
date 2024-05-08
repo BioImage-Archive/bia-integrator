@@ -1,4 +1,5 @@
 import os
+from typing import AsyncGenerator
 from dotenv import load_dotenv
 
 load_dotenv(os.environ.get("DOTENV_PATH", None))
@@ -11,6 +12,7 @@ from .models.repository import repository_create, Repository
 
 import uvicorn
 from fastapi import FastAPI, Depends
+from fastapi.openapi.docs import get_redoc_html
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 from starlette.status import HTTP_500_INTERNAL_SERVER_ERROR
@@ -42,7 +44,7 @@ async def log_exception_handler(request: Request, exc: Exception):
     )
 
 
-async def repository_dependency() -> Repository:
+async def repository_dependency() -> AsyncGenerator[Repository, None]:
     db = await repository_create(init=False)
     try:
         yield db
@@ -55,18 +57,30 @@ async def startup_event():
     await repository_create(init=True)
 
 
+# Same as /openapi.json and /redoc
+# Duplicated here to make them have the common /vN prefix to make proxying easy
+@app.get("/v1/openapi.json", include_in_schema=False)
+async def get_custom_openapi():
+    return app.openapi()
+
+
+@app.get("/v1/redoc", include_in_schema=False)
+async def custom_redoc():
+    return get_redoc_html(openapi_url="/v1/openapi.json", title="BioImage Archive API")
+
+
 app.include_router(
-    auth.router, prefix="/api/v1", dependencies=[Depends(repository_dependency)]
+    auth.router, prefix="/v1", dependencies=[Depends(repository_dependency)]
 )
 app.include_router(
-    private.router, prefix="/api/v1", dependencies=[Depends(repository_dependency)]
+    private.router, prefix="/v1", dependencies=[Depends(repository_dependency)]
 )
 app.include_router(
-    admin.router, prefix="/api/v1", dependencies=[Depends(repository_dependency)]
+    admin.router, prefix="/v1", dependencies=[Depends(repository_dependency)]
 )
 # routes applied in the order they are declared
 app.include_router(
-    public.router, prefix="/api/v1", dependencies=[Depends(repository_dependency)]
+    public.router, prefix="/v1", dependencies=[Depends(repository_dependency)]
 )
 
 if __name__ == "__main__":

@@ -324,7 +324,7 @@ def get_image_acquisition(
     return rsp.json()
 
 
-TEST_SERVER_BASE_URL = "http://localhost.com/api/v1"
+TEST_SERVER_BASE_URL = "http://localhost.com/v1"
 
 
 def get_client(**kwargs) -> TestClient:

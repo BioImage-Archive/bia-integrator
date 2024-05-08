@@ -197,7 +197,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/private/biosamples', 'POST',
+            '/v1/private/biosamples', 'POST',
             _path_params,
             _query_params,
             _header_params,
@@ -350,7 +350,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/private/collections', 'POST',
+            '/v1/private/collections', 'POST',
             _path_params,
             _query_params,
             _header_params,
@@ -503,7 +503,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/private/file_references', 'POST',
+            '/v1/private/file_references', 'POST',
             _path_params,
             _query_params,
             _header_params,
@@ -656,7 +656,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/private/image_acquisitions', 'POST',
+            '/v1/private/image_acquisitions', 'POST',
             _path_params,
             _query_params,
             _header_params,
@@ -809,7 +809,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/private/images/{image_uuid}/representations/single', 'POST',
+            '/v1/private/images/{image_uuid}/representations/single', 'POST',
             _path_params,
             _query_params,
             _header_params,
@@ -962,7 +962,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/private/images', 'POST',
+            '/v1/private/images', 'POST',
             _path_params,
             _query_params,
             _header_params,
@@ -1093,7 +1093,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/private/images/bulk', 'POST',
+            '/v1/private/images/bulk', 'POST',
             _path_params,
             _query_params,
             _header_params,
@@ -1246,7 +1246,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/private/specimens', 'POST',
+            '/v1/private/specimens', 'POST',
             _path_params,
             _query_params,
             _header_params,
@@ -1399,7 +1399,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/private/studies', 'POST',
+            '/v1/private/studies', 'POST',
             _path_params,
             _query_params,
             _header_params,
@@ -1537,7 +1537,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/biosamples/{biosample_uuid}', 'GET',
+            '/v1/biosamples/{biosample_uuid}', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -1683,7 +1683,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/collections/{collection_uuid}', 'GET',
+            '/v1/collections/{collection_uuid}', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -1829,7 +1829,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/file_references/{file_reference_uuid}', 'GET',
+            '/v1/file_references/{file_reference_uuid}', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -1975,7 +1975,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/images/{image_uuid}', 'GET',
+            '/v1/images/{image_uuid}', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -2113,7 +2113,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/image_acquisitions/{image_acquisition_uuid}', 'GET',
+            '/v1/image_acquisitions/{image_acquisition_uuid}', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -2251,7 +2251,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/images/{image_uuid}/ome_metadata', 'GET',
+            '/v1/images/{image_uuid}/ome_metadata', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -2390,7 +2390,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/object_info_by_accessions', 'GET',
+            '/v1/object_info_by_accessions', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -2528,7 +2528,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/specimens/{specimen_uuid}', 'GET',
+            '/v1/specimens/{specimen_uuid}', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -2674,7 +2674,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/studies/{study_uuid}', 'GET',
+            '/v1/studies/{study_uuid}', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -2838,7 +2838,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/studies/{study_uuid}/file_references', 'GET',
+            '/v1/studies/{study_uuid}/file_references', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -3002,7 +3002,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/studies/{study_uuid}/images', 'GET',
+            '/v1/studies/{study_uuid}/images', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -3157,7 +3157,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/studies/{study_accession}/images_by_aliases', 'GET',
+            '/v1/studies/{study_accession}/images_by_aliases', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -3286,7 +3286,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/admin/health-check', 'GET',
+            '/v1/admin/health-check', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -3471,7 +3471,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/auth/token', 'POST',
+            '/v1/auth/token', 'POST',
             _path_params,
             _query_params,
             _header_params,
@@ -3616,7 +3616,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/auth/users/register', 'POST',
+            '/v1/auth/users/register', 'POST',
             _path_params,
             _query_params,
             _header_params,
@@ -3762,7 +3762,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/collections', 'GET',
+            '/v1/collections', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -3917,7 +3917,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/search/file_references/exact_match', 'POST',
+            '/v1/search/file_references/exact_match', 'POST',
             _path_params,
             _query_params,
             _header_params,
@@ -4072,7 +4072,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/search/images/exact_match', 'POST',
+            '/v1/search/images/exact_match', 'POST',
             _path_params,
             _query_params,
             _header_params,
@@ -4228,7 +4228,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/search/studies', 'GET',
+            '/v1/search/studies', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -4381,7 +4381,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/search/studies/exact_match', 'POST',
+            '/v1/search/studies/exact_match', 'POST',
             _path_params,
             _query_params,
             _header_params,
@@ -4534,7 +4534,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/private/images/{image_uuid}/ome_metadata', 'POST',
+            '/v1/private/images/{image_uuid}/ome_metadata', 'POST',
             _path_params,
             _query_params,
             _header_params,
@@ -4674,7 +4674,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/private/studies/{study_uuid}/refresh_counts', 'POST',
+            '/v1/private/studies/{study_uuid}/refresh_counts', 'POST',
             _path_params,
             _query_params,
             _header_params,
@@ -4819,7 +4819,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/private/biosamples', 'PATCH',
+            '/v1/private/biosamples', 'PATCH',
             _path_params,
             _query_params,
             _header_params,
@@ -4964,7 +4964,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/private/file_references/single', 'PATCH',
+            '/v1/private/file_references/single', 'PATCH',
             _path_params,
             _query_params,
             _header_params,
@@ -5111,7 +5111,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/private/images/single', 'PATCH',
+            '/v1/private/images/single', 'PATCH',
             _path_params,
             _query_params,
             _header_params,
@@ -5256,7 +5256,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/private/image_acquisitions', 'PATCH',
+            '/v1/private/image_acquisitions', 'PATCH',
             _path_params,
             _query_params,
             _header_params,
@@ -5401,7 +5401,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/private/specimens', 'PATCH',
+            '/v1/private/specimens', 'PATCH',
             _path_params,
             _query_params,
             _header_params,
@@ -5546,7 +5546,7 @@ class PrivateApi(object):
         }
 
         return self.api_client.call_api(
-            '/api/v1/private/studies', 'PATCH',
+            '/v1/private/studies', 'PATCH',
             _path_params,
             _query_params,
             _header_params,
