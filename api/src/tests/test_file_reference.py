@@ -124,7 +124,7 @@ def test_create_file_references_multiple_errors(
         "E11000 duplicate key error" in bulk_write_results_by_status[400][7]["message"]
     )
     assert "Expected version to be 0" in bulk_write_results_by_status[400][5]["message"]
-    assert "Study does not exist" in bulk_write_results_by_status[400][3]["message"]
+    assert f"{file_references[3]["study_uuid"]} does not exist" in bulk_write_results_by_status[400][3]["message"]
 
 
 def test_create_file_references_existing_unchaged(

@@ -39,9 +39,10 @@ def create_image_list(
     return uuids, images
 
 
-def test_create_images_valid(api_client: TestClient, existing_study: dict):
+def test_create_images_valid(api_client: TestClient, existing_study: dict,  existing_image_acquisition: dict):
 
     uuids, images = create_image_list(2, existing_study)
+    images[1]["image_acquisitions_uuid"] = [existing_image_acquisition["uuid"]]
     rsp = api_client.post("private/images", json=images)
     assert rsp.status_code == 201, rsp.json()
 
@@ -50,13 +51,19 @@ def test_create_images_valid(api_client: TestClient, existing_study: dict):
         assert rsp.status_code == 200
 
 
-def test_create_images_multiple_errors(api_client: TestClient, existing_study: dict):
+def test_create_images_multiple_errors(
+    api_client: TestClient, existing_study: dict, existing_specimen: dict, existing_image_acquisition: dict
+):
     uuids, images = create_image_list(10, existing_study)
 
-    images[5]["version"] = 2
+    images[4]["version"] = 2
     # mongo rejects *both* documents that violate an index constraint in a multi-doc insert
-    images[7]["uuid"] = images[0]["uuid"]
-    images[3]["study_uuid"] = "00000000-0000-0000-0000-000000000000"
+    images[5]["uuid"] = images[0]["uuid"]
+    images[6]["study_uuid"] = "00000000-0000-0000-0000-000000000000"
+    images[7]["study_uuid"] = existing_specimen["uuid"]
+    images[8]["image_acquisitions_uuid"] = [existing_image_acquisition["uuid"]]
+    images[9]["study_uuid"] = existing_image_acquisition["uuid"]
+
 
     rsp = api_client.post("private/images", json=images)
     assert rsp.status_code == 400, rsp.json()
@@ -71,8 +78,8 @@ def test_create_images_multiple_errors(api_client: TestClient, existing_study: d
         )
     }
     assert set(bulk_write_results_by_status.keys()) == set([201, 400])
-    assert len(bulk_write_results_by_status[201]) == 7
-    assert len(bulk_write_results_by_status[400]) == 3
+    assert len(bulk_write_results_by_status[201]) == 4
+    assert len(bulk_write_results_by_status[400]) == 6
 
     # check all acknowledged docs were actually persisted
     for write_result in bulk_write_results_by_status[201]:
@@ -85,11 +92,16 @@ def test_create_images_multiple_errors(api_client: TestClient, existing_study: d
         e["idx_in_request"]: e for e in bulk_write_results_by_status[400]
     }
 
+    assert "Expected version to be 0" in bulk_write_results_by_status[400][4]["message"]
     assert (
-        "E11000 duplicate key error" in bulk_write_results_by_status[400][7]["message"]
+        "E11000 duplicate key error" in bulk_write_results_by_status[400][5]["message"]
     )
-    assert "Expected version to be 0" in bulk_write_results_by_status[400][5]["message"]
-    assert "Study does not exist" in bulk_write_results_by_status[400][3]["message"]
+    assert f"{images[6]["study_uuid"]} does not exist" in bulk_write_results_by_status[400][6]["message"]
+    assert f"{images[7]["study_uuid"]} expected to be of type BIAStudy, but found Specimen" in bulk_write_results_by_status[400][7]["message"]
+    # Check that 2 different images using the same image_acquisition uuid for an image acquisition and a study both get an error message.
+    assert f"'Your request expects {images[9]["study_uuid"]} to be an instance of more than 1 of conflicting types: BIAStudy, ImageAcquisition, when it is an instance of ImageAcquisition." in bulk_write_results_by_status[400][8]["message"]
+    assert f"'Your request expects {images[9]["study_uuid"]} to be an instance of more than 1 of conflicting types: BIAStudy, ImageAcquisition, when it is an instance of ImageAcquisition." in bulk_write_results_by_status[400][9]["message"]
+
 
 
 def test_create_images_existing_unchaged(
@@ -274,9 +286,10 @@ def test_create_images_idempotent_on_identical_ops_when_defaults_missing(
     assert rsp["items"][1]["status"] == 201
 
 
-def test_update_image(api_client: TestClient, existing_image: dict):
+def test_update_image(api_client: TestClient, existing_image: dict, existing_image_acquisition: dict):
     existing_image["version"] = 1
     existing_image["name"] = "some_other_name"
+    existing_image["image_acquisitions_uuid"] = [existing_image_acquisition["uuid"]]
 
     rsp = api_client.patch("private/images/single", json=existing_image)
     assert rsp.status_code == 200, rsp.json()

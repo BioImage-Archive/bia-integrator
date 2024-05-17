@@ -8,7 +8,7 @@ from motor.motor_asyncio import (
     AsyncIOMotorDatabase,
 )
 import pydantic
-from typing import List, Any, Callable
+from typing import List, Any, Callable, Type, Union
 from enum import Enum
 import uuid
 import pymongo
@@ -239,7 +239,6 @@ class Repository:
 
         if doc is None:
             raise exceptions.DocumentNotFound("Study does not exist")
-
         return models.BIAStudy(**doc)
 
     async def persist_doc(self, doc_model: models.DocumentMixin) -> None:
@@ -409,43 +408,6 @@ class Repository:
             )
         return result
 
-    async def doc_dependency_verify_exists(
-        self,
-        models_to_verify: List[models.DocumentMixin],
-        fn_model_extract_dependency: Callable[[models.BIABaseModel], uuid.UUID],
-        fn_dependency_fetch: Callable[[str | uuid.UUID], models.BIABaseModel],
-        ref_bulk_operation_response: api_models.BulkOperationResponse,
-    ) -> None:
-        # we always insert a large number of filerefs/images associated with a single dependency (study)
-        # so groupby dependency before checking if it exists
-        models_idx_by_dependency = {}
-        for idx, model in enumerate(models_to_verify):
-            model_dependency_uuid = fn_model_extract_dependency(model)
-
-            if models_idx_by_dependency.get(model_dependency_uuid, None) is None:
-                models_idx_by_dependency[model_dependency_uuid] = []
-
-            models_idx_by_dependency[model_dependency_uuid].append(idx)
-
-        # check dependency exists
-        for (
-            dependency_uuid,
-            models_with_dependency_idx,
-        ) in models_idx_by_dependency.items():
-            try:
-                await fn_dependency_fetch(dependency_uuid)
-            except exceptions.DocumentNotFound as e:
-                # if it doesn't update corresponding response item for all requested documents with the specific dependency
-                for model_with_dependency_idx in models_with_dependency_idx:
-                    ref_bulk_operation_response.items[
-                        model_with_dependency_idx
-                    ].status = 400
-                    ref_bulk_operation_response.items[
-                        model_with_dependency_idx
-                    ].message = e.detail
-
-        return
-
     async def update_doc(self, doc_model: models.DocumentMixin) -> None:
         result = await self.biaint.update_one(
             {
@@ -561,6 +523,103 @@ class Repository:
             raise exceptions.DocumentNotFound("Specimen does not exist")
 
         return models.Specimen(**doc)
+
+    async def validate_object_dependency(
+        self, doc_to_verify: models.DocumentMixin, field_type_map: dict[str, Type[models.DocumentMixin]]
+    ):
+        
+        for field, doc_type in field_type_map.items():
+
+            if isinstance(getattr(doc_to_verify, field), uuid.UUID):
+                uuid_to_check = getattr(doc_to_verify, field)
+                await self.validate_uuid_type(uuid_to_check, doc_type)
+
+            if isinstance(getattr(doc_to_verify, field), List):
+                for uuid_to_check in getattr(doc_to_verify, field):
+                    await self.validate_uuid_type(uuid_to_check, doc_type)
+
+        return
+    
+    async def bulk_validate_object_dependency(
+        self, 
+        docs_to_verify: List[models.DocumentMixin], 
+        field_type_map: dict[str, Type[models.DocumentMixin]], 
+        ref_bulk_operation_response: api_models.BulkOperationResponse,
+    ):
+        # we always insert a large number of filerefs/images associated with a single dependency (study)
+        # so groupby dependency before checking if it exists
+        dependency_map = {}
+        for index, doc in enumerate(docs_to_verify):
+            for field, expected_type in field_type_map.items():
+                dependency = getattr(doc, field)
+                self.append_dependency(dependency_map, dependency, index, expected_type)
+
+        # check dependency exists
+        for (
+            dependency_uuid,
+            dependency_info,
+        ) in dependency_map.items():  
+            if len(dependency_info['type']) != 1:
+                doc = await self.biaint.find_one({"uuid": dependency_uuid})
+                for model_with_dependency_idx in dependency_info['index']:
+                    ref_bulk_operation_response.items[
+                        model_with_dependency_idx
+                    ].status = 400
+                    if doc is None:
+                        ref_bulk_operation_response.items[
+                            model_with_dependency_idx
+                        ].message = f"{dependency_uuid} does not exist. Additionally, your request expects it to be an instances of more than 1 conflicting types: {", ".join([x.__name__ for x in iter(dependency_info['type'])])}"
+                    else:
+                        ref_bulk_operation_response.items[
+                            model_with_dependency_idx
+                        ].message = f"Your request expects {dependency_uuid} to be an instance of more than 1 of conflicting types: {", ".join([x.__name__ for x in iter(dependency_info['type'])])}, when it is an instance of {doc["model"]["type_name"]}."
+                continue
+
+            try:
+                await self.validate_uuid_type(dependency_uuid, next(iter(dependency_info['type'])))
+            except (exceptions.DocumentNotFound, exceptions.UnexpectedDocumentType) as e:
+                # if it doesn't update corresponding response item for all requested documents with the specific dependency
+                for model_with_dependency_idx in dependency_info['index']:
+                    ref_bulk_operation_response.items[
+                        model_with_dependency_idx
+                    ].status = 400
+                    ref_bulk_operation_response.items[
+                        model_with_dependency_idx
+                    ].message = e.detail
+                                
+        return
+
+
+    async def validate_uuid_type(
+        self, target_uuid: uuid.UUID, expected_type: Type[models.DocumentMixin]
+    ):
+        doc = await self.biaint.find_one({"uuid": target_uuid})
+        if doc is None:
+            raise exceptions.DocumentNotFound(f"{target_uuid} does not exist")
+        if doc["model"]["type_name"] != str(expected_type.__name__):
+            raise exceptions.UnexpectedDocumentType(
+                f"{target_uuid} expected to be of type {expected_type.__name__}, but found {doc["model"]["type_name"]}"
+            )
+
+        return
+
+    def append_dependency(self, dependency_map: dict, dependency: Union[uuid.UUID, List[uuid.UUID]], index: int, expected_type: Type[models.DocumentMixin]):
+        if isinstance(dependency, uuid.UUID):
+            if dependency_map.get(dependency, None) is None:
+                dependency_map[dependency] = {"index": [index], "type": {expected_type}}
+            else:
+                dependency_map[dependency]['index'].append(index)
+                # We expect a single unique doc type but will sort out throwing an error below
+                dependency_map[dependency]['type'].add(expected_type)
+        elif isinstance(dependency, List):
+            for dependency_uuid in dependency:
+                if dependency_map.get(dependency_uuid, None) is None:
+                    dependency_map[dependency_uuid] = {"index": [index], "type": {expected_type}}
+                else:
+                    dependency_map[dependency_uuid]['index'].append(index)
+                    # We expect a single unique doc type but will sort out throwing an error below
+                    dependency_map[dependency_uuid]['type'].add(expected_type)
+        return
 
 
 async def repository_create(init: bool) -> Repository:
