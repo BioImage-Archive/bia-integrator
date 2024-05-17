@@ -1,0 +1,36 @@
+replicaCount: 1
+
+imagePullSecrets:
+  - name: ghcr-creds
+
+image:
+  tag: "0.1"
+  pullPolicy: IfNotPresent
+
+service:
+  type: NodePort
+  port: 8080
+
+ingress:
+  # TODO
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+
+resources: 
+  limits:
+    memory: "1G"
+    cpu: "1"
+
+api_env:
+  mongoRootUser: ""
+  mongoRootPassword: ""
+  mongoHost: ""
+  dbName: "bia-integrator"
+  jwtSecretKey: ""
+  userCreateSecretToken: ""

@@ -1,0 +1,8 @@
+architecture: standalone
+auth:
+  rootUser: ""
+  rootPassword: ""
+service:
+  type: LoadBalancer
+  nodePorts:
+    mongodb: "27017"
