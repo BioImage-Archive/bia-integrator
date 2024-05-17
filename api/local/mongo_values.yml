@@ -3,6 +3,6 @@ auth:
   rootUser: ""
   rootPassword: ""
 service:
-  type: LoadBalancer
+  type: ClusterIP
   nodePorts:
     mongodb: "27017"
