@@ -525,25 +525,27 @@ class Repository:
         return models.Specimen(**doc)
 
     async def validate_object_dependency(
-        self, doc_to_verify: models.DocumentMixin, field_type_map: dict[str, Type[models.DocumentMixin]]
+        self,
+        doc_to_verify: models.DocumentMixin,
+        field_type_map: dict[str, Type[models.DocumentMixin]],
     ):
-        
+
         for field, doc_type in field_type_map.items():
 
             if isinstance(getattr(doc_to_verify, field), uuid.UUID):
                 uuid_to_check = getattr(doc_to_verify, field)
-                await self.validate_uuid_type(uuid_to_check, doc_type)
+                await self.validate_uuid_type(uuid_to_check, doc_type.__name__)
 
             if isinstance(getattr(doc_to_verify, field), List):
                 for uuid_to_check in getattr(doc_to_verify, field):
-                    await self.validate_uuid_type(uuid_to_check, doc_type)
+                    await self.validate_uuid_type(uuid_to_check, doc_type.__name__)
 
         return
-    
+
     async def bulk_validate_object_dependency(
-        self, 
-        docs_to_verify: List[models.DocumentMixin], 
-        field_type_map: dict[str, Type[models.DocumentMixin]], 
+        self,
+        docs_to_verify: List[models.DocumentMixin],
+        field_type_map: dict[str, Type[models.DocumentMixin]],
         ref_bulk_operation_response: api_models.BulkOperationResponse,
     ):
         # we always insert a large number of filerefs/images associated with a single dependency (study)
@@ -558,67 +560,81 @@ class Repository:
         for (
             dependency_uuid,
             dependency_info,
-        ) in dependency_map.items():  
-            if len(dependency_info['type']) != 1:
+        ) in dependency_map.items():
+            if len(dependency_info["type"]) != 1:
                 doc = await self.biaint.find_one({"uuid": dependency_uuid})
-                for model_with_dependency_idx in dependency_info['index']:
+                for model_with_dependency_idx in dependency_info["index"]:
                     ref_bulk_operation_response.items[
                         model_with_dependency_idx
                     ].status = 400
                     if doc is None:
                         ref_bulk_operation_response.items[
                             model_with_dependency_idx
-                        ].message = f"{dependency_uuid} does not exist. Additionally, your request expects it to be an instances of more than 1 conflicting types: {", ".join([x.__name__ for x in iter(dependency_info['type'])])}"
+                        ].message = f"{dependency_uuid} does not exist. Additionally, your request expects it to be an instances of more than 1 conflicting types: {', '.join(sorted(dependency_info['type']))}"
                     else:
                         ref_bulk_operation_response.items[
                             model_with_dependency_idx
-                        ].message = f"Your request expects {dependency_uuid} to be an instance of more than 1 of conflicting types: {", ".join([x.__name__ for x in iter(dependency_info['type'])])}, when it is an instance of {doc["model"]["type_name"]}."
+                        ].message = f"Your request expects {dependency_uuid} to be an instance of more than 1 of conflicting types: {', '.join(sorted(dependency_info['type']))}, when it is an instance of {doc['model']['type_name']}."
                 continue
 
             try:
-                await self.validate_uuid_type(dependency_uuid, next(iter(dependency_info['type'])))
-            except (exceptions.DocumentNotFound, exceptions.UnexpectedDocumentType) as e:
+                await self.validate_uuid_type(
+                    dependency_uuid, next(iter(dependency_info["type"]))
+                )
+            except (
+                exceptions.DocumentNotFound,
+                exceptions.UnexpectedDocumentType,
+            ) as e:
                 # if it doesn't update corresponding response item for all requested documents with the specific dependency
-                for model_with_dependency_idx in dependency_info['index']:
+                for model_with_dependency_idx in dependency_info["index"]:
                     ref_bulk_operation_response.items[
                         model_with_dependency_idx
                     ].status = 400
                     ref_bulk_operation_response.items[
                         model_with_dependency_idx
                     ].message = e.detail
-                                
+
         return
 
-
-    async def validate_uuid_type(
-        self, target_uuid: uuid.UUID, expected_type: Type[models.DocumentMixin]
-    ):
+    async def validate_uuid_type(self, target_uuid: uuid.UUID, expected_type_name: str):
         doc = await self.biaint.find_one({"uuid": target_uuid})
         if doc is None:
             raise exceptions.DocumentNotFound(f"{target_uuid} does not exist")
-        if doc["model"]["type_name"] != str(expected_type.__name__):
+        if doc["model"]["type_name"] != expected_type_name:
             raise exceptions.UnexpectedDocumentType(
-                f"{target_uuid} expected to be of type {expected_type.__name__}, but found {doc["model"]["type_name"]}"
+                f"{target_uuid} expected to be of type {expected_type_name}, but found {doc['model']['type_name']}"
             )
 
         return
 
-    def append_dependency(self, dependency_map: dict, dependency: Union[uuid.UUID, List[uuid.UUID]], index: int, expected_type: Type[models.DocumentMixin]):
+    def append_dependency(
+        self,
+        dependency_map: dict,
+        dependency: Union[uuid.UUID, List[uuid.UUID]],
+        index: int,
+        expected_type: Type[models.DocumentMixin],
+    ):
         if isinstance(dependency, uuid.UUID):
             if dependency_map.get(dependency, None) is None:
-                dependency_map[dependency] = {"index": [index], "type": {expected_type}}
+                dependency_map[dependency] = {
+                    "index": [index],
+                    "type": {expected_type.__name__},
+                }
             else:
-                dependency_map[dependency]['index'].append(index)
+                dependency_map[dependency]["index"].append(index)
                 # We expect a single unique doc type but will sort out throwing an error below
-                dependency_map[dependency]['type'].add(expected_type)
+                dependency_map[dependency]["type"].add(expected_type.__name__)
         elif isinstance(dependency, List):
             for dependency_uuid in dependency:
                 if dependency_map.get(dependency_uuid, None) is None:
-                    dependency_map[dependency_uuid] = {"index": [index], "type": {expected_type}}
+                    dependency_map[dependency_uuid] = {
+                        "index": [index],
+                        "type": {expected_type.__name__},
+                    }
                 else:
-                    dependency_map[dependency_uuid]['index'].append(index)
+                    dependency_map[dependency_uuid]["index"].append(index)
                     # We expect a single unique doc type but will sort out throwing an error below
-                    dependency_map[dependency_uuid]['type'].add(expected_type)
+                    dependency_map[dependency_uuid]["type"].add(expected_type.__name__)
         return
 
 
