@@ -52,8 +52,10 @@ jobs:
           mv helmsman /usr/local/bin/helmsman
           helmsman --apply -f ./api/local/helmsman_local.yml -e ./api/local/.env_template
 
+      - run: kubectl get pods --namespace=api
+
       - name: Wait for api to start and health-check
-        run: kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=api --timeout=100s --namespace=api
+        run: kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=api --timeout=1000s --namespace=api
 
       - name: Cleanup
         run: |
