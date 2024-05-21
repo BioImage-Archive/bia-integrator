@@ -11,7 +11,7 @@ biaint = "bia_integrator_tools.cli:app"
 biaconv = "bia_integrator_tools.biaconv:app"
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.10,<3.12"
 typer = {extras = ["all"], version = "^0.7.0"}
 fs = "^2.4.16"
 bia-integrator-api = { git = "https://github.com/BioImage-Archive/bia-integrator.git", subdirectory = "clients/python" }
