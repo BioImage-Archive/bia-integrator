@@ -10,6 +10,7 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 jobs:
   build:
+    if: false
     runs-on: ubuntu-latest
     defaults:
       run:

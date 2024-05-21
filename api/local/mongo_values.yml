@@ -6,3 +6,16 @@ service:
   type: ClusterIP
   nodePorts:
     mongodb: "27017"
+
+livenessProbe:
+  enabled: false
+readinessProbe:
+  enabled: false
+
+resources:
+  limits:
+    cpu: 1
+    memory: 256M
+  requests:
+    cpu: 1
+    memory: 256M
