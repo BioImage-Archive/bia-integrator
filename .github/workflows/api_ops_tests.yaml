@@ -1,0 +1,48 @@
+# See https://github.com/helm/chart-testing-action
+name: Lint and Test Charts
+
+on:
+  push:
+    branches:
+      #- main
+      - local_api_infra
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  ops-lint-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with: 
+          fetch-depth: 0
+
+      - name: Install Helm
+        uses: azure/setup-helm@v3
+        # as of 2022/12 the set-output still not fixed in this action
+        # https://github.com/Azure/setup-helm/issues/103
+        with:
+          version: v3.12.1
+
+      - name: Install chart-testing
+        uses: helm/chart-testing-action@v2.6.0
+
+      - name: Run chart-testing (lint)
+        run: ct lint --charts ./api/local/api --debug
+
+      - name: Start minikube - if this breaks on local do a 'minikube delete'
+        id: minikube
+        uses: medyagh/setup-minikube@master
+        with:
+          cpus: 2
+          memory: 2G # 1.9G recommended minimum
+          start-args: '--force'
+
+      - name: Run chart-testing (install)
+        run: ct install --charts ./api/local/api
+      
+      - name: Cleanup
+        run: |
+          minikube delete
+        if: ${{ always() }}

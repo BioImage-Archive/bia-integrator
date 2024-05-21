@@ -22,7 +22,7 @@ ingress:
         - path: /
           pathType: ImplementationSpecific
 
-resources: 
+resources:
   limits:
     memory: "1G"
     cpu: "1"
