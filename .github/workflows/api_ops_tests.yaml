@@ -46,7 +46,6 @@ jobs:
       - name: Add ghcr-creds
         run: kubectl create secret docker-registry ghcr-creds --docker-server=https://ghcr.io --docker-username=${{ github.actor }} --docker-password=${{ secrets.GITHUB_TOKEN }} --docker-email=${{ github.actor }}
 
-
       - name: Start everything
         run: |
           curl -L https://github.com/Praqma/helmsman/releases/download/v3.17.0/helmsman_3.17.0_linux_amd64.tar.gz | tar zx
@@ -54,7 +53,7 @@ jobs:
           helmsman --apply -f ./api/local/helmsman_local.yml -e ./api/local/.env_template
 
       - name: Wait for api to start and health-check
-        run: kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=api --timeout=1s --namespace=api
+        run: kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=api --timeout=100s --namespace=api
 
       - name: Cleanup
         run: |
