@@ -99,9 +99,9 @@ def test_image_acquisition_create_retrieve_update(
     assert rsp.status_code == 200, rsp.json()
 
     rsp = api_client.get(f"image_acquisitions/{uuid}")
-    specimen_fetched = rsp.json()
-    del specimen_fetched["model"]
-    assert specimen_fetched == image_acquisition
+    image_acquisition_fetched = rsp.json()
+    del image_acquisition_fetched["model"]
+    assert image_acquisition_fetched == image_acquisition
 
 
 def test_create_update_with_badly_typed_uuid(
