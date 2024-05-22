@@ -9,8 +9,10 @@ from pathlib import Path
 
 import typer
 import os
+from typing import List, Dict
 
 from bia_ingest.biostudies import (
+    Submission,
     load_submission,
     find_file_lists_in_submission,
     flist_from_flist_fname,
@@ -20,6 +22,7 @@ from bia_integrator_api.exceptions import NotFoundException
 from bia_integrator_api.util import simple_client, PrivateApi
 from bia_integrator_api.models.biosample import Biosample
 from bia_integrator_api.models.specimen import Specimen
+from bia_integrator_api.models.bia_image import BIAImage
 from bia_integrator_api.models.image_acquisition import ImageAcquisition
 
 from bia_ingest.conversion import (
@@ -44,7 +47,9 @@ api_client = simple_client(
 )
 
 
-def image_acquisitions_from_associations(submission, associations):
+def image_acquisitions_from_associations(
+    submission: Submission, associations: List[str]
+) -> List[str]:
     """Create/retrieve image acquisition models for specified associations"""
 
     image_acquisition_dicts = extract_image_acquisition_dicts(submission)
@@ -146,7 +151,9 @@ def image_acquisitions_from_associations(submission, associations):
     return image_acquisition_uuids
 
 
-def attach_image_acquisitions_to_filerefs(submission):
+def attach_image_acquisitions_to_filerefs(
+    submission: Submission,
+) -> Dict[str, List[str]]:
     """For each file ref return list of image_acquisition uuids"""
 
     file_list_dicts = find_file_lists_in_submission(submission)
@@ -181,7 +188,9 @@ def attach_image_acquisitions_to_filerefs(submission):
     return fileref_to_image_acquisitions
 
 
-def update_images_with_image_acquisitions(images, fileref_to_image_acquisitions):
+def update_images_with_image_acquisitions(
+    images: List[BIAImage], fileref_to_image_acquisitions: Dict[str, List[str]]
+) -> None:
     # Types of image representations that represent abstract BIAImage
     bia_image_types = [
         "fire_object",
@@ -220,7 +229,7 @@ app = typer.Typer()
 
 
 @app.command()
-def main(accession_id: str):
+def main(accession_id: str) -> None:
     logging.basicConfig(level=logging.INFO)
 
     # If there are no images then nothing to attach image acquisitions to

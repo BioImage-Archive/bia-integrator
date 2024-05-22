@@ -3,7 +3,7 @@ import uuid
 import hashlib
 import logging
 import pathlib
-from typing import Optional, Dict
+from typing import Optional, Dict, Any, List
 
 import rich
 import typer
@@ -43,7 +43,7 @@ def dict_to_uuid(my_dict: dict, attributes_to_consider: list) -> str:
     return str(uuid.UUID(version=4, hex=hexdigest))
 
 
-def parse_empiar_authors(raw_obj):
+def parse_empiar_authors(raw_obj: Dict[str, Any]) -> List[EMPIARAuthor]:
     entry_dict = list(raw_obj.values())[0]
     author_dictlist = entry_dict["authors"]
     authors = [EMPIARAuthor.parse_obj(entry["author"]) for entry in author_dictlist]
@@ -92,7 +92,7 @@ def empiar_file_to_file_reference(
     return fileref
 
 
-def empiar_files_by_pyfilesystem(accession_no: str):
+def empiar_files_by_pyfilesystem(accession_no: str) -> List[EMPIARFile]:
 
     ftp_fs = FTPFS("ftp.ebi.ac.uk")
     root_path = f"/empiar/world_availability/{accession_no}/data"
@@ -109,7 +109,9 @@ def empiar_files_by_pyfilesystem(accession_no: str):
     return empiar_files
 
 
-def generate_filerefs_for_empiar_entry(accession_no: str, study_uuid: str):
+def generate_filerefs_for_empiar_entry(
+    accession_no: str, study_uuid: str
+) -> List[FileReference]:
 
     empiar_files = empiar_files_by_pyfilesystem(accession_no)
 
@@ -126,7 +128,7 @@ app = typer.Typer()
 
 
 @app.command()
-def main(accession_id: str):
+def main(accession_id: str) -> None:
     logging.basicConfig(level=logging.INFO)
 
     accession_no = accession_id.split("-")[1]

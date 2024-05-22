@@ -29,7 +29,7 @@ rw_client = simple_client(
 )
 
 
-def get_study_uuid_by_accession_id(accession_id: str):
+def get_study_uuid_by_accession_id(accession_id: str) -> str:
     study_obj = rw_client.get_object_info_by_accession([accession_id])
     study_uuid = study_obj[0].uuid
 

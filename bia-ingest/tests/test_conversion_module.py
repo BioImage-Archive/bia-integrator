@@ -3,6 +3,10 @@
 """
 
 from bia_ingest.conversion import (
+    Submission,
+    Biosample,
+    Specimen,
+    ImageAcquisition,
     find_and_convert_biosamples,
     extract_specimen_dicts,
     convert_specimen_to_api_model,
@@ -11,14 +15,14 @@ from bia_ingest.conversion import (
 )
 
 
-def test_read_biosample(submission, expected_biosample):
+def test_read_biosample(submission: Submission, expected_biosample: Biosample) -> None:
     extracted_biosamples = find_and_convert_biosamples(submission)
 
     assert len(extracted_biosamples) == 1
     assert extracted_biosamples[0] == expected_biosample
 
 
-def test_read_specimen(submission, expected_specimen):
+def test_read_specimen(submission: Submission, expected_specimen: Specimen) -> None:
     extracted_specimen_dicts = extract_specimen_dicts(submission)
     assert len(extracted_specimen_dicts) == 1
 
@@ -27,7 +31,9 @@ def test_read_specimen(submission, expected_specimen):
     assert extracted_specimen == expected_specimen
 
 
-def test_image_acquisition(submission, expected_image_acquisition):
+def test_image_acquisition(
+    submission: Submission, expected_image_acquisition: ImageAcquisition
+) -> None:
     extracted_image_acquisition_dicts = extract_image_acquisition_dicts(submission)
 
     assert len(extracted_image_acquisition_dicts) == 2

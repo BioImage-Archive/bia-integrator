@@ -1,3 +1,4 @@
+from typing import Optional
 from bia_ingest.conversion import (
     generate_biosample_uuid,
     generate_specimen_uuid,
@@ -8,7 +9,7 @@ from bia_integrator_api.models.specimen import Specimen
 from bia_integrator_api.models.image_acquisition import ImageAcquisition
 
 
-def create_expected_biosample(accession_id):
+def create_expected_biosample(accession_id: str) -> Biosample:
     """ Create Biosample
 
     """
@@ -42,7 +43,9 @@ def create_expected_biosample(accession_id):
     return expected_biosample
 
 
-def create_expected_specimen(accession_id, expected_biosample_uuid=None):
+def create_expected_specimen(
+    accession_id: str, expected_biosample_uuid: Optional[str] = None
+) -> Specimen:
     """Create Specimen
 
     """
@@ -68,7 +71,9 @@ def create_expected_specimen(accession_id, expected_biosample_uuid=None):
     return expected_specimen
 
 
-def create_expected_image_acquisition(accession_id, expected_specimen_uuid=None):
+def create_expected_image_acquisition(
+    accession_id: str, expected_specimen_uuid: Optional[str] = None
+) -> ImageAcquisition:
     """ Create Image Acquisition object directly as we do not need its dict
 
     """

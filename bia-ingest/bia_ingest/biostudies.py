@@ -2,7 +2,7 @@ import json
 import logging
 import pathlib
 import datetime
-from typing import List, Union, Optional
+from typing import List, Union, Dict, Optional, Any
 from copy import deepcopy
 
 import requests
@@ -31,7 +31,7 @@ class Attribute(BaseModel):
     nmqual: List[AttributeDetail] = []
     valqual: List[AttributeDetail] = []
 
-    def as_tsv(self):
+    def as_tsv(self) -> str:
         if self.reference:
             tsv_rep = f"<{self.name}>\t{self.value}\n"
         else:
@@ -54,7 +54,7 @@ class Link(BaseModel):
     url: str
     attributes: List[Attribute] = []
 
-    def as_tsv(self):
+    def as_tsv(self) -> str:
         tsv_rep = "\n"
         tsv_rep += f"Link\t{self.url}\n"
         tsv_rep += "".join([attr.as_tsv() for attr in self.attributes])
@@ -70,7 +70,7 @@ class Section(BaseModel):
     links: List[Link] = []
     files: List[Union[File, List[File]]] = []
 
-    def as_tsv(self, parent_accno=None):
+    def as_tsv(self, parent_accno: Optional[str] = None) -> str:
         tsv_rep = "\n"
 
         accno_str = self.accno if self.accno else ""
@@ -151,12 +151,14 @@ def load_submission(accession_id: str) -> Submission:
     return submission
 
 
-def attributes_to_dict(attributes: List[Attribute]) -> dict:
+def attributes_to_dict(attributes: List[Attribute]) -> Dict[str, Optional[str]]:
 
     return {attr.name: attr.value for attr in attributes}
 
 
-def find_file_lists_in_section(section, flists) -> list:
+def find_file_lists_in_section(
+    section: Section, flists: List[Dict[str, Union[str, None, List[str]]]]
+) -> List[Dict[str, Union[str, None, List[str]]]]:
     """Find all of the File Lists in a Section, recursively descending through
     the subsections.
     
@@ -187,12 +189,16 @@ def find_file_lists_in_section(section, flists) -> list:
     return flists
 
 
-def find_file_lists_in_submission(submission: Submission):
+def find_file_lists_in_submission(
+    submission: Submission,
+) -> List[Dict[str, Union[str, None, List[str]]]]:
 
     return find_file_lists_in_section(submission.section, [])
 
 
-def flist_from_flist_fname(accession_id: str, flist_fname: str, extra_attribute=None):
+def flist_from_flist_fname(
+    accession_id: str, flist_fname: str, extra_attribute: Union[List[str], str] = None
+) -> List[File]:
 
     flist_url = FLIST_URI_TEMPLATE.format(
         accession_id=accession_id, flist_fname=flist_fname
@@ -221,7 +227,9 @@ def flist_from_flist_fname(accession_id: str, flist_fname: str, extra_attribute=
     return fl
 
 
-def file_uri(accession_id: str, file: File, file_uri_template=FILE_URI_TEMPLATE):
+def file_uri(
+    accession_id: str, file: File, file_uri_template: Optional[str] = FILE_URI_TEMPLATE
+) -> str:
     """For a given accession and file object, return the HTTP URI where we can expect
     to be able to access that file."""
 
@@ -295,7 +303,7 @@ def find_files_in_submission(submission: Submission) -> List[File]:
     return all_files
 
 
-def get_with_case_insensitive_key(dictionary: dict, key: str) -> str:
+def get_with_case_insensitive_key(dictionary: Dict[str, Any], key: str) -> Any:
     keys = [k.lower() for k in dictionary.keys()]
     temp_key = key.lower()
     if temp_key in keys:
@@ -306,7 +314,7 @@ def get_with_case_insensitive_key(dictionary: dict, key: str) -> str:
         raise KeyError(f"{key} not in {dictionary.keys()}")
 
 
-def filter_filelist_content(dictionary: dict):
+def filter_filelist_content(dictionary: Dict[str, Any]) -> Dict[str, Any]:
     """Remove attributes in filelist with null or empty values
 
     """

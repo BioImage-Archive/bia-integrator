@@ -6,13 +6,14 @@ Adapted from https://third-bit.com/sdxpy/check/#check-visitor-pattern
 import re
 import uuid
 import hashlib
+from typing import List, Dict, Union
 from .models import BIAStudy, Publication, Author, Affiliation
 from bia_integrator_api.models.biosample import Biosample
 from .conversion import generate_biosample_uuid
 
 
 class Visitor:
-    def __init__(self, accession_id):
+    def __init__(self, accession_id: str) -> None:
         self.accession_id = accession_id
         self.indent_level = 0
         self.result = {"study": [{},]}
@@ -20,7 +21,7 @@ class Visitor:
         self.common_name_matcher = re.compile(r"\((.*)\)")
         # self.study = BIAStudy()
 
-    def visit(self, parent, node):
+    def visit(self, parent: str, node: Union[str, List, Dict]) -> None:
         if isinstance(node, str):
             self._text(parent, node)
         elif isinstance(node, list):
@@ -36,7 +37,7 @@ class Visitor:
                 self.visit(f"{parent}.{child}", node[child])
             self._tag_exit(parent, node)
 
-    def _tag_enter(self, parent, node):
+    def _tag_enter(self, parent: str, node: Union[List, Dict]) -> None:
         if isinstance(node, list):
             pass
             # print(f"{self.indent_level * '  '}Entering node '{parent}'. List with {len(node)} elements")
@@ -64,7 +65,7 @@ class Visitor:
             # print(f"{self.indent_level * '  '}Entering node '{parent}'. Dict with keys: {', '.join(node.keys())}")
         self.indent_level += 1
 
-    def _tag_exit(self, parent, node):
+    def _tag_exit(self, parent: str, node: Union[List, Dict]) -> None:
         self.indent_level -= 1
         if isinstance(node, list):
             pass
@@ -119,7 +120,7 @@ class Visitor:
                         node_type: [biosample],
                     }
 
-    def _text(self, parent, node):
+    def _text(self, parent: str, node: str) -> None:
         indent = (self.indent_level + 1) * "  "
         print(f"{indent}In node '{parent}' with string value: {node}")
         node_key = node.lower().replace(" ", "_")
@@ -145,27 +146,27 @@ class Visitor:
             key = parent.split(".")[-1]
             self.result[self.current_result_key][-1][key] = node
 
-    def _is_attribute_name(self, node_ref):
+    def _is_attribute_name(self, node_ref: str) -> bool:
         """Check if a node reference is an attribute name"""
 
         return len(re.findall(r"attributes\[[0-9]{1,3}]\.name", node_ref)) > 0
 
-    def _is_attribute_value(self, node_ref):
+    def _is_attribute_value(self, node_ref: str) -> bool:
         """Check if a node reference is an attribute value"""
 
         return len(re.findall(r"attributes\[[0-9]{1,3}]\.value", node_ref)) > 0
 
-    def _is_value_qualifier_name(self, node_ref):
+    def _is_value_qualifier_name(self, node_ref: str) -> bool:
         """Check if a node reference is a value qualifier name"""
 
         return len(re.findall(r"valqual\[[0-9]{1,3}]\.name", node_ref)) > 0
 
-    def _is_value_qualifier_value(self, node_ref):
+    def _is_value_qualifier_value(self, node_ref: str) -> bool:
         """Check if a node reference is a value qualifier value"""
 
         return len(re.findall(r"valqual\[[0-9]{1,3}]\.value", node_ref)) > 0
 
-    def _dict_to_uuid(self, my_dict: dict, attributes_to_consider: list) -> str:
+    def _dict_to_uuid(self, my_dict: Dict, attributes_to_consider: List[str]) -> str:
         """Create uuid from specific keys in a dictionary
 
         """

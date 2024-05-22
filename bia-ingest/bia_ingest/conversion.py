@@ -1,9 +1,10 @@
-from typing import List, Dict
+from typing import List, Tuple, Dict, Union, Iterable, Optional, Any, Type
 import hashlib
 import uuid
 
 import rich
 
+from pydantic import BaseModel
 from .models import Author, BIAStudy, Affiliation, Publication
 from .biostudies import Section, Submission, Attribute, attributes_to_dict
 
@@ -13,7 +14,9 @@ from bia_integrator_api.models.specimen import Specimen
 from bia_integrator_api.models.image_acquisition import ImageAcquisition
 
 
-def find_sections_recursive(section: Section, search_types: List[str], results=[]):
+def find_sections_recursive(
+    section: Section, search_types: List[str], results: Optional[List[Section]] = []
+) -> List[Section]:
     """Find all sections of the given type within the tree, starting at
     the given section."""
 
@@ -35,13 +38,17 @@ def find_sections_recursive(section: Section, search_types: List[str], results=[
     return results
 
 
-def find_sections_in_submission(submission: Submission, search_types: List[str]):
+def find_sections_in_submission(
+    submission: Submission, search_types: List[str]
+) -> List[Section]:
     """Find all sections within the submission with the given type."""
 
     return find_sections_recursive(submission.section, search_types, [])
 
 
-def mattributes_to_dict(attributes: List[Attribute], reference_dict: Dict) -> dict:
+# TODO check type of reference_dict. Possibly Dict[str, str], but need to
+# verify. This also determines type returned by function
+def mattributes_to_dict(attributes: List[Attribute], reference_dict: Dict) -> Dict:
     def value_or_dereference(attr):
         if attr.reference:
             return reference_dict[attr.value]
@@ -51,7 +58,9 @@ def mattributes_to_dict(attributes: List[Attribute], reference_dict: Dict) -> di
     return {attr.name: value_or_dereference(attr) for attr in attributes}
 
 
-def flatten_mixed_list(iterable):
+def flatten_mixed_list(
+    iterable: Iterable[Union[Section, List[Section]]]
+) -> List[Section]:
     # Each thing in section.subsections is either Section or List[Section]
     # First, let's make sure we ensure they're all lists:
     nested = [[item] if not isinstance(item, list) else item for item in iterable]
@@ -59,7 +68,9 @@ def flatten_mixed_list(iterable):
     return sum(nested, [])
 
 
-def find_attribute_values_recursive(section: Section, name: str, results=[]):
+def find_attribute_values_recursive(
+    section: Section, name: str, results: List[Tuple[str, Optional[str]]] = []
+) -> List[Tuple[str, Optional[str]]]:
     attr_dict = attributes_to_dict(section.attributes)
 
     if name in attr_dict:
@@ -73,7 +84,7 @@ def find_attribute_values_recursive(section: Section, name: str, results=[]):
     return results
 
 
-def recursive_descent(section: Section, depth=0):
+def recursive_descent(section: Section, depth: int = 0) -> None:
     spacing = depth * "  "
     attr_dict = attributes_to_dict(section.attributes)
     print(f"{spacing}{section.type} {','.join(attr_dict.keys())}")
@@ -84,7 +95,9 @@ def recursive_descent(section: Section, depth=0):
         recursive_descent(section, depth + 1)
 
 
-def find_attributes_in_submission(submission, name):
+def find_attributes_in_submission(
+    submission: Submission, name: str
+) -> List[Tuple[str, Optional[str]]]:
     attr_dict = attributes_to_dict(submission.attributes)
 
     results = []
@@ -94,7 +107,9 @@ def find_attributes_in_submission(submission, name):
     return find_attribute_values_recursive(submission.section, name, results)
 
 
-def find_attributes_by_section_type(submission, key, section_types):
+def find_attributes_by_section_type(
+    submission: Submission, key: str, section_types: List[str]
+) -> Union[str, None]:
     results = dict(find_attributes_in_submission(submission, key))
 
     for section_type in section_types:
@@ -102,7 +117,9 @@ def find_attributes_by_section_type(submission, key, section_types):
             return results[section_type]
 
 
-def extract_model_dict(submission):
+def extract_model_dict(
+    submission: Submission,
+) -> Dict[str, Union[str, List[Author], List[Publication], None]]:
 
     # recursive_descent(submission.section)
 
@@ -150,7 +167,7 @@ def extract_model_dict(submission):
     # rich.print(bia_study)
 
 
-def find_and_convert_publications(submission):
+def find_and_convert_publications(submission: Submission) -> List[Publication]:
 
     sections = find_sections_in_submission(submission, ["Publication"])
     model = Publication
@@ -171,7 +188,7 @@ def find_and_convert_publications(submission):
     return publications
 
 
-def find_and_convert_authors(submission):
+def find_and_convert_authors(submission: Submission) -> List[Author]:
     organisation_sections = find_sections_in_submission(
         submission, ["organisation", "organization"]
     )
@@ -202,7 +219,12 @@ def find_and_convert_authors(submission):
     return authors
 
 
-def dicts_to_api_models(dicts, api_model_class):
+# This function instantiates any API model given a dict of its attributes
+# Hence the use of the pydantic BaseModel which all API models
+# are derived from in the type hinting
+def dicts_to_api_models(
+    dicts: List[Dict[str, Any]], api_model_class: Type[BaseModel]
+) -> BaseModel:
 
     api_models = []
     for model_dict in dicts:
@@ -211,7 +233,7 @@ def dicts_to_api_models(dicts, api_model_class):
     return api_models
 
 
-def extract_biosample_dicts(submission):
+def extract_biosample_dicts(submission: Submission) -> List[Dict[str, Any]]:
     biosample_sections = find_sections_in_submission(submission, ["Biosample"])
 
     key_mapping = [
@@ -260,14 +282,14 @@ def extract_biosample_dicts(submission):
     return model_dicts
 
 
-def find_and_convert_biosamples(submission):
+def find_and_convert_biosamples(submission: Submission) -> List[Biosample]:
 
     biosample_model_dicts = extract_biosample_dicts(submission)
     biosamples = dicts_to_api_models(biosample_model_dicts, Biosample)
     return biosamples
 
 
-def extract_specimen_dicts(submission):
+def extract_specimen_dicts(submission: Submission) -> List[Dict[str, Any]]:
     specimen_sections = find_sections_in_submission(submission, ["Specimen"])
 
     key_mapping = [
@@ -292,14 +314,14 @@ def extract_specimen_dicts(submission):
     return model_dicts
 
 
-def convert_specimen_to_api_model(specimen_dict):
+def convert_specimen_to_api_model(specimen_dict: Dict[str, Any]) -> Specimen:
 
     specimen_dict["uuid"] = generate_specimen_uuid(specimen_dict)
     specimen = dicts_to_api_models([specimen_dict,], Specimen)[0]
     return specimen
 
 
-def extract_image_acquisition_dicts(submission):
+def extract_image_acquisition_dicts(submission: Submission) -> List[Dict[str, Any]]:
     image_acquisition_sections = find_sections_in_submission(
         submission, ["Image acquisition"]
     )
@@ -325,7 +347,9 @@ def extract_image_acquisition_dicts(submission):
     return model_dicts
 
 
-def convert_image_acquisition_to_api_model(image_acquisition_dict):
+def convert_image_acquisition_to_api_model(
+    image_acquisition_dict: Dict[str, Any]
+) -> ImageAcquisition:
 
     image_acquisition_dict["uuid"] = generate_image_acquisition_uuid(
         image_acquisition_dict
@@ -337,7 +361,7 @@ def convert_image_acquisition_to_api_model(image_acquisition_dict):
 
 
 # This function is in bia_integrator_tools.utils !!!
-def dict_to_uuid(my_dict: dict, attributes_to_consider: list) -> str:
+def dict_to_uuid(my_dict: Dict[str, Any], attributes_to_consider: List[str]) -> str:
     """Create uuid from specific keys in a dictionary
 
     """
@@ -350,7 +374,7 @@ def dict_to_uuid(my_dict: dict, attributes_to_consider: list) -> str:
 # Generate uuids for specimen, biosample and image_acquisition using
 # functions below - these are intended to be called whereever the uuid
 # needs to be generated
-def generate_biosample_uuid(biosample_dict):
+def generate_biosample_uuid(biosample_dict: Dict[str, Any]) -> str:
     attributes_to_consider = [
         "accession_id",
         "accno",
@@ -367,7 +391,7 @@ def generate_biosample_uuid(biosample_dict):
     return dict_to_uuid(biosample_dict, attributes_to_consider)
 
 
-def generate_specimen_uuid(specimen_dict):
+def generate_specimen_uuid(specimen_dict: Dict[str, Any]) -> str:
     attributes_to_consider = [
         "accession_id",
         "accno",
@@ -379,7 +403,7 @@ def generate_specimen_uuid(specimen_dict):
     return dict_to_uuid(specimen_dict, attributes_to_consider)
 
 
-def generate_image_acquisition_uuid(image_acquisition):
+def generate_image_acquisition_uuid(image_acquisition: Dict[str, Any]) -> str:
     attributes_to_consider = [
         "accession_id",
         "accno",

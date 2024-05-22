@@ -9,7 +9,7 @@ app = typer.Typer()
 
 
 @app.command()
-def ingest_from_biostudies(accession_id: str):
+def ingest_from_biostudies(accession_id: str) -> None:
 
     # TODO: Funding
     # TODO: Links
