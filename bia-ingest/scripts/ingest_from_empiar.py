@@ -1,3 +1,6 @@
+"""Ingest EMPIAR submission into BIA API
+
+"""
 import json
 import uuid
 import hashlib

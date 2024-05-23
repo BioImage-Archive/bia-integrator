@@ -20,6 +20,7 @@ from bia_ingest.biostudies import (
 
 from bia_integrator_api.exceptions import NotFoundException
 from bia_integrator_api.util import simple_client, PrivateApi
+from bia_integrator_api.models.overwrite_mode import OverwriteMode
 from bia_integrator_api.models.biosample import Biosample
 from bia_integrator_api.models.specimen import Specimen
 from bia_integrator_api.models.bia_image import BIAImage
@@ -35,16 +36,9 @@ from bia_ingest.conversion import (
     dicts_to_api_models,
     dict_to_uuid,
 )
+from bia_ingest.scli import rw_client as api_client
 
 logger = logging.getLogger(__file__)
-
-global api_client
-api_client = simple_client(
-    os.environ.get("BIA_API_BASEPATH", "http://localhost:8080"),
-    os.environ.get("BIA_USERNAME", ""),
-    os.environ.get("BIA_PASSWORD", ""),
-    os.environ.get("BIA_DISABLE_SSL_HOST_CHECK", ""),
-)
 
 
 def image_acquisitions_from_associations(
@@ -71,8 +65,8 @@ def image_acquisitions_from_associations(
 
     image_acquisition_uuids = []
     for association in associations:
-        # ToDo: Check if there can be > 1 entry with same title? YES!!!
-        # ToDo: Refactor code blocks below to iterate using a dict
+        # TODO: Check if there can be > 1 entry with same title? YES!!!
+        # TODO: Refactor code blocks below to iterate using a dict
         image_acquisition_title = association["Image acquisition"]
         image_acquisition = [
             f
@@ -105,47 +99,29 @@ def image_acquisitions_from_associations(
                 f"Submission has more than one biosample with the title {biosample_title}. Using first biosample for association {association}"
             )
         biosample = biosample[0]
+        biosample_model = dicts_to_api_models([biosample,], Biosample)[0]
+        api_client.create_biosample(
+            biosample_model, overwrite_mode=OverwriteMode.ALLOW_IDEMPOTENT
+        )
+        logger.info(f"Using biosample with uuid {biosample_model.uuid}")
 
-        # Check if API contains objects with the expected uuids
-        try:
-            biosample_model = api_client.get_biosample(biosample["uuid"])
-            logger.info(
-                f"Retrieved biosample with uuid {biosample_model.uuid} using API"
-            )
-        except NotFoundException:
-            biosample_model = dicts_to_api_models([biosample,], Biosample)[0]
-            api_client.create_biosample(biosample_model)
-            logger.info(f"Created biosample with uuid {biosample_model.uuid}")
+        specimen["biosample_uuid"] = biosample_model.uuid
+        specimen["uuid"] = generate_specimen_uuid(specimen)
+        specimen_model = dicts_to_api_models([specimen,], Specimen)[0]
+        api_client.create_specimen(
+            specimen_model, overwrite_mode=OverwriteMode.ALLOW_IDEMPOTENT
+        )
+        logger.info(f"Using specimen with uuid {specimen_model.uuid}")
 
-        try:
-            specimen["biosample_uuid"] = biosample_model.uuid
-            specimen["uuid"] = generate_specimen_uuid(specimen)
-            specimen_model = api_client.get_specimen(specimen["uuid"])
-            logger.info(f"Retrieved specimen with uuid {specimen_model.uuid} using API")
-        except NotFoundException:
-            specimen_model = dicts_to_api_models([specimen,], Specimen)[0]
-            api_client.create_specimen(specimen_model)
-            logger.info(f"Created specimen with uuid {specimen_model.uuid}")
-
-        try:
-            image_acquisition["specimen_uuid"] = specimen_model.uuid
-            image_acquisition["uuid"] = generate_image_acquisition_uuid(
-                image_acquisition
-            )
-            image_acquisition_model = api_client.get_image_acquisition(
-                image_acquisition["uuid"]
-            )
-            logger.info(
-                f"Retrieved image_acquisition with uuid {image_acquisition_model.uuid} using API"
-            )
-        except NotFoundException:
-            image_acquisition_model = dicts_to_api_models(
-                [image_acquisition,], ImageAcquisition
-            )[0]
-            api_client.create_image_acquisition(image_acquisition_model)
-            logger.info(
-                f"Created image_acquisition with uuid {image_acquisition_model.uuid}"
-            )
+        image_acquisition["specimen_uuid"] = specimen_model.uuid
+        image_acquisition["uuid"] = generate_image_acquisition_uuid(image_acquisition)
+        image_acquisition_model = dicts_to_api_models(
+            [image_acquisition,], ImageAcquisition
+        )[0]
+        api_client.create_image_acquisition(
+            image_acquisition_model, overwrite_mode=OverwriteMode.ALLOW_IDEMPOTENT
+        )
+        logger.info(f"Using image_acquisition with uuid {image_acquisition_model.uuid}")
         image_acquisition_uuids.append(image_acquisition_model.uuid)
 
     return image_acquisition_uuids
@@ -201,28 +177,22 @@ def update_images_with_image_acquisitions(
             image.image_acquisitions_uuid = []
         image_acquisitions_uuid = []
         image_reps = [
-            i
-            for i in filter(
-                lambda i: i.type in bia_image_types and "attributes" in i.__dict__,
-                image.representations,
-            )
+            image_rep
+            for image_rep in image.representations
+            if image_rep.type in bia_image_types and "attributes" in image_rep.__dict__
         ]
         for image_rep in image_reps:
             for fileref in image_rep.attributes.get("fileref_ids", []):
                 image_acquisitions_uuid.extend(
                     fileref_to_image_acquisitions.get(fileref, [])
                 )
-        if len(image_acquisitions_uuid) > 0:
-            image_acquisitions_uuid = list(set(image_acquisitions_uuid))
-            image_acquisitions_uuid.sort()
-            image.image_acquisitions_uuid.sort()
-            if image_acquisitions_uuid != image.image_acquisitions_uuid:
-                image.image_acquisitions_uuid = image_acquisitions_uuid
-                image.version += 1
-                api_client.update_image(image)
-                logger.info(
-                    f"Setting image {image.uuid} image_acquisitions_uuid to : {image_acquisitions_uuid}"
-                )
+        if set(image.image_acquisitions_uuid) != set(image_acquisitions_uuid):
+            image.image_acquisitions_uuid = image_acquisitions_uuid
+            image.version += 1
+            api_client.update_image(image)
+            logger.info(
+                f"Setting image {image.uuid} image_acquisitions_uuid to : {image_acquisitions_uuid}"
+            )
 
 
 app = typer.Typer()

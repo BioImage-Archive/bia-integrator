@@ -105,16 +105,12 @@ def test_assign_image_acquisitions_to_images_script_runs_ok(caplog):
     runner = CliRunner(mix_stderr=False)
     result = runner.invoke(app, [accession_id,], catch_exceptions=False)
 
-    if result.exception is not None:
-        print(result.exception)
-
-    assert result.exception is None
     assert result.exit_code == 0
 
     expected_messages = [
-        "Retrieved biosample with uuid",
-        "Retrieved specimen with uuid",
-        "Retrieved image_acquisition with uuid",
+        "Using biosample with uuid",
+        "Using specimen with uuid",
+        "Using image_acquisition with uuid",
         "Found 3 fileref to image_acquisition relationships",
     ]
     caplog_messages = " ".join(caplog.messages)

@@ -1,3 +1,6 @@
+"""Ingest study from biostudies into BIA API
+
+"""
 import rich
 import typer
 
