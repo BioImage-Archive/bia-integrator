@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "bia-ingest"
+version = "0.1.0"
+description = ""
+authors = ["Matthew Hartley <matthewh@ebi.ac.uk>"]
+readme = "README.md"
+packages = [{include = "bia_ingest"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+requests = "^2.31.0"
+typer = "^0.9.0"
+rich = "^13.7.0"
+fs = "^2.4.16"
+python-dotenv = "^1.0.0"
+bia-integrator-api = "^0.3.0"
+
+
+[tool.poetry.group.dev.dependencies]
+ipython = "^8.22.1"
+pytest = "^8.0.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
