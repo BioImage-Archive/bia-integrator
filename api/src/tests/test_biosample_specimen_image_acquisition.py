@@ -9,13 +9,16 @@ So they were grouped in the same test file
 from fastapi.testclient import TestClient
 from .util import (
     get_template_biosample,
+    get_template_specimen,
+    get_template_image_acquisition,
 )
 import pytest
 
 
-def test_biosample_create_retrieve_update(api_client: TestClient, uuid: str):
+def test_biosample_create_retrieve_update(api_client: TestClient):
     # Note that this actually doesn't depend on any study
-    biosample = get_template_biosample() | {"uuid": uuid}
+    biosample = get_template_biosample(add_uuid=True)
+    uuid = biosample["uuid"]
     rsp = api_client.post(f"private/biosamples", json=biosample)
     assert rsp.status_code == 201, rsp.json()
 
@@ -36,20 +39,10 @@ def test_biosample_create_retrieve_update(api_client: TestClient, uuid: str):
 
 
 def test_specimen_create_retrieve_update(
-    api_client: TestClient, uuid: str, existing_biosample: dict
+    api_client: TestClient, existing_biosample: dict
 ):
-    specimen = {
-        "uuid": uuid,
-        "version": 0,
-        "biosample_uuid": existing_biosample["uuid"],
-        "title": "placeholder_title",
-        "sample_preparation_protocol": "placeholder_sample_preparation_protocol",
-        "growth_protocol": "placeholder_growth_protocol",
-        "attributes": {},
-        "annotations": [],
-        "annotations_applied": False,
-        "@context": "https://placeholder/context",
-    }
+    specimen = get_template_specimen(existing_biosample, add_uuid=True)
+    uuid = specimen["uuid"]
     rsp = api_client.post(f"private/specimens", json=specimen)
     assert rsp.status_code == 201, rsp.json()
 
@@ -70,28 +63,17 @@ def test_specimen_create_retrieve_update(
 
 
 def test_image_acquisition_create_retrieve_update(
-    api_client: TestClient, uuid: str, existing_specimen: dict
+    api_client: TestClient, existing_specimen: dict
 ):
-    image_acquisition = {
-        "uuid": uuid,
-        "version": 0,
-        "specimen_uuid": existing_specimen["uuid"],
-        "title": "placeholder_title",
-        "imaging_instrument": "placeholder_imaging_instrument",
-        "image_acquisition_parameters": "placeholder_image_acquisition_parameters",
-        "imaging_method": "placeholder_imaging_method",
-        "attributes": {},
-        "annotations": [],
-        "annotations_applied": False,
-        "@context": "https://placeholder/context",
-    }
+    image_acquisition = get_template_image_acquisition(existing_specimen, add_uuid=True)
+    uuid = image_acquisition["uuid"]
     rsp = api_client.post(f"private/image_acquisitions", json=image_acquisition)
     assert rsp.status_code == 201, rsp.json()
 
     rsp = api_client.get(f"image_acquisitions/{uuid}")
-    specimen_fetched = rsp.json()
-    del specimen_fetched["model"]
-    assert specimen_fetched == image_acquisition
+    image_acquisition_fetched = rsp.json()
+    del image_acquisition_fetched["model"]
+    assert image_acquisition_fetched == image_acquisition
 
     image_acquisition["title"] = "title_updated"
     image_acquisition["version"] += 1
@@ -106,24 +88,11 @@ def test_image_acquisition_create_retrieve_update(
 
 def test_create_update_with_badly_typed_uuid(
     api_client: TestClient,
-    uuid: str,
     existing_specimen: dict,
     existing_image_acquisition: dict,
     existing_study: dict,
 ):
-    image_acquisition = {
-        "uuid": uuid,
-        "version": 0,
-        "specimen_uuid": existing_study["uuid"],
-        "title": "placeholder_title",
-        "imaging_instrument": "placeholder_imaging_instrument",
-        "image_acquisition_parameters": "placeholder_image_acquisition_parameters",
-        "imaging_method": "placeholder_imaging_method",
-        "attributes": {},
-        "annotations": [],
-        "annotations_applied": False,
-        "@context": "https://placeholder/context",
-    }
+    image_acquisition = get_template_image_acquisition(existing_study, add_uuid=True)
     rsp = api_client.post(f"private/image_acquisitions", json=image_acquisition)
     assert rsp.status_code == 400, rsp.json()
 
@@ -134,18 +103,7 @@ def test_create_update_with_badly_typed_uuid(
     )
     assert rsp.status_code == 400, rsp.json()
 
-    specimen = {
-        "uuid": uuid,
-        "version": 0,
-        "biosample_uuid": existing_study["uuid"],
-        "title": "placeholder_title",
-        "sample_preparation_protocol": "placeholder_sample_preparation_protocol",
-        "growth_protocol": "placeholder_growth_protocol",
-        "attributes": {},
-        "annotations": [],
-        "annotations_applied": False,
-        "@context": "https://placeholder/context",
-    }
+    specimen = get_template_specimen(existing_study, add_uuid=True)
     rsp = api_client.post(f"private/specimens", json=specimen)
     assert rsp.status_code == 400, rsp.json()
 
