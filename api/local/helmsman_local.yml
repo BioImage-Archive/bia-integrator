@@ -23,7 +23,7 @@ apps:
   api:
     namespace: api
     enabled: true
-    chart: ./api
+    chart: ../helm-chart
     version: "0.1.0"
     priority: -1
     set:
