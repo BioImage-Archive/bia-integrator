@@ -36,7 +36,7 @@ def test_biosample_create_retrieve_update(api_client: TestClient, uuid: str):
 
 
 def test_specimen_create_retrieve_update(
-    api_client: TestClient, uuid: str, existing_biosample
+    api_client: TestClient, uuid: str, existing_biosample: dict
 ):
     specimen = {
         "uuid": uuid,
@@ -70,7 +70,7 @@ def test_specimen_create_retrieve_update(
 
 
 def test_image_acquisition_create_retrieve_update(
-    api_client: TestClient, uuid: str, existing_specimen
+    api_client: TestClient, uuid: str, existing_specimen: dict
 ):
     image_acquisition = {
         "uuid": uuid,
@@ -99,13 +99,64 @@ def test_image_acquisition_create_retrieve_update(
     assert rsp.status_code == 200, rsp.json()
 
     rsp = api_client.get(f"image_acquisitions/{uuid}")
-    specimen_fetched = rsp.json()
-    del specimen_fetched["model"]
-    assert specimen_fetched == image_acquisition
+    image_acquisition_fetched = rsp.json()
+    del image_acquisition_fetched["model"]
+    assert image_acquisition_fetched == image_acquisition
+
+
+def test_create_update_with_badly_typed_uuid(
+    api_client: TestClient,
+    uuid: str,
+    existing_specimen: dict,
+    existing_image_acquisition: dict,
+    existing_study: dict,
+):
+    image_acquisition = {
+        "uuid": uuid,
+        "version": 0,
+        "specimen_uuid": existing_study["uuid"],
+        "title": "placeholder_title",
+        "imaging_instrument": "placeholder_imaging_instrument",
+        "image_acquisition_parameters": "placeholder_image_acquisition_parameters",
+        "imaging_method": "placeholder_imaging_method",
+        "attributes": {},
+        "annotations": [],
+        "annotations_applied": False,
+        "@context": "https://placeholder/context",
+    }
+    rsp = api_client.post(f"private/image_acquisitions", json=image_acquisition)
+    assert rsp.status_code == 400, rsp.json()
+
+    existing_image_acquisition["specimen_uuid"] = existing_study["uuid"]
+    existing_image_acquisition["version"] += 1
+    rsp = api_client.patch(
+        f"private/image_acquisitions", json=existing_image_acquisition
+    )
+    assert rsp.status_code == 400, rsp.json()
+
+    specimen = {
+        "uuid": uuid,
+        "version": 0,
+        "biosample_uuid": existing_study["uuid"],
+        "title": "placeholder_title",
+        "sample_preparation_protocol": "placeholder_sample_preparation_protocol",
+        "growth_protocol": "placeholder_growth_protocol",
+        "attributes": {},
+        "annotations": [],
+        "annotations_applied": False,
+        "@context": "https://placeholder/context",
+    }
+    rsp = api_client.post(f"private/specimens", json=specimen)
+    assert rsp.status_code == 400, rsp.json()
+
+    existing_specimen["biosample_uuid"] = existing_study["uuid"]
+    existing_specimen["version"] += 1
+    rsp = api_client.patch(f"private/specimens", json=existing_specimen)
+    assert rsp.status_code == 400, rsp.json()
 
 
 def test_image_add_image_acquisition(
-    api_client: TestClient, existing_image, existing_image_acquisition
+    api_client: TestClient, existing_image: dict, existing_image_acquisition: dict
 ):
     existing_image["version"] += 1
     existing_image["image_acquisitions_uuid"].append(existing_image_acquisition["uuid"])
@@ -114,9 +165,8 @@ def test_image_add_image_acquisition(
     assert rsp.status_code == 200, rsp.json()
 
 
-@pytest.mark.skip(reason="This test fails on purpose! We need _uuid field type validation")
 def test_image_add_study_as_image_acquisition(
-    api_client: TestClient, existing_image, existing_study
+    api_client: TestClient, existing_image: dict, existing_study: dict
 ):
     existing_image["version"] += 1
     existing_image["image_acquisitions_uuid"].append(existing_study["uuid"])

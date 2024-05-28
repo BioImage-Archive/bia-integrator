@@ -10,6 +10,14 @@ class InvalidRequestException(HTTPException):
         super().__init__(STATUS_INVALID_REQUEST, detail, **kwargs)
 
 
+STATUS_UNEXPECTED_DOCUMENT_TYPE = 400
+
+
+class UnexpectedDocumentType(HTTPException):
+    def __init__(self, detail, **kwargs) -> None:
+        super().__init__(STATUS_UNEXPECTED_DOCUMENT_TYPE, detail, **kwargs)
+
+
 STATUS_DOCUMENT_NOT_FOUND = 404
 
 

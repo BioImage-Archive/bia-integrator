@@ -6,7 +6,7 @@ from uuid import UUID
 
 from pydantic_core import Url
 
-from src.api.exceptions import DocumentNotFound, InvalidRequestException
+from src.api.exceptions import UnexpectedDocumentType, InvalidRequestException
 
 
 def url2str(self, val: Url) -> str:
@@ -54,8 +54,8 @@ class DocumentMixin(BaseModel):
                 model_metadata_existing = ModelMetadata(**model_metadata_existing)
 
                 if model_metadata_existing != model_metadata_expected:
-                    raise DocumentNotFound(
-                        f"Document {str(data.get('_id'))} has model metadata {model_metadata_existing}, expected : {model_metadata_expected}"
+                    raise UnexpectedDocumentType(
+                        f"Document {str(data.get('uuid'))} has model metadata {model_metadata_existing}, expected : {model_metadata_expected}"
                     )
             else:
                 raise ValueError(f"Document missing model attribute")

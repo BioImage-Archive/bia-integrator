@@ -25,7 +25,7 @@ def test_create_collection(api_client: TestClient, uuid: str):
 
 def test_get_image_with_uuid_of_non_image(api_client: TestClient, existing_study):
     rsp = api_client.get(f"images/{existing_study['uuid']}")
-    assert rsp.status_code == 404
+    assert rsp.status_code == 400
 
 
 def test_get_object_info_by_accession(api_client: TestClient, uuid: str):

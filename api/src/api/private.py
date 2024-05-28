@@ -74,12 +74,15 @@ async def create_images(
             for idx in range(len(study_images))
         ]
     )
-    await db.doc_dependency_verify_exists(
+    await db.bulk_validate_object_dependency(
         study_images,
-        lambda img: img.study_uuid,
-        db.find_study_by_uuid,
-        ref_bulk_operation_response=create_bulk_response,
+        {
+            "study_uuid": db_models.BIAStudy,
+            "image_acquisitions_uuid": db_models.ImageAcquisition,
+        },
+        create_bulk_response,
     )
+
     await db.persist_docs(
         study_images, ref_bulk_operation_response=create_bulk_response
     )
@@ -103,7 +106,13 @@ async def update_image(
         f"Updating image {study_image.uuid}. New version: {study_image.version}"
     )
 
-    await db.find_study_by_uuid(study_image.study_uuid)
+    await db.validate_object_dependency(
+        study_image,
+        {
+            "study_uuid": db_models.BIAStudy,
+            "image_acquisitions_uuid": db_models.ImageAcquisition,
+        },
+    )
     await db.update_doc(study_image)
 
     return None
@@ -148,10 +157,11 @@ async def create_file_references(
         ]
     )
 
-    await db.doc_dependency_verify_exists(
-        file_references,
-        lambda fr: fr.study_uuid,
-        db.find_study_by_uuid,
+    await db.bulk_validate_object_dependency(
+        docs_to_verify=file_references,
+        field_type_map={
+            "study_uuid": db_models.BIAStudy,
+        },
         ref_bulk_operation_response=create_bulk_response,
     )
     await db.persist_docs(
@@ -173,7 +183,13 @@ async def update_file_reference(
     logging.info(
         f"Updating file reference {file_reference.uuid}. New version: {file_reference.version}"
     )
-    await db.find_study_by_uuid(file_reference.study_uuid)
+    # await db.validate_uuid_type(file_reference.study_uuid, db_models.BIAStudy)
+    await db.validate_object_dependency(
+        file_reference,
+        {
+            "study_uuid": db_models.BIAStudy,
+        },
+    )
     await db.update_doc(file_reference)
 
     return None
@@ -206,6 +222,13 @@ async def create_image_acquisition(
 ) -> None:
     logging.info(f"Creating Image Acquisition {image_acquisition.uuid}")
     db.overwrite_mode = overwrite_mode
+    # await db.validate_uuid_type(image_acquisition.specimen_uuid, db_models.Specimen)
+    await db.validate_object_dependency(
+        image_acquisition,
+        {
+            "specimen_uuid": db_models.Specimen,
+        },
+    )
     await db.persist_doc(image_acquisition)
 
     return None
@@ -218,6 +241,13 @@ async def update_image_acquisition(
     logging.info(
         f"Updating Image acquisition {image_acquisition.uuid}. New version: {image_acquisition.version}"
     )
+    # await db.validate_uuid_type(image_acquisition.specimen_uuid, db_models.Specimen)
+    await db.validate_object_dependency(
+        image_acquisition,
+        {
+            "specimen_uuid": db_models.Specimen,
+        },
+    )
     await db.update_doc(image_acquisition)
 
     return None
@@ -225,13 +255,20 @@ async def update_image_acquisition(
 
 @router.post("/specimens", status_code=status.HTTP_201_CREATED)
 async def create_specimen(
-    image_acquisition: db_models.Specimen,
+    specimen: db_models.Specimen,
     db: Repository = Depends(),
     overwrite_mode: OverwriteMode = OverwriteMode.FAIL,
 ) -> None:
-    logging.info(f"Creating specimen {image_acquisition.uuid}")
+    logging.info(f"Creating specimen {specimen.uuid}")
     db.overwrite_mode = overwrite_mode
-    await db.persist_doc(image_acquisition)
+    # await db.validate_uuid_type(specimen.biosample_uuid, db_models.Biosample)
+    await db.validate_object_dependency(
+        specimen,
+        {
+            "biosample_uuid": db_models.Biosample,
+        },
+    )
+    await db.persist_doc(specimen)
 
     return None
 
@@ -241,6 +278,13 @@ async def update_specimen(
     specimen: db_models.Specimen, db: Repository = Depends()
 ) -> None:
     logging.info(f"Updating Specimen {specimen.uuid}. New version: {specimen.version}")
+    # await db.validate_uuid_type(specimen.biosample_uuid, db_models.Biosample)
+    await db.validate_object_dependency(
+        specimen,
+        {
+            "biosample_uuid": db_models.Biosample,
+        },
+    )
     await db.update_doc(specimen)
 
     return None
