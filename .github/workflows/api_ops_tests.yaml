@@ -39,8 +39,8 @@ jobs:
         id: minikube
         uses: medyagh/setup-minikube@master
         with:
-          cpus: 2
-          memory: 2G # 1.9G recommended minimum
+          cpus: 4
+          memory: 4G # 1.9G recommended minimum
           start-args: '--force'
 
       - name: Start everything
