@@ -1,0 +1,127 @@
+id:  https://www.ebi.ac.uk/bioimage-archive/schema/
+name: bia-shared-datamodels
+
+prefixes:
+  bia-shared-datamodels: https://www.ebi.ac.uk/bioimage-archive/schema/
+  linkml: https://w3id.org/linkml/
+default_prefix: bia-shared-datamodels
+
+imports:
+  - linkml:types
+  - mixins
+
+classes: 
+  Document:
+    description: A documentary resource or body of scientific work.
+    slots:
+      - author
+      - title
+      - release_date
+      - keywords
+      - acknowledgements
+      - description
+    slot_usage: 
+      author:
+        required: true
+  
+  Study:
+    is_a: Document
+    mixins:
+      - Document
+    description: A study in the BioImageArchive represents a dataset of image data, and the scienfitic effort that resulted in it's creation.
+    slots:
+      - accession_id
+      - file_references_count
+      - image_count
+      - see_also
+      - funding
+
+  Publication:
+    is_a: Document
+    slots:
+      - pubmed_id
+      - doi
+
+  StudyComponent:
+    description: A StudyComponent is a dataset of images in which the same set of imaging techniques were performed on a set of specimens and biosamples.
+
+  
+slots:
+  title:
+    description: The title of a scientific document. This will usually be displayed when search results including your data are shown.
+    examples:
+      - value: An annotated fluorescence image dataset for training nuclear segmentation methods
+      - value: Embryonic mice ultrasound volumes with body and brain volume segmentation masks
+  
+  description:
+    description: Brief description of the scientific document.
+    examples:
+      - value: >-
+          Accurate quantification of nuclear features is critical for the characterization of tumours. 
+          This dataset contains annotated fluorescent images of cell nuclei from a normal human skin cell line, and from different tumour samples from cancer patients. 
+          This dataset can be used to train nuclear image segmentation algorithms.
+      - value: >-
+          The number of cells in an embryo at early stages of development can be used to understand its viability, however counting cells on DIC images is a challenging task. 
+          This dataset contains annotated DIC images of mouse embryos to train machine learning models.
+
+  keywords:
+    description: Keywords or tags used to describe a document
+    multivalued: true
+    examples:
+      - value:
+        - segmentation
+        - nuclei
+        - cancer
+      - value:
+        - image segmentation 
+        - high-frequency ultrasound 
+        - mouse embryo 
+        - volumetric deep learning
+
+  license:
+    description: The license under which the data are available
+    range: LicenseType
+    examples:
+      - value: CC0
+      - value: CC_BY
+
+  author: 
+    description: The creators of the Work.
+    range: Agent
+    multivalued: true
+
+  pubmed_id:
+    slot_uri: WIKIDATA_PROPERTY:P698
+    range: uriorcurie
+    description: Identifier for journal articles/abstracts in PubMed
+    examples: 
+      - value: PMID:18492790
+      - value: PMID:26136366
+
+  release_date:
+    description: Date of first publication
+    range: Date
+    examples:
+      - value: "2021"
+      - value: "1986"
+  
+  see_also:
+    description: Links to publications, github repositories, and other pages related to this Study.
+    range: url
+  
+
+
+enums:
+  LicenseType:
+    permissible_values:
+
+      CC0:
+        description: No Copyright. You can copy, modify, distribute and perform the work, even for commercial purposes, all without asking permission.
+        meaning: https://creativecommons.org/publicdomain/zero/1.0/
+      
+      CC_BY:
+        description: >-
+         You are free to: Share — copy and redistribute the material in any medium or format. Adapt — remix, transform, and build upon the material 
+         for any purpose, even commercially. You must give appropriate credit, provide a link to the license, and indicate if changes were made. 
+         You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+        meaning: https://creativecommons.org/licenses/by/4.0/

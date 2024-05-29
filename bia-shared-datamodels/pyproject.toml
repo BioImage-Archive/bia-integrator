@@ -1,0 +1,30 @@
+[tool.poetry]
+name = "bia-shared-datamodels"
+version = "0.1.0"
+description = "Schemas and models for working with the BioImage Archive's (Metadata, Incentives, Formats and Accessibility) metadata implementation"
+authors = ["Francois Sherwood <fsherwood@ebi.ac.uk>"]
+license = "Apache Software License 2.0"
+readme = "README.md"
+include = ["README.md", "src/bia_mifa_models/schema", "project"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+linkml-runtime = "^1"
+
+[tool.poetry-dynamic-versioning]
+enable = true
+vcs = "git"
+style = "pep440"
+
+[tool.poetry.dev-dependencies]
+linkml = "^1.3.5"
+mkdocs-material = "^8.2.8"
+mkdocs-mermaid2-plugin = "^0.6.0"
+schemasheets = "^0.1.14"
+
+[build-system]
+requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning"]
+build-backend = "poetry_dynamic_versioning.backend"
+
+[tool.poetry.extras]
+docs = ["linkml", "mkdocs-material"]

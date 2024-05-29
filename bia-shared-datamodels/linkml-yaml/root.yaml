@@ -1,0 +1,10 @@
+id:  https://www.ebi.ac.uk/bioimage-archive/schema/
+name: bia-shared-datamodels
+
+prefixes:
+  bia-shared-datamodels: https://www.ebi.ac.uk/bioimage-archive/schema/
+  linkml: https://w3id.org/linkml/
+default_prefix: bia-shared-datamodels
+
+imports:
+  - study
