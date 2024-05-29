@@ -1,8 +1,5 @@
 replicaCount: 1
 
-imagePullSecrets:
-  - name: ghcr-creds
-
 image:
   tag: "0.1"
   pullPolicy: IfNotPresent
