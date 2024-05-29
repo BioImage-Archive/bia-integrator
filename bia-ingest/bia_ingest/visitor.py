@@ -19,6 +19,8 @@ class Visitor:
         self.result = {"study": [{},]}
         self.current_result_key = "study"
         self.common_name_matcher = re.compile(r"\((.*)\)")
+        self.flattened_contents = []
+        self.flattened_contents_dict = {}
         # self.study = BIAStudy()
 
     def visit(self, parent: str, node: Union[str, List, Dict]) -> None:
@@ -36,6 +38,9 @@ class Visitor:
             for child in node:
                 self.visit(f"{parent}.{child}", node[child])
             self._tag_exit(parent, node)
+
+    def reset(self, accession_id):
+        self.__init__(accession_id)
 
     def _tag_enter(self, parent: str, node: Union[List, Dict]) -> None:
         if isinstance(node, list):
@@ -123,6 +128,8 @@ class Visitor:
     def _text(self, parent: str, node: str) -> None:
         indent = (self.indent_level + 1) * "  "
         print(f"{indent}In node '{parent}' with string value: {node}")
+        self.flattened_contents.append({parent: node})
+        self.flattened_contents_dict.update({parent: node})
         node_key = node.lower().replace(" ", "_")
         if self._is_attribute_name(parent):
             if node_key not in self.result[self.current_result_key][-1]:

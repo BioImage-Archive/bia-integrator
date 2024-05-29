@@ -2,8 +2,8 @@
 
 """
 
-from unittest.mock import Mock, MagicMock
 import logging
+from unittest.mock import Mock, MagicMock
 import json
 from pathlib import Path
 from scripts.assign_image_acquisitions_to_images import app, api_client
@@ -18,12 +18,11 @@ from .utils import (
 )
 
 from typer.testing import CliRunner
-
+    
 N_TEST_IMAGES = 3
 TEST_IMAGE_UUID = "test_image_uuid"
 accession_id = "S-BIADTEST"
-
-
+    
 def mock_get_object_info_by_accession():
     study = Mock()
     study.uuid = "test_study_uuid"
@@ -62,41 +61,35 @@ def mock_get_study_images():
         images.append(image)
     return images
 
-
-api_client.get_study_images = MagicMock(return_value=mock_get_study_images())
-api_client.update_image = MagicMock(return_value=True)
-
-
 def mock_load_submission():
     submission_path = Path(__file__).parent / "data" / f"{accession_id}.json"
     submission_dict = json.loads(submission_path.read_text())
     return Submission(**submission_dict)
+  
+def setup_module(module):    
+    api_client.get_study_images = MagicMock(return_value=mock_get_study_images())
+    api_client.update_image = MagicMock(return_value=True)
 
-
-assign_image_acquisitions_to_images.load_submission = MagicMock(
-    return_value=mock_load_submission()
-)
-
-assign_image_acquisitions_to_images.flist_from_flist_fname = MagicMock(
-    return_value=test_filerefs
-)
-
-api_client.get_biosample = MagicMock(create_expected_biosample(accession_id))
-api_client.create_biosample = MagicMock(create_expected_biosample(accession_id))
-
-api_client.get_specimen = MagicMock(create_expected_specimen(accession_id))
-api_client.create_specimen = MagicMock(create_expected_specimen(accession_id))
-
-api_client.get_image_acquisition = MagicMock(
-    create_expected_image_acquisition(accession_id)
-)
-api_client.create_image_acquisition = MagicMock(
-    create_expected_image_acquisition(accession_id)
-)
-
-api_client.get_biosample = MagicMock(create_expected_biosample(""))
-api_client.create_biosample = MagicMock(create_expected_biosample(""))
-
+    assign_image_acquisitions_to_images.load_submission = MagicMock(
+        return_value=mock_load_submission()
+    )
+    
+    assign_image_acquisitions_to_images.flist_from_flist_fname = MagicMock(
+        return_value=test_filerefs
+    )
+    
+    api_client.get_biosample = MagicMock(create_expected_biosample(accession_id))
+    api_client.create_biosample = MagicMock(create_expected_biosample(accession_id))
+    
+    api_client.get_specimen = MagicMock(create_expected_specimen(accession_id))
+    api_client.create_specimen = MagicMock(create_expected_specimen(accession_id))
+    
+    api_client.get_image_acquisition = MagicMock(
+        create_expected_image_acquisition(accession_id)
+    )
+    api_client.create_image_acquisition = MagicMock(
+        create_expected_image_acquisition(accession_id)
+    )
 
 def test_assign_image_acquisitions_to_images_script_runs_ok(caplog):
     caplog.set_level(
