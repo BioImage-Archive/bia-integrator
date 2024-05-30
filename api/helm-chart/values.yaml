@@ -27,7 +27,26 @@ resources:
 api_env:
   mongoRootUser: ""
   mongoRootPassword: ""
-  mongoHost: ""
+  mongoHost: "api-mongodb"
   dbName: "bia-integrator"
   jwtSecretKey: ""
   userCreateSecretToken: ""
+
+mongodb:
+  enabled: false
+  architecture: standalone
+  auth:
+    rootUser: ""
+    rootPassword: ""
+  service:
+    type: ClusterIP
+    nodePorts:
+      mongodb: "27017"
+    nameOverride: "api-mongodb"
+  resources:
+    limits:
+      cpu: 2
+      memory: 512M
+    requests:
+      cpu: 2
+      memory: 512M

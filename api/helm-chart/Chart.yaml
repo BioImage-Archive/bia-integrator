@@ -2,8 +2,6 @@ apiVersion: v2
 name: api
 description: A Helm chart for Kubernetes
 maintainers:
-  # See https://github.com/helm/chart-testing/issues/192
-  # for why the maintainer doesn't validate if the name field is the name of an actual human that exists (afaict)
   - name: LA  # Liviu Anita
     email: liviu@ebi.ac.uk
 
@@ -11,8 +9,10 @@ type: application
 
 version: 0.1.0
 
-# This is the version number of the application being deployed. This version number should be
-# incremented each time you make changes to the application. Versions are not expected to
-# follow Semantic Versioning. They should reflect the version the application is using.
-# It is recommended to use it with quotes.
 appVersion: "0.1.0"
+
+dependencies:
+  - name: mongodb
+    version: 15.4.3
+    repository: https://charts.bitnami.com/bitnami
+    condition: mongodb.enabled

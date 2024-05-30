@@ -24,7 +24,7 @@ jobs:
       - name: Run chart-testing (lint)
         run: ct lint --charts ./api/helm-chart --debug
 
-  helmsman-test:
+  api-test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -40,20 +40,49 @@ jobs:
         uses: medyagh/setup-minikube@master
         with:
           cpus: 4
-          memory: 4G # 1.9G recommended minimum
+          memory: 4G # 'wait' below times out on Actions with 2G
           start-args: '--force'
+
+      - run: helm repo add bitnami https://charts.bitnami.com/bitnami
+
+      - name: Get helm dependencies
+        run: helm dependency build ./api/helm-chart
 
       - name: Start everything
         run: |
-          curl -L https://github.com/Praqma/helmsman/releases/download/v3.17.0/helmsman_3.17.0_linux_amd64.tar.gz | tar zx
-          mv helmsman /usr/local/bin/helmsman
-          helmsman --apply -f ./api/local/helmsman_local.yml -e ./api/local/.env_template
-
-      - run: kubectl get pods --namespace=api
+          helm install bia-api-local ./api/helm-chart \
+            --set "api_env.mongoRootUser=${{ vars.MONGO_INITDB_ROOT_USERNAME }}" \
+            --set "api_env.mongoRootPassword=${{ secrets.MONGO_INITDB_ROOT_PASSWORD }}" \
+            --set "api_env.jwtSecretKey=${{ secrets.JWT_SECRET_KEY }}" \
+            --set "api_env.userCreateSecretToken=${{ secrets.USER_CREATE_SECRET_TOKEN }}" \
+            --set "mongodb.enabled=true" \
+            --set "mongodb.auth.rootUser=${{ vars.MONGO_INITDB_ROOT_USERNAME }}" \
+            --set "mongodb.auth.rootPassword=${{ secrets.MONGO_INITDB_ROOT_PASSWORD }}"
 
       - name: Wait for api to start and health-check
-        run: kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=api --timeout=1000s --namespace=api
+        run: kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=api --timeout=180s
 
+      - name: Install and configure Poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: 1.2.2
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+
+      - name: Install api dependencies
+        run: poetry install
+        working-directory: ./api
+
+      - name: Run tests
+        run: poetry run pytest
+        working-directory: ./api
+        env:
+          MONGO_INITDB_ROOT_PASSWORD: ${{ secrets.MONGO_INITDB_ROOT_PASSWORD }}
+          MONGO_INITDB_ROOT_USERNAME: ${{ vars.MONGO_INITDB_ROOT_USERNAME }}
+          MONGO_CONNSTRING: mongodb://${{ vars.MONGO_INITDB_ROOT_USERNAME }}:${{ secrets.MONGO_INITDB_ROOT_PASSWORD }}@biaint-mongo:27017
+          DB_NAME: ${{ vars.DB_NAME }}
+          JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
+          USER_CREATE_SECRET_TOKEN: ${{ secrets.USER_CREATE_SECRET_TOKEN }}
       - name: Cleanup
         run: |
           minikube delete
