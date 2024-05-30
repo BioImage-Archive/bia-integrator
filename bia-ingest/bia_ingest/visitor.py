@@ -13,7 +13,7 @@ from .conversion import generate_biosample_uuid
 
 
 class Visitor:
-    def __init__(self, accession_id: str) -> None:
+    def __init__(self, accession_id: str, create_api_models: bool = False) -> None:
         self.accession_id = accession_id
         self.indent_level = 0
         self.result = {"study": [{},]}
@@ -21,6 +21,7 @@ class Visitor:
         self.common_name_matcher = re.compile(r"\((.*)\)")
         self.flattened_contents = []
         self.flattened_contents_dict = {}
+        self.create_api_models = create_api_models
         # self.study = BIAStudy()
 
     def visit(self, parent: str, node: Union[str, List, Dict]) -> None:
@@ -39,8 +40,8 @@ class Visitor:
                 self.visit(f"{parent}.{child}", node[child])
             self._tag_exit(parent, node)
 
-    def reset(self, accession_id):
-        self.__init__(accession_id)
+    def reset(self, accession_id: str, create_api_models: bool = False) -> None:
+        self.__init__(accession_id, create_api_models)
 
     def _tag_enter(self, parent: str, node: Union[List, Dict]) -> None:
         if isinstance(node, list):
@@ -84,7 +85,7 @@ class Visitor:
                 # print(f"{self.indent_level * '  '}Exiting node '{parent}'. Dict with keys: {', '.join(node.keys())}")
 
                 # Create Biosample
-                if node_type == "biosample":
+                if node_type == "biosample" and self.create_api_models:
                     biosample_dict = {}
                     for key, value in self.result[node_type][-1].items():
                         if key.endswith("variable"):
