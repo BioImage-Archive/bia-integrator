@@ -2,7 +2,7 @@
 
 """
 
-import sys
+import typer
 import json
 from pathlib import Path
 from logging import Logger
@@ -42,6 +42,9 @@ def compare_biostudies_with_api(from_biostudies: dict[str, Any], from_api: dict[
             
     return result
 
+app = typer.Typer()
+
+@app.command()
 def main(accession_id: str, output_path: str = None) -> None:
 
     url = f"https://www.ebi.ac.uk/biostudies/files/{accession_id}/{accession_id}.json"
@@ -78,7 +81,4 @@ def main(accession_id: str, output_path: str = None) -> None:
     logger.info(f"Written comparison result to {output_path}")
 
 if __name__ == "__main__":
-    if len(sys.argv) > 2:
-        main(accession_id=sys.argv[1], output_path = sys.argv[2])
-    else:
-        main(accession_id=sys.argv[1])
+    app()
