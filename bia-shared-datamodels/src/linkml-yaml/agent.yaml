@@ -1,0 +1,96 @@
+id:  https://www.ebi.ac.uk/bioimage-archive/schema/
+name: bia-shared-datamodels
+
+prefixes:
+  bia-shared-datamodels: https://www.ebi.ac.uk/bioimage-archive/schema/
+  linkml: https://w3id.org/linkml/
+default_prefix: bia-shared-datamodels
+
+imports:
+  - linkml:types
+
+classes: 
+  Agent:
+    description: A resource that acts or has the power to act.
+    slots:
+      - display_name
+      - contact_email
+      - memberOf
+    slot_usage: 
+      display_name:
+        required: True
+
+  Organisation:
+    is_a: Agent
+    description: An Agent that is composed of multiple members established to meet needs or persue goals. 
+    slots:
+      - rorid
+      - address # while people do have addresses, we probably don't want to store these
+
+  Person:
+    is_a: Agent
+    description: An Agent that is a human being.
+    slots:
+      - orcid
+    slot_usage:
+      contact_email:
+        required: True
+
+  Grant:
+    description:
+    slots:
+      - funder
+    slot_usage:
+      funder:
+        required: True
+
+
+slots:
+  memberOf: 
+    description: The organisations an Agent is afiliated with.
+    range: Organisation
+    multivalued: true
+
+  display_name:
+    description: Name as it should be displayed on the BioImage Archive # do we really need first & last names separately? 
+    range: string
+    examples:
+      - value: Josiah Carberry
+      - value: Marie Skłodowska-Curie"
+
+  orcid:
+    slot_uri: WIKIDATA_PROPERTY:P496
+    description: A unique identifier for a researcher.
+    range: uriorcurie
+    examples: 
+      - value: ORCID:0000-0002-1825-0097
+      - value: ORCID:0000-0002-9079-593X
+
+  contact_email:
+    description: email to use to contact the Agent.
+    range: string
+    pattern: "^\\S+@[\\S+\\.]+\\S+"
+    examples: 
+      - value: jcarberry@example.com
+      - value: mariesc@example.com
+  
+  funder:
+    description: The funding body provididing support to a grant.
+    range: Agent
+    multivalued: True
+    examples:
+      - value: EMBO Long-Term Fellowship
+      - value: Marie Sklodowska-Curie Individual Fellowship
+  
+  rorid:
+    description: email to use to contact the Agent.
+    range: uriorcurie
+
+  address:
+    description: Comma separated lines of the address of an organisation.
+    range: string
+    examples:
+      - value: Wellcome Genome Campus, Hinxton, Cambridgeshire, CB10 1SD, UK.
+      - value: 27 King's College Cir, Toronto, ON M5S, Canada.
+
+

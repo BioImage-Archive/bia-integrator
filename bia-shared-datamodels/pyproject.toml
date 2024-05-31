@@ -11,6 +11,7 @@ include = ["README.md", "src/bia_mifa_models/schema", "project"]
 python = "^3.9"
 linkml-runtime = "^1"
 
+
 [tool.poetry-dynamic-versioning]
 enable = true
 vcs = "git"
