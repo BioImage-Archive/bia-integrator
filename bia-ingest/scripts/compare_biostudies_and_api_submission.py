@@ -72,8 +72,6 @@ def main(accession_id: str, output_path: str = "") -> None:
     from_biostudies = visitor.flattened_contents_dict
 
     # If study not in API use an empty dict
-    # Catch IndexError as load_and_annotate_study throws this if
-    # accession_id not found
     study_info = rw_client.get_object_info_by_accession([accession_id,])
     n_studies = len(study_info)
     if n_studies == 0:
