@@ -1,11 +1,8 @@
 import sys
 from pathlib import Path
 import json
-import subprocess
 from unittest.mock import Mock, MagicMock
 from tempfile import TemporaryDirectory
-
-import pytest
 
 from bia_integrator_api.models import BIAStudy
 from bia_ingest.visitor import Visitor
@@ -18,8 +15,6 @@ from compare_biostudies_and_api_submission import (
     rw_client,
     main as main_func,
 )
-
-import compare_biostudies_and_api_submission
 
 accession_id = "S-BIAD0001"
 from_biostudies_str = """

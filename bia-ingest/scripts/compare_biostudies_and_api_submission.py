@@ -20,7 +20,20 @@ def compare_biostudies_with_api(
 ) -> dict[str, list[str]]:
     """Return dict showing values mapped successfully and those not mapped
 
+    Args:
+        from_biostudes (dict[str, Any]): dict returned by 
+            Visitor.flattened_contents_dict after visiting all nodes in a 
+            biostudies Submission
+        from_api (dict[str, Any]): dict returned by 
+            Visitor.flattened_contents_dict after visiting all nodes in a
+            BIA API Study object augmented with Images and File references
+
+    Returns:
+        dict[str, list[str]]: dict containing two keys 
+            "mapped" -> list of dotted paths mapped from biostudies to api
+            "not_mapped" -> list of dotted paths in biostudies not in api.
     """
+
     result = {
         "mapped": [],
         "not_mapped": [],
@@ -29,7 +42,7 @@ def compare_biostudies_with_api(
     from_api_values = list(from_api.values())
     from_api_keys = list(from_api.keys())
 
-    for i, (key, value) in enumerate(from_biostudies.items(), start=1):
+    for key, value in from_biostudies.items():
         if key.endswith(".name"):
             last_name = key
             last_value = value
@@ -50,7 +63,7 @@ app = typer.Typer()
 
 
 @app.command()
-def main(accession_id: str, output_path: str = None) -> None:
+def main(accession_id: str, output_path: str = "") -> None:
 
     url = f"https://www.ebi.ac.uk/biostudies/files/{accession_id}/{accession_id}.json"
     from_biostudies = requests.get(url).json()
@@ -84,7 +97,7 @@ def main(accession_id: str, output_path: str = None) -> None:
 
     comparison_result = compare_biostudies_with_api(from_biostudies, from_api)
 
-    if not output_path:
+    if output_path == "":
         output_path = Path.cwd() / f"{accession_id}-comparison-result.json"
     Path(output_path).write_text(json.dumps(comparison_result, indent=2))
     logger.info(f"Written comparison result to {output_path}")
