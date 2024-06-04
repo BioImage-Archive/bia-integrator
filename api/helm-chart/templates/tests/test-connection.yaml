@@ -6,10 +6,13 @@ metadata:
     {{- include "api.labels" . | nindent 4 }}
   annotations:
     "helm.sh/hook": test
+    "helm.sh/hook-weight": "0"
+    # https://github.com/helm/helm/issues/9098
+    #"helm.sh/hook-delete-policy": hook-succeeded
 spec:
   containers:
     - name: wget
       image: busybox
       command: ['wget']
-      args: ['{{ include "api.fullname" . }}:{{ .Values.service.port }}/v1/openapi.json']
+      args: ['{{ include "api.fullname" . }}:{{ .Values.service.port }}/v1/openapi.json', '--quiet']
   restartPolicy: Never

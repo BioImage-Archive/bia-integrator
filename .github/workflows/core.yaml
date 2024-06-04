@@ -3,7 +3,6 @@ on: [pull_request,push]
 
 jobs:
   ci:
-    if: false
     strategy:
       fail-fast: false
       matrix:
