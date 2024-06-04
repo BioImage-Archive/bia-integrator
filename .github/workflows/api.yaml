@@ -61,7 +61,7 @@ jobs:
             --set "mongodb.auth.rootPassword=${{ secrets.MONGO_INITDB_ROOT_PASSWORD }}"
 
       - name: Wait for api to start and health-check
-        run: kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=api --timeout=180s
+        run: kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=api --timeout=360s
 
       - name: Run tests
         run: helm test bia-api-local --logs
