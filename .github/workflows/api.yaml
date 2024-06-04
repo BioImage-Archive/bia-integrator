@@ -20,6 +20,8 @@ jobs:
       - name: Install chart-testing
         uses: helm/chart-testing-action@v2.6.0
 
+      - run: helm repo add bitnami https://charts.bitnami.com/bitnami
+
       - name: Run chart-testing (lint)
         run: ct lint --charts ./api/helm-chart --debug
 
