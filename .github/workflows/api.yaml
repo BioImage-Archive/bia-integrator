@@ -27,6 +27,8 @@ jobs:
 
   api-test:
     runs-on: ubuntu-latest
+    environment:
+      name: test
     steps:
       - name: Checkout
         uses: actions/checkout@v3
