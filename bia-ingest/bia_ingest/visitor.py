@@ -131,7 +131,14 @@ class Visitor:
         print(f"{indent}In node '{parent}' with string value: {node}")
         self.flattened_contents.append({parent: node})
         self.flattened_contents_dict.update({parent: node})
-        node_key = node.lower().replace(" ", "_")
+
+        # 'type' is a specific key in pagetab. So nodes called 'Type' are
+        # not converted to 'type'
+        if node == "Type":
+            node_key = node
+        else:
+            node_key = node.lower().replace(" ", "_")
+
         if self._is_attribute_name(parent):
             if node_key not in self.result[self.current_result_key][-1]:
                 # Use list to store values of attributes as some
