@@ -13,7 +13,7 @@ minikube delete
 ## Accessing apps
 
 ```bash
-kubectl port-forward svc/mongo-mongodb 27017:27017
+kubectl port-forward svc/api-mongodb 27017:27017
 kubectl port-forward svc/api 8080:8080
 ```
 

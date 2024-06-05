@@ -1,81 +1,47 @@
-name: Lint and Test Charts
-
+name: Docker Compose Test API
 on:
-  push:
+  pull_request:
     branches:
       - main
-  pull_request:
+  push:
     branches:
       - main
 
 jobs:
-  helm-lint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with: 
-          fetch-depth: 0
-
-      - name: Install chart-testing
-        uses: helm/chart-testing-action@v2.6.0
-
-      - run: helm repo add bitnami https://charts.bitnami.com/bitnami
-
-      - name: Run chart-testing (lint)
-        run: ct lint --charts ./api/helm-chart --debug
-
-  api-test:
+  docker-compose-test:
     runs-on: ubuntu-latest
     environment:
       name: test
+    env:
+      MONGO_INITDB_ROOT_PASSWORD: ${{ secrets.MONGO_INITDB_ROOT_PASSWORD }}
+      MONGO_INITDB_ROOT_USERNAME: ${{ vars.MONGO_INITDB_ROOT_USERNAME }}
+      MONGO_CONNSTRING: mongodb://${{ vars.MONGO_INITDB_ROOT_USERNAME }}:${{ secrets.MONGO_INITDB_ROOT_PASSWORD }}@biaint-mongo:27017
+      DB_NAME: ${{ vars.DB_NAME }}
+      JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
+      USER_CREATE_SECRET_TOKEN: ${{ secrets.USER_CREATE_SECRET_TOKEN }}
+    defaults:
+      run:
+        working-directory: ./api
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with: 
-          fetch-depth: 0
-      
-      - uses: azure/setup-helm@v4.2.0
-      - uses: azure/setup-kubectl@v3
-
-      - name: Start minikube - if this breaks on local do a 'minikube delete'
-        id: minikube
-        uses: medyagh/setup-minikube@master
+      - name: Checkout code
+        uses: actions/checkout@v2 # Checkout your repository to the GitHub Actions runner
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1 # Set up Docker Buildx for building and pushing Docker images
+      - name: Cache Docker layers
+        uses: actions/cache@v2 # Cache Docker layers to speed up subsequent builds
         with:
-          cpus: 4
-          memory: 4G # 'wait' below times out on Actions with 2G
-          start-args: '--force'
-
-      - run: helm repo add bitnami https://charts.bitnami.com/bitnami
-
-      - name: Get helm dependencies
-        run: helm dependency build ./api/helm-chart
-
-      - name: Start everything
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+      - name: Docker Compose Up
         run: |
-          helm install bia-api-local ./api/helm-chart \
-            --set "api_env.mongoRootUser=${{ vars.MONGO_INITDB_ROOT_USERNAME }}" \
-            --set "api_env.mongoRootPassword=${{ secrets.MONGO_INITDB_ROOT_PASSWORD }}" \
-            --set "api_env.jwtSecretKey=${{ secrets.JWT_SECRET_KEY }}" \
-            --set "api_env.userCreateSecretToken=${{ secrets.USER_CREATE_SECRET_TOKEN }}" \
-            --set "mongodb.enabled=true" \
-            --set "mongodb.auth.rootUser=${{ vars.MONGO_INITDB_ROOT_USERNAME }}" \
-            --set "mongodb.auth.rootPassword=${{ secrets.MONGO_INITDB_ROOT_PASSWORD }}"
-
-      - name: Wait for api to start and health-check
-        run: kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=api --timeout=180s
-
+          docker compose up -d --build 
       - name: Run tests
-        run: helm test bia-api-local --logs
-
-      - name: List pods for CI minikube debug
         run: |
-          kubectl get pods
-          kubectl describe pods -l app.kubernetes.io/name=api
-          kubectl logs -l app.kubernetes.io/name=api
-        if: ${{ failure() }}
-
-      - name: Cleanup
+          docker compose exec -T bia-integrator-api poetry run pytest
+      # Always cleanup - even for cancelled jobs
+      - name: Docker Compose Down
         run: |
-          minikube delete
+          docker compose down
         if: ${{ always() }}

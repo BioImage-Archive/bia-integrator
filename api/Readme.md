@@ -25,17 +25,9 @@ If doing any development on the project, consider installing the recommended ext
 ## Running the api
  
 ```sh
-# low node port range sometimes needed to proxy services (eg mongo 27017) on their standard port for tidyness
-minikube start --memory=5000 --cpus=4 --extra-config=apiserver.service-node-port-range=1-65535
-helm install bia-api-local ./helm-chart -f ./local/api_values.yml
+# note the --build, otherwise the api image doesn't actually get rebuilt to reflect changes
+docker compose --env-file ./.env_compose up --build -d # remove -d when first setting up, to make any problems obvious 
 ```
-
-Forward service ports to localhost
-```sh
-kubectl port-forward svc/api-mongodb 27017:27017
-kubectl port-forward svc/bia-api-local 8080:8080
-```
-
 
 To check if everything worked, go to `http://localhost:8080/openapi.json` and the response should be a json of the openapi spec
 
