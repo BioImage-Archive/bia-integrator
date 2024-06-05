@@ -132,7 +132,7 @@ class Publication(Document):
     doi: str = Field(description="""Digital Object Identifier (DOI)""")
 
 
-class ImagingStudyComponent:
+class ImagingStudyComponent(BaseModel):
     """
     A logical grouping of image data associated with a Study that was produced by the same imaging technique(s).
     """
@@ -146,7 +146,7 @@ class ImagingStudyComponent:
     )
 
 
-class AnnotationStudyComponent:
+class AnnotationStudyComponent(BaseModel):
     """
     A logical grouping of annotation data associated with a Study.
     """
@@ -157,7 +157,7 @@ class AnnotationStudyComponent:
     )
 
 
-class ExternalReference:
+class ExternalReference(BaseModel):
     """
     An object outside the BIA that a user wants to refer to.
     """
@@ -309,7 +309,7 @@ class RenderedView(BaseModel):
     t: Optional[str] = Field(
         None, description="""A t-value for the timestamp of the image view"""
     )
-    channel_information: Optional[List[str]] = Field(
+    channel_information: Optional[List[Channel]] = Field(
         None,
         description="""Information about the channels involved in displaying this view of the image.""",
     )
@@ -326,3 +326,9 @@ class Channel(BaseModel):
     label: Optional[str] = Field(
         None, description="""Label describing the channel for display."""
     )
+
+
+# Model rebuild
+# see https://pydantic-docs.helpmanual.io/usage/models/#rebuilding-a-model
+# Need to do this in order to auto-generate the class diagram
+Study.model_rebuild()
