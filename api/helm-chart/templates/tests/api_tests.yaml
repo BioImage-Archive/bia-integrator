@@ -15,7 +15,7 @@ metadata:
 spec:
   containers:
     - name: run-api-tests
-      image: ghcr.io/bioimage-archive/integrator-api:{{ .Values.image.tag }}
+      image: ghcr.io/bioimage-archive/bia-integrator-api:{{ .Values.image.tag }}
       command: ["poetry", "run", "pytest"]
       workingDir: /integrator-api
       env:
