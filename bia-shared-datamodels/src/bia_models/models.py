@@ -2,16 +2,11 @@ from __future__ import annotations
 
 from enum import Enum
 from datetime import date
-from typing import (
-    List,
-    Dict,
-    Optional,
-)
+from typing import Any, List, Literal, Dict, Optional, Union
 
 from pydantic import BaseModel, Field, EmailStr, AnyUrl
 
-from uri import URI
-
+# from uri import URI
 
 # Agentive classes: e.g. people, organisations, grants.
 
@@ -87,7 +82,7 @@ class Document(BaseModel):
         default_factory=list,
         description="""Keywords or tags used to describe the subject of a document""",
     )
-    acknowledgements: Optional[List[Agent]] = Field(
+    acknowledgement: Optional[List[Agent]] = Field(
         default_factory=list,
         description="""Any person or group that should be acknowledged with the document.""",
     )
@@ -108,16 +103,21 @@ class Study(Document):
     image_count: int = Field(
         description="""Number of images associated with the study."""
     )
-    see_also: Optional[List[AnyUrl]] = Field(
+    license: LicenseType = Field(
+        description="""The license under which the data associated with the study is made avaliable."""
+    )
+    see_also: Optional[List[ExternalReference]] = Field(
         default_factory=list,
         description="""Links to publications, github repositories, and other pages related to this Study.""",
     )
-    fundedBy: Optional[Grant] = Field(
-        None, description="""The grants that funded the study."""
+    fundedBy: Optional[List[Grant]] = Field(
+        default_factory=list, description="""The grants that funded the study."""
     )
-    part: Optional[List[StudyComponent]] = Field(
-        default_factory=list,
-        description="""A related document that is included logically in the described document.""",
+    part: Optional[List[Union[ImagingStudyComponent, AnnotationStudyComponent]]] = (
+        Field(
+            default_factory=list,
+            description="""A related document that is included logically in the described document.""",
+        )
     )
 
 
@@ -132,12 +132,48 @@ class Publication(Document):
     doi: str = Field(description="""Digital Object Identifier (DOI)""")
 
 
-class StudyComponent:
+class ImagingStudyComponent:
     """
-    A locigal grouping of the data associated with a Study.
+    A logical grouping of image data associated with a Study that was produced by the same imaging technique(s).
     """
 
-    pass
+    image: List[Image] = Field(description="""Images assicuated with the dataset""")
+    imaging_method_description: str = Field(
+        description="""A description of the methods involved in creating the images in this dataset."""
+    )
+    fbbi_id: List[str] = Field(
+        description="""Biological Imaging Methods Ontology id indicating the kind of imaging that was perfomed."""
+    )
+
+
+class AnnotationStudyComponent:
+    """
+    A logical grouping of annotation data associated with a Study.
+    """
+
+    image: List[Image] = Field(description="""Images assicuated with the dataset""")
+    annotation_method_description: str = Field(
+        description="""A description of the methods involved in creating the annotations in this dataset."""
+    )
+
+
+class ExternalReference:
+    """
+    An object outside the BIA that a user wants to refer to.
+    """
+
+    link: AnyUrl = Field(description="""A URL linking to the refered resource.""")
+    description: Optional[str] = Field(
+        None,
+        description="""Brief description of the resource and how it relates to the document providing the reference.""",
+    )
+
+
+class LicenseType(str, Enum):
+    # No Copyright. You can copy, modify, distribute and perform the work, even for commercial purposes, all without asking permission.
+    CC0 = "CC0"
+    # You are free to: Share — copy and redistribute the material in any medium or format. Adapt — remix, transform, and build upon the material  for any purpose, even commercially. You must give appropriate credit, provide a link to the license, and indicate if changes were made.  You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+    CC_BY_40 = "CC_BY_4.0"
 
 
 # Image classes: e.g. Images, how they were created, what is their subject.
@@ -164,12 +200,6 @@ class ImageAcquisition(BaseModel):
     subject: List[Specimen] = Field(
         description="""The Specimens that were the subject of the image acquisition process."""
     )
-    fbbi_id: str = Field(
-        description="""Biological Imaging Methods Ontology id indicating the kind of imaging that was perfomed."""
-    )
-    imaging_method_description: str = Field(
-        description="""A description of how the images were taken."""
-    )
     imaging_instrument_description: str = Field(
         description="""Names, types, or description of how the instruments used to create the image."""
     )
@@ -187,13 +217,14 @@ class Specimen(BaseModel):
         description="""The biological matter that sampled to create the specimen."""
     )
     sample_preparation_description: Optional[str] = Field(
-        None, description="""The process by which the specimen was created"""
+        None, description="""How the sample was prepared for imaging."""
     )
     signal_contrast_mechanism_description: Optional[str] = Field(
-        None, description="""How is the signal generated by this sample"""
+        None, description="""How is the signal is generated by this sample."""
     )
     growth_protocol_description: Optional[str] = Field(
-        None, description="""placeholder"""
+        None,
+        description="""How the specimen was grown, e.g. cell line cultures, crosses or plant growth.""",
     )
     channel_content_description: Optional[str] = Field(
         None,
@@ -206,7 +237,7 @@ class Specimen(BaseModel):
 
 class Biosample(BaseModel):
     """
-    THe biological entity that has undergone preparation (as a Sample) in order to be imaged.
+    The biological entity that has undergone preparation (as a Sample) in order to be imaged.
     """
 
     organism: List[Taxon] = Field(
@@ -239,20 +270,20 @@ class Taxon(BaseModel):
 # File classes: Files, image files & their channels
 
 
-class FileReference(BaseModel):
+class FileRepresentation(BaseModel):
     """
     The digital represenation of a document.
     """
 
-    name: str = Field(description="""The name of the file.""")
+    file_name: str = Field(description="""The name of the file.""")
     format: str = Field(description="""File format or type.""")
     size_in_bytes: int = Field(description="""Disc size in bytes.""")
-    uri: URI = Field(description="""URI from which the file can be accessed.""")
+    uri: str = Field(description="""URI from which the file can be accessed.""")
 
 
-class ImageRepresentation(FileReference):
+class ImageRepresentation(FileRepresentation):
     """
-    The manifestation of an image in a particular image file format.
+    The manifestation of an image, represented in a particular image file format.
     """
 
     physical_dimension: Optional[str] = Field(
@@ -286,7 +317,7 @@ class RenderedView(BaseModel):
 
 class Channel(BaseModel):
     """
-    An image channel
+    An image channel.
     """
 
     colormap_start: float = Field(description="""Start value of colormap""")
