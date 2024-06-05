@@ -17,7 +17,7 @@ spec:
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}
-          image: "ghcr.io/bioimage-archive/integrator-api:{{ .Values.image.tag }}"
+          image: "ghcr.io/bioimage-archive/bia-integrator-api:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
