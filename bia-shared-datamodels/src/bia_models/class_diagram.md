@@ -3,6 +3,11 @@
 ```mermaid
 classDiagram
 
+    class Dataset {
+        image: list[Image]
+        file: list[FileRepresentation]
+    }
+
     class ExternalReference {
         link: Url
         description: str | None = None
@@ -132,13 +137,12 @@ classDiagram
     Agent ..> Organisation
     Grant ..> Agent
     Document ..> Agent
-    Study ..> AnnotationStudyComponent
-    Study ..> ImagingStudyComponent
+    Study ..> Dataset
     Study ..> ExternalReference
     Study ..> LicenseType
     Study ..> Grant
-    ImagingStudyComponent ..> Image
-    AnnotationStudyComponent ..> Image
+    Dataset ..> Image
+    Dataset ..> FileRepresentation
     Image ..> ImageAcquisition
     Image ..> ImageRepresentation
     ImageAcquisition ..> Specimen
@@ -148,10 +152,12 @@ classDiagram
     RenderedView ..> Channel
 
 
-    Agent <|-- Organisation
     Agent <|-- Person
-    Document <|-- Study
+    Agent <|-- Organisation
     Document <|-- Publication
+    Document <|-- Study
+    Dataset <|-- AnnotationStudyComponent
+    Dataset <|-- ImagingStudyComponent
     FileRepresentation <|-- ImageRepresentation
 
 

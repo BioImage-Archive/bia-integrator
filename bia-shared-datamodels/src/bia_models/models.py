@@ -113,11 +113,9 @@ class Study(Document):
     fundedBy: Optional[List[Grant]] = Field(
         default_factory=list, description="""The grants that funded the study."""
     )
-    part: Optional[List[Union[ImagingStudyComponent, AnnotationStudyComponent]]] = (
-        Field(
-            default_factory=list,
-            description="""A related document that is included logically in the described document.""",
-        )
+    part: Optional[List[Dataset]] = Field(
+        default_factory=list,
+        description="""A dataset that is associated with the study.""",
     )
 
 
@@ -132,12 +130,22 @@ class Publication(Document):
     doi: str = Field(description="""Digital Object Identifier (DOI)""")
 
 
-class ImagingStudyComponent(BaseModel):
+class Dataset(BaseModel):
+    """
+    A logical grouping of data (in files) associated with a Study.
+    """
+
+    image: List[Image] = Field(description="""Images associated with the dataset""")
+    file: List[FileRepresentation] = Field(
+        description="""Files associated with the dataset"""
+    )
+
+
+class ImagingStudyComponent(Dataset):
     """
     A logical grouping of image data associated with a Study that was produced by the same imaging technique(s).
     """
 
-    image: List[Image] = Field(description="""Images assicuated with the dataset""")
     imaging_method_description: str = Field(
         description="""A description of the methods involved in creating the images in this dataset."""
     )
@@ -146,12 +154,11 @@ class ImagingStudyComponent(BaseModel):
     )
 
 
-class AnnotationStudyComponent(BaseModel):
+class AnnotationStudyComponent(Dataset):
     """
     A logical grouping of annotation data associated with a Study.
     """
 
-    image: List[Image] = Field(description="""Images assicuated with the dataset""")
     annotation_method_description: str = Field(
         description="""A description of the methods involved in creating the annotations in this dataset."""
     )
@@ -332,3 +339,5 @@ class Channel(BaseModel):
 # see https://pydantic-docs.helpmanual.io/usage/models/#rebuilding-a-model
 # Need to do this in order to auto-generate the class diagram
 Study.model_rebuild()
+ImagingStudyComponent.model_rebuild()
+AnnotationStudyComponent.model_rebuild()
