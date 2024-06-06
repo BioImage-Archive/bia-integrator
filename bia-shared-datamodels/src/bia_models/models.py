@@ -22,7 +22,7 @@ class Agent(BaseModel):
     contact_email: EmailStr = Field(
         description="""An email address to contact the person or organisation"""
     )
-    memberOf: Optional[List[Organisation]] = Field(
+    member_of: Optional[List[Organisation]] = Field(
         default_factory=list,
         description="""The organisations an Agent is afiliated with.""",
     )
@@ -93,7 +93,7 @@ class Document(BaseModel):
 
 class Study(Document):
     """
-    A study in the BioImageArchive represents a set of image data, and the scienfitic effort that resulted in its creation.
+    A piece of scientific work that resulted in the creation of imaging data.
     """
 
     accession_id: str = Field(description="""Unique ID provided by BioStudies.""")
@@ -110,7 +110,10 @@ class Study(Document):
         default_factory=list,
         description="""Links to publications, github repositories, and other pages related to this Study.""",
     )
-    fundedBy: Optional[List[Grant]] = Field(
+    contributed_publication: Optional[List[Publication]] = Field(
+        description="""The publications that the work involved in the study contributed to."""
+    )
+    funding: Optional[List[Grant]] = Field(
         default_factory=list, description="""The grants that funded the study."""
     )
     part: Optional[List[Dataset]] = Field(
@@ -132,35 +135,15 @@ class Publication(Document):
 
 class Dataset(BaseModel):
     """
-    A logical grouping of data (in files) associated with a Study.
+    A logical grouping of data (in files) associated with a Study based on the process involved in creation of the files.
     """
 
     image: List[Image] = Field(description="""Images associated with the dataset""")
     file: List[FileRepresentation] = Field(
         description="""Files associated with the dataset"""
     )
-
-
-class ImagingStudyComponent(Dataset):
-    """
-    A logical grouping of image data associated with a Study that was produced by the same imaging technique(s).
-    """
-
-    imaging_method_description: str = Field(
-        description="""A description of the methods involved in creating the images in this dataset."""
-    )
-    fbbi_id: List[str] = Field(
-        description="""Biological Imaging Methods Ontology id indicating the kind of imaging that was perfomed."""
-    )
-
-
-class AnnotationStudyComponent(Dataset):
-    """
-    A logical grouping of annotation data associated with a Study.
-    """
-
-    annotation_method_description: str = Field(
-        description="""A description of the methods involved in creating the annotations in this dataset."""
+    creation_method: list[Process] = Field(
+        description="""Processes involved in the creation of the images and files in this dataset."""
     )
 
 
@@ -220,7 +203,7 @@ class Specimen(BaseModel):
     The subject of an image acquisition.
     """
 
-    sampleOf: List[Biosample] = Field(
+    sample_of: List[Biosample] = Field(
         description="""The biological matter that sampled to create the specimen."""
     )
     sample_preparation_description: Optional[str] = Field(
@@ -247,7 +230,7 @@ class Biosample(BaseModel):
     The biological entity that has undergone preparation (as a Sample) in order to be imaged.
     """
 
-    organism: List[Taxon] = Field(
+    organism_classification: List[Taxon] = Field(
         description="""The biological matter that sampled to create the specimen."""
     )
     description: str = Field(
@@ -299,9 +282,19 @@ class ImageRepresentation(FileRepresentation):
     digital_dimension: Optional[str] = Field(
         None, description="""Size in pixels or voxels of the image"""
     )
-    image_viewer_setting: Optional[RenderedView] = Field(
+    image_viewer_setting: Optional[List[RenderedView]] = Field(
         None,
         description="""Settings of a particular view of an image, such as a specific timestamp of a timeseries, or camera placement in a 3D model.""",
+    )
+
+
+class AnnotationRepresation(FileRepresentation):
+    """
+    A file providing additional metadata or highlighting parts of an image.
+    """
+
+    source_image: ImageRepresentation = Field(
+        description="""The original image this file is annotating."""
     )
 
 
@@ -335,9 +328,70 @@ class Channel(BaseModel):
     )
 
 
+# PostProcessing classes: Annotations, Image Correlations, and data analysis
+
+
+class Process(BaseModel):
+    """
+    A process of either capturing, processing, or modifying an image.
+    """
+
+    method_description: str = Field(
+        description="""Description of processing method, e.g. light sheet fluorescence microscopy, class labels, segmentation masks, manual overlay"""
+    )
+
+
+class ImageCaptureProcess(Process):
+    """
+    A process or method of capturing images
+    """
+
+    fbbi_id: List[str] = Field(
+        description="""Biological Imaging Methods Ontology id indicating the kind of imaging that was perfomed."""
+    )
+    method_description: str = Field(
+        description="""A description of the imaging methods involved in creating the images in this dataset, e.g. light sheet fluorescence microscopy."""
+    )
+    pass
+
+
+class Annotation(Process):
+    """
+    A resource designed to describe some or all of another resource.
+    """
+
+    source_dataset: Union[Dataset | AnyUrl] = Field(
+        description="""The file this annotation is describing."""
+    )
+    method_description: str = Field(
+        description="""Description of annotation method, e.g. class labels, segmentation masks etc.."""
+    )
+    annotation_criteria: str = Field(
+        description="""Rules used to generate annotations."""
+    )
+    annotation_coverage: str = Field(
+        description="""Which images from the dataset were annotated, and what percentage of the data has been annotated from what is available."""
+    )
+
+
+class ImageCorrelation(Process):
+    """ """
+
+    method_description: str = Field(
+        description="""Method used to correlate images from different modalities (e.g. manual overlay, alignment algorithm etc)."""
+    )
+    fiducials_used: str = Field(
+        description="""Features from correlated datasets used for colocalization."""
+    )
+
+
+class AnalysedData(Process):
+    """ """
+
+    method_description: str = Field()
+
+
 # Model rebuild
 # see https://pydantic-docs.helpmanual.io/usage/models/#rebuilding-a-model
 # Need to do this in order to auto-generate the class diagram
 Study.model_rebuild()
-ImagingStudyComponent.model_rebuild()
-AnnotationStudyComponent.model_rebuild()
