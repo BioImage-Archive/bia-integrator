@@ -1,47 +1,32 @@
 ```mermaid
 classDiagram
 
-    class Biosample {
-        organism_classification: list[Taxon]
-        description: str
-        experimental_variable_description: list[str] | None
-        extrinsic_variable_description: list[str] | None
-        intrinsic_variable_description: list[str] | None
-    }
-
-    class Organisation {
-        rorid: str | None = None
-        address: str | None = None
-    }
-
-    class Dataset {
-        image: list[Image]
-        file: list[FileRepresentation]
-        creation_method: list[Process]
-    }
-
     class Image {
         represenatation: list[ImageRepresentation]
         acquisition_process: list[ImageAcquisition]
     }
 
-    class RenderedView {
-        z: str | None = None
-        t: str | None = None
-        channel_information: list[Channel] | None = None
+    class Study {
+        accession_id: str
+        file_reference_count: int
+        image_count: int
+        license: LicenseType
+        see_also: list[ExternalReference] | None = list
+        related_publication: list[Publication] | None
+        grant: list[Grant] | None = list
+        funding_statement: str | None = list
+        part: list[Dataset] | None = list
     }
 
-    class ImageRepresentation {
-        physical_dimension: str | None = None
-        digital_dimension: str | None = None
-        image_viewer_setting: list[RenderedView] | None = None
+    class ExternalReference {
+        link: Url
+        description: str | None = None
     }
 
-    class FileRepresentation {
-        file_name: str
-        format: str
-        size_in_bytes: int
-        uri: str
+    class ImageAcquisition {
+        subject: list[Specimen]
+        imaging_instrument_description: str
+        image_acquistion_parameters: str
     }
 
     class Channel {
@@ -51,29 +36,6 @@ classDiagram
         label: str | None = None
     }
 
-    class Person {
-        orcid: str | None = None
-    }
-
-    class ImageCaptureProcess {
-        fbbi_id: list[str]
-    }
-
-    class ImageAcquisition {
-        subject: list[Specimen]
-        imaging_instrument_description: str
-        image_acquistion_parameters: str
-    }
-
-    class Publication {
-        pubmed_id: str | None = None
-        doi: str
-    }
-
-    class ImageCorrelation {
-        fiducials_used: str
-    }
-
     class Process {
         method_description: str
     }
@@ -81,50 +43,61 @@ classDiagram
     class Agent {
         display_name: str
         contact_email: EmailStr
-        member_of: list[Organisation] | None = list
+        affiliation: list[Organisation] | None = list
+        website: Url | None = None
     }
 
-    class AnalysedData {
+    class AnnotationType {
+        <<Enumeration>>
+        class_labels: str = 'class_labels'
+        bounding_boxes: str = 'bounding_boxes'
+        counts: str = 'counts'
+        derived_annotations: str = 'derived_annotations'
+        geometrical_annotations: str = 'geometrical_annotations'
+        graphs: str = 'graphs'
+        point_annotations: str = 'point_annotations'
+        segmentation_mask: str = 'segmentation_mask'
+        tracks: str = 'tracks'
+        weak_annotations: str = 'weak_annotations'
+        other: str = 'other'
+    }
+
+    class RenderedView {
+        z: str | None = None
+        t: str | None = None
+        channel_information: list[Channel] | None = None
+    }
+
+    class Taxon {
+        common_name: str | None = None
+        scientific_name: str | None = None
+        ncbi_id: str | None = None
+    }
+
+    class Person {
+        orcid: str | None = None
+    }
+
+    class FileRepresentation {
+        file_name: str
+        format: str
+        size_in_bytes: int
+        uri: str
     }
 
     class Document {
         author: list[Agent]
         title: str
         release_date: date
-        keywords: list[str] | None = list
+        keyword: list[str] | None = list
         acknowledgement: list[Agent] | None = list
         description: str | None = None
     }
 
-    class ExternalReference {
-        link: Url
-        description: str | None = None
-    }
-
-    class Study {
-        accession_id: str
-        file_reference_count: int
-        image_count: int
-        license: LicenseType
-        see_also: list[ExternalReference] | None = list
-        contributed_publication: list[Publication] | None
-        funding: list[Grant] | None = list
-        part: list[Dataset] | None = list
-    }
-
-    class Grant {
-        id: str | None = None
-        funder: list[Agent] = list
-    }
-
-    class Annotation {
-        source_dataset: Dataset | Url
-        annotation_criteria: str
-        annotation_coverage: str
-    }
-
-    class AnnotationRepresation {
-        source_image: ImageRepresentation
+    class LicenseType {
+        <<Enumeration>>
+        CC0: str = 'CC0'
+        CC_BY_40: str = 'CC_BY_4.0'
     }
 
     class Specimen {
@@ -136,30 +109,79 @@ classDiagram
         channel_biological_entity: str | None = None
     }
 
-    class LicenseType {
-        <<Enumeration>>
-        CC0: str = 'CC0'
-        CC_BY_40: str = 'CC_BY_4.0'
+    class Biosample {
+        organism_classification: list[Taxon]
+        description: str
+        experimental_variable_description: list[str] | None
+        extrinsic_variable_description: list[str] | None
+        intrinsic_variable_description: list[str] | None
     }
 
-    class Taxon {
-        common_name: str | None = None
-        scientific_name: str | None = None
-        ncbi_id: str | None = None
+    class Annotation {
+        source_dataset: list[Dataset | Url]
+        annotation_criteria: str
+        annotation_coverage: str
     }
 
+    class ImagingMethod {
+        fbbi_id: list[str]
+    }
+
+    class ImageAnalysis {
+        method_description: str = 'The steps performed during image analysis.'
+        features_analysed: str
+    }
+
+    class Dataset {
+        image: list[Image]
+        file: list[FileRepresentation]
+        creation_method: list[Process]
+    }
+
+    class Organisation {
+        rorid: str | None = None
+        address: str | None = None
+    }
+
+    class Grant {
+        id: str | None = None
+        funder: list[Agent] = list
+    }
+
+    class Publication {
+        pubmed_id: str | None = None
+        doi: str
+    }
+
+    class AnnotationRepresation {
+        source_image: ImageRepresentation
+    }
+
+    class ImageRepresentation {
+        physical_dimension: str | None = None
+        digital_dimension: str | None = None
+        image_viewer_setting: list[RenderedView] | None = None
+    }
+
+    class ImageCorrelation {
+        fiducials_used: str
+        transformation_matrix: str
+    }
+
+    Agent ..> Url
     Agent ..> EmailStr
     Agent ..> Organisation
     Grant ..> Agent
     Document ..> Agent
-    Study ..> Publication
-    Study ..> Grant
-    Study ..> Dataset
-    Study ..> LicenseType
     Study ..> ExternalReference
-    Dataset ..> FileRepresentation
+    Study ..> Dataset
+    Study ..> Grant
+    Study ..> Publication
+    Study ..> LicenseType
     Dataset ..> Image
+    Dataset ..> FileRepresentation
     Dataset ..> Process
+    ExternalReference ..> Url
     Image ..> ImageRepresentation
     Image ..> ImageAcquisition
     ImageAcquisition ..> Specimen
@@ -169,16 +191,17 @@ classDiagram
     AnnotationRepresation ..> ImageRepresentation
     RenderedView ..> Channel
     Annotation ..> Dataset
+    Annotation ..> Url
 
-    Agent <|-- Organisation
     Agent <|-- Person
-    Document <|-- Study
+    Agent <|-- Organisation
     Document <|-- Publication
-    FileRepresentation <|-- ImageRepresentation
+    Document <|-- Study
     FileRepresentation <|-- AnnotationRepresation
-    Process <|-- AnalysedData
-    Process <|-- ImageCaptureProcess
-    Process <|-- Annotation
+    FileRepresentation <|-- ImageRepresentation
+    Process <|-- ImageAnalysis
     Process <|-- ImageCorrelation
+    Process <|-- Annotation
+    Process <|-- ImagingMethod
 
 ```

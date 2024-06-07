@@ -22,9 +22,13 @@ class Agent(BaseModel):
     contact_email: EmailStr = Field(
         description="""An email address to contact the person or organisation"""
     )
-    member_of: Optional[List[Organisation]] = Field(
+    affiliation: Optional[List[Organisation]] = Field(
         default_factory=list,
         description="""The organisations an Agent is afiliated with.""",
+    )
+    website: Optional[AnyUrl] = Field(
+        default=None,
+        description="""The website page with information about the Agent.""",
     )
 
 
@@ -78,7 +82,7 @@ class Document(BaseModel):
         description="""The title of a scientific document. This will usually be displayed when search results including your data are shown."""
     )
     release_date: date = Field(description="""Date of first publication""")
-    keywords: Optional[List[str]] = Field(
+    keyword: Optional[List[str]] = Field(
         default_factory=list,
         description="""Keywords or tags used to describe the subject of a document""",
     )
@@ -110,11 +114,14 @@ class Study(Document):
         default_factory=list,
         description="""Links to publications, github repositories, and other pages related to this Study.""",
     )
-    contributed_publication: Optional[List[Publication]] = Field(
+    related_publication: Optional[List[Publication]] = Field(
         description="""The publications that the work involved in the study contributed to."""
     )
-    funding: Optional[List[Grant]] = Field(
+    grant: Optional[List[Grant]] = Field(
         default_factory=list, description="""The grants that funded the study."""
+    )
+    funding_statement: Optional[str] = Field(
+        default_factory=list, description="""Description of how the study was funded"""
     )
     part: Optional[List[Dataset]] = Field(
         default_factory=list,
@@ -157,13 +164,6 @@ class ExternalReference(BaseModel):
         None,
         description="""Brief description of the resource and how it relates to the document providing the reference.""",
     )
-
-
-class LicenseType(str, Enum):
-    # No Copyright. You can copy, modify, distribute and perform the work, even for commercial purposes, all without asking permission.
-    CC0 = "CC0"
-    # You are free to: Share — copy and redistribute the material in any medium or format. Adapt — remix, transform, and build upon the material  for any purpose, even commercially. You must give appropriate credit, provide a link to the license, and indicate if changes were made.  You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
-    CC_BY_40 = "CC_BY_4.0"
 
 
 # Image classes: e.g. Images, how they were created, what is their subject.
@@ -333,7 +333,7 @@ class Channel(BaseModel):
 
 class Process(BaseModel):
     """
-    A process of either capturing, processing, or modifying an image.
+    A process of either capturing, processing, or analysing an image.
     """
 
     method_description: str = Field(
@@ -341,9 +341,9 @@ class Process(BaseModel):
     )
 
 
-class ImageCaptureProcess(Process):
+class ImagingMethod(Process):
     """
-    A process or method of capturing images
+    A process or method of capturing images.
     """
 
     fbbi_id: List[str] = Field(
@@ -357,11 +357,11 @@ class ImageCaptureProcess(Process):
 
 class Annotation(Process):
     """
-    A resource designed to describe some or all of another resource.
+    Information about the annotation process, such as methods used, or how much of a dataset was annotated.
     """
 
-    source_dataset: Union[Dataset | AnyUrl] = Field(
-        description="""The file this annotation is describing."""
+    source_dataset: List[Union[Dataset | AnyUrl]] = Field(
+        description="""The datasets that were annotated."""
     )
     method_description: str = Field(
         description="""Description of annotation method, e.g. class labels, segmentation masks etc.."""
@@ -375,20 +375,64 @@ class Annotation(Process):
 
 
 class ImageCorrelation(Process):
-    """ """
+    """
+    Information about the process of correlating the positions of multiple images.
+    """
 
     method_description: str = Field(
-        description="""Method used to correlate images from different modalities (e.g. manual overlay, alignment algorithm etc)."""
+        description="""Method used for spatial and/or temporal alignment of images from different modalities (e.g. manual overlay, alignment algorithm etc)."""
     )
     fiducials_used: str = Field(
         description="""Features from correlated datasets used for colocalization."""
     )
+    transformation_matrix: str = Field()
 
 
-class AnalysedData(Process):
-    """ """
+class ImageAnalysis(Process):
+    """
+    Information about data analysis methods.
+    """
 
-    method_description: str = Field()
+    method_description: str = Field(
+        description="""The steps performed during image analysis."""
+    )
+    features_analysed: str = Field()
+
+
+# Enums
+
+
+class LicenseType(str, Enum):
+    # No Copyright. You can copy, modify, distribute and perform the work, even for commercial purposes, all without asking permission.
+    CC0 = "CC0"
+    # You are free to: Share — copy and redistribute the material in any medium or format. Adapt — remix, transform, and build upon the material  for any purpose, even commercially. You must give appropriate credit, provide a link to the license, and indicate if changes were made.  You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+    CC_BY_40 = "CC_BY_4.0"
+
+
+class AnnotationType(str, Enum):
+
+    # tags that identify specific features, patterns or classes in images
+    class_labels = "class_labels"
+    # rectangles completely enclosing a structure of interest within an image
+    bounding_boxes = "bounding_boxes"
+    # number of objects, such as cells, found in an image
+    counts = "counts"
+    # additional analytical data extracted from the images. For example, the image point spread function,the signal to noise ratio, focus information…
+    derived_annotations = "derived_annotations"
+    # polygons and shapes that outline a region of interest in the image. These can be geometrical primitives, 2D polygons, 3D meshes…
+    geometrical_annotations = "geometrical_annotations"
+    # graphical representations of the morphology, connectivity, or spatial arrangement of biological structures in an image. Graphs, such as skeletons or connectivity diagrams, typically consist of nodes and edges, where nodes represent individual elements or regions and edges represent the connections or interactions between them
+    graphs = "graphs"
+    # X, Y, and Z coordinates of a point of interest in an image (for example an object's centroid  or landmarks).
+    point_annotations = "point_annotations"
+    # an image, the same size as the source image, with the value of each pixel representing some biological identity or background region
+    segmentation_mask = "segmentation_mask"
+    # annotations marking the movement or trajectory of objects within a sequence of bioimages
+    tracks = "tracks"
+    # rough imprecise annotations that are fast to generate. These annotations are used, for example,  to detect an object without providing accurate boundaries
+    weak_annotations = "weak_annotations"
+    # other types of annotations, please specify in the annotation overview section
+    other = "other"
 
 
 # Model rebuild
