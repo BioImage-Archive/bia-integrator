@@ -34,7 +34,7 @@ class Agent(BaseModel):
 
 class Organisation(Agent):
     """
-    An Agent that is composed of multiple members established to meet needs or persue goals.
+    An Agent that is composed of multiple members established to meet needs or pursue goals.
     """
 
     rorid: Optional[str] = Field(
@@ -262,7 +262,7 @@ class Taxon(BaseModel):
 
 class FileRepresentation(BaseModel):
     """
-    The digital represenation of a document.
+    The digital representation of a document.
     """
 
     file_name: str = Field(description="""The name of the file.""")
@@ -300,7 +300,7 @@ class AnnotationRepresation(FileRepresentation):
 
 class RenderedView(BaseModel):
     """
-    A particular view of an image, such as as a specific timestamp of a time series, or a view direction of a 3D model
+    A particular view of an image, such as as a specific timestamp of a time series, or a view direction of a 3D model.
     """
 
     z: Optional[str] = Field(
@@ -333,7 +333,7 @@ class Channel(BaseModel):
 
 class Process(BaseModel):
     """
-    A process of either capturing, processing, or analysing an image.
+    A process of either capturing, combining, or analysing images.
     """
 
     method_description: str = Field(
