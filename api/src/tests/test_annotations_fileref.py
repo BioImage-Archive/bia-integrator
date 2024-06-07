@@ -6,7 +6,6 @@ import pytest
 from fastapi.testclient import TestClient
 
 
-@pytest.mark.asyncio
 class TestFilerefAnnotations(DBTestMixin):
     @pytest.fixture
     def field_annotation(self):
@@ -68,6 +67,7 @@ class TestFilerefAnnotations(DBTestMixin):
     ):
         assert fileref_initial == fileref
 
+    @pytest.mark.asyncio
     @pytest.mark.parametrize("update", [False, True])
     async def test_annotations_not_applied_when_persisted(
         self,
@@ -96,7 +96,7 @@ class TestFilerefAnnotations(DBTestMixin):
         )
 
     @pytest.mark.parametrize("update", [False, True])
-    async def test_annotations_applied_when_explicit(
+    def test_annotations_applied_when_explicit(
         self,
         api_client: TestClient,
         fileref: dict,

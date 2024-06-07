@@ -6,7 +6,6 @@ import pytest
 from fastapi.testclient import TestClient
 
 
-@pytest.mark.asyncio
 class TestImageAnnotations(DBTestMixin):
     @pytest.fixture
     def field_annotation(self):
@@ -66,6 +65,7 @@ class TestImageAnnotations(DBTestMixin):
     ):
         assert img_initial == image
 
+    @pytest.mark.asyncio
     @pytest.mark.parametrize("update", [False, True])
     async def test_annotations_not_applied_when_persisted(
         self,

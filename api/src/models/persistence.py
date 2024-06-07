@@ -1,6 +1,5 @@
 from enum import Enum
 from pydantic import BaseModel, Field, ConfigDict, field_serializer
-from pydantic.generics import GenericModel
 from typing import Dict, List, Optional, TypeVar, Generic
 from uuid import UUID
 
@@ -130,7 +129,7 @@ TAnnotation = TypeVar(
 )
 
 
-class AnnotatedMixin(GenericModel, Generic[TAnnotation]):
+class AnnotatedMixin(BaseModel, Generic[TAnnotation]):
     attributes: Dict = Field(
         default={},
         description="""
