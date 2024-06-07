@@ -9,7 +9,6 @@ from fastapi.testclient import TestClient
 import uuid as uuid_lib
 
 
-@pytest.mark.asyncio
 class TestStudyAnnotations(DBTestMixin):
     @pytest.fixture
     def field_annotation(self):
@@ -69,6 +68,7 @@ class TestStudyAnnotations(DBTestMixin):
     ):
         assert study_initial == study
 
+    @pytest.mark.asyncio
     @pytest.mark.parametrize("update", [False, True])
     async def test_annotations_not_applied_when_persisted(
         self,

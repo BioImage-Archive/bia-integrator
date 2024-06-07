@@ -323,9 +323,7 @@ async def set_image_ome_metadata(
         raise exceptions.InvalidRequestException("File has size 0")
 
     try:
-        ome_metadata = from_xml(
-            ome_metadata_file.file._file, parser="lxml", validate=True
-        )
+        ome_metadata = from_xml(ome_metadata_file.file._file, validate=True)
     except Exception as e:
         raise exceptions.InvalidRequestException(str(e))
 

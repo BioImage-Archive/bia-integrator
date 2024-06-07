@@ -5,7 +5,6 @@ import pytest
 from fastapi.testclient import TestClient
 
 
-@pytest.mark.asyncio
 class TestCollectionAnnotation(DBTestMixin):
     @pytest.fixture
     def field_annotation(self):

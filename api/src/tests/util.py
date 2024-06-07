@@ -12,7 +12,13 @@ import os
 
 
 class DBTestMixin:
-    @pytest_asyncio.fixture
+    """
+    db fixture is async!
+    Tests requiring this fixture need to be async as well, and decorated with @pytest.mark.asyncio
+    Otherwise, they get skipped by pytest
+    """
+
+    @pytest_asyncio.fixture()
     async def db(self) -> Repository:
         return await repository_create(init=True)
 
