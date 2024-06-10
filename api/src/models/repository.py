@@ -8,7 +8,7 @@ from motor.motor_asyncio import (
     AsyncIOMotorDatabase,
 )
 import pydantic
-from typing import List, Any, Callable, Type, Union
+from typing import List, Any, Type, Union
 from enum import Enum
 import uuid
 import pymongo
@@ -535,8 +535,7 @@ class Repository:
             if isinstance(getattr(doc_to_verify, field), uuid.UUID):
                 uuid_to_check = getattr(doc_to_verify, field)
                 await self.validate_uuid_type(uuid_to_check, doc_type.__name__)
-
-            if isinstance(getattr(doc_to_verify, field), List):
+            elif isinstance(getattr(doc_to_verify, field), List):
                 for uuid_to_check in getattr(doc_to_verify, field):
                     await self.validate_uuid_type(uuid_to_check, doc_type.__name__)
 
@@ -607,34 +606,36 @@ class Repository:
 
         return
 
+    @staticmethod
     def append_dependency(
-        self,
-        dependency_map: dict,
+        dependency_map_collector: dict,
         dependency: Union[uuid.UUID, List[uuid.UUID]],
         index: int,
         expected_type: Type[models.DocumentMixin],
     ):
         if isinstance(dependency, uuid.UUID):
-            if dependency_map.get(dependency, None) is None:
-                dependency_map[dependency] = {
+            if dependency_map_collector.get(dependency, None) is None:
+                dependency_map_collector[dependency] = {
                     "index": [index],
                     "type": {expected_type.__name__},
                 }
             else:
-                dependency_map[dependency]["index"].append(index)
+                dependency_map_collector[dependency]["index"].append(index)
                 # We expect a single unique doc type but will sort out throwing an error below
-                dependency_map[dependency]["type"].add(expected_type.__name__)
+                dependency_map_collector[dependency]["type"].add(expected_type.__name__)
         elif isinstance(dependency, List):
             for dependency_uuid in dependency:
-                if dependency_map.get(dependency_uuid, None) is None:
-                    dependency_map[dependency_uuid] = {
+                if dependency_map_collector.get(dependency_uuid, None) is None:
+                    dependency_map_collector[dependency_uuid] = {
                         "index": [index],
                         "type": {expected_type.__name__},
                     }
                 else:
-                    dependency_map[dependency_uuid]["index"].append(index)
+                    dependency_map_collector[dependency_uuid]["index"].append(index)
                     # We expect a single unique doc type but will sort out throwing an error below
-                    dependency_map[dependency_uuid]["type"].add(expected_type.__name__)
+                    dependency_map_collector[dependency_uuid]["type"].add(
+                        expected_type.__name__
+                    )
         return
 
 
