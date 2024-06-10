@@ -15,10 +15,9 @@ from .util import (
 import pytest
 
 
-def test_biosample_create_retrieve_update(api_client: TestClient):
+def test_biosample_create_retrieve_update(api_client: TestClient, uuid: str):
     # Note that this actually doesn't depend on any study
-    biosample = get_template_biosample(add_uuid=True)
-    uuid = biosample["uuid"]
+    biosample = get_template_biosample() | {"uuid": uuid}
     rsp = api_client.post(f"private/biosamples", json=biosample)
     assert rsp.status_code == 201, rsp.json()
 
@@ -39,10 +38,9 @@ def test_biosample_create_retrieve_update(api_client: TestClient):
 
 
 def test_specimen_create_retrieve_update(
-    api_client: TestClient, existing_biosample: dict
+    api_client: TestClient, existing_biosample: dict, uuid: str
 ):
-    specimen = get_template_specimen(existing_biosample, add_uuid=True)
-    uuid = specimen["uuid"]
+    specimen = get_template_specimen(existing_biosample) | {"uuid": uuid}
     rsp = api_client.post(f"private/specimens", json=specimen)
     assert rsp.status_code == 201, rsp.json()
 
@@ -63,10 +61,11 @@ def test_specimen_create_retrieve_update(
 
 
 def test_image_acquisition_create_retrieve_update(
-    api_client: TestClient, existing_specimen: dict
+    api_client: TestClient, existing_specimen: dict, uuid: str
 ):
-    image_acquisition = get_template_image_acquisition(existing_specimen, add_uuid=True)
-    uuid = image_acquisition["uuid"]
+    image_acquisition = get_template_image_acquisition(existing_specimen) | {
+        "uuid": uuid
+    }
     rsp = api_client.post(f"private/image_acquisitions", json=image_acquisition)
     assert rsp.status_code == 201, rsp.json()
 
@@ -91,8 +90,9 @@ def test_create_update_with_badly_typed_uuid(
     existing_specimen: dict,
     existing_image_acquisition: dict,
     existing_study: dict,
+    uuid: str,
 ):
-    image_acquisition = get_template_image_acquisition(existing_study, add_uuid=True)
+    image_acquisition = get_template_image_acquisition(existing_study) | {"uuid": uuid}
     rsp = api_client.post(f"private/image_acquisitions", json=image_acquisition)
     assert rsp.status_code == 400, rsp.json()
 
