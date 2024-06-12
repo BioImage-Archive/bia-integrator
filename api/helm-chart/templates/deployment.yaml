@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "api.fullname" . }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "api.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "api.labels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "ghcr.io/bioimage-archive/bia-integrator-api:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /v1/search/studies?limit=1
+              port: http
+            initialDelaySeconds: 10
+            failureThreshold: 10
+            periodSeconds: 60
+          readinessProbe:
+            httpGet:
+              path: /v1/openapi.json
+              port: http
+            initialDelaySeconds: 10
+            failureThreshold: 10
+            periodSeconds: 60
+          env:
+            - name: DB_NAME
+              value: {{ .Values.api_env.dbName }}
+            - name: JWT_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "api.fullname" . }}
+                  key: jwtSecretKey
+            - name: USER_CREATE_SECRET_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "api.fullname" . }}
+                  key: userCreateSecretToken
+            - name: MONGO_CONNSTRING
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "api.fullname" . }}
+                  key: mongoConnstring

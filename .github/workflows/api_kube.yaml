@@ -1,0 +1,81 @@
+name: Lint and Test Charts
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  helm-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with: 
+          fetch-depth: 0
+
+      - name: Install chart-testing
+        uses: helm/chart-testing-action@v2.6.0
+
+      - run: helm repo add bitnami https://charts.bitnami.com/bitnami
+
+      - name: Run chart-testing (lint)
+        run: ct lint --charts ./api/helm-chart --debug
+
+  api-test:
+    runs-on: ubuntu-latest
+    environment:
+      name: test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with: 
+          fetch-depth: 0
+      
+      - uses: azure/setup-helm@v4.2.0
+      - uses: azure/setup-kubectl@v3
+
+      - name: Start minikube - if this breaks on local do a 'minikube delete'
+        id: minikube
+        uses: medyagh/setup-minikube@master
+        with:
+          cpus: 4
+          memory: 4G # 'wait' below times out on Actions with 2G
+          start-args: '--force'
+
+      - run: helm repo add bitnami https://charts.bitnami.com/bitnami
+
+      - name: Get helm dependencies
+        run: helm dependency build ./api/helm-chart
+
+      - name: Start everything
+        run: |
+          helm install bia-api-local ./api/helm-chart \
+            --set "api_env.mongoRootUser=${{ vars.MONGO_INITDB_ROOT_USERNAME }}" \
+            --set "api_env.mongoRootPassword=${{ secrets.MONGO_INITDB_ROOT_PASSWORD }}" \
+            --set "api_env.jwtSecretKey=${{ secrets.JWT_SECRET_KEY }}" \
+            --set "api_env.userCreateSecretToken=${{ secrets.USER_CREATE_SECRET_TOKEN }}" \
+            --set "mongodb.enabled=true" \
+            --set "mongodb.auth.rootUser=${{ vars.MONGO_INITDB_ROOT_USERNAME }}" \
+            --set "mongodb.auth.rootPassword=${{ secrets.MONGO_INITDB_ROOT_PASSWORD }}"
+
+      - name: Wait for api to start and health-check
+        run: kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=api --timeout=180s
+
+      - name: Run tests
+        run: helm test bia-api-local --logs
+
+      - name: List pods for CI minikube debug
+        run: |
+          kubectl get pods
+          kubectl describe pods -l app.kubernetes.io/name=api
+          kubectl logs -l app.kubernetes.io/name=api
+        if: ${{ failure() }}
+
+      - name: Cleanup
+        run: |
+          minikube delete
+        if: ${{ always() }}

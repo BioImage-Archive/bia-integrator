@@ -1,0 +1,42 @@
+{{- if .Values.mongodb.enabled }}
+# API tests should *never* run in a non-throwaway environment because they persist test data in the db
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "api.fullname" . }}-api-tests"
+  labels:
+    {{- include "api.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+    "helm.sh/hook-weight": "-10"
+    # https://github.com/helm/helm/issues/9098
+    #"helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  containers:
+    - name: run-api-tests
+      image: ghcr.io/bioimage-archive/bia-integrator-api:{{ .Values.image.tag }}
+      command: ["poetry", "run", "pytest"]
+      workingDir: /integrator-api
+      env:
+        - name: DB_NAME
+          value: {{ .Values.api_env.dbName }}
+        - name: JWT_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+                name: {{ include "api.fullname" . }}
+                key: jwtSecretKey
+        - name: USER_CREATE_SECRET_TOKEN
+          valueFrom:
+            secretKeyRef:
+                name: {{ include "api.fullname" . }}
+                key: userCreateSecretToken
+        # INTENTIONALLY USING MONGO VALUES (instead of api values)
+        #   so in case the api points to a remote mongo but mongo is enabled (for some reason/by accident),
+        # only the throwaway mongo created by the chart would be used for tests
+        - name: MONGO_CONNSTRING
+          value: "mongodb://{{ .Values.mongodb.auth.rootUser }}:{{ .Values.mongodb.auth.rootPassword }}@{{ .Values.mongodb.service.nameOverride }}:{{ .Values.mongodb.service.nodePorts.mongodb }}/"
+
+  restartPolicy: Never
+
+{{- end }}

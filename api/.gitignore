@@ -63,3 +63,5 @@ env
 ####
 .env
 .venv
+
+helm-chart/charts

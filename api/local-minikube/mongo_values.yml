@@ -1,0 +1,25 @@
+# This is left in because sometimes it's useful to test assuming Mongo was installed external of the api chart
+#   Unless a very unusual context, use `api_values.yml` and the api chart
+
+architecture: standalone
+auth:
+  rootUser: "independent-install-root"
+  rootPassword: "independent-install-example"
+service:
+  type: ClusterIP
+  nodePorts:
+    mongodb: "27017"
+  nameOverride: "independent-install-mongodb"
+
+livenessProbe:
+  enabled: false
+readinessProbe:
+  enabled: false
+
+resources:
+  limits:
+    cpu: 1
+    memory: 256M
+  requests:
+    cpu: 1
+    memory: 256M
