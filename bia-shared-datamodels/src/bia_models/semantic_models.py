@@ -8,76 +8,72 @@ from pydantic import BaseModel, Field, EmailStr, AnyUrl
 
 # from uri import URI
 
-# Agentive classes: e.g. people, organisations, grants.
+#######################################################################################################
+# Subgraph 1: Documents, contributors & their affiliations
+#######################################################################################################
 
 
-class Agent(BaseModel):
+class PersonMixin(BaseModel):
     """
-    A resource that acts or has the power to act.
+    Person information
+    """
+
+    orcid: Optional[str] = Field(
+        None, description="""Open Researcher and Contributor ID."""
+    )
+
+
+class OrganisationMixin(BaseModel):
+    """
+    Organisation information
+    """
+
+    rorid: Optional[str] = Field(
+        None, description="""Reasearch Organisation Registry ID."""
+    )
+    address: Optional[str] = Field(
+        None, description="""Comma separated lines of the address."""
+    )
+    website: Optional[AnyUrl] = Field(
+        default=None,
+        description="""The website page with information about the Organisation.""",
+    )
+
+
+class Contributor(PersonMixin, OrganisationMixin):
+    """
+    A person or group that contributed to the creation of a Document.
     """
 
     display_name: str = Field(
         description="""Name as it should be displayed on the BioImage Archive."""
     )
     contact_email: EmailStr = Field(
-        description="""An email address to contact the person or organisation"""
+        description="""An email address to contact the Contributor."""
     )
-    affiliation: Optional[List[Organisation]] = Field(
+    role: str = Field(description="""The role of the contributor.""")
+    affiliation: Optional[List[Affiliation]] = Field(
         default_factory=list,
-        description="""The organisations an Agent is afiliated with.""",
-    )
-    website: Optional[AnyUrl] = Field(
-        default=None,
-        description="""The website page with information about the Agent.""",
+        description="""The organisation(s) a contributor is afiliated with.""",
     )
 
 
-class Organisation(Agent):
+class Affiliation(OrganisationMixin):
     """
-    An Agent that is composed of multiple members established to meet needs or pursue goals.
+    An organsiation that a contributor is affiliated with.
     """
 
-    rorid: Optional[str] = Field(
-        None, description="""Reasearch Organisation Registry ID"""
-    )
-    address: Optional[str] = Field(
-        None, description="""Comma separated lines of the address."""
+    display_name: str = Field(
+        description="""Name as it should be displayed on the BioImage Archive."""
     )
 
 
-class Person(Agent):
-    """
-    A human being.
-    """
-
-    orcid: Optional[str] = Field(
-        None, description="""Open Researcher and Contributor ID"""
-    )
-
-
-class Grant(BaseModel):
-    """ """
-
-    id: Optional[str] = Field(
-        None,
-        description="""A unique identifier for the grant, such as an Open Funder Registry ID.""",
-    )
-
-    funder: List[Agent] = Field(
-        default_factory=list,
-        description="""The funding body provididing support to a grant.""",
-    )
-
-
-# Document classes: e.g. studies and publications.
-
-
-class Document(BaseModel):
+class DocumentMixin(BaseModel):
     """
     A documentary resource or body of scientific work.
     """
 
-    author: List[Agent] = Field(description="""The creators of the document.""")
+    author: List[Contributor] = Field(description="""The creators of the document.""")
     title: str = Field(
         description="""The title of a scientific document. This will usually be displayed when search results including your data are shown."""
     )
@@ -86,7 +82,7 @@ class Document(BaseModel):
         default_factory=list,
         description="""Keywords or tags used to describe the subject of a document""",
     )
-    acknowledgement: Optional[List[Agent]] = Field(
+    acknowledgement: Optional[List[Contributor]] = Field(
         default_factory=list,
         description="""Any person or group that should be acknowledged with the document.""",
     )
@@ -95,7 +91,12 @@ class Document(BaseModel):
     )
 
 
-class Study(Document):
+#######################################################################################################
+# Subgraph 2: Studies and links to external information (publications, grants etc)
+#######################################################################################################
+
+
+class Study(DocumentMixin):
     """
     A piece of scientific work that resulted in the creation of imaging data.
     """
@@ -121,15 +122,18 @@ class Study(Document):
         default_factory=list, description="""The grants that funded the study."""
     )
     funding_statement: Optional[str] = Field(
-        default_factory=list, description="""Description of how the study was funded"""
+        default_factory=list, description="""Description of how the study was funded."""
     )
-    part: Optional[List[Dataset]] = Field(
+    experimental_imaging_component: Optional[List[ExperimentalImagingDataset]] = Field(
         default_factory=list,
-        description="""A dataset that is associated with the study.""",
+        description="""A dataset of that is associated with the study.""",
+    )
+    annotation_component: Optional[List[ImageAnnotationDataset]] = Field(
+        default_factory=list, description=""""""
     )
 
 
-class Publication(Document):
+class Publication(DocumentMixin):
     """
     A published paper or written work.
     """
@@ -140,129 +144,73 @@ class Publication(Document):
     doi: str = Field(description="""Digital Object Identifier (DOI)""")
 
 
-class Dataset(BaseModel):
-    """
-    A logical grouping of data (in files) associated with a Study based on the process involved in creation of the files.
-    """
-
-    image: List[Image] = Field(description="""Images associated with the dataset""")
-    file: List[FileRepresentation] = Field(
-        description="""Files associated with the dataset"""
-    )
-    creation_method: list[Process] = Field(
-        description="""Processes involved in the creation of the images and files in this dataset."""
-    )
-
-
 class ExternalReference(BaseModel):
     """
     An object outside the BIA that a user wants to refer to.
     """
 
     link: AnyUrl = Field(description="""A URL linking to the refered resource.""")
+    link_type: Optional[str] = Field(
+        None,
+        description="""Classifies the link by website domain and/or use-case, which is useful for display purposes and faceting search.""",
+    )
     description: Optional[str] = Field(
         None,
         description="""Brief description of the resource and how it relates to the document providing the reference.""",
     )
 
 
-# Image classes: e.g. Images, how they were created, what is their subject.
+class Grant(BaseModel):
+    """ """
 
-
-class Image(BaseModel):
-    """
-    The abstraction of an image, which can be represented by individual image files.
-    """
-
-    represenatation: List[ImageRepresentation] = Field(
-        description="""The files that store the image data."""
-    )
-    acquisition_process: List[ImageAcquisition] = Field(
-        description="""The processes involved in the creation of the image."""
-    )
-
-
-class ImageAcquisition(BaseModel):
-    """
-    The process through which an image is captured.
-    """
-
-    subject: List[Specimen] = Field(
-        description="""The Specimens that were the subject of the image acquisition process."""
-    )
-    imaging_instrument_description: str = Field(
-        description="""Names, types, or description of how the instruments used to create the image."""
-    )
-    image_acquistion_parameters: str = Field(
-        description="""Parameters relevant to how the image was taken, such as instrument settings."""
-    )
-
-
-class Specimen(BaseModel):
-    """
-    The subject of an image acquisition.
-    """
-
-    sample_of: List[Biosample] = Field(
-        description="""The biological matter that sampled to create the specimen."""
-    )
-    sample_preparation_description: Optional[str] = Field(
-        None, description="""How the sample was prepared for imaging."""
-    )
-    signal_contrast_mechanism_description: Optional[str] = Field(
-        None, description="""How is the signal is generated by this sample."""
-    )
-    growth_protocol_description: Optional[str] = Field(
+    id: Optional[str] = Field(
         None,
-        description="""How the specimen was grown, e.g. cell line cultures, crosses or plant growth.""",
+        description="""A unique identifier for the grant, such as an Open Funder Registry ID.""",
     )
-    channel_content_description: Optional[str] = Field(
+
+    funder: List[FundingBody] = Field(
+        default_factory=list,
+        description="""The name of the funding body providing support for the grant.""",
+    )
+
+
+class FundingBody(BaseModel):
+    """ """
+
+    display_name: str = Field(
+        description="""Name as it should be displayed on the BioImage Archive."""
+    )
+    id: Optional[str] = Field(
         None,
-        description="""What staining was used in preparation of the specimen (e.g. IEM, DAB).""",
-    )
-    channel_biological_entity: Optional[str] = Field(
-        None, description="""What molecule is stained."""
+        description="""A unique identifier for the Funder, such as an Open Funder Registry ID.""",
     )
 
 
-class Biosample(BaseModel):
+class LicenseType(str, Enum):
+    # No Copyright. You can copy, modify, distribute and perform the work, even for commercial purposes, all without asking permission.
+    CC0 = "CC0"
+    # You are free to: Share — copy and redistribute the material in any medium or format. Adapt — remix, transform, and build upon the material  for any purpose, even commercially. You must give appropriate credit, provide a link to the license, and indicate if changes were made.  You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+    CC_BY_40 = "CC_BY_4.0"
+
+
+#######################################################################################################
+# Subgraph 3: Dataset mixin and it's files. Method (of dataset creation/maniuplation) mixin.
+#######################################################################################################
+
+
+class DatasetMixin(BaseModel):
     """
-    The biological entity that has undergone preparation (as a Sample) in order to be imaged.
-    """
-
-    organism_classification: List[Taxon] = Field(
-        description="""The biological matter that sampled to create the specimen."""
-    )
-    description: str = Field(
-        description="""A short description of the biological entity."""
-    )
-    experimental_variable_description: Optional[List[str]] = Field(
-        description="""What is intentionally varied (e.g. time) between multiple entries in this study component"""
-    )
-    extrinsic_variable_description: Optional[List[str]] = Field(
-        description="External treatment (e.g. reagent)."
-    )
-    intrinsic_variable_description: Optional[List[str]] = Field(
-        description="Intrinsic (e.g. genetic) alteration."
-    )
-
-
-class Taxon(BaseModel):
-    """
-    The classification of a biological entity.
+    A logical grouping of data (in files) based on the process involved in it's creation.
     """
 
-    common_name: Optional[str] = Field(None)
-    scientific_name: Optional[str] = Field(None)
-    ncbi_id: Optional[str] = Field(None)
+    file: List[FileReference] = Field(
+        description="""Files associated with the dataset"""
+    )
 
 
-# File classes: Files, image files & their channels
-
-
-class FileRepresentation(BaseModel):
+class FileReference(BaseModel):
     """
-    The digital representation of a document.
+    Information about a file, provided in file list.
     """
 
     file_name: str = Field(description="""The name of the file.""")
@@ -271,30 +219,84 @@ class FileRepresentation(BaseModel):
     uri: str = Field(description="""URI from which the file can be accessed.""")
 
 
-class ImageRepresentation(FileRepresentation):
+class MethodMixin(BaseModel):
     """
-    The manifestation of an image, represented in a particular image file format.
+    A process of either capturing, combining, or analysing images.
     """
 
-    physical_dimension: Optional[str] = Field(
-        None, description="""Size of the physical space captured by the image"""
+    method_description: str = Field(
+        description="""Description of steps involved in the process or method."""
     )
-    digital_dimension: Optional[str] = Field(
-        None, description="""Size in pixels or voxels of the image"""
+
+
+#######################################################################################################
+# Subgraph 4: Abstract images & their representations
+#######################################################################################################
+
+
+class AbstractImageMixin(BaseModel):
+    """
+    The abstract notion of an image that can have many representions in different image formats.
+    """
+
+    represenatation: List[ImageRepresentation] = Field(
+        description="""Representation(s) of the image in a specific image format."""
+    )
+
+
+class ImageRepresentation(BaseModel):
+    """
+    The viewable or processable represention of an image in a particular image file format.
+    This object was created from one or more file refences (usually one) provided by submitters to the BioImage Archive.
+    """
+
+    image_format: str = Field(description="""Image format of the combined files.""")
+    file_uri: List[str] = Field(
+        description="""URI(s) of the file(s) which together make up this image representation."""
+    )
+    total_size_in_bytes: int = Field(
+        description="""Combined disc size in bytes of all the files."""
+    )
+    physical_size_x: Optional[float] = Field(
+        None,
+        description="""Size of the physical space (in meters) captured in the field of view of the image.""",
+    )
+    physical_size_y: Optional[float] = Field(
+        None,
+        description="""Size of the physical space (in meters) captured in the field of view of the image.""",
+    )
+    physical_size_z: Optional[float] = Field(
+        None,
+        description="""Size of the physical space (in meters) captured in the field of view of the image.""",
+    )
+    digital_size_x: Optional[int] = Field(
+        None,
+        description="""Pixels or voxels dimension of the data array of the image.""",
+    )
+    digital_size_y: Optional[int] = Field(
+        None,
+        description="""Pixels or voxels dimension of the data array of the image.""",
+    )
+    digital_size_z: Optional[int] = Field(
+        None,
+        description="""Pixels or voxels dimension of the data array of the image.""",
+    )
+    digital_size_c: Optional[int] = Field(
+        None,
+        description="""Pixels or voxels dimension of the data array of the image.""",
+    )
+    digital_size_t: Optional[float] = Field(
+        None,
+        description="""temporal dimension of the data array of the image (in seconds???).""",
     )
     image_viewer_setting: Optional[List[RenderedView]] = Field(
         None,
         description="""Settings of a particular view of an image, such as a specific timestamp of a timeseries, or camera placement in a 3D model.""",
     )
-
-
-class AnnotationRepresation(FileRepresentation):
-    """
-    A file providing additional metadata or highlighting parts of an image.
-    """
-
-    source_image: ImageRepresentation = Field(
-        description="""The original image this file is annotating."""
+    original_file_reference: Optional[List[FileReference]] = Field(
+        default_factory=list,
+        description="""The user sumbitted file references from which this image representation was created. 
+                    If this ImageRepresentation was created by conversion from another representation this will be empty.""",
     )
 
 
@@ -328,39 +330,182 @@ class Channel(BaseModel):
     )
 
 
-# PostProcessing classes: Annotations, Image Correlations, and data analysis
+#######################################################################################################
+# Subgraph 5: ImagingStudyComponents, Images, Acquisitions, Specimens, Biosample
+#######################################################################################################
 
 
-class Process(BaseModel):
+class ExperimentalImagingDataset(DatasetMixin):
     """
-    A process of either capturing, combining, or analysing images.
+    A logical collection of images that were created by the same acquisition and preparation procols being applied a biosample.
     """
 
-    method_description: str = Field(
-        description="""Description of processing method, e.g. light sheet fluorescence microscopy, class labels, segmentation masks, manual overlay"""
+    image: List[ExperimentallyCapturedImage] = Field(
+        description="""Images associated with the dataset."""
+    )
+    acquisition_method: list[ImageAcquisition] = Field(
+        description="""Processes involved in the creation of the images and files in this dataset."""
+    )
+    specimen_preparation_method: list[SpecimenPrepartionProtocol] = Field(
+        description="""Processes involved in the creation of the samples that were then imaged."""
+    )
+    biological_entity: list[Biosample] = Field(
+        description="""The biological entity that was imaged."""
+    )
+    analysis_method: Optional[list[ImageAnalysisMethod]] = Field(
+        description="""Data analysis processes performed on the images."""
+    )
+    correlation_method: Optional[list[ImageCorrelationMethod]] = Field(
+        description="""Processes performed to correlate image data."""
     )
 
 
-class ImagingMethod(Process):
+class ExperimentallyCapturedImage(AbstractImageMixin):
     """
-    A process or method of capturing images.
+    The abstract result of subject being captured by an image acquisition event. This can have many representions in different image formats.
     """
 
+    acquisition_process: List[ImageAcquisition] = Field(
+        description="""The processes involved in the creation of the image."""
+    )
+    subject: List[Specimen] = Field(
+        description="""The specimen that was prepared for and captured in the field of view of hte image."""
+    )
+
+
+class ImageAcquisition(BaseModel):
+    """
+    The process with which an image is captured.
+    """
+
+    imaging_instrument_description: str = Field(
+        description="""Names, types, or description of how the instruments used to create the image."""
+    )
+    image_acquistion_parameters: str = Field(
+        description="""Parameters relevant to how the image was taken, such as instrument settings."""
+    )
     fbbi_id: List[str] = Field(
         description="""Biological Imaging Methods Ontology id indicating the kind of imaging that was perfomed."""
     )
-    method_description: str = Field(
-        description="""A description of the imaging methods involved in creating the images in this dataset, e.g. light sheet fluorescence microscopy."""
+
+
+class SpecimenPrepartionProtocol(BaseModel):
+    sample_preparation_description: Optional[str] = Field(
+        None, description="""How the sample was prepared for imaging."""
     )
-    pass
+    signal_contrast_mechanism_description: Optional[str] = Field(
+        None, description="""How is the signal is generated by this sample."""
+    )
+    growth_protocol_description: Optional[str] = Field(
+        None,
+        description="""How the specimen was grown, e.g. cell line cultures, crosses or plant growth.""",
+    )
+    channel_content_description: Optional[str] = Field(
+        None,
+        description="""What staining was used in preparation of the specimen (e.g. IEM, DAB).""",
+    )
+    channel_biological_entity: Optional[str] = Field(
+        None, description="""What molecule is stained."""
+    )
 
 
-class Annotation(Process):
+class Specimen(BaseModel):
+    """
+    The subject of an image acquisition, and the result of a Biosample being prepared to be imaged.
+    """
+
+    sample_of: List[Biosample] = Field(
+        description="""The biological matter that sampled to create the specimen."""
+    )
+    preparation_method: List[SpecimenPrepartionProtocol] = Field(
+        description="""How the biosample was prepared for imaging."""
+    )
+
+
+class Biosample(BaseModel):
+    """
+    The biological entity that has undergone preparation (as a Sample) in order to be imaged.
+    """
+
+    organism_classification: List[Taxon] = Field(
+        description="""The classification of th ebiological matter."""
+    )
+    description: str = Field(
+        description="""A short description of the biological entity."""
+    )
+    experimental_variable_description: Optional[List[str]] = Field(
+        description="""What is intentionally varied (e.g. time) between multiple entries in this study component"""
+    )
+    extrinsic_variable_description: Optional[List[str]] = Field(
+        description="External treatment (e.g. reagent)."
+    )
+    intrinsic_variable_description: Optional[List[str]] = Field(
+        description="Intrinsic (e.g. genetic) alteration."
+    )
+
+
+class Taxon(BaseModel):
+    """
+    The classification of a biological entity.
+    """
+
+    common_name: Optional[str] = Field(None)
+    scientific_name: Optional[str] = Field(None)
+    ncbi_id: Optional[str] = Field(None)
+
+
+class ImageAnalysisMethod(MethodMixin):
+    """
+    Information about image analysis methods.
+    """
+
+    method_description: str = Field(
+        description="""The steps performed during image analysis."""
+    )
+    features_analysed: str = Field(description="""""")
+
+
+class ImageCorrelationMethod(MethodMixin):
+    """
+    Information about the process of correlating the positions of multiple images.
+    """
+
+    method_description: str = Field(
+        description="""Method used for spatial and/or temporal alignment of images from different modalities (e.g. manual overlay, alignment algorithm etc)."""
+    )
+    fiducials_used: str = Field(
+        description="""Features from correlated datasets used for colocalization."""
+    )
+    transformation_matrix: str = Field(description="""Correlation transforms.""")
+
+
+#######################################################################################################
+# Subgraph 6: Annotation dataset, annotations etc.
+#######################################################################################################
+
+
+class ImageAnnotationDataset(DatasetMixin):
     """
     Information about the annotation process, such as methods used, or how much of a dataset was annotated.
     """
 
-    source_dataset: List[Union[Dataset | AnyUrl]] = Field(
+    annotation_method: List[AnnotationMethod] = Field(
+        description="""The process(es) that were performed to create the annotated data."""
+    )
+    annotation_file: List[AnnotationFileReference] = Field(
+        description="""Annotation files associated with the dataset."""
+    )
+    image: List[DerivedImage] = Field(
+        description="""Images associated with the dataset."""
+    )
+
+
+class AnnotationMethod(MethodMixin):
+    """
+    Information about the annotation process, such as methods used, or how much of a dataset was annotated.
+    """
+
+    source_dataset: List[Union[ExperimentalImagingDataset | AnyUrl]] = Field(
         description="""The datasets that were annotated."""
     )
     method_description: str = Field(
@@ -372,41 +517,41 @@ class Annotation(Process):
     annotation_coverage: str = Field(
         description="""Which images from the dataset were annotated, and what percentage of the data has been annotated from what is available."""
     )
-
-
-class ImageCorrelation(Process):
-    """
-    Information about the process of correlating the positions of multiple images.
-    """
-
-    method_description: str = Field(
-        description="""Method used for spatial and/or temporal alignment of images from different modalities (e.g. manual overlay, alignment algorithm etc)."""
+    method_type: AnnotationType = Field(
+        description="""Classification of the kind of annotation that was performed."""
     )
-    fiducials_used: str = Field(
-        description="""Features from correlated datasets used for colocalization."""
-    )
-    transformation_matrix: str = Field()
 
 
-class ImageAnalysis(Process):
+class AnnotationMixin(BaseModel):
     """
-    Information about data analysis methods.
+    Information providing additional metadata or highlighting parts of an image.
     """
 
-    method_description: str = Field(
-        description="""The steps performed during image analysis."""
+    source_image: ImageRepresentation = Field(
+        description="""The original image this file is annotating."""
     )
-    features_analysed: str = Field()
+    transformation_description: str = Field(
+        description="""Any transformations required to link annotations to the image."""
+    )
+    spatial_information: str = Field(
+        description="""Spatial information for non-pixel annotations."""
+    )
 
 
-# Enums
+class AnnotationFileReference(FileReference, AnnotationMixin):
+    """
+    An file that is an annotation of an image.
+    """
+
+    pass
 
 
-class LicenseType(str, Enum):
-    # No Copyright. You can copy, modify, distribute and perform the work, even for commercial purposes, all without asking permission.
-    CC0 = "CC0"
-    # You are free to: Share — copy and redistribute the material in any medium or format. Adapt — remix, transform, and build upon the material  for any purpose, even commercially. You must give appropriate credit, provide a link to the license, and indicate if changes were made.  You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
-    CC_BY_40 = "CC_BY_4.0"
+class DerivedImage(AnnotationMixin, AbstractImageMixin):
+    """
+    An image that is an annotation of another image.
+    """
+
+    pass
 
 
 class AnnotationType(str, Enum):
@@ -435,7 +580,17 @@ class AnnotationType(str, Enum):
     other = "other"
 
 
+#######################################################################################################
+# Other (unsure where to classify for now)
+#######################################################################################################
+
+
 # Model rebuild
 # see https://pydantic-docs.helpmanual.io/usage/models/#rebuilding-a-model
 # Need to do this in order to auto-generate the class diagram
+Contributor.model_rebuild()
+DocumentMixin.model_rebuild()
 Study.model_rebuild()
+DatasetMixin.model_rebuild()
+ImageAnnotationDataset.model_rebuild()
+ExperimentalImagingDataset.model_rebuild()
