@@ -125,7 +125,7 @@ class Study(DocumentMixin):
     annotation_component: Optional[List[ImageAnnotationDataset]] = Field(
         default_factory=list, description=""""""
     )
-    attributes: dict = Field(
+    attribute: dict = Field(
         description="""Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."""
     )
 
@@ -217,7 +217,7 @@ class FileReference(BaseModel):
     format: str = Field(description="""File format or type.""")
     size_in_bytes: int = Field(description="""Disc size in bytes.""")
     uri: str = Field(description="""URI from which the file can be accessed.""")
-    attributes: dict = Field(
+    attribute: dict = Field(
         description="""Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."""
     )
 
@@ -245,7 +245,7 @@ class AbstractImageMixin(BaseModel):
     represenatation: List[ImageRepresentation] = Field(
         description="""Representation(s) of the image in a specific image format."""
     )
-    attributes: dict = Field(
+    attribute: dict = Field(
         description="""Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."""
     )
 
@@ -304,7 +304,7 @@ class ImageRepresentation(BaseModel):
         description="""The user sumbitted file references from which this image representation was created. 
                     If this ImageRepresentation was created by conversion from another representation this will be empty.""",
     )
-    attributes: dict = Field(
+    attribute: dict = Field(
         description="""Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."""
     )
 
@@ -383,8 +383,8 @@ class ExperimentallyCapturedImage(AbstractImageMixin):
     acquisition_process: List[ImageAcquisition] = Field(
         description="""The processes involved in the creation of the image."""
     )
-    subject: List[Specimen] = Field(
-        description="""The specimen that was prepared for and captured in the field of view of hte image."""
+    subject: Specimen = Field(
+        description="""The specimen that was prepared for and captured in the field of view of the image."""
     )
 
 
