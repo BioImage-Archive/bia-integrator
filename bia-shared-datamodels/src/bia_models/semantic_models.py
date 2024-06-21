@@ -206,6 +206,9 @@ class DatasetMixin(BaseModel):
     file_reference_count: int = Field(
         description="""Number of files associated with the study."""
     )
+    submitted_in_study: Study = Field(
+        description="""The study the dataset was submitted in."""
+    )
 
 
 class FileReference(BaseModel):

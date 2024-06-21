@@ -38,6 +38,7 @@ class ExperimentalImagingDataset(
 ):
     image: List[UUID] = Field()
     file: List[UUID] = Field()
+    submitted_in_study: UUID = Field()
     # we include image analysis and correlation
 
 
@@ -84,6 +85,7 @@ class ImageAnnotationDataset(
 ):
     image: List[UUID] = Field()
     file: List[UUID] = Field()
+    submitted_in_study: UUID = Field()
 
 
 class AnnotationFileReference(
@@ -92,3 +94,4 @@ class AnnotationFileReference(
 ):
     represenatation: List[UUID] = Field()
     source_image: UUID = Field()
+    submission_dataset: UUID = Field()
