@@ -3,7 +3,6 @@ Package containing the shared BIA models in link-ml yaml format, and the generat
 
 Below shows the class diagram for the Shared BIA Models.
 
-![Alt text](./src/bia_models/Datamodel-class_diagram.svg)
 <img src="./src/bia_models/Datamodel-class_diagram.svg">
 
 To edit the diagram, see: https://docs.google.com/drawings/d/1l0Yjy5bGBDlu6qoNfE7Mta7XdBmydRNCQTciY-KeztQ/edit

@@ -386,6 +386,9 @@ class ExperimentallyCapturedImage(AbstractImageMixin):
     subject: Specimen = Field(
         description="""The specimen that was prepared for and captured in the field of view of the image."""
     )
+    submission_dataset: ExperimentalImagingDataset = Field(
+        description="""The dataset in which image was first submitted to the BIA."""
+    )
 
 
 class ImageAcquisition(BaseModel):
@@ -563,7 +566,9 @@ class DerivedImage(AnnotationMixin, AbstractImageMixin):
     An image that is an annotation of another image.
     """
 
-    pass
+    submission_dataset: ImageAnnotationDataset = Field(
+        description="""The dataset in which image was first submitted to the BIA."""
+    )
 
 
 class AnnotationType(str, Enum):

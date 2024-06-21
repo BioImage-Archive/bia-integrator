@@ -18,6 +18,13 @@ class Study(
     annotation_component: List[UUID] = Field()
 
 
+class FileReference(
+    semantic_models.FileReference,
+    DocumentMixin,
+):
+    submission_dataset: UUID = Field()
+
+
 class ImageRepresentation(
     semantic_models.ImageRepresentation,
     DocumentMixin,
