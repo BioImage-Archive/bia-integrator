@@ -102,12 +102,6 @@ class Study(DocumentMixin):
     """
 
     accession_id: str = Field(description="""Unique ID provided by BioStudies.""")
-    file_reference_count: int = Field(
-        description="""Number of files associated with the study."""
-    )
-    image_count: int = Field(
-        description="""Number of images associated with the study."""
-    )
     license: LicenseType = Field(
         description="""The license under which the data associated with the study is made avaliable."""
     )
@@ -130,6 +124,9 @@ class Study(DocumentMixin):
     )
     annotation_component: Optional[List[ImageAnnotationDataset]] = Field(
         default_factory=list, description=""""""
+    )
+    attributes: dict = Field(
+        description="""Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."""
     )
 
 
@@ -206,6 +203,9 @@ class DatasetMixin(BaseModel):
     file: List[FileReference] = Field(
         description="""Files associated with the dataset"""
     )
+    file_reference_count: int = Field(
+        description="""Number of files associated with the study."""
+    )
 
 
 class FileReference(BaseModel):
@@ -217,11 +217,14 @@ class FileReference(BaseModel):
     format: str = Field(description="""File format or type.""")
     size_in_bytes: int = Field(description="""Disc size in bytes.""")
     uri: str = Field(description="""URI from which the file can be accessed.""")
+    attributes: dict = Field(
+        description="""Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."""
+    )
 
 
-class MethodMixin(BaseModel):
+class ProtocolMixin(BaseModel):
     """
-    A process of either capturing, combining, or analysing images.
+    A protocol for either capturing, combining, or analysing images.
     """
 
     method_description: str = Field(
@@ -241,6 +244,9 @@ class AbstractImageMixin(BaseModel):
 
     represenatation: List[ImageRepresentation] = Field(
         description="""Representation(s) of the image in a specific image format."""
+    )
+    attributes: dict = Field(
+        description="""Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."""
     )
 
 
@@ -269,23 +275,23 @@ class ImageRepresentation(BaseModel):
         None,
         description="""Size of the physical space (in meters) captured in the field of view of the image.""",
     )
-    digital_size_x: Optional[int] = Field(
+    size_x: Optional[int] = Field(
         None,
         description="""Pixels or voxels dimension of the data array of the image.""",
     )
-    digital_size_y: Optional[int] = Field(
+    size_y: Optional[int] = Field(
         None,
         description="""Pixels or voxels dimension of the data array of the image.""",
     )
-    digital_size_z: Optional[int] = Field(
+    size_z: Optional[int] = Field(
         None,
         description="""Pixels or voxels dimension of the data array of the image.""",
     )
-    digital_size_c: Optional[int] = Field(
+    size_c: Optional[int] = Field(
         None,
-        description="""Pixels or voxels dimension of the data array of the image.""",
+        description="""Number of channels of the image.""",
     )
-    digital_size_t: Optional[float] = Field(
+    size_t: Optional[float] = Field(
         None,
         description="""temporal dimension of the data array of the image (in seconds???).""",
     )
@@ -297,6 +303,9 @@ class ImageRepresentation(BaseModel):
         default_factory=list,
         description="""The user sumbitted file references from which this image representation was created. 
                     If this ImageRepresentation was created by conversion from another representation this will be empty.""",
+    )
+    attributes: dict = Field(
+        description="""Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."""
     )
 
 
@@ -357,6 +366,12 @@ class ExperimentalImagingDataset(DatasetMixin):
     )
     correlation_method: Optional[list[ImageCorrelationMethod]] = Field(
         description="""Processes performed to correlate image data."""
+    )
+    example_image_uri: list[str] = Field(
+        description="A viewable image that is typical of the dataset."
+    )
+    image_count: int = Field(
+        description="""Number of images associated with the dataset."""
     )
 
 
@@ -454,25 +469,19 @@ class Taxon(BaseModel):
     ncbi_id: Optional[str] = Field(None)
 
 
-class ImageAnalysisMethod(MethodMixin):
+class ImageAnalysisMethod(ProtocolMixin):
     """
     Information about image analysis methods.
     """
 
-    method_description: str = Field(
-        description="""The steps performed during image analysis."""
-    )
     features_analysed: str = Field(description="""""")
 
 
-class ImageCorrelationMethod(MethodMixin):
+class ImageCorrelationMethod(ProtocolMixin):
     """
     Information about the process of correlating the positions of multiple images.
     """
 
-    method_description: str = Field(
-        description="""Method used for spatial and/or temporal alignment of images from different modalities (e.g. manual overlay, alignment algorithm etc)."""
-    )
     fiducials_used: str = Field(
         description="""Features from correlated datasets used for colocalization."""
     )
@@ -498,18 +507,21 @@ class ImageAnnotationDataset(DatasetMixin):
     image: List[DerivedImage] = Field(
         description="""Images associated with the dataset."""
     )
+    example_image_uri: list[str] = Field(
+        description="A viewable image that is typical of the dataset."
+    )
+    image_count: int = Field(
+        description="""Number of images associated with the dataset."""
+    )
 
 
-class AnnotationMethod(MethodMixin):
+class AnnotationMethod(ProtocolMixin):
     """
     Information about the annotation process, such as methods used, or how much of a dataset was annotated.
     """
 
     source_dataset: List[Union[ExperimentalImagingDataset | AnyUrl]] = Field(
         description="""The datasets that were annotated."""
-    )
-    method_description: str = Field(
-        description="""Description of annotation method, e.g. class labels, segmentation masks etc.."""
     )
     annotation_criteria: str = Field(
         description="""Rules used to generate annotations."""
