@@ -554,6 +554,9 @@ class AnnotationMixin(BaseModel):
     spatial_information: str = Field(
         description="""Spatial information for non-pixel annotations."""
     )
+    creation_process: AnnotationMethod = Field(
+        description="""The process that was followed to create the annotation."""
+    )
 
 
 class AnnotationFileReference(FileReference, AnnotationMixin):

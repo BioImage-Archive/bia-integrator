@@ -86,6 +86,7 @@ class ImageAnnotationDataset(
     image: List[UUID] = Field()
     file: List[UUID] = Field()
     submitted_in_study: UUID = Field()
+    annotation_method: UUID = Field()
 
 
 class AnnotationFileReference(
@@ -95,3 +96,11 @@ class AnnotationFileReference(
     represenatation: List[UUID] = Field()
     source_image: UUID = Field()
     submission_dataset: UUID = Field()
+    creation_process: UUID = Field()
+
+
+class AnnotationMethod(
+    semantic_models.AnnotationMethod,
+    DocumentMixin,
+):
+    pass
