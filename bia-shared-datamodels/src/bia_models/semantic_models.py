@@ -2,11 +2,10 @@ from __future__ import annotations
 
 from enum import Enum
 from datetime import date
-from typing import Any, List, Literal, Dict, Optional, Union
+from typing import List, Optional, Union
 
 from pydantic import BaseModel, Field, EmailStr, AnyUrl
 
-# from uri import URI
 
 #######################################################################################################
 # Subgraph 1: Documents, contributors & their affiliations
@@ -48,13 +47,15 @@ class Contributor(PersonMixin, OrganisationMixin):
     display_name: str = Field(
         description="""Name as it should be displayed on the BioImage Archive."""
     )
-    contact_email: EmailStr = Field(
-        description="""An email address to contact the Contributor."""
-    )
-    role: str = Field(description="""The role of the contributor.""")
-    affiliation: Optional[List[Affiliation]] = Field(
+    affiliation: List[Affiliation] = Field(
         default_factory=list,
         description="""The organisation(s) a contributor is afiliated with.""",
+    )
+    contact_email: Optional[EmailStr] = Field(
+        default=None, description="""An email address to contact the Contributor."""
+    )
+    role: Optional[str] = Field(
+        default=None, description="""The role of the contributor."""
     )
 
 
@@ -82,7 +83,7 @@ class DocumentMixin(BaseModel):
         default_factory=list,
         description="""Keywords or tags used to describe the subject of a document""",
     )
-    acknowledgement: Optional[List[Contributor]] = Field(
+    acknowledgement: Optional[str] = Field(
         default_factory=list,
         description="""Any person or group that should be acknowledged with the document.""",
     )
@@ -110,7 +111,8 @@ class Study(DocumentMixin):
         description="""Links to publications, github repositories, and other pages related to this Study.""",
     )
     related_publication: Optional[List[Publication]] = Field(
-        description="""The publications that the work involved in the study contributed to."""
+        default_factory=list,
+        description="""The publications that the work involved in the study contributed to.""",
     )
     grant: Optional[List[Grant]] = Field(
         default_factory=list, description="""The grants that funded the study."""
@@ -165,7 +167,7 @@ class Grant(BaseModel):
         description="""A unique identifier for the grant, such as an Open Funder Registry ID.""",
     )
 
-    funder: List[FundingBody] = Field(
+    funder: Optional[List[FundingBody]] = Field(
         default_factory=list,
         description="""The name of the funding body providing support for the grant.""",
     )

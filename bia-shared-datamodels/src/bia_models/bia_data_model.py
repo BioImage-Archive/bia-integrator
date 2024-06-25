@@ -7,7 +7,15 @@ from pydantic_core import Url
 
 
 class DocumentMixin(BaseModel):
-    uuid: UUID = Field()
+    uuid: UUID = Field(
+        description="""Unique ID (across the BIA database) used to refer to and identify a document."""
+    )
+
+
+class UserIdentifiedObject(BaseModel):
+    title_id: str = Field(
+        description="""User provided title, which is unqiue within a submission, used to identify a part of a submission."""
+    )
 
 
 class Study(
@@ -35,6 +43,7 @@ class ImageRepresentation(
 class ExperimentalImagingDataset(
     semantic_models.ImageRepresentation,
     DocumentMixin,
+    UserIdentifiedObject,
 ):
     image: List[UUID] = Field()
     file: List[UUID] = Field()
@@ -54,6 +63,7 @@ class ExperimentallyCapturedImage(
 class ImageAcquisition(
     semantic_models.ExperimentallyCapturedImage,
     DocumentMixin,
+    UserIdentifiedObject,
 ):
     pass
 
@@ -61,6 +71,7 @@ class ImageAcquisition(
 class SpecimenPrepartionProtocol(
     semantic_models.SpecimenPrepartionProtocol,
     DocumentMixin,
+    UserIdentifiedObject,
 ):
     pass
 
@@ -75,6 +86,7 @@ class Specimen(
 class Biosample(
     semantic_models.Biosample,
     DocumentMixin,
+    UserIdentifiedObject,
 ):
     pass
 
@@ -82,6 +94,7 @@ class Biosample(
 class ImageAnnotationDataset(
     semantic_models.ImageAnnotationDataset,
     DocumentMixin,
+    UserIdentifiedObject,
 ):
     image: List[UUID] = Field()
     file: List[UUID] = Field()
@@ -102,5 +115,6 @@ class AnnotationFileReference(
 class AnnotationMethod(
     semantic_models.AnnotationMethod,
     DocumentMixin,
+    UserIdentifiedObject,
 ):
     pass
