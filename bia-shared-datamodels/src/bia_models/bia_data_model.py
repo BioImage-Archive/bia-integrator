@@ -41,7 +41,7 @@ class ImageRepresentation(
 
 
 class ExperimentalImagingDataset(
-    semantic_models.ImageRepresentation,
+    semantic_models.ExperimentalImagingDataset,
     DocumentMixin,
     UserIdentifiedObject,
 ):
@@ -61,7 +61,7 @@ class ExperimentallyCapturedImage(
 
 
 class ImageAcquisition(
-    semantic_models.ExperimentallyCapturedImage,
+    semantic_models.ImageAcquisition,
     DocumentMixin,
     UserIdentifiedObject,
 ):
@@ -77,7 +77,7 @@ class SpecimenPrepartionProtocol(
 
 
 class Specimen(
-    semantic_models.ExperimentallyCapturedImage,
+    semantic_models.Specimen,
 ):
     sample_of: List[UUID] = Field()
     preparation_method: List[UUID] = Field()
