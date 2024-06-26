@@ -247,7 +247,7 @@ class AbstractImageMixin(BaseModel):
     The abstract notion of an image that can have many representions in different image formats.
     """
 
-    represenatation: List[ImageRepresentation] = Field(
+    representation: List[ImageRepresentation] = Field(
         description="""Representation(s) of the image in a specific image format."""
     )
     attribute: dict = Field(
@@ -345,13 +345,13 @@ class Channel(BaseModel):
 
 
 #######################################################################################################
-# Subgraph 5: ImagingStudyComponents, Images, Acquisitions, Specimens, Biosample
+# Subgraph 5: ImagingStudyComponents, Images, Acquisitions, Specimens, BioSample
 #######################################################################################################
 
 
 class ExperimentalImagingDataset(DatasetMixin):
     """
-    A logical collection of images that were created by the same acquisition and preparation procols being applied a biosample.
+    A logical collection of images that were created by the same acquisition and preparation procols being applied to a biosample.
     """
 
     image: List[ExperimentallyCapturedImage] = Field(
@@ -363,7 +363,7 @@ class ExperimentalImagingDataset(DatasetMixin):
     specimen_preparation_method: list[SpecimenPrepartionProtocol] = Field(
         description="""Processes involved in the creation of the samples that were then imaged."""
     )
-    biological_entity: list[Biosample] = Field(
+    biological_entity: list[BioSample] = Field(
         description="""The biological entity that was imaged."""
     )
     analysis_method: Optional[list[ImageAnalysisMethod]] = Field(
@@ -434,10 +434,10 @@ class SpecimenPrepartionProtocol(BaseModel):
 
 class Specimen(BaseModel):
     """
-    The subject of an image acquisition, and the result of a Biosample being prepared to be imaged.
+    The subject of an image acquisition, and the result of a BioSample being prepared to be imaged.
     """
 
-    sample_of: List[Biosample] = Field(
+    sample_of: List[BioSample] = Field(
         description="""The biological matter that sampled to create the specimen."""
     )
     preparation_method: List[SpecimenPrepartionProtocol] = Field(
@@ -445,7 +445,7 @@ class Specimen(BaseModel):
     )
 
 
-class Biosample(BaseModel):
+class BioSample(BaseModel):
     """
     The biological entity that has undergone preparation (as a Sample) in order to be imaged.
     """
@@ -547,8 +547,8 @@ class AnnotationMixin(BaseModel):
     Information providing additional metadata or highlighting parts of an image.
     """
 
-    source_image: ImageRepresentation = Field(
-        description="""The original image this file is annotating."""
+    source_image: List[ImageRepresentation] = Field(
+        description="""The original image(s) this file is annotating."""
     )
     transformation_description: str = Field(
         description="""Any transformations required to link annotations to the image."""

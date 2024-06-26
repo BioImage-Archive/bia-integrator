@@ -1,6 +1,6 @@
 import semantic_models
-from pydantic import BaseModel, Field
-from typing import List, Optional
+from pydantic import BaseModel, Field, AnyUrl
+from typing import List, Optional, Union
 from uuid import UUID
 
 from pydantic_core import Url
@@ -56,7 +56,8 @@ class ExperimentallyCapturedImage(
     DocumentMixin,
 ):
     acquisition_process: List[UUID] = Field()
-    represenatation: List[UUID] = Field()
+    representation: List[UUID] = Field()
+    submission_dataset: UUID = Field()
     # note Specimen is included in image document, but links to protocol & biosample via uuid.
 
 
@@ -83,8 +84,8 @@ class Specimen(
     preparation_method: List[UUID] = Field()
 
 
-class Biosample(
-    semantic_models.Biosample,
+class BioSample(
+    semantic_models.BioSample,
     DocumentMixin,
     UserIdentifiedObject,
 ):
@@ -98,6 +99,7 @@ class ImageAnnotationDataset(
 ):
     image: List[UUID] = Field()
     file: List[UUID] = Field()
+    annotation_file: List[UUID] = Field()
     submitted_in_study: UUID = Field()
     annotation_method: UUID = Field()
 
@@ -106,10 +108,19 @@ class AnnotationFileReference(
     semantic_models.AnnotationFileReference,
     DocumentMixin,
 ):
-    represenatation: List[UUID] = Field()
-    source_image: UUID = Field()
+    source_image: List[UUID] = Field()
     submission_dataset: UUID = Field()
     creation_process: UUID = Field()
+
+
+class DerivedImage(
+    semantic_models.DerivedImage,
+    DocumentMixin,
+):
+    source_image: List[UUID] = Field()
+    submission_dataset: UUID = Field()
+    creation_process: UUID = Field()
+    representation: List[UUID] = Field()
 
 
 class AnnotationMethod(
@@ -117,4 +128,4 @@ class AnnotationMethod(
     DocumentMixin,
     UserIdentifiedObject,
 ):
-    pass
+    source_dataset: List[Union[UUID, AnyUrl]]
