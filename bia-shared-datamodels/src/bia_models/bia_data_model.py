@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import semantic_models
 from pydantic import BaseModel, Field, AnyUrl
 from typing import List, Optional, Union
@@ -48,7 +50,15 @@ class ExperimentalImagingDataset(
     image: List[UUID] = Field()
     file: List[UUID] = Field()
     submitted_in_study: UUID = Field()
+    specimen_preparation_method: List[UUID] = Field()
+    acquisition_method: List[UUID] = Field()
+    biological_entity: List[UUID] = Field()
     # we include image analysis and correlation
+
+
+class Specimem(semantic_models.Specimen):
+    preparation_method: List[UUID] = Field()
+    sample_of: List[UUID] = Field()
 
 
 class ExperimentallyCapturedImage(
@@ -58,7 +68,8 @@ class ExperimentallyCapturedImage(
     acquisition_process: List[UUID] = Field()
     representation: List[UUID] = Field()
     submission_dataset: UUID = Field()
-    # note Specimen is included in image document, but links to protocol & biosample via uuid.
+    subject: Specimen = Field()
+    # note Specimen is included in image document, but needs to be overriden to link to protocol & biosample via uuid.
 
 
 class ImageAcquisition(
