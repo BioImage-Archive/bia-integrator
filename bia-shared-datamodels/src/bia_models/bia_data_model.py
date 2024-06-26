@@ -56,7 +56,7 @@ class ExperimentalImagingDataset(
     # we include image analysis and correlation
 
 
-class Specimem(semantic_models.Specimen):
+class Specimen(semantic_models.Specimen):
     preparation_method: List[UUID] = Field()
     sample_of: List[UUID] = Field()
 
@@ -86,13 +86,6 @@ class SpecimenPrepartionProtocol(
     UserIdentifiedObject,
 ):
     pass
-
-
-class Specimen(
-    semantic_models.Specimen,
-):
-    sample_of: List[UUID] = Field()
-    preparation_method: List[UUID] = Field()
 
 
 class BioSample(
