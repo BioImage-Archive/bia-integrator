@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import semantic_models
-from pydantic import BaseModel, Field, AnyUrl
+from pydantic import BaseModel, Field, AnyUrl, conlist
 from typing import List, Optional, Union
 from uuid import UUID
 
@@ -57,8 +57,8 @@ class ExperimentalImagingDataset(
 
 
 class Specimen(semantic_models.Specimen):
-    preparation_method: List[UUID] = Field()
-    sample_of: List[UUID] = Field()
+    preparation_method: conlist(item_type=UUID, min_length=1) = Field()
+    sample_of: conlist(item_type=UUID, min_length=1) = Field()
 
 
 class ExperimentallyCapturedImage(

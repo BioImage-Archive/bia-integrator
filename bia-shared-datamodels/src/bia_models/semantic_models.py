@@ -404,7 +404,7 @@ class ImageAcquisition(BaseModel):
     imaging_instrument_description: str = Field(
         description="""Names, types, or description of how the instruments used to create the image."""
     )
-    image_acquistion_parameters: str = Field(
+    image_acquisition_parameters: str = Field(
         description="""Parameters relevant to how the image was taken, such as instrument settings."""
     )
     fbbi_id: List[str] = Field(
