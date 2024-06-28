@@ -130,6 +130,10 @@ class Study(DocumentMixin):
     attribute: dict = Field(
         description="""Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."""
     )
+    # Override optional description in DocumentMixin
+    description: str = Field(
+        None, description="""Brief description of the scientific document."""
+    )
 
 
 class Publication(DocumentMixin):
