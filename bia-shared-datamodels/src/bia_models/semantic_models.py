@@ -296,9 +296,9 @@ class ImageRepresentation(BaseModel):
         None,
         description="""Number of channels of the image.""",
     )
-    size_t: Optional[float] = Field(
+    size_t: Optional[int] = Field(
         None,
-        description="""temporal dimension of the data array of the image (in seconds???).""",
+        description="""Size of temporal dimension of the data array of the image).""",
     )
     image_viewer_setting: Optional[List[RenderedView]] = Field(
         None,
