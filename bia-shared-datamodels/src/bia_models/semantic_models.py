@@ -130,6 +130,10 @@ class Study(DocumentMixin):
     attribute: dict = Field(
         description="""Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."""
     )
+    # Override optional description in DocumentMixin
+    description: str = Field(
+        None, description="""Brief description of the scientific document."""
+    )
 
 
 class Publication(DocumentMixin):
@@ -296,9 +300,9 @@ class ImageRepresentation(BaseModel):
         None,
         description="""Number of channels of the image.""",
     )
-    size_t: Optional[float] = Field(
+    size_t: Optional[int] = Field(
         None,
-        description="""temporal dimension of the data array of the image (in seconds???).""",
+        description="""Size of temporal dimension of the data array of the image).""",
     )
     image_viewer_setting: Optional[List[RenderedView]] = Field(
         None,
@@ -404,7 +408,7 @@ class ImageAcquisition(BaseModel):
     imaging_instrument_description: str = Field(
         description="""Names, types, or description of how the instruments used to create the image."""
     )
-    image_acquistion_parameters: str = Field(
+    image_acquisition_parameters: str = Field(
         description="""Parameters relevant to how the image was taken, such as instrument settings."""
     )
     fbbi_id: List[str] = Field(
