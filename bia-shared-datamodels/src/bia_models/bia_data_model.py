@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import semantic_models
-from pydantic import BaseModel, Field, AnyUrl, conlist
+from pydantic import BaseModel, Field, AnyUrl
 from typing import List, Optional, Union
 from uuid import UUID
 
@@ -26,7 +26,7 @@ class Study(
 ):
     experimental_imaging_component: List[UUID] = Field()
     annotation_component: List[UUID] = Field()
-    author: conlist(item_type=semantic_models.Contributor, min_length=1) = Field()
+    author: semantic_models.Contributor = Field(min_length=1)
     description: str = Field()
 
 
