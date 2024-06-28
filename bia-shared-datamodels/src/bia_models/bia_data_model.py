@@ -26,7 +26,7 @@ class Study(
 ):
     experimental_imaging_component: List[UUID] = Field()
     annotation_component: List[UUID] = Field()
-    author: semantic_models.Contributor = Field(min_length=1)
+    author: List[semantic_models.Contributor] = Field(min_length=1)
     description: str = Field()
 
 
