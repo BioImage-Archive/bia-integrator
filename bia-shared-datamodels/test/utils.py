@@ -343,9 +343,11 @@ def get_template_study() -> bia_data_model.Study:
             "author": [contributor.model_dump(),],
             "title": "Test publication",
             "release_date": "2024-06-23",
+            "keyword": ["Template keyword1", "Template keyword2",],
             # Defined in study
             "experimental_imaging_component": [uuid4(),],
             "annotation_component": [uuid4(),],
+            "description": "Template description",
         }
     )
     return study

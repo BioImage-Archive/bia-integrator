@@ -26,6 +26,8 @@ class Study(
 ):
     experimental_imaging_component: List[UUID] = Field()
     annotation_component: List[UUID] = Field()
+    author: conlist(item_type=semantic_models.Contributor, min_length=1) = Field()
+    description: str = Field()
 
 
 class FileReference(

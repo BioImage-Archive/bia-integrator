@@ -1,4 +1,6 @@
+from uuid import uuid4
 import pytest
+from pydantic import ValidationError
 from . import utils
 from .utils import (
     bia_data_model,
@@ -42,3 +44,16 @@ from .utils import (
 def test_create_models(expected_model_type, model_creation_func):
     expected_model = model_creation_func()
     assert type(expected_model) is expected_model_type
+
+
+def test_create_specimen_with_empty_lists_fails():
+    with pytest.raises(ValidationError):
+        specimen = bia_data_model.Specimen.model_validate(
+            {"sample_of": [], "preparation_method": [],}
+        )
+        specimen = bia_data_model.Specimen.model_validate(
+            {"sample_of": [uuid4()], "preparation_method": [],}
+        )
+        specimen = bia_data_model.Specimen.model_validate(
+            {"sample_of": [], "preparation_method": [uuid4()],}
+        )
