@@ -59,8 +59,8 @@ class ExperimentalImagingDataset(
 
 
 class Specimen(semantic_models.Specimen):
-    preparation_method: conlist(item_type=UUID, min_length=1) = Field()
-    sample_of: conlist(item_type=UUID, min_length=1) = Field()
+    preparation_method: List[UUID] = Field(min_length=1)
+    sample_of: List[UUID] = Field(min_length=1)
 
 
 class ExperimentallyCapturedImage(
