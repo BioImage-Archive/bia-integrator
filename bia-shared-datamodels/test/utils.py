@@ -155,7 +155,7 @@ def get_template_derived_image() -> bia_data_model.DerivedImage:
                 get_template_image_representation().uuid,
             ],
             "submission_dataset": get_template_image_annotation_dataset().uuid,
-            "creation_process": get_template_annotation_method().uuid,
+            "creation_process": [get_template_annotation_method().uuid],
             "representation": [
                 get_template_image_representation().uuid,
             ],
@@ -188,7 +188,7 @@ def get_template_image_annotation_dataset() -> bia_data_model.ImageAnnotationDat
             "file": [],  # This should be a list of FileReference UUIDs ...
             "annotation_file": [],  # This should be a list of AnnotationFileReference UUIDs ...
             "submitted_in_study": get_template_study().uuid,
-            "annotation_method": get_template_annotation_method().uuid,
+            "annotation_method": [get_template_annotation_method().uuid],
             "file_reference_count": 0,
             "image_count": 0,
             "example_image_uri": ["https://dummy.url.org"],
@@ -294,7 +294,7 @@ def get_template_annotation_file_reference() -> bia_data_model.AnnotationFileRef
             ],
             "transformation_description": "Template transformation description",
             "spatial_information": "Template spatial information",
-            "creation_process": get_template_annotation_method().uuid,
+            "creation_process": [get_template_annotation_method().uuid],
         }
     )
 
@@ -383,7 +383,7 @@ def get_template_study() -> bia_data_model.Study:
         {
             "uuid": uuid4(),
             "accession_id": "S-BIADTEST",
-            "license": semantic_models.LicenseType.CC0,
+            "licence": semantic_models.LicenceType.CC0,
             "attribute": {},
             "related_publication": [],
             # From DocumentMixin

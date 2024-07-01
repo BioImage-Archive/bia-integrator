@@ -107,7 +107,7 @@ class ImageAnnotationDataset(
     file: List[UUID] = Field()
     annotation_file: List[UUID] = Field()
     submitted_in_study: UUID = Field()
-    annotation_method: UUID = Field()
+    annotation_method: List[UUID] = Field()
 
 
 class AnnotationFileReference(
@@ -116,7 +116,7 @@ class AnnotationFileReference(
 ):
     source_image: List[UUID] = Field()
     submission_dataset: UUID = Field()
-    creation_process: UUID = Field()
+    creation_process: List[UUID] = Field()
 
 
 class DerivedImage(
@@ -125,7 +125,7 @@ class DerivedImage(
 ):
     source_image: List[UUID] = Field()
     submission_dataset: UUID = Field()
-    creation_process: UUID = Field()
+    creation_process: List[UUID] = Field()
     representation: List[UUID] = Field()
 
 
