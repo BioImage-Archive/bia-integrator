@@ -103,7 +103,7 @@ class Study(DocumentMixin):
     """
 
     accession_id: str = Field(description="""Unique ID provided by BioStudies.""")
-    license: LicenseType = Field(
+    licence: LicenceType = Field(
         description="""The license under which the data associated with the study is made avaliable."""
     )
     see_also: Optional[List[ExternalReference]] = Field(
@@ -189,7 +189,7 @@ class FundingBody(BaseModel):
     )
 
 
-class LicenseType(str, Enum):
+class LicenceType(str, Enum):
     # No Copyright. You can copy, modify, distribute and perform the work, even for commercial purposes, all without asking permission.
     CC0 = "CC0"
     # You are free to: Share — copy and redistribute the material in any medium or format. Adapt — remix, transform, and build upon the material  for any purpose, even commercially. You must give appropriate credit, provide a link to the license, and indicate if changes were made.  You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
@@ -207,7 +207,7 @@ class DatasetMixin(BaseModel):
     """
 
     file: List[FileReference] = Field(
-        description="""Files associated with the dataset"""
+        description="""Files associated with the dataset."""
     )
     file_reference_count: int = Field(
         description="""Number of files associated with the study."""
@@ -516,7 +516,7 @@ class ImageAnnotationDataset(DatasetMixin):
     image: List[DerivedImage] = Field(
         description="""Images associated with the dataset."""
     )
-    example_image_uri: list[str] = Field(
+    example_image_uri: List[str] = Field(
         description="A viewable image that is typical of the dataset."
     )
     image_count: int = Field(
@@ -529,13 +529,13 @@ class AnnotationMethod(ProtocolMixin):
     Information about the annotation process, such as methods used, or how much of a dataset was annotated.
     """
 
-    source_dataset: List[Union[ExperimentalImagingDataset | AnyUrl]] = Field(
+    source_dataset: Optional[List[Union[ExperimentalImagingDataset | AnyUrl]]] = Field(
         description="""The datasets that were annotated."""
     )
-    annotation_criteria: str = Field(
+    annotation_criteria: Optional[str] = Field(
         description="""Rules used to generate annotations."""
     )
-    annotation_coverage: str = Field(
+    annotation_coverage: Optional[str] = Field(
         description="""Which images from the dataset were annotated, and what percentage of the data has been annotated from what is available."""
     )
     method_type: AnnotationType = Field(
@@ -551,13 +551,13 @@ class AnnotationMixin(BaseModel):
     source_image: List[ImageRepresentation] = Field(
         description="""The original image(s) this file is annotating."""
     )
-    transformation_description: str = Field(
+    transformation_description: Optional[str] = Field(
         description="""Any transformations required to link annotations to the image."""
     )
-    spatial_information: str = Field(
+    spatial_information: Optional[str] = Field(
         description="""Spatial information for non-pixel annotations."""
     )
-    creation_process: AnnotationMethod = Field(
+    creation_process: List[AnnotationMethod] = Field(
         description="""The process that was followed to create the annotation."""
     )
 
