@@ -1,26 +1,50 @@
+import hashlib
+import uuid
 from typing import List, Any, Dict, Optional, Tuple
 from .biostudies import Submission, attributes_to_dict, Section, Attribute
-from .shared_models import Study, Organisation, Agent 
 from src.bia_models import bia_data_model, semantic_models
 
-def get_study_from_submission(submission: Submission) -> Study:
+def get_study(submission: Submission) -> bia_data_model.Study:
     """Return an API study model populated from the submission
 
     """
     
     submission_attributes = attributes_to_dict(submission.attributes)
-    authors = find_and_convert_authors(submission)
+    contributors = get_contributor(submission)
+    grants = get_grant(submission)
+
+    study_attributes = attributes_to_dict(submission.section.attributes)
+
     study_dict = {
         "accession_id": submission.accno,
-        "release_date": submission_attributes["ReleaseDate"],
-        "title": submission_attributes.get("Title", ""),
-        "author": authors,
-        "file_reference_count": 0,
-        "image_count": 0,
+        # TODO: Do more robust search for title - sometimes it is in
+        #       actual submission - see old ingest code
+        "title": study_attributes.pop("Title", None),
+        "description": study_attributes.pop("Description", None),
+        "release_date": submission_attributes.pop("ReleaseDate"),
+        "licence": get_licence(study_attributes),
+        "acknowledgement": study_attributes.pop("Acknowledgements", None),
+        "funding_statement": study_attributes.pop("Funding statement", None),
+        "keyword": study_attributes.pop("Keywords", []),
+        "author": [c.model_dump() for c in contributors],
+        "grant": [g.model_dump() for g in grants],
+        "attribute": study_attributes,
+        "experimental_imaging_component": [],
+        "annotation_component": [],
+
     }
-    study = Study.model_validate(study_dict)
+    study_uuid = dict_to_uuid(study_dict, ["accession_id", "title", "release_date",])
+    study_dict["uuid"] = study_uuid
+    study = bia_data_model.Study.model_validate(study_dict)
 
     return study
+
+def get_licence(submission_attributes: Dict[str, Any]) -> semantic_models.LicenceType:
+    """Return enum version of licence of study
+
+    """
+    licence = submission_attributes.pop("License").replace(" ", "_")
+    return semantic_models.LicenceType(licence)
 
 def get_external_reference(submission: Submission) -> List[semantic_models.ExternalReference]:
     """Map biostudies.Submission.Link to semantic_models.ExternalReference
@@ -197,53 +221,6 @@ def find_sections_recursive(
 
     return results
 
-def find_and_convert_authors(submission: Submission) -> List[Agent]:
-    """Return API models of authors in submission
-
-    """
-    organisation_sections = find_sections_recursive(
-        submission.section, ["organisation", "organization"], []
-    )
-
-    key_mapping = [
-        ("display_name", "Name", None),
-        ("rorid", "RORID", None),
-        # TODO: Agent in shared models needs emailStr to be optional
-        ("contact_email", "E-mail", "not@supplied.com"),
-    ]
-
-    organisation_dict = {}
-    for section in organisation_sections:
-        attr_dict = attributes_to_dict(section.attributes)
-
-        model_dict = {k: attr_dict.get(v, default) for k, v, default in key_mapping}
-        organisation_dict[section.accno] = Organisation.model_validate(model_dict)
-
-    key_mapping = [
-        ("display_name", "Name", "Not supplied"),
-        ("contact_email", "E-mail", "not@supplied.com"),
-        # TODO: Agent/Person or maybe create a new Author class for this
-        # in shared models?
-        #("role", "Role", None),
-        ("memberOf", "affiliation", []),
-        # TODO: Nowhere to store orcid in Agent. Need Person?
-        #("orcid", "ORCID", None),
-    ]
-    author_sections = find_sections_recursive(submission.section, ["author",], [])
-    authors = []
-    for section in author_sections:
-        attr_dict = mattributes_to_dict(section.attributes, organisation_dict)
-        model_dict = {k: attr_dict.get(v, default) for k, v, default in key_mapping}
-        # TODO: Find out if authors can have more than one
-        # organisation ->what are the implications for mattributes_to_dict?
-        if model_dict["memberOf"] is None:
-            model_dict["memberOf"] = []
-        elif type(model_dict["memberOf"]) is not list:
-            model_dict["memberOf"] = [model_dict["memberOf"],]
-        authors.append(Agent.model_validate(model_dict))
-
-    return authors
-
 # TODO check type of reference_dict. Possibly Dict[str, str], but need to
 # verify. This also determines type returned by function
 def mattributes_to_dict(attributes: List[Attribute], reference_dict: Dict[str, Any]) -> Dict[str, Any]:
@@ -259,3 +236,14 @@ def mattributes_to_dict(attributes: List[Attribute], reference_dict: Dict[str, A
             return attr.value
 
     return {attr.name: value_or_dereference(attr) for attr in attributes}
+
+
+# TODO: Need to use a canonical version for this function e.g. from API
+def dict_to_uuid(my_dict: Dict[str, Any], attributes_to_consider: List[str]) -> str:
+    """Create uuid from specific keys in a dictionary
+
+    """
+
+    seed = "".join([f"{my_dict[attr]}" for attr in attributes_to_consider])
+    hexdigest = hashlib.md5(seed.encode("utf-8")).hexdigest()
+    return str(uuid.UUID(version=4, hex=hexdigest))

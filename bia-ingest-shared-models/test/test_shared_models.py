@@ -11,6 +11,7 @@ from bia_ingest_sm import conversion
         (utils.get_test_contributor, conversion.get_contributor,),
 
         (utils.get_test_grant, conversion.get_grant,),
+        (utils.get_test_study, conversion.get_study,),
         # Not testing as we need to deal with links that are not proper
         # urls
         #(utils.get_test_external_reference, conversion.get_external_reference,),

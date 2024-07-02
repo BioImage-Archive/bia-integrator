@@ -7,6 +7,7 @@
 
 from typing import Dict, List
 from src.bia_models import bia_data_model, semantic_models
+from bia_ingest_sm.conversion import dict_to_uuid
 from uuid import uuid4
 
 template_taxon = semantic_models.Taxon.model_validate(
@@ -445,33 +446,32 @@ def get_test_grant() -> List[semantic_models.Grant]:
     })
     return [grant1, grant2,]
 
-def get_template_study() -> bia_data_model.Study:
-    contributor = get_template_contributor()
-    study = bia_data_model.Study.model_validate(
-        {
-            "uuid": uuid4(),
-            "accession_id": "S-BIADTEST",
-            "license": semantic_models.LicenseType.CC0,
-            "attribute": {},
-            "related_publication": [],
-            # From DocumentMixin
-            "author": [
-                contributor.model_dump(),
-            ],
-            "title": "Test publication",
-            "release_date": "2024-06-23",
-            "keyword": [
-                "Template keyword1",
-                "Template keyword2",
-            ],
-            # Defined in study
-            "experimental_imaging_component": [
-                uuid4(),
-            ],
-            "annotation_component": [
-                uuid4(),
-            ],
-            "description": "Template description",
-        }
-    )
+def get_test_study() -> bia_data_model.Study:
+    contributor = get_test_contributor()
+    grant = get_test_grant()
+    study_dict = {
+        "accession_id": "S-BIADTEST",
+        "title": "A test submission with title greater than 25 characters",
+        "description": "A test submission to allow testing without retrieving from bia server",
+        "release_date": "2024-02-13",
+        "licence": semantic_models.LicenceType.CC0,
+        "acknowledgement": "We thank you",
+        "funding_statement": "This work was funded by the EBI",
+        "attribute": {
+
+        },
+        "related_publication": [],
+        "author": [ c.model_dump() for c in contributor ],
+        "keyword": [
+            "Test keyword1",
+            "Test keyword2",
+            "Test keyword3",
+        ],
+        "grant": [ g.model_dump() for g in grant ],
+        "experimental_imaging_component": [],
+        "annotation_component": [],
+    }
+    study_uuid = dict_to_uuid(study_dict, ["accession_id", "title", "release_date",])
+    study_dict["uuid"] = study_uuid
+    study = bia_data_model.Study.model_validate(study_dict)
     return study
