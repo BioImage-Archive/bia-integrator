@@ -151,9 +151,19 @@ def load_submission(accession_id: str) -> Submission:
     return submission
 
 
-def attributes_to_dict(attributes: List[Attribute]) -> Dict[str, Optional[str]]:
+def attributes_to_dict(attributes: List[Attribute]) -> Dict[str, Optional[str|List[str]]]:
 
-    return {attr.name: attr.value for attr in attributes}
+    attr_dict = {}
+    for attr in attributes:
+        if attr.name in attr_dict:
+            if type(attr_dict[attr.name]) is list:
+                attr_dict[attr.name].append(attr.value)
+            else:
+                attr_dict[attr.name] = [attr_dict[attr.name],]
+                attr_dict[attr.name].append(attr.value)
+        else:
+            attr_dict[attr.name] = attr.value
+    return attr_dict
 
 
 def find_file_lists_in_section(
