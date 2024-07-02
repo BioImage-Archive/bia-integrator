@@ -5,6 +5,7 @@ description = "Schemas and models for working with the BioImage Archive's (Metad
 authors = ["Francois Sherwood <fsherwood@ebi.ac.uk>"]
 license = "Apache Software License 2.0"
 readme = "README.md"
+packages = [{include = "src/bia_models"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
