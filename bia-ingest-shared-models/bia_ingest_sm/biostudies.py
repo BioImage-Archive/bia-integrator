@@ -151,7 +151,9 @@ def load_submission(accession_id: str) -> Submission:
     return submission
 
 
-def attributes_to_dict(attributes: List[Attribute]) -> Dict[str, Optional[str|List[str]]]:
+def attributes_to_dict(
+    attributes: List[Attribute],
+) -> Dict[str, Optional[str | List[str]]]:
 
     attr_dict = {}
     for attr in attributes:
@@ -159,7 +161,9 @@ def attributes_to_dict(attributes: List[Attribute]) -> Dict[str, Optional[str|Li
             if type(attr_dict[attr.name]) is list:
                 attr_dict[attr.name].append(attr.value)
             else:
-                attr_dict[attr.name] = [attr_dict[attr.name],]
+                attr_dict[attr.name] = [
+                    attr_dict[attr.name],
+                ]
                 attr_dict[attr.name].append(attr.value)
         else:
             attr_dict[attr.name] = attr.value
@@ -206,11 +210,11 @@ def find_file_lists_in_submission(
     return find_file_lists_in_section(submission.section, [])
 
 
-# KB 14/06/2024 commented out as I need to replace parse_raw_as with 
+# KB 14/06/2024 commented out as I need to replace parse_raw_as with
 # TypeAdapter for pydantic >=2
-#def flist_from_flist_fname(
+# def flist_from_flist_fname(
 #    accession_id: str, flist_fname: str, extra_attribute: Union[List[str], str] = None
-#) -> List[File]:
+# ) -> List[File]:
 #
 #    flist_url = FLIST_URI_TEMPLATE.format(
 #        accession_id=accession_id, flist_fname=flist_fname

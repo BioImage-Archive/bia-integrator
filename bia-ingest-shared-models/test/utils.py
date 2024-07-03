@@ -471,7 +471,7 @@ def get_test_study() -> bia_data_model.Study:
         "experimental_imaging_component": [],
         "annotation_component": [],
     }
-    study_uuid = dict_to_uuid(study_dict, ["accession_id", "title", "release_date",])
+    study_uuid = dict_to_uuid(study_dict, ["accession_id", ])
     study_dict["uuid"] = study_uuid
     study = bia_data_model.Study.model_validate(study_dict)
     return study

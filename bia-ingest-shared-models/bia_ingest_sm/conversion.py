@@ -1,28 +1,38 @@
+import re
 import hashlib
 import uuid
 from typing import List, Any, Dict, Optional, Tuple
 from .biostudies import Submission, attributes_to_dict, Section, Attribute
 from src.bia_models import bia_data_model, semantic_models
 
+
 def get_study(submission: Submission) -> bia_data_model.Study:
     """Return an API study model populated from the submission
 
     """
-    
+
     submission_attributes = attributes_to_dict(submission.attributes)
     contributors = get_contributor(submission)
     grants = get_grant(submission)
 
     study_attributes = attributes_to_dict(submission.section.attributes)
 
+    study_title = study_title_from_submission(submission)
+    if "Title" in study_attributes:
+        study_attributes.pop("Title")
+
+    licence = get_licence(study_attributes)
+    if "License" in study_attributes:
+        study_attributes.pop("License")
+
     study_dict = {
         "accession_id": submission.accno,
         # TODO: Do more robust search for title - sometimes it is in
         #       actual submission - see old ingest code
-        "title": study_attributes.pop("Title", None),
+        "title": study_title,
         "description": study_attributes.pop("Description", None),
         "release_date": submission_attributes.pop("ReleaseDate"),
-        "licence": get_licence(study_attributes),
+        "licence": licence,
         "acknowledgement": study_attributes.pop("Acknowledgements", None),
         "funding_statement": study_attributes.pop("Funding statement", None),
         "keyword": study_attributes.pop("Keywords", []),
@@ -31,28 +41,41 @@ def get_study(submission: Submission) -> bia_data_model.Study:
         "attribute": study_attributes,
         "experimental_imaging_component": [],
         "annotation_component": [],
-
     }
-    study_uuid = dict_to_uuid(study_dict, ["accession_id", "title", "release_date",])
+    study_uuid = dict_to_uuid(study_dict, ["accession_id",])
     study_dict["uuid"] = study_uuid
     study = bia_data_model.Study.model_validate(study_dict)
 
     return study
 
-def get_licence(submission_attributes: Dict[str, Any]) -> semantic_models.LicenceType:
+
+def study_title_from_submission(submission: Submission) -> str:
+
+    submission_attr_dict = attributes_to_dict(submission.attributes)
+    study_section_attr_dict = attributes_to_dict(submission.section.attributes)
+
+    study_title = submission_attr_dict.get("Title", None)
+    if not study_title:
+        study_title = study_section_attr_dict.get("Title", "Unknown")
+
+    return study_title
+
+
+def get_licence(study_attributes: Dict[str, Any]) -> semantic_models.LicenceType:
     """Return enum version of licence of study
 
     """
-    licence = submission_attributes.pop("License").replace(" ", "_")
+    licence = re.sub(r"\s", "_", study_attributes.get("License", "CC0"))
     return semantic_models.LicenceType(licence)
 
-def get_external_reference(submission: Submission) -> List[semantic_models.ExternalReference]:
+
+def get_external_reference(
+    submission: Submission,
+) -> List[semantic_models.ExternalReference]:
     """Map biostudies.Submission.Link to semantic_models.ExternalReference
 
     """
-    sections = find_sections_recursive(
-        submission.section, ["links",]
-    )
+    sections = find_sections_recursive(submission.section, ["links",])
 
     key_mapping = [
         ("link", "url", None),
@@ -64,8 +87,11 @@ def get_external_reference(submission: Submission) -> List[semantic_models.Exter
     for section in sections:
         attr_dict = attributes_to_dict(section.attributes)
         model_dict = {k: attr_dict.get(v, default) for k, v, default in key_mapping}
-        return_list.append(semantic_models.External_reference.model_validate(model_dict))
+        return_list.append(
+            semantic_models.External_reference.model_validate(model_dict)
+        )
     return return_list
+
 
 # TODO: Put comments and docstring
 def get_grant(submission: Submission) -> List[semantic_models.Grant]:
@@ -73,7 +99,9 @@ def get_grant(submission: Submission) -> List[semantic_models.Grant]:
     key_mapping = [
         ("id", "grant_id", None),
     ]
-    grant_dict = get_generic_section_as_dict(submission, ["Funding",], semantic_models.Grant, key_mapping)
+    grant_dict = get_generic_section_as_dict(
+        submission, ["Funding",], semantic_models.Grant, key_mapping
+    )
 
     grant_list = []
     for k, v in grant_dict.items():
@@ -81,19 +109,28 @@ def get_grant(submission: Submission) -> List[semantic_models.Grant]:
             v.funder.append(funding_body_dict[k])
         grant_list.append(v)
     return grant_list
-    
+
+
 # TODO: Put comments and docstring
 def get_funding_body(submission: Submission) -> semantic_models.FundingBody:
-    
+
     key_mapping = [
         ("display_name", "Agency", None,),
     ]
-    funding_body = get_generic_section_as_dict(submission, ["Funding",], semantic_models.FundingBody, key_mapping)
+    funding_body = get_generic_section_as_dict(
+        submission, ["Funding",], semantic_models.FundingBody, key_mapping
+    )
     return funding_body
 
 
 # TODO: Put comments and docstring
-def get_generic_section_as_list(submission: Submission, section_name: List[str], mapped_object: [Any], key_mapping: List[Tuple[str, str, [str|None|List]]], mapped_attrs_dict: Optional[Dict[str, Any]] = None) -> List[Any]:
+def get_generic_section_as_list(
+    submission: Submission,
+    section_name: List[str],
+    mapped_object: [Any],
+    key_mapping: List[Tuple[str, str, [str | None | List]]],
+    mapped_attrs_dict: Optional[Dict[str, Any]] = None,
+) -> List[Any]:
     """Map biostudies.Submission objects to either semantic_models or bia_data_model equivalent
 
     """
@@ -109,8 +146,14 @@ def get_generic_section_as_list(submission: Submission, section_name: List[str],
         return_list.append(mapped_object.model_validate(model_dict))
     return return_list
 
+
 # TODO: Put comments and docstring
-def get_generic_section_as_dict(submission: Submission, section_name: List[str], mapped_object: [Any], key_mapping: List[Tuple[str, str, [str|None|List]]]) -> Dict[str,Any]:
+def get_generic_section_as_dict(
+    submission: Submission,
+    section_name: List[str],
+    mapped_object: [Any],
+    key_mapping: List[Tuple[str, str, [str | None | List]]],
+) -> Dict[str, Any]:
     """Map biostudies.Submission objects to dict containing either semantic_models or bia_data_model equivalent
 
     """
@@ -122,6 +165,7 @@ def get_generic_section_as_dict(submission: Submission, section_name: List[str],
         model_dict = {k: attr_dict.get(v, default) for k, v, default in key_mapping}
         return_dict[section.accno] = mapped_object.model_validate(model_dict)
     return return_dict
+
 
 def get_affiliation(submission: Submission) -> Dict[str, semantic_models.Affiliation]:
     """Maps biostudies.Submission.Organisation sections to semantic_models.Affiliations
@@ -146,13 +190,17 @@ def get_affiliation(submission: Submission) -> Dict[str, semantic_models.Affilia
         attr_dict = attributes_to_dict(section.attributes)
 
         model_dict = {k: attr_dict.get(v, default) for k, v, default in key_mapping}
-        affiliation_dict[section.accno] = semantic_models.Affiliation.model_validate(model_dict)
+        affiliation_dict[section.accno] = semantic_models.Affiliation.model_validate(
+            model_dict
+        )
 
     return affiliation_dict
 
 
 def get_publication(submission: Submission) -> List[semantic_models.Publication]:
-    publication_sections = find_sections_recursive(submission.section, ["publication",], [])
+    publication_sections = find_sections_recursive(
+        submission.section, ["publication",], []
+    )
     key_mapping = [
         ("doi", "DOI", None),
         ("pubmed_id", "Pubmed ID", None),
@@ -169,11 +217,12 @@ def get_publication(submission: Submission) -> List[semantic_models.Publication]
 
     return publications
 
+
 def get_contributor(submission: Submission) -> List[semantic_models.Contributor]:
     """ Map authors in submission to semantic_model.Contributors
 
     """
-    affiliation_dict = get_affiliation(submission) 
+    affiliation_dict = get_affiliation(submission)
     key_mapping = [
         ("display_name", "Name", None),
         ("contact_email", "E-mail", "not@supplied.com"),
@@ -191,11 +240,13 @@ def get_contributor(submission: Submission) -> List[semantic_models.Contributor]
         if model_dict["affiliation"] is None:
             model_dict["affiliation"] = []
         elif type(model_dict["affiliation"]) is not list:
-            model_dict["affiliation"] = [model_dict["affiliation"],]
+            model_dict["affiliation"] = [
+                model_dict["affiliation"],
+            ]
         contributors.append(semantic_models.Contributor.model_validate(model_dict))
 
     return contributors
-    
+
 
 def find_sections_recursive(
     section: Section, search_types: List[str], results: Optional[List[Section]] = []
@@ -204,7 +255,7 @@ def find_sections_recursive(
 
     """
 
-    search_types_lower = [ s.lower() for s in search_types ]
+    search_types_lower = [s.lower() for s in search_types]
     if section.type.lower() in search_types_lower:
         results.append(section)
 
@@ -221,14 +272,18 @@ def find_sections_recursive(
 
     return results
 
+
 # TODO check type of reference_dict. Possibly Dict[str, str], but need to
 # verify. This also determines type returned by function
-def mattributes_to_dict(attributes: List[Attribute], reference_dict: Dict[str, Any]) -> Dict[str, Any]:
+def mattributes_to_dict(
+    attributes: List[Attribute], reference_dict: Dict[str, Any]
+) -> Dict[str, Any]:
     """Return attributes as dictionary dereferencing attribute references
 
     Return the list of attributes supplied as a dictionary. Any attributes
     whose values are references are 'dereferenced' using the reference_dict
     """
+
     def value_or_dereference(attr):
         if attr.reference:
             return reference_dict[attr.value]
