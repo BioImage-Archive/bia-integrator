@@ -4,6 +4,7 @@ from ..models.repository import Repository
 from .exceptions import DocumentNotFound, InvalidRequestException
 from . import constants
 from .annotator import annotator, Annotator
+from ..logging import log_info, log_error
 
 from typing import List, Optional, Annotated
 from fastapi import APIRouter, Query, Depends, Body

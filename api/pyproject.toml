@@ -22,6 +22,7 @@ ome-types = "^0.4.2"
 #   not directly needed except the latest version crashes the api on start
 xsdata = "23.8"
 lxml = "^4.9.3"
+json-log-formatter = "^1.0"
 
 [tool.poetry.group.dev.dependencies]
 locust = "^2.16.1"

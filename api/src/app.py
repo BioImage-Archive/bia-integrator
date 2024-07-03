@@ -9,6 +9,7 @@ from .api import private
 from .api import admin
 from .api import auth
 from .models.repository import repository_create, Repository
+from .logging import log_error
 
 import uvicorn
 from fastapi import FastAPI, Depends
@@ -17,7 +18,6 @@ from starlette.requests import Request
 from starlette.responses import JSONResponse
 from starlette.status import HTTP_500_INTERNAL_SERVER_ERROR
 from fastapi.middleware.gzip import GZipMiddleware
-import logging
 
 app = FastAPI(
     generate_unique_id_function=lambda route: route.name,
@@ -37,7 +37,7 @@ app.add_middleware(GZipMiddleware, minimum_size=1000)
 
 @app.exception_handler(Exception)
 async def log_exception_handler(request: Request, exc: Exception):
-    logging.error("Unhandled exception:", exc_info=True)
+    log_error("Unhandled exception:", exc_info=True)
 
     return JSONResponse(
         {"detail": "Internal server error"}, status_code=HTTP_500_INTERNAL_SERVER_ERROR
@@ -84,5 +84,4 @@ app.include_router(
 )
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.ERROR)
     uvicorn.run(app, host="0.0.0.0", port=8080)
