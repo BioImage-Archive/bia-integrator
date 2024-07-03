@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import semantic_models
+from . import semantic_models
 from pydantic import BaseModel, Field, AnyUrl
 from typing import List, Optional, Union
 from uuid import UUID
