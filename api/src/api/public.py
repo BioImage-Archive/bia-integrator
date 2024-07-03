@@ -15,7 +15,7 @@ router = APIRouter(tags=[constants.OPENAPI_TAG_PUBLIC, constants.OPENAPI_TAG_PRI
 
 @router.get("/object_info_by_accessions")
 async def get_object_info_by_accession(
-    accessions: List[str] = Query(), db: Repository = Depends(use_cache=True)
+    accessions: List[str] = Query(), db: Repository = Depends()
 ) -> List[api_models.ObjectInfo]:
     query = {
         "accession_id": {
@@ -30,7 +30,7 @@ async def get_study_images_by_alias(
     study_accession: str,
     annotator: Annotated[Annotator, Depends(annotator)],
     aliases: List[str] = Query(),
-    db: Repository = Depends(use_cache=True),
+    db: Repository = Depends(),
 ) -> List[db_models.BIAImage]:
     study_objects_info = await db.get_object_info(
         {
@@ -61,7 +61,7 @@ async def get_study_images_by_alias(
 async def get_study(
     study_uuid: str,
     annotator: Annotated[Annotator, Depends(annotator)],
-    db: Repository = Depends(use_cache=True),
+    db: Repository = Depends(),
 ) -> db_models.BIAStudy:
     study = await db.find_study_by_uuid(study_uuid)
     annotator.annotate_if_needed(study)
@@ -75,7 +75,7 @@ async def get_study_file_references(
     annotator: Annotated[Annotator, Depends(annotator)],
     start_uuid: UUID | None = None,
     limit: Annotated[int, Query(gt=0)] = 10,
-    db: Repository = Depends(use_cache=True),
+    db: Repository = Depends(),
 ) -> List[db_models.FileReference]:
     """
     First item in response is the next item with uuid greater than start_uuid.
@@ -93,7 +93,7 @@ async def search_studies(
     annotator: Annotated[Annotator, Depends(annotator)],
     start_uuid: UUID | None = None,
     limit: Annotated[int, Query(gt=0)] = 10,
-    db: Repository = Depends(use_cache=True),
+    db: Repository = Depends(),
 ) -> List[db_models.BIAStudy]:
     """
     @TODO: Define search criteria for the general case
@@ -113,7 +113,7 @@ async def search_studies(
 async def search_images_exact_match(
     search_filter: Annotated[api_models.SearchImageFilter, Body(embed=False)],
     annotator: Annotated[Annotator, Depends(annotator)],
-    db: Repository = Depends(use_cache=True),
+    db: Repository = Depends(),
 ) -> List[db_models.BIAImage]:
     """
     Exact match search of images with a specific attribute.
@@ -190,7 +190,7 @@ async def search_images_exact_match(
 async def search_file_references_exact_match(
     search_filter: Annotated[api_models.SearchFileReferenceFilter, Body(embed=False)],
     annotator: Annotated[Annotator, Depends(annotator)],
-    db: Repository = Depends(use_cache=True),
+    db: Repository = Depends(),
 ) -> List[db_models.FileReference]:
     """
     Exact match search of file references with a specific attribute.
@@ -263,7 +263,7 @@ async def search_file_references_exact_match(
 async def search_studies_exact_match(
     search_filter: Annotated[api_models.SearchStudyFilter, Body(embed=False)],
     annotator: Annotated[Annotator, Depends(annotator)],
-    db: Repository = Depends(use_cache=True),
+    db: Repository = Depends(),
 ) -> List[db_models.BIAStudy]:
     query = {}
     if search_filter.annotations_any:
@@ -343,7 +343,7 @@ async def get_study_images(
     annotator: Annotated[Annotator, Depends(annotator)],
     start_uuid: UUID | None = None,
     limit: Annotated[int, Query(gt=0)] = 10,
-    db: Repository = Depends(use_cache=True),
+    db: Repository = Depends(),
 ) -> List[db_models.BIAImage]:
     """
     First item in response is the next item with uuid greater than start_uuid.
@@ -360,7 +360,7 @@ async def get_study_images(
 async def get_image(
     image_uuid: UUID,
     annotator: Annotated[Annotator, Depends(annotator)],
-    db: Repository = Depends(use_cache=True),
+    db: Repository = Depends(),
 ) -> db_models.BIAImage:
     image = await db.get_image(uuid=image_uuid)
     annotator.annotate_if_needed(image)
@@ -371,7 +371,7 @@ async def get_image(
 @router.get("/image_acquisitions/{image_acquisition_uuid}")
 async def get_image_acquisition(
     image_acquisition_uuid: UUID,
-    db: Repository = Depends(use_cache=True),
+    db: Repository = Depends(),
 ) -> db_models.ImageAcquisition:
     image_acquisition = await db.get_image_acquisition(uuid=image_acquisition_uuid)
 
@@ -381,7 +381,7 @@ async def get_image_acquisition(
 @router.get("/biosamples/{biosample_uuid}")
 async def get_biosample(
     biosample_uuid: UUID,
-    db: Repository = Depends(use_cache=True),
+    db: Repository = Depends(),
 ) -> db_models.Biosample:
     biosample = await db.get_biosample(uuid=biosample_uuid)
 
@@ -391,7 +391,7 @@ async def get_biosample(
 @router.get("/specimens/{specimen_uuid}")
 async def get_specimen(
     specimen_uuid: UUID,
-    db: Repository = Depends(use_cache=True),
+    db: Repository = Depends(),
 ) -> db_models.Specimen:
     specimen = await db.get_specimen(uuid=specimen_uuid)
 
@@ -400,7 +400,7 @@ async def get_specimen(
 
 @router.get("/images/{image_uuid}/ome_metadata")
 async def get_image_ome_metadata(
-    image_uuid: UUID, db: Repository = Depends(use_cache=True)
+    image_uuid: UUID, db: Repository = Depends()
 ) -> db_models.BIAImageOmeMetadata:
     ome_metadata = await db.get_ome_metadata_for_image(image_uuid)
 
@@ -411,7 +411,7 @@ async def get_image_ome_metadata(
 async def get_file_reference(
     file_reference_uuid: str,
     annotator: Annotated[Annotator, Depends(annotator)],
-    db: Repository = Depends(use_cache=True),
+    db: Repository = Depends(),
 ) -> db_models.FileReference:
     file_reference = await db.get_file_reference(uuid=UUID(file_reference_uuid))
     annotator.annotate_if_needed(file_reference)
@@ -428,7 +428,7 @@ async def get_file_reference(
 async def search_collections(
     annotator: Annotated[Annotator, Depends(annotator)],
     name: Optional[str] = None,
-    db: Repository = Depends(use_cache=True),
+    db: Repository = Depends(),
 ) -> List[db_models.BIACollection]:
     query = {}
     if name:
@@ -444,7 +444,7 @@ async def search_collections(
 async def get_collection(
     collection_uuid: UUID,
     annotator: Annotated[Annotator, Depends(annotator)],
-    db: Repository = Depends(use_cache=True),
+    db: Repository = Depends(),
 ) -> db_models.BIACollection:
     collection = await db.get_collection(uuid=collection_uuid)
     annotator.annotate_if_needed(collection)

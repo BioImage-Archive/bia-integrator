@@ -19,7 +19,7 @@ class Annotator:
 
     async def __call__(
         self,
-        db: Repository = Depends(use_cache=True),
+        db: Repository = Depends(),
         apply_annotations: Annotated[bool, Query()] = False,
     ):
         """
