@@ -13,6 +13,7 @@ from enum import Enum
 import uuid
 import pymongo
 import os
+from pymongo.errors import InvalidOperation
 
 DB_NAME = os.environ["DB_NAME"]
 COLLECTION_BIA_INTEGRATOR = "bia_integrator"
@@ -86,7 +87,10 @@ class Repository:
         self.close()
 
     def close(self):
-        self.connection.close()
+        try:
+            self.connection.close()
+        except InvalidOperation:
+            pass
 
     async def file_references_for_study(
         self, *args, **kwargs
