@@ -5,7 +5,7 @@ from ..api import exceptions
 from .auth import get_current_user
 from . import constants
 from uuid import UUID
-import logging
+from ..logging import log_info
 
 from typing import List
 from fastapi import APIRouter, status, Depends, UploadFile, Response
@@ -25,7 +25,7 @@ async def create_study(
     db: Repository = Depends(),
     overwrite_mode: OverwriteMode = OverwriteMode.FAIL,
 ) -> None:
-    logging.info(f"Creating study {study.accession_id}")
+    log_info(f"Creating study {study.accession_id}")
     db.overwrite_mode = overwrite_mode
     if study.version != 0:
         raise exceptions.InvalidRequestException(
@@ -38,7 +38,7 @@ async def create_study(
 
 @router.patch("/studies", status_code=status.HTTP_200_OK)
 async def update_study(study: db_models.BIAStudy, db: Repository = Depends()) -> None:
-    logging.info(f"Updating study {study.accession_id}. New version: {study.version}")
+    log_info(f"Updating study {study.accession_id}. New version: {study.version}")
     await db.update_doc(study)
 
     return None
@@ -50,7 +50,7 @@ async def update_study(study: db_models.BIAStudy, db: Repository = Depends()) ->
 async def study_refresh_counts(study_uuid: str, db: Repository = Depends()) -> None:
     """Recalculate and persist counts for other objects pointing to this study."""
 
-    logging.info(f"Recalculating reference counts for study {study_uuid}")
+    log_info(f"Recalculating reference counts for study {study_uuid}")
     await db.study_refresh_counts(study_uuid)
 
     return None
@@ -63,7 +63,7 @@ async def create_images(
     db: Repository = Depends(),
     overwrite_mode: OverwriteMode = OverwriteMode.FAIL,
 ) -> api_models.BulkOperationResponse:
-    logging.info(
+    log_info(
         f"Creating {len(study_images)} images. First image attached to study: {study_images[0].study_uuid if len(study_images) else 'EMPTY LIST'}"
     )
     db.overwrite_mode = overwrite_mode
@@ -102,9 +102,7 @@ async def update_image(
     """Bulk update not available - update_many only has one filter for the entire update
     @TODO: Find common bulk update usecases and map them to mongo operations"""
 
-    logging.info(
-        f"Updating image {study_image.uuid}. New version: {study_image.version}"
-    )
+    log_info(f"Updating image {study_image.uuid}. New version: {study_image.version}")
 
     await db.validate_object_dependency(
         study_image,
@@ -132,7 +130,7 @@ async def create_image_representation(
     representation: db_models.BIAImageRepresentation,
     db: Repository = Depends(),
 ) -> None:
-    logging.info(f"Adding an image representation to image {image_uuid}")
+    log_info(f"Adding an image representation to image {image_uuid}")
     await db.list_item_push(image_uuid, "representations", representation)
 
     return None
@@ -145,7 +143,7 @@ async def create_file_references(
     db: Repository = Depends(),
     overwrite_mode: OverwriteMode = OverwriteMode.FAIL,
 ) -> api_models.BulkOperationResponse:
-    logging.info(
+    log_info(
         f"Creating {len(file_references)} file references. First file reference attached to study: {file_references[0].study_uuid if len(file_references) else 'EMPTY LIST'}"
     )
     db.overwrite_mode = overwrite_mode
@@ -180,7 +178,7 @@ async def create_file_references(
 async def update_file_reference(
     file_reference: db_models.FileReference, db: Repository = Depends()
 ) -> None:
-    logging.info(
+    log_info(
         f"Updating file reference {file_reference.uuid}. New version: {file_reference.version}"
     )
     # await db.validate_uuid_type(file_reference.study_uuid, db_models.BIAStudy)
@@ -201,7 +199,7 @@ async def create_collection(
     db: Repository = Depends(),
     overwrite_mode: OverwriteMode = OverwriteMode.FAIL,
 ) -> None:
-    logging.info(f"Creating collection {collection.uuid}")
+    log_info(f"Creating collection {collection.uuid}")
     db.overwrite_mode = overwrite_mode
     for study_uuid in collection.study_uuids:
         await db.find_study_by_uuid(study_uuid)
@@ -220,7 +218,7 @@ async def create_image_acquisition(
     db: Repository = Depends(),
     overwrite_mode: OverwriteMode = OverwriteMode.FAIL,
 ) -> None:
-    logging.info(f"Creating Image Acquisition {image_acquisition.uuid}")
+    log_info(f"Creating Image Acquisition {image_acquisition.uuid}")
     db.overwrite_mode = overwrite_mode
     # await db.validate_uuid_type(image_acquisition.specimen_uuid, db_models.Specimen)
     await db.validate_object_dependency(
@@ -238,7 +236,7 @@ async def create_image_acquisition(
 async def update_image_acquisition(
     image_acquisition: db_models.ImageAcquisition, db: Repository = Depends()
 ) -> None:
-    logging.info(
+    log_info(
         f"Updating Image acquisition {image_acquisition.uuid}. New version: {image_acquisition.version}"
     )
     # await db.validate_uuid_type(image_acquisition.specimen_uuid, db_models.Specimen)
@@ -259,7 +257,7 @@ async def create_specimen(
     db: Repository = Depends(),
     overwrite_mode: OverwriteMode = OverwriteMode.FAIL,
 ) -> None:
-    logging.info(f"Creating specimen {specimen.uuid}")
+    log_info(f"Creating specimen {specimen.uuid}")
     db.overwrite_mode = overwrite_mode
     # await db.validate_uuid_type(specimen.biosample_uuid, db_models.Biosample)
     await db.validate_object_dependency(
@@ -277,7 +275,7 @@ async def create_specimen(
 async def update_specimen(
     specimen: db_models.Specimen, db: Repository = Depends()
 ) -> None:
-    logging.info(f"Updating Specimen {specimen.uuid}. New version: {specimen.version}")
+    log_info(f"Updating Specimen {specimen.uuid}. New version: {specimen.version}")
     # await db.validate_uuid_type(specimen.biosample_uuid, db_models.Biosample)
     await db.validate_object_dependency(
         specimen,
@@ -296,7 +294,7 @@ async def create_biosample(
     db: Repository = Depends(),
     overwrite_mode: OverwriteMode = OverwriteMode.FAIL,
 ) -> None:
-    logging.info(f"Creating Biosample {biosample.uuid}")
+    log_info(f"Creating Biosample {biosample.uuid}")
     db.overwrite_mode = overwrite_mode
     await db.persist_doc(biosample)
 
@@ -307,9 +305,7 @@ async def create_biosample(
 async def update_biosample(
     biosample: db_models.Biosample, db: Repository = Depends()
 ) -> None:
-    logging.info(
-        f"Updating Biosample {biosample.uuid}. New version: {biosample.version}"
-    )
+    log_info(f"Updating Biosample {biosample.uuid}. New version: {biosample.version}")
     await db.update_doc(biosample)
 
     return None
