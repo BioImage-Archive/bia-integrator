@@ -6,7 +6,7 @@ from typing import List, Union, Dict, Optional, Any
 from copy import deepcopy
 
 import requests
-from pydantic import BaseModel
+from pydantic import BaseModel, TypeAdapter
 
 
 logger = logging.getLogger(__name__)
@@ -230,7 +230,7 @@ def flist_from_flist_fname(
    dict_content = json.loads(r.content)
    dict_filtered_content = filter_filelist_content(dict_content)
    filtered_content = bytes(json.dumps(dict_filtered_content), "utf-8")
-   fl = parse_raw_as(List[File], filtered_content)
+   fl = TypeAdapter(List[File]).validate_json(filtered_content)
 
    if extra_attribute:
        if type(extra_attribute) is not list:
