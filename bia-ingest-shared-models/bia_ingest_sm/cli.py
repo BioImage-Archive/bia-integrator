@@ -11,7 +11,7 @@ app = typer.Typer()
 def ingest(accession_id: Annotated[str, typer.Argument()],) -> None:
     submission = load_submission(accession_id)
     study = get_study(submission, persist_artefacts=True)
-    #typer.echo(study.model_dump_json(indent=2))
+    # typer.echo(study.model_dump_json(indent=2))
 
 
 @app.callback()

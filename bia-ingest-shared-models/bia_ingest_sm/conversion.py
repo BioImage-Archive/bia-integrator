@@ -13,14 +13,13 @@ from .biostudies import (
     flist_from_flist_fname,
     file_uri,
 )
-from . config import settings
+from .config import settings
 from src.bia_models import bia_data_model, semantic_models
 
 
 def get_file_reference_by_study_component(
-        submission: Submission,
-        persist_artefacts: bool = False
-    ) -> Dict[str, List[bia_data_model.FileReference]]:
+    submission: Submission, persist_artefacts: bool = False
+) -> Dict[str, List[bia_data_model.FileReference]]:
     """Return Dict of list of file references in study components.
 
 
@@ -30,7 +29,8 @@ def get_file_reference_by_study_component(
 
     if persist_artefacts:
         output_dir = Path(settings.bia_data_dir) / "file_references" / submission.accno
-        if not output_dir.is_dir(): output_dir.mkdir(parents=True)
+        if not output_dir.is_dir():
+            output_dir.mkdir(parents=True)
 
     for file_list_dict in file_list_dicts:
         study_component_name = file_list_dict["Name"]
@@ -45,7 +45,9 @@ def get_file_reference_by_study_component(
                 "file_name": str(f.path),
                 "size_in_bytes": str(f.size),
             }
-            fileref_uuid = dict_to_uuid(file_dict, ["accession_id", "file_name", "size_in_bytes"])
+            fileref_uuid = dict_to_uuid(
+                file_dict, ["accession_id", "file_name", "size_in_bytes"]
+            )
             fileref_to_study_components[study_component_name].append(fileref_uuid)
             # TODO - Not storing submission_dataset uuid yet!!!
             if persist_artefacts:
@@ -57,19 +59,24 @@ def get_file_reference_by_study_component(
                 file_reference = bia_data_model.FileReference.model_validate(file_dict)
                 output_path = output_dir / f"{fileref_uuid}.json"
                 output_path.write_text(file_reference.model_dump_json(indent=2))
-                
 
     return fileref_to_study_components
 
 
-def get_experimental_imaging_dataset(submission: Submission, persist_artefacts=False) -> List[bia_data_model.ExperimentalImagingDataset]:
+def get_experimental_imaging_dataset(
+    submission: Submission, persist_artefacts=False
+) -> List[bia_data_model.ExperimentalImagingDataset]:
     """Map biostudies.Submission study components to bia_data_model.ExperimentalImagingDataset
 
     """
-    study_components = find_sections_recursive(submission.section, ["Study Component",], [])
+    study_components = find_sections_recursive(
+        submission.section, ["Study Component",], []
+    )
     analysis_method_dict = get_image_analysis_method(submission)
 
-    file_reference_uuids = get_file_reference_by_study_component(submission, persist_artefacts=persist_artefacts)
+    file_reference_uuids = get_file_reference_by_study_component(
+        submission, persist_artefacts=persist_artefacts
+    )
 
     # TODO: Need to persist this (API finally, but initially to disk)
     biosamples_in_submission = get_biosample(submission)
@@ -83,7 +90,9 @@ def get_experimental_imaging_dataset(submission: Submission, persist_artefacts=F
         if biosample.title_id in biosamples_in_submission_uuid:
             biosamples_in_submission_uuid[biosample.title_id].append(biosample.uuid)
         else:
-            biosamples_in_submission_uuid[biosample.title_id] = [biosample.uuid,]
+            biosamples_in_submission_uuid[biosample.title_id] = [
+                biosample.uuid,
+            ]
 
     experimental_imaging_dataset = []
     for section in study_components:
@@ -95,7 +104,9 @@ def get_experimental_imaging_dataset(submission: Submission, persist_artefacts=F
             ("image_analysis", "Image analysis", None,),
             ("image_correlation", "Image correlation", None,),
         ]
-        associations = get_generic_section_as_list(section, ["Associations",], key_mapping) 
+        associations = get_generic_section_as_list(
+            section, ["Associations",], key_mapping
+        )
 
         analysis_method_list = []
         biosample_list = []
@@ -105,9 +116,14 @@ def get_experimental_imaging_dataset(submission: Submission, persist_artefacts=F
 
         if len(associations) > 0:
             # Image Analysis Method
-            analysis_methods_from_associations = [a.get("image_analysis") for a in associations]
+            analysis_methods_from_associations = [
+                a.get("image_analysis") for a in associations
+            ]
             for analysis_method in analysis_method_dict.values():
-                if analysis_method.method_description in analysis_methods_from_associations:
+                if (
+                    analysis_method.method_description
+                    in analysis_methods_from_associations
+                ):
                     analysis_method_list.append(analysis_method)
 
             # Biosample
@@ -115,14 +131,12 @@ def get_experimental_imaging_dataset(submission: Submission, persist_artefacts=F
             for biosample in biosamples_from_associations:
                 if biosample in biosamples_in_submission_uuid:
                     biosample_list.extend(biosamples_in_submission_uuid[biosample])
-            
-        
 
         section_name = attr_dict["Name"]
-        study_component_file_references =  file_reference_uuids.get(section_name, [])
+        study_component_file_references = file_reference_uuids.get(section_name, [])
         model_dict = {
             "title_id": section_name,
-            #"description": attr_dict["Description"],
+            # "description": attr_dict["Description"],
             "submitted_in_study": get_study_uuid(submission),
             "file": study_component_file_references,
             "image": [],
@@ -136,23 +150,31 @@ def get_experimental_imaging_dataset(submission: Submission, persist_artefacts=F
             "example_image_uri": [],
         }
         # TODO: Add 'description' to computation of uuid (Maybe accno?)
-        model_dict["uuid"] = dict_to_uuid(model_dict, ["title_id", "submitted_in_study", ])
+        model_dict["uuid"] = dict_to_uuid(
+            model_dict, ["title_id", "submitted_in_study",]
+        )
         experimental_imaging_dataset.append(
             bia_data_model.ExperimentalImagingDataset.model_validate(model_dict)
         )
-    
+
     if persist_artefacts and experimental_imaging_dataset:
-        output_dir = Path(settings.bia_data_dir) / "experimental_imaging_datasets" / submission.accno
+        output_dir = (
+            Path(settings.bia_data_dir)
+            / "experimental_imaging_datasets"
+            / submission.accno
+        )
         if not output_dir.is_dir():
             output_dir.mkdir(parents=True)
         for dataset in experimental_imaging_dataset:
             output_path = output_dir / f"{dataset.uuid}.json"
             output_path.write_text(dataset.model_dump_json(indent=2))
 
-        
     return experimental_imaging_dataset
 
-def get_study(submission: Submission, persist_artefacts: bool = False) -> bia_data_model.Study:
+
+def get_study(
+    submission: Submission, persist_artefacts: bool = False
+) -> bia_data_model.Study:
     """Return an API study model populated from the submission
 
     """
@@ -161,7 +183,9 @@ def get_study(submission: Submission, persist_artefacts: bool = False) -> bia_da
     contributors = get_contributor(submission)
     grants = get_grant(submission)
 
-    experimental_imaging_datasets = get_experimental_imaging_dataset(submission, persist_artefacts=persist_artefacts)
+    experimental_imaging_datasets = get_experimental_imaging_dataset(
+        submission, persist_artefacts=persist_artefacts
+    )
     experimental_imaging_dataset_uuids = [e.uuid for e in experimental_imaging_datasets]
 
     study_attributes = attributes_to_dict(submission.section.attributes)
@@ -192,8 +216,8 @@ def get_study(submission: Submission, persist_artefacts: bool = False) -> bia_da
         "experimental_imaging_component": experimental_imaging_dataset_uuids,
         "annotation_component": [],
     }
-    #study_uuid = dict_to_uuid(study_dict, ["accession_id",])
-    #study_dict["uuid"] = study_uuid
+    # study_uuid = dict_to_uuid(study_dict, ["accession_id",])
+    # study_dict["uuid"] = study_uuid
     study = bia_data_model.Study.model_validate(study_dict)
 
     if persist_artefacts:
@@ -208,19 +232,27 @@ def get_study(submission: Submission, persist_artefacts: bool = False) -> bia_da
         # Save study
     return study
 
-def get_image_analysis_method(submission: Submission) -> Dict[str, semantic_models.ImageAnalysisMethod]:
-    
+
+def get_image_analysis_method(
+    submission: Submission,
+) -> Dict[str, semantic_models.ImageAnalysisMethod]:
+
     key_mapping = [
         ("method_description", "Title", None,),
         ("features_analysed", "Image analysis overview", None,),
     ]
-    
+
     return get_generic_section_as_dict(
-        submission, ["Image analysis",], key_mapping, semantic_models.ImageAnalysisMethod
+        submission,
+        ["Image analysis",],
+        key_mapping,
+        semantic_models.ImageAnalysisMethod,
     )
+
 
 def get_study_uuid(submission: Submission) -> str:
     return dict_to_uuid({"accession_id": submission.accno}, ["accession_id",])
+
 
 def study_title_from_submission(submission: Submission) -> str:
 
@@ -273,7 +305,8 @@ def get_grant(submission: Submission) -> List[semantic_models.Grant]:
         ("id", "grant_id", None),
     ]
     grant_dict = get_generic_section_as_dict(
-        submission, ["Funding",], key_mapping, semantic_models.Grant )
+        submission, ["Funding",], key_mapping, semantic_models.Grant
+    )
 
     grant_list = []
     for k, v in grant_dict.items():
@@ -297,12 +330,12 @@ def get_funding_body(submission: Submission) -> semantic_models.FundingBody:
 
 # TODO: Put comments and docstring
 def get_generic_section_as_list(
-    root: [Submission|Section],
+    root: [Submission | Section],
     section_name: List[str],
     key_mapping: List[Tuple[str, str, [str | None | List]]],
     mapped_object: Optional[Any] = None,
     mapped_attrs_dict: Optional[Dict[str, Any]] = None,
-) -> List[Any|Dict[str,str|List[str]]]:
+) -> List[Any | Dict[str, str | List[str]]]:
     """Map biostudies.Submission objects to either semantic_models or bia_data_model equivalent
 
     """
@@ -327,11 +360,11 @@ def get_generic_section_as_list(
 
 # TODO: Put comments and docstring
 def get_generic_section_as_dict(
-    root: [Submission|Section],
+    root: [Submission | Section],
     section_name: List[str],
     key_mapping: List[Tuple[str, str, [str | None | List]]],
-    mapped_object: Optional[Any]=None,
-) -> Dict[str, Any|Dict[str, Dict[str,str|List[str]]]]:
+    mapped_object: Optional[Any] = None,
+) -> Dict[str, Any | Dict[str, Dict[str, str | List[str]]]]:
     """Map biostudies.Submission objects to dict containing either semantic_models or bia_data_model equivalent
 
     """
@@ -431,6 +464,7 @@ def get_contributor(submission: Submission) -> List[semantic_models.Contributor]
 
     return contributors
 
+
 # This function instantiates any API model given a dict of its attributes
 # Hence the use of the pydantic BaseModel which all API models
 # are derived from in the type hinting
@@ -444,7 +478,10 @@ def dicts_to_api_models(
 
     return api_models
 
-def get_biosample(submission: Submission, persist_artefacts=False) -> List[bia_data_model.BioSample]:
+
+def get_biosample(
+    submission: Submission, persist_artefacts=False
+) -> List[bia_data_model.BioSample]:
 
     biosample_model_dicts = extract_biosample_dicts(submission)
     biosamples = dicts_to_api_models(biosample_model_dicts, bia_data_model.BioSample)
@@ -458,6 +495,7 @@ def get_biosample(submission: Submission, persist_artefacts=False) -> List[bia_d
             output_path.write_text(biosample.model_dump_json(indent=2))
     return biosamples
 
+
 def extract_biosample_dicts(submission: Submission) -> List[Dict[str, Any]]:
     biosample_sections = find_sections_recursive(submission.section, ["Biosample"], [])
 
@@ -465,7 +503,7 @@ def extract_biosample_dicts(submission: Submission) -> List[Dict[str, Any]]:
         ("title_id", "Title", ""),
         ("description", "Description", ""),
         # TODO: discuss adding this to semantic model with FS
-        #("biological_entity", "Biological entity", ""),
+        # ("biological_entity", "Biological entity", ""),
         ("organism", "Organism", ""),
     ]
 
@@ -485,12 +523,14 @@ def extract_biosample_dicts(submission: Submission) -> List[Dict[str, Any]]:
         except ValueError:
             organism_scientific_name = organism
             organism_common_name = ""
-        taxon = semantic_models.Taxon.model_validate({
-            "common_name": organism_common_name.strip(),
-            "scientific_name": organism_scientific_name.strip(),
-            "ncbi_id": None,
-        })
-        model_dict["organism_classification"] = [ taxon.model_dump() ]
+        taxon = semantic_models.Taxon.model_validate(
+            {
+                "common_name": organism_common_name.strip(),
+                "scientific_name": organism_scientific_name.strip(),
+                "ncbi_id": None,
+            }
+        )
+        model_dict["organism_classification"] = [taxon.model_dump()]
 
         # Populate intrinsic and extrinsic variables
         for api_key, biostudies_key in (
@@ -517,12 +557,13 @@ def generate_biosample_uuid(biosample_dict: Dict[str, Any]) -> str:
         "organism_classification",
         "description",
         # TODO: Discuss including below in semantic_models.BioSample
-        #"biological_entity",
+        # "biological_entity",
         "intrinsic_variable_description",
         "extrinsic_variable_description",
         "experimental_variable_description",
     ]
     return dict_to_uuid(biosample_dict, attributes_to_consider)
+
 
 def find_sections_recursive(
     section: Section, search_types: List[str], results: Optional[List[Section]] = []

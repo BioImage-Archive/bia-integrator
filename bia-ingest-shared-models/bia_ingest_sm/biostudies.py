@@ -213,34 +213,34 @@ def find_file_lists_in_submission(
 # KB 14/06/2024 commented out as I need to replace parse_raw_as with
 # TypeAdapter for pydantic >=2
 def flist_from_flist_fname(
-   accession_id: str, flist_fname: str, extra_attribute: Union[List[str], str] = None
+    accession_id: str, flist_fname: str, extra_attribute: Union[List[str], str] = None
 ) -> List[File]:
 
-   flist_url = FLIST_URI_TEMPLATE.format(
-       accession_id=accession_id, flist_fname=flist_fname
-   )
+    flist_url = FLIST_URI_TEMPLATE.format(
+        accession_id=accession_id, flist_fname=flist_fname
+    )
 
-   r = requests.get(flist_url)
-   logger.info(f"Fetching file list from {flist_url}")
-   assert r.status_code == 200
+    r = requests.get(flist_url)
+    logger.info(f"Fetching file list from {flist_url}")
+    assert r.status_code == 200
 
-   # fl = parse_raw_as(List[File], r.content)
-   # KB 18/08/2023 - Hack to fix error due to null values in attributes
-   # Remove attribute entries with {"value": "null"}
-   dict_content = json.loads(r.content)
-   dict_filtered_content = filter_filelist_content(dict_content)
-   filtered_content = bytes(json.dumps(dict_filtered_content), "utf-8")
-   fl = TypeAdapter(List[File]).validate_json(filtered_content)
+    # fl = parse_raw_as(List[File], r.content)
+    # KB 18/08/2023 - Hack to fix error due to null values in attributes
+    # Remove attribute entries with {"value": "null"}
+    dict_content = json.loads(r.content)
+    dict_filtered_content = filter_filelist_content(dict_content)
+    filtered_content = bytes(json.dumps(dict_filtered_content), "utf-8")
+    fl = TypeAdapter(List[File]).validate_json(filtered_content)
 
-   if extra_attribute:
-       if type(extra_attribute) is not list:
-           extra_attribute = [
-               extra_attribute,
-           ]
-       for file in fl:
-           file.attributes.extend(extra_attribute)
+    if extra_attribute:
+        if type(extra_attribute) is not list:
+            extra_attribute = [
+                extra_attribute,
+            ]
+        for file in fl:
+            file.attributes.extend(extra_attribute)
 
-   return fl
+    return fl
 
 
 def file_uri(
