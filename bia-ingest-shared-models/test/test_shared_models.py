@@ -7,7 +7,7 @@ from .utils import bia_data_model, semantic_models
 from bia_ingest_sm import conversion
 from bia_ingest_sm.biostudies import requests
 
-# Attempt to patch requests.get in biostudies
+# TODO: Mock requests.get correctly!!!
 def mock_request_get(flist_url: str) -> Dict[str,str]:
     data_dir = Path(__file__).parent / "data"
     path_to_load = data_dir / Path(flist_url).name
@@ -39,3 +39,7 @@ def test_create_models(expected_model_func, model_creation_func, test_submission
     expected = expected_model_func()
     created = model_creation_func(test_submission)
     assert expected == created
+
+#def test_save_study_artefacts(test_submission):
+#    conversion.get_study(test_submission, persist_artefacts=True)
+    

@@ -1,3 +1,4 @@
+from pathlib import Path
 import re
 import hashlib
 import uuid
@@ -10,12 +11,15 @@ from .biostudies import (
     Attribute,
     find_file_lists_in_submission,
     flist_from_flist_fname,
+    file_uri,
 )
+from . config import settings
 from src.bia_models import bia_data_model, semantic_models
 
 
 def get_file_reference_by_study_component(
         submission: Submission,
+        persist_artefacts: bool = False
     ) -> Dict[str, List[bia_data_model.FileReference]]:
     """Return Dict of list of file references in study components.
 
@@ -23,6 +27,11 @@ def get_file_reference_by_study_component(
     """
     file_list_dicts = find_file_lists_in_submission(submission)
     fileref_to_study_components = {}
+
+    if persist_artefacts:
+        output_dir = Path(settings.bia_data_dir) / "file_references" / submission.accno
+        if not output_dir.is_dir(): output_dir.mkdir(parents=True)
+
     for file_list_dict in file_list_dicts:
         study_component_name = file_list_dict["Name"]
         if study_component_name not in fileref_to_study_components:
@@ -38,18 +47,29 @@ def get_file_reference_by_study_component(
             }
             fileref_uuid = dict_to_uuid(file_dict, ["accession_id", "file_name", "size_in_bytes"])
             fileref_to_study_components[study_component_name].append(fileref_uuid)
+            # TODO - Not storing submission_dataset uuid yet!!!
+            if persist_artefacts:
+                file_dict["uuid"] = fileref_uuid
+                file_dict["uri"] = file_uri(submission.accno, f)
+                file_dict["submission_dataset"] = fileref_uuid
+                file_dict["format"] = f.type
+                file_dict["attribute"] = attributes_to_dict(f.attributes)
+                file_reference = bia_data_model.FileReference.model_validate(file_dict)
+                output_path = output_dir / f"{fileref_uuid}.json"
+                output_path.write_text(file_reference.model_dump_json(indent=2))
+                
 
     return fileref_to_study_components
 
 
-def get_experimental_imaging_dataset(submission: Submission) -> List[bia_data_model.ExperimentalImagingDataset]:
+def get_experimental_imaging_dataset(submission: Submission, persist_artefacts=False) -> List[bia_data_model.ExperimentalImagingDataset]:
     """Map biostudies.Submission study components to bia_data_model.ExperimentalImagingDataset
 
     """
     study_components = find_sections_recursive(submission.section, ["Study Component",], [])
     analysis_method_dict = get_image_analysis_method(submission)
 
-    file_reference_uuids = get_file_reference_by_study_component(submission)
+    file_reference_uuids = get_file_reference_by_study_component(submission, persist_artefacts=persist_artefacts)
 
     # TODO: Need to persist this (API finally, but initially to disk)
     biosamples_in_submission = get_biosample(submission)
@@ -59,7 +79,7 @@ def get_experimental_imaging_dataset(submission: Submission) -> List[bia_data_mo
     # Use for loop instead of dict comprehension to allow biosamples with
     # same title to form list
     biosamples_in_submission_uuid = {}
-    for biosample in get_biosample(submission):
+    for biosample in get_biosample(submission, persist_artefacts=persist_artefacts):
         if biosample.title_id in biosamples_in_submission_uuid:
             biosamples_in_submission_uuid[biosample.title_id].append(biosample.uuid)
         else:
@@ -121,9 +141,18 @@ def get_experimental_imaging_dataset(submission: Submission) -> List[bia_data_mo
             bia_data_model.ExperimentalImagingDataset.model_validate(model_dict)
         )
     
+    if persist_artefacts and experimental_imaging_dataset:
+        output_dir = Path(settings.bia_data_dir) / "experimental_imaging_datasets" / submission.accno
+        if not output_dir.is_dir():
+            output_dir.mkdir(parents=True)
+        for dataset in experimental_imaging_dataset:
+            output_path = output_dir / f"{dataset.uuid}.json"
+            output_path.write_text(dataset.model_dump_json(indent=2))
+
+        
     return experimental_imaging_dataset
 
-def get_study(submission: Submission) -> bia_data_model.Study:
+def get_study(submission: Submission, persist_artefacts: bool = False) -> bia_data_model.Study:
     """Return an API study model populated from the submission
 
     """
@@ -132,7 +161,7 @@ def get_study(submission: Submission) -> bia_data_model.Study:
     contributors = get_contributor(submission)
     grants = get_grant(submission)
 
-    experimental_imaging_datasets = get_experimental_imaging_dataset(submission)
+    experimental_imaging_datasets = get_experimental_imaging_dataset(submission, persist_artefacts=persist_artefacts)
     experimental_imaging_dataset_uuids = [e.uuid for e in experimental_imaging_datasets]
 
     study_attributes = attributes_to_dict(submission.section.attributes)
@@ -167,6 +196,16 @@ def get_study(submission: Submission) -> bia_data_model.Study:
     #study_dict["uuid"] = study_uuid
     study = bia_data_model.Study.model_validate(study_dict)
 
+    if persist_artefacts:
+        output_dir = Path(settings.bia_data_dir) / "studies"
+        if not output_dir.is_dir():
+            output_dir.mkdir(parents=True)
+        output_path = output_dir / f"{study.accession_id}.json"
+        output_path.write_text(study.model_dump_json(indent=2))
+        # Save ALL file references
+        # Save ALL biosamples
+        # Save experimental_imaging_datasets
+        # Save study
     return study
 
 def get_image_analysis_method(submission: Submission) -> Dict[str, semantic_models.ImageAnalysisMethod]:
@@ -405,10 +444,18 @@ def dicts_to_api_models(
 
     return api_models
 
-def get_biosample(submission: Submission) -> List[bia_data_model.BioSample]:
+def get_biosample(submission: Submission, persist_artefacts=False) -> List[bia_data_model.BioSample]:
 
     biosample_model_dicts = extract_biosample_dicts(submission)
     biosamples = dicts_to_api_models(biosample_model_dicts, bia_data_model.BioSample)
+
+    if persist_artefacts and biosamples:
+        output_dir = Path(settings.bia_data_dir) / "biosamples" / submission.accno
+        if not output_dir.is_dir():
+            output_dir.mkdir(parents=True)
+        for biosample in biosamples:
+            output_path = output_dir / f"{biosample.uuid}.json"
+            output_path.write_text(biosample.model_dump_json(indent=2))
     return biosamples
 
 def extract_biosample_dicts(submission: Submission) -> List[Dict[str, Any]]:
