@@ -3,8 +3,43 @@ import hashlib
 import uuid
 from typing import List, Any, Dict, Optional, Tuple, Type
 from pydantic import BaseModel
-from .biostudies import Submission, attributes_to_dict, Section, Attribute
+from .biostudies import (
+    Submission,
+    attributes_to_dict,
+    Section,
+    Attribute,
+    find_file_lists_in_submission,
+    flist_from_flist_fname,
+)
 from src.bia_models import bia_data_model, semantic_models
+
+
+def get_file_reference_by_study_component(
+        submission: Submission,
+    ) -> Dict[str, List[bia_data_model.FileReference]]:
+    """Return Dict of list of file references in study components.
+
+
+    """
+    file_list_dicts = find_file_lists_in_submission(submission)
+    fileref_to_study_components = {}
+    for file_list_dict in file_list_dicts:
+        study_component_name = file_list_dict["Name"]
+        if study_component_name not in fileref_to_study_components:
+            fileref_to_study_components[study_component_name] = []
+
+        fname = file_list_dict["File List"]
+        files_in_fl = flist_from_flist_fname(submission.accno, fname)
+        for f in files_in_fl:
+            file_dict = {
+                "accession_id": submission.accno,
+                "file_name": str(f.path),
+                "size_in_bytes": str(f.size),
+            }
+            fileref_uuid = dict_to_uuid(file_dict, ["accession_id", "file_name", "size_in_bytes"])
+            fileref_to_study_components[study_component_name].append(fileref_uuid)
+
+    return fileref_to_study_components
 
 
 def get_experimental_imaging_dataset(submission: Submission) -> List[bia_data_model.ExperimentalImagingDataset]:

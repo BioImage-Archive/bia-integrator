@@ -303,16 +303,36 @@ def get_test_experimental_imaging_dataset() -> (
     bia_data_model.ExperimentalImagingDataset
 ):
     # Create first study component
+    file_references = [{
+            "accession_id": "S-BIADTEST",
+            "file_name": "study_component1/im06.png",
+            "size_in_bytes": 3,
+        },{
+            "accession_id": "S-BIADTEST",
+            "file_name": "study_component1/im08.png",
+            "size_in_bytes": 123,
+        },{
+            "accession_id": "S-BIADTEST",
+            "file_name": "study_component1/ann01-05",
+            "size_in_bytes": 11,
+        },{
+            "accession_id": "S-BIADTEST",
+            "file_name": "study_component1/ann06-10.json",
+            "size_in_bytes": 12,
+        },
+    ]
+    file_reference_uuids = get_test_file_reference_uuid(file_references)
+
     experimental_imaging_dataset_dict = {
         "title_id": "Study Component 1",
         "image": [],  # This should be a list of Experimentally captured image UUIDs
-        "file": [],  # This should be a list of FileReference UUIDs ...
+        "file": file_reference_uuids,
         "submitted_in_study": get_test_study().uuid,
         "specimen_preparation_method": [
-            get_template_specimen_preparation_protocol().uuid,
+            #get_template_specimen_preparation_protocol().uuid,
         ],
         "acquisition_method": [
-            get_test_image_acquisition()[0].uuid,
+            #get_test_image_acquisition()[0].uuid,
         ],
         # This study component uses both biosamples
         "biological_entity": [
@@ -322,9 +342,9 @@ def get_test_experimental_imaging_dataset() -> (
             get_test_image_analysis_method().model_dump(),
         ],
         "correlation_method": [
-            get_template_image_correlation_method().model_dump(),
+            #get_template_image_correlation_method().model_dump(),
         ],
-        "file_reference_count": 0,
+        "file_reference_count": 4,
         "image_count": 0,
         "example_image_uri": [],
     }
@@ -333,16 +353,32 @@ def get_test_experimental_imaging_dataset() -> (
     experimental_imaging_dataset1 = bia_data_model.ExperimentalImagingDataset.model_validate(experimental_imaging_dataset_dict)
 
     # Create second study component
+    file_references = [{
+            "accession_id": "S-BIADTEST",
+            "file_name": "study_component2/im06.png",
+            "size_in_bytes": 3,
+        },{
+            "accession_id": "S-BIADTEST",
+            "file_name": "study_component2/im08.png",
+            "size_in_bytes": 123,
+        },{
+            "accession_id": "S-BIADTEST",
+            "file_name": "study_component2/ann01-05",
+            "size_in_bytes": 11,
+        },
+    ]
+    file_reference_uuids = get_test_file_reference_uuid(file_references)
+
     experimental_imaging_dataset_dict = {
         "title_id": "Study Component 2",
         "image": [],  # This should be a list of Experimentally captured image UUIDs
-        "file": [],  # This should be a list of FileReference UUIDs ...
+        "file": file_reference_uuids,
         "submitted_in_study": get_test_study().uuid,
         "specimen_preparation_method": [
-            get_template_specimen_preparation_protocol().uuid,
+            #get_template_specimen_preparation_protocol().uuid,
         ],
         "acquisition_method": [
-            get_test_image_acquisition()[1].uuid,
+            #get_test_image_acquisition()[1].uuid,
         ],
         # This study component uses only second biosample
         "biological_entity": [
@@ -352,9 +388,9 @@ def get_test_experimental_imaging_dataset() -> (
             get_test_image_analysis_method().model_dump(),
         ],
         "correlation_method": [
-            get_template_image_correlation_method().model_dump(),
+            #get_template_image_correlation_method().model_dump(),
         ],
-        "file_reference_count": 0,
+        "file_reference_count": 3,
         "image_count": 0,
         "example_image_uri": [],
     }
@@ -567,3 +603,13 @@ def get_test_study() -> bia_data_model.Study:
     study_dict["uuid"] = study_uuid
     study = bia_data_model.Study.model_validate(study_dict)
     return study
+
+def get_test_file_reference_uuid(file_references: List[Dict[str, str]]) -> List[str]:
+    attributes_to_consider = [
+        "accession_id",
+        "file_name",
+        "size_in_bytes",
+    ]
+    return [
+        dict_to_uuid(file_reference, attributes_to_consider) for file_reference in file_references
+    ]

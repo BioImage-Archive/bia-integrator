@@ -228,8 +228,11 @@ class FileReference(BaseModel):
     """
     Information about a file, provided in file list.
     """
-
+    
+    # TODO: Clarify if this should be file_name or file_path
     file_name: str = Field(description="""The name of the file.""")
+    # TODO: Clarify if this should be biostudies 'type' or derived from 
+    #       file extension
     format: str = Field(description="""File format or type.""")
     size_in_bytes: int = Field(description="""Disc size in bytes.""")
     uri: str = Field(description="""URI from which the file can be accessed.""")
