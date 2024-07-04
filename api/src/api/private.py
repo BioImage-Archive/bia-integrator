@@ -234,7 +234,8 @@ async def create_image_acquisition(
 
 @router.patch("/image_acquisitions", status_code=status.HTTP_200_OK)
 async def update_image_acquisition(
-    image_acquisition: db_models.ImageAcquisition, db: Repository = Depends()
+    image_acquisition: db_models.ImageAcquisition,
+    db: Repository = Depends(),
 ) -> None:
     log_info(
         f"Updating Image acquisition {image_acquisition.uuid}. New version: {image_acquisition.version}"
@@ -313,7 +314,9 @@ async def update_biosample(
 
 @router.post("/images/{image_uuid}/ome_metadata", status_code=status.HTTP_201_CREATED)
 async def set_image_ome_metadata(
-    image_uuid: UUID, ome_metadata_file: UploadFile, db: Repository = Depends()
+    image_uuid: UUID,
+    ome_metadata_file: UploadFile,
+    db: Repository = Depends(),
 ) -> db_models.BIAImageOmeMetadata:
     if not ome_metadata_file.size:
         raise exceptions.InvalidRequestException("File has size 0")
