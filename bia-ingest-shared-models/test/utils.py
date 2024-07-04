@@ -302,6 +302,10 @@ def get_template_image_correlation_method() -> semantic_models.ImageCorrelationM
 def get_test_experimental_imaging_dataset() -> (
     bia_data_model.ExperimentalImagingDataset
 ):
+    study_uuid = dict_to_uuid(
+        {"accession_id": "S-BIADTEST",},
+        attributes_to_consider=["accession_id",]
+    )
     # Create first study component
     file_references = [{
             "accession_id": "S-BIADTEST",
@@ -327,7 +331,7 @@ def get_test_experimental_imaging_dataset() -> (
         "title_id": "Study Component 1",
         "image": [],  # This should be a list of Experimentally captured image UUIDs
         "file": file_reference_uuids,
-        "submitted_in_study": get_test_study().uuid,
+        "submitted_in_study": study_uuid,
         "specimen_preparation_method": [
             #get_template_specimen_preparation_protocol().uuid,
         ],
@@ -373,7 +377,7 @@ def get_test_experimental_imaging_dataset() -> (
         "title_id": "Study Component 2",
         "image": [],  # This should be a list of Experimentally captured image UUIDs
         "file": file_reference_uuids,
-        "submitted_in_study": get_test_study().uuid,
+        "submitted_in_study": study_uuid,
         "specimen_preparation_method": [
             #get_template_specimen_preparation_protocol().uuid,
         ],
@@ -596,7 +600,7 @@ def get_test_study() -> bia_data_model.Study:
             "Test keyword3",
         ],
         "grant": [ g.model_dump() for g in grant ],
-        "experimental_imaging_component": [],
+        "experimental_imaging_component": [e.uuid for e in get_test_experimental_imaging_dataset()],
         "annotation_component": [],
     }
     study_uuid = dict_to_uuid(study_dict, ["accession_id", ])

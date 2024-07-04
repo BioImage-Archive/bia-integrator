@@ -49,6 +49,8 @@ def get_experimental_imaging_dataset(submission: Submission) -> List[bia_data_mo
     study_components = find_sections_recursive(submission.section, ["Study Component",], [])
     analysis_method_dict = get_image_analysis_method(submission)
 
+    file_reference_uuids = get_file_reference_by_study_component(submission)
+
     # TODO: Need to persist this (API finally, but initially to disk)
     biosamples_in_submission = get_biosample(submission)
 
@@ -96,18 +98,20 @@ def get_experimental_imaging_dataset(submission: Submission) -> List[bia_data_mo
             
         
 
+        section_name = attr_dict["Name"]
+        study_component_file_references =  file_reference_uuids.get(section_name, [])
         model_dict = {
-            "title_id": attr_dict["Name"],
+            "title_id": section_name,
             #"description": attr_dict["Description"],
             "submitted_in_study": get_study_uuid(submission),
-            "file": [],
+            "file": study_component_file_references,
             "image": [],
             "specimen_preparation_method": specimen_preparation_method_list,
             "acquisition_method": image_acquisition_method_list,
             "biological_entity": biosample_list,
             "analysis_method": analysis_method_list,
             "correlation_method": correlation_method_list,
-            "file_reference_count": 0,
+            "file_reference_count": len(study_component_file_references),
             "image_count": 0,
             "example_image_uri": [],
         }
@@ -127,6 +131,9 @@ def get_study(submission: Submission) -> bia_data_model.Study:
     submission_attributes = attributes_to_dict(submission.attributes)
     contributors = get_contributor(submission)
     grants = get_grant(submission)
+
+    experimental_imaging_datasets = get_experimental_imaging_dataset(submission)
+    experimental_imaging_dataset_uuids = [e.uuid for e in experimental_imaging_datasets]
 
     study_attributes = attributes_to_dict(submission.section.attributes)
 
@@ -153,7 +160,7 @@ def get_study(submission: Submission) -> bia_data_model.Study:
         "author": [c.model_dump() for c in contributors],
         "grant": [g.model_dump() for g in grants],
         "attribute": study_attributes,
-        "experimental_imaging_component": [],
+        "experimental_imaging_component": experimental_imaging_dataset_uuids,
         "annotation_component": [],
     }
     #study_uuid = dict_to_uuid(study_dict, ["accession_id",])

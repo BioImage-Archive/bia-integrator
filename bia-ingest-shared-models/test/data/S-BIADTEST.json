@@ -249,10 +249,10 @@
         "value" : "Test Primary Screen Image Acquisition"
       }, {
         "name" : "Imaging instrument",
-        "value" : "Test imaging instrument"
+        "value" : "Test imaging instrument 1"
       }, {
         "name" : "Image acquisition parameters",
-        "value" : "Test image acquisition parameters"
+        "value" : "Test image acquisition parameters 1"
       }, {
         "name" : "Imaging method",
         "value" : "confocal microscopy"

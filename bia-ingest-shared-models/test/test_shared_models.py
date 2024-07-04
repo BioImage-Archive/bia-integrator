@@ -1,10 +1,22 @@
 from typing import Dict
+from pathlib import Path
+from unittest.mock import Mock
 import pytest
 from . import utils
 from .utils import bia_data_model, semantic_models
 from bia_ingest_sm import conversion
+from bia_ingest_sm.biostudies import requests
 
-
+# Attempt to patch requests.get in biostudies
+def mock_request_get(flist_url: str) -> Dict[str,str]:
+    data_dir = Path(__file__).parent / "data"
+    path_to_load = data_dir / Path(flist_url).name
+    return_value = Mock()
+    return_value.status_code = 200
+    return_value.content = path_to_load.read_text()
+    return return_value
+requests.get = mock_request_get
+    
 @pytest.mark.parametrize(
     ("expected_model_func", "model_creation_func",),
     (
