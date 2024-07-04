@@ -170,38 +170,76 @@
       "type" : "Biosample",
       "attributes" : [ {
         "name" : "Title",
-        "value" : "Test Biosample "
+        "value" : "Test Biosample 1"
       }, {
         "name" : "Organism",
         "value" : "Homo sapiens (human)"
       }, {
         "name" : "Description",
-        "value" : "Test description (\"with some escaped chars\") "
+        "value" : "Test description 1 (\"with some escaped chars\") "
       }, {
         "name" : "Biological entity",
-        "value" : "Test biological entity"
+        "value" : "Test biological entity 1"
       }, {
         "name" : "Experimental variable",
-        "value" : "Test experimental entity"
+        "value" : "Test experimental entity 1"
       }, {
         "name" : "Extrinsic variable",
-        "value" : "Test extrinsic variable"
+        "value" : "Test extrinsic variable 1"
       }, {
         "name" : "Intrinsic variable",
-        "value" : "Test intrinsic variable\nwith escaped character"
+        "value" : "Test intrinsic variable 1\nwith escaped character"
+      } ]
+    }, {
+      "accno" : "Biosample-2",
+      "type" : "Biosample",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Test Biosample 2 "
+      }, {
+        "name" : "Organism",
+        "value" : "Mus musculus (mouse)"
+      }, {
+        "name" : "Description",
+        "value" : "Test description 2"
+      }, {
+        "name" : "Biological entity",
+        "value" : "Test biological entity 2"
+      }, {
+        "name" : "Experimental variable",
+        "value" : "Test experimental entity 2"
+      }, {
+        "name" : "Extrinsic variable",
+        "value" : "Test extrinsic variable 2"
+      }, {
+        "name" : "Intrinsic variable",
+        "value" : "Test intrinsic variable 2"
+      } ]
+    }, {
+      "accno" : "Specimen-1",
+      "type" : "Specimen",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Test specimen 1"
+      }, {
+        "name" : "Sample preparation protocol",
+        "value" : "Test sample preparation protocol 1"
+      }, {
+        "name" : "Growth protocol",
+        "value" : "Test growth protocol 1"
       } ]
     }, {
       "accno" : "Specimen-2",
       "type" : "Specimen",
       "attributes" : [ {
         "name" : "Title",
-        "value" : "Test specimen"
+        "value" : "Test specimen 2"
       }, {
         "name" : "Sample preparation protocol",
-        "value" : "Test sample preparation protocol"
+        "value" : "Test sample preparation protocol 2"
       }, {
         "name" : "Growth protocol",
-        "value" : "Test growth protocol"
+        "value" : "Test growth protocol 2"
       } ]
     }, {
       "accno" : "Image acquisition-3",
@@ -246,27 +284,27 @@
         "value" : "Test image analysis overview"
       } ]
     }, {
-      "accno" : "Study Component-4",
+      "accno" : "Study Component-1",
       "type" : "Study Component",
       "attributes" : [ {
         "name" : "Name",
-        "value" : "Primary and secondary secretome screens"
-      }, {
+        "value" : "Study Component 1"
+        }, {
         "name" : "Description",
-        "value" : "Images and analyses from primary and secondary secretome screens"
+        "value" : "Description of study component 1"
       }, {
         "name" : "File List",
-        "value" : "File_List_secretome_both_final.json"
+        "value" : "file_list_study_component_1.json"
       } ],
       "subsections" : [ {
         "type" : "Associations",
-        "accno" : "association0",
+        "accno" : "association1",
         "attributes" : [ {
           "name" : "Biosample",
-          "value" : "Test Biosample "
+          "value" : "Test Biosample 1"
         }, {
           "name" : "Specimen",
-          "value" : "Test specimen"
+          "value" : "Test specimen 1"
         }, {
           "name" : "Image acquisition",
           "value" : "Test Primary Screen Image Acquisition"
@@ -276,16 +314,46 @@
         } ]
       }, {
         "type" : "Associations",
-        "accno" : "association1",
+        "accno" : "association2",
         "attributes" : [ {
           "name" : "Biosample",
-          "value" : "Test Biosample "
+          "value" : "Test Biosample 2 "
         }, {
           "name" : "Specimen",
-          "value" : "Test specimen"
+          "value" : "Test specimen 1"
         }, {
           "name" : "Image acquisition",
           "value" : "Test Secondary Screen Image Acquisition"
+        }, {
+          "name" : "Image analysis",
+          "value" : "Test image analysis"
+        } ]
+      } ]
+    }, {
+      "accno" : "Study Component-2",
+      "type" : "Study Component",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Study Component 2"
+      }, {
+        "name" : "Description",
+        "value" : "Description of study component 2"
+      }, {
+        "name" : "File List",
+        "value" : "file_list_study_component_2.json"
+      } ],
+      "subsections" : [ {
+        "type" : "Associations",
+        "accno" : "association3",
+        "attributes" : [ {
+          "name" : "Biosample",
+          "value" : "Test Biosample 2 "
+        }, {
+          "name" : "Specimen",
+          "value" : "Test specimen 2"
+        }, {
+          "name" : "Image acquisition",
+          "value" : "Test Primary Screen Image Acquisition"
         }, {
           "name" : "Image analysis",
           "value" : "Test image analysis"

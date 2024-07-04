@@ -12,6 +12,8 @@ from bia_ingest_sm import conversion
         (utils.get_test_contributor, conversion.get_contributor,),
         (utils.get_test_grant, conversion.get_grant,),
         (utils.get_test_study, conversion.get_study,),
+        (utils.get_test_biosample, conversion.get_biosample,),
+        (utils.get_test_experimental_imaging_dataset, conversion.get_experimental_imaging_dataset,),
         # Not testing as we need to deal with links that are not proper
         # urls
         # (utils.get_test_external_reference, conversion.get_external_reference,),
