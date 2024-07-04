@@ -89,15 +89,12 @@ class Repository:
     def close(self):
         """
         When we apply_annotations, we double-close.
-        Ignore the double-close exception
+        Ignore the double-close exception?
 
         See https://motor.readthedocs.io/en/stable/api-asyncio/asyncio_motor_client.html#motor.motor_asyncio.AsyncIOMotorClient.close
         """
 
-        try:
-            self.connection.close()
-        except InvalidOperation:
-            pass
+        self.connection.close()
 
     async def file_references_for_study(
         self, *args, **kwargs
