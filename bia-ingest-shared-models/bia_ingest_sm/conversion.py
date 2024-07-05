@@ -1,3 +1,4 @@
+import logging
 from pathlib import Path
 import re
 import hashlib
@@ -16,6 +17,8 @@ from .biostudies import (
 from .config import settings
 from src.bia_models import bia_data_model, semantic_models
 
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO)
 
 def get_file_reference_by_study_component(
     submission: Submission, persist_artefacts: bool = False
@@ -31,6 +34,7 @@ def get_file_reference_by_study_component(
         output_dir = Path(settings.bia_data_dir) / "file_references" / submission.accno
         if not output_dir.is_dir():
             output_dir.mkdir(parents=True)
+            logger.info(f"Created {output_dir}")
 
     for file_list_dict in file_list_dicts:
         study_component_name = file_list_dict["Name"]
@@ -59,6 +63,7 @@ def get_file_reference_by_study_component(
                 file_reference = bia_data_model.FileReference.model_validate(file_dict)
                 output_path = output_dir / f"{fileref_uuid}.json"
                 output_path.write_text(file_reference.model_dump_json(indent=2))
+                logger.info(f"Written {output_path}")
 
     return fileref_to_study_components
 
@@ -165,9 +170,11 @@ def get_experimental_imaging_dataset(
         )
         if not output_dir.is_dir():
             output_dir.mkdir(parents=True)
+            logger.info(f"Created {output_dir}")
         for dataset in experimental_imaging_dataset:
             output_path = output_dir / f"{dataset.uuid}.json"
             output_path.write_text(dataset.model_dump_json(indent=2))
+            logger.info(f"Written {output_path}")
 
     return experimental_imaging_dataset
 
@@ -198,6 +205,10 @@ def get_study(
     if "License" in study_attributes:
         study_attributes.pop("License")
 
+    keywords = study_attributes.get("Keywords", [])
+    if type(keywords) is not list: keywords = [keywords,]
+    if "Keywords" in study_attributes: study_attributes.pop("Keywords")
+
     study_dict = {
         "uuid": get_study_uuid(submission),
         "accession_id": submission.accno,
@@ -209,7 +220,7 @@ def get_study(
         "licence": licence,
         "acknowledgement": study_attributes.pop("Acknowledgements", None),
         "funding_statement": study_attributes.pop("Funding statement", None),
-        "keyword": study_attributes.pop("Keywords", []),
+        "keyword": keywords,
         "author": [c.model_dump() for c in contributors],
         "grant": [g.model_dump() for g in grants],
         "attribute": study_attributes,
@@ -224,8 +235,10 @@ def get_study(
         output_dir = Path(settings.bia_data_dir) / "studies"
         if not output_dir.is_dir():
             output_dir.mkdir(parents=True)
+            logger.info(f"Created {output_dir}")
         output_path = output_dir / f"{study.accession_id}.json"
         output_path.write_text(study.model_dump_json(indent=2))
+        logger.info(f"Written {output_path}")
         # Save ALL file references
         # Save ALL biosamples
         # Save experimental_imaging_datasets
@@ -490,9 +503,11 @@ def get_biosample(
         output_dir = Path(settings.bia_data_dir) / "biosamples" / submission.accno
         if not output_dir.is_dir():
             output_dir.mkdir(parents=True)
+            logger.info(f"Created {output_dir}")
         for biosample in biosamples:
             output_path = output_dir / f"{biosample.uuid}.json"
             output_path.write_text(biosample.model_dump_json(indent=2))
+            logger.info(f"Written {output_path}")
     return biosamples
 
 
