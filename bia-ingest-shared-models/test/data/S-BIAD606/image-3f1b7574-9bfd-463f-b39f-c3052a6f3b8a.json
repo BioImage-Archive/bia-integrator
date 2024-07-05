@@ -1,0 +1,79 @@
+{
+  "attributes": {
+    "file format": "3D Tiff",
+    "number images": "984",
+    "bit depth": "16",
+    "voxel size_µm": "2442"
+  },
+  "annotations_applied": false,
+  "annotations": [],
+  "@context": "https://raw.githubusercontent.com/BioImage-Archive/bia-integrator/main/api/src/models/jsonld/1.0/ImageContext.jsonld",
+  "uuid": "3f1b7574-9bfd-463f-b39f-c3052a6f3b8a",
+  "version": 0,
+  "model": {
+    "type_name": "BIAImage",
+    "version": 2
+  },
+  "study_uuid": "4dce18a2-2a47-44b7-8e0b-e3ab66abf398",
+  "original_relpath": "PycLit_InsVI_3_postMolt6_posBody.tif",
+  "name": "PycLit_InsVI_3_postMolt6_posBody.tif",
+  "dimensions": null,
+  "representations": [
+    {
+      "size": 1613383960,
+      "uri": [
+        "https://ftp.ebi.ac.uk/biostudies/fire/S-BIAD/606/S-BIAD606/Files/PycLit_InsVI_3_postMolt6_posBody.tif"
+      ],
+      "type": "fire_object",
+      "dimensions": null,
+      "attributes": {
+        "fileref_ids": [
+          "05bd96ce-8231-4047-bdb1-f1e22b71e61d"
+        ]
+      },
+      "rendering": null
+    },
+    {
+      "size": 0,
+      "uri": [
+        "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD606/3f1b7574-9bfd-463f-b39f-c3052a6f3b8a/3f1b7574-9bfd-463f-b39f-c3052a6f3b8a.zarr"
+      ],
+      "type": "ome_ngff",
+      "dimensions": null,
+      "attributes": {},
+      "rendering": null
+    },
+    {
+      "size": 0,
+      "uri": [
+        "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD606/3f1b7574-9bfd-463f-b39f-c3052a6f3b8a/3f1b7574-9bfd-463f-b39f-c3052a6f3b8a.zarr"
+      ],
+      "type": "ome_ngff",
+      "dimensions": null,
+      "attributes": {},
+      "rendering": null
+    },
+    {
+      "size": 48796,
+      "uri": [
+        "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD606/3f1b7574-9bfd-463f-b39f-c3052a6f3b8a/3f1b7574-9bfd-463f-b39f-c3052a6f3b8a-thumbnail-256-256.png"
+      ],
+      "type": "thumbnail",
+      "dimensions": "(256, 256)",
+      "attributes": {},
+      "rendering": null
+    },
+    {
+      "size": 179194,
+      "uri": [
+        "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD606/3f1b7574-9bfd-463f-b39f-c3052a6f3b8a/3f1b7574-9bfd-463f-b39f-c3052a6f3b8a-representative-512-512.png"
+      ],
+      "type": "representative",
+      "dimensions": "(512, 512)",
+      "attributes": {},
+      "rendering": null
+    }
+  ],
+  "alias": null,
+  "image_acquisitions_uuid": []
+}

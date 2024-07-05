@@ -1,0 +1,66 @@
+{
+  "attributes": {
+    "file description": "Raw nuclear images in TIFF format",
+    "Diagnosis": "normal (HaCaT)",
+    "Preparation": "cellline cytospin",
+    "Train-/Testset split": "train",
+    "Testset class": "-",
+    "Magnification": "63x",
+    "Modality": "FM",
+    "Device": "Zeiss Axioplan II",
+    "Software": "Metafer",
+    "Mean BG signal": "39,9",
+    "Mean FG signal": "119",
+    "Signal/Noise": "3",
+    "S/N Class": "<4",
+    "download_size": "1.3MiB"
+  },
+  "annotations_applied": false,
+  "annotations": [
+    {
+      "author_email": "migration@ebi.ac.uk",
+      "key": "download_size",
+      "value": "1.3MiB",
+      "state": "active"
+    }
+  ],
+  "@context": "https://raw.githubusercontent.com/BioImage-Archive/bia-integrator/main/api/src/models/jsonld/1.0/ImageContext.jsonld",
+  "uuid": "15e5f46d-369b-49cf-9fda-15c0d0ed67ab",
+  "version": 0,
+  "model": {
+    "type_name": "BIAImage",
+    "version": 2
+  },
+  "study_uuid": "00000000-0000-0000-0006-09b5b66706bf",
+  "original_relpath": "dataset/rawimages/normal_20.tif",
+  "name": "dataset/rawimages/normal_20.tif",
+  "dimensions": null,
+  "representations": [
+    {
+      "size": 1311278,
+      "uri": [
+        "https://ftp.ebi.ac.uk/biostudies/fire/S-BIAD/634/S-BIAD634/Files/dataset/rawimages/normal_20.tif"
+      ],
+      "type": "fire_object",
+      "dimensions": null,
+      "attributes": {
+        "fileref_ids": [
+          "0393f32b-ed45-45c9-91d5-20029aae0d08"
+        ]
+      },
+      "rendering": null
+    },
+    {
+      "size": 0,
+      "uri": [
+        "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD634/15e5f46d-369b-49cf-9fda-15c0d0ed67ab/15e5f46d-369b-49cf-9fda-15c0d0ed67ab.zarr/0"
+      ],
+      "type": "ome_ngff",
+      "dimensions": null,
+      "attributes": {},
+      "rendering": null
+    }
+  ],
+  "alias": null,
+  "image_acquisitions_uuid": []
+}

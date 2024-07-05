@@ -1,0 +1,143 @@
+{
+  "accno" : "S-BIAD606",
+  "attributes" : [ {
+    "name" : "Template",
+    "value" : "BioImages.v4"
+  }, {
+    "name" : "ReleaseDate",
+    "value" : "2023-01-31"
+  }, {
+    "name" : "AttachTo",
+    "value" : "BioImages"
+  } ],
+  "section" : {
+    "type" : "Study",
+    "attributes" : [ {
+      "name" : "Title",
+      "value" : "The sea spider Pycnogonum litorale overturns the paradigm of the absence of axial regeneration in molting animals"
+    }, {
+      "name" : "Description",
+      "value" : "µCT datasets of Pycnogonum litorale specimens that had been subjected to various degrees of posterior amputation."
+    }, {
+      "name" : "Keywords",
+      "value" : "Pycnogonida"
+    }, {
+      "name" : "Keywords",
+      "value" : "sea spider"
+    }, {
+      "name" : "Keywords",
+      "value" : "Pantopoda"
+    }, {
+      "name" : "Keywords",
+      "value" : "Arthropoda"
+    }, {
+      "name" : "Keywords",
+      "value" : "regeneration"
+    }, {
+      "name" : "Keywords",
+      "value" : "evolution"
+    }, {
+      "name" : "Keywords",
+      "value" : "µCT"
+    }, {
+      "name" : "Keywords",
+      "value" : "development"
+    }, {
+      "name" : "Keywords",
+      "value" : "segmentation"
+    }, {
+      "name" : "License",
+      "value" : "CC BY 4.0"
+    }, {
+      "name" : "Funding statement",
+      "value" : "Deutsche Forschungsgemeinschaft grant BR5039/3-1\nAssemble Plus grant as part of the European Union’s Horizon 2020 research and innovation programme under grant agreement no. 730984"
+    } ],
+    "subsections" : [ {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Georg Brenneis"
+      }, {
+        "name" : "E-mail",
+        "value" : "georg.brenneis@univie.ac.at"
+      }, {
+        "name" : "affiliation",
+        "value" : "o1",
+        "reference" : true
+      } ]
+    }, {
+      "accno" : "o1",
+      "type" : "organisation",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "University of Vienna"
+      } ]
+    }, {
+      "accno" : "Biosample-1",
+      "type" : "Biosample",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Pycnogonida (sea spiders)"
+      }, {
+        "name" : "Organism",
+        "value" : "Pycnogonum litorale"
+      }, {
+        "name" : "Biological entity",
+        "value" : "Complete specimens and selected ROIs"
+      } ]
+    }, {
+      "accno" : "Specimen-2",
+      "type" : "Specimen",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Pycnogonum litorale amputees"
+      }, {
+        "name" : "Sample preparation protocol",
+        "value" : "All specimens were fixed and stored in Bouin’s fluid (10% formaldehyde, 5% glacial acetic acid in saturated aqueous picric acid) at room temperature (RT). Specimens were briefly rinsed in phosphate-buffered saline (PBS; 1.86 mM NaH2PO4, 8.41 mM Na2HPO4, 175 mM NaCl, pH 7.4; at least 3× 5 min), transferred into deionized water, dehydrated via an ascending ethanol series, incubated in a tissue contrasting solution of 2% iodine (resublimated; Carl Roth; #X864.1) in 99.5% ethanol for 48 h at RT, rinsed in 99.5% ethanol (3 to 4× 10 min), and critical point-dried with a Leica EM CPD300. "
+      } ]
+    }, {
+      "accno" : "Image acquisition-3",
+      "type" : "Image acquisition",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Pycnogonum litorale µCT"
+      }, {
+        "name" : "Imaging instrument",
+        "value" : "Xradia MicroXCT-200 (Carl Zeiss Microscopy)"
+      }, {
+        "name" : "Image acquisition parameters",
+        "value" : "Dried specimens were placed in plastic tubes for overview scans. For higher resolution scans of the posterior body region with the regenerates, they were subsequently attached to plastic welding rods with hot glue. Scans were performed under 40 kV/200 μA/8 W or 30 kV/200 μA/6 W settings. Depending on the specimen size and region of interest, a 4×, 10×, or 20× objective was chosen. Exposure times were individually adjusted for each scan, ranging from 0.75 to 6.5 s. To reduce noise, binning 2 was applied during data acquisition. Tomography projections were reconstructed with the XMReconstructor software (Carl Zeiss Microscopy) with binning 1 (= full resolution) and TIFF format image stacks as output."
+      }, {
+        "name" : "Imaging method",
+        "value" : "X-ray computed tomography"
+      } ]
+    }, {
+      "accno" : "Study Component-6",
+      "type" : "Study Component",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "µCT data"
+      }, {
+        "name" : "Description",
+        "value" : "Raw image stacks (3D tiff file format) of Pycnogonum litorale complete specimens and ROIs"
+      }, {
+        "name" : "File List",
+        "value" : "PycnoRegeneration_FileList.json"
+      } ],
+      "subsections" : [ {
+        "type" : "Associations",
+        "attributes" : [ {
+          "name" : "Biosample",
+          "value" : "Pycnogonida (sea spiders)"
+        }, {
+          "name" : "Specimen",
+          "value" : "Pycnogonum litorale amputees"
+        }, {
+          "name" : "Image acquisition",
+          "value" : "Pycnogonum litorale µCT"
+        } ]
+      } ]
+    } ]
+  },
+  "type" : "submission"
+}
