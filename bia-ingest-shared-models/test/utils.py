@@ -61,26 +61,76 @@ def get_template_specimen_preparation_protocol() -> (
     return specimen_preparation_protocol
 
 
-def get_template_biosample() -> bia_data_model.BioSample:
-    biosample = bia_data_model.BioSample.model_validate(
+def get_test_biosample() -> List[bia_data_model.BioSample]:
+    # For UUID
+    attributes_to_consider = [
+        "accession_id",
+        "accno",
+        "title_id",
+        "organism_classification",
+        "description",
+        # TODO: Discuss including below in semantic_models.BioSample
+        #"biological_entity",
+        "intrinsic_variable_description",
+        "extrinsic_variable_description",
+        "experimental_variable_description",
+    ]
+    taxon1 = semantic_models.Taxon.model_validate(
         {
-            "uuid": uuid4(),
-            "title_id": "Template BioSample",
-            "organism_classification": [
-                template_taxon.model_dump(),
-            ],
-            "description": "Test biosample description",
-            "experimental_variable_description": [
-                "Description of experimental variable",
-            ],
-            "extrinsic_variable_description": [
-                "Description of external treatment",
-            ],
-            "intrinsic_variable_description": [
-                "Description of internal treatment",
-            ],
+            "common_name": "human",
+            "scientific_name": "Homo sapiens",
+            "ncbi_id": None,
         }
     )
+    taxon2 = semantic_models.Taxon.model_validate(
+        {
+            "common_name": "mouse",
+            "scientific_name": "Mus musculus",
+            "ncbi_id": None,
+        }
+    )
+    biosample_info = [
+        {
+            "accno": "Biosample-1",
+            "accession_id": "S-BIADTEST",
+            "title_id": "Test Biosample 1",
+            "organism_classification": [
+                taxon1.model_dump(),
+            ],
+            "description": "Test description 1 (\"with some escaped chars\") ",
+            "experimental_variable_description": [
+                "Test experimental entity 1",
+            ],
+            "extrinsic_variable_description": [
+                "Test extrinsic variable 1",
+            ],
+            "intrinsic_variable_description": [
+                "Test intrinsic variable 1\nwith escaped character",
+            ],
+         }, {
+            "accno": "Biosample-2",
+            "accession_id": "S-BIADTEST",
+            "title_id": "Test Biosample 2 ",
+            "organism_classification": [
+                taxon2.model_dump(),
+            ],
+            "description": "Test description 2",
+            "experimental_variable_description": [
+                "Test experimental entity 2",
+            ],
+            "extrinsic_variable_description": [
+                "Test extrinsic variable 2",
+            ],
+            "intrinsic_variable_description": [
+                "Test intrinsic variable 2",
+            ],
+        },
+    ]
+    
+    biosample = []
+    for biosample_dict in biosample_info:
+        biosample_dict["uuid"] = dict_to_uuid(biosample_dict, attributes_to_consider)
+        biosample.append(bia_data_model.BioSample.model_validate(biosample_dict))
     return biosample
 
 
@@ -94,7 +144,7 @@ def get_template_specimen() -> bia_data_model.Specimen:
                 get_template_specimen_preparation_protocol().uuid,
             ],
             "sample_of": [
-                get_template_biosample().uuid,
+                biosample.uuid for biosample in get_test_biosample()
             ],
         }
     )
@@ -193,27 +243,47 @@ def get_template_image_annotation_dataset() -> bia_data_model.ImageAnnotationDat
     return image_annotation_dataset
 
 
-def get_template_image_acquisition() -> bia_data_model.ImageAcquisition:
-    image_acquisition = bia_data_model.ImageAcquisition.model_validate(
+def get_test_image_acquisition() -> List[bia_data_model.ImageAcquisition]:
+    attributes_to_consider = [
+        "accession_id",
+        "accno",
+        "title_id",
+        "method_description",
+        "imaging_instrument_description",
+        "image_acquisition_parameters",
+        "fbbi_id",
+    ]
+    image_acquisition_info = [
         {
-            "uuid": uuid4(),
-            "title_id": "Template image acquisition",
-            "method_description": "Template method description",
-            "imaging_instrument_description": "Template imaging instrument",
-            "image_acquisition_parameters": "Template image acquisition parameters",
-            "fbbi_id": [
-                "Test FBBI ID",
-            ],
-        }
-    )
+            "accno": "Image acquisition-3",
+            "accession_id": "S-BIADTEST",
+            "title_id": "Test Primary Screen Image Acquisition",
+            "method_description": "confocal microscopy",
+            "imaging_instrument_description": "Test imaging instrument 1",
+            "image_acquisition_parameters": "Test image acquisition parameters 1",
+            "fbbi_id": [],
+        }, {
+            "accno": "Image acquisition-7",
+            "accession_id": "S-BIADTEST",
+            "title_id": "Test Secondary Screen Image Acquisition",
+            "method_description": "flourescence microscopy",
+            "imaging_instrument_description": "Test imaging instrument 2",
+            "image_acquisition_parameters": "Test image acquisition parameters 2",
+            "fbbi_id": [],
+        },
+    ]
+    image_acquisition = []
+    for image_acquisition_dict in image_acquisition_info:
+        image_acquisition_dict["uuid"] = dict_to_uuid(image_acquisition_dict, attributes_to_consider)
+        image_acquisition.append(bia_data_model.ImageAcquisition.model_validate(image_acquisition_dict))
     return image_acquisition
 
 
-def get_template_image_analysis_method() -> semantic_models.ImageAnalysisMethod:
+def get_test_image_analysis_method() -> semantic_models.ImageAnalysisMethod:
     return semantic_models.ImageAnalysisMethod.model_validate(
         {
-            "method_description": "Template Analysis method",
-            "features_analysed": "Template features analysed",
+            "method_description": "Test image analysis",
+            "features_analysed": "Test image analysis overview",
         }
     )
 
@@ -228,48 +298,110 @@ def get_template_image_correlation_method() -> semantic_models.ImageCorrelationM
     )
 
 
-# Depends on:
-#   bia_data_model.ExperimentallyCapturedImage
-#   bia_data_model.FileReference (this is a circular dependence!)
-#   bia_data_model.Study
-#   bia_data_model.SpecimenPreparationProtocol
-#   bia_data_model.ImageAcquisition
-#   bia_data_model.BioSample
-#
-# TODO: Verify that in practice, the Datasets are created then the
-#       FileReference instances are added. So here we have empty lists
-#       for the dataset
-def get_template_experimental_imaging_dataset() -> (
+# TODO: Create FileReferences and ExperimentallyCapturedImage 
+def get_test_experimental_imaging_dataset() -> (
     bia_data_model.ExperimentalImagingDataset
 ):
-    experimental_imaging_dataset = bia_data_model.ExperimentalImagingDataset.model_validate(
-        {
-            "uuid": uuid4(),
-            "title_id": "Template experimental image dataset",
-            "image": [],  # This should be a list of Experimentally captured image UUIDs
-            "file": [],  # This should be a list of FileReference UUIDs ...
-            "submitted_in_study": get_template_study().uuid,
-            "specimen_preparation_method": [
-                get_template_specimen_preparation_protocol().uuid,
-            ],
-            "acquisition_method": [
-                get_template_image_acquisition().uuid,
-            ],
-            "biological_entity": [
-                get_template_biosample().uuid,
-            ],
-            "analysis_method": [
-                get_template_image_analysis_method().model_dump(),
-            ],
-            "correlation_method": [
-                get_template_image_correlation_method().model_dump(),
-            ],
-            "file_reference_count": 0,
-            "image_count": 0,
-            "example_image_uri": ["https://dummy.url.org"],
-        }
+    study_uuid = dict_to_uuid(
+        {"accession_id": "S-BIADTEST",},
+        attributes_to_consider=["accession_id",]
     )
-    return experimental_imaging_dataset
+    # Create first study component
+    file_references = [{
+            "accession_id": "S-BIADTEST",
+            "file_name": "study_component1/im06.png",
+            "size_in_bytes": 3,
+        },{
+            "accession_id": "S-BIADTEST",
+            "file_name": "study_component1/im08.png",
+            "size_in_bytes": 123,
+        },{
+            "accession_id": "S-BIADTEST",
+            "file_name": "study_component1/ann01-05",
+            "size_in_bytes": 11,
+        },{
+            "accession_id": "S-BIADTEST",
+            "file_name": "study_component1/ann06-10.json",
+            "size_in_bytes": 12,
+        },
+    ]
+    file_reference_uuids = get_test_file_reference_uuid(file_references)
+
+    experimental_imaging_dataset_dict = {
+        "title_id": "Study Component 1",
+        "image": [],  # This should be a list of Experimentally captured image UUIDs
+        "file": file_reference_uuids,
+        "submitted_in_study": study_uuid,
+        "specimen_preparation_method": [
+            #get_template_specimen_preparation_protocol().uuid,
+        ],
+        "acquisition_method": [
+            #get_test_image_acquisition()[0].uuid,
+        ],
+        # This study component uses both biosamples
+        "biological_entity": [
+            biosample.uuid for biosample in get_test_biosample()
+        ],
+        "analysis_method": [
+            get_test_image_analysis_method().model_dump(),
+        ],
+        "correlation_method": [
+            #get_template_image_correlation_method().model_dump(),
+        ],
+        "file_reference_count": 4,
+        "image_count": 0,
+        "example_image_uri": [],
+    }
+    experimental_imaging_dataset_uuid = dict_to_uuid(experimental_imaging_dataset_dict, ["title_id", "submitted_in_study",])
+    experimental_imaging_dataset_dict["uuid"] = experimental_imaging_dataset_uuid
+    experimental_imaging_dataset1 = bia_data_model.ExperimentalImagingDataset.model_validate(experimental_imaging_dataset_dict)
+
+    # Create second study component
+    file_references = [{
+            "accession_id": "S-BIADTEST",
+            "file_name": "study_component2/im06.png",
+            "size_in_bytes": 3,
+        },{
+            "accession_id": "S-BIADTEST",
+            "file_name": "study_component2/im08.png",
+            "size_in_bytes": 123,
+        },{
+            "accession_id": "S-BIADTEST",
+            "file_name": "study_component2/ann01-05",
+            "size_in_bytes": 11,
+        },
+    ]
+    file_reference_uuids = get_test_file_reference_uuid(file_references)
+
+    experimental_imaging_dataset_dict = {
+        "title_id": "Study Component 2",
+        "image": [],  # This should be a list of Experimentally captured image UUIDs
+        "file": file_reference_uuids,
+        "submitted_in_study": study_uuid,
+        "specimen_preparation_method": [
+            #get_template_specimen_preparation_protocol().uuid,
+        ],
+        "acquisition_method": [
+            #get_test_image_acquisition()[1].uuid,
+        ],
+        # This study component uses only second biosample
+        "biological_entity": [
+            get_test_biosample()[1].uuid,
+        ],
+        "analysis_method": [
+            get_test_image_analysis_method().model_dump(),
+        ],
+        "correlation_method": [
+            #get_template_image_correlation_method().model_dump(),
+        ],
+        "file_reference_count": 3,
+        "image_count": 0,
+        "example_image_uri": [],
+    }
+    experimental_imaging_dataset_uuid = dict_to_uuid(experimental_imaging_dataset_dict, ["title_id", "submitted_in_study",])
+    experimental_imaging_dataset_dict["uuid"] = experimental_imaging_dataset_uuid
+    experimental_imaging_dataset2 = bia_data_model.ExperimentalImagingDataset.model_validate(experimental_imaging_dataset_dict)
+    return [experimental_imaging_dataset1, experimental_imaging_dataset2]
 
 
 # Depends on:
@@ -468,10 +600,20 @@ def get_test_study() -> bia_data_model.Study:
             "Test keyword3",
         ],
         "grant": [ g.model_dump() for g in grant ],
-        "experimental_imaging_component": [],
+        "experimental_imaging_component": [e.uuid for e in get_test_experimental_imaging_dataset()],
         "annotation_component": [],
     }
     study_uuid = dict_to_uuid(study_dict, ["accession_id", ])
     study_dict["uuid"] = study_uuid
     study = bia_data_model.Study.model_validate(study_dict)
     return study
+
+def get_test_file_reference_uuid(file_references: List[Dict[str, str]]) -> List[str]:
+    attributes_to_consider = [
+        "accession_id",
+        "file_name",
+        "size_in_bytes",
+    ]
+    return [
+        dict_to_uuid(file_reference, attributes_to_consider) for file_reference in file_references
+    ]

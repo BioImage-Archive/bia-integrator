@@ -1,0 +1,59 @@
+[
+  {
+    "path": "study_component2/im06.png",
+    "size": 3,
+    "attributes": [
+      {
+        "name": "AnnotationsIn",
+        "value": "ann06-10.json"
+      },
+      {
+        "name": "metadata1",
+        "value": "metadata7"
+      },
+      {
+        "name": "metadata2",
+        "value": "metadata8"
+      }
+    ],
+    "type": "file"
+  },
+  {
+    "path": "study_component2/im08.png",
+    "size": 123,
+    "attributes": [
+      {
+        "name": "AnnotationsIn",
+        "value": "ann06-10.json"
+      },
+      {
+        "name": "metadata1",
+        "value": "metadata9"
+      },
+      {
+        "name": "metadata2",
+        "value": "metadata10"
+      }
+    ],
+    "type": "file"
+  },
+  {
+    "path": "study_component2/ann01-05",
+    "size": 11,
+    "attributes": [
+      {
+        "name": "AnnotationsIn",
+        "value": "None"
+      },
+      {
+        "name": "metadata1",
+        "value": "None"
+      },
+      {
+        "name": "metadata2",
+        "value": "None"
+      }
+    ],
+    "type": "directory"
+  }
+]
