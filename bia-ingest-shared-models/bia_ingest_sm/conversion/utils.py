@@ -3,9 +3,9 @@ from pathlib import Path
 import re
 import hashlib
 import uuid
-from typing import List, Any, Dict, Optional, Tuple, Type
+from typing import List, Any, Dict, Optional, Tuple, Type, Union
 from pydantic import BaseModel
-from .biostudies import (
+from ..biostudies import (
     Submission,
     attributes_to_dict,
     Section,
@@ -14,7 +14,7 @@ from .biostudies import (
     flist_from_flist_fname,
     file_uri,
 )
-from .config import settings
+from ..config import settings
 from src.bia_models import bia_data_model, semantic_models
 
 logger = logging.getLogger(__name__)
@@ -23,9 +23,8 @@ logging.basicConfig(level=logging.INFO)
 def get_file_reference_by_study_component(
     submission: Submission, persist_artefacts: bool = False
 ) -> Dict[str, List[bia_data_model.FileReference]]:
-    """Return Dict of list of file references in study components.
-
-
+    """
+    Return Dict of list of file references in study components.
     """
     file_list_dicts = find_file_lists_in_submission(submission)
     fileref_to_study_components = {}
@@ -71,8 +70,8 @@ def get_file_reference_by_study_component(
 def get_experimental_imaging_dataset(
     submission: Submission, persist_artefacts=False
 ) -> List[bia_data_model.ExperimentalImagingDataset]:
-    """Map biostudies.Submission study components to bia_data_model.ExperimentalImagingDataset
-
+    """
+    Map biostudies.Submission study components to bia_data_model.ExperimentalImagingDataset
     """
     study_components = find_sections_recursive(
         submission.section, ["Study Component",], []
@@ -182,8 +181,8 @@ def get_experimental_imaging_dataset(
 def get_study(
     submission: Submission, persist_artefacts: bool = False
 ) -> bia_data_model.Study:
-    """Return an API study model populated from the submission
-
+    """
+    Return an API study model populated from the submission
     """
 
     submission_attributes = attributes_to_dict(submission.attributes)
@@ -280,8 +279,8 @@ def study_title_from_submission(submission: Submission) -> str:
 
 
 def get_licence(study_attributes: Dict[str, Any]) -> semantic_models.LicenceType:
-    """Return enum version of licence of study
-
+    """
+    Return enum version of licence of study
     """
     licence = re.sub(r"\s", "_", study_attributes.get("License", "CC0"))
     return semantic_models.LicenceType(licence)
@@ -290,8 +289,8 @@ def get_licence(study_attributes: Dict[str, Any]) -> semantic_models.LicenceType
 def get_external_reference(
     submission: Submission,
 ) -> List[semantic_models.ExternalReference]:
-    """Map biostudies.Submission.Link to semantic_models.ExternalReference
-
+    """
+    Map biostudies.Submission.Link to semantic_models.ExternalReference
     """
     sections = find_sections_recursive(submission.section, ["links",], [])
 
@@ -343,14 +342,14 @@ def get_funding_body(submission: Submission) -> semantic_models.FundingBody:
 
 # TODO: Put comments and docstring
 def get_generic_section_as_list(
-    root: [Submission | Section],
+    root: Submission | Section,
     section_name: List[str],
-    key_mapping: List[Tuple[str, str, [str | None | List]]],
+    key_mapping: List[Tuple[str, str, str | None | List]],
     mapped_object: Optional[Any] = None,
     mapped_attrs_dict: Optional[Dict[str, Any]] = None,
 ) -> List[Any | Dict[str, str | List[str]]]:
-    """Map biostudies.Submission objects to either semantic_models or bia_data_model equivalent
-
+    """
+    Map biostudies.Submission objects to either semantic_models or bia_data_model equivalent
     """
     if type(root) is Submission:
         sections = find_sections_recursive(root.section, section_name, [])
@@ -373,13 +372,13 @@ def get_generic_section_as_list(
 
 # TODO: Put comments and docstring
 def get_generic_section_as_dict(
-    root: [Submission | Section],
+    root: Submission | Section,
     section_name: List[str],
-    key_mapping: List[Tuple[str, str, [str | None | List]]],
+    key_mapping: List[Tuple[str, str, Union[str , None , List]]],
     mapped_object: Optional[Any] = None,
 ) -> Dict[str, Any | Dict[str, Dict[str, str | List[str]]]]:
-    """Map biostudies.Submission objects to dict containing either semantic_models or bia_data_model equivalent
-
+    """
+    Map biostudies.Submission objects to dict containing either semantic_models or bia_data_model equivalent
     """
     if type(root) is Submission:
         sections = find_sections_recursive(root.section, section_name, [])
@@ -398,8 +397,8 @@ def get_generic_section_as_dict(
 
 
 def get_affiliation(submission: Submission) -> Dict[str, semantic_models.Affiliation]:
-    """Maps biostudies.Submission.Organisation sections to semantic_models.Affiliations
-
+    """
+    Maps biostudies.Submission.Organisation sections to semantic_models.Affiliations
     """
 
     organisation_sections = find_sections_recursive(
@@ -449,8 +448,8 @@ def get_publication(submission: Submission) -> List[semantic_models.Publication]
 
 
 def get_contributor(submission: Submission) -> List[semantic_models.Contributor]:
-    """ Map authors in submission to semantic_model.Contributors
-
+    """
+    Map authors in submission to semantic_model.Contributors
     """
     affiliation_dict = get_affiliation(submission)
     key_mapping = [
@@ -516,9 +515,7 @@ def extract_biosample_dicts(submission: Submission) -> List[Dict[str, Any]]:
 
     key_mapping = [
         ("title_id", "Title", ""),
-        ("description", "Description", ""),
-        # TODO: discuss adding this to semantic model with FS
-        # ("biological_entity", "Biological entity", ""),
+        ("description", "Biological entity", ""),
         ("organism", "Organism", ""),
     ]
 
@@ -583,8 +580,8 @@ def generate_biosample_uuid(biosample_dict: Dict[str, Any]) -> str:
 def find_sections_recursive(
     section: Section, search_types: List[str], results: Optional[List[Section]] = []
 ) -> List[Section]:
-    """Find all sections of search_types within tree, starting at given section
-
+    """
+    Find all sections of search_types within tree, starting at given section
     """
 
     search_types_lower = [s.lower() for s in search_types]
@@ -627,8 +624,8 @@ def mattributes_to_dict(
 
 # TODO: Need to use a canonical version for this function e.g. from API
 def dict_to_uuid(my_dict: Dict[str, Any], attributes_to_consider: List[str]) -> str:
-    """Create uuid from specific keys in a dictionary
-
+    """
+    Create uuid from specific keys in a dictionary
     """
 
     seed = "".join([f"{my_dict[attr]}" for attr in attributes_to_consider])

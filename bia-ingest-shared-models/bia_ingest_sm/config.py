@@ -6,7 +6,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 default_output_base = (
-    f"{Path(os.environ.get('HOME')) / '.cache' / 'bia-integrator-data-sm'}"
+    f"{Path(os.environ.get('HOME', '')) / '.cache' / 'bia-integrator-data-sm'}"
 )
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(

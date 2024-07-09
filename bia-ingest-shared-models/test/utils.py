@@ -7,7 +7,7 @@
 
 from typing import Dict, List
 from src.bia_models import bia_data_model, semantic_models
-from bia_ingest_sm.conversion import dict_to_uuid
+from bia_ingest_sm.conversion.utils import dict_to_uuid
 from uuid import uuid4
 
 template_taxon = semantic_models.Taxon.model_validate(

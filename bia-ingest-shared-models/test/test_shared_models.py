@@ -3,8 +3,11 @@ from pathlib import Path
 from unittest.mock import Mock
 import pytest
 from . import utils
-from .utils import bia_data_model, semantic_models
-from bia_ingest_sm import conversion
+from bia_ingest_sm.conversion import (
+    biosample,
+    experimental_imaging_dataset,
+    study
+)
 from bia_ingest_sm.biostudies import requests
 
 # TODO: Mock requests.get correctly!!!
@@ -23,14 +26,14 @@ requests.get = mock_request_get
 @pytest.mark.parametrize(
     ("expected_model_func", "model_creation_func",),
     (
-        (utils.get_test_affiliation, conversion.get_affiliation,),
-        (utils.get_test_contributor, conversion.get_contributor,),
-        (utils.get_test_grant, conversion.get_grant,),
-        (utils.get_test_study, conversion.get_study,),
-        (utils.get_test_biosample, conversion.get_biosample,),
+        (utils.get_test_affiliation, study.get_affiliation,),
+        (utils.get_test_contributor, study.get_contributor,),
+        (utils.get_test_grant, study.get_grant,),
+        (utils.get_test_study, study.get_study,),
+        (utils.get_test_biosample, biosample.get_biosample,),
         (
             utils.get_test_experimental_imaging_dataset,
-            conversion.get_experimental_imaging_dataset,
+            experimental_imaging_dataset.get_experimental_imaging_dataset,
         ),
         # Not testing as we need to deal with links that are not proper
         # urls

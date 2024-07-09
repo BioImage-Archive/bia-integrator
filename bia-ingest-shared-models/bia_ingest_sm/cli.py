@@ -2,7 +2,7 @@ import typer
 from typing import Optional
 from typing_extensions import Annotated
 from bia_ingest_sm.biostudies import load_submission
-from bia_ingest_sm.conversion import get_study
+from bia_ingest_sm.conversion.study import get_study
 
 app = typer.Typer()
 
