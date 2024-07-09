@@ -8,7 +8,7 @@ readme = "README.md"
 packages = [{include = "bia_ingest_sm"}]
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.10,<3.12"
 requests = "^2.31.0"
 pytest = "^7.0"
 bia-shared-datamodels = { path = "../bia-shared-datamodels", develop = true }

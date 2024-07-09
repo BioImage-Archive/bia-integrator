@@ -173,8 +173,8 @@ def attributes_to_dict(
 def find_file_lists_in_section(
     section: Section, flists: List[Dict[str, Union[str, None, List[str]]]]
 ) -> List[Dict[str, Union[str, None, List[str]]]]:
-    """Find all of the File Lists in a Section, recursively descending through
-    the subsections.
+    """
+    Find all of the File Lists in a Section, recursively descending through the subsections.
     
     Return a list of dictionaries.
     """
@@ -194,7 +194,7 @@ def find_file_lists_in_section(
     for subsection in section.subsections:
         subsection_type = type(subsection)
         if subsection_type == Section:
-            find_file_lists_in_section(subsection, flists)
+            find_file_lists_in_section(subsection, flists) # type: ignore
         else:
             logger.warning(
                 f"Not processing subsection as type is {subsection_type}, not 'Section'. Contents={subsection}"
@@ -331,8 +331,8 @@ def get_with_case_insensitive_key(dictionary: Dict[str, Any], key: str) -> Any:
 
 
 def filter_filelist_content(dictionary: Dict[str, Any]) -> Dict[str, Any]:
-    """Remove attributes in filelist with null or empty values
-
+    """
+    Remove attributes in filelist with null or empty values
     """
     dict_copy = deepcopy(dictionary)
     for d in dict_copy:
