@@ -69,10 +69,11 @@ def get_experimental_imaging_dataset(
         )
 
         analysis_method_list = []
-        biosample_list = []
-        image_acquisition_method_list = []
         correlation_method_list = []
-        specimen_preparation_method_list = []
+        biosample_list = []
+        image_acquisition_list = []
+        specimen_preparation_protocol_list = []
+        specimen_growth_protocol_list = []
 
         if len(associations) > 0:
             # Image Analysis Method
@@ -81,7 +82,7 @@ def get_experimental_imaging_dataset(
             ]
             for analysis_method in analysis_method_dict.values():
                 if (
-                    analysis_method.method_description
+                    analysis_method.protocol_description
                     in analysis_methods_from_associations
                 ):
                     analysis_method_list.append(analysis_method)
@@ -96,12 +97,11 @@ def get_experimental_imaging_dataset(
         study_component_file_references = file_reference_uuids.get(section_name, [])
         model_dict = {
             "title_id": section_name,
-            # "description": attr_dict["Description"],
+            "description": attr_dict["Description"],
             "submitted_in_study": study_conversion.get_study_uuid(submission),
-            "file": study_component_file_references,
-            "image": [],
-            "specimen_preparation_method": specimen_preparation_method_list,
-            "acquisition_method": image_acquisition_method_list,
+            "specimen_imaging_preparation_protocol": specimen_preparation_protocol_list,
+            "acquisition_process": image_acquisition_list,
+            "specimen_growth_protocol": specimen_growth_protocol_list,
             "biological_entity": biosample_list,
             "analysis_method": analysis_method_list,
             "correlation_method": correlation_method_list,
@@ -139,7 +139,7 @@ def get_image_analysis_method(
 ) -> Dict[str, semantic_models.ImageAnalysisMethod]:
 
     key_mapping = [
-        ("method_description", "Title", None,),
+        ("protocol_description", "Title", None,),
         ("features_analysed", "Image analysis overview", None,),
     ]
 

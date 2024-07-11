@@ -46,6 +46,18 @@ def get_template_rendered_view() -> semantic_models.RenderedView:
     )
 
 
+def get_template_signal_channel_information() -> (
+    semantic_models.SignalChannelInformation
+):
+    return semantic_models.SignalChannelInformation.model_validate(
+        {
+            "signal_contrast_mechanism_description": "Test description",
+            "channel_content_description": "Test description",
+            "channel_biological_entity": "Test Entity",
+        }
+    )
+
+
 def get_template_specimen_preparation_protocol() -> (
     bia_data_model.SpecimenPrepartionProtocol
 ):
@@ -54,15 +66,27 @@ def get_template_specimen_preparation_protocol() -> (
             {
                 "uuid": uuid4(),
                 "title_id": "Test specimen preparation protocol",
-                "method_description": "Test description",
-                "signal_contrast_mechanism_description": "Test description",
-                "growth_protocol_description": "Test description",
-                "channel_content_description": "Test description",
-                "channel_biological_entity": "Test Entity",
+                "protocol_description": "Test description",
+                "signal_channel_information": [
+                    get_template_signal_channel_information()
+                ],
             }
         )
     )
     return specimen_preparation_protocol
+
+
+def get_template_specimen_growth_protocol() -> (
+    bia_data_model.SpecimenGrowthProtocol
+):
+    specimen_growth_protocol = bia_data_model.SpecimenGrowthProtocol.model_validate(
+        {
+            "uuid": uuid4(),
+            "title_id": "Test specimen preparation protocol",
+            "protocol_description": "Test description",
+        }
+    )
+    return specimen_growth_protocol
 
 
 def get_template_biosample() -> bia_data_model.BioSample:
@@ -94,25 +118,28 @@ def get_template_biosample() -> bia_data_model.BioSample:
 def get_template_specimen() -> bia_data_model.Specimen:
     specimen = bia_data_model.Specimen.model_validate(
         {
-            "preparation_method": [
+            "imaging_preparation_protocol": [
                 get_template_specimen_preparation_protocol().uuid,
             ],
             "sample_of": [
                 get_template_biosample().uuid,
+            ],
+            "growth_protocol": [
+                get_template_specimen_growth_protocol().uuid,
             ],
         }
     )
     return specimen
 
 
-# Depends on ExperimentalImagingDataset (circular)
+# Depends on ExperimentalImagingDataset
 def get_template_annotation_method() -> bia_data_model.AnnotationMethod:
     annotation_method = bia_data_model.AnnotationMethod.model_validate(
         {
             "uuid": uuid4(),
             "title_id": "Template annotation method",
             "source_dataset": [],  # ExperimentalImagingDataset.uuid or url
-            "method_description": "Template annotation method description",
+            "protocol_description": "Template annotation method description",
             "annotation_criteria": "Template annotation criteria",
             "annotation_coverage": "Template annotation coverage",
             "method_type": semantic_models.AnnotationType.class_labels,
@@ -168,26 +195,12 @@ def get_template_derived_image() -> bia_data_model.DerivedImage:
 
 
 # Depends on:
-#   bia_data_model.DerivedImage
-#   bia_data_model.FileReference (this is a circular dependence!)
-#   bia_data_model.Study
-#   bia_data_model.AnnotationFileReference (this is a circular dependence!)
 #   bia_data_model.AnnotationMethod
-#
-# TODO: Verify that in practice, the Datasets are created then the
-#       FileReference instances are added. So here we have empty lists
-#       for the dataset
 def get_template_image_annotation_dataset() -> bia_data_model.ImageAnnotationDataset:
     image_annotation_dataset = bia_data_model.ImageAnnotationDataset.model_validate(
         {
             "uuid": uuid4(),
             "title_id": "Template image annotation dataset",
-            "image": [
-                get_template_image_representation().uuid,
-            ],
-            "file": [],  # This should be a list of FileReference UUIDs ...
-            "annotation_file": [],  # This should be a list of AnnotationFileReference UUIDs ...
-            "submitted_in_study": get_template_study().uuid,
             "annotation_method": [get_template_annotation_method().uuid],
             "file_reference_count": 0,
             "image_count": 0,
@@ -202,9 +215,9 @@ def get_template_image_acquisition() -> bia_data_model.ImageAcquisition:
         {
             "uuid": uuid4(),
             "title_id": "Template image acquisition",
-            "method_description": "Template method description",
+            "protocol_description": "Template method description",
             "imaging_instrument_description": "Template imaging instrument",
-            "image_acquisition_parameters": "Template image acquisition parameters",
+            "parameters_description": "Template parameters description",
             "fbbi_id": [
                 "Test FBBI ID",
             ],
@@ -216,7 +229,7 @@ def get_template_image_acquisition() -> bia_data_model.ImageAcquisition:
 def get_template_image_analysis_method() -> semantic_models.ImageAnalysisMethod:
     return semantic_models.ImageAnalysisMethod.model_validate(
         {
-            "method_description": "Template Analysis method",
+            "protocol_description": "Template Analysis method",
             "features_analysed": "Template features analysed",
         }
     )
@@ -225,7 +238,7 @@ def get_template_image_analysis_method() -> semantic_models.ImageAnalysisMethod:
 def get_template_image_correlation_method() -> semantic_models.ImageCorrelationMethod:
     return semantic_models.ImageCorrelationMethod.model_validate(
         {
-            "method_description": "Template Analysis method",
+            "protocol_description": "Template Analysis method",
             "fiducials_used": "Template fiducials used",
             "transformation_matrix": "Template transformation matrix",
         }
@@ -233,16 +246,10 @@ def get_template_image_correlation_method() -> semantic_models.ImageCorrelationM
 
 
 # Depends on:
-#   bia_data_model.ExperimentallyCapturedImage
-#   bia_data_model.FileReference (this is a circular dependence!)
-#   bia_data_model.Study
 #   bia_data_model.SpecimenPreparationProtocol
 #   bia_data_model.ImageAcquisition
 #   bia_data_model.BioSample
-#
-# TODO: Verify that in practice, the Datasets are created then the
-#       FileReference instances are added. So here we have empty lists
-#       for the dataset
+#   bia_data_model.SpecimenGrowthProtocol
 def get_template_experimental_imaging_dataset() -> (
     bia_data_model.ExperimentalImagingDataset
 ):
@@ -250,17 +257,17 @@ def get_template_experimental_imaging_dataset() -> (
         {
             "uuid": uuid4(),
             "title_id": "Template experimental image dataset",
-            "image": [],  # This should be a list of Experimentally captured image UUIDs
-            "file": [],  # This should be a list of FileReference UUIDs ...
-            "submitted_in_study": get_template_study().uuid,
-            "specimen_preparation_method": [
+            "specimen_imaging_preparation_protocol": [
                 get_template_specimen_preparation_protocol().uuid,
             ],
-            "acquisition_method": [
+            "acquisition_process": [
                 get_template_image_acquisition().uuid,
             ],
             "biological_entity": [
                 get_template_biosample().uuid,
+            ],
+            "specimen_growth_protocol": [
+                get_template_specimen_growth_protocol().uuid,
             ],
             "analysis_method": [
                 get_template_image_analysis_method().model_dump(),
@@ -277,13 +284,13 @@ def get_template_experimental_imaging_dataset() -> (
 
 
 # Depends on:
-#   bia_data_model.ImageAnnotationDataset (circular)
+#   bia_data_model.ImageAnnotationDataset
 #   bia_data_model.ExperimentalImagingDataset (circular)
 def get_template_annotation_file_reference() -> bia_data_model.AnnotationFileReference:
     return bia_data_model.AnnotationFileReference.model_validate(
         {
             "uuid": uuid4(),
-            "file_name": "Dummy file name",
+            "file_path": "Dummy file path",
             "format": "Dummy format",
             "size_in_bytes": 10,
             "uri": "https://dummy.uri.co",
@@ -300,13 +307,15 @@ def get_template_annotation_file_reference() -> bia_data_model.AnnotationFileRef
 
 
 # Depends on:
-#   bia_data_model.ImageAnnotationDataset (circular)
-#   bia_data_model.ExperimentalImagingDataset (circular)
+#   bia_data_model.ImageAnnotationDataset
+#   or
+#   bia_data_model.ExperimentalImagingDataset
+#   the latter is tested here.
 def get_template_file_reference() -> bia_data_model.FileReference:
     file_reference = bia_data_model.FileReference.model_validate(
         {
             "uuid": uuid4(),
-            "file_name": "Dummy file name",
+            "file_path": "Dummy file path",
             "format": "Dummy format",
             "size_in_bytes": 10,
             "uri": "https://dummy.uri.co",
@@ -386,7 +395,6 @@ def get_template_study() -> bia_data_model.Study:
             "licence": semantic_models.LicenceType.CC0,
             "attribute": {},
             "related_publication": [],
-            # From DocumentMixin
             "author": [
                 contributor.model_dump(),
             ],
@@ -396,7 +404,6 @@ def get_template_study() -> bia_data_model.Study:
                 "Template keyword1",
                 "Template keyword2",
             ],
-            # Defined in study
             "experimental_imaging_component": [
                 uuid4(),
             ],

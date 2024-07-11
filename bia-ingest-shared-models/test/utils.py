@@ -50,7 +50,7 @@ def get_template_specimen_preparation_protocol() -> (
             {
                 "uuid": uuid4(),
                 "title_id": "Test specimen preparation protocol",
-                "method_description": "Test description",
+                "protocol_description": "Test description",
                 "signal_contrast_mechanism_description": "Test description",
                 "growth_protocol_description": "Test description",
                 "channel_content_description": "Test description",
@@ -158,7 +158,7 @@ def get_template_annotation_method() -> bia_data_model.AnnotationMethod:
             "uuid": uuid4(),
             "title_id": "Template annotation method",
             "source_dataset": [],  # ExperimentalImagingDataset.uuid or url
-            "method_description": "Template annotation method description",
+            "protocol_description": "Template annotation method description",
             "annotation_criteria": "Template annotation criteria",
             "annotation_coverage": "Template annotation coverage",
             "method_type": semantic_models.AnnotationType.class_labels,
@@ -248,7 +248,7 @@ def get_test_image_acquisition() -> List[bia_data_model.ImageAcquisition]:
         "accession_id",
         "accno",
         "title_id",
-        "method_description",
+        "protocol_description",
         "imaging_instrument_description",
         "image_acquisition_parameters",
         "fbbi_id",
@@ -258,7 +258,7 @@ def get_test_image_acquisition() -> List[bia_data_model.ImageAcquisition]:
             "accno": "Image acquisition-3",
             "accession_id": "S-BIADTEST",
             "title_id": "Test Primary Screen Image Acquisition",
-            "method_description": "confocal microscopy",
+            "protocol_description": "confocal microscopy",
             "imaging_instrument_description": "Test imaging instrument 1",
             "image_acquisition_parameters": "Test image acquisition parameters 1",
             "fbbi_id": [],
@@ -266,7 +266,7 @@ def get_test_image_acquisition() -> List[bia_data_model.ImageAcquisition]:
             "accno": "Image acquisition-7",
             "accession_id": "S-BIADTEST",
             "title_id": "Test Secondary Screen Image Acquisition",
-            "method_description": "flourescence microscopy",
+            "protocol_description": "flourescence microscopy",
             "imaging_instrument_description": "Test imaging instrument 2",
             "image_acquisition_parameters": "Test image acquisition parameters 2",
             "fbbi_id": [],
@@ -282,7 +282,7 @@ def get_test_image_acquisition() -> List[bia_data_model.ImageAcquisition]:
 def get_test_image_analysis_method() -> semantic_models.ImageAnalysisMethod:
     return semantic_models.ImageAnalysisMethod.model_validate(
         {
-            "method_description": "Test image analysis",
+            "protocol_description": "Test image analysis",
             "features_analysed": "Test image analysis overview",
         }
     )
@@ -291,7 +291,7 @@ def get_test_image_analysis_method() -> semantic_models.ImageAnalysisMethod:
 def get_template_image_correlation_method() -> semantic_models.ImageCorrelationMethod:
     return semantic_models.ImageCorrelationMethod.model_validate(
         {
-            "method_description": "Template Analysis method",
+            "protocol_description": "Template Analysis method",
             "fiducials_used": "Template fiducials used",
             "transformation_matrix": "Template transformation matrix",
         }
@@ -329,14 +329,15 @@ def get_test_experimental_imaging_dataset() -> (
 
     experimental_imaging_dataset_dict = {
         "title_id": "Study Component 1",
-        "image": [],  # This should be a list of Experimentally captured image UUIDs
-        "file": file_reference_uuids,
         "submitted_in_study": study_uuid,
-        "specimen_preparation_method": [
-            #get_template_specimen_preparation_protocol().uuid,
+        "specimen_imaging_preparation_protocol": [
+            #get_template_specimen_imaging_preparation_protocol().uuid,
         ],
-        "acquisition_method": [
+        "acquisition_process": [
             #get_test_image_acquisition()[0].uuid,
+        ],
+        "specimen_growth_protocol": [
+            #get_test_specimen_growth_protocol()[0].uuid,
         ],
         # This study component uses both biosamples
         "biological_entity": [
@@ -351,6 +352,7 @@ def get_test_experimental_imaging_dataset() -> (
         "file_reference_count": 4,
         "image_count": 0,
         "example_image_uri": [],
+        "description": "Description of study component 1"
     }
     experimental_imaging_dataset_uuid = dict_to_uuid(experimental_imaging_dataset_dict, ["title_id", "submitted_in_study",])
     experimental_imaging_dataset_dict["uuid"] = experimental_imaging_dataset_uuid
@@ -375,14 +377,15 @@ def get_test_experimental_imaging_dataset() -> (
 
     experimental_imaging_dataset_dict = {
         "title_id": "Study Component 2",
-        "image": [],  # This should be a list of Experimentally captured image UUIDs
-        "file": file_reference_uuids,
         "submitted_in_study": study_uuid,
-        "specimen_preparation_method": [
+        "specimen_imaging_preparation_protocol": [
             #get_template_specimen_preparation_protocol().uuid,
         ],
-        "acquisition_method": [
+        "acquisition_process": [
             #get_test_image_acquisition()[1].uuid,
+        ],
+        "specimen_growth_protocol": [
+            #get_test_specimen_growth_protocol()[0].uuid,
         ],
         # This study component uses only second biosample
         "biological_entity": [
@@ -397,6 +400,7 @@ def get_test_experimental_imaging_dataset() -> (
         "file_reference_count": 3,
         "image_count": 0,
         "example_image_uri": [],
+        "description": "Description of study component 2",
     }
     experimental_imaging_dataset_uuid = dict_to_uuid(experimental_imaging_dataset_dict, ["title_id", "submitted_in_study",])
     experimental_imaging_dataset_dict["uuid"] = experimental_imaging_dataset_uuid

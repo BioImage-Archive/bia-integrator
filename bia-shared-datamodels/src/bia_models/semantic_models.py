@@ -8,7 +8,132 @@ from pydantic import BaseModel, Field, EmailStr, AnyUrl
 
 
 #######################################################################################################
-# Subgraph 1: Documents, contributors & their affiliations
+# Subgraph 1: Studies and links to external information (publications, grants etc)
+#######################################################################################################
+
+
+class Study(BaseModel):
+    """
+    A piece of scientific work that resulted in the creation of imaging data.
+    """
+
+    accession_id: str = Field(description="""Unique ID provided by BioStudies.""")
+    licence: LicenceType = Field(
+        description="""The license under which the data associated with the study is made avaliable."""
+    )
+    author: List[Contributor] = Field(description="""The creators of the document.""")
+    title: str = Field(
+        description="""The title of a study. This will usually be displayed when search results including your data are shown."""
+    )
+    release_date: date = Field(description="""Date of first publication""")
+    keyword: Optional[List[str]] = Field(
+        default_factory=list,
+        description="""Keywords or tags used to describe the subject or context of the study.""",
+    )
+    acknowledgement: Optional[str] = Field(
+        default_factory=list,
+        description="""Any person or group that should be acknowledged outside of the authors/main contributors to the study.""",
+    )
+    description: Optional[str] = Field(
+        None, description="""Brief description of the study."""
+    )
+    see_also: Optional[List[ExternalReference]] = Field(
+        default_factory=list,
+        description="""Links to publications, github repositories, and other pages related to this Study.""",
+    )
+    related_publication: Optional[List[Publication]] = Field(
+        default_factory=list,
+        description="""The publications that the work involved in the study contributed to.""",
+    )
+    grant: Optional[List[Grant]] = Field(
+        default_factory=list, description="""The grants that funded the study."""
+    )
+    funding_statement: Optional[str] = Field(
+        default_factory=list, description="""Description of how the study was funded."""
+    )
+    experimental_imaging_component: Optional[List[ExperimentalImagingDataset]] = Field(
+        default_factory=list,
+        description="""A dataset of that is associated with the study.""",
+    )
+    annotation_component: Optional[List[ImageAnnotationDataset]] = Field(
+        default_factory=list, description=""""""
+    )
+    attribute: dict = Field(
+        description="""Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."""
+    )
+    # Override optional description in DocumentMixin
+    description: str = Field(
+        None, description="""Brief description of the scientific document."""
+    )
+
+
+class Publication(BaseModel):
+    """
+    A published paper or written work.
+    """
+
+    authors_name: str = Field(
+        description="""The list of names of the authors as displayed in the publication."""
+    )
+    title: str = Field(description="""The title of the publication.""")
+    publication_year: int = Field(description="""Year the article was published""")
+    pubmed_id: Optional[str] = Field(
+        None, description="""Identifier for journal articles/abstracts in PubMed"""
+    )
+    doi: Optional[str] = Field(None, description="""Digital Object Identifier (DOI)""")
+
+
+class ExternalReference(BaseModel):
+    """
+    An object outside the BIA that a user wants to refer to.
+    """
+
+    link: AnyUrl = Field(description="""A URL linking to the refered resource.""")
+    link_type: Optional[str] = Field(
+        None,
+        description="""Classifies the link by website domain and/or use-case, which is useful for display purposes and faceting search.""",
+    )
+    description: Optional[str] = Field(
+        None,
+        description="""Brief description of the resource and how it relates to the document providing the reference.""",
+    )
+
+
+class Grant(BaseModel):
+    """ """
+
+    id: Optional[str] = Field(
+        None,
+        description="""A unique identifier for the grant, such as an Open Funder Registry ID.""",
+    )
+
+    funder: Optional[List[FundingBody]] = Field(
+        default_factory=list,
+        description="""The name of the funding body providing support for the grant.""",
+    )
+
+
+class FundingBody(BaseModel):
+    """ """
+
+    display_name: str = Field(
+        description="""Name as it should be displayed on the BioImage Archive."""
+    )
+    id: Optional[str] = Field(
+        None,
+        description="""A unique identifier for the Funder, such as an Open Funder Registry ID.""",
+    )
+
+
+class LicenceType(str, Enum):
+    # No Copyright. You can copy, modify, distribute and perform the work, even for commercial purposes, all without asking permission.
+    CC0 = "CC0"
+    # You are free to: Share — copy and redistribute the material in any medium or format. Adapt — remix, transform, and build upon the material  for any purpose, even commercially. You must give appropriate credit, provide a link to the license, and indicate if changes were made.  You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+    CC_BY_40 = "CC_BY_4.0"
+
+
+#######################################################################################################
+# Subgraph 2: Contributors & their affiliations
 #######################################################################################################
 
 
@@ -69,140 +194,6 @@ class Affiliation(OrganisationMixin):
     )
 
 
-class DocumentMixin(BaseModel):
-    """
-    A documentary resource or body of scientific work.
-    """
-
-    author: List[Contributor] = Field(description="""The creators of the document.""")
-    title: str = Field(
-        description="""The title of a scientific document. This will usually be displayed when search results including your data are shown."""
-    )
-    release_date: date = Field(description="""Date of first publication""")
-    keyword: Optional[List[str]] = Field(
-        default_factory=list,
-        description="""Keywords or tags used to describe the subject of a document""",
-    )
-    acknowledgement: Optional[str] = Field(
-        default_factory=list,
-        description="""Any person or group that should be acknowledged with the document.""",
-    )
-    description: Optional[str] = Field(
-        None, description="""Brief description of the scientific document."""
-    )
-
-
-#######################################################################################################
-# Subgraph 2: Studies and links to external information (publications, grants etc)
-#######################################################################################################
-
-
-class Study(DocumentMixin):
-    """
-    A piece of scientific work that resulted in the creation of imaging data.
-    """
-
-    accession_id: str = Field(description="""Unique ID provided by BioStudies.""")
-    licence: LicenceType = Field(
-        description="""The license under which the data associated with the study is made avaliable."""
-    )
-    see_also: Optional[List[ExternalReference]] = Field(
-        default_factory=list,
-        description="""Links to publications, github repositories, and other pages related to this Study.""",
-    )
-    related_publication: Optional[List[Publication]] = Field(
-        default_factory=list,
-        description="""The publications that the work involved in the study contributed to.""",
-    )
-    grant: Optional[List[Grant]] = Field(
-        default_factory=list, description="""The grants that funded the study."""
-    )
-    funding_statement: Optional[str] = Field(
-        default_factory=list, description="""Description of how the study was funded."""
-    )
-    experimental_imaging_component: Optional[List[ExperimentalImagingDataset]] = Field(
-        default_factory=list,
-        description="""A dataset of that is associated with the study.""",
-    )
-    annotation_component: Optional[List[ImageAnnotationDataset]] = Field(
-        default_factory=list, description=""""""
-    )
-    attribute: dict = Field(
-        description="""Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."""
-    )
-    # Override optional description in DocumentMixin
-    description: str = Field(
-        None, description="""Brief description of the scientific document."""
-    )
-
-
-class Publication(DocumentMixin):
-    """
-    A published paper or written work.
-    """
-
-    pubmed_id: Optional[str] = Field(
-        None, description="""Identifier for journal articles/abstracts in PubMed"""
-    )
-    doi: Optional[str] = Field(None, description="""Digital Object Identifier (DOI)""")
-    # TODO: Discuss making changes below to allow Publications created by
-    #       submission tool to be ingested. See https://app.clickup.com/t/8694zc48g
-    #doi: Optional[str] = Field(None, description="""Digital Object Identifier (DOI)""")
-    ## Override DocumentMixin.release_date as biostudies.Submission.Publication only has year of publication
-    #release_date: Optional[str] = Field(None, description="""Release date associated with publication. Not necessarily a well formatted date string""")
-    ## Override DocumentMixin.Authors as biostudies.Submission.Publication imports just a string with author names
-    #author: Optional[str] = Field(None, description="""Names of author(s)""")
-
-
-class ExternalReference(BaseModel):
-    """
-    An object outside the BIA that a user wants to refer to.
-    """
-
-    link: AnyUrl = Field(description="""A URL linking to the refered resource.""")
-    link_type: Optional[str] = Field(
-        None,
-        description="""Classifies the link by website domain and/or use-case, which is useful for display purposes and faceting search.""",
-    )
-    description: Optional[str] = Field(
-        None,
-        description="""Brief description of the resource and how it relates to the document providing the reference.""",
-    )
-
-
-class Grant(BaseModel):
-    """ """
-
-    id: Optional[str] = Field(
-        None,
-        description="""A unique identifier for the grant, such as an Open Funder Registry ID.""",
-    )
-
-    funder: Optional[List[FundingBody]] = Field(
-        default_factory=list,
-        description="""The name of the funding body providing support for the grant.""",
-    )
-
-
-class FundingBody(BaseModel):
-    """ """
-
-    display_name: str = Field(
-        description="""Name as it should be displayed on the BioImage Archive."""
-    )
-    id: Optional[str] = Field(
-        None,
-        description="""A unique identifier for the Funder, such as an Open Funder Registry ID.""",
-    )
-
-
-class LicenceType(str, Enum):
-    # No Copyright. You can copy, modify, distribute and perform the work, even for commercial purposes, all without asking permission.
-    CC0 = "CC0"
-    # You are free to: Share — copy and redistribute the material in any medium or format. Adapt — remix, transform, and build upon the material  for any purpose, even commercially. You must give appropriate credit, provide a link to the license, and indicate if changes were made.  You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
-    CC_BY_40 = "CC_BY_4.0"
-
-
 #######################################################################################################
 # Subgraph 3: Dataset mixin and it's files. Method (of dataset creation/maniuplation) mixin.
 #######################################################################################################
@@ -213,14 +204,11 @@ class DatasetMixin(BaseModel):
     A logical grouping of data (in files) based on the process involved in it's creation.
     """
 
-    file: List[FileReference] = Field(
-        description="""Files associated with the dataset."""
-    )
     file_reference_count: int = Field(
         description="""Number of files associated with the study."""
     )
-    submitted_in_study: Study = Field(
-        description="""The study the dataset was submitted in."""
+    description: Optional[str] = Field(
+        None, description="""Brief description of the dataset."""
     )
 
 
@@ -228,11 +216,9 @@ class FileReference(BaseModel):
     """
     Information about a file, provided in file list.
     """
-    
-    # TODO: Clarify if this should be file_name or file_path
-    file_name: str = Field(description="""The name of the file.""")
-    # TODO: Clarify if this should be biostudies 'type' or derived from 
-    #       file extension
+
+    file_path: str = Field(description="""The path (including the name) of the file.""")
+    # TODO: Clarify if this should be biostudies 'type' or derived from file extension
     format: str = Field(description="""File format or type.""")
     size_in_bytes: int = Field(description="""Disc size in bytes.""")
     uri: str = Field(description="""URI from which the file can be accessed.""")
@@ -246,8 +232,8 @@ class ProtocolMixin(BaseModel):
     A protocol for either capturing, combining, or analysing images.
     """
 
-    method_description: str = Field(
-        description="""Description of steps involved in the process or method."""
+    protocol_description: str = Field(
+        description="""Description of steps involved in the process."""
     )
 
 
@@ -368,17 +354,17 @@ class ExperimentalImagingDataset(DatasetMixin):
     A logical collection of images that were created by the same acquisition and preparation procols being applied to a biosample.
     """
 
-    image: List[ExperimentallyCapturedImage] = Field(
-        description="""Images associated with the dataset."""
-    )
-    acquisition_method: list[ImageAcquisition] = Field(
+    acquisition_process: list[ImageAcquisition] = Field(
         description="""Processes involved in the creation of the images and files in this dataset."""
     )
-    specimen_preparation_method: list[SpecimenPrepartionProtocol] = Field(
-        description="""Processes involved in the creation of the samples that were then imaged."""
+    specimen_imaging_preparation_protocol: list[SpecimenPrepartionProtocol] = Field(
+        description="""Processes involved in the preprapartion of the samples for imaged."""
     )
     biological_entity: list[BioSample] = Field(
-        description="""The biological entity that was imaged."""
+        description="""The biological entity or entities that were imaged."""
+    )
+    specimen_growth_protocol: Optional[list[SpecimenPrepartionProtocol]] = Field(
+        description="""Processes involved in the growth of the samples that were then imaged."""
     )
     analysis_method: Optional[list[ImageAnalysisMethod]] = Field(
         description="""Data analysis processes performed on the images."""
@@ -418,21 +404,29 @@ class ImageAcquisition(ProtocolMixin):
     imaging_instrument_description: str = Field(
         description="""Names, types, or description of how the instruments used to create the image."""
     )
-    image_acquisition_parameters: str = Field(
-        description="""Parameters relevant to how the image was taken, such as instrument settings."""
-    )
-    fbbi_id: List[str] = Field(
+    fbbi_id: Optional[List[str]] = Field(
         description="""Biological Imaging Methods Ontology id indicating the kind of imaging that was perfomed."""
+    )
+    imaging_method_name: Optional[List[str]] = Field(
+        description="""Name of the kind of imaging method that was performed."""
     )
 
 
 class SpecimenPrepartionProtocol(ProtocolMixin):
+    """
+    The process to prepare biological entity for imaging.
+    """
+
+    signal_channel_information: Optional[List[SignalChannelInformation]]
+
+
+class SignalChannelInformation(BaseModel):
+    """
+    Information about how signals were generated, staining compounds and their targets.
+    """
+
     signal_contrast_mechanism_description: Optional[str] = Field(
         None, description="""How is the signal is generated by this sample."""
-    )
-    growth_protocol_description: Optional[str] = Field(
-        None,
-        description="""How the specimen was grown, e.g. cell line cultures, crosses or plant growth.""",
     )
     channel_content_description: Optional[str] = Field(
         None,
@@ -443,6 +437,14 @@ class SpecimenPrepartionProtocol(ProtocolMixin):
     )
 
 
+class SpecimenGrowthProtocol(ProtocolMixin):
+    """
+    Protocol methods related to growth of the specimen.
+    """
+
+    pass
+
+
 class Specimen(BaseModel):
     """
     The subject of an image acquisition, and the result of a BioSample being prepared to be imaged.
@@ -451,8 +453,12 @@ class Specimen(BaseModel):
     sample_of: List[BioSample] = Field(
         description="""The biological matter that sampled to create the specimen."""
     )
-    preparation_method: List[SpecimenPrepartionProtocol] = Field(
+    imaging_preparation_protocol: List[SpecimenPrepartionProtocol] = Field(
         description="""How the biosample was prepared for imaging."""
+    )
+    growth_protocol: Optional[List[SpecimenGrowthProtocol]] = Field(
+        None,
+        description="""How the specimen was grown, e.g. cell line cultures, crosses or plant growth.""",
     )
 
 
@@ -519,12 +525,6 @@ class ImageAnnotationDataset(DatasetMixin):
 
     annotation_method: List[AnnotationMethod] = Field(
         description="""The process(es) that were performed to create the annotated data."""
-    )
-    annotation_file: List[AnnotationFileReference] = Field(
-        description="""Annotation files associated with the dataset."""
-    )
-    image: List[DerivedImage] = Field(
-        description="""Images associated with the dataset."""
     )
     example_image_uri: List[str] = Field(
         description="A viewable image that is typical of the dataset."
@@ -625,7 +625,6 @@ class AnnotationType(str, Enum):
 # see https://pydantic-docs.helpmanual.io/usage/models/#rebuilding-a-model
 # Need to do this in order to auto-generate the class diagram
 Contributor.model_rebuild()
-DocumentMixin.model_rebuild()
 Study.model_rebuild()
 DatasetMixin.model_rebuild()
 ImageAnnotationDataset.model_rebuild()
