@@ -5,7 +5,8 @@ from .utils import (
     find_sections_recursive,
     get_generic_section_as_list,
     dict_to_uuid,
-    get_generic_section_as_dict
+    get_generic_section_as_dict,
+    persist
 )
 import bia_ingest_sm.conversion.biosample as biosample_conversion
 import bia_ingest_sm.conversion.study as study_conversion
@@ -118,18 +119,7 @@ def get_experimental_imaging_dataset(
         )
 
     if persist_artefacts and experimental_imaging_dataset:
-        output_dir = (
-            Path(settings.bia_data_dir)
-            / "experimental_imaging_datasets"
-            / submission.accno
-        )
-        if not output_dir.is_dir():
-            output_dir.mkdir(parents=True)
-            logger.info(f"Created {output_dir}")
-        for dataset in experimental_imaging_dataset:
-            output_path = output_dir / f"{dataset.uuid}.json"
-            output_path.write_text(dataset.model_dump_json(indent=2))
-            logger.info(f"Written {output_path}")
+        persist(experimental_imaging_dataset, "experimental_imaging_dataset", submission.accno)
 
     return experimental_imaging_dataset
 

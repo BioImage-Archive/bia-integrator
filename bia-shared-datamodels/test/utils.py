@@ -76,9 +76,7 @@ def get_template_specimen_preparation_protocol() -> (
     return specimen_preparation_protocol
 
 
-def get_template_specimen_growth_protocol() -> (
-    bia_data_model.SpecimenGrowthProtocol
-):
+def get_template_specimen_growth_protocol() -> bia_data_model.SpecimenGrowthProtocol:
     specimen_growth_protocol = bia_data_model.SpecimenGrowthProtocol.model_validate(
         {
             "uuid": uuid4(),
@@ -97,7 +95,7 @@ def get_template_biosample() -> bia_data_model.BioSample:
             "organism_classification": [
                 template_taxon.model_dump(),
             ],
-            "description": "Test biosample description",
+            "biological_entity_description": "Test biological entity description",
             "experimental_variable_description": [
                 "Description of experimental variable",
             ],
@@ -217,7 +215,7 @@ def get_template_image_acquisition() -> bia_data_model.ImageAcquisition:
             "title_id": "Template image acquisition",
             "protocol_description": "Template method description",
             "imaging_instrument_description": "Template imaging instrument",
-            "parameters_description": "Template parameters description",
+            "imaging_method_name": "Template imaging method name",
             "fbbi_id": [
                 "Test FBBI ID",
             ],
@@ -253,32 +251,34 @@ def get_template_image_correlation_method() -> semantic_models.ImageCorrelationM
 def get_template_experimental_imaging_dataset() -> (
     bia_data_model.ExperimentalImagingDataset
 ):
-    experimental_imaging_dataset = bia_data_model.ExperimentalImagingDataset.model_validate(
-        {
-            "uuid": uuid4(),
-            "title_id": "Template experimental image dataset",
-            "specimen_imaging_preparation_protocol": [
-                get_template_specimen_preparation_protocol().uuid,
-            ],
-            "acquisition_process": [
-                get_template_image_acquisition().uuid,
-            ],
-            "biological_entity": [
-                get_template_biosample().uuid,
-            ],
-            "specimen_growth_protocol": [
-                get_template_specimen_growth_protocol().uuid,
-            ],
-            "analysis_method": [
-                get_template_image_analysis_method().model_dump(),
-            ],
-            "correlation_method": [
-                get_template_image_correlation_method().model_dump(),
-            ],
-            "file_reference_count": 0,
-            "image_count": 0,
-            "example_image_uri": ["https://dummy.url.org"],
-        }
+    experimental_imaging_dataset = (
+        bia_data_model.ExperimentalImagingDataset.model_validate(
+            {
+                "uuid": uuid4(),
+                "title_id": "Template experimental image dataset",
+                "specimen_imaging_preparation_protocol": [
+                    get_template_specimen_preparation_protocol().uuid,
+                ],
+                "acquisition_process": [
+                    get_template_image_acquisition().uuid,
+                ],
+                "biological_entity": [
+                    get_template_biosample().uuid,
+                ],
+                "specimen_growth_protocol": [
+                    get_template_specimen_growth_protocol().uuid,
+                ],
+                "analysis_method": [
+                    get_template_image_analysis_method().model_dump(),
+                ],
+                "correlation_method": [
+                    get_template_image_correlation_method().model_dump(),
+                ],
+                "file_reference_count": 0,
+                "image_count": 0,
+                "example_image_uri": ["https://dummy.url.org"],
+            }
+        )
     )
     return experimental_imaging_dataset
 

@@ -4,7 +4,8 @@ from typing import List, Any, Dict
 from .utils import (
     dicts_to_api_models,
     find_sections_recursive,
-    dict_to_uuid
+    dict_to_uuid,
+    persist
 )
 from ..biostudies import (
     Submission,
@@ -25,14 +26,7 @@ def get_biosample(
     biosamples = dicts_to_api_models(biosample_model_dicts, bia_data_model.BioSample)
 
     if persist_artefacts and biosamples:
-        output_dir = Path(settings.bia_data_dir) / "biosamples" / submission.accno
-        if not output_dir.is_dir():
-            output_dir.mkdir(parents=True)
-            logger.info(f"Created {output_dir}")
-        for biosample in biosamples:
-            output_path = output_dir / f"{biosample.uuid}.json"
-            output_path.write_text(biosample.model_dump_json(indent=2))
-            logger.info(f"Written {output_path}")
+        persist(biosamples, "biosamples", submission.accno)
     return biosamples
 
 
@@ -41,7 +35,7 @@ def extract_biosample_dicts(submission: Submission) -> List[Dict[str, Any]]:
 
     key_mapping = [
         ("title_id", "Title", ""),
-        ("description", "Description", ""),
+        ("biological_entity_description", "Biological entity", ""),
         ("organism", "Organism", ""),
     ]
 
@@ -93,9 +87,7 @@ def generate_biosample_uuid(biosample_dict: Dict[str, Any]) -> str:
         "accno",
         "title_id",
         "organism_classification",
-        "description",
-        # TODO: Discuss including below in semantic_models.BioSample
-        # "biological_entity",
+        "biological_entity_description",
         "intrinsic_variable_description",
         "extrinsic_variable_description",
         "experimental_variable_description",

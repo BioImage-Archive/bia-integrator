@@ -407,7 +407,7 @@ class ImageAcquisition(ProtocolMixin):
     fbbi_id: Optional[List[str]] = Field(
         description="""Biological Imaging Methods Ontology id indicating the kind of imaging that was perfomed."""
     )
-    imaging_method_name: Optional[List[str]] = Field(
+    imaging_method_name: Optional[str] = Field(
         description="""Name of the kind of imaging method that was performed."""
     )
 
@@ -470,7 +470,7 @@ class BioSample(BaseModel):
     organism_classification: List[Taxon] = Field(
         description="""The classification of th ebiological matter."""
     )
-    description: str = Field(
+    biological_entity_description: str = Field(
         description="""A short description of the biological entity."""
     )
     experimental_variable_description: Optional[List[str]] = Field(
