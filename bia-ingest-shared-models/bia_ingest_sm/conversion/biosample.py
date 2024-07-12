@@ -1,5 +1,4 @@
 import logging
-from pathlib import Path
 from typing import List, Any, Dict
 from .utils import (
     dicts_to_api_models,
@@ -11,7 +10,6 @@ from ..biostudies import (
     Submission,
     attributes_to_dict,
 )
-from ..config import settings
 from src.bia_models import bia_data_model, semantic_models
 
 logger = logging.getLogger(__name__)
