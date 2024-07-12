@@ -6,8 +6,7 @@ from .utils import (
     get_generic_section_as_dict,
     mattributes_to_dict,
     dict_to_uuid,
-    find_sections_recursive,
-    persist
+    find_sections_recursive
 )
 import bia_ingest_sm.conversion.experimental_imaging_dataset as eid_conversion
 from ..biostudies import (

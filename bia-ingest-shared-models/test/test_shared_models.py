@@ -10,6 +10,7 @@ from bia_ingest_sm.conversion import (
     specimen_imaging_protocol,
     specimen_growth_protocol,
     image_acquisition,
+    annotation_method,
 )
 from bia_ingest_sm.biostudies import requests
 
@@ -49,6 +50,10 @@ requests.get = mock_request_get
         (
             utils.get_test_image_acquisition,
             image_acquisition.get_image_acquisition,
+        ),
+         (
+            utils.get_test_annotation_method,
+            annotation_method.get_annotation_method,
         ),
         # Not testing as we need to deal with links that are not proper
         # urls
