@@ -1,0 +1,64 @@
+{
+  "attributes": {},
+  "annotations_applied": false,
+  "annotations": [],
+  "@context": "https://raw.githubusercontent.com/BioImage-Archive/bia-integrator/main/api/src/models/jsonld/1.0/ImageContext.jsonld",
+  "uuid": "d4c81718-25de-476d-9665-e6ef2680c696",
+  "version": 0,
+  "model": {
+    "type_name": "BIAImage",
+    "version": 2
+  },
+  "study_uuid": "136acfb1-f609-4d33-8731-e8a267ebc4e8",
+  "original_relpath": "Day11/DMSO_asp_05_20221110.czi",
+  "name": "Day11/DMSO_asp_05_20221110.czi",
+  "dimensions": null,
+  "representations": [
+    {
+      "size": 32961504,
+      "uri": [
+        "https://ftp.ebi.ac.uk/biostudies/fire/S-BIAD/987/S-BIAD987/Files/Day11/DMSO_asp_05_20221110.czi"
+      ],
+      "type": "fire_object",
+      "dimensions": null,
+      "attributes": {
+        "fileref_ids": [
+          "3e2b2220-c208-4b82-8030-ee6a523f0d27"
+        ]
+      },
+      "rendering": null
+    },
+    {
+      "size": 0,
+      "uri": [
+        "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD987/d4c81718-25de-476d-9665-e6ef2680c696/d4c81718-25de-476d-9665-e6ef2680c696.zarr/0"
+      ],
+      "type": "ome_ngff",
+      "dimensions": null,
+      "attributes": {},
+      "rendering": null
+    },
+    {
+      "size": 47696,
+      "uri": [
+        "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD987/d4c81718-25de-476d-9665-e6ef2680c696/d4c81718-25de-476d-9665-e6ef2680c696-thumbnail-256-256.png"
+      ],
+      "type": "thumbnail",
+      "dimensions": "(256, 256)",
+      "attributes": {},
+      "rendering": null
+    },
+    {
+      "size": 124754,
+      "uri": [
+        "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD987/d4c81718-25de-476d-9665-e6ef2680c696/d4c81718-25de-476d-9665-e6ef2680c696-representative-512-512.png"
+      ],
+      "type": "representative",
+      "dimensions": "(512, 512)",
+      "attributes": {},
+      "rendering": null
+    }
+  ],
+  "alias": null,
+  "image_acquisitions_uuid": []
+}
