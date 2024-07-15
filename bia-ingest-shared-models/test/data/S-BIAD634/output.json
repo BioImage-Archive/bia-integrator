@@ -295,7 +295,7 @@
                 "ncbi_id": "261975"
             }
         ],
-        "description": "Schwann cell stroma-rich tissue from a patient with a ganglioneuroblastoma tumor"
+        "biological_entity_description": "Schwann cell stroma-rich tissue from a patient with a ganglioneuroblastoma tumor"
     },
     {
         "uuid": "UUID-biosample-2",
@@ -306,7 +306,7 @@
                 "ncbi_id": "261975"
             }
         ],
-        "description": "Tumor tissue from neuroblastoma patient"
+        "biological_entity_description": "Tumor tissue from neuroblastoma patient"
     },
     {
         "uuid": "UUID-biosample-3",
@@ -317,7 +317,7 @@
                 "ncbi_id": "261975"
             }
         ],
-        "description": "Bone marrow cells from neuroblastoma patient"
+        "biological_entity_description": "Bone marrow cells from neuroblastoma patient"
     },
     {
         "uuid": "UUID-biosample-4",
@@ -328,7 +328,7 @@
                 "ncbi_id": "261975"
             }
         ],
-        "description": "Wilms tumor tissue"
+        "biological_entity_description": "Wilms tumor tissue"
     },
     {
         "uuid": "UUID-biosample-5",
@@ -339,7 +339,7 @@
                 "ncbi_id": "261975"
             }
         ],
-        "description": "Patient-derived neuroblastoma cell lines (CLB-Ma, STA-NB10)"
+        "biological_entity_description": "Patient-derived neuroblastoma cell lines (CLB-Ma, STA-NB10)"
     },
     {
         "uuid": "UUID-biosample-6",
@@ -350,7 +350,7 @@
                 "ncbi_id": "261975"
             }
         ],
-        "description": "HaCaT cell line, a spontaneously transformed human epithelial cell line from adult skin"
+        "biological_entity_description": "HaCaT cell line, a spontaneously transformed human epithelial cell line from adult skin"
     },
     {
         "uuid": "UUID-experimentally-captured-image-1",

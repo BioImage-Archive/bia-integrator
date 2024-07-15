@@ -122,7 +122,7 @@
                 "ncbi_id": "10090"
             }
         ],
-        "description": "Primary cortical cultures from E18 mouse embryos after 21 days in vitro",
+        "biological_entity_description": "Primary cortical cultures from E18 mouse embryos after 21 days in vitro",
         "extrinsic_variable_description": "Growth condition"
     },
     {
