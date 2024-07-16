@@ -33,7 +33,7 @@ def extract_annotation_method_dicts(submission: Submission) -> List[Dict[str, An
     annotation_sections = find_sections_recursive(submission.section, ["Annotations"], [])
 
     key_mapping = [
-        ("title_id", "Title", ""),
+        ("title_id", "Name", ""),
         ("protocol_description", "Annotation overview", ""),
         ("annotation_criteria", "Annotation criteria", ""),
         ("annotation_coverage", "Annotation coverage", ""),
