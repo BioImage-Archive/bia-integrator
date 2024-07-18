@@ -1,0 +1,75 @@
+{
+    "uuid": "a2fdbd58-ee11-4cd9-bc6a-f3d3da7fff71",
+    "accession_id": "S-BIADTEST",
+    "licence": "CC0",
+    "author": [
+        {
+            "rorid": null,
+            "address": null,
+            "website": null,
+            "orcid": "0000-0000-0000-0000",
+            "display_name": "Test Author1",
+            "affiliation": [
+                {
+                    "rorid": null,
+                    "address": null,
+                    "website": null,
+                    "display_name": "Test College 1"
+                }
+            ],
+            "contact_email": "test_author1@ebi.ac.uk",
+            "role": "corresponding author"
+        },
+        {
+            "rorid": null,
+            "address": null,
+            "website": null,
+            "orcid": "1111-1111-1111-1111",
+            "display_name": "Test Author2",
+            "affiliation": [
+                {
+                    "rorid": null,
+                    "address": null,
+                    "website": null,
+                    "display_name": "Test College 2"
+                }
+            ],
+            "contact_email": "test_author2@ebi.ac.uk",
+            "role": "first author"
+        }
+    ],
+    "title": "A test submission with title greater than 25 characters",
+    "release_date": "2024-02-13",
+    "keyword": [
+        "Test keyword1",
+        "Test keyword2",
+        "Test keyword3"
+    ],
+    "acknowledgement": "We thank you",
+    "description": "A test submission to allow testing without retrieving from bia server",
+    "see_also": [],
+    "related_publication": [],
+    "grant": [
+        {
+            "id": "TESTFUNDS1",
+            "funder": [
+                {
+                    "display_name": "Test funding body1",
+                    "id": null
+                }
+            ]
+        },
+        {
+            "id": "TESTFUNDS2",
+            "funder": [
+                {
+                    "display_name": "Test funding body2",
+                    "id": null
+                }
+            ]
+        }
+    ],
+    "funding_statement": "This work was funded by the EBI",
+    "annotation_component": [],
+    "attribute": {}
+}

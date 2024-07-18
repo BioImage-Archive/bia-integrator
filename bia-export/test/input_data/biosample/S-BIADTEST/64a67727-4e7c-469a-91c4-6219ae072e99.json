@@ -1,0 +1,21 @@
+{
+    "title_id": "Test Biosample 1",
+    "uuid": "64a67727-4e7c-469a-91c4-6219ae072e99",
+    "organism_classification": [
+        {
+            "common_name": "human",
+            "scientific_name": "Homo sapiens",
+            "ncbi_id": null
+        }
+    ],
+    "biological_entity_description": "Test biological entity 1",
+    "experimental_variable_description": [
+        "Test experimental entity 1"
+    ],
+    "extrinsic_variable_description": [
+        "Test extrinsic variable 1"
+    ],
+    "intrinsic_variable_description": [
+        "Test intrinsic variable 1\\nwith escaped character"
+    ]
+}
