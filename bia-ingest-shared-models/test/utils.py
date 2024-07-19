@@ -6,9 +6,8 @@
 """
 
 from typing import Dict, List
-from src.bia_models import bia_data_model, semantic_models
+from bia_shared_datamodels import bia_data_model, semantic_models
 from bia_ingest_sm.conversion.utils import dict_to_uuid
-from uuid import uuid4
 
 
 def get_test_annotation_method() -> List[bia_data_model.AnnotationMethod]:
@@ -335,17 +334,17 @@ def get_test_experimental_imaging_dataset() -> (
     file_references = [
         {
             "accession_id": "S-BIADTEST",
-            "file_name": "study_component2/im06.png",
+            "file_path": "study_component2/im06.png",
             "size_in_bytes": 3,
         },
         {
             "accession_id": "S-BIADTEST",
-            "file_name": "study_component2/im08.png",
+            "file_path": "study_component2/im08.png",
             "size_in_bytes": 123,
         },
         {
             "accession_id": "S-BIADTEST",
-            "file_name": "study_component2/ann01-05",
+            "file_path": "study_component2/ann01-05",
             "size_in_bytes": 11,
         },
     ]
@@ -572,7 +571,7 @@ def get_test_study() -> bia_data_model.Study:
 def get_test_file_reference_uuid(file_references: List[Dict[str, str]]) -> List[str]:
     attributes_to_consider = [
         "accession_id",
-        "file_name",
+        "file_path",
         "size_in_bytes",
     ]
     return [

@@ -10,7 +10,7 @@ from ..biostudies import (
     Submission,
     attributes_to_dict,
 )
-from src.bia_models import bia_data_model, semantic_models
+from bia_shared_datamodels import bia_data_model, semantic_models
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
