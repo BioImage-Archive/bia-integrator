@@ -1,0 +1,22 @@
+{
+    "attributes": {
+      "file description": "Groundtruth, annotated segmentation masks in TIFF format",
+      "source image": "dataset/rawimages/normal_20.tif",
+      "Title": "Segmentation masks",
+      "alias": "AN42"
+    },
+    "annotations_applied": false,
+    "annotations": [],
+    "@context": "https://raw.githubusercontent.com/BioImage-Archive/bia-integrator/main/api/src/models/jsonld/1.0/FileReferenceContext.jsonld",
+    "uuid": "f8720f25-d33b-4172-a19e-417a3c185459",
+    "version": 0,
+    "model": {
+      "type_name": "FileReference",
+      "version": 1
+    },
+    "study_uuid": "00000000-0000-0000-0006-09b5b66706bf",
+    "name": "dataset/groundtruth/normal_20.tif",
+    "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BIAD/634/S-BIAD634/Files/dataset/groundtruth/normal_20.tif",
+    "type": "fire_object",
+    "size_in_bytes": 2621808
+  }

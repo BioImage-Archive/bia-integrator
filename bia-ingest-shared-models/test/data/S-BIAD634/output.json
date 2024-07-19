@@ -1,0 +1,522 @@
+[
+    {
+        "uuid": "UUID-study-1",
+        "title": "An annotated fluorescence image dataset for training nuclear segmentation methods",
+        "description": "This dataset contains annotated fluorescent nuclear images of normal or cancer cells from different tissue origins and sample preparation types, and can be used to train machine-learning based nuclear image segmentation algorithms. It consists of 79 expert-annotated fluorescence images of immuno and DAPI stained samples containing 7813 nuclei in total. In addition, the dataset is heterogenous in aspects such as type of preparation, imaging modality, magnification, signal-to-noise ratio and other technical aspects. Relevant parameters, e.g. diagnosis, magnification, signal-to-noise ratio and modality with respect to the type of preparation are provided in the file list. The images are derived from one Schwann cell stroma-rich tissue (from a ganglioneuroblastoma) cryosection (10 images/2773 nuclei), seven neuroblastoma (NB) patients (19 images/931 nuclei), one Wilms patient (1 image/102 nuclei), two NB cell lines (CLB-Ma, STA-NB10) (8 images/1785 nuclei) and a human keratinocyte cell line (HaCaT) (41 images/2222 nuclei).",
+        "release_date": "2023-03-07",
+        "accession_id": "S-BIAD634",
+        "licence": "CC0",
+        "author": [
+            {
+                "display_name": "Sabine Taschner-Mandl",
+                "contact_email": "sabine.taschner@ccri.at",
+                "role": "conceptualization, data acquisition",
+                "orcid": "0000-0002-1439-5301",
+                "address": "Zimmermannplatz 10, 1090 Vienna, Austria",
+                "affiliation": [
+                    {
+                        "display_name": "Children's Cancer Research Institute"
+                    }
+                ]
+            },
+            {
+                "display_name": "Inge M. Ambros",
+                "contact_email": "inge.ambros@ccri.at",
+                "role": "data acquisition, data annotation",
+                "address": "Zimmermannplatz 10, 1090 Vienna, Austria",
+                "affiliation": [
+                    {
+                        "display_name": "Children's Cancer Research Institute"
+                    }
+                ]
+            },
+            {
+                "display_name": "Peter F. Ambros",
+                "contact_email": "peter.ambros@ccri.at",
+                "role": "conceptualization, data acquisition",
+                "orcid": "0000-0002-5507-7211",
+                "address": "Zimmermannplatz 10, 1090 Vienna, Austria",
+                "affiliation": [
+                    {
+                        "display_name": "Children's Cancer Research Institute"
+                    }
+                ]
+            },
+            {
+                "display_name": "Klaus Beiske",
+                "contact_email": "klaus.beiske@medisin.uio.no",
+                "role": "data annotation",
+                "address": "Ullernchausseen 70, 0379 Oslo",
+                "affiliation": [
+                    {
+                        "display_name": "Oslo University Hospital"
+                    }
+                ]
+            },
+            {
+                "display_name": "Allan  Hanbury",
+                "contact_email": "hanbury@ifs.tuwien.ac.at",
+                "role": "conceptualization",
+                "orcid": "0000-0002-7149-5843",
+                "address": "Favoritenstrasse 9-11/194, 1040 Wien",
+                "affiliation": [
+                    {
+                        "display_name": "TU Wien"
+                    }
+                ]
+            },
+            {
+                "display_name": "Wolfgang Doerr",
+                "contact_email": "wolfgang.doerr@meduniwien.ac.at",
+                "role": "resources",
+                "orcid": "0000-0003-1477-6849",
+                "address": "Waehringer Guertel 18-20, 1090 Vienna, Austria",
+                "affiliation": [
+                    {
+                        "display_name": "TRAB-Applied and Translational Radiobiology, Department of Radiation Oncology, Medical University of Vienna"
+                    }
+                ]
+            },
+            {
+                "display_name": "Tamara Weiss",
+                "contact_email": "tamara.weiss@meduniwien.ac.at",
+                "role": "data acquisition, data annotation",
+                "orcid": "0000-0001-7046-3412",
+                "address": "Waehringer Guertel 18-20, 1090 Vienna, Austria",
+                "affiliation": [
+                    {
+                        "display_name": "Children's Cancer Research Institute"
+                    }
+                ]
+            },
+            {
+                "display_name": "Maria Berneder",
+                "contact_email": "maria.berneder@ccri.at",
+                "role": "sample preparation",
+                "address": "Zimmermannplatz 10, 1090 Vienna, Austria",
+                "affiliation": [
+                    {
+                        "display_name": "Children's Cancer Research Institute"
+                    }
+                ]
+            },
+            {
+                "display_name": "Magdalena Ambros",
+                "contact_email": "magdalena.ambros@ccri.at",
+                "role": "data acquisition",
+                "address": "Zimmermannplatz 10, 1090 Vienna, Austria",
+                "affiliation": [
+                    {
+                        "display_name": "Children's Cancer Research Institute"
+                    }
+                ]
+            },
+            {
+                "display_name": "Eva Bozsaky",
+                "contact_email": "eva.bozsaky@ccri.at",
+                "role": "data acquisition, data annotation",
+                "address": "Labdia Labordiagnostik GmbH",
+                "affiliation": [
+                    {
+                        "display_name": "Children's Cancer Research Institute"
+                    }
+                ]
+            },
+            {
+                "display_name": "Florian Kromp",
+                "contact_email": "florian.kromp@ccri.at",
+                "role": "conceptualization, data acquisition, data annotation, data analysis",
+                "orcid": "0000-0003-4557-5652",
+                "address": "Zimmermannplatz 10, 1090 Vienna, Austria",
+                "affiliation": [
+                    {
+                        "display_name": "Children's Cancer Research Institute"
+                    }
+                ]
+            },
+            {
+                "display_name": "Teresa Zulueta-Coarasa",
+                "contact_email": "teresaz@ebi.ac.uk",
+                "role": "data curation",
+                "orcid": "0000-0002-0456-6912",
+                "affiliation": [
+                    {
+                        "display_name": "European Bioinformatics Institute (EMBL-EBI)"
+                    }
+                ]
+            }
+        ],
+        "attribute": {},
+        "related_publication": [
+            {
+                "title": "An annotated fluorescence image dataset for training nuclear segmentation methods",
+                "authors": "Florian Kromp, Eva Bozsaky, Fikret Rifatbegovic, Lukas Fischer, Magdalena Ambros, Maria Berneder, Tamara Weiss, Daria Lazic, Wolfgang Dörr, Allan Hanbury, Klaus Beiske, Peter F. Ambros, Inge M. Ambros & Sabine Taschner-Mandl",
+                "doi": "https://doi.org/10.1038/s41597-020-00608-w"
+            }
+        ],
+        "keyword": [
+            "AI",
+            "segmentation",
+            "nucleus",
+            "fluorescence"
+        ],
+        "funding_statement": "This work was facilitated by an EraSME grant (project TisQuant) under the grant no. 844198 and by a COIN grant (project VISIOMICS) under the grant no. 861750, both grants kindly provided by the Austrian Research Promotion Agency (FFG), and the St. Anna Kinderkrebsforschung. Partial funding was further provided by BMK, BMDW, and the Province of Upper Austria in the frame of the COMET Programme managed by FFG.",
+        "see_also": [
+            {
+                "link": "https://github.com/perlfloccri/NuclearSegmentationPipeline",
+                "description": "Deep Learning models trained with this dataset"
+            },
+            {
+                "link": "https://www.ebi.ac.uk/biostudies/bioimages/studies/S-BSST265",
+                "description": "Original submission (not curated)"
+            }
+        ],
+        "experimental_imaging_component": [
+            "UUID-experimental-imaging-dataset-1"
+        ],
+        "annotation_component": [
+            "UUID-annotation-dataset-1"
+        ]
+    },
+    {
+        "uuid": "UUID-experimental-imaging-dataset-1",
+        "title_id": "Fluorescence images",
+        "description": "Fluorescent nuclear images of normal or cancer cells from different tissue origins and sample preparation types",
+        "image": [
+            "UUID-experimentally-captured-image-1"
+        ],
+        "file": [
+            "UUID-file-reference-1"
+        ],
+        "submitted_in_study": "UUID-study-1",
+        "specimen_imaging_preparation_protocol": [
+            "UUID-specimen-preparation-protocol-1",
+            "UUID-specimen-preparation-protocol-2",
+            "UUID-specimen-preparation-protocol-3",
+            "UUID-specimen-preparation-protocol-4"
+        ],
+        "acquisition_process": [
+            "UUID-image-acquisition-1"
+        ],
+        "biological_entity": [
+            "UUID-biosample-1",
+            "UUID-biosample-2",
+            "UUID-biosample-3",
+            "UUID-biosample-4",
+            "UUID-biosample-5",
+            "UUID-biosample-6"
+        ],
+        "specimen_growth_protocol": [],
+        "analysis_method": [],
+        "correlation_method": [],
+        "file_reference_count": 1,
+        "image_count": 1,
+        "example_image_uri": [],
+        "attribute": {
+            "associatations": [
+                {
+                    "biosample": "UUID-biosample-1",
+                    "specimen": "UUID-specimen-preparation-protocol-1",
+                    "image_acquisition": "UUID-image-acquisition-1"
+                },
+                {
+                    "biosample": "UUID-biosample-2",
+                    "specimen": "UUID-specimen-preparation-protocol-1",
+                    "image_acquisition": "UUID-image-acquisition-1"
+                },
+                {
+                    "biosample": "UUID-biosample-4",
+                    "specimen": "UUID-specimen-preparation-protocol-1",
+                    "image_acquisition": "UUID-image-acquisition-1"
+                },
+                {
+                    "biosample": "UUID-biosample-6",
+                    "specimen": "UUID-specimen-preparation-protocol-2",
+                    "image_acquisition": "UUID-image-acquisition-1"
+                },
+                {
+                    "biosample": "UUID-biosample-2",
+                    "specimen": "UUID-specimen-preparation-protocol-3",
+                    "image_acquisition": "UUID-image-acquisition-1"
+                },
+                {
+                    "biosample": "UUID-biosample-3",
+                    "specimen": "UUID-specimen-preparation-protocol-3",
+                    "image_acquisition": "UUID-image-acquisition-1"
+                },
+                {
+                    "biosample": "UUID-biosample-5",
+                    "specimen": "UUID-specimen-preparation-protocol-4",
+                    "image_acquisition": "UUID-image-acquisition-1"
+                }
+            ]
+        }
+    },
+    {
+        "uuid": "UUID-specimen-preparation-protocol-1",
+        "title_id": "Preparation and IF-staining of tumor tissue cryosections",
+        "protocol_description": "The fresh-frozen tumor tissues of one ganglioneuroblastoma patient, one neuroblastoma patient and one Wilms tumor patient were embedded into tissue-tek-OCT and 4 𝜇𝑚 thick cryosections were prepared. Sections were mounted on Histobond glass slides (Marienfeld), fixed in 4.5% formaledhyde and stained with 4,6-diamino-2-phenylindole (DAPI), a blue fluorescent dye conventionally used for staining of nuclei for cellular imaging techniques. Finally, slides were covered with Vectashield and coverslips were sealed on the slides with rubber cement.",
+        "signal_channel_information": []
+    },
+    {
+        "uuid": "UUID-specimen-preparation-protocol-2",
+        "title_id": "Preparation and IF-staining of HaCaT human skin keratinocyte cell line",
+        "protocol_description": "The HaCaT cell line, a spontaneously transformed human epithelial cell line from adult skin, was cultivated either in culture flasks or on microscopy glass slides. Cell cultures were irradiated (2 and 6 Gy), harvested, cytospinned, air-dried and IF stained. Cells grown and irradiated on the glass slides were directly subjected to IF staining. Cells were fixed in 4% formaldehyde for 10 minutes at 4 °C, and were permeabilized with 0.1% sodium dodecyl sulfate (SDS) in PBS for 6 minutes. Slides were mounted with antifade solution Vectashield containing DAPI and coverslips were sealed on the slides with rubber cement.",
+        "signal_channel_information": []
+    },
+    {
+        "uuid": "UUID-specimen-preparation-protocol-3",
+        "title_id": "Preparation and IF-staining of tumor touch imprints and bone marrow cytospin preparations",
+        "protocol_description": "Touch imprints were prepared from fresh primary tumors of 4 stage M neuroblastoma patients as previously described. Mononuclear cells were isolated from bone marrow aspirates of 3 stage M neuroblastoma patients by density gradient centrifugation and cytospinned as described. After fixation in 3.7% formaldehyde for 3 minutes, cells were treated according to the Telomere PNA FISH Kit Cy3 protocol (Dako), mounted with Vectashield containing DAPI, covered and sealed.",
+        "signal_channel_information": []
+    },
+    {
+        "uuid": "UUID-specimen-preparation-protocol-4",
+        "title_id": "Preparation and IF-staining of neuroblastoma cell line cytospin preparations",
+        "protocol_description": "STA-NB-10 and CLB-Ma are cell lines derived from neuroblastoma tumor tissue of patients with stage M disease. Preparation and drug-treatment were conducted as described. Briefly, cells were cultured in the absence or presence of 5 nM topotecan, a chemotherapeutic drug for 3 weeks, detached and cytospinned to microscopy glass slides. Preparations were air-dried, fixed in 3.7% formaldehyde, immuno- and DAPI stained, covered and sealed.",
+        "signal_channel_information": []
+    },
+    {
+        "uuid": "UUID-image-acquisition-1",
+        "title_id": "Pycnogonum litorale µCT",
+        "protocol_description": "Dried specimens were placed in plastic tubes for overview scans. For higher resolution scans of the posterior body region with the regenerates, they were subsequently attached to plastic welding rods with hot glue. Scans were performed under 40 kV/200 μA/8 W or 30 kV/200 μA/6 W settings. Depending on the specimen size and region of interest, a 4×, 10×, or 20× objective was chosen. Exposure times were individually adjusted for each scan, ranging from 0.75 to 6.5 s. To reduce noise, binning 2 was applied during data acquisition. Tomography projections were reconstructed with the XMReconstructor software (Carl Zeiss Microscopy) with binning 1 (= full resolution) and TIFF format image stacks as output.",
+        "imaging_instrument_description": "Xradia MicroXCT-200 (Carl Zeiss Microscopy)",
+        "imaging_method_name": "X-ray computed tomography",
+        "fbbi_id": [
+            "http://purl.obolibrary.org/obo/FBbi_00001002"
+        ]
+    },
+    {
+        "uuid": "UUID-biosample-1",
+        "title_id": "Tumor sample from ganglioneuroblastoma patient",
+        "organism_classification": [
+            {
+                "scientific_name": "Homo sapiens",
+                "ncbi_id": "261975"
+            }
+        ],
+        "biological_entity_description": "Schwann cell stroma-rich tissue from a patient with a ganglioneuroblastoma tumor"
+    },
+    {
+        "uuid": "UUID-biosample-2",
+        "title_id": "Tumor sample from neuroblastoma patient",
+        "organism_classification": [
+            {
+                "scientific_name": "Homo sapiens",
+                "ncbi_id": "261975"
+            }
+        ],
+        "biological_entity_description": "Tumor tissue from neuroblastoma patient"
+    },
+    {
+        "uuid": "UUID-biosample-3",
+        "title_id": "Bone marrow sample from neuroblastoma patient",
+        "organism_classification": [
+            {
+                "scientific_name": "Homo sapiens",
+                "ncbi_id": "261975"
+            }
+        ],
+        "biological_entity_description": "Bone marrow cells from neuroblastoma patient"
+    },
+    {
+        "uuid": "UUID-biosample-4",
+        "title_id": "Tumor sample from Wilms tumor patient",
+        "organism_classification": [
+            {
+                "scientific_name": "Homo sapiens",
+                "ncbi_id": "261975"
+            }
+        ],
+        "biological_entity_description": "Wilms tumor tissue"
+    },
+    {
+        "uuid": "UUID-biosample-5",
+        "title_id": "Neuroblastoma cell lines",
+        "organism_classification": [
+            {
+                "scientific_name": "Homo sapiens",
+                "ncbi_id": "261975"
+            }
+        ],
+        "biological_entity_description": "Patient-derived neuroblastoma cell lines (CLB-Ma, STA-NB10)"
+    },
+    {
+        "uuid": "UUID-biosample-6",
+        "title_id": "Skin keratinocyte cell line",
+        "organism_classification": [
+            {
+                "scientific_name": "Homo sapiens",
+                "ncbi_id": "261975"
+            }
+        ],
+        "biological_entity_description": "HaCaT cell line, a spontaneously transformed human epithelial cell line from adult skin"
+    },
+    {
+        "uuid": "UUID-experimentally-captured-image-1",
+        "acquisition_process": [
+            "UUID-image-acquisition-1"
+        ],
+        "representation": [
+            "UUID-image-representation-1",
+            "UUID-image-representation-2"
+        ],
+        "submission_dataset": "UUID-experimental-imaging-dataset-1",
+        "subject": {
+            "imaging_preparation_protocol": [
+                "UUID-specimen-preparation-protocol-1",
+                "UUID-specimen-preparation-protocol-2",
+                "UUID-specimen-preparation-protocol-3",
+                "UUID-specimen-preparation-protocol-4"
+            ],
+            "sample_of": [
+                "UUID-biosample-1",
+                "UUID-biosample-2",
+                "UUID-biosample-3",
+                "UUID-biosample-4",
+                "UUID-biosample-5",
+                "UUID-biosample-6"
+            ],
+            "growth_protocol": []
+        },
+        "attribute": {
+            "file description": "Raw nuclear images in TIFF format",
+            "Diagnosis": "normal (HaCaT)",
+            "Preparation": "cellline cytospin",
+            "Train-/Testset split": "train",
+            "Testset class": "-",
+            "Magnification": "63x",
+            "Modality": "FM",
+            "Device": "Zeiss Axioplan II",
+            "Software": "Metafer",
+            "Mean BG signal": "39,9",
+            "Mean FG signal": "119",
+            "Signal/Noise": "3",
+            "S/N Class": "<4",
+            "download_size": "1.3MiB"
+        }
+    },
+    {
+        "uuid": "UUID-image-representation-1",
+        "original_file_reference": [
+            "UUID-file-reference-1"
+        ],
+        "image_format": "fire_object",
+        "file_uri": [
+            "https://ftp.ebi.ac.uk/biostudies/fire/S-BIAD/634/S-BIAD634/Files/dataset/rawimages/normal_20.tif"
+        ],
+        "total_size_in_bytes": 1311278,
+        "image_viewer_setting": [],
+        "attribute": {}
+    },
+    {
+        "uuid": "UUID-image-representation-2",
+        "original_file_reference": [
+            "UUID12-file_reference"
+        ],
+        "image_format": "ome_ngff",
+        "file_uri": [
+            "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD634/15e5f46d-369b-49cf-9fda-15c0d0ed67ab/15e5f46d-369b-49cf-9fda-15c0d0ed67ab.zarr/0"
+        ],
+        "total_size_in_bytes": 0,
+        "image_viewer_setting": [],
+        "attribute": {}
+    },
+    {
+        "uuid": "UUID-file-reference-1",
+        "file_path": "dataset/rawimages/normal_20.tif",
+        "format": "fire_object",
+        "size_in_bytes": 1311278,
+        "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BIAD/606/S-BIAD606/Files/PycLit_InsVI_3_postMolt6_posBody.tif",
+        "attribute": {
+            "file description": "Raw nuclear images in TIFF format",
+            "Diagnosis": "normal (HaCaT)",
+            "Preparation": "cellline cytospin",
+            "Train-/Testset split": "train",
+            "Testset class": "-",
+            "Magnification": "63x",
+            "Modality": "FM",
+            "Device": "Zeiss Axioplan II",
+            "Software": "Metafer",
+            "Mean BG signal": "39,9",
+            "Mean FG signal": "119",
+            "Signal/Noise": "3",
+            "S/N Class": "<4"
+        },
+        "submission_dataset": "UUID-experimental-imaging-dataset-1"
+    },
+    {
+        "uuid": "UUID-annotation-dataset-1",
+        "title_id": "Template image annotation dataset",
+        "image": [
+            "UUID-derived-image-1"
+        ],
+        "file": [
+            "UUID-file-reference-2"
+        ],
+        "annotation_file": [],
+        "submitted_in_study": "UUID-study-1",
+        "annotation_method": "UUID-annotation-method-1",
+        "file_reference_count": 1,
+        "image_count": 1,
+        "example_image_uri": []
+    },
+    {
+        "uuid": "UUID-annotation-method-1",
+        "title_id": "Segmentation masks",
+        "source_dataset": [],
+        "protocol_description": "Nuclei image annotation was performed by students and expert biologists trained by a disease expert. To accelerate the time consuming process of image annotation, a machine learning-based framework (MLF) was utilized supporting the process of annotation by learning characteristics of annotation in multiple steps. The MLF annotations result in a coarse annotation of nuclear contours and have to be refined to serve as ground truth annotation. Therefore, annotated images were exported as support vector graphic (SVG) files and imported into Adobe Illustrator (AI) CS6. AI enables the visualization of annotated nuclei as polygons overlaid on the raw nuclear image and provides tools to refine the contours of each nucleus. An expert biologist and disease expert carefully curated all images by refining polygonal contours and by removing polygons or adding them, if missing. Finally, an expert pathologist was consulted to revise all image annotations and annotations were curated according to the pathologist’s suggestions. In cases where decision finding was difficult, a majority vote including all experts’ suggestions was considered and annotations were corrected accordingly. Images were exported and converted to Tagged Image File Format (TIFF) files, serving as nuclear masks in the ground truth dataset. To set a baseline for machine learning-based image segmentation methods and to validate the proposed dataset, 25 nuclei were randomly sampled from the ground truth annotations for each of the classes, marked on the raw images and presented to two independent experts for image annotation. Annotation was carried out by a biology expert with long-standing experience in nuclear image annotation, further called annotation expert, and a biologist with experience in cell morphology and microscopy, further called expert biologist. Nuclei were annotated using SVG-files and Adobe illustrator. The single-nuclei annotations, described as single-cell annotations within the dataset, can be downloaded along with the dataset.",
+        "annotation_criteria": "The annotation of nuclei in tissue sections or tumor touch imprints is challenging and may not be unambiguous due to out-of-focus light or nuclei, damaged nuclei or nuclei presenting with modified morphology due to the slide preparation procedure. We defined the following criteria to annotate nuclear images: Only intact nuclei are annotated, even if the nuclear intensity is low in comparison to all other nuclei present. Nuclei have to be in focus. If parts of a nucleus are out of focus, only the part of the nucleus being in focus is annotated. Nuclear borders have to be annotated as exact as resolution and blurring allows for. Nuclei are not annotated if their morphology was heavily changed due to the preparation procedure. Nuclei from dividing cells are annotated as one nucleus unless clear borders can be distinguished between the resulting new nuclei."
+    },
+    {
+        "uuid": "UUID-derived-image-1",
+        "source_image": [
+            "UUID-image-representation-1"
+        ],
+        "submission_dataset": "UUID-annotation-dataset-1",
+        "creation_process": [
+            "UUID-annotation-method-1"
+        ],
+        "representation": [
+            "UUID-image-representation-3",
+            "UUID-image-representation-4"
+        ],
+        "transformation_description": "Template transformation description",
+        "spatial_information": "Template spatial information",
+        "attribute": {}
+    },
+    {
+        "uuid": "UUID-image-representation-3",
+        "original_file_reference": [
+            "UUID-file-reference-2"
+        ],
+        "image_format": "fire_object",
+        "file_uri": [
+            "https://ftp.ebi.ac.uk/biostudies/fire/S-BIAD/634/S-BIAD634/Files/dataset/groundtruth/normal_20.tif"
+        ],
+        "total_size_in_bytes": 2621808
+    },
+    {
+        "uuid": "UUID-image-representation-4",
+        "original_file_reference": [],
+        "image_format": "ome_ngff",
+        "file_uri": [
+            "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD634/906e2ace-8e99-4841-89e6-f95983632896/906e2ace-8e99-4841-89e6-f95983632896.zarr/0"
+        ],
+        "total_size_in_bytes": 0
+    },
+    {
+        "uuid": "UUID-file-reference-2",
+        "file_path": "dataset/groundtruth/normal_20.tif",
+        "format": "fire_object",
+        "size_in_bytes": 2621808,
+        "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BIAD/634/S-BIAD634/Files/dataset/groundtruth/normal_20.tif",
+        "attribute": {
+            "file description": "Groundtruth, annotated segmentation masks in TIFF format",
+            "source image": "dataset/rawimages/normal_20.tif",
+            "Title": "Segmentation masks",
+            "alias": "AN42"
+        },
+        "submission_dataset": "UUID-annotation-dataset-1"
+    }
+]
