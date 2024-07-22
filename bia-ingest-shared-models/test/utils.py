@@ -1,8 +1,7 @@
-"""Utility functions to create models
+"""
+Utility functions to create models
 
-    This module attempts to create models starting from the outer nodes (leaves) of the 
-    model dependency graph
-
+This module attempts to create models starting from the outer nodes (leaves) of the model dependency graph
 """
 
 from typing import Dict, List
@@ -110,8 +109,8 @@ def get_test_specimen_growth_protocol() -> List[bia_data_model.SpecimenGrowthPro
     return protocol
 
 
-def get_test_specimen_preparation_protocol() -> (
-    List[bia_data_model.SpecimenPrepartionProtocol]
+def get_test_specimen_imaging_preparation_protocol() -> (
+    List[bia_data_model.SpecimenImagingPrepartionProtocol]
 ):
     # For UUID
     attributes_to_consider = [
@@ -141,7 +140,7 @@ def get_test_specimen_preparation_protocol() -> (
     for protocol_dict in protocol_info:
         protocol_dict["uuid"] = dict_to_uuid(protocol_dict, attributes_to_consider)
         protocol.append(
-            bia_data_model.SpecimenPrepartionProtocol.model_validate(protocol_dict)
+            bia_data_model.SpecimenImagingPrepartionProtocol.model_validate(protocol_dict)
         )
     return protocol
 
@@ -293,26 +292,13 @@ def get_test_experimental_imaging_dataset() -> (
 
     experimental_imaging_dataset_dict = {
         "title_id": "Study Component 1",
-        "submitted_in_study": study_uuid,
-        "specimen_imaging_preparation_protocol": [
-            # get_template_specimen_imaging_preparation_protocol().uuid,
-        ],
-        "acquisition_process": [
-            # get_test_image_acquisition()[0].uuid,
-        ],
-        "specimen_growth_protocol": [
-            # get_test_specimen_growth_protocol()[0].uuid,
-        ],
-        # This study component uses both biosamples
-        "biological_entity": [biosample.uuid for biosample in get_test_biosample()],
+        "submitted_in_study_uuid": study_uuid,
         "analysis_method": [
             get_test_image_analysis_method().model_dump(),
         ],
         "correlation_method": [
             # get_template_image_correlation_method().model_dump(),
         ],
-        "file_reference_count": 4,
-        "image_count": 0,
         "example_image_uri": [],
         "description": "Description of study component 1",
     }
@@ -320,7 +306,7 @@ def get_test_experimental_imaging_dataset() -> (
         experimental_imaging_dataset_dict,
         [
             "title_id",
-            "submitted_in_study",
+            "submitted_in_study_uuid",
         ],
     )
     experimental_imaging_dataset_dict["uuid"] = experimental_imaging_dataset_uuid
@@ -350,28 +336,13 @@ def get_test_experimental_imaging_dataset() -> (
     ]
     experimental_imaging_dataset_dict = {
         "title_id": "Study Component 2",
-        "submitted_in_study": study_uuid,
-        "specimen_imaging_preparation_protocol": [
-            # get_template_specimen_preparation_protocol().uuid,
-        ],
-        "acquisition_process": [
-            # get_test_image_acquisition()[1].uuid,
-        ],
-        "specimen_growth_protocol": [
-            # get_test_specimen_growth_protocol()[0].uuid,
-        ],
-        # This study component uses only second biosample
-        "biological_entity": [
-            get_test_biosample()[1].uuid,
-        ],
+        "submitted_in_study_uuid": study_uuid,
         "analysis_method": [
             get_test_image_analysis_method().model_dump(),
         ],
         "correlation_method": [
             # get_template_image_correlation_method().model_dump(),
         ],
-        "file_reference_count": 3,
-        "image_count": 0,
         "example_image_uri": [],
         "description": "Description of study component 2",
     }
@@ -379,7 +350,7 @@ def get_test_experimental_imaging_dataset() -> (
         experimental_imaging_dataset_dict,
         [
             "title_id",
-            "submitted_in_study",
+            "submitted_in_study_uuid",
         ],
     )
     experimental_imaging_dataset_dict["uuid"] = experimental_imaging_dataset_uuid

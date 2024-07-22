@@ -6,8 +6,8 @@ from . import utils
 from bia_ingest_sm.conversion import (
     biosample,
     experimental_imaging_dataset,
+    specimen_imaging_preparation_protocol,
     study,
-    specimen_imaging_protocol,
     specimen_growth_protocol,
     image_acquisition,
     annotation_method,
@@ -40,8 +40,8 @@ requests.get = mock_request_get
             experimental_imaging_dataset.get_experimental_imaging_dataset,
         ),
         (
-            utils.get_test_specimen_preparation_protocol,
-            specimen_imaging_protocol.get_specimen_preparation_protocol,
+            utils.get_test_specimen_imaging_preparation_protocol,
+            specimen_imaging_preparation_protocol.get_specimen_imaging_preparation_protocol,
         ),
         (
             utils.get_test_specimen_growth_protocol,

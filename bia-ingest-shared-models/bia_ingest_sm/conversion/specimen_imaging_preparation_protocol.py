@@ -16,12 +16,12 @@ logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
 
-def get_specimen_preparation_protocol(
+def get_specimen_imaging_preparation_protocol(
     submission: Submission, persist_artefacts=False
-) -> List[bia_data_model.Specimen]:
+) -> List[bia_data_model.SpecimenImagingPrepartionProtocol]:
 
     specimen_preparation_protocol_model_dicts = extract_specimen_preparation_protocol_dicts(submission)
-    specimen_preparation_protocols = dicts_to_api_models(specimen_preparation_protocol_model_dicts, bia_data_model.SpecimenPrepartionProtocol)
+    specimen_preparation_protocols = dicts_to_api_models(specimen_preparation_protocol_model_dicts, bia_data_model.SpecimenImagingPrepartionProtocol)
 
     if persist_artefacts and specimen_preparation_protocols:
         persist(specimen_preparation_protocols, "specimen_imaging_protocol", submission.accno)
@@ -48,13 +48,13 @@ def extract_specimen_preparation_protocol_dicts(submission: Submission) -> List[
 
         model_dict["accno"] = section.__dict__.get("accno", "")
         model_dict["accession_id"] = submission.accno
-        model_dict["uuid"] = generate_specimen_preparation_uuid(model_dict)
+        model_dict["uuid"] = generate_specimen_imaging_preparation_uuid(model_dict)
         model_dicts.append(model_dict)
 
     return model_dicts
 
 
-def generate_specimen_preparation_uuid(protocol_dict: Dict[str, Any]) -> str:
+def generate_specimen_imaging_preparation_uuid(protocol_dict: Dict[str, Any]) -> str:
     attributes_to_consider = [
         "accession_id",
         "accno",

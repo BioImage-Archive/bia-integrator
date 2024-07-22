@@ -1,5 +1,5 @@
 import logging
-from typing import List, Dict
+from typing import List, Dict, Any
 from .utils import (
     find_sections_recursive,
     get_generic_section_as_list,
@@ -56,9 +56,6 @@ def get_experimental_imaging_dataset(
     for section in study_components:
         attr_dict = attributes_to_dict(section.attributes)
         key_mapping = [
-            ("biosample", "Biosample", None,),
-            ("specimen", "Specimen", None,),
-            ("image_acquisition", "Image acquisition", None,),
             ("image_analysis", "Image analysis", None,),
             ("image_correlation", "Image correlation", None,),
         ]
@@ -69,10 +66,8 @@ def get_experimental_imaging_dataset(
         analysis_method_list = []
         correlation_method_list = []
         biosample_list = []
-        image_acquisition_list = []
-        specimen_preparation_protocol_list = []
-        specimen_growth_protocol_list = []
 
+        #TODO: move this to main CLI code to make object generation more independent
         if len(associations) > 0:
             # Image Analysis Method
             analysis_methods_from_associations = [
@@ -91,26 +86,17 @@ def get_experimental_imaging_dataset(
                 if biosample in biosamples_in_submission_uuid:
                     biosample_list.extend(biosamples_in_submission_uuid[biosample])
 
+
         section_name = attr_dict["Name"]
-        study_component_file_references = file_reference_uuids.get(section_name, [])
         model_dict = {
             "title_id": section_name,
             "description": attr_dict["Description"],
-            "submitted_in_study": study_conversion.get_study_uuid(submission),
-            "specimen_imaging_preparation_protocol": specimen_preparation_protocol_list,
-            "acquisition_process": image_acquisition_list,
-            "specimen_growth_protocol": specimen_growth_protocol_list,
-            "biological_entity": biosample_list,
+            "submitted_in_study_uuid": study_conversion.get_study_uuid(submission),
             "analysis_method": analysis_method_list,
             "correlation_method": correlation_method_list,
-            "file_reference_count": len(study_component_file_references),
-            "image_count": 0,
             "example_image_uri": [],
         }
-        # TODO: Add 'description' to computation of uuid (Maybe accno?)
-        model_dict["uuid"] = dict_to_uuid(
-            model_dict, ["title_id", "submitted_in_study",]
-        )
+        model_dict["uuid"] = generate_experimental_imaging_dataset_uuid(model_dict)
         experimental_imaging_dataset.append(
             bia_data_model.ExperimentalImagingDataset.model_validate(model_dict)
         )
@@ -137,3 +123,11 @@ def get_image_analysis_method(
         semantic_models.ImageAnalysisMethod,
     )
 
+
+def generate_experimental_imaging_dataset_uuid(experimental_imaging_dataset_dict: Dict[str, Any]) -> str:
+    # TODO: Add 'description' to computation of uuid (Maybe accno?)
+    attributes_to_consider = [
+        "title_id", 
+        "submitted_in_study_uuid",
+    ]
+    return dict_to_uuid(experimental_imaging_dataset_dict, attributes_to_consider)

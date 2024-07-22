@@ -1,17 +1,13 @@
-"""Utility functions to create models
+"""
+Utility functions to create models
 
-    This module attempts to create models starting from the outer nodes (leaves) of the 
-    model dependency graph
-
+This module attempts to create models starting from the outer nodes (leaves) of the model dependency graph
 """
 
 from pathlib import Path
-import sys
 
 base_path = Path(__file__).parent
-sys.path.append(f"{base_path.parent / 'src'}")
-sys.path.append(f"{base_path.parent / 'src' / 'bia_models'}")
-from bia_models import bia_data_model, semantic_models
+from bia_shared_datamodels import bia_data_model, semantic_models
 from uuid import uuid4
 
 template_taxon = semantic_models.Taxon.model_validate(
@@ -58,11 +54,11 @@ def get_template_signal_channel_information() -> (
     )
 
 
-def get_template_specimen_preparation_protocol() -> (
-    bia_data_model.SpecimenPrepartionProtocol
+def get_template_specimen_imaging_preparation_protocol() -> (
+    bia_data_model.SpecimenImagingPrepartionProtocol
 ):
-    specimen_preparation_protocol = (
-        bia_data_model.SpecimenPrepartionProtocol.model_validate(
+    specimen_imaging_preparation_protocol = (
+        bia_data_model.SpecimenImagingPrepartionProtocol.model_validate(
             {
                 "uuid": uuid4(),
                 "title_id": "Test specimen preparation protocol",
@@ -73,7 +69,7 @@ def get_template_specimen_preparation_protocol() -> (
             }
         )
     )
-    return specimen_preparation_protocol
+    return specimen_imaging_preparation_protocol
 
 
 def get_template_specimen_growth_protocol() -> bia_data_model.SpecimenGrowthProtocol:
@@ -112,17 +108,18 @@ def get_template_biosample() -> bia_data_model.BioSample:
 
 # Depends on:
 #   bia_data_model.BioSample
-#   bia_data_model.SpecimenPreparationProtocol
+#   bia_data_model.SpecimenImagingPreparationProtocol
 def get_template_specimen() -> bia_data_model.Specimen:
     specimen = bia_data_model.Specimen.model_validate(
         {
-            "imaging_preparation_protocol": [
-                get_template_specimen_preparation_protocol().uuid,
+            "uuid": uuid4(),
+            "imaging_preparation_protocol_uuid": [
+                get_template_specimen_imaging_preparation_protocol().uuid,
             ],
-            "sample_of": [
+            "sample_of_uuid": [
                 get_template_biosample().uuid,
             ],
-            "growth_protocol": [
+            "growth_protocol_uuid": [
                 get_template_specimen_growth_protocol().uuid,
             ],
         }
@@ -157,12 +154,9 @@ def get_template_experimentally_captured_image() -> (
     return bia_data_model.ExperimentallyCapturedImage.model_validate(
         {
             "uuid": uuid4(),
-            "acquisition_process": [get_template_image_acquisition().uuid],
-            "representation": [
-                get_template_image_representation().uuid,
-            ],
-            "submission_dataset": get_template_experimental_imaging_dataset().uuid,
-            "subject": get_template_specimen(),
+            "acquisition_process_uuid": [get_template_image_acquisition().uuid],
+            "submission_dataset_uuid": get_template_experimental_imaging_dataset().uuid,
+            "subject_uuid": get_template_specimen().uuid,
             "attribute": {},
         }
     )
@@ -176,14 +170,11 @@ def get_template_derived_image() -> bia_data_model.DerivedImage:
     derived_image = bia_data_model.DerivedImage.model_validate(
         {
             "uuid": uuid4(),
-            "source_image": [
+            "source_image_uuid": [
                 get_template_image_representation().uuid,
             ],
-            "submission_dataset": get_template_image_annotation_dataset().uuid,
-            "creation_process": [get_template_annotation_method().uuid],
-            "representation": [
-                get_template_image_representation().uuid,
-            ],
+            "submission_dataset_uuid": get_template_image_annotation_dataset().uuid,
+            "creation_process_uuid": [get_template_annotation_method().uuid],
             "transformation_description": "Template transformation description",
             "spatial_information": "Template spatial information",
             "attribute": {},
@@ -198,10 +189,8 @@ def get_template_image_annotation_dataset() -> bia_data_model.ImageAnnotationDat
     image_annotation_dataset = bia_data_model.ImageAnnotationDataset.model_validate(
         {
             "uuid": uuid4(),
+            "submitted_in_study_uuid": get_template_study().uuid,
             "title_id": "Template image annotation dataset",
-            "annotation_method": [get_template_annotation_method().uuid],
-            "file_reference_count": 0,
-            "image_count": 0,
             "example_image_uri": ["https://dummy.url.org"],
         }
     )
@@ -255,27 +244,14 @@ def get_template_experimental_imaging_dataset() -> (
         bia_data_model.ExperimentalImagingDataset.model_validate(
             {
                 "uuid": uuid4(),
+                "submitted_in_study_uuid": get_template_study().uuid,
                 "title_id": "Template experimental image dataset",
-                "specimen_imaging_preparation_protocol": [
-                    get_template_specimen_preparation_protocol().uuid,
-                ],
-                "acquisition_process": [
-                    get_template_image_acquisition().uuid,
-                ],
-                "biological_entity": [
-                    get_template_biosample().uuid,
-                ],
-                "specimen_growth_protocol": [
-                    get_template_specimen_growth_protocol().uuid,
-                ],
                 "analysis_method": [
                     get_template_image_analysis_method().model_dump(),
                 ],
                 "correlation_method": [
                     get_template_image_correlation_method().model_dump(),
                 ],
-                "file_reference_count": 0,
-                "image_count": 0,
                 "example_image_uri": ["https://dummy.url.org"],
             }
         )
@@ -295,13 +271,13 @@ def get_template_annotation_file_reference() -> bia_data_model.AnnotationFileRef
             "size_in_bytes": 10,
             "uri": "https://dummy.uri.co",
             "attribute": {},
-            "submission_dataset": get_template_image_annotation_dataset().uuid,
-            "source_image": [
+            "submission_dataset_uuid": get_template_image_annotation_dataset().uuid,
+            "source_image_uuid": [
                 get_template_image_representation().uuid,
             ],
             "transformation_description": "Template transformation description",
             "spatial_information": "Template spatial information",
-            "creation_process": [get_template_annotation_method().uuid],
+            "creation_process_uuid": [get_template_annotation_method().uuid],
         }
     )
 
@@ -320,19 +296,22 @@ def get_template_file_reference() -> bia_data_model.FileReference:
             "size_in_bytes": 10,
             "uri": "https://dummy.uri.co",
             "attribute": {},
-            "submission_dataset": get_template_experimental_imaging_dataset().uuid,
+            "submission_dataset_uuid": get_template_experimental_imaging_dataset().uuid,
+            "submission_dataset_type": bia_data_model.DatasetType.ExperimentalImagingDataset
         }
     )
     return file_reference
 
 
 # Depends on:
-#   bia_data_model.FileReference (
+#   bia_data_model.FileReference
 def get_template_image_representation() -> bia_data_model.ImageRepresentation:
     return bia_data_model.ImageRepresentation.model_validate(
         {
             "uuid": uuid4(),
-            "original_file_reference": [
+            "representation_of_uuid": get_template_experimentally_captured_image().uuid,
+            "abstract_image_type": bia_data_model.AbstractImageType.DerivedImage,
+            "original_file_reference_uuid": [
                 get_template_file_reference().uuid,
             ],
             "image_format": "Template image format",

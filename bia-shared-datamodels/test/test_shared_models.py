@@ -2,10 +2,8 @@ from uuid import uuid4
 import pytest
 from pydantic import ValidationError
 from . import utils
-from .utils import (
-    bia_data_model,
-    semantic_models,
-)
+from bia_shared_datamodels import bia_data_model
+
 
 
 @pytest.mark.parametrize(
@@ -43,8 +41,8 @@ from .utils import (
             utils.get_template_image_acquisition,
         ),
         (
-            bia_data_model.SpecimenPrepartionProtocol,
-            utils.get_template_specimen_preparation_protocol,
+            bia_data_model.SpecimenImagingPrepartionProtocol,
+            utils.get_template_specimen_imaging_preparation_protocol,
         ),
         (
             bia_data_model.BioSample,

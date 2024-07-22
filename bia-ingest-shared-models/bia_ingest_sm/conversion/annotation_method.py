@@ -18,7 +18,7 @@ logging.basicConfig(level=logging.INFO)
 
 def get_annotation_method(
     submission: Submission, persist_artefacts=False
-) -> List[bia_data_model.Specimen]:
+) -> List[bia_data_model.AnnotationMethod]:
 
     annotation_method_model_dicts = extract_annotation_method_dicts(submission)
     annotation_methods = dicts_to_api_models(annotation_method_model_dicts, bia_data_model.AnnotationMethod)

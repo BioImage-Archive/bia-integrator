@@ -18,7 +18,7 @@ logging.basicConfig(level=logging.INFO)
 
 def get_image_acquisition(
     submission: Submission, persist_artefacts=False
-) -> List[bia_data_model.Specimen]:
+) -> List[bia_data_model.ImageAcquisition]:
 
     image_acquisition_model_dicts = extract_image_acquisition_dicts(submission)
     image_acquisitions = dicts_to_api_models(image_acquisition_model_dicts, bia_data_model.ImageAcquisition)

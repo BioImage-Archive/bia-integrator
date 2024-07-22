@@ -18,7 +18,7 @@ logging.basicConfig(level=logging.INFO)
 
 def get_specimen_growth_protocol(
     submission: Submission, persist_artefacts=False
-) -> List[bia_data_model.Specimen]:
+) -> List[bia_data_model.SpecimenGrowthProtocol]:
 
     specimen_growth_protocol_model_dicts = extract_specimen_growth_protocol_dicts(submission)
     specimen_growth_protocols = dicts_to_api_models(specimen_growth_protocol_model_dicts, bia_data_model.SpecimenGrowthProtocol)

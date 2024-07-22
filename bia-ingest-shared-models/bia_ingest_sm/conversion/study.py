@@ -31,10 +31,10 @@ def get_study(
     contributors = get_contributor(submission)
     grants = get_grant(submission)
 
-    experimental_imaging_datasets = eid_conversion.get_experimental_imaging_dataset(
+    # TODO: move this to main CLI code to make object generation more independent
+    eid_conversion.get_experimental_imaging_dataset(
         submission, persist_artefacts=persist_artefacts
     )
-    experimental_imaging_dataset_uuids = [e.uuid for e in experimental_imaging_datasets]
 
     study_attributes = attributes_to_dict(submission.section.attributes)
 
@@ -65,7 +65,6 @@ def get_study(
         "author": [c.model_dump() for c in contributors],
         "grant": [g.model_dump() for g in grants],
         "attribute": study_attributes,
-        "experimental_imaging_component": experimental_imaging_dataset_uuids,
         "annotation_component": [],
     }
     # study_uuid = dict_to_uuid(study_dict, ["accession_id",])
@@ -85,9 +84,6 @@ def get_study(
         # Save experimental_imaging_datasets
         # Save study
     return study
-
-
-
 
 
 def get_study_uuid(submission: Submission) -> str:
