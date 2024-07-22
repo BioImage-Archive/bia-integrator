@@ -1,6 +1,5 @@
 import logging
 from pathlib import Path
-import re
 import hashlib
 import uuid
 from typing import List, Any, Dict, Optional, Tuple, Type, Union
@@ -10,12 +9,8 @@ from ..biostudies import (
     attributes_to_dict,
     Section,
     Attribute,
-    find_file_lists_in_submission,
-    flist_from_flist_fname,
-    file_uri,
 )
 from ..config import settings
-from src.bia_models import bia_data_model, semantic_models
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
@@ -145,3 +140,14 @@ def dict_to_uuid(my_dict: Dict[str, Any], attributes_to_consider: List[str]) -> 
     seed = "".join([f"{my_dict[attr]}" for attr in attributes_to_consider])
     hexdigest = hashlib.md5(seed.encode("utf-8")).hexdigest()
     return str(uuid.UUID(version=4, hex=hexdigest))
+
+
+def persist(object_list: List, object_path: str, sumbission_accno: str):
+    output_dir = Path(settings.bia_data_dir) / object_path / sumbission_accno
+    if not output_dir.is_dir():
+        output_dir.mkdir(parents=True)
+        logger.info(f"Created {output_dir}")
+    for object in object_list:
+        output_path = output_dir / f"{object.uuid}.json"
+        output_path.write_text(object.model_dump_json(indent=2))
+        logger.info(f"Written {output_path}")

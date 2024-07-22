@@ -6,7 +6,11 @@ from . import utils
 from bia_ingest_sm.conversion import (
     biosample,
     experimental_imaging_dataset,
-    study
+    specimen_imaging_preparation_protocol,
+    study,
+    specimen_growth_protocol,
+    image_acquisition,
+    annotation_method,
 )
 from bia_ingest_sm.biostudies import requests
 
@@ -34,6 +38,22 @@ requests.get = mock_request_get
         (
             utils.get_test_experimental_imaging_dataset,
             experimental_imaging_dataset.get_experimental_imaging_dataset,
+        ),
+        (
+            utils.get_test_specimen_imaging_preparation_protocol,
+            specimen_imaging_preparation_protocol.get_specimen_imaging_preparation_protocol,
+        ),
+        (
+            utils.get_test_specimen_growth_protocol,
+            specimen_growth_protocol.get_specimen_growth_protocol,
+        ),
+        (
+            utils.get_test_image_acquisition,
+            image_acquisition.get_image_acquisition,
+        ),
+         (
+            utils.get_test_annotation_method,
+            annotation_method.get_annotation_method,
         ),
         # Not testing as we need to deal with links that are not proper
         # urls

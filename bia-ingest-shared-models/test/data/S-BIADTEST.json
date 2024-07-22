@@ -284,6 +284,22 @@
         "value" : "Test image analysis overview"
       } ]
     }, {
+      "accno" : "Annotations-29",
+      "type" : "Annotations",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Segmentation masks"
+      }, {
+        "name" : "Annotation overview",
+        "value" : "Test annotation overview 1"
+      }, {
+        "name" : "Annotation criteria",
+        "value" : "Test annotation criteria 1"
+      }, {
+        "name" : "File List",
+        "value" : "file_list_annotations_1.json"
+      } ]
+    }, {
       "accno" : "Study Component-1",
       "type" : "Study Component",
       "attributes" : [ {

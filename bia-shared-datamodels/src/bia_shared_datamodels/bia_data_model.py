@@ -1,11 +1,10 @@
 from __future__ import annotations
 
 from . import semantic_models
-from pydantic import BaseModel, Field, AnyUrl
-from typing import List, Optional, Union
+from pydantic import BaseModel, Field
+from typing import List, Optional
 from uuid import UUID
-
-from pydantic_core import Url
+from enum import Enum
 
 
 class DocumentMixin(BaseModel):
@@ -24,24 +23,27 @@ class Study(
     semantic_models.Study,
     DocumentMixin,
 ):
-    experimental_imaging_component: List[UUID] = Field()
-    annotation_component: List[UUID] = Field()
     author: List[semantic_models.Contributor] = Field(min_length=1)
-    description: str = Field()
 
 
 class FileReference(
     semantic_models.FileReference,
     DocumentMixin,
 ):
-    submission_dataset: UUID = Field()
+    submission_dataset_uuid: UUID = Field()
+    submission_dataset_type: DatasetType = Field(
+        description="""The type of dataset in which this file was submitted to the BioImage Archive."""
+    )
 
 
 class ImageRepresentation(
     semantic_models.ImageRepresentation,
     DocumentMixin,
 ):
-    original_file_reference: Optional[List[UUID]] = Field()
+    # We may want to store the FileReference -> Image(Represenation) rather than in the original_file_reference_uuid
+    original_file_reference_uuid: Optional[List[UUID]] = Field()
+    representation_of_uuid: UUID = Field()
+    abstract_image_type: AbstractImageType = Field()
 
 
 class ExperimentalImagingDataset(
@@ -49,30 +51,22 @@ class ExperimentalImagingDataset(
     DocumentMixin,
     UserIdentifiedObject,
 ):
-    image: List[UUID] = Field()
-    file: List[UUID] = Field()
-    submitted_in_study: UUID = Field()
-    specimen_preparation_method: List[UUID] = Field()
-    acquisition_method: List[UUID] = Field()
-    biological_entity: List[UUID] = Field()
-    # we include image analysis and correlation
+    submitted_in_study_uuid: UUID = Field()
 
 
-class Specimen(semantic_models.Specimen):
-    preparation_method: List[UUID] = Field(min_length=1)
-    sample_of: List[UUID] = Field(min_length=1)
+class Specimen(semantic_models.Specimen, DocumentMixin):
+    imaging_preparation_protocol_uuid: List[UUID] = Field(min_length=1)
+    sample_of_uuid: List[UUID] = Field(min_length=1)
+    growth_protocol_uuid: List[UUID] = Field()
 
 
 class ExperimentallyCapturedImage(
     semantic_models.ExperimentallyCapturedImage,
     DocumentMixin,
 ):
-    acquisition_process: List[UUID] = Field()
-    representation: List[UUID] = Field()
-    submission_dataset: UUID = Field()
-    subject: Specimen = Field()
-    # note Specimen is included in image document, but needs to be overriden to link to protocol & biosample via uuid.
-
+    acquisition_process_uuid: List[UUID] = Field()
+    submission_dataset_uuid: UUID = Field()
+    subject_uuid: UUID = Field()
 
 class ImageAcquisition(
     semantic_models.ImageAcquisition,
@@ -82,8 +76,16 @@ class ImageAcquisition(
     pass
 
 
-class SpecimenPrepartionProtocol(
-    semantic_models.SpecimenPrepartionProtocol,
+class SpecimenImagingPrepartionProtocol(
+    semantic_models.SpecimenImagingPrepartionProtocol,
+    DocumentMixin,
+    UserIdentifiedObject,
+):
+    pass
+
+
+class SpecimenGrowthProtocol(
+    semantic_models.SpecimenGrowthProtocol,
     DocumentMixin,
     UserIdentifiedObject,
 ):
@@ -103,30 +105,25 @@ class ImageAnnotationDataset(
     DocumentMixin,
     UserIdentifiedObject,
 ):
-    image: List[UUID] = Field()
-    file: List[UUID] = Field()
-    annotation_file: List[UUID] = Field()
-    submitted_in_study: UUID = Field()
-    annotation_method: List[UUID] = Field()
+    submitted_in_study_uuid: UUID = Field()
 
 
 class AnnotationFileReference(
     semantic_models.AnnotationFileReference,
     DocumentMixin,
 ):
-    source_image: List[UUID] = Field()
-    submission_dataset: UUID = Field()
-    creation_process: List[UUID] = Field()
+    submission_dataset_uuid: UUID = Field()
+    source_image_uuid: List[UUID] = Field()
+    creation_process_uuid: List[UUID] = Field()
 
 
 class DerivedImage(
     semantic_models.DerivedImage,
     DocumentMixin,
 ):
-    source_image: List[UUID] = Field()
-    submission_dataset: UUID = Field()
-    creation_process: List[UUID] = Field()
-    representation: List[UUID] = Field()
+    source_image_uuid: List[UUID] = Field()
+    submission_dataset_uuid: UUID = Field()
+    creation_process_uuid: List[UUID] = Field()
 
 
 class AnnotationMethod(
@@ -134,4 +131,22 @@ class AnnotationMethod(
     DocumentMixin,
     UserIdentifiedObject,
 ):
-    source_dataset: List[Union[UUID, AnyUrl]]
+    pass
+
+
+class DatasetType(str, Enum):
+    """
+    The type of Dataset stored in the BIA. Used by File Referneces to
+    """
+
+    ExperimentalImagingDataset = "ExperimentalImagingDataset"
+    ImageAnnotationDataset = "ImageAnnotationDataset"
+
+
+class AbstractImageType(str, Enum):
+    """
+    The type of Abstract Image stored in the BIA. Used by Image representations to store
+    """
+
+    ExperimentallyDerivedImage = "ExperimentallyDerivedImage"
+    DerivedImage = "DerivedImage"
