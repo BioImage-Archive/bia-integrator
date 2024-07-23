@@ -3,13 +3,17 @@ BIA Export
 
 Export data from the BIA to feed static pages, and other downstream consumers. This:
 
-* Pulls data from the BIA Integrator API
-* Selects attributes for images and studies
-* Derives information from OME-Zarr representations (physical dimensions, axis sizes)
+* Selects attributes for studies stored in local files
 * Transforms to a specific export format
 * Writes the result to a JSON file
 
-Note that the export process caches results, so be careful!
+The expectation is to use this on the output from the bia-ingest package, that can cache the documents that will be uploaded to the api as local files.
+
+This does not yet:
+
+* Cover images, or even complete study metadata
+* Pulls data from the BIA Integrator API
+* Derives information from OME-Zarr representations (physical dimensions, axis sizes)
  
 Installation
 ------------
@@ -20,13 +24,13 @@ Installation
 Setup
 -----
 
-Copy `template.env` to `.env`.
+None required post installation
 
 Usage
 -----
 
 Run:
 
-    poetry run bia-export
+    poetry run bia-export website-study S-BIADTEST -o bia_export.json -r test/input_data 
 
-This will, by default, create `bia-export.json`.
+This will create `bia-export.json` using the example test data.
