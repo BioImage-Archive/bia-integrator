@@ -31,9 +31,6 @@ class FileReference(
     DocumentMixin,
 ):
     submission_dataset_uuid: UUID = Field()
-    submission_dataset_type: DatasetType = Field(
-        description="""The type of dataset in which this file was submitted to the BioImage Archive."""
-    )
 
 
 class ImageRepresentation(
@@ -43,7 +40,6 @@ class ImageRepresentation(
     # We may want to store the FileReference -> Image(Represenation) rather than in the original_file_reference_uuid
     original_file_reference_uuid: Optional[List[UUID]] = Field()
     representation_of_uuid: UUID = Field()
-    abstract_image_type: AbstractImageType = Field()
 
 
 class ExperimentalImagingDataset(
@@ -133,20 +129,3 @@ class AnnotationMethod(
 ):
     pass
 
-
-class DatasetType(str, Enum):
-    """
-    The type of Dataset stored in the BIA. Used by File Referneces to
-    """
-
-    ExperimentalImagingDataset = "ExperimentalImagingDataset"
-    ImageAnnotationDataset = "ImageAnnotationDataset"
-
-
-class AbstractImageType(str, Enum):
-    """
-    The type of Abstract Image stored in the BIA. Used by Image representations to store
-    """
-
-    ExperimentallyDerivedImage = "ExperimentallyDerivedImage"
-    DerivedImage = "DerivedImage"

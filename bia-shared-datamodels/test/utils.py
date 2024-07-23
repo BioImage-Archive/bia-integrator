@@ -297,7 +297,6 @@ def get_template_file_reference() -> bia_data_model.FileReference:
             "uri": "https://dummy.uri.co",
             "attribute": {},
             "submission_dataset_uuid": get_template_experimental_imaging_dataset().uuid,
-            "submission_dataset_type": bia_data_model.DatasetType.ExperimentalImagingDataset
         }
     )
     return file_reference
@@ -310,7 +309,6 @@ def get_template_image_representation() -> bia_data_model.ImageRepresentation:
         {
             "uuid": uuid4(),
             "representation_of_uuid": get_template_experimentally_captured_image().uuid,
-            "abstract_image_type": bia_data_model.AbstractImageType.DerivedImage,
             "original_file_reference_uuid": [
                 get_template_file_reference().uuid,
             ],
