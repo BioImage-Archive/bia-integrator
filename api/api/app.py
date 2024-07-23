@@ -1,6 +1,5 @@
 from . import public
-
-# from .api import private
+from . import private
 
 import uvicorn
 from fastapi import FastAPI
@@ -17,3 +16,4 @@ app.openapi_version = "3.0.2"
 # app.include_router(private.router, prefix="/v2")
 # routes applied in the order they are declared
 app.include_router(public.router, prefix="/v2")
+app.include_router(private.router, prefix="/v2")
