@@ -1,0 +1,8 @@
+{
+    "title_id": "Test Primary Screen Image Acquisition",
+    "uuid": "c2e44a1b-a43c-476e-8ddf-8587f4c955b3",
+    "protocol_description": "Test image acquisition parameters 1",
+    "imaging_instrument_description": "Test imaging instrument 1",
+    "fbbi_id": [],
+    "imaging_method_name": "confocal microscopy"
+}
