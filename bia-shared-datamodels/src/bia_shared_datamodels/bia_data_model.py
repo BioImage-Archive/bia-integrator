@@ -1,13 +1,19 @@
 from __future__ import annotations
 
 from . import semantic_models
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from typing import List, Optional
 from uuid import UUID
 from enum import Enum
 
 
+
+
 class DocumentMixin(BaseModel):
+    
+    # Throw error if you try to validate/create model from a dictionary with keys that aren't a field in the model
+    model_config = ConfigDict(extra="forbid")
+
     uuid: UUID = Field(
         description="""Unique ID (across the BIA database) used to refer to and identify a document."""
     )

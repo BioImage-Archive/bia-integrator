@@ -4,7 +4,8 @@ from .utils import (
     dicts_to_api_models,
     find_sections_recursive,
     dict_to_uuid,
-    persist
+    persist,
+    filter_model_dictionary
 )
 from ..biostudies import (
     Submission,
@@ -74,6 +75,7 @@ def extract_biosample_dicts(submission: Submission) -> List[Dict[str, Any]]:
 
         model_dict["accession_id"] = submission.accno
         model_dict["uuid"] = generate_biosample_uuid(model_dict)
+        model_dict = filter_model_dictionary(model_dict, bia_data_model.BioSample)
         model_dicts.append(model_dict)
 
     return model_dicts

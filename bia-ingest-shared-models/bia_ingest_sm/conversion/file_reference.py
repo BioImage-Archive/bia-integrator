@@ -3,6 +3,7 @@ from pathlib import Path
 from typing import List, Dict
 from .utils import (
     dict_to_uuid,
+    filter_model_dictionary,
 )
 from ..biostudies import (
     Submission,
@@ -56,6 +57,7 @@ def get_file_reference_by_study_component(
                 file_dict["submission_dataset"] = fileref_uuid
                 file_dict["format"] = f.type
                 file_dict["attribute"] = attributes_to_dict(f.attributes)
+                file_dict = filter_model_dictionary(file_dict, bia_data_model.FileReference)
                 file_reference = bia_data_model.FileReference.model_validate(file_dict)
                 output_path = output_dir / f"{fileref_uuid}.json"
                 output_path.write_text(file_reference.model_dump_json(indent=2))

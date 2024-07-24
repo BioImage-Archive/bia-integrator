@@ -73,6 +73,7 @@
     "attribute": {},
     "experimental_imaging_component": [
         {
+            "title_id": "Study Component 1",
             "uuid": "47a4ab60-c76d-4424-bfaa-c2a024de720c",
             "description": "Description of study component 1",
             "analysis_method": [
@@ -82,7 +83,8 @@
                 }
             ],
             "correlation_method": [],
-            "example_image_uri": []
+            "example_image_uri": [],
+            "submitted_in_study_uuid": "a2fdbd58-ee11-4cd9-bc6a-f3d3da7fff71"
         }
     ]
 }
