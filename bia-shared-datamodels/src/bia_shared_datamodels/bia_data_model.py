@@ -24,7 +24,6 @@ class DocumentMixin(BaseModel):
         Optional so we can accept objects without it set and set it on the server.
         Can't default_factory because that can't be generated in the api client."""
     )
-    model_config = ConfigDict(extra="forbid")
 
     def __init__(self, *args, **data):
         model_version_spec = self.model_config.get("model_version_latest")
