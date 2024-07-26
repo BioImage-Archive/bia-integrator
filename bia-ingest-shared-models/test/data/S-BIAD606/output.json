@@ -30,37 +30,15 @@
             "development",
             "segmentation"
         ],
-        "funding_statement": "Deutsche Forschungsgemeinschaft grant BR5039/3-1\nAssemble Plus grant as part of the European Union’s Horizon 2020 research and innovation programme under grant agreement no. 730984",
-        "experimental_imaging_component": [
-            "UUID-experimental-imaging-dataset-1"
-        ],
-        "annotation_component": []
+        "funding_statement": "Deutsche Forschungsgemeinschaft grant BR5039/3-1\nAssemble Plus grant as part of the European Union’s Horizon 2020 research and innovation programme under grant agreement no. 730984"
     },
     {
         "uuid": "UUID-experimental-imaging-dataset-1",
         "title_id": "µCT data",
         "description": "Raw image stacks (3D tiff file format) of Pycnogonum litorale complete specimens and ROIs",
-        "image": [
-            "UUID-experimentally-captured-image-1"
-        ],
-        "file": [
-            "UUID-file-reference-1"
-        ],
         "submitted_in_study": "UUID-study-1",
-        "specimen_imaging_preparation_protocol": [
-            "UUID-specimen-preparation-protocol-1"
-        ],
-        "acquisition_process": [
-            "UUID-image-acquisition-1"
-        ],
-        "biological_entity": [
-            "UUID-biosample-1"
-        ],
-        "specimen_growth_protocol": [],
         "analysis_method": [],
         "correlation_method": [],
-        "file_reference_count": 1,
-        "image_count": 1,
         "example_image_uri": []
     },
     {
@@ -74,7 +52,7 @@
         "title_id": "Pycnogonum litorale µCT",
         "protocol_description": "Dried specimens were placed in plastic tubes for overview scans. For higher resolution scans of the posterior body region with the regenerates, they were subsequently attached to plastic welding rods with hot glue. Scans were performed under 40 kV/200 μA/8 W or 30 kV/200 μA/6 W settings. Depending on the specimen size and region of interest, a 4×, 10×, or 20× objective was chosen. Exposure times were individually adjusted for each scan, ranging from 0.75 to 6.5 s. To reduce noise, binning 2 was applied during data acquisition. Tomography projections were reconstructed with the XMReconstructor software (Carl Zeiss Microscopy) with binning 1 (= full resolution) and TIFF format image stacks as output.",
         "imaging_instrument_description": "Xradia MicroXCT-200 (Carl Zeiss Microscopy)",
-        "imaging_method_name": "X-ray computed tomography", 
+        "imaging_method_name": "X-ray computed tomography",
         "fbbi_id": [
             "http://purl.obolibrary.org/obo/FBbi_00001002"
         ]
@@ -95,27 +73,23 @@
         "acquisition_process": [
             "UUID-image-acquisition-1"
         ],
-        "representation": [
-            "UUID-image-representation-1",
-            "UUID-image-representation-2",
-            "UUID-image-representation-3",
-            "UUID-image-representation-4",
-            "UUID-image-representation-5"
-        ],
         "submission_dataset": "UUID-experimental-imaging-dataset-1",
-        "subject": {
-            "imaging_preparation_protocol": [
-                "UUID-specimen-preparation-protocol-1"
-            ],
-            "sample_of": [
-                "UUID-biosample-1"
-            ],
-            "growth_protocol": []
-        },
+        "subject": "UUID-specimen-1",
         "attribute": {}
     },
     {
+        "uuid": "UUID-specimen-1",
+        "imaging_preparation_protocol": [
+            "UUID-specimen-preparation-protocol-1"
+        ],
+        "sample_of": [
+            "UUID-biosample-1"
+        ],
+        "growth_protocol": []
+    },
+    {
         "uuid": "UUID-image-representation-1",
+        "representation_of": "UUID-experimentally-captured-image-1",
         "original_file_reference": [
             "UUID12-file_reference"
         ],
@@ -129,6 +103,7 @@
     },
     {
         "uuid": "UUID-image-representation-2",
+        "representation_of": "UUID-experimentally-captured-image-1",
         "original_file_reference": [],
         "image_format": "ome_ngff",
         "file_uri": [
@@ -140,6 +115,7 @@
     },
     {
         "uuid": "UUID-image-representation-3",
+        "representation_of": "UUID-experimentally-captured-image-1",
         "original_file_reference": [],
         "image_format": "ome_ngff",
         "file_uri": [
@@ -151,6 +127,7 @@
     },
     {
         "uuid": "UUID-image-representation-4",
+        "representation_of": "UUID-experimentally-captured-image-1",
         "original_file_reference": [],
         "image_format": "thumbnail",
         "file_uri": [
@@ -164,6 +141,7 @@
     },
     {
         "uuid": "UUID-image-representation-5",
+        "representation_of": "UUID-experimentally-captured-image-1",
         "original_file_reference": [],
         "image_format": "representative",
         "file_uri": [

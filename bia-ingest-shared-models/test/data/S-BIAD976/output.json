@@ -64,34 +64,13 @@
             "nucleus",
             "fluorescence"
         ],
-        "funding_statement": "This study was supported by R&D grants of Flanders Innovation & Entrepreneurship (IWT150003, 120511). ",
-        "experimental_imaging_component": [
-            "UUID-experimental-imaging-dataset-1",
-            "UUID-experimental-imaging-dataset-2"
-        ],
-        "annotation_component": []
+        "funding_statement": "This study was supported by R&D grants of Flanders Innovation & Entrepreneurship (IWT150003, 120511). "
     },
     {
         "uuid": "UUID-experimental-imaging-dataset-1",
         "title_id": "Functional assay",
         "description": "Synchronous calcium bursting is measured in GCaMP6f-transduced primary cortical cultures from E18 mouse embryos.",
-        "image": [
-            "UUID-experimentally-captured-image-1"
-        ],
-        "file": [
-            "UUID-file-reference-1"
-        ],
         "submitted_in_study": "UUID1-study",
-        "specimen_preparation_method": [
-            "UUID-specimen-preparation-protocol-1"
-        ],
-        "acquisition_method": [
-            "UUID-image-acquisition-1"
-        ],
-        "biological_entity": [
-            "UUID-biosample-1"
-        ],
-        "specimen_growth_protocol": [],
         "analysis_method": [
             {
                 "title_id": "Functional ",
@@ -99,8 +78,6 @@
             }
         ],
         "correlation_method": [],
-        "file_reference_count": 1,
-        "image_count": 1,
         "example_image_uri": [],
         "attribute": {
             "associatations": [
@@ -144,22 +121,7 @@
         "uuid": "UUID-experimental-imaging-dataset-2",
         "title_id": "Morphological assay",
         "description": "Quantification of morphological neuronal connectivity in primary cortical cultures from E18 mouse embryos.",
-        "image": [
-            "UUID-experimentally-captured-image-1"
-        ],
-        "file": [
-            "UUID-file-reference-1"
-        ],
         "submitted_in_study": "UUID1-study",
-        "specimen_preparation_method": [
-            "UUID-specimen_preparation-protocol-1"
-        ],
-        "acquisition_method": [
-            "UUID-image-acquisition-2"
-        ],
-        "biological_entity": [
-            "UUID-biosample-1"
-        ],
         "analysis_method": [
             {
                 "title_id": "Morphological",
@@ -167,8 +129,6 @@
             }
         ],
         "correlation_method": [],
-        "file_reference_count": 0,
-        "image_count": 0,
         "example_image_uri": [],
         "attribute": {
             "associatations": [
@@ -195,22 +155,8 @@
         "acquisition_process": [
             "UUID-image-acquisition-1"
         ],
-        "representation": [
-            "UUID-image-representation-1",
-            "UUID-image-representation-2",
-            "UUID-image-representation-3",
-            "UUID-image-representation-4"
-        ],
         "submission_dataset": "UUID-experimental-imaging-dataset-1",
-        "subject": {
-            "imaging_preparation_protocol": [
-                "UUID-specimen-preparation-protocol-1"
-            ],
-            "sample_of": [
-                "UUID-biosample-1"
-            ],
-            "growth_protocol": []
-        },
+        "subject": "UUID-specimen-1",
         "attribute": {
             "Type": "Raw Data Time",
             "Rep": "1",
@@ -221,7 +167,18 @@
         }
     },
     {
+        "uuid": "UUID-specimen-1",
+        "imaging_preparation_protocol": [
+            "UUID-specimen-preparation-protocol-1"
+        ],
+        "sample_of": [
+            "UUID-biosample-1"
+        ],
+        "growth_protocol": []
+    },
+    {
         "uuid": "UUID-image-representation-1",
+        "representation_of": "UUID-experimentally-captured-image-1",
         "original_file_reference": [
             "UUID-file-reference-1"
         ],
@@ -235,6 +192,7 @@
     },
     {
         "uuid": "UUID-image-representation-2",
+        "representation_of": "UUID-experimentally-captured-image-1",
         "original_file_reference": [],
         "image_format": "ome_ngff",
         "file_uri": [
@@ -246,6 +204,7 @@
     },
     {
         "uuid": "UUID-image-representation-3",
+        "representation_of": "UUID-experimentally-captured-image-1",
         "original_file_reference": [
             "UUID-file-reference-1"
         ],
@@ -261,6 +220,7 @@
     },
     {
         "uuid": "UUID-image-representation-4",
+        "representation_of": "UUID-experimentally-captured-image-1",
         "original_file_reference": [
             "UUID-file-reference-1"
         ],
