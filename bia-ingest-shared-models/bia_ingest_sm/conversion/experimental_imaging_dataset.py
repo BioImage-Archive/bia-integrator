@@ -5,7 +5,8 @@ from .utils import (
     get_generic_section_as_list,
     dict_to_uuid,
     get_generic_section_as_dict,
-    persist
+    persist,
+    filter_model_dictionary
 )
 from .file_reference import get_file_reference_by_study_component
 import bia_ingest_sm.conversion.biosample as biosample_conversion
@@ -97,6 +98,9 @@ def get_experimental_imaging_dataset(
             "example_image_uri": [],
         }
         model_dict["uuid"] = generate_experimental_imaging_dataset_uuid(model_dict)
+
+        model_dict = filter_model_dictionary(model_dict, bia_data_model.ExperimentalImagingDataset)
+
         experimental_imaging_dataset.append(
             bia_data_model.ExperimentalImagingDataset.model_validate(model_dict)
         )

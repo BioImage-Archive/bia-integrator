@@ -1,26 +1,14 @@
 {
     "title_id": "Study Component 1",
     "uuid": "47a4ab60-c76d-4424-bfaa-c2a024de720c",
-    "file_reference_count": 4,
     "description": "Description of study component 1",
-    "acquisition_process": [
-        "c2e44a1b-a43c-476e-8ddf-8587f4c955b3"
-    ],
-    "specimen_imaging_preparation_protocol": [
-        "7199d730-29f1-4ad8-b599-e9089cbb2d7b"
-    ],
-    "biological_entity": [
-        "64a67727-4e7c-469a-91c4-6219ae072e99",
-        "6950718c-4917-47a1-a807-11b874e80a23"
-    ],
-    "specimen_growth_protocol": [],
     "analysis_method": [
         {
             "protocol_description": "Test image analysis",
             "features_analysed": "Test image analysis overview"
         }
     ],
+    "submitted_in_study_uuid": "a2fdbd58-ee11-4cd9-bc6a-f3d3da7fff71",
     "correlation_method": [],
-    "example_image_uri": [],
-    "image_count": 0
+    "example_image_uri": []
 }

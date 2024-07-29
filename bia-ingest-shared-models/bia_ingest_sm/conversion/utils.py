@@ -151,3 +151,9 @@ def persist(object_list: List, object_path: str, sumbission_accno: str):
         output_path = output_dir / f"{object.uuid}.json"
         output_path.write_text(object.model_dump_json(indent=2))
         logger.info(f"Written {output_path}")
+
+
+def filter_model_dictionary(dictionary: dict, target_model: Type[BaseModel]):
+    accepted_fields = target_model.model_fields.keys()
+    result_dict = {key: dictionary[key] for key in accepted_fields}
+    return result_dict
