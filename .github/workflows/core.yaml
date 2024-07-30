@@ -11,10 +11,10 @@ jobs:
         os: [ubuntu-20.04, macos-latest, windows-latest]
         project:
           [
-            bia-export",
+            bia-export,
             bia-ingest,
             bia-ingest-shared-models,
-            bia-shared-datamodels",
+            bia-shared-datamodels,
             core,
           ]
     runs-on: ${{ matrix.os }}
