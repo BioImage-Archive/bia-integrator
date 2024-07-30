@@ -133,7 +133,6 @@ def get_template_annotation_method() -> bia_data_model.AnnotationMethod:
         {
             "uuid": uuid4(),
             "title_id": "Template annotation method",
-            "source_dataset": [],  # ExperimentalImagingDataset.uuid or url
             "protocol_description": "Template annotation method description",
             "annotation_criteria": "Template annotation criteria",
             "annotation_coverage": "Template annotation coverage",
@@ -380,12 +379,6 @@ def get_template_study() -> bia_data_model.Study:
             "keyword": [
                 "Template keyword1",
                 "Template keyword2",
-            ],
-            "experimental_imaging_component": [
-                uuid4(),
-            ],
-            "annotation_component": [
-                uuid4(),
             ],
             "description": "Template description",
         }
