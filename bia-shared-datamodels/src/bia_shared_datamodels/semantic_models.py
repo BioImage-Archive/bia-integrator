@@ -218,6 +218,9 @@ class DatasetMixin(BaseModel):
     description: Optional[str] = Field(
         None, description="""Brief description of the dataset."""
     )
+    attribute: dict = Field(
+        description="""Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."""
+    )
 
 
 class FileReference(BaseModel):

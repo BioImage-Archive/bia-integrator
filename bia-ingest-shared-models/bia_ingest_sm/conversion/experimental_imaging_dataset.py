@@ -59,6 +59,9 @@ def get_experimental_imaging_dataset(
         key_mapping = [
             ("image_analysis", "Image analysis", None,),
             ("image_correlation", "Image correlation", None,),
+            ("biosample", "Biosample", None,),
+            ("image_acquisition", "Image acquisition", None,),
+            ("specimen", "Specimen", None,),
         ]
         associations = get_generic_section_as_list(
             section, ["Associations",], key_mapping
@@ -96,6 +99,9 @@ def get_experimental_imaging_dataset(
             "analysis_method": analysis_method_list,
             "correlation_method": correlation_method_list,
             "example_image_uri": [],
+            "attribute": {
+                "associations": associations
+            }
         }
         model_dict["uuid"] = generate_experimental_imaging_dataset_uuid(model_dict)
 
