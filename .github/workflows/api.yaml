@@ -39,7 +39,7 @@ jobs:
           docker compose up -d --build 
       - name: Run tests
         run: |
-          docker compose exec -T bia-integrator-api poetry run pytest
+          docker compose run -T bia-integrator-api poetry run pytest
       # Always cleanup - even for cancelled jobs
       - name: Docker Compose Down
         run: |

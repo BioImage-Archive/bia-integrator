@@ -21,6 +21,7 @@ services:
   bia-integrator-api:
     build:
       context: .
+      dockerfile: api/Dockerfile
     container_name: api
     hostname: api
     ports:
