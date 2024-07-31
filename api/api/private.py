@@ -3,8 +3,15 @@ from pydantic.alias_generators import to_snake
 
 # ?
 import bia_shared_datamodels.bia_data_model as shared_data_models
+from .models.repository import Repository
+from . import constants
+from fastapi import APIRouter, Depends
 
-router = APIRouter()
+router = APIRouter(
+    prefix="/private",
+    # dependencies=[Depends(get_current_user)], TODO
+    tags=[constants.OPENAPI_TAG_PRIVATE],
+)
 models_private = [
     shared_data_models.Study,
     shared_data_models.ImageAnnotationDataset,
@@ -15,8 +22,8 @@ models_private = [
 
 
 def make_post_item(t):
-    def post_item(doc: t) -> None:
-        print(t)
+    async def post_item(doc: t, db: Repository = Depends()) -> None:
+        await db.persist_doc(doc)
 
     return post_item
 

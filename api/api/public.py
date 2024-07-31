@@ -1,8 +1,10 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from pydantic.alias_generators import to_snake
 
 # ?
 import bia_shared_datamodels.bia_data_model as shared_data_models
+from .models.repository import Repository
+
 
 router = APIRouter()
 models_public = [
@@ -19,10 +21,10 @@ def make_get_item(t):
     # https://eev.ee/blog/2011/04/24/gotcha-python-scoping-closures/
 
     # @TODO: nicer wrapper?
-    def get_item(uuid: shared_data_models.UUID) -> dict:
-        print(t)
-
-        return {}
+    async def get_item(
+        uuid: shared_data_models.UUID, db: Repository = Depends()
+    ) -> dict:
+        return db.get_doc(uuid, t)
 
     return get_item
 
@@ -43,6 +45,6 @@ def not_overwritten(n: int) -> int:
     return n
 
 
-@router.get("/Study")
+@router.get("/study")
 def yes_overwritten(n: int) -> int:
     return n
