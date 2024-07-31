@@ -38,7 +38,7 @@ def api_client() -> TestClient:
     return client
 
 
-def test_create_thing(api_client: TestClient):
+def test_create_study(api_client: TestClient):
     study_uuid = get_uuid()
     study = {
         "uuid": study_uuid,
@@ -50,11 +50,28 @@ def test_create_thing(api_client: TestClient):
         "licence": "CC_BY_4.0",
         "see_also": [],
         "model": {"type_name": "Study", "version": 1},
+        "acknowledgement": "test",
+        "funding_statement": "test",
+        "grant": [],
+        "keyword": [],
+        "related_publication": [],
         "author": [
             {
-                "display_name": "Georg Brenneis",
-                "contact_email": "georg.brenneis@univie.ac.at",
-                "affiliation": [{"display_name": "University of Vienna"}],
+                "address": None,
+                "display_name": "Test name",
+                "contact_email": "test_email@test.com",
+                "orcid": None,
+                "role": None,
+                "rorid": None,
+                "website": None,
+                "affiliation": [
+                    {
+                        "display_name": "Test",
+                        "address": None,
+                        "rorid": None,
+                        "website": None,
+                    }
+                ],
             }
         ],
         "attribute": {},
@@ -62,3 +79,7 @@ def test_create_thing(api_client: TestClient):
 
     rsp = api_client.post("private/study", json=study)
     assert rsp.status_code == 201, rsp.json()
+
+    rsp = api_client.get(f"study/{study['uuid']}")
+    assert rsp.status_code == 200, rsp.text
+    assert rsp.json() == study

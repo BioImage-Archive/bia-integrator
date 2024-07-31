@@ -5,7 +5,7 @@ from pydantic.alias_generators import to_snake
 import bia_shared_datamodels.bia_data_model as shared_data_models
 from .models.repository import Repository
 from . import constants
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, status
 
 router = APIRouter(
     prefix="/private",
@@ -35,4 +35,5 @@ for t in models_private:
         summary=f"Create {t.__name__}",
         methods=["POST"],
         endpoint=make_post_item(t),
+        status_code=status.HTTP_201_CREATED,
     )

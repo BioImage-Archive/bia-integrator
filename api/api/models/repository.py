@@ -82,7 +82,7 @@ class Repository:
             raise exceptions.InvalidUpdateException(str(e))
 
     async def get_doc(self, uuid: shared_data_models.UUID, doc_type):
-        doc = await self._get_doc_raw({"uuid": uuid})
+        doc = await self._get_doc_raw(uuid=uuid)
 
         if doc is None:
             raise exceptions.DocumentNotFound("Study does not exist")

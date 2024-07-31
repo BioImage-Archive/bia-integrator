@@ -24,14 +24,14 @@ def make_get_item(t):
     async def get_item(
         uuid: shared_data_models.UUID, db: Repository = Depends()
     ) -> dict:
-        return db.get_doc(uuid, t)
+        return await db.get_doc(uuid, t)
 
     return get_item
 
 
 for t in models_public:
     router.add_api_route(
-        "/" + to_snake(t.__name__),
+        f"/{to_snake(t.__name__)}/{{uuid}}",
         response_model=t,
         operation_id=f"get{t.__name__}",
         summary=f"Get {t.__name__}",
@@ -45,6 +45,6 @@ def not_overwritten(n: int) -> int:
     return n
 
 
-@router.get("/study")
-def yes_overwritten(n: int) -> int:
-    return n
+# @router.get("/study")
+# def yes_overwritten(n: int) -> int:
+#    return n
