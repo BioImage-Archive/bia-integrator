@@ -1,5 +1,10 @@
 {
     "uuid": "a2fdbd58-ee11-4cd9-bc6a-f3d3da7fff71",
+    "version": 1,
+    "model": {
+        "type_name": "Study",
+        "version": 1
+    },
     "accession_id": "S-BIADTEST",
     "licence": "CC0",
     "author": [
@@ -75,6 +80,11 @@
         {
             "title_id": "Study Component 1",
             "uuid": "47a4ab60-c76d-4424-bfaa-c2a024de720c",
+            "version": 1,
+            "model": {
+                "type_name": "ExperimentalImagingDataset",
+                "version": 1
+            },
             "description": "Description of study component 1",
             "analysis_method": [
                 {

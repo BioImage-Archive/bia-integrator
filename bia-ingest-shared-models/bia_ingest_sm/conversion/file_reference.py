@@ -45,6 +45,7 @@ def get_file_reference_by_study_component(
                 "accession_id": submission.accno,
                 "file_path": str(f.path),
                 "size_in_bytes": str(f.size),
+                "version": 1
             }
             fileref_uuid = dict_to_uuid(
                 file_dict, ["accession_id", "file_path", "size_in_bytes"]

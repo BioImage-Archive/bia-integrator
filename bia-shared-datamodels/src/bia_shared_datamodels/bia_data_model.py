@@ -25,9 +25,6 @@ class DocumentMixin(BaseModel):
         Optional because for some usecases (e.g. api) we want to accept objects without it because we have the info we need to set it."""
     )
 
-    # Throw error if you try to validate/create model from a dictionary with keys that aren't a field in the model
-    model_config = ConfigDict(extra="forbid")
-
     def __init__(self, *args, **data):
         model_version_spec = self.model_config.get("model_version_latest")
         if model_version_spec is None:
@@ -41,6 +38,7 @@ class DocumentMixin(BaseModel):
         )
         model_metadata_existing = data.get("model", None)
         if model_metadata_existing:
+            model_metadata_existing = ModelMetadata(**model_metadata_existing)
             if model_metadata_existing != model_metadata_expected:
                 raise exceptions.UnexpectedDocumentType(
                     f"Document {str(data.get('uuid'))} has model metadata {model_metadata_existing}, expected : {model_metadata_expected}"

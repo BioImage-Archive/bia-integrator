@@ -65,6 +65,7 @@ def get_study(
         "author": [c.model_dump() for c in contributors],
         "grant": [g.model_dump() for g in grants],
         "attribute": study_attributes,
+        "version": 1
     }
     # study_uuid = dict_to_uuid(study_dict, ["accession_id",])
     # study_dict["uuid"] = study_uuid

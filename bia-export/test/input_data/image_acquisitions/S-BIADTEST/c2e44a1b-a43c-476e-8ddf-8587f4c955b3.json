@@ -4,5 +4,6 @@
     "protocol_description": "Test image acquisition parameters 1",
     "imaging_instrument_description": "Test imaging instrument 1",
     "fbbi_id": [],
-    "imaging_method_name": "confocal microscopy"
+    "imaging_method_name": "confocal microscopy",
+    "version": 1
 }
