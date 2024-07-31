@@ -21,7 +21,7 @@ jobs:
       USER_CREATE_SECRET_TOKEN: ${{ secrets.USER_CREATE_SECRET_TOKEN }}
     defaults:
       run:
-        working-directory: ./api
+        working-directory: ./
     steps:
       - name: Checkout code
         uses: actions/checkout@v2 # Checkout your repository to the GitHub Actions runner
