@@ -6,10 +6,8 @@ This module attempts to create models starting from the outer nodes (leaves) of 
 
 from typing import Dict, List
 from bia_shared_datamodels import bia_data_model, semantic_models
-from bia_ingest_sm.conversion.utils import (
-    dict_to_uuid,
-    filter_model_dictionary
-)
+from bia_ingest_sm.conversion.utils import dict_to_uuid, filter_model_dictionary
+
 
 def get_test_annotation_method() -> List[bia_data_model.AnnotationMethod]:
     # For UUID
@@ -38,9 +36,15 @@ def get_test_annotation_method() -> List[bia_data_model.AnnotationMethod]:
 
     annotation_method = []
     for annotation_method_dict in annotation_method_info:
-        annotation_method_dict["uuid"] = dict_to_uuid(annotation_method_dict, attributes_to_consider)
-        annotation_method_dict = filter_model_dictionary(annotation_method_dict, bia_data_model.AnnotationMethod)
-        annotation_method.append(bia_data_model.AnnotationMethod.model_validate(annotation_method_dict))
+        annotation_method_dict["uuid"] = dict_to_uuid(
+            annotation_method_dict, attributes_to_consider
+        )
+        annotation_method_dict = filter_model_dictionary(
+            annotation_method_dict, bia_data_model.AnnotationMethod
+        )
+        annotation_method.append(
+            bia_data_model.AnnotationMethod.model_validate(annotation_method_dict)
+        )
     return annotation_method
 
 
@@ -70,7 +74,9 @@ def get_test_specimen_growth_protocol() -> List[bia_data_model.SpecimenGrowthPro
     protocol = []
     for protocol_dict in protocol_info:
         protocol_dict["uuid"] = dict_to_uuid(protocol_dict, attributes_to_consider)
-        protocol_dict = filter_model_dictionary(protocol_dict, bia_data_model.SpecimenGrowthProtocol)
+        protocol_dict = filter_model_dictionary(
+            protocol_dict, bia_data_model.SpecimenGrowthProtocol
+        )
         protocol.append(
             bia_data_model.SpecimenGrowthProtocol.model_validate(protocol_dict)
         )
@@ -107,9 +113,13 @@ def get_test_specimen_imaging_preparation_protocol() -> (
     protocol = []
     for protocol_dict in protocol_info:
         protocol_dict["uuid"] = dict_to_uuid(protocol_dict, attributes_to_consider)
-        protocol_dict = filter_model_dictionary(protocol_dict, bia_data_model.SpecimenImagingPrepartionProtocol)
+        protocol_dict = filter_model_dictionary(
+            protocol_dict, bia_data_model.SpecimenImagingPrepartionProtocol
+        )
         protocol.append(
-            bia_data_model.SpecimenImagingPrepartionProtocol.model_validate(protocol_dict)
+            bia_data_model.SpecimenImagingPrepartionProtocol.model_validate(
+                protocol_dict
+            )
         )
     return protocol
 
@@ -182,7 +192,9 @@ def get_test_biosample() -> List[bia_data_model.BioSample]:
     biosample = []
     for biosample_dict in biosample_info:
         biosample_dict["uuid"] = dict_to_uuid(biosample_dict, attributes_to_consider)
-        biosample_dict = filter_model_dictionary(biosample_dict, bia_data_model.BioSample)
+        biosample_dict = filter_model_dictionary(
+            biosample_dict, bia_data_model.BioSample
+        )
         biosample.append(bia_data_model.BioSample.model_validate(biosample_dict))
     return biosample
 
@@ -222,7 +234,9 @@ def get_test_image_acquisition() -> List[bia_data_model.ImageAcquisition]:
         image_acquisition_dict["uuid"] = dict_to_uuid(
             image_acquisition_dict, attributes_to_consider
         )
-        image_acquisition_dict = filter_model_dictionary(image_acquisition_dict, bia_data_model.ImageAcquisition)
+        image_acquisition_dict = filter_model_dictionary(
+            image_acquisition_dict, bia_data_model.ImageAcquisition
+        )
         image_acquisition.append(
             bia_data_model.ImageAcquisition.model_validate(image_acquisition_dict)
         )
@@ -272,6 +286,24 @@ def get_test_experimental_imaging_dataset() -> (
         ],
         "example_image_uri": [],
         "description": "Description of study component 1",
+        "attribute": {
+            "associations": [
+                {
+                    "image_analysis": "Test image analysis",
+                    "image_correlation": None,
+                    "biosample": "Test Biosample 1",
+                    "image_acquisition": "Test Primary Screen Image Acquisition",
+                    "specimen": "Test specimen 1",
+                },
+                {
+                    "image_analysis": "Test image analysis",
+                    "image_correlation": None,
+                    "biosample": "Test Biosample 2 ",
+                    "image_acquisition": "Test Secondary Screen Image Acquisition",
+                    "specimen": "Test specimen 1",
+                },
+            ]
+        },
     }
     experimental_imaging_dataset_uuid = dict_to_uuid(
         experimental_imaging_dataset_dict,
@@ -281,7 +313,9 @@ def get_test_experimental_imaging_dataset() -> (
         ],
     )
     experimental_imaging_dataset_dict["uuid"] = experimental_imaging_dataset_uuid
-    experimental_imaging_dataset_dict = filter_model_dictionary(experimental_imaging_dataset_dict, bia_data_model.ExperimentalImagingDataset)
+    experimental_imaging_dataset_dict = filter_model_dictionary(
+        experimental_imaging_dataset_dict, bia_data_model.ExperimentalImagingDataset
+    )
     experimental_imaging_dataset1 = (
         bia_data_model.ExperimentalImagingDataset.model_validate(
             experimental_imaging_dataset_dict
@@ -317,6 +351,17 @@ def get_test_experimental_imaging_dataset() -> (
         ],
         "example_image_uri": [],
         "description": "Description of study component 2",
+        "attribute": {
+            "associations": [
+                {
+                    "image_analysis": "Test image analysis",
+                    "image_correlation": None,
+                    "biosample": "Test Biosample 2 ",
+                    "image_acquisition": "Test Primary Screen Image Acquisition",
+                    "specimen": "Test specimen 2",
+                }
+            ]
+        },
     }
     experimental_imaging_dataset_uuid = dict_to_uuid(
         experimental_imaging_dataset_dict,

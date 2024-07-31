@@ -106,9 +106,7 @@ def get_template_biosample() -> bia_data_model.BioSample:
     return biosample
 
 
-# Depends on:
-#   bia_data_model.BioSample
-#   bia_data_model.SpecimenImagingPreparationProtocol
+
 def get_template_specimen() -> bia_data_model.Specimen:
     specimen = bia_data_model.Specimen.model_validate(
         {
@@ -127,7 +125,6 @@ def get_template_specimen() -> bia_data_model.Specimen:
     return specimen
 
 
-# Depends on ExperimentalImagingDataset
 def get_template_annotation_method() -> bia_data_model.AnnotationMethod:
     annotation_method = bia_data_model.AnnotationMethod.model_validate(
         {
@@ -142,11 +139,7 @@ def get_template_annotation_method() -> bia_data_model.AnnotationMethod:
     return annotation_method
 
 
-# Depends on:
-#   bia_data_model.ExperimentalImagingDataset (circular dependency)
-#   bia_data_model.ImageAcquisition
-#   bia_data_model.ImageRepresentation
-#   bia_data_model.Specimen
+
 def get_template_experimentally_captured_image() -> (
     bia_data_model.ExperimentallyCapturedImage
 ):
@@ -161,10 +154,6 @@ def get_template_experimentally_captured_image() -> (
     )
 
 
-# Depends on:
-#   bia_data_model.ImageAnnotationDataset (circular dependency)
-#   bia_data_model.AnnotationMethod
-#   bia_data_model.ImageRepresentation
 def get_template_derived_image() -> bia_data_model.DerivedImage:
     derived_image = bia_data_model.DerivedImage.model_validate(
         {
@@ -182,8 +171,7 @@ def get_template_derived_image() -> bia_data_model.DerivedImage:
     return derived_image
 
 
-# Depends on:
-#   bia_data_model.AnnotationMethod
+
 def get_template_image_annotation_dataset() -> bia_data_model.ImageAnnotationDataset:
     image_annotation_dataset = bia_data_model.ImageAnnotationDataset.model_validate(
         {
@@ -191,6 +179,7 @@ def get_template_image_annotation_dataset() -> bia_data_model.ImageAnnotationDat
             "submitted_in_study_uuid": get_template_study().uuid,
             "title_id": "Template image annotation dataset",
             "example_image_uri": ["https://dummy.url.org"],
+            "attribute": {},
         }
     )
     return image_annotation_dataset
@@ -231,11 +220,6 @@ def get_template_image_correlation_method() -> semantic_models.ImageCorrelationM
     )
 
 
-# Depends on:
-#   bia_data_model.SpecimenPreparationProtocol
-#   bia_data_model.ImageAcquisition
-#   bia_data_model.BioSample
-#   bia_data_model.SpecimenGrowthProtocol
 def get_template_experimental_imaging_dataset() -> (
     bia_data_model.ExperimentalImagingDataset
 ):
@@ -252,15 +236,13 @@ def get_template_experimental_imaging_dataset() -> (
                     get_template_image_correlation_method().model_dump(),
                 ],
                 "example_image_uri": ["https://dummy.url.org"],
+                "attribute": {}
             }
         )
     )
     return experimental_imaging_dataset
 
 
-# Depends on:
-#   bia_data_model.ImageAnnotationDataset
-#   bia_data_model.ExperimentalImagingDataset (circular)
 def get_template_annotation_file_reference() -> bia_data_model.AnnotationFileReference:
     return bia_data_model.AnnotationFileReference.model_validate(
         {
@@ -281,11 +263,6 @@ def get_template_annotation_file_reference() -> bia_data_model.AnnotationFileRef
     )
 
 
-# Depends on:
-#   bia_data_model.ImageAnnotationDataset
-#   or
-#   bia_data_model.ExperimentalImagingDataset
-#   the latter is tested here.
 def get_template_file_reference() -> bia_data_model.FileReference:
     file_reference = bia_data_model.FileReference.model_validate(
         {
@@ -301,8 +278,7 @@ def get_template_file_reference() -> bia_data_model.FileReference:
     return file_reference
 
 
-# Depends on:
-#   bia_data_model.FileReference
+
 def get_template_image_representation() -> bia_data_model.ImageRepresentation:
     return bia_data_model.ImageRepresentation.model_validate(
         {

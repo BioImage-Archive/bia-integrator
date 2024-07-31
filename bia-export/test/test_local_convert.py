@@ -18,4 +18,5 @@ def test_cli_export_website_studies(tmp_path):
 
 
     assert result.exit_code == 0
+    # Note this tests for exact equivance in files, i.e. order of fields and indentation matters
     assert filecmp.cmp(expected_output, outfile, shallow=False)
