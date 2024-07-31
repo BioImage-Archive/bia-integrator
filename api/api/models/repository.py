@@ -9,12 +9,33 @@ import bia_shared_datamodels.bia_data_model as shared_data_models
 import pymongo
 from typing import Any
 from .. import exceptions
+import datetime
+
+from bson.codec_options import CodecOptions
+from bson.datetime_ms import DatetimeMS
+from bson.codec_options import TypeCodec, TypeRegistry
+from bson.binary import UuidRepresentation
 
 
 DB_NAME = os.environ["DB_NAME"]
 COLLECTION_BIA_INTEGRATOR = "bia_integrator"
 COLLECTION_USERS = "users"
 COLLECTION_OME_METADATA = "ome_metadata"
+
+
+class DateCodec(TypeCodec):
+    python_type = datetime.date  # the Python type acted upon by this type codec
+    bson_type = DatetimeMS  # the BSON type acted upon by this type codec
+
+    def transform_python(self, value: datetime.date) -> DatetimeMS:
+        same_day_zero_time = datetime.datetime.combine(
+            value, datetime.datetime.min.time()
+        )
+
+        return DatetimeMS(value=same_day_zero_time)
+
+    def transform_bson(self, value: DatetimeMS) -> datetime.date:
+        return value.as_datetime().date()
 
 
 class OverwriteMode(str, Enum):
@@ -34,7 +55,15 @@ class Repository:
         self.connection = AsyncIOMotorClient(
             mongo_connstring, uuidRepresentation="standard", maxPoolSize=10
         )
-        self.db = self.connection.get_database(DB_NAME)
+        self.db = self.connection.get_database(
+            DB_NAME,
+            # Looks like explicitly setting codec_options excludes settings from the client
+            #   so uuid_representation needs to be defined even if already defined in connection
+            codec_options=CodecOptions(
+                type_registry=TypeRegistry([DateCodec()]),
+                uuid_representation=UuidRepresentation.STANDARD,
+            ),
+        )
         self.users = self.db[COLLECTION_USERS]
         self.biaint = self.db[COLLECTION_BIA_INTEGRATOR]
         self.ome_metadata = self.db[COLLECTION_OME_METADATA]
