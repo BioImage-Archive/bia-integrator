@@ -15,6 +15,7 @@ ADD ./api/pyproject.toml api/pyproject.toml
 ADD ./bia-shared-datamodels bia-shared-datamodels
 
 WORKDIR /bia-integrator/api
+RUN poetry lock
 RUN poetry install
 
 # Everything up to here should be reused most times
