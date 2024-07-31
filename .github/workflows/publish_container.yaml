@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: api
+        working-directory: ./
     steps:
       - name: Checkout
         uses: actions/checkout@v4.1.0
@@ -32,7 +32,8 @@ jobs:
       - name: Build and push Docker image (version tag)
         uses: docker/build-push-action@v4.2.0
         with:
-          context: api
+          context: ./
+          dockerfile: api/Dockerfile
           push: true
           tags: ghcr.io/${{ steps.image-label.outputs.image_name }}:${{ steps.image-label.outputs.version }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -40,7 +41,8 @@ jobs:
         if: steps.check-version.outputs.current-version
         uses: docker/build-push-action@v4.2.0
         with:
-          context: .
+          context: ./
+          dockerfile: api/Dockerfile
           push: true
           tags: ghcr.io/${{ steps.image-label.outputs.image_name }}:latest
           labels: ${{ steps.meta.outputs.labels }}
