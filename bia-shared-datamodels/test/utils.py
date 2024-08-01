@@ -216,7 +216,7 @@ def get_template_image_annotation_dataset() -> bia_data_model.ImageAnnotationDat
             "model": {
                 "type_name": "ImageAnnotationDataset", 
                 "version": 1
-            }
+            },
             "attribute": {},
         }
     )
