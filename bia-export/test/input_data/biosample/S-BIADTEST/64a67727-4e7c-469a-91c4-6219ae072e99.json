@@ -17,5 +17,6 @@
     ],
     "intrinsic_variable_description": [
         "Test intrinsic variable 1\\nwith escaped character"
-    ]
+    ],
+    "version": 1
 }

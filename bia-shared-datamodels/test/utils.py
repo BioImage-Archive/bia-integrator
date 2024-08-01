@@ -66,6 +66,11 @@ def get_template_specimen_imaging_preparation_protocol() -> (
                 "signal_channel_information": [
                     get_template_signal_channel_information()
                 ],
+                "version": 1,
+                "model": {
+                "type_name": "SpecimenImagingPrepartionProtocol", 
+                "version": 1
+            }
             }
         )
     )
@@ -78,6 +83,11 @@ def get_template_specimen_growth_protocol() -> bia_data_model.SpecimenGrowthProt
             "uuid": uuid4(),
             "title_id": "Test specimen preparation protocol",
             "protocol_description": "Test description",
+            "version": 1,
+            "model": {
+                "type_name": "SpecimenGrowthProtocol", 
+                "version": 1
+            }
         }
     )
     return specimen_growth_protocol
@@ -101,10 +111,14 @@ def get_template_biosample() -> bia_data_model.BioSample:
             "intrinsic_variable_description": [
                 "Description of internal treatment",
             ],
+            "version": 1,
+            "model": {
+                "type_name": "BioSample", 
+                "version": 1
+            }
         }
     )
     return biosample
-
 
 
 def get_template_specimen() -> bia_data_model.Specimen:
@@ -120,6 +134,11 @@ def get_template_specimen() -> bia_data_model.Specimen:
             "growth_protocol_uuid": [
                 get_template_specimen_growth_protocol().uuid,
             ],
+            "version": 1,
+            "model": {
+                "type_name": "Specimen", 
+                "version": 1
+            }
         }
     )
     return specimen
@@ -134,10 +153,14 @@ def get_template_annotation_method() -> bia_data_model.AnnotationMethod:
             "annotation_criteria": "Template annotation criteria",
             "annotation_coverage": "Template annotation coverage",
             "method_type": semantic_models.AnnotationType.class_labels,
+            "version": 1,
+            "model": {
+                "type_name": "AnnotationMethod", 
+                "version": 1
+            }
         }
     )
     return annotation_method
-
 
 
 def get_template_experimentally_captured_image() -> (
@@ -150,6 +173,11 @@ def get_template_experimentally_captured_image() -> (
             "submission_dataset_uuid": get_template_experimental_imaging_dataset().uuid,
             "subject_uuid": get_template_specimen().uuid,
             "attribute": {},
+            "version": 1,
+            "model": {
+                "type_name": "ExperimentallyCapturedImage", 
+                "version": 1
+            }
         }
     )
 
@@ -166,6 +194,11 @@ def get_template_derived_image() -> bia_data_model.DerivedImage:
             "transformation_description": "Template transformation description",
             "spatial_information": "Template spatial information",
             "attribute": {},
+            "version": 1,
+            "model": {
+                "type_name": "DerivedImage", 
+                "version": 1
+            }
         }
     )
     return derived_image
@@ -179,6 +212,11 @@ def get_template_image_annotation_dataset() -> bia_data_model.ImageAnnotationDat
             "submitted_in_study_uuid": get_template_study().uuid,
             "title_id": "Template image annotation dataset",
             "example_image_uri": ["https://dummy.url.org"],
+            "version": 1,
+            "model": {
+                "type_name": "ImageAnnotationDataset", 
+                "version": 1
+            },
             "attribute": {},
         }
     )
@@ -196,6 +234,11 @@ def get_template_image_acquisition() -> bia_data_model.ImageAcquisition:
             "fbbi_id": [
                 "Test FBBI ID",
             ],
+            "version": 1,
+            "model": {
+                "type_name": "ImageAcquisition", 
+                "version": 1
+            }
         }
     )
     return image_acquisition
@@ -236,6 +279,8 @@ def get_template_experimental_imaging_dataset() -> (
                     get_template_image_correlation_method().model_dump(),
                 ],
                 "example_image_uri": ["https://dummy.url.org"],
+                "version": 1,
+                "model": {"type_name": "ExperimentalImagingDataset", "version": 1},
                 "attribute": {}
             }
         )
@@ -259,6 +304,8 @@ def get_template_annotation_file_reference() -> bia_data_model.AnnotationFileRef
             "transformation_description": "Template transformation description",
             "spatial_information": "Template spatial information",
             "creation_process_uuid": [get_template_annotation_method().uuid],
+            "version": 1,
+            "model": {"type_name": "AnnotationFileReference", "version": 1},
         }
     )
 
@@ -273,6 +320,8 @@ def get_template_file_reference() -> bia_data_model.FileReference:
             "uri": "https://dummy.uri.co",
             "attribute": {},
             "submission_dataset_uuid": get_template_experimental_imaging_dataset().uuid,
+            "version": 1,
+            "model": {"type_name": "FileReference", "version": 1},
         }
     )
     return file_reference
@@ -304,6 +353,8 @@ def get_template_image_representation() -> bia_data_model.ImageRepresentation:
                 get_template_rendered_view().model_dump(),
             ],
             "attribute": {},
+            "version": 1,
+            "model": {"type_name": "ImageRepresentation", "version": 1},
         }
     )
 
@@ -314,7 +365,7 @@ def get_template_affiliation() -> semantic_models.Affiliation:
             "display_name": "Template Affiliation Organisation",
             "rorid": "None",
             "address": "None",
-            "website": "https://www.none.com",
+            "website": "https://www.none.com"
         }
     )
     return affiliation
@@ -332,7 +383,7 @@ def get_template_contributor() -> semantic_models.Contributor:
             "rorid": "None",
             "address": "None",
             "website": "https://www.none.com",
-            "orcid": "None",
+            "orcid": "None"
         }
     )
     return contributor
@@ -357,6 +408,8 @@ def get_template_study() -> bia_data_model.Study:
                 "Template keyword2",
             ],
             "description": "Template description",
-        }
+            "version": 1,
+            "model": {"type_name": "Study", "version": 1},
+        },
     )
     return study

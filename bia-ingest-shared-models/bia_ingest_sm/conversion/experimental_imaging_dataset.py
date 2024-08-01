@@ -99,6 +99,7 @@ def get_experimental_imaging_dataset(
             "analysis_method": analysis_method_list,
             "correlation_method": correlation_method_list,
             "example_image_uri": [],
+            "version": 1,
             "attribute": {
                 "associations": associations
             }

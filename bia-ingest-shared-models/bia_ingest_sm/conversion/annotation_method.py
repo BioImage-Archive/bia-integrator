@@ -53,6 +53,7 @@ def extract_annotation_method_dicts(submission: Submission) -> List[Dict[str, An
         model_dict["accno"] = section.__dict__.get("accno", "")
         model_dict["accession_id"] = submission.accno
         model_dict["uuid"] = generate_annotation_method_uuid(model_dict)
+        model_dict["version"] = 1
         model_dict = filter_model_dictionary(model_dict, bia_data_model.AnnotationMethod)
 
         model_dicts.append(model_dict)

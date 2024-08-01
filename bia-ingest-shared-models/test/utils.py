@@ -31,6 +31,7 @@ def get_test_annotation_method() -> List[bia_data_model.AnnotationMethod]:
             "annotation_coverage": "",
             "method_type": "other",
             "source_dataset": [],
+            "version": 1,
         },
     ]
 
@@ -62,12 +63,14 @@ def get_test_specimen_growth_protocol() -> List[bia_data_model.SpecimenGrowthPro
             "accession_id": "S-BIADTEST",
             "title_id": "Test specimen 1",
             "protocol_description": "Test growth protocol 1",
+            "version": 1,
         },
         {
             "accno": "Specimen-2",
             "accession_id": "S-BIADTEST",
             "title_id": "Test specimen 2",
             "protocol_description": "Test growth protocol 2",
+            "version": 1,
         },
     ]
 
@@ -100,6 +103,7 @@ def get_test_specimen_imaging_preparation_protocol() -> (
             "title_id": "Test specimen 1",
             "protocol_description": "Test sample preparation protocol 1",
             "signal_channel_information": [],
+            "version": 1,
         },
         {
             "accno": "Specimen-2",
@@ -107,6 +111,7 @@ def get_test_specimen_imaging_preparation_protocol() -> (
             "title_id": "Test specimen 2",
             "protocol_description": "Test sample preparation protocol 2",
             "signal_channel_information": [],
+            "version": 1,
         },
     ]
 
@@ -168,6 +173,7 @@ def get_test_biosample() -> List[bia_data_model.BioSample]:
             "intrinsic_variable_description": [
                 "Test intrinsic variable 1\nwith escaped character",
             ],
+            "version": 1,
         },
         {
             "accno": "Biosample-2",
@@ -186,6 +192,7 @@ def get_test_biosample() -> List[bia_data_model.BioSample]:
             "intrinsic_variable_description": [
                 "Test intrinsic variable 2",
             ],
+            "version": 1,
         },
     ]
 
@@ -218,6 +225,7 @@ def get_test_image_acquisition() -> List[bia_data_model.ImageAcquisition]:
             "imaging_instrument_description": "Test imaging instrument 1",
             "imaging_method_name": "confocal microscopy",
             "fbbi_id": [],
+            "version": 1,
         },
         {
             "accno": "Image acquisition-7",
@@ -227,6 +235,7 @@ def get_test_image_acquisition() -> List[bia_data_model.ImageAcquisition]:
             "imaging_instrument_description": "Test imaging instrument 2",
             "imaging_method_name": "fluorescence microscopy",
             "fbbi_id": [],
+            "version": 1,
         },
     ]
     image_acquisition = []
@@ -286,6 +295,7 @@ def get_test_experimental_imaging_dataset() -> (
         ],
         "example_image_uri": [],
         "description": "Description of study component 1",
+        "version": 1,
         "attribute": {
             "associations": [
                 {
@@ -328,16 +338,19 @@ def get_test_experimental_imaging_dataset() -> (
             "accession_id": "S-BIADTEST",
             "file_path": "study_component2/im06.png",
             "size_in_bytes": 3,
+            "version": 1,
         },
         {
             "accession_id": "S-BIADTEST",
             "file_path": "study_component2/im08.png",
             "size_in_bytes": 123,
+            "version": 1,
         },
         {
             "accession_id": "S-BIADTEST",
             "file_path": "study_component2/ann01-05",
             "size_in_bytes": 11,
+            "version": 1,
         },
     ]
     experimental_imaging_dataset_dict = {
@@ -351,6 +364,7 @@ def get_test_experimental_imaging_dataset() -> (
         ],
         "example_image_uri": [],
         "description": "Description of study component 2",
+        "version": 1,
         "attribute": {
             "associations": [
                 {
@@ -540,6 +554,7 @@ def get_test_study() -> bia_data_model.Study:
             "Test keyword3",
         ],
         "grant": [g.model_dump() for g in grant],
+        "version": 1,
     }
     study_uuid = dict_to_uuid(
         study_dict,

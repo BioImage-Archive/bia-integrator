@@ -2,9 +2,14 @@ from __future__ import annotations
 
 from enum import Enum
 from datetime import date
-from typing import List, Optional, Union
+from typing import List, Optional
 
-from pydantic import BaseModel, Field, EmailStr, AnyUrl
+from pydantic import BaseModel, Field, EmailStr, AnyUrl, ConfigDict
+
+
+class ConfiguredBaseModel(BaseModel):
+    # Throw error if you try to validate/create model from a dictionary with keys that aren't a field in the model
+    model_config = ConfigDict(extra="forbid")
 
 
 #######################################################################################################
@@ -12,7 +17,7 @@ from pydantic import BaseModel, Field, EmailStr, AnyUrl
 #######################################################################################################
 
 
-class Study(BaseModel):
+class Study(ConfiguredBaseModel):
     """
     A piece of scientific work that resulted in the creation of imaging data.
     """
@@ -67,7 +72,7 @@ class Study(BaseModel):
     )
 
 
-class Publication(BaseModel):
+class Publication(ConfiguredBaseModel):
     """
     A published paper or written work.
     """
@@ -83,7 +88,7 @@ class Publication(BaseModel):
     doi: Optional[str] = Field(None, description="""Digital Object Identifier (DOI)""")
 
 
-class ExternalReference(BaseModel):
+class ExternalReference(ConfiguredBaseModel):
     """
     An object outside the BIA that a user wants to refer to.
     """
@@ -99,7 +104,7 @@ class ExternalReference(BaseModel):
     )
 
 
-class Grant(BaseModel):
+class Grant(ConfiguredBaseModel):
     """ """
 
     id: Optional[str] = Field(
@@ -113,7 +118,7 @@ class Grant(BaseModel):
     )
 
 
-class FundingBody(BaseModel):
+class FundingBody(ConfiguredBaseModel):
     """ """
 
     display_name: str = Field(
@@ -137,7 +142,7 @@ class LicenceType(str, Enum):
 #######################################################################################################
 
 
-class PersonMixin(BaseModel):
+class PersonMixin(ConfiguredBaseModel):
     """
     Person information
     """
@@ -147,7 +152,7 @@ class PersonMixin(BaseModel):
     )
 
 
-class OrganisationMixin(BaseModel):
+class OrganisationMixin(ConfiguredBaseModel):
     """
     Organisation information
     """
@@ -199,7 +204,7 @@ class Affiliation(OrganisationMixin):
 #######################################################################################################
 
 
-class DatasetMixin(BaseModel):
+class DatasetMixin(ConfiguredBaseModel):
     """
     A logical grouping of data (in files) based on the process involved in it's creation.
     """
@@ -223,7 +228,7 @@ class DatasetMixin(BaseModel):
     )
 
 
-class FileReference(BaseModel):
+class FileReference(ConfiguredBaseModel):
     """
     Information about a file, provided in file list.
     """
@@ -245,7 +250,7 @@ class FileReference(BaseModel):
 
 
 
-class ProtocolMixin(BaseModel):
+class ProtocolMixin(ConfiguredBaseModel):
     """
     A protocol for either capturing, combining, or analysing images.
     """
@@ -261,7 +266,7 @@ class ProtocolMixin(BaseModel):
 #######################################################################################################
 
 
-class AbstractImageMixin(BaseModel):
+class AbstractImageMixin(ConfiguredBaseModel):
     """
     The abstract notion of an image that can have many representions in different image formats.
     """
@@ -275,7 +280,7 @@ class AbstractImageMixin(BaseModel):
     )
 
 
-class ImageRepresentation(BaseModel):
+class ImageRepresentation(ConfiguredBaseModel):
     """
     The viewable or processable represention of an image in a particular image file format.
     This object was created from one or more file refences (usually one) provided by submitters to the BioImage Archive.
@@ -339,7 +344,7 @@ class ImageRepresentation(BaseModel):
     )
 
 
-class RenderedView(BaseModel):
+class RenderedView(ConfiguredBaseModel):
     """
     A particular view of an image, such as as a specific timestamp of a time series, or a view direction of a 3D model.
     """
@@ -356,7 +361,7 @@ class RenderedView(BaseModel):
     )
 
 
-class Channel(BaseModel):
+class Channel(ConfiguredBaseModel):
     """
     An image channel.
     """
@@ -451,7 +456,7 @@ class SpecimenImagingPrepartionProtocol(ProtocolMixin):
     signal_channel_information: Optional[List[SignalChannelInformation]]
 
 
-class SignalChannelInformation(BaseModel):
+class SignalChannelInformation(ConfiguredBaseModel):
     """
     Information about how signals were generated, staining compounds and their targets.
     """
@@ -476,7 +481,7 @@ class SpecimenGrowthProtocol(ProtocolMixin):
     pass
 
 
-class Specimen(BaseModel):
+class Specimen(ConfiguredBaseModel):
     """
     The subject of an image acquisition, and the result of a BioSample being prepared to be imaged.
     """
@@ -495,7 +500,7 @@ class Specimen(BaseModel):
     # )
 
 
-class BioSample(BaseModel):
+class BioSample(ConfiguredBaseModel):
     """
     The biological entity that has undergone preparation (as a Sample) in order to be imaged.
     """
@@ -517,7 +522,7 @@ class BioSample(BaseModel):
     )
 
 
-class Taxon(BaseModel):
+class Taxon(ConfiguredBaseModel):
     """
     The classification of a biological entity.
     """
@@ -589,7 +594,7 @@ class AnnotationMethod(ProtocolMixin):
     )
 
 
-class AnnotationMixin(BaseModel):
+class AnnotationMixin(ConfiguredBaseModel):
     """
     Information providing additional metadata or highlighting parts of an image.
     """

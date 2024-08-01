@@ -52,6 +52,7 @@ def extract_image_acquisition_dicts(submission: Submission) -> List[Dict[str, An
         model_dict["accno"] = section.__dict__.get("accno", "")
         model_dict["accession_id"] = submission.accno
         model_dict["uuid"] = generate_image_acquisition_uuid(model_dict)
+        model_dict["version"] = 1
         model_dict = filter_model_dictionary(model_dict, bia_data_model.ImageAcquisition)
         model_dicts.append(model_dict)
 

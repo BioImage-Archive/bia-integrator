@@ -47,6 +47,7 @@ def extract_specimen_growth_protocol_dicts(submission: Submission) -> List[Dict[
         model_dict["accno"] = section.__dict__.get("accno", "")
         model_dict["accession_id"] = submission.accno
         model_dict["uuid"] = generate_specimen_growth_protocol_uuid(model_dict)
+        model_dict["version"] = 1
         model_dict = filter_model_dictionary(model_dict, bia_data_model.SpecimenGrowthProtocol)
 
         model_dicts.append(model_dict)

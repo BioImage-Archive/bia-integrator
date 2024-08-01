@@ -50,6 +50,7 @@ def extract_specimen_preparation_protocol_dicts(submission: Submission) -> List[
         model_dict["accno"] = section.__dict__.get("accno", "")
         model_dict["accession_id"] = submission.accno
         model_dict["uuid"] = generate_specimen_imaging_preparation_uuid(model_dict)
+        model_dict["version"] = 1
         model_dict = filter_model_dictionary(model_dict, bia_data_model.SpecimenImagingPrepartionProtocol)
 
         model_dicts.append(model_dict)
