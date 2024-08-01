@@ -5,17 +5,12 @@ from . import utils
 from bia_shared_datamodels import bia_data_model
 
 
-
 @pytest.mark.parametrize(
     (
         "expected_model_type",
         "model_creation_func",
     ),
     (
-        (
-            bia_data_model.Study,
-            utils.get_template_study,
-        ),
         (
             bia_data_model.FileReference,
             utils.get_template_file_reference,
@@ -73,6 +68,38 @@ from bia_shared_datamodels import bia_data_model
 def test_create_models(expected_model_type, model_creation_func):
     expected_model = model_creation_func()
     assert type(expected_model) is expected_model_type
+
+
+def test_create_study():
+
+    complete_dict = utils.get_study_dict(utils.Completeness.COMPLETE)
+    study_complete = bia_data_model.Study(**complete_dict)
+
+    # Check that the model is created
+    assert type(study_complete) is bia_data_model.Study
+    # Check that the dictionary is indeed "Complete" - no optional fields missed
+    assert study_complete.model_dump() == complete_dict
+    # Check that there are no inconsistencies in the model definition
+    assert (
+        type(bia_data_model.Study(**study_complete.model_dump()))
+        is bia_data_model.Study
+    )
+
+    mimimal_dict = utils.get_study_dict(utils.Completeness.MINIMAL)
+    study_minimal = bia_data_model.Study(**mimimal_dict)
+
+    # Check that the model is created
+    assert type(study_minimal) is bia_data_model.Study
+    # Check that the dictionary is indeed "Minimal" - no optional fields included
+    for key in mimimal_dict:
+        less_than_minimal_dict = mimimal_dict.copy()
+        del less_than_minimal_dict[key]
+        with pytest.raises(ValidationError):
+            bia_data_model.Study(**less_than_minimal_dict)
+    # Check that there are no inconsistencies in the model definition's optional fields
+    assert (
+        type(bia_data_model.Study(**study_minimal.model_dump())) is bia_data_model.Study
+    )
 
 
 def test_create_specimen_with_empty_lists_fails():

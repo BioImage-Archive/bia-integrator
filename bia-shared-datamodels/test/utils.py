@@ -9,6 +9,15 @@ from pathlib import Path
 base_path = Path(__file__).parent
 from bia_shared_datamodels import bia_data_model, semantic_models
 from uuid import uuid4
+from enum import Enum
+import datetime
+from pydantic_core import Url
+
+
+class Completeness(str, Enum):
+    COMPLETE = "COMPLETE"
+    MINIMAL = "MINIMAL"
+
 
 template_taxon = semantic_models.Taxon.model_validate(
     {
@@ -68,9 +77,9 @@ def get_template_specimen_imaging_preparation_protocol() -> (
                 ],
                 "version": 1,
                 "model": {
-                "type_name": "SpecimenImagingPrepartionProtocol", 
-                "version": 1
-            }
+                    "type_name": "SpecimenImagingPrepartionProtocol",
+                    "version": 1,
+                },
             }
         )
     )
@@ -84,10 +93,7 @@ def get_template_specimen_growth_protocol() -> bia_data_model.SpecimenGrowthProt
             "title_id": "Test specimen preparation protocol",
             "protocol_description": "Test description",
             "version": 1,
-            "model": {
-                "type_name": "SpecimenGrowthProtocol", 
-                "version": 1
-            }
+            "model": {"type_name": "SpecimenGrowthProtocol", "version": 1},
         }
     )
     return specimen_growth_protocol
@@ -112,10 +118,7 @@ def get_template_biosample() -> bia_data_model.BioSample:
                 "Description of internal treatment",
             ],
             "version": 1,
-            "model": {
-                "type_name": "BioSample", 
-                "version": 1
-            }
+            "model": {"type_name": "BioSample", "version": 1},
         }
     )
     return biosample
@@ -135,10 +138,7 @@ def get_template_specimen() -> bia_data_model.Specimen:
                 get_template_specimen_growth_protocol().uuid,
             ],
             "version": 1,
-            "model": {
-                "type_name": "Specimen", 
-                "version": 1
-            }
+            "model": {"type_name": "Specimen", "version": 1},
         }
     )
     return specimen
@@ -154,10 +154,7 @@ def get_template_annotation_method() -> bia_data_model.AnnotationMethod:
             "annotation_coverage": "Template annotation coverage",
             "method_type": semantic_models.AnnotationType.class_labels,
             "version": 1,
-            "model": {
-                "type_name": "AnnotationMethod", 
-                "version": 1
-            }
+            "model": {"type_name": "AnnotationMethod", "version": 1},
         }
     )
     return annotation_method
@@ -174,10 +171,7 @@ def get_template_experimentally_captured_image() -> (
             "subject_uuid": get_template_specimen().uuid,
             "attribute": {},
             "version": 1,
-            "model": {
-                "type_name": "ExperimentallyCapturedImage", 
-                "version": 1
-            }
+            "model": {"type_name": "ExperimentallyCapturedImage", "version": 1},
         }
     )
 
@@ -195,28 +189,21 @@ def get_template_derived_image() -> bia_data_model.DerivedImage:
             "spatial_information": "Template spatial information",
             "attribute": {},
             "version": 1,
-            "model": {
-                "type_name": "DerivedImage", 
-                "version": 1
-            }
+            "model": {"type_name": "DerivedImage", "version": 1},
         }
     )
     return derived_image
-
 
 
 def get_template_image_annotation_dataset() -> bia_data_model.ImageAnnotationDataset:
     image_annotation_dataset = bia_data_model.ImageAnnotationDataset.model_validate(
         {
             "uuid": uuid4(),
-            "submitted_in_study_uuid": get_template_study().uuid,
+            "submitted_in_study_uuid": get_study_dict()["uuid"],
             "title_id": "Template image annotation dataset",
             "example_image_uri": ["https://dummy.url.org"],
             "version": 1,
-            "model": {
-                "type_name": "ImageAnnotationDataset", 
-                "version": 1
-            },
+            "model": {"type_name": "ImageAnnotationDataset", "version": 1},
             "attribute": {},
         }
     )
@@ -235,10 +222,7 @@ def get_template_image_acquisition() -> bia_data_model.ImageAcquisition:
                 "Test FBBI ID",
             ],
             "version": 1,
-            "model": {
-                "type_name": "ImageAcquisition", 
-                "version": 1
-            }
+            "model": {"type_name": "ImageAcquisition", "version": 1},
         }
     )
     return image_acquisition
@@ -270,7 +254,7 @@ def get_template_experimental_imaging_dataset() -> (
         bia_data_model.ExperimentalImagingDataset.model_validate(
             {
                 "uuid": uuid4(),
-                "submitted_in_study_uuid": get_template_study().uuid,
+                "submitted_in_study_uuid": get_study_dict()["uuid"],
                 "title_id": "Template experimental image dataset",
                 "analysis_method": [
                     get_template_image_analysis_method().model_dump(),
@@ -281,7 +265,7 @@ def get_template_experimental_imaging_dataset() -> (
                 "example_image_uri": ["https://dummy.url.org"],
                 "version": 1,
                 "model": {"type_name": "ExperimentalImagingDataset", "version": 1},
-                "attribute": {}
+                "attribute": {},
             }
         )
     )
@@ -327,7 +311,6 @@ def get_template_file_reference() -> bia_data_model.FileReference:
     return file_reference
 
 
-
 def get_template_image_representation() -> bia_data_model.ImageRepresentation:
     return bia_data_model.ImageRepresentation.model_validate(
         {
@@ -359,50 +342,75 @@ def get_template_image_representation() -> bia_data_model.ImageRepresentation:
     )
 
 
-def get_template_affiliation() -> semantic_models.Affiliation:
-    affiliation = semantic_models.Affiliation.model_validate(
-        {
+def get_affiliation_dict(
+    completeness=Completeness.COMPLETE,
+) -> dict:
+
+    if completeness == Completeness.MINIMAL:
+        affiliation = {
+            "display_name": "Template Affiliation Organisation",
+        }
+    elif completeness == Completeness.COMPLETE:
+        affiliation = {
             "display_name": "Template Affiliation Organisation",
             "rorid": "None",
             "address": "None",
-            "website": "https://www.none.com"
+            "website": Url("https://www.none.com"),
         }
-    )
     return affiliation
 
 
-def get_template_contributor() -> semantic_models.Contributor:
-    contributor = semantic_models.Contributor.model_validate(
-        {
+def get_contributor_dict(
+    completeness=Completeness.COMPLETE,
+) -> dict:
+
+    if completeness == Completeness.MINIMAL:
+        contributor_dict = {"display_name": "Contributor1", "affiliation": []}
+    elif completeness == Completeness.COMPLETE:
+        contributor_dict = {
             "display_name": "Contributor1",
             "contact_email": "contributor1@org1.ac.uk",
             "role": "contributing author",
             "affiliation": [
-                get_template_affiliation(),
+                get_affiliation_dict(Completeness.COMPLETE),
             ],
             "rorid": "None",
             "address": "None",
-            "website": "https://www.none.com",
-            "orcid": "None"
+            "website": Url("https://www.none.com"),
+            "orcid": "None",
         }
-    )
-    return contributor
+    return contributor_dict
 
 
-def get_template_study() -> bia_data_model.Study:
-    contributor = get_template_contributor()
-    study = bia_data_model.Study.model_validate(
-        {
+def get_study_dict(completeness=Completeness.COMPLETE) -> dict:
+
+    if completeness == Completeness.MINIMAL:
+        study_dict = {
+            "uuid": uuid4(),
+            "accession_id": "S-BIADTEST",
+            "licence": semantic_models.LicenceType.CC0,
+            "author": [get_contributor_dict(Completeness.MINIMAL)],
+            "attribute": {},
+            "title": "Test publication",
+            "release_date": "2024-06-23",
+            "version": 1,
+            "description": "Template description",
+        }
+
+    elif completeness == Completeness.COMPLETE:
+        study_dict = {
             "uuid": uuid4(),
             "accession_id": "S-BIADTEST",
             "licence": semantic_models.LicenceType.CC0,
             "attribute": {},
             "related_publication": [],
-            "author": [
-                contributor.model_dump(),
-            ],
+            "author": [get_contributor_dict(Completeness.COMPLETE)],
+            "acknowledgement": "Template acknowledgement",
+            "funding_statement": "Template funding statement",
+            "grant": [],
             "title": "Test publication",
-            "release_date": "2024-06-23",
+            "release_date": datetime.date(2024, 6, 23),
+            "see_also": [],
             "keyword": [
                 "Template keyword1",
                 "Template keyword2",
@@ -410,6 +418,6 @@ def get_template_study() -> bia_data_model.Study:
             "description": "Template description",
             "version": 1,
             "model": {"type_name": "Study", "version": 1},
-        },
-    )
-    return study
+        }
+
+    return study_dict
