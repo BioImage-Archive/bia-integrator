@@ -86,6 +86,7 @@
                 "version": 1
             },
             "description": "Description of study component 1",
+            "attribute": {},
             "analysis_method": [
                 {
                     "protocol_description": "Test image analysis",

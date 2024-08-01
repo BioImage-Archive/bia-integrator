@@ -204,6 +204,7 @@ def get_template_derived_image() -> bia_data_model.DerivedImage:
     return derived_image
 
 
+
 def get_template_image_annotation_dataset() -> bia_data_model.ImageAnnotationDataset:
     image_annotation_dataset = bia_data_model.ImageAnnotationDataset.model_validate(
         {
@@ -216,6 +217,7 @@ def get_template_image_annotation_dataset() -> bia_data_model.ImageAnnotationDat
                 "type_name": "ImageAnnotationDataset", 
                 "version": 1
             }
+            "attribute": {},
         }
     )
     return image_annotation_dataset
@@ -279,6 +281,7 @@ def get_template_experimental_imaging_dataset() -> (
                 "example_image_uri": ["https://dummy.url.org"],
                 "version": 1,
                 "model": {"type_name": "ExperimentalImagingDataset", "version": 1},
+                "attribute": {}
             }
         )
     )
@@ -306,6 +309,7 @@ def get_template_annotation_file_reference() -> bia_data_model.AnnotationFileRef
         }
     )
 
+
 def get_template_file_reference() -> bia_data_model.FileReference:
     file_reference = bia_data_model.FileReference.model_validate(
         {
@@ -321,6 +325,7 @@ def get_template_file_reference() -> bia_data_model.FileReference:
         }
     )
     return file_reference
+
 
 
 def get_template_image_representation() -> bia_data_model.ImageRepresentation:
