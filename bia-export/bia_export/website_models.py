@@ -17,7 +17,7 @@ class ExperimentalImagingDataset(bia_data_model.ExperimentalImagingDataset):
     biological_entity: list[bia_data_model.BioSample] = Field(
         description="""The biological entity or entities that were imaged."""
     )
-    specimen_growth_protocol: Optional[list[bia_data_model.SpecimenImagingPrepartionProtocol]] = Field(
+    specimen_growth_protocol: Optional[list[bia_data_model.SpecimenGrowthProtocol]] = Field(
         description="""Processes involved in the growth of the samples that were then imaged."""
     )
 
