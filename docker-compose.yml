@@ -2,9 +2,7 @@ services:
   biaint-mongo:
     image: mongo:6.0
     restart: no
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: "${MONGO_INITDB_ROOT_USERNAME}"
-      MONGO_INITDB_ROOT_PASSWORD: "${MONGO_INITDB_ROOT_PASSWORD}"
+    env_file: api/.env_compose
     ports:
       - 27017:27017
     expose:
@@ -22,6 +20,7 @@ services:
     build:
       context: .
       dockerfile: api/Dockerfile
+    env_file: api/.env_compose
     container_name: api
     hostname: api
     ports:
