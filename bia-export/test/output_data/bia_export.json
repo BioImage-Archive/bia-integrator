@@ -92,6 +92,11 @@
                         "biosample": "Test Biosample 1",
                         "image_acquisition": "Test Primary Screen Image Acquisition",
                         "specimen": "Test specimen 1"
+                    },
+                    {
+                        "biosample": "Test Biosample 2",
+                        "image_acquisition": "Test Primary Screen Image Acquisition",
+                        "specimen": "Test specimen 1"
                     }
                 ]
             },
@@ -157,6 +162,32 @@
                     ],
                     "intrinsic_variable_description": [
                         "Test intrinsic variable 1\\nwith escaped character"
+                    ]
+                },
+                {
+                    "title_id": "Test Biosample 2",
+                    "uuid": "6950718c-4917-47a1-a807-11b874e80a23",
+                    "version": 1,
+                    "model": {
+                        "type_name": "BioSample",
+                        "version": 1
+                    },
+                    "organism_classification": [
+                        {
+                            "common_name": "mouse",
+                            "scientific_name": "Mus musculus",
+                            "ncbi_id": null
+                        }
+                    ],
+                    "biological_entity_description": "Test biological entity 2",
+                    "experimental_variable_description": [
+                        "Test experimental entity 2"
+                    ],
+                    "extrinsic_variable_description": [
+                        "Test extrinsic variable 2"
+                    ],
+                    "intrinsic_variable_description": [
+                        "Test intrinsic variable 2"
                     ]
                 }
             ],
