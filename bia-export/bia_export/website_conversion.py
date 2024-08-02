@@ -24,7 +24,7 @@ def read_api_json_file(file_path: Path, object_type: Type[BaseModel]) -> BaseMod
     return object_type(**object_dict)
 
 
-def real_all_json(directory_path: Path, object_type: Type[BaseModel]) -> List[BaseModel]:
+def read_all_json(directory_path: Path, object_type: Type[BaseModel]) -> List[BaseModel]:
     object_list = []
     file_paths = glob(str(directory_path))
     for file_path in file_paths:
@@ -38,7 +38,7 @@ def find_associated_objects(typed_associations: set, directory_path: Path, objec
     if len(typed_associations) == 0:
         return linked_object
     
-    typed_object_in_study: List[bia_data_model.UserIdentifiedObject] = real_all_json(directory_path, object_type)
+    typed_object_in_study: List[bia_data_model.UserIdentifiedObject] = read_all_json(directory_path, object_type)
     for object in typed_object_in_study:
         if object.title_id in typed_associations:
             linked_object.append(object)
@@ -72,7 +72,7 @@ def create_experimental_imaging_datasets(accession_id: str, root_directory: Path
     
         eid_directory = root_directory.joinpath(f'experimental_imaging_datasets/{accession_id}/*.json')
 
-        api_eids: List[bia_data_model.ExperimentalImagingDataset] = real_all_json(eid_directory, bia_data_model.ExperimentalImagingDataset)
+        api_eids: List[bia_data_model.ExperimentalImagingDataset] = read_all_json(eid_directory, bia_data_model.ExperimentalImagingDataset)
         
         for eid in api_eids:
             eid_dict = eid.model_dump()
