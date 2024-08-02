@@ -23,6 +23,7 @@ def website_study(
     abs_root = root_directory.resolve()
     study = create_study(accession_id, abs_root)
 
+    logging.info(f"Writing study info to {output_filename.absolute()}")
     with open(output_filename, "w") as output:
         output.write(study.model_dump_json(indent=4)) 
 

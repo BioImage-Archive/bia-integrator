@@ -2,7 +2,20 @@
     "title_id": "Study Component 1",
     "uuid": "47a4ab60-c76d-4424-bfaa-c2a024de720c",
     "description": "Description of study component 1",
-    "attribute": {},
+    "attribute": {
+        "associations": [
+            {
+                "biosample": "Test Biosample 1",
+                "image_acquisition": "Test Primary Screen Image Acquisition",
+                "specimen": "Test specimen 1"
+            },
+            {
+                "biosample": "Test Biosample 2",
+                "image_acquisition": "Test Primary Screen Image Acquisition",
+                "specimen": "Test specimen 1"
+            }
+        ]
+    },
     "analysis_method": [
         {
             "protocol_description": "Test image analysis",

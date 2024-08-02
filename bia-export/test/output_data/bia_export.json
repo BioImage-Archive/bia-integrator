@@ -86,7 +86,15 @@
                 "version": 1
             },
             "description": "Description of study component 1",
-            "attribute": {},
+            "attribute": {
+                "associations": [
+                    {
+                        "biosample": "Test Biosample 1",
+                        "image_acquisition": "Test Primary Screen Image Acquisition",
+                        "specimen": "Test specimen 1"
+                    }
+                ]
+            },
             "analysis_method": [
                 {
                     "protocol_description": "Test image analysis",
@@ -95,7 +103,64 @@
             ],
             "correlation_method": [],
             "example_image_uri": [],
-            "submitted_in_study_uuid": "a2fdbd58-ee11-4cd9-bc6a-f3d3da7fff71"
+            "submitted_in_study_uuid": "a2fdbd58-ee11-4cd9-bc6a-f3d3da7fff71",
+            "acquisition_process": [
+                {
+                    "title_id": "Test Primary Screen Image Acquisition",
+                    "uuid": "c2e44a1b-a43c-476e-8ddf-8587f4c955b3",
+                    "version": 1,
+                    "model": {
+                        "type_name": "ImageAcquisition",
+                        "version": 1
+                    },
+                    "protocol_description": "Test image acquisition parameters 1",
+                    "imaging_instrument_description": "Test imaging instrument 1",
+                    "fbbi_id": [],
+                    "imaging_method_name": "confocal microscopy"
+                }
+            ],
+            "specimen_imaging_preparation_protocol": [
+                {
+                    "title_id": "Test specimen 1",
+                    "uuid": "7199d730-29f1-4ad8-b599-e9089cbb2d7b",
+                    "version": 1,
+                    "model": {
+                        "type_name": "SpecimenImagingPrepartionProtocol",
+                        "version": 1
+                    },
+                    "protocol_description": "Test sample preparation protocol 1",
+                    "signal_channel_information": []
+                }
+            ],
+            "biological_entity": [
+                {
+                    "title_id": "Test Biosample 1",
+                    "uuid": "64a67727-4e7c-469a-91c4-6219ae072e99",
+                    "version": 1,
+                    "model": {
+                        "type_name": "BioSample",
+                        "version": 1
+                    },
+                    "organism_classification": [
+                        {
+                            "common_name": "human",
+                            "scientific_name": "Homo sapiens",
+                            "ncbi_id": null
+                        }
+                    ],
+                    "biological_entity_description": "Test biological entity 1",
+                    "experimental_variable_description": [
+                        "Test experimental entity 1"
+                    ],
+                    "extrinsic_variable_description": [
+                        "Test extrinsic variable 1"
+                    ],
+                    "intrinsic_variable_description": [
+                        "Test intrinsic variable 1\\nwith escaped character"
+                    ]
+                }
+            ],
+            "specimen_growth_protocol": []
         }
     ]
 }
