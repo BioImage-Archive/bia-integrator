@@ -4,9 +4,14 @@ from pydantic.alias_generators import to_snake
 # ?
 import bia_shared_datamodels.bia_data_model as shared_data_models
 from .models.repository import Repository
+from . import constants
 
 
-router = APIRouter()
+router = APIRouter(
+    prefix="/private",
+    # dependencies=[Depends(get_current_user)], TODO
+    tags=[constants.OPENAPI_TAG_PUBLIC],
+)
 models_public = [
     shared_data_models.Study,
     shared_data_models.FileReference,
