@@ -36,12 +36,15 @@ def make_post_item(t):
     return post_item
 
 
-for t in models_private:
-    router.add_api_route(
-        "/" + to_snake(t.__name__),
-        operation_id=f"post{t.__name__}",
-        summary=f"Create {t.__name__}",
-        methods=["POST"],
-        endpoint=make_post_item(t),
-        status_code=status.HTTP_201_CREATED,
-    )
+def make_router() -> APIRouter:
+    for t in models_private:
+        router.add_api_route(
+            "/" + to_snake(t.__name__),
+            operation_id=f"post{t.__name__}",
+            summary=f"Create {t.__name__}",
+            methods=["POST"],
+            endpoint=make_post_item(t),
+            status_code=status.HTTP_201_CREATED,
+        )
+
+    return router

@@ -41,12 +41,20 @@ def make_get_item(t):
     return get_item
 
 
-for t in models_public:
-    router.add_api_route(
-        f"/{to_snake(t.__name__)}/{{uuid}}",
-        response_model=t,
-        operation_id=f"get{t.__name__}",
-        summary=f"Get {t.__name__}",
-        methods=["GET"],
-        endpoint=make_get_item(t),
-    )
+def make_router() -> APIRouter:
+    for t in models_public:
+        router.add_api_route(
+            f"/{to_snake(t.__name__)}/{{uuid}}",
+            response_model=t,
+            operation_id=f"get{t.__name__}",
+            summary=f"Get {t.__name__}",
+            methods=["GET"],
+            endpoint=make_get_item(t),
+        )
+
+    return router
+
+
+@router.get("/placeholder")
+def example_custom_handler():
+    pass
