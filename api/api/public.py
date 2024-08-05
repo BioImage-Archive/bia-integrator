@@ -30,9 +30,7 @@ def make_get_item(t):
     # https://eev.ee/blog/2011/04/24/gotcha-python-scoping-closures/
 
     # @TODO: nicer wrapper?
-    async def get_item(
-        uuid: shared_data_models.UUID, db: Repository = Depends()
-    ) -> dict:
+    async def get_item(uuid: shared_data_models.UUID, db: Repository = Depends()) -> t:
         return await db.get_doc(uuid, t)
 
     return get_item
