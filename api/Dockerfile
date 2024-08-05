@@ -12,16 +12,14 @@ WORKDIR /bia-integrator
 #   only add poetry.lock if it exists (building on local)
 ADD ./api/poetry.lock* api/poetry.lock
 ADD ./api/pyproject.toml api/pyproject.toml
-
-# add the actual project, which is what is often changed in between two different container builds
-ADD . .
+ADD bia-shared-datamodels bia-shared-datamodels
 
 WORKDIR /bia-integrator/api
-
 RUN poetry lock
 RUN poetry install
-
 # Everything up to here should be reused most times
 
-
-CMD ["poetry", "run", "uvicorn", "--workers", "4", "--port", "8080", "--log-config", ".api/src/log_config.yml", "--host", "0.0.0.0", "api.app:app"]
+# add the actual project, which is what is often changed in between two different container builds
+ADD . /bia-integrator
+ 
+CMD ["poetry", "run", "uvicorn", "--workers", "4", "--port", "8080", "--log-config", "./src/log_config.yml", "--host", "0.0.0.0", "api.app:app"]
