@@ -27,11 +27,8 @@ services:
       - 8080:8080
     expose:
       - 8080
-    volumes:
-      - "./.env_compose:/integrator-api/.env"
     depends_on:
       - biaint-mongo
-
 
 volumes:
   api_data:
