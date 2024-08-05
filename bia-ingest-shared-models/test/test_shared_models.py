@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, List
 from pathlib import Path
 from unittest.mock import Mock
 import pytest
@@ -11,8 +11,10 @@ from bia_ingest_sm.conversion import (
     specimen_growth_protocol,
     image_acquisition,
     annotation_method,
+    file_reference,
 )
-from bia_ingest_sm.biostudies import requests
+from bia_ingest_sm.biostudies import requests, File
+from pydantic import TypeAdapter
 
 # TODO: Mock requests.get correctly!!!
 def mock_request_get(flist_url: str) -> Dict[str, str]:
@@ -55,6 +57,13 @@ requests.get = mock_request_get
             utils.get_test_annotation_method,
             annotation_method.get_annotation_method,
         ),
+        # Test FileReference creation separately as it now has a
+        # different pattern of creation from other artefacts i.e.
+        # it now needs a submitted dataset
+        #(
+        #    utils.get_test_file_reference,
+        #    file_reference.get_file_reference_by_study_component,
+        #),
         # Not testing as we need to deal with links that are not proper
         # urls
         # (utils.get_test_external_reference, conversion.get_external_reference,),
@@ -72,3 +81,38 @@ def test_create_models(expected_model_func, model_creation_func, test_submission
 
 # def test_save_study_artefacts(test_submission):
 #    conversion.get_study(test_submission, persist_artefacts=True)
+
+def test_create_file_reference(test_submission):
+    file_reference_data = [
+        {
+            "accession_id": "S-BIADTEST",
+            "path": "study_component2/im06.png",
+            "type": "file",
+            "size": 3,
+            "uri": "",
+            "attribute": {},
+        },
+        {
+            "accession_id": "S-BIADTEST",
+            "path": "study_component2/im08.png",
+            "type": "file",
+            "size": 123,
+            "uri": "",
+            "attribute": {},
+        },
+        {
+            "accession_id": "S-BIADTEST",
+            "path": "study_component2/ann01-05",
+            "type": "file",
+            "size": 11,
+            "uri": "",
+            "attribute": {},
+        },
+    ]
+    files_in_filelist = [File.model_validate(f) for f in file_reference_data]
+
+    expected = utils.get_test_file_reference()
+    #created = file_reference.get_file_reference_for_submission_dataset(accession_id="S-BIADTEST", submission_dataset=utils.get_test_experimental_imaging_dataset()[1], files_in_file_list=files_in_filelist)
+    datasets_in_submission = [utils.get_test_experimental_imaging_dataset()[1],]
+    created = file_reference.get_file_reference_by_study_component(test_submission, datasets_in_submission=datasets_in_submission)
+    assert created[datasets_in_submission[0].title_id] == expected

@@ -9,6 +9,8 @@ from bia_shared_datamodels import bia_data_model, semantic_models
 from bia_ingest_sm.conversion.utils import dict_to_uuid, filter_model_dictionary
 
 
+accession_id = "S-BIADTEST"
+
 def get_test_annotation_method() -> List[bia_data_model.AnnotationMethod]:
     # For UUID
     attributes_to_consider = [
@@ -24,7 +26,7 @@ def get_test_annotation_method() -> List[bia_data_model.AnnotationMethod]:
     annotation_method_info = [
         {
             "accno": "Annotations-29",
-            "accession_id": "S-BIADTEST",
+            "accession_id": accession_id,
             "title_id": "Segmentation masks",
             "protocol_description": "Test annotation overview 1",
             "annotation_criteria": "Test annotation criteria 1",
@@ -60,14 +62,14 @@ def get_test_specimen_growth_protocol() -> List[bia_data_model.SpecimenGrowthPro
     protocol_info = [
         {
             "accno": "Specimen-1",
-            "accession_id": "S-BIADTEST",
+            "accession_id": accession_id,
             "title_id": "Test specimen 1",
             "protocol_description": "Test growth protocol 1",
             "version": 1,
         },
         {
             "accno": "Specimen-2",
-            "accession_id": "S-BIADTEST",
+            "accession_id": accession_id,
             "title_id": "Test specimen 2",
             "protocol_description": "Test growth protocol 2",
             "version": 1,
@@ -99,7 +101,7 @@ def get_test_specimen_imaging_preparation_protocol() -> (
     protocol_info = [
         {
             "accno": "Specimen-1",
-            "accession_id": "S-BIADTEST",
+            "accession_id": accession_id,
             "title_id": "Test specimen 1",
             "protocol_description": "Test sample preparation protocol 1",
             "signal_channel_information": [],
@@ -107,7 +109,7 @@ def get_test_specimen_imaging_preparation_protocol() -> (
         },
         {
             "accno": "Specimen-2",
-            "accession_id": "S-BIADTEST",
+            "accession_id": accession_id,
             "title_id": "Test specimen 2",
             "protocol_description": "Test sample preparation protocol 2",
             "signal_channel_information": [],
@@ -158,7 +160,7 @@ def get_test_biosample() -> List[bia_data_model.BioSample]:
     biosample_info = [
         {
             "accno": "Biosample-1",
-            "accession_id": "S-BIADTEST",
+            "accession_id": accession_id,
             "title_id": "Test Biosample 1",
             "organism_classification": [
                 taxon1.model_dump(),
@@ -177,7 +179,7 @@ def get_test_biosample() -> List[bia_data_model.BioSample]:
         },
         {
             "accno": "Biosample-2",
-            "accession_id": "S-BIADTEST",
+            "accession_id": accession_id,
             "title_id": "Test Biosample 2 ",
             "organism_classification": [
                 taxon2.model_dump(),
@@ -219,7 +221,7 @@ def get_test_image_acquisition() -> List[bia_data_model.ImageAcquisition]:
     image_acquisition_info = [
         {
             "accno": "Image acquisition-3",
-            "accession_id": "S-BIADTEST",
+            "accession_id": accession_id,
             "title_id": "Test Primary Screen Image Acquisition",
             "protocol_description": "Test image acquisition parameters 1",
             "imaging_instrument_description": "Test imaging instrument 1",
@@ -229,7 +231,7 @@ def get_test_image_acquisition() -> List[bia_data_model.ImageAcquisition]:
         },
         {
             "accno": "Image acquisition-7",
-            "accession_id": "S-BIADTEST",
+            "accession_id": accession_id,
             "title_id": "Test Secondary Screen Image Acquisition",
             "protocol_description": "Test image acquisition parameters 2",
             "imaging_instrument_description": "Test imaging instrument 2",
@@ -270,14 +272,59 @@ def get_test_image_correlation_method() -> semantic_models.ImageCorrelationMetho
         }
     )
 
+def get_test_file_reference() -> List [bia_data_model.FileReference]:
+    
+    submission_dataset_uuids = [s.uuid for s in get_test_experimental_imaging_dataset()]
+    uri_template = "https://www.ebi.ac.uk/biostudies/files/{accession_id}/{file_path}"
+    file_reference_data = [
+        {
+            "accession_id": accession_id,
+            "file_path": "study_component2/im06.png",
+            "format": "file",
+            "size_in_bytes": 3,
+            "uri": "",
+            "attribute": {},
+            "submission_dataset_uuid": submission_dataset_uuids[1],
+        },
+        {
+            "accession_id": accession_id,
+            "file_path": "study_component2/im08.png",
+            "format": "file",
+            "size_in_bytes": 123,
+            "uri": "",
+            "attribute": {},
+            "submission_dataset_uuid": submission_dataset_uuids[1],
+        },
+        {
+            "accession_id": accession_id,
+            "file_path": "study_component2/ann01-05",
+            "format": "file",
+            "size_in_bytes": 11,
+            "uri": "",
+            "attribute": {},
+            "submission_dataset_uuid": submission_dataset_uuids[1],
+        },
+    ]
 
-# TODO: Create FileReferences and ExperimentallyCapturedImage
+    for file_reference in file_reference_data:
+        file_reference["uri"] = uri_template.format(accession_id=accession_id, file_path=file_reference["file_path"])
+
+    file_reference_uuids = get_test_file_reference_uuid(file_reference_data)
+    file_references = []
+    for file_reference_dict, uuid in zip(file_reference_data, file_reference_uuids):
+        file_reference_dict["uuid"] = uuid
+        file_reference_dict = filter_model_dictionary(file_reference_dict, bia_data_model.FileReference)
+        file_references.append(bia_data_model.FileReference.model_validate(file_reference_dict))
+
+    return file_references
+
+# TODO: Create ExperimentallyCapturedImage
 def get_test_experimental_imaging_dataset() -> (
     bia_data_model.ExperimentalImagingDataset
 ):
     study_uuid = dict_to_uuid(
         {
-            "accession_id": "S-BIADTEST",
+            "accession_id": accession_id,
         },
         attributes_to_consider=[
             "accession_id",
@@ -332,27 +379,6 @@ def get_test_experimental_imaging_dataset() -> (
         )
     )
 
-    # Create second study component
-    file_references = [
-        {
-            "accession_id": "S-BIADTEST",
-            "file_path": "study_component2/im06.png",
-            "size_in_bytes": 3,
-            "version": 1,
-        },
-        {
-            "accession_id": "S-BIADTEST",
-            "file_path": "study_component2/im08.png",
-            "size_in_bytes": 123,
-            "version": 1,
-        },
-        {
-            "accession_id": "S-BIADTEST",
-            "file_path": "study_component2/ann01-05",
-            "size_in_bytes": 11,
-            "version": 1,
-        },
-    ]
     experimental_imaging_dataset_dict = {
         "title_id": "Study Component 2",
         "submitted_in_study_uuid": study_uuid,
@@ -538,7 +564,7 @@ def get_test_study() -> bia_data_model.Study:
     contributor = get_test_contributor()
     grant = get_test_grant()
     study_dict = {
-        "accession_id": "S-BIADTEST",
+        "accession_id": accession_id,
         "title": "A test submission with title greater than 25 characters",
         "description": "A test submission to allow testing without retrieving from bia server",
         "release_date": "2024-02-13",

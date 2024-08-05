@@ -33,10 +33,6 @@ def get_experimental_imaging_dataset(
     )
     analysis_method_dict = get_image_analysis_method(submission)
 
-    file_reference_uuids = get_file_reference_by_study_component(
-        submission, persist_artefacts=persist_artefacts
-    )
-
     # TODO: Need to persist this (API finally, but initially to disk)
     biosamples_in_submission = biosample_conversion.get_biosample(submission)
 
