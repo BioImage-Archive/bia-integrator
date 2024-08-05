@@ -1,3 +1,7 @@
+"""
+WIP minimal tests
+"""
+
 from fastapi.testclient import TestClient
 import pytest
 import uuid as uuid_lib

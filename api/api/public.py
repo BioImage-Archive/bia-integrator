@@ -9,10 +9,19 @@ from .models.repository import Repository
 router = APIRouter()
 models_public = [
     shared_data_models.Study,
-    shared_data_models.ImageAnnotationDataset,
-    shared_data_models.ExperimentalImagingDataset,
-    shared_data_models.AnnotationFileReference,
     shared_data_models.FileReference,
+    shared_data_models.ImageRepresentation,
+    shared_data_models.ExperimentalImagingDataset,
+    shared_data_models.Specimen,
+    shared_data_models.ExperimentallyCapturedImage,
+    shared_data_models.ImageAcquisition,
+    shared_data_models.SpecimenImagingPrepartionProtocol,
+    shared_data_models.SpecimenGrowthProtocol,
+    shared_data_models.BioSample,
+    shared_data_models.ImageAnnotationDataset,
+    shared_data_models.AnnotationFileReference,
+    shared_data_models.DerivedImage,
+    shared_data_models.AnnotationMethod,
 ]
 
 
@@ -38,13 +47,3 @@ for t in models_public:
         methods=["GET"],
         endpoint=make_get_item(t),
     )
-
-
-@router.get("/other_resource_no_overwrite")
-def not_overwritten(n: int) -> int:
-    return n
-
-
-# @router.get("/study")
-# def yes_overwritten(n: int) -> int:
-#    return n
