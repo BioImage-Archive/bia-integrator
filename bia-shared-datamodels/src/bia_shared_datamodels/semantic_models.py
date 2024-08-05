@@ -367,7 +367,7 @@ class Channel(ConfiguredBaseModel):
 
     colormap_start: float = Field(description="""Start value of colormap""")
     colormap_end: float = Field(description="""End value of colormap""")
-    scale_factor: float = Field(None)
+    scale_factor: Optional[float] = Field(None)
     label: Optional[str] = Field(
         None, description="""Label describing the channel for display."""
     )

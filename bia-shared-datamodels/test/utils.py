@@ -6,8 +6,7 @@ This module attempts to create models starting from the outer nodes (leaves) of 
 
 from pathlib import Path
 
-base_path = Path(__file__).parent
-from bia_shared_datamodels import bia_data_model, semantic_models
+from bia_shared_datamodels import semantic_models
 from uuid import uuid4
 from enum import Enum
 import datetime
@@ -19,93 +18,121 @@ class Completeness(str, Enum):
     MINIMAL = "MINIMAL"
 
 
-template_taxon = semantic_models.Taxon.model_validate(
-    {
-        "common_name": "Test Common Name",
-        "scientific_name": "Test Scientific Name",
-        "ncbi_id": "Test_NCBI_ID",
-    }
-)
+def get_taxon_dict(completeness=Completeness.COMPLETE) -> dict:
+    if completeness == Completeness.MINIMAL:
+        taxon = {}
+    elif completeness == Completeness.COMPLETE:
+        taxon = {
+            "common_name": "Test Common Name",
+            "scientific_name": "Test Scientific Name",
+            "ncbi_id": "Test_NCBI_ID",
+        }
+    return taxon
 
 
-def get_template_channel() -> semantic_models.Channel:
-    return semantic_models.Channel.model_validate(
-        {
+def get_channel_dict(completeness=Completeness.COMPLETE) -> dict:
+    if completeness == Completeness.MINIMAL:
+        channel = {
+            "colormap_start": 0.0,
+            "colormap_end": 1.0,
+        }
+    elif completeness == Completeness.COMPLETE:
+        channel = {
             "colormap_start": 0.0,
             "colormap_end": 1.0,
             "scale_factor": 1.0,
             "label": "Template label",
         }
-    )
+    return channel
 
 
-def get_template_rendered_view() -> semantic_models.RenderedView:
-    return semantic_models.RenderedView.model_validate(
-        {
+def get_rendered_view_dict(completeness=Completeness.COMPLETE) -> dict:
+    if completeness == Completeness.MINIMAL:
+        rendered_view = {}
+    elif completeness == Completeness.COMPLETE:
+        rendered_view = {
             "z": "Template z position",
             "t": "Template t position",
             "channel_information": [
-                get_template_channel(),
+                get_channel_dict(Completeness.COMPLETE),
             ],
         }
-    )
+    return rendered_view
 
 
-def get_template_signal_channel_information() -> (
-    semantic_models.SignalChannelInformation
-):
-    return semantic_models.SignalChannelInformation.model_validate(
-        {
+def get_signal_channel_information_dict(completeness=Completeness.COMPLETE) -> dict:
+    if completeness == Completeness.MINIMAL:
+        signal_channel_information = {}
+    elif completeness == Completeness.COMPLETE:
+        signal_channel_information = {
             "signal_contrast_mechanism_description": "Test description",
             "channel_content_description": "Test description",
             "channel_biological_entity": "Test Entity",
         }
-    )
+    return signal_channel_information
 
 
-def get_template_specimen_imaging_preparation_protocol() -> (
-    bia_data_model.SpecimenImagingPrepartionProtocol
-):
-    specimen_imaging_preparation_protocol = (
-        bia_data_model.SpecimenImagingPrepartionProtocol.model_validate(
-            {
-                "uuid": uuid4(),
-                "title_id": "Test specimen preparation protocol",
-                "protocol_description": "Test description",
-                "signal_channel_information": [
-                    get_template_signal_channel_information()
-                ],
+def get_specimen_imaging_preparation_protocol_dict(
+    completeness=Completeness.COMPLETE,
+) -> dict:
+    if completeness == Completeness.MINIMAL:
+        specimen_imaging_preparation_protocol = {
+            "uuid": uuid4(),
+            "title_id": "Test specimen preparation protocol",
+            "protocol_description": "Test description",
+            "version": 1,
+        }
+    elif completeness == Completeness.COMPLETE:
+        specimen_imaging_preparation_protocol = {
+            "uuid": uuid4(),
+            "title_id": "Test specimen preparation protocol",
+            "protocol_description": "Test description",
+            "signal_channel_information": [
+                get_signal_channel_information_dict(Completeness.COMPLETE)
+            ],
+            "version": 1,
+            "model": {
+                "type_name": "SpecimenImagingPrepartionProtocol",
                 "version": 1,
-                "model": {
-                    "type_name": "SpecimenImagingPrepartionProtocol",
-                    "version": 1,
-                },
-            }
-        )
-    )
+            },
+        }
     return specimen_imaging_preparation_protocol
 
 
-def get_template_specimen_growth_protocol() -> bia_data_model.SpecimenGrowthProtocol:
-    specimen_growth_protocol = bia_data_model.SpecimenGrowthProtocol.model_validate(
-        {
+def get_specimen_growth_protocol_dict(completeness=Completeness.COMPLETE) -> dict:
+    if completeness == Completeness.MINIMAL:
+        specimen_growth_protocol = {
+            "uuid": uuid4(),
+            "title_id": "Test specimen preparation protocol",
+            "protocol_description": "Test description",
+            "version": 1,
+        }
+    elif completeness == Completeness.COMPLETE:
+        specimen_growth_protocol = {
             "uuid": uuid4(),
             "title_id": "Test specimen preparation protocol",
             "protocol_description": "Test description",
             "version": 1,
             "model": {"type_name": "SpecimenGrowthProtocol", "version": 1},
         }
-    )
     return specimen_growth_protocol
 
 
-def get_template_biosample() -> bia_data_model.BioSample:
-    biosample = bia_data_model.BioSample.model_validate(
-        {
+def get_biosample_dict(completeness=Completeness.COMPLETE) -> dict:
+    if completeness == Completeness.MINIMAL:
+        biosample = {
+            "uuid": uuid4(),
+            "title_id": "Template BioSample",
+            "biological_entity_description": "Test biological entity description",
+            "version": 1,
+            "organism_classification": [],
+        }
+    elif completeness == Completeness.COMPLETE:
+        biosample = {
             "uuid": uuid4(),
             "title_id": "Template BioSample",
             "organism_classification": [
-                template_taxon.model_dump(),
+                get_taxon_dict(Completeness.COMPLETE),
             ],
             "biological_entity_description": "Test biological entity description",
             "experimental_variable_description": [
@@ -120,33 +147,51 @@ def get_template_biosample() -> bia_data_model.BioSample:
             "version": 1,
             "model": {"type_name": "BioSample", "version": 1},
         }
-    )
     return biosample
 
 
-def get_template_specimen() -> bia_data_model.Specimen:
-    specimen = bia_data_model.Specimen.model_validate(
-        {
+def get_specimen_dict(completeness=Completeness.COMPLETE) -> dict:
+    if completeness == Completeness.MINIMAL:
+        specimen = {
             "uuid": uuid4(),
             "imaging_preparation_protocol_uuid": [
-                get_template_specimen_imaging_preparation_protocol().uuid,
+                get_specimen_imaging_preparation_protocol_dict()["uuid"],
             ],
             "sample_of_uuid": [
-                get_template_biosample().uuid,
+                get_biosample_dict()["uuid"],
+            ],
+            "growth_protocol_uuid": [],
+            "version": 1,
+        }
+    elif completeness == Completeness.COMPLETE:
+        specimen = {
+            "uuid": uuid4(),
+            "imaging_preparation_protocol_uuid": [
+                get_specimen_imaging_preparation_protocol_dict()["uuid"],
+            ],
+            "sample_of_uuid": [
+                get_biosample_dict()["uuid"],
             ],
             "growth_protocol_uuid": [
-                get_template_specimen_growth_protocol().uuid,
+                get_specimen_growth_protocol_dict()["uuid"],
             ],
             "version": 1,
             "model": {"type_name": "Specimen", "version": 1},
         }
-    )
     return specimen
 
 
-def get_template_annotation_method() -> bia_data_model.AnnotationMethod:
-    annotation_method = bia_data_model.AnnotationMethod.model_validate(
-        {
+def get_annotation_method_dict(completeness=Completeness.COMPLETE) -> dict:
+    if completeness == Completeness.MINIMAL:
+        annotation_method = {
+            "uuid": uuid4(),
+            "title_id": "Template annotation method",
+            "protocol_description": "Template annotation method description",
+            "method_type": semantic_models.AnnotationType.class_labels,
+            "version": 1,
+        }
+    elif completeness == Completeness.COMPLETE:
+        annotation_method = {
             "uuid": uuid4(),
             "title_id": "Template annotation method",
             "protocol_description": "Template annotation method description",
@@ -156,63 +201,95 @@ def get_template_annotation_method() -> bia_data_model.AnnotationMethod:
             "version": 1,
             "model": {"type_name": "AnnotationMethod", "version": 1},
         }
-    )
     return annotation_method
 
 
-def get_template_experimentally_captured_image() -> (
-    bia_data_model.ExperimentallyCapturedImage
-):
-    return bia_data_model.ExperimentallyCapturedImage.model_validate(
-        {
+def get_experimentally_captured_image_dict(completeness=Completeness.COMPLETE) -> dict:
+    if completeness == Completeness.MINIMAL:
+        experimentally_captured_image = {
             "uuid": uuid4(),
-            "acquisition_process_uuid": [get_template_image_acquisition().uuid],
-            "submission_dataset_uuid": get_template_experimental_imaging_dataset().uuid,
-            "subject_uuid": get_template_specimen().uuid,
+            "acquisition_process_uuid": [],
+            "subject_uuid": get_specimen_dict()["uuid"],
+            "submission_dataset_uuid": get_experimental_imaging_dataset_dict()["uuid"],
+            "version": 1,
+            "attribute": {},
+        }
+    elif completeness == Completeness.COMPLETE:
+        experimentally_captured_image = {
+            "uuid": uuid4(),
+            "acquisition_process_uuid": [get_image_acquisition_dict()["uuid"]],
+            "submission_dataset_uuid": get_experimental_imaging_dataset_dict()["uuid"],
+            "subject_uuid": get_specimen_dict()["uuid"],
             "attribute": {},
             "version": 1,
             "model": {"type_name": "ExperimentallyCapturedImage", "version": 1},
         }
-    )
+    return experimentally_captured_image
 
 
-def get_template_derived_image() -> bia_data_model.DerivedImage:
-    derived_image = bia_data_model.DerivedImage.model_validate(
-        {
+def get_derived_image_dict(completeness=Completeness.COMPLETE) -> dict:
+    if completeness == Completeness.MINIMAL:
+        derived_image = {
+            "uuid": uuid4(),
+            "source_image_uuid": [],
+            "submission_dataset_uuid": get_image_annotation_dataset_dict()["uuid"],
+            "creation_process_uuid": [],
+            "attribute": {},
+            "version": 1,
+        }
+    elif completeness == Completeness.COMPLETE:
+        derived_image = {
             "uuid": uuid4(),
             "source_image_uuid": [
-                get_template_image_representation().uuid,
+                get_image_representation_dict()["uuid"],
             ],
-            "submission_dataset_uuid": get_template_image_annotation_dataset().uuid,
-            "creation_process_uuid": [get_template_annotation_method().uuid],
+            "submission_dataset_uuid": get_image_annotation_dataset_dict()["uuid"],
+            "creation_process_uuid": [get_annotation_method_dict()["uuid"]],
             "transformation_description": "Template transformation description",
             "spatial_information": "Template spatial information",
             "attribute": {},
             "version": 1,
             "model": {"type_name": "DerivedImage", "version": 1},
         }
-    )
     return derived_image
 
 
-def get_template_image_annotation_dataset() -> bia_data_model.ImageAnnotationDataset:
-    image_annotation_dataset = bia_data_model.ImageAnnotationDataset.model_validate(
-        {
+def get_image_annotation_dataset_dict(completeness=Completeness.COMPLETE) -> dict:
+    if completeness == Completeness.MINIMAL:
+        image_annotation_dataset = {
+            "uuid": uuid4(),
+            "submitted_in_study_uuid": get_study_dict()["uuid"],
+            "title_id": "Template image annotation dataset",
+            "example_image_uri": [],
+            "version": 1,
+            "attribute": {},
+        }
+    elif completeness == Completeness.COMPLETE:
+        image_annotation_dataset = {
             "uuid": uuid4(),
             "submitted_in_study_uuid": get_study_dict()["uuid"],
             "title_id": "Template image annotation dataset",
             "example_image_uri": ["https://dummy.url.org"],
+            "description": "Template description",
             "version": 1,
             "model": {"type_name": "ImageAnnotationDataset", "version": 1},
             "attribute": {},
         }
-    )
     return image_annotation_dataset
 
 
-def get_template_image_acquisition() -> bia_data_model.ImageAcquisition:
-    image_acquisition = bia_data_model.ImageAcquisition.model_validate(
-        {
+def get_image_acquisition_dict(completeness=Completeness.COMPLETE) -> dict:
+    if completeness == Completeness.MINIMAL:
+        image_acquisition = {
+            "uuid": uuid4(),
+            "title_id": "Template image acquisition",
+            "protocol_description": "Template method description",
+            "imaging_instrument_description": "Template imaging instrument",
+            "imaging_method_name": "Template imaging method name",
+            "version": 1,
+        }
+    elif completeness == Completeness.COMPLETE:
+        image_acquisition = {
             "uuid": uuid4(),
             "title_id": "Template image acquisition",
             "protocol_description": "Template method description",
@@ -224,100 +301,151 @@ def get_template_image_acquisition() -> bia_data_model.ImageAcquisition:
             "version": 1,
             "model": {"type_name": "ImageAcquisition", "version": 1},
         }
-    )
     return image_acquisition
 
 
-def get_template_image_analysis_method() -> semantic_models.ImageAnalysisMethod:
-    return semantic_models.ImageAnalysisMethod.model_validate(
-        {
+def get_image_analysis_method_dict(completeness=Completeness.COMPLETE) -> dict:
+    if completeness == Completeness.MINIMAL:
+        image_analysis_method = {
             "protocol_description": "Template Analysis method",
             "features_analysed": "Template features analysed",
         }
-    )
+    elif completeness == Completeness.COMPLETE:
+        image_analysis_method = {
+            "protocol_description": "Template Analysis method",
+            "features_analysed": "Template features analysed",
+        }
+    return image_analysis_method
 
 
-def get_template_image_correlation_method() -> semantic_models.ImageCorrelationMethod:
-    return semantic_models.ImageCorrelationMethod.model_validate(
-        {
+def get_image_correlation_method_dict(completeness=Completeness.COMPLETE) -> dict:
+    if completeness == Completeness.MINIMAL:
+        image_correlation_method = {
             "protocol_description": "Template Analysis method",
             "fiducials_used": "Template fiducials used",
             "transformation_matrix": "Template transformation matrix",
         }
-    )
+    elif completeness == Completeness.COMPLETE:
+        image_correlation_method = {
+            "protocol_description": "Template Analysis method",
+            "fiducials_used": "Template fiducials used",
+            "transformation_matrix": "Template transformation matrix",
+        }
+    return image_correlation_method
 
 
-def get_template_experimental_imaging_dataset() -> (
-    bia_data_model.ExperimentalImagingDataset
-):
-    experimental_imaging_dataset = (
-        bia_data_model.ExperimentalImagingDataset.model_validate(
-            {
-                "uuid": uuid4(),
-                "submitted_in_study_uuid": get_study_dict()["uuid"],
-                "title_id": "Template experimental image dataset",
-                "analysis_method": [
-                    get_template_image_analysis_method().model_dump(),
-                ],
-                "correlation_method": [
-                    get_template_image_correlation_method().model_dump(),
-                ],
-                "example_image_uri": ["https://dummy.url.org"],
-                "version": 1,
-                "model": {"type_name": "ExperimentalImagingDataset", "version": 1},
-                "attribute": {},
-            }
-        )
-    )
+def get_experimental_imaging_dataset_dict(
+    completeness=Completeness.COMPLETE,
+) -> dict:
+    if completeness == Completeness.MINIMAL:
+        experimental_imaging_dataset = {
+            "uuid": uuid4(),
+            "submitted_in_study_uuid": get_study_dict()["uuid"],
+            "title_id": "Template experimental image dataset",
+            "example_image_uri": [],
+            "version": 1,
+            "attribute": {},
+        }
+    elif completeness == Completeness.COMPLETE:
+        experimental_imaging_dataset = {
+            "uuid": uuid4(),
+            "submitted_in_study_uuid": get_study_dict()["uuid"],
+            "title_id": "Template experimental image dataset",
+            "description": "Template description",
+            "analysis_method": [
+                get_image_analysis_method_dict(),
+            ],
+            "correlation_method": [
+                get_image_correlation_method_dict(),
+            ],
+            "example_image_uri": ["https://dummy.url.org"],
+            "version": 1,
+            "model": {"type_name": "ExperimentalImagingDataset", "version": 1},
+            "attribute": {},
+        }
     return experimental_imaging_dataset
 
 
-def get_template_annotation_file_reference() -> bia_data_model.AnnotationFileReference:
-    return bia_data_model.AnnotationFileReference.model_validate(
-        {
+def get_annotation_file_reference_dict(completeness=Completeness.COMPLETE) -> dict:
+    if completeness == Completeness.MINIMAL:
+        annotation_file_reference = {
             "uuid": uuid4(),
             "file_path": "Dummy file path",
             "format": "Dummy format",
             "size_in_bytes": 10,
             "uri": "https://dummy.uri.co",
             "attribute": {},
-            "submission_dataset_uuid": get_template_image_annotation_dataset().uuid,
+            "source_image_uuid": [],
+            "creation_process_uuid": [],
+            "submission_dataset_uuid": get_image_annotation_dataset_dict()["uuid"],
+            "version": 1,
+        }
+    elif completeness == Completeness.COMPLETE:
+        annotation_file_reference = {
+            "uuid": uuid4(),
+            "file_path": "Dummy file path",
+            "format": "Dummy format",
+            "size_in_bytes": 10,
+            "uri": "https://dummy.uri.co",
+            "attribute": {},
+            "submission_dataset_uuid": get_image_annotation_dataset_dict()["uuid"],
             "source_image_uuid": [
-                get_template_image_representation().uuid,
+                get_image_representation_dict()["uuid"],
             ],
             "transformation_description": "Template transformation description",
             "spatial_information": "Template spatial information",
-            "creation_process_uuid": [get_template_annotation_method().uuid],
+            "creation_process_uuid": [get_annotation_method_dict()["uuid"]],
             "version": 1,
             "model": {"type_name": "AnnotationFileReference", "version": 1},
         }
-    )
+    return annotation_file_reference
 
 
-def get_template_file_reference() -> bia_data_model.FileReference:
-    file_reference = bia_data_model.FileReference.model_validate(
-        {
+def get_file_reference_dict(completeness=Completeness.COMPLETE) -> dict:
+    if completeness == Completeness.MINIMAL:
+        file_reference = {
             "uuid": uuid4(),
             "file_path": "Dummy file path",
             "format": "Dummy format",
             "size_in_bytes": 10,
             "uri": "https://dummy.uri.co",
             "attribute": {},
-            "submission_dataset_uuid": get_template_experimental_imaging_dataset().uuid,
+            "submission_dataset_uuid": get_experimental_imaging_dataset_dict()["uuid"],
+            "version": 1,
+        }
+    elif completeness == Completeness.COMPLETE:
+        file_reference = {
+            "uuid": uuid4(),
+            "file_path": "Dummy file path",
+            "format": "Dummy format",
+            "size_in_bytes": 10,
+            "uri": "https://dummy.uri.co",
+            "attribute": {},
+            "submission_dataset_uuid": get_experimental_imaging_dataset_dict()["uuid"],
             "version": 1,
             "model": {"type_name": "FileReference", "version": 1},
         }
-    )
     return file_reference
 
 
-def get_template_image_representation() -> bia_data_model.ImageRepresentation:
-    return bia_data_model.ImageRepresentation.model_validate(
-        {
+def get_image_representation_dict(completeness=Completeness.COMPLETE) -> dict:
+    if completeness == Completeness.MINIMAL:
+        image_representation = {
             "uuid": uuid4(),
-            "representation_of_uuid": get_template_experimentally_captured_image().uuid,
+            "representation_of_uuid": get_experimentally_captured_image_dict()["uuid"],
+            "original_file_reference_uuid": [],
+            "image_format": "Template image format",
+            "attribute": {},
+            "total_size_in_bytes": 0,
+            "file_uri": [],
+            "version": 1,
+        }
+    elif completeness == Completeness.COMPLETE:
+        image_representation = {
+            "uuid": uuid4(),
+            "representation_of_uuid": get_experimentally_captured_image_dict()["uuid"],
             "original_file_reference_uuid": [
-                get_template_file_reference().uuid,
+                get_file_reference_dict()["uuid"],
             ],
             "image_format": "Template image format",
             "file_uri": [
@@ -333,13 +461,13 @@ def get_template_image_representation() -> bia_data_model.ImageRepresentation:
             "size_c": 1,
             "size_t": 1,
             "image_viewer_setting": [
-                get_template_rendered_view().model_dump(),
+                get_rendered_view_dict(),
             ],
             "attribute": {},
             "version": 1,
             "model": {"type_name": "ImageRepresentation", "version": 1},
         }
-    )
+    return image_representation
 
 
 def get_affiliation_dict(
