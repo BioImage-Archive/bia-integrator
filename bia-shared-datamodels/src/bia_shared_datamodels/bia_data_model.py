@@ -5,6 +5,23 @@ from pydantic import BaseModel, Field, ConfigDict
 from typing import List, Optional
 from uuid import UUID
 from enum import Enum
+from typing_extensions import Annotated, get_args, get_origin
+
+# from pydantic.functional_validators import WrapValidator
+# from pydantic_core.core_schema import ValidationInfo
+
+# class PluginnableReferenceValidator(WrapValidator):
+#    validators = []
+#    referenced_type = None
+
+#    def __init__(self, referenced_type):
+#        self.referenced_type = referenced_type
+
+#        def referenced_type_validate(val, info: ValidationInfo):
+#            for validator in PluginnableReferenceValidator.validators:
+#                validator(referenced_type, val)
+
+#        super().__init__(referenced_type_validate)
 
 
 class ModelMetadata(BaseModel):
@@ -26,16 +43,7 @@ class DocumentMixin(BaseModel):
     )
 
     def __init__(self, *args, **data):
-        model_version_spec = self.model_config.get("model_version_latest")
-        if model_version_spec is None:
-            raise exceptions.ModelDefinitionInvalid(
-                f"Class {self.__class__.__name__} missing 'model_version_latest' in its model_config"
-            )
-
-        model_metadata_expected = ModelMetadata(
-            type_name=self.__class__.__name__,
-            version=model_version_spec,
-        )
+        model_metadata_expected = self.get_model_metadata()
         model_metadata_existing = data.get("model", None)
         if model_metadata_existing:
             model_metadata_existing = ModelMetadata(**model_metadata_existing)
@@ -47,6 +55,29 @@ class DocumentMixin(BaseModel):
             data["model"] = model_metadata_expected.model_dump()
 
         super().__init__(*args, **data)
+
+    @classmethod
+    def get_model_metadata(cls):
+        model_version_spec = cls.model_config.get("model_version_latest")
+        if model_version_spec is None:
+            raise exceptions.ModelDefinitionInvalid(
+                f"Class {cls.__name__} missing 'model_version_latest' in its model_config"
+            )
+
+        return ModelMetadata(
+            type_name=cls.__name__,
+            version=model_version_spec,
+        )
+
+    @classmethod
+    def fields_by_type(cls, type_name):
+        fields_filtered = {}
+
+        for field_name, field_info in cls.model_fields.items():
+            if field_info.annotation is type_name:
+                fields_filtered[field_name] = field_info
+
+        return fields_filtered
 
 
 class UserIdentifiedObject(BaseModel):
@@ -89,7 +120,7 @@ class ExperimentalImagingDataset(
     DocumentMixin,
     UserIdentifiedObject,
 ):
-    submitted_in_study_uuid: UUID = Field()
+    submitted_in_study_uuid: Annotated[UUID, Study] = Field()
 
     model_config = ConfigDict(model_version_latest=1)
 

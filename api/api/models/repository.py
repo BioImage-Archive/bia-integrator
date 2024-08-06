@@ -89,6 +89,19 @@ class Repository:
 
         return doc_type(**doc)
 
+    async def get_docs(self, doc_filter: dict, doc_type):
+        if not len(doc_filter.keys()):
+            raise Exception("Need at least one filter")
+
+        # @TODO: Only add additional filter for type(indexed) not version
+        doc_filter |= doc_type.get_model_metadata().model_dump()
+
+        docs = []
+        for doc in await self._get_docs_raw(**doc_filter):
+            docs.append(doc_type(**doc))
+
+        return docs
+
     async def _model_doc_exists(
         self, doc_model: shared_data_models.DocumentMixin
     ) -> bool:
@@ -111,6 +124,15 @@ class Repository:
         doc.pop("_id")
 
         return doc
+
+    async def _get_docs_raw(self, **kwargs) -> Any:
+        docs = []
+
+        async for doc in self.biaint.find(kwargs):
+            doc.pop("_id")
+            docs.append(doc)
+
+        return docs
 
 
 async def repository_create(init: bool) -> Repository:
