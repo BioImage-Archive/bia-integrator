@@ -1,67 +1,66 @@
 import pytest
 from pydantic import ValidationError, BaseModel
-from . import utils
-from bia_shared_datamodels import bia_data_model, semantic_models
+from bia_shared_datamodels import bia_data_model, semantic_models, mock_objects
 from typing import Callable
 
 @pytest.mark.parametrize(
     ("expected_model_type", "dict_creation_func"),
     (
-        (semantic_models.Taxon, utils.get_taxon_dict),
-        (semantic_models.Channel, utils.get_channel_dict),
-        (semantic_models.RenderedView, utils.get_rendered_view_dict),
+        (semantic_models.Taxon, mock_objects.get_taxon_dict),
+        (semantic_models.Channel, mock_objects.get_channel_dict),
+        (semantic_models.RenderedView, mock_objects.get_rendered_view_dict),
         (
             semantic_models.SignalChannelInformation,
-            utils.get_signal_channel_information_dict,
+            mock_objects.get_signal_channel_information_dict,
         ),
         (
             bia_data_model.SpecimenImagingPrepartionProtocol,
-            utils.get_specimen_imaging_preparation_protocol_dict,
+            mock_objects.get_specimen_imaging_preparation_protocol_dict,
         ),
         (
             bia_data_model.SpecimenGrowthProtocol,
-            utils.get_specimen_growth_protocol_dict,
+            mock_objects.get_specimen_growth_protocol_dict,
         ),
-        (bia_data_model.BioSample, utils.get_biosample_dict),
-        (bia_data_model.Specimen, utils.get_specimen_dict),
-        (bia_data_model.AnnotationMethod, utils.get_annotation_method_dict),
+        (bia_data_model.BioSample, mock_objects.get_biosample_dict),
+        (bia_data_model.Specimen, mock_objects.get_specimen_dict),
+        (bia_data_model.AnnotationMethod, mock_objects.get_annotation_method_dict),
         (
             bia_data_model.ExperimentallyCapturedImage,
-            utils.get_experimentally_captured_image_dict,
+            mock_objects.get_experimentally_captured_image_dict,
         ),
-        (bia_data_model.DerivedImage, utils.get_derived_image_dict),
+        (bia_data_model.DerivedImage, mock_objects.get_derived_image_dict),
         (
             bia_data_model.ImageAnnotationDataset,
-            utils.get_image_annotation_dataset_dict,
+            mock_objects.get_image_annotation_dataset_dict,
         ),
-        (bia_data_model.ImageAcquisition, utils.get_image_acquisition_dict),
-        (semantic_models.ImageAnalysisMethod, utils.get_image_analysis_method_dict),
+        (bia_data_model.ImageAcquisition, mock_objects.get_image_acquisition_dict),
+        (semantic_models.ImageAnalysisMethod, mock_objects.get_image_analysis_method_dict),
         (
             semantic_models.ImageCorrelationMethod,
-            utils.get_image_correlation_method_dict,
+            mock_objects.get_image_correlation_method_dict,
         ),
         (
             bia_data_model.ExperimentalImagingDataset,
-            utils.get_experimental_imaging_dataset_dict,
+            mock_objects.get_experimental_imaging_dataset_dict,
         ),
         (
             bia_data_model.AnnotationFileReference,
-            utils.get_annotation_file_reference_dict,
+            mock_objects.get_annotation_file_reference_dict,
         ),
-        (bia_data_model.FileReference, utils.get_file_reference_dict),
-        (bia_data_model.ImageRepresentation, utils.get_image_representation_dict),
-        (semantic_models.Affiliation, utils.get_affiliation_dict),
-        (semantic_models.Contributor, utils.get_contributor_dict),
-        (bia_data_model.Study, utils.get_study_dict),
+        (bia_data_model.FileReference, mock_objects.get_file_reference_dict),
+        (bia_data_model.ImageRepresentation, mock_objects.get_image_representation_dict),
+        (semantic_models.Affiliation, mock_objects.get_affiliation_dict),
+        (semantic_models.Contributor, mock_objects.get_contributor_dict),
+        (bia_data_model.Study, mock_objects.get_study_dict),
     ),
 )
 class TestCreateObject:
     def test_create_complete_object(
         self,
         expected_model_type: BaseModel,
-        dict_creation_func: Callable[[utils.Completeness], dict],
+        dict_creation_func: Callable[[mock_objects.Completeness], dict],
     ):
-        complete_dict = dict_creation_func(utils.Completeness.COMPLETE)
+        complete_dict = dict_creation_func(mock_objects.Completeness.COMPLETE)
         complete_model: BaseModel = expected_model_type(**complete_dict)
 
         # Check that the model is created
@@ -78,9 +77,9 @@ class TestCreateObject:
     def test_create_minimal_object(
         self,
         expected_model_type: BaseModel,
-        dict_creation_func: Callable[[utils.Completeness], dict],
+        dict_creation_func: Callable[[mock_objects.Completeness], dict],
     ):
-        mimimal_dict = dict_creation_func(utils.Completeness.MINIMAL)
+        mimimal_dict = dict_creation_func(mock_objects.Completeness.MINIMAL)
         minimal_model: BaseModel = expected_model_type(**mimimal_dict)
 
         # Check that the model is created
