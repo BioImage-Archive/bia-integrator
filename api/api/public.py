@@ -5,10 +5,11 @@ from pydantic.alias_generators import to_snake
 import bia_shared_datamodels.bia_data_model as shared_data_models
 from .models.repository import Repository
 from . import constants
-
+from uuid import UUID
+from typing import List
 
 router = APIRouter(
-    prefix="/private",
+    prefix="",
     # dependencies=[Depends(get_current_user)], TODO
     tags=[constants.OPENAPI_TAG_PUBLIC],
 )
@@ -41,6 +42,33 @@ def make_get_item(t):
     return get_item
 
 
+def make_reverse_links(router: APIRouter) -> APIRouter:
+    def make_reverse_link_handler(source_attribute: str, source_type):
+        async def get_descendents(
+            uuid: shared_data_models.UUID, db: Repository = Depends()
+        ) -> List[source_type]:
+            return await db.get_docs(
+                doc_filter={source_attribute: uuid}, doc_type=source_type
+            )
+
+        return get_descendents
+
+    for model in models_public:
+        uuid_fields = model.fields_by_type(UUID)
+        for uuid_field_name, uuid_field_type in uuid_fields.items():
+            if len(uuid_field_type.metadata):
+                parent_type = uuid_field_type.metadata[0]  # convention
+
+                router.add_api_route(
+                    f"/{to_snake(parent_type.__name__)}/{{uuid}}/{to_snake(model.__name__)}",
+                    response_model=List[model],
+                    operation_id=f"get{model.__name__}In{parent_type.__name__}",
+                    summary=f"Get {model.__name__} In {parent_type.__name__}",
+                    methods=["GET"],
+                    endpoint=make_reverse_link_handler(uuid_field_name, model),
+                )
+
+
 def make_router() -> APIRouter:
     for t in models_public:
         router.add_api_route(
@@ -51,6 +79,8 @@ def make_router() -> APIRouter:
             methods=["GET"],
             endpoint=make_get_item(t),
         )
+
+    make_reverse_links(router)
 
     return router
 
