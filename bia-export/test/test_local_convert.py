@@ -3,11 +3,10 @@ from pathlib import Path
 import pytest
 from bia_export.cli import app
 import filecmp
-import logging
-
-LOGGER = logging.getLogger(__name__)
 
 runner = CliRunner()
+
+
 
 def test_cli_export_website_studies(tmp_path):
     input_root_path = Path(__file__).parent.joinpath("input_data")
@@ -16,11 +15,8 @@ def test_cli_export_website_studies(tmp_path):
 
     result = runner.invoke(app, ["website-study", "S-BIADTEST", "-o", outfile, "-r", input_root_path])
 
+
+
     assert result.exit_code == 0
     # Note this tests for exact equivance in files, i.e. order of fields and indentation matters
-    with open(expected_output) as expected_json:
-        print(expected_json.read())
-    with open(outfile) as out_json:
-        print(out_json.read())
-    
     assert filecmp.cmp(expected_output, outfile, shallow=False)
