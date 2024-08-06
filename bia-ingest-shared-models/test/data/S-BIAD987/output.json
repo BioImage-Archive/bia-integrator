@@ -100,40 +100,16 @@
             "mitochondrion",
             "plastid"
         ],
-        "funding_statement": "This work was supported by the NIAID Division of Intramural Research.",
-        "experimental_imaging_component": [
-            "UUID-experimental-imaging-dataset-1",
-            "UUID-experimental-imaging-dataset-2",
-            "UUID-experimental-imaging-dataset-3",
-            "UUID-experimental-imaging-dataset-4"
-        ],
-        "annotation_component": []
+        "funding_statement": "This work was supported by the NIAID Division of Intramural Research."
     },
     {
         "uuid": "UUID-experimental-imaging-dataset-1",
         "title_id": "Day 2 Organelles",
         "description": "This component contains Airyscan-processed images of organelles from FACS-collected P. falciparum persisters and ring stages two days after treatment with DHA/sorbitol (“DHA”) and the vehicle control (“DMSO”), respectively. The apicoplast is shown in green, mitochondrion is shown in red, and nucleus are shown in blue. ",
-        "image": [
-            "UUID-experimentally-captured-image-1"
-        ],
-        "file": [
-            "UUID-file-reference-1"
-        ],
         "submitted_in_study": "UUID1-study",
-        "specimen_preparation_method": [
-            "UUID-specimen-preparation-protocol-1"
-        ],
-        "acquisition_method": [
-            "UUID-image-acquisition-1"
-        ],
-        "biological_entity": [
-            "UUID-biosample-1"
-        ],
         "specimen_growth_protocol": [],
         "analysis_method": [],
         "correlation_method": [],
-        "file_reference_count": 1,
-        "image_count": 1,
         "example_image_uri": [],
         "attribute": {
             "associatations": [
@@ -149,23 +125,9 @@
         "uuid": "UUID-experimental-imaging-dataset-2",
         "title_id": "Day 17 Organelles",
         "description": "This component contains Airyscan-processed images of apicoplasts, mitochondria, and nuclei from FACS-collected P. falciparum parasites 17 days after DHA/sorbitol treatment plus sorbitol selection.",
-        "image": [],
-        "file": [],
         "submitted_in_study": "UUID1-study",
-        "specimen_preparation_method": [
-            "UUID-specimen-preparation-protocol-2"
-        ],
-        "acquisition_method": [
-            "UUID-image-acquisition-1"
-        ],
-        "biological_entity": [
-            "UUID-biosample-2"
-        ],
-        "specimen_growth_protocol": [],
         "analysis_method": [],
         "correlation_method": [],
-        "file_reference_count": 0,
-        "image_count": 0,
         "example_image_uri": [],
         "attribute": {
             "associatations": [
@@ -181,22 +143,9 @@
         "uuid": "UUID-experimental-imaging-dataset-3",
         "title_id": "Day 5 Organelles",
         "description": "This component contains Airyscan-processed images of apicoplasts, mitochondria, and nuclei from FACS-collected P. falciparum parasites 5 days following initial treatment with DHA/sorbitol (\"DHA\") or vehicle control/sorbitol (“DMSO”) plus sorbitol selection. ",
-        "image": [],
-        "file": [],
         "submitted_in_study": "UUID1-study",
-        "specimen_preparation_method": [
-            "UUID-specimen-preparation-protocol-2"
-        ],
-        "acquisition_method": [
-            "UUID-image-acquisition-1"
-        ],
-        "biological_entity": [
-            "UUID-biosample-2"
-        ],
         "analysis_method": [],
         "correlation_method": [],
-        "file_reference_count": 0,
-        "image_count": 0,
         "example_image_uri": [],
         "attribute": {
             "associatations": [
@@ -212,22 +161,9 @@
         "uuid": "UUID-experimental-imaging-dataset-4",
         "title_id": "Day 11 Organelles",
         "description": "This study component contains Airyscan-processed images of apicoplasts, mitochondria, and nuclei from FACS-collected P. falciparum parasites 11 days following initial treatment with DHA/sorbitol (\"DHA\") or vehicle control/sorbitol (“DMSO”) plus sorbitol selection. ",
-        "image": [],
-        "file": [],
         "submitted_in_study": "UUID1-study",
-        "specimen_preparation_method": [
-            "UUID-specimen-preparation-protocol-2"
-        ],
-        "acquisition_method": [
-            "UUID-image-acquisition-1"
-        ],
-        "biological_entity": [
-            "UUID-biosample-2"
-        ],
         "analysis_method": [],
         "correlation_method": [],
-        "file_reference_count": 0,
-        "image_count": 0,
         "example_image_uri": [],
         "attribute": {
             "associatations": [
@@ -273,26 +209,23 @@
         "acquisition_process": [
             "UUID-image-acquisition-1"
         ],
-        "representation": [
-            "UUID-image-representation-1",
-            "UUID-image-representation-2",
-            "UUID-image-representation-3",
-            "UUID-image-representation-4"
-        ],
         "submission_dataset": "UUID-experimental-imaging-dataset-1",
-        "subject": {
-            "imaging_preparation_protocol": [
-                "UUID-specimen-preparation-protocol-1"
-            ],
-            "sample_of": [
-                "UUID-biosample-1"
-            ],
-            "growth_protocol": []
-        },
+        "subject": "UUID-specimen-1",
         "attribute": {}
     },
     {
+        "uuid": "UUID-specimen-1",
+        "imaging_preparation_protocol": [
+            "UUID-specimen-preparation-protocol-1"
+        ],
+        "sample_of": [
+            "UUID-biosample-1"
+        ],
+        "growth_protocol": []
+    },
+    {
         "uuid": "UUID-image-representation-1",
+        "representation_of": "UUID-experimentally-captured-image-1",
         "original_file_reference": [
             "UUID-file-reference-1"
         ],
@@ -306,6 +239,7 @@
     },
     {
         "uuid": "UUID-image-representation-2",
+        "representation_of": "UUID-experimentally-captured-image-1",
         "original_file_reference": [],
         "image_format": "ome_ngff",
         "file_uri": [
@@ -316,10 +250,9 @@
         "attribute": {}
     },
     {
-        "uuid": "UUID-image-representation-1",
-        "original_file_reference": [
-            "UUID-file-reference-1"
-        ],
+        "uuid": "UUID-image-representation-3",
+        "representation_of": "UUID-experimentally-captured-image-1",
+        "original_file_reference": [],
         "image_format": "thumbnail",
         "file_uri": [
             "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD987/d4c81718-25de-476d-9665-e6ef2680c696/d4c81718-25de-476d-9665-e6ef2680c696-thumbnail-256-256.png"
@@ -331,10 +264,9 @@
         "attribute": {}
     },
     {
-        "uuid": "UUID-image-representation-1",
-        "original_file_reference": [
-            "UUID-file-reference-1"
-        ],
+        "uuid": "UUID-image-representation-4",
+        "representation_of": "UUID-experimentally-captured-image-1",
+        "original_file_reference": [],
         "image_format": "representative",
         "file_uri": [
             "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD987/d4c81718-25de-476d-9665-e6ef2680c696/d4c81718-25de-476d-9665-e6ef2680c696-representative-512-512.png"
