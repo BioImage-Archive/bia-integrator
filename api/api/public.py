@@ -49,7 +49,12 @@ def make_reverse_links(router: APIRouter) -> APIRouter:
             uuid: shared_data_models.UUID, db: Repository = Depends()
         ) -> List[source_type]:
             return await db.get_docs(
-                doc_filter={source_attribute: uuid}, doc_type=source_type
+                # !!!!
+                # source_attribute has list values sometimes (for models that reference a list of other objects)
+                #   mongo queries just so happen have the semantics we want
+                # a.i. list_attribute: some_val means "any value in list_attribute is equal to some_val"
+                doc_filter={source_attribute: uuid},
+                doc_type=source_type,
             )
 
         return get_descendents
@@ -60,14 +65,18 @@ def make_reverse_links(router: APIRouter) -> APIRouter:
             if len(uuid_field_type.metadata):
                 parent_type = uuid_field_type.metadata[0]  # convention
 
-                router.add_api_route(
-                    f"/{to_snake(parent_type.__name__)}/{{uuid}}/{to_snake(model.__name__)}",
-                    response_model=List[model],
-                    operation_id=f"get{model.__name__}In{parent_type.__name__}",
-                    summary=f"Get {model.__name__} In {parent_type.__name__}",
-                    methods=["GET"],
-                    endpoint=make_reverse_link_handler(uuid_field_name, model),
-                )
+                # List validators (e.g. MinLength) are also set in the type.metadata list
+                #   -> only generate backlinks for types that have metadata that is also one of the exposed types
+                #   ? Maybe find a better way to wrap "foreign key"-type relationships, like a custom generic similar to List so we can also drop the [0] convention?
+                if parent_type in models_public:
+                    router.add_api_route(
+                        f"/{to_snake(parent_type.__name__)}/{{uuid}}/{to_snake(model.__name__)}",
+                        response_model=List[model],
+                        operation_id=f"get{model.__name__}In{parent_type.__name__}",
+                        summary=f"Get {model.__name__} In {parent_type.__name__}",
+                        methods=["GET"],
+                        endpoint=make_reverse_link_handler(uuid_field_name, model),
+                    )
 
 
 def make_router() -> APIRouter:

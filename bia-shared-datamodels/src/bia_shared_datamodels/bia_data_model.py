@@ -78,7 +78,14 @@ class DocumentMixin(BaseModel):
         fields_filtered = {}
 
         for field_name, field_info in cls.model_fields.items():
-            if field_info.annotation is field_type:
+            # conditions split for clarity
+            field_type_exact = field_info.annotation is field_type
+            field_type_container_list = (
+                hasattr(field_info.annotation, "__origin__")
+                and field_info.annotation.__origin__ is list
+                and field_info.annotation.__args__[0] is field_type
+            )
+            if field_type_exact or field_type_container_list:
                 fields_filtered[field_name] = field_info
 
         return fields_filtered
@@ -131,7 +138,7 @@ class ExperimentalImagingDataset(
 
 class Specimen(semantic_models.Specimen, DocumentMixin):
     imaging_preparation_protocol_uuid: List[UUID] = Field(min_length=1)
-    sample_of_uuid: List[UUID] = Field(min_length=1)
+    sample_of_uuid: Annotated[List[UUID], BioSample] = Field(min_length=1)
     growth_protocol_uuid: List[UUID] = Field()
 
     model_config = ConfigDict(model_version_latest=1)
