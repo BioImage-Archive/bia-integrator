@@ -59,8 +59,12 @@ def test_create_file_reference_for_study_component_when_no_matching_sc_in_file_l
     dataset.title_id = "Test name not in file list"
     created = file_reference.get_file_reference_by_study_component(test_submission, datasets_in_submission=[dataset,])
     
-    expected_log_message = "Intersection of Study component titles from datasets in submission ({'Test name not in file list'}) and file lists in submission ( {'Study Component 1', 'Segmentation masks', 'Study Component 2'} ) was null - exiting"
-
     assert created is None
-    assert expected_log_message in caplog.text
+
+    # Check Warning message. Use form below as a 'set' is involved
+    # in getting study component names - so ordering is not fixed
+    expected_log_message = ["Intersection of Study component titles from datasets in submission ({'Test name not in file list'}) and file lists in submission ( {", "'Study Component 1'", "'Segmentation masks'","'Study Component 2'", "} ) was null - exiting",]
+
+    for expected in expected_log_message:
+        assert expected in caplog.text
 
