@@ -58,28 +58,6 @@ def get_file_reference_by_study_component(
         fname = file_list_dict["File List"]
         files_in_fl = flist_from_flist_fname(submission.accno, fname)
 
-        #for f in files_in_fl:
-        #    file_dict = {
-        #        "accession_id": submission.accno,
-        #        "file_path": str(f.path),
-        #        "size_in_bytes": str(f.size),
-        #    }
-        #    fileref_uuid = dict_to_uuid(
-        #        file_dict, ["accession_id", "file_path", "size_in_bytes"]
-        #    )
-        #    file_dict["uuid"] = fileref_uuid
-        #    file_dict["uri"] = file_uri(submission.accno, f)
-        #    file_dict["submission_dataset_uuid"] = dataset_uuid
-        #    file_dict["format"] = f.type
-        #    file_dict["attribute"] = attributes_to_dict(f.attributes)
-        #    file_dict = filter_model_dictionary(file_dict, bia_data_model.FileReference)
-        #    file_reference = bia_data_model.FileReference.model_validate(file_dict)
-        #    fileref_to_study_components[study_component_name].append(file_reference)
-        #    # TODO - Not storing submission_dataset uuid yet!!!
-        #    if persist_artefacts:
-        #        output_path = output_dir / f"{fileref_uuid}.json"
-        #        output_path.write_text(file_reference.model_dump_json(indent=2))
-        #        logger.info(f"Written {output_path}")
         file_references = get_file_reference_for_submission_dataset(
             submission.accno, dataset, files_in_fl
         )

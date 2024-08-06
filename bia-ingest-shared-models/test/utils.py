@@ -4,7 +4,9 @@ Utility functions to create models
 This module attempts to create models starting from the outer nodes (leaves) of the model dependency graph
 """
 
+import json
 from typing import Dict, List
+from pathlib import Path
 from bia_shared_datamodels import bia_data_model, semantic_models
 from bia_ingest_sm.conversion.utils import dict_to_uuid, filter_model_dictionary
 
@@ -272,43 +274,46 @@ def get_test_image_correlation_method() -> semantic_models.ImageCorrelationMetho
         }
     )
 
-def get_test_file_reference() -> List [bia_data_model.FileReference]:
+
+def get_test_file_list_data(file_list_name) -> List[Dict[str, [int | str]]]:
+    """Return file list contents as dict
+
+    """
+    
+    file_list_path = Path(__file__).parent / "data" / file_list_name
+    file_list_data = json.loads(file_list_path.read_text())
+    return file_list_data
+
+def get_test_file_reference_data() -> List[Dict[str, str]]:
+    """Return file reference data for study component 2
+
+       Return file reference data for study component 2. This is the same
+       data in ./data/file_list_study_component_2.json
+    """
     
     submission_dataset_uuids = [s.uuid for s in get_test_experimental_imaging_dataset()]
     uri_template = "https://www.ebi.ac.uk/biostudies/files/{accession_id}/{file_path}"
-    file_reference_data = [
-        {
-            "accession_id": accession_id,
-            "file_path": "study_component2/im06.png",
-            "format": "file",
-            "size_in_bytes": 3,
-            "uri": "",
-            "attribute": {},
-            "submission_dataset_uuid": submission_dataset_uuids[1],
-        },
-        {
-            "accession_id": accession_id,
-            "file_path": "study_component2/im08.png",
-            "format": "file",
-            "size_in_bytes": 123,
-            "uri": "",
-            "attribute": {},
-            "submission_dataset_uuid": submission_dataset_uuids[1],
-        },
-        {
-            "accession_id": accession_id,
-            "file_path": "study_component2/ann01-05",
-            "format": "file",
-            "size_in_bytes": 11,
-            "uri": "",
-            "attribute": {},
-            "submission_dataset_uuid": submission_dataset_uuids[1],
-        },
-    ]
+    file_list_data = get_test_file_list_data("file_list_study_component_2.json")
 
-    for file_reference in file_reference_data:
-        file_reference["uri"] = uri_template.format(accession_id=accession_id, file_path=file_reference["file_path"])
+    file_reference_data = []
 
+    for fl_data in file_list_data:
+        file_reference_data.append({
+            "accession_id": accession_id,
+            "file_path": fl_data["path"],
+            "format": fl_data["type"],
+            "size_in_bytes": fl_data["size"],
+            "uri": uri_template.format(accession_id=accession_id, file_path=fl_data["path"]),
+            "attribute": { a["name"]: a["value"] for a in fl_data["attributes"]},
+            "submission_dataset_uuid": submission_dataset_uuids[1],
+        })
+
+    return file_reference_data
+
+# This returns the expected FileReference models for study component 2
+def get_test_file_reference() -> List [bia_data_model.FileReference]:
+    
+    file_reference_data = get_test_file_reference_data()
     file_reference_uuids = get_test_file_reference_uuid(file_reference_data)
     file_references = []
     for file_reference_dict, uuid in zip(file_reference_data, file_reference_uuids):

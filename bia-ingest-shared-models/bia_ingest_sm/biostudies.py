@@ -210,8 +210,6 @@ def find_file_lists_in_submission(
     return find_file_lists_in_section(submission.section, [])
 
 
-# KB 14/06/2024 commented out as I need to replace parse_raw_as with
-# TypeAdapter for pydantic >=2
 def flist_from_flist_fname(
     accession_id: str, flist_fname: str, extra_attribute: Union[List[str], str] = None
 ) -> List[File]:
