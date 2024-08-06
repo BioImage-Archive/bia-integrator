@@ -84,7 +84,7 @@ class Repository:
     async def get_doc(
         self,
         uuid: shared_data_models.UUID,
-        doc_type: Type[shared_data_models.BaseModel],
+        doc_type: Type[shared_data_models.DocumentMixin],
     ) -> Any:
         doc = await self._get_doc_raw(uuid=uuid)
 
@@ -96,7 +96,7 @@ class Repository:
     async def get_docs(
         self,
         doc_filter: dict,
-        doc_type: Type[shared_data_models.BaseModel],
+        doc_type: Type[shared_data_models.DocumentMixin],
     ) -> Any:
         if not len(doc_filter.keys()):
             raise Exception("Need at least one filter")
