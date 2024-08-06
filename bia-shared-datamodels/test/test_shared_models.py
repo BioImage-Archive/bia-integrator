@@ -55,40 +55,52 @@ from typing import Callable
         (bia_data_model.Study, utils.get_study_dict),
     ),
 )
-def test_create_study(
-    expected_model_type: BaseModel,
-    dict_creation_func: Callable[[utils.Completeness], dict],
-):
+class TestCreateObject:
+    def test_create_complete_object(
+        self,
+        expected_model_type: BaseModel,
+        dict_creation_func: Callable[[utils.Completeness], dict],
+    ):
+        complete_dict = dict_creation_func(utils.Completeness.COMPLETE)
+        complete_model: BaseModel = expected_model_type(**complete_dict)
 
-    complete_dict = dict_creation_func(utils.Completeness.COMPLETE)
-    complete_model: BaseModel = expected_model_type(**complete_dict)
+        # Check that the model is created
+        assert type(complete_model) is expected_model_type
+        # Check that the dictionary is indeed "Complete" - no optional fields missed
+        assert complete_model.model_dump() == complete_dict
+        # Check that there are no inconsistencies in the model definition
+        assert (
+            type(expected_model_type(**complete_model.model_dump()))
+            is expected_model_type
+        )
 
-    # Check that the model is created
-    assert type(complete_model) is expected_model_type
-    # Check that the dictionary is indeed "Complete" - no optional fields missed
-    assert complete_model.model_dump() == complete_dict
-    # Check that there are no inconsistencies in the model definition
-    assert (
-        type(expected_model_type(**complete_model.model_dump())) is expected_model_type
-    )
 
-    mimimal_dict = dict_creation_func(utils.Completeness.MINIMAL)
-    minimal_model: BaseModel = expected_model_type(**mimimal_dict)
+    def test_create_minimal_object(
+        self,
+        expected_model_type: BaseModel,
+        dict_creation_func: Callable[[utils.Completeness], dict],
+    ):
+        mimimal_dict = dict_creation_func(utils.Completeness.MINIMAL)
+        minimal_model: BaseModel = expected_model_type(**mimimal_dict)
 
-    # Check that the model is created
-    assert type(minimal_model) is expected_model_type
-    # Check that the dictionary is indeed "Minimal" - no optional fields included, and list fields are of minimum length
-    for key in mimimal_dict:
-        less_than_minimal_dict = mimimal_dict.copy()
-        if isinstance(less_than_minimal_dict[key], list) and len(less_than_minimal_dict[key]) > 0:
-            less_than_minimal_dict[key] = []
+        # Check that the model is created
+        assert type(minimal_model) is expected_model_type
+        # Check that the dictionary is indeed "Minimal" - no optional fields included, and list fields are of minimum length
+        for key in mimimal_dict:
+            less_than_minimal_dict = mimimal_dict.copy()
+            if (
+                isinstance(less_than_minimal_dict[key], list)
+                and len(less_than_minimal_dict[key]) > 0
+            ):
+                less_than_minimal_dict[key] = []
+                with pytest.raises(ValidationError):
+                    expected_model_type(**less_than_minimal_dict)
+
+            del less_than_minimal_dict[key]
             with pytest.raises(ValidationError):
                 expected_model_type(**less_than_minimal_dict)
-
-        del less_than_minimal_dict[key]
-        with pytest.raises(ValidationError):
-            expected_model_type(**less_than_minimal_dict)
-    # Check that there are no inconsistencies in the model definition's optional fields
-    assert (
-        type(expected_model_type(**minimal_model.model_dump())) is expected_model_type
-    )
+        # Check that there are no inconsistencies in the model definition's optional fields
+        assert (
+            type(expected_model_type(**minimal_model.model_dump()))
+            is expected_model_type
+        )
