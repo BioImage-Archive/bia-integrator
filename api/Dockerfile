@@ -19,7 +19,7 @@ ADD bia-shared-datamodels bia-shared-datamodels
 WORKDIR /bia-integrator/api
 
 # This will now cache unless theres changes to the lock file, or the pyproject.toml, or bia-shared-datamodels
-RUN poetry install
+RUN poetry install --no-root
 
 # Add the rest of the files
 # The previous layers will cache fully and only this layer will be rebuilt if there are changes to the files.
