@@ -6,14 +6,13 @@ import bia_shared_datamodels.bia_data_model as shared_data_models
 from .models.repository import Repository
 from . import constants
 from uuid import UUID
-from typing import List
+from typing import List, Type
 
 router = APIRouter(
     prefix="",
-    # dependencies=[Depends(get_current_user)], TODO
     tags=[constants.OPENAPI_TAG_PUBLIC],
 )
-models_public = [
+models_public: List[shared_data_models.DocumentMixin] = [
     shared_data_models.Study,
     shared_data_models.FileReference,
     shared_data_models.ImageRepresentation,
@@ -31,7 +30,7 @@ models_public = [
 ]
 
 
-def make_get_item(t):
+def make_get_item(t: Type[shared_data_models.DocumentMixin]):
     # variables are function-scoped => add wrapper to bind each value of t
     # https://eev.ee/blog/2011/04/24/gotcha-python-scoping-closures/
 
@@ -43,7 +42,9 @@ def make_get_item(t):
 
 
 def make_reverse_links(router: APIRouter) -> APIRouter:
-    def make_reverse_link_handler(source_attribute: str, source_type):
+    def make_reverse_link_handler(
+        source_attribute: str, source_type: Type[shared_data_models.DocumentMixin]
+    ):
         async def get_descendents(
             uuid: shared_data_models.UUID, db: Repository = Depends()
         ) -> List[source_type]:
