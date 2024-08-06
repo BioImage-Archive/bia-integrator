@@ -22,16 +22,20 @@ def get_image_acquisition(
 ) -> List[bia_data_model.ImageAcquisition]:
 
     image_acquisition_model_dicts = extract_image_acquisition_dicts(submission)
-    image_acquisitions = dicts_to_api_models(image_acquisition_model_dicts, bia_data_model.ImageAcquisition)
+    image_acquisitions = dicts_to_api_models(
+        image_acquisition_model_dicts, bia_data_model.ImageAcquisition
+    )
 
     if persist_artefacts and image_acquisitions:
         persist(image_acquisitions, "specimen_growth_protocol", submission.accno)
-    
+
     return image_acquisitions
 
 
 def extract_image_acquisition_dicts(submission: Submission) -> List[Dict[str, Any]]:
-    acquisition_sections = find_sections_recursive(submission.section, ["Image acquisition"], [])
+    acquisition_sections = find_sections_recursive(
+        submission.section, ["Image acquisition"], []
+    )
 
     key_mapping = [
         ("title_id", "Title", ""),
@@ -53,7 +57,9 @@ def extract_image_acquisition_dicts(submission: Submission) -> List[Dict[str, An
         model_dict["accession_id"] = submission.accno
         model_dict["uuid"] = generate_image_acquisition_uuid(model_dict)
         model_dict["version"] = 1
-        model_dict = filter_model_dictionary(model_dict, bia_data_model.ImageAcquisition)
+        model_dict = filter_model_dictionary(
+            model_dict, bia_data_model.ImageAcquisition
+        )
         model_dicts.append(model_dict)
 
     return model_dicts
@@ -67,6 +73,6 @@ def generate_image_acquisition_uuid(protocol_dict: Dict[str, Any]) -> str:
         "protocol_description",
         "imaging_instrument_description",
         "imaging_method_name",
-        "fbbi_id"
+        "fbbi_id",
     ]
     return dict_to_uuid(protocol_dict, attributes_to_consider)

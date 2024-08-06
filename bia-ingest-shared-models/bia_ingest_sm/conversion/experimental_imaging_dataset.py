@@ -6,7 +6,7 @@ from .utils import (
     dict_to_uuid,
     get_generic_section_as_dict,
     persist,
-    filter_model_dictionary
+    filter_model_dictionary,
 )
 from .file_reference import get_file_reference_by_study_component
 import bia_ingest_sm.conversion.biosample as biosample_conversion
@@ -41,7 +41,9 @@ def get_experimental_imaging_dataset(
     # Use for loop instead of dict comprehension to allow biosamples with
     # same title to form list
     biosamples_in_submission_uuid = {}
-    for biosample in biosample_conversion.get_biosample(submission, persist_artefacts=persist_artefacts):
+    for biosample in biosample_conversion.get_biosample(
+        submission, persist_artefacts=persist_artefacts
+    ):
         if biosample.title_id in biosamples_in_submission_uuid:
             biosamples_in_submission_uuid[biosample.title_id].append(biosample.uuid)
         else:
@@ -67,7 +69,7 @@ def get_experimental_imaging_dataset(
         correlation_method_list = []
         biosample_list = []
 
-        #TODO: move this to main CLI code to make object generation more independent
+        # TODO: move this to main CLI code to make object generation more independent
         if len(associations) > 0:
             # Image Analysis Method
             analysis_methods_from_associations = [
@@ -86,7 +88,6 @@ def get_experimental_imaging_dataset(
                 if biosample in biosamples_in_submission_uuid:
                     biosample_list.extend(biosamples_in_submission_uuid[biosample])
 
-
         section_name = attr_dict["Name"]
         model_dict = {
             "title_id": section_name,
@@ -96,20 +97,24 @@ def get_experimental_imaging_dataset(
             "correlation_method": correlation_method_list,
             "example_image_uri": [],
             "version": 1,
-            "attribute": {
-                "associations": associations
-            }
+            "attribute": {"associations": associations},
         }
         model_dict["uuid"] = generate_experimental_imaging_dataset_uuid(model_dict)
 
-        model_dict = filter_model_dictionary(model_dict, bia_data_model.ExperimentalImagingDataset)
+        model_dict = filter_model_dictionary(
+            model_dict, bia_data_model.ExperimentalImagingDataset
+        )
 
         experimental_imaging_dataset.append(
             bia_data_model.ExperimentalImagingDataset.model_validate(model_dict)
         )
 
     if persist_artefacts and experimental_imaging_dataset:
-        persist(experimental_imaging_dataset, "experimental_imaging_dataset", submission.accno)
+        persist(
+            experimental_imaging_dataset,
+            "experimental_imaging_dataset",
+            submission.accno,
+        )
 
     return experimental_imaging_dataset
 
@@ -131,10 +136,12 @@ def get_image_analysis_method(
     )
 
 
-def generate_experimental_imaging_dataset_uuid(experimental_imaging_dataset_dict: Dict[str, Any]) -> str:
+def generate_experimental_imaging_dataset_uuid(
+    experimental_imaging_dataset_dict: Dict[str, Any]
+) -> str:
     # TODO: Add 'description' to computation of uuid (Maybe accno?)
     attributes_to_consider = [
-        "title_id", 
+        "title_id",
         "submitted_in_study_uuid",
     ]
     return dict_to_uuid(experimental_imaging_dataset_dict, attributes_to_consider)

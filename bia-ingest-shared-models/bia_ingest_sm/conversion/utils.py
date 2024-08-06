@@ -50,7 +50,7 @@ def get_generic_section_as_list(
 def get_generic_section_as_dict(
     root: Submission | Section,
     section_name: List[str],
-    key_mapping: List[Tuple[str, str, Union[str , None , List]]],
+    key_mapping: List[Tuple[str, str, Union[str, None, List]]],
     mapped_object: Optional[Any] = None,
 ) -> Dict[str, Any | Dict[str, Dict[str, str | List[str]]]]:
     """
@@ -155,5 +155,5 @@ def persist(object_list: List, object_path: str, sumbission_accno: str):
 
 def filter_model_dictionary(dictionary: dict, target_model: Type[BaseModel]):
     accepted_fields = target_model.model_fields.keys()
-    result_dict = {key: dictionary[key]  for key in accepted_fields if key in dictionary}
+    result_dict = {key: dictionary[key] for key in accepted_fields if key in dictionary}
     return result_dict

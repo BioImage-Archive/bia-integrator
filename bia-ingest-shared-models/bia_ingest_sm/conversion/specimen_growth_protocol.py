@@ -5,7 +5,7 @@ from .utils import (
     find_sections_recursive,
     dict_to_uuid,
     persist,
-    filter_model_dictionary
+    filter_model_dictionary,
 )
 from ..biostudies import (
     Submission,
@@ -21,16 +21,22 @@ def get_specimen_growth_protocol(
     submission: Submission, persist_artefacts=False
 ) -> List[bia_data_model.SpecimenGrowthProtocol]:
 
-    specimen_growth_protocol_model_dicts = extract_specimen_growth_protocol_dicts(submission)
-    specimen_growth_protocols = dicts_to_api_models(specimen_growth_protocol_model_dicts, bia_data_model.SpecimenGrowthProtocol)
+    specimen_growth_protocol_model_dicts = extract_specimen_growth_protocol_dicts(
+        submission
+    )
+    specimen_growth_protocols = dicts_to_api_models(
+        specimen_growth_protocol_model_dicts, bia_data_model.SpecimenGrowthProtocol
+    )
 
     if persist_artefacts and specimen_growth_protocols:
         persist(specimen_growth_protocols, "specimen_growth_protocol", submission.accno)
-    
+
     return specimen_growth_protocols
 
 
-def extract_specimen_growth_protocol_dicts(submission: Submission) -> List[Dict[str, Any]]:
+def extract_specimen_growth_protocol_dicts(
+    submission: Submission,
+) -> List[Dict[str, Any]]:
     specimen_sections = find_sections_recursive(submission.section, ["Specimen"], [])
 
     key_mapping = [
@@ -48,7 +54,9 @@ def extract_specimen_growth_protocol_dicts(submission: Submission) -> List[Dict[
         model_dict["accession_id"] = submission.accno
         model_dict["uuid"] = generate_specimen_growth_protocol_uuid(model_dict)
         model_dict["version"] = 1
-        model_dict = filter_model_dictionary(model_dict, bia_data_model.SpecimenGrowthProtocol)
+        model_dict = filter_model_dictionary(
+            model_dict, bia_data_model.SpecimenGrowthProtocol
+        )
 
         model_dicts.append(model_dict)
 

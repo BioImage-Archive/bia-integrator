@@ -5,7 +5,7 @@ from .utils import (
     find_sections_recursive,
     dict_to_uuid,
     persist,
-    filter_model_dictionary
+    filter_model_dictionary,
 )
 from ..biostudies import (
     Submission,
@@ -21,16 +21,27 @@ def get_specimen_imaging_preparation_protocol(
     submission: Submission, persist_artefacts=False
 ) -> List[bia_data_model.SpecimenImagingPrepartionProtocol]:
 
-    specimen_preparation_protocol_model_dicts = extract_specimen_preparation_protocol_dicts(submission)
-    specimen_preparation_protocols = dicts_to_api_models(specimen_preparation_protocol_model_dicts, bia_data_model.SpecimenImagingPrepartionProtocol)
+    specimen_preparation_protocol_model_dicts = extract_specimen_preparation_protocol_dicts(
+        submission
+    )
+    specimen_preparation_protocols = dicts_to_api_models(
+        specimen_preparation_protocol_model_dicts,
+        bia_data_model.SpecimenImagingPrepartionProtocol,
+    )
 
     if persist_artefacts and specimen_preparation_protocols:
-        persist(specimen_preparation_protocols, "specimen_imaging_protocol", submission.accno)
-    
+        persist(
+            specimen_preparation_protocols,
+            "specimen_imaging_protocol",
+            submission.accno,
+        )
+
     return specimen_preparation_protocols
 
 
-def extract_specimen_preparation_protocol_dicts(submission: Submission) -> List[Dict[str, Any]]:
+def extract_specimen_preparation_protocol_dicts(
+    submission: Submission,
+) -> List[Dict[str, Any]]:
     specimen_sections = find_sections_recursive(submission.section, ["Specimen"], [])
 
     key_mapping = [
@@ -51,7 +62,9 @@ def extract_specimen_preparation_protocol_dicts(submission: Submission) -> List[
         model_dict["accession_id"] = submission.accno
         model_dict["uuid"] = generate_specimen_imaging_preparation_uuid(model_dict)
         model_dict["version"] = 1
-        model_dict = filter_model_dictionary(model_dict, bia_data_model.SpecimenImagingPrepartionProtocol)
+        model_dict = filter_model_dictionary(
+            model_dict, bia_data_model.SpecimenImagingPrepartionProtocol
+        )
 
         model_dicts.append(model_dict)
 

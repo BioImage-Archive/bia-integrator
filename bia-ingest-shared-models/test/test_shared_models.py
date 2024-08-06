@@ -10,6 +10,7 @@ from bia_ingest_sm.conversion import (
     annotation_method,
 )
 
+
 @pytest.mark.parametrize(
     ("expected_model_func", "model_creation_func",),
     (
@@ -30,14 +31,8 @@ from bia_ingest_sm.conversion import (
             utils.get_test_specimen_growth_protocol,
             specimen_growth_protocol.get_specimen_growth_protocol,
         ),
-        (
-            utils.get_test_image_acquisition,
-            image_acquisition.get_image_acquisition,
-        ),
-         (
-            utils.get_test_annotation_method,
-            annotation_method.get_annotation_method,
-        ),
+        (utils.get_test_image_acquisition, image_acquisition.get_image_acquisition,),
+        (utils.get_test_annotation_method, annotation_method.get_annotation_method,),
         # Not testing as we need to deal with links that are not proper
         # urls
         # (utils.get_test_external_reference, conversion.get_external_reference,),

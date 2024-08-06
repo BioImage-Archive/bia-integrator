@@ -12,26 +12,37 @@ from ..biostudies import (
     flist_from_flist_fname,
     file_uri,
 )
-from .. import biostudies # To make reference to biostudies.File explicit
+from .. import biostudies  # To make reference to biostudies.File explicit
 from ..config import settings
 from bia_shared_datamodels import bia_data_model
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
+
 def get_file_reference_by_study_component(
     submission: Submission,
-    datasets_in_submission: List[bia_data_model.ExperimentalImagingDataset | bia_data_model.ImageAnnotationDataset], persist_artefacts: bool = False
+    datasets_in_submission: List[
+        bia_data_model.ExperimentalImagingDataset
+        | bia_data_model.ImageAnnotationDataset
+    ],
+    persist_artefacts: bool = False,
 ) -> Dict[str, List[bia_data_model.FileReference]]:
     """
     Return Dict of list of file references in study components.
     """
 
     # Get list of study component titles to process
-    sc_titles_from_datasets_in_submission = { dataset.title_id for dataset in datasets_in_submission }
+    sc_titles_from_datasets_in_submission = {
+        dataset.title_id for dataset in datasets_in_submission
+    }
     file_list_dicts = find_file_lists_in_submission(submission)
-    sc_titles_from_file_lists = set([file_list_dict["Name"] for file_list_dict in file_list_dicts])
-    study_components_to_process = list(sc_titles_from_datasets_in_submission.intersection(sc_titles_from_file_lists))
+    sc_titles_from_file_lists = set(
+        [file_list_dict["Name"] for file_list_dict in file_list_dicts]
+    )
+    study_components_to_process = list(
+        sc_titles_from_datasets_in_submission.intersection(sc_titles_from_file_lists)
+    )
 
     if not study_components_to_process:
         message = f"""
@@ -47,8 +58,16 @@ def get_file_reference_by_study_component(
             logger.info(f"Created {output_dir}")
 
     fileref_to_study_components = {}
-    datasets_to_process = { ds.title_id: ds for ds in datasets_in_submission if ds.title_id in study_components_to_process }
-    file_lists_to_process = { file_list_dict["Name"]: file_list_dict for file_list_dict in file_list_dicts if file_list_dict["Name"] in study_components_to_process }
+    datasets_to_process = {
+        ds.title_id: ds
+        for ds in datasets_in_submission
+        if ds.title_id in study_components_to_process
+    }
+    file_lists_to_process = {
+        file_list_dict["Name"]: file_list_dict
+        for file_list_dict in file_list_dicts
+        if file_list_dict["Name"] in study_components_to_process
+    }
     for study_component_name in study_components_to_process:
         dataset = datasets_to_process[study_component_name]
         file_list_dict = file_lists_to_process[study_component_name]
@@ -67,18 +86,20 @@ def get_file_reference_by_study_component(
                 output_path = output_dir / f"{file_reference.uuid}.json"
                 output_path.write_text(file_reference.model_dump_json(indent=2))
                 logger.info(f"Written {output_path}")
-        
-        fileref_to_study_components[study_component_name].extend(
-            file_references
-        )
+
+        fileref_to_study_components[study_component_name].extend(file_references)
 
     return fileref_to_study_components
 
 
 def get_file_reference_for_submission_dataset(
     accession_id: str,
-    submission_dataset: [bia_data_model.ExperimentalImagingDataset|bia_data_model.ImageAnnotationDataset],
-    files_in_file_list: List[biostudies.File]) -> List[bia_data_model.FileReference]:
+    submission_dataset: [
+        bia_data_model.ExperimentalImagingDataset
+        | bia_data_model.ImageAnnotationDataset
+    ],
+    files_in_file_list: List[biostudies.File],
+) -> List[bia_data_model.FileReference]:
     """
     Return list of file references for particular submission dataset
     """
@@ -98,6 +119,7 @@ def get_file_reference_for_submission_dataset(
         file_dict["submission_dataset_uuid"] = submission_dataset.uuid
         file_dict["format"] = f.type
         file_dict["attribute"] = attributes_to_dict(f.attributes)
+        file_dict["version"] = 1
         file_dict = filter_model_dictionary(file_dict, bia_data_model.FileReference)
         file_reference = bia_data_model.FileReference.model_validate(file_dict)
         file_references.append(file_reference)

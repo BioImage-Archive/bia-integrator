@@ -194,7 +194,7 @@ def find_file_lists_in_section(
     for subsection in section.subsections:
         subsection_type = type(subsection)
         if subsection_type == Section:
-            find_file_lists_in_section(subsection, flists) # type: ignore
+            find_file_lists_in_section(subsection, flists)  # type: ignore
         else:
             logger.warning(
                 f"Not processing subsection as type is {subsection_type}, not 'Section'. Contents={subsection}"

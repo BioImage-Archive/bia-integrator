@@ -30,7 +30,10 @@ def mock_request_get(flist_url: str) -> Dict[str, str]:
 requests.get = mock_request_get
 
 # Get second study component as dataset in submission
-datasets_in_submission = [utils.get_test_experimental_imaging_dataset()[1],]
+datasets_in_submission = [
+    utils.get_test_experimental_imaging_dataset()[1],
+]
+
 
 def test_get_file_reference_for_submission_dataset(test_submission):
     """Test creation of FileReferences for dataset with file list supplied
@@ -40,31 +43,47 @@ def test_get_file_reference_for_submission_dataset(test_submission):
     files_in_filelist = [File.model_validate(f) for f in file_list_data]
 
     expected = utils.get_test_file_reference()
-    created = file_reference.get_file_reference_for_submission_dataset(accession_id=test_submission.accno, submission_dataset=datasets_in_submission[0], files_in_file_list=files_in_filelist)
+    created = file_reference.get_file_reference_for_submission_dataset(
+        accession_id=test_submission.accno,
+        submission_dataset=datasets_in_submission[0],
+        files_in_file_list=files_in_filelist,
+    )
     assert created == expected
+
 
 def test_create_file_reference_for_study_component(test_submission):
 
     expected = {datasets_in_submission[0].title_id: utils.get_test_file_reference()}
-    created = file_reference.get_file_reference_by_study_component(test_submission, datasets_in_submission=datasets_in_submission)
+    created = file_reference.get_file_reference_by_study_component(
+        test_submission, datasets_in_submission=datasets_in_submission
+    )
     assert created == expected
 
 
-def test_create_file_reference_for_study_component_when_no_matching_sc_in_file_list(test_submission, caplog):
+def test_create_file_reference_for_study_component_when_no_matching_sc_in_file_list(
+    test_submission, caplog
+):
     """Test attempted creation of study FileReferences when study 
         components in dataset do not match does in file_list
     """
 
     dataset = utils.get_test_experimental_imaging_dataset()[0]
     dataset.title_id = "Test name not in file list"
-    created = file_reference.get_file_reference_by_study_component(test_submission, datasets_in_submission=[dataset,])
-    
+    created = file_reference.get_file_reference_by_study_component(
+        test_submission, datasets_in_submission=[dataset,]
+    )
+
     assert created is None
 
     # Check Warning message. Use form below as a 'set' is involved
     # in getting study component names - so ordering is not fixed
-    expected_log_message = ["Intersection of Study component titles from datasets in submission ({'Test name not in file list'}) and file lists in submission ( {", "'Study Component 1'", "'Segmentation masks'","'Study Component 2'", "} ) was null - exiting",]
+    expected_log_message = [
+        "Intersection of Study component titles from datasets in submission ({'Test name not in file list'}) and file lists in submission ( {",
+        "'Study Component 1'",
+        "'Segmentation masks'",
+        "'Study Component 2'",
+        "} ) was null - exiting",
+    ]
 
     for expected in expected_log_message:
         assert expected in caplog.text
-

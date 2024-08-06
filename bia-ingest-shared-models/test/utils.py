@@ -318,6 +318,7 @@ def get_test_file_reference() -> List [bia_data_model.FileReference]:
     file_references = []
     for file_reference_dict, uuid in zip(file_reference_data, file_reference_uuids):
         file_reference_dict["uuid"] = uuid
+        file_reference_dict["version"] = 1
         file_reference_dict = filter_model_dictionary(file_reference_dict, bia_data_model.FileReference)
         file_references.append(bia_data_model.FileReference.model_validate(file_reference_dict))
 
