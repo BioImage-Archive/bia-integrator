@@ -32,14 +32,14 @@ class Study(ConfiguredBaseModel):
     )
     release_date: date = Field(description="""Date of first publication""")
     description: str = Field(
-        None, description="""Brief description of the study."""
+        description="""Brief description of the study."""
     )
     keyword: Optional[List[str]] = Field(
         default_factory=list,
         description="""Keywords or tags used to describe the subject or context of the study.""",
     )
     acknowledgement: Optional[str] = Field(
-        default_factory=list,
+        None,
         description="""Any person or group that should be acknowledged outside of the authors/main contributors to the study.""",
     )
 
@@ -55,7 +55,7 @@ class Study(ConfiguredBaseModel):
         default_factory=list, description="""The grants that funded the study."""
     )
     funding_statement: Optional[str] = Field(
-        default_factory=list, description="""Description of how the study was funded."""
+        None, description="""Description of how the study was funded."""
     )
 
     # TODO: In order to maintian consistency these will be endpoints that run a query in the DB, rather than a stored field.
@@ -164,7 +164,7 @@ class OrganisationMixin(ConfiguredBaseModel):
         None, description="""Comma separated lines of the address."""
     )
     website: Optional[AnyUrl] = Field(
-        default=None,
+        None,
         description="""The website page with information about the Organisation.""",
     )
 
@@ -178,14 +178,13 @@ class Contributor(PersonMixin, OrganisationMixin):
         description="""Name as it should be displayed on the BioImage Archive."""
     )
     affiliation: List[Affiliation] = Field(
-        default_factory=list,
         description="""The organisation(s) a contributor is afiliated with.""",
     )
     contact_email: Optional[EmailStr] = Field(
-        default=None, description="""An email address to contact the Contributor."""
+        None, description="""An email address to contact the Contributor."""
     )
     role: Optional[str] = Field(
-        default=None, description="""The role of the contributor."""
+        None, description="""The role of the contributor."""
     )
 
 
@@ -329,7 +328,7 @@ class ImageRepresentation(ConfiguredBaseModel):
         description="""Size of temporal dimension of the data array of the image.""",
     )
     image_viewer_setting: Optional[List[RenderedView]] = Field(
-        None,
+        default_factory=list,
         description="""Settings of a particular view of an image, such as a specific timestamp of a timeseries, or camera placement in a 3D model.""",
     )
     # TODO: representation_of information is stored in representation_of_uuid defined in bia_data_model. 
@@ -356,7 +355,7 @@ class RenderedView(ConfiguredBaseModel):
         None, description="""A t-value for the timestamp of the image view"""
     )
     channel_information: Optional[List[Channel]] = Field(
-        None,
+        default_factory=list,
         description="""Information about the channels involved in displaying this view of the image.""",
     )
 
@@ -368,7 +367,7 @@ class Channel(ConfiguredBaseModel):
 
     colormap_start: float = Field(description="""Start value of colormap""")
     colormap_end: float = Field(description="""End value of colormap""")
-    scale_factor: float = Field(None)
+    scale_factor: Optional[float] = Field(None)
     label: Optional[str] = Field(
         None, description="""Label describing the channel for display."""
     )
@@ -399,9 +398,11 @@ class ExperimentalImagingDataset(DatasetMixin):
     #     description="""Processes involved in the growth of the samples that were then imaged."""
     # )
     analysis_method: Optional[list[ImageAnalysisMethod]] = Field(
+        default_factory=list,
         description="""Data analysis processes performed on the images."""
     )
     correlation_method: Optional[list[ImageCorrelationMethod]] = Field(
+        default_factory=list,
         description="""Processes performed to correlate image data."""
     )
     example_image_uri: list[str] = Field(
@@ -441,6 +442,7 @@ class ImageAcquisition(ProtocolMixin):
         description="""Names, types, or description of how the instruments used to create the image."""
     )
     fbbi_id: Optional[List[str]] = Field(
+        default_factory=list,
         description="""Biological Imaging Methods Ontology id indicating the kind of imaging that was perfomed."""
     )
     imaging_method_name: Optional[str] = Field(
@@ -453,7 +455,10 @@ class SpecimenImagingPrepartionProtocol(ProtocolMixin):
     The process to prepare biological entity for imaging.
     """
 
-    signal_channel_information: Optional[List[SignalChannelInformation]]
+    signal_channel_information: Optional[List[SignalChannelInformation]] = Field(
+        default_factory=list,
+        description="""Information about how channels in the image relate to image signal generation."""
+    )
 
 
 class SignalChannelInformation(ConfiguredBaseModel):
@@ -512,12 +517,15 @@ class BioSample(ConfiguredBaseModel):
         description="""A short description of the biological entity."""
     )
     experimental_variable_description: Optional[List[str]] = Field(
+        default_factory=list,
         description="""What is intentionally varied (e.g. time) between multiple entries in this study component"""
     )
     extrinsic_variable_description: Optional[List[str]] = Field(
+        default_factory=list,
         description="External treatment (e.g. reagent)."
     )
     intrinsic_variable_description: Optional[List[str]] = Field(
+        default_factory=list,
         description="Intrinsic (e.g. genetic) alteration."
     )
 
@@ -527,9 +535,9 @@ class Taxon(ConfiguredBaseModel):
     The classification of a biological entity.
     """
 
-    common_name: Optional[str] = Field(None)
-    scientific_name: Optional[str] = Field(None)
-    ncbi_id: Optional[str] = Field(None)
+    common_name: Optional[str] = Field(None, description="""Name used to refer to the species that can vary by locallity.""")
+    scientific_name: Optional[str] = Field(None, description="""unique name used by the scientific community to identify species.""")
+    ncbi_id: Optional[str] = Field(None, description="""unique name used by the scientific community to identify species.""")
 
 
 class ImageAnalysisMethod(ProtocolMixin):
@@ -584,9 +592,10 @@ class AnnotationMethod(ProtocolMixin):
     #     description="""The datasets that were annotated."""
     # )
     annotation_criteria: Optional[str] = Field(
-        description="""Rules used to generate annotations."""
+        None, description="""Rules used to generate annotations."""
     )
     annotation_coverage: Optional[str] = Field(
+        None,
         description="""Which images from the dataset were annotated, and what percentage of the data has been annotated from what is available."""
     )
     method_type: AnnotationType = Field(
@@ -608,9 +617,11 @@ class AnnotationMixin(ConfiguredBaseModel):
     #     description="""The process that was followed to create the annotation."""
     # )
     transformation_description: Optional[str] = Field(
+        None,
         description="""Any transformations required to link annotations to the image."""
     )
     spatial_information: Optional[str] = Field(
+        None,
         description="""Spatial information for non-pixel annotations."""
     )
 
