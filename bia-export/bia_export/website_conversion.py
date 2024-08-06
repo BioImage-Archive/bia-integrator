@@ -31,7 +31,7 @@ def read_all_json(
     directory_path: Path, object_type: Type[BaseModel]
 ) -> List[BaseModel]:
     object_list = []
-    file_paths = glob(str(directory_path))
+    file_paths = sorted(glob(str(directory_path)))
     for file_path in file_paths:
         object_list.append(read_api_json_file(file_path, object_type))
     return object_list
