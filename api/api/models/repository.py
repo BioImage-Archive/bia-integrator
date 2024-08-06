@@ -7,7 +7,7 @@ import os
 from enum import Enum
 import bia_shared_datamodels.bia_data_model as shared_data_models
 import pymongo
-from typing import Any
+from typing import Type, List, Any
 from .. import exceptions
 import datetime
 
@@ -81,7 +81,11 @@ class Repository:
 
             raise exceptions.InvalidUpdateException(str(e))
 
-    async def get_doc(self, uuid: shared_data_models.UUID, doc_type):
+    async def get_doc(
+        self,
+        uuid: shared_data_models.UUID,
+        doc_type: Type[shared_data_models.BaseModel],
+    ) -> Any:
         doc = await self._get_doc_raw(uuid=uuid)
 
         if doc is None:
@@ -89,7 +93,11 @@ class Repository:
 
         return doc_type(**doc)
 
-    async def get_docs(self, doc_filter: dict, doc_type):
+    async def get_docs(
+        self,
+        doc_filter: dict,
+        doc_type: Type[shared_data_models.BaseModel],
+    ) -> Any:
         if not len(doc_filter.keys()):
             raise Exception("Need at least one filter")
 
@@ -119,13 +127,13 @@ class Repository:
 
         return result == doc
 
-    async def _get_doc_raw(self, **kwargs) -> Any:
+    async def _get_doc_raw(self, **kwargs) -> dict:
         doc = await self.biaint.find_one(kwargs)
         doc.pop("_id")
 
         return doc
 
-    async def _get_docs_raw(self, **kwargs) -> Any:
+    async def _get_docs_raw(self, **kwargs) -> List[dict]:
         docs = []
 
         async for doc in self.biaint.find(kwargs):

@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from . import semantic_models, exceptions
 from pydantic import BaseModel, Field, ConfigDict
-from typing import List, Optional
+from pydantic.fields import FieldInfo
+from typing import List, Optional, Any, Dict
 from uuid import UUID
-from enum import Enum
-from typing_extensions import Annotated, get_args, get_origin
+from typing_extensions import Annotated
 
 # from pydantic.functional_validators import WrapValidator
 # from pydantic_core.core_schema import ValidationInfo
@@ -57,7 +57,7 @@ class DocumentMixin(BaseModel):
         super().__init__(*args, **data)
 
     @classmethod
-    def get_model_metadata(cls):
+    def get_model_metadata(cls) -> ModelMetadata:
         model_version_spec = cls.model_config.get("model_version_latest")
         if model_version_spec is None:
             raise exceptions.ModelDefinitionInvalid(
@@ -70,11 +70,15 @@ class DocumentMixin(BaseModel):
         )
 
     @classmethod
-    def fields_by_type(cls, type_name):
+    def fields_by_type(cls, field_type: Any) -> Dict[str, FieldInfo]:
+        """
+        @param field_type is the _actual class_ (not class name as a string) to search for
+            typed as any because it can be a descendent of DocumentMixin or UUID
+        """
         fields_filtered = {}
 
         for field_name, field_info in cls.model_fields.items():
-            if field_info.annotation is type_name:
+            if field_info.annotation is field_type:
                 fields_filtered[field_name] = field_info
 
         return fields_filtered
