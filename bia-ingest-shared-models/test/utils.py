@@ -275,7 +275,7 @@ def get_test_image_correlation_method() -> semantic_models.ImageCorrelationMetho
     )
 
 
-def get_test_file_list_data(file_list_name) -> List[Dict[str, [int | str]]]:
+def get_test_file_list_data(file_list_name) -> List[Dict[str, int | str]]:
     """Return file list contents as dict
 
     """

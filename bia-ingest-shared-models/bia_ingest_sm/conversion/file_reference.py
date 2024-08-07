@@ -4,6 +4,7 @@ from typing import List, Dict
 from .utils import (
     dict_to_uuid,
     filter_model_dictionary,
+    find_datasets_with_file_lists,
 )
 from ..biostudies import (
     Submission,
@@ -20,7 +21,7 @@ logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
 
-def get_file_reference_by_study_component(
+def get_file_reference_by_dataset(
     submission: Submission,
     datasets_in_submission: List[
         bia_data_model.ExperimentalImagingDataset
@@ -29,24 +30,25 @@ def get_file_reference_by_study_component(
     persist_artefacts: bool = False,
 ) -> Dict[str, List[bia_data_model.FileReference]]:
     """
-    Return Dict of list of file references in study components.
+    Return Dict of list of file references in datasets.
     """
 
-    # Get list of study component titles to process
-    sc_titles_from_datasets_in_submission = {
+    # Get datasets to process
+    titles_from_datasets_in_submission = {
         dataset.title_id for dataset in datasets_in_submission
     }
-    file_list_dicts = find_file_lists_in_submission(submission)
-    sc_titles_from_file_lists = set(
-        [file_list_dict["Name"] for file_list_dict in file_list_dicts]
-    )
-    study_components_to_process = list(
-        sc_titles_from_datasets_in_submission.intersection(sc_titles_from_file_lists)
-    )
 
-    if not study_components_to_process:
+    file_list_dicts = find_datasets_with_file_lists(submission)
+
+    datasets_to_process = {
+        ds.title_id: ds
+        for ds in datasets_in_submission
+        if ds.title_id in file_list_dicts.keys()
+    }
+
+    if not datasets_to_process:
         message = f"""
-            Intersection of Study component titles from datasets in submission ({sc_titles_from_datasets_in_submission}) and file lists in submission ( {sc_titles_from_file_lists} ) was null - exiting
+            Intersection of titles from datasets in submission ({titles_from_datasets_in_submission}) and file lists in submission ( {file_list_dicts.keys()} ) was null - exiting
         """
         logger.warning(message)
         return
@@ -57,39 +59,28 @@ def get_file_reference_by_study_component(
             output_dir.mkdir(parents=True)
             logger.info(f"Created {output_dir}")
 
-    fileref_to_study_components = {}
-    datasets_to_process = {
-        ds.title_id: ds
-        for ds in datasets_in_submission
-        if ds.title_id in study_components_to_process
-    }
-    file_lists_to_process = {
-        file_list_dict["Name"]: file_list_dict
-        for file_list_dict in file_list_dicts
-        if file_list_dict["Name"] in study_components_to_process
-    }
-    for study_component_name in study_components_to_process:
-        dataset = datasets_to_process[study_component_name]
-        file_list_dict = file_lists_to_process[study_component_name]
-        if study_component_name not in fileref_to_study_components:
-            fileref_to_study_components[study_component_name] = []
+    fileref_to_datasets = {}
+    for dataset_name, dataset in datasets_to_process.items():
+        for file_list_dict in file_list_dicts[dataset_name]:
+            if dataset_name not in fileref_to_datasets:
+                fileref_to_datasets[dataset_name] = []
 
-        fname = file_list_dict["File List"]
-        files_in_fl = flist_from_flist_fname(submission.accno, fname)
+            fname = file_list_dict["File List"]
+            files_in_fl = flist_from_flist_fname(submission.accno, fname)
 
-        file_references = get_file_reference_for_submission_dataset(
-            submission.accno, dataset, files_in_fl
-        )
+            file_references = get_file_reference_for_submission_dataset(
+                submission.accno, dataset, files_in_fl
+            )
 
-        if persist_artefacts:
-            for file_reference in file_references:
-                output_path = output_dir / f"{file_reference.uuid}.json"
-                output_path.write_text(file_reference.model_dump_json(indent=2))
-                logger.info(f"Written {output_path}")
+            if persist_artefacts:
+                for file_reference in file_references:
+                    output_path = output_dir / f"{file_reference.uuid}.json"
+                    output_path.write_text(file_reference.model_dump_json(indent=2))
+                    logger.info(f"Written {output_path}")
 
-        fileref_to_study_components[study_component_name].extend(file_references)
+            fileref_to_datasets[dataset_name].extend(file_references)
 
-    return fileref_to_study_components
+    return fileref_to_datasets
 
 
 def get_file_reference_for_submission_dataset(

@@ -8,7 +8,6 @@ from .utils import (
     persist,
     filter_model_dictionary,
 )
-from .file_reference import get_file_reference_by_study_component
 import bia_ingest_sm.conversion.biosample as biosample_conversion
 import bia_ingest_sm.conversion.study as study_conversion
 from ..biostudies import (
