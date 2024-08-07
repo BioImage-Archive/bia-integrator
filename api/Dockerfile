@@ -10,16 +10,20 @@ ENV PATH=/root/.local/bin:$PATH
 WORKDIR /bia-integrator
 
 #   only add poetry.lock if it exists (building on local)
-ADD ./api/poetry.lock* api/poetry.lock
-ADD ./api/pyproject.toml api/pyproject.toml
+ADD api/poetry.lock* api/poetry.lock
+ADD api/pyproject.toml api/pyproject.toml
+
+# This needed to be added because it's a poetry dep 
 ADD bia-shared-datamodels bia-shared-datamodels
 
 WORKDIR /bia-integrator/api
-RUN poetry lock
-RUN poetry install
-# Everything up to here should be reused most times
 
-# add the actual project, which is what is often changed in between two different container builds
-ADD . /bia-integrator
- 
-CMD ["poetry", "run", "uvicorn", "--workers", "4", "--port", "8080", "--log-config", "./src/log_config.yml", "--host", "0.0.0.0", "api.app:app"]
+# This will now cache unless theres changes to the lock file, or the pyproject.toml, or bia-shared-datamodels
+RUN poetry install --no-root
+
+# Add the rest of the files
+# The previous layers will cache fully and only this layer will be rebuilt if there are changes to the files.
+
+ADD . ..
+
+CMD ["poetry", "run", "uvicorn", "--workers", "4", "--port", "8080", "--log-config", "src/log_config.yml", "--host", "0.0.0.0", "api.app:app"]
