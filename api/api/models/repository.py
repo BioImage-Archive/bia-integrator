@@ -16,6 +16,7 @@ from bson.datetime_ms import DatetimeMS
 from bson.codec_options import TypeCodec, TypeRegistry
 from bson.binary import UuidRepresentation
 
+from pydantic_core import Url
 
 DB_NAME = os.environ["DB_NAME"]
 COLLECTION_BIA_INTEGRATOR = "bia_integrator"
@@ -36,6 +37,17 @@ class DateCodec(TypeCodec):
 
     def transform_bson(self, value: DatetimeMS) -> datetime.date:
         return value.as_datetime().date()
+
+
+class UrlCodec(TypeCodec):
+    python_type = Url
+    bson_type = str
+
+    def transform_python(self, value: Url) -> str:
+        return str(value)
+
+    def transform_bson(self, value: str) -> str:
+        return value
 
 
 class OverwriteMode(str, Enum):
@@ -60,7 +72,7 @@ class Repository:
             # Looks like explicitly setting codec_options excludes settings from the client
             #   so uuid_representation needs to be defined even if already defined in connection
             codec_options=CodecOptions(
-                type_registry=TypeRegistry([DateCodec()]),
+                type_registry=TypeRegistry([DateCodec(), UrlCodec()]),
                 uuid_representation=UuidRepresentation.STANDARD,
             ),
         )
@@ -102,7 +114,7 @@ class Repository:
             raise Exception("Need at least one filter")
 
         # @TODO: Only add additional filter for type(indexed) not version
-        doc_filter |= doc_type.get_model_metadata().model_dump()
+        doc_filter["model"] = doc_type.get_model_metadata().model_dump()
 
         docs = []
         for doc in await self._get_docs_raw(**doc_filter):

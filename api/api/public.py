@@ -20,7 +20,7 @@ models_public: List[shared_data_models.DocumentMixin] = [
     shared_data_models.Specimen,
     shared_data_models.ExperimentallyCapturedImage,
     shared_data_models.ImageAcquisition,
-    shared_data_models.SpecimenImagingPrepartionProtocol,
+    shared_data_models.SpecimenImagingPreparationProtocol,
     shared_data_models.SpecimenGrowthProtocol,
     shared_data_models.BioSample,
     shared_data_models.ImageAnnotationDataset,
@@ -62,8 +62,12 @@ def make_reverse_links(router: APIRouter) -> APIRouter:
     for model in models_public:
         uuid_fields = model.fields_by_type(UUID)
         for uuid_field_name, uuid_field_type in uuid_fields.items():
-            if len(uuid_field_type.metadata):
-                parent_type = uuid_field_type.metadata[0]  # convention
+            if (
+                len(uuid_field_type.metadata)
+                and type(uuid_field_type.metadata[0])
+                is shared_data_models.ObjectReference
+            ):
+                parent_type = uuid_field_type.metadata[0].link_dest_type  # convention
 
                 # List validators (e.g. MinLength) are also set in the type.metadata list
                 #   -> only generate backlinks for types that have metadata that is also one of the exposed types
