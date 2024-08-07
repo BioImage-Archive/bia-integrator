@@ -1,13 +1,14 @@
 from __future__ import annotations
 
 from . import semantic_models, exceptions
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import BaseModel, Field, ConfigDict, GetPydanticSchema
 from pydantic.fields import FieldInfo
-from typing import List, Optional, Any, Dict
+from typing import List, Optional, Any, Dict, Type
 from uuid import UUID
 from typing_extensions import Annotated
 
-# from pydantic.functional_validators import WrapValidator
+from pydantic.functional_validators import WrapValidator
+
 # from pydantic_core.core_schema import ValidationInfo
 
 # class PluginnableReferenceValidator(WrapValidator):
@@ -22,6 +23,21 @@ from typing_extensions import Annotated
 #                validator(referenced_type, val)
 
 #        super().__init__(referenced_type_validate)
+
+
+class ObjectReference:
+    validators_for_type = {}
+    link_dest_type: Any = BaseModel
+    func = None
+
+    def __init__(self, link_dest_type):
+        self.link_dest_type = link_dest_type
+
+        def generic_validator(val, handler):
+            if ObjectReference.validators_for_type.get(link_dest_type, None):
+                return ObjectReference.validators_for_type[link_dest_type](val)
+            else:
+                return val
 
 
 class ModelMetadata(BaseModel):
@@ -131,14 +147,16 @@ class ExperimentalImagingDataset(
     DocumentMixin,
     UserIdentifiedObject,
 ):
-    submitted_in_study_uuid: Annotated[UUID, Study] = Field()
+    submitted_in_study_uuid: Annotated[UUID, ObjectReference(Study)] = Field()
 
     model_config = ConfigDict(model_version_latest=1)
 
 
 class Specimen(semantic_models.Specimen, DocumentMixin):
     imaging_preparation_protocol_uuid: List[UUID] = Field(min_length=1)
-    sample_of_uuid: Annotated[List[UUID], BioSample] = Field(min_length=1)
+    sample_of_uuid: Annotated[List[UUID], ObjectReference(BioSample)] = Field(
+        min_length=1
+    )
     growth_protocol_uuid: List[UUID] = Field()
 
     model_config = ConfigDict(model_version_latest=1)
@@ -163,7 +181,7 @@ class ImageAcquisition(
     model_config = ConfigDict(model_version_latest=1)
 
 
-class SpecimenImagingPrepartionProtocol(
+class SpecimenImagingPreparationProtocol(
     semantic_models.SpecimenImagingPrepartionProtocol,
     DocumentMixin,
     UserIdentifiedObject,

@@ -81,7 +81,7 @@ def get_specimen_imaging_preparation_protocol_dict(
                 get_signal_channel_information_dict(Completeness.COMPLETE)
             ],
             "model": {
-                "type_name": "SpecimenImagingPrepartionProtocol",
+                "type_name": "SpecimenImagingPreparationProtocol",
                 "version": 1,
             },
         }
