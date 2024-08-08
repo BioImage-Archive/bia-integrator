@@ -51,13 +51,16 @@ def test_get_file_reference_for_submission_dataset(test_submission):
     assert created == expected
 
 
-def test_create_file_reference_for_study_component(test_submission):
+def test_create_file_reference_for_study_component(test_submission, caplog):
 
     expected = {datasets_in_submission[0].title_id: utils.get_test_file_reference()}
     created = file_reference.get_file_reference_by_dataset(
         test_submission, datasets_in_submission=datasets_in_submission
     )
     assert created == expected
+
+    expected_log_message = """Number of datasets with file lists (3) is not equal to the number of datasets passed as input to this function (1). Was this deliberate?"""
+    assert expected_log_message in caplog.text
 
 
 def test_create_file_reference_for_study_component_when_no_matching_sc_in_file_list(

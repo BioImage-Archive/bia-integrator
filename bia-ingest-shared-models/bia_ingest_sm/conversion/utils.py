@@ -159,7 +159,10 @@ def filter_model_dictionary(dictionary: dict, target_model: Type[BaseModel]):
     result_dict = {key: dictionary[key] for key in accepted_fields if key in dictionary}
     return result_dict
 
-def find_datasets_with_file_lists(submission: Submission) -> List[Dict[str, List[Dict[str, Union[str, None, List[str]]]]]]:
+
+def find_datasets_with_file_lists(
+    submission: Submission,
+) -> List[Dict[str, List[Dict[str, Union[str, None, List[str]]]]]]:
     """
     Return dict with dataset names as keys and file lists dicts as values
     
@@ -175,7 +178,7 @@ def find_datasets_with_file_lists(submission: Submission) -> List[Dict[str, List
     # Associate each dataset name with a list because there is no thing
     # preventing different datasets having the same title. If this happens
     # values will be appended instead of being overwritten
-    datasets_with_file_lists = { fld["Name"]: [] for fld in file_list_dicts }
+    datasets_with_file_lists = {fld["Name"]: [] for fld in file_list_dicts}
     for file_list_dict in file_list_dicts:
         datasets_with_file_lists[file_list_dict["Name"]].append(file_list_dict)
 

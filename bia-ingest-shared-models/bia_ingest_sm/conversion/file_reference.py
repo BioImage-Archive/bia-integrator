@@ -52,6 +52,12 @@ def get_file_reference_by_dataset(
         """
         logger.warning(message)
         return
+    else:
+        n_datasets_with_file_lists = len(file_list_dicts.keys())
+        n_datasets_in_submission = len(datasets_in_submission)
+        if n_datasets_with_file_lists != n_datasets_in_submission:
+            message = f"""Number of datasets with file lists ({n_datasets_with_file_lists}) is not equal to the number of datasets passed as input to this function ({n_datasets_in_submission}). Was this deliberate?"""
+            logger.warning(message)
 
     if persist_artefacts:
         output_dir = Path(settings.bia_data_dir) / "file_references" / submission.accno
