@@ -1,43 +1,48 @@
 from __future__ import annotations
 
 from . import semantic_models, exceptions
-from pydantic import BaseModel, Field, ConfigDict, GetPydanticSchema
+from pydantic import BaseModel, Field, ConfigDict, GetCoreSchemaHandler
 from pydantic.fields import FieldInfo
-from typing import List, Optional, Any, Dict, Type
+from typing import List, Optional, Any, Dict
 from uuid import UUID
 from typing_extensions import Annotated
-
-from pydantic.functional_validators import WrapValidator
-
-# from pydantic_core.core_schema import ValidationInfo
-
-# class PluginnableReferenceValidator(WrapValidator):
-#    validators = []
-#    referenced_type = None
-
-#    def __init__(self, referenced_type):
-#        self.referenced_type = referenced_type
-
-#        def referenced_type_validate(val, info: ValidationInfo):
-#            for validator in PluginnableReferenceValidator.validators:
-#                validator(referenced_type, val)
-
-#        super().__init__(referenced_type_validate)
+from pydantic_core import CoreSchema, core_schema
 
 
 class ObjectReference:
+    """
+    Dispatches to implement pluginnable validators _and_ marks fields as referencing other objects
+    Discussion on dynamically adding validators to existing models (with some alternative workarounds)
+        https://github.com/pydantic/pydantic/issues/2076
+    """
+
     validators_for_type = {}
     link_dest_type: Any = BaseModel
-    func = None
 
     def __init__(self, link_dest_type):
         self.link_dest_type = link_dest_type
 
-        def generic_validator(val, handler):
-            if ObjectReference.validators_for_type.get(link_dest_type, None):
-                return ObjectReference.validators_for_type[link_dest_type](val)
-            else:
-                return val
+    @classmethod
+    def generic_validator(cls, val, info: core_schema.ValidationInfo) -> UUID:
+        return val
+        # if ObjectReference.validators_for_type.get(link_dest_type, None):
+        #    return ObjectReference.validators_for_type[link_dest_type](val)
+        # else:
+        #    return val
+
+    @classmethod
+    def __get_pydantic_core_schema__(
+        cls, source_type: Any, handler: GetCoreSchemaHandler
+    ) -> CoreSchema:
+
+        return core_schema.chain_schema(
+            [
+                handler.generate_schema(source_type),
+                core_schema.with_info_plain_validator_function(
+                    function=cls.generic_validator,
+                ),
+            ]
+        )
 
 
 class ModelMetadata(BaseModel):
