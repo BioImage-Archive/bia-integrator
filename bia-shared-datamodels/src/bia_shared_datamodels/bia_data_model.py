@@ -22,24 +22,24 @@ class ObjectReference:
     def __init__(self, link_dest_type):
         self.link_dest_type = link_dest_type
 
-    @classmethod
-    def generic_validator(cls, val, info: core_schema.ValidationInfo) -> UUID:
-        return val
-        # if ObjectReference.validators_for_type.get(link_dest_type, None):
-        #    return ObjectReference.validators_for_type[link_dest_type](val)
-        # else:
-        #    return val
+    async def generic_validator(self, val, info: core_schema.ValidationInfo) -> UUID:
+        for validator in ObjectReference.validators_for_type.get(
+            self.link_dest_type, []
+        ):
+            validator(val)
 
-    @classmethod
+        return val
+
+    # @classmethod
     def __get_pydantic_core_schema__(
-        cls, source_type: Any, handler: GetCoreSchemaHandler
+        self, source_type: Any, handler: GetCoreSchemaHandler
     ) -> CoreSchema:
 
         return core_schema.chain_schema(
             [
                 handler.generate_schema(source_type),
                 core_schema.with_info_plain_validator_function(
-                    function=cls.generic_validator,
+                    function=self.generic_validator,
                 ),
             ]
         )
