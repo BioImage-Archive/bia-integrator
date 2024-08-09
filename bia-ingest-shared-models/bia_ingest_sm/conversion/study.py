@@ -6,7 +6,7 @@ from .utils import (
     get_generic_section_as_dict,
     mattributes_to_dict,
     dict_to_uuid,
-    find_sections_recursive
+    find_sections_recursive,
 )
 import bia_ingest_sm.conversion.experimental_imaging_dataset as eid_conversion
 from ..biostudies import (
@@ -47,8 +47,12 @@ def get_study(
         study_attributes.pop("License")
 
     keywords = study_attributes.get("Keywords", [])
-    if type(keywords) is not list: keywords = [keywords,]
-    if "Keywords" in study_attributes: study_attributes.pop("Keywords")
+    if type(keywords) is not list:
+        keywords = [
+            keywords,
+        ]
+    if "Keywords" in study_attributes:
+        study_attributes.pop("Keywords")
 
     study_dict = {
         "uuid": get_study_uuid(submission),
@@ -65,7 +69,7 @@ def get_study(
         "author": [c.model_dump() for c in contributors],
         "grant": [g.model_dump() for g in grants],
         "attribute": study_attributes,
-        "version": 1
+        "version": 1,
     }
     # study_uuid = dict_to_uuid(study_dict, ["accession_id",])
     # study_dict["uuid"] = study_uuid
@@ -243,5 +247,3 @@ def get_contributor(submission: Submission) -> List[semantic_models.Contributor]
         contributors.append(semantic_models.Contributor.model_validate(model_dict))
 
     return contributors
-
-

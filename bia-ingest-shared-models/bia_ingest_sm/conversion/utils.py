@@ -9,6 +9,7 @@ from ..biostudies import (
     attributes_to_dict,
     Section,
     Attribute,
+    find_file_lists_in_submission,
 )
 from ..config import settings
 
@@ -50,7 +51,7 @@ def get_generic_section_as_list(
 def get_generic_section_as_dict(
     root: Submission | Section,
     section_name: List[str],
-    key_mapping: List[Tuple[str, str, Union[str , None , List]]],
+    key_mapping: List[Tuple[str, str, Union[str, None, List]]],
     mapped_object: Optional[Any] = None,
 ) -> Dict[str, Any | Dict[str, Dict[str, str | List[str]]]]:
     """
@@ -155,5 +156,30 @@ def persist(object_list: List, object_path: str, sumbission_accno: str):
 
 def filter_model_dictionary(dictionary: dict, target_model: Type[BaseModel]):
     accepted_fields = target_model.model_fields.keys()
-    result_dict = {key: dictionary[key]  for key in accepted_fields if key in dictionary}
+    result_dict = {key: dictionary[key] for key in accepted_fields if key in dictionary}
     return result_dict
+
+
+def find_datasets_with_file_lists(
+    submission: Submission,
+) -> List[Dict[str, List[Dict[str, Union[str, None, List[str]]]]]]:
+    """
+    Return dict with dataset names as keys and file lists dicts as values
+    
+    Wrapper around 'biostudies.find_file_lists_in_submission'. Creates a
+    dict whos keys are the dataset titles and values are list of dicts
+    of the file list details.
+
+    'datasets' can be sections of type 'Study component' or 'Annotation'
+    """
+
+    file_list_dicts = find_file_lists_in_submission(submission)
+
+    # Associate each dataset name with a list because there is no thing
+    # preventing different datasets having the same title. If this happens
+    # values will be appended instead of being overwritten
+    datasets_with_file_lists = {fld["Name"]: [] for fld in file_list_dicts}
+    for file_list_dict in file_list_dicts:
+        datasets_with_file_lists[file_list_dict["Name"]].append(file_list_dict)
+
+    return datasets_with_file_lists

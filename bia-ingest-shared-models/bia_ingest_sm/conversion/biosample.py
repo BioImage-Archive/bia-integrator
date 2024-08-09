@@ -5,7 +5,7 @@ from .utils import (
     find_sections_recursive,
     dict_to_uuid,
     persist,
-    filter_model_dictionary
+    filter_model_dictionary,
 )
 from ..biostudies import (
     Submission,
