@@ -1,10 +1,48 @@
 from __future__ import annotations
 
 from . import semantic_models, exceptions
-from pydantic import BaseModel, Field, ConfigDict
-from typing import List, Optional
+from pydantic import BaseModel, Field, ConfigDict, GetCoreSchemaHandler
+from pydantic.fields import FieldInfo
+from typing import List, Optional, Any, Dict
 from uuid import UUID
-from enum import Enum
+from typing_extensions import Annotated
+from pydantic_core import CoreSchema, core_schema
+
+
+class ObjectReference:
+    """
+    Dispatches to implement pluginnable validators _and_ marks fields as referencing other objects
+    Discussion on dynamically adding validators to existing models (with some alternative workarounds)
+        https://github.com/pydantic/pydantic/issues/2076
+    """
+
+    validators_for_type = {}
+    link_dest_type: Any = BaseModel
+
+    def __init__(self, link_dest_type):
+        self.link_dest_type = link_dest_type
+
+    async def generic_validator(self, val, info: core_schema.ValidationInfo) -> UUID:
+        for validator in ObjectReference.validators_for_type.get(
+            self.link_dest_type, []
+        ):
+            validator(val)
+
+        return val
+
+    # @classmethod
+    def __get_pydantic_core_schema__(
+        self, source_type: Any, handler: GetCoreSchemaHandler
+    ) -> CoreSchema:
+
+        return core_schema.chain_schema(
+            [
+                handler.generate_schema(source_type),
+                core_schema.with_info_plain_validator_function(
+                    function=self.generic_validator,
+                ),
+            ]
+        )
 
 
 class ModelMetadata(BaseModel):
@@ -26,16 +64,7 @@ class DocumentMixin(BaseModel):
     )
 
     def __init__(self, *args, **data):
-        model_version_spec = self.model_config.get("model_version_latest")
-        if model_version_spec is None:
-            raise exceptions.ModelDefinitionInvalid(
-                f"Class {self.__class__.__name__} missing 'model_version_latest' in its model_config"
-            )
-
-        model_metadata_expected = ModelMetadata(
-            type_name=self.__class__.__name__,
-            version=model_version_spec,
-        )
+        model_metadata_expected = self.get_model_metadata()
         model_metadata_existing = data.get("model", None)
         if model_metadata_existing:
             model_metadata_existing = ModelMetadata(**model_metadata_existing)
@@ -47,6 +76,40 @@ class DocumentMixin(BaseModel):
             data["model"] = model_metadata_expected.model_dump()
 
         super().__init__(*args, **data)
+
+    @classmethod
+    def get_model_metadata(cls) -> ModelMetadata:
+        model_version_spec = cls.model_config.get("model_version_latest")
+        if model_version_spec is None:
+            raise exceptions.ModelDefinitionInvalid(
+                f"Class {cls.__name__} missing 'model_version_latest' in its model_config"
+            )
+
+        return ModelMetadata(
+            type_name=cls.__name__,
+            version=model_version_spec,
+        )
+
+    @classmethod
+    def fields_by_type(cls, field_type: Any) -> Dict[str, FieldInfo]:
+        """
+        @param field_type is the _actual class_ (not class name as a string) to search for
+            typed as any because it can be a descendent of DocumentMixin or UUID
+        """
+        fields_filtered = {}
+
+        for field_name, field_info in cls.model_fields.items():
+            # conditions split for clarity
+            field_type_exact = field_info.annotation is field_type
+            field_type_container_list = (
+                hasattr(field_info.annotation, "__origin__")
+                and field_info.annotation.__origin__ is list
+                and field_info.annotation.__args__[0] is field_type
+            )
+            if field_type_exact or field_type_container_list:
+                fields_filtered[field_name] = field_info
+
+        return fields_filtered
 
 
 class UserIdentifiedObject(BaseModel):
@@ -89,14 +152,16 @@ class ExperimentalImagingDataset(
     DocumentMixin,
     UserIdentifiedObject,
 ):
-    submitted_in_study_uuid: UUID = Field()
+    submitted_in_study_uuid: Annotated[UUID, ObjectReference(Study)] = Field()
 
     model_config = ConfigDict(model_version_latest=1)
 
 
 class Specimen(semantic_models.Specimen, DocumentMixin):
     imaging_preparation_protocol_uuid: List[UUID] = Field(min_length=1)
-    sample_of_uuid: List[UUID] = Field(min_length=1)
+    sample_of_uuid: Annotated[List[UUID], ObjectReference(BioSample)] = Field(
+        min_length=1
+    )
     growth_protocol_uuid: List[UUID] = Field()
 
     model_config = ConfigDict(model_version_latest=1)
@@ -121,7 +186,7 @@ class ImageAcquisition(
     model_config = ConfigDict(model_version_latest=1)
 
 
-class SpecimenImagingPrepartionProtocol(
+class SpecimenImagingPreparationProtocol(
     semantic_models.SpecimenImagingPrepartionProtocol,
     DocumentMixin,
     UserIdentifiedObject,

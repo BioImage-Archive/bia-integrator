@@ -7,7 +7,7 @@ import os
 from enum import Enum
 import bia_shared_datamodels.bia_data_model as shared_data_models
 import pymongo
-from typing import Any
+from typing import Type, List, Any
 from .. import exceptions
 import datetime
 
@@ -16,6 +16,7 @@ from bson.datetime_ms import DatetimeMS
 from bson.codec_options import TypeCodec, TypeRegistry
 from bson.binary import UuidRepresentation
 
+from pydantic_core import Url
 
 DB_NAME = os.environ["DB_NAME"]
 COLLECTION_BIA_INTEGRATOR = "bia_integrator"
@@ -36,6 +37,17 @@ class DateCodec(TypeCodec):
 
     def transform_bson(self, value: DatetimeMS) -> datetime.date:
         return value.as_datetime().date()
+
+
+class UrlCodec(TypeCodec):
+    python_type = Url
+    bson_type = str
+
+    def transform_python(self, value: Url) -> str:
+        return str(value)
+
+    def transform_bson(self, value: str) -> str:
+        return value
 
 
 class OverwriteMode(str, Enum):
@@ -60,7 +72,7 @@ class Repository:
             # Looks like explicitly setting codec_options excludes settings from the client
             #   so uuid_representation needs to be defined even if already defined in connection
             codec_options=CodecOptions(
-                type_registry=TypeRegistry([DateCodec()]),
+                type_registry=TypeRegistry([DateCodec(), UrlCodec()]),
                 uuid_representation=UuidRepresentation.STANDARD,
             ),
         )
@@ -81,13 +93,34 @@ class Repository:
 
             raise exceptions.InvalidUpdateException(str(e))
 
-    async def get_doc(self, uuid: shared_data_models.UUID, doc_type):
+    async def get_doc(
+        self,
+        uuid: shared_data_models.UUID,
+        doc_type: Type[shared_data_models.DocumentMixin],
+    ) -> Any:
         doc = await self._get_doc_raw(uuid=uuid)
 
         if doc is None:
             raise exceptions.DocumentNotFound("Study does not exist")
 
         return doc_type(**doc)
+
+    async def get_docs(
+        self,
+        doc_filter: dict,
+        doc_type: Type[shared_data_models.DocumentMixin],
+    ) -> Any:
+        if not len(doc_filter.keys()):
+            raise Exception("Need at least one filter")
+
+        # @TODO: Only add additional filter for type(indexed) not version
+        doc_filter["model"] = doc_type.get_model_metadata().model_dump()
+
+        docs = []
+        for doc in await self._get_docs_raw(**doc_filter):
+            docs.append(doc_type(**doc))
+
+        return docs
 
     async def _model_doc_exists(
         self, doc_model: shared_data_models.DocumentMixin
@@ -106,11 +139,20 @@ class Repository:
 
         return result == doc
 
-    async def _get_doc_raw(self, **kwargs) -> Any:
+    async def _get_doc_raw(self, **kwargs) -> dict:
         doc = await self.biaint.find_one(kwargs)
         doc.pop("_id")
 
         return doc
+
+    async def _get_docs_raw(self, **kwargs) -> List[dict]:
+        docs = []
+
+        async for doc in self.biaint.find(kwargs):
+            doc.pop("_id")
+            docs.append(doc)
+
+        return docs
 
 
 async def repository_create(init: bool) -> Repository:
