@@ -247,16 +247,7 @@ def file_uri(
     """For a given accession and file object, return the HTTP URI where we can expect
     to be able to access that file."""
 
-    # KB 09/08/2024 we are having an issue with url containing '\' when
-    # testing on windows during CI/CD.
-    # Use of PosixPath does not work -> not implemented error. Use of
-    # Path.as_posix() as commented out below does not seem to work either!
-    #return file_uri_template.format(accession_id=accession_id, relpath=file.path.as_posix())
-
-    # Hence split and manually rejoin
-    relpath = "/".join(file.path.parts)
-    return file_uri_template.format(accession_id=accession_id, relpath=relpath)
-
+    return file_uri_template.format(accession_id=accession_id, relpath=file.path.as_posix())
 
 
 def get_file_uri_template_for_accession(accession_id: str) -> str:
