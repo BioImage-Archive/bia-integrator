@@ -44,7 +44,7 @@ class Attribute(BaseModel):
 
 
 class File(BaseModel):
-    path: pathlib.Path
+    path: pathlib.PosixPath
     size: int
     type: str
     attributes: List[Attribute] = []
