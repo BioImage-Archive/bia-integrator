@@ -105,7 +105,7 @@ def get_file_reference_for_submission_dataset(
     for f in files_in_file_list:
         file_dict = {
             "accession_id": accession_id,
-            "file_path": str(f.path),
+            "file_path": str(f.path.as_posix()),
             "size_in_bytes": str(f.size),
         }
         fileref_uuid = dict_to_uuid(

@@ -247,7 +247,7 @@ def file_uri(
     """For a given accession and file object, return the HTTP URI where we can expect
     to be able to access that file."""
 
-    return file_uri_template.format(accession_id=accession_id, relpath=file.path)
+    return file_uri_template.format(accession_id=accession_id, relpath=file.path.as_posix())
 
 
 def get_file_uri_template_for_accession(accession_id: str) -> str:
