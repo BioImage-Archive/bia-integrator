@@ -8,7 +8,6 @@ from .utils import (
     dict_to_uuid,
     find_sections_recursive,
 )
-import bia_ingest_sm.conversion.experimental_imaging_dataset as eid_conversion
 from ..biostudies import (
     Submission,
     attributes_to_dict,
@@ -30,11 +29,6 @@ def get_study(
     submission_attributes = attributes_to_dict(submission.attributes)
     contributors = get_contributor(submission)
     grants = get_grant(submission)
-
-    # TODO: move this to main CLI code to make object generation more independent
-    eid_conversion.get_experimental_imaging_dataset(
-        submission, persist_artefacts=persist_artefacts
-    )
 
     study_attributes = attributes_to_dict(submission.section.attributes)
 

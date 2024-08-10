@@ -256,6 +256,38 @@ def get_test_image_acquisition() -> List[bia_data_model.ImageAcquisition]:
     return image_acquisition
 
 
+def get_test_specimen() -> bia_data_model.Specimen:
+
+    imaging_preparation_protocols = {
+        ipp.title_id : ipp.uuid for ipp in get_test_specimen_imaging_preparation_protocol()
+    }
+    growth_protocols = {
+        gp.title_id : gp.uuid for gp in get_test_specimen_growth_protocol()
+    }
+    biosamples = {
+        biosample.title_id : biosample.uuid for biosample in get_test_biosample()
+    }
+
+    associations = [
+        {"Biosample": "Test Biosample 1", "Specimen": "Test specimen 1",},
+        {"Biosample": "Test Biosample 2 ", "Specimen": "Test specimen 1",},
+        {"Biosample": "Test Biosample 2 ", "Specimen": "Test specimen 2",},
+    ]
+
+    specimens = []
+    for association in associations:
+        biosample_title = association["Biosample"]
+        specimen_title = association["Specimen"]
+        specimen_dict = {
+            "imaging_preparation_protocol_uuid": [imaging_preparation_protocols[specimen_title]],
+            "sample_of_uuid": [biosamples[biosample_title],],
+            "growth_protocol_uuid": [growth_protocols[specimen_title],],
+        }
+        specimen_dict["uuid"] = dict_to_uuid(specimen_dict, list(specimen_dict.keys()))
+        specimen_dict["version"] = 1
+        specimens.append(bia_data_model.Specimen.model_validate(specimen_dict))
+    return specimens
+
 def get_test_image_analysis_method() -> semantic_models.ImageAnalysisMethod:
     return semantic_models.ImageAnalysisMethod.model_validate(
         {

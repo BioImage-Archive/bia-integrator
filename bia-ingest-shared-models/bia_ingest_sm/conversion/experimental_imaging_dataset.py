@@ -32,24 +32,6 @@ def get_experimental_imaging_dataset(
     )
     analysis_method_dict = get_image_analysis_method(submission)
 
-    # TODO: Need to persist this (API finally, but initially to disk)
-    biosamples_in_submission = biosample_conversion.get_biosample(submission)
-
-    # Index biosamples by title_id. Makes linking with associations more
-    # straight forward.
-    # Use for loop instead of dict comprehension to allow biosamples with
-    # same title to form list
-    biosamples_in_submission_uuid = {}
-    for biosample in biosample_conversion.get_biosample(
-        submission, persist_artefacts=persist_artefacts
-    ):
-        if biosample.title_id in biosamples_in_submission_uuid:
-            biosamples_in_submission_uuid[biosample.title_id].append(biosample.uuid)
-        else:
-            biosamples_in_submission_uuid[biosample.title_id] = [
-                biosample.uuid,
-            ]
-
     experimental_imaging_dataset = []
     for section in study_components:
         attr_dict = attributes_to_dict(section.attributes)
@@ -66,7 +48,6 @@ def get_experimental_imaging_dataset(
 
         analysis_method_list = []
         correlation_method_list = []
-        biosample_list = []
 
         # TODO: move this to main CLI code to make object generation more independent
         if len(associations) > 0:
@@ -80,12 +61,6 @@ def get_experimental_imaging_dataset(
                     in analysis_methods_from_associations
                 ):
                     analysis_method_list.append(analysis_method)
-
-            # Biosample
-            biosamples_from_associations = [a.get("biosample") for a in associations]
-            for biosample in biosamples_from_associations:
-                if biosample in biosamples_in_submission_uuid:
-                    biosample_list.extend(biosamples_in_submission_uuid[biosample])
 
         section_name = attr_dict["Name"]
         model_dict = {
