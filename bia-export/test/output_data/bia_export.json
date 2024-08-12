@@ -111,6 +111,7 @@
             "submitted_in_study_uuid": "a2fdbd58-ee11-4cd9-bc6a-f3d3da7fff71",
             "acquisition_process": [
                 {
+                    "default_open": true,
                     "title_id": "Test Primary Screen Image Acquisition",
                     "uuid": "c2e44a1b-a43c-476e-8ddf-8587f4c955b3",
                     "version": 1,
@@ -126,6 +127,7 @@
             ],
             "specimen_imaging_preparation_protocol": [
                 {
+                    "default_open": true,
                     "title_id": "Test specimen 1",
                     "uuid": "7199d730-29f1-4ad8-b599-e9089cbb2d7b",
                     "version": 1,
@@ -139,6 +141,7 @@
             ],
             "biological_entity": [
                 {
+                    "default_open": true,
                     "title_id": "Test Biosample 1",
                     "uuid": "64a67727-4e7c-469a-91c4-6219ae072e99",
                     "version": 1,
@@ -165,6 +168,7 @@
                     ]
                 },
                 {
+                    "default_open": true,
                     "title_id": "Test Biosample 2",
                     "uuid": "6950718c-4917-47a1-a807-11b874e80a23",
                     "version": 1,
@@ -191,6 +195,55 @@
                     ]
                 }
             ],
+            "specimen_growth_protocol": []
+        },
+        {
+            "title_id": "Study Component 2",
+            "uuid": "850a1ca3-9681-4a8a-b625-477936fcb954",
+            "version": 1,
+            "model": {
+                "type_name": "ExperimentalImagingDataset",
+                "version": 1
+            },
+            "description": "Description of study component 2",
+            "attribute": {
+                "associations": [
+                    {
+                        "image_analysis": "Test image analysis",
+                        "image_correlation": null,
+                        "biosample": "Test Biosample 2 ",
+                        "image_acquisition": "Test Primary Screen Image Acquisition",
+                        "specimen": "Test specimen 2"
+                    }
+                ]
+            },
+            "analysis_method": [
+                {
+                    "protocol_description": "Test image analysis",
+                    "features_analysed": "Test image analysis overview"
+                }
+            ],
+            "correlation_method": [],
+            "example_image_uri": [],
+            "submitted_in_study_uuid": "a2fdbd58-ee11-4cd9-bc6a-f3d3da7fff71",
+            "acquisition_process": [
+                {
+                    "default_open": false,
+                    "title_id": "Test Primary Screen Image Acquisition",
+                    "uuid": "c2e44a1b-a43c-476e-8ddf-8587f4c955b3",
+                    "version": 1,
+                    "model": {
+                        "type_name": "ImageAcquisition",
+                        "version": 1
+                    },
+                    "protocol_description": "Test image acquisition parameters 1",
+                    "imaging_instrument_description": "Test imaging instrument 1",
+                    "fbbi_id": [],
+                    "imaging_method_name": "confocal microscopy"
+                }
+            ],
+            "specimen_imaging_preparation_protocol": [],
+            "biological_entity": [],
             "specimen_growth_protocol": []
         }
     ]
