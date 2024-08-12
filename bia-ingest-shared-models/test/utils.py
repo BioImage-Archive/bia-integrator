@@ -257,7 +257,13 @@ def get_test_image_acquisition() -> List[bia_data_model.ImageAcquisition]:
 
 
 def get_test_specimen() -> bia_data_model.Specimen:
-
+    
+    attributes_to_consider = [
+        "accession_id",
+        "imaging_preparation_protocol_uuid",
+        "sample_of_uuid",
+        "growth_protocol_uuid",
+    ]   
     imaging_preparation_protocols = {
         ipp.title_id : ipp.uuid for ipp in get_test_specimen_imaging_preparation_protocol()
     }
@@ -282,8 +288,12 @@ def get_test_specimen() -> bia_data_model.Specimen:
             "imaging_preparation_protocol_uuid": [imaging_preparation_protocols[specimen_title]],
             "sample_of_uuid": [biosamples[biosample_title],],
             "growth_protocol_uuid": [growth_protocols[specimen_title],],
+            "accession_id": accession_id,
         }
-        specimen_dict["uuid"] = dict_to_uuid(specimen_dict, list(specimen_dict.keys()))
+        specimen_dict["uuid"] = dict_to_uuid(specimen_dict, attributes_to_consider)
+        # Accession ID only needed to generate UUID
+        specimen_dict.pop("accession_id")
+
         specimen_dict["version"] = 1
         specimens.append(bia_data_model.Specimen.model_validate(specimen_dict))
     return specimens
