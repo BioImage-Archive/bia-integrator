@@ -25,7 +25,10 @@ from . import (
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
-def get_specimen(submission: Submission, persist_artefacts: bool = False) -> List[bia_data_model.Specimen]:
+
+def get_specimen(
+    submission: Submission, persist_artefacts: bool = False
+) -> List[bia_data_model.Specimen]:
     """Create and persist bia_data_model.Specimen and models it depends on
 
     Create and persist the bia_data_model.Specimen and the models it 
@@ -33,8 +36,9 @@ def get_specimen(submission: Submission, persist_artefacts: bool = False) -> Lis
     (specimen) GrowthProtocol.
     """
 
-
-    logger.info(f"Starting creation of bia_shared_models.Specimen models for submission: {submission.accno}")
+    logger.info(
+        f"Starting creation of bia_shared_models.Specimen models for submission: {submission.accno}"
+    )
     # ToDo - when API in operation do we attempt to retreive from
     # API first before creating biosample, specimen_growth_protocol and
     # specimen_preparation_protocol?
@@ -45,17 +49,26 @@ def get_specimen(submission: Submission, persist_artefacts: bool = False) -> Lis
     # straight forward.
     # Use for loop instead of dict comprehension to allow biosamples with
     # same title to form list
-    biosample_uuids = make_dict_from_objects(biosamples, key_attr="title_id", value_attr="uuid")
+    biosample_uuids = make_dict_from_objects(
+        biosamples, key_attr="title_id", value_attr="uuid"
+    )
 
     # ImagingPreparationProtocol
-    imaging_preparation_protocols = sipp_conversion.get_specimen_imaging_preparation_protocol(submission, persist_artefacts)
-    imaging_preparation_protocol_uuids = make_dict_from_objects(imaging_preparation_protocols, key_attr="title_id", value_attr="uuid")
+    imaging_preparation_protocols = sipp_conversion.get_specimen_imaging_preparation_protocol(
+        submission, persist_artefacts
+    )
+    imaging_preparation_protocol_uuids = make_dict_from_objects(
+        imaging_preparation_protocols, key_attr="title_id", value_attr="uuid"
+    )
 
     # GrowthProtocol
-    growth_protocols = sgp_conversion.get_specimen_growth_protocol(submission, persist_artefacts)
-    growth_protocol_uuids = make_dict_from_objects(growth_protocols, key_attr="title_id", value_attr="uuid")
+    growth_protocols = sgp_conversion.get_specimen_growth_protocol(
+        submission, persist_artefacts
+    )
+    growth_protocol_uuids = make_dict_from_objects(
+        growth_protocols, key_attr="title_id", value_attr="uuid"
+    )
 
-    
     # ToDo - associations needed in multiple places -> create util func?
     key_mapping = [
         ("biosample", "Biosample", None,),
@@ -72,11 +85,15 @@ def get_specimen(submission: Submission, persist_artefacts: bool = False) -> Lis
             biosample_list = biosample_uuids[biosample_titles]
         else:
             biosample_list = _extend_uuid_list(biosample_titles, biosample_uuids)
-        
+
         specimen_titles = association.get("specimen")
         if not isinstance(specimen_titles, list):
-            specimen_titles = [specimen_titles,]
-        imaging_preparation_protocol_list = _extend_uuid_list(specimen_titles, imaging_preparation_protocol_uuids)
+            specimen_titles = [
+                specimen_titles,
+            ]
+        imaging_preparation_protocol_list = _extend_uuid_list(
+            specimen_titles, imaging_preparation_protocol_uuids
+        )
         growth_protocol_list = _extend_uuid_list(specimen_titles, growth_protocol_uuids)
 
         model_dict = {
@@ -95,10 +112,13 @@ def get_specimen(submission: Submission, persist_artefacts: bool = False) -> Lis
     if persist_artefacts and specimens:
         persist(specimens, "specimens", submission.accno)
 
-    # ToDo: How should we deal with situation where specimens for a 
+    # ToDo: How should we deal with situation where specimens for a
     # submission are exactly the same? E.g. see associations of S-BIAD1287
-    logger.info(f"Finished the creation of bia_shared_models.Specimen models for submission: {submission.accno}. {len(model_dicts)} models created.")
+    logger.info(
+        f"Finished the creation of bia_shared_models.Specimen models for submission: {submission.accno}. {len(model_dicts)} models created."
+    )
     return dicts_to_api_models(model_dicts, bia_data_model.Specimen)
+
 
 def generate_specimen_uuid(specimen_dict: Dict[str, Any]) -> str:
     attributes_to_consider = [
@@ -108,6 +128,7 @@ def generate_specimen_uuid(specimen_dict: Dict[str, Any]) -> str:
         "growth_protocol_uuid",
     ]
     return dict_to_uuid(specimen_dict, attributes_to_consider)
+
 
 def _extend_uuid_list(titles, uuid_mapping):
     result = []

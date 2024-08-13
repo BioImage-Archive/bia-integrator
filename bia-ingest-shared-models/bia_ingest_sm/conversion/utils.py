@@ -184,7 +184,10 @@ def find_datasets_with_file_lists(
 
     return datasets_with_file_lists
 
-def make_dict_from_objects(objects: List[Any], key_attr: str, value_attr: Optional[str]) -> Dict[str,List[Any]]:
+
+def make_dict_from_objects(
+    objects: List[Any], key_attr: str, value_attr: Optional[str]
+) -> Dict[str, List[Any]]:
     """Create a dict grouping objects by value specified by 'key_attr'
 
     Utility function for common pattern in conversion to create a dict

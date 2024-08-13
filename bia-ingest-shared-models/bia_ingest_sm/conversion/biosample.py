@@ -81,6 +81,7 @@ def extract_biosample_dicts(submission: Submission) -> List[Dict[str, Any]]:
 
     return model_dicts
 
+
 ###############################################################
 #
 # Start of commented code block from experimental_imaging_dataset.py
