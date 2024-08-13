@@ -8,6 +8,7 @@ from bia_ingest_sm.conversion.experimental_imaging_dataset import (
 )
 from bia_ingest_sm.conversion.file_reference import get_file_reference_by_dataset
 from bia_ingest_sm.conversion.specimen import get_specimen
+from bia_ingest_sm.conversion.image_acquisition import get_image_acquisition
 
 app = typer.Typer()
 
@@ -25,6 +26,8 @@ def ingest(accession_id: Annotated[str, typer.Argument()],) -> None:
     file_references = get_file_reference_by_dataset(
         submission, experimental_imaging_datasets, persist_artefacts=True
     )
+
+    image_acquisitions = get_image_acquisition(submission, persist_artefacts=True)
 
     # Specimen
     # Biosample and Specimen artefacts are processed as part of bia_data_models.Specimen (note - this is very different from Biostudies.Specimen)
