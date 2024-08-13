@@ -10,7 +10,7 @@ from .utils import (
     persist,
     filter_model_dictionary,
     get_generic_section_as_list,
-    make_dict_from_objects,
+    object_value_pair_to_dict,
 )
 from ..biostudies import (
     Submission,
@@ -49,7 +49,7 @@ def get_specimen(
     # straight forward.
     # Use for loop instead of dict comprehension to allow biosamples with
     # same title to form list
-    biosample_uuids = make_dict_from_objects(
+    biosample_uuids = object_value_pair_to_dict(
         biosamples, key_attr="title_id", value_attr="uuid"
     )
 
@@ -57,7 +57,7 @@ def get_specimen(
     imaging_preparation_protocols = sipp_conversion.get_specimen_imaging_preparation_protocol(
         submission, persist_artefacts
     )
-    imaging_preparation_protocol_uuids = make_dict_from_objects(
+    imaging_preparation_protocol_uuids = object_value_pair_to_dict(
         imaging_preparation_protocols, key_attr="title_id", value_attr="uuid"
     )
 
@@ -65,7 +65,7 @@ def get_specimen(
     growth_protocols = sgp_conversion.get_specimen_growth_protocol(
         submission, persist_artefacts
     )
-    growth_protocol_uuids = make_dict_from_objects(
+    growth_protocol_uuids = object_value_pair_to_dict(
         growth_protocols, key_attr="title_id", value_attr="uuid"
     )
 

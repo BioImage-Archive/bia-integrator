@@ -185,7 +185,7 @@ def find_datasets_with_file_lists(
     return datasets_with_file_lists
 
 
-def make_dict_from_objects(
+def object_value_pair_to_dict(
     objects: List[Any], key_attr: str, value_attr: Optional[str]
 ) -> Dict[str, List[Any]]:
     """Create a dict grouping objects by value specified by 'key_attr'
