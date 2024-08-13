@@ -183,3 +183,24 @@ def find_datasets_with_file_lists(
         datasets_with_file_lists[file_list_dict["Name"]].append(file_list_dict)
 
     return datasets_with_file_lists
+
+
+def object_value_pair_to_dict(
+    objects: List[Any], key_attr: str, value_attr: Optional[str]
+) -> Dict[str, List[Any]]:
+    """Create a dict grouping objects by value specified by 'key_attr'
+
+    Utility function for common pattern in conversion to create a dict
+    that groups objects (or an attribue) by a specified object attribute
+    """
+
+    object_dict = {}
+    for obj in objects:
+        key = getattr(obj, key_attr)
+        object_dict[key] = getattr(obj, key, [])
+        if value_attr:
+            object_dict[key].append(getattr(obj, value_attr))
+        else:
+            object_dict[key].append(obj)
+
+    return object_dict
