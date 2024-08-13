@@ -82,37 +82,6 @@ def extract_biosample_dicts(submission: Submission) -> List[Dict[str, Any]]:
     return model_dicts
 
 
-###############################################################
-#
-# Start of commented code block from experimental_imaging_dataset.py
-# TODO: Need to persist this (API finally, but initially to disk)
-#    biosamples_in_submission = biosample_conversion.get_biosample(submission)
-#
-#    # Index biosamples by title_id. Makes linking with associations more
-#    # straight forward.
-#    # Use for loop instead of dict comprehension to allow biosamples with
-#    # same title to form list
-#    biosamples_in_submission_uuid = {}
-#    for biosample in biosample_conversion.get_biosample(
-#        submission, persist_artefacts=persist_artefacts
-#    ):
-#        if biosample.title_id in biosamples_in_submission_uuid:
-#            biosamples_in_submission_uuid[biosample.title_id].append(biosample.uuid)
-#        else:
-#            biosamples_in_submission_uuid[biosample.title_id] = [
-#                biosample.uuid,
-#            ]
-#
-#            # Biosample
-#            biosamples_from_associations = [a.get("biosample") for a in associations]
-#            for biosample in biosamples_from_associations:
-#                if biosample in biosamples_in_submission_uuid:
-#                    biosample_list.extend(biosamples_in_submission_uuid[biosample])
-#
-# End of commented code block from experimental_imaging_dataset.py
-###############################################################
-
-
 def generate_biosample_uuid(biosample_dict: Dict[str, Any]) -> str:
     attributes_to_consider = [
         "accession_id",
