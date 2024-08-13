@@ -26,16 +26,6 @@ app = FastAPI(
 
 app.openapi_version = "3.0.2"
 
-# app.include_router(private.router, prefix="/v2")
-# routes applied in the order they are declared
-
-
-async def test_func(val):
-    pass
-
-
-ObjectReference.validators_for_type[Study] = [test_func]
-
 
 app.include_router(public.make_router(), prefix="/v2")
 app.include_router(private.make_router(), prefix="/v2")

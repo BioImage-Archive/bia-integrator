@@ -9,6 +9,7 @@ from typing_extensions import Annotated
 from pydantic_core import CoreSchema, core_schema
 
 
+# @DELETEME? Unused & unnecessary?
 class ObjectReference:
     """
     Dispatches to implement pluginnable validators _and_ marks fields as referencing other objects
@@ -16,21 +17,33 @@ class ObjectReference:
         https://github.com/pydantic/pydantic/issues/2076
     """
 
-    validators_for_type = {}
+    """
+    Global collection of type-validator mappings.
+    Validator gets called as part of the schema validation of the "main" Annotated type (UUID usually)
+    """
+    _validators_by_type = {}
+
+    """
+    Instance context for "what does this link to"
+    """
     link_dest_type: Any = BaseModel
 
     def __init__(self, link_dest_type):
         self.link_dest_type = link_dest_type
 
-    async def generic_validator(self, val, info: core_schema.ValidationInfo) -> UUID:
-        for validator in ObjectReference.validators_for_type.get(
+    def generic_validator(self, val, info: core_schema.ValidationInfo) -> UUID:
+        """
+        Static validation hook registered to the schema of all attributes using this.
+        Dispatches to type-specific validation (registered sometime after this gets registered in Pydantic, most likely at application init)
+        """
+
+        for validator in self.__class__._validators_by_type.get(
             self.link_dest_type, []
         ):
             validator(val)
 
         return val
 
-    # @classmethod
     def __get_pydantic_core_schema__(
         self, source_type: Any, handler: GetCoreSchemaHandler
     ) -> CoreSchema:
@@ -43,6 +56,25 @@ class ObjectReference:
                 ),
             ]
         )
+
+    @classmethod
+    def register_validator(cls, type_to_validate, fn_validator):
+        """
+        @param fn_validator needs to be a static function in global context
+
+        @TODO: Tidy if we're going to keep this.
+        !! How do we avoid memory leaks if fn_validator local but can't get deleted because it has a reference here?
+        """
+        if cls._validators_for_type.get(type_to_validate):
+            """
+            Singleton-type pattern (static attribute as a container of hooks) for the validators collection.
+            Can't have a container object because all types are declared at startup (so no point in execution where we can create it and pass it in before models are declared).
+                Could add object-like 'namespaces' if we really wanted to.
+            So we need to be _very_ careful about it being shared / overwriting functions. Defer defining behaviour for when/if we ever have a usecase for it
+            """
+            raise Exception("Overwriting validators not supported.")
+
+        cls._validators_for_type[type_to_validate] = fn_validator
 
 
 class ModelMetadata(BaseModel):
