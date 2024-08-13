@@ -1,5 +1,8 @@
 import logging
 from typing import Dict, List, Any
+
+from bia_shared_datamodels import bia_data_model, semantic_models
+
 from .utils import (
     dicts_to_api_models,
     find_sections_recursive,
@@ -18,7 +21,9 @@ from . import (
     specimen_imaging_preparation_protocol as sipp_conversion,
     specimen_growth_protocol as sgp_conversion,
 )
-from bia_shared_datamodels import bia_data_model, semantic_models
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO)
 
 def get_specimen(submission: Submission, persist_artefacts: bool = False) -> List[bia_data_model.Specimen]:
     """Create and persist bia_data_model.Specimen and models it depends on
@@ -29,10 +34,10 @@ def get_specimen(submission: Submission, persist_artefacts: bool = False) -> Lis
     """
 
 
+    logger.info(f"Starting creation of bia_shared_models.Specimen models for submission: {submission.accno}")
     # ToDo - when API in operation do we attempt to retreive from
     # API first before creating biosample, specimen_growth_protocol and
     # specimen_preparation_protocol?
-
     # Biosamples
     biosamples = biosample_conversion.get_biosample(submission, persist_artefacts)
 
@@ -53,10 +58,7 @@ def get_specimen(submission: Submission, persist_artefacts: bool = False) -> Lis
     
     # ToDo - associations needed in multiple places -> create util func?
     key_mapping = [
-        ("image_analysis", "Image analysis", None,),
-        ("image_correlation", "Image correlation", None,),
         ("biosample", "Biosample", None,),
-        ("image_acquisition", "Image acquisition", None,),
         ("specimen", "Specimen", None,),
     ]
     associations = get_generic_section_as_list(
@@ -66,19 +68,16 @@ def get_specimen(submission: Submission, persist_artefacts: bool = False) -> Lis
     model_dicts = []
     for association in associations:
         biosample_titles = association.get("biosample")
-        if type(biosample_titles) is not list:
+        if not isinstance(biosample_titles, list):
             biosample_list = biosample_uuids[biosample_titles]
         else:
-            biosample_list = []
-            [biosample_list.extend(biosample_uuids[title]) for title in biosample_titles]
+            biosample_list = _extend_uuid_list(biosample_titles, biosample_uuids)
         
         specimen_titles = association.get("specimen")
-        if type(specimen_titles) is not list:
+        if not isinstance(specimen_titles, list):
             specimen_titles = [specimen_titles,]
-        imaging_preparation_protocol_list = []
-        [imaging_preparation_protocol_list.extend(imaging_preparation_protocol_uuids[title]) for title in specimen_titles];
-        growth_protocol_list = []
-        [growth_protocol_list.extend(growth_protocol_uuids[title]) for title in specimen_titles];
+        imaging_preparation_protocol_list = _extend_uuid_list(specimen_titles, imaging_preparation_protocol_uuids)
+        growth_protocol_list = _extend_uuid_list(specimen_titles, growth_protocol_uuids)
 
         model_dict = {
             "imaging_preparation_protocol_uuid": imaging_preparation_protocol_list,
@@ -91,6 +90,14 @@ def get_specimen(submission: Submission, persist_artefacts: bool = False) -> Lis
 
         model_dict = filter_model_dictionary(model_dict, bia_data_model.Specimen)
         model_dicts.append(model_dict)
+    specimens = dicts_to_api_models(model_dicts, bia_data_model.Specimen)
+
+    if persist_artefacts and specimens:
+        persist(specimens, "specimens", submission.accno)
+
+    # ToDo: How should we deal with situation where specimens for a 
+    # submission are exactly the same? E.g. see associations of S-BIAD1287
+    logger.info(f"Finished the creation of bia_shared_models.Specimen models for submission: {submission.accno}. {len(model_dicts)} models created.")
     return dicts_to_api_models(model_dicts, bia_data_model.Specimen)
 
 def generate_specimen_uuid(specimen_dict: Dict[str, Any]) -> str:
@@ -101,3 +108,9 @@ def generate_specimen_uuid(specimen_dict: Dict[str, Any]) -> str:
         "growth_protocol_uuid",
     ]
     return dict_to_uuid(specimen_dict, attributes_to_consider)
+
+def _extend_uuid_list(titles, uuid_mapping):
+    result = []
+    for title in titles:
+        result.extend(uuid_mapping[title])
+    return result
