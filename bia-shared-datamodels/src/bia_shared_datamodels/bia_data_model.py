@@ -123,6 +123,32 @@ class DocumentMixin(BaseModel):
         )
 
     @classmethod
+    def get_object_reference_fields(cls) -> Dict[str, DocumentMixin]:
+        """
+        @return mapping of attribute_name: referenced_object_type
+        """
+
+        fields_filtered = {}
+        for field_name, field_info in cls.model_fields.items():
+            maybe_reference = next(
+                (m for m in field_info.metadata if isinstance(m, ObjectReference)), None
+            )
+
+            if maybe_reference:
+                fields_filtered[field_name] = maybe_reference.link_dest_type
+
+        return fields_filtered
+
+    @classmethod
+    def field_is_list(cls, field_name: str):
+        """
+        Helper to avoid leaking type introspection into user code
+
+        @TODO: ! Ignored attribute missing exception
+        """
+        return cls.model_fields[field_name].annotation.__origin__ is list
+
+    @classmethod
     def fields_by_type(cls, field_type: Any) -> Dict[str, FieldInfo]:
         """
         @param field_type is the _actual class_ (not class name as a string) to search for
@@ -190,7 +216,9 @@ class ExperimentalImagingDataset(
 
 
 class Specimen(semantic_models.Specimen, DocumentMixin):
-    imaging_preparation_protocol_uuid: List[UUID] = Field(min_length=1)
+    imaging_preparation_protocol_uuid: Annotated[
+        List[UUID], ObjectReference(SpecimenImagingPreparationProtocol)
+    ] = Field(min_length=1)
     sample_of_uuid: Annotated[List[UUID], ObjectReference(BioSample)] = Field(
         min_length=1
     )

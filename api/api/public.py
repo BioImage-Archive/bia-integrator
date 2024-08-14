@@ -60,27 +60,23 @@ def make_reverse_links(router: APIRouter) -> APIRouter:
         return get_descendents
 
     for model in models_public:
-        uuid_fields = model.fields_by_type(UUID)
-        for uuid_field_name, uuid_field_type in uuid_fields.items():
-            if (
-                len(uuid_field_type.metadata)
-                and type(uuid_field_type.metadata[0])
-                is shared_data_models.ObjectReference
-            ):
-                parent_type = uuid_field_type.metadata[0].link_dest_type  # convention
-
-                # List validators (e.g. MinLength) are also set in the type.metadata list
-                #   -> only generate backlinks for types that have metadata that is also one of the exposed types
-                #   ? Maybe find a better way to wrap "foreign key"-type relationships, like a custom generic similar to List so we can also drop the [0] convention?
-                if parent_type in models_public:
-                    router.add_api_route(
-                        f"/{to_snake(parent_type.__name__)}/{{uuid}}/{to_snake(model.__name__)}",
-                        response_model=List[model],
-                        operation_id=f"get{model.__name__}In{parent_type.__name__}",
-                        summary=f"Get {model.__name__} In {parent_type.__name__}",
-                        methods=["GET"],
-                        endpoint=make_reverse_link_handler(uuid_field_name, model),
-                    )
+        for (
+            link_attribute_name,
+            link_attribute_type,
+        ) in model.get_object_reference_fields().items():
+            # Just in case we accidentally link to a private model somehow (technically possible)
+            #   just raise and defer definining behaviour until we use it
+            if link_attribute_type in models_public:
+                router.add_api_route(
+                    f"/{to_snake(link_attribute_type.__name__)}/{{uuid}}/{to_snake(model.__name__)}",
+                    response_model=List[model],
+                    operation_id=f"get{model.__name__}In{link_attribute_type.__name__}",
+                    summary=f"Get {model.__name__} In {link_attribute_type.__name__}",
+                    methods=["GET"],
+                    endpoint=make_reverse_link_handler(link_attribute_name, model),
+                )
+            else:
+                raise Exception("TODO: Link from a public model to a nonpublic one")
 
 
 def make_router() -> APIRouter:

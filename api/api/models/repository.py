@@ -80,7 +80,67 @@ class Repository:
         self.biaint = self.db[COLLECTION_BIA_INTEGRATOR]
         self.ome_metadata = self.db[COLLECTION_OME_METADATA]
 
+    async def assert_model_doc_dependencies_exist(
+        self, object_to_check: shared_data_models.DocumentMixin
+    ):
+        doc_dependencies = []
+        for (
+            link_attribute_name,
+            link_attribute_type,
+        ) in object_to_check.get_object_reference_fields().items():
+            if not getattr(object_to_check, link_attribute_name):
+                """
+                If a field optional and a link to another object,
+                    then if not set we skip it (because it's optional)
+                    else (it's set to some non-None value) we check that the referenced object matches expected type (below)
+                We don't need to check if the field itself is optional because it's typed and Pydantic does it already
+                    a.i. if setting a non-optional field to None we wouldn't reach this and get an object validation error instead
+                """
+                continue
+
+            if object_to_check.field_is_list(link_attribute_name):
+                for dependency_uuid in getattr(object_to_check, link_attribute_name):
+                    doc_dependencies.append(
+                        {
+                            "uuid": dependency_uuid,
+                            "model": link_attribute_type.get_model_metadata().model_dump(),
+                        }
+                    )
+            else:
+                doc_dependencies.append(
+                    {
+                        "uuid": getattr(object_to_check, link_attribute_name),
+                        "model": link_attribute_type.get_model_metadata().model_dump(),
+                    }
+                )
+        if not doc_dependencies:
+            """
+            No dependencies to check.
+            No need to do a Mongo round-trip / $or with an empty list as "noop" not supported by Mongo anyway
+            """
+            return
+
+        docs = await self.biaint.find(
+            {"$or": doc_dependencies}, {"uuid": 1, "model": 1}
+        ).to_list(length=None)
+        if len(docs) != len(doc_dependencies):
+            """
+            ! This also fails if an object has the same object as a dependency twice.
+            Feature? Could it happen for something like links in different contexts to the same file/fileref?
+            """
+            dependencies_missing = []
+
+            for doc_dependency in doc_dependencies:
+                if doc_dependency["uuid"] not in docs:
+                    dependencies_missing.append(doc_dependency)
+
+            raise exceptions.DocumentNotFound(
+                f"Document {object_to_check.uuid} has missing dependencies: {dependencies_missing}"
+            )
+
     async def persist_doc(self, model_doc: shared_data_models.DocumentMixin):
+        await self.assert_model_doc_dependencies_exist(model_doc)
+
         try:
             return await self.biaint.insert_one(model_doc.model_dump())
         except pymongo.errors.DuplicateKeyError as e:
