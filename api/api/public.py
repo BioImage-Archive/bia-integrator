@@ -5,7 +5,6 @@ from pydantic.alias_generators import to_snake
 import bia_shared_datamodels.bia_data_model as shared_data_models
 from .models.repository import Repository
 from . import constants
-from uuid import UUID
 from typing import List, Type
 
 router = APIRouter(

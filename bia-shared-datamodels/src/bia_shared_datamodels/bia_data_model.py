@@ -65,7 +65,7 @@ class ObjectReference:
         @TODO: Tidy if we're going to keep this.
         !! How do we avoid memory leaks if fn_validator local but can't get deleted because it has a reference here?
         """
-        if cls._validators_for_type.get(type_to_validate):
+        if cls._validators_by_type.get(type_to_validate):
             """
             Singleton-type pattern (static attribute as a container of hooks) for the validators collection.
             Can't have a container object because all types are declared at startup (so no point in execution where we can create it and pass it in before models are declared).
@@ -74,7 +74,7 @@ class ObjectReference:
             """
             raise Exception("Overwriting validators not supported.")
 
-        cls._validators_for_type[type_to_validate] = fn_validator
+        cls._validators_by_type[type_to_validate] = fn_validator
 
 
 class ModelMetadata(BaseModel):
