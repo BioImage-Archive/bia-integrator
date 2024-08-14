@@ -50,8 +50,6 @@ def extract_image_acquisition_dicts(submission: Submission) -> List[Dict[str, An
 
         model_dict = {k: attr_dict.get(v, default) for k, v, default in key_mapping}
 
-        # Convert imaging_method_name to string if necessary
-        # TODO: discuss with team whether attribute on model should be list
         if isinstance(model_dict["imaging_method_name"], str):
             model_dict["imaging_method_name"] = [model_dict["imaging_method_name"],]
 
