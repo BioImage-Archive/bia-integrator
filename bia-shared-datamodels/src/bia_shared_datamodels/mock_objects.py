@@ -231,7 +231,6 @@ def get_image_acquisition_dict(completeness=Completeness.COMPLETE) -> dict:
         "title_id": "Template image acquisition",
         "protocol_description": "Template method description",
         "imaging_instrument_description": "Template imaging instrument",
-        "imaging_method_name": "Template imaging method name",
         "version": 1,
     }
     if completeness == Completeness.COMPLETE:
@@ -239,6 +238,7 @@ def get_image_acquisition_dict(completeness=Completeness.COMPLETE) -> dict:
             "fbbi_id": [
                 "Test FBBI ID",
             ],
+            "imaging_method_name": ["Template imaging method name",],
             "model": {"type_name": "ImageAcquisition", "version": 1},
         }
     return image_acquisition
