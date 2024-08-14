@@ -5,7 +5,7 @@ from pydantic import BaseModel, Field, ConfigDict, GetCoreSchemaHandler
 from pydantic.fields import FieldInfo
 from typing import List, Optional, Any, Dict
 from uuid import UUID
-from typing_extensions import Annotated
+from typing_extensions import Annotated, Union
 from pydantic_core import CoreSchema, core_schema
 
 
@@ -146,7 +146,26 @@ class DocumentMixin(BaseModel):
 
         @TODO: ! Ignored attribute missing exception
         """
-        return cls.model_fields[field_name].annotation.__origin__ is list
+        field_annotation_type = cls.model_fields[field_name].annotation
+        if not getattr(field_annotation_type, "__origin__", None):
+            # Not a generic, not even checking
+            return False
+
+        # Unpack Optional[*]
+        if (
+            field_annotation_type.__origin__ is Union
+            and type(None) in field_annotation_type.__args__
+        ):
+            field_annotation_type = field_annotation_type.__args__[0]
+
+            # check again in case it's Optional[SomeNonGenericType]
+            if not getattr(field_annotation_type, "__origin__", None):
+                # Not a generic, not even checking
+                return False
+
+            # it was Optional[SomeGenericType]
+
+        return field_annotation_type.__origin__ is list
 
     @classmethod
     def fields_by_type(cls, field_type: Any) -> Dict[str, FieldInfo]:
@@ -199,9 +218,9 @@ class ImageRepresentation(
     DocumentMixin,
 ):
     # We may want to store the FileReference -> Image(Represenation) rather than in the original_file_reference_uuid
-    original_file_reference_uuid: Annotated[Optional[List[UUID]], FileReference] = (
-        Field()
-    )
+    original_file_reference_uuid: Annotated[
+        Optional[List[UUID]], ObjectReference(FileReference)
+    ] = Field(default_factory=lambda : [])
     representation_of_uuid: UUID = Field()  # @TODO: Branching links
 
     model_config = ConfigDict(model_version_latest=1)
@@ -224,7 +243,9 @@ class Specimen(semantic_models.Specimen, DocumentMixin):
     sample_of_uuid: Annotated[List[UUID], ObjectReference(BioSample)] = Field(
         min_length=1
     )
-    growth_protocol_uuid: Annotated[List[UUID], SpecimenGrowthProtocol] = Field()
+    growth_protocol_uuid: Annotated[
+        List[UUID], ObjectReference(SpecimenGrowthProtocol)
+    ] = Field()
 
     model_config = ConfigDict(model_version_latest=1)
 
@@ -233,9 +254,13 @@ class ExperimentallyCapturedImage(
     semantic_models.ExperimentallyCapturedImage,
     DocumentMixin,
 ):
-    acquisition_process_uuid: Annotated[List[UUID], ImageAcquisition] = Field()
-    submission_dataset_uuid: Annotated[UUID, ExperimentalImagingDataset] = Field()
-    subject_uuid: Annotated[UUID, Specimen] = Field()
+    acquisition_process_uuid: Annotated[
+        List[UUID], ObjectReference(ImageAcquisition)
+    ] = Field()
+    submission_dataset_uuid: Annotated[
+        UUID, ObjectReference(ExperimentalImagingDataset)
+    ] = Field()
+    subject_uuid: Annotated[UUID, ObjectReference(Specimen)] = Field()
 
     model_config = ConfigDict(model_version_latest=1)
 
@@ -277,7 +302,7 @@ class ImageAnnotationDataset(
     DocumentMixin,
     UserIdentifiedObject,
 ):
-    submitted_in_study_uuid: Annotated[UUID, Study] = Field()
+    submitted_in_study_uuid: Annotated[UUID, ObjectReference(Study)] = Field()
 
     model_config = ConfigDict(model_version_latest=1)
 
@@ -288,7 +313,9 @@ class AnnotationFileReference(
 ):
     submission_dataset_uuid: UUID = Field()  # @TODO: Branching links
     source_image_uuid: List[UUID] = Field()  # @TODO: Branching links
-    creation_process_uuid: Annotated[List[UUID], AnnotationMethod] = Field()
+    creation_process_uuid: Annotated[List[UUID], ObjectReference(AnnotationMethod)] = (
+        Field()
+    )
 
     model_config = ConfigDict(model_version_latest=1)
 
@@ -298,8 +325,12 @@ class DerivedImage(
     DocumentMixin,
 ):
     source_image_uuid: List[UUID] = Field()  # @TODO: Branching links
-    submission_dataset_uuid: Annotated[UUID, ImageAnnotationDataset] = Field()
-    creation_process_uuid: Annotated[List[UUID], AnnotationMethod] = Field()
+    submission_dataset_uuid: Annotated[
+        UUID, ObjectReference(ImageAnnotationDataset)
+    ] = Field()
+    creation_process_uuid: Annotated[List[UUID], ObjectReference(AnnotationMethod)] = (
+        Field()
+    )
 
     model_config = ConfigDict(model_version_latest=1)
 
