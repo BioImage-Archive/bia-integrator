@@ -189,7 +189,7 @@ class FileReference(
     semantic_models.FileReference,
     DocumentMixin,
 ):
-    submission_dataset_uuid: UUID = Field()
+    submission_dataset_uuid: UUID = Field()  # @TODO: Branching links
 
     model_config = ConfigDict(model_version_latest=1)
 
@@ -199,8 +199,10 @@ class ImageRepresentation(
     DocumentMixin,
 ):
     # We may want to store the FileReference -> Image(Represenation) rather than in the original_file_reference_uuid
-    original_file_reference_uuid: Optional[List[UUID]] = Field()
-    representation_of_uuid: UUID = Field()
+    original_file_reference_uuid: Annotated[Optional[List[UUID]], FileReference] = (
+        Field()
+    )
+    representation_of_uuid: UUID = Field()  # @TODO: Branching links
 
     model_config = ConfigDict(model_version_latest=1)
 
@@ -222,7 +224,7 @@ class Specimen(semantic_models.Specimen, DocumentMixin):
     sample_of_uuid: Annotated[List[UUID], ObjectReference(BioSample)] = Field(
         min_length=1
     )
-    growth_protocol_uuid: List[UUID] = Field()
+    growth_protocol_uuid: Annotated[List[UUID], SpecimenGrowthProtocol] = Field()
 
     model_config = ConfigDict(model_version_latest=1)
 
@@ -231,9 +233,9 @@ class ExperimentallyCapturedImage(
     semantic_models.ExperimentallyCapturedImage,
     DocumentMixin,
 ):
-    acquisition_process_uuid: List[UUID] = Field()
-    submission_dataset_uuid: UUID = Field()
-    subject_uuid: UUID = Field()
+    acquisition_process_uuid: Annotated[List[UUID], ImageAcquisition] = Field()
+    submission_dataset_uuid: Annotated[UUID, ExperimentalImagingDataset] = Field()
+    subject_uuid: Annotated[UUID, Specimen] = Field()
 
     model_config = ConfigDict(model_version_latest=1)
 
@@ -275,7 +277,7 @@ class ImageAnnotationDataset(
     DocumentMixin,
     UserIdentifiedObject,
 ):
-    submitted_in_study_uuid: UUID = Field()
+    submitted_in_study_uuid: Annotated[UUID, Study] = Field()
 
     model_config = ConfigDict(model_version_latest=1)
 
@@ -284,9 +286,9 @@ class AnnotationFileReference(
     semantic_models.AnnotationFileReference,
     DocumentMixin,
 ):
-    submission_dataset_uuid: UUID = Field()
-    source_image_uuid: List[UUID] = Field()
-    creation_process_uuid: List[UUID] = Field()
+    submission_dataset_uuid: UUID = Field()  # @TODO: Branching links
+    source_image_uuid: List[UUID] = Field()  # @TODO: Branching links
+    creation_process_uuid: Annotated[List[UUID], AnnotationMethod] = Field()
 
     model_config = ConfigDict(model_version_latest=1)
 
@@ -295,9 +297,9 @@ class DerivedImage(
     semantic_models.DerivedImage,
     DocumentMixin,
 ):
-    source_image_uuid: List[UUID] = Field()
-    submission_dataset_uuid: UUID = Field()
-    creation_process_uuid: List[UUID] = Field()
+    source_image_uuid: List[UUID] = Field()  # @TODO: Branching links
+    submission_dataset_uuid: Annotated[UUID, ImageAnnotationDataset] = Field()
+    creation_process_uuid: Annotated[List[UUID], AnnotationMethod] = Field()
 
     model_config = ConfigDict(model_version_latest=1)
 

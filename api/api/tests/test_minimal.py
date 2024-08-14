@@ -111,3 +111,7 @@ def test_duplicate_uuid_fails(
 
 def test_object_update_version_bumped_passes():
     assert 0, "TODO: indices then add this"
+
+
+def test_object_update_version_enforced():
+    assert 0, "TODO: longer todo, check version works as expected"
