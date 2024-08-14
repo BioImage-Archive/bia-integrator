@@ -445,7 +445,8 @@ class ImageAcquisition(ProtocolMixin):
         default_factory=list,
         description="""Biological Imaging Methods Ontology id indicating the kind of imaging that was perfomed."""
     )
-    imaging_method_name: Optional[str] = Field(
+    imaging_method_name: Optional[List[str]] = Field(
+        default_factory=list,
         description="""Name of the kind of imaging method that was performed."""
     )
 

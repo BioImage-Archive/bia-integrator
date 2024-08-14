@@ -27,7 +27,7 @@ def get_image_acquisition(
     )
 
     if persist_artefacts and image_acquisitions:
-        persist(image_acquisitions, "specimen_growth_protocol", submission.accno)
+        persist(image_acquisitions, "image_acquisitions", submission.accno)
 
     return image_acquisitions
 
@@ -49,6 +49,9 @@ def extract_image_acquisition_dicts(submission: Submission) -> List[Dict[str, An
         attr_dict = attributes_to_dict(section.attributes)
 
         model_dict = {k: attr_dict.get(v, default) for k, v, default in key_mapping}
+
+        if isinstance(model_dict["imaging_method_name"], str):
+            model_dict["imaging_method_name"] = [model_dict["imaging_method_name"],]
 
         # TODO: change template / create logic to lookup the fbbi ID
         model_dict["fbbi_id"] = []
