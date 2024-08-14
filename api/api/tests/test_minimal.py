@@ -109,6 +109,31 @@ def test_duplicate_uuid_fails(
     assert rsp.status_code == 404, rsp.json()
 
 
+def test_optional_link_unset_passes(
+    api_client: TestClient, existing_image_representation: dict
+):
+    image_representation = existing_image_representation.copy()
+
+    image_representation["uuid"] = get_uuid()
+    del image_representation["original_file_reference_uuid"]
+
+    rsp = api_client.post(
+        "private/image_representation",
+        json=image_representation,
+    )
+    assert rsp.status_code == 201, rsp.json()
+
+
+def test_optional_reverse_link(
+    api_client: TestClient, existing_image_representation: dict
+):
+    rsp = api_client.get(
+        f"file_reference/{existing_image_representation['original_file_reference_uuid'][0]}/image_representation"
+    )
+    assert rsp.status_code == 200, rsp.json()
+    assert rsp.json() == [existing_image_representation]
+
+
 def test_object_update_version_bumped_passes():
     assert 0, "TODO: indices then add this"
 
