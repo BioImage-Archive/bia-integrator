@@ -52,10 +52,8 @@ def extract_image_acquisition_dicts(submission: Submission) -> List[Dict[str, An
 
         # Convert imaging_method_name to string if necessary
         # TODO: discuss with team whether attribute on model should be list
-        if isinstance(model_dict["imaging_method_name"], list):
-            model_dict["imaging_method_name"] = ", ".join(
-                model_dict["imaging_method_name"]
-            )
+        if isinstance(model_dict["imaging_method_name"], str):
+            model_dict["imaging_method_name"] = [model_dict["imaging_method_name"],]
 
         # TODO: change template / create logic to lookup the fbbi ID
         model_dict["fbbi_id"] = []
