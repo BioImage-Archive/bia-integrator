@@ -49,3 +49,14 @@ class SpecimenImagingPrepartionProtocol(
     bia_data_model.SpecimenImagingPrepartionProtocol, DetailSection
 ):
     pass
+
+
+class Specimen(bia_data_model.Specimen):
+    imaging_preparation_protocol: List[SpecimenImagingPrepartionProtocol] = Field()
+    sample_of: List[BioSample] = Field()
+    growth_protocol: List[SpecimenGrowthProtocol] = Field()
+
+
+class ExperimentallyCapturedImage(bia_data_model.ExperimentallyCapturedImage):
+    acquisition_process: List[ImageAcquisition] = Field()
+    subject: Specimen = Field()

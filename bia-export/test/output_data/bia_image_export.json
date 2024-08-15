@@ -1,0 +1,63 @@
+{
+    "e7322131-8e27-455d-b9fc-8add0719af70": {
+        "uuid": "e7322131-8e27-455d-b9fc-8add0719af70",
+        "version": 1,
+        "model": {
+            "type_name": "ExperimentallyCapturedImage",
+            "version": 1
+        },
+        "attribute": {},
+        "acquisition_process_uuid": [
+            "c2e44a1b-a43c-476e-8ddf-8587f4c955b3"
+        ],
+        "submission_dataset_uuid": "47a4ab60-c76d-4424-bfaa-c2a024de720c",
+        "subject_uuid": "dcc18482-fa1a-468f-878f-c00f9cd46376",
+        "acquisition_process": [
+            {
+                "default_open": true,
+                "title_id": "Test Primary Screen Image Acquisition",
+                "uuid": "c2e44a1b-a43c-476e-8ddf-8587f4c955b3",
+                "version": 1,
+                "model": {
+                    "type_name": "ImageAcquisition",
+                    "version": 1
+                },
+                "protocol_description": "Test image acquisition parameters 1",
+                "imaging_instrument_description": "Test imaging instrument 1",
+                "fbbi_id": [],
+                "imaging_method_name": "confocal microscopy"
+            }
+        ],
+        "subject": {
+            "uuid": "dcc18482-fa1a-468f-878f-c00f9cd46376",
+            "version": 1,
+            "model": {
+                "type_name": "Specimen",
+                "version": 1
+            },
+            "imaging_preparation_protocol_uuid": [
+                "7199d730-29f1-4ad8-b599-e9089cbb2d7b"
+            ],
+            "sample_of_uuid": [
+                "64a67727-4e7c-469a-91c4-6219ae072e99"
+            ],
+            "growth_protocol_uuid": [],
+            "imaging_preparation_protocol": [
+                {
+                    "default_open": true,
+                    "title_id": "Test specimen 1",
+                    "uuid": "7199d730-29f1-4ad8-b599-e9089cbb2d7b",
+                    "version": 1,
+                    "model": {
+                        "type_name": "SpecimenImagingPrepartionProtocol",
+                        "version": 1
+                    },
+                    "protocol_description": "Test sample preparation protocol 1",
+                    "signal_channel_information": []
+                }
+            ],
+            "sample_of": [],
+            "growth_protocol": []
+        }
+    }
+}
