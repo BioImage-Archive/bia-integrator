@@ -31,6 +31,13 @@ Usage
 
 Run:
 
-    poetry run bia-export website-study S-BIADTEST -o bia_export.json -r test/input_data 
+    `poetry run bia-export website-study S-BIADTEST -o bia_export.json -r test/input_data` 
+
+This will create `bia-export.json` using the example test data for studies
+
+
+Run:
+    
+    poetry run bia-export website-image S-BIADTEST -o bia_image_export.json -r test/input_data 
 
 This will create `bia-export.json` using the example test data.
