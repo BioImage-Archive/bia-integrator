@@ -9,3 +9,10 @@ A system for ingesting imaging datasets, tracking images and their representatio
 
 ## Help
 See [documentation](https://bia-integrator.readthedocs.io) for more details
+
+
+# Development
+
+This repo uses precommit hooks to enforce code standards, install with:
+
+  pre-commit install
