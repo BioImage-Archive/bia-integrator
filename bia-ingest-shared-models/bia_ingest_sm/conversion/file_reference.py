@@ -91,10 +91,9 @@ def get_file_reference_by_dataset(
 
 def get_file_reference_for_submission_dataset(
     accession_id: str,
-    submission_dataset: [
+    submission_dataset: 
         bia_data_model.ExperimentalImagingDataset
-        | bia_data_model.ImageAnnotationDataset
-    ],
+        | bia_data_model.ImageAnnotationDataset,
     files_in_file_list: List[biostudies.File],
 ) -> List[bia_data_model.FileReference]:
     """
