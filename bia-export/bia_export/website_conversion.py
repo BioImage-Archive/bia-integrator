@@ -56,6 +56,14 @@ def find_associated_objects(
     return linked_object
 
 
+def create_studies(accession_id_list: str, root_directory: Path) -> dict:
+    study_map = {}
+    for accession_id in accession_id_list:
+        study  = create_study(accession_id, root_directory)
+        study_map[accession_id] = study.model_dump(mode='json')
+    return study_map
+
+
 def create_study(accession_id: str, root_directory: Path) -> Study:
 
     if root_directory:
@@ -171,7 +179,7 @@ def create_experimental_imaging_datasets(
             eid_dict["specimen_growth_protocol"] = process_details_section(
                 root_directory,
                 accession_id,
-                detail_map[BioSample],
+                detail_map[SpecimenGrowthProtocol],
                 association_by_type["specimen"],
             )
             eid_dict["acquisition_process"] = process_details_section(
