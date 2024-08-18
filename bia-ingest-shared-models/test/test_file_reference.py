@@ -1,33 +1,27 @@
-""" Test FileReference creation
-   
-    Test FileReference creation separately from other shared models as it
-    now has a different pattern of creation from other artefacts i.e. 
-    it now needs a submitted dataset
+"""Test FileReference creation
+
+Test FileReference creation separately from other shared models as it
+now has a different pattern of creation from other artefacts i.e.
+it now needs a submitted dataset
 """
 
-from typing import Dict
-from pathlib import Path
-from unittest.mock import Mock
-import pytest
 from . import utils
 from bia_ingest_sm.conversion import (
-    experimental_imaging_dataset,
     file_reference,
 )
-from bia_ingest_sm.biostudies import requests, File
-from pydantic import TypeAdapter
+from bia_ingest_sm.biostudies import File
 
-# TODO: Mock requests.get correctly!!!
-def mock_request_get(flist_url: str) -> Dict[str, str]:
-    data_dir = Path(__file__).parent / "data"
-    path_to_load = data_dir / Path(flist_url).name
-    return_value = Mock()
-    return_value.status_code = 200
-    return_value.content = path_to_load.read_text()
-    return return_value
-
-
-requests.get = mock_request_get
+## TODO: Mock requests.get correctly!!!
+# def mock_request_get(flist_url: str) -> Dict[str, str]:
+#    data_dir = Path(__file__).parent / "data"
+#    path_to_load = data_dir / Path(flist_url).name
+#    return_value = Mock()
+#    return_value.status_code = 200
+#    return_value.content = path_to_load.read_text()
+#    return return_value
+#
+#
+# requests.get = mock_request_get
 
 # Get second study component as dataset in submission
 datasets_in_submission = [
@@ -68,8 +62,8 @@ def test_create_file_reference_for_study_component(test_submission, caplog, resu
 def test_create_file_reference_for_study_component_when_no_matching_sc_in_file_list(
     test_submission, caplog, result_summary
 ):
-    """Test attempted creation of study FileReferences when study 
-        components in dataset do not match does in file_list
+    """Test attempted creation of study FileReferences when study
+    components in dataset do not match does in file_list
     """
 
     dataset = utils.get_test_experimental_imaging_dataset()[0]
