@@ -11,10 +11,10 @@ from ..biostudies import (
     Submission,
     attributes_to_dict,
 )
+from ..config import RESULT_SUMMARY
 from bia_shared_datamodels import bia_data_model
 
-logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger('biaingest')
 
 
 def get_specimen_growth_protocol(
@@ -24,7 +24,7 @@ def get_specimen_growth_protocol(
         submission
     )
     specimen_growth_protocols = dicts_to_api_models(
-        specimen_growth_protocol_model_dicts, bia_data_model.SpecimenGrowthProtocol
+        specimen_growth_protocol_model_dicts, bia_data_model.SpecimenGrowthProtocol, RESULT_SUMMARY[submission.accno]
     )
 
     if persist_artefacts and specimen_growth_protocols:
@@ -60,6 +60,10 @@ def extract_specimen_growth_protocol_dicts(
         )
 
         model_dicts.append(model_dict)
+
+    logger.info(
+        f"Ingesting: {submission.accno}. Created bia_data_model.SpecimenGrowthProtocol. Count: {len(model_dicts)}"
+    )
 
     return model_dicts
 

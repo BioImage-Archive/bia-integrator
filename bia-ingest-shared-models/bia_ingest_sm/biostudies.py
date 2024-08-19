@@ -9,7 +9,7 @@ import requests
 from pydantic import BaseModel, TypeAdapter
 
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('biaingest')
 
 
 STUDY_URL_TEMPLATE = "https://www.ebi.ac.uk/biostudies/api/v1/studies/{accession}"

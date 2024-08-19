@@ -12,11 +12,10 @@ from ..biostudies import (
     Submission,
     attributes_to_dict,
 )
-from ..config import settings
+from ..config import settings, RESULT_SUMMARY
 from bia_shared_datamodels import bia_data_model, semantic_models
 
-logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger('biaingest')
 
 
 def get_study(
@@ -139,7 +138,7 @@ def get_grant(submission: Submission) -> List[semantic_models.Grant]:
         ("id", "grant_id", None),
     ]
     grant_dict = get_generic_section_as_dict(
-        submission, ["Funding",], key_mapping, semantic_models.Grant
+        submission, ["Funding",], key_mapping, semantic_models.Grant, RESULT_SUMMARY[submission.accno]
     )
 
     grant_list = []
@@ -157,7 +156,7 @@ def get_funding_body(submission: Submission) -> semantic_models.FundingBody:
         ("display_name", "Agency", None,),
     ]
     funding_body = get_generic_section_as_dict(
-        submission, ["Funding",], key_mapping, semantic_models.FundingBody
+        submission, ["Funding",], key_mapping, semantic_models.FundingBody, RESULT_SUMMARY[submission.accno]
     )
     return funding_body
 

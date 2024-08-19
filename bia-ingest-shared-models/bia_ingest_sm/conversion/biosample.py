@@ -11,10 +11,10 @@ from ..biostudies import (
     Submission,
     attributes_to_dict,
 )
+from ..config import RESULT_SUMMARY
 from bia_shared_datamodels import bia_data_model, semantic_models
 
-logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger('biaingest')
 
 
 def get_biosample(
@@ -22,7 +22,7 @@ def get_biosample(
 ) -> List[bia_data_model.BioSample]:
 
     biosample_model_dicts = extract_biosample_dicts(submission)
-    biosamples = dicts_to_api_models(biosample_model_dicts, bia_data_model.BioSample)
+    biosamples = dicts_to_api_models(biosample_model_dicts, bia_data_model.BioSample, RESULT_SUMMARY[submission.accno])
 
     if persist_artefacts and biosamples:
         persist(biosamples, "biosamples", submission.accno)
@@ -78,6 +78,11 @@ def extract_biosample_dicts(submission: Submission) -> List[Dict[str, Any]]:
         model_dict["version"] = 1
         model_dict = filter_model_dictionary(model_dict, bia_data_model.BioSample)
         model_dicts.append(model_dict)
+
+
+    logger.info(
+        f"Ingesting: {submission.accno}. Created bia_data_model.BioSample. Count: {len(model_dicts)}"
+    )
 
     return model_dicts
 

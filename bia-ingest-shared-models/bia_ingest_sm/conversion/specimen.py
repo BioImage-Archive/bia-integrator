@@ -16,14 +16,14 @@ from ..biostudies import (
     Submission,
     attributes_to_dict,
 )
+from ..config import RESULT_SUMMARY
 from . import (
     biosample as biosample_conversion,
     specimen_imaging_preparation_protocol as sipp_conversion,
     specimen_growth_protocol as sgp_conversion,
 )
 
-logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger('biaingest')
 
 
 def get_specimen(
@@ -36,7 +36,7 @@ def get_specimen(
     (specimen) GrowthProtocol.
     """
 
-    logger.info(
+    logger.debug(
         f"Starting creation of bia_shared_models.Specimen models for submission: {submission.accno}"
     )
     # ToDo - when API in operation do we attempt to retreive from
@@ -107,7 +107,8 @@ def get_specimen(
 
         model_dict = filter_model_dictionary(model_dict, bia_data_model.Specimen)
         model_dicts.append(model_dict)
-    specimens = dicts_to_api_models(model_dicts, bia_data_model.Specimen)
+
+    specimens = dicts_to_api_models(model_dicts, bia_data_model.Specimen, RESULT_SUMMARY[submission.accno])
 
     if persist_artefacts and specimens:
         persist(specimens, "specimens", submission.accno)
@@ -115,9 +116,9 @@ def get_specimen(
     # ToDo: How should we deal with situation where specimens for a
     # submission are exactly the same? E.g. see associations of S-BIAD1287
     logger.info(
-        f"Finished the creation of bia_shared_models.Specimen models for submission: {submission.accno}. {len(model_dicts)} models created."
+        f"Ingesting: {submission.accno}. Created bia_data_model.Specimen. Count: {len(model_dicts)}"
     )
-    return dicts_to_api_models(model_dicts, bia_data_model.Specimen)
+    return specimens
 
 
 def generate_specimen_uuid(specimen_dict: Dict[str, Any]) -> str:

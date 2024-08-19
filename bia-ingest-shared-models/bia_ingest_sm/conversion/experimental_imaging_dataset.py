@@ -13,10 +13,13 @@ from ..biostudies import (
     Submission,
     attributes_to_dict,
 )
+from ..config import RESULT_SUMMARY
 from bia_shared_datamodels import bia_data_model, semantic_models
+from pydantic import ValidationError
+import traceback
 
-logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO)
+
+logger = logging.getLogger('biaingest')
 
 
 def get_experimental_imaging_dataset(
@@ -108,6 +111,10 @@ def get_experimental_imaging_dataset(
         experimental_imaging_dataset.append(
             bia_data_model.ExperimentalImagingDataset.model_validate(model_dict)
         )
+    
+    logger.info(
+        f"Ingesting: {submission.accno}. Created bia_data_model.ExperimentalImagingDataset. Count: {len(experimental_imaging_dataset)}"
+    )
 
     if persist_artefacts and experimental_imaging_dataset:
         persist(
@@ -123,6 +130,7 @@ def get_image_analysis_method(
     submission: Submission,
 ) -> Dict[str, semantic_models.ImageAnalysisMethod]:
     key_mapping = [
+<<<<<<< HEAD
         (
             "protocol_description",
             "Title",
@@ -133,6 +141,10 @@ def get_image_analysis_method(
             "Image analysis overview",
             None,
         ),
+=======
+        ("protocol_description", "Title", None,),
+        ("protocol_description", "Image analysis overview", None,),
+>>>>>>> fbaa8c4 (improve ingest error reporting in the terminal)
     ]
 
     return get_generic_section_as_dict(
@@ -142,6 +154,7 @@ def get_image_analysis_method(
         ],
         key_mapping,
         semantic_models.ImageAnalysisMethod,
+        RESULT_SUMMARY[submission.accno],
     )
 
 

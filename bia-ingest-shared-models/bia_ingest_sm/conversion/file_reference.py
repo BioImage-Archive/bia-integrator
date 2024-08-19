@@ -1,5 +1,6 @@
 import logging
 from pathlib import Path
+from pydantic import ValidationError
 from typing import List, Dict
 from .utils import (
     dict_to_uuid,
@@ -14,11 +15,10 @@ from ..biostudies import (
     file_uri,
 )
 from .. import biostudies  # To make reference to biostudies.File explicit
-from ..config import settings
+from ..config import settings, RESULT_SUMMARY
 from bia_shared_datamodels import bia_data_model
 
-logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger('biaingest')
 
 
 def get_file_reference_by_dataset(
@@ -82,7 +82,7 @@ def get_file_reference_by_dataset(
                 for file_reference in file_references:
                     output_path = output_dir / f"{file_reference.uuid}.json"
                     output_path.write_text(file_reference.model_dump_json(indent=2))
-                    logger.info(f"Written {output_path}")
+                    logger.debug(f"Written {output_path}")
 
             fileref_to_datasets[dataset_name].extend(file_references)
 
@@ -117,7 +117,13 @@ def get_file_reference_for_submission_dataset(
         file_dict["attribute"] = attributes_to_dict(f.attributes)
         file_dict["version"] = 1
         file_dict = filter_model_dictionary(file_dict, bia_data_model.FileReference)
-        file_reference = bia_data_model.FileReference.model_validate(file_dict)
-        file_references.append(file_reference)
+
+        try:
+            file_reference = bia_data_model.FileReference.model_validate(file_dict)
+            file_references.append(file_reference)
+        except(ValidationError):
+            logger.warn(f"Failed to create FileReference")
+            logger.debug("Pydantic Validation Error:", exc_info=True)
+            RESULT_SUMMARY[accession_id].FileReference_ValidationErrorCount += 1
 
     return file_references
