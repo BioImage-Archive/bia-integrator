@@ -134,7 +134,7 @@
                     "uuid": "7199d730-29f1-4ad8-b599-e9089cbb2d7b",
                     "version": 1,
                     "model": {
-                        "type_name": "SpecimenImagingPrepartionProtocol",
+                        "type_name": "SpecimenImagingPreparationProtocol",
                         "version": 1
                     },
                     "protocol_description": "Test sample preparation protocol 1",

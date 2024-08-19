@@ -14,7 +14,7 @@ from typing import Callable
             mock_objects.get_signal_channel_information_dict,
         ),
         (
-            bia_data_model.SpecimenImagingPrepartionProtocol,
+            bia_data_model.SpecimenImagingPreparationProtocol,
             mock_objects.get_specimen_imaging_preparation_protocol_dict,
         ),
         (

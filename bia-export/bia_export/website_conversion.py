@@ -7,7 +7,7 @@ from .website_models import (
     ImageAcquisition,
     BioSample,
     SpecimenGrowthProtocol,
-    SpecimenImagingPrepartionProtocol,
+    SpecimenImagingPreparationProtocol,
 )
 from glob import glob
 from typing import List, Type
@@ -103,10 +103,10 @@ def create_experimental_imaging_datasets(
                 "bia_type": bia_data_model.BioSample,
                 "previously_displayed": set(),
             },
-            SpecimenImagingPrepartionProtocol: {
+            SpecimenImagingPreparationProtocol: {
                 "source_directory": "specimen_imaging_preparation_protocols",
                 "association_field": "specimen",
-                "bia_type": bia_data_model.SpecimenImagingPrepartionProtocol,
+                "bia_type": bia_data_model.SpecimenImagingPreparationProtocol,
                 "previously_displayed": set(),
             },
             SpecimenGrowthProtocol: {
@@ -165,7 +165,7 @@ def create_experimental_imaging_datasets(
             eid_dict["specimen_imaging_preparation_protocol"] = process_details_section(
                 root_directory,
                 accession_id,
-                detail_map[SpecimenImagingPrepartionProtocol],
+                detail_map[SpecimenImagingPreparationProtocol],
                 association_by_type["specimen"],
             )
             eid_dict["specimen_growth_protocol"] = process_details_section(

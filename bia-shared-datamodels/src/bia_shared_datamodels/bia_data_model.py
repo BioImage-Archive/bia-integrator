@@ -274,7 +274,7 @@ class ImageAcquisition(
 
 
 class SpecimenImagingPreparationProtocol(
-    semantic_models.SpecimenImagingPrepartionProtocol,
+    semantic_models.SpecimenImagingPreparationProtocol,
     DocumentMixin,
     UserIdentifiedObject,
 ):
