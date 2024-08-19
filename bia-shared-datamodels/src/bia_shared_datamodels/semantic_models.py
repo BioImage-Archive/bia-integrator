@@ -546,7 +546,7 @@ class ImageAnalysisMethod(ProtocolMixin):
     Information about image analysis methods.
     """
 
-    features_analysed: Optional[str] = Field(description="""""")
+    features_analysed: str = Field(description="""""")
 
 
 class ImageCorrelationMethod(ProtocolMixin):
