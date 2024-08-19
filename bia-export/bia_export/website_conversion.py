@@ -173,7 +173,7 @@ def create_experimental_imaging_datasets(
             eid_dict["specimen_growth_protocol"] = process_details_section(
                 root_directory,
                 accession_id,
-                detail_map[BioSample],
+                detail_map[SpecimenGrowthProtocol],
                 association_by_type["specimen"],
             )
             eid_dict["acquisition_process"] = process_details_section(
@@ -215,8 +215,8 @@ def create_ec_images(
                 path = root_directory.joinpath(
                     f"{path_name}/{accession_id}/{uuid}.json"
                 )
-                api_ia = read_api_json_file(path, bia_type)
-                obj_dict = api_ia.model_dump() | {"default_open": True}
+                api_object = read_api_json_file(path, bia_type)
+                obj_dict = api_object.model_dump() | {"default_open": True}
                 obj_list.append(website_type(**obj_dict))
             return obj_list
 
@@ -238,7 +238,7 @@ def create_ec_images(
             )
 
             biosample_list = process_list(
-                api_specimen.growth_protocol_uuid,
+                api_specimen.sample_of_uuid,
                 accession_id,
                 BioSample,
                 bia_data_model.BioSample,
