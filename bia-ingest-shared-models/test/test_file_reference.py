@@ -35,9 +35,9 @@ datasets_in_submission = [
 ]
 
 
-def test_get_file_reference_for_submission_dataset(test_submission):
-    """Test creation of FileReferences for dataset with file list supplied
-
+def test_get_file_reference_for_submission_dataset(test_submission, result_summary):
+    """
+    Test creation of FileReferences for dataset with file list supplied
     """
     file_list_data = utils.get_test_file_list_data("file_list_study_component_2.json")
     files_in_filelist = [File.model_validate(f) for f in file_list_data]
@@ -47,15 +47,17 @@ def test_get_file_reference_for_submission_dataset(test_submission):
         accession_id=test_submission.accno,
         submission_dataset=datasets_in_submission[0],
         files_in_file_list=files_in_filelist,
+        result_summary=result_summary
     )
     assert created == expected
 
 
-def test_create_file_reference_for_study_component(test_submission, caplog):
+def test_create_file_reference_for_study_component(test_submission, caplog, result_summary):
 
     expected = {datasets_in_submission[0].title_id: utils.get_test_file_reference()}
     created = file_reference.get_file_reference_by_dataset(
-        test_submission, datasets_in_submission=datasets_in_submission
+        test_submission, datasets_in_submission=datasets_in_submission, result_summary=result_summary
+
     )
     assert created == expected
 
@@ -64,7 +66,7 @@ def test_create_file_reference_for_study_component(test_submission, caplog):
 
 
 def test_create_file_reference_for_study_component_when_no_matching_sc_in_file_list(
-    test_submission, caplog
+    test_submission, caplog, result_summary
 ):
     """Test attempted creation of study FileReferences when study 
         components in dataset do not match does in file_list
@@ -73,7 +75,7 @@ def test_create_file_reference_for_study_component_when_no_matching_sc_in_file_l
     dataset = utils.get_test_experimental_imaging_dataset()[0]
     dataset.title_id = "Test name not in file list"
     created = file_reference.get_file_reference_by_dataset(
-        test_submission, datasets_in_submission=[dataset,]
+        test_submission, datasets_in_submission=[dataset,], result_summary=result_summary
     )
 
     assert created is None

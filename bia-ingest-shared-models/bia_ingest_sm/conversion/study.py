@@ -12,22 +12,22 @@ from ..biostudies import (
     Submission,
     attributes_to_dict,
 )
-from ..config import settings, RESULT_SUMMARY
+from ..config import settings
 from bia_shared_datamodels import bia_data_model, semantic_models
 
 logger = logging.getLogger('biaingest')
 
 
 def get_study(
-    submission: Submission, persist_artefacts: bool = False
+    submission: Submission, result_summary: dict, persist_artefacts: bool = False
 ) -> bia_data_model.Study:
     """
     Return an API study model populated from the submission
     """
 
     submission_attributes = attributes_to_dict(submission.attributes)
-    contributors = get_contributor(submission)
-    grants = get_grant(submission)
+    contributors = get_contributor(submission, result_summary)
+    grants = get_grant(submission, result_summary)
 
     study_attributes = attributes_to_dict(submission.section.attributes)
 
@@ -108,7 +108,7 @@ def get_licence(study_attributes: Dict[str, Any]) -> semantic_models.LicenceType
 
 
 def get_external_reference(
-    submission: Submission,
+    submission: Submission, RESULT_SUMMARY: dict
 ) -> List[semantic_models.ExternalReference]:
     """
     Map biostudies.Submission.Link to semantic_models.ExternalReference
@@ -132,8 +132,8 @@ def get_external_reference(
 
 
 # TODO: Put comments and docstring
-def get_grant(submission: Submission) -> List[semantic_models.Grant]:
-    funding_body_dict = get_funding_body(submission)
+def get_grant(submission: Submission, RESULT_SUMMARY: dict) -> List[semantic_models.Grant]:
+    funding_body_dict = get_funding_body(submission, RESULT_SUMMARY)
     key_mapping = [
         ("id", "grant_id", None),
     ]
@@ -150,7 +150,7 @@ def get_grant(submission: Submission) -> List[semantic_models.Grant]:
 
 
 # TODO: Put comments and docstring
-def get_funding_body(submission: Submission) -> semantic_models.FundingBody:
+def get_funding_body(submission: Submission, RESULT_SUMMARY: dict) -> semantic_models.FundingBody:
 
     key_mapping = [
         ("display_name", "Agency", None,),
@@ -161,7 +161,7 @@ def get_funding_body(submission: Submission) -> semantic_models.FundingBody:
     return funding_body
 
 
-def get_affiliation(submission: Submission) -> Dict[str, semantic_models.Affiliation]:
+def get_affiliation(submission: Submission, RESULT_SUMMARY: dict) -> Dict[str, semantic_models.Affiliation]:
     """
     Maps biostudies.Submission.Organisation sections to semantic_models.Affiliations
     """
@@ -191,7 +191,7 @@ def get_affiliation(submission: Submission) -> Dict[str, semantic_models.Affilia
     return affiliation_dict
 
 
-def get_publication(submission: Submission) -> List[semantic_models.Publication]:
+def get_publication(submission: Submission, RESULT_SUMMARY: dict) -> List[semantic_models.Publication]:
     publication_sections = find_sections_recursive(
         submission.section, ["publication",], []
     )
@@ -212,11 +212,11 @@ def get_publication(submission: Submission) -> List[semantic_models.Publication]
     return publications
 
 
-def get_contributor(submission: Submission) -> List[semantic_models.Contributor]:
+def get_contributor(submission: Submission, RESULT_SUMMARY: dict) -> List[semantic_models.Contributor]:
     """
     Map authors in submission to semantic_model.Contributors
     """
-    affiliation_dict = get_affiliation(submission)
+    affiliation_dict = get_affiliation(submission, RESULT_SUMMARY)
     key_mapping = [
         ("display_name", "Name", None),
         ("contact_email", "E-mail", "not@supplied.com"),

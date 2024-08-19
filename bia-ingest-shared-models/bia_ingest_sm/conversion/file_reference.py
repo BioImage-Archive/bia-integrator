@@ -14,7 +14,7 @@ from ..biostudies import (
     file_uri,
 )
 from .. import biostudies  # To make reference to biostudies.File explicit
-from ..config import settings, RESULT_SUMMARY
+from ..config import settings
 from bia_shared_datamodels import bia_data_model
 
 logger = logging.getLogger('biaingest')
@@ -26,6 +26,7 @@ def get_file_reference_by_dataset(
         bia_data_model.ExperimentalImagingDataset
         | bia_data_model.ImageAnnotationDataset
     ],
+    result_summary: dict,
     persist_artefacts: bool = False,
 ) -> Dict[str, List[bia_data_model.FileReference]]:
     """
@@ -74,7 +75,7 @@ def get_file_reference_by_dataset(
             files_in_fl = flist_from_flist_fname(submission.accno, fname)
 
             file_references = get_file_reference_for_submission_dataset(
-                submission.accno, dataset, files_in_fl
+                submission.accno, dataset, files_in_fl, result_summary
             )
 
             if persist_artefacts:
@@ -94,6 +95,7 @@ def get_file_reference_for_submission_dataset(
         bia_data_model.ExperimentalImagingDataset
         | bia_data_model.ImageAnnotationDataset,
     files_in_file_list: List[biostudies.File],
+    result_summary: dict
 ) -> List[bia_data_model.FileReference]:
     """
     Return list of file references for particular submission dataset
@@ -123,6 +125,6 @@ def get_file_reference_for_submission_dataset(
         except(ValidationError):
             logger.warn(f"Failed to create FileReference")
             logger.debug("Pydantic Validation Error:", exc_info=True)
-            RESULT_SUMMARY[accession_id].FileReference_ValidationErrorCount += 1
+            result_summary[accession_id].FileReference_ValidationErrorCount += 1
 
     return file_references

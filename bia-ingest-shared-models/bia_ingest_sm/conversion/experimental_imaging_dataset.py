@@ -13,7 +13,6 @@ from ..biostudies import (
     Submission,
     attributes_to_dict,
 )
-from ..config import RESULT_SUMMARY
 from bia_shared_datamodels import bia_data_model, semantic_models
 
 
@@ -21,7 +20,7 @@ logger = logging.getLogger('biaingest')
 
 
 def get_experimental_imaging_dataset(
-    submission: Submission, persist_artefacts=False
+    submission: Submission, result_summary: dict, persist_artefacts=False
 ) -> List[bia_data_model.ExperimentalImagingDataset]:
     """
     Map biostudies.Submission study components to bia_data_model.ExperimentalImagingDataset
@@ -33,7 +32,7 @@ def get_experimental_imaging_dataset(
         ],
         [],
     )
-    analysis_method_dict = get_image_analysis_method(submission)
+    analysis_method_dict = get_image_analysis_method(submission, result_summary)
 
     experimental_imaging_dataset = []
     for section in study_components:
@@ -126,6 +125,7 @@ def get_experimental_imaging_dataset(
 
 def get_image_analysis_method(
     submission: Submission,
+    RESULT_SUMMARY: dict
 ) -> Dict[str, semantic_models.ImageAnalysisMethod]:
     key_mapping = [
         (

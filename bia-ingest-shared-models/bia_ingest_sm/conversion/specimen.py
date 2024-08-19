@@ -14,7 +14,6 @@ from .utils import (
 from ..biostudies import (
     Submission,
 )
-from ..config import RESULT_SUMMARY
 from . import (
     biosample as biosample_conversion,
     specimen_imaging_preparation_protocol as sipp_conversion,
@@ -25,7 +24,7 @@ logger = logging.getLogger('biaingest')
 
 
 def get_specimen(
-    submission: Submission, persist_artefacts: bool = False
+    submission: Submission, result_summary: dict, persist_artefacts: bool = False
 ) -> List[bia_data_model.Specimen]:
     """Create and persist bia_data_model.Specimen and models it depends on
 
@@ -41,7 +40,7 @@ def get_specimen(
     # API first before creating biosample, specimen_growth_protocol and
     # specimen_preparation_protocol?
     # Biosamples
-    biosamples = biosample_conversion.get_biosample(submission, persist_artefacts)
+    biosamples = biosample_conversion.get_biosample(submission, result_summary, persist_artefacts)
 
     # Index biosamples by title_id. Makes linking with associations more
     # straight forward.
@@ -53,7 +52,7 @@ def get_specimen(
 
     # ImagingPreparationProtocol
     imaging_preparation_protocols = sipp_conversion.get_specimen_imaging_preparation_protocol(
-        submission, persist_artefacts
+        submission, result_summary, persist_artefacts
     )
     imaging_preparation_protocol_uuids = object_value_pair_to_dict(
         imaging_preparation_protocols, key_attr="title_id", value_attr="uuid"
@@ -61,7 +60,7 @@ def get_specimen(
 
     # GrowthProtocol
     growth_protocols = sgp_conversion.get_specimen_growth_protocol(
-        submission, persist_artefacts
+        submission, result_summary, persist_artefacts
     )
     growth_protocol_uuids = object_value_pair_to_dict(
         growth_protocols, key_attr="title_id", value_attr="uuid"
@@ -106,7 +105,7 @@ def get_specimen(
         model_dict = filter_model_dictionary(model_dict, bia_data_model.Specimen)
         model_dicts.append(model_dict)
 
-    specimens = dicts_to_api_models(model_dicts, bia_data_model.Specimen, RESULT_SUMMARY[submission.accno])
+    specimens = dicts_to_api_models(model_dicts, bia_data_model.Specimen, result_summary[submission.accno])
 
     if persist_artefacts and specimens:
         persist(specimens, "specimens", submission.accno)

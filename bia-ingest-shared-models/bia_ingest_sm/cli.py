@@ -12,8 +12,7 @@ from bia_ingest_sm.conversion.image_acquisition import get_image_acquisition
 import logging
 from rich import print
 from rich.logging import RichHandler
-from .config import RESULT_SUMMARY, ObjectValidationResult
-from .cli_logging import tabulate_errors
+from .cli_logging import tabulate_errors, ObjectValidationResult
 
 app = typer.Typer()
 
@@ -34,36 +33,38 @@ def ingest(accession_id_list: Annotated[List[str], typer.Argument()],
     if verbose:
         logger.setLevel(logging.DEBUG)
 
+    result_summary = {}
+
     for accession_id in accession_id_list:
         print(f"[blue]-------- Starting ingest of {accession_id} --------[/blue]")
         logger.debug(f"starting ingest of {accession_id}")
 
-        RESULT_SUMMARY[accession_id] = ObjectValidationResult()
+        result_summary[accession_id] = ObjectValidationResult()
 
         submission = load_submission(accession_id)
 
-        study = get_study(submission, persist_artefacts=True)
+        study = get_study(submission, result_summary, persist_artefacts=True)
 
         experimental_imaging_datasets = get_experimental_imaging_dataset(
-            submission, persist_artefacts=True
+            submission, result_summary, persist_artefacts=True
         )
 
         file_references = get_file_reference_by_dataset(
-            submission, experimental_imaging_datasets, persist_artefacts=True
+            submission, experimental_imaging_datasets, result_summary, persist_artefacts=True
         )
 
-        image_acquisitions = get_image_acquisition(submission, persist_artefacts=True)
+        image_acquisitions = get_image_acquisition(submission, result_summary, persist_artefacts=True)
 
         # Specimen
         # Biosample and Specimen artefacts are processed as part of bia_data_models.Specimen (note - this is very different from Biostudies.Specimen)
-        specimens = get_specimen(submission, persist_artefacts=True)
+        specimens = get_specimen(submission, result_summary, persist_artefacts=True)
 
         # typer.echo(study.model_dump_json(indent=2))
         
         logger.debug(f"COMPLETED: Ingest of: {accession_id}")
         print(f"[green]-------- Completed ingest of {accession_id} --------[/green]")
     
-    print(tabulate_errors(RESULT_SUMMARY))
+    print(tabulate_errors(result_summary))
 
 
 

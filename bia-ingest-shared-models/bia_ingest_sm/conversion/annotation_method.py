@@ -11,19 +11,18 @@ from ..biostudies import (
     Submission,
     attributes_to_dict,
 )
-from ..config import RESULT_SUMMARY
 from bia_shared_datamodels import bia_data_model
 
 logger = logging.getLogger('biaingest')
 
 
 def get_annotation_method(
-    submission: Submission, persist_artefacts=False
+    submission: Submission, result_summary: dict, persist_artefacts=False
 ) -> List[bia_data_model.AnnotationMethod]:
 
     annotation_method_model_dicts = extract_annotation_method_dicts(submission)
     annotation_methods = dicts_to_api_models(
-        annotation_method_model_dicts, bia_data_model.AnnotationMethod, RESULT_SUMMARY[submission.accno]
+        annotation_method_model_dicts, bia_data_model.AnnotationMethod, result_summary[submission.accno]
     )
 
     if persist_artefacts and annotation_methods:

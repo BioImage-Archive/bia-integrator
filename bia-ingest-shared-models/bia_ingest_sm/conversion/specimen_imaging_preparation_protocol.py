@@ -11,14 +11,13 @@ from ..biostudies import (
     Submission,
     attributes_to_dict,
 )
-from ..config import RESULT_SUMMARY
 from bia_shared_datamodels import bia_data_model
 
 logger = logging.getLogger('biaingest')
 
 
 def get_specimen_imaging_preparation_protocol(
-    submission: Submission, persist_artefacts=False
+    submission: Submission, result_summary: dict, persist_artefacts=False
 ) -> List[bia_data_model.SpecimenImagingPreparationProtocol]:
     specimen_preparation_protocol_model_dicts = (
         extract_specimen_preparation_protocol_dicts(submission)
@@ -26,7 +25,7 @@ def get_specimen_imaging_preparation_protocol(
     specimen_preparation_protocols = dicts_to_api_models(
         specimen_preparation_protocol_model_dicts,
         bia_data_model.SpecimenImagingPreparationProtocol,
-        RESULT_SUMMARY[submission.accno],
+        result_summary[submission.accno],
     )
 
     if persist_artefacts and specimen_preparation_protocols:

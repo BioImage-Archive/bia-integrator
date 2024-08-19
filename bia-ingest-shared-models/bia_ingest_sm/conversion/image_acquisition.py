@@ -11,19 +11,18 @@ from ..biostudies import (
     Submission,
     attributes_to_dict,
 )
-from ..config import RESULT_SUMMARY
 from bia_shared_datamodels import bia_data_model
 
 logger = logging.getLogger('biaingest')
 
 
 def get_image_acquisition(
-    submission: Submission, persist_artefacts=False
+    submission: Submission, result_summary: dict, persist_artefacts=False
 ) -> List[bia_data_model.ImageAcquisition]:
 
     image_acquisition_model_dicts = extract_image_acquisition_dicts(submission)
     image_acquisitions = dicts_to_api_models(
-        image_acquisition_model_dicts, bia_data_model.ImageAcquisition, RESULT_SUMMARY[submission.accno]
+        image_acquisition_model_dicts, bia_data_model.ImageAcquisition, result_summary[submission.accno]
     )
 
     if persist_artefacts and image_acquisitions:

@@ -11,7 +11,8 @@ from ..biostudies import (
     Attribute,
     find_file_lists_in_submission,
 )
-from ..config import settings, ObjectValidationResult
+from ..config import settings
+from ..cli_logging import ObjectValidationResult
 
 logger = logging.getLogger('biaingest')
 
