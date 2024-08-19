@@ -65,7 +65,9 @@ class Repository:
     def __init__(self) -> None:
         mongo_connstring = os.environ["MONGO_CONNSTRING"]
         self.connection = AsyncIOMotorClient(
-            mongo_connstring, uuidRepresentation="standard", maxPoolSize=10
+            mongo_connstring,
+            uuidRepresentation=UuidRepresentation.STANDARD,
+            maxPoolSize=10,
         )
         self.db = self.connection.get_database(
             DB_NAME,
@@ -161,7 +163,7 @@ class Repository:
         doc = await self._get_doc_raw(uuid=uuid)
 
         if doc is None:
-            raise exceptions.DocumentNotFound("Study does not exist")
+            raise exceptions.DocumentNotFound("Document does not exist")
 
         return doc_type(**doc)
 

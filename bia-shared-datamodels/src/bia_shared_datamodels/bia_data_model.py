@@ -220,7 +220,7 @@ class ImageRepresentation(
     # We may want to store the FileReference -> Image(Represenation) rather than in the original_file_reference_uuid
     original_file_reference_uuid: Annotated[
         Optional[List[UUID]], ObjectReference(FileReference)
-    ] = Field(default_factory=lambda : [])
+    ] = Field(default_factory=lambda: [])
     representation_of_uuid: UUID = Field()  # @TODO: Branching links
 
     model_config = ConfigDict(model_version_latest=1)
