@@ -3,7 +3,6 @@ import uuid as uuid_lib
 from fastapi.testclient import TestClient
 import pytest
 import json
-import jsonpickle
 
 TEST_SERVER_BASE_URL = "http://localhost.com/v2"
 
