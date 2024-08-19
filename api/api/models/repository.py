@@ -66,7 +66,7 @@ class Repository:
         mongo_connstring = os.environ["MONGO_CONNSTRING"]
         self.connection = AsyncIOMotorClient(
             mongo_connstring,
-            uuidRepresentation=UuidRepresentation.STANDARD,
+            uuidRepresentation="standard",
             maxPoolSize=10,
         )
         self.db = self.connection.get_database(

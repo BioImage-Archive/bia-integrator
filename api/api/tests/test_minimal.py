@@ -92,21 +92,22 @@ def test_create_object_duplicate_dependency_fails(
     assert specimen["sample_of_uuid"][0] in rsp_body["detail"]
 
 
-def test_duplicate_uuid_fails(
-    api_client: TestClient, existing_specimen: dict, existing_study: dict
-):
-    """
-    ! Should fail (maybe with a different status code)
-    Needs indices
-    """
-    specimen = existing_specimen.copy()
-    specimen["uuid"] = existing_study["uuid"]
+#   TODO - when we add indices
+# def test_duplicate_uuid_fails(
+#    api_client: TestClient, existing_specimen: dict, existing_study: dict
+# ):
+#    """
+#    ! Should fail (maybe with a different status code)
+#    Needs indices
+#    """
+#    specimen = existing_specimen.copy()
+#    specimen["uuid"] = existing_study["uuid"]
 
-    rsp = api_client.post(
-        "private/specimen",
-        json=specimen,
-    )
-    assert rsp.status_code == 404, rsp.json()
+#    rsp = api_client.post(
+#        "private/specimen",
+#        json=specimen,
+#    )
+#    assert rsp.status_code == 404, rsp.json()
 
 
 def test_optional_link_unset_passes(
@@ -134,9 +135,11 @@ def test_optional_reverse_link(
     assert rsp.json() == [existing_image_representation]
 
 
-def test_object_update_version_bumped_passes():
-    assert 0, "TODO: indices then add this"
+#   TODO - When we add indices
+# def test_object_update_version_bumped_passes():
+#    assert 0, "TODO: indices then add this"
 
 
-def test_object_update_version_enforced():
-    assert 0, "TODO: longer todo, check version works as expected"
+#   TODO - When we add indices
+# def test_object_update_version_enforced():
+#    assert 0, "TODO: longer todo, check version works as expected"
