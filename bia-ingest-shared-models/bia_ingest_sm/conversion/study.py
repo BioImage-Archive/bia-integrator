@@ -1,5 +1,6 @@
 import logging
 from pathlib import Path
+from pydantic import ValidationError
 import re
 from typing import List, Any, Dict
 from .utils import (
@@ -7,6 +8,7 @@ from .utils import (
     mattributes_to_dict,
     dict_to_uuid,
     find_sections_recursive,
+    log_failed_model_creation
 )
 from ..biostudies import (
     Submission,
@@ -66,7 +68,10 @@ def get_study(
     }
     # study_uuid = dict_to_uuid(study_dict, ["accession_id",])
     # study_dict["uuid"] = study_uuid
-    study = bia_data_model.Study.model_validate(study_dict)
+    try:
+        study = bia_data_model.Study.model_validate(study_dict)
+    except(ValidationError):
+            log_failed_model_creation(bia_data_model.Study, result_summary)
 
     if persist_artefacts:
         output_dir = Path(settings.bia_data_dir) / "studies"
@@ -150,18 +155,18 @@ def get_grant(submission: Submission, RESULT_SUMMARY: dict) -> List[semantic_mod
 
 
 # TODO: Put comments and docstring
-def get_funding_body(submission: Submission, RESULT_SUMMARY: dict) -> semantic_models.FundingBody:
+def get_funding_body(submission: Submission, result_summary: dict) -> semantic_models.FundingBody:
 
     key_mapping = [
         ("display_name", "Agency", None,),
     ]
     funding_body = get_generic_section_as_dict(
-        submission, ["Funding",], key_mapping, semantic_models.FundingBody, RESULT_SUMMARY[submission.accno]
+        submission, ["Funding",], key_mapping, semantic_models.FundingBody, result_summary[submission.accno]
     )
     return funding_body
 
 
-def get_affiliation(submission: Submission, RESULT_SUMMARY: dict) -> Dict[str, semantic_models.Affiliation]:
+def get_affiliation(submission: Submission, result_summary: dict) -> Dict[str, semantic_models.Affiliation]:
     """
     Maps biostudies.Submission.Organisation sections to semantic_models.Affiliations
     """
@@ -184,14 +189,18 @@ def get_affiliation(submission: Submission, RESULT_SUMMARY: dict) -> Dict[str, s
         attr_dict = attributes_to_dict(section.attributes)
 
         model_dict = {k: attr_dict.get(v, default) for k, v, default in key_mapping}
-        affiliation_dict[section.accno] = semantic_models.Affiliation.model_validate(
+        try:
+            affiliation_dict[section.accno] = semantic_models.Affiliation.model_validate(
             model_dict
-        )
+        )        
+        except(ValidationError):
+            log_failed_model_creation(semantic_models.Contributor, result_summary)
+        
 
     return affiliation_dict
 
 
-def get_publication(submission: Submission, RESULT_SUMMARY: dict) -> List[semantic_models.Publication]:
+def get_publication(submission: Submission, result_summary: dict) -> List[semantic_models.Publication]:
     publication_sections = find_sections_recursive(
         submission.section, ["publication",], []
     )
@@ -207,16 +216,19 @@ def get_publication(submission: Submission, RESULT_SUMMARY: dict) -> List[semant
         attr_dict = attributes_to_dict(section.attributes)
 
         model_dict = {k: attr_dict.get(v, default) for k, v, default in key_mapping}
-        publications.append(semantic_models.Publication.model_validate(model_dict))
+        try:
+            publications.append(semantic_models.Publication.model_validate(model_dict))
+        except(ValidationError):
+            log_failed_model_creation(semantic_models.Contributor, result_summary)
 
     return publications
 
 
-def get_contributor(submission: Submission, RESULT_SUMMARY: dict) -> List[semantic_models.Contributor]:
+def get_contributor(submission: Submission, result_summary: dict) -> List[semantic_models.Contributor]:
     """
     Map authors in submission to semantic_model.Contributors
     """
-    affiliation_dict = get_affiliation(submission, RESULT_SUMMARY)
+    affiliation_dict = get_affiliation(submission, result_summary)
     key_mapping = [
         ("display_name", "Name", None),
         ("contact_email", "E-mail", "not@supplied.com"),
@@ -237,6 +249,9 @@ def get_contributor(submission: Submission, RESULT_SUMMARY: dict) -> List[semant
             model_dict["affiliation"] = [
                 model_dict["affiliation"],
             ]
-        contributors.append(semantic_models.Contributor.model_validate(model_dict))
+        try:
+            contributors.append(semantic_models.Contributor.model_validate(model_dict))
+        except(ValidationError):
+            log_failed_model_creation(semantic_models.Contributor, result_summary)
 
     return contributors

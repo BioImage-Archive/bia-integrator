@@ -7,12 +7,14 @@ from .utils import (
     get_generic_section_as_dict,
     persist,
     filter_model_dictionary,
+    log_failed_model_creation
 )
 import bia_ingest_sm.conversion.study as study_conversion
 from ..biostudies import (
     Submission,
     attributes_to_dict,
 )
+from pydantic import ValidationError
 from bia_shared_datamodels import bia_data_model, semantic_models
 
 
@@ -105,10 +107,15 @@ def get_experimental_imaging_dataset(
             model_dict, bia_data_model.ExperimentalImagingDataset
         )
 
-        experimental_imaging_dataset.append(
+        
+        try:
+            experimental_imaging_dataset.append(
             bia_data_model.ExperimentalImagingDataset.model_validate(model_dict)
-        )
-    
+        )    
+        except(ValidationError):
+            log_failed_model_creation(bia_data_model.Study, result_summary)
+
+
     logger.info(
         f"Ingesting: {submission.accno}. Created bia_data_model.ExperimentalImagingDataset. Count: {len(experimental_imaging_dataset)}"
     )

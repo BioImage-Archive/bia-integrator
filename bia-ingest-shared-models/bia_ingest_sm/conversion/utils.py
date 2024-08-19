@@ -16,6 +16,14 @@ from ..cli_logging import ObjectValidationResult
 
 logger = logging.getLogger('biaingest')
 
+
+def log_failed_model_creation(model_class, valdiation_error_tracking) -> None:
+    logger.error(f"Failed to create {model_class.__name__}")
+    logger.debug("Pydantic Validation Error:", exc_info=True)
+    field_name = f"{model_class.__name__}_ValidationErrorCount"
+    valdiation_error_tracking.__setattr__(field_name, valdiation_error_tracking.__getattribute__(field_name) + 1)
+
+
 # TODO: Put comments and docstring
 def get_generic_section_as_list(
     root: Submission | Section,
@@ -23,6 +31,7 @@ def get_generic_section_as_list(
     key_mapping: List[Tuple[str, str, str | None | List]],
     mapped_object: Optional[BaseModel] = None,
     mapped_attrs_dict: Optional[Dict[str, Any]] = None,
+    valdiation_error_tracking: Optional[ObjectValidationResult] = None,
 ) -> List[Any | Dict[str, str | List[str]]]:
     """
     Map biostudies.Submission objects to either semantic_models or bia_data_model equivalent
@@ -42,7 +51,12 @@ def get_generic_section_as_list(
         if mapped_object is None:
             return_list.append(model_dict)
         else:
-            return_list.append(mapped_object.model_validate(model_dict))
+            if not valdiation_error_tracking:
+                raise RuntimeError("If a mapped_object is provided, valdiation_error_tracking needs to also be provided.")
+            try:
+                return_list.append(mapped_object.model_validate(model_dict))
+            except(ValidationError):
+                log_failed_model_creation(mapped_object, valdiation_error_tracking)
     return return_list
 
 
@@ -74,10 +88,7 @@ def get_generic_section_as_dict(
             try:
                 return_dict[section.accno] = mapped_object.model_validate(model_dict)
             except(ValidationError):
-                logger.warn(f"Failed to create {mapped_object.__name__}")
-                logger.debug("Pydantic Validation Error:", exc_info=True)
-                field_name = f"{mapped_object.__name__}_ValidationErrorCount"
-                valdiation_error_tracking.__setattr__(field_name, valdiation_error_tracking.__getattribute__(field_name) + 1)
+                log_failed_model_creation(mapped_object, valdiation_error_tracking)
     return return_dict
 
 
@@ -93,10 +104,7 @@ def dicts_to_api_models(
         try:
             api_models.append(api_model_class.model_validate(model_dict))
         except(ValidationError):
-            logger.warn(f"Failed to create {api_model_class.__name__}")
-            logger.debug("Pydantic Validation Error:", exc_info=True)
-            field_name = f"{api_model_class.__name__}_ValidationErrorCount"
-            valdiation_error_tracking.__setattr__(field_name, valdiation_error_tracking.__getattribute__(field_name) + 1)
+            log_failed_model_creation(api_model_class, valdiation_error_tracking)
     return api_models
 
 
@@ -156,7 +164,7 @@ def dict_to_uuid(my_dict: Dict[str, Any], attributes_to_consider: List[str]) -> 
     return str(uuid.UUID(version=4, hex=hexdigest))
 
 
-def persist(object_list: List, object_path: str, sumbission_accno: str):
+def persist(object_list: List[BaseModel], object_path: str, sumbission_accno: str):
     output_dir = Path(settings.bia_data_dir) / object_path / sumbission_accno
     if not output_dir.is_dir():
         output_dir.mkdir(parents=True)
