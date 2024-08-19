@@ -130,7 +130,6 @@ def get_image_analysis_method(
     submission: Submission,
 ) -> Dict[str, semantic_models.ImageAnalysisMethod]:
     key_mapping = [
-<<<<<<< HEAD
         (
             "protocol_description",
             "Title",
@@ -141,10 +140,6 @@ def get_image_analysis_method(
             "Image analysis overview",
             None,
         ),
-=======
-        ("protocol_description", "Title", None,),
-        ("protocol_description", "Image analysis overview", None,),
->>>>>>> fbaa8c4 (improve ingest error reporting in the terminal)
     ]
 
     return get_generic_section_as_dict(
