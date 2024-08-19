@@ -5,7 +5,6 @@ from bia_shared_datamodels import bia_data_model, semantic_models
 
 from .utils import (
     dicts_to_api_models,
-    find_sections_recursive,
     dict_to_uuid,
     persist,
     filter_model_dictionary,
@@ -14,7 +13,6 @@ from .utils import (
 )
 from ..biostudies import (
     Submission,
-    attributes_to_dict,
 )
 from ..config import RESULT_SUMMARY
 from . import (

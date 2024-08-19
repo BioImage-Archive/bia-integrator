@@ -10,7 +10,6 @@ from .utils import (
 from ..biostudies import (
     Submission,
     attributes_to_dict,
-    find_file_lists_in_submission,
     flist_from_flist_fname,
     file_uri,
 )

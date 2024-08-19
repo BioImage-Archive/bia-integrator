@@ -15,8 +15,6 @@ from ..biostudies import (
 )
 from ..config import RESULT_SUMMARY
 from bia_shared_datamodels import bia_data_model, semantic_models
-from pydantic import ValidationError
-import traceback
 
 
 logger = logging.getLogger('biaingest')
