@@ -40,24 +40,38 @@ def make_get_item(t: Type[shared_data_models.DocumentMixin]):
     return get_item
 
 
+def make_reverse_link_handler(
+    source_attribute: str, source_type: Type[shared_data_models.DocumentMixin]
+):
+    async def get_descendents(
+        uuid: shared_data_models.UUID, db: Repository = Depends()
+    ) -> List[source_type]:
+        return await db.get_docs(
+            # !!!!
+            # source_attribute has list values sometimes (for models that reference a list of other objects)
+            #   mongo queries just so happen have the semantics we want
+            # a.i. list_attribute: some_val means "any value in list_attribute is equal to some_val"
+            doc_filter={source_attribute: uuid},
+            doc_type=source_type,
+        )
+
+    return get_descendents
+
+
+def router_add_reverse_link(
+    router: APIRouter, link_target_type, link_source_type, link_attribute_name
+):
+    router.add_api_route(
+        f"/{to_snake(link_target_type.__name__)}/{{uuid}}/{to_snake(link_source_type.__name__)}",
+        response_model=List[link_source_type],
+        operation_id=f"get{link_source_type.__name__}In{link_target_type.__name__}",
+        summary=f"Get {link_source_type.__name__} In {link_target_type.__name__}",
+        methods=["GET"],
+        endpoint=make_reverse_link_handler(link_attribute_name, link_source_type),
+    )
+
+
 def make_reverse_links(router: APIRouter) -> APIRouter:
-    def make_reverse_link_handler(
-        source_attribute: str, source_type: Type[shared_data_models.DocumentMixin]
-    ):
-        async def get_descendents(
-            uuid: shared_data_models.UUID, db: Repository = Depends()
-        ) -> List[source_type]:
-            return await db.get_docs(
-                # !!!!
-                # source_attribute has list values sometimes (for models that reference a list of other objects)
-                #   mongo queries just so happen have the semantics we want
-                # a.i. list_attribute: some_val means "any value in list_attribute is equal to some_val"
-                doc_filter={source_attribute: uuid},
-                doc_type=source_type,
-            )
-
-        return get_descendents
-
     for model in models_public:
         for (
             link_attribute_name,
@@ -66,13 +80,8 @@ def make_reverse_links(router: APIRouter) -> APIRouter:
             # Just in case we accidentally link to a private model somehow (technically possible)
             #   just raise and defer definining behaviour until we use it
             if link_attribute_type in models_public:
-                router.add_api_route(
-                    f"/{to_snake(link_attribute_type.__name__)}/{{uuid}}/{to_snake(model.__name__)}",
-                    response_model=List[model],
-                    operation_id=f"get{model.__name__}In{link_attribute_type.__name__}",
-                    summary=f"Get {model.__name__} In {link_attribute_type.__name__}",
-                    methods=["GET"],
-                    endpoint=make_reverse_link_handler(link_attribute_name, model),
+                router_add_reverse_link(
+                    router, link_attribute_type, model, link_attribute_name
                 )
             else:
                 raise Exception("TODO: Link from a public model to a nonpublic one")
@@ -90,6 +99,69 @@ def make_router() -> APIRouter:
         )
 
     make_reverse_links(router)
+
+    """
+    The ambiguous links - @TODO: Deleteme
+    """
+    # fileref to dataset
+    for dataset_type in [
+        shared_data_models.ImageAnnotationDataset,
+        shared_data_models.ExperimentalImagingDataset,
+    ]:
+        router_add_reverse_link(
+            router,
+            dataset_type,
+            shared_data_models.FileReference,
+            "submission_dataset_uuid",
+        )
+
+    # representation to image
+    for image_type in [
+        shared_data_models.DerivedImage,
+        shared_data_models.ExperimentallyCapturedImage,
+    ]:
+        router_add_reverse_link(
+            router,
+            image_type,
+            shared_data_models.ImageRepresentation,
+            "representation_of_uuid",
+        )
+
+    # AnnotationFile to dataset
+    for annotation_file_type in [
+        shared_data_models.ImageAnnotationDataset,
+        shared_data_models.ExperimentalImagingDataset,
+    ]:
+        router_add_reverse_link(
+            router,
+            annotation_file_type,
+            shared_data_models.AnnotationFileReference,
+            "submission_dataset_uuid",
+        )
+
+    # AnnotationFile to image
+    for annotation_file_type in [
+        shared_data_models.DerivedImage,
+        shared_data_models.ExperimentallyCapturedImage,
+    ]:
+        router_add_reverse_link(
+            router,
+            annotation_file_type,
+            shared_data_models.AnnotationFileReference,
+            "source_image_uuid",
+        )
+
+    # DerivedImage to image
+    for image_type in [
+        shared_data_models.DerivedImage,
+        shared_data_models.ExperimentallyCapturedImage,
+    ]:
+        router_add_reverse_link(
+            router,
+            image_type,
+            shared_data_models.DerivedImage,
+            "source_image_uuid",
+        )
 
     return router
 
