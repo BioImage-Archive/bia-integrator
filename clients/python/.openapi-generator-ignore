@@ -1,0 +1,7 @@
+## Generated but removed
+bia_integrator_api/test/**
+
+## Manually added
+util.py
+Readme.md
+bia_integrator_api/example
