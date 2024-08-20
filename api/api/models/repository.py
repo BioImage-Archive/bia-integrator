@@ -92,7 +92,7 @@ class Repository:
         ) in object_to_check.get_object_reference_fields().items():
             if not getattr(object_to_check, link_attribute_name):
                 """
-                If a field optional and a link to another object,
+                If a field is a link to another object (the for) and optional (doesn't exist as an attribute on the object to validate),
                     then if not set we skip it (because it's optional)
                     else (it's set to some non-None value) we check that the referenced object matches expected type (below)
                 We don't need to check if the field itself is optional because it's typed and Pydantic does it already

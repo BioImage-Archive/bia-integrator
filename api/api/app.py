@@ -1,8 +1,6 @@
 from . import public
 from . import private
 from .models.repository import repository_create, Repository
-from bia_shared_datamodels.bia_data_model import ObjectReference, Study
-
 
 from fastapi import FastAPI
 from typing import AsyncGenerator

@@ -93,41 +93,33 @@ class TestCreateObject:
         # Check that the dictionary is indeed "Minimal" - no optional fields included, and list fields are of minimum length
         for key in mimimal_dict:
             less_than_minimal_dict = mimimal_dict.copy()
-            if isinstance(less_than_minimal_dict[key], list):
-                if len(less_than_minimal_dict[key]):
-                    """
-                    Minimal object includes at least one element of a list attribute
-                    """
+            if isinstance(less_than_minimal_dict[key], list) and len(
+                less_than_minimal_dict[key]
+            ):
+                """
+                Minimal object includes at least one element of a list attribute
+                This checks if minimum length constraints are enforced / really minimal in the mocks
+                """
 
-                    less_than_minimal_dict[key] = []
+                less_than_minimal_dict[key] = []
 
-                    try:
-                        expected_model_type(**less_than_minimal_dict)
-                    except ValidationError:
-                        pass
-                    except Exception as e:
-                        raise Exception(f"Expected ValidationError, got: {e}")
-                    else:
-                        raise Exception(
-                            f"Expected ValidationError, got no error for empty list {key}"
-                        )
+                try:
+                    expected_model_type(**less_than_minimal_dict)
+                except ValidationError:
+                    pass
+                except Exception as e:
+                    raise Exception(f"Expected ValidationError, got: {e}")
                 else:
-                    """
-                    minimal object has an empty list. If the attribute has a default, then the minimal object wasn't minimal in the first place
-                    """
-                    del less_than_minimal_dict[key]
+                    raise Exception(
+                        f"Expected ValidationError, got no error for empty list {key}"
+                    )
 
-                    try:
-                        expected_model_type(**less_than_minimal_dict)
-                    except ValidationError:
-                        pass
-                    except Exception as e:
-                        raise Exception(f"Expected ValidationError, got: {e}")
-                    else:
-                        raise Exception(
-                            f"Expected ValidationError, got no error after deleting {key}- is the generated minimal object really minimal?"
-                        )
             else:
+                """
+                ! Note this is not isinstance(less_than_minimal_dict[key], list) or not len(less_than_minimal_dict[key])
+                minimal object has an empty list, or minimal object attribute is a non-abstract type
+                This checks if "field exists" constraints are enforced / really minimal in the mocks
+                """
                 del less_than_minimal_dict[key]
                 try:
                     expected_model_type(**less_than_minimal_dict)
