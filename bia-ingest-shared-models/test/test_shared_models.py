@@ -44,7 +44,7 @@ from bia_ingest_sm.conversion import (
         # (bia_data_model.Study, conversion.get_study_from_submission,),
     ),
 )
-def test_create_models(expected_model_func, model_creation_func, test_submission):
+def test_create_models(expected_model_func, model_creation_func, test_submission, result_summary):
     expected = expected_model_func()
-    created = model_creation_func(test_submission)
+    created = model_creation_func(test_submission, result_summary)
     assert expected == created

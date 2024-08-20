@@ -3,7 +3,7 @@ from pathlib import Path
 import hashlib
 import uuid
 from typing import List, Any, Dict, Optional, Tuple, Type, Union
-from pydantic import BaseModel
+from pydantic import BaseModel, ValidationError
 from ..biostudies import (
     Submission,
     attributes_to_dict,
@@ -12,9 +12,16 @@ from ..biostudies import (
     find_file_lists_in_submission,
 )
 from ..config import settings
+from ..cli_logging import ObjectValidationResult
 
-logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger('__main__.'+__name__)
+
+
+def log_failed_model_creation(model_class, valdiation_error_tracking) -> None:
+    logger.error(f"Failed to create {model_class.__name__}")
+    logger.debug("Pydantic Validation Error:", exc_info=True)
+    field_name = f"{model_class.__name__}_ValidationErrorCount"
+    valdiation_error_tracking.__setattr__(field_name, valdiation_error_tracking.__getattribute__(field_name) + 1)
 
 
 # TODO: Put comments and docstring
@@ -22,8 +29,9 @@ def get_generic_section_as_list(
     root: Submission | Section,
     section_name: List[str],
     key_mapping: List[Tuple[str, str, str | None | List]],
-    mapped_object: Optional[Any] = None,
+    mapped_object: Optional[BaseModel] = None,
     mapped_attrs_dict: Optional[Dict[str, Any]] = None,
+    valdiation_error_tracking: Optional[ObjectValidationResult] = None,
 ) -> List[Any | Dict[str, str | List[str]]]:
     """
     Map biostudies.Submission objects to either semantic_models or bia_data_model equivalent
@@ -43,7 +51,12 @@ def get_generic_section_as_list(
         if mapped_object is None:
             return_list.append(model_dict)
         else:
-            return_list.append(mapped_object.model_validate(model_dict))
+            if not valdiation_error_tracking:
+                raise RuntimeError("If a mapped_object is provided, valdiation_error_tracking needs to also be provided.")
+            try:
+                return_list.append(mapped_object.model_validate(model_dict))
+            except(ValidationError):
+                log_failed_model_creation(mapped_object, valdiation_error_tracking)
     return return_list
 
 
@@ -52,7 +65,8 @@ def get_generic_section_as_dict(
     root: Submission | Section,
     section_name: List[str],
     key_mapping: List[Tuple[str, str, Union[str, None, List]]],
-    mapped_object: Optional[Any] = None,
+    mapped_object: Optional[BaseModel] = None,
+    valdiation_error_tracking: Optional[ObjectValidationResult] = None,
 ) -> Dict[str, Any | Dict[str, Dict[str, str | List[str]]]]:
     """
     Map biostudies.Submission objects to dict containing either semantic_models or bia_data_model equivalent
@@ -69,7 +83,12 @@ def get_generic_section_as_dict(
         if mapped_object is None:
             return_dict[section.accno] = model_dict
         else:
-            return_dict[section.accno] = mapped_object.model_validate(model_dict)
+            if not valdiation_error_tracking:
+                raise RuntimeError("If a mapped_object is provided, valdiation_error_tracking needs to also be provided.")
+            try:
+                return_dict[section.accno] = mapped_object.model_validate(model_dict)
+            except(ValidationError):
+                log_failed_model_creation(mapped_object, valdiation_error_tracking)
     return return_dict
 
 
@@ -77,13 +96,15 @@ def get_generic_section_as_dict(
 # Hence the use of the pydantic BaseModel which all API models
 # are derived from in the type hinting
 def dicts_to_api_models(
-    dicts: List[Dict[str, Any]], api_model_class: Type[BaseModel]
+    dicts: List[Dict[str, Any]], api_model_class: Type[BaseModel], valdiation_error_tracking: ObjectValidationResult
 ) -> BaseModel:
 
     api_models = []
     for model_dict in dicts:
-        api_models.append(api_model_class.model_validate(model_dict))
-
+        try:
+            api_models.append(api_model_class.model_validate(model_dict))
+        except(ValidationError):
+            log_failed_model_creation(api_model_class, valdiation_error_tracking)
     return api_models
 
 
@@ -143,15 +164,15 @@ def dict_to_uuid(my_dict: Dict[str, Any], attributes_to_consider: List[str]) -> 
     return str(uuid.UUID(version=4, hex=hexdigest))
 
 
-def persist(object_list: List, object_path: str, sumbission_accno: str):
+def persist(object_list: List[BaseModel], object_path: str, sumbission_accno: str):
     output_dir = Path(settings.bia_data_dir) / object_path / sumbission_accno
     if not output_dir.is_dir():
         output_dir.mkdir(parents=True)
-        logger.info(f"Created {output_dir}")
+        logger.debug(f"Created {output_dir}")
     for object in object_list:
         output_path = output_dir / f"{object.uuid}.json"
         output_path.write_text(object.model_dump_json(indent=2))
-        logger.info(f"Written {output_path}")
+        logger.debug(f"Written {output_path}")
 
 
 def filter_model_dictionary(dictionary: dict, target_model: Type[BaseModel]):

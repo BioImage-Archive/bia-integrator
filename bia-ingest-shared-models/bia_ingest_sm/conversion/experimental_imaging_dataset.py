@@ -7,20 +7,22 @@ from .utils import (
     get_generic_section_as_dict,
     persist,
     filter_model_dictionary,
+    log_failed_model_creation
 )
 import bia_ingest_sm.conversion.study as study_conversion
 from ..biostudies import (
     Submission,
     attributes_to_dict,
 )
+from pydantic import ValidationError
 from bia_shared_datamodels import bia_data_model, semantic_models
 
-logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO)
+
+logger = logging.getLogger('__main__.'+__name__)
 
 
 def get_experimental_imaging_dataset(
-    submission: Submission, persist_artefacts=False
+    submission: Submission, result_summary: dict, persist_artefacts=False
 ) -> List[bia_data_model.ExperimentalImagingDataset]:
     """
     Map biostudies.Submission study components to bia_data_model.ExperimentalImagingDataset
@@ -32,7 +34,7 @@ def get_experimental_imaging_dataset(
         ],
         [],
     )
-    analysis_method_dict = get_image_analysis_method(submission)
+    analysis_method_dict = get_image_analysis_method(submission, result_summary)
 
     experimental_imaging_dataset = []
     for section in study_components:
@@ -105,9 +107,18 @@ def get_experimental_imaging_dataset(
             model_dict, bia_data_model.ExperimentalImagingDataset
         )
 
-        experimental_imaging_dataset.append(
+        
+        try:
+            experimental_imaging_dataset.append(
             bia_data_model.ExperimentalImagingDataset.model_validate(model_dict)
-        )
+        )    
+        except(ValidationError):
+            log_failed_model_creation(bia_data_model.ExperimentalImagingDataset, result_summary)
+
+
+    logger.info(
+        f"Ingesting: {submission.accno}. Created bia_data_model.ExperimentalImagingDataset. Count: {len(experimental_imaging_dataset)}"
+    )
 
     if persist_artefacts and experimental_imaging_dataset:
         persist(
@@ -121,6 +132,7 @@ def get_experimental_imaging_dataset(
 
 def get_image_analysis_method(
     submission: Submission,
+    result_summary: dict
 ) -> Dict[str, semantic_models.ImageAnalysisMethod]:
     key_mapping = [
         (
@@ -142,6 +154,7 @@ def get_image_analysis_method(
         ],
         key_mapping,
         semantic_models.ImageAnalysisMethod,
+        result_summary[submission.accno],
     )
 
 
