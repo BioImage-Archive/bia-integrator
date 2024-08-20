@@ -17,7 +17,7 @@ from ..biostudies import (
 from ..config import settings
 from bia_shared_datamodels import bia_data_model, semantic_models
 
-logger = logging.getLogger('biaingest')
+logger = logging.getLogger('__main__.'+__name__)
 
 
 def get_study(
@@ -194,7 +194,7 @@ def get_affiliation(submission: Submission, result_summary: dict) -> Dict[str, s
             model_dict
         )        
         except(ValidationError):
-            log_failed_model_creation(semantic_models.Contributor, result_summary)
+            log_failed_model_creation(semantic_models.Affiliation, result_summary)
         
 
     return affiliation_dict
@@ -219,7 +219,7 @@ def get_publication(submission: Submission, result_summary: dict) -> List[semant
         try:
             publications.append(semantic_models.Publication.model_validate(model_dict))
         except(ValidationError):
-            log_failed_model_creation(semantic_models.Contributor, result_summary)
+            log_failed_model_creation(semantic_models.Publication, result_summary)
 
     return publications
 

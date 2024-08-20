@@ -17,7 +17,7 @@ from .. import biostudies  # To make reference to biostudies.File explicit
 from ..config import settings
 from bia_shared_datamodels import bia_data_model
 
-logger = logging.getLogger('biaingest')
+logger = logging.getLogger('__main__.'+__name__)
 
 
 def get_file_reference_by_dataset(

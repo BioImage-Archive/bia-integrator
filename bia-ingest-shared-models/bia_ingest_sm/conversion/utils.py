@@ -14,7 +14,7 @@ from ..biostudies import (
 from ..config import settings
 from ..cli_logging import ObjectValidationResult
 
-logger = logging.getLogger('biaingest')
+logger = logging.getLogger('__main__.'+__name__)
 
 
 def log_failed_model_creation(model_class, valdiation_error_tracking) -> None:

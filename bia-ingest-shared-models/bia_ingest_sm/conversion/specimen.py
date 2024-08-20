@@ -20,7 +20,7 @@ from . import (
     specimen_growth_protocol as sgp_conversion,
 )
 
-logger = logging.getLogger('biaingest')
+logger = logging.getLogger('__main__.'+__name__)
 
 
 def get_specimen(

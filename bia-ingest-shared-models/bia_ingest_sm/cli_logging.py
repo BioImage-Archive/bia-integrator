@@ -24,11 +24,10 @@ class ObjectValidationResult(BaseModel):
     Contributor_ValidationErrorCount: int = Field(default=0)
     Organisation_ValidationErrorCount: int = Field(default=0)
 
-def tabulate_errors(dict_of_results: dict[ObjectValidationResult]) -> Table:
+def tabulate_errors(dict_of_results: dict[str, ObjectValidationResult]) -> Table:
     table = Table("Accession ID", "Status", "Error: Count;")
-    for accession_id_key in dict_of_results:
+    for accession_id_key, validation_result in dict_of_results.items():
         error_message = ""
-        validation_result: ObjectValidationResult = dict_of_results[accession_id_key]
         errors = validation_result.model_dump()
         for field, value in errors.items():
             if value > 0:

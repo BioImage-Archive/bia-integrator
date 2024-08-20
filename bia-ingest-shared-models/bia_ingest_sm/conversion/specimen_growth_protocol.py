@@ -13,7 +13,7 @@ from ..biostudies import (
 )
 from bia_shared_datamodels import bia_data_model
 
-logger = logging.getLogger('biaingest')
+logger = logging.getLogger('__main__.'+__name__)
 
 
 def get_specimen_growth_protocol(

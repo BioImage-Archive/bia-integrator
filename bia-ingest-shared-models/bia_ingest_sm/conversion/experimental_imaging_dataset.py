@@ -18,7 +18,7 @@ from pydantic import ValidationError
 from bia_shared_datamodels import bia_data_model, semantic_models
 
 
-logger = logging.getLogger('biaingest')
+logger = logging.getLogger('__main__.'+__name__)
 
 
 def get_experimental_imaging_dataset(
@@ -113,7 +113,7 @@ def get_experimental_imaging_dataset(
             bia_data_model.ExperimentalImagingDataset.model_validate(model_dict)
         )    
         except(ValidationError):
-            log_failed_model_creation(bia_data_model.Study, result_summary)
+            log_failed_model_creation(bia_data_model.ExperimentalImagingDataset, result_summary)
 
 
     logger.info(
@@ -132,7 +132,7 @@ def get_experimental_imaging_dataset(
 
 def get_image_analysis_method(
     submission: Submission,
-    RESULT_SUMMARY: dict
+    result_summary: dict
 ) -> Dict[str, semantic_models.ImageAnalysisMethod]:
     key_mapping = [
         (
@@ -154,7 +154,7 @@ def get_image_analysis_method(
         ],
         key_mapping,
         semantic_models.ImageAnalysisMethod,
-        RESULT_SUMMARY[submission.accno],
+        result_summary[submission.accno],
     )
 
 

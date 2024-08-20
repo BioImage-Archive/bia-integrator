@@ -23,7 +23,7 @@ logging.basicConfig(
     handlers=[RichHandler(show_time=False)]
 )
 
-logger = logging.getLogger('biaingest')
+logger = logging.getLogger()
 
 @app.command(help="Ingest from biostudies and echo json of bia_data_model.Study")
 def ingest(accession_id_list: Annotated[List[str], typer.Argument()],
