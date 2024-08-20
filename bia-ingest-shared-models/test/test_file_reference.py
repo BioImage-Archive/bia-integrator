@@ -5,23 +5,31 @@ now has a different pattern of creation from other artefacts i.e.
 it now needs a submitted dataset
 """
 
+from typing import Dict
+from pathlib import Path
+from unittest.mock import Mock
+import pytest
 from . import utils
 from bia_ingest_sm.conversion import (
     file_reference,
 )
-from bia_ingest_sm.biostudies import File
+from bia_ingest_sm.biostudies import requests, File
 
-## TODO: Mock requests.get correctly!!!
-# def mock_request_get(flist_url: str) -> Dict[str, str]:
-#    data_dir = Path(__file__).parent / "data"
-#    path_to_load = data_dir / Path(flist_url).name
-#    return_value = Mock()
-#    return_value.status_code = 200
-#    return_value.content = path_to_load.read_text()
-#    return return_value
-#
-#
-# requests.get = mock_request_get
+
+@pytest.fixture
+def mock_request_get(monkeypatch):
+    """Requests.get mocked to read file from disk"""
+
+    def _mock_request_get(flist_url: str) -> Dict[str, str]:
+        data_dir = Path(__file__).parent / "data"
+        path_to_load = data_dir / Path(flist_url).name
+        return_value = Mock()
+        return_value.status_code = 200
+        return_value.content = path_to_load.read_text()
+        return return_value
+
+    monkeypatch.setattr(requests, "get", _mock_request_get)
+
 
 # Get second study component as dataset in submission
 datasets_in_submission = [
@@ -46,7 +54,7 @@ def test_get_file_reference_for_submission_dataset(test_submission, result_summa
     assert created == expected
 
 
-def test_create_file_reference_for_study_component(test_submission, caplog, result_summary):
+def test_create_file_reference_for_study_component(test_submission, caplog, result_summary, mock_request_get):
 
     expected = {datasets_in_submission[0].title_id: utils.get_test_file_reference()}
     created = file_reference.get_file_reference_by_dataset(
