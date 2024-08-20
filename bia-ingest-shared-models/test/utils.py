@@ -91,7 +91,7 @@ def get_test_specimen_growth_protocol() -> List[bia_data_model.SpecimenGrowthPro
 
 
 def get_test_specimen_imaging_preparation_protocol() -> (
-    List[bia_data_model.SpecimenImagingPrepartionProtocol]
+    List[bia_data_model.SpecimenImagingPreparationProtocol]
 ):
     # For UUID
     attributes_to_consider = [
@@ -123,10 +123,10 @@ def get_test_specimen_imaging_preparation_protocol() -> (
     for protocol_dict in protocol_info:
         protocol_dict["uuid"] = dict_to_uuid(protocol_dict, attributes_to_consider)
         protocol_dict = filter_model_dictionary(
-            protocol_dict, bia_data_model.SpecimenImagingPrepartionProtocol
+            protocol_dict, bia_data_model.SpecimenImagingPreparationProtocol
         )
         protocol.append(
-            bia_data_model.SpecimenImagingPrepartionProtocol.model_validate(
+            bia_data_model.SpecimenImagingPreparationProtocol.model_validate(
                 protocol_dict
             )
         )

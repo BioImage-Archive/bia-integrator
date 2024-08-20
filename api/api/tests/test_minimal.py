@@ -1,89 +1,145 @@
 """
 WIP minimal tests
+tl;dr avoid importing get_uuid to make sure we reuse mocks
 """
 
 from fastapi.testclient import TestClient
-import pytest
-import uuid as uuid_lib
+from .conftest import get_uuid
 
 
-TEST_SERVER_BASE_URL = "http://localhost.com/v2"
+def test_get_created_study(api_client: TestClient, existing_study):
+    rsp = api_client.get(f"study/{existing_study['uuid']}")
+    assert rsp.status_code == 200, rsp.text
+    assert rsp.json() == existing_study
 
 
-def get_uuid() -> str:
-    # @TODO: make this constant and require mongo to always be clean?
-    generated = uuid_lib.uuid4()
-
-    return str(generated)
-
-
-def get_client(**kwargs) -> TestClient:
-    from fastapi.responses import JSONResponse
-    from fastapi import Request
-    import traceback
-
-    from ..app import app
-
-    @app.exception_handler(Exception)
-    def generic_exception_handler(request: Request, exc: Exception):
-        return JSONResponse(
-            status_code=500,
-            content=traceback.format_exception(exc, value=exc, tb=exc.__traceback__),
-        )
-
-    return TestClient(app, base_url=TEST_SERVER_BASE_URL, **kwargs)
+def test_get_study_datasets(
+    api_client: TestClient, existing_study, existing_experimental_imaging_dataset
+):
+    rsp = api_client.get(f"study/{existing_study['uuid']}/experimental_imaging_dataset")
+    assert rsp.status_code == 200, rsp.json()
+    assert rsp.json() == [existing_experimental_imaging_dataset]
 
 
-@pytest.fixture(scope="module")
-def api_client() -> TestClient:
-    client = get_client(raise_server_exceptions=False)
-    # authenticate_client(client)  # @TODO: DELETEME
+def test_get_biosample_specimens(
+    api_client: TestClient, existing_biosample, existing_specimen
+):
+    rsp = api_client.get(f"bio_sample/{existing_biosample['uuid']}/specimen")
+    assert rsp.status_code == 200, rsp.json()
+    assert rsp.json() == [existing_specimen]
 
-    return client
+
+def test_create_object_missing_dependency_fails(
+    api_client: TestClient, existing_specimen: dict
+):
+    """
+    overwrite uuid and sample uuid on an existing specimen to get a new specimen with a missing sample uuid
+    """
+    specimen = existing_specimen.copy()
+    specimen["uuid"] = get_uuid()
+    specimen["sample_of_uuid"] = [get_uuid()]
+
+    rsp = api_client.post(
+        "private/specimen",
+        json=specimen,
+    )
+    assert rsp.status_code == 404, rsp.json()
+
+    # Error should mention the uuid referenced in sample_of_uuid that doesn't exist
+    rsp_body = rsp.json()
+    assert specimen["sample_of_uuid"][0] in rsp_body["detail"]
 
 
-def test_create_study(api_client: TestClient):
-    study_uuid = get_uuid()
-    study = {
-        "uuid": study_uuid,
-        "version": 0,
-        "release_date": "2023-01-31",
-        "accession_id": study_uuid,
-        "title": "Test BIA study",
-        "description": "description",
-        "licence": "CC_BY_4.0",
-        "see_also": [],
-        "model": {"type_name": "Study", "version": 1},
-        "acknowledgement": "test",
-        "funding_statement": "test",
-        "grant": [],
-        "keyword": [],
-        "related_publication": [],
-        "author": [
-            {
-                "address": None,
-                "display_name": "Test name",
-                "contact_email": "test_email@test.com",
-                "orcid": None,
-                "role": None,
-                "rorid": None,
-                "website": None,
-                "affiliation": [
-                    {
-                        "display_name": "Test",
-                        "address": None,
-                        "rorid": None,
-                        "website": None,
-                    }
-                ],
-            }
-        ],
-        "attribute": {},
-    }
+def test_create_object_mistyped_dependency_fails(
+    api_client: TestClient, existing_specimen: dict, existing_study: dict
+):
+    specimen = existing_specimen.copy()
+    specimen["uuid"] = get_uuid()
+    specimen["imaging_preparation_protocol_uuid"] = [existing_study["uuid"]]
 
-    rsp = api_client.post("private/study", json=study)
+    rsp = api_client.post(
+        "private/specimen",
+        json=specimen,
+    )
+    assert rsp.status_code == 404, rsp.json()
+
+    # Error message should mention the referenced uuid that doesn't exist
+    rsp_body = rsp.json()
+    assert specimen["imaging_preparation_protocol_uuid"][0] in rsp_body["detail"]
+
+
+def test_create_object_duplicate_dependency_fails(
+    api_client: TestClient, existing_specimen: dict
+):
+    """
+    accidental feature of the dependency check implementation
+       if a list of referenced objects contains duplicates (presumably there by accident), object creation should fail
+    except the error is "Not found" instead of something to do with duplicates
+    """
+
+    specimen = existing_specimen.copy()
+    specimen["uuid"] = get_uuid()
+    specimen["sample_of_uuid"] = specimen["sample_of_uuid"] + specimen["sample_of_uuid"]
+
+    rsp = api_client.post(
+        "private/specimen",
+        json=specimen,
+    )
+    assert rsp.status_code == 404, rsp.json()
+
+    # Error message should mention the referenced uuid that doesn't exist
+    rsp_body = rsp.json()
+    assert specimen["sample_of_uuid"][0] in rsp_body["detail"]
+
+
+#   TODO - when we add indices
+# def test_duplicate_uuid_fails(
+#    api_client: TestClient, existing_specimen: dict, existing_study: dict
+# ):
+#    """
+#    ! Should fail (maybe with a different status code)
+#    Needs indices
+#    """
+#    specimen = existing_specimen.copy()
+#    specimen["uuid"] = existing_study["uuid"]
+
+#    rsp = api_client.post(
+#        "private/specimen",
+#        json=specimen,
+#    )
+#    assert rsp.status_code == 404, rsp.json()
+
+
+def test_optional_link_unset_passes(
+    api_client: TestClient, existing_image_representation: dict
+):
+    image_representation = existing_image_representation.copy()
+
+    image_representation["uuid"] = get_uuid()
+    del image_representation["original_file_reference_uuid"]
+
+    rsp = api_client.post(
+        "private/image_representation",
+        json=image_representation,
+    )
     assert rsp.status_code == 201, rsp.json()
 
-    rsp = api_client.get(f"study/{study['uuid']}")
-    assert rsp.status_code == 200, rsp.text
-    assert rsp.json() == study
+
+def test_optional_reverse_link(
+    api_client: TestClient, existing_image_representation: dict
+):
+    rsp = api_client.get(
+        f"file_reference/{existing_image_representation['original_file_reference_uuid'][0]}/image_representation"
+    )
+    assert rsp.status_code == 200, rsp.json()
+    assert rsp.json() == [existing_image_representation]
+
+
+#   TODO - When we add indices
+# def test_object_update_version_bumped_passes():
+#    assert 0, "TODO: indices then add this"
+
+
+#   TODO - When we add indices
+# def test_object_update_version_enforced():
+#    assert 0, "TODO: longer todo, check version works as expected"

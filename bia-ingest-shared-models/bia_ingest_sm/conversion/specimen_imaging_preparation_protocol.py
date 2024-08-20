@@ -19,13 +19,13 @@ logging.basicConfig(level=logging.INFO)
 
 def get_specimen_imaging_preparation_protocol(
     submission: Submission, persist_artefacts=False
-) -> List[bia_data_model.SpecimenImagingPrepartionProtocol]:
+) -> List[bia_data_model.SpecimenImagingPreparationProtocol]:
     specimen_preparation_protocol_model_dicts = (
         extract_specimen_preparation_protocol_dicts(submission)
     )
     specimen_preparation_protocols = dicts_to_api_models(
         specimen_preparation_protocol_model_dicts,
-        bia_data_model.SpecimenImagingPrepartionProtocol,
+        bia_data_model.SpecimenImagingPreparationProtocol,
     )
 
     if persist_artefacts and specimen_preparation_protocols:
@@ -62,7 +62,7 @@ def extract_specimen_preparation_protocol_dicts(
         model_dict["uuid"] = generate_specimen_imaging_preparation_uuid(model_dict)
         model_dict["version"] = 1
         model_dict = filter_model_dictionary(
-            model_dict, bia_data_model.SpecimenImagingPrepartionProtocol
+            model_dict, bia_data_model.SpecimenImagingPreparationProtocol
         )
 
         model_dicts.append(model_dict)

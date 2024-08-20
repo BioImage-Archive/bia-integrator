@@ -7,7 +7,7 @@ import os
 from enum import Enum
 import bia_shared_datamodels.bia_data_model as shared_data_models
 import pymongo
-from typing import Any
+from typing import Type, List, Any
 from .. import exceptions
 import datetime
 
@@ -16,6 +16,7 @@ from bson.datetime_ms import DatetimeMS
 from bson.codec_options import TypeCodec, TypeRegistry
 from bson.binary import UuidRepresentation
 
+from pydantic_core import Url
 
 DB_NAME = os.environ["DB_NAME"]
 COLLECTION_BIA_INTEGRATOR = "bia_integrator"
@@ -38,6 +39,17 @@ class DateCodec(TypeCodec):
         return value.as_datetime().date()
 
 
+class UrlCodec(TypeCodec):
+    python_type = Url
+    bson_type = str
+
+    def transform_python(self, value: Url) -> str:
+        return str(value)
+
+    def transform_bson(self, value: str) -> str:
+        return value
+
+
 class OverwriteMode(str, Enum):
     FAIL = "fail"
     ALLOW_IDEMPOTENT = "allow_idempotent"
@@ -53,14 +65,16 @@ class Repository:
     def __init__(self) -> None:
         mongo_connstring = os.environ["MONGO_CONNSTRING"]
         self.connection = AsyncIOMotorClient(
-            mongo_connstring, uuidRepresentation="standard", maxPoolSize=10
+            mongo_connstring,
+            uuidRepresentation="standard",
+            maxPoolSize=10,
         )
         self.db = self.connection.get_database(
             DB_NAME,
             # Looks like explicitly setting codec_options excludes settings from the client
             #   so uuid_representation needs to be defined even if already defined in connection
             codec_options=CodecOptions(
-                type_registry=TypeRegistry([DateCodec()]),
+                type_registry=TypeRegistry([DateCodec(), UrlCodec()]),
                 uuid_representation=UuidRepresentation.STANDARD,
             ),
         )
@@ -68,7 +82,67 @@ class Repository:
         self.biaint = self.db[COLLECTION_BIA_INTEGRATOR]
         self.ome_metadata = self.db[COLLECTION_OME_METADATA]
 
+    async def assert_model_doc_dependencies_exist(
+        self, object_to_check: shared_data_models.DocumentMixin
+    ):
+        doc_dependencies = []
+        for (
+            link_attribute_name,
+            link_attribute_type,
+        ) in object_to_check.get_object_reference_fields().items():
+            if not getattr(object_to_check, link_attribute_name):
+                """
+                If a field is a link to another object (the for) and optional (doesn't exist as an attribute on the object to validate),
+                    then if not set we skip it (because it's optional)
+                    else (it's set to some non-None value) we check that the referenced object matches expected type (below)
+                We don't need to check if the field itself is optional because it's typed and Pydantic does it already
+                    a.i. if setting a non-optional field to None we wouldn't reach this and get an object validation error instead
+                """
+                continue
+
+            if object_to_check.field_is_list(link_attribute_name):
+                for dependency_uuid in getattr(object_to_check, link_attribute_name):
+                    doc_dependencies.append(
+                        {
+                            "uuid": dependency_uuid,
+                            "model": link_attribute_type.get_model_metadata().model_dump(),
+                        }
+                    )
+            else:
+                doc_dependencies.append(
+                    {
+                        "uuid": getattr(object_to_check, link_attribute_name),
+                        "model": link_attribute_type.get_model_metadata().model_dump(),
+                    }
+                )
+        if not doc_dependencies:
+            """
+            No dependencies to check.
+            No need to do a Mongo round-trip / $or with an empty list as "noop" not supported by Mongo anyway
+            """
+            return
+
+        docs = await self.biaint.find(
+            {"$or": doc_dependencies}, {"uuid": 1, "model": 1}
+        ).to_list(length=None)
+        if len(docs) != len(doc_dependencies):
+            """
+            ! This also fails if an object has the same object as a dependency twice.
+            Feature? Could it happen for something like links in different contexts to the same file/fileref?
+            """
+            dependencies_missing = []
+
+            for doc_dependency in doc_dependencies:
+                if doc_dependency["uuid"] not in docs:
+                    dependencies_missing.append(doc_dependency)
+
+            raise exceptions.DocumentNotFound(
+                f"Document {object_to_check.uuid} has missing dependencies: {dependencies_missing}"
+            )
+
     async def persist_doc(self, model_doc: shared_data_models.DocumentMixin):
+        await self.assert_model_doc_dependencies_exist(model_doc)
+
         try:
             return await self.biaint.insert_one(model_doc.model_dump())
         except pymongo.errors.DuplicateKeyError as e:
@@ -81,13 +155,34 @@ class Repository:
 
             raise exceptions.InvalidUpdateException(str(e))
 
-    async def get_doc(self, uuid: shared_data_models.UUID, doc_type):
+    async def get_doc(
+        self,
+        uuid: shared_data_models.UUID,
+        doc_type: Type[shared_data_models.DocumentMixin],
+    ) -> Any:
         doc = await self._get_doc_raw(uuid=uuid)
 
         if doc is None:
-            raise exceptions.DocumentNotFound("Study does not exist")
+            raise exceptions.DocumentNotFound("Document does not exist")
 
         return doc_type(**doc)
+
+    async def get_docs(
+        self,
+        doc_filter: dict,
+        doc_type: Type[shared_data_models.DocumentMixin],
+    ) -> Any:
+        if not len(doc_filter.keys()):
+            raise Exception("Need at least one filter")
+
+        # @TODO: Only add additional filter for type(indexed) not version
+        doc_filter["model"] = doc_type.get_model_metadata().model_dump()
+
+        docs = []
+        for doc in await self._get_docs_raw(**doc_filter):
+            docs.append(doc_type(**doc))
+
+        return docs
 
     async def _model_doc_exists(
         self, doc_model: shared_data_models.DocumentMixin
@@ -106,11 +201,20 @@ class Repository:
 
         return result == doc
 
-    async def _get_doc_raw(self, **kwargs) -> Any:
+    async def _get_doc_raw(self, **kwargs) -> dict:
         doc = await self.biaint.find_one(kwargs)
         doc.pop("_id")
 
         return doc
+
+    async def _get_docs_raw(self, **kwargs) -> List[dict]:
+        docs = []
+
+        async for doc in self.biaint.find(kwargs):
+            doc.pop("_id")
+            docs.append(doc)
+
+        return docs
 
 
 async def repository_create(init: bool) -> Repository:

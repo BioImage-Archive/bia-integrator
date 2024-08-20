@@ -2,7 +2,6 @@ from . import public
 from . import private
 from .models.repository import repository_create, Repository
 
-
 from fastapi import FastAPI
 from typing import AsyncGenerator
 
@@ -25,7 +24,6 @@ app = FastAPI(
 
 app.openapi_version = "3.0.2"
 
-# app.include_router(private.router, prefix="/v2")
-# routes applied in the order they are declared
+
 app.include_router(public.make_router(), prefix="/v2")
 app.include_router(private.make_router(), prefix="/v2")
