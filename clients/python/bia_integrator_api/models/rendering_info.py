@@ -17,74 +17,90 @@ import pprint
 import re  # noqa: F401
 import json
 
-
-from typing import List, Optional
-from pydantic import BaseModel, StrictInt, conlist
+from pydantic import BaseModel, ConfigDict, StrictInt
+from typing import Any, ClassVar, Dict, List, Optional
 from bia_integrator_api.models.channel_rendering import ChannelRendering
+from typing import Optional, Set
+from typing_extensions import Self
 
 class RenderingInfo(BaseModel):
     """
     RenderingInfo
-    """
-    channel_renders: Optional[conlist(ChannelRendering)] = None
+    """ # noqa: E501
+    channel_renders: Optional[List[ChannelRendering]] = None
     default_z: Optional[StrictInt] = None
     default_t: Optional[StrictInt] = None
-    __properties = ["channel_renders", "default_z", "default_t"]
+    __properties: ClassVar[List[str]] = ["channel_renders", "default_z", "default_t"]
 
-    class Config:
-        """Pydantic configuration"""
-        allow_population_by_field_name = True
-        validate_assignment = True
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_assignment=True,
+        protected_namespaces=(),
+    )
+
 
     def to_str(self) -> str:
         """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.dict(by_alias=True))
+        return pprint.pformat(self.model_dump(by_alias=True))
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
+        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
         return json.dumps(self.to_dict())
 
     @classmethod
-    def from_json(cls, json_str: str) -> RenderingInfo:
+    def from_json(cls, json_str: str) -> Optional[Self]:
         """Create an instance of RenderingInfo from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self):
-        """Returns the dictionary representation of the model using alias"""
-        _dict = self.dict(by_alias=True,
-                          exclude={
-                          },
-                          exclude_none=True)
+    def to_dict(self) -> Dict[str, Any]:
+        """Return the dictionary representation of the model using alias.
+
+        This has the following differences from calling pydantic's
+        `self.model_dump(by_alias=True)`:
+
+        * `None` is only added to the output dict for nullable fields that
+          were set at model initialization. Other fields with value `None`
+          are ignored.
+        """
+        excluded_fields: Set[str] = set([
+        ])
+
+        _dict = self.model_dump(
+            by_alias=True,
+            exclude=excluded_fields,
+            exclude_none=True,
+        )
         # override the default output from pydantic by calling `to_dict()` of each item in channel_renders (list)
         _items = []
         if self.channel_renders:
-            for _item in self.channel_renders:
-                if _item:
-                    _items.append(_item.to_dict())
+            for _item_channel_renders in self.channel_renders:
+                if _item_channel_renders:
+                    _items.append(_item_channel_renders.to_dict())
             _dict['channel_renders'] = _items
         # set to None if default_z (nullable) is None
-        # and __fields_set__ contains the field
-        if self.default_z is None and "default_z" in self.__fields_set__:
+        # and model_fields_set contains the field
+        if self.default_z is None and "default_z" in self.model_fields_set:
             _dict['default_z'] = None
 
         # set to None if default_t (nullable) is None
-        # and __fields_set__ contains the field
-        if self.default_t is None and "default_t" in self.__fields_set__:
+        # and model_fields_set contains the field
+        if self.default_t is None and "default_t" in self.model_fields_set:
             _dict['default_t'] = None
 
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: dict) -> RenderingInfo:
+    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
         """Create an instance of RenderingInfo from a dict"""
         if obj is None:
             return None
 
         if not isinstance(obj, dict):
-            return RenderingInfo.parse_obj(obj)
+            return cls.model_validate(obj)
 
-        _obj = RenderingInfo.parse_obj({
-            "channel_renders": [ChannelRendering.from_dict(_item) for _item in obj.get("channel_renders")] if obj.get("channel_renders") is not None else None,
+        _obj = cls.model_validate({
+            "channel_renders": [ChannelRendering.from_dict(_item) for _item in obj["channel_renders"]] if obj.get("channel_renders") is not None else None,
             "default_z": obj.get("default_z"),
             "default_t": obj.get("default_t")
         })

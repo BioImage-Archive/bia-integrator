@@ -2,6 +2,7 @@
 
 
 ## Properties
+
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **uri_prefix** | **str** |  | [optional] 
@@ -20,12 +21,12 @@ json = "{}"
 # create an instance of SearchFileReference from a JSON string
 search_file_reference_instance = SearchFileReference.from_json(json)
 # print the JSON string representation of the object
-print SearchFileReference.to_json()
+print(SearchFileReference.to_json())
 
 # convert the object into a dict
 search_file_reference_dict = search_file_reference_instance.to_dict()
 # create an instance of SearchFileReference from a dict
-search_file_reference_form_dict = search_file_reference.from_dict(search_file_reference_dict)
+search_file_reference_from_dict = SearchFileReference.from_dict(search_file_reference_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

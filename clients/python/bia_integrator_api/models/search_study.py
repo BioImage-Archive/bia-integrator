@@ -17,14 +17,15 @@ import pprint
 import re  # noqa: F401
 import json
 
-
-from typing import Optional
-from pydantic import BaseModel, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, StrictInt, StrictStr
+from typing import Any, ClassVar, Dict, List, Optional
+from typing import Optional, Set
+from typing_extensions import Self
 
 class SearchStudy(BaseModel):
     """
     SearchStudy
-    """
+    """ # noqa: E501
     author_name_fragment: Optional[StrictStr] = None
     accession_id: Optional[StrictStr] = None
     file_references_count_lte: Optional[StrictInt] = None
@@ -32,79 +33,94 @@ class SearchStudy(BaseModel):
     images_count_lte: Optional[StrictInt] = None
     images_count_gte: Optional[StrictInt] = None
     tag: Optional[StrictStr] = None
-    __properties = ["author_name_fragment", "accession_id", "file_references_count_lte", "file_references_count_gte", "images_count_lte", "images_count_gte", "tag"]
+    __properties: ClassVar[List[str]] = ["author_name_fragment", "accession_id", "file_references_count_lte", "file_references_count_gte", "images_count_lte", "images_count_gte", "tag"]
 
-    class Config:
-        """Pydantic configuration"""
-        allow_population_by_field_name = True
-        validate_assignment = True
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_assignment=True,
+        protected_namespaces=(),
+    )
+
 
     def to_str(self) -> str:
         """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.dict(by_alias=True))
+        return pprint.pformat(self.model_dump(by_alias=True))
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
+        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
         return json.dumps(self.to_dict())
 
     @classmethod
-    def from_json(cls, json_str: str) -> SearchStudy:
+    def from_json(cls, json_str: str) -> Optional[Self]:
         """Create an instance of SearchStudy from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self):
-        """Returns the dictionary representation of the model using alias"""
-        _dict = self.dict(by_alias=True,
-                          exclude={
-                          },
-                          exclude_none=True)
+    def to_dict(self) -> Dict[str, Any]:
+        """Return the dictionary representation of the model using alias.
+
+        This has the following differences from calling pydantic's
+        `self.model_dump(by_alias=True)`:
+
+        * `None` is only added to the output dict for nullable fields that
+          were set at model initialization. Other fields with value `None`
+          are ignored.
+        """
+        excluded_fields: Set[str] = set([
+        ])
+
+        _dict = self.model_dump(
+            by_alias=True,
+            exclude=excluded_fields,
+            exclude_none=True,
+        )
         # set to None if author_name_fragment (nullable) is None
-        # and __fields_set__ contains the field
-        if self.author_name_fragment is None and "author_name_fragment" in self.__fields_set__:
+        # and model_fields_set contains the field
+        if self.author_name_fragment is None and "author_name_fragment" in self.model_fields_set:
             _dict['author_name_fragment'] = None
 
         # set to None if accession_id (nullable) is None
-        # and __fields_set__ contains the field
-        if self.accession_id is None and "accession_id" in self.__fields_set__:
+        # and model_fields_set contains the field
+        if self.accession_id is None and "accession_id" in self.model_fields_set:
             _dict['accession_id'] = None
 
         # set to None if file_references_count_lte (nullable) is None
-        # and __fields_set__ contains the field
-        if self.file_references_count_lte is None and "file_references_count_lte" in self.__fields_set__:
+        # and model_fields_set contains the field
+        if self.file_references_count_lte is None and "file_references_count_lte" in self.model_fields_set:
             _dict['file_references_count_lte'] = None
 
         # set to None if file_references_count_gte (nullable) is None
-        # and __fields_set__ contains the field
-        if self.file_references_count_gte is None and "file_references_count_gte" in self.__fields_set__:
+        # and model_fields_set contains the field
+        if self.file_references_count_gte is None and "file_references_count_gte" in self.model_fields_set:
             _dict['file_references_count_gte'] = None
 
         # set to None if images_count_lte (nullable) is None
-        # and __fields_set__ contains the field
-        if self.images_count_lte is None and "images_count_lte" in self.__fields_set__:
+        # and model_fields_set contains the field
+        if self.images_count_lte is None and "images_count_lte" in self.model_fields_set:
             _dict['images_count_lte'] = None
 
         # set to None if images_count_gte (nullable) is None
-        # and __fields_set__ contains the field
-        if self.images_count_gte is None and "images_count_gte" in self.__fields_set__:
+        # and model_fields_set contains the field
+        if self.images_count_gte is None and "images_count_gte" in self.model_fields_set:
             _dict['images_count_gte'] = None
 
         # set to None if tag (nullable) is None
-        # and __fields_set__ contains the field
-        if self.tag is None and "tag" in self.__fields_set__:
+        # and model_fields_set contains the field
+        if self.tag is None and "tag" in self.model_fields_set:
             _dict['tag'] = None
 
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: dict) -> SearchStudy:
+    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
         """Create an instance of SearchStudy from a dict"""
         if obj is None:
             return None
 
         if not isinstance(obj, dict):
-            return SearchStudy.parse_obj(obj)
+            return cls.model_validate(obj)
 
-        _obj = SearchStudy.parse_obj({
+        _obj = cls.model_validate({
             "author_name_fragment": obj.get("author_name_fragment"),
             "accession_id": obj.get("accession_id"),
             "file_references_count_lte": obj.get("file_references_count_lte"),

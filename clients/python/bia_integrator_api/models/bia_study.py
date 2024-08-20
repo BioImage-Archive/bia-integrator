@@ -17,68 +17,85 @@ import pprint
 import re  # noqa: F401
 import json
 
-
-from typing import Any, Dict, List, Optional
-from pydantic import BaseModel, Field, StrictBool, StrictInt, StrictStr, conlist, constr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr
+from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
 from bia_integrator_api.models.author import Author
 from bia_integrator_api.models.model_metadata import ModelMetadata
 from bia_integrator_api.models.study_annotation import StudyAnnotation
+from typing import Optional, Set
+from typing_extensions import Self
 
 class BIAStudy(BaseModel):
     """
     BIAStudy
-    """
-    attributes: Optional[Dict[str, Any]] = Field(None, description="         When annotations are applied, the ones that have a key different than an object attribute (so they don't overwrite it) get saved here.     ")
-    annotations_applied: Optional[StrictBool] = Field(False, description="         This acts as a dirty flag, with the purpose of telling apart objects that had some fields overwritten by applying annotations (so should be rejected when writing), and those that didn't.     ")
-    annotations: Optional[conlist(StudyAnnotation)] = None
-    context: Optional[constr(strict=True, min_length=1)] = Field('https://raw.githubusercontent.com/BioImage-Archive/bia-integrator/main/api/src/models/jsonld/1.0/StudyContext.jsonld', alias="@context")
-    uuid: StrictStr = Field(...)
-    version: StrictInt = Field(...)
+    """ # noqa: E501
+    attributes: Optional[Dict[str, Any]] = Field(default=None, description="         When annotations are applied, the ones that have a key different than an object attribute (so they don't overwrite it) get saved here.     ")
+    annotations_applied: Optional[StrictBool] = Field(default=False, description="         This acts as a dirty flag, with the purpose of telling apart objects that had some fields overwritten by applying annotations (so should be rejected when writing), and those that didn't.     ")
+    annotations: Optional[List[StudyAnnotation]] = None
+    context: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default='https://raw.githubusercontent.com/BioImage-Archive/bia-integrator/main/api/src/models/jsonld/1.0/StudyContext.jsonld', alias="@context")
+    uuid: StrictStr
+    version: StrictInt
     model: Optional[ModelMetadata] = None
-    title: StrictStr = Field(...)
-    description: StrictStr = Field(...)
-    authors: Optional[conlist(Author)] = None
-    organism: StrictStr = Field(...)
-    release_date: StrictStr = Field(...)
-    accession_id: StrictStr = Field(...)
+    title: StrictStr
+    description: StrictStr
+    authors: Optional[List[Author]] = None
+    organism: StrictStr
+    release_date: StrictStr
+    accession_id: StrictStr
     imaging_type: Optional[StrictStr] = None
     example_image_uri: Optional[StrictStr] = ''
     example_image_annotation_uri: Optional[StrictStr] = ''
-    tags: Optional[conlist(StrictStr)] = None
+    tags: Optional[List[StrictStr]] = None
     file_references_count: Optional[StrictInt] = 0
     images_count: Optional[StrictInt] = 0
-    __properties = ["attributes", "annotations_applied", "annotations", "@context", "uuid", "version", "model", "title", "description", "authors", "organism", "release_date", "accession_id", "imaging_type", "example_image_uri", "example_image_annotation_uri", "tags", "file_references_count", "images_count"]
+    __properties: ClassVar[List[str]] = ["attributes", "annotations_applied", "annotations", "@context", "uuid", "version", "model", "title", "description", "authors", "organism", "release_date", "accession_id", "imaging_type", "example_image_uri", "example_image_annotation_uri", "tags", "file_references_count", "images_count"]
 
-    class Config:
-        """Pydantic configuration"""
-        allow_population_by_field_name = True
-        validate_assignment = True
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_assignment=True,
+        protected_namespaces=(),
+    )
+
 
     def to_str(self) -> str:
         """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.dict(by_alias=True))
+        return pprint.pformat(self.model_dump(by_alias=True))
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
+        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
         return json.dumps(self.to_dict())
 
     @classmethod
-    def from_json(cls, json_str: str) -> BIAStudy:
+    def from_json(cls, json_str: str) -> Optional[Self]:
         """Create an instance of BIAStudy from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self):
-        """Returns the dictionary representation of the model using alias"""
-        _dict = self.dict(by_alias=True,
-                          exclude={
-                          },
-                          exclude_none=True)
+    def to_dict(self) -> Dict[str, Any]:
+        """Return the dictionary representation of the model using alias.
+
+        This has the following differences from calling pydantic's
+        `self.model_dump(by_alias=True)`:
+
+        * `None` is only added to the output dict for nullable fields that
+          were set at model initialization. Other fields with value `None`
+          are ignored.
+        """
+        excluded_fields: Set[str] = set([
+        ])
+
+        _dict = self.model_dump(
+            by_alias=True,
+            exclude=excluded_fields,
+            exclude_none=True,
+        )
         # override the default output from pydantic by calling `to_dict()` of each item in annotations (list)
         _items = []
         if self.annotations:
-            for _item in self.annotations:
-                if _item:
-                    _items.append(_item.to_dict())
+            for _item_annotations in self.annotations:
+                if _item_annotations:
+                    _items.append(_item_annotations.to_dict())
             _dict['annotations'] = _items
         # override the default output from pydantic by calling `to_dict()` of model
         if self.model:
@@ -86,47 +103,47 @@ class BIAStudy(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of each item in authors (list)
         _items = []
         if self.authors:
-            for _item in self.authors:
-                if _item:
-                    _items.append(_item.to_dict())
+            for _item_authors in self.authors:
+                if _item_authors:
+                    _items.append(_item_authors.to_dict())
             _dict['authors'] = _items
         # set to None if model (nullable) is None
-        # and __fields_set__ contains the field
-        if self.model is None and "model" in self.__fields_set__:
+        # and model_fields_set contains the field
+        if self.model is None and "model" in self.model_fields_set:
             _dict['model'] = None
 
         # set to None if authors (nullable) is None
-        # and __fields_set__ contains the field
-        if self.authors is None and "authors" in self.__fields_set__:
+        # and model_fields_set contains the field
+        if self.authors is None and "authors" in self.model_fields_set:
             _dict['authors'] = None
 
         # set to None if imaging_type (nullable) is None
-        # and __fields_set__ contains the field
-        if self.imaging_type is None and "imaging_type" in self.__fields_set__:
+        # and model_fields_set contains the field
+        if self.imaging_type is None and "imaging_type" in self.model_fields_set:
             _dict['imaging_type'] = None
 
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: dict) -> BIAStudy:
+    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
         """Create an instance of BIAStudy from a dict"""
         if obj is None:
             return None
 
         if not isinstance(obj, dict):
-            return BIAStudy.parse_obj(obj)
+            return cls.model_validate(obj)
 
-        _obj = BIAStudy.parse_obj({
+        _obj = cls.model_validate({
             "attributes": obj.get("attributes"),
             "annotations_applied": obj.get("annotations_applied") if obj.get("annotations_applied") is not None else False,
-            "annotations": [StudyAnnotation.from_dict(_item) for _item in obj.get("annotations")] if obj.get("annotations") is not None else None,
-            "context": obj.get("@context") if obj.get("@context") is not None else 'https://raw.githubusercontent.com/BioImage-Archive/bia-integrator/main/api/src/models/jsonld/1.0/StudyContext.jsonld',
+            "annotations": [StudyAnnotation.from_dict(_item) for _item in obj["annotations"]] if obj.get("annotations") is not None else None,
+            "@context": obj.get("@context") if obj.get("@context") is not None else 'https://raw.githubusercontent.com/BioImage-Archive/bia-integrator/main/api/src/models/jsonld/1.0/StudyContext.jsonld',
             "uuid": obj.get("uuid"),
             "version": obj.get("version"),
-            "model": ModelMetadata.from_dict(obj.get("model")) if obj.get("model") is not None else None,
+            "model": ModelMetadata.from_dict(obj["model"]) if obj.get("model") is not None else None,
             "title": obj.get("title"),
             "description": obj.get("description"),
-            "authors": [Author.from_dict(_item) for _item in obj.get("authors")] if obj.get("authors") is not None else None,
+            "authors": [Author.from_dict(_item) for _item in obj["authors"]] if obj.get("authors") is not None else None,
             "organism": obj.get("organism"),
             "release_date": obj.get("release_date"),
             "accession_id": obj.get("accession_id"),

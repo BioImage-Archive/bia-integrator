@@ -2,6 +2,7 @@
 
 
 ## Properties
+
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **context** | **str** |  | [optional] [default to 'https://raw.githubusercontent.com/BioImage-Archive/bia-integrator/main/api/src/models/jsonld/1.0/SpecimenContext.jsonld']
@@ -31,12 +32,12 @@ json = "{}"
 # create an instance of Biosample from a JSON string
 biosample_instance = Biosample.from_json(json)
 # print the JSON string representation of the object
-print Biosample.to_json()
+print(Biosample.to_json())
 
 # convert the object into a dict
 biosample_dict = biosample_instance.to_dict()
 # create an instance of Biosample from a dict
-biosample_form_dict = biosample.from_dict(biosample_dict)
+biosample_from_dict = Biosample.from_dict(biosample_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

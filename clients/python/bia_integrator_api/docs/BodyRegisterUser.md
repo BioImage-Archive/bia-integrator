@@ -2,6 +2,7 @@
 
 
 ## Properties
+
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **email** | **str** |  | 
@@ -18,12 +19,12 @@ json = "{}"
 # create an instance of BodyRegisterUser from a JSON string
 body_register_user_instance = BodyRegisterUser.from_json(json)
 # print the JSON string representation of the object
-print BodyRegisterUser.to_json()
+print(BodyRegisterUser.to_json())
 
 # convert the object into a dict
 body_register_user_dict = body_register_user_instance.to_dict()
 # create an instance of BodyRegisterUser from a dict
-body_register_user_form_dict = body_register_user.from_dict(body_register_user_dict)
+body_register_user_from_dict = BodyRegisterUser.from_dict(body_register_user_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

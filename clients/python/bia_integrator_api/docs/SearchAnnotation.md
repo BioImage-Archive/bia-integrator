@@ -2,6 +2,7 @@
 
 
 ## Properties
+
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **author_email** | **str** |  | [optional] 
@@ -19,12 +20,12 @@ json = "{}"
 # create an instance of SearchAnnotation from a JSON string
 search_annotation_instance = SearchAnnotation.from_json(json)
 # print the JSON string representation of the object
-print SearchAnnotation.to_json()
+print(SearchAnnotation.to_json())
 
 # convert the object into a dict
 search_annotation_dict = search_annotation_instance.to_dict()
 # create an instance of SearchAnnotation from a dict
-search_annotation_form_dict = search_annotation.from_dict(search_annotation_dict)
+search_annotation_from_dict = SearchAnnotation.from_dict(search_annotation_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

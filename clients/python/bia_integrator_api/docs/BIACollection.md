@@ -3,6 +3,7 @@
 A collection of studies with a coherent purpose. Studies can be in multiple collections.
 
 ## Properties
+
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **attributes** | **object** |          When annotations are applied, the ones that have a key different than an object attribute (so they don&#39;t overwrite it) get saved here.      | [optional] 
@@ -28,12 +29,12 @@ json = "{}"
 # create an instance of BIACollection from a JSON string
 bia_collection_instance = BIACollection.from_json(json)
 # print the JSON string representation of the object
-print BIACollection.to_json()
+print(BIACollection.to_json())
 
 # convert the object into a dict
 bia_collection_dict = bia_collection_instance.to_dict()
 # create an instance of BIACollection from a dict
-bia_collection_form_dict = bia_collection.from_dict(bia_collection_dict)
+bia_collection_from_dict = BIACollection.from_dict(bia_collection_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

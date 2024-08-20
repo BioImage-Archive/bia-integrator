@@ -2,6 +2,7 @@
 
 
 ## Properties
+
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **original_relpath** | **str** |  | [optional] 
@@ -21,12 +22,12 @@ json = "{}"
 # create an instance of SearchImageFilter from a JSON string
 search_image_filter_instance = SearchImageFilter.from_json(json)
 # print the JSON string representation of the object
-print SearchImageFilter.to_json()
+print(SearchImageFilter.to_json())
 
 # convert the object into a dict
 search_image_filter_dict = search_image_filter_instance.to_dict()
 # create an instance of SearchImageFilter from a dict
-search_image_filter_form_dict = search_image_filter.from_dict(search_image_filter_dict)
+search_image_filter_from_dict = SearchImageFilter.from_dict(search_image_filter_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

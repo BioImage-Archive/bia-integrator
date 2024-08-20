@@ -17,92 +17,109 @@ import pprint
 import re  # noqa: F401
 import json
 
-
-from typing import List, Optional
-from pydantic import BaseModel, StrictStr, conint, conlist
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
 from bia_integrator_api.models.search_annotation import SearchAnnotation
 from bia_integrator_api.models.search_file_representation import SearchFileRepresentation
+from typing import Optional, Set
+from typing_extensions import Self
 
 class SearchImageFilter(BaseModel):
     """
     SearchImageFilter
-    """
+    """ # noqa: E501
     original_relpath: Optional[StrictStr] = None
-    annotations_any: Optional[conlist(SearchAnnotation)] = None
-    image_representations_any: Optional[conlist(SearchFileRepresentation)] = None
+    annotations_any: Optional[List[SearchAnnotation]] = None
+    image_representations_any: Optional[List[SearchFileRepresentation]] = None
     study_uuid: Optional[StrictStr] = None
     start_uuid: Optional[StrictStr] = None
-    limit: Optional[conint(strict=True, ge=0)] = 10
-    __properties = ["original_relpath", "annotations_any", "image_representations_any", "study_uuid", "start_uuid", "limit"]
+    limit: Optional[Annotated[int, Field(strict=True, ge=0)]] = 10
+    __properties: ClassVar[List[str]] = ["original_relpath", "annotations_any", "image_representations_any", "study_uuid", "start_uuid", "limit"]
 
-    class Config:
-        """Pydantic configuration"""
-        allow_population_by_field_name = True
-        validate_assignment = True
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_assignment=True,
+        protected_namespaces=(),
+    )
+
 
     def to_str(self) -> str:
         """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.dict(by_alias=True))
+        return pprint.pformat(self.model_dump(by_alias=True))
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
+        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
         return json.dumps(self.to_dict())
 
     @classmethod
-    def from_json(cls, json_str: str) -> SearchImageFilter:
+    def from_json(cls, json_str: str) -> Optional[Self]:
         """Create an instance of SearchImageFilter from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self):
-        """Returns the dictionary representation of the model using alias"""
-        _dict = self.dict(by_alias=True,
-                          exclude={
-                          },
-                          exclude_none=True)
+    def to_dict(self) -> Dict[str, Any]:
+        """Return the dictionary representation of the model using alias.
+
+        This has the following differences from calling pydantic's
+        `self.model_dump(by_alias=True)`:
+
+        * `None` is only added to the output dict for nullable fields that
+          were set at model initialization. Other fields with value `None`
+          are ignored.
+        """
+        excluded_fields: Set[str] = set([
+        ])
+
+        _dict = self.model_dump(
+            by_alias=True,
+            exclude=excluded_fields,
+            exclude_none=True,
+        )
         # override the default output from pydantic by calling `to_dict()` of each item in annotations_any (list)
         _items = []
         if self.annotations_any:
-            for _item in self.annotations_any:
-                if _item:
-                    _items.append(_item.to_dict())
+            for _item_annotations_any in self.annotations_any:
+                if _item_annotations_any:
+                    _items.append(_item_annotations_any.to_dict())
             _dict['annotations_any'] = _items
         # override the default output from pydantic by calling `to_dict()` of each item in image_representations_any (list)
         _items = []
         if self.image_representations_any:
-            for _item in self.image_representations_any:
-                if _item:
-                    _items.append(_item.to_dict())
+            for _item_image_representations_any in self.image_representations_any:
+                if _item_image_representations_any:
+                    _items.append(_item_image_representations_any.to_dict())
             _dict['image_representations_any'] = _items
         # set to None if original_relpath (nullable) is None
-        # and __fields_set__ contains the field
-        if self.original_relpath is None and "original_relpath" in self.__fields_set__:
+        # and model_fields_set contains the field
+        if self.original_relpath is None and "original_relpath" in self.model_fields_set:
             _dict['original_relpath'] = None
 
         # set to None if study_uuid (nullable) is None
-        # and __fields_set__ contains the field
-        if self.study_uuid is None and "study_uuid" in self.__fields_set__:
+        # and model_fields_set contains the field
+        if self.study_uuid is None and "study_uuid" in self.model_fields_set:
             _dict['study_uuid'] = None
 
         # set to None if start_uuid (nullable) is None
-        # and __fields_set__ contains the field
-        if self.start_uuid is None and "start_uuid" in self.__fields_set__:
+        # and model_fields_set contains the field
+        if self.start_uuid is None and "start_uuid" in self.model_fields_set:
             _dict['start_uuid'] = None
 
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: dict) -> SearchImageFilter:
+    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
         """Create an instance of SearchImageFilter from a dict"""
         if obj is None:
             return None
 
         if not isinstance(obj, dict):
-            return SearchImageFilter.parse_obj(obj)
+            return cls.model_validate(obj)
 
-        _obj = SearchImageFilter.parse_obj({
+        _obj = cls.model_validate({
             "original_relpath": obj.get("original_relpath"),
-            "annotations_any": [SearchAnnotation.from_dict(_item) for _item in obj.get("annotations_any")] if obj.get("annotations_any") is not None else None,
-            "image_representations_any": [SearchFileRepresentation.from_dict(_item) for _item in obj.get("image_representations_any")] if obj.get("image_representations_any") is not None else None,
+            "annotations_any": [SearchAnnotation.from_dict(_item) for _item in obj["annotations_any"]] if obj.get("annotations_any") is not None else None,
+            "image_representations_any": [SearchFileRepresentation.from_dict(_item) for _item in obj["image_representations_any"]] if obj.get("image_representations_any") is not None else None,
             "study_uuid": obj.get("study_uuid"),
             "start_uuid": obj.get("start_uuid"),
             "limit": obj.get("limit") if obj.get("limit") is not None else 10

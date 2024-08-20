@@ -17,72 +17,79 @@ import pprint
 import re  # noqa: F401
 import json
 
-
-from typing import Dict, List, Optional
-from pydantic import BaseModel, Field, StrictInt, conlist
+from pydantic import BaseModel, ConfigDict, StrictInt
+from typing import Any, ClassVar, Dict, List, Optional
 from bia_integrator_api.models.bulk_operation_item import BulkOperationItem
+from typing import Optional, Set
+from typing_extensions import Self
 
 class BulkOperationResponse(BaseModel):
     """
     BulkOperationResponse
-    """
-    items: conlist(BulkOperationItem) = Field(...)
-    item_idx_by_status: Optional[Dict[str, conlist(StrictInt)]] = None
-    __properties = ["items", "item_idx_by_status"]
+    """ # noqa: E501
+    items: List[BulkOperationItem]
+    item_idx_by_status: Optional[Dict[str, List[StrictInt]]] = None
+    __properties: ClassVar[List[str]] = ["items", "item_idx_by_status"]
 
-    class Config:
-        """Pydantic configuration"""
-        allow_population_by_field_name = True
-        validate_assignment = True
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_assignment=True,
+        protected_namespaces=(),
+    )
+
 
     def to_str(self) -> str:
         """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.dict(by_alias=True))
+        return pprint.pformat(self.model_dump(by_alias=True))
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
+        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
         return json.dumps(self.to_dict())
 
     @classmethod
-    def from_json(cls, json_str: str) -> BulkOperationResponse:
+    def from_json(cls, json_str: str) -> Optional[Self]:
         """Create an instance of BulkOperationResponse from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self):
-        """Returns the dictionary representation of the model using alias"""
-        _dict = self.dict(by_alias=True,
-                          exclude={
-                          },
-                          exclude_none=True)
+    def to_dict(self) -> Dict[str, Any]:
+        """Return the dictionary representation of the model using alias.
+
+        This has the following differences from calling pydantic's
+        `self.model_dump(by_alias=True)`:
+
+        * `None` is only added to the output dict for nullable fields that
+          were set at model initialization. Other fields with value `None`
+          are ignored.
+        """
+        excluded_fields: Set[str] = set([
+        ])
+
+        _dict = self.model_dump(
+            by_alias=True,
+            exclude=excluded_fields,
+            exclude_none=True,
+        )
         # override the default output from pydantic by calling `to_dict()` of each item in items (list)
         _items = []
         if self.items:
-            for _item in self.items:
-                if _item:
-                    _items.append(_item.to_dict())
+            for _item_items in self.items:
+                if _item_items:
+                    _items.append(_item_items.to_dict())
             _dict['items'] = _items
-        # override the default output from pydantic by calling `to_dict()` of each value in item_idx_by_status (dict of array)
-        _field_dict_of_array = {}
-        if self.item_idx_by_status:
-            for _key in self.item_idx_by_status:
-                if self.item_idx_by_status[_key]:
-                    _field_dict_of_array[_key] = [
-                        _item.to_dict() for _item in self.item_idx_by_status[_key]
-                    ]
-            _dict['item_idx_by_status'] = _field_dict_of_array
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: dict) -> BulkOperationResponse:
+    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
         """Create an instance of BulkOperationResponse from a dict"""
         if obj is None:
             return None
 
         if not isinstance(obj, dict):
-            return BulkOperationResponse.parse_obj(obj)
+            return cls.model_validate(obj)
 
-        _obj = BulkOperationResponse.parse_obj({
-            "items": [BulkOperationItem.from_dict(_item) for _item in obj.get("items")] if obj.get("items") is not None else None,
+        _obj = cls.model_validate({
+            "items": [BulkOperationItem.from_dict(_item) for _item in obj["items"]] if obj.get("items") is not None else None,
             "item_idx_by_status": obj.get("item_idx_by_status")
         })
         return _obj

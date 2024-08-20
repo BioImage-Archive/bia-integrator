@@ -1,4 +1,6 @@
 packageName: bia_integrator_api
 projectName: bia_integrator_api
 packageVersion: 0.1.0
+
+# !! This doesn't refresh pyproject.toml (literally only generates otherwise unrunnable source code)
 generateSourceCodeOnly: true

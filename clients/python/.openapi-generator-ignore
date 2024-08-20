@@ -1,6 +1,3 @@
-# OpenAPI Generator Ignore
-# gitignore-like format. Files here don't get overwritten by openapi-generator
-
 ## Generated but removed
 bia_integrator_api/test/**
 

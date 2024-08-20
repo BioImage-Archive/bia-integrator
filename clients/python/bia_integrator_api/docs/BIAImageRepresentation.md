@@ -3,6 +3,7 @@
 A particular representation of a BIAImage. Examples:  * A single HTTP accessible file. * Multiple HTTP accessible files, representing different channels, planes and time points. * An S3 accessible OME-Zarr. * A thumbnail.
 
 ## Properties
+
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **size** | **int** |  | 
@@ -22,12 +23,12 @@ json = "{}"
 # create an instance of BIAImageRepresentation from a JSON string
 bia_image_representation_instance = BIAImageRepresentation.from_json(json)
 # print the JSON string representation of the object
-print BIAImageRepresentation.to_json()
+print(BIAImageRepresentation.to_json())
 
 # convert the object into a dict
 bia_image_representation_dict = bia_image_representation_instance.to_dict()
 # create an instance of BIAImageRepresentation from a dict
-bia_image_representation_form_dict = bia_image_representation.from_dict(bia_image_representation_dict)
+bia_image_representation_from_dict = BIAImageRepresentation.from_dict(bia_image_representation_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

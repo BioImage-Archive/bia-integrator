@@ -2,6 +2,7 @@
 
 
 ## Properties
+
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **attributes** | **object** |          When annotations are applied, the ones that have a key different than an object attribute (so they don&#39;t overwrite it) get saved here.      | [optional] 
@@ -34,12 +35,12 @@ json = "{}"
 # create an instance of BIAStudy from a JSON string
 bia_study_instance = BIAStudy.from_json(json)
 # print the JSON string representation of the object
-print BIAStudy.to_json()
+print(BIAStudy.to_json())
 
 # convert the object into a dict
 bia_study_dict = bia_study_instance.to_dict()
 # create an instance of BIAStudy from a dict
-bia_study_form_dict = bia_study.from_dict(bia_study_dict)
+bia_study_from_dict = BIAStudy.from_dict(bia_study_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
