@@ -114,23 +114,21 @@ class TestCreateObject:
                         f"Expected ValidationError, got no error for empty list {key}"
                     )
 
+            """
+            Checks if "field exists" constraints are enforced at all
+                - fallthrough for lists with minimum length constraints for the extra-check of required fields always being required
+            """
+            del less_than_minimal_dict[key]
+            try:
+                expected_model_type(**less_than_minimal_dict)
+            except ValidationError:
+                pass
+            except Exception as e:
+                raise Exception(f"Expected ValidationError, got: {e}")
             else:
-                """
-                ! Note this is not isinstance(less_than_minimal_dict[key], list) or not len(less_than_minimal_dict[key])
-                minimal object has an empty list, or minimal object attribute is a non-abstract type
-                This checks if "field exists" constraints are enforced / really minimal in the mocks
-                """
-                del less_than_minimal_dict[key]
-                try:
-                    expected_model_type(**less_than_minimal_dict)
-                except ValidationError:
-                    pass
-                except Exception as e:
-                    raise Exception(f"Expected ValidationError, got: {e}")
-                else:
-                    raise Exception(
-                        f"Expected ValidationError, got no error for deleted key {key}"
-                    )
+                raise Exception(
+                    f"Expected ValidationError, got no error for deleted key {key}"
+                )
 
         # Check that there are no inconsistencies in the model definition's optional fields
         assert (
