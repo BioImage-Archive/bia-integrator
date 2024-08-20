@@ -1,15 +1,16 @@
+from unittest.mock import Mock
+from typing import Dict
 from pathlib import Path
 import json
 import pytest
-from bia_ingest_sm.biostudies import Submission
+from bia_ingest_sm.biostudies import Submission, requests
 from .utils import accession_id
 from bia_ingest_sm.cli_logging import ObjectValidationResult
 
+
 @pytest.fixture
 def base_path() -> Path:
-    """Return full path to test directory
-
-    """
+    """Return full path to test directory"""
     return Path(__file__).parent
 
 
@@ -24,3 +25,18 @@ def test_submission(base_path: Path) -> Submission:
 @pytest.fixture
 def result_summary():
     return {accession_id: ObjectValidationResult()}
+
+
+@pytest.fixture
+def mock_request_get(monkeypatch):
+    """Requests.get mocked to read file from disk"""
+
+    def _mock_request_get(flist_url: str) -> Dict[str, str]:
+        data_dir = Path(__file__).parent / "data"
+        path_to_load = data_dir / Path(flist_url).name
+        return_value = Mock()
+        return_value.status_code = 200
+        return_value.content = path_to_load.read_text()
+        return return_value
+
+    monkeypatch.setattr(requests, "get", _mock_request_get)
