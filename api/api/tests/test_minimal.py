@@ -156,7 +156,7 @@ def test_known_bug_should_not_pass_but_does_union_reference_typed_lists_not_excl
     assert rsp.status_code == 201, "Fixed the bug!"
 
 
-def test_known_bug_should_not_pass_but_does_can_resolve_reverse_link_from_mistyped_parent(
+def test_cannot_resolve_reverse_union_link_from_mistyped_parent(
     api_client: TestClient,
     existing_annotaton_file_reference: dict,
     existing_experimentally_captured_image: dict,
@@ -175,11 +175,10 @@ def test_known_bug_should_not_pass_but_does_can_resolve_reverse_link_from_mistyp
     assert rsp.status_code == 201
 
     rsp = api_client.get(
-        # BUG: using an existing experimentally captured image as a derived_image (annotation_file_reference can't tell the difference)
+        # existing_experimentally_captured_image exists but is not a derived_image
         f"derived_image/{existing_experimentally_captured_image['uuid']}/annotation_file_reference",
     )
-    assert rsp.status_code == 200
-    assert rsp.json() == [existing_annotaton_file_reference]
+    assert rsp.status_code == 404
 
 
 #   TODO - When we add indices

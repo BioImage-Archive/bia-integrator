@@ -173,7 +173,9 @@ class Repository:
         uuid: shared_data_models.UUID,
         doc_type: Type[shared_data_models.DocumentMixin],
     ) -> Any:
-        doc = await self._get_doc_raw(uuid=uuid)
+        doc = await self._get_doc_raw(
+            uuid=uuid, model=doc_type.get_model_metadata().model_dump()
+        )
 
         if doc is None:
             raise exceptions.DocumentNotFound("Document does not exist")
@@ -216,7 +218,8 @@ class Repository:
 
     async def _get_doc_raw(self, **kwargs) -> dict:
         doc = await self.biaint.find_one(kwargs)
-        doc.pop("_id")
+        if doc:
+            doc.pop("_id")
 
         return doc
 

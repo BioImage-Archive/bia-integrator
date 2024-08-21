@@ -41,11 +41,17 @@ def make_get_item(t: Type[shared_data_models.DocumentMixin]):
 
 
 def make_reverse_link_handler(
-    source_attribute: str, source_type: Type[shared_data_models.DocumentMixin]
+    source_attribute: str,
+    source_type: Type[shared_data_models.DocumentMixin],
+    target_type: Type[shared_data_models.DocumentMixin],
 ):
     async def get_descendents(
         uuid: shared_data_models.UUID, db: Repository = Depends()
     ) -> List[source_type]:
+        # Check target document actually exists (and is typed correctly - esp. important for union-typed links)
+        #   see workaround_union_reference_types
+        await db.get_doc(uuid, target_type)
+
         return await db.get_docs(
             # !!!!
             # source_attribute has list values sometimes (for models that reference a list of other objects)
@@ -67,7 +73,9 @@ def router_add_reverse_link(
         operation_id=f"get{link_source_type.__name__}In{link_target_type.__name__}",
         summary=f"Get {link_source_type.__name__} In {link_target_type.__name__}",
         methods=["GET"],
-        endpoint=make_reverse_link_handler(link_attribute_name, link_source_type),
+        endpoint=make_reverse_link_handler(
+            link_attribute_name, link_source_type, link_target_type
+        ),
     )
 
 
