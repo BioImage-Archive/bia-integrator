@@ -15,7 +15,7 @@ class ExperimentalImagingDataset(bia_data_model.ExperimentalImagingDataset):
     acquisition_process: list[ImageAcquisition] = Field(
         description="""Processes involved in the creation of the images and files in this dataset."""
     )
-    specimen_imaging_preparation_protocol: list[SpecimenImagingPrepartionProtocol] = (
+    specimen_imaging_preparation_protocol: list[SpecimenImagingPreparationProtocol] = (
         Field(
             description="""Processes involved in the preprapartion of the samples for imaged."""
         )
@@ -45,8 +45,8 @@ class SpecimenGrowthProtocol(bia_data_model.SpecimenGrowthProtocol, DetailSectio
     pass
 
 
-class SpecimenImagingPrepartionProtocol(
-    bia_data_model.SpecimenImagingPrepartionProtocol, DetailSection
+class SpecimenImagingPreparationProtocol(
+    bia_data_model.SpecimenImagingPreparationProtocol, DetailSection
 ):
     pass
 

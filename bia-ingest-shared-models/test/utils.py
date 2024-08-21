@@ -13,6 +13,7 @@ from bia_ingest_sm.conversion.utils import dict_to_uuid, filter_model_dictionary
 
 accession_id = "S-BIADTEST"
 
+
 def get_test_annotation_method() -> List[bia_data_model.AnnotationMethod]:
     # For UUID
     attributes_to_consider = [
@@ -91,7 +92,7 @@ def get_test_specimen_growth_protocol() -> List[bia_data_model.SpecimenGrowthPro
 
 
 def get_test_specimen_imaging_preparation_protocol() -> (
-    List[bia_data_model.SpecimenImagingPrepartionProtocol]
+    List[bia_data_model.SpecimenImagingPreparationProtocol]
 ):
     # For UUID
     attributes_to_consider = [
@@ -123,10 +124,10 @@ def get_test_specimen_imaging_preparation_protocol() -> (
     for protocol_dict in protocol_info:
         protocol_dict["uuid"] = dict_to_uuid(protocol_dict, attributes_to_consider)
         protocol_dict = filter_model_dictionary(
-            protocol_dict, bia_data_model.SpecimenImagingPrepartionProtocol
+            protocol_dict, bia_data_model.SpecimenImagingPreparationProtocol
         )
         protocol.append(
-            bia_data_model.SpecimenImagingPrepartionProtocol.model_validate(
+            bia_data_model.SpecimenImagingPreparationProtocol.model_validate(
                 protocol_dict
             )
         )
@@ -227,7 +228,9 @@ def get_test_image_acquisition() -> List[bia_data_model.ImageAcquisition]:
             "title_id": "Test Primary Screen Image Acquisition",
             "protocol_description": "Test image acquisition parameters 1",
             "imaging_instrument_description": "Test imaging instrument 1",
-            "imaging_method_name": ["confocal microscopy",],
+            "imaging_method_name": [
+                "confocal microscopy",
+            ],
             "fbbi_id": [],
             "version": 1,
         },
@@ -237,7 +240,9 @@ def get_test_image_acquisition() -> List[bia_data_model.ImageAcquisition]:
             "title_id": "Test Secondary Screen Image Acquisition",
             "protocol_description": "Test image acquisition parameters 2",
             "imaging_instrument_description": "Test imaging instrument 2",
-            "imaging_method_name": ["fluorescence microscopy",],
+            "imaging_method_name": [
+                "fluorescence microscopy",
+            ],
             "fbbi_id": [],
             "version": 1,
         },
@@ -257,27 +262,36 @@ def get_test_image_acquisition() -> List[bia_data_model.ImageAcquisition]:
 
 
 def get_test_specimen() -> bia_data_model.Specimen:
-    
     attributes_to_consider = [
         "accession_id",
         "imaging_preparation_protocol_uuid",
         "sample_of_uuid",
         "growth_protocol_uuid",
-    ]   
+    ]
     imaging_preparation_protocols = {
-        ipp.title_id : ipp.uuid for ipp in get_test_specimen_imaging_preparation_protocol()
+        ipp.title_id: ipp.uuid
+        for ipp in get_test_specimen_imaging_preparation_protocol()
     }
     growth_protocols = {
-        gp.title_id : gp.uuid for gp in get_test_specimen_growth_protocol()
+        gp.title_id: gp.uuid for gp in get_test_specimen_growth_protocol()
     }
     biosamples = {
-        biosample.title_id : biosample.uuid for biosample in get_test_biosample()
+        biosample.title_id: biosample.uuid for biosample in get_test_biosample()
     }
 
     associations = [
-        {"Biosample": "Test Biosample 1", "Specimen": "Test specimen 1",},
-        {"Biosample": "Test Biosample 2 ", "Specimen": "Test specimen 1",},
-        {"Biosample": "Test Biosample 2 ", "Specimen": "Test specimen 2",},
+        {
+            "Biosample": "Test Biosample 1",
+            "Specimen": "Test specimen 1",
+        },
+        {
+            "Biosample": "Test Biosample 2 ",
+            "Specimen": "Test specimen 1",
+        },
+        {
+            "Biosample": "Test Biosample 2 ",
+            "Specimen": "Test specimen 2",
+        },
     ]
 
     specimens = []
@@ -285,9 +299,15 @@ def get_test_specimen() -> bia_data_model.Specimen:
         biosample_title = association["Biosample"]
         specimen_title = association["Specimen"]
         specimen_dict = {
-            "imaging_preparation_protocol_uuid": [imaging_preparation_protocols[specimen_title]],
-            "sample_of_uuid": [biosamples[biosample_title],],
-            "growth_protocol_uuid": [growth_protocols[specimen_title],],
+            "imaging_preparation_protocol_uuid": [
+                imaging_preparation_protocols[specimen_title]
+            ],
+            "sample_of_uuid": [
+                biosamples[biosample_title],
+            ],
+            "growth_protocol_uuid": [
+                growth_protocols[specimen_title],
+            ],
             "accession_id": accession_id,
         }
         specimen_dict["uuid"] = dict_to_uuid(specimen_dict, attributes_to_consider)
@@ -297,6 +317,7 @@ def get_test_specimen() -> bia_data_model.Specimen:
         specimen_dict["version"] = 1
         specimens.append(bia_data_model.Specimen.model_validate(specimen_dict))
     return specimens
+
 
 def get_test_image_analysis_method() -> semantic_models.ImageAnalysisMethod:
     return semantic_models.ImageAnalysisMethod.model_validate(
@@ -318,57 +339,70 @@ def get_test_image_correlation_method() -> semantic_models.ImageCorrelationMetho
 
 
 def get_test_file_list_data(file_list_name) -> List[Dict[str, int | str]]:
-    """Return file list contents as dict
+    """Return file list contents as dict"""
 
-    """
-    
     file_list_path = Path(__file__).parent / "data" / file_list_name
     file_list_data = json.loads(file_list_path.read_text())
     return file_list_data
 
-def get_test_file_reference_data() -> List[Dict[str, str]]:
+
+def get_test_file_reference_data(filelist: str) -> List[Dict[str, str]]:
     """Return file reference data for study component 2
 
-       Return file reference data for study component 2. This is the same
-       data in ./data/file_list_study_component_2.json
+    Return file reference data for study component 2. This is the same
+    data in ./data/file_list_study_component_2.json
     """
-    
+
     submission_dataset_uuids = [s.uuid for s in get_test_experimental_imaging_dataset()]
     uri_template = "https://www.ebi.ac.uk/biostudies/files/{accession_id}/{file_path}"
-    file_list_data = get_test_file_list_data("file_list_study_component_2.json")
+    file_list_data = get_test_file_list_data(filelist)
 
     file_reference_data = []
 
     for fl_data in file_list_data:
-        file_reference_data.append({
-            "accession_id": accession_id,
-            "file_path": fl_data["path"],
-            "format": fl_data["type"],
-            "size_in_bytes": fl_data["size"],
-            "uri": uri_template.format(accession_id=accession_id, file_path=fl_data["path"]),
-            "attribute": { a["name"]: a["value"] for a in fl_data["attributes"]},
-            "submission_dataset_uuid": submission_dataset_uuids[1],
-        })
+        file_reference_data.append(
+            {
+                "accession_id": accession_id,
+                "file_path": fl_data["path"],
+                "format": fl_data["type"],
+                "size_in_bytes": fl_data["size"],
+                "uri": uri_template.format(
+                    accession_id=accession_id, file_path=fl_data["path"]
+                ),
+                "attribute": {a["name"]: a["value"] for a in fl_data["attributes"]},
+                "submission_dataset_uuid": submission_dataset_uuids[1],
+            }
+        )
 
     return file_reference_data
 
-# This returns the expected FileReference models for study component 2
-def get_test_file_reference() -> List [bia_data_model.FileReference]:
-    
-    file_reference_data = get_test_file_reference_data()
-    file_reference_uuids = get_test_file_reference_uuid(file_reference_data)
+
+# Returns expected FileReference models for study component 2 by default
+def get_test_file_reference(
+    filelists: List[str] = [
+        "file_list_study_component_2.json",
+    ],
+) -> List[bia_data_model.FileReference]:
     file_references = []
-    for file_reference_dict, uuid in zip(file_reference_data, file_reference_uuids):
-        file_reference_dict["uuid"] = uuid
-        file_reference_dict["version"] = 1
-        file_reference_dict = filter_model_dictionary(file_reference_dict, bia_data_model.FileReference)
-        file_references.append(bia_data_model.FileReference.model_validate(file_reference_dict))
+    for filelist in filelists:
+        file_reference_data = get_test_file_reference_data(filelist)
+        file_reference_uuids = get_test_file_reference_uuid(file_reference_data)
+        for file_reference_dict, uuid in zip(file_reference_data, file_reference_uuids):
+            file_reference_dict["uuid"] = uuid
+            file_reference_dict["version"] = 1
+            file_reference_dict = filter_model_dictionary(
+                file_reference_dict, bia_data_model.FileReference
+            )
+            file_references.append(
+                bia_data_model.FileReference.model_validate(file_reference_dict)
+            )
 
     return file_references
 
+
 # TODO: Create ExperimentallyCapturedImage
 def get_test_experimental_imaging_dataset() -> (
-    bia_data_model.ExperimentalImagingDataset
+    List[bia_data_model.ExperimentalImagingDataset]
 ):
     study_uuid = dict_to_uuid(
         {

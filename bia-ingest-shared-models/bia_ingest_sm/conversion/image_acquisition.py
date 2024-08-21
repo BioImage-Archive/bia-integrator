@@ -13,17 +13,16 @@ from ..biostudies import (
 )
 from bia_shared_datamodels import bia_data_model
 
-logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger('__main__.'+__name__)
 
 
 def get_image_acquisition(
-    submission: Submission, persist_artefacts=False
+    submission: Submission, result_summary: dict, persist_artefacts=False
 ) -> List[bia_data_model.ImageAcquisition]:
 
     image_acquisition_model_dicts = extract_image_acquisition_dicts(submission)
     image_acquisitions = dicts_to_api_models(
-        image_acquisition_model_dicts, bia_data_model.ImageAcquisition
+        image_acquisition_model_dicts, bia_data_model.ImageAcquisition, result_summary[submission.accno]
     )
 
     if persist_artefacts and image_acquisitions:
@@ -65,6 +64,9 @@ def extract_image_acquisition_dicts(submission: Submission) -> List[Dict[str, An
         )
         model_dicts.append(model_dict)
 
+    logger.info(
+        f"Ingesting: {submission.accno}. Created bia_data_model.ImageAcquisition. Count: {len(model_dicts)}"
+    )
     return model_dicts
 
 

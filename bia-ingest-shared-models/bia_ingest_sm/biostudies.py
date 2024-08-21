@@ -9,7 +9,7 @@ import requests
 from pydantic import BaseModel, TypeAdapter
 
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('__main__.'+__name__)
 
 
 STUDY_URL_TEMPLATE = "https://www.ebi.ac.uk/biostudies/api/v1/studies/{accession}"
@@ -97,7 +97,7 @@ class Submission(BaseModel):
     attributes: List[Attribute]
 
     def as_tsv(self) -> str:
-        tsv_rep = f"Submission"
+        tsv_rep = "Submission"
         if self.accno:
             tsv_rep += f"\t{self.accno}"
         tsv_rep += "\n"
@@ -136,7 +136,6 @@ class QueryResult(BaseModel):
 
 
 def load_submission(accession_id: str) -> Submission:
-
     url = STUDY_URL_TEMPLATE.format(accession=accession_id)
     logger.info(f"Fetching submission from {url}")
     headers = {
@@ -146,7 +145,7 @@ def load_submission(accession_id: str) -> Submission:
 
     assert r.status_code == 200
 
-    submission = Submission.parse_raw(r.content)
+    submission = Submission.model_validate_json(r.content)
 
     return submission
 
@@ -154,11 +153,10 @@ def load_submission(accession_id: str) -> Submission:
 def attributes_to_dict(
     attributes: List[Attribute],
 ) -> Dict[str, Optional[str | List[str]]]:
-
     attr_dict = {}
     for attr in attributes:
         if attr.name in attr_dict:
-            if type(attr_dict[attr.name]) is list:
+            if isinstance(attr_dict[attr.name], list):
                 attr_dict[attr.name].append(attr.value)
             else:
                 attr_dict[attr.name] = [
@@ -175,7 +173,7 @@ def find_file_lists_in_section(
 ) -> List[Dict[str, Union[str, None, List[str]]]]:
     """
     Find all of the File Lists in a Section, recursively descending through the subsections.
-    
+
     Return a list of dictionaries.
     """
 
@@ -206,14 +204,12 @@ def find_file_lists_in_section(
 def find_file_lists_in_submission(
     submission: Submission,
 ) -> List[Dict[str, Union[str, None, List[str]]]]:
-
     return find_file_lists_in_section(submission.section, [])
 
 
 def flist_from_flist_fname(
     accession_id: str, flist_fname: str, extra_attribute: Union[List[str], str] = None
 ) -> List[File]:
-
     flist_url = FLIST_URI_TEMPLATE.format(
         accession_id=accession_id, flist_fname=flist_fname
     )
@@ -231,7 +227,7 @@ def flist_from_flist_fname(
     fl = TypeAdapter(List[File]).validate_json(filtered_content)
 
     if extra_attribute:
-        if type(extra_attribute) is not list:
+        if not isinstance(extra_attribute, list):
             extra_attribute = [
                 extra_attribute,
             ]
@@ -269,7 +265,6 @@ def get_file_uri_template_for_accession(accession_id: str) -> str:
 
 
 def find_files_in_submission_file_lists(submission: Submission) -> List[File]:
-
     file_list_dicts = find_file_lists_in_submission(submission)
     file_lists = []
     for file_list_dict in file_list_dicts:
@@ -298,7 +293,6 @@ def find_files_in_submission(submission: Submission) -> List[File]:
     all_files = find_files_in_submission_file_lists(submission)
 
     def descend_and_find_files(section, files_list=[]):
-
         section_type = type(section)
         if section_type == Section:
             for file in section.files:

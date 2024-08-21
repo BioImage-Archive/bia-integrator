@@ -1,5 +1,6 @@
 import logging
 from pathlib import Path
+from pydantic import ValidationError
 from typing import List, Dict
 from .utils import (
     dict_to_uuid,
@@ -9,7 +10,6 @@ from .utils import (
 from ..biostudies import (
     Submission,
     attributes_to_dict,
-    find_file_lists_in_submission,
     flist_from_flist_fname,
     file_uri,
 )
@@ -17,8 +17,7 @@ from .. import biostudies  # To make reference to biostudies.File explicit
 from ..config import settings
 from bia_shared_datamodels import bia_data_model
 
-logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger('__main__.'+__name__)
 
 
 def get_file_reference_by_dataset(
@@ -27,6 +26,7 @@ def get_file_reference_by_dataset(
         bia_data_model.ExperimentalImagingDataset
         | bia_data_model.ImageAnnotationDataset
     ],
+    result_summary: dict,
     persist_artefacts: bool = False,
 ) -> Dict[str, List[bia_data_model.FileReference]]:
     """
@@ -75,14 +75,14 @@ def get_file_reference_by_dataset(
             files_in_fl = flist_from_flist_fname(submission.accno, fname)
 
             file_references = get_file_reference_for_submission_dataset(
-                submission.accno, dataset, files_in_fl
+                submission.accno, dataset, files_in_fl, result_summary
             )
 
             if persist_artefacts:
                 for file_reference in file_references:
                     output_path = output_dir / f"{file_reference.uuid}.json"
                     output_path.write_text(file_reference.model_dump_json(indent=2))
-                    logger.info(f"Written {output_path}")
+                    logger.debug(f"Written {output_path}")
 
             fileref_to_datasets[dataset_name].extend(file_references)
 
@@ -95,6 +95,7 @@ def get_file_reference_for_submission_dataset(
         bia_data_model.ExperimentalImagingDataset
         | bia_data_model.ImageAnnotationDataset,
     files_in_file_list: List[biostudies.File],
+    result_summary: dict
 ) -> List[bia_data_model.FileReference]:
     """
     Return list of file references for particular submission dataset
@@ -117,7 +118,13 @@ def get_file_reference_for_submission_dataset(
         file_dict["attribute"] = attributes_to_dict(f.attributes)
         file_dict["version"] = 1
         file_dict = filter_model_dictionary(file_dict, bia_data_model.FileReference)
-        file_reference = bia_data_model.FileReference.model_validate(file_dict)
-        file_references.append(file_reference)
+
+        try:
+            file_reference = bia_data_model.FileReference.model_validate(file_dict)
+            file_references.append(file_reference)
+        except(ValidationError):
+            logger.warn(f"Failed to create FileReference")
+            logger.debug("Pydantic Validation Error:", exc_info=True)
+            result_summary[accession_id].FileReference_ValidationErrorCount += 1
 
     return file_references

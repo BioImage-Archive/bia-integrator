@@ -13,26 +13,25 @@ from ..biostudies import (
 )
 from bia_shared_datamodels import bia_data_model
 
-logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger('__main__.'+__name__)
 
 
 def get_specimen_imaging_preparation_protocol(
-    submission: Submission, persist_artefacts=False
-) -> List[bia_data_model.SpecimenImagingPrepartionProtocol]:
-
-    specimen_preparation_protocol_model_dicts = extract_specimen_preparation_protocol_dicts(
-        submission
+    submission: Submission, result_summary: dict, persist_artefacts=False
+) -> List[bia_data_model.SpecimenImagingPreparationProtocol]:
+    specimen_preparation_protocol_model_dicts = (
+        extract_specimen_preparation_protocol_dicts(submission)
     )
     specimen_preparation_protocols = dicts_to_api_models(
         specimen_preparation_protocol_model_dicts,
-        bia_data_model.SpecimenImagingPrepartionProtocol,
+        bia_data_model.SpecimenImagingPreparationProtocol,
+        result_summary[submission.accno],
     )
 
     if persist_artefacts and specimen_preparation_protocols:
         persist(
             specimen_preparation_protocols,
-            "specimen_imaging_protocol",
+            "specimen_imaging_protocols",
             submission.accno,
         )
 
@@ -63,10 +62,14 @@ def extract_specimen_preparation_protocol_dicts(
         model_dict["uuid"] = generate_specimen_imaging_preparation_uuid(model_dict)
         model_dict["version"] = 1
         model_dict = filter_model_dictionary(
-            model_dict, bia_data_model.SpecimenImagingPrepartionProtocol
+            model_dict, bia_data_model.SpecimenImagingPreparationProtocol
         )
 
         model_dicts.append(model_dict)
+    
+    logger.info(
+        f"Ingesting: {submission.accno}. Created bia_data_model.SpecimenImagingPrepartionProtocol. Count: {len(model_dicts)}"
+    )
 
     return model_dicts
 

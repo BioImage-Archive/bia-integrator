@@ -4,37 +4,55 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**get_biosample**](PublicApi.md#get_biosample) | **GET** /v1/biosamples/{biosample_uuid} | Get Biosample
-[**get_collection**](PublicApi.md#get_collection) | **GET** /v1/collections/{collection_uuid} | Get Collection
-[**get_file_reference**](PublicApi.md#get_file_reference) | **GET** /v1/file_references/{file_reference_uuid} | Get File Reference
-[**get_image**](PublicApi.md#get_image) | **GET** /v1/images/{image_uuid} | Get Image
-[**get_image_acquisition**](PublicApi.md#get_image_acquisition) | **GET** /v1/image_acquisitions/{image_acquisition_uuid} | Get Image Acquisition
-[**get_image_ome_metadata**](PublicApi.md#get_image_ome_metadata) | **GET** /v1/images/{image_uuid}/ome_metadata | Get Image Ome Metadata
-[**get_object_info_by_accession**](PublicApi.md#get_object_info_by_accession) | **GET** /v1/object_info_by_accessions | Get Object Info By Accession
-[**get_specimen**](PublicApi.md#get_specimen) | **GET** /v1/specimens/{specimen_uuid} | Get Specimen
-[**get_study**](PublicApi.md#get_study) | **GET** /v1/studies/{study_uuid} | Get Study
-[**get_study_file_references**](PublicApi.md#get_study_file_references) | **GET** /v1/studies/{study_uuid}/file_references | Get Study File References
-[**get_study_images**](PublicApi.md#get_study_images) | **GET** /v1/studies/{study_uuid}/images | Get Study Images
-[**get_study_images_by_alias**](PublicApi.md#get_study_images_by_alias) | **GET** /v1/studies/{study_accession}/images_by_aliases | Get Study Images By Alias
-[**search_collections**](PublicApi.md#search_collections) | **GET** /v1/collections | Search Collections
-[**search_file_references_exact_match**](PublicApi.md#search_file_references_exact_match) | **POST** /v1/search/file_references/exact_match | Search File References Exact Match
-[**search_images_exact_match**](PublicApi.md#search_images_exact_match) | **POST** /v1/search/images/exact_match | Search Images Exact Match
-[**search_studies**](PublicApi.md#search_studies) | **GET** /v1/search/studies | Search Studies
-[**search_studies_exact_match**](PublicApi.md#search_studies_exact_match) | **POST** /v1/search/studies/exact_match | Search Studies Exact Match
+[**example_custom_handler**](PublicApi.md#example_custom_handler) | **GET** /v2/placeholder | Example Custom Handler
+[**get_annotation_file_reference**](PublicApi.md#get_annotation_file_reference) | **GET** /v2/annotation_file_reference/{uuid} | Get AnnotationFileReference
+[**get_annotation_file_reference_in_annotation_method**](PublicApi.md#get_annotation_file_reference_in_annotation_method) | **GET** /v2/annotation_method/{uuid}/annotation_file_reference | Get AnnotationFileReference In AnnotationMethod
+[**get_annotation_file_reference_in_derived_image**](PublicApi.md#get_annotation_file_reference_in_derived_image) | **GET** /v2/derived_image/{uuid}/annotation_file_reference | Get AnnotationFileReference In DerivedImage
+[**get_annotation_file_reference_in_experimental_imaging_dataset**](PublicApi.md#get_annotation_file_reference_in_experimental_imaging_dataset) | **GET** /v2/experimental_imaging_dataset/{uuid}/annotation_file_reference | Get AnnotationFileReference In ExperimentalImagingDataset
+[**get_annotation_file_reference_in_experimentally_captured_image**](PublicApi.md#get_annotation_file_reference_in_experimentally_captured_image) | **GET** /v2/experimentally_captured_image/{uuid}/annotation_file_reference | Get AnnotationFileReference In ExperimentallyCapturedImage
+[**get_annotation_file_reference_in_image_annotation_dataset**](PublicApi.md#get_annotation_file_reference_in_image_annotation_dataset) | **GET** /v2/image_annotation_dataset/{uuid}/annotation_file_reference | Get AnnotationFileReference In ImageAnnotationDataset
+[**get_annotation_method**](PublicApi.md#get_annotation_method) | **GET** /v2/annotation_method/{uuid} | Get AnnotationMethod
+[**get_bio_sample**](PublicApi.md#get_bio_sample) | **GET** /v2/bio_sample/{uuid} | Get BioSample
+[**get_derived_image**](PublicApi.md#get_derived_image) | **GET** /v2/derived_image/{uuid} | Get DerivedImage
+[**get_derived_image_in_annotation_method**](PublicApi.md#get_derived_image_in_annotation_method) | **GET** /v2/annotation_method/{uuid}/derived_image | Get DerivedImage In AnnotationMethod
+[**get_derived_image_in_derived_image**](PublicApi.md#get_derived_image_in_derived_image) | **GET** /v2/derived_image/{uuid}/derived_image | Get DerivedImage In DerivedImage
+[**get_derived_image_in_experimentally_captured_image**](PublicApi.md#get_derived_image_in_experimentally_captured_image) | **GET** /v2/experimentally_captured_image/{uuid}/derived_image | Get DerivedImage In ExperimentallyCapturedImage
+[**get_derived_image_in_image_annotation_dataset**](PublicApi.md#get_derived_image_in_image_annotation_dataset) | **GET** /v2/image_annotation_dataset/{uuid}/derived_image | Get DerivedImage In ImageAnnotationDataset
+[**get_experimental_imaging_dataset**](PublicApi.md#get_experimental_imaging_dataset) | **GET** /v2/experimental_imaging_dataset/{uuid} | Get ExperimentalImagingDataset
+[**get_experimental_imaging_dataset_in_study**](PublicApi.md#get_experimental_imaging_dataset_in_study) | **GET** /v2/study/{uuid}/experimental_imaging_dataset | Get ExperimentalImagingDataset In Study
+[**get_experimentally_captured_image**](PublicApi.md#get_experimentally_captured_image) | **GET** /v2/experimentally_captured_image/{uuid} | Get ExperimentallyCapturedImage
+[**get_experimentally_captured_image_in_experimental_imaging_dataset**](PublicApi.md#get_experimentally_captured_image_in_experimental_imaging_dataset) | **GET** /v2/experimental_imaging_dataset/{uuid}/experimentally_captured_image | Get ExperimentallyCapturedImage In ExperimentalImagingDataset
+[**get_experimentally_captured_image_in_image_acquisition**](PublicApi.md#get_experimentally_captured_image_in_image_acquisition) | **GET** /v2/image_acquisition/{uuid}/experimentally_captured_image | Get ExperimentallyCapturedImage In ImageAcquisition
+[**get_experimentally_captured_image_in_specimen**](PublicApi.md#get_experimentally_captured_image_in_specimen) | **GET** /v2/specimen/{uuid}/experimentally_captured_image | Get ExperimentallyCapturedImage In Specimen
+[**get_file_reference**](PublicApi.md#get_file_reference) | **GET** /v2/file_reference/{uuid} | Get FileReference
+[**get_file_reference_in_experimental_imaging_dataset**](PublicApi.md#get_file_reference_in_experimental_imaging_dataset) | **GET** /v2/experimental_imaging_dataset/{uuid}/file_reference | Get FileReference In ExperimentalImagingDataset
+[**get_file_reference_in_image_annotation_dataset**](PublicApi.md#get_file_reference_in_image_annotation_dataset) | **GET** /v2/image_annotation_dataset/{uuid}/file_reference | Get FileReference In ImageAnnotationDataset
+[**get_image_acquisition**](PublicApi.md#get_image_acquisition) | **GET** /v2/image_acquisition/{uuid} | Get ImageAcquisition
+[**get_image_annotation_dataset**](PublicApi.md#get_image_annotation_dataset) | **GET** /v2/image_annotation_dataset/{uuid} | Get ImageAnnotationDataset
+[**get_image_annotation_dataset_in_study**](PublicApi.md#get_image_annotation_dataset_in_study) | **GET** /v2/study/{uuid}/image_annotation_dataset | Get ImageAnnotationDataset In Study
+[**get_image_representation**](PublicApi.md#get_image_representation) | **GET** /v2/image_representation/{uuid} | Get ImageRepresentation
+[**get_image_representation_in_derived_image**](PublicApi.md#get_image_representation_in_derived_image) | **GET** /v2/derived_image/{uuid}/image_representation | Get ImageRepresentation In DerivedImage
+[**get_image_representation_in_experimentally_captured_image**](PublicApi.md#get_image_representation_in_experimentally_captured_image) | **GET** /v2/experimentally_captured_image/{uuid}/image_representation | Get ImageRepresentation In ExperimentallyCapturedImage
+[**get_image_representation_in_file_reference**](PublicApi.md#get_image_representation_in_file_reference) | **GET** /v2/file_reference/{uuid}/image_representation | Get ImageRepresentation In FileReference
+[**get_specimen**](PublicApi.md#get_specimen) | **GET** /v2/specimen/{uuid} | Get Specimen
+[**get_specimen_growth_protocol**](PublicApi.md#get_specimen_growth_protocol) | **GET** /v2/specimen_growth_protocol/{uuid} | Get SpecimenGrowthProtocol
+[**get_specimen_imaging_preparation_protocol**](PublicApi.md#get_specimen_imaging_preparation_protocol) | **GET** /v2/specimen_imaging_preparation_protocol/{uuid} | Get SpecimenImagingPreparationProtocol
+[**get_specimen_in_bio_sample**](PublicApi.md#get_specimen_in_bio_sample) | **GET** /v2/bio_sample/{uuid}/specimen | Get Specimen In BioSample
+[**get_specimen_in_specimen_growth_protocol**](PublicApi.md#get_specimen_in_specimen_growth_protocol) | **GET** /v2/specimen_growth_protocol/{uuid}/specimen | Get Specimen In SpecimenGrowthProtocol
+[**get_specimen_in_specimen_imaging_preparation_protocol**](PublicApi.md#get_specimen_in_specimen_imaging_preparation_protocol) | **GET** /v2/specimen_imaging_preparation_protocol/{uuid}/specimen | Get Specimen In SpecimenImagingPreparationProtocol
+[**get_study**](PublicApi.md#get_study) | **GET** /v2/study/{uuid} | Get Study
 
 
-# **get_biosample**
-> Biosample get_biosample(biosample_uuid)
+# **example_custom_handler**
+> object example_custom_handler()
 
-Get Biosample
+Example Custom Handler
 
 ### Example
 
+
 ```python
-import time
-import os
 import bia_integrator_api
-from bia_integrator_api.models.biosample import Biosample
 from bia_integrator_api.rest import ApiException
 from pprint import pprint
 
@@ -49,28 +67,25 @@ configuration = bia_integrator_api.Configuration(
 with bia_integrator_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = bia_integrator_api.PublicApi(api_client)
-    biosample_uuid = 'biosample_uuid_example' # str | 
 
     try:
-        # Get Biosample
-        api_response = api_instance.get_biosample(biosample_uuid)
-        print("The response of PublicApi->get_biosample:\n")
+        # Example Custom Handler
+        api_response = api_instance.example_custom_handler()
+        print("The response of PublicApi->example_custom_handler:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling PublicApi->get_biosample: %s\n" % e)
+        print("Exception when calling PublicApi->example_custom_handler: %s\n" % e)
 ```
 
 
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **biosample_uuid** | **str**|  | 
+This endpoint does not need any parameter.
 
 ### Return type
 
-[**Biosample**](Biosample.md)
+**object**
 
 ### Authorization
 
@@ -82,6 +97,73 @@ No authorization required
  - **Accept**: application/json
 
 ### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **get_annotation_file_reference**
+> AnnotationFileReference get_annotation_file_reference(uuid)
+
+Get AnnotationFileReference
+
+### Example
+
+
+```python
+import bia_integrator_api
+from bia_integrator_api.models.annotation_file_reference import AnnotationFileReference
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PublicApi(api_client)
+    uuid = 'uuid_example' # str | 
+
+    try:
+        # Get AnnotationFileReference
+        api_response = api_instance.get_annotation_file_reference(uuid)
+        print("The response of PublicApi->get_annotation_file_reference:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PublicApi->get_annotation_file_reference: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **uuid** | **str**|  | 
+
+### Return type
+
+[**AnnotationFileReference**](AnnotationFileReference.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Successful Response |  -  |
@@ -89,18 +171,17 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **get_collection**
-> BIACollection get_collection(collection_uuid, apply_annotations=apply_annotations)
+# **get_annotation_file_reference_in_annotation_method**
+> List[AnnotationFileReference] get_annotation_file_reference_in_annotation_method(uuid)
 
-Get Collection
+Get AnnotationFileReference In AnnotationMethod
 
 ### Example
 
+
 ```python
-import time
-import os
 import bia_integrator_api
-from bia_integrator_api.models.bia_collection import BIACollection
+from bia_integrator_api.models.annotation_file_reference import AnnotationFileReference
 from bia_integrator_api.rest import ApiException
 from pprint import pprint
 
@@ -115,30 +196,29 @@ configuration = bia_integrator_api.Configuration(
 with bia_integrator_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = bia_integrator_api.PublicApi(api_client)
-    collection_uuid = 'collection_uuid_example' # str | 
-    apply_annotations = False # bool |  (optional) (default to False)
+    uuid = 'uuid_example' # str | 
 
     try:
-        # Get Collection
-        api_response = api_instance.get_collection(collection_uuid, apply_annotations=apply_annotations)
-        print("The response of PublicApi->get_collection:\n")
+        # Get AnnotationFileReference In AnnotationMethod
+        api_response = api_instance.get_annotation_file_reference_in_annotation_method(uuid)
+        print("The response of PublicApi->get_annotation_file_reference_in_annotation_method:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling PublicApi->get_collection: %s\n" % e)
+        print("Exception when calling PublicApi->get_annotation_file_reference_in_annotation_method: %s\n" % e)
 ```
 
 
 
 ### Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **collection_uuid** | **str**|  | 
- **apply_annotations** | **bool**|  | [optional] [default to False]
+ **uuid** | **str**|  | 
 
 ### Return type
 
-[**BIACollection**](BIACollection.md)
+[**List[AnnotationFileReference]**](AnnotationFileReference.md)
 
 ### Authorization
 
@@ -150,6 +230,1146 @@ No authorization required
  - **Accept**: application/json
 
 ### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **get_annotation_file_reference_in_derived_image**
+> List[AnnotationFileReference] get_annotation_file_reference_in_derived_image(uuid)
+
+Get AnnotationFileReference In DerivedImage
+
+### Example
+
+
+```python
+import bia_integrator_api
+from bia_integrator_api.models.annotation_file_reference import AnnotationFileReference
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PublicApi(api_client)
+    uuid = 'uuid_example' # str | 
+
+    try:
+        # Get AnnotationFileReference In DerivedImage
+        api_response = api_instance.get_annotation_file_reference_in_derived_image(uuid)
+        print("The response of PublicApi->get_annotation_file_reference_in_derived_image:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PublicApi->get_annotation_file_reference_in_derived_image: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **uuid** | **str**|  | 
+
+### Return type
+
+[**List[AnnotationFileReference]**](AnnotationFileReference.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **get_annotation_file_reference_in_experimental_imaging_dataset**
+> List[AnnotationFileReference] get_annotation_file_reference_in_experimental_imaging_dataset(uuid)
+
+Get AnnotationFileReference In ExperimentalImagingDataset
+
+### Example
+
+
+```python
+import bia_integrator_api
+from bia_integrator_api.models.annotation_file_reference import AnnotationFileReference
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PublicApi(api_client)
+    uuid = 'uuid_example' # str | 
+
+    try:
+        # Get AnnotationFileReference In ExperimentalImagingDataset
+        api_response = api_instance.get_annotation_file_reference_in_experimental_imaging_dataset(uuid)
+        print("The response of PublicApi->get_annotation_file_reference_in_experimental_imaging_dataset:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PublicApi->get_annotation_file_reference_in_experimental_imaging_dataset: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **uuid** | **str**|  | 
+
+### Return type
+
+[**List[AnnotationFileReference]**](AnnotationFileReference.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **get_annotation_file_reference_in_experimentally_captured_image**
+> List[AnnotationFileReference] get_annotation_file_reference_in_experimentally_captured_image(uuid)
+
+Get AnnotationFileReference In ExperimentallyCapturedImage
+
+### Example
+
+
+```python
+import bia_integrator_api
+from bia_integrator_api.models.annotation_file_reference import AnnotationFileReference
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PublicApi(api_client)
+    uuid = 'uuid_example' # str | 
+
+    try:
+        # Get AnnotationFileReference In ExperimentallyCapturedImage
+        api_response = api_instance.get_annotation_file_reference_in_experimentally_captured_image(uuid)
+        print("The response of PublicApi->get_annotation_file_reference_in_experimentally_captured_image:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PublicApi->get_annotation_file_reference_in_experimentally_captured_image: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **uuid** | **str**|  | 
+
+### Return type
+
+[**List[AnnotationFileReference]**](AnnotationFileReference.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **get_annotation_file_reference_in_image_annotation_dataset**
+> List[AnnotationFileReference] get_annotation_file_reference_in_image_annotation_dataset(uuid)
+
+Get AnnotationFileReference In ImageAnnotationDataset
+
+### Example
+
+
+```python
+import bia_integrator_api
+from bia_integrator_api.models.annotation_file_reference import AnnotationFileReference
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PublicApi(api_client)
+    uuid = 'uuid_example' # str | 
+
+    try:
+        # Get AnnotationFileReference In ImageAnnotationDataset
+        api_response = api_instance.get_annotation_file_reference_in_image_annotation_dataset(uuid)
+        print("The response of PublicApi->get_annotation_file_reference_in_image_annotation_dataset:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PublicApi->get_annotation_file_reference_in_image_annotation_dataset: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **uuid** | **str**|  | 
+
+### Return type
+
+[**List[AnnotationFileReference]**](AnnotationFileReference.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **get_annotation_method**
+> AnnotationMethod get_annotation_method(uuid)
+
+Get AnnotationMethod
+
+### Example
+
+
+```python
+import bia_integrator_api
+from bia_integrator_api.models.annotation_method import AnnotationMethod
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PublicApi(api_client)
+    uuid = 'uuid_example' # str | 
+
+    try:
+        # Get AnnotationMethod
+        api_response = api_instance.get_annotation_method(uuid)
+        print("The response of PublicApi->get_annotation_method:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PublicApi->get_annotation_method: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **uuid** | **str**|  | 
+
+### Return type
+
+[**AnnotationMethod**](AnnotationMethod.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **get_bio_sample**
+> BioSample get_bio_sample(uuid)
+
+Get BioSample
+
+### Example
+
+
+```python
+import bia_integrator_api
+from bia_integrator_api.models.bio_sample import BioSample
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PublicApi(api_client)
+    uuid = 'uuid_example' # str | 
+
+    try:
+        # Get BioSample
+        api_response = api_instance.get_bio_sample(uuid)
+        print("The response of PublicApi->get_bio_sample:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PublicApi->get_bio_sample: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **uuid** | **str**|  | 
+
+### Return type
+
+[**BioSample**](BioSample.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **get_derived_image**
+> DerivedImage get_derived_image(uuid)
+
+Get DerivedImage
+
+### Example
+
+
+```python
+import bia_integrator_api
+from bia_integrator_api.models.derived_image import DerivedImage
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PublicApi(api_client)
+    uuid = 'uuid_example' # str | 
+
+    try:
+        # Get DerivedImage
+        api_response = api_instance.get_derived_image(uuid)
+        print("The response of PublicApi->get_derived_image:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PublicApi->get_derived_image: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **uuid** | **str**|  | 
+
+### Return type
+
+[**DerivedImage**](DerivedImage.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **get_derived_image_in_annotation_method**
+> List[DerivedImage] get_derived_image_in_annotation_method(uuid)
+
+Get DerivedImage In AnnotationMethod
+
+### Example
+
+
+```python
+import bia_integrator_api
+from bia_integrator_api.models.derived_image import DerivedImage
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PublicApi(api_client)
+    uuid = 'uuid_example' # str | 
+
+    try:
+        # Get DerivedImage In AnnotationMethod
+        api_response = api_instance.get_derived_image_in_annotation_method(uuid)
+        print("The response of PublicApi->get_derived_image_in_annotation_method:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PublicApi->get_derived_image_in_annotation_method: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **uuid** | **str**|  | 
+
+### Return type
+
+[**List[DerivedImage]**](DerivedImage.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **get_derived_image_in_derived_image**
+> List[DerivedImage] get_derived_image_in_derived_image(uuid)
+
+Get DerivedImage In DerivedImage
+
+### Example
+
+
+```python
+import bia_integrator_api
+from bia_integrator_api.models.derived_image import DerivedImage
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PublicApi(api_client)
+    uuid = 'uuid_example' # str | 
+
+    try:
+        # Get DerivedImage In DerivedImage
+        api_response = api_instance.get_derived_image_in_derived_image(uuid)
+        print("The response of PublicApi->get_derived_image_in_derived_image:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PublicApi->get_derived_image_in_derived_image: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **uuid** | **str**|  | 
+
+### Return type
+
+[**List[DerivedImage]**](DerivedImage.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **get_derived_image_in_experimentally_captured_image**
+> List[DerivedImage] get_derived_image_in_experimentally_captured_image(uuid)
+
+Get DerivedImage In ExperimentallyCapturedImage
+
+### Example
+
+
+```python
+import bia_integrator_api
+from bia_integrator_api.models.derived_image import DerivedImage
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PublicApi(api_client)
+    uuid = 'uuid_example' # str | 
+
+    try:
+        # Get DerivedImage In ExperimentallyCapturedImage
+        api_response = api_instance.get_derived_image_in_experimentally_captured_image(uuid)
+        print("The response of PublicApi->get_derived_image_in_experimentally_captured_image:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PublicApi->get_derived_image_in_experimentally_captured_image: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **uuid** | **str**|  | 
+
+### Return type
+
+[**List[DerivedImage]**](DerivedImage.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **get_derived_image_in_image_annotation_dataset**
+> List[DerivedImage] get_derived_image_in_image_annotation_dataset(uuid)
+
+Get DerivedImage In ImageAnnotationDataset
+
+### Example
+
+
+```python
+import bia_integrator_api
+from bia_integrator_api.models.derived_image import DerivedImage
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PublicApi(api_client)
+    uuid = 'uuid_example' # str | 
+
+    try:
+        # Get DerivedImage In ImageAnnotationDataset
+        api_response = api_instance.get_derived_image_in_image_annotation_dataset(uuid)
+        print("The response of PublicApi->get_derived_image_in_image_annotation_dataset:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PublicApi->get_derived_image_in_image_annotation_dataset: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **uuid** | **str**|  | 
+
+### Return type
+
+[**List[DerivedImage]**](DerivedImage.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **get_experimental_imaging_dataset**
+> ExperimentalImagingDataset get_experimental_imaging_dataset(uuid)
+
+Get ExperimentalImagingDataset
+
+### Example
+
+
+```python
+import bia_integrator_api
+from bia_integrator_api.models.experimental_imaging_dataset import ExperimentalImagingDataset
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PublicApi(api_client)
+    uuid = 'uuid_example' # str | 
+
+    try:
+        # Get ExperimentalImagingDataset
+        api_response = api_instance.get_experimental_imaging_dataset(uuid)
+        print("The response of PublicApi->get_experimental_imaging_dataset:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PublicApi->get_experimental_imaging_dataset: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **uuid** | **str**|  | 
+
+### Return type
+
+[**ExperimentalImagingDataset**](ExperimentalImagingDataset.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **get_experimental_imaging_dataset_in_study**
+> List[ExperimentalImagingDataset] get_experimental_imaging_dataset_in_study(uuid)
+
+Get ExperimentalImagingDataset In Study
+
+### Example
+
+
+```python
+import bia_integrator_api
+from bia_integrator_api.models.experimental_imaging_dataset import ExperimentalImagingDataset
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PublicApi(api_client)
+    uuid = 'uuid_example' # str | 
+
+    try:
+        # Get ExperimentalImagingDataset In Study
+        api_response = api_instance.get_experimental_imaging_dataset_in_study(uuid)
+        print("The response of PublicApi->get_experimental_imaging_dataset_in_study:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PublicApi->get_experimental_imaging_dataset_in_study: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **uuid** | **str**|  | 
+
+### Return type
+
+[**List[ExperimentalImagingDataset]**](ExperimentalImagingDataset.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **get_experimentally_captured_image**
+> ExperimentallyCapturedImage get_experimentally_captured_image(uuid)
+
+Get ExperimentallyCapturedImage
+
+### Example
+
+
+```python
+import bia_integrator_api
+from bia_integrator_api.models.experimentally_captured_image import ExperimentallyCapturedImage
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PublicApi(api_client)
+    uuid = 'uuid_example' # str | 
+
+    try:
+        # Get ExperimentallyCapturedImage
+        api_response = api_instance.get_experimentally_captured_image(uuid)
+        print("The response of PublicApi->get_experimentally_captured_image:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PublicApi->get_experimentally_captured_image: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **uuid** | **str**|  | 
+
+### Return type
+
+[**ExperimentallyCapturedImage**](ExperimentallyCapturedImage.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **get_experimentally_captured_image_in_experimental_imaging_dataset**
+> List[ExperimentallyCapturedImage] get_experimentally_captured_image_in_experimental_imaging_dataset(uuid)
+
+Get ExperimentallyCapturedImage In ExperimentalImagingDataset
+
+### Example
+
+
+```python
+import bia_integrator_api
+from bia_integrator_api.models.experimentally_captured_image import ExperimentallyCapturedImage
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PublicApi(api_client)
+    uuid = 'uuid_example' # str | 
+
+    try:
+        # Get ExperimentallyCapturedImage In ExperimentalImagingDataset
+        api_response = api_instance.get_experimentally_captured_image_in_experimental_imaging_dataset(uuid)
+        print("The response of PublicApi->get_experimentally_captured_image_in_experimental_imaging_dataset:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PublicApi->get_experimentally_captured_image_in_experimental_imaging_dataset: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **uuid** | **str**|  | 
+
+### Return type
+
+[**List[ExperimentallyCapturedImage]**](ExperimentallyCapturedImage.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **get_experimentally_captured_image_in_image_acquisition**
+> List[ExperimentallyCapturedImage] get_experimentally_captured_image_in_image_acquisition(uuid)
+
+Get ExperimentallyCapturedImage In ImageAcquisition
+
+### Example
+
+
+```python
+import bia_integrator_api
+from bia_integrator_api.models.experimentally_captured_image import ExperimentallyCapturedImage
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PublicApi(api_client)
+    uuid = 'uuid_example' # str | 
+
+    try:
+        # Get ExperimentallyCapturedImage In ImageAcquisition
+        api_response = api_instance.get_experimentally_captured_image_in_image_acquisition(uuid)
+        print("The response of PublicApi->get_experimentally_captured_image_in_image_acquisition:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PublicApi->get_experimentally_captured_image_in_image_acquisition: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **uuid** | **str**|  | 
+
+### Return type
+
+[**List[ExperimentallyCapturedImage]**](ExperimentallyCapturedImage.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **get_experimentally_captured_image_in_specimen**
+> List[ExperimentallyCapturedImage] get_experimentally_captured_image_in_specimen(uuid)
+
+Get ExperimentallyCapturedImage In Specimen
+
+### Example
+
+
+```python
+import bia_integrator_api
+from bia_integrator_api.models.experimentally_captured_image import ExperimentallyCapturedImage
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PublicApi(api_client)
+    uuid = 'uuid_example' # str | 
+
+    try:
+        # Get ExperimentallyCapturedImage In Specimen
+        api_response = api_instance.get_experimentally_captured_image_in_specimen(uuid)
+        print("The response of PublicApi->get_experimentally_captured_image_in_specimen:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PublicApi->get_experimentally_captured_image_in_specimen: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **uuid** | **str**|  | 
+
+### Return type
+
+[**List[ExperimentallyCapturedImage]**](ExperimentallyCapturedImage.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Successful Response |  -  |
@@ -158,15 +1378,14 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_file_reference**
-> FileReference get_file_reference(file_reference_uuid, apply_annotations=apply_annotations)
+> FileReference get_file_reference(uuid)
 
-Get File Reference
+Get FileReference
 
 ### Example
 
+
 ```python
-import time
-import os
 import bia_integrator_api
 from bia_integrator_api.models.file_reference import FileReference
 from bia_integrator_api.rest import ApiException
@@ -183,12 +1402,11 @@ configuration = bia_integrator_api.Configuration(
 with bia_integrator_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = bia_integrator_api.PublicApi(api_client)
-    file_reference_uuid = 'file_reference_uuid_example' # str | 
-    apply_annotations = False # bool |  (optional) (default to False)
+    uuid = 'uuid_example' # str | 
 
     try:
-        # Get File Reference
-        api_response = api_instance.get_file_reference(file_reference_uuid, apply_annotations=apply_annotations)
+        # Get FileReference
+        api_response = api_instance.get_file_reference(uuid)
         print("The response of PublicApi->get_file_reference:\n")
         pprint(api_response)
     except Exception as e:
@@ -199,10 +1417,10 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
 
 ### Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **file_reference_uuid** | **str**|  | 
- **apply_annotations** | **bool**|  | [optional] [default to False]
+ **uuid** | **str**|  | 
 
 ### Return type
 
@@ -218,6 +1436,7 @@ No authorization required
  - **Accept**: application/json
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Successful Response |  -  |
@@ -225,18 +1444,17 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **get_image**
-> BIAImage get_image(image_uuid, apply_annotations=apply_annotations)
+# **get_file_reference_in_experimental_imaging_dataset**
+> List[FileReference] get_file_reference_in_experimental_imaging_dataset(uuid)
 
-Get Image
+Get FileReference In ExperimentalImagingDataset
 
 ### Example
 
+
 ```python
-import time
-import os
 import bia_integrator_api
-from bia_integrator_api.models.bia_image import BIAImage
+from bia_integrator_api.models.file_reference import FileReference
 from bia_integrator_api.rest import ApiException
 from pprint import pprint
 
@@ -251,30 +1469,29 @@ configuration = bia_integrator_api.Configuration(
 with bia_integrator_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = bia_integrator_api.PublicApi(api_client)
-    image_uuid = 'image_uuid_example' # str | 
-    apply_annotations = False # bool |  (optional) (default to False)
+    uuid = 'uuid_example' # str | 
 
     try:
-        # Get Image
-        api_response = api_instance.get_image(image_uuid, apply_annotations=apply_annotations)
-        print("The response of PublicApi->get_image:\n")
+        # Get FileReference In ExperimentalImagingDataset
+        api_response = api_instance.get_file_reference_in_experimental_imaging_dataset(uuid)
+        print("The response of PublicApi->get_file_reference_in_experimental_imaging_dataset:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling PublicApi->get_image: %s\n" % e)
+        print("Exception when calling PublicApi->get_file_reference_in_experimental_imaging_dataset: %s\n" % e)
 ```
 
 
 
 ### Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **image_uuid** | **str**|  | 
- **apply_annotations** | **bool**|  | [optional] [default to False]
+ **uuid** | **str**|  | 
 
 ### Return type
 
-[**BIAImage**](BIAImage.md)
+[**List[FileReference]**](FileReference.md)
 
 ### Authorization
 
@@ -286,6 +1503,74 @@ No authorization required
  - **Accept**: application/json
 
 ### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **get_file_reference_in_image_annotation_dataset**
+> List[FileReference] get_file_reference_in_image_annotation_dataset(uuid)
+
+Get FileReference In ImageAnnotationDataset
+
+### Example
+
+
+```python
+import bia_integrator_api
+from bia_integrator_api.models.file_reference import FileReference
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PublicApi(api_client)
+    uuid = 'uuid_example' # str | 
+
+    try:
+        # Get FileReference In ImageAnnotationDataset
+        api_response = api_instance.get_file_reference_in_image_annotation_dataset(uuid)
+        print("The response of PublicApi->get_file_reference_in_image_annotation_dataset:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PublicApi->get_file_reference_in_image_annotation_dataset: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **uuid** | **str**|  | 
+
+### Return type
+
+[**List[FileReference]**](FileReference.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Successful Response |  -  |
@@ -294,15 +1579,14 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_image_acquisition**
-> ImageAcquisition get_image_acquisition(image_acquisition_uuid)
+> ImageAcquisition get_image_acquisition(uuid)
 
-Get Image Acquisition
+Get ImageAcquisition
 
 ### Example
 
+
 ```python
-import time
-import os
 import bia_integrator_api
 from bia_integrator_api.models.image_acquisition import ImageAcquisition
 from bia_integrator_api.rest import ApiException
@@ -319,11 +1603,11 @@ configuration = bia_integrator_api.Configuration(
 with bia_integrator_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = bia_integrator_api.PublicApi(api_client)
-    image_acquisition_uuid = 'image_acquisition_uuid_example' # str | 
+    uuid = 'uuid_example' # str | 
 
     try:
-        # Get Image Acquisition
-        api_response = api_instance.get_image_acquisition(image_acquisition_uuid)
+        # Get ImageAcquisition
+        api_response = api_instance.get_image_acquisition(uuid)
         print("The response of PublicApi->get_image_acquisition:\n")
         pprint(api_response)
     except Exception as e:
@@ -334,9 +1618,10 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
 
 ### Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **image_acquisition_uuid** | **str**|  | 
+ **uuid** | **str**|  | 
 
 ### Return type
 
@@ -352,6 +1637,7 @@ No authorization required
  - **Accept**: application/json
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Successful Response |  -  |
@@ -359,18 +1645,17 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **get_image_ome_metadata**
-> BIAImageOmeMetadata get_image_ome_metadata(image_uuid)
+# **get_image_annotation_dataset**
+> ImageAnnotationDataset get_image_annotation_dataset(uuid)
 
-Get Image Ome Metadata
+Get ImageAnnotationDataset
 
 ### Example
 
+
 ```python
-import time
-import os
 import bia_integrator_api
-from bia_integrator_api.models.bia_image_ome_metadata import BIAImageOmeMetadata
+from bia_integrator_api.models.image_annotation_dataset import ImageAnnotationDataset
 from bia_integrator_api.rest import ApiException
 from pprint import pprint
 
@@ -385,28 +1670,29 @@ configuration = bia_integrator_api.Configuration(
 with bia_integrator_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = bia_integrator_api.PublicApi(api_client)
-    image_uuid = 'image_uuid_example' # str | 
+    uuid = 'uuid_example' # str | 
 
     try:
-        # Get Image Ome Metadata
-        api_response = api_instance.get_image_ome_metadata(image_uuid)
-        print("The response of PublicApi->get_image_ome_metadata:\n")
+        # Get ImageAnnotationDataset
+        api_response = api_instance.get_image_annotation_dataset(uuid)
+        print("The response of PublicApi->get_image_annotation_dataset:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling PublicApi->get_image_ome_metadata: %s\n" % e)
+        print("Exception when calling PublicApi->get_image_annotation_dataset: %s\n" % e)
 ```
 
 
 
 ### Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **image_uuid** | **str**|  | 
+ **uuid** | **str**|  | 
 
 ### Return type
 
-[**BIAImageOmeMetadata**](BIAImageOmeMetadata.md)
+[**ImageAnnotationDataset**](ImageAnnotationDataset.md)
 
 ### Authorization
 
@@ -418,6 +1704,7 @@ No authorization required
  - **Accept**: application/json
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Successful Response |  -  |
@@ -425,18 +1712,17 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **get_object_info_by_accession**
-> List[ObjectInfo] get_object_info_by_accession(accessions)
+# **get_image_annotation_dataset_in_study**
+> List[ImageAnnotationDataset] get_image_annotation_dataset_in_study(uuid)
 
-Get Object Info By Accession
+Get ImageAnnotationDataset In Study
 
 ### Example
 
+
 ```python
-import time
-import os
 import bia_integrator_api
-from bia_integrator_api.models.object_info import ObjectInfo
+from bia_integrator_api.models.image_annotation_dataset import ImageAnnotationDataset
 from bia_integrator_api.rest import ApiException
 from pprint import pprint
 
@@ -451,28 +1737,29 @@ configuration = bia_integrator_api.Configuration(
 with bia_integrator_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = bia_integrator_api.PublicApi(api_client)
-    accessions = ['accessions_example'] # List[str] | 
+    uuid = 'uuid_example' # str | 
 
     try:
-        # Get Object Info By Accession
-        api_response = api_instance.get_object_info_by_accession(accessions)
-        print("The response of PublicApi->get_object_info_by_accession:\n")
+        # Get ImageAnnotationDataset In Study
+        api_response = api_instance.get_image_annotation_dataset_in_study(uuid)
+        print("The response of PublicApi->get_image_annotation_dataset_in_study:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling PublicApi->get_object_info_by_accession: %s\n" % e)
+        print("Exception when calling PublicApi->get_image_annotation_dataset_in_study: %s\n" % e)
 ```
 
 
 
 ### Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **accessions** | [**List[str]**](str.md)|  | 
+ **uuid** | **str**|  | 
 
 ### Return type
 
-[**List[ObjectInfo]**](ObjectInfo.md)
+[**List[ImageAnnotationDataset]**](ImageAnnotationDataset.md)
 
 ### Authorization
 
@@ -484,6 +1771,275 @@ No authorization required
  - **Accept**: application/json
 
 ### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **get_image_representation**
+> ImageRepresentation get_image_representation(uuid)
+
+Get ImageRepresentation
+
+### Example
+
+
+```python
+import bia_integrator_api
+from bia_integrator_api.models.image_representation import ImageRepresentation
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PublicApi(api_client)
+    uuid = 'uuid_example' # str | 
+
+    try:
+        # Get ImageRepresentation
+        api_response = api_instance.get_image_representation(uuid)
+        print("The response of PublicApi->get_image_representation:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PublicApi->get_image_representation: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **uuid** | **str**|  | 
+
+### Return type
+
+[**ImageRepresentation**](ImageRepresentation.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **get_image_representation_in_derived_image**
+> List[ImageRepresentation] get_image_representation_in_derived_image(uuid)
+
+Get ImageRepresentation In DerivedImage
+
+### Example
+
+
+```python
+import bia_integrator_api
+from bia_integrator_api.models.image_representation import ImageRepresentation
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PublicApi(api_client)
+    uuid = 'uuid_example' # str | 
+
+    try:
+        # Get ImageRepresentation In DerivedImage
+        api_response = api_instance.get_image_representation_in_derived_image(uuid)
+        print("The response of PublicApi->get_image_representation_in_derived_image:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PublicApi->get_image_representation_in_derived_image: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **uuid** | **str**|  | 
+
+### Return type
+
+[**List[ImageRepresentation]**](ImageRepresentation.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **get_image_representation_in_experimentally_captured_image**
+> List[ImageRepresentation] get_image_representation_in_experimentally_captured_image(uuid)
+
+Get ImageRepresentation In ExperimentallyCapturedImage
+
+### Example
+
+
+```python
+import bia_integrator_api
+from bia_integrator_api.models.image_representation import ImageRepresentation
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PublicApi(api_client)
+    uuid = 'uuid_example' # str | 
+
+    try:
+        # Get ImageRepresentation In ExperimentallyCapturedImage
+        api_response = api_instance.get_image_representation_in_experimentally_captured_image(uuid)
+        print("The response of PublicApi->get_image_representation_in_experimentally_captured_image:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PublicApi->get_image_representation_in_experimentally_captured_image: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **uuid** | **str**|  | 
+
+### Return type
+
+[**List[ImageRepresentation]**](ImageRepresentation.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **get_image_representation_in_file_reference**
+> List[ImageRepresentation] get_image_representation_in_file_reference(uuid)
+
+Get ImageRepresentation In FileReference
+
+### Example
+
+
+```python
+import bia_integrator_api
+from bia_integrator_api.models.image_representation import ImageRepresentation
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PublicApi(api_client)
+    uuid = 'uuid_example' # str | 
+
+    try:
+        # Get ImageRepresentation In FileReference
+        api_response = api_instance.get_image_representation_in_file_reference(uuid)
+        print("The response of PublicApi->get_image_representation_in_file_reference:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PublicApi->get_image_representation_in_file_reference: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **uuid** | **str**|  | 
+
+### Return type
+
+[**List[ImageRepresentation]**](ImageRepresentation.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Successful Response |  -  |
@@ -492,15 +2048,14 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_specimen**
-> Specimen get_specimen(specimen_uuid)
+> Specimen get_specimen(uuid)
 
 Get Specimen
 
 ### Example
 
+
 ```python
-import time
-import os
 import bia_integrator_api
 from bia_integrator_api.models.specimen import Specimen
 from bia_integrator_api.rest import ApiException
@@ -517,11 +2072,11 @@ configuration = bia_integrator_api.Configuration(
 with bia_integrator_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = bia_integrator_api.PublicApi(api_client)
-    specimen_uuid = 'specimen_uuid_example' # str | 
+    uuid = 'uuid_example' # str | 
 
     try:
         # Get Specimen
-        api_response = api_instance.get_specimen(specimen_uuid)
+        api_response = api_instance.get_specimen(uuid)
         print("The response of PublicApi->get_specimen:\n")
         pprint(api_response)
     except Exception as e:
@@ -532,9 +2087,10 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
 
 ### Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **specimen_uuid** | **str**|  | 
+ **uuid** | **str**|  | 
 
 ### Return type
 
@@ -550,6 +2106,7 @@ No authorization required
  - **Accept**: application/json
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Successful Response |  -  |
@@ -557,18 +2114,17 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **get_study**
-> BIAStudy get_study(study_uuid, apply_annotations=apply_annotations)
+# **get_specimen_growth_protocol**
+> SpecimenGrowthProtocol get_specimen_growth_protocol(uuid)
 
-Get Study
+Get SpecimenGrowthProtocol
 
 ### Example
 
+
 ```python
-import time
-import os
 import bia_integrator_api
-from bia_integrator_api.models.bia_study import BIAStudy
+from bia_integrator_api.models.specimen_growth_protocol import SpecimenGrowthProtocol
 from bia_integrator_api.rest import ApiException
 from pprint import pprint
 
@@ -583,12 +2139,346 @@ configuration = bia_integrator_api.Configuration(
 with bia_integrator_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = bia_integrator_api.PublicApi(api_client)
-    study_uuid = 'study_uuid_example' # str | 
-    apply_annotations = False # bool |  (optional) (default to False)
+    uuid = 'uuid_example' # str | 
+
+    try:
+        # Get SpecimenGrowthProtocol
+        api_response = api_instance.get_specimen_growth_protocol(uuid)
+        print("The response of PublicApi->get_specimen_growth_protocol:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PublicApi->get_specimen_growth_protocol: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **uuid** | **str**|  | 
+
+### Return type
+
+[**SpecimenGrowthProtocol**](SpecimenGrowthProtocol.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **get_specimen_imaging_preparation_protocol**
+> SpecimenImagingPreparationProtocol get_specimen_imaging_preparation_protocol(uuid)
+
+Get SpecimenImagingPreparationProtocol
+
+### Example
+
+
+```python
+import bia_integrator_api
+from bia_integrator_api.models.specimen_imaging_preparation_protocol import SpecimenImagingPreparationProtocol
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PublicApi(api_client)
+    uuid = 'uuid_example' # str | 
+
+    try:
+        # Get SpecimenImagingPreparationProtocol
+        api_response = api_instance.get_specimen_imaging_preparation_protocol(uuid)
+        print("The response of PublicApi->get_specimen_imaging_preparation_protocol:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PublicApi->get_specimen_imaging_preparation_protocol: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **uuid** | **str**|  | 
+
+### Return type
+
+[**SpecimenImagingPreparationProtocol**](SpecimenImagingPreparationProtocol.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **get_specimen_in_bio_sample**
+> List[Specimen] get_specimen_in_bio_sample(uuid)
+
+Get Specimen In BioSample
+
+### Example
+
+
+```python
+import bia_integrator_api
+from bia_integrator_api.models.specimen import Specimen
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PublicApi(api_client)
+    uuid = 'uuid_example' # str | 
+
+    try:
+        # Get Specimen In BioSample
+        api_response = api_instance.get_specimen_in_bio_sample(uuid)
+        print("The response of PublicApi->get_specimen_in_bio_sample:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PublicApi->get_specimen_in_bio_sample: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **uuid** | **str**|  | 
+
+### Return type
+
+[**List[Specimen]**](Specimen.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **get_specimen_in_specimen_growth_protocol**
+> List[Specimen] get_specimen_in_specimen_growth_protocol(uuid)
+
+Get Specimen In SpecimenGrowthProtocol
+
+### Example
+
+
+```python
+import bia_integrator_api
+from bia_integrator_api.models.specimen import Specimen
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PublicApi(api_client)
+    uuid = 'uuid_example' # str | 
+
+    try:
+        # Get Specimen In SpecimenGrowthProtocol
+        api_response = api_instance.get_specimen_in_specimen_growth_protocol(uuid)
+        print("The response of PublicApi->get_specimen_in_specimen_growth_protocol:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PublicApi->get_specimen_in_specimen_growth_protocol: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **uuid** | **str**|  | 
+
+### Return type
+
+[**List[Specimen]**](Specimen.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **get_specimen_in_specimen_imaging_preparation_protocol**
+> List[Specimen] get_specimen_in_specimen_imaging_preparation_protocol(uuid)
+
+Get Specimen In SpecimenImagingPreparationProtocol
+
+### Example
+
+
+```python
+import bia_integrator_api
+from bia_integrator_api.models.specimen import Specimen
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PublicApi(api_client)
+    uuid = 'uuid_example' # str | 
+
+    try:
+        # Get Specimen In SpecimenImagingPreparationProtocol
+        api_response = api_instance.get_specimen_in_specimen_imaging_preparation_protocol(uuid)
+        print("The response of PublicApi->get_specimen_in_specimen_imaging_preparation_protocol:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PublicApi->get_specimen_in_specimen_imaging_preparation_protocol: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **uuid** | **str**|  | 
+
+### Return type
+
+[**List[Specimen]**](Specimen.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **get_study**
+> Study get_study(uuid)
+
+Get Study
+
+### Example
+
+
+```python
+import bia_integrator_api
+from bia_integrator_api.models.study import Study
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PublicApi(api_client)
+    uuid = 'uuid_example' # str | 
 
     try:
         # Get Study
-        api_response = api_instance.get_study(study_uuid, apply_annotations=apply_annotations)
+        api_response = api_instance.get_study(uuid)
         print("The response of PublicApi->get_study:\n")
         pprint(api_response)
     except Exception as e:
@@ -599,14 +2489,14 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
 
 ### Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **study_uuid** | **str**|  | 
- **apply_annotations** | **bool**|  | [optional] [default to False]
+ **uuid** | **str**|  | 
 
 ### Return type
 
-[**BIAStudy**](BIAStudy.md)
+[**Study**](Study.md)
 
 ### Authorization
 
@@ -618,575 +2508,7 @@ No authorization required
  - **Accept**: application/json
 
 ### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-**200** | Successful Response |  -  |
-**422** | Validation Error |  -  |
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **get_study_file_references**
-> List[FileReference] get_study_file_references(study_uuid, start_uuid=start_uuid, limit=limit, apply_annotations=apply_annotations)
-
-Get Study File References
-
-First item in response is the next item with uuid greater than start_uuid. start_uuid is part of the response
-
-### Example
-
-```python
-import time
-import os
-import bia_integrator_api
-from bia_integrator_api.models.file_reference import FileReference
-from bia_integrator_api.rest import ApiException
-from pprint import pprint
-
-# Defining the host is optional and defaults to http://localhost
-# See configuration.py for a list of all supported configuration parameters.
-configuration = bia_integrator_api.Configuration(
-    host = "http://localhost"
-)
-
-
-# Enter a context with an instance of the API client
-with bia_integrator_api.ApiClient(configuration) as api_client:
-    # Create an instance of the API class
-    api_instance = bia_integrator_api.PublicApi(api_client)
-    study_uuid = 'study_uuid_example' # str | 
-    start_uuid = bia_integrator_api.StartUuid() # StartUuid |  (optional)
-    limit = 10 # int |  (optional) (default to 10)
-    apply_annotations = False # bool |  (optional) (default to False)
-
-    try:
-        # Get Study File References
-        api_response = api_instance.get_study_file_references(study_uuid, start_uuid=start_uuid, limit=limit, apply_annotations=apply_annotations)
-        print("The response of PublicApi->get_study_file_references:\n")
-        pprint(api_response)
-    except Exception as e:
-        print("Exception when calling PublicApi->get_study_file_references: %s\n" % e)
-```
-
-
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **study_uuid** | **str**|  | 
- **start_uuid** | [**StartUuid**](.md)|  | [optional] 
- **limit** | **int**|  | [optional] [default to 10]
- **apply_annotations** | **bool**|  | [optional] [default to False]
-
-### Return type
-
-[**List[FileReference]**](FileReference.md)
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: application/json
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-**200** | Successful Response |  -  |
-**422** | Validation Error |  -  |
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **get_study_images**
-> List[BIAImage] get_study_images(study_uuid, start_uuid=start_uuid, limit=limit, apply_annotations=apply_annotations)
-
-Get Study Images
-
-First item in response is the next item with uuid greater than start_uuid. start_uuid is part of the response
-
-### Example
-
-```python
-import time
-import os
-import bia_integrator_api
-from bia_integrator_api.models.bia_image import BIAImage
-from bia_integrator_api.rest import ApiException
-from pprint import pprint
-
-# Defining the host is optional and defaults to http://localhost
-# See configuration.py for a list of all supported configuration parameters.
-configuration = bia_integrator_api.Configuration(
-    host = "http://localhost"
-)
-
-
-# Enter a context with an instance of the API client
-with bia_integrator_api.ApiClient(configuration) as api_client:
-    # Create an instance of the API class
-    api_instance = bia_integrator_api.PublicApi(api_client)
-    study_uuid = 'study_uuid_example' # str | 
-    start_uuid = bia_integrator_api.StartUuid() # StartUuid |  (optional)
-    limit = 10 # int |  (optional) (default to 10)
-    apply_annotations = False # bool |  (optional) (default to False)
-
-    try:
-        # Get Study Images
-        api_response = api_instance.get_study_images(study_uuid, start_uuid=start_uuid, limit=limit, apply_annotations=apply_annotations)
-        print("The response of PublicApi->get_study_images:\n")
-        pprint(api_response)
-    except Exception as e:
-        print("Exception when calling PublicApi->get_study_images: %s\n" % e)
-```
-
-
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **study_uuid** | **str**|  | 
- **start_uuid** | [**StartUuid**](.md)|  | [optional] 
- **limit** | **int**|  | [optional] [default to 10]
- **apply_annotations** | **bool**|  | [optional] [default to False]
-
-### Return type
-
-[**List[BIAImage]**](BIAImage.md)
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: application/json
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-**200** | Successful Response |  -  |
-**422** | Validation Error |  -  |
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **get_study_images_by_alias**
-> List[BIAImage] get_study_images_by_alias(study_accession, aliases, apply_annotations=apply_annotations)
-
-Get Study Images By Alias
-
-### Example
-
-```python
-import time
-import os
-import bia_integrator_api
-from bia_integrator_api.models.bia_image import BIAImage
-from bia_integrator_api.rest import ApiException
-from pprint import pprint
-
-# Defining the host is optional and defaults to http://localhost
-# See configuration.py for a list of all supported configuration parameters.
-configuration = bia_integrator_api.Configuration(
-    host = "http://localhost"
-)
-
-
-# Enter a context with an instance of the API client
-with bia_integrator_api.ApiClient(configuration) as api_client:
-    # Create an instance of the API class
-    api_instance = bia_integrator_api.PublicApi(api_client)
-    study_accession = 'study_accession_example' # str | 
-    aliases = ['aliases_example'] # List[str] | 
-    apply_annotations = False # bool |  (optional) (default to False)
-
-    try:
-        # Get Study Images By Alias
-        api_response = api_instance.get_study_images_by_alias(study_accession, aliases, apply_annotations=apply_annotations)
-        print("The response of PublicApi->get_study_images_by_alias:\n")
-        pprint(api_response)
-    except Exception as e:
-        print("Exception when calling PublicApi->get_study_images_by_alias: %s\n" % e)
-```
-
-
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **study_accession** | **str**|  | 
- **aliases** | [**List[str]**](str.md)|  | 
- **apply_annotations** | **bool**|  | [optional] [default to False]
-
-### Return type
-
-[**List[BIAImage]**](BIAImage.md)
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: application/json
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-**200** | Successful Response |  -  |
-**422** | Validation Error |  -  |
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **search_collections**
-> List[BIACollection] search_collections(name=name, apply_annotations=apply_annotations)
-
-Search Collections
-
-### Example
-
-```python
-import time
-import os
-import bia_integrator_api
-from bia_integrator_api.models.bia_collection import BIACollection
-from bia_integrator_api.rest import ApiException
-from pprint import pprint
-
-# Defining the host is optional and defaults to http://localhost
-# See configuration.py for a list of all supported configuration parameters.
-configuration = bia_integrator_api.Configuration(
-    host = "http://localhost"
-)
-
-
-# Enter a context with an instance of the API client
-with bia_integrator_api.ApiClient(configuration) as api_client:
-    # Create an instance of the API class
-    api_instance = bia_integrator_api.PublicApi(api_client)
-    name = bia_integrator_api.Name() # Name |  (optional)
-    apply_annotations = False # bool |  (optional) (default to False)
-
-    try:
-        # Search Collections
-        api_response = api_instance.search_collections(name=name, apply_annotations=apply_annotations)
-        print("The response of PublicApi->search_collections:\n")
-        pprint(api_response)
-    except Exception as e:
-        print("Exception when calling PublicApi->search_collections: %s\n" % e)
-```
-
-
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **name** | [**Name**](.md)|  | [optional] 
- **apply_annotations** | **bool**|  | [optional] [default to False]
-
-### Return type
-
-[**List[BIACollection]**](BIACollection.md)
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: application/json
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-**200** | Successful Response |  -  |
-**422** | Validation Error |  -  |
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **search_file_references_exact_match**
-> List[FileReference] search_file_references_exact_match(search_file_reference_filter, apply_annotations=apply_annotations)
-
-Search File References Exact Match
-
-Exact match search of file references with a specific attribute. Multiple parameters mean AND (as in, p1 AND p2). Items in lists with the `_any` suffix are ORed.  Although `study_uuid` is optional, passing it if known is highly recommended and results in faster queries. Queries time out after 2 seconds, which should be enough for any search filtered by study.  This is likely to change fast, so **named arguments are recommended** in client apps instead of positional if possible to prevent downstream breakage.  `name` and `uri_prefix` queries are case insensitive
-
-### Example
-
-```python
-import time
-import os
-import bia_integrator_api
-from bia_integrator_api.models.file_reference import FileReference
-from bia_integrator_api.models.search_file_reference_filter import SearchFileReferenceFilter
-from bia_integrator_api.rest import ApiException
-from pprint import pprint
-
-# Defining the host is optional and defaults to http://localhost
-# See configuration.py for a list of all supported configuration parameters.
-configuration = bia_integrator_api.Configuration(
-    host = "http://localhost"
-)
-
-
-# Enter a context with an instance of the API client
-with bia_integrator_api.ApiClient(configuration) as api_client:
-    # Create an instance of the API class
-    api_instance = bia_integrator_api.PublicApi(api_client)
-    search_file_reference_filter = bia_integrator_api.SearchFileReferenceFilter() # SearchFileReferenceFilter | 
-    apply_annotations = False # bool |  (optional) (default to False)
-
-    try:
-        # Search File References Exact Match
-        api_response = api_instance.search_file_references_exact_match(search_file_reference_filter, apply_annotations=apply_annotations)
-        print("The response of PublicApi->search_file_references_exact_match:\n")
-        pprint(api_response)
-    except Exception as e:
-        print("Exception when calling PublicApi->search_file_references_exact_match: %s\n" % e)
-```
-
-
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **search_file_reference_filter** | [**SearchFileReferenceFilter**](SearchFileReferenceFilter.md)|  | 
- **apply_annotations** | **bool**|  | [optional] [default to False]
-
-### Return type
-
-[**List[FileReference]**](FileReference.md)
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
- - **Content-Type**: application/json
- - **Accept**: application/json
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-**200** | Successful Response |  -  |
-**422** | Validation Error |  -  |
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **search_images_exact_match**
-> List[BIAImage] search_images_exact_match(search_image_filter, apply_annotations=apply_annotations)
-
-Search Images Exact Match
-
-Exact match search of images with a specific attribute. Multiple parameters mean AND (as in, p1 AND p2). Items in lists with the `_any` suffix are ORed.  Although `study_uuid` is optional, passing it if known is highly recommended and results in faster queries. Queries time out after 2 seconds, which should be enough for any search filtered by study.  This is likely to change fast, so **named arguments are recommended** in client apps instead of positional if possible to prevent downstream breakage.
-
-### Example
-
-```python
-import time
-import os
-import bia_integrator_api
-from bia_integrator_api.models.bia_image import BIAImage
-from bia_integrator_api.models.search_image_filter import SearchImageFilter
-from bia_integrator_api.rest import ApiException
-from pprint import pprint
-
-# Defining the host is optional and defaults to http://localhost
-# See configuration.py for a list of all supported configuration parameters.
-configuration = bia_integrator_api.Configuration(
-    host = "http://localhost"
-)
-
-
-# Enter a context with an instance of the API client
-with bia_integrator_api.ApiClient(configuration) as api_client:
-    # Create an instance of the API class
-    api_instance = bia_integrator_api.PublicApi(api_client)
-    search_image_filter = bia_integrator_api.SearchImageFilter() # SearchImageFilter | 
-    apply_annotations = False # bool |  (optional) (default to False)
-
-    try:
-        # Search Images Exact Match
-        api_response = api_instance.search_images_exact_match(search_image_filter, apply_annotations=apply_annotations)
-        print("The response of PublicApi->search_images_exact_match:\n")
-        pprint(api_response)
-    except Exception as e:
-        print("Exception when calling PublicApi->search_images_exact_match: %s\n" % e)
-```
-
-
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **search_image_filter** | [**SearchImageFilter**](SearchImageFilter.md)|  | 
- **apply_annotations** | **bool**|  | [optional] [default to False]
-
-### Return type
-
-[**List[BIAImage]**](BIAImage.md)
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
- - **Content-Type**: application/json
- - **Accept**: application/json
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-**200** | Successful Response |  -  |
-**422** | Validation Error |  -  |
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **search_studies**
-> List[BIAStudy] search_studies(start_uuid=start_uuid, limit=limit, apply_annotations=apply_annotations)
-
-Search Studies
-
-@TODO: Define search criteria for the general case  First item in response is the next item with uuid greater than start_uuid. start_uuid is part of the response
-
-### Example
-
-```python
-import time
-import os
-import bia_integrator_api
-from bia_integrator_api.models.bia_study import BIAStudy
-from bia_integrator_api.rest import ApiException
-from pprint import pprint
-
-# Defining the host is optional and defaults to http://localhost
-# See configuration.py for a list of all supported configuration parameters.
-configuration = bia_integrator_api.Configuration(
-    host = "http://localhost"
-)
-
-
-# Enter a context with an instance of the API client
-with bia_integrator_api.ApiClient(configuration) as api_client:
-    # Create an instance of the API class
-    api_instance = bia_integrator_api.PublicApi(api_client)
-    start_uuid = bia_integrator_api.StartUuid() # StartUuid |  (optional)
-    limit = 10 # int |  (optional) (default to 10)
-    apply_annotations = False # bool |  (optional) (default to False)
-
-    try:
-        # Search Studies
-        api_response = api_instance.search_studies(start_uuid=start_uuid, limit=limit, apply_annotations=apply_annotations)
-        print("The response of PublicApi->search_studies:\n")
-        pprint(api_response)
-    except Exception as e:
-        print("Exception when calling PublicApi->search_studies: %s\n" % e)
-```
-
-
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **start_uuid** | [**StartUuid**](.md)|  | [optional] 
- **limit** | **int**|  | [optional] [default to 10]
- **apply_annotations** | **bool**|  | [optional] [default to False]
-
-### Return type
-
-[**List[BIAStudy]**](BIAStudy.md)
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: application/json
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-**200** | Successful Response |  -  |
-**422** | Validation Error |  -  |
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **search_studies_exact_match**
-> List[BIAStudy] search_studies_exact_match(search_study_filter, apply_annotations=apply_annotations)
-
-Search Studies Exact Match
-
-### Example
-
-```python
-import time
-import os
-import bia_integrator_api
-from bia_integrator_api.models.bia_study import BIAStudy
-from bia_integrator_api.models.search_study_filter import SearchStudyFilter
-from bia_integrator_api.rest import ApiException
-from pprint import pprint
-
-# Defining the host is optional and defaults to http://localhost
-# See configuration.py for a list of all supported configuration parameters.
-configuration = bia_integrator_api.Configuration(
-    host = "http://localhost"
-)
-
-
-# Enter a context with an instance of the API client
-with bia_integrator_api.ApiClient(configuration) as api_client:
-    # Create an instance of the API class
-    api_instance = bia_integrator_api.PublicApi(api_client)
-    search_study_filter = bia_integrator_api.SearchStudyFilter() # SearchStudyFilter | 
-    apply_annotations = False # bool |  (optional) (default to False)
-
-    try:
-        # Search Studies Exact Match
-        api_response = api_instance.search_studies_exact_match(search_study_filter, apply_annotations=apply_annotations)
-        print("The response of PublicApi->search_studies_exact_match:\n")
-        pprint(api_response)
-    except Exception as e:
-        print("Exception when calling PublicApi->search_studies_exact_match: %s\n" % e)
-```
-
-
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **search_study_filter** | [**SearchStudyFilter**](SearchStudyFilter.md)|  | 
- **apply_annotations** | **bool**|  | [optional] [default to False]
-
-### Return type
-
-[**List[BIAStudy]**](BIAStudy.md)
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
- - **Content-Type**: application/json
- - **Accept**: application/json
-
-### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Successful Response |  -  |

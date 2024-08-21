@@ -2,9 +2,21 @@ from __future__ import annotations
 
 from . import semantic_models, exceptions
 from pydantic import BaseModel, Field, ConfigDict
-from typing import List, Optional
+from pydantic.fields import FieldInfo
+from typing import List, Optional, Any, Dict
 from uuid import UUID
-from enum import Enum
+from typing_extensions import Annotated, Union
+
+
+class ObjectReference:
+    """
+    Instance context for "what does this link to"
+    """
+
+    link_dest_type: Any = BaseModel
+
+    def __init__(self, link_dest_type):
+        self.link_dest_type = link_dest_type
 
 
 class ModelMetadata(BaseModel):
@@ -26,16 +38,7 @@ class DocumentMixin(BaseModel):
     )
 
     def __init__(self, *args, **data):
-        model_version_spec = self.model_config.get("model_version_latest")
-        if model_version_spec is None:
-            raise exceptions.ModelDefinitionInvalid(
-                f"Class {self.__class__.__name__} missing 'model_version_latest' in its model_config"
-            )
-
-        model_metadata_expected = ModelMetadata(
-            type_name=self.__class__.__name__,
-            version=model_version_spec,
-        )
+        model_metadata_expected = self.get_model_metadata()
         model_metadata_existing = data.get("model", None)
         if model_metadata_existing:
             model_metadata_existing = ModelMetadata(**model_metadata_existing)
@@ -47,6 +50,85 @@ class DocumentMixin(BaseModel):
             data["model"] = model_metadata_expected.model_dump()
 
         super().__init__(*args, **data)
+
+    @classmethod
+    def get_model_metadata(cls) -> ModelMetadata:
+        model_version_spec = cls.model_config.get("model_version_latest")
+        if model_version_spec is None:
+            raise exceptions.ModelDefinitionInvalid(
+                f"Class {cls.__name__} missing 'model_version_latest' in its model_config"
+            )
+
+        return ModelMetadata(
+            type_name=cls.__name__,
+            version=model_version_spec,
+        )
+
+    @classmethod
+    def get_object_reference_fields(cls) -> Dict[str, DocumentMixin]:
+        """
+        @return mapping of attribute_name: referenced_object_type
+        """
+
+        fields_filtered = {}
+        for field_name, field_info in cls.model_fields.items():
+            maybe_reference = next(
+                (m for m in field_info.metadata if isinstance(m, ObjectReference)), None
+            )
+
+            if maybe_reference:
+                fields_filtered[field_name] = maybe_reference.link_dest_type
+
+        return fields_filtered
+
+    @classmethod
+    def field_is_list(cls, field_name: str):
+        """
+        Helper to avoid leaking type introspection into user code
+
+        @TODO: ! Ignored attribute missing exception
+        """
+        field_annotation_type = cls.model_fields[field_name].annotation
+        if not getattr(field_annotation_type, "__origin__", None):
+            # Not a generic, not even checking
+            return False
+
+        # Unpack Optional[*]
+        if (
+            field_annotation_type.__origin__ is Union
+            and type(None) in field_annotation_type.__args__
+        ):
+            field_annotation_type = field_annotation_type.__args__[0]
+
+            # check again in case it's Optional[SomeNonGenericType]
+            if not getattr(field_annotation_type, "__origin__", None):
+                # Not a generic, not even checking
+                return False
+
+            # it was Optional[SomeGenericType]
+
+        return field_annotation_type.__origin__ is list
+
+    @classmethod
+    def fields_by_type(cls, field_type: Any) -> Dict[str, FieldInfo]:
+        """
+        @param field_type is the _actual class_ (not class name as a string) to search for
+            typed as any because it can be a descendent of DocumentMixin or UUID
+        """
+        fields_filtered = {}
+
+        for field_name, field_info in cls.model_fields.items():
+            # conditions split for clarity
+            field_type_exact = field_info.annotation is field_type
+            field_type_container_list = (
+                hasattr(field_info.annotation, "__origin__")
+                and field_info.annotation.__origin__ is list
+                and field_info.annotation.__args__[0] is field_type
+            )
+            if field_type_exact or field_type_container_list:
+                fields_filtered[field_name] = field_info
+
+        return fields_filtered
 
 
 class UserIdentifiedObject(BaseModel):
@@ -68,7 +150,7 @@ class FileReference(
     semantic_models.FileReference,
     DocumentMixin,
 ):
-    submission_dataset_uuid: UUID = Field()
+    submission_dataset_uuid: UUID = Field()  # @TODO: Branching links
 
     model_config = ConfigDict(model_version_latest=1)
 
@@ -78,8 +160,10 @@ class ImageRepresentation(
     DocumentMixin,
 ):
     # We may want to store the FileReference -> Image(Represenation) rather than in the original_file_reference_uuid
-    original_file_reference_uuid: Optional[List[UUID]] = Field()
-    representation_of_uuid: UUID = Field()
+    original_file_reference_uuid: Annotated[
+        Optional[List[UUID]], ObjectReference(FileReference)
+    ] = Field(default_factory=lambda: [])
+    representation_of_uuid: UUID = Field()  # @TODO: Branching links
 
     model_config = ConfigDict(model_version_latest=1)
 
@@ -89,15 +173,21 @@ class ExperimentalImagingDataset(
     DocumentMixin,
     UserIdentifiedObject,
 ):
-    submitted_in_study_uuid: UUID = Field()
+    submitted_in_study_uuid: Annotated[UUID, ObjectReference(Study)] = Field()
 
     model_config = ConfigDict(model_version_latest=1)
 
 
 class Specimen(semantic_models.Specimen, DocumentMixin):
-    imaging_preparation_protocol_uuid: List[UUID] = Field(min_length=1)
-    sample_of_uuid: List[UUID] = Field(min_length=1)
-    growth_protocol_uuid: List[UUID] = Field()
+    imaging_preparation_protocol_uuid: Annotated[
+        List[UUID], ObjectReference(SpecimenImagingPreparationProtocol)
+    ] = Field(min_length=1)
+    sample_of_uuid: Annotated[List[UUID], ObjectReference(BioSample)] = Field(
+        min_length=1
+    )
+    growth_protocol_uuid: Annotated[
+        List[UUID], ObjectReference(SpecimenGrowthProtocol)
+    ] = Field()
 
     model_config = ConfigDict(model_version_latest=1)
 
@@ -106,9 +196,13 @@ class ExperimentallyCapturedImage(
     semantic_models.ExperimentallyCapturedImage,
     DocumentMixin,
 ):
-    acquisition_process_uuid: List[UUID] = Field()
-    submission_dataset_uuid: UUID = Field()
-    subject_uuid: UUID = Field()
+    acquisition_process_uuid: Annotated[
+        List[UUID], ObjectReference(ImageAcquisition)
+    ] = Field()
+    submission_dataset_uuid: Annotated[
+        UUID, ObjectReference(ExperimentalImagingDataset)
+    ] = Field()
+    subject_uuid: Annotated[UUID, ObjectReference(Specimen)] = Field()
 
     model_config = ConfigDict(model_version_latest=1)
 
@@ -121,8 +215,8 @@ class ImageAcquisition(
     model_config = ConfigDict(model_version_latest=1)
 
 
-class SpecimenImagingPrepartionProtocol(
-    semantic_models.SpecimenImagingPrepartionProtocol,
+class SpecimenImagingPreparationProtocol(
+    semantic_models.SpecimenImagingPreparationProtocol,
     DocumentMixin,
     UserIdentifiedObject,
 ):
@@ -150,7 +244,7 @@ class ImageAnnotationDataset(
     DocumentMixin,
     UserIdentifiedObject,
 ):
-    submitted_in_study_uuid: UUID = Field()
+    submitted_in_study_uuid: Annotated[UUID, ObjectReference(Study)] = Field()
 
     model_config = ConfigDict(model_version_latest=1)
 
@@ -159,9 +253,11 @@ class AnnotationFileReference(
     semantic_models.AnnotationFileReference,
     DocumentMixin,
 ):
-    submission_dataset_uuid: UUID = Field()
-    source_image_uuid: List[UUID] = Field()
-    creation_process_uuid: List[UUID] = Field()
+    submission_dataset_uuid: UUID = Field()  # @TODO: Branching links
+    source_image_uuid: List[UUID] = Field()  # @TODO: Branching links
+    creation_process_uuid: Annotated[List[UUID], ObjectReference(AnnotationMethod)] = (
+        Field()
+    )
 
     model_config = ConfigDict(model_version_latest=1)
 
@@ -170,9 +266,13 @@ class DerivedImage(
     semantic_models.DerivedImage,
     DocumentMixin,
 ):
-    source_image_uuid: List[UUID] = Field()
-    submission_dataset_uuid: UUID = Field()
-    creation_process_uuid: List[UUID] = Field()
+    source_image_uuid: List[UUID] = Field()  # @TODO: Branching links
+    submission_dataset_uuid: Annotated[
+        UUID, ObjectReference(ImageAnnotationDataset)
+    ] = Field()
+    creation_process_uuid: Annotated[List[UUID], ObjectReference(AnnotationMethod)] = (
+        Field()
+    )
 
     model_config = ConfigDict(model_version_latest=1)
 

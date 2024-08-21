@@ -5,13 +5,14 @@ import bia_shared_datamodels.bia_data_model as shared_data_models
 from .models.repository import Repository
 from . import constants
 from fastapi import APIRouter, Depends, status
+from typing import List, Type
 
 router = APIRouter(
     prefix="/private",
     # dependencies=[Depends(get_current_user)], TODO
     tags=[constants.OPENAPI_TAG_PRIVATE],
 )
-models_private = [
+models_private: List[shared_data_models.DocumentMixin] = [
     shared_data_models.Study,
     shared_data_models.FileReference,
     shared_data_models.ImageRepresentation,
@@ -19,7 +20,7 @@ models_private = [
     shared_data_models.Specimen,
     shared_data_models.ExperimentallyCapturedImage,
     shared_data_models.ImageAcquisition,
-    shared_data_models.SpecimenImagingPrepartionProtocol,
+    shared_data_models.SpecimenImagingPreparationProtocol,
     shared_data_models.SpecimenGrowthProtocol,
     shared_data_models.BioSample,
     shared_data_models.ImageAnnotationDataset,
@@ -29,7 +30,7 @@ models_private = [
 ]
 
 
-def make_post_item(t):
+def make_post_item(t: Type[shared_data_models.DocumentMixin]):
     async def post_item(doc: t, db: Repository = Depends()) -> None:
         await db.persist_doc(doc)
 

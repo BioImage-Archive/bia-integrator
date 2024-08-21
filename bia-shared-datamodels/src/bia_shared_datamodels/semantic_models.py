@@ -388,13 +388,13 @@ class ExperimentalImagingDataset(DatasetMixin):
     # acquisition_process: list[ImageAcquisition] = Field(
     #     description="""Processes involved in the creation of the images and files in this dataset."""
     # )
-    # specimen_imaging_preparation_protocol: list[SpecimenImagingPrepartionProtocol] = Field(
+    # specimen_imaging_preparation_protocol: list[SpecimenImagingPreparationProtocol] = Field(
     #     description="""Processes involved in the preprapartion of the samples for imaged."""
     # )
     # biological_entity: list[BioSample] = Field(
     #     description="""The biological entity or entities that were imaged."""
     # )
-    # specimen_growth_protocol: Optional[list[SpecimenImagingPrepartionProtocol]] = Field(
+    # specimen_growth_protocol: Optional[list[SpecimenImagingPreparationProtocol]] = Field(
     #     description="""Processes involved in the growth of the samples that were then imaged."""
     # )
     analysis_method: Optional[list[ImageAnalysisMethod]] = Field(
@@ -451,7 +451,7 @@ class ImageAcquisition(ProtocolMixin):
     )
 
 
-class SpecimenImagingPrepartionProtocol(ProtocolMixin):
+class SpecimenImagingPreparationProtocol(ProtocolMixin):
     """
     The process to prepare biological entity for imaging.
     """
@@ -497,7 +497,7 @@ class Specimen(ConfiguredBaseModel):
     # sample_of: List[BioSample] = Field(
     #     description="""The biological matter that sampled to create the specimen."""
     # )
-    # imaging_preparation_protocol: List[SpecimenImagingPrepartionProtocol] = Field(
+    # imaging_preparation_protocol: List[SpecimenImagingPreparationProtocol] = Field(
     #     description="""How the biosample was prepared for imaging."""
     # )
     # growth_protocol: Optional[List[SpecimenGrowthProtocol]] = Field(
@@ -687,6 +687,6 @@ DatasetMixin.model_rebuild()
 ImageAnnotationDataset.model_rebuild()
 ExperimentalImagingDataset.model_rebuild()
 BioSample.model_rebuild()
-SpecimenImagingPrepartionProtocol.model_rebuild()
+SpecimenImagingPreparationProtocol.model_rebuild()
 AnnotationMethod.model_rebuild()
 ImageRepresentation.model_rebuild()

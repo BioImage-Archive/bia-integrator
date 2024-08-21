@@ -4,7 +4,6 @@ import os
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-
 default_output_base = (
     f"{Path(os.environ.get('HOME', '')) / '.cache' / 'bia-integrator-data-sm'}"
 )
@@ -27,3 +26,4 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
+

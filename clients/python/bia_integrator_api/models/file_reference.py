@@ -17,93 +17,95 @@ import pprint
 import re  # noqa: F401
 import json
 
-
-from typing import Any, Dict, List, Optional
-from pydantic import BaseModel, Field, StrictBool, StrictInt, StrictStr, conlist, constr
-from bia_integrator_api.models.file_reference_annotation import FileReferenceAnnotation
+from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr
+from typing import Any, ClassVar, Dict, List, Optional
 from bia_integrator_api.models.model_metadata import ModelMetadata
+from typing import Optional, Set
+from typing_extensions import Self
 
 class FileReference(BaseModel):
     """
-    A reference to an externally hosted file.
-    """
-    attributes: Optional[Dict[str, Any]] = Field(None, description="         When annotations are applied, the ones that have a key different than an object attribute (so they don't overwrite it) get saved here.     ")
-    annotations_applied: Optional[StrictBool] = Field(False, description="         This acts as a dirty flag, with the purpose of telling apart objects that had some fields overwritten by applying annotations (so should be rejected when writing), and those that didn't.     ")
-    annotations: Optional[conlist(FileReferenceAnnotation)] = None
-    context: Optional[constr(strict=True, min_length=1)] = Field('https://raw.githubusercontent.com/BioImage-Archive/bia-integrator/main/api/src/models/jsonld/1.0/FileReferenceContext.jsonld', alias="@context")
-    uuid: StrictStr = Field(...)
-    version: StrictInt = Field(...)
-    model: Optional[ModelMetadata] = None
-    study_uuid: StrictStr = Field(...)
-    name: StrictStr = Field(...)
-    uri: StrictStr = Field(...)
-    type: StrictStr = Field(...)
-    size_in_bytes: StrictInt = Field(...)
-    __properties = ["attributes", "annotations_applied", "annotations", "@context", "uuid", "version", "model", "study_uuid", "name", "uri", "type", "size_in_bytes"]
+    FileReference
+    """ # noqa: E501
+    uuid: StrictStr = Field(description="Unique ID (across the BIA database) used to refer to and identify a document.")
+    version: StrictInt = Field(description="Document version. This can't be optional to make sure we never persist objects without it")
+    model: Optional[ModelMetadata]
+    file_path: StrictStr = Field(description="The path (including the name) of the file.")
+    format: StrictStr = Field(description="File format or type.")
+    size_in_bytes: StrictInt = Field(description="Disc size in bytes.")
+    uri: StrictStr = Field(description="URI from which the file can be accessed.")
+    attribute: Dict[str, Any] = Field(description="Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields.")
+    submission_dataset_uuid: StrictStr
+    __properties: ClassVar[List[str]] = ["uuid", "version", "model", "file_path", "format", "size_in_bytes", "uri", "attribute", "submission_dataset_uuid"]
 
-    class Config:
-        """Pydantic configuration"""
-        allow_population_by_field_name = True
-        validate_assignment = True
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_assignment=True,
+        protected_namespaces=(),
+    )
+
 
     def to_str(self) -> str:
         """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.dict(by_alias=True))
+        return pprint.pformat(self.model_dump(by_alias=True))
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
+        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
         return json.dumps(self.to_dict())
 
     @classmethod
-    def from_json(cls, json_str: str) -> FileReference:
+    def from_json(cls, json_str: str) -> Optional[Self]:
         """Create an instance of FileReference from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self):
-        """Returns the dictionary representation of the model using alias"""
-        _dict = self.dict(by_alias=True,
-                          exclude={
-                          },
-                          exclude_none=True)
-        # override the default output from pydantic by calling `to_dict()` of each item in annotations (list)
-        _items = []
-        if self.annotations:
-            for _item in self.annotations:
-                if _item:
-                    _items.append(_item.to_dict())
-            _dict['annotations'] = _items
+    def to_dict(self) -> Dict[str, Any]:
+        """Return the dictionary representation of the model using alias.
+
+        This has the following differences from calling pydantic's
+        `self.model_dump(by_alias=True)`:
+
+        * `None` is only added to the output dict for nullable fields that
+          were set at model initialization. Other fields with value `None`
+          are ignored.
+        """
+        excluded_fields: Set[str] = set([
+        ])
+
+        _dict = self.model_dump(
+            by_alias=True,
+            exclude=excluded_fields,
+            exclude_none=True,
+        )
         # override the default output from pydantic by calling `to_dict()` of model
         if self.model:
             _dict['model'] = self.model.to_dict()
         # set to None if model (nullable) is None
-        # and __fields_set__ contains the field
-        if self.model is None and "model" in self.__fields_set__:
+        # and model_fields_set contains the field
+        if self.model is None and "model" in self.model_fields_set:
             _dict['model'] = None
 
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: dict) -> FileReference:
+    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
         """Create an instance of FileReference from a dict"""
         if obj is None:
             return None
 
         if not isinstance(obj, dict):
-            return FileReference.parse_obj(obj)
+            return cls.model_validate(obj)
 
-        _obj = FileReference.parse_obj({
-            "attributes": obj.get("attributes"),
-            "annotations_applied": obj.get("annotations_applied") if obj.get("annotations_applied") is not None else False,
-            "annotations": [FileReferenceAnnotation.from_dict(_item) for _item in obj.get("annotations")] if obj.get("annotations") is not None else None,
-            "context": obj.get("@context") if obj.get("@context") is not None else 'https://raw.githubusercontent.com/BioImage-Archive/bia-integrator/main/api/src/models/jsonld/1.0/FileReferenceContext.jsonld',
+        _obj = cls.model_validate({
             "uuid": obj.get("uuid"),
             "version": obj.get("version"),
-            "model": ModelMetadata.from_dict(obj.get("model")) if obj.get("model") is not None else None,
-            "study_uuid": obj.get("study_uuid"),
-            "name": obj.get("name"),
+            "model": ModelMetadata.from_dict(obj["model"]) if obj.get("model") is not None else None,
+            "file_path": obj.get("file_path"),
+            "format": obj.get("format"),
+            "size_in_bytes": obj.get("size_in_bytes"),
             "uri": obj.get("uri"),
-            "type": obj.get("type"),
-            "size_in_bytes": obj.get("size_in_bytes")
+            "attribute": obj.get("attribute"),
+            "submission_dataset_uuid": obj.get("submission_dataset_uuid")
         })
         return _obj
 
