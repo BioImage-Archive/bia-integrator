@@ -1,5 +1,7 @@
 from . import public
 from . import private
+from . import auth
+
 from .models.repository import repository_create, Repository
 
 from fastapi import FastAPI
@@ -24,6 +26,6 @@ app = FastAPI(
 
 app.openapi_version = "3.0.2"
 
-
+app.include_router(auth.router, prefix="/v2")
 app.include_router(public.make_router(), prefix="/v2")
 app.include_router(private.make_router(), prefix="/v2")
