@@ -1,6 +1,11 @@
 from __future__ import annotations
+
 from pydantic import Field, BaseModel
 from typing import List, Optional
+
+# Removing this breaks tests - see https://app.clickup.com/t/8695g5yjk
+from bia_shared_datamodels.bia_data_model import UUID, Annotated, ObjectReference
+
 from bia_shared_datamodels import bia_data_model
 
 

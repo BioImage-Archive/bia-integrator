@@ -283,6 +283,3 @@ class AnnotationMethod(
     UserIdentifiedObject,
 ):
     model_config = ConfigDict(model_version_latest=1)
-
-Specimen.model_rebuild()
-ExperimentallyCapturedImage.model_rebuild()
