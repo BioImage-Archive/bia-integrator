@@ -16,8 +16,8 @@ spec:
   containers:
     - name: run-api-tests
       image: ghcr.io/bioimage-archive/bia-integrator-api:{{ .Values.image.tag }}
-      command: ["poetry", "run", "pytest"]
-      workingDir: /integrator-api
+      command: ["poetry", "run", "pytest", "--ignore", "src"]
+      workingDir: /bia-integrator/api
       env:
         - name: DB_NAME
           value: {{ .Values.api_env.dbName }}
