@@ -135,6 +135,53 @@ def test_optional_reverse_link(
     assert rsp.json() == [existing_image_representation]
 
 
+def test_known_bug_should_not_pass_but_does_union_reference_typed_lists_not_exclusive(
+    api_client: TestClient,
+    existing_annotaton_file_reference: dict,
+    existing_derived_image: dict,
+    existing_experimentally_captured_image: dict,
+):
+    existing_annotaton_file_reference |= {
+        "uuid": get_uuid(),
+        "source_image_uuid": [
+            # this should cause an error, because the source images aren't of the same type
+            existing_derived_image["uuid"],
+            existing_experimentally_captured_image["uuid"],
+        ],
+    }
+    rsp = api_client.post(
+        "private/annotation_file_reference",
+        json=existing_annotaton_file_reference,
+    )
+    assert rsp.status_code == 201, "Fixed the bug!"
+
+
+def test_known_bug_should_not_pass_but_does_can_resolve_reverse_link_from_mistyped_parent(
+    api_client: TestClient,
+    existing_annotaton_file_reference: dict,
+    existing_experimentally_captured_image: dict,
+):
+    existing_annotaton_file_reference |= {
+        "uuid": get_uuid(),
+        "source_image_uuid": [
+            # Note no derived_image anywhere
+            existing_experimentally_captured_image["uuid"],
+        ],
+    }
+    rsp = api_client.post(
+        "private/annotation_file_reference",
+        json=existing_annotaton_file_reference,
+    )
+    assert rsp.status_code == 201
+
+    rsp = api_client.get(
+        # BUG: using an existing experimentally captured image as a derived_image (annotation_file_reference can't tell the difference)
+        f"derived_image/{existing_experimentally_captured_image['uuid']}/annotation_file_reference",
+    )
+    assert rsp.status_code == 200
+    assert rsp.json() == [existing_annotaton_file_reference]
+
+
 #   TODO - When we add indices
 # def test_object_update_version_bumped_passes():
 #    assert 0, "TODO: indices then add this"

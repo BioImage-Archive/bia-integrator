@@ -75,16 +75,25 @@ def make_reverse_links(router: APIRouter) -> APIRouter:
     for model in models_public:
         for (
             link_attribute_name,
-            link_attribute_type,
+            link_object_reference,
         ) in model.get_object_reference_fields().items():
             # Just in case we accidentally link to a private model somehow (technically possible)
             #   just raise and defer definining behaviour until we use it
-            if link_attribute_type in models_public:
-                router_add_reverse_link(
-                    router, link_attribute_type, model, link_attribute_name
-                )
-            else:
-                raise Exception("TODO: Link from a public model to a nonpublic one")
+            link_target_options = (
+                [link_object_reference.link_dest_type]
+                if link_object_reference.link_dest_type
+                else link_object_reference.workaround_union_reference_types
+            )
+            for link_dest_option in link_target_options:
+                if link_dest_option in models_public:
+                    router_add_reverse_link(
+                        router,
+                        link_dest_option,
+                        model,
+                        link_attribute_name,
+                    )
+                else:
+                    raise Exception("TODO: Link from a public model to a nonpublic one")
 
 
 def make_router() -> APIRouter:
@@ -99,69 +108,6 @@ def make_router() -> APIRouter:
         )
 
     make_reverse_links(router)
-
-    """
-    The ambiguous links - @TODO: Deleteme
-    """
-    # fileref to dataset
-    for dataset_type in [
-        shared_data_models.ImageAnnotationDataset,
-        shared_data_models.ExperimentalImagingDataset,
-    ]:
-        router_add_reverse_link(
-            router,
-            dataset_type,
-            shared_data_models.FileReference,
-            "submission_dataset_uuid",
-        )
-
-    # representation to image
-    for image_type in [
-        shared_data_models.DerivedImage,
-        shared_data_models.ExperimentallyCapturedImage,
-    ]:
-        router_add_reverse_link(
-            router,
-            image_type,
-            shared_data_models.ImageRepresentation,
-            "representation_of_uuid",
-        )
-
-    # AnnotationFile to dataset
-    for annotation_file_type in [
-        shared_data_models.ImageAnnotationDataset,
-        shared_data_models.ExperimentalImagingDataset,
-    ]:
-        router_add_reverse_link(
-            router,
-            annotation_file_type,
-            shared_data_models.AnnotationFileReference,
-            "submission_dataset_uuid",
-        )
-
-    # AnnotationFile to image
-    for annotation_file_type in [
-        shared_data_models.DerivedImage,
-        shared_data_models.ExperimentallyCapturedImage,
-    ]:
-        router_add_reverse_link(
-            router,
-            annotation_file_type,
-            shared_data_models.AnnotationFileReference,
-            "source_image_uuid",
-        )
-
-    # DerivedImage to image
-    for image_type in [
-        shared_data_models.DerivedImage,
-        shared_data_models.ExperimentallyCapturedImage,
-    ]:
-        router_add_reverse_link(
-            router,
-            image_type,
-            shared_data_models.DerivedImage,
-            "source_image_uuid",
-        )
 
     return router
 

@@ -88,7 +88,7 @@ class Repository:
         doc_dependencies = []
         for (
             link_attribute_name,
-            link_attribute_type,
+            link_object_reference,
         ) in object_to_check.get_object_reference_fields().items():
             if not getattr(object_to_check, link_attribute_name):
                 """
@@ -100,21 +100,29 @@ class Repository:
                 """
                 continue
 
-            if object_to_check.field_is_list(link_attribute_name):
-                for dependency_uuid in getattr(object_to_check, link_attribute_name):
+            link_target_options = (
+                [link_object_reference.link_dest_type]
+                if link_object_reference.link_dest_type
+                else link_object_reference.workaround_union_reference_types
+            )
+            for link_target_type in link_target_options:
+                if object_to_check.field_is_list(link_attribute_name):
+                    for dependency_uuid in getattr(
+                        object_to_check, link_attribute_name
+                    ):
+                        doc_dependencies.append(
+                            {
+                                "uuid": dependency_uuid,
+                                "model": link_target_type.get_model_metadata().model_dump(),
+                            }
+                        )
+                else:
                     doc_dependencies.append(
                         {
-                            "uuid": dependency_uuid,
-                            "model": link_attribute_type.get_model_metadata().model_dump(),
+                            "uuid": getattr(object_to_check, link_attribute_name),
+                            "model": link_target_type.get_model_metadata().model_dump(),
                         }
                     )
-            else:
-                doc_dependencies.append(
-                    {
-                        "uuid": getattr(object_to_check, link_attribute_name),
-                        "model": link_attribute_type.get_model_metadata().model_dump(),
-                    }
-                )
         if not doc_dependencies:
             """
             No dependencies to check.
@@ -132,13 +140,18 @@ class Repository:
             """
             dependencies_missing = []
 
+            docs_found_uuid = [doc["uuid"] for doc in docs]
             for doc_dependency in doc_dependencies:
-                if doc_dependency["uuid"] not in docs:
+                if doc_dependency["uuid"] not in docs_found_uuid:
                     dependencies_missing.append(doc_dependency)
 
-            raise exceptions.DocumentNotFound(
-                f"Document {object_to_check.uuid} has missing dependencies: {dependencies_missing}"
-            )
+            if dependencies_missing:
+                raise exceptions.DocumentNotFound(
+                    f"Document {object_to_check.uuid} has missing dependencies: {dependencies_missing}"
+                )
+            else:
+                # all objects in the query (by uuid) were found in either one of the expected type options
+                pass
 
     async def persist_doc(self, model_doc: shared_data_models.DocumentMixin):
         await self.assert_model_doc_dependencies_exist(model_doc)

@@ -14,9 +14,13 @@ class ObjectReference:
     """
 
     link_dest_type: Any = BaseModel
+    workaround_union_reference_types: Optional[List]
 
-    def __init__(self, link_dest_type):
+    def __init__(
+        self, link_dest_type, workaround_union_reference_types: Optional[List] = None
+    ):
         self.link_dest_type = link_dest_type
+        self.workaround_union_reference_types = workaround_union_reference_types
 
 
 class ModelMetadata(BaseModel):
@@ -65,7 +69,7 @@ class DocumentMixin(BaseModel):
         )
 
     @classmethod
-    def get_object_reference_fields(cls) -> Dict[str, DocumentMixin]:
+    def get_object_reference_fields(cls) -> Dict[str, ObjectReference]:
         """
         @return mapping of attribute_name: referenced_object_type
         """
@@ -77,7 +81,7 @@ class DocumentMixin(BaseModel):
             )
 
             if maybe_reference:
-                fields_filtered[field_name] = maybe_reference.link_dest_type
+                fields_filtered[field_name] = maybe_reference
 
         return fields_filtered
 
@@ -150,7 +154,16 @@ class FileReference(
     semantic_models.FileReference,
     DocumentMixin,
 ):
-    submission_dataset_uuid: UUID = Field()  # @TODO: Branching links
+    submission_dataset_uuid: Annotated[
+        UUID,
+        ObjectReference(
+            None,
+            workaround_union_reference_types=[
+                ImageAnnotationDataset,
+                ExperimentalImagingDataset,
+            ],
+        ),
+    ] = Field()
 
     model_config = ConfigDict(model_version_latest=1)
 
@@ -163,7 +176,16 @@ class ImageRepresentation(
     original_file_reference_uuid: Annotated[
         Optional[List[UUID]], ObjectReference(FileReference)
     ] = Field(default_factory=lambda: [])
-    representation_of_uuid: UUID = Field()  # @TODO: Branching links
+    representation_of_uuid: Annotated[
+        UUID,
+        ObjectReference(
+            None,
+            workaround_union_reference_types=[
+                DerivedImage,
+                ExperimentallyCapturedImage,
+            ],
+        ),
+    ] = Field()
 
     model_config = ConfigDict(model_version_latest=1)
 
@@ -253,8 +275,26 @@ class AnnotationFileReference(
     semantic_models.AnnotationFileReference,
     DocumentMixin,
 ):
-    submission_dataset_uuid: UUID = Field()  # @TODO: Branching links
-    source_image_uuid: List[UUID] = Field()  # @TODO: Branching links
+    submission_dataset_uuid: Annotated[
+        UUID,
+        ObjectReference(
+            None,
+            workaround_union_reference_types=[
+                ImageAnnotationDataset,
+                ExperimentalImagingDataset,
+            ],
+        ),
+    ] = Field()
+    source_image_uuid: Annotated[
+        List[UUID],
+        ObjectReference(
+            None,
+            workaround_union_reference_types=[
+                DerivedImage,
+                ExperimentallyCapturedImage,
+            ],
+        ),
+    ] = Field()
     creation_process_uuid: Annotated[List[UUID], ObjectReference(AnnotationMethod)] = (
         Field()
     )
@@ -266,7 +306,16 @@ class DerivedImage(
     semantic_models.DerivedImage,
     DocumentMixin,
 ):
-    source_image_uuid: List[UUID] = Field()  # @TODO: Branching links
+    source_image_uuid: Annotated[
+        List[UUID],
+        ObjectReference(
+            None,
+            workaround_union_reference_types=[
+                DerivedImage,
+                ExperimentallyCapturedImage,
+            ],
+        ),
+    ] = Field()
     submission_dataset_uuid: Annotated[
         UUID, ObjectReference(ImageAnnotationDataset)
     ] = Field()

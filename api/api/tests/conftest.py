@@ -224,6 +224,67 @@ def existing_experimentally_captured_image(
 
 
 @pytest.fixture(scope="function")
+def existing_image_annotation_dataset(api_client: TestClient, existing_study: dict):
+    image_annotation_dataset = mock_object_jsonsafe(
+        mock_objects.get_image_annotation_dataset_dict,
+        passthrough={"completeness": mock_objects.Completeness.COMPLETE},
+    )
+    image_annotation_dataset |= {"submitted_in_study_uuid": existing_study["uuid"]}
+
+    rsp = api_client.post(
+        "private/image_annotation_dataset",
+        json=image_annotation_dataset,
+    )
+    assert rsp.status_code == 201, rsp.json()
+
+    return image_annotation_dataset
+
+
+@pytest.fixture(scope="function")
+def existing_annotaton_file_reference(
+    api_client: TestClient, existing_image_annotation_dataset: dict
+):
+    annotation_file_reference = mock_object_jsonsafe(
+        mock_objects.get_annotation_file_reference_dict,
+        passthrough={"completeness": mock_objects.Completeness.COMPLETE},
+    )
+    annotation_file_reference |= {
+        "submission_dataset_uuid": existing_image_annotation_dataset["uuid"],
+        "source_image_uuid": [],
+        "creation_process_uuid": [],
+    }
+
+    rsp = api_client.post(
+        "private/annotation_file_reference",
+        json=annotation_file_reference,
+    )
+    assert rsp.status_code == 201, rsp.json()
+
+    return annotation_file_reference
+
+
+@pytest.fixture(scope="function")
+def existing_derived_image(
+    api_client: TestClient, existing_image_annotation_dataset: dict
+):
+    derived_image = mock_object_jsonsafe(
+        mock_objects.get_derived_image_dict,
+        passthrough={"completeness": mock_objects.Completeness.MINIMAL},
+    )
+    derived_image |= {
+        "submission_dataset_uuid": existing_image_annotation_dataset["uuid"]
+    }
+
+    rsp = api_client.post(
+        "private/derived_image",
+        json=derived_image,
+    )
+    assert rsp.status_code == 201, rsp.json()
+
+    return derived_image
+
+
+@pytest.fixture(scope="function")
 def existing_image_representation(
     api_client: TestClient,
     existing_experimentally_captured_image: dict,
