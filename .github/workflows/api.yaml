@@ -38,6 +38,7 @@ jobs:
         run: |
           docker compose up -d --build 
       - name: Run tests
+        # api moved to api/ , src left in as a reference as we transition. All tests there are failing and that directory will be deleted anyway
         run: |
           docker compose run -T bia-integrator-api poetry run pytest --ignore src
       # Always cleanup - even for cancelled jobs

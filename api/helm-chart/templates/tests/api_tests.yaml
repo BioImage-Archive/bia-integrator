@@ -16,6 +16,7 @@ spec:
   containers:
     - name: run-api-tests
       image: ghcr.io/bioimage-archive/bia-integrator-api:{{ .Values.image.tag }}
+      # api moved to api/ , src left in as a reference as we transition. All tests there are failing and that directory will be deleted anyway
       command: ["poetry", "run", "pytest", "--ignore", "src"]
       workingDir: /bia-integrator/api
       env:
