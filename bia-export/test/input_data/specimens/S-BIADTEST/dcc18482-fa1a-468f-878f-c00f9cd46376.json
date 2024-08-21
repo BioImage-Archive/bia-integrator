@@ -1,0 +1,17 @@
+{
+  "uuid": "dcc18482-fa1a-468f-878f-c00f9cd46376",
+  "version": 1,
+  "model": {
+    "type_name": "Specimen",
+    "version": 1
+  },
+  "imaging_preparation_protocol_uuid": [
+    "7199d730-29f1-4ad8-b599-e9089cbb2d7b"
+  ],
+  "sample_of_uuid": [
+    "64a67727-4e7c-469a-91c4-6219ae072e99"
+  ],
+  "growth_protocol_uuid": [
+    "a2ce3950-3b28-40b3-a6a5-23c4f7864912"
+  ]
+}
