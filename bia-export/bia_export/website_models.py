@@ -52,7 +52,7 @@ class SpecimenImagingPreparationProtocol(
 
 
 class Specimen(bia_data_model.Specimen):
-    imaging_preparation_protocol: List[SpecimenImagingPrepartionProtocol] = Field()
+    imaging_preparation_protocol: List[SpecimenImagingPreparationProtocol] = Field()
     sample_of: List[BioSample] = Field()
     growth_protocol: List[SpecimenGrowthProtocol] = Field()
 

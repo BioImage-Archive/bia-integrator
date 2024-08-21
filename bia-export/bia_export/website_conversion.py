@@ -7,7 +7,7 @@ from .website_models import (
     ImageAcquisition,
     BioSample,
     SpecimenGrowthProtocol,
-    SpecimenImagingPrepartionProtocol,
+    SpecimenImagingPreparationProtocol,
     ExperimentallyCapturedImage,
     Specimen,
 )
@@ -61,8 +61,8 @@ def find_associated_objects(
 def create_studies(accession_id_list: str, root_directory: Path) -> dict:
     study_map = {}
     for accession_id in accession_id_list:
-        study  = create_study(accession_id, root_directory)
-        study_map[accession_id] = study.model_dump(mode='json')
+        study = create_study(accession_id, root_directory)
+        study_map[accession_id] = study.model_dump(mode="json")
     return study_map
 
 
@@ -255,8 +255,8 @@ def create_ec_images(
             sipp_list = process_list(
                 api_specimen.imaging_preparation_protocol_uuid,
                 accession_id,
-                SpecimenImagingPrepartionProtocol,
-                bia_data_model.SpecimenImagingPrepartionProtocol,
+                SpecimenImagingPreparationProtocol,
+                bia_data_model.SpecimenImagingPreparationProtocol,
                 "specimen_imaging_preparation_protocols",
             )
             sgp_list = process_list(
