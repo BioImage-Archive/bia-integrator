@@ -25,16 +25,18 @@ spec:
             - name: http
               containerPort: 8080
               protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /v1/search/studies?limit=1
-              port: http
-            initialDelaySeconds: 10
-            failureThreshold: 10
-            periodSeconds: 60
+          #livenessProbe:
+          #   @TODO: Can't use a dummy uuid (404). Re-add when we have an endpoint that lists objects + pagination
+          #     this should touch the db
+          #  httpGet:
+          #    path: /v2/study/00000000-0000-0000-0000-000000000000
+          #    port: http
+          #  initialDelaySeconds: 10
+          #  failureThreshold: 10
+          #  periodSeconds: 60
           readinessProbe:
             httpGet:
-              path: /v1/openapi.json
+              path: /v2/openapi.json
               port: http
             initialDelaySeconds: 10
             failureThreshold: 10
