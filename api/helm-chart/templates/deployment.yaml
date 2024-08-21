@@ -36,7 +36,7 @@ spec:
           #  periodSeconds: 60
           readinessProbe:
             httpGet:
-              path: /v2/openapi.json
+              path: /openapi.json
               port: http
             initialDelaySeconds: 10
             failureThreshold: 10
