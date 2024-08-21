@@ -626,6 +626,100 @@
         }
       }
     },
+    "/v2/image_annotation_dataset/{uuid}/file_reference": {
+      "get": {
+        "tags": [
+          "public"
+        ],
+        "summary": "Get FileReference In ImageAnnotationDataset",
+        "operationId": "getFileReferenceInImageAnnotationDataset",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FileReference"
+                  },
+                  "title": "Response Getfilereferenceinimageannotationdataset"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/experimental_imaging_dataset/{uuid}/file_reference": {
+      "get": {
+        "tags": [
+          "public"
+        ],
+        "summary": "Get FileReference In ExperimentalImagingDataset",
+        "operationId": "getFileReferenceInExperimentalImagingDataset",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FileReference"
+                  },
+                  "title": "Response Getfilereferenceinexperimentalimagingdataset"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v2/file_reference/{uuid}/image_representation": {
       "get": {
         "tags": [
@@ -656,6 +750,100 @@
                     "$ref": "#/components/schemas/ImageRepresentation"
                   },
                   "title": "Response Getimagerepresentationinfilereference"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/derived_image/{uuid}/image_representation": {
+      "get": {
+        "tags": [
+          "public"
+        ],
+        "summary": "Get ImageRepresentation In DerivedImage",
+        "operationId": "getImageRepresentationInDerivedImage",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ImageRepresentation"
+                  },
+                  "title": "Response Getimagerepresentationinderivedimage"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/experimentally_captured_image/{uuid}/image_representation": {
+      "get": {
+        "tags": [
+          "public"
+        ],
+        "summary": "Get ImageRepresentation In ExperimentallyCapturedImage",
+        "operationId": "getImageRepresentationInExperimentallyCapturedImage",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ImageRepresentation"
+                  },
+                  "title": "Response Getimagerepresentationinexperimentallycapturedimage"
                 }
               }
             }
@@ -1049,6 +1237,194 @@
         }
       }
     },
+    "/v2/image_annotation_dataset/{uuid}/annotation_file_reference": {
+      "get": {
+        "tags": [
+          "public"
+        ],
+        "summary": "Get AnnotationFileReference In ImageAnnotationDataset",
+        "operationId": "getAnnotationFileReferenceInImageAnnotationDataset",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AnnotationFileReference"
+                  },
+                  "title": "Response Getannotationfilereferenceinimageannotationdataset"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/experimental_imaging_dataset/{uuid}/annotation_file_reference": {
+      "get": {
+        "tags": [
+          "public"
+        ],
+        "summary": "Get AnnotationFileReference In ExperimentalImagingDataset",
+        "operationId": "getAnnotationFileReferenceInExperimentalImagingDataset",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AnnotationFileReference"
+                  },
+                  "title": "Response Getannotationfilereferenceinexperimentalimagingdataset"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/derived_image/{uuid}/annotation_file_reference": {
+      "get": {
+        "tags": [
+          "public"
+        ],
+        "summary": "Get AnnotationFileReference In DerivedImage",
+        "operationId": "getAnnotationFileReferenceInDerivedImage",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AnnotationFileReference"
+                  },
+                  "title": "Response Getannotationfilereferenceinderivedimage"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/experimentally_captured_image/{uuid}/annotation_file_reference": {
+      "get": {
+        "tags": [
+          "public"
+        ],
+        "summary": "Get AnnotationFileReference In ExperimentallyCapturedImage",
+        "operationId": "getAnnotationFileReferenceInExperimentallyCapturedImage",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AnnotationFileReference"
+                  },
+                  "title": "Response Getannotationfilereferenceinexperimentallycapturedimage"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v2/annotation_method/{uuid}/annotation_file_reference": {
       "get": {
         "tags": [
@@ -1079,6 +1455,100 @@
                     "$ref": "#/components/schemas/AnnotationFileReference"
                   },
                   "title": "Response Getannotationfilereferenceinannotationmethod"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/derived_image/{uuid}/derived_image": {
+      "get": {
+        "tags": [
+          "public"
+        ],
+        "summary": "Get DerivedImage In DerivedImage",
+        "operationId": "getDerivedImageInDerivedImage",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DerivedImage"
+                  },
+                  "title": "Response Getderivedimageinderivedimage"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/experimentally_captured_image/{uuid}/derived_image": {
+      "get": {
+        "tags": [
+          "public"
+        ],
+        "summary": "Get DerivedImage In ExperimentallyCapturedImage",
+        "operationId": "getDerivedImageInExperimentallyCapturedImage",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DerivedImage"
+                  },
+                  "title": "Response Getderivedimageinexperimentallycapturedimage"
                 }
               }
             }
