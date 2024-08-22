@@ -1,7 +1,7 @@
 import logging
 import subprocess
 
-from pydantic.v1 import BaseSettings
+from pydantic import BaseSettings
 
 
 class ConversionSettings(BaseSettings):

@@ -7,7 +7,7 @@ from urllib.parse import urlparse
 
 import boto3
 import requests
-from pydantic.v1 import BaseSettings
+from pydantic import BaseSettings
 from remotezip import RemoteZip
 from bia_integrator_core.interface import api_models
 from bia_integrator_core.config import Settings

@@ -7,6 +7,9 @@ import json
 from pathlib import Path
 import xml.etree.ElementTree as ET
 import requests
+
+# from pydantic import BaseSettings
+# from bia_integrator_tools.io import copy_local_zarr_to_s3
 from bia_integrator_tools.conversion import run_zarr_conversion
 
 import click

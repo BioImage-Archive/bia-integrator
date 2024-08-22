@@ -1,5 +1,5 @@
 from pathlib import Path
-from pydantic.v1 import BaseSettings
+from pydantic import BaseSettings
 from typing import Optional
 from bia_integrator_api.util import simple_client
 from bia_integrator_api.api import PrivateApi
