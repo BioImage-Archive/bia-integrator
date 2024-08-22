@@ -6,7 +6,7 @@ import json
 import os
 
 from api.auth import create_user, get_user
-from models.repository import repository_create
+from api.models.repository import repository_create
 import asyncio
 
 

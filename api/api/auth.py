@@ -12,9 +12,9 @@ from typing import Optional
 import uuid
 
 from api import constants
-from models.repository import Repository
-from models.persistence import User
-from models.api import AuthenticationToken, TokenData, AuthResult
+from api.models.repository import Repository
+from api.models.persistence import User
+from api.models.api import AuthenticationToken, TokenData, AuthResult
 import os
 import base64
 
