@@ -210,6 +210,12 @@
                         },
                         "protocol_description": "Test sample preparation protocol 1"
                     }
+                ],
+                "file_count": 2,
+                "image_count": 0,
+                "file_type_aggregation": [
+                    ".tif",
+                    ".zip"
                 ]
             },
             {
@@ -261,7 +267,10 @@
                 ],
                 "specimen_imaging_preparation_protocol": [],
                 "biological_entity": [],
-                "specimen_growth_protocol": []
+                "specimen_growth_protocol": [],
+                "file_count": 0,
+                "image_count": 0,
+                "file_type_aggregation": []
             }
         ]
     }

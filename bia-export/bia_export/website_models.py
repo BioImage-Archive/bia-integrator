@@ -27,6 +27,9 @@ class ExperimentalImagingDataset(bia_data_model.ExperimentalImagingDataset):
         default_factory=list,
         description="""Processes involved in the growth of the samples that were then imaged.""",
     )
+    file_count: int = Field()
+    image_count: int = Field()
+    file_type_aggregation: set = Field()
 
 
 class DetailSection(BaseModel):
