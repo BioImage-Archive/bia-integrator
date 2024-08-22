@@ -36,7 +36,7 @@ Create a local-only test user with:
 ```bash
 curl -H "Content-Type: application/json" \
     --request POST \
-    --data '{"email": "test@example.com", "password_plain": "test", "secret_token": "00123456789==" }' \
+    --data '{"email": "test@example.com", "password_plain": "test", "secret_token": "0123456789==" }' \
     http://localhost:8080/v1/auth/users/register
 ```
 
@@ -68,7 +68,7 @@ Build images and run contains:
 
 Create user:
 
-`curl -H "Content-Type: application/json" --request POST --data '{"email": "test@example.com", "password_plain": "test", "secret_token": "00123456789==" }'  http://localhost:8080/v1/auth/users/register`
+`curl -H "Content-Type: application/json" --request POST --data '{"email": "test@example.com", "password_plain": "test", "secret_token": "0123456789==" }'  http://localhost:8080/v1/auth/users/register`
 
 Get auth token
 

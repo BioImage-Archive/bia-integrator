@@ -34,6 +34,9 @@ def validate_secret_token(token):
     if len(token) < 10:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
     try:
+        # Note for validate=True:
+        #   Common placeholder values (ex 00123456789==) raise an 'Excess data after padding' error
+        #   because validate=True expects values to already be correctly padded
         base64.b64decode(token, validate=True)
     except:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
