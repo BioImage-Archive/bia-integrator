@@ -8,7 +8,7 @@ from enum import Enum
 import bia_shared_datamodels.bia_data_model as shared_data_models
 import pymongo
 from typing import Type, List, Any
-from .. import exceptions
+from api import exceptions
 import datetime
 
 from bson.codec_options import CodecOptions

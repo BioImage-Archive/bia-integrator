@@ -1,8 +1,8 @@
-from . import public
-from . import private
-from . import auth
+from api import public
+from api import private
+from api import auth
 
-from .models.repository import repository_create, Repository
+from api.models.repository import repository_create, Repository
 
 from fastapi import FastAPI
 from typing import AsyncGenerator

@@ -2,9 +2,9 @@ from fastapi import APIRouter
 from pydantic.alias_generators import to_snake
 
 import bia_shared_datamodels.bia_data_model as shared_data_models
-from .models.repository import Repository
-from . import constants
-from . import auth
+from models.repository import Repository
+from api import constants
+from api import auth
 from fastapi import APIRouter, Depends, status
 from typing import List, Type
 

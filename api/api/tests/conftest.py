@@ -1,8 +1,13 @@
-from bia_shared_datamodels import mock_objects, bia_data_model
+from bia_shared_datamodels import mock_objects
 import uuid as uuid_lib
 from fastapi.testclient import TestClient
 import pytest
 import json
+
+from api.auth import create_user, get_user
+from models.repository import repository_create
+import asyncio
+
 
 TEST_SERVER_BASE_URL = "http://localhost.com/v2"
 
@@ -31,7 +36,7 @@ def get_client(**kwargs) -> TestClient:
     from fastapi import Request
     import traceback
 
-    from ..app import app
+    from api.app import app
 
     @app.exception_handler(Exception)
     def generic_exception_handler(request: Request, exc: Exception):
@@ -43,10 +48,42 @@ def get_client(**kwargs) -> TestClient:
     return TestClient(app, base_url=TEST_SERVER_BASE_URL, **kwargs)
 
 
+def create_user_if_missing(email: str, password: str):
+    """
+    Exception from the general rule used in this project, of tests being as high-level as possible
+    Just to avoid compromising on security for easy test user creation / the logistics of a seed db
+    """
+    loop = asyncio.get_event_loop()
+
+    async def create_test_user_if_missing():
+        db = await repository_create(init=True)
+
+        if not await get_user(db, email):
+            await create_user(db, email, password)
+
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(create_test_user_if_missing())
+
+
+def authenticate_client(api_client: TestClient):
+    user_details = {
+        "username": "test@example.com",
+        "password": "test",
+    }
+    create_user_if_missing(user_details["username"], user_details["password"])
+
+    rsp = api_client.post("auth/token", data=user_details)
+
+    assert rsp.status_code == 200
+    token = rsp.json()
+
+    api_client.headers["Authorization"] = f"Bearer {token['access_token']}"
+
+
 @pytest.fixture(scope="module")
 def api_client() -> TestClient:
     client = get_client(raise_server_exceptions=False)
-    # authenticate_client(client)  # @TODO: DELETEME
+    authenticate_client(client)  # @TODO: DELETEME
 
     return client
 

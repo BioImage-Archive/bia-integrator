@@ -3,8 +3,8 @@ from pydantic.alias_generators import to_snake
 
 # ?
 import bia_shared_datamodels.bia_data_model as shared_data_models
-from .models.repository import Repository
-from . import constants
+from models.repository import Repository
+from api import constants
 from typing import List, Type
 
 router = APIRouter(

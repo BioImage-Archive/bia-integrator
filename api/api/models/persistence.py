@@ -1,7 +1,8 @@
-# ? Import shared models base?
+from bia_shared_datamodels.bia_data_model import DocumentMixin
+from pydantic import Field, ConfigDict
 
 
-class User(BIABaseModel, DocumentMixin):
+class User(DocumentMixin):
     email: str = Field()
     password: str = Field()
 

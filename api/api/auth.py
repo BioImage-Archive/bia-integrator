@@ -11,7 +11,7 @@ from passlib.utils import consteq
 from typing import Optional
 import uuid
 
-from . import constants
+from api import constants
 from models.repository import Repository
 from models.persistence import User
 from models.api import AuthenticationToken, TokenData, AuthResult
