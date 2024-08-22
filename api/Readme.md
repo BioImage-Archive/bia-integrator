@@ -37,7 +37,7 @@ Create a local-only test user with:
 curl -H "Content-Type: application/json" \
     --request POST \
     --data '{"email": "test@example.com", "password_plain": "test", "secret_token": "0123456789==" }' \
-    http://localhost:8080/v1/auth/users/register
+    http://localhost:8080/v2/auth/user/register
 ```
 
 The response should be just `null` and there should be no errors in the api container.
@@ -68,15 +68,15 @@ Build images and run contains:
 
 Create user:
 
-`curl -H "Content-Type: application/json" --request POST --data '{"email": "test@example.com", "password_plain": "test", "secret_token": "0123456789==" }'  http://localhost:8080/v1/auth/users/register`
+`curl -H "Content-Type: application/json" --request POST --data '{"email": "test@example.com", "password_plain": "test", "secret_token": "0123456789==" }'  http://localhost:8080/v2/auth/user/register`
 
 Get auth token
 
-`curl -H "Content-Type: application/x-www-form-urlencoded" --request POST --data 'username=test@example.com&password=test'  http://localhost:8080/v1/auth/token`
+`curl -H "Content-Type: application/x-www-form-urlencoded" --request POST --data 'username=test@example.com&password=test'  http://localhost:8080/v2/auth/token`
 
 Copy auth token which you can then use to make calls to the api. E.g. create a study:
 
-`curl -H "Content-Type: application/json" -H "Authorization: Bearer <auth token>" --request POST http://localhost:8080/v1/private/studies -d @study_input.json`
+`curl -H "Content-Type: application/json" -H "Authorization: Bearer <auth token>" --request POST http://localhost:8080/v2/private/study -d @study_input.json`
 
 You should be able to make your changes & can rebuild the api image with the command:
 
