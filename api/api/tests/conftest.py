@@ -3,6 +3,7 @@ import uuid as uuid_lib
 from fastapi.testclient import TestClient
 import pytest
 import json
+import os
 
 from api.auth import create_user, get_user
 from models.repository import repository_create
@@ -29,6 +30,11 @@ def get_uuid() -> str:
     generated = uuid_lib.uuid4()
 
     return str(generated)
+
+
+@pytest.fixture(scope="function")
+def uuid() -> str:
+    return get_uuid()
 
 
 def get_client(**kwargs) -> TestClient:
@@ -65,13 +71,7 @@ def create_user_if_missing(email: str, password: str):
     loop.run_until_complete(create_test_user_if_missing())
 
 
-def authenticate_client(api_client: TestClient):
-    user_details = {
-        "username": "test@example.com",
-        "password": "test",
-    }
-    create_user_if_missing(user_details["username"], user_details["password"])
-
+def authenticate_client(api_client: TestClient, user_details: dict):
     rsp = api_client.post("auth/token", data=user_details)
 
     assert rsp.status_code == 200
@@ -81,9 +81,32 @@ def authenticate_client(api_client: TestClient):
 
 
 @pytest.fixture(scope="module")
-def api_client() -> TestClient:
+def existing_user() -> dict:
+    user_details = {
+        "username": "test@example.com",
+        "password": "test",
+    }
+    create_user_if_missing(user_details["username"], user_details["password"])
+
+    return user_details
+
+
+@pytest.fixture(scope="module")
+def user_create_token() -> str:
+    return os.environ["USER_CREATE_SECRET_TOKEN"]
+
+
+@pytest.fixture(scope="module")
+def api_client(existing_user: dict) -> TestClient:
     client = get_client(raise_server_exceptions=False)
-    authenticate_client(client)  # @TODO: DELETEME
+    authenticate_client(client, existing_user)  # @TODO: DELETEME
+
+    return client
+
+
+@pytest.fixture(scope="module")
+def api_client_public() -> TestClient:
+    client = get_client(raise_server_exceptions=False)
 
     return client
 

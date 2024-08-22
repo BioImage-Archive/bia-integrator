@@ -133,7 +133,7 @@ async def login_for_access_token(
     return auth_result
 
 
-@router.post("/users/register")
+@router.post("/user/register")
 async def register_user(
     email: Annotated[str, Body()],
     password_plain: Annotated[str, Body()],

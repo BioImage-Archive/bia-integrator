@@ -19,12 +19,11 @@ from .util import (
 )
 
 
-# @pytest.fixture
-# def api_client_private() -> TestClient:
-#    client = get_client(raise_server_exceptions=False)
-#    authenticate_client(client)
+@pytest.fixture(scope="module")
+def api_client_public() -> TestClient:
+    client = get_client(raise_server_exceptions=False)
 
-#    return client
+    return client
 
 
 @pytest.fixture(scope="module")
