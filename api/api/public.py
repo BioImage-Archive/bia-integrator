@@ -40,42 +40,68 @@ def make_get_item(t: Type[shared_data_models.DocumentMixin]):
     return get_item
 
 
+def make_reverse_link_handler(
+    source_attribute: str,
+    source_type: Type[shared_data_models.DocumentMixin],
+    target_type: Type[shared_data_models.DocumentMixin],
+):
+    async def get_descendents(
+        uuid: shared_data_models.UUID, db: Repository = Depends()
+    ) -> List[source_type]:
+        # Check target document actually exists (and is typed correctly - esp. important for union-typed links)
+        #   see workaround_union_reference_types
+        await db.get_doc(uuid, target_type)
+
+        return await db.get_docs(
+            # !!!!
+            # source_attribute has list values sometimes (for models that reference a list of other objects)
+            #   mongo queries just so happen have the semantics we want
+            # a.i. list_attribute: some_val means "any value in list_attribute is equal to some_val"
+            doc_filter={source_attribute: uuid},
+            doc_type=source_type,
+        )
+
+    return get_descendents
+
+
+def router_add_reverse_link(
+    router: APIRouter, link_target_type, link_source_type, link_attribute_name
+):
+    router.add_api_route(
+        f"/{to_snake(link_target_type.__name__)}/{{uuid}}/{to_snake(link_source_type.__name__)}",
+        response_model=List[link_source_type],
+        operation_id=f"get{link_source_type.__name__}In{link_target_type.__name__}",
+        summary=f"Get {link_source_type.__name__} In {link_target_type.__name__}",
+        methods=["GET"],
+        endpoint=make_reverse_link_handler(
+            link_attribute_name, link_source_type, link_target_type
+        ),
+    )
+
+
 def make_reverse_links(router: APIRouter) -> APIRouter:
-    def make_reverse_link_handler(
-        source_attribute: str, source_type: Type[shared_data_models.DocumentMixin]
-    ):
-        async def get_descendents(
-            uuid: shared_data_models.UUID, db: Repository = Depends()
-        ) -> List[source_type]:
-            return await db.get_docs(
-                # !!!!
-                # source_attribute has list values sometimes (for models that reference a list of other objects)
-                #   mongo queries just so happen have the semantics we want
-                # a.i. list_attribute: some_val means "any value in list_attribute is equal to some_val"
-                doc_filter={source_attribute: uuid},
-                doc_type=source_type,
-            )
-
-        return get_descendents
-
     for model in models_public:
         for (
             link_attribute_name,
-            link_attribute_type,
+            link_object_reference,
         ) in model.get_object_reference_fields().items():
             # Just in case we accidentally link to a private model somehow (technically possible)
             #   just raise and defer definining behaviour until we use it
-            if link_attribute_type in models_public:
-                router.add_api_route(
-                    f"/{to_snake(link_attribute_type.__name__)}/{{uuid}}/{to_snake(model.__name__)}",
-                    response_model=List[model],
-                    operation_id=f"get{model.__name__}In{link_attribute_type.__name__}",
-                    summary=f"Get {model.__name__} In {link_attribute_type.__name__}",
-                    methods=["GET"],
-                    endpoint=make_reverse_link_handler(link_attribute_name, model),
-                )
-            else:
-                raise Exception("TODO: Link from a public model to a nonpublic one")
+            link_target_options = (
+                [link_object_reference.link_dest_type]
+                if link_object_reference.link_dest_type
+                else link_object_reference.workaround_union_reference_types
+            )
+            for link_dest_option in link_target_options:
+                if link_dest_option in models_public:
+                    router_add_reverse_link(
+                        router,
+                        link_dest_option,
+                        model,
+                        link_attribute_name,
+                    )
+                else:
+                    raise Exception("TODO: Link from a public model to a nonpublic one")
 
 
 def make_router() -> APIRouter:
