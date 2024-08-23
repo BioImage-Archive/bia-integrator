@@ -139,7 +139,11 @@ def create_experimental_imaging_datasets(
             submission_dataset = file_reference.submission_dataset_uuid
             file_type = Path(file_reference.file_path).suffix
             if submission_dataset not in eid_counts_map:
-                eid_counts_map[submission_dataset] = {"file_count": 0, "image_count": 0, "file_type_aggregation": set()}
+                eid_counts_map[submission_dataset] = {
+                    "file_count": 0,
+                    "image_count": 0,
+                    "file_type_aggregation": set(),
+                }
             eid_counts_map[submission_dataset]["file_count"] += 1
             eid_counts_map[submission_dataset]["file_type_aggregation"].add(file_type)
 
@@ -172,9 +176,16 @@ def create_experimental_imaging_datasets(
             eid_dict = eid.model_dump()
 
             if eid_dict["uuid"] in eid_counts_map:
+                eid_counts_map[eid_dict["uuid"]]["file_type_aggregation"] = sorted(
+                    list(eid_counts_map[eid_dict["uuid"]]["file_type_aggregation"])
+                )
                 eid_dict = eid_dict | eid_counts_map[eid_dict["uuid"]]
             else:
-                eid_dict = eid_dict | {"file_count": 0, "image_count": 0, "file_type_aggregation": set()}
+                eid_dict = eid_dict | {
+                    "file_count": 0,
+                    "image_count": 0,
+                    "file_type_aggregation": set(),
+                }
 
             associations = eid.attribute["associations"]
 
