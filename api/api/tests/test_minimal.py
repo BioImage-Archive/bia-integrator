@@ -4,7 +4,7 @@ tl;dr avoid importing get_uuid to make sure we reuse mocks
 """
 
 from fastapi.testclient import TestClient
-from .conftest import get_uuid
+from api.tests.conftest import get_uuid
 
 
 def test_get_created_study(api_client: TestClient, existing_study):

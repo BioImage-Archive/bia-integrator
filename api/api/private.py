@@ -2,14 +2,15 @@ from fastapi import APIRouter
 from pydantic.alias_generators import to_snake
 
 import bia_shared_datamodels.bia_data_model as shared_data_models
-from .models.repository import Repository
-from . import constants
+from api.models.repository import Repository
+from api import constants
+from api import auth
 from fastapi import APIRouter, Depends, status
 from typing import List, Type
 
 router = APIRouter(
     prefix="/private",
-    # dependencies=[Depends(get_current_user)], TODO
+    dependencies=[Depends(auth.get_current_user)],
     tags=[constants.OPENAPI_TAG_PRIVATE],
 )
 models_private: List[shared_data_models.DocumentMixin] = [
