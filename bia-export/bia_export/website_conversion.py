@@ -131,7 +131,7 @@ def create_experimental_imaging_datasets(
         file_reference_directory = root_directory.joinpath(
             f"file_references/{accession_id}/*.json"
         )
-        file_reference_paths = sorted(glob(str(file_reference_directory)))
+        file_reference_paths = glob(str(file_reference_directory))
         for file_path in file_reference_paths:
             with open(file_path, "r") as object_file:
                 object_dict = json.load(object_file)
