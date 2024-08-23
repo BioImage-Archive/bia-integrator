@@ -6,7 +6,7 @@ api_env:
   mongoHost: "api-mongodb"
   dbName: "bia-integrator"
   jwtSecretKey: "5acacd0471b95e32ecb75693f785225472b9f3e57b6ad480619c8449fb2fc885"
-  userCreateSecretToken: "00123456789=="
+  userCreateSecretToken: "0123456789=="
 
 mongodb:
   enabled: true
