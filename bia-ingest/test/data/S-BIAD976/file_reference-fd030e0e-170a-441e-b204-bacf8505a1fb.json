@@ -1,0 +1,24 @@
+{
+    "attributes": {
+      "Type": "Raw Data Time",
+      "Rep": "1",
+      "Plate": "1",
+      "Well": "G06",
+      "Image": "1",
+      "Condition": "B27"
+    },
+    "annotations_applied": false,
+    "annotations": [],
+    "@context": "https://raw.githubusercontent.com/BioImage-Archive/bia-integrator/main/api/src/models/jsonld/1.0/FileReferenceContext.jsonld",
+    "uuid": "fd030e0e-170a-441e-b204-bacf8505a1fb",
+    "version": 0,
+    "model": {
+      "type_name": "FileReference",
+      "version": 1
+    },
+    "study_uuid": "387ad6d6-76ea-449f-bb62-90c2f202a879",
+    "name": "NeuroConnectivity_Func/Rep1/repl1_17_G06.tif",
+    "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BIAD/976/S-BIAD976/Files/NeuroConnectivity_Func/Rep1/repl1_17_G06.tif",
+    "type": "file",
+    "size_in_bytes": 90456332
+  }

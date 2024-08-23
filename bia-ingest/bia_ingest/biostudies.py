@@ -6,10 +6,10 @@ from typing import List, Union, Dict, Optional, Any
 from copy import deepcopy
 
 import requests
-from pydantic import BaseModel, parse_raw_as
+from pydantic import BaseModel, TypeAdapter
 
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("__main__." + __name__)
 
 
 STUDY_URL_TEMPLATE = "https://www.ebi.ac.uk/biostudies/api/v1/studies/{accession}"
@@ -64,7 +64,7 @@ class Link(BaseModel):
 
 class Section(BaseModel):
     type: str
-    accno: Optional[str]
+    accno: Optional[str] = ""
     attributes: List[Attribute] = []
     subsections: List[Union["Section", List["Section"]]] = []
     links: List[Link] = []
@@ -97,7 +97,7 @@ class Submission(BaseModel):
     attributes: List[Attribute]
 
     def as_tsv(self) -> str:
-        tsv_rep = f"Submission"
+        tsv_rep = "Submission"
         if self.accno:
             tsv_rep += f"\t{self.accno}"
         tsv_rep += "\n"
@@ -136,7 +136,6 @@ class QueryResult(BaseModel):
 
 
 def load_submission(accession_id: str) -> Submission:
-
     url = STUDY_URL_TEMPLATE.format(accession=accession_id)
     logger.info(f"Fetching submission from {url}")
     headers = {
@@ -146,22 +145,35 @@ def load_submission(accession_id: str) -> Submission:
 
     assert r.status_code == 200
 
-    submission = Submission.parse_raw(r.content)
+    submission = Submission.model_validate_json(r.content)
 
     return submission
 
 
-def attributes_to_dict(attributes: List[Attribute]) -> Dict[str, Optional[str]]:
-
-    return {attr.name: attr.value for attr in attributes}
+def attributes_to_dict(
+    attributes: List[Attribute],
+) -> Dict[str, Optional[str | List[str]]]:
+    attr_dict = {}
+    for attr in attributes:
+        if attr.name in attr_dict:
+            if isinstance(attr_dict[attr.name], list):
+                attr_dict[attr.name].append(attr.value)
+            else:
+                attr_dict[attr.name] = [
+                    attr_dict[attr.name],
+                ]
+                attr_dict[attr.name].append(attr.value)
+        else:
+            attr_dict[attr.name] = attr.value
+    return attr_dict
 
 
 def find_file_lists_in_section(
     section: Section, flists: List[Dict[str, Union[str, None, List[str]]]]
 ) -> List[Dict[str, Union[str, None, List[str]]]]:
-    """Find all of the File Lists in a Section, recursively descending through
-    the subsections.
-    
+    """
+    Find all of the File Lists in a Section, recursively descending through the subsections.
+
     Return a list of dictionaries.
     """
 
@@ -180,7 +192,7 @@ def find_file_lists_in_section(
     for subsection in section.subsections:
         subsection_type = type(subsection)
         if subsection_type == Section:
-            find_file_lists_in_section(subsection, flists)
+            find_file_lists_in_section(subsection, flists)  # type: ignore
         else:
             logger.warning(
                 f"Not processing subsection as type is {subsection_type}, not 'Section'. Contents={subsection}"
@@ -192,14 +204,12 @@ def find_file_lists_in_section(
 def find_file_lists_in_submission(
     submission: Submission,
 ) -> List[Dict[str, Union[str, None, List[str]]]]:
-
     return find_file_lists_in_section(submission.section, [])
 
 
 def flist_from_flist_fname(
     accession_id: str, flist_fname: str, extra_attribute: Union[List[str], str] = None
 ) -> List[File]:
-
     flist_url = FLIST_URI_TEMPLATE.format(
         accession_id=accession_id, flist_fname=flist_fname
     )
@@ -214,10 +224,10 @@ def flist_from_flist_fname(
     dict_content = json.loads(r.content)
     dict_filtered_content = filter_filelist_content(dict_content)
     filtered_content = bytes(json.dumps(dict_filtered_content), "utf-8")
-    fl = parse_raw_as(List[File], filtered_content)
+    fl = TypeAdapter(List[File]).validate_json(filtered_content)
 
     if extra_attribute:
-        if type(extra_attribute) is not list:
+        if not isinstance(extra_attribute, list):
             extra_attribute = [
                 extra_attribute,
             ]
@@ -233,7 +243,9 @@ def file_uri(
     """For a given accession and file object, return the HTTP URI where we can expect
     to be able to access that file."""
 
-    return file_uri_template.format(accession_id=accession_id, relpath=file.path)
+    return file_uri_template.format(
+        accession_id=accession_id, relpath=file.path.as_posix()
+    )
 
 
 def get_file_uri_template_for_accession(accession_id: str) -> str:
@@ -253,7 +265,6 @@ def get_file_uri_template_for_accession(accession_id: str) -> str:
 
 
 def find_files_in_submission_file_lists(submission: Submission) -> List[File]:
-
     file_list_dicts = find_file_lists_in_submission(submission)
     file_lists = []
     for file_list_dict in file_list_dicts:
@@ -282,7 +293,6 @@ def find_files_in_submission(submission: Submission) -> List[File]:
     all_files = find_files_in_submission_file_lists(submission)
 
     def descend_and_find_files(section, files_list=[]):
-
         section_type = type(section)
         if section_type == Section:
             for file in section.files:
@@ -315,8 +325,8 @@ def get_with_case_insensitive_key(dictionary: Dict[str, Any], key: str) -> Any:
 
 
 def filter_filelist_content(dictionary: Dict[str, Any]) -> Dict[str, Any]:
-    """Remove attributes in filelist with null or empty values
-
+    """
+    Remove attributes in filelist with null or empty values
     """
     dict_copy = deepcopy(dictionary)
     for d in dict_copy:

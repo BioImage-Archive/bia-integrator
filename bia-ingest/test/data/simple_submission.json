@@ -1,0 +1,19 @@
+{
+  "accno" : "S-BIAD0001",
+  "title" : "Test Submission",
+  "attributes" : [ {
+    "name" : "Template",
+    "value" : "BioImages.v4"
+  }, {
+    "name" : "ReleaseDate",
+    "value" : "2024-02-21"
+  }, {
+    "name" : "AttachTo",
+    "value" : "BioImages"
+  } ],
+  "section": {
+    "accno": "section",
+    "type": "section"
+  },
+  "type" : "submission"
+}
