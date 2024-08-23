@@ -184,7 +184,7 @@ def create_experimental_imaging_datasets(
                 eid_dict = eid_dict | {
                     "file_count": 0,
                     "image_count": 0,
-                    "file_type_aggregation": set(),
+                    "file_type_aggregation": [],
                 }
 
             associations = eid.attribute["associations"]
