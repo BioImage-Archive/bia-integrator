@@ -110,12 +110,16 @@ class Repository:
                     for dependency_uuid in getattr(
                         object_to_check, link_attribute_name
                     ):
-                        doc_dependencies.append(
-                            {
-                                "uuid": dependency_uuid,
-                                "model": link_target_type.get_model_metadata().model_dump(),
-                            }
-                        )
+                        new_dependency = {
+                            "uuid": dependency_uuid,
+                            "model": link_target_type.get_model_metadata().model_dump(),
+                        }
+                        if new_dependency in doc_dependencies:
+                            raise exceptions.DocumentNotFound(
+                                f"Field {link_attribute_name} has duplicate dependency {dependency_uuid}"
+                            )
+
+                        doc_dependencies.append(new_dependency)
                 else:
                     doc_dependencies.append(
                         {
