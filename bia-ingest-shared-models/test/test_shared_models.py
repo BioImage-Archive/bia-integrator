@@ -9,6 +9,7 @@ from bia_ingest_sm.conversion import (
     image_acquisition,
     annotation_method,
     specimen,
+    image_annotation_dataset,
 )
 
 
@@ -35,6 +36,7 @@ from bia_ingest_sm.conversion import (
         (utils.get_test_image_acquisition, image_acquisition.get_image_acquisition,),
         (utils.get_test_specimen, specimen.get_specimen,),
         (utils.get_test_annotation_method, annotation_method.get_annotation_method,),
+        (utils.get_test_image_annotation_dataset_method, image_annotation_dataset.get_image_annotation_dataset,),
         # Not testing as we need to deal with links that are not proper
         # urls
         # (utils.get_test_external_reference, conversion.get_external_reference,),

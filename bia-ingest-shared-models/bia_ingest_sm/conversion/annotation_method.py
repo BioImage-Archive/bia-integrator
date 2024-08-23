@@ -26,7 +26,7 @@ def get_annotation_method(
     )
 
     if persist_artefacts and annotation_methods:
-        persist(annotation_methods, "annotation_method", submission.accno)
+        persist(annotation_methods, "annotation_methods", submission.accno)
 
     return annotation_methods
 
