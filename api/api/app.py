@@ -7,6 +7,8 @@ from api.models.repository import repository_create, Repository
 from fastapi import FastAPI
 from typing import AsyncGenerator
 
+from api.logging import log_info
+
 
 async def repository_dependency() -> AsyncGenerator[Repository, None]:
     db = await repository_create(init=False)
@@ -27,5 +29,17 @@ app = FastAPI(
 app.openapi_version = "3.0.2"
 
 app.include_router(auth.router, prefix="/v2")
+
+
+@app.on_event("startup")
+def on_start():
+    log_info("App started")
+
+
+@app.on_event("shutdown")
+def on_start():
+    log_info("App stopped")
+
+
 app.include_router(public.make_router(), prefix="/v2")
 app.include_router(private.make_router(), prefix="/v2")

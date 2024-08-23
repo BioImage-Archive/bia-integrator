@@ -1,0 +1,52 @@
+# ! time formats need to always be consistent
+# string datetime in ISO 8601 format (datetime default) preferred
+
+version: 1
+disable_existing_loggers: true
+formatters:
+    json_request:
+        class: api.logging.AccesslogFormatter
+    json_error:
+        class: api.logging.VerboseJSONFormatter
+    json_catchall:
+        class: api.logging.VerboseJSONFormatter
+    json_api:
+        class: api.logging.APILogFormatter
+handlers:
+    json_api:
+        class: logging.StreamHandler
+        stream: ext://sys.stdout
+        formatter: json_api
+    json_request:
+        class: logging.StreamHandler
+        stream: ext://sys.stdout
+        formatter: json_request
+    json_error:
+        class: logging.StreamHandler
+        stream: ext://sys.stderr
+        formatter: json_error
+    json_catchall:
+        # this is just so we never drop logs, nothing should be handled by this handler
+        class: logging.StreamHandler
+        stream: ext://sys.stdout
+        formatter: json_catchall
+loggers:
+    starlette:
+        level: INFO
+        handlers: [json_request]
+        propagate: false
+    uvicorn.access:
+        level: INFO
+        handlers: [json_request]
+        propagate: false
+    uvicorn.error:
+        level: ERROR
+        handlers: [json_error]
+        propagate: false
+    bia:
+        level: INFO
+        handlers: [json_api]
+        propagate: false
+root:
+    level: INFO
+    handlers: [json_catchall]
