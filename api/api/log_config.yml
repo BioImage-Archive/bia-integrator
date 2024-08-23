@@ -5,13 +5,13 @@ version: 1
 disable_existing_loggers: true
 formatters:
     json_request:
-        class: api.logging.AccesslogFormatter
+        class: api.api_logging.AccesslogFormatter
     json_error:
-        class: api.logging.VerboseJSONFormatter
+        class: api.api_logging.VerboseJSONFormatter
     json_catchall:
-        class: api.logging.VerboseJSONFormatter
+        class: api.api_logging.VerboseJSONFormatter
     json_api:
-        class: api.logging.APILogFormatter
+        class: api.api_logging.APILogFormatter
 handlers:
     json_api:
         class: logging.StreamHandler

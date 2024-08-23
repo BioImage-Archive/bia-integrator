@@ -7,7 +7,7 @@ from api.models.repository import repository_create, Repository
 from fastapi import FastAPI
 from typing import AsyncGenerator
 
-from api.logging import log_info
+from api.api_logging import log_info
 
 
 async def repository_dependency() -> AsyncGenerator[Repository, None]:
