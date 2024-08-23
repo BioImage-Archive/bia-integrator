@@ -3,20 +3,16 @@ from typing import List, Dict, Any
 from .utils import (
     find_sections_recursive,
     dicts_to_api_models,
-    get_generic_section_as_list,
     dict_to_uuid,
-    get_generic_section_as_dict,
     persist,
     filter_model_dictionary,
-    log_failed_model_creation
 )
 import bia_ingest_sm.conversion.study as study_conversion
 from ..biostudies import (
     Submission,
     attributes_to_dict,
 )
-from pydantic import ValidationError
-from bia_shared_datamodels import bia_data_model, semantic_models
+from bia_shared_datamodels import bia_data_model
 
 
 logger = logging.getLogger('__main__.'+__name__)
@@ -49,7 +45,7 @@ def extract_image_annotation_dataset_method_dicts(submission: Submission) -> Lis
         #model_dict = {k: attr_dict(v, default) for k, v, default in key_mapping}
 
         model_dict = {
-            "title_id": attr_dict.get("Name", ""),
+            "title_id": attr_dict.get("Title", ""),
             "description": attr_dict.get("Description"),
             "submitted_in_study_uuid": study_conversion.get_study_uuid(submission),
             "example_image_uri": [],

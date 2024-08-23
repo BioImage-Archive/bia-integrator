@@ -9,6 +9,7 @@ from bia_ingest_sm.conversion.experimental_imaging_dataset import (
 from bia_ingest_sm.conversion.file_reference import get_file_reference_by_dataset
 from bia_ingest_sm.conversion.specimen import get_specimen
 from bia_ingest_sm.conversion.image_acquisition import get_image_acquisition
+from bia_ingest_sm.conversion.image_annotation_dataset import get_image_annotation_dataset
 import logging
 from rich import print
 from rich.logging import RichHandler
@@ -49,8 +50,14 @@ def ingest(accession_id_list: Annotated[List[str], typer.Argument()],
             submission, result_summary, persist_artefacts=True
         )
 
+        image_annotation_datasets = get_image_annotation_dataset(
+            submission, result_summary, persist_artefacts=True
+        )
+
+
+
         file_references = get_file_reference_by_dataset(
-            submission, experimental_imaging_datasets, result_summary, persist_artefacts=True
+            submission, experimental_imaging_datasets + image_annotation_datasets, result_summary, persist_artefacts=True
         )
 
         image_acquisitions = get_image_acquisition(submission, result_summary, persist_artefacts=True)
