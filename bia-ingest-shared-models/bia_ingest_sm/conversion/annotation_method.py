@@ -37,11 +37,9 @@ def extract_annotation_method_dicts(submission: Submission) -> List[Dict[str, An
     )
 
     key_mapping = [
-        ("title_id", "Name", ""),
-        ("protocol_description", "Annotation overview", ""),
+        ("title_id", "Title", ""),
         ("annotation_criteria", "Annotation criteria", ""),
         ("annotation_coverage", "Annotation coverage", ""),
-        ("method_type", "Annotation method", "other"),
     ]
 
     model_dicts = []
@@ -52,6 +50,17 @@ def extract_annotation_method_dicts(submission: Submission) -> List[Dict[str, An
 
         # TODO: change template to get source dataset information
         model_dict["source_dataset"] = []
+
+        # TODO: Deal with protocol descriptions and method types more consistently.
+        if "Annotation overview" in attr_dict:
+            if "Annotation method" in attr_dict:
+                protocol_descrption = attr_dict.get("Annotation overview").rstrip(".:,") + ". " + attr_dict.get("Annotation method")
+            else:
+                protocol_descrption = attr_dict.get("Annotation overview")
+        else: 
+            protocol_descrption = attr_dict.get("Annotation method", "") 
+        model_dict["protocol_description"] = protocol_descrption
+        model_dict["method_type"] = "other"
 
         model_dict["accno"] = section.__dict__.get("accno", "")
         model_dict["accession_id"] = submission.accno

@@ -10,6 +10,7 @@ from bia_ingest_sm.conversion.file_reference import get_file_reference_by_datase
 from bia_ingest_sm.conversion.specimen import get_specimen
 from bia_ingest_sm.conversion.image_acquisition import get_image_acquisition
 from bia_ingest_sm.conversion.image_annotation_dataset import get_image_annotation_dataset
+from bia_ingest_sm.conversion.annotation_method import get_annotation_method
 import logging
 from rich import print
 from rich.logging import RichHandler
@@ -54,8 +55,6 @@ def ingest(accession_id_list: Annotated[List[str], typer.Argument()],
             submission, result_summary, persist_artefacts=True
         )
 
-
-
         file_references = get_file_reference_by_dataset(
             submission, experimental_imaging_datasets + image_annotation_datasets, result_summary, persist_artefacts=True
         )
@@ -65,6 +64,9 @@ def ingest(accession_id_list: Annotated[List[str], typer.Argument()],
         # Specimen
         # Biosample and Specimen artefacts are processed as part of bia_data_models.Specimen (note - this is very different from Biostudies.Specimen)
         specimens = get_specimen(submission, result_summary, persist_artefacts=True)
+
+
+        annotation_method = get_annotation_method(submission, result_summary, persist_artefacts=True)
 
         # typer.echo(study.model_dump_json(indent=2))
         

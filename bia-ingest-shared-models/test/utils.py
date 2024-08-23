@@ -15,7 +15,7 @@ accession_id = "S-BIADTEST"
 
 
 
-def get_test_image_annotation_dataset_method() -> List[bia_data_model.ImageAnnotationDataset]:
+def get_test_image_annotation_dataset() -> List[bia_data_model.ImageAnnotationDataset]:
 
     study_uuid = dict_to_uuid(
         {

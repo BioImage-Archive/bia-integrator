@@ -17,6 +17,8 @@ expected_objects_dict = {
     "image_acquisitions": utils.get_test_image_acquisition(),
     "specimen_growth_protocol": utils.get_test_specimen_growth_protocol(),
     "specimen_imaging_protocol": utils.get_test_specimen_imaging_preparation_protocol(),
+    "annotation_method": utils.get_test_annotation_method(),
+    "image_annotation_dataset": utils.get_test_image_annotation_dataset(),
 }
 
 # File references are a special case as they depend on experimental dataset
