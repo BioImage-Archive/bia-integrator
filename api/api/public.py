@@ -9,7 +9,7 @@ from typing import List, Type
 
 router = APIRouter(
     prefix="",
-    tags=[constants.OPENAPI_TAG_PUBLIC],
+    tags=[constants.OPENAPI_TAG_PUBLIC, constants.OPENAPI_TAG_PRIVATE],
 )
 models_public: List[shared_data_models.DocumentMixin] = [
     shared_data_models.Study,

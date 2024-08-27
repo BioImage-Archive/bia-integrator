@@ -45,20 +45,14 @@ configuration = bia_integrator_api.Configuration(
 with bia_integrator_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = bia_integrator_api.PrivateApi(api_client)
-    username = 'username_example' # str | 
-    password = 'password_example' # str | 
-    grant_type = 'grant_type_example' # str |  (optional)
-    scope = '' # str |  (optional) (default to '')
-    client_id = 'client_id_example' # str |  (optional)
-    client_secret = 'client_secret_example' # str |  (optional)
 
     try:
-        # Login For Access Token
-        api_response = api_instance.login_for_access_token(username, password, grant_type=grant_type, scope=scope, client_id=client_id, client_secret=client_secret)
-        print("The response of PrivateApi->login_for_access_token:\n")
+        # Example Custom Handler
+        api_response = api_instance.example_custom_handler()
+        print("The response of PrivateApi->example_custom_handler:\n")
         pprint(api_response)
     except ApiException as e:
-        print("Exception when calling PrivateApi->login_for_access_token: %s\n" % e)
+        print("Exception when calling PrivateApi->example_custom_handler: %s\n" % e)
 
 ```
 
@@ -68,6 +62,43 @@ All URIs are relative to *http://localhost*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
+*PrivateApi* | [**example_custom_handler**](bia_integrator_api/docs/PrivateApi.md#example_custom_handler) | **GET** /v2/placeholder | Example Custom Handler
+*PrivateApi* | [**get_annotation_file_reference**](bia_integrator_api/docs/PrivateApi.md#get_annotation_file_reference) | **GET** /v2/annotation_file_reference/{uuid} | Get AnnotationFileReference
+*PrivateApi* | [**get_annotation_file_reference_in_annotation_method**](bia_integrator_api/docs/PrivateApi.md#get_annotation_file_reference_in_annotation_method) | **GET** /v2/annotation_method/{uuid}/annotation_file_reference | Get AnnotationFileReference In AnnotationMethod
+*PrivateApi* | [**get_annotation_file_reference_in_derived_image**](bia_integrator_api/docs/PrivateApi.md#get_annotation_file_reference_in_derived_image) | **GET** /v2/derived_image/{uuid}/annotation_file_reference | Get AnnotationFileReference In DerivedImage
+*PrivateApi* | [**get_annotation_file_reference_in_experimental_imaging_dataset**](bia_integrator_api/docs/PrivateApi.md#get_annotation_file_reference_in_experimental_imaging_dataset) | **GET** /v2/experimental_imaging_dataset/{uuid}/annotation_file_reference | Get AnnotationFileReference In ExperimentalImagingDataset
+*PrivateApi* | [**get_annotation_file_reference_in_experimentally_captured_image**](bia_integrator_api/docs/PrivateApi.md#get_annotation_file_reference_in_experimentally_captured_image) | **GET** /v2/experimentally_captured_image/{uuid}/annotation_file_reference | Get AnnotationFileReference In ExperimentallyCapturedImage
+*PrivateApi* | [**get_annotation_file_reference_in_image_annotation_dataset**](bia_integrator_api/docs/PrivateApi.md#get_annotation_file_reference_in_image_annotation_dataset) | **GET** /v2/image_annotation_dataset/{uuid}/annotation_file_reference | Get AnnotationFileReference In ImageAnnotationDataset
+*PrivateApi* | [**get_annotation_method**](bia_integrator_api/docs/PrivateApi.md#get_annotation_method) | **GET** /v2/annotation_method/{uuid} | Get AnnotationMethod
+*PrivateApi* | [**get_bio_sample**](bia_integrator_api/docs/PrivateApi.md#get_bio_sample) | **GET** /v2/bio_sample/{uuid} | Get BioSample
+*PrivateApi* | [**get_derived_image**](bia_integrator_api/docs/PrivateApi.md#get_derived_image) | **GET** /v2/derived_image/{uuid} | Get DerivedImage
+*PrivateApi* | [**get_derived_image_in_annotation_method**](bia_integrator_api/docs/PrivateApi.md#get_derived_image_in_annotation_method) | **GET** /v2/annotation_method/{uuid}/derived_image | Get DerivedImage In AnnotationMethod
+*PrivateApi* | [**get_derived_image_in_derived_image**](bia_integrator_api/docs/PrivateApi.md#get_derived_image_in_derived_image) | **GET** /v2/derived_image/{uuid}/derived_image | Get DerivedImage In DerivedImage
+*PrivateApi* | [**get_derived_image_in_experimentally_captured_image**](bia_integrator_api/docs/PrivateApi.md#get_derived_image_in_experimentally_captured_image) | **GET** /v2/experimentally_captured_image/{uuid}/derived_image | Get DerivedImage In ExperimentallyCapturedImage
+*PrivateApi* | [**get_derived_image_in_image_annotation_dataset**](bia_integrator_api/docs/PrivateApi.md#get_derived_image_in_image_annotation_dataset) | **GET** /v2/image_annotation_dataset/{uuid}/derived_image | Get DerivedImage In ImageAnnotationDataset
+*PrivateApi* | [**get_experimental_imaging_dataset**](bia_integrator_api/docs/PrivateApi.md#get_experimental_imaging_dataset) | **GET** /v2/experimental_imaging_dataset/{uuid} | Get ExperimentalImagingDataset
+*PrivateApi* | [**get_experimental_imaging_dataset_in_study**](bia_integrator_api/docs/PrivateApi.md#get_experimental_imaging_dataset_in_study) | **GET** /v2/study/{uuid}/experimental_imaging_dataset | Get ExperimentalImagingDataset In Study
+*PrivateApi* | [**get_experimentally_captured_image**](bia_integrator_api/docs/PrivateApi.md#get_experimentally_captured_image) | **GET** /v2/experimentally_captured_image/{uuid} | Get ExperimentallyCapturedImage
+*PrivateApi* | [**get_experimentally_captured_image_in_experimental_imaging_dataset**](bia_integrator_api/docs/PrivateApi.md#get_experimentally_captured_image_in_experimental_imaging_dataset) | **GET** /v2/experimental_imaging_dataset/{uuid}/experimentally_captured_image | Get ExperimentallyCapturedImage In ExperimentalImagingDataset
+*PrivateApi* | [**get_experimentally_captured_image_in_image_acquisition**](bia_integrator_api/docs/PrivateApi.md#get_experimentally_captured_image_in_image_acquisition) | **GET** /v2/image_acquisition/{uuid}/experimentally_captured_image | Get ExperimentallyCapturedImage In ImageAcquisition
+*PrivateApi* | [**get_experimentally_captured_image_in_specimen**](bia_integrator_api/docs/PrivateApi.md#get_experimentally_captured_image_in_specimen) | **GET** /v2/specimen/{uuid}/experimentally_captured_image | Get ExperimentallyCapturedImage In Specimen
+*PrivateApi* | [**get_file_reference**](bia_integrator_api/docs/PrivateApi.md#get_file_reference) | **GET** /v2/file_reference/{uuid} | Get FileReference
+*PrivateApi* | [**get_file_reference_in_experimental_imaging_dataset**](bia_integrator_api/docs/PrivateApi.md#get_file_reference_in_experimental_imaging_dataset) | **GET** /v2/experimental_imaging_dataset/{uuid}/file_reference | Get FileReference In ExperimentalImagingDataset
+*PrivateApi* | [**get_file_reference_in_image_annotation_dataset**](bia_integrator_api/docs/PrivateApi.md#get_file_reference_in_image_annotation_dataset) | **GET** /v2/image_annotation_dataset/{uuid}/file_reference | Get FileReference In ImageAnnotationDataset
+*PrivateApi* | [**get_image_acquisition**](bia_integrator_api/docs/PrivateApi.md#get_image_acquisition) | **GET** /v2/image_acquisition/{uuid} | Get ImageAcquisition
+*PrivateApi* | [**get_image_annotation_dataset**](bia_integrator_api/docs/PrivateApi.md#get_image_annotation_dataset) | **GET** /v2/image_annotation_dataset/{uuid} | Get ImageAnnotationDataset
+*PrivateApi* | [**get_image_annotation_dataset_in_study**](bia_integrator_api/docs/PrivateApi.md#get_image_annotation_dataset_in_study) | **GET** /v2/study/{uuid}/image_annotation_dataset | Get ImageAnnotationDataset In Study
+*PrivateApi* | [**get_image_representation**](bia_integrator_api/docs/PrivateApi.md#get_image_representation) | **GET** /v2/image_representation/{uuid} | Get ImageRepresentation
+*PrivateApi* | [**get_image_representation_in_derived_image**](bia_integrator_api/docs/PrivateApi.md#get_image_representation_in_derived_image) | **GET** /v2/derived_image/{uuid}/image_representation | Get ImageRepresentation In DerivedImage
+*PrivateApi* | [**get_image_representation_in_experimentally_captured_image**](bia_integrator_api/docs/PrivateApi.md#get_image_representation_in_experimentally_captured_image) | **GET** /v2/experimentally_captured_image/{uuid}/image_representation | Get ImageRepresentation In ExperimentallyCapturedImage
+*PrivateApi* | [**get_image_representation_in_file_reference**](bia_integrator_api/docs/PrivateApi.md#get_image_representation_in_file_reference) | **GET** /v2/file_reference/{uuid}/image_representation | Get ImageRepresentation In FileReference
+*PrivateApi* | [**get_specimen**](bia_integrator_api/docs/PrivateApi.md#get_specimen) | **GET** /v2/specimen/{uuid} | Get Specimen
+*PrivateApi* | [**get_specimen_growth_protocol**](bia_integrator_api/docs/PrivateApi.md#get_specimen_growth_protocol) | **GET** /v2/specimen_growth_protocol/{uuid} | Get SpecimenGrowthProtocol
+*PrivateApi* | [**get_specimen_imaging_preparation_protocol**](bia_integrator_api/docs/PrivateApi.md#get_specimen_imaging_preparation_protocol) | **GET** /v2/specimen_imaging_preparation_protocol/{uuid} | Get SpecimenImagingPreparationProtocol
+*PrivateApi* | [**get_specimen_in_bio_sample**](bia_integrator_api/docs/PrivateApi.md#get_specimen_in_bio_sample) | **GET** /v2/bio_sample/{uuid}/specimen | Get Specimen In BioSample
+*PrivateApi* | [**get_specimen_in_specimen_growth_protocol**](bia_integrator_api/docs/PrivateApi.md#get_specimen_in_specimen_growth_protocol) | **GET** /v2/specimen_growth_protocol/{uuid}/specimen | Get Specimen In SpecimenGrowthProtocol
+*PrivateApi* | [**get_specimen_in_specimen_imaging_preparation_protocol**](bia_integrator_api/docs/PrivateApi.md#get_specimen_in_specimen_imaging_preparation_protocol) | **GET** /v2/specimen_imaging_preparation_protocol/{uuid}/specimen | Get Specimen In SpecimenImagingPreparationProtocol
+*PrivateApi* | [**get_study**](bia_integrator_api/docs/PrivateApi.md#get_study) | **GET** /v2/study/{uuid} | Get Study
 *PrivateApi* | [**login_for_access_token**](bia_integrator_api/docs/PrivateApi.md#login_for_access_token) | **POST** /v2/auth/token | Login For Access Token
 *PrivateApi* | [**post_annotation_file_reference**](bia_integrator_api/docs/PrivateApi.md#post_annotation_file_reference) | **POST** /v2/private/annotation_file_reference | Create AnnotationFileReference
 *PrivateApi* | [**post_annotation_method**](bia_integrator_api/docs/PrivateApi.md#post_annotation_method) | **POST** /v2/private/annotation_method | Create AnnotationMethod
@@ -172,8 +203,7 @@ Authentication schemes defined for the API:
 - **Type**: OAuth
 - **Flow**: password
 - **Authorization URL**: 
-- **Scopes**: 
- - **test**: test
+- **Scopes**: N/A
 
 
 ## Author

@@ -8,7 +8,7 @@ client = get_client_private(
 )
 
 # @TODO: Re-use shared minimal/maximal to make sure field typing / metadata gets transferred through to client
-study = client.post_study(Study(
+study = Study(
     uuid="06c19696-00e8-4c2e-a27f-23587aedb782",
     version=0,
     accession_id="test",
@@ -22,5 +22,8 @@ study = client.post_study(Study(
     description = "test",
     attribute = {},
     model=None
-))
+)
+client.post_study(study)
+
+study = client.get_study(study.uuid)
 print(study)
