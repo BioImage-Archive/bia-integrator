@@ -26,7 +26,7 @@ def get_annotation_method(
     )
 
     if persist_artefacts and annotation_methods:
-        persist(annotation_methods, "annotation_method", submission.accno)
+        persist(annotation_methods, "annotation_methods", submission.accno)
 
     return annotation_methods
 
@@ -37,11 +37,9 @@ def extract_annotation_method_dicts(submission: Submission) -> List[Dict[str, An
     )
 
     key_mapping = [
-        ("title_id", "Name", ""),
-        ("protocol_description", "Annotation overview", ""),
-        ("annotation_criteria", "Annotation criteria", ""),
-        ("annotation_coverage", "Annotation coverage", ""),
-        ("method_type", "Annotation method", "other"),
+        ("title_id", "Title", ""),
+        ("annotation_criteria", "Annotation Criteria", ""),
+        ("annotation_coverage", "Annotation Coverage", ""),
     ]
 
     model_dicts = []
@@ -52,6 +50,19 @@ def extract_annotation_method_dicts(submission: Submission) -> List[Dict[str, An
 
         # TODO: change template to get source dataset information
         model_dict["source_dataset"] = []
+
+        # TODO: Deal with protocol descriptions more consistently.
+        if "Annotation Overview" in attr_dict:
+            if "Annotation Method" in attr_dict:
+                protocol_descrption = attr_dict.get("Annotation Overview").rstrip(".:,") + ". " + attr_dict.get("Annotation Method")
+            else:
+                protocol_descrption = attr_dict.get("Annotation Overview")
+        else: 
+            protocol_descrption = attr_dict.get("Annotation Method", "") 
+        model_dict["protocol_description"] = protocol_descrption
+ 
+        # TODO: should use "annotation_type" field, but need to update models & deal with more complex mapping logic here.
+        model_dict["method_type"] = "other"
 
         model_dict["accno"] = section.__dict__.get("accno", "")
         model_dict["accession_id"] = submission.accno
