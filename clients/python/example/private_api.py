@@ -20,8 +20,7 @@ study = Study(
     title = "test",
     release_date = date.today(),
     description = "test",
-    attribute = {},
-    model=None
+    attribute = {}
 )
 client.post_study(study)
 

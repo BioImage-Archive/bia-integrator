@@ -29,7 +29,7 @@ class ExperimentallyCapturedImage(BaseModel):
     """ # noqa: E501
     uuid: StrictStr = Field(description="Unique ID (across the BIA database) used to refer to and identify a document.")
     version: StrictInt = Field(description="Document version. This can't be optional to make sure we never persist objects without it")
-    model: Optional[ModelMetadata]
+    model: Optional[ModelMetadata] = None
     attribute: Dict[str, Any] = Field(description="Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields.")
     acquisition_process_uuid: List[StrictStr]
     submission_dataset_uuid: StrictStr

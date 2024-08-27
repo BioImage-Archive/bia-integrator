@@ -36,7 +36,7 @@ class Study(BaseModel):
     """ # noqa: E501
     uuid: StrictStr = Field(description="Unique ID (across the BIA database) used to refer to and identify a document.")
     version: StrictInt = Field(description="Document version. This can't be optional to make sure we never persist objects without it")
-    model: Optional[ModelMetadata]
+    model: Optional[ModelMetadata] = None
     accession_id: StrictStr = Field(description="Unique ID provided by BioStudies.")
     licence: LicenceType = Field(description="The license under which the data associated with the study is made avaliable.")
     author: Annotated[List[Contributor], Field(min_length=1)]

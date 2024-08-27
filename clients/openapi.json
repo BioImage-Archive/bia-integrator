@@ -2550,7 +2550,6 @@
         "required": [
           "uuid",
           "version",
-          "model",
           "file_path",
           "format",
           "size_in_bytes",
@@ -2635,7 +2634,6 @@
           "title_id",
           "uuid",
           "version",
-          "model",
           "protocol_description",
           "method_type"
         ],
@@ -2770,7 +2768,6 @@
           "title_id",
           "uuid",
           "version",
-          "model",
           "organism_classification",
           "biological_entity_description"
         ],
@@ -3081,7 +3078,6 @@
         "required": [
           "uuid",
           "version",
-          "model",
           "attribute",
           "source_image_uuid",
           "submission_dataset_uuid",
@@ -3185,7 +3181,6 @@
           "title_id",
           "uuid",
           "version",
-          "model",
           "attribute",
           "example_image_uri",
           "submitted_in_study_uuid"
@@ -3245,7 +3240,6 @@
         "required": [
           "uuid",
           "version",
-          "model",
           "attribute",
           "acquisition_process_uuid",
           "submission_dataset_uuid",
@@ -3355,7 +3349,6 @@
         "required": [
           "uuid",
           "version",
-          "model",
           "file_path",
           "format",
           "size_in_bytes",
@@ -3517,7 +3510,6 @@
           "title_id",
           "uuid",
           "version",
-          "model",
           "protocol_description",
           "imaging_instrument_description"
         ],
@@ -3611,7 +3603,6 @@
           "title_id",
           "uuid",
           "version",
-          "model",
           "attribute",
           "example_image_uri",
           "submitted_in_study_uuid"
@@ -3830,7 +3821,6 @@
         "required": [
           "uuid",
           "version",
-          "model",
           "image_format",
           "file_uri",
           "total_size_in_bytes",
@@ -4064,7 +4054,6 @@
         "required": [
           "uuid",
           "version",
-          "model",
           "imaging_preparation_protocol_uuid",
           "sample_of_uuid",
           "growth_protocol_uuid"
@@ -4112,7 +4101,6 @@
           "title_id",
           "uuid",
           "version",
-          "model",
           "protocol_description"
         ],
         "title": "SpecimenGrowthProtocol"
@@ -4173,7 +4161,6 @@
           "title_id",
           "uuid",
           "version",
-          "model",
           "protocol_description"
         ],
         "title": "SpecimenImagingPreparationProtocol"
@@ -4334,7 +4321,6 @@
         "required": [
           "uuid",
           "version",
-          "model",
           "accession_id",
           "licence",
           "author",

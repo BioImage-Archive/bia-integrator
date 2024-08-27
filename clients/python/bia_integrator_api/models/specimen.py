@@ -30,7 +30,7 @@ class Specimen(BaseModel):
     """ # noqa: E501
     uuid: StrictStr = Field(description="Unique ID (across the BIA database) used to refer to and identify a document.")
     version: StrictInt = Field(description="Document version. This can't be optional to make sure we never persist objects without it")
-    model: Optional[ModelMetadata]
+    model: Optional[ModelMetadata] = None
     imaging_preparation_protocol_uuid: Annotated[List[StrictStr], Field(min_length=1)]
     sample_of_uuid: Annotated[List[StrictStr], Field(min_length=1)]
     growth_protocol_uuid: List[StrictStr]

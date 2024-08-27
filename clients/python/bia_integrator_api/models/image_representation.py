@@ -30,7 +30,7 @@ class ImageRepresentation(BaseModel):
     """ # noqa: E501
     uuid: StrictStr = Field(description="Unique ID (across the BIA database) used to refer to and identify a document.")
     version: StrictInt = Field(description="Document version. This can't be optional to make sure we never persist objects without it")
-    model: Optional[ModelMetadata]
+    model: Optional[ModelMetadata] = None
     image_format: StrictStr = Field(description="Image format of the combined files.")
     file_uri: List[StrictStr] = Field(description="URI(s) of the file(s) which together make up this image representation.")
     total_size_in_bytes: StrictInt = Field(description="Combined disc size in bytes of all the files.")
