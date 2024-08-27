@@ -199,9 +199,16 @@ def find_datasets_with_file_lists(
     # Associate each dataset name with a list because there is no thing
     # preventing different datasets having the same title. If this happens
     # values will be appended instead of being overwritten
-    datasets_with_file_lists = {fld["Name"]: [] for fld in file_list_dicts}
-    for file_list_dict in file_list_dicts:
-        datasets_with_file_lists[file_list_dict["Name"]].append(file_list_dict)
+    datasets_with_file_lists = {}
+    for fld in file_list_dicts:
+        if "Name" in fld:
+            if fld["Name"] not in datasets_with_file_lists:
+                datasets_with_file_lists[fld["Name"]] = []
+            datasets_with_file_lists[fld["Name"]].append(fld)
+        elif "Title" in fld:
+            if fld["Title"] not in datasets_with_file_lists:
+                datasets_with_file_lists[fld["Title"]] = []
+            datasets_with_file_lists[fld["Title"]].append(fld)
 
     return datasets_with_file_lists
 

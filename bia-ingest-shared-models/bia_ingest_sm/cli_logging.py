@@ -13,7 +13,7 @@ class ObjectValidationResult(BaseModel):
     Specimen_ValidationErrorCount: int = Field(default=0)
     DerivedImage_ValidationErrorCount: int = Field(default=0)
     AnnotationMethod_ValidationErrorCount: int = Field(default=0)
-    AnnotationDataset_ValidationErrorCount: int = Field(default=0)
+    ImageAnnotationDataset_ValidationErrorCount: int = Field(default=0)
     AnnotationFile_ValidationErrorCount: int = Field(default=0)
     ImageAnalysisMethod_ValidationErrorCount: int = Field(default=0)
     ImageCorrelationMethod_ValidationErrorCount: int = Field(default=0)

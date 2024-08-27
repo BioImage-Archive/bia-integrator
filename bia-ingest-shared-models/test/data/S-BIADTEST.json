@@ -287,13 +287,13 @@
       "accno" : "Annotations-29",
       "type" : "Annotations",
       "attributes" : [ {
-        "name" : "Name",
+        "name" : "Title",
         "value" : "Segmentation masks"
       }, {
-        "name" : "Annotation overview",
+        "name" : "Annotation Overview",
         "value" : "Test annotation overview 1"
       }, {
-        "name" : "Annotation criteria",
+        "name" : "Annotation Criteria",
         "value" : "Test annotation criteria 1"
       }, {
         "name" : "File List",

@@ -14,6 +14,52 @@ from bia_ingest_sm.conversion.utils import dict_to_uuid, filter_model_dictionary
 accession_id = "S-BIADTEST"
 
 
+
+def get_test_image_annotation_dataset() -> List[bia_data_model.ImageAnnotationDataset]:
+
+    study_uuid = dict_to_uuid(
+        {
+            "accession_id": accession_id,
+        },
+        attributes_to_consider=[
+            "accession_id",
+        ],
+    )
+
+    attributes_to_consider = [
+        "accession_id",
+        "accno",
+        "title_id",
+    ]
+
+    image_annotation_dataset_info = [
+        {
+            "accno": "Annotations-29",
+            "accession_id": accession_id,
+            "title_id": "Segmentation masks",
+            "example_image_uri": [],
+            "submitted_in_study_uuid": study_uuid,
+            "version": 1,
+            "attribute": {}
+        },
+    ]
+
+    image_annotation_dataset = []
+    for image_annotation_dataset_dict in image_annotation_dataset_info:
+        image_annotation_dataset_dict["uuid"] = dict_to_uuid(
+            image_annotation_dataset_dict, attributes_to_consider
+        )
+        image_annotation_dataset_dict = filter_model_dictionary(
+            image_annotation_dataset_dict, bia_data_model.ImageAnnotationDataset
+        )
+        image_annotation_dataset.append(
+            bia_data_model.ImageAnnotationDataset.model_validate(image_annotation_dataset_dict)
+        )
+    return image_annotation_dataset
+
+
+
+
 def get_test_annotation_method() -> List[bia_data_model.AnnotationMethod]:
     # For UUID
     attributes_to_consider = [
