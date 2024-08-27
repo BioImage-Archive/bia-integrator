@@ -18,7 +18,9 @@ from bia_integrator_api.models.affiliation import Affiliation
 from bia_integrator_api.models.annotation_file_reference import AnnotationFileReference
 from bia_integrator_api.models.annotation_method import AnnotationMethod
 from bia_integrator_api.models.annotation_type import AnnotationType
+from bia_integrator_api.models.authentication_token import AuthenticationToken
 from bia_integrator_api.models.bio_sample import BioSample
+from bia_integrator_api.models.body_register_user import BodyRegisterUser
 from bia_integrator_api.models.channel import Channel
 from bia_integrator_api.models.contributor import Contributor
 from bia_integrator_api.models.derived_image import DerivedImage

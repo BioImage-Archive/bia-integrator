@@ -45,15 +45,20 @@ configuration = bia_integrator_api.Configuration(
 with bia_integrator_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = bia_integrator_api.PrivateApi(api_client)
-    annotation_file_reference = bia_integrator_api.AnnotationFileReference() # AnnotationFileReference | 
+    username = 'username_example' # str | 
+    password = 'password_example' # str | 
+    grant_type = 'grant_type_example' # str |  (optional)
+    scope = '' # str |  (optional) (default to '')
+    client_id = 'client_id_example' # str |  (optional)
+    client_secret = 'client_secret_example' # str |  (optional)
 
     try:
-        # Create AnnotationFileReference
-        api_response = api_instance.post_annotation_file_reference(annotation_file_reference)
-        print("The response of PrivateApi->post_annotation_file_reference:\n")
+        # Login For Access Token
+        api_response = api_instance.login_for_access_token(username, password, grant_type=grant_type, scope=scope, client_id=client_id, client_secret=client_secret)
+        print("The response of PrivateApi->login_for_access_token:\n")
         pprint(api_response)
     except ApiException as e:
-        print("Exception when calling PrivateApi->post_annotation_file_reference: %s\n" % e)
+        print("Exception when calling PrivateApi->login_for_access_token: %s\n" % e)
 
 ```
 
@@ -63,6 +68,7 @@ All URIs are relative to *http://localhost*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
+*PrivateApi* | [**login_for_access_token**](bia_integrator_api/docs/PrivateApi.md#login_for_access_token) | **POST** /v2/auth/token | Login For Access Token
 *PrivateApi* | [**post_annotation_file_reference**](bia_integrator_api/docs/PrivateApi.md#post_annotation_file_reference) | **POST** /v2/private/annotation_file_reference | Create AnnotationFileReference
 *PrivateApi* | [**post_annotation_method**](bia_integrator_api/docs/PrivateApi.md#post_annotation_method) | **POST** /v2/private/annotation_method | Create AnnotationMethod
 *PrivateApi* | [**post_bio_sample**](bia_integrator_api/docs/PrivateApi.md#post_bio_sample) | **POST** /v2/private/bio_sample | Create BioSample
@@ -77,6 +83,7 @@ Class | Method | HTTP request | Description
 *PrivateApi* | [**post_specimen_growth_protocol**](bia_integrator_api/docs/PrivateApi.md#post_specimen_growth_protocol) | **POST** /v2/private/specimen_growth_protocol | Create SpecimenGrowthProtocol
 *PrivateApi* | [**post_specimen_imaging_preparation_protocol**](bia_integrator_api/docs/PrivateApi.md#post_specimen_imaging_preparation_protocol) | **POST** /v2/private/specimen_imaging_preparation_protocol | Create SpecimenImagingPreparationProtocol
 *PrivateApi* | [**post_study**](bia_integrator_api/docs/PrivateApi.md#post_study) | **POST** /v2/private/study | Create Study
+*PrivateApi* | [**register_user**](bia_integrator_api/docs/PrivateApi.md#register_user) | **POST** /v2/auth/user/register | Register User
 *PublicApi* | [**example_custom_handler**](bia_integrator_api/docs/PublicApi.md#example_custom_handler) | **GET** /v2/placeholder | Example Custom Handler
 *PublicApi* | [**get_annotation_file_reference**](bia_integrator_api/docs/PublicApi.md#get_annotation_file_reference) | **GET** /v2/annotation_file_reference/{uuid} | Get AnnotationFileReference
 *PublicApi* | [**get_annotation_file_reference_in_annotation_method**](bia_integrator_api/docs/PublicApi.md#get_annotation_file_reference_in_annotation_method) | **GET** /v2/annotation_method/{uuid}/annotation_file_reference | Get AnnotationFileReference In AnnotationMethod
@@ -122,7 +129,9 @@ Class | Method | HTTP request | Description
  - [AnnotationFileReference](bia_integrator_api/docs/AnnotationFileReference.md)
  - [AnnotationMethod](bia_integrator_api/docs/AnnotationMethod.md)
  - [AnnotationType](bia_integrator_api/docs/AnnotationType.md)
+ - [AuthenticationToken](bia_integrator_api/docs/AuthenticationToken.md)
  - [BioSample](bia_integrator_api/docs/BioSample.md)
+ - [BodyRegisterUser](bia_integrator_api/docs/BodyRegisterUser.md)
  - [Channel](bia_integrator_api/docs/Channel.md)
  - [Contributor](bia_integrator_api/docs/Contributor.md)
  - [DerivedImage](bia_integrator_api/docs/DerivedImage.md)
@@ -155,7 +164,16 @@ Class | Method | HTTP request | Description
 <a id="documentation-for-authorization"></a>
 ## Documentation For Authorization
 
-Endpoints do not require authorization.
+
+Authentication schemes defined for the API:
+<a id="OAuth2PasswordBearer"></a>
+### OAuth2PasswordBearer
+
+- **Type**: OAuth
+- **Flow**: password
+- **Authorization URL**: 
+- **Scopes**: 
+ - **test**: test
 
 
 ## Author
