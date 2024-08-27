@@ -9,7 +9,7 @@ Common usecase - get a client and create an object
 
 @TODO: Re-use shared minimal/maximal to make sure field typing / metadata gets transferred through to client
 
-NOTE: No version check, no "uuid is actually unique" check
+NOTE: No version check (so no check for overwrites), no "uuid is actually unique" check
 """
 client = get_client_private(
     username="test@example.com",
