@@ -42,6 +42,8 @@ def extract_image_annotation_dataset_method_dicts(submission: Submission) -> Lis
     for section in annotation_sections:
         attr_dict = attributes_to_dict(section.attributes)
 
+        # TODO: there is no "Description" field in the biostudies model.
+        # We should probably decide how we want to map the overview between here and the AnotationMethod.
         model_dict = {
             "title_id": attr_dict.get("Title", ""),
             "description": attr_dict.get("Description"),
