@@ -14,9 +14,70 @@ from bia_ingest_sm.conversion.utils import dict_to_uuid, filter_model_dictionary
 accession_id = "S-BIADTEST"
 
 
+def get_test_experimentally_captured_image() -> (
+    List[bia_data_model.ExperimentallyCapturedImage]
+):
+    image_acquisition_uuids = [ia.uuid for ia in get_test_image_acquisition()]
+    specimen_uuids = [specimen.uuid for specimen in get_test_specimen()]
+    experimental_imaging_dataset_uuids = [
+        eid.uuid for eid in get_test_experimental_imaging_dataset()
+    ]
+    experimentally_captured_image_dicts = [
+        # study_component1/im06.png
+        {
+            "acquisition_process_uuid": image_acquisition_uuids,
+            "submission_dataset_uuid": experimental_imaging_dataset_uuids[0],
+            # TODO: All details from all associations have to be made
+            # into a single bia_data_model.Specimen - see clickup ticket
+            # https://app.clickup.com/t/8695fqxpy
+            # For now just storing uuid of specimen for first association
+            "subject_uuid": specimen_uuids[0],
+            "attribute": {},
+        },
+        # study_component1/im08.png
+        {
+            "acquisition_process_uuid": image_acquisition_uuids,
+            "submission_dataset_uuid": experimental_imaging_dataset_uuids[0],
+            "subject_uuid": specimen_uuids[0],
+            "attribute": {},
+        },
+        # study_component2/im06.png
+        {
+            "acquisition_process_uuid": [
+                image_acquisition_uuids[0],
+            ],
+            "submission_dataset_uuid": experimental_imaging_dataset_uuids[1],
+            "subject_uuid": specimen_uuids[2],
+            "attribute": {},
+        },
+        # study_component2/im08.png
+        {
+            "acquisition_process_uuid": [
+                image_acquisition_uuids[0],
+            ],
+            "submission_dataset_uuid": experimental_imaging_dataset_uuids[1],
+            "subject_uuid": specimen_uuids[2],
+            "attribute": {},
+        },
+    ]
+
+    experimentally_captured_images = []
+    attributes_to_consider = [
+        "acquisition_process_uuid",
+        "submission_dataset_uuid",
+        "subject_uuid",
+    ]
+    for eci in experimentally_captured_image_dicts:
+        eci["uuid"] = dict_to_uuid(eci, attributes_to_consider)
+        eci["version"] = 1
+        experimentally_captured_images.append(
+            bia_data_model.ExperimentallyCapturedImage.model_validate(eci)
+        )
+
+    return experimentally_captured_images
+
 
 def get_test_image_annotation_dataset() -> List[bia_data_model.ImageAnnotationDataset]:
-
     study_uuid = dict_to_uuid(
         {
             "accession_id": accession_id,
@@ -40,7 +101,7 @@ def get_test_image_annotation_dataset() -> List[bia_data_model.ImageAnnotationDa
             "example_image_uri": [],
             "submitted_in_study_uuid": study_uuid,
             "version": 1,
-            "attribute": {}
+            "attribute": {},
         },
     ]
 
@@ -53,11 +114,11 @@ def get_test_image_annotation_dataset() -> List[bia_data_model.ImageAnnotationDa
             image_annotation_dataset_dict, bia_data_model.ImageAnnotationDataset
         )
         image_annotation_dataset.append(
-            bia_data_model.ImageAnnotationDataset.model_validate(image_annotation_dataset_dict)
+            bia_data_model.ImageAnnotationDataset.model_validate(
+                image_annotation_dataset_dict
+            )
         )
     return image_annotation_dataset
-
-
 
 
 def get_test_annotation_method() -> List[bia_data_model.AnnotationMethod]:
