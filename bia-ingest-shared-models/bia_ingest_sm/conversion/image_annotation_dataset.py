@@ -42,8 +42,6 @@ def extract_image_annotation_dataset_method_dicts(submission: Submission) -> Lis
     for section in annotation_sections:
         attr_dict = attributes_to_dict(section.attributes)
 
-        #model_dict = {k: attr_dict(v, default) for k, v, default in key_mapping}
-
         model_dict = {
             "title_id": attr_dict.get("Title", ""),
             "description": attr_dict.get("Description"),
