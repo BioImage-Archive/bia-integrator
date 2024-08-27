@@ -127,6 +127,26 @@ def create_experimental_imaging_datasets(
             },
         }
 
+        eid_counts_map = {}
+        file_reference_directory = root_directory.joinpath(
+            f"file_references/{accession_id}/*.json"
+        )
+        file_reference_paths = glob(str(file_reference_directory))
+        for file_path in file_reference_paths:
+            with open(file_path, "r") as object_file:
+                object_dict = json.load(object_file)
+                file_reference = bia_data_model.FileReference(**object_dict)
+            submission_dataset = file_reference.submission_dataset_uuid
+            file_type = Path(file_reference.file_path).suffix
+            if submission_dataset not in eid_counts_map:
+                eid_counts_map[submission_dataset] = {
+                    "file_count": 0,
+                    "image_count": 0,
+                    "file_type_aggregation": set(),
+                }
+            eid_counts_map[submission_dataset]["file_count"] += 1
+            eid_counts_map[submission_dataset]["file_type_aggregation"].add(file_type)
+
         def process_details_section(
             root_directory: Path,
             accession_id: str,
@@ -154,6 +174,18 @@ def create_experimental_imaging_datasets(
 
         for eid in api_eids:
             eid_dict = eid.model_dump()
+
+            if eid_dict["uuid"] in eid_counts_map:
+                eid_counts_map[eid_dict["uuid"]]["file_type_aggregation"] = sorted(
+                    list(eid_counts_map[eid_dict["uuid"]]["file_type_aggregation"])
+                )
+                eid_dict = eid_dict | eid_counts_map[eid_dict["uuid"]]
+            else:
+                eid_dict = eid_dict | {
+                    "file_count": 0,
+                    "image_count": 0,
+                    "file_type_aggregation": [],
+                }
 
             associations = eid.attribute["associations"]
 
