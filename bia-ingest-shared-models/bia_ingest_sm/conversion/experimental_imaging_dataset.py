@@ -113,7 +113,7 @@ def get_experimental_imaging_dataset(
             bia_data_model.ExperimentalImagingDataset.model_validate(model_dict)
         )    
         except(ValidationError):
-            log_failed_model_creation(bia_data_model.ExperimentalImagingDataset, result_summary)
+            log_failed_model_creation(bia_data_model.ExperimentalImagingDataset, result_summary[submission.accno])
 
 
     logger.info(
