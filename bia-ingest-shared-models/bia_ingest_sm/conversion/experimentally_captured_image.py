@@ -1,11 +1,12 @@
 import logging
 from typing import List
-from .utils import dicts_to_api_models, dict_to_uuid
+from .utils import dicts_to_api_models, dict_to_uuid, find_datasets_with_file_lists
 from .experimental_imaging_dataset import get_experimental_imaging_dataset
 from bia_ingest_sm.conversion.specimen import get_specimen_for_association
 from bia_ingest_sm.conversion.image_acquisition import get_image_acquisition
 from ..biostudies import (
     Submission,
+    flist_from_flist_fname,
 )
 from bia_shared_datamodels import bia_data_model
 
@@ -19,8 +20,25 @@ def get_all_experimentally_captured_images(
     """Return all experimentally captured images in all experimental imaging datasets"""
 
     datasets = get_experimental_imaging_dataset(submission, result_summary)
+    datasets_with_file_lists = find_datasets_with_file_lists(submission)
     model_dicts = []
     for dataset in datasets:
+        # TODO: Revisit this - there may be cases where study components
+        # have exactly the same title - and this will be a list greater
+        # than length 1!
+        dataset_from_submission = datasets_with_file_lists.get(dataset.title_id)[0]
+        file_list_fname = (
+            dataset_from_submission.get("File List")
+            if dataset_from_submission
+            else None
+        )
+
+        if not file_list_fname:
+            message = f"Did not find file list for dataset {dataset.title} no ExperimentallyCapturedImages will be generated for this dataset"
+            logger.warning(message)
+            continue
+
+        files_in_fl = flist_from_flist_fname(submission.accno, file_list_fname)
         image_acquisition_title = [
             association["image_acquisition"]
             for association in dataset.attribute["associations"]
@@ -46,15 +64,22 @@ def get_all_experimentally_captured_images(
             submission, dataset.attribute["associations"][0]
         ).uuid
 
-        model_dict = {
-            "acquisition_process_uuid": acquisition_process_uuid,
-            "submission_dataset_uuid": dataset.uuid,
-            "subject_uuid": subject_uuid,
-        }
-        model_dict["uuid"] = dict_to_uuid(model_dict, list(model_dict.keys()))
-        model_dict["attribute"] = {}
-        model_dict["version"] = 1
-        model_dicts.append(model_dict)
+        for file_in_fl in files_in_fl:
+            # TODO: Need a way to filter relevant files
+            if not str(file_in_fl.path).endswith(".png"):
+                continue
+
+            model_dict = {
+                "path": str(file_in_fl.path),
+                "acquisition_process_uuid": acquisition_process_uuid,
+                "submission_dataset_uuid": dataset.uuid,
+                "subject_uuid": subject_uuid,
+            }
+            model_dict["uuid"] = dict_to_uuid(model_dict, list(model_dict.keys()))
+            model_dict.pop("path")
+            model_dict["attribute"] = {}
+            model_dict["version"] = 1
+            model_dicts.append(model_dict)
     experimentally_captured_images = dicts_to_api_models(
         model_dicts,
         bia_data_model.ExperimentallyCapturedImage,

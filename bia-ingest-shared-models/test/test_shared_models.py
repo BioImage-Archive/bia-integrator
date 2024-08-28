@@ -9,7 +9,6 @@ from bia_ingest_sm.conversion import (
     image_acquisition,
     annotation_method,
     specimen,
-    image_annotation_dataset,
     experimentally_captured_image,
 )
 
@@ -78,7 +77,11 @@ from bia_ingest_sm.conversion import (
     ),
 )
 def test_create_models(
-    expected_model_func, model_creation_func, test_submission, result_summary
+    expected_model_func,
+    model_creation_func,
+    test_submission,
+    result_summary,
+    mock_request_get,
 ):
     expected = expected_model_func()
     created = model_creation_func(test_submission, result_summary)

@@ -23,8 +23,8 @@ def get_test_experimentally_captured_image() -> (
         eid.uuid for eid in get_test_experimental_imaging_dataset()
     ]
     experimentally_captured_image_dicts = [
-        # study_component1/im06.png
         {
+            "path": "study_component1/im06.png",
             "acquisition_process_uuid": image_acquisition_uuids,
             "submission_dataset_uuid": experimental_imaging_dataset_uuids[0],
             # TODO: All details from all associations have to be made
@@ -34,15 +34,15 @@ def get_test_experimentally_captured_image() -> (
             "subject_uuid": specimen_uuids[0],
             "attribute": {},
         },
-        # study_component1/im08.png
         {
+            "path": "study_component1/im08.png",
             "acquisition_process_uuid": image_acquisition_uuids,
             "submission_dataset_uuid": experimental_imaging_dataset_uuids[0],
             "subject_uuid": specimen_uuids[0],
             "attribute": {},
         },
-        # study_component2/im06.png
         {
+            "path": "study_component2/im06.png",
             "acquisition_process_uuid": [
                 image_acquisition_uuids[0],
             ],
@@ -50,8 +50,8 @@ def get_test_experimentally_captured_image() -> (
             "subject_uuid": specimen_uuids[2],
             "attribute": {},
         },
-        # study_component2/im08.png
         {
+            "path": "study_component2/im08.png",
             "acquisition_process_uuid": [
                 image_acquisition_uuids[0],
             ],
@@ -63,6 +63,7 @@ def get_test_experimentally_captured_image() -> (
 
     experimentally_captured_images = []
     attributes_to_consider = [
+        "path",
         "acquisition_process_uuid",
         "submission_dataset_uuid",
         "subject_uuid",
@@ -70,6 +71,7 @@ def get_test_experimentally_captured_image() -> (
     for eci in experimentally_captured_image_dicts:
         eci["uuid"] = dict_to_uuid(eci, attributes_to_consider)
         eci["version"] = 1
+        eci.pop("path")
         experimentally_captured_images.append(
             bia_data_model.ExperimentallyCapturedImage.model_validate(eci)
         )
