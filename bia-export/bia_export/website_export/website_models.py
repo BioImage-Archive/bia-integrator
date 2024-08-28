@@ -1,7 +1,12 @@
 from __future__ import annotations
 from pydantic import Field, BaseModel
-from typing import List, Optional
+from typing import List, Optional, Type
 from bia_shared_datamodels import bia_data_model
+from uuid import UUID
+from pathlib import Path
+import logging
+
+logger = logging.getLogger("__main__." + __name__)
 
 
 class Study(bia_data_model.Study):
@@ -63,3 +68,26 @@ class Specimen(bia_data_model.Specimen):
 class ExperimentallyCapturedImage(bia_data_model.ExperimentallyCapturedImage):
     acquisition_process: List[ImageAcquisition] = Field()
     subject: Specimen = Field()
+
+
+class StudyCreationContext(BaseModel):
+    # Local Processing Fields
+    root_directory: Path = Field(default=None)
+    accession_id: str = Field(default=None)
+    dataset_file_aggregate_data: dict = Field(
+        default_factory=dict,
+        description="Image & File Reference counts & types for each Dataset",
+    )
+    # API Processing Fields
+    study_uuid: UUID = Field(default=None)
+    # Fields used in both
+    displayed_dataset_detail: dict[Type, set] = Field(
+        default={
+            ImageAcquisition: set(),
+            BioSample: set(),
+            SpecimenImagingPreparationProtocol: set(),
+            SpecimenGrowthProtocol: set(),
+        },
+        description="""Tracks e.g. which BioSamples have been displayed in previous dataset sections to 
+        determine whether details should default to open or closed.""",
+    )
