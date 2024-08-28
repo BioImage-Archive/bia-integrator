@@ -31,7 +31,7 @@ class AnnotationMethod(BaseModel):
     title_id: StrictStr = Field(description="User provided title, which is unqiue within a submission, used to identify a part of a submission.")
     uuid: StrictStr = Field(description="Unique ID (across the BIA database) used to refer to and identify a document.")
     version: StrictInt = Field(description="Document version. This can't be optional to make sure we never persist objects without it")
-    model: Optional[ModelMetadata]
+    model: Optional[ModelMetadata] = None
     protocol_description: StrictStr = Field(description="Description of steps involved in the process.")
     annotation_criteria: Optional[StrictStr] = None
     annotation_coverage: Optional[StrictStr] = None

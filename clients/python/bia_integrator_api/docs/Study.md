@@ -7,7 +7,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **uuid** | **str** | Unique ID (across the BIA database) used to refer to and identify a document. | 
 **version** | **int** | Document version. This can&#39;t be optional to make sure we never persist objects without it | 
-**model** | [**ModelMetadata**](ModelMetadata.md) |  | 
+**model** | [**ModelMetadata**](ModelMetadata.md) |  | [optional] 
 **accession_id** | **str** | Unique ID provided by BioStudies. | 
 **licence** | [**LicenceType**](LicenceType.md) | The license under which the data associated with the study is made avaliable. | 
 **author** | [**List[Contributor]**](Contributor.md) |  | 

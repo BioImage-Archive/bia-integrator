@@ -7,7 +7,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **uuid** | **str** | Unique ID (across the BIA database) used to refer to and identify a document. | 
 **version** | **int** | Document version. This can&#39;t be optional to make sure we never persist objects without it | 
-**model** | [**ModelMetadata**](ModelMetadata.md) |  | 
+**model** | [**ModelMetadata**](ModelMetadata.md) |  | [optional] 
 **transformation_description** | **str** |  | [optional] 
 **spatial_information** | **str** |  | [optional] 
 **file_path** | **str** | The path (including the name) of the file. | 

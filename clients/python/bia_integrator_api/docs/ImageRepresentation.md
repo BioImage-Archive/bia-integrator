@@ -7,7 +7,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **uuid** | **str** | Unique ID (across the BIA database) used to refer to and identify a document. | 
 **version** | **int** | Document version. This can&#39;t be optional to make sure we never persist objects without it | 
-**model** | [**ModelMetadata**](ModelMetadata.md) |  | 
+**model** | [**ModelMetadata**](ModelMetadata.md) |  | [optional] 
 **image_format** | **str** | Image format of the combined files. | 
 **file_uri** | **List[str]** | URI(s) of the file(s) which together make up this image representation. | 
 **total_size_in_bytes** | **int** | Combined disc size in bytes of all the files. | 

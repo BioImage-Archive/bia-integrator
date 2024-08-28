@@ -38,7 +38,8 @@ class DocumentMixin(BaseModel):
     )
     model: Optional[ModelMetadata] = Field(
         description="""Model type and version. Used to map arbitrary objects to a known (possibly previously-used) type.
-        Optional because for some usecases (e.g. api) we want to accept objects without it because we have the info we need to set it."""
+        Optional because for some usecases (e.g. api) we want to accept objects without it because we have the info we need to set it.""",
+        default=None,
     )
 
     def __init__(self, *args, **data):
@@ -332,6 +333,7 @@ class AnnotationMethod(
     UserIdentifiedObject,
 ):
     model_config = ConfigDict(model_version_latest=1)
+
 
 Specimen.model_rebuild()
 ExperimentallyCapturedImage.model_rebuild()

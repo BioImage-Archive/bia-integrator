@@ -9,7 +9,9 @@ bia_integrator_api/docs/Affiliation.md
 bia_integrator_api/docs/AnnotationFileReference.md
 bia_integrator_api/docs/AnnotationMethod.md
 bia_integrator_api/docs/AnnotationType.md
+bia_integrator_api/docs/AuthenticationToken.md
 bia_integrator_api/docs/BioSample.md
+bia_integrator_api/docs/BodyRegisterUser.md
 bia_integrator_api/docs/Channel.md
 bia_integrator_api/docs/Contributor.md
 bia_integrator_api/docs/DerivedImage.md
@@ -45,7 +47,9 @@ bia_integrator_api/models/affiliation.py
 bia_integrator_api/models/annotation_file_reference.py
 bia_integrator_api/models/annotation_method.py
 bia_integrator_api/models/annotation_type.py
+bia_integrator_api/models/authentication_token.py
 bia_integrator_api/models/bio_sample.py
+bia_integrator_api/models/body_register_user.py
 bia_integrator_api/models/channel.py
 bia_integrator_api/models/contributor.py
 bia_integrator_api/models/derived_image.py

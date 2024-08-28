@@ -29,7 +29,7 @@ class AnnotationFileReference(BaseModel):
     """ # noqa: E501
     uuid: StrictStr = Field(description="Unique ID (across the BIA database) used to refer to and identify a document.")
     version: StrictInt = Field(description="Document version. This can't be optional to make sure we never persist objects without it")
-    model: Optional[ModelMetadata]
+    model: Optional[ModelMetadata] = None
     transformation_description: Optional[StrictStr] = None
     spatial_information: Optional[StrictStr] = None
     file_path: StrictStr = Field(description="The path (including the name) of the file.")

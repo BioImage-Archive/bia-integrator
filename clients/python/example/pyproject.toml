@@ -7,7 +7,10 @@ readme = "README.md"
 packages = [{include = "python_example"}]
 
 [tool.poetry.dependencies]
-bia-integrator-api = { git = "https://github.com/BioImage-Archive/bia-integrator.git", subdirectory = "clients/python", branch = "main" }
+python = "^3.8,<3.12"
+# WIP - UNCOMMENT
+#bia-integrator-api = { git = "https://github.com/BioImage-Archive/bia-integrator.git", subdirectory = "clients/python", branch = "main" }
+bia-integrator-api = { path = "../", develop=true}
 
 [build-system]
 requires = ["poetry-core"]

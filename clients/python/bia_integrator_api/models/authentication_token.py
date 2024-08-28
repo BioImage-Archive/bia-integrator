@@ -17,22 +17,18 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional
-from bia_integrator_api.models.model_metadata import ModelMetadata
+from pydantic import BaseModel, ConfigDict, StrictStr
+from typing import Any, ClassVar, Dict, List
 from typing import Optional, Set
 from typing_extensions import Self
 
-class SpecimenGrowthProtocol(BaseModel):
+class AuthenticationToken(BaseModel):
     """
-    SpecimenGrowthProtocol
+    AuthenticationToken
     """ # noqa: E501
-    title_id: StrictStr = Field(description="User provided title, which is unqiue within a submission, used to identify a part of a submission.")
-    uuid: StrictStr = Field(description="Unique ID (across the BIA database) used to refer to and identify a document.")
-    version: StrictInt = Field(description="Document version. This can't be optional to make sure we never persist objects without it")
-    model: Optional[ModelMetadata] = None
-    protocol_description: StrictStr = Field(description="Description of steps involved in the process.")
-    __properties: ClassVar[List[str]] = ["title_id", "uuid", "version", "model", "protocol_description"]
+    access_token: StrictStr
+    token_type: StrictStr
+    __properties: ClassVar[List[str]] = ["access_token", "token_type"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -52,7 +48,7 @@ class SpecimenGrowthProtocol(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of SpecimenGrowthProtocol from a JSON string"""
+        """Create an instance of AuthenticationToken from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -73,19 +69,11 @@ class SpecimenGrowthProtocol(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of model
-        if self.model:
-            _dict['model'] = self.model.to_dict()
-        # set to None if model (nullable) is None
-        # and model_fields_set contains the field
-        if self.model is None and "model" in self.model_fields_set:
-            _dict['model'] = None
-
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of SpecimenGrowthProtocol from a dict"""
+        """Create an instance of AuthenticationToken from a dict"""
         if obj is None:
             return None
 
@@ -93,11 +81,8 @@ class SpecimenGrowthProtocol(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "title_id": obj.get("title_id"),
-            "uuid": obj.get("uuid"),
-            "version": obj.get("version"),
-            "model": ModelMetadata.from_dict(obj["model"]) if obj.get("model") is not None else None,
-            "protocol_description": obj.get("protocol_description")
+            "access_token": obj.get("access_token"),
+            "token_type": obj.get("token_type")
         })
         return _obj
 
