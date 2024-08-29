@@ -25,6 +25,9 @@ def create_ec_images(context: StudyCreationContext) -> ExperimentallyCapturedIma
 
     api_images = retrieve_images(context)
 
+    if context.root_directory:
+        context.image_to_canonical_rep_uuid_map = get_local_img_rep_map(context)
+
     for api_image in api_images:
 
         image = create_image(api_image, context)
@@ -92,7 +95,13 @@ def create_image(
     }
     website_fields["subject"] = Specimen(**specimen_dict)
 
-    image_dict = api_image.model_dump() | website_fields
+    canoncical_img_rep = retrieve_canonical_representation(api_image.uuid, context)
+
+    image_dict = (
+        api_image.model_dump()
+        | website_fields
+        | {"canonical_representation": canoncical_img_rep}
+    )
     return ExperimentallyCapturedImage(**image_dict)
 
 
@@ -146,3 +155,43 @@ def create_details_list(
         obj_dict = api_obj.model_dump() | {"default_open": True}
         obj_list.append(website_class(**obj_dict))
     return obj_list
+
+
+def retrieve_canonical_representation(
+    image_uuid: UUID, context: StudyCreationContext
+) -> bia_data_model.ImageRepresentation:
+    if context.root_directory:
+        canonical_rep = context.root_directory.joinpath(
+            f"image_representations/{context.accession_id}/{str(context.image_to_canonical_rep_uuid_map[image_uuid])}.json"
+        )
+        canonical_image_represenation: List[bia_data_model.ImageRepresentation] = (
+            read_api_json_file(canonical_rep, bia_data_model.ImageRepresentation)
+        )
+    else:
+        # TODO: impliment API client version
+        raise NotImplementedError
+    return canonical_image_represenation
+
+
+def is_canonical(image_rep: bia_data_model.ImageRepresentation) -> bool:
+    # TODO: create better / more consistent logic to determine the canonical image rep
+    # i.e. the one with all the dimension & ome-zarr info we need for the website.
+    if image_rep.physical_size_x:
+        return True
+    else:
+        return False
+
+
+def get_local_img_rep_map(context: StudyCreationContext) -> dict[UUID, UUID]:
+    image_rep_path = context.root_directory.joinpath(
+        f"image_representations/{context.accession_id}/*.json"
+    )
+    api_image_represenation: List[bia_data_model.ImageRepresentation] = read_all_json(
+        image_rep_path, bia_data_model.ImageRepresentation
+    )
+    image_to_rep_map = {}
+    for image_rep in api_image_represenation:
+        if is_canonical(image_rep):
+            image_to_rep_map[image_rep.representation_of_uuid] = image_rep.uuid
+
+    return image_to_rep_map

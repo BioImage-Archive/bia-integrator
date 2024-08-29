@@ -216,7 +216,8 @@
                 "file_type_aggregation": [
                     ".tif",
                     ".zip"
-                ]
+                ],
+                "image": []
             },
             {
                 "title_id": "Study Component 2",
@@ -270,7 +271,23 @@
                 "specimen_growth_protocol": [],
                 "file_count": 0,
                 "image_count": 0,
-                "file_type_aggregation": []
+                "file_type_aggregation": [],
+                "image": [
+                    {
+                        "uuid": "e7322131-8e27-455d-b9fc-8add0719af70",
+                        "version": 1,
+                        "model": {
+                            "type_name": "ExperimentallyCapturedImage",
+                            "version": 1
+                        },
+                        "attribute": {},
+                        "acquisition_process_uuid": [
+                            "c2e44a1b-a43c-476e-8ddf-8587f4c955b3"
+                        ],
+                        "submission_dataset_uuid": "47a4ab60-c76d-4424-bfaa-c2a024de720c",
+                        "subject_uuid": "dcc18482-fa1a-468f-878f-c00f9cd46376"
+                    }
+                ]
             }
         ]
     }

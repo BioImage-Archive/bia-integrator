@@ -71,6 +71,7 @@ class Specimen(bia_data_model.Specimen):
 class ExperimentallyCapturedImage(bia_data_model.ExperimentallyCapturedImage):
     acquisition_process: List[ImageAcquisition] = Field()
     subject: Specimen = Field()
+    canonical_representation: bia_data_model.ImageRepresentation = Field()
 
 
 class StudyCreationContext(BaseModel):
@@ -80,6 +81,10 @@ class StudyCreationContext(BaseModel):
     dataset_file_aggregate_data: dict = Field(
         default_factory=dict,
         description="Image & File Reference counts & types for each Dataset",
+    )
+    image_to_canonical_rep_uuid_map: dict = Field(
+        default_factory=dict,
+        description="Image uuid to canonical representation uuid map in order to not re-read a lot of json files.",
     )
     # API Processing Fields
     study_uuid: UUID = Field(default=None)
