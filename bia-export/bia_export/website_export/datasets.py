@@ -64,6 +64,9 @@ def create_experimental_imaging_dataset(
 
     dataset_dict = dataset_dict | retrieve_aggregation_fields(api_dataset.uuid, context)
 
+    dataset_api_images = retrieve_dataset_images(api_dataset.uuid, context)
+    dataset_dict = dataset_dict | {"image": dataset_api_images}
+
     dataset = ExperimentalImagingDataset(**dataset_dict)
     return dataset
 
@@ -110,3 +113,25 @@ def aggregate_file_list_data(context: StudyCreationContext) -> dict[UUID, dict]:
         eid_counts_map[submission_dataset]["file_count"] += 1
         eid_counts_map[submission_dataset]["file_type_aggregation"].add(file_type)
     return eid_counts_map
+
+
+def retrieve_dataset_images(
+    dataset_uuid: UUID, context: StudyCreationContext
+) -> List[bia_data_model.ExperimentallyCapturedImage]:
+    if context.root_directory:
+        image_directory = context.root_directory.joinpath(
+            f"experimentally_captured_images/{context.accession_id}/*.json"
+        )
+        all_api_images: List[bia_data_model.ExperimentallyCapturedImage] = (
+            read_all_json(image_directory, bia_data_model.ExperimentallyCapturedImage)
+        )
+        api_images = [
+            image
+            for image in all_api_images
+            if image.submission_dataset_uuid != dataset_uuid
+        ]
+
+    else:
+        # TODO: impliment client code
+        raise NotImplementedError
+    return api_images

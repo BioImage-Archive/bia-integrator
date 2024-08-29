@@ -35,6 +35,9 @@ class ExperimentalImagingDataset(bia_data_model.ExperimentalImagingDataset):
     file_count: int = Field()
     image_count: int = Field()
     file_type_aggregation: list = Field()
+    image: List[bia_data_model.ExperimentallyCapturedImage] = Field(
+        default_factory=list
+    )
 
 
 class DetailSection(BaseModel):
