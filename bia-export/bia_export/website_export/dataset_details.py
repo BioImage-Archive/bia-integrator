@@ -54,7 +54,7 @@ def create_dataset_details(
     for field, object_list in api_details.items():
         detail_fields[field] = []
         for api_object in object_list:
-            detail = process_detail(
+            detail = create_detail(
                 api_object,
                 detail_map[field]["website_type"],
                 context,
@@ -102,7 +102,7 @@ def retrieve_details(
     return detail_fields
 
 
-def process_detail(
+def create_detail(
     detail_object: BaseModel,
     target_type: Type[DetailSection],
     context: StudyCreationContext,

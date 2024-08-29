@@ -18,7 +18,6 @@ logger = logging.getLogger()
 app = typer.Typer()
 
 
-
 @app.command()
 def website_study(
     id_list: Annotated[List[str], typer.Argument(help="IDs of the studies to export")],
@@ -58,7 +57,7 @@ def website_study(
 
 @app.command()
 def website_image(
-    accession_id: Annotated[
+    id: Annotated[
         str, typer.Argument(help="Accession ID of the study to export")
     ],
     root_directory: Annotated[
@@ -80,7 +79,13 @@ def website_image(
 
     if root_directory:
         abs_root = root_directory.resolve()
-    image_map = create_ec_images(accession_id, abs_root)
+
+    if abs_root:
+        context = StudyCreationContext(root_directory=abs_root, accession_id=id)
+    else:
+        context = StudyCreationContext(study_uuid=id)
+
+    image_map = create_ec_images(context)
 
     logging.info(f"Writing website images to {output_filename.absolute()}")
     with open(output_filename, "w") as output:
