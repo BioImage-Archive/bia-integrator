@@ -1,9 +1,17 @@
 import logging
+from uuid import UUID
 from typing import List
-from .utils import dicts_to_api_models, dict_to_uuid, find_datasets_with_file_lists
-from .experimental_imaging_dataset import get_experimental_imaging_dataset
+from .utils import (
+    dicts_to_api_models,
+    dict_to_uuid,
+    find_datasets_with_file_lists,
+    get_bia_data_model_by_uuid,
+)
 from bia_ingest_sm.conversion.specimen import get_specimen_for_association
 from bia_ingest_sm.conversion.image_acquisition import get_image_acquisition
+from bia_ingest_sm.conversion.experimental_imaging_dataset import (
+    get_experimental_imaging_dataset,
+)
 from ..biostudies import (
     Submission,
     flist_from_flist_fname,
@@ -87,6 +95,55 @@ def get_all_experimentally_captured_images(
     )
 
     return experimentally_captured_images
+
+
+def get_experimentally_captured_image(
+    submission: Submission,
+    dataset_uuid: UUID,
+    file_paths: List[str],
+    persist_artefacts=False,
+) -> bia_data_model.ExperimentallyCapturedImage:
+    """Get the ExperimentallyCapturedImage corresponding to the dataset/file_reference(s) combination"""
+
+    # Get the dataset
+    dataset = get_bia_data_model_by_uuid(
+        dataset_uuid, bia_data_model.ExperimentalImagingDataset, submission.accno
+    )
+
+    image_acquisition_title = [
+        association["image_acquisition"]
+        for association in dataset.attribute["associations"]
+    ]
+    image_acquisitions = None
+
+    result_summary = {submission.accno: {}}
+    if not image_acquisitions:
+        # Get all image acquisitions in study
+        image_acquisitions = get_image_acquisition(
+            submission, result_summary, persist_artefacts=persist_artefacts
+        )
+
+    acquisition_process_uuid = [
+        ia.uuid for ia in image_acquisitions if ia.title_id in image_acquisition_title
+    ]
+    subject_uuid = get_specimen_for_association(
+        submission, dataset.attribute["associations"][0]
+    ).uuid
+
+    model_dict = {
+        # "file_reference_uuid": ",".join([str(f) for f in file_reference_uuids]),
+        "path": ",".join([fp for fp in file_paths]),
+        "acquisition_process_uuid": acquisition_process_uuid,
+        "submission_dataset_uuid": dataset.uuid,
+        "subject_uuid": subject_uuid,
+    }
+    model_dict["uuid"] = dict_to_uuid(model_dict, list(model_dict.keys()))
+    model_dict.pop("path")
+    # model_dict.pop("file_reference_uuid")
+    model_dict["attribute"] = {}
+    model_dict["version"] = 1
+
+    return bia_data_model.ExperimentallyCapturedImage.model_validate(model_dict)
 
 
 #    submission: Submission, result_summary: dict, persist_artefacts=False
