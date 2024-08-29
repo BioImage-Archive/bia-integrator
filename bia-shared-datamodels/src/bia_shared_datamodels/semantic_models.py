@@ -135,6 +135,11 @@ class LicenceType(str, Enum):
     CC0 = "CC0"
     # You are free to: Share — copy and redistribute the material in any medium or format. Adapt — remix, transform, and build upon the material  for any purpose, even commercially. You must give appropriate credit, provide a link to the license, and indicate if changes were made.  You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
     CC_BY_40 = "CC_BY_4.0"
+    CC_BY_SA_30 = "CC_BY-SA_3.0"
+    CC_BY_NC_SA_30 = "CC_BY-NC-SA_3.0"
+    CC_BY_NC_ND_40 = "CC_BY-NC-ND_4.0"
+
+    CC_BY_SA_21_JP = "CC_BY-SA_2.1_JP"
 
 
 #######################################################################################################
