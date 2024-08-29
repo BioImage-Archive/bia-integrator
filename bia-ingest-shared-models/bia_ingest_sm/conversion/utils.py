@@ -17,7 +17,7 @@ from ..cli_logging import ObjectValidationResult
 logger = logging.getLogger('__main__.'+__name__)
 
 
-def log_failed_model_creation(model_class, valdiation_error_tracking) -> None:
+def log_failed_model_creation(model_class: Type[BaseModel], valdiation_error_tracking: ObjectValidationResult) -> None:
     logger.error(f"Failed to create {model_class.__name__}")
     logger.debug("Pydantic Validation Error:", exc_info=True)
     field_name = f"{model_class.__name__}_ValidationErrorCount"

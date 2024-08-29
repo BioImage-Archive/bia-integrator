@@ -71,7 +71,7 @@ def get_study(
     try:
         study = bia_data_model.Study.model_validate(study_dict)
     except(ValidationError):
-            log_failed_model_creation(bia_data_model.Study, result_summary)
+            log_failed_model_creation(bia_data_model.Study, result_summary[submission.accno])
 
     if persist_artefacts:
         output_dir = Path(settings.bia_data_dir) / "studies"
@@ -113,7 +113,7 @@ def get_licence(study_attributes: Dict[str, Any]) -> semantic_models.LicenceType
 
 
 def get_external_reference(
-    submission: Submission, RESULT_SUMMARY: dict
+    submission: Submission, result_summary: dict
 ) -> List[semantic_models.ExternalReference]:
     """
     Map biostudies.Submission.Link to semantic_models.ExternalReference
@@ -130,20 +130,23 @@ def get_external_reference(
     for section in sections:
         attr_dict = attributes_to_dict(section.attributes)
         model_dict = {k: attr_dict.get(v, default) for k, v, default in key_mapping}
-        return_list.append(
-            semantic_models.External_reference.model_validate(model_dict)
-        )
+        try:
+            return_list.append(
+                semantic_models.ExternalReference.model_validate(model_dict)
+            )
+        except(ValidationError):
+            log_failed_model_creation(semantic_models.ExternalReference, result_summary[submission.accno])
     return return_list
 
 
 # TODO: Put comments and docstring
-def get_grant(submission: Submission, RESULT_SUMMARY: dict) -> List[semantic_models.Grant]:
-    funding_body_dict = get_funding_body(submission, RESULT_SUMMARY)
+def get_grant(submission: Submission, result_summary: dict) -> List[semantic_models.Grant]:
+    funding_body_dict = get_funding_body(submission, result_summary)
     key_mapping = [
         ("id", "grant_id", None),
     ]
     grant_dict = get_generic_section_as_dict(
-        submission, ["Funding",], key_mapping, semantic_models.Grant, RESULT_SUMMARY[submission.accno]
+        submission, ["Funding",], key_mapping, semantic_models.Grant, result_summary[submission.accno]
     )
 
     grant_list = []
@@ -194,7 +197,7 @@ def get_affiliation(submission: Submission, result_summary: dict) -> Dict[str, s
             model_dict
         )        
         except(ValidationError):
-            log_failed_model_creation(semantic_models.Affiliation, result_summary)
+            log_failed_model_creation(semantic_models.Affiliation, result_summary[submission.accno])
         
 
     return affiliation_dict
@@ -219,7 +222,7 @@ def get_publication(submission: Submission, result_summary: dict) -> List[semant
         try:
             publications.append(semantic_models.Publication.model_validate(model_dict))
         except(ValidationError):
-            log_failed_model_creation(semantic_models.Publication, result_summary)
+            log_failed_model_creation(semantic_models.Publication, result_summary[submission.accno])
 
     return publications
 
@@ -252,6 +255,6 @@ def get_contributor(submission: Submission, result_summary: dict) -> List[semant
         try:
             contributors.append(semantic_models.Contributor.model_validate(model_dict))
         except(ValidationError):
-            log_failed_model_creation(semantic_models.Contributor, result_summary)
+            log_failed_model_creation(semantic_models.Contributor, result_summary[submission.accno])
 
     return contributors
