@@ -61,11 +61,16 @@ def tabulate_errors(dict_of_results: dict[str, IngestionResult]) -> Table:
         if result.ExperimentalImagingDataset_CreationCount == 0 & result.ImageAnnotationDataset_CreationCount == 0:
             error_message += "No datasets were created; "
         
-        if not (result.BioSample_CreationCount == 0 & result.SpecimenImagingPreparationProtocol_CreationCount == 0 & result.ImageAcquisition_CreationCount):
-            if (result.BioSample_CreationCount == 0 | result.SpecimenImagingPreparationProtocol_CreationCount == 0 | result.ImageAcquisition_CreationCount):
-                error_message += "Incomplete REMBI objects created; "
-        else:
-            error_message += "No REMBI objects created; "
+        if result.ExperimentalImagingDataset_CreationCount > 0:
+            if not (result.BioSample_CreationCount == 0 & result.SpecimenImagingPreparationProtocol_CreationCount == 0 & result.ImageAcquisition_CreationCount):
+                if (result.BioSample_CreationCount == 0 | result.SpecimenImagingPreparationProtocol_CreationCount == 0 | result.ImageAcquisition_CreationCount):
+                    error_message += "Incomplete REMBI objects created; "
+            else:
+                error_message += "No REMBI objects associated with Dataset; "
+
+        if result.ImageAnnotationDataset_CreationCount > 0:
+            if result.AnnotationMethod_CreationCount == 0:
+                error_message += "No Annotation Method associated with Dataset; "
 
         if error_message == "":
             status = Text("Success")
