@@ -33,8 +33,12 @@ class DocumentMixin(BaseModel):
         description="""Unique ID (across the BIA database) used to refer to and identify a document."""
     )
 
+    # !!!!
+    # EXTREMELY important that this field is validated
+    # please check no downstream breakage (especially api) before changing
     version: int = Field(
-        description="""Document version. This can't be optional to make sure we never persist objects without it"""
+        description="""Document version. This can't be optional to make sure we never persist objects without it""",
+        ge=0,
     )
     model: Optional[ModelMetadata] = Field(
         description="""Model type and version. Used to map arbitrary objects to a known (possibly previously-used) type.
