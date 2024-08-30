@@ -7,7 +7,8 @@ from .utils import (
     get_generic_section_as_dict,
     persist,
     filter_model_dictionary,
-    log_failed_model_creation
+    log_failed_model_creation,
+    log_model_creation_count
 )
 import bia_ingest_sm.conversion.study as study_conversion
 from ..biostudies import (
@@ -116,9 +117,7 @@ def get_experimental_imaging_dataset(
             log_failed_model_creation(bia_data_model.ExperimentalImagingDataset, result_summary[submission.accno])
 
 
-    logger.info(
-        f"Ingesting: {submission.accno}. Created bia_data_model.ExperimentalImagingDataset. Count: {len(experimental_imaging_dataset)}"
-    )
+    log_model_creation_count(bia_data_model.ExperimentalImagingDataset, len(experimental_imaging_dataset), result_summary[submission.accno])
 
     if persist_artefacts and experimental_imaging_dataset:
         persist(

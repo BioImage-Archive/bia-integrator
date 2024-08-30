@@ -13,12 +13,12 @@ from ..biostudies import (
     find_file_lists_in_submission,
 )
 from ..config import settings
-from ..cli_logging import ObjectValidationResult
+from ..cli_logging import IngestionResult
 
 logger = logging.getLogger("__main__." + __name__)
 
 
-def log_failed_model_creation(model_class: Type[BaseModel], valdiation_error_tracking: ObjectValidationResult) -> None:
+def log_failed_model_creation(model_class: Type[BaseModel], valdiation_error_tracking: IngestionResult) -> None:
     logger.error(f"Failed to create {model_class.__name__}")
     logger.debug("Pydantic Validation Error:", exc_info=True)
     field_name = f"{model_class.__name__}_ValidationErrorCount"
@@ -26,6 +26,10 @@ def log_failed_model_creation(model_class: Type[BaseModel], valdiation_error_tra
         field_name, valdiation_error_tracking.__getattribute__(field_name) + 1
     )
 
+def log_model_creation_count(model_class: Type[BaseModel], count: int, valdiation_error_tracking: IngestionResult) -> None:
+    logger.info(f"Created {model_class.__name__}. Count: {count}")
+    field_name = f"{model_class.__name__}_CreationCount"
+    valdiation_error_tracking.__setattr__(field_name, valdiation_error_tracking.__getattribute__(field_name) + count)
 
 # TODO: Put comments and docstring
 def get_generic_section_as_list(
@@ -34,7 +38,7 @@ def get_generic_section_as_list(
     key_mapping: List[Tuple[str, str, str | None | List]],
     mapped_object: Optional[BaseModel] = None,
     mapped_attrs_dict: Optional[Dict[str, Any]] = None,
-    valdiation_error_tracking: Optional[ObjectValidationResult] = None,
+    valdiation_error_tracking: Optional[IngestionResult] = None,
 ) -> List[Any | Dict[str, str | List[str]]]:
     """
     Map biostudies.Submission objects to either semantic_models or bia_data_model equivalent
@@ -71,7 +75,7 @@ def get_generic_section_as_dict(
     section_name: List[str],
     key_mapping: List[Tuple[str, str, Union[str, None, List]]],
     mapped_object: Optional[BaseModel] = None,
-    valdiation_error_tracking: Optional[ObjectValidationResult] = None,
+    valdiation_error_tracking: Optional[IngestionResult] = None,
 ) -> Dict[str, Any | Dict[str, Dict[str, str | List[str]]]]:
     """
     Map biostudies.Submission objects to dict containing either semantic_models or bia_data_model equivalent
@@ -103,9 +107,7 @@ def get_generic_section_as_dict(
 # Hence the use of the pydantic BaseModel which all API models
 # are derived from in the type hinting
 def dicts_to_api_models(
-    dicts: List[Dict[str, Any]],
-    api_model_class: Type[BaseModel],
-    valdiation_error_tracking: ObjectValidationResult,
+    dicts: List[Dict[str, Any]], api_model_class: Type[BaseModel], valdiation_error_tracking: IngestionResult
 ) -> BaseModel:
     api_models = []
     for model_dict in dicts:

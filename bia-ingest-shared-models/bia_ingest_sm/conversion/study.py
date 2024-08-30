@@ -66,12 +66,10 @@ def get_study(
         "attribute": study_attributes,
         "version": 1,
     }
-    # study_uuid = dict_to_uuid(study_dict, ["accession_id",])
-    # study_dict["uuid"] = study_uuid
     try:
         study = bia_data_model.Study.model_validate(study_dict)
     except(ValidationError):
-            log_failed_model_creation(bia_data_model.Study, result_summary[submission.accno])
+        log_failed_model_creation(bia_data_model.Study, result_summary[submission.accno])
 
     if persist_artefacts:
         output_dir = Path(settings.bia_data_dir) / "studies"

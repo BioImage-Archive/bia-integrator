@@ -10,6 +10,7 @@ from .utils import (
     filter_model_dictionary,
     get_generic_section_as_list,
     object_value_pair_to_dict,
+    log_model_creation_count
 )
 from ..biostudies import (
     Submission,
@@ -185,14 +186,14 @@ def get_specimen(
         model_dicts, bia_data_model.Specimen, result_summary[submission.accno]
     )
 
+    log_model_creation_count(bia_data_model.SpecimenImagingPreparationProtocol, len(specimens), result_summary[submission.accno])
+
     if persist_artefacts and specimens:
         persist(specimens, "specimens", submission.accno)
 
     # ToDo: How should we deal with situation where specimens for a
     # submission are exactly the same? E.g. see associations of S-BIAD1287
-    logger.info(
-        f"Ingesting: {submission.accno}. Created bia_data_model.Specimen. Count: {len(model_dicts)}"
-    )
+
     return specimens
 
 

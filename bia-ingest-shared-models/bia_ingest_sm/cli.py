@@ -14,7 +14,7 @@ from bia_ingest_sm.conversion.annotation_method import get_annotation_method
 import logging
 from rich import print
 from rich.logging import RichHandler
-from .cli_logging import tabulate_errors, ObjectValidationResult
+from .cli_logging import tabulate_errors, IngestionResult
 
 app = typer.Typer()
 
@@ -41,7 +41,7 @@ def ingest(accession_id_list: Annotated[List[str], typer.Argument()],
         print(f"[blue]-------- Starting ingest of {accession_id} --------[/blue]")
         logger.debug(f"starting ingest of {accession_id}")
 
-        result_summary[accession_id] = ObjectValidationResult()
+        result_summary[accession_id] = IngestionResult()
 
         submission = load_submission(accession_id)
 

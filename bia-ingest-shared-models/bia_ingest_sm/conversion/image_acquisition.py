@@ -6,6 +6,7 @@ from .utils import (
     dict_to_uuid,
     persist,
     filter_model_dictionary,
+    log_model_creation_count
 )
 from ..biostudies import (
     Submission,
@@ -24,6 +25,8 @@ def get_image_acquisition(
     image_acquisitions = dicts_to_api_models(
         image_acquisition_model_dicts, bia_data_model.ImageAcquisition, result_summary[submission.accno]
     )
+    
+    log_model_creation_count(bia_data_model.ImageAcquisition, len(image_acquisitions), result_summary[submission.accno])
 
     if persist_artefacts and image_acquisitions:
         persist(image_acquisitions, "image_acquisitions", submission.accno)
@@ -64,9 +67,6 @@ def extract_image_acquisition_dicts(submission: Submission) -> List[Dict[str, An
         )
         model_dicts.append(model_dict)
 
-    logger.info(
-        f"Ingesting: {submission.accno}. Created bia_data_model.ImageAcquisition. Count: {len(model_dicts)}"
-    )
     return model_dicts
 
 

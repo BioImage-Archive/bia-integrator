@@ -6,6 +6,7 @@ from .utils import (
     dict_to_uuid,
     persist,
     filter_model_dictionary,
+    log_model_creation_count
 )
 from ..biostudies import (
     Submission,
@@ -27,6 +28,8 @@ def get_specimen_imaging_preparation_protocol(
         bia_data_model.SpecimenImagingPreparationProtocol,
         result_summary[submission.accno],
     )
+
+    log_model_creation_count(bia_data_model.SpecimenImagingPreparationProtocol, len(specimen_preparation_protocols), result_summary[submission.accno])
 
     if persist_artefacts and specimen_preparation_protocols:
         persist(
@@ -66,10 +69,6 @@ def extract_specimen_preparation_protocol_dicts(
         )
 
         model_dicts.append(model_dict)
-    
-    logger.info(
-        f"Ingesting: {submission.accno}. Created bia_data_model.SpecimenImagingPrepartionProtocol. Count: {len(model_dicts)}"
-    )
 
     return model_dicts
 
