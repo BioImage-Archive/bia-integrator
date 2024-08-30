@@ -9,6 +9,7 @@ from bia_ingest_sm.conversion import (
     image_acquisition,
     annotation_method,
     specimen,
+    image_annotation_dataset,
     experimentally_captured_image,
 )
 
@@ -62,6 +63,10 @@ from bia_ingest_sm.conversion import (
         (
             utils.get_test_annotation_method,
             annotation_method.get_annotation_method,
+        ),
+        (
+            utils.get_test_image_annotation_dataset,
+            image_annotation_dataset.get_image_annotation_dataset,
         ),
         (
             utils.get_test_experimentally_captured_image,
