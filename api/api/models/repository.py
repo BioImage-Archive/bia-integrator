@@ -82,6 +82,12 @@ class Repository:
         self.biaint = self.db[COLLECTION_BIA_INTEGRATOR]
         self.ome_metadata = self.db[COLLECTION_OME_METADATA]
 
+    async def _init_collection_biaint(self) -> None:
+        await self.biaint.create_index([("uuid", 1)], unique=True, name="doc_uuid")
+
+    async def _init_collection_users(self) -> None:
+        await self.users.create_index([("email", 1)], unique=True)
+
     async def assert_model_doc_dependencies_exist(
         self, object_to_check: shared_data_models.DocumentMixin
     ):
@@ -160,17 +166,40 @@ class Repository:
     async def persist_doc(self, model_doc: shared_data_models.DocumentMixin):
         await self.assert_model_doc_dependencies_exist(model_doc)
 
-        try:
-            return await self.biaint.insert_one(model_doc.model_dump())
-        except pymongo.errors.DuplicateKeyError as e:
-            if (
-                (e.details["code"] == 11000)
-                and (self.overwrite_mode == OverwriteMode.ALLOW_IDEMPOTENT)
-                and (await self._model_doc_exists(model_doc))
-            ):
-                return
+        if model_doc.version:
+            """
+            ! The update itself is atomic
+            The error might have race conditions (but they're extremely unlikely to happen)
+            """
+            doc_filter = {
+                "uuid": model_doc.uuid,
+                "model": model_doc.model.model_dump(),
+                "version": model_doc.version - 1,
+            }
+            result = await self.biaint.update_one(
+                doc_filter,
+                {"$set": model_doc.model_dump()},
+                upsert=False,
+            )
+            if not result.matched_count:
+                if not await self._get_doc_raw(uuid=model_doc.uuid):
+                    raise exceptions.DocumentNotFound(
+                        f"Could not find document with uuid {model_doc.uuid}"
+                    )
+                else:
+                    # ! Keep the same InvalidUpdateException error for update and create operations (below)
+                    raise exceptions.InvalidUpdateException(
+                        f"Unable to update. No matches for {doc_filter}"
+                    )
 
-            raise exceptions.InvalidUpdateException(str(e))
+            return result
+        else:
+            try:
+                return await self.biaint.insert_one(model_doc.model_dump())
+            except pymongo.errors.DuplicateKeyError:
+                raise exceptions.InvalidUpdateException(
+                    f"Document {model_doc.uuid} already exists"
+                )
 
     async def get_doc(
         self,
@@ -241,10 +270,8 @@ async def repository_create(init: bool) -> Repository:
     repository = Repository()
 
     if init:
-        pass
-        # TODO
-        # await repository._init_collection_biaint()
-        # await repository._init_collection_users()
+        await repository._init_collection_biaint()
+        await repository._init_collection_users()
         # await repository._init_collection_ome_metadata()
 
     return repository

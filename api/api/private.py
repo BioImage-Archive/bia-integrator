@@ -3,8 +3,7 @@ from pydantic.alias_generators import to_snake
 
 import bia_shared_datamodels.bia_data_model as shared_data_models
 from api.models.repository import Repository
-from api import constants
-from api import auth
+from api import constants, auth
 from fastapi import APIRouter, Depends, status
 from typing import List, Type
 
@@ -33,6 +32,9 @@ models_private: List[shared_data_models.DocumentMixin] = [
 
 def make_post_item(t: Type[shared_data_models.DocumentMixin]):
     async def post_item(doc: t, db: Repository = Depends()) -> None:
+        if doc.version < 0:
+            raise ValueError("Bad doc version")
+
         await db.persist_doc(doc)
 
     return post_item

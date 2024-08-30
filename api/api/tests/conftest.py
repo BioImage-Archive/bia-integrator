@@ -20,7 +20,7 @@ def mock_object_jsonsafe(fn_mock_generator, passthrough={}):
 
     obj = fn_mock_generator(**passthrough)
     str_obj = json.dumps(obj, default=lambda v: str(v))
-    serialisable_obj = json.loads(str_obj)
+    serialisable_obj = json.loads(str_obj) | {"version": 0}
 
     return serialisable_obj
 
@@ -122,6 +122,16 @@ def existing_study(api_client: TestClient) -> dict:
     assert rsp.status_code == 201, rsp.json()
 
     return study
+
+
+@pytest.fixture(scope="function")
+def updated_study(api_client: TestClient, existing_study: dict) -> dict:
+    existing_study["version"] = 1
+
+    rsp = api_client.post("private/study", json=existing_study)
+    assert rsp.status_code == 201, rsp.json()
+
+    return existing_study
 
 
 @pytest.fixture(scope="function")

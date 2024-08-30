@@ -181,11 +181,72 @@ def test_cannot_resolve_reverse_union_link_from_mistyped_parent(
     assert rsp.status_code == 404
 
 
-#   TODO - When we add indices
-# def test_object_update_version_bumped_passes():
-#    assert 0, "TODO: indices then add this"
+def test_object_update_same_version_zero_rejected(
+    api_client: TestClient, existing_study: dict
+):
+    rsp = api_client.post(
+        "private/study",
+        json=existing_study,
+    )
+    assert rsp.status_code == 409
 
 
-#   TODO - When we add indices
-# def test_object_update_version_enforced():
-#    assert 0, "TODO: longer todo, check version works as expected"
+def test_object_update_same_version_nonzero_rejected(
+    api_client: TestClient, updated_study: dict
+):
+    rsp = api_client.post(
+        "private/study",
+        json=updated_study,
+    )
+    assert rsp.status_code == 409
+
+
+def test_object_update_missing_uuid_rejected(
+    api_client: TestClient, updated_study: dict
+):
+    updated_study["uuid"] = get_uuid()
+
+    rsp = api_client.post(
+        "private/study",
+        json=updated_study,
+    )
+    assert rsp.status_code == 404
+
+
+def test_object_update_bump_larger_than_one_rejected(
+    api_client: TestClient, existing_study: dict
+):
+    existing_study["version"] = 2
+    rsp = api_client.post(
+        "private/study",
+        json=existing_study,
+    )
+    assert rsp.status_code == 409
+
+
+def test_create_object_negative_version(api_client: TestClient, existing_study: dict):
+    new_study = existing_study.copy()
+
+    new_study["version"] = -1
+    new_study["uuid"] = get_uuid()
+
+    rsp = api_client.post(
+        "private/study",
+        json=new_study,
+    )
+    assert rsp.status_code == 422
+
+
+def test_create_object_nonzero_positive_version(
+    api_client: TestClient, existing_study: dict
+):
+    new_study = existing_study.copy()
+
+    new_study["version"] = 1
+    new_study["uuid"] = get_uuid()
+
+    rsp = api_client.post(
+        "private/study",
+        json=new_study,
+    )
+    assert rsp.status_code == 404
