@@ -102,6 +102,31 @@
                     "protocol_description": "Test sample preparation protocol 1"
                 }
             ]
+        },
+        "canonical_representation": {
+            "uuid": "570a177d-de5d-4bee-bbd1-fd2dcbec9e2a",
+            "version": 1,
+            "model": {
+                "type_name": "ImageRepresentation",
+                "version": 1
+            },
+            "image_format": "Template image format",
+            "file_uri": [
+                "https://dummy.uri.org"
+            ],
+            "total_size_in_bytes": 0,
+            "physical_size_x": 1.0,
+            "physical_size_y": 1.0,
+            "physical_size_z": 1.0,
+            "size_x": 1,
+            "size_y": 1,
+            "size_z": 1,
+            "size_c": 1,
+            "size_t": 1,
+            "image_viewer_setting": [],
+            "attribute": {},
+            "original_file_reference_uuid": [],
+            "representation_of_uuid": "e7322131-8e27-455d-b9fc-8add0719af70"
         }
     }
 }

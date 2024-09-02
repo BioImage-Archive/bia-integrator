@@ -57,9 +57,7 @@ def website_study(
 
 @app.command()
 def website_image(
-    id: Annotated[
-        str, typer.Argument(help="Accession ID of the study to export")
-    ],
+    id: Annotated[str, typer.Argument(help="Accession ID of the study to export")],
     root_directory: Annotated[
         Path,
         typer.Option(
