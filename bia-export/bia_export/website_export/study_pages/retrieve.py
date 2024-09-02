@@ -1,41 +1,34 @@
-from bia_export.website_export.dataset_details import create_dataset_details
-from bia_export.website_export.utils import read_all_json
-from bia_export.website_export.website_models import (
-    ExperimentalImagingDataset,
-    StudyCreationContext,
-)
-from uuid import UUID
-
-
-from bia_shared_datamodels import bia_data_model
-
-import json
 from glob import glob
+from uuid import UUID
+from bia_export.website_export.utils import read_all_json, read_api_json_file
 from pathlib import Path
-from typing import List
+from bia_export.website_export.website_models import CLIContext
+from bia_shared_datamodels import bia_data_model
+import json
+from typing import List, Type
 import logging
 
 logger = logging.getLogger("__main__." + __name__)
 
 
-def create_experimental_imaging_datasets(
-    context: StudyCreationContext,
-) -> List[ExperimentalImagingDataset]:
-    api_datasets = retrieve_experimental_imaging_datasets(context)
-
-    # Collect file list information prior to creating eid if reading locally to avoid reading them multiple times.
+def retrieve_study(context: CLIContext) -> bia_data_model.Study:
     if context.root_directory:
-        context.dataset_file_aggregate_data = aggregate_file_list_data(context)
+        study_path = context.root_directory.joinpath(
+            f"studies/{context.accession_id}.json"
+        )
 
-    dataset_list = []
-    for api_dataset in api_datasets:
-        dataset_list.append(create_experimental_imaging_dataset(api_dataset, context))
+        logger.info(f"Loading study from {study_path}")
 
-    return dataset_list
+        api_study = read_api_json_file(study_path, bia_data_model.Study)
+    else:
+        # TODO: use client and context.study_uuid
+        raise NotImplementedError
+
+    return api_study
 
 
 def retrieve_experimental_imaging_datasets(
-    context: StudyCreationContext,
+    context: CLIContext,
 ) -> bia_data_model.ExperimentalImagingDataset:
     if context.root_directory:
         eid_directory = context.root_directory.joinpath(
@@ -52,26 +45,7 @@ def retrieve_experimental_imaging_datasets(
     return api_eids
 
 
-def create_experimental_imaging_dataset(
-    api_dataset: bia_data_model.ExperimentalImagingDataset,
-    context: StudyCreationContext,
-) -> ExperimentalImagingDataset:
-
-    dataset_dict = api_dataset.model_dump()
-
-    # Details include Biosample, and various Protocols
-    dataset_dict = dataset_dict | create_dataset_details(api_dataset, context)
-
-    dataset_dict = dataset_dict | retrieve_aggregation_fields(api_dataset.uuid, context)
-
-    dataset_api_images = retrieve_dataset_images(api_dataset.uuid, context)
-    dataset_dict = dataset_dict | {"image": dataset_api_images}
-
-    dataset = ExperimentalImagingDataset(**dataset_dict)
-    return dataset
-
-
-def retrieve_aggregation_fields(dataset_uuid: UUID, context: StudyCreationContext):
+def retrieve_aggregation_fields(dataset_uuid: UUID, context: CLIContext):
     if context.root_directory:
         try:
             dataset_aggregation_fields = context.dataset_file_aggregate_data[
@@ -92,7 +66,7 @@ def retrieve_aggregation_fields(dataset_uuid: UUID, context: StudyCreationContex
     return dataset_aggregation_fields
 
 
-def aggregate_file_list_data(context: StudyCreationContext) -> dict[UUID, dict]:
+def aggregate_file_list_data(context: CLIContext) -> dict[UUID, dict]:
     eid_counts_map = {}
     file_reference_directory = context.root_directory.joinpath(
         f"file_references/{context.accession_id}/*.json"
@@ -116,7 +90,7 @@ def aggregate_file_list_data(context: StudyCreationContext) -> dict[UUID, dict]:
 
 
 def retrieve_dataset_images(
-    dataset_uuid: UUID, context: StudyCreationContext
+    dataset_uuid: UUID, context: CLIContext
 ) -> List[bia_data_model.ExperimentallyCapturedImage]:
     if context.root_directory:
         image_directory = context.root_directory.joinpath(
@@ -135,3 +109,61 @@ def retrieve_dataset_images(
         # TODO: impliment client code
         raise NotImplementedError
     return api_images
+
+
+def find_associated_objects(
+    typed_associations: set,
+    directory_path: Path,
+    object_type: Type[bia_data_model.UserIdentifiedObject],
+) -> List[bia_data_model.UserIdentifiedObject]:
+    linked_object = []
+
+    if len(typed_associations) == 0:
+        return linked_object
+
+    # We read all the e.g. Biosamples multiple times per study because there aren't that many and their json is small
+    typed_object_in_study: List[bia_data_model.UserIdentifiedObject] = read_all_json(
+        directory_path, object_type
+    )
+    for object in typed_object_in_study:
+        if object.title_id in typed_associations:
+            linked_object.append(object)
+    return linked_object
+
+
+def retrieve_detail_objects(
+    dataset: bia_data_model.ExperimentalImagingDataset,
+    detail_map: dict,
+    context: CLIContext,
+) -> dict[str, List]:
+    if context.root_directory:
+        detail_fields = {}
+
+        association_by_type = {
+            "biosample": set(),
+            "image_acquisition": set(),
+            "specimen": set(),
+        }
+        for association in dataset.attribute["associations"]:
+            for key in association_by_type.keys():
+                association_by_type[key].add(association[key])
+
+        for field, source_info in detail_map.items():
+            detail_path = context.root_directory.joinpath(
+                f"{source_info['source_directory']}/{context.accession_id}/*.json"
+            )
+            api_objects = find_associated_objects(
+                association_by_type[source_info["association_field"]],
+                detail_path,
+                source_info["bia_type"],
+            )
+            detail_fields[field] = api_objects
+
+    else:
+        # TODO: use client. Either:
+        # Dataset -> Images[0] -> specimen -> details (while all images have all the same specimen info)
+        # or:
+        # Dataset -> details field (when we have multi-hop api endpoints)
+        raise NotImplementedError
+
+    return detail_fields
