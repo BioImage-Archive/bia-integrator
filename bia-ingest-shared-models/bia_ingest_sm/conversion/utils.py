@@ -1,5 +1,6 @@
 import logging
 from pathlib import Path
+from uuid import UUID
 import hashlib
 import uuid
 from typing import List, Any, Dict, Optional, Tuple, Type, Union
@@ -14,14 +15,16 @@ from ..biostudies import (
 from ..config import settings
 from ..cli_logging import ObjectValidationResult
 
-logger = logging.getLogger('__main__.'+__name__)
+logger = logging.getLogger("__main__." + __name__)
 
 
 def log_failed_model_creation(model_class: Type[BaseModel], valdiation_error_tracking: ObjectValidationResult) -> None:
     logger.error(f"Failed to create {model_class.__name__}")
     logger.debug("Pydantic Validation Error:", exc_info=True)
     field_name = f"{model_class.__name__}_ValidationErrorCount"
-    valdiation_error_tracking.__setattr__(field_name, valdiation_error_tracking.__getattribute__(field_name) + 1)
+    valdiation_error_tracking.__setattr__(
+        field_name, valdiation_error_tracking.__getattribute__(field_name) + 1
+    )
 
 
 # TODO: Put comments and docstring
@@ -52,10 +55,12 @@ def get_generic_section_as_list(
             return_list.append(model_dict)
         else:
             if not valdiation_error_tracking:
-                raise RuntimeError("If a mapped_object is provided, valdiation_error_tracking needs to also be provided.")
+                raise RuntimeError(
+                    "If a mapped_object is provided, valdiation_error_tracking needs to also be provided."
+                )
             try:
                 return_list.append(mapped_object.model_validate(model_dict))
-            except(ValidationError):
+            except ValidationError:
                 log_failed_model_creation(mapped_object, valdiation_error_tracking)
     return return_list
 
@@ -84,10 +89,12 @@ def get_generic_section_as_dict(
             return_dict[section.accno] = model_dict
         else:
             if not valdiation_error_tracking:
-                raise RuntimeError("If a mapped_object is provided, valdiation_error_tracking needs to also be provided.")
+                raise RuntimeError(
+                    "If a mapped_object is provided, valdiation_error_tracking needs to also be provided."
+                )
             try:
                 return_dict[section.accno] = mapped_object.model_validate(model_dict)
-            except(ValidationError):
+            except ValidationError:
                 log_failed_model_creation(mapped_object, valdiation_error_tracking)
     return return_dict
 
@@ -96,14 +103,15 @@ def get_generic_section_as_dict(
 # Hence the use of the pydantic BaseModel which all API models
 # are derived from in the type hinting
 def dicts_to_api_models(
-    dicts: List[Dict[str, Any]], api_model_class: Type[BaseModel], valdiation_error_tracking: ObjectValidationResult
+    dicts: List[Dict[str, Any]],
+    api_model_class: Type[BaseModel],
+    valdiation_error_tracking: ObjectValidationResult,
 ) -> BaseModel:
-
     api_models = []
     for model_dict in dicts:
         try:
             api_models.append(api_model_class.model_validate(model_dict))
-        except(ValidationError):
+        except ValidationError:
             log_failed_model_creation(api_model_class, valdiation_error_tracking)
     return api_models
 
@@ -186,7 +194,7 @@ def find_datasets_with_file_lists(
 ) -> List[Dict[str, List[Dict[str, Union[str, None, List[str]]]]]]:
     """
     Return dict with dataset names as keys and file lists dicts as values
-    
+
     Wrapper around 'biostudies.find_file_lists_in_submission'. Creates a
     dict whos keys are the dataset titles and values are list of dicts
     of the file list details.
@@ -232,3 +240,20 @@ def object_value_pair_to_dict(
             object_dict[key].append(obj)
 
     return object_dict
+
+
+# TODO: Find out how to get generic type for bia_data_model (baseclass?)
+def get_bia_data_model_by_uuid(
+    uuid: UUID, model_class: Type[BaseModel], accession_id: str = ""
+) -> BaseModel:
+    """Instantiate a bia_data_model from a json file on disk"""
+    import re
+
+    model_name_parts = [
+        s.lower() for s in re.split(r"(?=[A-Z])", model_class.__name__) if len(s) > 0
+    ]
+    model_subdir = "_".join(model_name_parts) + "s"
+    input_path = (
+        Path(settings.bia_data_dir) / model_subdir / accession_id / f"{uuid}.json"
+    )
+    return model_class.model_validate_json(input_path.read_text())
