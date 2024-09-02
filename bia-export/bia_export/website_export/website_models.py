@@ -90,7 +90,7 @@ class ExperimentallyCapturedImage(bia_data_model.ExperimentallyCapturedImage):
         description="""The specimen that was prepared for and captured in the field of view of the image."""
     )
     canonical_representation: bia_data_model.ImageRepresentation = Field(
-        description="""The image represenation that contains the most 'ground truth' version of the image.
+        description="""The image representation that contains the most 'ground truth' version of the image.
         Commonly this would be the one that captures the most data, both in terms of image metadata
         (e.g. records of the physical dimensions of the Field of View) but also in the visual
         fidelity of the image (e.g. has the largest field of view, or is in a data format storing the

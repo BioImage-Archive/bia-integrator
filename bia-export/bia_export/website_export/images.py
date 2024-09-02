@@ -95,12 +95,12 @@ def create_image(
     }
     website_fields["subject"] = Specimen(**specimen_dict)
 
-    canoncical_img_rep = retrieve_canonical_representation(api_image.uuid, context)
+    canonical_img_rep = retrieve_canonical_representation(api_image.uuid, context)
 
     image_dict = (
         api_image.model_dump()
         | website_fields
-        | {"canonical_representation": canoncical_img_rep}
+        | {"canonical_representation": canonical_img_rep}
     )
     return ExperimentallyCapturedImage(**image_dict)
 
