@@ -4,9 +4,9 @@ import json
 from rich.logging import RichHandler
 from typing_extensions import Annotated
 from pathlib import Path
-from .website_export.studies import create_study
-from .website_export.images import create_ec_images
-from .website_export.website_models import StudyCreationContext
+from .website_export.study_pages.transform import transform_study
+from .website_export.image_pages.transform import transform_ec_images
+from .website_export.website_models import CLIContext
 from typing import List
 import json
 
@@ -44,10 +44,10 @@ def website_study(
     studies_map = {}
     for id in id_list:
         if abs_root:
-            context = StudyCreationContext(root_directory=abs_root, accession_id=id)
+            context = CLIContext(root_directory=abs_root, accession_id=id)
         else:
-            context = StudyCreationContext(study_uuid=id)
-        study = create_study(context)
+            context = CLIContext(study_uuid=id)
+        study = transform_study(context)
         studies_map[study.accession_id] = study.model_dump(mode="json")
 
     logging.info(f"Writing study info to {output_filename.absolute()}")
@@ -79,11 +79,11 @@ def website_image(
         abs_root = root_directory.resolve()
 
     if abs_root:
-        context = StudyCreationContext(root_directory=abs_root, accession_id=id)
+        context = CLIContext(root_directory=abs_root, accession_id=id)
     else:
-        context = StudyCreationContext(study_uuid=id)
+        context = CLIContext(study_uuid=id)
 
-    image_map = create_ec_images(context)
+    image_map = transform_ec_images(context)
 
     logging.info(f"Writing website images to {output_filename.absolute()}")
     with open(output_filename, "w") as output:

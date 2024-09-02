@@ -98,7 +98,7 @@ class ExperimentallyCapturedImage(bia_data_model.ExperimentallyCapturedImage):
     )
 
 
-class StudyCreationContext(BaseModel):
+class CLIContext(BaseModel):
     # This class is used by the CLI to carry around various pieces of contextual information for the different modes the CLI can be run with.
 
     # Local Processing Fields
