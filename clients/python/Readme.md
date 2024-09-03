@@ -2,7 +2,7 @@
 
 This is the client module for using the BIA integrator [api](../../api/). This project is a mix of generated and manually written files. The recommended way to use it is to treat this Readme as the documentation, and everything else as reference.
 
-The API is intended to facilitate the use of the [bia-shared-datamodels](../../bia-shared-datamodels/), which act as a domain model. Concepts in the API are a strict superset of the models, so for reference docs for the models themselves please see the linked project. This covers details that are exclusively relevant to the API.
+The API is intended to facilitate the use of the [bia-shared-datamodels](../../bia-shared-datamodels/), which act as a domain model. Concepts in the API are build on top of the models, so for reference docs for the models themselves please see the linked project. This covers details that are exclusively relevant to the API.
 
 ## Summary
 * Only use this Readme and the [examples](./example/) for docs.
