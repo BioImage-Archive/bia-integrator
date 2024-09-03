@@ -1,16 +1,13 @@
+"""
+Example script that creates and gets some objects. Please see the api client readme for details
+"""
+
 from bia_integrator_api.util import get_client_private
 from bia_integrator_api.models import Study, LicenceType, Contributor, ExperimentalImagingDataset
 from datetime import date
 from bia_integrator_api import exceptions as api_exceptions
 from pydantic import ValidationError
 
-"""
-Common usecase - get a client and create an object
-
-@TODO: Re-use shared minimal/maximal to make sure field typing / metadata gets transferred through to client
-
-NOTE: No version check (so no check for overwrites), no "uuid is actually unique" check
-"""
 client = get_client_private(
     username="test@example.com",
     password="test"
