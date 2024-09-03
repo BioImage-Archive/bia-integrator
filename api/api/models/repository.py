@@ -19,7 +19,7 @@ from bson.binary import UuidRepresentation
 from pydantic_core import Url
 
 DB_NAME = os.environ["DB_NAME"]
-DB_TIMEOUT_MS = os.environ.get("TIMEOUT_MS", 500)
+DB_TIMEOUT_MS = os.environ.get("DB_TIMEOUT_MS", 500)
 COLLECTION_BIA_INTEGRATOR = "bia_integrator"
 COLLECTION_USERS = "users"
 
