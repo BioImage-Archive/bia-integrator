@@ -3,7 +3,7 @@ from uuid import UUID
 from bia_export.website_export.utils import read_all_json, read_api_json_file
 from pathlib import Path
 from bia_export.website_export.website_models import CLIContext
-from bia_shared_datamodels import bia_data_model
+from bia_shared_datamodels import bia_data_model, semantic_models
 import json
 from typing import List, Type
 import logging
@@ -67,7 +67,7 @@ def retrieve_aggregation_fields(dataset_uuid: UUID, context: CLIContext):
 
 
 def aggregate_file_list_data(context: CLIContext) -> dict[UUID, dict]:
-    eid_counts_map = {}
+    dataset_counts_map = {}
     file_reference_directory = context.root_directory.joinpath(
         f"file_references/{context.accession_id}/*.json"
     )
@@ -78,31 +78,37 @@ def aggregate_file_list_data(context: CLIContext) -> dict[UUID, dict]:
             file_reference = bia_data_model.FileReference(**object_dict)
         submission_dataset = file_reference.submission_dataset_uuid
         file_type = Path(file_reference.file_path).suffix
-        if submission_dataset not in eid_counts_map:
-            eid_counts_map[submission_dataset] = {
+        if submission_dataset not in dataset_counts_map:
+            dataset_counts_map[submission_dataset] = {
                 "file_count": 0,
                 "image_count": 0,
                 "file_type_aggregation": set(),
             }
-        eid_counts_map[submission_dataset]["file_count"] += 1
-        eid_counts_map[submission_dataset]["file_type_aggregation"].add(file_type)
-    return eid_counts_map
+        dataset_counts_map[submission_dataset]["file_count"] += 1
+        dataset_counts_map[submission_dataset]["file_type_aggregation"].add(file_type)
+    return dataset_counts_map
 
 
 def retrieve_dataset_images(
-    dataset_uuid: UUID, context: CLIContext
+    dataset_uuid: UUID,
+    image_type: Type[semantic_models.AbstractImageMixin],
+    context: CLIContext,
 ) -> List[bia_data_model.ExperimentallyCapturedImage]:
     if context.root_directory:
+
+        directory_map = {
+            bia_data_model.ExperimentallyCapturedImage: "experimentally_captured_images",
+            bia_data_model.DerivedImage: "derived_images",
+        }
+
         image_directory = context.root_directory.joinpath(
-            f"experimentally_captured_images/{context.accession_id}/*.json"
+            f"{directory_map[image_type]}/{context.accession_id}/*.json"
         )
-        all_api_images: List[bia_data_model.ExperimentallyCapturedImage] = (
-            read_all_json(image_directory, bia_data_model.ExperimentallyCapturedImage)
-        )
+        all_api_images = read_all_json(image_directory, image_type)
         api_images = [
             image
             for image in all_api_images
-            if image.submission_dataset_uuid != dataset_uuid
+            if image.submission_dataset_uuid == dataset_uuid
         ]
 
     else:
@@ -167,3 +173,42 @@ def retrieve_detail_objects(
         raise NotImplementedError
 
     return detail_fields
+
+
+def retrieve_image_annotatation_datasets(
+    context: CLIContext,
+) -> List[bia_data_model.ImageAnnotationDataset]:
+    if context.root_directory:
+        iad_directory = context.root_directory.joinpath(
+            f"image_annotation_datasets/{context.accession_id}/*.json"
+        )
+
+        api_aids: List[bia_data_model.ImageAnnotationDataset] = read_all_json(
+            iad_directory, bia_data_model.ImageAnnotationDataset
+        )
+    else:
+        # TODO: use client and context.study_uuid
+        raise NotImplementedError
+
+    return api_aids
+
+
+def retrieve_annotion_method(
+    api_dataset: bia_data_model.ImageAnnotationDataset, context: CLIContext
+):
+    if context.root_directory:
+        api_methods = []
+        methods_directory = context.root_directory.joinpath(
+            f"annotation_methods/{context.accession_id}/*.json"
+        )
+        all_api_methods: List[bia_data_model.AnnotationMethod] = read_all_json(
+            methods_directory, bia_data_model.AnnotationMethod
+        )
+        for api_method in all_api_methods:
+            # Note that currentlt the title_ids are the same because the two objects are created from the same user input.
+            if api_method.title_id == api_dataset.title_id:
+                api_methods.append(api_method)
+    else:
+        # TODO: use client and context.study_uuid
+        raise NotImplementedError
+    return api_methods
