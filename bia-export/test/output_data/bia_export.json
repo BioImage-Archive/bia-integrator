@@ -79,6 +79,12 @@
         "attribute": {},
         "experimental_imaging_component": [
             {
+                "file_count": 2,
+                "image_count": 0,
+                "file_type_aggregation": [
+                    ".tif",
+                    ".zip"
+                ],
                 "title_id": "Study Component 1",
                 "uuid": "47a4ab60-c76d-4424-bfaa-c2a024de720c",
                 "version": 1,
@@ -211,15 +217,27 @@
                         "protocol_description": "Test sample preparation protocol 1"
                     }
                 ],
-                "file_count": 2,
-                "image_count": 0,
-                "file_type_aggregation": [
-                    ".tif",
-                    ".zip"
-                ],
-                "image": []
+                "image": [
+                    {
+                        "uuid": "e7322131-8e27-455d-b9fc-8add0719af70",
+                        "version": 1,
+                        "model": {
+                            "type_name": "ExperimentallyCapturedImage",
+                            "version": 1
+                        },
+                        "attribute": {},
+                        "acquisition_process_uuid": [
+                            "c2e44a1b-a43c-476e-8ddf-8587f4c955b3"
+                        ],
+                        "submission_dataset_uuid": "47a4ab60-c76d-4424-bfaa-c2a024de720c",
+                        "subject_uuid": "dcc18482-fa1a-468f-878f-c00f9cd46376"
+                    }
+                ]
             },
             {
+                "file_count": 0,
+                "image_count": 0,
+                "file_type_aggregation": [],
                 "title_id": "Study Component 2",
                 "uuid": "850a1ca3-9681-4a8a-b625-477936fcb954",
                 "version": 1,
@@ -269,23 +287,61 @@
                 "specimen_imaging_preparation_protocol": [],
                 "biological_entity": [],
                 "specimen_growth_protocol": [],
-                "file_count": 0,
+                "image": []
+            }
+        ],
+        "image_annotation_component": [
+            {
+                "file_count": 2,
                 "image_count": 0,
-                "file_type_aggregation": [],
-                "image": [
+                "file_type_aggregation": [
+                    ".tif",
+                    ".zip"
+                ],
+                "title_id": "Annotations and segmentation masks",
+                "uuid": "21999a9f-6f16-45d4-91c9-ed46cbfe015c",
+                "version": 1,
+                "model": {
+                    "type_name": "ImageAnnotationDataset",
+                    "version": 1
+                },
+                "description": null,
+                "attribute": {},
+                "example_image_uri": [],
+                "submitted_in_study_uuid": "a2fdbd58-ee11-4cd9-bc6a-f3d3da7fff71",
+                "annotation_method": [
                     {
-                        "uuid": "e7322131-8e27-455d-b9fc-8add0719af70",
+                        "title_id": "Annotations and segmentation masks",
+                        "uuid": "ef019f5d-d3e0-4122-89ae-1d1d07d2830f",
                         "version": 1,
                         "model": {
-                            "type_name": "ExperimentallyCapturedImage",
+                            "type_name": "AnnotationMethod",
+                            "version": 1
+                        },
+                        "protocol_description": "Test protocol description",
+                        "annotation_criteria": "Test annotation criteria.",
+                        "annotation_coverage": "Test annotation coverage.",
+                        "method_type": "other"
+                    }
+                ],
+                "image": [
+                    {
+                        "uuid": "7966aa52-e3db-4ce3-801e-44c524b73ee3",
+                        "version": 1,
+                        "model": {
+                            "type_name": "DerivedImage",
                             "version": 1
                         },
                         "attribute": {},
-                        "acquisition_process_uuid": [
-                            "c2e44a1b-a43c-476e-8ddf-8587f4c955b3"
+                        "transformation_description": null,
+                        "spatial_information": null,
+                        "source_image_uuid": [
+                            "e7322131-8e27-455d-b9fc-8add0719af70"
                         ],
-                        "submission_dataset_uuid": "47a4ab60-c76d-4424-bfaa-c2a024de720c",
-                        "subject_uuid": "dcc18482-fa1a-468f-878f-c00f9cd46376"
+                        "submission_dataset_uuid": "21999a9f-6f16-45d4-91c9-ed46cbfe015c",
+                        "creation_process_uuid": [
+                            "ef019f5d-d3e0-4122-89ae-1d1d07d2830f"
+                        ]
                     }
                 ]
             }
