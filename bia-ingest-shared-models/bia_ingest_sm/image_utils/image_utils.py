@@ -1,5 +1,18 @@
 from pathlib import Path
 
+
+def get_total_zarr_size(zarr_path: str) -> int:
+    """Return size of zarr archive in bytes"""
+
+    # Assume the zarr store is a local disk
+    # TODO: Generalise for any uri (including file:// and s3://)
+    # TODO: so the argument name for this func should be 'zarr_uri'
+    zarr_path = Path(zarr_path)
+    return (
+        sum(f.stat().st_size for f in zarr_path.rglob("*")) + zarr_path.stat().st_size
+    )
+
+
 single_file_formats_path = (
     Path(__file__).parent / "resources" / "bioformats_curated_single_file_formats.txt"
 )

@@ -8,7 +8,7 @@ from .utils import (
     get_bia_data_model_by_uuid,
     filter_model_dictionary,
 )
-from ..image_utils.utils import (
+from ..image_utils.image_utils import (
     get_image_extension,
     extension_in_bioformats_single_file_formats_list,
 )
