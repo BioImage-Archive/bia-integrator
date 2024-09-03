@@ -67,7 +67,6 @@ def create_user_if_missing(email: str, password: str):
         if not await get_user(db, email):
             await create_user(db, email, password)
 
-    loop = asyncio.get_event_loop()
     loop.run_until_complete(create_test_user_if_missing())
 
 

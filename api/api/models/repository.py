@@ -19,9 +19,9 @@ from bson.binary import UuidRepresentation
 from pydantic_core import Url
 
 DB_NAME = os.environ["DB_NAME"]
+DB_TIMEOUT_MS = os.environ.get("TIMEOUT_MS", 500)
 COLLECTION_BIA_INTEGRATOR = "bia_integrator"
 COLLECTION_USERS = "users"
-COLLECTION_OME_METADATA = "ome_metadata"
 
 
 class DateCodec(TypeCodec):
@@ -62,15 +62,22 @@ class Repository:
     biaint: AsyncIOMotorCollection
     overwrite_mode: OverwriteMode = OverwriteMode.FAIL
 
-    def __init__(self) -> None:
+    def __init__(
+        self,
+        db_timeout_ms=DB_TIMEOUT_MS,
+        db_name=DB_NAME,
+        collection_users=COLLECTION_USERS,
+        collection_bia_integrator=COLLECTION_BIA_INTEGRATOR,
+    ) -> None:
         mongo_connstring = os.environ["MONGO_CONNSTRING"]
         self.connection = AsyncIOMotorClient(
             mongo_connstring,
             uuidRepresentation="standard",
             maxPoolSize=10,
+            timeoutms=db_timeout_ms,
         )
         self.db = self.connection.get_database(
-            DB_NAME,
+            db_name,
             # Looks like explicitly setting codec_options excludes settings from the client
             #   so uuid_representation needs to be defined even if already defined in connection
             codec_options=CodecOptions(
@@ -78,9 +85,8 @@ class Repository:
                 uuid_representation=UuidRepresentation.STANDARD,
             ),
         )
-        self.users = self.db[COLLECTION_USERS]
-        self.biaint = self.db[COLLECTION_BIA_INTEGRATOR]
-        self.ome_metadata = self.db[COLLECTION_OME_METADATA]
+        self.users = self.db[collection_users]
+        self.biaint = self.db[collection_bia_integrator]
 
     async def _init_collection_biaint(self) -> None:
         await self.biaint.create_index([("uuid", 1)], unique=True, name="doc_uuid")
@@ -272,6 +278,5 @@ async def repository_create(init: bool) -> Repository:
     if init:
         await repository._init_collection_biaint()
         await repository._init_collection_users()
-        # await repository._init_collection_ome_metadata()
 
     return repository

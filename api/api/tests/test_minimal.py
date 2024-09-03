@@ -250,3 +250,29 @@ def test_create_object_nonzero_positive_version(
         json=new_study,
     )
     assert rsp.status_code == 404
+
+
+def test_db_timeout():
+    """
+    ! This is very flimsy and dependent on the test env. Maybe just delete it?
+    """
+
+    from pymongo.errors import ExecutionTimeout, NetworkTimeout
+    import asyncio
+    from api.models.repository import Repository
+
+    loop = asyncio.get_event_loop()
+
+    async def large_query():
+        db = Repository(db_timeout_ms=5)
+
+        await db._get_docs_raw()
+
+    try:
+        loop.run_until_complete(large_query())
+    except ExecutionTimeout as e:
+        pass
+    except NetworkTimeout as e:
+        pass
+    else:
+        assert False
