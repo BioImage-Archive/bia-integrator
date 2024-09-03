@@ -27,14 +27,15 @@ def test_get_create_zarr_representation_of_single_image(
         ],
         "original_file_reference_uuid": [test_file_reference.uuid],
         "representation_of_uuid": experimentally_captured_image_uuid,
-        "total_size_in_bytes": 60352,
+        "total_size_in_bytes": 60360,
         # "physical_size_x": 0,
         # "physical_size_y": 0,
         # "physical_size_z": 0,
-        # "size_x": 100,
-        # "size_y": 80,
-        # "size_z": 1,
-        # "size_t": 1,
+        "size_x": 100,
+        "size_y": 80,
+        "size_z": 1,
+        "size_c": 3,
+        "size_t": 1,
         "attribute": {},
         "version": 1,
     }
@@ -51,6 +52,10 @@ def test_get_create_zarr_representation_of_single_image(
             return test_file_reference.model_dump_json()
         elif "experimental_imaging_dataset" in input_path:
             return utils.get_test_experimental_imaging_dataset()[0].model_dump_json()
+        else:
+            with open(input_path, "rt") as fid:
+                text = "".join(fid.readlines())
+            return text
 
     monkeypatch.setattr(
         image_representation.Path, "read_text", mock_return_file_reference
