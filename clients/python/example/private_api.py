@@ -89,7 +89,7 @@ try:
 except ValidationError:
     pass
 
-#! object dependency check works
+#! "foreign key" links (all fields typed UUID that are not uuid) are validated
 try:
     dataset.submitted_in_study_uuid = dataset.uuid
     client.post_experimental_imaging_dataset(dataset)
