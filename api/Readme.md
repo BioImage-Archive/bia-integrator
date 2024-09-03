@@ -1,28 +1,4 @@
-### First time setup
-
-Run
-```
-poetry install
-```
-Will generate the following warning:
-```
-Warning: The current project could not be installed: No file/folder found for package bia-integrator-api
-If you do not want to install the current project use --no-root.
-If you want to use Poetry only for dependency management but not for packaging, you can set the operating mode to "non-package" in your pyproject.toml file.
-In a future version of Poetry this warning will become an error!
-```
-This can be ignored.
-
-### Install recommended extensions
-
-If doing any development on the project, consider installing the recommended extensions:
-
-* ms-python.black-formatter
-* ms-python.debugpy
-* ms-python.python
-
-
-## Running the api
+## Running the api as a service locally
  
 ```sh
 # note the --build, otherwise the api image doesn't actually get rebuilt to reflect changes
@@ -40,19 +16,40 @@ curl -H "Content-Type: application/json" \
     http://localhost:8080/v2/auth/user/register
 ```
 
-The response should be just `null` and there should be no errors in the api container.
+You should be able to authenticate using the email/password above at http://localhost:8080/docs (Authenticate button)
 
-## Development
+## First time setup - api dev
 
-### Testing with VS CODE
+⚠️ Note that unless you run uvicorn on the host, the api at http://localhost:8080 is the one in the container (above) - so rebuild when needed
 
-The instructions below assume you use VS Code for development.
+⚠️ It's simplest to never run the api on the host, to avoid port clashes/confusion between it and the one running in docker. For API testing (pytest cli or vscode pytest plugin) the api never listens on any port. If you need a local api, use the one in docker (and rebuild / every time you make changes)
 
-For test/debugger integration to work, **the api directory must be the root project directory in vscode**, not the bia-integrator directory.
+⚠️ To cleanup the local mongo `docker compose down`
 
-In order to run tests, the database needs to be up, which you can do by running the docker compose command listed above.
+Follow steps [above](#running-the-api-as-a-service-locally) to get a mongo instance and an api running. 
 
-You also need to have a `.env` file under the `/api/` folder. This configures the API that is tested to be able to access your locally running database. This .env file should not be committed to the package, as it would interact with the production service. You can copy & fill in the `.env_template` and use the `.env_compose` for reference.
+For VSCode:
+* Recommended extensions: ms-python.black-formatter, ms-python.debugpy, ms-python.python
+* `bia-integrator/api` should be the project root (opened in vscode) for plugins to work smoothly
+* `poetry install --no-root` create a virtualenv with api dependencies. Set the python binary in VSCode to the python there (in a .py file, lower-right)
+* **Testing** tab should collect the tests and be able to run them. **Debugger** should work (set a breakpoint and run 'Debug test' to test) 
+
+### Setup & run tests only
+
+Follow steps [above](#running-the-api-as-a-service-locally) to get a mongo instance running 
+
+```sh
+cp .env_compose .env
+
+## change (at least) the mongo host in MONGO_CONNSTRING to be localhost instead of biaint-mongo
+vim .env
+
+# should be in bia-integrator/api
+pwd
+
+# the api used for testing runs on the host (not in docker) and is configures with the .env created above
+pytest
+```
 
 ### Adding new tests
 
