@@ -6,6 +6,7 @@ from .utils import (
     dict_to_uuid,
     persist,
     filter_model_dictionary,
+    log_model_creation_count
 )
 import bia_ingest_sm.conversion.study as study_conversion
 from ..biostudies import (
@@ -26,6 +27,8 @@ def get_image_annotation_dataset(
     image_annotation_datasets = dicts_to_api_models(
         iad_model_dicts, bia_data_model.ImageAnnotationDataset, result_summary[submission.accno]
     )
+
+    log_model_creation_count(bia_data_model.ImageAnnotationDataset, len(image_annotation_datasets), result_summary[submission.accno])
 
     if persist_artefacts and image_annotation_datasets:
         persist(image_annotation_datasets, "image_annotation_datasets", submission.accno)
@@ -62,11 +65,6 @@ def extract_image_annotation_dataset_method_dicts(submission: Submission) -> Lis
         )
 
         model_dicts.append(model_dict)
-
-
-    logger.info(
-        f"Ingesting: {submission.accno}. Created bia_data_model.ImageAnnotationDataset. Count: {len(model_dicts)}"
-    )
 
     return model_dicts
 

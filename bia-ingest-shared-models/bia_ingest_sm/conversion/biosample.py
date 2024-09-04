@@ -6,6 +6,7 @@ from .utils import (
     dict_to_uuid,
     persist,
     filter_model_dictionary,
+    log_model_creation_count
 )
 from ..biostudies import (
     Submission,
@@ -22,6 +23,8 @@ def get_biosample(
 
     biosample_model_dicts = extract_biosample_dicts(submission)
     biosamples = dicts_to_api_models(biosample_model_dicts, bia_data_model.BioSample, result_summary[submission.accno])
+
+    log_model_creation_count(bia_data_model.BioSample, len(biosamples), result_summary[submission.accno])
 
     if persist_artefacts and biosamples:
         persist(biosamples, "biosamples", submission.accno)
@@ -77,11 +80,6 @@ def extract_biosample_dicts(submission: Submission) -> List[Dict[str, Any]]:
         model_dict["version"] = 1
         model_dict = filter_model_dictionary(model_dict, bia_data_model.BioSample)
         model_dicts.append(model_dict)
-
-
-    logger.info(
-        f"Ingesting: {submission.accno}. Created bia_data_model.BioSample. Count: {len(model_dicts)}"
-    )
 
     return model_dicts
 

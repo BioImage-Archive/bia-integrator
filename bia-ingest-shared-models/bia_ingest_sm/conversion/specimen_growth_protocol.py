@@ -6,6 +6,7 @@ from .utils import (
     dict_to_uuid,
     persist,
     filter_model_dictionary,
+    log_model_creation_count
 )
 from ..biostudies import (
     Submission,
@@ -25,6 +26,8 @@ def get_specimen_growth_protocol(
     specimen_growth_protocols = dicts_to_api_models(
         specimen_growth_protocol_model_dicts, bia_data_model.SpecimenGrowthProtocol, result_summary[submission.accno]
     )
+
+    log_model_creation_count(bia_data_model.SpecimenGrowthProtocol, len(specimen_growth_protocols), result_summary[submission.accno])
 
     if persist_artefacts and specimen_growth_protocols:
         persist(
@@ -59,10 +62,6 @@ def extract_specimen_growth_protocol_dicts(
         )
 
         model_dicts.append(model_dict)
-
-    logger.info(
-        f"Ingesting: {submission.accno}. Created bia_data_model.SpecimenGrowthProtocol. Count: {len(model_dicts)}"
-    )
 
     return model_dicts
 

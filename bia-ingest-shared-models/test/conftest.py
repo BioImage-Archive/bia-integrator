@@ -5,7 +5,7 @@ import json
 import pytest
 from bia_ingest_sm.biostudies import Submission, requests
 from .utils import accession_id
-from bia_ingest_sm.cli_logging import ObjectValidationResult
+from bia_ingest_sm.cli_logging import IngestionResult
 
 
 @pytest.fixture
@@ -24,7 +24,7 @@ def test_submission(base_path: Path) -> Submission:
 
 @pytest.fixture
 def result_summary():
-    return {accession_id: ObjectValidationResult()}
+    return {accession_id: IngestionResult()}
 
 
 @pytest.fixture

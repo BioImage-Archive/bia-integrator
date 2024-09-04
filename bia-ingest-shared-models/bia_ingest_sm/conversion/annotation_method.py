@@ -6,6 +6,7 @@ from .utils import (
     dict_to_uuid,
     persist,
     filter_model_dictionary,
+    log_model_creation_count
 )
 from ..biostudies import (
     Submission,
@@ -24,6 +25,8 @@ def get_annotation_method(
     annotation_methods = dicts_to_api_models(
         annotation_method_model_dicts, bia_data_model.AnnotationMethod, result_summary[submission.accno]
     )
+
+    log_model_creation_count(bia_data_model.AnnotationMethod, len(annotation_methods), result_summary[submission.accno])
 
     if persist_artefacts and annotation_methods:
         persist(annotation_methods, "annotation_methods", submission.accno)
@@ -73,11 +76,6 @@ def extract_annotation_method_dicts(submission: Submission) -> List[Dict[str, An
         )
 
         model_dicts.append(model_dict)
-
-
-    logger.info(
-        f"Ingesting: {submission.accno}. Created bia_data_model.AnnotationMethod. Count: {len(model_dicts)}"
-    )
 
     return model_dicts
 
