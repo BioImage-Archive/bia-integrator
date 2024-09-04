@@ -22,6 +22,7 @@ def test_get_create_zarr_representation_of_single_image(
     test_submission, result_summary, monkeypatch
 ):
     model_dict = {
+        "image_representation_type": "OME_ZARR",
         "image_format": "",
         "file_uri": [
             test_file_reference.uri,

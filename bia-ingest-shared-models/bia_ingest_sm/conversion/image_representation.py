@@ -39,6 +39,7 @@ def image_representation_from_zarr(
 
     model_dict = {
         "image_format": "",
+        "image_representation_type": "OME_ZARR",
         "file_uri": file_uris,
         "original_file_reference_uuid": file_reference_uuids,
         "representation_of_uuid": experimentally_captured_image.uuid,
