@@ -27,11 +27,10 @@ logger = logging.getLogger("__main__." + __name__)
 # TODO: Should we make this per image?
 # TODO: Need to change according to https://app.clickup.com/t/8695fqxpy
 def get_specimen_for_association(
-    submission: Submission, association: Dict[str, str]
+    submission: Submission, association: Dict[str, str],  result_summary: dict 
 ) -> bia_data_model.Specimen:
     """Return bia_data_model.Specimen for a particular dataset"""
 
-    result_summary = {submission.accno: []}
     specimen_title = association["specimen"]
 
     biosamples = biosample_conversion.get_biosample(submission, result_summary)
@@ -186,7 +185,7 @@ def get_specimen(
         model_dicts, bia_data_model.Specimen, result_summary[submission.accno]
     )
 
-    log_model_creation_count(bia_data_model.SpecimenImagingPreparationProtocol, len(specimens), result_summary[submission.accno])
+    log_model_creation_count(bia_data_model.Specimen, len(specimens), result_summary[submission.accno])
 
     if persist_artefacts and specimens:
         persist(specimens, "specimens", submission.accno)

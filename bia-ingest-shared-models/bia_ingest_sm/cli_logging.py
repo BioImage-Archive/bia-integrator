@@ -46,6 +46,7 @@ class IngestionResult(BaseModel):
     Contributor_ValidationErrorCount: int = Field(default=0)
     Organisation_CreationCount: int = Field(default=0)
     Organisation_ValidationErrorCount: int = Field(default=0)
+    ExperimentallyCapturedImage_CreationCount: int = Field(default=0)
     ExperimentallyCapturedImage_ValidationErrorCount: int = Field(default=0)
 
 

@@ -78,7 +78,7 @@ def get_all_experimentally_captured_images(
 
         # TODO: revisit this once API up
         subject_uuid = get_specimen_for_association(
-            submission, dataset.attribute["associations"][0]
+            submission, dataset.attribute["associations"][0], result_summary
         ).uuid
 
         for file_in_fl in files_in_fl:
@@ -136,7 +136,7 @@ def get_experimentally_captured_image(
         ia.uuid for ia in image_acquisitions if ia.title_id in image_acquisition_title
     ]
     subject_uuid = get_specimen_for_association(
-        submission, dataset.attribute["associations"][0]
+        submission, dataset.attribute["associations"][0], result_summary
     ).uuid
 
     model_dict = prepare_experimentally_captured_image_dict(
