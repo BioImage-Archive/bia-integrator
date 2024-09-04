@@ -8,7 +8,7 @@ from urllib.parse import urlparse
 
 import requests
 
-from .config import settings
+from ..config import settings
 
 
 logger = logging.getLogger(__name__)

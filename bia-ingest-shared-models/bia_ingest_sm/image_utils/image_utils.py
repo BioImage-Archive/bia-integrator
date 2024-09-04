@@ -55,6 +55,31 @@ def extension_in_bioformats_single_file_formats_list(ext: str) -> bool:
     return ext in single_file_formats
 
 
+def get_ome_zarr_pixel_metadata(zarr_location: str) -> dict:
+    """Return pixel metadata entry of METADATA.ome.xml of bioformats2raw zarr"""
+
+    # This function assumes the zarr has been created at specified location
+    # on disk and was produced by bioformats2raw -> OME/METADATA.ome.xml
+    # exists
+    #
+    # TODO: handle general uris e.g. https://, s3:// or file://
+    metadata_path = Path(zarr_location) / "OME" / "METADATA.ome.xml"
+    if metadata_path.is_file():
+        metadata = parse_xml_string(metadata_path.read_text())
+        try:
+            pixel_metadata = metadata[
+                "{http://www.openmicroscopy.org/Schemas/OME/2016-06}OME"
+            ][r"{http://www.openmicroscopy.org/Schemas/OME/2016-06}Image"][
+                "{http://www.openmicroscopy.org/Schemas/OME/2016-06}Pixels"
+            ]
+        except KeyError:
+            pixel_metadata = {}
+    else:
+        pixel_metadata = {}
+
+    return pixel_metadata
+
+
 # TODO: discuss replacing this function with something from either
 #       ome_zarr or ome_zarr_metadata
 def parse_xml_string(xml_string: str) -> dict:

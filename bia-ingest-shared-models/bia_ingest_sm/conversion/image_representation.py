@@ -1,4 +1,3 @@
-from pathlib import Path
 import logging
 from typing import List
 from uuid import UUID
@@ -32,24 +31,7 @@ def image_representation_from_zarr(
         file_paths=[fr.file_path for fr in file_references],
     )
 
-    # This function assumes the zarr has been created at specified location
-    # on disk and was produced by bioformats2raw -> OME/METADATA.ome.xml
-    # exists
-    #
-    # TODO: handle general uris e.g. https://, s3:// or file://
-    metadata_path = Path(zarr_location) / "OME" / "METADATA.ome.xml"
-    if metadata_path.is_file():
-        metadata = image_utils.parse_xml_string(metadata_path.read_text())
-        try:
-            pixel_metadata = metadata[
-                "{http://www.openmicroscopy.org/Schemas/OME/2016-06}OME"
-            ][r"{http://www.openmicroscopy.org/Schemas/OME/2016-06}Image"][
-                "{http://www.openmicroscopy.org/Schemas/OME/2016-06}Pixels"
-            ]
-        except KeyError:
-            pixel_metadata = {}
-    else:
-        pixel_metadata = {}
+    pixel_metadata = image_utils.get_ome_zarr_pixel_metadata(zarr_location)
 
     model_dict = {
         "image_format": "",
