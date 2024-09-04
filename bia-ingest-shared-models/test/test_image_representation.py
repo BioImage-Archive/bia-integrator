@@ -6,6 +6,7 @@ from bia_shared_datamodels import bia_data_model
 from bia_ingest_sm.conversion import (
     image_representation,
 )
+from bia_ingest_sm.image_utils import image_utils
 
 experimentally_captured_image_uuid = utils.get_test_experimentally_captured_image()[
     0
@@ -57,11 +58,12 @@ def test_get_create_zarr_representation_of_single_image(
                 text = "".join(fid.readlines())
             return text
 
-    monkeypatch.setattr(
-        image_representation.Path, "read_text", mock_return_file_reference
-    )
+    monkeypatch.setattr(image_utils.Path, "read_text", mock_return_file_reference)
 
     created = image_representation.image_representation_from_zarr(
-        test_submission, test_file_reference_uuids, zarr_location=test_zarr_location
+        test_submission,
+        test_file_reference_uuids,
+        zarr_location=test_zarr_location,
+        result_summary=result_summary,
     )
     assert created == expected

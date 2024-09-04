@@ -14,7 +14,10 @@ logger = logging.getLogger("__main__." + __name__)
 
 
 def image_representation_from_zarr(
-    submission: Submission, file_reference_uuids: List[UUID], zarr_location: str
+    submission: Submission,
+    file_reference_uuids: List[UUID],
+    zarr_location: str,
+    result_summary: dict,
 ) -> bia_data_model.ImageRepresentation:
     """Create ImageRepresentation for specified FileReference(s) and zarr"""
 
@@ -29,6 +32,7 @@ def image_representation_from_zarr(
         submission=submission,
         dataset_uuid=file_references[0].submission_dataset_uuid,
         file_paths=[fr.file_path for fr in file_references],
+        result_summary=result_summary,
     )
 
     pixel_metadata = image_utils.get_ome_zarr_pixel_metadata(zarr_location)
