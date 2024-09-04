@@ -142,7 +142,7 @@ def get_test_annotation_method() -> List[bia_data_model.AnnotationMethod]:
             "title_id": "Segmentation masks",
             "protocol_description": "Test annotation overview 1",
             "annotation_criteria": "Test annotation criteria 1",
-            "annotation_coverage": "",
+            "annotation_coverage": None,
             "method_type": "other",
             "source_dataset": [],
             "version": 1,
