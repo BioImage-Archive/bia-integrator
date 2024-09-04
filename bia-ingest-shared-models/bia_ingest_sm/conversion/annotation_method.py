@@ -38,8 +38,8 @@ def extract_annotation_method_dicts(submission: Submission) -> List[Dict[str, An
 
     key_mapping = [
         ("title_id", "Title", ""),
-        ("annotation_criteria", "Annotation Criteria", ""),
-        ("annotation_coverage", "Annotation Coverage", ""),
+        ("annotation_criteria", "Annotation Criteria", None),
+        ("annotation_coverage", "Annotation Coverage", None),
     ]
 
     model_dicts = []
