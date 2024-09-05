@@ -40,7 +40,7 @@ def get_image_extension(file_path: str) -> str:
 
     ext_map = {
         ".jpeg": ".jpg",
-        ".tiff": ".tif",
+        ".tif": ".tiff",
     }
     ext = Path(file_path).suffix.lower()
     if ext in ext_map:

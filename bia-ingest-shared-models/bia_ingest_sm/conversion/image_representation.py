@@ -1,5 +1,5 @@
 import logging
-from typing import List
+from typing import List, Optional
 from uuid import UUID
 from .utils import dict_to_uuid, get_bia_data_model_by_uuid
 from ..image_utils import image_utils
@@ -8,16 +8,18 @@ from ..biostudies import (
     Submission,
 )
 from bia_shared_datamodels import bia_data_model
+from bia_shared_datamodels.semantic_models import ImageRepresentationUseType
 
 
 logger = logging.getLogger("__main__." + __name__)
 
 
-def image_representation_from_zarr(
+def create_image_representation(
     submission: Submission,
     file_reference_uuids: List[UUID],
-    zarr_location: str,
+    representation_use_type: ImageRepresentationUseType,
     result_summary: dict,
+    representation_location: Optional[str],
 ) -> bia_data_model.ImageRepresentation:
     """Create ImageRepresentation for specified FileReference(s) and zarr"""
 
@@ -27,7 +29,7 @@ def image_representation_from_zarr(
         get_bia_data_model_by_uuid(uuid, bia_data_model.FileReference, submission.accno)
         for uuid in file_reference_uuids
     ]
-    file_uris = [file_reference.uri for file_reference in file_references]
+
     experimentally_captured_image = get_experimentally_captured_image(
         submission=submission,
         dataset_uuid=file_references[0].submission_dataset_uuid,
@@ -35,15 +37,33 @@ def image_representation_from_zarr(
         result_summary=result_summary,
     )
 
-    pixel_metadata = image_utils.get_ome_zarr_pixel_metadata(zarr_location)
+    # TODO: Use bioformats or PIL for other formats (if on local disk)
+    if representation_location:
+        image_format = image_utils.get_image_extension(representation_location)
+    else:
+        image_format = ""
+
+    pixel_metadata = {}
+    total_size_in_bytes = 0
+    if image_format == ".ome.zarr":
+        pixel_metadata = image_utils.get_ome_zarr_pixel_metadata(
+            representation_location
+        )
+        total_size_in_bytes = image_utils.get_total_zarr_size(representation_location)
+
+    if (
+        total_size_in_bytes == 0
+        and representation_use_type == ImageRepresentationUseType.UPLOADED_BY_SUBMITTER
+    ):
+        total_size_in_bytes = sum([fr.size_in_bytes for fr in file_references])
 
     model_dict = {
-        "image_format": "",
-        "use_type": "INTERACTIVE_DISPLAY",
-        "file_uri": file_uris,
+        "image_format": image_format,
+        "use_type": representation_use_type,
+        "file_uri": [],
         "original_file_reference_uuid": file_reference_uuids,
         "representation_of_uuid": experimentally_captured_image.uuid,
-        "total_size_in_bytes": image_utils.get_total_zarr_size(zarr_location),
+        "total_size_in_bytes": total_size_in_bytes,
         "size_x": pixel_metadata.get("SizeX", None),
         "size_y": pixel_metadata.get("SizeY", None),
         "size_z": pixel_metadata.get("SizeZ", None),

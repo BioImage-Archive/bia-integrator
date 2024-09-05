@@ -15,18 +15,16 @@ test_file_reference = utils.get_test_file_reference(
     ["file_list_study_component_1.json"]
 )[0]
 # test_zarr_location = f"file://{Path(__file__).parent / 'data' / 'test_image_representations' / 'study_component1' / 'im06.zarr'}"
-test_zarr_location = f"{Path(__file__).parent / 'data' / 'test_image_representations' / 'study_component1' / 'im06.zarr'}"
+test_zarr_location = f"{Path(__file__).parent / 'data' / 'test_image_representations' / 'study_component1' / 'im06.ome.zarr'}"
 
 
 def test_get_create_zarr_representation_of_single_image(
     test_submission, result_summary, monkeypatch
 ):
     model_dict = {
+        "image_format": ".ome.zarr",
         "use_type": "INTERACTIVE_DISPLAY",
-        "image_format": "",
-        "file_uri": [
-            test_file_reference.uri,
-        ],
+        "file_uri": [],
         "original_file_reference_uuid": [test_file_reference.uuid],
         "representation_of_uuid": experimentally_captured_image_uuid,
         "total_size_in_bytes": 60360,
@@ -61,10 +59,11 @@ def test_get_create_zarr_representation_of_single_image(
 
     monkeypatch.setattr(image_utils.Path, "read_text", mock_return_file_reference)
 
-    created = image_representation.image_representation_from_zarr(
+    created = image_representation.create_image_representation(
         test_submission,
         test_file_reference_uuids,
-        zarr_location=test_zarr_location,
+        representation_use_type="INTERACTIVE_DISPLAY",
+        representation_location=test_zarr_location,
         result_summary=result_summary,
     )
     assert created == expected
