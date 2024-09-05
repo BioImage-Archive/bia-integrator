@@ -1,5 +1,5 @@
 import logging
-from typing import List, Optional
+from typing import List, Optional, Dict, Any
 from uuid import UUID
 from .utils import dict_to_uuid, get_bia_data_model_by_uuid
 from ..image_utils import image_utils
@@ -21,7 +21,7 @@ def create_image_representation(
     result_summary: dict,
     representation_location: Optional[str],
 ) -> bia_data_model.ImageRepresentation:
-    """Create ImageRepresentation for specified FileReference(s) and zarr"""
+    """Create ImageRepresentation for specified FileReference(s) zarr"""
 
     # TODO: this should be replaced by API client and we would not need
     # accession_id
@@ -51,11 +51,12 @@ def create_image_representation(
         )
         total_size_in_bytes = image_utils.get_total_zarr_size(representation_location)
 
-    if (
-        total_size_in_bytes == 0
-        and representation_use_type == ImageRepresentationUseType.UPLOADED_BY_SUBMITTER
-    ):
-        total_size_in_bytes = sum([fr.size_in_bytes for fr in file_references])
+    if representation_use_type == ImageRepresentationUseType.UPLOADED_BY_SUBMITTER:
+        if total_size_in_bytes == 0:
+            total_size_in_bytes = sum([fr.size_in_bytes for fr in file_references])
+        # TODO: Discuss what to do if file reference is list > 1 with different paths e.g. .hdr and .img for analyze. Currently just using first file reference
+        if image_format == "":
+            image_format = image_utils.get_image_extension(file_references[0].file_path)
 
     model_dict = {
         "image_format": image_format,
@@ -75,7 +76,18 @@ def create_image_representation(
         "attribute": {},
         "version": 1,
     }
-    model_dict["uuid"] = dict_to_uuid(model_dict, list(model_dict.keys()))
+    model_dict["uuid"] = generate_image_representation_uuid(model_dict)
 
     return bia_data_model.ImageRepresentation.model_validate(model_dict)
     # return dicts_to_api_models([model_dict,], bia_data_model.ImageRepresentation )[0]
+
+
+def generate_image_representation_uuid(
+    image_representation_dict: Dict[str, Any],
+) -> str:
+    attributes_to_consider = [
+        "use_type",
+        "original_file_reference_uuid",
+        "representation_of_uuid",
+    ]
+    return dict_to_uuid(image_representation_dict, attributes_to_consider)
