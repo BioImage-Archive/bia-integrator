@@ -339,7 +339,7 @@ def get_image_representation_dict(completeness=Completeness.COMPLETE) -> dict:
     image_representation = {
         "uuid": uuid4(),
         "representation_of_uuid": get_experimentally_captured_image_dict()["uuid"],
-        "image_representation_type": "UPLOADED_BY_SUBMITTER",
+        "use_type": "UPLOADED_BY_SUBMITTER",
         "image_format": "Template image format",
         "attribute": {},
         "total_size_in_bytes": 0,

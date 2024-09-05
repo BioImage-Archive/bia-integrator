@@ -140,17 +140,17 @@ class LicenceType(str, Enum):
     CC_BY_SA_21_JP = "CC_BY-SA_2.1_JP"
 
 
-class ImageRepresentationType(str, Enum):
-    """Enumerate types of ImageRepresentations"""
+class ImageRepresentationUseType(str, Enum):
+    """Enumerate use types of ImageRepresentations"""
 
     # Original format uploaded with the study
     UPLOADED_BY_SUBMITTER = "UPLOADED_BY_SUBMITTER"
-    # Representative image for study
-    REPRESENTATIVE = "REPRESENTATIVE"
+    # Usually used as representative image for study
+    STATIC_DISPLAY = "STATIC_DISPLAY"
     # To be used as thumbnail
     THUMBNAIL = "THUMBNAIL"
-    # In ome zarr format (usually by conversion using bioformats2raw
-    OME_ZARR = "OME_ZARR"
+    # Allows remote interactive exploration - usually ome zarr format
+    INTERACTIVE_DISPLAY = "INTERACTIVE_DISPLAY"
 
 
 #######################################################################################################
@@ -301,8 +301,8 @@ class ImageRepresentation(ConfiguredBaseModel):
     # The field here will eventually be used to generate endpoints.
     # representation_of: AbstractImageMixin = Field( description="The abstraction of this image represtation.")
     image_format: str = Field(description="""Image format of the combined files.""")
-    image_representation_type: ImageRepresentationType = Field(
-        description="""The type of this particular image representation i.e. thumbnail, representative image etc."""
+    use_type: ImageRepresentationUseType = Field(
+        description="""The use case of this particular image representation i.e. thumbnail, interactive display etc."""
     )
     file_uri: List[str] = Field(
         description="""URI(s) of the file(s) which together make up this image representation."""
