@@ -31,9 +31,7 @@ class Study(ConfiguredBaseModel):
         description="""The title of a study. This will usually be displayed when search results including your data are shown."""
     )
     release_date: date = Field(description="""Date of first publication""")
-    description: str = Field(
-        description="""Brief description of the study."""
-    )
+    description: str = Field(description="""Brief description of the study.""")
     keyword: Optional[List[str]] = Field(
         default_factory=list,
         description="""Keywords or tags used to describe the subject or context of the study.""",
@@ -142,6 +140,19 @@ class LicenceType(str, Enum):
     CC_BY_SA_21_JP = "CC_BY-SA_2.1_JP"
 
 
+class ImageRepresentationUseType(str, Enum):
+    """Enumerate use types of ImageRepresentations"""
+
+    # Original format uploaded with the study
+    UPLOADED_BY_SUBMITTER = "UPLOADED_BY_SUBMITTER"
+    # Usually used as representative image for study
+    STATIC_DISPLAY = "STATIC_DISPLAY"
+    # To be used as thumbnail
+    THUMBNAIL = "THUMBNAIL"
+    # Allows remote interactive exploration - usually ome zarr format
+    INTERACTIVE_DISPLAY = "INTERACTIVE_DISPLAY"
+
+
 #######################################################################################################
 # Subgraph 2: Contributors & their affiliations
 #######################################################################################################
@@ -188,9 +199,7 @@ class Contributor(PersonMixin, OrganisationMixin):
     contact_email: Optional[EmailStr] = Field(
         None, description="""An email address to contact the Contributor."""
     )
-    role: Optional[str] = Field(
-        None, description="""The role of the contributor."""
-    )
+    role: Optional[str] = Field(None, description="""The role of the contributor.""")
 
 
 class Affiliation(OrganisationMixin):
@@ -217,13 +226,13 @@ class DatasetMixin(ConfiguredBaseModel):
     # file_reference_count: int = Field(
     #     description="""Number of files associated with the study."""
     # )
-    
-    # TODO: submitted_in_study information is stored in submitted_in_study_uuid defined in bia_data_model. 
+
+    # TODO: submitted_in_study information is stored in submitted_in_study_uuid defined in bia_data_model.
     # The field here will eventually be used to generate endpoints.
     # submitted_in_study: Study = Field(
     #     description="""The study in which this dataset was submitted"""
     # )
-    
+
     description: Optional[str] = Field(
         None, description="""Brief description of the dataset."""
     )
@@ -246,12 +255,11 @@ class FileReference(ConfiguredBaseModel):
         description="""Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."""
     )
 
-    # TODO: submission_dataset information is stored in submission_dataset_uuid defined in bia_data_model. 
+    # TODO: submission_dataset information is stored in submission_dataset_uuid defined in bia_data_model.
     # The field here will eventually be used to generate endpoints.
     # submission_dataset: DatasetMixin = Field(
     #     description="""The datatset in which this file was submitted to the BioImage Archive."""
     # )
-
 
 
 class ProtocolMixin(ConfiguredBaseModel):
@@ -262,7 +270,6 @@ class ProtocolMixin(ConfiguredBaseModel):
     protocol_description: str = Field(
         description="""Description of steps involved in the process."""
     )
-
 
 
 #######################################################################################################
@@ -290,10 +297,13 @@ class ImageRepresentation(ConfiguredBaseModel):
     This object was created from one or more file refences (usually one) provided by submitters to the BioImage Archive.
     """
 
-    # TODO: representation_of information is stored in representation_of_uuid defined in bia_data_model. 
+    # TODO: representation_of information is stored in representation_of_uuid defined in bia_data_model.
     # The field here will eventually be used to generate endpoints.
     # representation_of: AbstractImageMixin = Field( description="The abstraction of this image represtation.")
     image_format: str = Field(description="""Image format of the combined files.""")
+    use_type: ImageRepresentationUseType = Field(
+        description="""The use case of this particular image representation i.e. thumbnail, interactive display etc."""
+    )
     file_uri: List[str] = Field(
         description="""URI(s) of the file(s) which together make up this image representation."""
     )
@@ -336,11 +346,11 @@ class ImageRepresentation(ConfiguredBaseModel):
         default_factory=list,
         description="""Settings of a particular view of an image, such as a specific timestamp of a timeseries, or camera placement in a 3D model.""",
     )
-    # TODO: representation_of information is stored in representation_of_uuid defined in bia_data_model. 
+    # TODO: representation_of information is stored in representation_of_uuid defined in bia_data_model.
     # The field here will eventually be used to generate endpoints.
     # original_file_reference: Optional[List[FileReference]] = Field(
     #     default_factory=list,
-    #     description="""The user sumbitted file references from which this image representation was created. 
+    #     description="""The user sumbitted file references from which this image representation was created.
     #                 If this ImageRepresentation was created by conversion from another representation this will be empty.""",
     # )
     attribute: dict = Field(
@@ -378,7 +388,6 @@ class Channel(ConfiguredBaseModel):
     )
 
 
-
 #######################################################################################################
 # Subgraph 5: ImagingStudyComponents, Images, Acquisitions, Specimens, BioSample
 #######################################################################################################
@@ -404,11 +413,11 @@ class ExperimentalImagingDataset(DatasetMixin):
     # )
     analysis_method: Optional[list[ImageAnalysisMethod]] = Field(
         default_factory=list,
-        description="""Data analysis processes performed on the images."""
+        description="""Data analysis processes performed on the images.""",
     )
     correlation_method: Optional[list[ImageCorrelationMethod]] = Field(
         default_factory=list,
-        description="""Processes performed to correlate image data."""
+        description="""Processes performed to correlate image data.""",
     )
     example_image_uri: list[str] = Field(
         description="A viewable image that is typical of the dataset."
@@ -425,7 +434,7 @@ class ExperimentallyCapturedImage(AbstractImageMixin):
     """
 
     pass
-    # TODO: All the fields below are stored in _uuid named fields defined in bia_data_model. 
+    # TODO: All the fields below are stored in _uuid named fields defined in bia_data_model.
     # These fields will eventually be used to generate endpoints
     # acquisition_process: List[ImageAcquisition] = Field(
     #     description="""The processes involved in the creation of the image."""
@@ -448,11 +457,11 @@ class ImageAcquisition(ProtocolMixin):
     )
     fbbi_id: Optional[List[str]] = Field(
         default_factory=list,
-        description="""Biological Imaging Methods Ontology id indicating the kind of imaging that was perfomed."""
+        description="""Biological Imaging Methods Ontology id indicating the kind of imaging that was perfomed.""",
     )
     imaging_method_name: Optional[List[str]] = Field(
         default_factory=list,
-        description="""Name of the kind of imaging method that was performed."""
+        description="""Name of the kind of imaging method that was performed.""",
     )
 
 
@@ -463,7 +472,7 @@ class SpecimenImagingPreparationProtocol(ProtocolMixin):
 
     signal_channel_information: Optional[List[SignalChannelInformation]] = Field(
         default_factory=list,
-        description="""Information about how channels in the image relate to image signal generation."""
+        description="""Information about how channels in the image relate to image signal generation.""",
     )
 
 
@@ -496,8 +505,9 @@ class Specimen(ConfiguredBaseModel):
     """
     The subject of an image acquisition, and the result of a BioSample being prepared to be imaged.
     """
+
     pass
-    # TODO: All the fields below are stored in _uuid named fields defined in bia_data_model. 
+    # TODO: All the fields below are stored in _uuid named fields defined in bia_data_model.
     # These fields will eventually be used to generate endpoints
     # sample_of: List[BioSample] = Field(
     #     description="""The biological matter that sampled to create the specimen."""
@@ -524,15 +534,13 @@ class BioSample(ConfiguredBaseModel):
     )
     experimental_variable_description: Optional[List[str]] = Field(
         default_factory=list,
-        description="""What is intentionally varied (e.g. time) between multiple entries in this study component"""
+        description="""What is intentionally varied (e.g. time) between multiple entries in this study component""",
     )
     extrinsic_variable_description: Optional[List[str]] = Field(
-        default_factory=list,
-        description="External treatment (e.g. reagent)."
+        default_factory=list, description="External treatment (e.g. reagent)."
     )
     intrinsic_variable_description: Optional[List[str]] = Field(
-        default_factory=list,
-        description="Intrinsic (e.g. genetic) alteration."
+        default_factory=list, description="Intrinsic (e.g. genetic) alteration."
     )
 
 
@@ -541,9 +549,18 @@ class Taxon(ConfiguredBaseModel):
     The classification of a biological entity.
     """
 
-    common_name: Optional[str] = Field(None, description="""Name used to refer to the species that can vary by locallity.""")
-    scientific_name: Optional[str] = Field(None, description="""unique name used by the scientific community to identify species.""")
-    ncbi_id: Optional[str] = Field(None, description="""unique name used by the scientific community to identify species.""")
+    common_name: Optional[str] = Field(
+        None,
+        description="""Name used to refer to the species that can vary by locallity.""",
+    )
+    scientific_name: Optional[str] = Field(
+        None,
+        description="""unique name used by the scientific community to identify species.""",
+    )
+    ncbi_id: Optional[str] = Field(
+        None,
+        description="""unique name used by the scientific community to identify species.""",
+    )
 
 
 class ImageAnalysisMethod(ProtocolMixin):
@@ -602,7 +619,7 @@ class AnnotationMethod(ProtocolMixin):
     )
     annotation_coverage: Optional[str] = Field(
         None,
-        description="""Which images from the dataset were annotated, and what percentage of the data has been annotated from what is available."""
+        description="""Which images from the dataset were annotated, and what percentage of the data has been annotated from what is available.""",
     )
     method_type: AnnotationType = Field(
         description="""Classification of the kind of annotation that was performed."""
@@ -614,7 +631,7 @@ class AnnotationMixin(ConfiguredBaseModel):
     Information providing additional metadata or highlighting parts of an image.
     """
 
-    # TODO: the fields below are stored in _uuid named fields defined in bia_data_model. 
+    # TODO: the fields below are stored in _uuid named fields defined in bia_data_model.
     # The fields here will eventually be used to generate endpoints.
     # source_image: List[ImageRepresentation] = Field(
     #     description="""The original image(s) this file is annotating."""
@@ -624,11 +641,10 @@ class AnnotationMixin(ConfiguredBaseModel):
     # )
     transformation_description: Optional[str] = Field(
         None,
-        description="""Any transformations required to link annotations to the image."""
+        description="""Any transformations required to link annotations to the image.""",
     )
     spatial_information: Optional[str] = Field(
-        None,
-        description="""Spatial information for non-pixel annotations."""
+        None, description="""Spatial information for non-pixel annotations."""
     )
 
 
@@ -645,7 +661,7 @@ class DerivedImage(AnnotationMixin, AbstractImageMixin):
     An image that is an annotation of another image.
     """
 
-    # TODO: the fields below are stored in _uuid named fields defined in bia_data_model. 
+    # TODO: the fields below are stored in _uuid named fields defined in bia_data_model.
     # The fields here will eventually be used to generate endpoints.
     # submission_dataset: ImageAnnotationDataset = Field(
     #     description="""The dataset in which image was first submitted to the BIA."""
@@ -653,7 +669,6 @@ class DerivedImage(AnnotationMixin, AbstractImageMixin):
 
 
 class AnnotationType(str, Enum):
-
     # tags that identify specific features, patterns or classes in images
     class_labels = "class_labels"
     # rectangles completely enclosing a structure of interest within an image

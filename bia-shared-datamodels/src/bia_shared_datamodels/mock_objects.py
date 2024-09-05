@@ -4,8 +4,6 @@ Utility functions to create models
 This module attempts to create models starting from the outer nodes (leaves) of the model dependency graph
 """
 
-from pathlib import Path
-
 from bia_shared_datamodels import semantic_models
 from uuid import uuid4
 from enum import Enum
@@ -341,6 +339,7 @@ def get_image_representation_dict(completeness=Completeness.COMPLETE) -> dict:
     image_representation = {
         "uuid": uuid4(),
         "representation_of_uuid": get_experimentally_captured_image_dict()["uuid"],
+        "use_type": "UPLOADED_BY_SUBMITTER",
         "image_format": "Template image format",
         "attribute": {},
         "total_size_in_bytes": 0,
@@ -374,7 +373,6 @@ def get_image_representation_dict(completeness=Completeness.COMPLETE) -> dict:
 def get_affiliation_dict(
     completeness=Completeness.COMPLETE,
 ) -> dict:
-
     affiliation = {
         "display_name": "Template Affiliation Organisation",
     }
@@ -390,7 +388,6 @@ def get_affiliation_dict(
 def get_contributor_dict(
     completeness=Completeness.COMPLETE,
 ) -> dict:
-
     contributor_dict = {"display_name": "Contributor1", "affiliation": []}
     if completeness == Completeness.COMPLETE:
         contributor_dict |= {
@@ -408,7 +405,6 @@ def get_contributor_dict(
 
 
 def get_study_dict(completeness=Completeness.COMPLETE) -> dict:
-
     study_dict = {
         "uuid": uuid4(),
         "accession_id": "S-BIADTEST",
