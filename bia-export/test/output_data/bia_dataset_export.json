@@ -1,0 +1,223 @@
+{
+    "47a4ab60-c76d-4424-bfaa-c2a024de720c": {
+        "title_id": "Study Component 1",
+        "uuid": "47a4ab60-c76d-4424-bfaa-c2a024de720c",
+        "version": 1,
+        "model": {
+            "type_name": "ExperimentalImagingDataset",
+            "version": 1
+        },
+        "description": "Description of study component 1",
+        "attribute": {
+            "associations": [
+                {
+                    "biosample": "Test Biosample 1",
+                    "image_acquisition": "Test Primary Screen Image Acquisition",
+                    "specimen": "Test specimen 1"
+                },
+                {
+                    "biosample": "Test Biosample 2",
+                    "image_acquisition": "Test Primary Screen Image Acquisition",
+                    "specimen": "Test specimen 1"
+                }
+            ]
+        },
+        "analysis_method": [
+            {
+                "protocol_description": "Test image analysis",
+                "features_analysed": "Test image analysis overview"
+            }
+        ],
+        "correlation_method": [],
+        "example_image_uri": [],
+        "submitted_in_study_uuid": "a2fdbd58-ee11-4cd9-bc6a-f3d3da7fff71",
+        "submitted_in_study": {
+            "uuid": "a2fdbd58-ee11-4cd9-bc6a-f3d3da7fff71",
+            "version": 1,
+            "model": {
+                "type_name": "Study",
+                "version": 1
+            },
+            "accession_id": "S-BIADTEST",
+            "licence": "CC0",
+            "author": [
+                {
+                    "rorid": null,
+                    "address": null,
+                    "website": null,
+                    "orcid": "0000-0000-0000-0000",
+                    "display_name": "Test Author1",
+                    "affiliation": [
+                        {
+                            "rorid": null,
+                            "address": null,
+                            "website": null,
+                            "display_name": "Test College 1"
+                        }
+                    ],
+                    "contact_email": "test_author1@ebi.ac.uk",
+                    "role": "corresponding author"
+                },
+                {
+                    "rorid": null,
+                    "address": null,
+                    "website": null,
+                    "orcid": "1111-1111-1111-1111",
+                    "display_name": "Test Author2",
+                    "affiliation": [
+                        {
+                            "rorid": null,
+                            "address": null,
+                            "website": null,
+                            "display_name": "Test College 2"
+                        }
+                    ],
+                    "contact_email": "test_author2@ebi.ac.uk",
+                    "role": "first author"
+                }
+            ],
+            "title": "A test submission with title greater than 25 characters",
+            "release_date": "2024-02-13",
+            "description": "A test submission to allow testing without retrieving from bia server",
+            "keyword": [
+                "Test keyword1",
+                "Test keyword2",
+                "Test keyword3"
+            ],
+            "acknowledgement": "We thank you",
+            "see_also": [],
+            "related_publication": [],
+            "grant": [
+                {
+                    "id": "TESTFUNDS1",
+                    "funder": [
+                        {
+                            "display_name": "Test funding body1",
+                            "id": null
+                        }
+                    ]
+                },
+                {
+                    "id": "TESTFUNDS2",
+                    "funder": [
+                        {
+                            "display_name": "Test funding body2",
+                            "id": null
+                        }
+                    ]
+                }
+            ],
+            "funding_statement": "This work was funded by the EBI",
+            "attribute": {}
+        }
+    },
+    "850a1ca3-9681-4a8a-b625-477936fcb954": {
+        "title_id": "Study Component 2",
+        "uuid": "850a1ca3-9681-4a8a-b625-477936fcb954",
+        "version": 1,
+        "model": {
+            "type_name": "ExperimentalImagingDataset",
+            "version": 1
+        },
+        "description": "Description of study component 2",
+        "attribute": {
+            "associations": [
+                {
+                    "image_analysis": "Test image analysis",
+                    "image_correlation": null,
+                    "biosample": "Test Biosample 2 ",
+                    "image_acquisition": "Test Primary Screen Image Acquisition",
+                    "specimen": "Test specimen 2"
+                }
+            ]
+        },
+        "analysis_method": [
+            {
+                "protocol_description": "Test image analysis",
+                "features_analysed": "Test image analysis overview"
+            }
+        ],
+        "correlation_method": [],
+        "example_image_uri": [],
+        "submitted_in_study_uuid": "a2fdbd58-ee11-4cd9-bc6a-f3d3da7fff71",
+        "submitted_in_study": {
+            "uuid": "a2fdbd58-ee11-4cd9-bc6a-f3d3da7fff71",
+            "version": 1,
+            "model": {
+                "type_name": "Study",
+                "version": 1
+            },
+            "accession_id": "S-BIADTEST",
+            "licence": "CC0",
+            "author": [
+                {
+                    "rorid": null,
+                    "address": null,
+                    "website": null,
+                    "orcid": "0000-0000-0000-0000",
+                    "display_name": "Test Author1",
+                    "affiliation": [
+                        {
+                            "rorid": null,
+                            "address": null,
+                            "website": null,
+                            "display_name": "Test College 1"
+                        }
+                    ],
+                    "contact_email": "test_author1@ebi.ac.uk",
+                    "role": "corresponding author"
+                },
+                {
+                    "rorid": null,
+                    "address": null,
+                    "website": null,
+                    "orcid": "1111-1111-1111-1111",
+                    "display_name": "Test Author2",
+                    "affiliation": [
+                        {
+                            "rorid": null,
+                            "address": null,
+                            "website": null,
+                            "display_name": "Test College 2"
+                        }
+                    ],
+                    "contact_email": "test_author2@ebi.ac.uk",
+                    "role": "first author"
+                }
+            ],
+            "title": "A test submission with title greater than 25 characters",
+            "release_date": "2024-02-13",
+            "description": "A test submission to allow testing without retrieving from bia server",
+            "keyword": [
+                "Test keyword1",
+                "Test keyword2",
+                "Test keyword3"
+            ],
+            "acknowledgement": "We thank you",
+            "see_also": [],
+            "related_publication": [],
+            "grant": [
+                {
+                    "id": "TESTFUNDS1",
+                    "funder": [
+                        {
+                            "display_name": "Test funding body1",
+                            "id": null
+                        }
+                    ]
+                },
+                {
+                    "id": "TESTFUNDS2",
+                    "funder": [
+                        {
+                            "display_name": "Test funding body2",
+                            "id": null
+                        }
+                    ]
+                }
+            ],
+            "funding_statement": "This work was funded by the EBI",
+            "attribute": {}
+        }
+    }
+}

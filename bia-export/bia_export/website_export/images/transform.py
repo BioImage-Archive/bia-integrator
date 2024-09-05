@@ -1,26 +1,23 @@
 from typing import List, Type
 from bia_shared_datamodels import bia_data_model
 from pydantic import BaseModel
-from bia_export.website_export.image_pages.models import (
+from bia_export.website_export.images.models import (
     ExperimentallyCapturedImage,
     Specimen,
-    ExperimentalImagingDataset,
+    CLIContext,
 )
-from bia_export.website_export.image_pages.retrieve import (
-    retrieve_canonical_representation,
+from bia_export.website_export.images.retrieve import (
     retrieve_images,
     retrieve_specimen,
     retrieve_object_list,
     get_local_img_rep_map,
-    retrieve_dataset,
-    retrieve_study,
+    retrieve_representations,
 )
 from bia_export.website_export.website_models import (
     BioSample,
     ImageAcquisition,
     SpecimenGrowthProtocol,
     SpecimenImagingPreparationProtocol,
-    CLIContext,
 )
 
 
@@ -30,7 +27,7 @@ def transform_ec_images(context: CLIContext) -> ExperimentallyCapturedImage:
     api_images = retrieve_images(context)
 
     if context.root_directory:
-        context.image_to_canonical_rep_uuid_map = get_local_img_rep_map(context)
+        context.image_to_rep_uuid_map = get_local_img_rep_map(context)
 
     for api_image in api_images:
 
@@ -80,16 +77,11 @@ def transform_image(
     }
     website_fields["subject"] = Specimen(**specimen_dict)
 
-    canoncical_img_rep = retrieve_canonical_representation(api_image.uuid, context)
+    api_img_rep = retrieve_representations(api_image.uuid, context)
 
     image_dict = (
-        api_image.model_dump()
-        | website_fields
-        | {"canonical_representation": canoncical_img_rep}
+        api_image.model_dump() | website_fields | {"representation": api_img_rep}
     )
-
-    api_eid = retrieve_dataset(api_image.submission_dataset_uuid, context)
-    image_dict["submission_dataset"] = transform_eid(api_eid, context)
 
     return ExperimentallyCapturedImage(**image_dict)
 
@@ -102,12 +94,3 @@ def transform_details_object_list(
         obj_dict = api_obj.model_dump() | {"default_open": True}
         obj_list.append(website_class(**obj_dict))
     return obj_list
-
-
-def transform_eid(
-    api_eid: bia_data_model.ExperimentalImagingDataset, context: CLIContext
-) -> ExperimentalImagingDataset:
-    api_study = retrieve_study(context)
-    api_eid_dict = api_eid.model_dump()
-    api_eid_dict["submitted_in_study"] = api_study
-    return ExperimentalImagingDataset(**api_eid_dict)

@@ -1,11 +1,12 @@
 from pydantic import BaseModel
 from typing import List, Type
-from bia_export.website_export.study_pages.models import (
+from bia_export.website_export.studies.models import (
     ExperimentalImagingDataset,
     ImageAnnotationDataset,
     Study,
+    CLIContext,
 )
-from bia_export.website_export.study_pages.retrieve import (
+from bia_export.website_export.studies.retrieve import (
     retrieve_study,
     retrieve_dataset_images,
     retrieve_image_annotatation_datasets,
@@ -21,7 +22,6 @@ from bia_export.website_export.website_models import (
     ImageAcquisition,
     SpecimenGrowthProtocol,
     SpecimenImagingPreparationProtocol,
-    CLIContext,
 )
 
 

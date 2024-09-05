@@ -5,13 +5,14 @@ from bia_export.website_export.website_models import (
     ImageAcquisition,
     SpecimenGrowthProtocol,
     SpecimenImagingPreparationProtocol,
+    CLIContext,
 )
 
 from bia_shared_datamodels import bia_data_model
 from pydantic import BaseModel, Field
 
 
-from typing import List, Optional
+from typing import List, Optional, Type
 
 
 class ImageDataset(BaseModel):
@@ -64,4 +65,21 @@ class Study(bia_data_model.Study):
     image_annotation_component: Optional[List[ImageAnnotationDataset]] = Field(
         default_factory=list,
         description="""An image annotation dataset of that is associated with the study.""",
+    )
+
+
+class CLIContext(CLIContext):
+    dataset_file_aggregate_data: dict = Field(
+        default_factory=dict,
+        description="Image & File Reference counts & types for each Dataset",
+    )
+    displayed_dataset_detail: dict[Type, set] = Field(
+        default={
+            ImageAcquisition: set(),
+            BioSample: set(),
+            SpecimenImagingPreparationProtocol: set(),
+            SpecimenGrowthProtocol: set(),
+        },
+        description="""Tracks e.g. which BioSamples have been displayed in previous dataset sections to 
+        determine whether details should default to open or closed.""",
     )

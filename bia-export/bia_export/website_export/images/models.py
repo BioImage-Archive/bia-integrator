@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from bia_shared_datamodels import bia_data_model
 from pydantic import Field
-
-from typing import List
+from ..website_models import CLIContext
+from typing import List, Optional
 
 
 class ExperimentalImagingDataset(bia_data_model.ExperimentalImagingDataset):
@@ -31,13 +31,14 @@ class ExperimentallyCapturedImage(bia_data_model.ExperimentallyCapturedImage):
     subject: Specimen = Field(
         description="""The specimen that was prepared for and captured in the field of view of the image."""
     )
-    canonical_representation: bia_data_model.ImageRepresentation = Field(
-        description="""The image representation that contains the most 'ground truth' version of the image.
-        Commonly this would be the one that captures the most data, both in terms of image metadata
-        (e.g. records of the physical dimensions of the Field of View) but also in the visual
-        fidelity of the image (e.g. has the largest field of view, or is in a data format storing the
-        greatest visual detail). This is the image represetation that should be viewable on the website."""
+    representation: Optional[List[bia_data_model.ImageRepresentation]] = Field(
+        default_factory=list,
+        description="""The concrete image representations of the image.""",
     )
-    submission_dataset: ExperimentalImagingDataset = Field(
-        description="""The dataset the image was submitted with."""
+
+
+class CLIContext(CLIContext):
+    image_to_rep_uuid_map: dict = Field(
+        default_factory=dict,
+        description="Image uuid to canonical representation uuid map in order to not re-read a lot of json files.",
     )

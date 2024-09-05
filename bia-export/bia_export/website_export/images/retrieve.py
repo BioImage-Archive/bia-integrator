@@ -1,7 +1,7 @@
 from uuid import UUID
 from pydantic import BaseModel
 from bia_export.website_export.utils import read_all_json, read_api_json_file
-from bia_export.website_export.website_models import CLIContext
+from .models import CLIContext
 from bia_shared_datamodels import bia_data_model
 from typing import List, Type
 import logging
@@ -70,29 +70,22 @@ def retrieve_object_list(
     return obj_list
 
 
-def retrieve_canonical_representation(
+def retrieve_representations(
     image_uuid: UUID, context: CLIContext
-) -> bia_data_model.ImageRepresentation:
+) -> List[bia_data_model.ImageRepresentation]:
     if context.root_directory:
-        canonical_rep = context.root_directory.joinpath(
-            f"image_representations/{context.accession_id}/{str(context.image_to_canonical_rep_uuid_map[image_uuid])}.json"
-        )
-        canonical_image_represenation: List[bia_data_model.ImageRepresentation] = (
-            read_api_json_file(canonical_rep, bia_data_model.ImageRepresentation)
-        )
+        api_img_reps = []
+        for img_rep in context.image_to_rep_uuid_map[image_uuid]:
+            img_rep_path = context.root_directory.joinpath(
+                f"image_representations/{context.accession_id}/{str(img_rep)}.json"
+            )
+            api_img_reps.append(
+                read_api_json_file(img_rep_path, bia_data_model.ImageRepresentation)
+            )
     else:
         # TODO: impliment API client version
         raise NotImplementedError
-    return canonical_image_represenation
-
-
-def is_canonical(image_rep: bia_data_model.ImageRepresentation) -> bool:
-    # TODO: create better / more consistent logic to determine the canonical image rep
-    # i.e. the one with all the dimension & ome-zarr info we need for the website.
-    if image_rep.physical_size_x:
-        return True
-    else:
-        return False
+    return api_img_reps
 
 
 def get_local_img_rep_map(context: CLIContext) -> dict[UUID, UUID]:
@@ -102,37 +95,10 @@ def get_local_img_rep_map(context: CLIContext) -> dict[UUID, UUID]:
     api_image_represenation: List[bia_data_model.ImageRepresentation] = read_all_json(
         image_rep_path, bia_data_model.ImageRepresentation
     )
-    image_to_rep_map = {}
+    image_to_rep_map: dict[UUID, List[UUID]] = {}
     for image_rep in api_image_represenation:
-        if is_canonical(image_rep):
-            image_to_rep_map[image_rep.representation_of_uuid] = image_rep.uuid
+        if image_rep.representation_of_uuid not in image_to_rep_map:
+            image_to_rep_map[image_rep.representation_of_uuid] = []
+        image_to_rep_map[image_rep.representation_of_uuid].append(image_rep.uuid)
 
     return image_to_rep_map
-
-
-def retrieve_dataset(
-    dataset_uuid: UUID, context: CLIContext
-) -> bia_data_model.ExperimentalImagingDataset:
-    if context.root_directory:
-        dataset_path = context.root_directory.joinpath(
-            f"experimental_imaging_datasets/{context.accession_id}/{str(dataset_uuid)}.json"
-        )
-        dataset = read_api_json_file(
-            dataset_path, bia_data_model.ExperimentalImagingDataset
-        )
-    else:
-        # TODO: impliment API client version
-        raise NotImplementedError
-    return dataset
-
-
-def retrieve_study(context: CLIContext) -> bia_data_model.Study:
-    if context.root_directory:
-        study_path = context.root_directory.joinpath(
-            f"studies/{context.accession_id}.json"
-        )
-        study = read_api_json_file(study_path, bia_data_model.Study)
-    else:
-        # TODO: impliment API client version
-        raise NotImplementedError
-    return study

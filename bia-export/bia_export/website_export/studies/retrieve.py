@@ -2,7 +2,7 @@ from glob import glob
 from uuid import UUID
 from bia_export.website_export.utils import read_all_json, read_api_json_file
 from pathlib import Path
-from bia_export.website_export.website_models import CLIContext
+from .models import CLIContext
 from bia_shared_datamodels import bia_data_model, semantic_models
 import json
 from typing import List, Type
