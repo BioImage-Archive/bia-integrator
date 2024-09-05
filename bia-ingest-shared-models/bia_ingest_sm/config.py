@@ -18,8 +18,10 @@ class Settings(BaseSettings):
     )
 
     bia_data_dir: str = Field(default_output_base)
-    bioformats2raw_java_home: str = Field()
-    bioformats2raw_bin: str = Field()
+
+
+#    bioformats2raw_java_home: str = Field()
+#    bioformats2raw_bin: str = Field()
 
 
 # class Settings:
