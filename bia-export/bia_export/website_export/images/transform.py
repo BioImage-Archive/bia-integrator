@@ -1,31 +1,33 @@
 from typing import List, Type
 from bia_shared_datamodels import bia_data_model
 from pydantic import BaseModel
-from bia_export.website_export.image_pages.retrieve import (
-    retrieve_canonical_representation,
+from bia_export.website_export.images.models import (
+    ExperimentallyCapturedImage,
+    Specimen,
+    ImageCLIContext,
+)
+from bia_export.website_export.images.retrieve import (
     retrieve_images,
     retrieve_specimen,
     retrieve_object_list,
     get_local_img_rep_map,
+    retrieve_representations,
 )
 from bia_export.website_export.website_models import (
     BioSample,
-    ExperimentallyCapturedImage,
     ImageAcquisition,
-    Specimen,
     SpecimenGrowthProtocol,
     SpecimenImagingPreparationProtocol,
-    CLIContext,
 )
 
 
-def transform_ec_images(context: CLIContext) -> ExperimentallyCapturedImage:
+def transform_ec_images(context: ImageCLIContext) -> ExperimentallyCapturedImage:
     eci_map = {}
 
     api_images = retrieve_images(context)
 
     if context.root_directory:
-        context.image_to_canonical_rep_uuid_map = get_local_img_rep_map(context)
+        context.image_to_rep_uuid_map = get_local_img_rep_map(context)
 
     for api_image in api_images:
 
@@ -37,7 +39,7 @@ def transform_ec_images(context: CLIContext) -> ExperimentallyCapturedImage:
 
 
 def transform_image(
-    api_image: bia_data_model.ExperimentallyCapturedImage, context: CLIContext
+    api_image: bia_data_model.ExperimentallyCapturedImage, context: ImageCLIContext
 ) -> ExperimentallyCapturedImage:
     website_fields = {}
     api_image_acquisitions = retrieve_object_list(
@@ -75,13 +77,12 @@ def transform_image(
     }
     website_fields["subject"] = Specimen(**specimen_dict)
 
-    canoncical_img_rep = retrieve_canonical_representation(api_image.uuid, context)
+    api_img_rep = retrieve_representations(api_image.uuid, context)
 
     image_dict = (
-        api_image.model_dump()
-        | website_fields
-        | {"canonical_representation": canoncical_img_rep}
+        api_image.model_dump() | website_fields | {"representation": api_img_rep}
     )
+
     return ExperimentallyCapturedImage(**image_dict)
 
 

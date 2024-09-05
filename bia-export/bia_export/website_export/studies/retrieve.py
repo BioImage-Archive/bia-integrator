@@ -2,7 +2,7 @@ from glob import glob
 from uuid import UUID
 from bia_export.website_export.utils import read_all_json, read_api_json_file
 from pathlib import Path
-from bia_export.website_export.website_models import CLIContext
+from .models import StudyCLIContext
 from bia_shared_datamodels import bia_data_model, semantic_models
 import json
 from typing import List, Type
@@ -11,7 +11,7 @@ import logging
 logger = logging.getLogger("__main__." + __name__)
 
 
-def retrieve_study(context: CLIContext) -> bia_data_model.Study:
+def retrieve_study(context: StudyCLIContext) -> bia_data_model.Study:
     if context.root_directory:
         study_path = context.root_directory.joinpath(
             f"studies/{context.accession_id}.json"
@@ -28,7 +28,7 @@ def retrieve_study(context: CLIContext) -> bia_data_model.Study:
 
 
 def retrieve_experimental_imaging_datasets(
-    context: CLIContext,
+    context: StudyCLIContext,
 ) -> bia_data_model.ExperimentalImagingDataset:
     if context.root_directory:
         eid_directory = context.root_directory.joinpath(
@@ -45,7 +45,7 @@ def retrieve_experimental_imaging_datasets(
     return api_eids
 
 
-def retrieve_aggregation_fields(dataset_uuid: UUID, context: CLIContext):
+def retrieve_aggregation_fields(dataset_uuid: UUID, context: StudyCLIContext):
     if context.root_directory:
         try:
             dataset_aggregation_fields = context.dataset_file_aggregate_data[
@@ -66,7 +66,7 @@ def retrieve_aggregation_fields(dataset_uuid: UUID, context: CLIContext):
     return dataset_aggregation_fields
 
 
-def aggregate_file_list_data(context: CLIContext) -> dict[UUID, dict]:
+def aggregate_file_list_data(context: StudyCLIContext) -> dict[UUID, dict]:
     dataset_counts_map = {}
     file_reference_directory = context.root_directory.joinpath(
         f"file_references/{context.accession_id}/*.json"
@@ -92,7 +92,7 @@ def aggregate_file_list_data(context: CLIContext) -> dict[UUID, dict]:
 def retrieve_dataset_images(
     dataset_uuid: UUID,
     image_type: Type[semantic_models.AbstractImageMixin],
-    context: CLIContext,
+    context: StudyCLIContext,
 ) -> List[bia_data_model.ExperimentallyCapturedImage]:
     if context.root_directory:
 
@@ -140,7 +140,7 @@ def find_associated_objects(
 def retrieve_detail_objects(
     dataset: bia_data_model.ExperimentalImagingDataset,
     detail_map: dict,
-    context: CLIContext,
+    context: StudyCLIContext,
 ) -> dict[str, List]:
     if context.root_directory:
         detail_fields = {}
@@ -176,7 +176,7 @@ def retrieve_detail_objects(
 
 
 def retrieve_image_annotatation_datasets(
-    context: CLIContext,
+    context: StudyCLIContext,
 ) -> List[bia_data_model.ImageAnnotationDataset]:
     if context.root_directory:
         iad_directory = context.root_directory.joinpath(
@@ -194,7 +194,7 @@ def retrieve_image_annotatation_datasets(
 
 
 def retrieve_annotion_method(
-    api_dataset: bia_data_model.ImageAnnotationDataset, context: CLIContext
+    api_dataset: bia_data_model.ImageAnnotationDataset, context: StudyCLIContext
 ):
     if context.root_directory:
         api_methods = []

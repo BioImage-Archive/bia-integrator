@@ -14,7 +14,6 @@
         "subject_uuid": "dcc18482-fa1a-468f-878f-c00f9cd46376",
         "acquisition_process": [
             {
-                "default_open": true,
                 "title_id": "Test Primary Screen Image Acquisition",
                 "uuid": "c2e44a1b-a43c-476e-8ddf-8587f4c955b3",
                 "version": 1,
@@ -48,7 +47,6 @@
             ],
             "imaging_preparation_protocol": [
                 {
-                    "default_open": true,
                     "title_id": "Test specimen 1",
                     "uuid": "7199d730-29f1-4ad8-b599-e9089cbb2d7b",
                     "version": 1,
@@ -62,7 +60,6 @@
             ],
             "sample_of": [
                 {
-                    "default_open": true,
                     "title_id": "Test Biosample 1",
                     "uuid": "64a67727-4e7c-469a-91c4-6219ae072e99",
                     "version": 1,
@@ -91,7 +88,6 @@
             ],
             "growth_protocol": [
                 {
-                    "default_open": true,
                     "title_id": "Test specimen 1",
                     "uuid": "a2ce3950-3b28-40b3-a6a5-23c4f7864912",
                     "version": 1,
@@ -103,30 +99,83 @@
                 }
             ]
         },
-        "canonical_representation": {
-            "uuid": "570a177d-de5d-4bee-bbd1-fd2dcbec9e2a",
-            "version": 1,
-            "model": {
-                "type_name": "ImageRepresentation",
-                "version": 1
+        "representation": [
+            {
+                "uuid": "570a177d-de5d-4bee-bbd1-fd2dcbec9e2a",
+                "version": 1,
+                "model": {
+                    "type_name": "ImageRepresentation",
+                    "version": 1
+                },
+                "image_format": "Template image format",
+                "use_type": "INTERACTIVE_DISPLAY",
+                "file_uri": [
+                    "https://dummy.uri.org"
+                ],
+                "total_size_in_bytes": 0,
+                "physical_size_x": 1.0,
+                "physical_size_y": 1.0,
+                "physical_size_z": 1.0,
+                "size_x": 1,
+                "size_y": 1,
+                "size_z": 1,
+                "size_c": 1,
+                "size_t": 1,
+                "image_viewer_setting": [],
+                "attribute": {},
+                "original_file_reference_uuid": [],
+                "representation_of_uuid": "e7322131-8e27-455d-b9fc-8add0719af70"
             },
-            "image_format": "Template image format",
-            "file_uri": [
-                "https://dummy.uri.org"
-            ],
-            "total_size_in_bytes": 0,
-            "physical_size_x": 1.0,
-            "physical_size_y": 1.0,
-            "physical_size_z": 1.0,
-            "size_x": 1,
-            "size_y": 1,
-            "size_z": 1,
-            "size_c": 1,
-            "size_t": 1,
-            "image_viewer_setting": [],
-            "attribute": {},
-            "original_file_reference_uuid": [],
-            "representation_of_uuid": "e7322131-8e27-455d-b9fc-8add0719af70"
-        }
+            {
+                "uuid": "677d5571-8ca3-4478-9e9f-cfeb3b012703",
+                "version": 1,
+                "model": {
+                    "type_name": "ImageRepresentation",
+                    "version": 1
+                },
+                "image_format": "Template image format",
+                "use_type": "UPLOADED_BY_SUBMITTER",
+                "file_uri": [
+                    "https://dummy.uri.org"
+                ],
+                "total_size_in_bytes": 0,
+                "physical_size_x": 1.0,
+                "physical_size_y": 1.0,
+                "physical_size_z": 1.0,
+                "size_x": 1,
+                "size_y": 1,
+                "size_z": 1,
+                "size_c": 1,
+                "size_t": 1,
+                "image_viewer_setting": [],
+                "attribute": {},
+                "original_file_reference_uuid": [],
+                "representation_of_uuid": "e7322131-8e27-455d-b9fc-8add0719af70"
+            },
+            {
+                "uuid": "8bfef1ff-18ec-4de7-8a10-2c19d552c150",
+                "version": 1,
+                "model": {
+                    "type_name": "ImageRepresentation",
+                    "version": 1
+                },
+                "image_format": "png",
+                "use_type": "THUMBNAIL",
+                "file_uri": [],
+                "total_size_in_bytes": 0,
+                "physical_size_x": null,
+                "physical_size_y": null,
+                "physical_size_z": null,
+                "size_x": null,
+                "size_y": null,
+                "size_z": null,
+                "size_c": null,
+                "size_t": null,
+                "image_viewer_setting": [],
+                "attribute": {},
+                "original_file_reference_uuid": [],
+                "representation_of_uuid": "e7322131-8e27-455d-b9fc-8add0719af70"
+            }
+        ]
     }
 }
