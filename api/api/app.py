@@ -4,18 +4,9 @@ from api import auth
 
 from api.models.repository import repository_create, Repository
 
-from fastapi import FastAPI
-from typing import AsyncGenerator
+from fastapi import FastAPI, Depends
 
 from api.api_logging import log_info
-
-
-async def repository_dependency() -> AsyncGenerator[Repository, None]:
-    db = await repository_create(init=False)
-    try:
-        yield db
-    finally:
-        db.close()
 
 
 app = FastAPI(
@@ -41,5 +32,12 @@ def on_start():
     log_info("App stopped")
 
 
-app.include_router(public.make_router(), prefix="/v2")
-app.include_router(private.make_router(), prefix="/v2")
+app.include_router(
+    public.make_router(),
+    prefix="/v2",
+)
+app.include_router(
+    private.make_router(),
+    prefix="/v2",
+    dependencies=[Depends(auth.get_current_user)],
+)
