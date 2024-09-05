@@ -8,7 +8,7 @@ from .utils import (
     get_bia_data_model_by_uuid,
     filter_model_dictionary,
 )
-from ..image_utils.utils import (
+from ..image_utils.image_utils import (
     get_image_extension,
     extension_in_bioformats_single_file_formats_list,
 )
@@ -107,6 +107,7 @@ def get_experimentally_captured_image(
     submission: Submission,
     dataset_uuid: UUID,
     file_paths: List[str],
+    result_summary: dict,
     persist_artefacts=False,
 ) -> bia_data_model.ExperimentallyCapturedImage:
     """Get the ExperimentallyCapturedImage corresponding to the dataset/file_reference(s) combination"""
@@ -124,8 +125,6 @@ def get_experimentally_captured_image(
     # TODO: Write function to get all objects of Type in accession_id subdir
     image_acquisitions = None
 
-    # TODO: this is not really ingest - do we need result_summary?
-    result_summary = {submission.accno: {}}
     if not image_acquisitions:
         # Get all image acquisitions in study
         image_acquisitions = get_image_acquisition(
