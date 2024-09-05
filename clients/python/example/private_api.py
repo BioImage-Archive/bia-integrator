@@ -8,9 +8,11 @@ from datetime import date
 from bia_integrator_api import exceptions as api_exceptions
 from pydantic import ValidationError
 
+api_base_url = "https://wwwdev.ebi.ac.uk/bioimage-archive/api"
 client = get_client_private(
     username="test@example.com",
-    password="test"
+    password="test",
+    api_base_url=api_base_url
 )
 
 # Example create/get - equivalent for every object
@@ -57,7 +59,8 @@ try:
     # create a client instance, remove the authentication token and try to make a request to a private endpoint
     client_unauthenticated = get_client_private(
         username="test@example.com",
-        password="test"
+        password="test",
+        api_base_url=api_base_url
     )
 
     client_unauthenticated.api_client.configuration.access_token = ""
@@ -69,7 +72,8 @@ try:
     # authenticate with bad credentials
     get_client_private(
         username="does_not_exist_user_test@example.com",
-        password="test"
+        password="test",
+        api_base_url=api_base_url
     )
 except api_exceptions.UnauthorizedException:
     pass
