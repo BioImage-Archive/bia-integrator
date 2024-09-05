@@ -108,3 +108,31 @@ def get_local_img_rep_map(context: CLIContext) -> dict[UUID, UUID]:
             image_to_rep_map[image_rep.representation_of_uuid] = image_rep.uuid
 
     return image_to_rep_map
+
+
+def retrieve_dataset(
+    dataset_uuid: UUID, context: CLIContext
+) -> bia_data_model.ExperimentalImagingDataset:
+    if context.root_directory:
+        dataset_path = context.root_directory.joinpath(
+            f"experimental_imaging_datasets/{context.accession_id}/{str(dataset_uuid)}.json"
+        )
+        dataset = read_api_json_file(
+            dataset_path, bia_data_model.ExperimentalImagingDataset
+        )
+    else:
+        # TODO: impliment API client version
+        raise NotImplementedError
+    return dataset
+
+
+def retrieve_study(context: CLIContext) -> bia_data_model.Study:
+    if context.root_directory:
+        study_path = context.root_directory.joinpath(
+            f"studies/{context.accession_id}.json"
+        )
+        study = read_api_json_file(study_path, bia_data_model.Study)
+    else:
+        # TODO: impliment API client version
+        raise NotImplementedError
+    return study

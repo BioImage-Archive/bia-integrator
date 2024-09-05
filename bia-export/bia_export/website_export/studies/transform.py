@@ -1,5 +1,10 @@
 from pydantic import BaseModel
 from typing import List, Type
+from bia_export.website_export.study_pages.models import (
+    ExperimentalImagingDataset,
+    ImageAnnotationDataset,
+    Study,
+)
 from bia_export.website_export.study_pages.retrieve import (
     retrieve_study,
     retrieve_dataset_images,
@@ -13,12 +18,9 @@ from bia_export.website_export.study_pages.retrieve import (
 from bia_export.website_export.website_models import (
     BioSample,
     DetailSection,
-    ExperimentalImagingDataset,
     ImageAcquisition,
     SpecimenGrowthProtocol,
     SpecimenImagingPreparationProtocol,
-    ImageAnnotationDataset,
-    Study,
     CLIContext,
 )
 
@@ -77,7 +79,9 @@ def transform_experimental_imaging_dataset(
 
     dataset_dict = dataset_dict | retrieve_aggregation_fields(api_dataset.uuid, context)
 
-    dataset_api_images = retrieve_dataset_images(api_dataset.uuid, bia_data_model.ExperimentallyCapturedImage, context)
+    dataset_api_images = retrieve_dataset_images(
+        api_dataset.uuid, bia_data_model.ExperimentallyCapturedImage, context
+    )
     dataset_dict = dataset_dict | {"image": dataset_api_images}
 
     dataset = ExperimentalImagingDataset(**dataset_dict)
@@ -167,7 +171,9 @@ def transform_image_annotatation_dataset(
 
     dataset_dict = dataset_dict | retrieve_aggregation_fields(api_dataset.uuid, context)
 
-    dataset_api_images = retrieve_dataset_images(api_dataset.uuid, bia_data_model.DerivedImage, context)
+    dataset_api_images = retrieve_dataset_images(
+        api_dataset.uuid, bia_data_model.DerivedImage, context
+    )
     dataset_dict = dataset_dict | {"image": dataset_api_images}
 
     dataset = ImageAnnotationDataset(**dataset_dict)
