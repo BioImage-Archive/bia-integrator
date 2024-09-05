@@ -7,9 +7,9 @@ The API is intended to facilitate the use of the [bia-shared-datamodels](../../b
 ## Summary
 * Only use this Readme and the [examples](./example/) for docs.
 * API functionality closely follows the [bia-shared-datamodels](../../bia-shared-datamodels/). Use the docs there for domain model info and an overview of the BIA models and field docs. Use of IDE autocomplete is encouraged. In general, method names for this client follow a regular structure:
-    * <pre>get<i>MODELNAME</i></pre> gets an object by UUID
-    * <pre>get<i>MODELCHILD</i>In<i>MODELPARENT</i></pre> gets a list of all "child" objects with the same "parent". child/parent relationship is defined in the shared data models. Example: `ExperimentalImagingDataset` has an attribute `study_uuid`. The `getExperimentalImagingDatasetInStudy(study_uuid)` method of the client retrieves a list of all experimental imaging datasets that reference the uuid passed in as `study_uuid`
-    * <pre>post<i>MODELNAME</i></pre> creates (if `version==0`) or updates (otherwise) an object
+    * <pre>get_<i>MODELNAME</i></pre> gets an object by UUID
+    * <pre>get_<i>MODELCHILD</i>_in_<i>MODELPARENT</i></pre> gets a list of all "child" objects with the same "parent". child/parent relationship is defined in the shared data models. Example: `ExperimentalImagingDataset` has an attribute `study_uuid`. The `getExperimentalImagingDatasetInStudy(study_uuid)` method of the client retrieves a list of all experimental imaging datasets that reference the uuid passed in as `study_uuid`
+    * <pre>post_<i>MODELNAME</i></pre> creates (if `version==0`) or updates (otherwise) an object
 * Only authenticated users can perform writes. 
 * Client sets `uuid` when creating objects
 * `version` is set by the client, at 0 and needs to be incremented for updates
