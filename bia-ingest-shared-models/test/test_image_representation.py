@@ -16,9 +16,14 @@ experimentally_captured_image_uuid = utils.get_test_experimentally_captured_imag
 test_file_reference = utils.get_test_file_reference(
     ["file_list_study_component_1.json"]
 )[0]
-# test_zarr_location = f"file://{Path(__file__).parent / 'data' / 'test_image_representations' / 'study_component1' / 'im06.zarr'}"
+
 representation_location_base = (
     Path(__file__).parent / "data" / "test_image_representations" / "study_component1"
+)
+zarr_location = representation_location_base / "im06.ome.zarr"
+zarr_total_size_in_bytes = (
+    sum(f.stat().st_size for f in zarr_location.rglob("*"))
+    + zarr_location.stat().st_size
 )
 
 
@@ -64,7 +69,7 @@ def representation_dict_template() -> dict:
             {
                 "image_format": ".ome.zarr",
                 "use_type": "INTERACTIVE_DISPLAY",
-                "total_size_in_bytes": 60360,
+                "total_size_in_bytes": zarr_total_size_in_bytes,
                 "size_x": 100,
                 "size_y": 80,
                 "size_z": 1,
