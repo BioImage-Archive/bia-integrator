@@ -68,7 +68,7 @@ class Study(bia_data_model.Study):
     )
 
 
-class CLIContext(CLIContext):
+class StudyCLIContext(CLIContext):
     dataset_file_aggregate_data: dict = Field(
         default_factory=dict,
         description="Image & File Reference counts & types for each Dataset",

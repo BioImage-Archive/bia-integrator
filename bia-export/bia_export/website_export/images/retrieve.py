@@ -1,7 +1,7 @@
 from uuid import UUID
 from pydantic import BaseModel
 from bia_export.website_export.utils import read_all_json, read_api_json_file
-from .models import CLIContext
+from .models import ImageCLIContext
 from bia_shared_datamodels import bia_data_model
 from typing import List, Type
 import logging
@@ -10,7 +10,7 @@ logger = logging.getLogger("__main__." + __name__)
 
 
 def retrieve_images(
-    context: CLIContext,
+    context: ImageCLIContext,
 ) -> list[bia_data_model.ImageRepresentation]:
 
     if context.root_directory:
@@ -29,7 +29,7 @@ def retrieve_images(
 
 
 def retrieve_specimen(
-    specimen_uuid: UUID, context: CLIContext
+    specimen_uuid: UUID, context: ImageCLIContext
 ) -> bia_data_model.Specimen:
     if context.root_directory:
         specimen_path = context.root_directory.joinpath(
@@ -45,7 +45,7 @@ def retrieve_specimen(
 
 
 def retrieve_object_list(
-    uuid_list: list[UUID], api_class: Type[BaseModel], context: CLIContext
+    uuid_list: list[UUID], api_class: Type[BaseModel], context: ImageCLIContext
 ) -> List[BaseModel]:
     if context.root_directory:
 
@@ -71,7 +71,7 @@ def retrieve_object_list(
 
 
 def retrieve_representations(
-    image_uuid: UUID, context: CLIContext
+    image_uuid: UUID, context: ImageCLIContext
 ) -> List[bia_data_model.ImageRepresentation]:
     if context.root_directory:
         api_img_reps = []
@@ -88,7 +88,7 @@ def retrieve_representations(
     return api_img_reps
 
 
-def get_local_img_rep_map(context: CLIContext) -> dict[UUID, UUID]:
+def get_local_img_rep_map(context: ImageCLIContext) -> dict[UUID, UUID]:
     image_rep_path = context.root_directory.joinpath(
         f"image_representations/{context.accession_id}/*.json"
     )

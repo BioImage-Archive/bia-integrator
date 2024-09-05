@@ -4,7 +4,7 @@ from bia_export.website_export.studies.models import (
     ExperimentalImagingDataset,
     ImageAnnotationDataset,
     Study,
-    CLIContext,
+    StudyCLIContext,
 )
 from bia_export.website_export.studies.retrieve import (
     retrieve_study,
@@ -31,7 +31,7 @@ import logging
 logger = logging.getLogger("__main__." + __name__)
 
 
-def transform_study(context: CLIContext) -> Study:
+def transform_study(context: StudyCLIContext) -> Study:
 
     api_study = retrieve_study(context)
     study_dict = api_study.model_dump()
@@ -54,7 +54,7 @@ def transform_study(context: CLIContext) -> Study:
 
 
 def transform_experimental_imaging_datasets(
-    context: CLIContext,
+    context: StudyCLIContext,
 ) -> List[ExperimentalImagingDataset]:
     api_datasets = retrieve_experimental_imaging_datasets(context)
 
@@ -69,7 +69,7 @@ def transform_experimental_imaging_datasets(
 
 def transform_experimental_imaging_dataset(
     api_dataset: bia_data_model.ExperimentalImagingDataset,
-    context: CLIContext,
+    context: StudyCLIContext,
 ) -> ExperimentalImagingDataset:
 
     dataset_dict = api_dataset.model_dump()
@@ -89,7 +89,7 @@ def transform_experimental_imaging_dataset(
 
 
 def transform_dataset_detail_objects(
-    dataset: bia_data_model.ExperimentalImagingDataset, context: CLIContext
+    dataset: bia_data_model.ExperimentalImagingDataset, context: StudyCLIContext
 ):
 
     detail_map = {
@@ -138,7 +138,7 @@ def transform_dataset_detail_objects(
 def transform_detail_object(
     detail_object: BaseModel,
     target_type: Type[DetailSection],
-    context: CLIContext,
+    context: StudyCLIContext,
 ):
     detail_dict = detail_object.model_dump()
     if detail_dict["uuid"] not in context.displayed_dataset_detail[target_type]:
@@ -151,7 +151,7 @@ def transform_detail_object(
 
 
 def transform_image_annotation_datasets(
-    context: CLIContext,
+    context: StudyCLIContext,
 ) -> List[ImageAnnotationDataset]:
     api_datasets = retrieve_image_annotatation_datasets(context)
 
@@ -163,7 +163,7 @@ def transform_image_annotation_datasets(
 
 
 def transform_image_annotatation_dataset(
-    api_dataset: bia_data_model.ImageAnnotationDataset, context: CLIContext
+    api_dataset: bia_data_model.ImageAnnotationDataset, context: StudyCLIContext
 ) -> ImageAnnotationDataset:
     dataset_dict = api_dataset.model_dump()
 

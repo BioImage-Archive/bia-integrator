@@ -4,7 +4,7 @@ from pydantic import BaseModel
 from bia_export.website_export.images.models import (
     ExperimentallyCapturedImage,
     Specimen,
-    CLIContext,
+    ImageCLIContext,
 )
 from bia_export.website_export.images.retrieve import (
     retrieve_images,
@@ -21,7 +21,7 @@ from bia_export.website_export.website_models import (
 )
 
 
-def transform_ec_images(context: CLIContext) -> ExperimentallyCapturedImage:
+def transform_ec_images(context: ImageCLIContext) -> ExperimentallyCapturedImage:
     eci_map = {}
 
     api_images = retrieve_images(context)
@@ -39,7 +39,7 @@ def transform_ec_images(context: CLIContext) -> ExperimentallyCapturedImage:
 
 
 def transform_image(
-    api_image: bia_data_model.ExperimentallyCapturedImage, context: CLIContext
+    api_image: bia_data_model.ExperimentallyCapturedImage, context: ImageCLIContext
 ) -> ExperimentallyCapturedImage:
     website_fields = {}
     api_image_acquisitions = retrieve_object_list(

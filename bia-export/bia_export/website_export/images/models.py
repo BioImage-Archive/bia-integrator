@@ -37,7 +37,7 @@ class ExperimentallyCapturedImage(bia_data_model.ExperimentallyCapturedImage):
     )
 
 
-class CLIContext(CLIContext):
+class ImageCLIContext(CLIContext):
     image_to_rep_uuid_map: dict = Field(
         default_factory=dict,
         description="Image uuid to canonical representation uuid map in order to not re-read a lot of json files.",

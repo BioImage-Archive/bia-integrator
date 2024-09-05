@@ -5,9 +5,9 @@ from rich.logging import RichHandler
 from typing_extensions import Annotated
 from pathlib import Path
 from .website_export.studies.transform import transform_study
-from .website_export.studies.models import CLIContext as StudyCLIContext
+from .website_export.studies.models import StudyCLIContext
 from .website_export.images.transform import transform_ec_images
-from .website_export.images.models import CLIContext as ImageCLIContext
+from .website_export.images.models import ImageCLIContext
 from .website_export.datasets_for_images.transform import transform_datasets
 from .website_export.website_models import CLIContext
 from typing import List
