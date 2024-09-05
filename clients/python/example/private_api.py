@@ -1,19 +1,18 @@
+"""
+Example script that creates and gets some objects. Please see the api client readme for details
+"""
+
 from bia_integrator_api.util import get_client_private
 from bia_integrator_api.models import Study, LicenceType, Contributor, ExperimentalImagingDataset
 from datetime import date
 from bia_integrator_api import exceptions as api_exceptions
 from pydantic import ValidationError
 
-"""
-Common usecase - get a client and create an object
-
-@TODO: Re-use shared minimal/maximal to make sure field typing / metadata gets transferred through to client
-
-NOTE: No version check (so no check for overwrites), no "uuid is actually unique" check
-"""
+api_base_url = "https://wwwdev.ebi.ac.uk/bioimage-archive/api"
 client = get_client_private(
     username="test@example.com",
-    password="test"
+    password="test",
+    api_base_url=api_base_url
 )
 
 # Example create/get - equivalent for every object
@@ -60,7 +59,8 @@ try:
     # create a client instance, remove the authentication token and try to make a request to a private endpoint
     client_unauthenticated = get_client_private(
         username="test@example.com",
-        password="test"
+        password="test",
+        api_base_url=api_base_url
     )
 
     client_unauthenticated.api_client.configuration.access_token = ""
@@ -72,7 +72,8 @@ try:
     # authenticate with bad credentials
     get_client_private(
         username="does_not_exist_user_test@example.com",
-        password="test"
+        password="test",
+        api_base_url=api_base_url
     )
 except api_exceptions.UnauthorizedException:
     pass
@@ -89,7 +90,7 @@ try:
 except ValidationError:
     pass
 
-#! object dependency check works
+#! "foreign key" links (all fields typed UUID that are not uuid) are validated
 try:
     dataset.submitted_in_study_uuid = dataset.uuid
     client.post_experimental_imaging_dataset(dataset)
