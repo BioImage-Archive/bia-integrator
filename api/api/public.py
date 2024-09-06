@@ -119,6 +119,17 @@ def make_router() -> APIRouter:
 
     make_reverse_links(router)
 
+    from bia_shared_datamodels.bia_data_model import Study
+
+    @router.get("/study")
+    async def getStudy(db: Annotated[Repository, Depends(get_db)]) -> List[Study]:
+        """
+        @TODO: Filters?
+        """
+        return await db.get_docs(
+            doc_filter={"model": {"type_name": "Study"}}, doc_type=Study
+        )
+
     return router
 
 
