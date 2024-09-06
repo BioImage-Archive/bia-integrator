@@ -5,6 +5,8 @@ from api import auth
 from api.models.repository import repository_create, Repository
 
 from fastapi import FastAPI
+from fastapi.openapi.docs import get_redoc_html
+
 from typing import AsyncGenerator
 
 from api.api_logging import log_info
@@ -29,6 +31,16 @@ app = FastAPI(
 app.openapi_version = "3.0.2"
 
 app.include_router(auth.router, prefix="/v2")
+
+
+@app.get("/v2/openapi.json", include_in_schema=False)
+async def get_custom_openapi():
+    return app.openapi()
+
+
+@app.get("/v2/redoc", include_in_schema=False)
+async def custom_redoc():
+    return get_redoc_html(openapi_url="/v2/openapi.json", title="BioImage Archive API")
 
 
 @app.on_event("startup")
