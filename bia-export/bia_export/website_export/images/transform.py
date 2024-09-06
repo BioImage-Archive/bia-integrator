@@ -1,5 +1,5 @@
 from typing import List, Type
-from bia_shared_datamodels import bia_data_model
+from bia_integrator_api import models as api_models
 from pydantic import BaseModel
 from bia_export.website_export.images.models import (
     ExperimentallyCapturedImage,
@@ -39,11 +39,11 @@ def transform_ec_images(context: ImageCLIContext) -> ExperimentallyCapturedImage
 
 
 def transform_image(
-    api_image: bia_data_model.ExperimentallyCapturedImage, context: ImageCLIContext
+    api_image: api_models.ExperimentallyCapturedImage, context: ImageCLIContext
 ) -> ExperimentallyCapturedImage:
     website_fields = {}
     api_image_acquisitions = retrieve_object_list(
-        api_image.acquisition_process_uuid, bia_data_model.ImageAcquisition, context
+        api_image.acquisition_process_uuid, api_models.ImageAcquisition, context
     )
 
     website_fields["acquisition_process"] = transform_details_object_list(
@@ -52,16 +52,16 @@ def transform_image(
 
     api_specimen = retrieve_specimen(api_image.subject_uuid, context)
     api_biosamples = retrieve_object_list(
-        api_specimen.sample_of_uuid, bia_data_model.BioSample, context
+        api_specimen.sample_of_uuid, api_models.BioSample, context
     )
     api_specimen_growth_protocols = retrieve_object_list(
         api_specimen.growth_protocol_uuid,
-        bia_data_model.SpecimenGrowthProtocol,
+        api_models.SpecimenGrowthProtocol,
         context,
     )
     api_specimen_imaging_preparation_protocols = retrieve_object_list(
         api_specimen.imaging_preparation_protocol_uuid,
-        bia_data_model.SpecimenImagingPreparationProtocol,
+        api_models.SpecimenImagingPreparationProtocol,
         context,
     )
 

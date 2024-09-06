@@ -7,8 +7,8 @@ from bia_export.website_export.website_models import (
     SpecimenImagingPreparationProtocol,
     CLIContext,
 )
+from bia_integrator_api import models
 
-from bia_shared_datamodels import bia_data_model
 from pydantic import BaseModel, Field
 
 
@@ -24,7 +24,7 @@ class ImageDataset(BaseModel):
 
 
 class ExperimentalImagingDataset(
-    bia_data_model.ExperimentalImagingDataset, ImageDataset
+    models.ExperimentalImagingDataset, ImageDataset
 ):
     acquisition_process: List[ImageAcquisition] = Field(
         description="""Processes involved in the creation of the images and files in this dataset."""
@@ -41,23 +41,23 @@ class ExperimentalImagingDataset(
         default_factory=list,
         description="""Processes involved in the growth of the samples that were then imaged.""",
     )
-    image: List[bia_data_model.ExperimentallyCapturedImage] = Field(
+    image: List[models.ExperimentallyCapturedImage] = Field(
         default_factory=list,
         description="List of image associated with the dataset.",
     )
 
 
-class ImageAnnotationDataset(bia_data_model.ImageAnnotationDataset, ImageDataset):
-    annotation_method: List[bia_data_model.AnnotationMethod] = Field(
+class ImageAnnotationDataset(models.ImageAnnotationDataset, ImageDataset):
+    annotation_method: List[models.AnnotationMethod] = Field(
         description="""The process(es) that were performed to create the annotated data."""
     )
-    image: List[bia_data_model.DerivedImage] = Field(
+    image: List[models.DerivedImage] = Field(
         default_factory=list,
         description="List of image associated with the dataset.",
     )
 
 
-class Study(bia_data_model.Study):
+class Study(models.Study):
     experimental_imaging_component: Optional[List[ExperimentalImagingDataset]] = Field(
         default_factory=list,
         description="""An experimental imaging dataset of that is associated with the study.""",

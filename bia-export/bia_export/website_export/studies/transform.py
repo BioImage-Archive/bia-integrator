@@ -23,9 +23,7 @@ from bia_export.website_export.website_models import (
     SpecimenGrowthProtocol,
     SpecimenImagingPreparationProtocol,
 )
-
-
-from bia_shared_datamodels import bia_data_model
+from bia_integrator_api import models as api_models
 import logging
 
 logger = logging.getLogger("__main__." + __name__)
@@ -68,7 +66,7 @@ def transform_experimental_imaging_datasets(
 
 
 def transform_experimental_imaging_dataset(
-    api_dataset: bia_data_model.ExperimentalImagingDataset,
+    api_dataset: api_models.ExperimentalImagingDataset,
     context: StudyCLIContext,
 ) -> ExperimentalImagingDataset:
 
@@ -80,7 +78,7 @@ def transform_experimental_imaging_dataset(
     dataset_dict = dataset_dict | retrieve_aggregation_fields(api_dataset, context)
 
     dataset_api_images = retrieve_dataset_images(
-        api_dataset.uuid, bia_data_model.ExperimentallyCapturedImage, context
+        api_dataset.uuid, api_models.ExperimentallyCapturedImage, context
     )
     dataset_dict = dataset_dict | {"image": dataset_api_images}
 
@@ -89,32 +87,32 @@ def transform_experimental_imaging_dataset(
 
 
 def transform_dataset_detail_objects(
-    dataset: bia_data_model.ExperimentalImagingDataset, context: StudyCLIContext
+    dataset: api_models.ExperimentalImagingDataset, context: StudyCLIContext
 ):
 
     detail_map = {
         "acquisition_process": {
             "source_directory": "image_acquisitions",
             "association_field": "image_acquisition",
-            "bia_type": bia_data_model.ImageAcquisition,
+            "bia_type": api_models.ImageAcquisition,
             "website_type": ImageAcquisition,
         },
         "biological_entity": {
             "source_directory": "biosamples",
             "association_field": "biosample",
-            "bia_type": bia_data_model.BioSample,
+            "bia_type": api_models.BioSample,
             "website_type": BioSample,
         },
         "specimen_imaging_preparation_protocol": {
             "source_directory": "specimen_imaging_preparation_protocols",
             "association_field": "specimen",
-            "bia_type": bia_data_model.SpecimenImagingPreparationProtocol,
+            "bia_type": api_models.SpecimenImagingPreparationProtocol,
             "website_type": SpecimenImagingPreparationProtocol,
         },
         "specimen_growth_protocol": {
             "source_directory": "specimen_growth_protocols",
             "association_field": "specimen",
-            "bia_type": bia_data_model.SpecimenGrowthProtocol,
+            "bia_type": api_models.SpecimenGrowthProtocol,
             "website_type": SpecimenGrowthProtocol,
         },
     }
@@ -163,7 +161,7 @@ def transform_image_annotation_datasets(
 
 
 def transform_image_annotatation_dataset(
-    api_dataset: bia_data_model.ImageAnnotationDataset, context: StudyCLIContext
+    api_dataset: api_models.ImageAnnotationDataset, context: StudyCLIContext
 ) -> ImageAnnotationDataset:
     dataset_dict = api_dataset.model_dump()
 
@@ -172,7 +170,7 @@ def transform_image_annotatation_dataset(
     dataset_dict = dataset_dict | retrieve_aggregation_fields(api_dataset, context)
 
     dataset_api_images = retrieve_dataset_images(
-        api_dataset.uuid, bia_data_model.DerivedImage, context
+        api_dataset.uuid, api_models.DerivedImage, context
     )
     dataset_dict = dataset_dict | {"image": dataset_api_images}
 
