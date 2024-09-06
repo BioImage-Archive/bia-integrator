@@ -1,7 +1,7 @@
 import logging
 from typing import List, Optional, Dict, Any
 from uuid import UUID
-from .utils import dict_to_uuid, get_bia_data_model_by_uuid
+from .utils import dict_to_uuid, get_bia_data_model_by_uuid, persist
 from ..image_utils import image_utils
 from .experimentally_captured_image import get_experimentally_captured_image
 from ..biostudies import (
@@ -19,7 +19,8 @@ def create_image_representation(
     file_reference_uuids: List[UUID],
     representation_use_type: ImageRepresentationUseType,
     result_summary: dict,
-    representation_location: Optional[str],
+    representation_location: Optional[str] = None,
+    persist_artefacts: Optional[bool] = False,
 ) -> bia_data_model.ImageRepresentation:
     """Create ImageRepresentation for specified FileReference(s) zarr"""
 
@@ -77,8 +78,18 @@ def create_image_representation(
         "version": 1,
     }
     model_dict["uuid"] = generate_image_representation_uuid(model_dict)
+    image_representation = bia_data_model.ImageRepresentation.model_validate(model_dict)
 
-    return bia_data_model.ImageRepresentation.model_validate(model_dict)
+    if persist_artefacts and image_representation:
+        persist(
+            [
+                image_representation,
+            ],
+            "image_representations",
+            submission.accno,
+        )
+
+    return image_representation
     # return dicts_to_api_models([model_dict,], bia_data_model.ImageRepresentation )[0]
 
 
