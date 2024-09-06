@@ -40,6 +40,7 @@ Method | HTTP request | Description
 [**get_specimen_in_bio_sample**](PrivateApi.md#get_specimen_in_bio_sample) | **GET** /v2/bio_sample/{uuid}/specimen | Get Specimen In BioSample
 [**get_specimen_in_specimen_growth_protocol**](PrivateApi.md#get_specimen_in_specimen_growth_protocol) | **GET** /v2/specimen_growth_protocol/{uuid}/specimen | Get Specimen In SpecimenGrowthProtocol
 [**get_specimen_in_specimen_imaging_preparation_protocol**](PrivateApi.md#get_specimen_in_specimen_imaging_preparation_protocol) | **GET** /v2/specimen_imaging_preparation_protocol/{uuid}/specimen | Get Specimen In SpecimenImagingPreparationProtocol
+[**get_studies**](PrivateApi.md#get_studies) | **GET** /v2/study | Getstudies
 [**get_study**](PrivateApi.md#get_study) | **GET** /v2/study/{uuid} | Get Study
 [**login_for_access_token**](PrivateApi.md#login_for_access_token) | **POST** /v2/auth/token | Login For Access Token
 [**post_annotation_file_reference**](PrivateApi.md#post_annotation_file_reference) | **POST** /v2/private/annotation_file_reference | Create AnnotationFileReference
@@ -2462,6 +2463,70 @@ No authorization required
 |-------------|-------------|------------------|
 **200** | Successful Response |  -  |
 **422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **get_studies**
+> List[Study] get_studies()
+
+Getstudies
+
+@TODO: Filters?
+
+### Example
+
+
+```python
+import bia_integrator_api
+from bia_integrator_api.models.study import Study
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PrivateApi(api_client)
+
+    try:
+        # Getstudies
+        api_response = api_instance.get_studies()
+        print("The response of PrivateApi->get_studies:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PrivateApi->get_studies: %s\n" % e)
+```
+
+
+
+### Parameters
+
+This endpoint does not need any parameter.
+
+### Return type
+
+[**List[Study]**](Study.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

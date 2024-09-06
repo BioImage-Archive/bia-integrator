@@ -98,6 +98,7 @@ Class | Method | HTTP request | Description
 *PrivateApi* | [**get_specimen_in_bio_sample**](bia_integrator_api/docs/PrivateApi.md#get_specimen_in_bio_sample) | **GET** /v2/bio_sample/{uuid}/specimen | Get Specimen In BioSample
 *PrivateApi* | [**get_specimen_in_specimen_growth_protocol**](bia_integrator_api/docs/PrivateApi.md#get_specimen_in_specimen_growth_protocol) | **GET** /v2/specimen_growth_protocol/{uuid}/specimen | Get Specimen In SpecimenGrowthProtocol
 *PrivateApi* | [**get_specimen_in_specimen_imaging_preparation_protocol**](bia_integrator_api/docs/PrivateApi.md#get_specimen_in_specimen_imaging_preparation_protocol) | **GET** /v2/specimen_imaging_preparation_protocol/{uuid}/specimen | Get Specimen In SpecimenImagingPreparationProtocol
+*PrivateApi* | [**get_studies**](bia_integrator_api/docs/PrivateApi.md#get_studies) | **GET** /v2/study | Getstudies
 *PrivateApi* | [**get_study**](bia_integrator_api/docs/PrivateApi.md#get_study) | **GET** /v2/study/{uuid} | Get Study
 *PrivateApi* | [**login_for_access_token**](bia_integrator_api/docs/PrivateApi.md#login_for_access_token) | **POST** /v2/auth/token | Login For Access Token
 *PrivateApi* | [**post_annotation_file_reference**](bia_integrator_api/docs/PrivateApi.md#post_annotation_file_reference) | **POST** /v2/private/annotation_file_reference | Create AnnotationFileReference
@@ -151,6 +152,7 @@ Class | Method | HTTP request | Description
 *PublicApi* | [**get_specimen_in_bio_sample**](bia_integrator_api/docs/PublicApi.md#get_specimen_in_bio_sample) | **GET** /v2/bio_sample/{uuid}/specimen | Get Specimen In BioSample
 *PublicApi* | [**get_specimen_in_specimen_growth_protocol**](bia_integrator_api/docs/PublicApi.md#get_specimen_in_specimen_growth_protocol) | **GET** /v2/specimen_growth_protocol/{uuid}/specimen | Get Specimen In SpecimenGrowthProtocol
 *PublicApi* | [**get_specimen_in_specimen_imaging_preparation_protocol**](bia_integrator_api/docs/PublicApi.md#get_specimen_in_specimen_imaging_preparation_protocol) | **GET** /v2/specimen_imaging_preparation_protocol/{uuid}/specimen | Get Specimen In SpecimenImagingPreparationProtocol
+*PublicApi* | [**get_studies**](bia_integrator_api/docs/PublicApi.md#get_studies) | **GET** /v2/study | Getstudies
 *PublicApi* | [**get_study**](bia_integrator_api/docs/PublicApi.md#get_study) | **GET** /v2/study/{uuid} | Get Study
 
 

@@ -1777,6 +1777,33 @@
         }
       }
     },
+    "/v2/study": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Getstudies",
+        "description": "@TODO: Filters?",
+        "operationId": "getStudies",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/Study"
+                  },
+                  "type": "array",
+                  "title": "Response Getstudies"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v2/private/study": {
       "post": {
         "tags": [

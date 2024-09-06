@@ -122,7 +122,7 @@ def make_router() -> APIRouter:
     from bia_shared_datamodels.bia_data_model import Study
 
     @router.get("/study")
-    async def getStudy(db: Annotated[Repository, Depends(get_db)]) -> List[Study]:
+    async def getStudies(db: Annotated[Repository, Depends(get_db)]) -> List[Study]:
         """
         @TODO: Filters?
         """
