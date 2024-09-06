@@ -125,6 +125,8 @@ def make_router() -> APIRouter:
     async def getStudies(db: Annotated[Repository, Depends(get_db)]) -> List[Study]:
         """
         @TODO: Filters?
+
+        @TODO: Not pluralizing clashes with getStudy(study_uuid) - non-pluralised convention?
         """
         return await db.get_docs(
             doc_filter={"model": {"type_name": "Study"}}, doc_type=Study
