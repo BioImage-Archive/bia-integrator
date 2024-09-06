@@ -10,7 +10,7 @@ from .website_export.images.transform import transform_ec_images
 from .website_export.images.models import ImageCLIContext
 from .website_export.datasets_for_images.transform import transform_datasets
 from .website_export.website_models import CLIContext
-from typing import List
+from typing import List, Optional
 import json
 
 logging.basicConfig(
@@ -25,7 +25,7 @@ app = typer.Typer()
 def website_study(
     id_list: Annotated[List[str], typer.Argument(help="IDs of the studies to export")],
     root_directory: Annotated[
-        Path,
+        Optional[Path],
         typer.Option(
             "--root",
             "-r",
@@ -46,7 +46,7 @@ def website_study(
 
     studies_map = {}
     for id in id_list:
-        if abs_root:
+        if root_directory:
             context = StudyCLIContext(root_directory=abs_root, accession_id=id)
         else:
             context = StudyCLIContext(study_uuid=id)
@@ -64,7 +64,7 @@ def website_image(
         List[str], typer.Argument(help="Accession ID of the study to export")
     ],
     root_directory: Annotated[
-        Path,
+        Optional[Path],
         typer.Option(
             "--root",
             "-r",
@@ -79,13 +79,14 @@ def website_image(
         ),
     ] = Path("bia-image-export.json"),
 ):
-
+    # NB: currently only exports for ExperimentallyCapturedImages
+    # TODO: get this working for 
     if root_directory:
         abs_root = root_directory.resolve()
 
     image_map = {}
     for id in id_list:
-        if abs_root:
+        if root_directory:
             context = ImageCLIContext(root_directory=abs_root, accession_id=id)
         else:
             context = ImageCLIContext(study_uuid=id)
@@ -103,7 +104,7 @@ def datasets_for_website_image(
         List[str], typer.Argument(help="Accession ID of the study to export")
     ],
     root_directory: Annotated[
-        Path,
+        Optional[Path],
         typer.Option(
             "--root",
             "-r",
@@ -124,7 +125,7 @@ def datasets_for_website_image(
 
     dataset_map = {}
     for id in id_list:
-        if abs_root:
+        if root_directory:
             context = CLIContext(root_directory=abs_root, accession_id=id)
         else:
             context = CLIContext(study_uuid=id)

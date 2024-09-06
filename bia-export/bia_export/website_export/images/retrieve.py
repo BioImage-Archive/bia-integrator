@@ -1,6 +1,7 @@
 from uuid import UUID
 from pydantic import BaseModel
 from bia_export.website_export.utils import read_all_json, read_api_json_file
+from bia_export.bia_client import api_client
 from .models import ImageCLIContext
 from bia_shared_datamodels import bia_data_model
 from typing import List, Type
@@ -11,7 +12,7 @@ logger = logging.getLogger("__main__." + __name__)
 
 def retrieve_images(
     context: ImageCLIContext,
-) -> list[bia_data_model.ImageRepresentation]:
+) -> list[bia_data_model.ExperimentallyCapturedImage]:
 
     if context.root_directory:
         image_directory = context.root_directory.joinpath(
@@ -22,8 +23,15 @@ def retrieve_images(
         )
 
     else:
-        # TODO: implement client
-        raise NotImplementedError
+        eid_list = api_client.get_experimental_imaging_dataset_in_study(
+            str(context.study_uuid)
+        )
+        api_ecis = []
+        for eid in eid_list:
+            images = api_client.get_experimentally_captured_image_in_experimental_imaging_dataset(
+                str(eid.uuid)
+            )
+            api_ecis += images
 
     return api_ecis
 
@@ -39,8 +47,7 @@ def retrieve_specimen(
             specimen_path, bia_data_model.Specimen
         )
     else:
-        # TODO: implement API client verison
-        raise NotImplementedError
+        api_specimen = api_client.get_specimen(str(specimen_uuid))
     return api_specimen
 
 
@@ -65,8 +72,21 @@ def retrieve_object_list(
             )
             obj_list.append(read_api_json_file(path, api_class))
     else:
-        # TODO: impliment API client version
-        raise NotImplementedError
+        obj_list = []
+        if api_class == bia_data_model.BioSample:
+            for uuid in uuid_list:
+                obj_list.append(api_client.get_bio_sample(str(uuid)))
+        elif api_class == bia_data_model.SpecimenGrowthProtocol:
+            for uuid in uuid_list:
+                obj_list.append(api_client.get_specimen_growth_protocol(str(uuid)))
+        elif api_class == bia_data_model.SpecimenImagingPreparationProtocol:
+            for uuid in uuid_list:
+                obj_list.append(
+                    api_client.get_specimen_imaging_preparation_protocol(str(uuid))
+                )
+        elif api_class == bia_data_model.ImageAcquisition:
+            for uuid in uuid_list:
+                obj_list.append(api_client.get_image_acquisition(str(uuid)))
     return obj_list
 
 
@@ -83,8 +103,11 @@ def retrieve_representations(
                 read_api_json_file(img_rep_path, bia_data_model.ImageRepresentation)
             )
     else:
-        # TODO: impliment API client version
-        raise NotImplementedError
+        api_img_reps = (
+            api_client.get_image_representation_in_experimentally_captured_image(
+                str(image_uuid)
+            )
+        )
     return api_img_reps
 
 

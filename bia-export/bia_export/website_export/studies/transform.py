@@ -77,7 +77,7 @@ def transform_experimental_imaging_dataset(
     # Details include Biosample, and various Protocols
     dataset_dict = dataset_dict | transform_dataset_detail_objects(api_dataset, context)
 
-    dataset_dict = dataset_dict | retrieve_aggregation_fields(api_dataset.uuid, context)
+    dataset_dict = dataset_dict | retrieve_aggregation_fields(api_dataset, context)
 
     dataset_api_images = retrieve_dataset_images(
         api_dataset.uuid, bia_data_model.ExperimentallyCapturedImage, context
@@ -121,7 +121,7 @@ def transform_dataset_detail_objects(
 
     api_details = retrieve_detail_objects(dataset, detail_map, context)
 
-    detail_fields = {}
+    detail_fields: dict[str, List[BaseModel]] = {}
     for field, object_list in api_details.items():
         detail_fields[field] = []
         for api_object in object_list:
@@ -169,7 +169,7 @@ def transform_image_annotatation_dataset(
 
     dataset_dict["annotation_method"] = retrieve_annotion_method(api_dataset, context)
 
-    dataset_dict = dataset_dict | retrieve_aggregation_fields(api_dataset.uuid, context)
+    dataset_dict = dataset_dict | retrieve_aggregation_fields(api_dataset, context)
 
     dataset_api_images = retrieve_dataset_images(
         api_dataset.uuid, bia_data_model.DerivedImage, context
