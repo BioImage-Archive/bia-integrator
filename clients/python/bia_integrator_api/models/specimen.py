@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from bia_integrator_api.models.model_metadata import ModelMetadata
@@ -29,7 +29,7 @@ class Specimen(BaseModel):
     Specimen
     """ # noqa: E501
     uuid: StrictStr = Field(description="Unique ID (across the BIA database) used to refer to and identify a document.")
-    version: StrictInt = Field(description="Document version. This can't be optional to make sure we never persist objects without it")
+    version: Annotated[int, Field(strict=True, ge=0)] = Field(description="Document version. This can't be optional to make sure we never persist objects without it")
     model: Optional[ModelMetadata] = None
     imaging_preparation_protocol_uuid: Annotated[List[StrictStr], Field(min_length=1)]
     sample_of_uuid: Annotated[List[StrictStr], Field(min_length=1)]

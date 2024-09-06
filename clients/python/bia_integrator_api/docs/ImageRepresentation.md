@@ -9,6 +9,7 @@ Name | Type | Description | Notes
 **version** | **int** | Document version. This can&#39;t be optional to make sure we never persist objects without it | 
 **model** | [**ModelMetadata**](ModelMetadata.md) |  | [optional] 
 **image_format** | **str** | Image format of the combined files. | 
+**use_type** | [**ImageRepresentationUseType**](ImageRepresentationUseType.md) | The use case of this particular image representation i.e. thumbnail, interactive display etc. | 
 **file_uri** | **List[str]** | URI(s) of the file(s) which together make up this image representation. | 
 **total_size_in_bytes** | **int** | Combined disc size in bytes of all the files. | 
 **physical_size_x** | **float** |  | [optional] 

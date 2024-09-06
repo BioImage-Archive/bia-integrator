@@ -2460,6 +2460,7 @@
           },
           "version": {
             "type": "integer",
+            "minimum": 0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -2576,6 +2577,7 @@
           },
           "version": {
             "type": "integer",
+            "minimum": 0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -2689,6 +2691,7 @@
           },
           "version": {
             "type": "integer",
+            "minimum": 0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -3008,6 +3011,7 @@
           },
           "version": {
             "type": "integer",
+            "minimum": 0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -3100,6 +3104,7 @@
           },
           "version": {
             "type": "integer",
+            "minimum": 0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -3197,6 +3202,7 @@
           },
           "version": {
             "type": "integer",
+            "minimum": 0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -3299,6 +3305,7 @@
           },
           "version": {
             "type": "integer",
+            "minimum": 0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -3449,6 +3456,7 @@
           },
           "version": {
             "type": "integer",
+            "minimum": 0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -3552,6 +3560,7 @@
           },
           "version": {
             "type": "integer",
+            "minimum": 0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -3647,6 +3656,7 @@
           },
           "version": {
             "type": "integer",
+            "minimum": 0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -3665,6 +3675,14 @@
             "type": "string",
             "title": "Image Format",
             "description": "Image format of the combined files."
+          },
+          "use_type": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ImageRepresentationUseType"
+              }
+            ],
+            "description": "The use case of this particular image representation i.e. thumbnail, interactive display etc."
           },
           "file_uri": {
             "items": {
@@ -3822,6 +3840,7 @@
           "uuid",
           "version",
           "image_format",
+          "use_type",
           "file_uri",
           "total_size_in_bytes",
           "attribute",
@@ -3829,11 +3848,26 @@
         ],
         "title": "ImageRepresentation"
       },
+      "ImageRepresentationUseType": {
+        "type": "string",
+        "enum": [
+          "UPLOADED_BY_SUBMITTER",
+          "STATIC_DISPLAY",
+          "THUMBNAIL",
+          "INTERACTIVE_DISPLAY"
+        ],
+        "title": "ImageRepresentationUseType",
+        "description": "Enumerate use types of ImageRepresentations"
+      },
       "LicenceType": {
         "type": "string",
         "enum": [
           "CC0",
-          "CC_BY_4.0"
+          "CC_BY_4.0",
+          "CC_BY-SA_3.0",
+          "CC_BY-NC-SA_3.0",
+          "CC_BY-NC-ND_4.0",
+          "CC_BY-SA_2.1_JP"
         ],
         "title": "LicenceType"
       },
@@ -4008,6 +4042,7 @@
           },
           "version": {
             "type": "integer",
+            "minimum": 0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -4075,6 +4110,7 @@
           },
           "version": {
             "type": "integer",
+            "minimum": 0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -4120,6 +4156,7 @@
           },
           "version": {
             "type": "integer",
+            "minimum": 0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -4175,6 +4212,7 @@
           },
           "version": {
             "type": "integer",
+            "minimum": 0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },

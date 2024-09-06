@@ -178,6 +178,7 @@ Class | Method | HTTP request | Description
  - [ImageAnnotationDataset](bia_integrator_api/docs/ImageAnnotationDataset.md)
  - [ImageCorrelationMethod](bia_integrator_api/docs/ImageCorrelationMethod.md)
  - [ImageRepresentation](bia_integrator_api/docs/ImageRepresentation.md)
+ - [ImageRepresentationUseType](bia_integrator_api/docs/ImageRepresentationUseType.md)
  - [LicenceType](bia_integrator_api/docs/LicenceType.md)
  - [LocationInner](bia_integrator_api/docs/LocationInner.md)
  - [ModelMetadata](bia_integrator_api/docs/ModelMetadata.md)
