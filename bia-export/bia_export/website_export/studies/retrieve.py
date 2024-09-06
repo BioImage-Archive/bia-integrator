@@ -3,7 +3,8 @@ from uuid import UUID
 from bia_export.website_export.utils import read_all_json, read_api_json_file
 from pathlib import Path
 from .models import StudyCLIContext
-from bia_shared_datamodels import bia_data_model, semantic_models
+from bia_shared_datamodels import semantic_models, bia_data_model
+from bia_integrator_api import models as api_models
 import json
 from typing import List, Type
 import logging
@@ -12,7 +13,7 @@ from bia_export.bia_client import api_client
 logger = logging.getLogger("__main__." + __name__)
 
 
-def retrieve_study(context: StudyCLIContext) -> bia_data_model.Study:
+def retrieve_study(context: StudyCLIContext) -> api_models.Study:
     if context.root_directory:
         study_path = context.root_directory.joinpath(
             f"studies/{context.accession_id}.json"
@@ -20,7 +21,7 @@ def retrieve_study(context: StudyCLIContext) -> bia_data_model.Study:
 
         logger.info(f"Loading study from {study_path}")
 
-        api_study = read_api_json_file(study_path, bia_data_model.Study)
+        api_study = read_api_json_file(study_path, api_models.Study)
     else:
         api_study = api_client.get_study(str(context.study_uuid))
 
@@ -29,14 +30,14 @@ def retrieve_study(context: StudyCLIContext) -> bia_data_model.Study:
 
 def retrieve_experimental_imaging_datasets(
     context: StudyCLIContext,
-) -> bia_data_model.ExperimentalImagingDataset:
+) -> api_models.ExperimentalImagingDataset:
     if context.root_directory:
         eid_directory = context.root_directory.joinpath(
             f"experimental_imaging_datasets/{context.accession_id}/*.json"
         )
 
-        api_eids: List[bia_data_model.ExperimentalImagingDataset] = read_all_json(
-            eid_directory, bia_data_model.ExperimentalImagingDataset
+        api_eids: List[api_models.ExperimentalImagingDataset] = read_all_json(
+            eid_directory, api_models.ExperimentalImagingDataset
         )
     else:
         api_eids = api_client.get_experimental_imaging_dataset_in_study(
@@ -72,10 +73,10 @@ def retrieve_aggregation_fields(
                 str(dataset.uuid)
             )
         elif dataset.model.type_name == "ImageAnnotationDataset":
-            images = api_client.get_experimentally_captured_image_in_experimental_imaging_dataset(
+            images = api_client.get_derived_image_in_image_annotation_dataset(
                 str(dataset.uuid)
             )
-            files = api_client.get_file_reference_in_experimental_imaging_dataset(
+            files = api_client.get_file_reference_in_image_annotation_dataset(
                 str(dataset.uuid)
             )
 
@@ -102,7 +103,7 @@ def aggregate_file_list_data(context: StudyCLIContext) -> dict[UUID, dict]:
     for file_path in file_reference_paths:
         with open(file_path, "r") as object_file:
             object_dict = json.load(object_file)
-            file_reference = bia_data_model.FileReference(**object_dict)
+            file_reference = api_models.FileReference(**object_dict)
         submission_dataset = file_reference.submission_dataset_uuid
         file_type = Path(file_reference.file_path).suffix
         if submission_dataset not in dataset_counts_map:
@@ -120,19 +121,19 @@ def retrieve_dataset_images(
     dataset_uuid: UUID,
     image_type: Type[semantic_models.AbstractImageMixin],
     context: StudyCLIContext,
-) -> List[bia_data_model.ExperimentallyCapturedImage]:
+) -> List[api_models.ExperimentallyCapturedImage]:
     if context.root_directory:
 
         directory_map = {
-            bia_data_model.ExperimentallyCapturedImage: "experimentally_captured_images",
-            bia_data_model.DerivedImage: "derived_images",
+            api_models.ExperimentallyCapturedImage: "experimentally_captured_images",
+            api_models.DerivedImage: "derived_images",
         }
 
         image_directory = context.root_directory.joinpath(
             f"{directory_map[image_type]}/{context.accession_id}/*.json"
         )
-        all_api_images: List[bia_data_model.ExperimentallyCapturedImage] = (
-            read_all_json(image_directory, image_type)
+        all_api_images: List[semantic_models.AbstractImageMixin] = read_all_json(
+            image_directory, image_type
         )
         api_images = [
             image
@@ -141,9 +142,15 @@ def retrieve_dataset_images(
         ]
 
     else:
-        api_images = api_client.get_experimentally_captured_image_in_experimental_imaging_dataset(
-            str(dataset_uuid)
-        )
+        if image_type == api_models.ExperimentallyCapturedImage:
+            api_images = api_client.get_experimentally_captured_image_in_experimental_imaging_dataset(
+                str(dataset_uuid)
+            )
+        elif image_type == api_models.DerivedImage:
+            api_images = api_client.get_derived_image_in_image_annotation_dataset(
+                str(dataset_uuid)
+            )
+
     return api_images
 
 
@@ -168,7 +175,7 @@ def find_associated_objects(
 
 
 def retrieve_detail_objects(
-    dataset: bia_data_model.ExperimentalImagingDataset,
+    dataset: api_models.ExperimentalImagingDataset,
     detail_map: dict,
     context: StudyCLIContext,
 ) -> dict[str, List]:
@@ -243,14 +250,14 @@ def retrieve_detail_objects(
 
 def retrieve_image_annotatation_datasets(
     context: StudyCLIContext,
-) -> List[bia_data_model.ImageAnnotationDataset]:
+) -> List[api_models.ImageAnnotationDataset]:
     if context.root_directory:
         iad_directory = context.root_directory.joinpath(
             f"image_annotation_datasets/{context.accession_id}/*.json"
         )
 
-        api_aids: List[bia_data_model.ImageAnnotationDataset] = read_all_json(
-            iad_directory, bia_data_model.ImageAnnotationDataset
+        api_aids: List[api_models.ImageAnnotationDataset] = read_all_json(
+            iad_directory, api_models.ImageAnnotationDataset
         )
     else:
         api_aids = api_client.get_image_annotation_dataset_in_study(
@@ -261,15 +268,15 @@ def retrieve_image_annotatation_datasets(
 
 
 def retrieve_annotion_method(
-    api_dataset: bia_data_model.ImageAnnotationDataset, context: StudyCLIContext
+    api_dataset: api_models.ImageAnnotationDataset, context: StudyCLIContext
 ):
     if context.root_directory:
         api_methods = []
         methods_directory = context.root_directory.joinpath(
             f"annotation_methods/{context.accession_id}/*.json"
         )
-        all_api_methods: List[bia_data_model.AnnotationMethod] = read_all_json(
-            methods_directory, bia_data_model.AnnotationMethod
+        all_api_methods: List[api_models.AnnotationMethod] = read_all_json(
+            methods_directory, api_models.AnnotationMethod
         )
         for api_method in all_api_methods:
             # Note that currently the title_ids are the same because the two objects are created from the same user input.

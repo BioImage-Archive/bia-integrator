@@ -1,12 +1,8 @@
 from __future__ import annotations
 
-from bia_shared_datamodels import bia_data_model
+from bia_integrator_api import models
 from pydantic import Field
 
 
-class ExperimentalImagingDataset(bia_data_model.ExperimentalImagingDataset):
-    submitted_in_study: bia_data_model.Study = Field()
-
-
-class ExperimentalImagingDataset(bia_data_model.ExperimentalImagingDataset):
-    submitted_in_study: bia_data_model.Study = Field()
+class ExperimentalImagingDataset(models.ExperimentalImagingDataset):
+    submitted_in_study: models.Study = Field()

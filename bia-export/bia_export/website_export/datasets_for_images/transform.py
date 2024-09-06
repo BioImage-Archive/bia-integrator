@@ -1,5 +1,3 @@
-from typing import List, Type
-from bia_shared_datamodels import bia_data_model
 from bia_export.website_export.images.models import (
     ExperimentalImagingDataset,
 )
