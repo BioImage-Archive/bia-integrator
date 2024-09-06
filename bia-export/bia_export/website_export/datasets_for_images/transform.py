@@ -13,6 +13,7 @@ from bia_export.website_export.website_models import (
 
 
 def transform_datasets(context: CLIContext) -> dict:
+    # TODO: deal with ImageAnnotationDatasets for Derived Images
     dataset_map = {}
     api_study = retrieve_study(context)
     api_datasets = retrieve_datasets(context)

@@ -7,6 +7,7 @@ from bia_shared_datamodels import bia_data_model, semantic_models
 import json
 from typing import List, Type
 import logging
+from bia_export.bia_client import api_client
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -21,8 +22,7 @@ def retrieve_study(context: StudyCLIContext) -> bia_data_model.Study:
 
         api_study = read_api_json_file(study_path, bia_data_model.Study)
     else:
-        # TODO: use client and context.study_uuid
-        raise NotImplementedError
+        api_study = api_client.get_study(str(context.study_uuid))
 
     return api_study
 
@@ -39,17 +39,20 @@ def retrieve_experimental_imaging_datasets(
             eid_directory, bia_data_model.ExperimentalImagingDataset
         )
     else:
-        # TODO: use client and context.study_uuid
-        raise NotImplementedError
+        api_eids = api_client.get_experimental_imaging_dataset_in_study(
+            str(context.study_uuid)
+        )
 
     return api_eids
 
 
-def retrieve_aggregation_fields(dataset_uuid: UUID, context: StudyCLIContext):
+def retrieve_aggregation_fields(
+    dataset: bia_data_model.DocumentMixin, context: StudyCLIContext
+):
     if context.root_directory:
         try:
             dataset_aggregation_fields = context.dataset_file_aggregate_data[
-                dataset_uuid
+                dataset.uuid
             ]
             dataset_aggregation_fields["file_type_aggregation"] = sorted(
                 list(dataset_aggregation_fields["file_type_aggregation"])
@@ -61,8 +64,32 @@ def retrieve_aggregation_fields(dataset_uuid: UUID, context: StudyCLIContext):
                 "file_type_aggregation": [],
             }
     else:
-        # TODO: use client and count fields
-        raise NotImplementedError
+        if dataset.model.type_name == "ExperimentalImagingDataset":
+            images = api_client.get_experimentally_captured_image_in_experimental_imaging_dataset(
+                str(dataset.uuid)
+            )
+            files = api_client.get_file_reference_in_experimental_imaging_dataset(
+                str(dataset.uuid)
+            )
+        elif dataset.model.type_name == "ImageAnnotationDataset":
+            images = api_client.get_experimentally_captured_image_in_experimental_imaging_dataset(
+                str(dataset.uuid)
+            )
+            files = api_client.get_file_reference_in_experimental_imaging_dataset(
+                str(dataset.uuid)
+            )
+
+        file_type_aggregation = set()
+        for file_reference in files:
+            file_type = Path(file_reference.file_path).suffix
+            file_type_aggregation.add(file_type)
+
+        dataset_aggregation_fields = {
+            "file_count": len(images),
+            "image_count": len(files),
+            "file_type_aggregation": sorted(list(file_type_aggregation)),
+        }
+
     return dataset_aggregation_fields
 
 
@@ -104,7 +131,9 @@ def retrieve_dataset_images(
         image_directory = context.root_directory.joinpath(
             f"{directory_map[image_type]}/{context.accession_id}/*.json"
         )
-        all_api_images = read_all_json(image_directory, image_type)
+        all_api_images: List[bia_data_model.ExperimentallyCapturedImage] = (
+            read_all_json(image_directory, image_type)
+        )
         api_images = [
             image
             for image in all_api_images
@@ -112,8 +141,9 @@ def retrieve_dataset_images(
         ]
 
     else:
-        # TODO: impliment client code
-        raise NotImplementedError
+        api_images = api_client.get_experimentally_captured_image_in_experimental_imaging_dataset(
+            str(dataset_uuid)
+        )
     return api_images
 
 
@@ -166,11 +196,47 @@ def retrieve_detail_objects(
             detail_fields[field] = api_objects
 
     else:
-        # TODO: use client. Either:
+        # Currently performing graph traversal of:
         # Dataset -> Images[0] -> specimen -> details (while all images have all the same specimen info)
-        # or:
+        # but could alternatively switch to the much simpler (for the exporter!):
         # Dataset -> details field (when we have multi-hop api endpoints)
-        raise NotImplementedError
+        dataset_images = api_client.get_experimentally_captured_image_in_experimental_imaging_dataset(
+            str(dataset.uuid)
+        )
+
+        acquisition_process = []
+        biological_entity = []
+        specimen_imaging_preparation_protocol = []
+        specimen_growth_protocol = []
+
+        if len(dataset_images) != 0:
+            single_dataset_image = dataset_images[0]
+
+            for ia_uuid in single_dataset_image.acquisition_process_uuid:
+                acquisition_process.append(
+                    api_client.get_image_acquisition(str(ia_uuid))
+                )
+
+            specimen = api_client.get_specimen(str(single_dataset_image.subject_uuid))
+
+            for biosample_uuid in specimen.sample_of_uuid:
+                biological_entity.append(api_client.get_bio_sample(str(biosample_uuid)))
+            for sipp_uuid in specimen.imaging_preparation_protocol_uuid:
+                specimen_imaging_preparation_protocol.append(
+                    api_client.get_specimen_imaging_preparation_protocol(str(sipp_uuid))
+                )
+            for sgp_uuid in specimen.growth_protocol_uuid:
+                specimen_growth_protocol.append(
+                    api_client.get_specimen_growth_protocol(str(sgp_uuid))
+                )
+
+        # TODO: Use detail map to namage field names in a single place
+        detail_fields = {
+            "acquisition_process": acquisition_process,
+            "biological_entity": biological_entity,
+            "specimen_imaging_preparation_protocol": specimen_imaging_preparation_protocol,
+            "specimen_growth_protocol": specimen_growth_protocol,
+        }
 
     return detail_fields
 
@@ -187,8 +253,9 @@ def retrieve_image_annotatation_datasets(
             iad_directory, bia_data_model.ImageAnnotationDataset
         )
     else:
-        # TODO: use client and context.study_uuid
-        raise NotImplementedError
+        api_aids = api_client.get_image_annotation_dataset_in_study(
+            str(context.study_uuid)
+        )
 
     return api_aids
 
@@ -205,10 +272,23 @@ def retrieve_annotion_method(
             methods_directory, bia_data_model.AnnotationMethod
         )
         for api_method in all_api_methods:
-            # Note that currentlt the title_ids are the same because the two objects are created from the same user input.
+            # Note that currently the title_ids are the same because the two objects are created from the same user input.
             if api_method.title_id == api_dataset.title_id:
                 api_methods.append(api_method)
     else:
-        # TODO: use client and context.study_uuid
-        raise NotImplementedError
+        # Currently performing graph traversal of:
+        # Dataset -> Derived Images[0] -> annotation_method (while all images have all the same info)
+        # but could alternatively switch to the much simpler (for the exporter!):
+        # Dataset -> annotation_method field (when we have multi-hop api endpoints)
+
+        dataset_images = api_client.get_derived_image_in_image_annotation_dataset(
+            str(api_dataset.uuid)
+        )
+
+        api_methods = []
+        if len(dataset_images) != 0:
+            single_dataset_image = dataset_images[0]
+            for method_uuid in single_dataset_image.creation_process_uuid:
+                api_methods.append(api_client.get_annotation_method(str(method_uuid)))
+
     return api_methods
