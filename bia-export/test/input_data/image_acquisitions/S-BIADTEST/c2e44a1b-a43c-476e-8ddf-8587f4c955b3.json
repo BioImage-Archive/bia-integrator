@@ -5,5 +5,10 @@
     "imaging_instrument_description": "Test imaging instrument 1",
     "fbbi_id": [],
     "imaging_method_name": ["confocal microscopy"],
-    "version": 1
+    "version": 1,
+
+    "model": {
+        "type_name": "ImageAcquisition",
+        "version": 1
+    }
 }
