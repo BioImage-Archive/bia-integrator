@@ -264,7 +264,8 @@ def test_db_timeout():
     loop = asyncio.get_event_loop()
 
     async def large_query():
-        db = Repository(db_timeout_ms=5)
+        db = Repository()
+        db.configure(db_timeout_ms=5)
 
         await db._get_docs_raw()
 

@@ -3,9 +3,9 @@ from pydantic.alias_generators import to_snake
 
 # ?
 import bia_shared_datamodels.bia_data_model as shared_data_models
-from api.models.repository import Repository
+from api.models.repository import Repository, get_db
 from api import constants
-from typing import List, Type
+from typing import List, Type, Annotated
 
 router = APIRouter(
     prefix="",
@@ -34,7 +34,9 @@ def make_get_item(t: Type[shared_data_models.DocumentMixin]):
     # https://eev.ee/blog/2011/04/24/gotcha-python-scoping-closures/
 
     # @TODO: nicer wrapper?
-    async def get_item(uuid: shared_data_models.UUID, db: Repository = Depends()) -> t:
+    async def get_item(
+        uuid: shared_data_models.UUID, db: Annotated[Repository, Depends(get_db)]
+    ) -> t:
         return await db.get_doc(uuid, t)
 
     return get_item
@@ -46,7 +48,7 @@ def make_reverse_link_handler(
     target_type: Type[shared_data_models.DocumentMixin],
 ):
     async def get_descendents(
-        uuid: shared_data_models.UUID, db: Repository = Depends()
+        uuid: shared_data_models.UUID, db: Annotated[Repository, Depends(get_db)]
     ) -> List[source_type]:
         # Check target document actually exists (and is typed correctly - esp. important for union-typed links)
         #   see workaround_union_reference_types

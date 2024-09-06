@@ -12,7 +12,7 @@ from typing import Optional
 import uuid
 
 from api import constants
-from api.models.repository import Repository
+from api.models.repository import Repository, get_db
 from api.models.persistence import User
 from api.models.api import AuthenticationToken, TokenData, AuthResult
 import os
@@ -88,7 +88,8 @@ def create_access_token(data: dict, expires_delta: Union[timedelta, None] = None
 
 
 async def get_current_user(
-    token: Annotated[str, Depends(oauth2_scheme)], db: Repository = Depends()
+    token: Annotated[str, Depends(oauth2_scheme)],
+    db: Annotated[Repository, Depends(get_db)],
 ):
     validate_secret_token(JWT_SECRET_KEY)
 
@@ -115,7 +116,7 @@ async def get_current_user(
 @router.post("/token", response_model=AuthenticationToken)
 async def login_for_access_token(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
-    db: Repository = Depends(),
+    db: Annotated[Repository, Depends(get_db)],
 ) -> AuthResult:
     user = await authenticate_user(db, form_data.username, form_data.password)
     if not user:
@@ -138,7 +139,7 @@ async def register_user(
     email: Annotated[str, Body()],
     password_plain: Annotated[str, Body()],
     secret_token: Annotated[str, Body()],
-    db: Repository = Depends(),
+    db: Annotated[Repository, Depends(get_db)],
 ) -> None:
     user_create_token = os.environ["USER_CREATE_SECRET_TOKEN"]
     validate_secret_token(user_create_token)

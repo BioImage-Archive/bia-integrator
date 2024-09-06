@@ -16,6 +16,8 @@ from bson.datetime_ms import DatetimeMS
 from bson.codec_options import TypeCodec, TypeRegistry
 from bson.binary import UuidRepresentation
 
+from typing import AsyncGenerator
+
 from pydantic_core import Url
 
 DB_NAME = os.environ["DB_NAME"]
@@ -64,11 +66,21 @@ class Repository:
 
     def __init__(
         self,
+    ) -> None:
+        """
+        ! Always keep params here empty
+        Fastapi builds a new Repository instance for `db: Repository = Depends()`
+        Which can accidetally allow api resource params to override db params
+        """
+        pass
+
+    def configure(
+        self,
         db_timeout_ms=DB_TIMEOUT_MS,
         db_name=DB_NAME,
         collection_users=COLLECTION_USERS,
         collection_bia_integrator=COLLECTION_BIA_INTEGRATOR,
-    ) -> None:
+    ):
         mongo_connstring = os.environ["MONGO_CONNSTRING"]
         self.connection = AsyncIOMotorClient(
             mongo_connstring,
@@ -271,12 +283,24 @@ class Repository:
 
         return docs
 
+    async def close(self):
+        await self.db.close()
+
 
 async def repository_create(init: bool) -> Repository:
     repository = Repository()
+    repository.configure()
 
     if init:
         await repository._init_collection_biaint()
         await repository._init_collection_users()
 
     return repository
+
+
+async def get_db() -> AsyncGenerator[Repository, None]:
+    db = await repository_create(init=False)
+    try:
+        yield db
+    finally:
+        db.close()

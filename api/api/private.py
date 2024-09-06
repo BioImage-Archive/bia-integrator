@@ -2,16 +2,12 @@ from fastapi import APIRouter
 from pydantic.alias_generators import to_snake
 
 import bia_shared_datamodels.bia_data_model as shared_data_models
-from api.models.repository import Repository
-from api import constants, auth
+from api.models.repository import Repository, get_db
+from api import constants
 from fastapi import APIRouter, Depends, status
-from typing import List, Type
+from typing import List, Type, Annotated
 
-router = APIRouter(
-    prefix="/private",
-    dependencies=[Depends(auth.get_current_user)],
-    tags=[constants.OPENAPI_TAG_PRIVATE],
-)
+router = APIRouter(prefix="/private", tags=[constants.OPENAPI_TAG_PRIVATE])
 models_private: List[shared_data_models.DocumentMixin] = [
     shared_data_models.Study,
     shared_data_models.FileReference,
@@ -31,7 +27,7 @@ models_private: List[shared_data_models.DocumentMixin] = [
 
 
 def make_post_item(t: Type[shared_data_models.DocumentMixin]):
-    async def post_item(doc: t, db: Repository = Depends()) -> None:
+    async def post_item(doc: t, db: Annotated[Repository, Depends(get_db)]) -> None:
         if doc.version < 0:
             raise ValueError("Bad doc version")
 
