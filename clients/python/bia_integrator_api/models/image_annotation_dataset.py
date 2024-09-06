@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
 from bia_integrator_api.models.model_metadata import ModelMetadata
 from typing import Optional, Set
 from typing_extensions import Self
@@ -29,7 +30,7 @@ class ImageAnnotationDataset(BaseModel):
     """ # noqa: E501
     title_id: StrictStr = Field(description="User provided title, which is unqiue within a submission, used to identify a part of a submission.")
     uuid: StrictStr = Field(description="Unique ID (across the BIA database) used to refer to and identify a document.")
-    version: StrictInt = Field(description="Document version. This can't be optional to make sure we never persist objects without it")
+    version: Annotated[int, Field(strict=True, ge=0)] = Field(description="Document version. This can't be optional to make sure we never persist objects without it")
     model: Optional[ModelMetadata] = None
     description: Optional[StrictStr] = None
     attribute: Dict[str, Any] = Field(description="Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields.")

@@ -36,6 +36,7 @@ from bia_integrator_api.models.image_analysis_method import ImageAnalysisMethod
 from bia_integrator_api.models.image_annotation_dataset import ImageAnnotationDataset
 from bia_integrator_api.models.image_correlation_method import ImageCorrelationMethod
 from bia_integrator_api.models.image_representation import ImageRepresentation
+from bia_integrator_api.models.image_representation_use_type import ImageRepresentationUseType
 from bia_integrator_api.models.licence_type import LicenceType
 from bia_integrator_api.models.location_inner import LocationInner
 from bia_integrator_api.models.model_metadata import ModelMetadata

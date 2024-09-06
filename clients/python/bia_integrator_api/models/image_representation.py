@@ -19,6 +19,8 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing_extensions import Annotated
+from bia_integrator_api.models.image_representation_use_type import ImageRepresentationUseType
 from bia_integrator_api.models.model_metadata import ModelMetadata
 from bia_integrator_api.models.rendered_view import RenderedView
 from typing import Optional, Set
@@ -29,9 +31,10 @@ class ImageRepresentation(BaseModel):
     ImageRepresentation
     """ # noqa: E501
     uuid: StrictStr = Field(description="Unique ID (across the BIA database) used to refer to and identify a document.")
-    version: StrictInt = Field(description="Document version. This can't be optional to make sure we never persist objects without it")
+    version: Annotated[int, Field(strict=True, ge=0)] = Field(description="Document version. This can't be optional to make sure we never persist objects without it")
     model: Optional[ModelMetadata] = None
     image_format: StrictStr = Field(description="Image format of the combined files.")
+    use_type: ImageRepresentationUseType = Field(description="The use case of this particular image representation i.e. thumbnail, interactive display etc.")
     file_uri: List[StrictStr] = Field(description="URI(s) of the file(s) which together make up this image representation.")
     total_size_in_bytes: StrictInt = Field(description="Combined disc size in bytes of all the files.")
     physical_size_x: Optional[Union[StrictFloat, StrictInt]] = None
@@ -46,7 +49,7 @@ class ImageRepresentation(BaseModel):
     attribute: Dict[str, Any] = Field(description="Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields.")
     original_file_reference_uuid: Optional[List[StrictStr]] = None
     representation_of_uuid: StrictStr
-    __properties: ClassVar[List[str]] = ["uuid", "version", "model", "image_format", "file_uri", "total_size_in_bytes", "physical_size_x", "physical_size_y", "physical_size_z", "size_x", "size_y", "size_z", "size_c", "size_t", "image_viewer_setting", "attribute", "original_file_reference_uuid", "representation_of_uuid"]
+    __properties: ClassVar[List[str]] = ["uuid", "version", "model", "image_format", "use_type", "file_uri", "total_size_in_bytes", "physical_size_x", "physical_size_y", "physical_size_z", "size_x", "size_y", "size_z", "size_c", "size_t", "image_viewer_setting", "attribute", "original_file_reference_uuid", "representation_of_uuid"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -168,6 +171,7 @@ class ImageRepresentation(BaseModel):
             "version": obj.get("version"),
             "model": ModelMetadata.from_dict(obj["model"]) if obj.get("model") is not None else None,
             "image_format": obj.get("image_format"),
+            "use_type": obj.get("use_type"),
             "file_uri": obj.get("file_uri"),
             "total_size_in_bytes": obj.get("total_size_in_bytes"),
             "physical_size_x": obj.get("physical_size_x"),

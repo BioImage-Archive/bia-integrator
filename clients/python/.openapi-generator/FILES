@@ -27,6 +27,7 @@ bia_integrator_api/docs/ImageAnalysisMethod.md
 bia_integrator_api/docs/ImageAnnotationDataset.md
 bia_integrator_api/docs/ImageCorrelationMethod.md
 bia_integrator_api/docs/ImageRepresentation.md
+bia_integrator_api/docs/ImageRepresentationUseType.md
 bia_integrator_api/docs/LicenceType.md
 bia_integrator_api/docs/LocationInner.md
 bia_integrator_api/docs/ModelMetadata.md
@@ -65,6 +66,7 @@ bia_integrator_api/models/image_analysis_method.py
 bia_integrator_api/models/image_annotation_dataset.py
 bia_integrator_api/models/image_correlation_method.py
 bia_integrator_api/models/image_representation.py
+bia_integrator_api/models/image_representation_use_type.py
 bia_integrator_api/models/licence_type.py
 bia_integrator_api/models/location_inner.py
 bia_integrator_api/models/model_metadata.py

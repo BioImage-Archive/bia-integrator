@@ -18,24 +18,22 @@ from enum import Enum
 from typing_extensions import Self
 
 
-class LicenceType(str, Enum):
+class ImageRepresentationUseType(str, Enum):
     """
-    LicenceType
+    Enumerate use types of ImageRepresentations
     """
 
     """
     allowed enum values
     """
-    CC0 = 'CC0'
-    CC_BY_4_DOT_0 = 'CC_BY_4.0'
-    CC_BY_MINUS_SA_3_DOT_0 = 'CC_BY-SA_3.0'
-    CC_BY_MINUS_NC_MINUS_SA_3_DOT_0 = 'CC_BY-NC-SA_3.0'
-    CC_BY_MINUS_NC_MINUS_ND_4_DOT_0 = 'CC_BY-NC-ND_4.0'
-    CC_BY_MINUS_SA_2_DOT_1_JP = 'CC_BY-SA_2.1_JP'
+    UPLOADED_BY_SUBMITTER = 'UPLOADED_BY_SUBMITTER'
+    STATIC_DISPLAY = 'STATIC_DISPLAY'
+    THUMBNAIL = 'THUMBNAIL'
+    INTERACTIVE_DISPLAY = 'INTERACTIVE_DISPLAY'
 
     @classmethod
     def from_json(cls, json_str: str) -> Self:
-        """Create an instance of LicenceType from a JSON string"""
+        """Create an instance of ImageRepresentationUseType from a JSON string"""
         return cls(json.loads(json_str))
 
 

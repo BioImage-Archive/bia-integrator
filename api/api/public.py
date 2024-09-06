@@ -122,9 +122,11 @@ def make_router() -> APIRouter:
     from bia_shared_datamodels.bia_data_model import Study
 
     @router.get("/study")
-    async def getStudy(db: Annotated[Repository, Depends(get_db)]) -> List[Study]:
+    async def getStudies(db: Annotated[Repository, Depends(get_db)]) -> List[Study]:
         """
         @TODO: Filters?
+
+        @TODO: Not pluralizing clashes with getStudy(study_uuid) - non-pluralised convention?
         """
         return await db.get_docs(
             doc_filter={"model": {"type_name": "Study"}}, doc_type=Study

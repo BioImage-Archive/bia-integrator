@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
 from bia_integrator_api.models.model_metadata import ModelMetadata
 from typing import Optional, Set
 from typing_extensions import Self
@@ -28,7 +29,7 @@ class AnnotationFileReference(BaseModel):
     AnnotationFileReference
     """ # noqa: E501
     uuid: StrictStr = Field(description="Unique ID (across the BIA database) used to refer to and identify a document.")
-    version: StrictInt = Field(description="Document version. This can't be optional to make sure we never persist objects without it")
+    version: Annotated[int, Field(strict=True, ge=0)] = Field(description="Document version. This can't be optional to make sure we never persist objects without it")
     model: Optional[ModelMetadata] = None
     transformation_description: Optional[StrictStr] = None
     spatial_information: Optional[StrictStr] = None
