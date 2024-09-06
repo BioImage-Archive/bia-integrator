@@ -14,7 +14,15 @@ from bia_ingest_sm.conversion.image_annotation_dataset import (
 )
 from bia_ingest_sm.conversion.annotation_method import get_annotation_method
 from bia_ingest_sm.conversion.image_representation import create_image_representation
+from bia_ingest_sm.conversion.utils import get_bia_data_model_by_uuid, persist
+
+# from bia_ingest_sm.image_utils import convert_image
 from bia_shared_datamodels.semantic_models import ImageRepresentationUseType
+from bia_shared_datamodels import bia_data_model
+from bia_ingest_sm.image_utils import image_utils
+from bia_ingest_sm.image_utils.io import stage_fileref_and_get_fpath
+from bia_ingest_sm.image_utils.conversion import cached_convert_to_zarr_and_get_fpath
+
 import logging
 from rich import print
 from rich.logging import RichHandler
@@ -88,7 +96,7 @@ def ingest(
     print(tabulate_errors(result_summary))
 
 
-@representations_app.command(help="Create/list specified representations")
+@representations_app.command(help="Create specified representations")
 def create(
     accession_id: Annotated[str, typer.Argument()],
     file_reference_uuid_list: Annotated[List[str], typer.Argument()],
@@ -112,6 +120,82 @@ def create(
                 result_summary=result_summary,
                 persist_artefacts=True,
             )
+
+
+@representations_app.command(
+    help="Convert images and create representations",
+)
+def convert_images(
+    accession_id: Annotated[str, typer.Argument()],
+    file_reference_uuid_list: Annotated[List[str], typer.Argument()],
+) -> None:
+    """Convert images and create representations for specified file reference(s)"""
+
+    submission = load_submission(accession_id)
+    representation_use_types = [
+        use_type.value
+        for use_type in ImageRepresentationUseType
+        # "UPLOADED_BY_SUBMITTER",
+        # "INTERACTIVE_DISPLAY",
+        # "THUMBNAIL",
+    ]
+    result_summary = {accession_id: IngestionResult()}
+    for file_reference_uuid in file_reference_uuid_list:
+        representations = {}
+        for representation_use_type in representation_use_types:
+            representations[representation_use_type] = create_image_representation(
+                submission,
+                [
+                    file_reference_uuid,
+                ],
+                representation_use_type=representation_use_type,
+                # representation_location=representation_location,
+                result_summary=result_summary,
+                persist_artefacts=True,
+            )
+        # Get image uploaded by submitter and update representation
+        representation = representations["UPLOADED_BY_SUBMITTER"]
+        # TODO file_uri of this representation = that of file reference(s)
+        file_reference = get_bia_data_model_by_uuid(
+            representation.original_file_reference_uuid[0],
+            bia_data_model.FileReference,
+            submission.accno,
+        )
+        local_path_to_uploaded_by_submitter_rep = stage_fileref_and_get_fpath(
+            file_reference
+        )
+
+        # Convert to zarr, get zarr metadata
+        # TODO: verify format for setting s3 uris then add upload to s3
+        representation = representations["INTERACTIVE_DISPLAY"]
+        local_path_to_zarr = cached_convert_to_zarr_and_get_fpath(
+            representation, local_path_to_uploaded_by_submitter_rep
+        )
+        pixel_metadata = image_utils.get_ome_zarr_pixel_metadata(local_path_to_zarr)
+
+        def _format_pixel_metadata(key):
+            value = pixel_metadata.pop(key, None)
+            if isinstance(value, tuple):
+                value = value[0]
+            if isinstance(value, str):
+                value = int(value)
+            return value
+
+        representation.size_x = _format_pixel_metadata("SizeX")
+        representation.size_y = _format_pixel_metadata("SizeY")
+        representation.size_z = _format_pixel_metadata("SizeZ")
+        representation.size_c = _format_pixel_metadata("SizeC")
+        representation.size_t = _format_pixel_metadata("SizeT")
+
+        representation.attribute |= pixel_metadata
+        persist(
+            [
+                representation,
+            ],
+            "image_representations",
+            submission.accno,
+        )
+        print(f"local_path_to_zarr = {local_path_to_zarr}")
 
 
 @app.callback()

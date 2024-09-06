@@ -46,6 +46,7 @@ def create_image_representation(
 
     pixel_metadata = {}
     total_size_in_bytes = 0
+    file_uri = []
     if image_format == ".ome.zarr":
         pixel_metadata = image_utils.get_ome_zarr_pixel_metadata(
             representation_location
@@ -58,11 +59,12 @@ def create_image_representation(
         # TODO: Discuss what to do if file reference is list > 1 with different paths e.g. .hdr and .img for analyze. Currently just using first file reference
         if image_format == "":
             image_format = image_utils.get_image_extension(file_references[0].file_path)
+        file_uri = [fr.uri for fr in file_references]
 
     model_dict = {
         "image_format": image_format,
         "use_type": representation_use_type,
-        "file_uri": [],
+        "file_uri": file_uri,
         "original_file_reference_uuid": file_reference_uuids,
         "representation_of_uuid": experimentally_captured_image.uuid,
         "total_size_in_bytes": total_size_in_bytes,

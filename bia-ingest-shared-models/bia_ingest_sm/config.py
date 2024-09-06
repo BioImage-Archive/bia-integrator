@@ -18,6 +18,11 @@ class Settings(BaseSettings):
     )
 
     bia_data_dir: str = Field(default_output_base)
+    endpoint_url: str = Field("https://uk1s3.embassy.ebi.ac.uk")
+    bucket_name: str = Field("bia-integrator-data")
+    cache_root_dirpath: Path = Field(Path.home() / ".cache" / "bia-converter")
+    bioformats2raw_java_home: str = Field("")
+    bioformats2raw_bin: str = Field("")
 
 
 # class Settings:
