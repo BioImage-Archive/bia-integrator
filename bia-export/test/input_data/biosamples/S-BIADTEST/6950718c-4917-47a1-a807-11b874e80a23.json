@@ -8,6 +8,10 @@
             "ncbi_id": null
         }
     ],
+    "model": {
+        "type_name": "BioSample",
+        "version": 1
+    },
     "biological_entity_description": "Test biological entity 2",
     "experimental_variable_description": [
         "Test experimental entity 2"

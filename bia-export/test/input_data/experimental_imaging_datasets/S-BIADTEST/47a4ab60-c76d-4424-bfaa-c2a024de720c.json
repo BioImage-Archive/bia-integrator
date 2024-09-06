@@ -16,6 +16,10 @@
             }
         ]
     },
+    "model": {
+        "type_name": "ExperimentalImagingDataset",
+        "version": 1
+    },
     "analysis_method": [
         {
             "protocol_description": "Test image analysis",
