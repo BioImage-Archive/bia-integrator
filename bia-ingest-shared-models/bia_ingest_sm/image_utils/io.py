@@ -47,7 +47,8 @@ def copy_local_to_s3(src_fpath: Path, dst_key: str) -> str:
     endpoint_url = settings.endpoint_url
     bucket_name = settings.bucket_name
 
-    cmd = f"aws --region us-east-1 --endpoint-url {settings.endpoint_url} s3 cp {src_fpath} s3://{bucket_name}/{dst_key} --acl public-read"
+    recursive = "--recursive" if src_fpath.is_dir() else ""
+    cmd = f"aws --region us-east-1 --endpoint-url {settings.endpoint_url} s3 cp {recursive} {src_fpath} s3://{bucket_name}/{dst_key} --acl public-read"
     logger.info(f"Uploading {src_fpath} to {dst_key}")
     subprocess.run(cmd, shell=True)
 

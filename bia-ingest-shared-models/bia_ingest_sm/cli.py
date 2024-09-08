@@ -21,7 +21,7 @@ from bia_ingest_sm.conversion.utils import get_bia_data_model_by_uuid, persist
 from bia_shared_datamodels.semantic_models import ImageRepresentationUseType
 from bia_shared_datamodels import bia_data_model
 from bia_ingest_sm.image_utils import image_utils
-from bia_ingest_sm.image_utils.io import stage_fileref_and_get_fpath
+from bia_ingest_sm.image_utils.io import stage_fileref_and_get_fpath, copy_local_to_s3
 from bia_ingest_sm.image_utils.conversion import cached_convert_to_zarr_and_get_fpath
 from bia_ingest_sm.image_utils.rendering import generate_padded_thumbnail_from_ngff_uri
 
@@ -190,13 +190,15 @@ def convert_images(
         representation.size_t = _format_pixel_metadata("SizeT")
 
         representation.attribute |= pixel_metadata
-        persist(
-            [
-                representation,
-            ],
-            "image_representations",
-            submission.accno,
+
+        representation.image_format = ".ome.zarr"
+        file_uri = copy_local_to_s3(
+            local_path_to_zarr,
+            f"{submission.accno}/{representation.uuid}{representation.image_format}",
         )
+        representation.file_uri = [
+            file_uri,
+        ]
 
         # Create thumbnail representation
         representation = representations["THUMBNAIL"]
@@ -209,6 +211,40 @@ def convert_images(
         with local_path_to_thumbnail.open("wb") as fh:
             thumbnail.save(fh)
         print(f"local_path_to_thumbnail = {local_path_to_thumbnail}")
+        representation.image_format = ".png"
+        file_uri = copy_local_to_s3(
+            local_path_to_thumbnail,
+            f"{submission.accno}/{representation.uuid}{representation.image_format}",
+        )
+        representation.file_uri = [
+            file_uri,
+        ]
+
+        # Create static display (representative image) representation
+        representation = representations["STATIC_DISPLAY"]
+        static_display = generate_padded_thumbnail_from_ngff_uri(
+            local_path_to_zarr / "0", dims=(512, 512)
+        )
+        local_path_to_static_display = (
+            Path("/home/kola/temp/") / f"{representation.uuid}.png"
+        )
+        with local_path_to_static_display.open("wb") as fh:
+            static_display.save(fh)
+        print(f"local_path_to_static_display = {local_path_to_static_display}")
+        representation.image_format = ".png"
+        file_uri = copy_local_to_s3(
+            local_path_to_static_display,
+            f"{submission.accno}/{representation.uuid}{representation.image_format}",
+        )
+        representation.file_uri = [
+            file_uri,
+        ]
+
+        persist(
+            list(representations.values()),
+            "image_representations",
+            submission.accno,
+        )
 
 
 @app.callback()
