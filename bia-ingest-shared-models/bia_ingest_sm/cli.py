@@ -1,4 +1,5 @@
 import typer
+from pathlib import Path
 from typing import List
 from typing_extensions import Annotated
 from bia_ingest_sm.biostudies import load_submission
@@ -22,6 +23,7 @@ from bia_shared_datamodels import bia_data_model
 from bia_ingest_sm.image_utils import image_utils
 from bia_ingest_sm.image_utils.io import stage_fileref_and_get_fpath
 from bia_ingest_sm.image_utils.conversion import cached_convert_to_zarr_and_get_fpath
+from bia_ingest_sm.image_utils.rendering import generate_padded_thumbnail_from_ngff_uri
 
 import logging
 from rich import print
@@ -195,7 +197,18 @@ def convert_images(
             "image_representations",
             submission.accno,
         )
-        print(f"local_path_to_zarr = {local_path_to_zarr}")
+
+        # Create thumbnail representation
+        representation = representations["THUMBNAIL"]
+        thumbnail = generate_padded_thumbnail_from_ngff_uri(
+            local_path_to_zarr / "0", dims=(256, 256)
+        )
+        local_path_to_thumbnail = (
+            Path("/home/kola/temp/") / f"{representation.uuid}.png"
+        )
+        with local_path_to_thumbnail.open("wb") as fh:
+            thumbnail.save(fh)
+        print(f"local_path_to_thumbnail = {local_path_to_thumbnail}")
 
 
 @app.callback()
