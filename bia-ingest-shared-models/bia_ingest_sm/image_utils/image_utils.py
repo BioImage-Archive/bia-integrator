@@ -1,3 +1,4 @@
+from ..config import settings
 from uuid import UUID
 from pathlib import Path
 from bia_shared_datamodels import bia_data_model
@@ -137,3 +138,13 @@ def create_s3_uri_suffix_for_image_representation(
     assert representation.image_format and len(representation.image_format) > 0
     assert isinstance(representation.representation_of_uuid, UUID)
     return f"{accession_id}/{representation.representation_of_uuid}/{representation.uuid}{representation.image_format}"
+
+
+def get_local_path_for_representation(uuid: [str | UUID], image_format: str) -> Path:
+    """Return path to local cache for this image representation"""
+
+    if not image_format.startswith("."):
+        image_format = f".{image_format}"
+    cache_dirpath = settings.cache_root_dirpath / "other_converted_images"
+    cache_dirpath.mkdir(exist_ok=True, parents=True)
+    return cache_dirpath / f"{uuid}{image_format}"
