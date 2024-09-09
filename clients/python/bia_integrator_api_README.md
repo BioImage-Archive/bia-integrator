@@ -45,14 +45,15 @@ configuration = bia_integrator_api.Configuration(
 with bia_integrator_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = bia_integrator_api.PrivateApi(api_client)
+    uuid = 'uuid_example' # str | 
 
     try:
-        # Example Custom Handler
-        api_response = api_instance.example_custom_handler()
-        print("The response of PrivateApi->example_custom_handler:\n")
+        # Get AnnotationFileReference
+        api_response = api_instance.get_annotation_file_reference(uuid)
+        print("The response of PrivateApi->get_annotation_file_reference:\n")
         pprint(api_response)
     except ApiException as e:
-        print("Exception when calling PrivateApi->example_custom_handler: %s\n" % e)
+        print("Exception when calling PrivateApi->get_annotation_file_reference: %s\n" % e)
 
 ```
 
@@ -62,7 +63,6 @@ All URIs are relative to *http://localhost*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
-*PrivateApi* | [**example_custom_handler**](bia_integrator_api/docs/PrivateApi.md#example_custom_handler) | **GET** /v2/placeholder | Example Custom Handler
 *PrivateApi* | [**get_annotation_file_reference**](bia_integrator_api/docs/PrivateApi.md#get_annotation_file_reference) | **GET** /v2/annotation_file_reference/{uuid} | Get AnnotationFileReference
 *PrivateApi* | [**get_annotation_file_reference_in_annotation_method**](bia_integrator_api/docs/PrivateApi.md#get_annotation_file_reference_in_annotation_method) | **GET** /v2/annotation_method/{uuid}/annotation_file_reference | Get AnnotationFileReference In AnnotationMethod
 *PrivateApi* | [**get_annotation_file_reference_in_derived_image**](bia_integrator_api/docs/PrivateApi.md#get_annotation_file_reference_in_derived_image) | **GET** /v2/derived_image/{uuid}/annotation_file_reference | Get AnnotationFileReference In DerivedImage
@@ -116,7 +116,6 @@ Class | Method | HTTP request | Description
 *PrivateApi* | [**post_specimen_imaging_preparation_protocol**](bia_integrator_api/docs/PrivateApi.md#post_specimen_imaging_preparation_protocol) | **POST** /v2/private/specimen_imaging_preparation_protocol | Create SpecimenImagingPreparationProtocol
 *PrivateApi* | [**post_study**](bia_integrator_api/docs/PrivateApi.md#post_study) | **POST** /v2/private/study | Create Study
 *PrivateApi* | [**register_user**](bia_integrator_api/docs/PrivateApi.md#register_user) | **POST** /v2/auth/user/register | Register User
-*PublicApi* | [**example_custom_handler**](bia_integrator_api/docs/PublicApi.md#example_custom_handler) | **GET** /v2/placeholder | Example Custom Handler
 *PublicApi* | [**get_annotation_file_reference**](bia_integrator_api/docs/PublicApi.md#get_annotation_file_reference) | **GET** /v2/annotation_file_reference/{uuid} | Get AnnotationFileReference
 *PublicApi* | [**get_annotation_file_reference_in_annotation_method**](bia_integrator_api/docs/PublicApi.md#get_annotation_file_reference_in_annotation_method) | **GET** /v2/annotation_method/{uuid}/annotation_file_reference | Get AnnotationFileReference In AnnotationMethod
 *PublicApi* | [**get_annotation_file_reference_in_derived_image**](bia_integrator_api/docs/PublicApi.md#get_annotation_file_reference_in_derived_image) | **GET** /v2/derived_image/{uuid}/annotation_file_reference | Get AnnotationFileReference In DerivedImage
