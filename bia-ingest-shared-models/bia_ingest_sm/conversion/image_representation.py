@@ -39,7 +39,7 @@ def create_image_representation(
         dataset_uuid=file_references[0].submission_dataset_uuid,
         file_paths=[fr.file_path for fr in file_references],
         result_summary=result_summary,
-        persist_artefacts=True,
+        persist_artefacts=persist_artefacts,
     )
 
     # TODO: Use bioformats or PIL for other formats (if on local disk)
