@@ -4,7 +4,6 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**example_custom_handler**](PrivateApi.md#example_custom_handler) | **GET** /v2/placeholder | Example Custom Handler
 [**get_annotation_file_reference**](PrivateApi.md#get_annotation_file_reference) | **GET** /v2/annotation_file_reference/{uuid} | Get AnnotationFileReference
 [**get_annotation_file_reference_in_annotation_method**](PrivateApi.md#get_annotation_file_reference_in_annotation_method) | **GET** /v2/annotation_method/{uuid}/annotation_file_reference | Get AnnotationFileReference In AnnotationMethod
 [**get_annotation_file_reference_in_derived_image**](PrivateApi.md#get_annotation_file_reference_in_derived_image) | **GET** /v2/derived_image/{uuid}/annotation_file_reference | Get AnnotationFileReference In DerivedImage
@@ -59,67 +58,6 @@ Method | HTTP request | Description
 [**post_study**](PrivateApi.md#post_study) | **POST** /v2/private/study | Create Study
 [**register_user**](PrivateApi.md#register_user) | **POST** /v2/auth/user/register | Register User
 
-
-# **example_custom_handler**
-> object example_custom_handler()
-
-Example Custom Handler
-
-### Example
-
-
-```python
-import bia_integrator_api
-from bia_integrator_api.rest import ApiException
-from pprint import pprint
-
-# Defining the host is optional and defaults to http://localhost
-# See configuration.py for a list of all supported configuration parameters.
-configuration = bia_integrator_api.Configuration(
-    host = "http://localhost"
-)
-
-
-# Enter a context with an instance of the API client
-with bia_integrator_api.ApiClient(configuration) as api_client:
-    # Create an instance of the API class
-    api_instance = bia_integrator_api.PrivateApi(api_client)
-
-    try:
-        # Example Custom Handler
-        api_response = api_instance.example_custom_handler()
-        print("The response of PrivateApi->example_custom_handler:\n")
-        pprint(api_response)
-    except Exception as e:
-        print("Exception when calling PrivateApi->example_custom_handler: %s\n" % e)
-```
-
-
-
-### Parameters
-
-This endpoint does not need any parameter.
-
-### Return type
-
-**object**
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: application/json
-
-### HTTP response details
-
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-**200** | Successful Response |  -  |
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_annotation_file_reference**
 > AnnotationFileReference get_annotation_file_reference(uuid)
@@ -2471,7 +2409,7 @@ No authorization required
 
 Getstudies
 
-@TODO: Filters?
+@TODO: Filters?  @TODO: Not pluralizing clashes with getStudy(study_uuid) - non-pluralised convention?
 
 ### Example
 

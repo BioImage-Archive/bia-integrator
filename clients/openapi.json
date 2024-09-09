@@ -85,26 +85,6 @@
         }
       }
     },
-    "/v2/placeholder": {
-      "get": {
-        "tags": [
-          "public",
-          "private"
-        ],
-        "summary": "Example Custom Handler",
-        "operationId": "example_custom_handler",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          }
-        }
-      }
-    },
     "/v2/study/{uuid}": {
       "get": {
         "tags": [
@@ -1784,7 +1764,7 @@
           "private"
         ],
         "summary": "Getstudies",
-        "description": "@TODO: Filters?",
+        "description": "@TODO: Filters?\n\n@TODO: Not pluralizing clashes with getStudy(study_uuid) - non-pluralised convention?",
         "operationId": "getStudies",
         "responses": {
           "200": {

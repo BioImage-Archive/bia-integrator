@@ -133,8 +133,3 @@ def make_router() -> APIRouter:
         )
 
     return router
-
-
-@router.get("/placeholder")
-def example_custom_handler():
-    pass
