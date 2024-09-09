@@ -7,6 +7,7 @@ from .utils import (
     find_datasets_with_file_lists,
     get_bia_data_model_by_uuid,
     filter_model_dictionary,
+    persist,
 )
 from ..image_utils.image_utils import (
     get_image_extension,
@@ -144,7 +145,19 @@ def get_experimentally_captured_image(
         dataset_uuid=dataset.uuid,
         subject_uuid=subject_uuid,
     )
-    return bia_data_model.ExperimentallyCapturedImage.model_validate(model_dict)
+
+    experimentally_captured_image = (
+        bia_data_model.ExperimentallyCapturedImage.model_validate(model_dict)
+    )
+    if persist_artefacts and experimentally_captured_image:
+        persist(
+            [
+                experimentally_captured_image,
+            ],
+            "experimentally_captured_images",
+            submission.accno,
+        )
+    return experimentally_captured_image
 
 
 def prepare_experimentally_captured_image_dict(

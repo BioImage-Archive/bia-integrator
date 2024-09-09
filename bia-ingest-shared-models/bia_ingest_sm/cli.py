@@ -194,7 +194,9 @@ def convert_images(
         representation.image_format = ".ome.zarr"
         file_uri = copy_local_to_s3(
             local_path_to_zarr,
-            f"{submission.accno}/{representation.uuid}{representation.image_format}",
+            image_utils.create_s3_uri_suffix_for_image_representation(
+                submission.accno, representation
+            ),
         )
         representation.file_uri = [
             file_uri,
@@ -214,7 +216,9 @@ def convert_images(
         representation.image_format = ".png"
         file_uri = copy_local_to_s3(
             local_path_to_thumbnail,
-            f"{submission.accno}/{representation.uuid}{representation.image_format}",
+            image_utils.create_s3_uri_suffix_for_image_representation(
+                submission.accno, representation
+            ),
         )
         representation.file_uri = [
             file_uri,
@@ -234,7 +238,9 @@ def convert_images(
         representation.image_format = ".png"
         file_uri = copy_local_to_s3(
             local_path_to_static_display,
-            f"{submission.accno}/{representation.uuid}{representation.image_format}",
+            image_utils.create_s3_uri_suffix_for_image_representation(
+                submission.accno, representation
+            ),
         )
         representation.file_uri = [
             file_uri,
