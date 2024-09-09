@@ -4,45 +4,53 @@ import bia_integrator_api.models as api_models
 import inspect
 import glob
 import json
+from pathlib import Path
 
-api_base_url = "https://wwwdev.ebi.ac.uk/bioimage-archive/api"
+api_base_url = "http://localhost:8080"
 client = get_client_private(
     username="test@example.com",
     password="test",
     api_base_url=api_base_url
 )
 
-for file_name in glob.glob("../../../bia-export/test/input_data/**/*.json", recursive=True):
-    # Instead of sorting dependencies, rerun until everything is created
-    print(file_name)
-    with open(file_name) as f:
-        data = json.load(f)
-        if 'model' not in data:
-            model_classes = [
-                model_class
-                for name, model_class in inspect.getmembers(api_models)
-                if inspect.isclass(model_class)
-            ]
-            
-            candidates = []
-            for model in model_classes:
-                try:
-                    data_parsed = model(**data)
-                except Exception:
-                    pass
-                else:
-                    candidates.append(model)
-            
-            if len(candidates) == 1:
-                data_parsed = candidates[0](**data)
+def dict_parse_unknown_model(data: dict):
+    if 'model' not in data:
+        model_classes = [
+            model_class
+            for name, model_class in inspect.getmembers(api_models)
+            if inspect.isclass(model_class)
+        ]
+        
+        candidates = []
+        for model in model_classes:
+            try:
+                data_parsed = model(**data)
+            except Exception:
+                pass
             else:
-                raise Exception(file_name, candidates)
+                candidates.append(model)
+        
+        if len(candidates) == 1:
+            data_parsed = candidates[0](**data)
         else:
-            data_parsed = getattr(api_models, data['model']['type_name'])(**data)
-        
-        data_parsed.version = 0 # version starts at 0
-        
-        print(file_name)
+            raise Exception("Unable to deserialise into a single model", file_name, candidates)
+    else:
+        data_parsed = getattr(api_models, data['model']['type_name'])(**data)
+    
+    data_parsed.version = 0 # version starts at 0
+    return data_parsed
+
+
+report = {
+    'already_exists': [],
+    'not_found': []
+}
+data_to_sync_root = Path("/home/liviu/Documents/wip_tickets/data_dir_to_api/temp-bia-data-dir")
+for file_name in data_to_sync_root.glob("**/*.json"):
+    # Instead of sorting dependencies, rerun until everything is created
+    with open(file_name) as f:
+        data_parsed = dict_parse_unknown_model(json.load(f))
+
         try:
             if data_parsed.model.type_name == "Study":
                 client.post_study(data_parsed)
@@ -71,10 +79,13 @@ for file_name in glob.glob("../../../bia-export/test/input_data/**/*.json", recu
             elif data_parsed.model.type_name == "SpecimenImagingPreparationProtocol":
                 client.post_specimen_imaging_preparation_protocol(data_parsed)
             else:
-                raise Exception(data_parsed)
+                raise Exception("Unable to create object", file_name, data_parsed)
         except NotFoundException as e:
-            print(e)
+            report['not_found'].append(str(file_name))
         except ApiException as e:
-            print(e)
-
-
+            if e.status == 409:
+                report['already_exists'].append(str(file_name))
+            else:
+                raise
+print(json.dumps(report, indent=4))
+print("! Rerun until 'not_found' in the report stops decreasing")
