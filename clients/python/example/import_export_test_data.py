@@ -45,7 +45,7 @@ report = {
     'already_exists': [],
     'not_found': []
 }
-data_to_sync_root = Path("/home/liviu/Documents/wip_tickets/data_dir_to_api/temp-bia-data-dir")
+data_to_sync_root = Path("/this-does-not-exist")
 for file_name in data_to_sync_root.glob("**/*.json"):
     # Instead of sorting dependencies, rerun until everything is created
     with open(file_name) as f:
