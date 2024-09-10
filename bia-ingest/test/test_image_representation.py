@@ -5,10 +5,10 @@ from typing import List
 from . import utils
 import pytest
 from bia_shared_datamodels import bia_data_model
-from bia_ingest_sm.conversion import (
+from bia_ingest.conversion import (
     image_representation,
 )
-from bia_ingest_sm.image_utils import image_utils
+from bia_ingest.image_utils import image_utils
 
 experimentally_captured_image_uuid = utils.get_test_experimentally_captured_image()[
     0

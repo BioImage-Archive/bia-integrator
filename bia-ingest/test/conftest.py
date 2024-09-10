@@ -3,9 +3,9 @@ from typing import Dict
 from pathlib import Path
 import json
 import pytest
-from bia_ingest_sm.biostudies import Submission, requests
+from bia_ingest.biostudies import Submission, requests
 from .utils import accession_id
-from bia_ingest_sm.cli_logging import IngestionResult
+from bia_ingest.cli_logging import IngestionResult
 
 
 @pytest.fixture

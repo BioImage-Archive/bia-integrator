@@ -1,19 +1,19 @@
 import typer
 from typing import List
 from typing_extensions import Annotated
-from bia_ingest_sm.biostudies import load_submission
-from bia_ingest_sm.conversion.study import get_study
-from bia_ingest_sm.conversion.experimental_imaging_dataset import (
+from bia_ingest.biostudies import load_submission
+from bia_ingest.conversion.study import get_study
+from bia_ingest.conversion.experimental_imaging_dataset import (
     get_experimental_imaging_dataset,
 )
-from bia_ingest_sm.conversion.file_reference import get_file_reference_by_dataset
-from bia_ingest_sm.conversion.specimen import get_specimen
-from bia_ingest_sm.conversion.image_acquisition import get_image_acquisition
-from bia_ingest_sm.conversion.image_annotation_dataset import (
+from bia_ingest.conversion.file_reference import get_file_reference_by_dataset
+from bia_ingest.conversion.specimen import get_specimen
+from bia_ingest.conversion.image_acquisition import get_image_acquisition
+from bia_ingest.conversion.image_annotation_dataset import (
     get_image_annotation_dataset,
 )
-from bia_ingest_sm.conversion.annotation_method import get_annotation_method
-from bia_ingest_sm.conversion.image_representation import (
+from bia_ingest.conversion.annotation_method import get_annotation_method
+from bia_ingest.conversion.image_representation import (
     create_image_representation,
     create_images_and_image_representations,
 )

@@ -13,9 +13,9 @@ from ..image_utils.image_utils import (
     get_image_extension,
     extension_in_bioformats_single_file_formats_list,
 )
-from bia_ingest_sm.conversion.specimen import get_specimen_for_association
-from bia_ingest_sm.conversion.image_acquisition import get_image_acquisition
-from bia_ingest_sm.conversion.experimental_imaging_dataset import (
+from bia_ingest.conversion.specimen import get_specimen_for_association
+from bia_ingest.conversion.image_acquisition import get_image_acquisition
+from bia_ingest.conversion.experimental_imaging_dataset import (
     get_experimental_imaging_dataset,
 )
 from ..biostudies import (

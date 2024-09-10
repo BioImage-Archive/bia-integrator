@@ -10,7 +10,7 @@ from .utils import (
     log_failed_model_creation,
     log_model_creation_count,
 )
-import bia_ingest_sm.conversion.study as study_conversion
+import bia_ingest.conversion.study as study_conversion
 from ..biostudies import (
     Submission,
     attributes_to_dict,

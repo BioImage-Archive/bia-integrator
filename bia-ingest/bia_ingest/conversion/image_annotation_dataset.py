@@ -8,7 +8,7 @@ from .utils import (
     filter_model_dictionary,
     log_model_creation_count,
 )
-import bia_ingest_sm.conversion.study as study_conversion
+import bia_ingest.conversion.study as study_conversion
 from ..biostudies import (
     Submission,
     attributes_to_dict,

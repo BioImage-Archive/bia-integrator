@@ -8,7 +8,7 @@ import json
 from typing import Dict, List
 from pathlib import Path
 from bia_shared_datamodels import bia_data_model, semantic_models
-from bia_ingest_sm.conversion.utils import dict_to_uuid, filter_model_dictionary
+from bia_ingest.conversion.utils import dict_to_uuid, filter_model_dictionary
 
 
 accession_id = "S-BIADTEST"

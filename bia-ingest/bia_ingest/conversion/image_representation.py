@@ -9,10 +9,10 @@ from ..biostudies import (
 from bia_shared_datamodels import bia_data_model
 from bia_shared_datamodels.semantic_models import ImageRepresentationUseType
 
-from bia_ingest_sm.image_utils import image_utils
-from bia_ingest_sm.image_utils.io import stage_fileref_and_get_fpath, copy_local_to_s3
-from bia_ingest_sm.image_utils.conversion import cached_convert_to_zarr_and_get_fpath
-from bia_ingest_sm.image_utils.rendering import generate_padded_thumbnail_from_ngff_uri
+from bia_ingest.image_utils import image_utils
+from bia_ingest.image_utils.io import stage_fileref_and_get_fpath, copy_local_to_s3
+from bia_ingest.image_utils.conversion import cached_convert_to_zarr_and_get_fpath
+from bia_ingest.image_utils.rendering import generate_padded_thumbnail_from_ngff_uri
 
 logger = logging.getLogger("__main__." + __name__)
 
