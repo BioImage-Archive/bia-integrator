@@ -14,7 +14,7 @@ python = "^3.10"
 typer = {extras = ["all"], version = "^0.7.0"}
 fs = "^2.4.16"
 dev_bia-integrator-core = { path = "../../core/dev", develop = true }
-bia-integrator-api = { path = "../../clients/python", develop = true }
+bia-integrator-api = { path = "../../clients/python_v1", develop = true }
 
 [build-system]
 requires = ["poetry-core"]
