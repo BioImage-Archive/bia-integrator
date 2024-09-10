@@ -25,7 +25,7 @@ fsspec = "^2024.9.0"
 s3fs = "^2024.9.0"
 
 [tool.poetry.scripts]
-biaingest = "bia_ingest_sm.cli:app"
+biaingest = "bia_ingest.cli:app"
 
 
 [tool.poetry.group.dev.dependencies]
