@@ -13,8 +13,12 @@ from bia_ingest_sm.conversion.image_annotation_dataset import (
     get_image_annotation_dataset,
 )
 from bia_ingest_sm.conversion.annotation_method import get_annotation_method
-from bia_ingest_sm.conversion.image_representation import create_image_representation
+from bia_ingest_sm.conversion.image_representation import (
+    create_image_representation,
+    create_images_and_image_representations,
+)
 from bia_shared_datamodels.semantic_models import ImageRepresentationUseType
+
 import logging
 from rich import print
 from rich.logging import RichHandler
@@ -88,7 +92,7 @@ def ingest(
     print(tabulate_errors(result_summary))
 
 
-@representations_app.command(help="Create/list specified representations")
+@representations_app.command(help="Create specified representations")
 def create(
     accession_id: Annotated[str, typer.Argument()],
     file_reference_uuid_list: Annotated[List[str], typer.Argument()],
@@ -112,6 +116,26 @@ def create(
                 result_summary=result_summary,
                 persist_artefacts=True,
             )
+
+
+@representations_app.command(
+    help="Convert images and create representations",
+)
+def convert_images(
+    accession_id: Annotated[str, typer.Argument()],
+    file_reference_uuid_list: Annotated[List[str], typer.Argument()],
+) -> None:
+    """Convert images and create representations for specified file reference(s)"""
+
+    submission = load_submission(accession_id)
+    result_summary = {accession_id: IngestionResult()}
+    for file_reference_uuid in file_reference_uuid_list:
+        create_images_and_image_representations(
+            submission=submission,
+            file_reference_uuid=file_reference_uuid,
+            result_summary=result_summary,
+            persist_artefacts=True,
+        )
 
 
 @app.callback()
