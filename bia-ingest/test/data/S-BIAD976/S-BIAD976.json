@@ -1,0 +1,283 @@
+{
+  "accno" : "S-BIAD976",
+  "attributes" : [ {
+    "name" : "Template",
+    "value" : "BioImages.v4"
+  }, {
+    "name" : "ReleaseDate",
+    "value" : "2023-12-20"
+  }, {
+    "name" : "AttachTo",
+    "value" : "BioImages"
+  } ],
+  "section" : {
+    "type" : "Study",
+    "attributes" : [ {
+      "name" : "Title",
+      "value" : "Quantification of morpho-functional synaptic connectivity in dissociated neuronal cultures "
+    }, {
+      "name" : "Description",
+      "value" : "Most neurological disorders share a phenotype of synaptic dysfunction. High-content microscopy is indispensable in the drug discovery process but the sensitivity relies on the accuracy of mature synapse detection. We present a workflow whereby synchronous calcium bursting is measured in GCaMP6f-transduced neurons. The same cultures are then subjected to Proximity Ligation Assay (PLA) to label mature synapses, the neurite network and nuclei. The integration of functional and morphological information provides a rich fingerprint of neuronal connectivity, deployable in different experimental conditions. "
+    }, {
+      "name" : "Keywords",
+      "value" : "High-content microscopy"
+    }, {
+      "name" : "Keywords",
+      "value" : "Neuronal Connectivity"
+    }, {
+      "name" : "Acknowledgements",
+      "value" : "We thank dr. Gerardo Garcia-Diaz Barriga for optimizing the PLA approach."
+    }, {
+      "name" : "License",
+      "value" : "CC0",
+      "valqual" : [ {
+        "name" : "URL",
+        "value" : "https://creativecommons.org/publicdomain/zero/1.0/legalcode"
+      } ]
+    }, {
+      "name" : "Funding statement",
+      "value" : "This study was supported by R&D grants of Flanders Innovation & Entrepreneurship (IWT150003, 120511). "
+    } ],
+    "subsections" : [ {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Peter Verstraelen"
+      }, {
+        "name" : "E-mail",
+        "value" : "peter.verstraelen@uantwerpen.be"
+      }, {
+        "name" : "Role",
+        "value" : "experiment performer"
+      }, {
+        "name" : "ORCID",
+        "value" : "0000-0002-2214-2806"
+      }, {
+        "name" : "affiliation",
+        "value" : "o1",
+        "reference" : true
+      } ]
+    }, {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Marlies Verschuuren"
+      }, {
+        "name" : "E-mail",
+        "value" : "marlies.verschuuren@uantwerpen.be"
+      }, {
+        "name" : "Role",
+        "value" : "data analyst"
+      }, {
+        "name" : "ORCID",
+        "value" : "0000-0003-0357-7422"
+      }, {
+        "name" : "affiliation",
+        "value" : "o1",
+        "reference" : true
+      } ]
+    }, {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Winnok H. De Vos"
+      }, {
+        "name" : "E-mail",
+        "value" : "winnok.devos@uantwerpen.be"
+      }, {
+        "name" : "Role",
+        "value" : "corresponding author"
+      }, {
+        "name" : "ORCID",
+        "value" : "0000-0003-0960-6781"
+      }, {
+        "name" : "affiliation",
+        "value" : "o1",
+        "reference" : true
+      } ]
+    }, {
+      "accno" : "o1",
+      "type" : "organisation",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "University of Antwerp"
+      } ]
+    }, {
+      "type" : "Publication",
+      "attributes" : [ {
+        "name" : "Pubmed ID",
+        "value" : "33083769"
+      }, {
+        "name" : "Title",
+        "value" : "Systematic Quantification of Synapses in Primary Neuronal Culture."
+      }, {
+        "name" : "Authors",
+        "value" : "Verstraelen P, Garcia-Diaz Barriga G, Verschuuren M, Asselbergh B, Nuydens R, Larsen PH, Timmermans JP, De Vos WH."
+      }, {
+        "name" : "DOI",
+        "value" : "10.1016/j.isci.2020.101542"
+      }, {
+        "name" : "Year",
+        "value" : "2020"
+      } ]
+    }, {
+      "type" : "Publication",
+      "attributes" : [ {
+        "name" : "Pubmed ID",
+        "value" : "31164177"
+      }, {
+        "name" : "Title",
+        "value" : "High-throughput microscopy exposes a pharmacological window in which dual leucine zipper kinase inhibition preserves neuronal network connectivity."
+      }, {
+        "name" : "Authors",
+        "value" : "Verschuuren M, Verstraelen P, García-Díaz Barriga G, Cilissen I, Coninx E, Verslegers M, Larsen PH, Nuydens R, De Vos WH."
+      }, {
+        "name" : "DOI",
+        "value" : "10.1186/s40478-019-0741-3"
+      }, {
+        "name" : "Year",
+        "value" : "2019"
+      } ]
+    }, {
+      "accno" : "Biosample-1",
+      "type" : "Biosample",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "BioSample 1"
+      }, {
+        "name" : "Organism",
+        "value" : "Mus musculus (mouse)"
+      }, {
+        "name" : "Description",
+        "value" : "Primary cortical cultures"
+      }, {
+        "name" : "Biological entity",
+        "value" : "Primary cortical cultures from E18 mouse embryos after 21 days in vitro"
+      }, {
+        "name" : "Extrinsic variable",
+        "value" : "Growth condition"
+      } ]
+    }, {
+      "accno" : "Specimen-2",
+      "type" : "Specimen",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Specimen 1"
+      }, {
+        "name" : "Sample preparation protocol",
+        "value" : "The preparation of primary neuronal cultures was carried out in accordance with the recommendations of the ethical committee for animal experimentation of the University of Antwerp (approved ethical file 2015-54). Cortex were dissected from wild type C57Bl6 E18 mouse embryos in HEPES (7 mM)-buffered Hanks Balanced Salt Solution (HBSS-HEPES), followed by trypsin digestion (0.05%; 10 min; 37°C) and mechanical dissociation. After centrifugation (5 min at 200g), the cell pellet was resuspended in Minimal Essential Medium supplemented with 10% heat-inactivated normal horse serum and 30 mM glucose. Cells were plated in Poly-D-Lysin-coated 96-well plates (Greiner μClear) at 10000 - 15000 cells/cm2 and kept in a humidified CO2 incubator (37°C; 5% CO2). After 4 hours, the medium was replaced with 150 μl B27-supplemented Neurobasal medium (NB-B27), containing Sodium Pyruvate (1 mM), Glutamax (2 mM), glucose (30 mM) and Penicillin-Streptomycin (0.5%). For anti-oxidant deprivation, the commercially available B27 supplement minus antioxidants was used. When the neurons were attached, typically 2h after plating, viral particles encoding the calcium sensor were added. AAV-DJ-hSyn1-GCaMP6f-P2A-nls-dTomato for neuron-specific expression of GCaMP6f (the cytosolic calcium sensor) and nls-dTomato (the nuclear counterstain) were used. The plasmid was obtained through addgene and packaged in house with a kit of Cell Biolabs. The obtained crude lysate is sufficient for the described in vitro experiments and does not need further purification. \n0.01 µl of the crude lysate was used per well of a MW96. Transgene expression was detectable after ~4 days and sustained for several (>6) weeks. To suppress proliferation of non-neuronal cells, 0.5 μM arabinosylcytosine was added in 25 μl at the seventh and tenth day in vitro (DIV). \n\nAfter calcium imaging, cultures were fixed and mature synapses were labeled with PLA. PLA is an antibody-based technique for proximity labeling whereby signal is generated when the pre- and postsynaptic markers are in close proximity. Bassoon and Homer are used but PLA also works with other synapse marker combinations. A counterstain for the neurite network (MAP2) and nuclei (DAPI) was performed as well. Fixation of the cultures was done in 2% paraformaldehyde solution for 20 min at room temperature. Next, cultures were permeabilized with a 0.5% Triton X-100 solution in PBS for 5 min at room temperature after which 50µL/well Duolink blocking solution was added for 1h at 37°C. Primary antibodies were diluted in Duolink antibody diluent (2µg/mL) and incubated overnight at 4°C (anti-Bassoon; Neuromab; 73-491 and anti-Homer; Synaptic Systems; 160003). After a wash step with wash buffer A for 2 x 5 min (Duolink in situ orange starter kit; Merck Millipore; DUO92102-1KT), cultures were incubated with PLA probes for 1h at 37°C (1:5 dilution; Duolink in situ orange starter kit; Merck Millipore; DUO92102-1KT). After washing the cultures with wash buffer A for 2x5min, ligation solution was added for 30 min at 37°C (Duolink ligation buffer + ligase) after which a 2x5min wash step with wash buffer A was done. Cultures were then incubated with amplification solution (amplification buffer and polymerase 1:80) for 100 min at 37°C. Cultures were counterstained after incubation with wash buffer B for 2x5 min (Duolink in situ orange starter kit; Merck Millipore; DUO92102-1KT) and 5 min with wash buffer A. Incubation with primary antibody was done overnight at 4°C (1:500; anti-MAP2; Synaptic Systems; 188006). Cultures were washed again for 2 x 5 min with wash buffer A after which they were incubated for 2h at room temperature with secondary antibody solution (Donkey-anti-Chicken-AlexaFluor647; Jackson Immunoresearch;\t703-605-155; 0.5 µg/ml). Next, incubation with DAPI solution was done for 10 min at room temperature (5 µg/ml) for 10 min at room temperature. A final wash step of 2 x 5 min with wash buffer A was done after which anti-fade buffer was added and plates were sealed (Duolink in situ microplate nuclear stain, anti-fade; Merck Millipore; DUO82064-1KT)\n\n\n\n\n\n\n"
+      } ]
+    }, {
+      "accno" : "Image acquisition-7",
+      "type" : "Image acquisition",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Morphological"
+      }, {
+        "name" : "Imaging instrument",
+        "value" : "Spinning disk confocal microscope (UltraVIEW VoX, PerkinElmer)"
+      }, {
+        "name" : "Image acquisition parameters",
+        "value" : "Perkin Elmer Ultraview Vox dual spinning disk confocal microscope, mounted on a Nikon Ti body, equipped with a Perfect Focus System was used. A 40X objective with a numerical aperture of 0.95 was used to acquire 20 z-stacks per well with 1 µm spacing . \n\nThe following filter sets were used:\nDAPI: 405 nm excitation / 470(W24) emission\nPLA: 561 nm excitation / 615(W70) emission\nMAP2: 640 nm excitation / 705 (W90) emission"
+      }, {
+        "name" : "Imaging method",
+        "value" : "spinning disk confocal microscopy"
+      } ]
+    }, {
+      "accno" : "Image acquisition-9",
+      "type" : "Image acquisition",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Functional"
+      }, {
+        "name" : "Imaging instrument",
+        "value" : "Spinning disk confocal microscope (UltraVIEW VoX, PerkinElmer)"
+      }, {
+        "name" : "Image acquisition parameters",
+        "value" : "Time-lapse imaging was performed on a Perkin Elmer Ultraview Vox dual spinning disk confocal microscope, mounted on a Nikon Ti body, equipped with a Perfect Focus System and a microscope incubator equilibrated at 37 °C. A 10X air objective was used to acquire a 3-minute time-lapse recording of calcium fluxes (GCaMP6f) in every well, followed by a single image of the neuronal nuclei (nls-dTomato).\n\nThe following acquisition settings were used: \nGCaMP6f: 488 nm excitation/525(W50) nm emission, 3 min @ 2 frames/sec, camera binning 2x2\nNls-dTomato: 561 nm excitation/615(W70) emission, 1 image, no camera binning"
+      }, {
+        "name" : "Imaging method",
+        "value" : "time lapse microscopy"
+      } ]
+    }, {
+      "accno" : "Image analysis-5",
+      "type" : "Image analysis",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Functional "
+      }, {
+        "name" : "Image analysis overview",
+        "value" : "The Neuroconnectivity_Func.ijm macro was used to analyse calcium recordings.  Nuclei were segmented using the nls-dTomato signal applying the stardist algorithm after initial smoothing (gaussian blur) of the image. Stardist is a trained convolutional neural network for nuclei detection. The obtained objects were filtered based on their size after which calcium intensities within these objects were measured in all frames of de GCaMP6f image.\n"
+      } ]
+    }, {
+      "accno" : "Image analysis-8",
+      "type" : "Image analysis",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Morphological"
+      }, {
+        "name" : "Image analysis overview",
+        "value" : "Neuronal network morphology is analyzed using the FIJI script ‘NeuroConnectivity_Morph’. Nuclei are detected using a manually assigned threshold or via Stardist. Neurites are identified using a rough (user-defined threshold) and fine segmentation (user-defined threshold after tubeness filtering). Next, the nuclei mask is subtracted from the neurite mask after which the new mask is dilated to obtain a search region in which synaptic spots are detected. The spots are first enhanced using a gaussian, Laplacian or multi-scale Laplacian filter with a user-defined kernel size. Next, a threshold is applied to segment the synapse spots. "
+      } ]
+    }, {
+      "accno" : "Study Component-4",
+      "type" : "Study Component",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Functional assay"
+      }, {
+        "name" : "Description",
+        "value" : "Synchronous calcium bursting is measured in GCaMP6f-transduced primary cortical cultures from E18 mouse embryos."
+      }, {
+        "name" : "File List",
+        "value" : "NeuroConnectivity_Func_FileList.json"
+      } ],
+      "subsections" : [ {
+        "type" : "Associations",
+        "attributes" : [ {
+          "name" : "Biosample",
+          "value" : "BioSample 1"
+        }, {
+          "name" : "Specimen",
+          "value" : "Specimen 1"
+        }, {
+          "name" : "Image acquisition",
+          "value" : "Functional"
+        }, {
+          "name" : "Image analysis",
+          "value" : "Functional "
+        } ]
+      } ]
+    }, {
+      "accno" : "Study Component-6",
+      "type" : "Study Component",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Morphological assay"
+      }, {
+        "name" : "Description",
+        "value" : "Quantification of morphological neuronal connectivity in primary cortical cultures from E18 mouse embryos."
+      }, {
+        "name" : "File List",
+        "value" : "NeuroConnectivity_Morph_FileList.json"
+      } ],
+      "subsections" : [ {
+        "type" : "Associations",
+        "attributes" : [ {
+          "name" : "Biosample",
+          "value" : "BioSample 1"
+        }, {
+          "name" : "Specimen",
+          "value" : "Specimen 1"
+        }, {
+          "name" : "Image acquisition",
+          "value" : "Morphological"
+        }, {
+          "name" : "Image analysis",
+          "value" : "Morphological"
+        } ]
+      } ]
+    } ]
+  },
+  "type" : "submission"
+}
