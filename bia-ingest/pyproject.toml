@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "bia-ingest-sm"
+name = "bia-ingest"
 version = "0.1.0"
 description = "BIA ingest using shared models"
 authors = ["Kola Babalola <kola@ebi.ac.uk>"]
