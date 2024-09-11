@@ -13,7 +13,6 @@ jobs:
           [
             bia-export,
             bia-ingest,
-            bia-ingest-shared-models,
             bia-shared-datamodels,
             core,
           ]

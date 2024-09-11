@@ -1,0 +1,357 @@
+[
+    {
+        "uuid": "UUID-study-1",
+        "title": "Progressive heterogeneity of enlarged and irregularly shaped apicoplasts in P. falciparum persister blood stages after drug treatment",
+        "description": "Morphological modifications and shifts in organelle relationships are hallmarks of dormancy in eukaryotic cells. Communications between altered mitochondria and nuclei are associated with metabolic quiescence of cancer cells that can survive chemotherapy. In plants, changes in the pathways between nuclei, mitochondria, and chloroplasts are associated with cold stress and bud dormancy. Plasmodium falciparum parasites, the deadliest agent of malaria in humans, contain a chloroplast-like organelle (apicoplast) derived from an ancient photosynthetic symbiont. Antimalarial treatments can fail because a small fraction of the blood stage parasites enter dormancy and recrudesce after drug exposure. Altered mitochondrial-nuclear interactions in these persisters have been described for P. falciparum, but interactions of the apicoplast remained to be characterized. In the present study, we examined the apicoplasts of dormant persisters obtained after exposure to dihydroartemisinin (a first-line antimalarial drug) followed by sorbitol treatment, or after exposure to sorbitol treatment alone. As previously observed, the mitochondrion of persisters was consistently enlarged and in close association with the nucleus. In contrast, the apicoplast varied from compact and oblate, like those of active ring stage parasites, to enlarged and irregularly shaped. Enlarged apicoplasts became more prevalent later in dormancy, but regular size apicoplasts subsequently predominated when actively replicating parasites recrudesced. All three organelles, nucleus, mitochondrion, and apicoplast, became closer during dormancy. Understanding their relationships in erythrocytic-stage persisters may lead to new strategies to prevent recrudescences and protect the future of malaria chemotherapy. ",
+        "release_date": "2024-01-01",
+        "accession_id": "S-BIAD987",
+        "licence": "CC BY 4.0",
+        "author": [
+            {
+                "display_name": "Chiara E Micchelli",
+                "contact_email": "cemicchelli@gmail.com",
+                "role": "first author",
+                "orcid": "0009-0005-4474-8912",
+                "affiliation": [
+                    {
+                        "display_name": "National Institute of Health"
+                    }
+                ]
+            },
+            {
+                "display_name": "Caroline Percopo",
+                "contact_email": "percopoc@niaid.nih.gov",
+                "role": "investigator",
+                "affiliation": [
+                    {
+                        "display_name": "National Institute of Health"
+                    }
+                ]
+            },
+            {
+                "display_name": "Maria Traver",
+                "contact_email": "maria.traver@nih.gov",
+                "role": "investigator",
+                "affiliation": [
+                    {
+                        "display_name": "National Institute of Health"
+                    }
+                ]
+            },
+            {
+                "display_name": "Joseph Brzostowski",
+                "contact_email": "brzostowskij@niaid.nih.gov",
+                "role": "investigator",
+                "affiliation": [
+                    {
+                        "display_name": "National Institute of Health"
+                    }
+                ]
+            },
+            {
+                "display_name": "Shuchi N Amin",
+                "contact_email": "aminshuchi@gmail.com",
+                "role": "investigator",
+                "affiliation": [
+                    {
+                        "display_name": "National Institute of Health"
+                    }
+                ]
+            },
+            {
+                "display_name": "Sean T Prigge",
+                "contact_email": "sprigge2@jhu.edu",
+                "role": "investigator",
+                "affiliation": [
+                    {
+                        "display_name": "Johns Hopkins University"
+                    }
+                ]
+            },
+            {
+                "display_name": "Juliana M Sa",
+                "contact_email": "jsa@niaid.nih.gov",
+                "role": "submitter",
+                "orcid": "0000-0003-3813-8104",
+                "affiliation": [
+                    {
+                        "display_name": "National Institute of Health"
+                    }
+                ]
+            },
+            {
+                "display_name": "Thomas E Wellems",
+                "contact_email": "twellems@niaid.nih.gov",
+                "role": "principal investigator",
+                "orcid": "0000-0003-3899-8454",
+                "affiliation": [
+                    {
+                        "display_name": "1National Institute of Health"
+                    }
+                ]
+            }
+        ],
+        "attribute": {},
+        "keyword": [
+            "malaria",
+            "artemisinin",
+            "airyscan microscopy",
+            "dormancy",
+            "mitochondrion",
+            "plastid"
+        ],
+        "funding_statement": "This work was supported by the NIAID Division of Intramural Research.",
+        "experimental_imaging_component": [
+            "UUID-experimental-imaging-dataset-1",
+            "UUID-experimental-imaging-dataset-2",
+            "UUID-experimental-imaging-dataset-3",
+            "UUID-experimental-imaging-dataset-4"
+        ],
+        "annotation_component": []
+    },
+    {
+        "uuid": "UUID-experimental-imaging-dataset-1",
+        "title_id": "Day 2 Organelles",
+        "description": "This component contains Airyscan-processed images of organelles from FACS-collected P. falciparum persisters and ring stages two days after treatment with DHA/sorbitol (“DHA”) and the vehicle control (“DMSO”), respectively. The apicoplast is shown in green, mitochondrion is shown in red, and nucleus are shown in blue. ",
+        "image": [
+            "UUID-experimentally-captured-image-1"
+        ],
+        "file": [
+            "UUID-file-reference-1"
+        ],
+        "submitted_in_study": "UUID1-study",
+        "specimen_preparation_method": [
+            "UUID-specimen-preparation-protocol-1"
+        ],
+        "acquisition_method": [
+            "UUID-image-acquisition-1"
+        ],
+        "biological_entity": [
+            "UUID-biosample-1"
+        ],
+        "specimen_growth_protocol": [],
+        "analysis_method": [],
+        "correlation_method": [],
+        "file_reference_count": 1,
+        "image_count": 1,
+        "example_image_uri": [],
+        "attribute": {
+            "associatations": [
+                {
+                    "biosample": "UUID-biosample-1",
+                    "specimen": "UUID-specimen-preparation-protocol-1",
+                    "image_acquisition": "UUID-image-acquisition-1"
+                }
+            ]
+        }
+    },
+    {
+        "uuid": "UUID-experimental-imaging-dataset-2",
+        "title_id": "Day 17 Organelles",
+        "description": "This component contains Airyscan-processed images of apicoplasts, mitochondria, and nuclei from FACS-collected P. falciparum parasites 17 days after DHA/sorbitol treatment plus sorbitol selection.",
+        "image": [],
+        "file": [],
+        "submitted_in_study": "UUID1-study",
+        "specimen_preparation_method": [
+            "UUID-specimen-preparation-protocol-2"
+        ],
+        "acquisition_method": [
+            "UUID-image-acquisition-1"
+        ],
+        "biological_entity": [
+            "UUID-biosample-2"
+        ],
+        "specimen_growth_protocol": [],
+        "analysis_method": [],
+        "correlation_method": [],
+        "file_reference_count": 0,
+        "image_count": 0,
+        "example_image_uri": [],
+        "attribute": {
+            "associatations": [
+                {
+                    "biosample": "UUID-biosample-1",
+                    "specimen": "UUID-specimen-preparation-protocol-2",
+                    "image_acquisition": "UUID-image-acquisition-1"
+                }
+            ]
+        }
+    },
+    {
+        "uuid": "UUID-experimental-imaging-dataset-3",
+        "title_id": "Day 5 Organelles",
+        "description": "This component contains Airyscan-processed images of apicoplasts, mitochondria, and nuclei from FACS-collected P. falciparum parasites 5 days following initial treatment with DHA/sorbitol (\"DHA\") or vehicle control/sorbitol (“DMSO”) plus sorbitol selection. ",
+        "image": [],
+        "file": [],
+        "submitted_in_study": "UUID1-study",
+        "specimen_preparation_method": [
+            "UUID-specimen-preparation-protocol-2"
+        ],
+        "acquisition_method": [
+            "UUID-image-acquisition-1"
+        ],
+        "biological_entity": [
+            "UUID-biosample-2"
+        ],
+        "analysis_method": [],
+        "correlation_method": [],
+        "file_reference_count": 0,
+        "image_count": 0,
+        "example_image_uri": [],
+        "attribute": {
+            "associatations": [
+                {
+                    "biosample": "UUID-biosample-1",
+                    "specimen": "UUID-specimen-preparation-protocol-2",
+                    "image_acquisition": "UUID-image-acquisition-1"
+                }
+            ]
+        }
+    },
+    {
+        "uuid": "UUID-experimental-imaging-dataset-4",
+        "title_id": "Day 11 Organelles",
+        "description": "This study component contains Airyscan-processed images of apicoplasts, mitochondria, and nuclei from FACS-collected P. falciparum parasites 11 days following initial treatment with DHA/sorbitol (\"DHA\") or vehicle control/sorbitol (“DMSO”) plus sorbitol selection. ",
+        "image": [],
+        "file": [],
+        "submitted_in_study": "UUID1-study",
+        "specimen_preparation_method": [
+            "UUID-specimen-preparation-protocol-2"
+        ],
+        "acquisition_method": [
+            "UUID-image-acquisition-1"
+        ],
+        "biological_entity": [
+            "UUID-biosample-2"
+        ],
+        "analysis_method": [],
+        "correlation_method": [],
+        "file_reference_count": 0,
+        "image_count": 0,
+        "example_image_uri": [],
+        "attribute": {
+            "associatations": [
+                {
+                    "biosample": "UUID-biosample-1",
+                    "specimen": "UUID-specimen-preparation-protocol-2",
+                    "image_acquisition": "UUID-image-acquisition-1"
+                }
+            ]
+        }
+    },
+    {
+        "uuid": "UUID-biosample-1",
+        "title_id": "P. falciparum DHA and Sorbitol Recrudescence ",
+        "organism_classification": [
+            {
+                "scientific_name": "Plasmodium falciparum",
+                "ncbi_id": "5833"
+            }
+        ],
+        "biological_entity_description": "Human erythrocytes infected with P. falciparum parasites following DHA/sorbitol treatment or sorbitol treatment alone. Parasite cultures were synchronized and treated with the vehicle control or DHA as described above. At 24, 48, and 72 h post-drug pulse, both DHA and vehicle-treated cultures were subjected to 10 ml of 5% sorbitol for 30 minutes at 37˚C, followed by two washes with iRPMI. The cells were returned to culture in new T25 flasks with complete medium following each treatment. After the last sorbitol treatment at 72 h, 200 µl of 50% hematocrit stock red blood cells were added to replenish those lost due to lysis. Media was changed daily, and 100 µl of 50% hematocrit stock red blood cells were added every third day. Recrudescence was monitored via daily thin blood smears until 2% parasitemia was reached. Based on resulting recrudescence timelines, parasites were harvested on days 5, 11, and 17 for FACS and imaging. ",
+        "intrinsic_variable_description": "P. falciparum NF54 parasites expressing a codon-optimized variant of green fluorescent protein, called Super Folder Green (SFG), fused to the N-terminus of the first 55 amino acids of Acyl Carrier Protein (ACP) to visualize the apicoplast (PMID: 32059044)."
+    },
+    {
+        "uuid": "UUID-specimen-preparation-protocol-1",
+        "title_id": "P. falciparum Parasites on Day 2",
+        "protocol_description": "Two days (t= 50 h) after treatment with DHA/sorbitol or the vehicle control, 1 ml of culture was removed from each flask and centrifuged at 3,000 rpm. Pelleted cells were washed three times with wash buffer composed of filter-sterilized 1× Hanks Balanced Salt Solution (HBSS; Gibco, Ward Hill, MA) and 2% fetal bovine serum (Gibco, Ward Hill, MA). Parasite DNA and mitochondria were stained using 2 µM Hoechst 33342 and 0.1 µM MitoTracker Deep Red FM (Invitrogen, Waltham, MA). Staining, which occurred at 37˚C in the dark for 30 minutes, was followed by three wash steps in which cells were centrifuged and resuspended in 2 ml of wash buffer to remove excess stain. Cells were sorted using the BD FACSAria Fusion fitted with a 70-micron nozzle, and gating was performed using the BD FACSDiva software. Persisters from DHA/sorbitol treated cultures were collected based on Hoechst and MitoTracker signal. Ring-stage parasites from control-treated cultures were collected for comparison. \n\nCells collected from FACS were transferred to a 1.5 ml tube (Eppendorf) and centrifuged. The pellet was resuspended in 30-300 µl of residual wash buffer depending on the number of cells collected from FACS. Clear silicon gaskets (Grace Bio-Labs, Bend, Oregon) were placed in the wells of Lab-Tek chambered cover glass with No. 1 borosilicate glass bottoms (Thermo Fisher Scientific, Ward Hill, MA) to create microwells 3 mm in diameter. 10 µl of 0.01% poly-L-lysine solution (Sigma-Aldrich, St. Louis, MO) was added to each microwell, incubated at room temperature for 30 minutes, and washed twice with 10 µl of 1× HBSS. Immediately after the second wash, cells were added to the poly-lysine coated microwells and incubated at room temperature for 30 minutes in the dark. A 1:4 dilution of Intracellular Fixation Buffer (Invitrogen, Waltham, MA) was added to each chamber, such that it covered the bottom of the chamber and microwells. Parafilm was used to cover the chambered cover glass before being stored at 4˚C in the dark."
+    },
+    {
+        "uuid": "UUID-specimen-preparation-protocol-1",
+        "title_id": "P. falciparum Parasites on Days 5, 11, and 17",
+        "protocol_description": "5, 11, and 17 days after treatment with DHA/sorbitol or sorbitol only, 1 ml of culture was removed from each flask and centrifuged at 3,000 rpm. Pelleted cells were washed three times with wash buffer composed of filter-sterilized 1× Hanks Balanced Salt Solution (HBSS; Gibco, Ward Hill, MA) and 2% fetal bovine serum (Gibco, Ward Hill, MA). Parasite DNA and mitochondria were stained using 2 µM Hoechst 33342 and 0.1 µM MitoTracker Deep Red FM (Invitrogen, Waltham, MA). Staining, which occurred at 37˚C in the dark for 30 minutes, was followed by three wash steps in which cells were centrifuged and resuspended in 2 ml of wash buffer to remove excess stain. Cells were sorted using the BD FACSAria Fusion fitted with a 70-micron nozzle, and gating was performed using the BD FACSDiva software. Parasites from DHA/sorbitol-treated and sorbitol-only treated cultures were collected based on Hoechst and MitoTracker signal. \n\nCells collected from FACS were transferred to a 1.5 ml tube (Eppendorf) and centrifuged. The pellet was resuspended in 30-300 µl of residual wash buffer depending on the number of cells collected from FACS. Clear silicon gaskets (Grace Bio-Labs, Bend, Oregon) were placed in the wells of Lab-Tek chambered cover glass with No. 1 borosilicate glass bottoms (Thermo Fisher Scientific, Ward Hill, MA) to create microwells 3 mm in diameter. 10 µl of 0.01% poly-L-lysine solution (Sigma-Aldrich, St. Louis, MO) was added to each microwell, incubated at room temperature for 30 minutes, and washed twice with 10 µl of 1× HBSS. Immediately after the second wash, cells were added to the poly-lysine coated microwells and incubated at room temperature for 30 minutes in the dark. A 1:4 dilution of Intracellular Fixation Buffer (Invitrogen, Waltham, MA) was added to each chamber, such that it covered the bottom of the chamber and microwells. Parafilm was used to cover the chambered cover glass before being stored at 4˚C in the dark."
+    },
+    {
+        "uuid": "UUID-image-acquisition-1",
+        "title_id": "Airyscan image acquisition ",
+        "protocol_description": "FACS-collected P. falciparum parasites retained MitoTracker Deep Red and Hoechst 33342 staining for visualization of the mitochondrion and nucleus, respectively, using the 633 and 405 laser lines. The 488 laser line was used to visualize Super Folder Green fluorescence localized to the apicoplast. Erythrocytes infected with parasites displaying MitoTracker and Hoechst signal were selected at random and viewed at 10x zoom factor for scan area of 13.5 µm x 13.5 µm. Z-stacks of fluorescence signals were acquired using the Frame scanning function for all three channels accompanied by Airyscan processing. ",
+        "imaging_instrument_description": "Zeiss 880 LSM with Airyscan equipped with a Zeiss plan apochromat 63x/1.4 NA oil immersion objective.",
+        "fbbi_id": []
+    },
+    {
+        "uuid": "UUID-experimentally-captured-image-1",
+        "acquisition_process": [
+            "UUID-image-acquisition-1"
+        ],
+        "representation": [
+            "UUID-image-representation-1",
+            "UUID-image-representation-2",
+            "UUID-image-representation-3",
+            "UUID-image-representation-4"
+        ],
+        "submission_dataset": "UUID-experimental-imaging-dataset-1",
+        "subject": {
+            "imaging_preparation_protocol": [
+                "UUID-specimen-preparation-protocol-1"
+            ],
+            "sample_of": [
+                "UUID-biosample-1"
+            ],
+            "growth_protocol": []
+        },
+        "attribute": {}
+    },
+    {
+        "uuid": "UUID-image-representation-1",
+        "original_file_reference": [
+            "UUID-file-reference-1"
+        ],
+        "image_format": "fire_object",
+        "file_uri": [
+            "https://ftp.ebi.ac.uk/biostudies/fire/S-BIAD/987/S-BIAD987/Files/Day11/DMSO_asp_05_20221110.czi"
+        ],
+        "total_size_in_bytes": 32961504,
+        "image_viewer_setting": [],
+        "attribute": {}
+    },
+    {
+        "uuid": "UUID-image-representation-2",
+        "original_file_reference": [],
+        "image_format": "ome_ngff",
+        "file_uri": [
+            "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD987/d4c81718-25de-476d-9665-e6ef2680c696/d4c81718-25de-476d-9665-e6ef2680c696.zarr/0"
+        ],
+        "total_size_in_bytes": 0,
+        "image_viewer_setting": [],
+        "attribute": {}
+    },
+    {
+        "uuid": "UUID-image-representation-1",
+        "original_file_reference": [
+            "UUID-file-reference-1"
+        ],
+        "image_format": "thumbnail",
+        "file_uri": [
+            "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD987/d4c81718-25de-476d-9665-e6ef2680c696/d4c81718-25de-476d-9665-e6ef2680c696-thumbnail-256-256.png"
+        ],
+        "total_size_in_bytes": 47696,
+        "size_x": 256,
+        "size_y": 256,
+        "image_viewer_setting": [],
+        "attribute": {}
+    },
+    {
+        "uuid": "UUID-image-representation-1",
+        "original_file_reference": [
+            "UUID-file-reference-1"
+        ],
+        "image_format": "representative",
+        "file_uri": [
+            "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD987/d4c81718-25de-476d-9665-e6ef2680c696/d4c81718-25de-476d-9665-e6ef2680c696-representative-512-512.png"
+        ],
+        "total_size_in_bytes": 124754,
+        "size_x": 512,
+        "size_y": 512,
+        "image_viewer_setting": [],
+        "attribute": {}
+    },
+    {
+        "uuid": "UUID-file-reference-1",
+        "file_path": "Day11/DMSO_asp_05_20221110.czi",
+        "format": "file",
+        "size_in_bytes": 32961504,
+        "uri": "https://ftp.ebi.ac.uk/biostudies/fire/S-BIAD/987/S-BIAD987/Files/Day11/DMSO_asp_05_20221110.czi",
+        "attribute": {},
+        "submission_dataset": "UUID-experimental-imaging-dataset-1"
+    }
+]
