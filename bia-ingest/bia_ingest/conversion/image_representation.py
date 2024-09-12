@@ -37,7 +37,7 @@ def create_image_representation(
     experimentally_captured_image = get_experimentally_captured_image(
         submission=submission,
         dataset_uuid=file_references[0].submission_dataset_uuid,
-        file_paths=",".join([fr.file_path for fr in file_references]),
+        file_references=file_references,
         result_summary=result_summary,
         persist_artefacts=persist_artefacts,
     )

@@ -7,6 +7,7 @@ from .utils import (
     get_bia_data_model_by_uuid,
     filter_model_dictionary,
     persist,
+    merge_dicts,
 )
 from ..image_utils.image_utils import (
     get_image_extension,
@@ -67,8 +68,6 @@ def get_all_experimentally_captured_images(
             logger.warning(message)
             continue
 
-        files_in_fl = [fr.file_path for fr in file_references]
-
         image_acquisition_title = [
             association["image_acquisition"]
             for association in dataset.attribute["associations"]
@@ -86,8 +85,10 @@ def get_all_experimentally_captured_images(
             submission, dataset.attribute["associations"][0], result_summary
         ).uuid
 
-        for file_in_fl in files_in_fl:
+        # files_in_fl = [fr.file_path for fr in file_references]
+        for file_reference in file_references:
             # Currently processing all single files bioformats can convert
+            file_in_fl = file_reference.file_path
             extension = get_image_extension(file_in_fl)
             if not extension_in_bioformats_single_file_formats_list(extension):
                 continue
@@ -97,6 +98,7 @@ def get_all_experimentally_captured_images(
                 acquisition_process_uuid=acquisition_process_uuid,
                 dataset_uuid=dataset.uuid,
                 subject_uuid=subject_uuid,
+                attribute=file_reference.attribute,
             )
             model_dicts.append(model_dict)
     experimentally_captured_images = dicts_to_api_models(
@@ -111,7 +113,7 @@ def get_all_experimentally_captured_images(
 def get_experimentally_captured_image(
     submission: Submission,
     dataset_uuid: UUID,
-    file_paths: str,
+    file_references: List[bia_data_model.FileReference],
     result_summary: dict,
     persist_artefacts=False,
 ) -> bia_data_model.ExperimentallyCapturedImage:
@@ -143,12 +145,15 @@ def get_experimentally_captured_image(
         submission, dataset.attribute["associations"][0], result_summary
     ).uuid
 
+    file_paths = ",".join([fr.file_path for fr in file_references])
+    # Consolidate attributes from multiple file references into one dict
+    attributes = merge_dicts([fr.attribute for fr in file_references])
     model_dict = prepare_experimentally_captured_image_dict(
         file_paths=file_paths,
-        # file_paths=",".join([fr.file_path for fr in file_reference_uuids]),
         acquisition_process_uuid=acquisition_process_uuid,
         dataset_uuid=dataset.uuid,
         subject_uuid=subject_uuid,
+        attribute=attributes,
     )
 
     experimentally_captured_image = (
