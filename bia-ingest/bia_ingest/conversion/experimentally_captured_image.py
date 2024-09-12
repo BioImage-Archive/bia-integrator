@@ -4,7 +4,6 @@ from typing import List, Dict, Any
 from .utils import (
     dicts_to_api_models,
     dict_to_uuid,
-    find_datasets_with_file_lists,
     get_bia_data_model_by_uuid,
     filter_model_dictionary,
     persist,
@@ -18,9 +17,9 @@ from bia_ingest.conversion.image_acquisition import get_image_acquisition
 from bia_ingest.conversion.experimental_imaging_dataset import (
     get_experimental_imaging_dataset,
 )
+from bia_ingest.conversion.file_reference import get_file_reference_by_dataset
 from ..biostudies import (
     Submission,
-    flist_from_flist_fname,
 )
 from bia_shared_datamodels import bia_data_model
 
@@ -46,25 +45,30 @@ def get_all_experimentally_captured_images(
 
     # Experimental Imaging Datasets in study
     datasets = get_experimental_imaging_dataset(submission, result_summary)
-    datasets_with_file_lists = find_datasets_with_file_lists(submission)
     model_dicts = []
     for dataset in datasets:
         # TODO: Revisit this - there may be cases where study components
         # have exactly the same title - and this will be a list greater
         # than length 1!
-        dataset_from_submission = datasets_with_file_lists.get(dataset.title_id)[0]
-        file_list_fname = (
-            dataset_from_submission.get("File List")
-            if dataset_from_submission
-            else None
+        file_references_dict = get_file_reference_by_dataset(
+            submission,
+            [
+                dataset,
+            ],
+            result_summary,
+            persist_artefacts,
         )
+        file_references = []
+        for file_reference_list in file_references_dict.values():
+            file_references.extend(file_reference_list)
 
-        if not file_list_fname:
-            message = f"Did not find file list for dataset {dataset.title} no ExperimentallyCapturedImages will be generated for this dataset"
+        if not file_references:
+            message = f"Did not find file references for dataset {dataset.title} no ExperimentallyCapturedImages will be generated for this dataset"
             logger.warning(message)
             continue
 
-        files_in_fl = flist_from_flist_fname(submission.accno, file_list_fname)
+        files_in_fl = [fr.file_path for fr in file_references]
+
         image_acquisition_title = [
             association["image_acquisition"]
             for association in dataset.attribute["associations"]
@@ -84,12 +88,12 @@ def get_all_experimentally_captured_images(
 
         for file_in_fl in files_in_fl:
             # Currently processing all single files bioformats can convert
-            extension = get_image_extension(str(file_in_fl.path))
+            extension = get_image_extension(file_in_fl)
             if not extension_in_bioformats_single_file_formats_list(extension):
                 continue
 
             model_dict = prepare_experimentally_captured_image_dict(
-                file_paths=str(file_in_fl.path),
+                file_paths=file_in_fl,
                 acquisition_process_uuid=acquisition_process_uuid,
                 dataset_uuid=dataset.uuid,
                 subject_uuid=subject_uuid,
@@ -107,7 +111,7 @@ def get_all_experimentally_captured_images(
 def get_experimentally_captured_image(
     submission: Submission,
     dataset_uuid: UUID,
-    file_paths: List[str],
+    file_paths: str,
     result_summary: dict,
     persist_artefacts=False,
 ) -> bia_data_model.ExperimentallyCapturedImage:
@@ -140,7 +144,8 @@ def get_experimentally_captured_image(
     ).uuid
 
     model_dict = prepare_experimentally_captured_image_dict(
-        file_paths=",".join([fp for fp in file_paths]),
+        file_paths=file_paths,
+        # file_paths=",".join([fr.file_path for fr in file_reference_uuids]),
         acquisition_process_uuid=acquisition_process_uuid,
         dataset_uuid=dataset.uuid,
         subject_uuid=subject_uuid,
