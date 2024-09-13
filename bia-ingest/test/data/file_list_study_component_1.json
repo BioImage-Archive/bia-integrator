@@ -8,12 +8,12 @@
         "value": "ann06-10.json"
       },
       {
-        "name": "metadata1",
-        "value": "metadata7"
+        "name": "metadata1_key",
+        "value": "metadata1_value"
       },
       {
-        "name": "metadata2",
-        "value": "metadata8"
+        "name": "metadata2_key",
+        "value": "metadata2_value"
       }
     ],
     "type": "file"
@@ -27,12 +27,12 @@
         "value": "ann06-10.json"
       },
       {
-        "name": "metadata1",
-        "value": "metadata9"
+        "name": "metadata3_key",
+        "value": "metadata3_value"
       },
       {
-        "name": "metadata2",
-        "value": "metadata10"
+        "name": "metadata4_key",
+        "value": "metadata4_value"
       }
     ],
     "type": "file"

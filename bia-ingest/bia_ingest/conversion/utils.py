@@ -269,3 +269,30 @@ def get_bia_data_model_by_uuid(
         Path(settings.bia_data_dir) / model_subdir / accession_id / f"{uuid}.json"
     )
     return model_class.model_validate_json(input_path.read_text())
+
+
+def merge_dicts(dict_list: List[Dict[str, str]]) -> Dict:
+    """Merge list of dicts to one dict. Values for repeated keys are put into lists
+
+    Assumes all input dict values are strings as in function type hint
+    """
+
+    if not dict_list:
+        return {}
+
+    merged_dict = dict_list[0]
+
+    for dictionary in dict_list[1:]:
+        for key, value in dictionary.items():
+            # If the key already exists in the merged dictionary
+            if key in merged_dict:
+                # If it's not already a list, convert the current value to a list
+                if not isinstance(merged_dict[key], list):
+                    merged_dict[key] = [merged_dict[key]]
+                # Append the new value to the list
+                merged_dict[key].append(value)
+            else:
+                # If the key does not exist, add it to the merged dictionary
+                merged_dict[key] = value
+
+    return merged_dict

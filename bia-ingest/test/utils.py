@@ -32,14 +32,22 @@ def get_test_experimentally_captured_image() -> (
             # https://app.clickup.com/t/8695fqxpy
             # For now just storing uuid of specimen for first association
             "subject_uuid": specimen_uuids[0],
-            "attribute": {},
+            "attribute": {
+                "AnnotationsIn": "ann06-10.json",
+                "metadata1_key": "metadata1_value",
+                "metadata2_key": "metadata2_value",
+            },
         },
         {
             "path": "study_component1/im08.png",
             "acquisition_process_uuid": image_acquisition_uuids,
             "submission_dataset_uuid": experimental_imaging_dataset_uuids[0],
             "subject_uuid": specimen_uuids[0],
-            "attribute": {},
+            "attribute": {
+                "AnnotationsIn": "ann06-10.json",
+                "metadata3_key": "metadata3_value",
+                "metadata4_key": "metadata4_value",
+            },
         },
         {
             "path": "study_component2/im06.png",
@@ -48,7 +56,11 @@ def get_test_experimentally_captured_image() -> (
             ],
             "submission_dataset_uuid": experimental_imaging_dataset_uuids[1],
             "subject_uuid": specimen_uuids[2],
-            "attribute": {},
+            "attribute": {
+                "AnnotationsIn": "ann06-10.json",
+                "metadata1_key": "metadata1_value",
+                "metadata2_key": "metadata2_value",
+            },
         },
         {
             "path": "study_component2/im08.png",
@@ -57,7 +69,11 @@ def get_test_experimentally_captured_image() -> (
             ],
             "submission_dataset_uuid": experimental_imaging_dataset_uuids[1],
             "subject_uuid": specimen_uuids[2],
-            "attribute": {},
+            "attribute": {
+                "AnnotationsIn": "ann06-10.json",
+                "metadata3_key": "metadata3_value",
+                "metadata4_key": "metadata4_value",
+            },
         },
     ]
 
