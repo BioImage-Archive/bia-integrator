@@ -13,7 +13,7 @@ from ..image_utils.image_utils import (
     get_image_extension,
     extension_in_bioformats_single_file_formats_list,
 )
-from bia_ingest.conversion.specimen import get_specimen_for_association
+from bia_ingest.conversion.specimen import get_specimen_for_dataset
 from bia_ingest.conversion.image_acquisition import get_image_acquisition
 from bia_ingest.conversion.experimental_imaging_dataset import (
     get_experimental_imaging_dataset,
@@ -81,8 +81,8 @@ def get_all_experimentally_captured_images(
         ]
 
         # TODO: revisit this once API up
-        subject_uuid = get_specimen_for_association(
-            submission, dataset.attribute["associations"][0], result_summary
+        subject_uuid = get_specimen_for_dataset(
+            submission, dataset, result_summary
         ).uuid
 
         # files_in_fl = [fr.file_path for fr in file_references]
@@ -141,9 +141,7 @@ def get_experimentally_captured_image(
     acquisition_process_uuid = [
         ia.uuid for ia in image_acquisitions if ia.title_id in image_acquisition_title
     ]
-    subject_uuid = get_specimen_for_association(
-        submission, dataset.attribute["associations"][0], result_summary
-    ).uuid
+    subject_uuid = get_specimen_for_dataset(submission, dataset, result_summary).uuid
 
     file_paths = ",".join([fr.file_path for fr in file_references])
     # Consolidate attributes from multiple file references into one dict
