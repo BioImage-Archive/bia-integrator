@@ -18,7 +18,10 @@ def get_test_experimentally_captured_image() -> (
     List[bia_data_model.ExperimentallyCapturedImage]
 ):
     image_acquisition_uuids = [ia.uuid for ia in get_test_image_acquisition()]
-    specimen_uuids = [specimen.uuid for specimen in get_test_specimen()]
+    specimen_uuids = [
+        specimen.uuid
+        for specimen in get_test_specimen_for_experimentally_captured_image()
+    ]
     experimental_imaging_dataset_uuids = [
         eid.uuid for eid in get_test_experimental_imaging_dataset()
     ]
@@ -55,7 +58,7 @@ def get_test_experimentally_captured_image() -> (
                 image_acquisition_uuids[0],
             ],
             "submission_dataset_uuid": experimental_imaging_dataset_uuids[1],
-            "subject_uuid": specimen_uuids[2],
+            "subject_uuid": specimen_uuids[1],
             "attribute": {
                 "AnnotationsIn": "ann06-10.json",
                 "metadata1_key": "metadata1_value",
@@ -68,7 +71,7 @@ def get_test_experimentally_captured_image() -> (
                 image_acquisition_uuids[0],
             ],
             "submission_dataset_uuid": experimental_imaging_dataset_uuids[1],
-            "subject_uuid": specimen_uuids[2],
+            "subject_uuid": specimen_uuids[1],
             "attribute": {
                 "AnnotationsIn": "ann06-10.json",
                 "metadata3_key": "metadata3_value",
@@ -429,6 +432,56 @@ def get_test_specimen() -> bia_data_model.Specimen:
             ],
             "sample_of_uuid": [
                 biosamples[biosample_title],
+            ],
+            "growth_protocol_uuid": [
+                growth_protocols[specimen_title],
+            ],
+            "accession_id": accession_id,
+        }
+        specimen_dict["uuid"] = dict_to_uuid(specimen_dict, attributes_to_consider)
+        # Accession ID only needed to generate UUID
+        specimen_dict.pop("accession_id")
+
+        specimen_dict["version"] = 1
+        specimens.append(bia_data_model.Specimen.model_validate(specimen_dict))
+    return specimens
+
+
+# This function is written to provide test data for ECI. It currently
+# uses correct form of Specimen where all artefacts in association for
+# a dataset are in one Specimen object (see https://app.clickup.com/t/8695fqxpy )
+# TODO: Consolidate this function and get_test_specimen() into one
+def get_test_specimen_for_experimentally_captured_image() -> bia_data_model.Specimen:
+    attributes_to_consider = [
+        "accession_id",
+        "imaging_preparation_protocol_uuid",
+        "sample_of_uuid",
+        "growth_protocol_uuid",
+    ]
+    imaging_preparation_protocols = {
+        ipp.title_id: ipp.uuid
+        for ipp in get_test_specimen_imaging_preparation_protocol()
+    }
+    growth_protocols = {
+        gp.title_id: gp.uuid for gp in get_test_specimen_growth_protocol()
+    }
+    biosamples = {
+        biosample.title_id: biosample.uuid for biosample in get_test_biosample()
+    }
+
+    # Specimens correspond to associations in Experimental Imaging Dataset
+    datasets = get_test_experimental_imaging_dataset()
+    specimens = []
+    for dataset in datasets:
+        associations = dataset.attribute["associations"]
+        biosample_titles = [a["biosample"] for a in associations]
+        specimen_title = associations[0]["specimen"]
+        specimen_dict = {
+            "imaging_preparation_protocol_uuid": [
+                imaging_preparation_protocols[specimen_title]
+            ],
+            "sample_of_uuid": [
+                biosamples[biosample_title] for biosample_title in biosample_titles
             ],
             "growth_protocol_uuid": [
                 growth_protocols[specimen_title],

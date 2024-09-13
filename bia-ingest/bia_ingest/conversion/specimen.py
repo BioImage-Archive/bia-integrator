@@ -24,50 +24,45 @@ from . import (
 logger = logging.getLogger("__main__." + __name__)
 
 
-# TODO: Should we make this per image?
-# TODO: Need to change according to https://app.clickup.com/t/8695fqxpy
-def get_specimen_for_association(
-    submission: Submission, association: Dict[str, str], result_summary: dict
+def get_specimen_for_dataset(
+    submission: Submission,
+    dataset: bia_data_model.ExperimentalImagingDataset,
+    result_summary: dict,
 ) -> bia_data_model.Specimen:
     """Return bia_data_model.Specimen for a particular dataset"""
 
-    specimen_title = association["specimen"]
+    # According to https://app.clickup.com/t/8695fqxpy we want one specimen
+    # per dataset, so if more than one association we are concatenation
+    # the required information from each.
+    associations = [association for association in dataset.attribute["associations"]]
+    specimen_titles = set([association["specimen"] for association in associations])
 
     biosamples = biosample_conversion.get_biosample(submission, result_summary)
+    # Put UUIDs from assoication in set to prevent duplication
+    biosample_uuids = set()
+    for association in associations:
+        biosample_uuids.add(
+            *[b.uuid for b in biosamples if b.title_id == association["biosample"]]
+        )
+    biosample_list = list(biosample_uuids)
+    biosample_list.sort()
 
-    biosample_list = [
-        next(
-            (b.uuid for b in biosamples if b.title_id == association["biosample"]), None
-        ),
-    ]
-
-    # Get biostudies.Specimen from submission, then use to get
-    # image preparation protocol and growth protocol details
-    # ImagingPreparationProtocol
     imaging_preparation_protocols = (
         sipp_conversion.get_specimen_imaging_preparation_protocol(
             submission, result_summary
         )
     )
     imaging_preparation_protocol_list = [
-        next(
-            (
-                sipp.uuid
-                for sipp in imaging_preparation_protocols
-                if sipp.title_id == specimen_title
-            ),
-            None,
-        ),
+        sipp.uuid
+        for sipp in imaging_preparation_protocols
+        if sipp.title_id in specimen_titles
     ]
 
-    # GrowthProtocol
     growth_protocols = sgp_conversion.get_specimen_growth_protocol(
         submission, result_summary
     )
     growth_protocol_list = [
-        next(
-            (gp.uuid for gp in growth_protocols if gp.title_id == specimen_title), None
-        ),
+        gp.uuid for gp in growth_protocols if gp.title_id in specimen_titles
     ]
 
     model_dict = {
@@ -83,6 +78,8 @@ def get_specimen_for_association(
     return bia_data_model.Specimen.model_validate(model_dict)
 
 
+# TODO: Discuss with @FS if we still need this function ( see clickup
+#       ticket https://app.clickup.com/t/8695fqxpy
 def get_specimen(
     submission: Submission, result_summary: dict, persist_artefacts: bool = False
 ) -> List[bia_data_model.Specimen]:
