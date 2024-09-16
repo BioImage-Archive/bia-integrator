@@ -1,6 +1,7 @@
 from api import public
 from api import private
 from api import auth
+from api import search
 
 from api.models.repository import repository_create, Repository
 
@@ -34,6 +35,10 @@ def on_start():
 
 app.include_router(
     public.make_router(),
+    prefix="/v2",
+)
+app.include_router(
+    search.make_router(),
     prefix="/v2",
 )
 app.include_router(
