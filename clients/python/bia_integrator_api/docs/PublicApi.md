@@ -30,6 +30,7 @@ Method | HTTP request | Description
 [**get_image_annotation_dataset**](PublicApi.md#get_image_annotation_dataset) | **GET** /v2/image_annotation_dataset/{uuid} | Get ImageAnnotationDataset
 [**get_image_annotation_dataset_in_study**](PublicApi.md#get_image_annotation_dataset_in_study) | **GET** /v2/study/{uuid}/image_annotation_dataset | Get ImageAnnotationDataset In Study
 [**get_image_representation**](PublicApi.md#get_image_representation) | **GET** /v2/image_representation/{uuid} | Get ImageRepresentation
+[**get_image_representation_by_file_uri**](PublicApi.md#get_image_representation_by_file_uri) | **GET** /v2/search/image_representation/file_uri_fragment | Getimagerepresentationbyfileuri
 [**get_image_representation_in_derived_image**](PublicApi.md#get_image_representation_in_derived_image) | **GET** /v2/derived_image/{uuid}/image_representation | Get ImageRepresentation In DerivedImage
 [**get_image_representation_in_experimentally_captured_image**](PublicApi.md#get_image_representation_in_experimentally_captured_image) | **GET** /v2/experimentally_captured_image/{uuid}/image_representation | Get ImageRepresentation In ExperimentallyCapturedImage
 [**get_image_representation_in_file_reference**](PublicApi.md#get_image_representation_in_file_reference) | **GET** /v2/file_reference/{uuid}/image_representation | Get ImageRepresentation In FileReference
@@ -41,6 +42,7 @@ Method | HTTP request | Description
 [**get_specimen_in_specimen_imaging_preparation_protocol**](PublicApi.md#get_specimen_in_specimen_imaging_preparation_protocol) | **GET** /v2/specimen_imaging_preparation_protocol/{uuid}/specimen | Get Specimen In SpecimenImagingPreparationProtocol
 [**get_studies**](PublicApi.md#get_studies) | **GET** /v2/study | Getstudies
 [**get_study**](PublicApi.md#get_study) | **GET** /v2/study/{uuid} | Get Study
+[**get_study_by_accession**](PublicApi.md#get_study_by_accession) | **GET** /v2/search/study/accession | Getstudybyaccession
 
 
 # **get_annotation_file_reference**
@@ -1785,6 +1787,73 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+# **get_image_representation_by_file_uri**
+> List[ImageRepresentation] get_image_representation_by_file_uri(file_uri)
+
+Getimagerepresentationbyfileuri
+
+### Example
+
+
+```python
+import bia_integrator_api
+from bia_integrator_api.models.image_representation import ImageRepresentation
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PublicApi(api_client)
+    file_uri = 'file_uri_example' # str | 
+
+    try:
+        # Getimagerepresentationbyfileuri
+        api_response = api_instance.get_image_representation_by_file_uri(file_uri)
+        print("The response of PublicApi->get_image_representation_by_file_uri:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PublicApi->get_image_representation_by_file_uri: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **file_uri** | **str**|  | 
+
+### Return type
+
+[**List[ImageRepresentation]**](ImageRepresentation.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **get_image_representation_in_derived_image**
 > List[ImageRepresentation] get_image_representation_in_derived_image(uuid)
 
@@ -2496,6 +2565,73 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **uuid** | **str**|  | 
+
+### Return type
+
+[**Study**](Study.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **get_study_by_accession**
+> Study get_study_by_accession(accession_id)
+
+Getstudybyaccession
+
+### Example
+
+
+```python
+import bia_integrator_api
+from bia_integrator_api.models.study import Study
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PublicApi(api_client)
+    accession_id = 'accession_id_example' # str | 
+
+    try:
+        # Getstudybyaccession
+        api_response = api_instance.get_study_by_accession(accession_id)
+        print("The response of PublicApi->get_study_by_accession:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PublicApi->get_study_by_accession: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **accession_id** | **str**|  | 
 
 ### Return type
 

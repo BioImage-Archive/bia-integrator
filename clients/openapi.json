@@ -1784,6 +1784,104 @@
         }
       }
     },
+    "/v2/search/study/accession": {
+      "get": {
+        "tags": [
+          "public"
+        ],
+        "summary": "Getstudybyaccession",
+        "operationId": "getStudyByAccession",
+        "parameters": [
+          {
+            "name": "accession_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Accession Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/Study"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "title": "Response Getstudybyaccession"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/search/image_representation/file_uri_fragment": {
+      "get": {
+        "tags": [
+          "public"
+        ],
+        "summary": "Getimagerepresentationbyfileuri",
+        "operationId": "getImageRepresentationByFileUri",
+        "parameters": [
+          {
+            "name": "file_uri",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 5,
+              "maxLength": 1000,
+              "title": "File Uri"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ImageRepresentation"
+                  },
+                  "title": "Response Getimagerepresentationbyfileuri"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v2/private/study": {
       "post": {
         "tags": [
