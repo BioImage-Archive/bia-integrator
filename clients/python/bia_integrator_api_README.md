@@ -142,7 +142,6 @@ Class | Method | HTTP request | Description
 *PublicApi* | [**get_image_annotation_dataset**](bia_integrator_api/docs/PublicApi.md#get_image_annotation_dataset) | **GET** /v2/image_annotation_dataset/{uuid} | Get ImageAnnotationDataset
 *PublicApi* | [**get_image_annotation_dataset_in_study**](bia_integrator_api/docs/PublicApi.md#get_image_annotation_dataset_in_study) | **GET** /v2/study/{uuid}/image_annotation_dataset | Get ImageAnnotationDataset In Study
 *PublicApi* | [**get_image_representation**](bia_integrator_api/docs/PublicApi.md#get_image_representation) | **GET** /v2/image_representation/{uuid} | Get ImageRepresentation
-*PublicApi* | [**get_image_representation_by_file_uri**](bia_integrator_api/docs/PublicApi.md#get_image_representation_by_file_uri) | **GET** /v2/search/image_representation/file_uri_fragment | Getimagerepresentationbyfileuri
 *PublicApi* | [**get_image_representation_in_derived_image**](bia_integrator_api/docs/PublicApi.md#get_image_representation_in_derived_image) | **GET** /v2/derived_image/{uuid}/image_representation | Get ImageRepresentation In DerivedImage
 *PublicApi* | [**get_image_representation_in_experimentally_captured_image**](bia_integrator_api/docs/PublicApi.md#get_image_representation_in_experimentally_captured_image) | **GET** /v2/experimentally_captured_image/{uuid}/image_representation | Get ImageRepresentation In ExperimentallyCapturedImage
 *PublicApi* | [**get_image_representation_in_file_reference**](bia_integrator_api/docs/PublicApi.md#get_image_representation_in_file_reference) | **GET** /v2/file_reference/{uuid}/image_representation | Get ImageRepresentation In FileReference
@@ -154,7 +153,8 @@ Class | Method | HTTP request | Description
 *PublicApi* | [**get_specimen_in_specimen_imaging_preparation_protocol**](bia_integrator_api/docs/PublicApi.md#get_specimen_in_specimen_imaging_preparation_protocol) | **GET** /v2/specimen_imaging_preparation_protocol/{uuid}/specimen | Get Specimen In SpecimenImagingPreparationProtocol
 *PublicApi* | [**get_studies**](bia_integrator_api/docs/PublicApi.md#get_studies) | **GET** /v2/study | Getstudies
 *PublicApi* | [**get_study**](bia_integrator_api/docs/PublicApi.md#get_study) | **GET** /v2/study/{uuid} | Get Study
-*PublicApi* | [**get_study_by_accession**](bia_integrator_api/docs/PublicApi.md#get_study_by_accession) | **GET** /v2/search/study/accession | Getstudybyaccession
+*PublicApi* | [**search_image_representation_by_file_uri**](bia_integrator_api/docs/PublicApi.md#search_image_representation_by_file_uri) | **GET** /v2/search/image_representation/file_uri_fragment | Searchimagerepresentationbyfileuri
+*PublicApi* | [**search_study_by_accession**](bia_integrator_api/docs/PublicApi.md#search_study_by_accession) | **GET** /v2/search/study/accession | Searchstudybyaccession
 
 
 ## Documentation For Models

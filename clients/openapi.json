@@ -1789,8 +1789,8 @@
         "tags": [
           "public"
         ],
-        "summary": "Getstudybyaccession",
-        "operationId": "getStudyByAccession",
+        "summary": "Searchstudybyaccession",
+        "operationId": "searchStudyByAccession",
         "parameters": [
           {
             "name": "accession_id",
@@ -1816,7 +1816,7 @@
                       "type": "null"
                     }
                   ],
-                  "title": "Response Getstudybyaccession"
+                  "title": "Response Searchstudybyaccession"
                 }
               }
             }
@@ -1839,8 +1839,8 @@
         "tags": [
           "public"
         ],
-        "summary": "Getimagerepresentationbyfileuri",
-        "operationId": "getImageRepresentationByFileUri",
+        "summary": "Searchimagerepresentationbyfileuri",
+        "operationId": "searchImageRepresentationByFileUri",
         "parameters": [
           {
             "name": "file_uri",
@@ -1864,7 +1864,7 @@
                   "items": {
                     "$ref": "#/components/schemas/ImageRepresentation"
                   },
-                  "title": "Response Getimagerepresentationbyfileuri"
+                  "title": "Response Searchimagerepresentationbyfileuri"
                 }
               }
             }

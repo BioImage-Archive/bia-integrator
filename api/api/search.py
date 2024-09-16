@@ -9,7 +9,7 @@ router = APIRouter(prefix="/search", tags=[constants.OPENAPI_TAG_PUBLIC])
 
 
 @router.get("/study/accession")
-async def getStudyByAccession(
+async def searchStudyByAccession(
     accession_id: str, db: Annotated[Repository, Depends(get_db)]
 ) -> Optional[shared_data_models.Study]:
     studies = await db.get_docs(
@@ -23,7 +23,7 @@ async def getStudyByAccession(
 
 
 @router.get("/image_representation/file_uri_fragment")
-async def getImageRepresentationByFileUri(
+async def searchImageRepresentationByFileUri(
     file_uri: Annotated[str, Query(min_length=5, max_length=1000)],
     db: Annotated[Repository, Depends(get_db)],
 ) -> List[shared_data_models.ImageRepresentation]:
