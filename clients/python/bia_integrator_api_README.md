@@ -153,6 +153,8 @@ Class | Method | HTTP request | Description
 *PublicApi* | [**get_specimen_in_specimen_imaging_preparation_protocol**](bia_integrator_api/docs/PublicApi.md#get_specimen_in_specimen_imaging_preparation_protocol) | **GET** /v2/specimen_imaging_preparation_protocol/{uuid}/specimen | Get Specimen In SpecimenImagingPreparationProtocol
 *PublicApi* | [**get_studies**](bia_integrator_api/docs/PublicApi.md#get_studies) | **GET** /v2/study | Getstudies
 *PublicApi* | [**get_study**](bia_integrator_api/docs/PublicApi.md#get_study) | **GET** /v2/study/{uuid} | Get Study
+*PublicApi* | [**search_image_representation_by_file_uri**](bia_integrator_api/docs/PublicApi.md#search_image_representation_by_file_uri) | **GET** /v2/search/image_representation/file_uri_fragment | Searchimagerepresentationbyfileuri
+*PublicApi* | [**search_study_by_accession**](bia_integrator_api/docs/PublicApi.md#search_study_by_accession) | **GET** /v2/search/study/accession | Searchstudybyaccession
 
 
 ## Documentation For Models
