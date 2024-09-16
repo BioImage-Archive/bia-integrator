@@ -2,6 +2,7 @@ import typer
 from typing import List
 from typing_extensions import Annotated
 from bia_ingest.biostudies import load_submission
+from bia_ingest.config import settings, api_client
 from bia_ingest.conversion.study import get_study
 from bia_ingest.conversion.experimental_imaging_dataset import (
     get_experimental_imaging_dataset,
@@ -17,6 +18,7 @@ from bia_ingest.conversion.image_representation import (
     create_image_representation,
     create_images_and_image_representations,
 )
+from bia_ingest.serialiser import SerialiserType, serialiser_factory
 from bia_shared_datamodels.semantic_models import ImageRepresentationUseType
 
 import logging
@@ -96,8 +98,18 @@ def ingest(
 def create(
     accession_id: Annotated[str, typer.Argument()],
     file_reference_uuid_list: Annotated[List[str], typer.Argument()],
+    serialiser_type: Annotated[
+        SerialiserType, typer.Option(case_sensitive=False)
+    ] = SerialiserType.mongodb,
 ) -> None:
     """Create representations for specified file reference(s)"""
+
+    serialiser = serialiser_factory(
+        serialiser_type,
+        output_dir_base=settings.bia_data_dir,
+        accession_id=accession_id,
+        api_client=api_client,
+    )
 
     submission = load_submission(accession_id)
     representation_use_types = [
@@ -114,7 +126,7 @@ def create(
                 representation_use_type=representation_use_type,
                 # representation_location=representation_location,
                 result_summary=result_summary,
-                persist_artefacts=True,
+                serialiser=serialiser,
             )
 
 
@@ -124,8 +136,18 @@ def create(
 def convert_images(
     accession_id: Annotated[str, typer.Argument()],
     file_reference_uuid_list: Annotated[List[str], typer.Argument()],
+    serialiser_type: Annotated[
+        SerialiserType, typer.Option(case_sensitive=False)
+    ] = SerialiserType.mongodb,
 ) -> None:
     """Convert images and create representations for specified file reference(s)"""
+
+    serialiser = serialiser_factory(
+        serialiser_type,
+        output_dir_base=settings.bia_data_dir,
+        accession_id=accession_id,
+        api_client=api_client,
+    )
 
     submission = load_submission(accession_id)
     result_summary = {accession_id: IngestionResult()}
@@ -134,7 +156,7 @@ def convert_images(
             submission=submission,
             file_reference_uuid=file_reference_uuid,
             result_summary=result_summary,
-            persist_artefacts=True,
+            serialiser=serialiser,
         )
 
 

@@ -5,6 +5,7 @@ import hashlib
 import uuid
 from typing import List, Any, Dict, Optional, Tuple, Type, Union
 from pydantic import BaseModel, ValidationError
+from pydantic.alias_generators import to_snake
 from ..biostudies import (
     Submission,
     attributes_to_dict,
@@ -12,8 +13,9 @@ from ..biostudies import (
     Attribute,
     find_file_lists_in_submission,
 )
-from ..config import settings
+from ..config import settings, api_client
 from ..cli_logging import IngestionResult
+import bia_integrator_api.models as api_models
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -185,14 +187,23 @@ def dict_to_uuid(my_dict: Dict[str, Any], attributes_to_consider: List[str]) -> 
 
 
 def persist(object_list: List[BaseModel], object_path: str, sumbission_accno: str):
-    output_dir = Path(settings.bia_data_dir) / object_path / sumbission_accno
-    if not output_dir.is_dir():
-        output_dir.mkdir(parents=True)
-        logger.debug(f"Created {output_dir}")
-    for object in object_list:
-        output_path = output_dir / f"{object.uuid}.json"
-        output_path.write_text(object.model_dump_json(indent=2))
-        logger.debug(f"Written {output_path}")
+    if object_path == "api":
+        for obj in object_list:
+            api_creation_method = f"post_{to_snake(obj.model.type_name)}"
+            api_obj = getattr(api_models, obj.model.type_name).model_validate_json(
+                obj.model_dump_json()
+            )
+            getattr(api_client, api_creation_method)(api_obj)
+            logger.info(f"persisted {obj.uuid} to API")
+    else:
+        output_dir = Path(settings.bia_data_dir) / object_path / sumbission_accno
+        if not output_dir.is_dir():
+            output_dir.mkdir(parents=True)
+            logger.debug(f"Created {output_dir}")
+        for obj in object_list:
+            output_path = output_dir / f"{obj.uuid}.json"
+            output_path.write_text(obj.model_dump_json(indent=2))
+            logger.debug(f"Written {output_path}")
 
 
 def filter_model_dictionary(dictionary: dict, target_model: Type[BaseModel]):

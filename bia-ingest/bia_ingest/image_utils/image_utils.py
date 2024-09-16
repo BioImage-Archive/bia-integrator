@@ -58,6 +58,12 @@ def extension_in_bioformats_single_file_formats_list(ext: str) -> bool:
     return ext in single_file_formats
 
 
+def in_bioformats_single_file_formats_list(file_location: [Path | str]) -> bool:
+    """Check if ext of path/uri/name of file in bioformats single file formats list"""
+    ext = get_image_extension(f"{file_location}")
+    return extension_in_bioformats_single_file_formats_list(ext)
+
+
 def get_ome_zarr_pixel_metadata(zarr_location: str) -> dict:
     """Return pixel metadata entry of METADATA.ome.xml of bioformats2raw zarr"""
 

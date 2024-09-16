@@ -4,6 +4,8 @@ import os
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+from bia_integrator_api.util import get_client_private
+
 default_output_base = (
     f"{Path(os.environ.get('HOME', '')) / '.cache' / 'bia-integrator-data-sm'}"
 )
@@ -31,3 +33,10 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
+
+# TODO: Put client details in .env (and maybe environment variables?)
+api_client = get_client_private(
+    username="test@example.com",
+    password="test",
+    api_base_url="http://localhost:8080",
+)
