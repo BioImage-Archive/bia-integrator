@@ -13,8 +13,6 @@ from ..image_utils.image_utils import (
     get_image_extension,
     extension_in_bioformats_single_file_formats_list,
 )
-from bia_ingest.conversion.specimen import get_specimen_for_dataset
-from bia_ingest.conversion.image_acquisition import get_image_acquisition
 from bia_ingest.conversion.experimental_imaging_dataset import (
     get_experimental_imaging_dataset,
 )
@@ -28,21 +26,12 @@ from bia_shared_datamodels import bia_data_model
 logger = logging.getLogger("__main__." + __name__)
 
 
+# TODO: Discuss whether to deprecate this function. We will not need it
+#       for our current workflow
 def get_all_experimentally_captured_images(
     submission: Submission, result_summary: dict, persist_artefacts=False
 ) -> List[bia_data_model.ExperimentallyCapturedImage]:
     """Return all experimentally captured images in all experimental imaging datasets"""
-
-    # TODO: Use of API will affect this! Retrieve if exists (Create otherwise?)
-    # TODO: Write function to get all objects of Type in accession_id subdir
-    image_acquisitions = None
-
-    # TODO: this is not really ingest - do we need result_summary?
-    if not image_acquisitions:
-        # Get all image acquisitions in study
-        image_acquisitions = get_image_acquisition(
-            submission, result_summary, persist_artefacts=persist_artefacts
-        )
 
     # Experimental Imaging Datasets in study
     datasets = get_experimental_imaging_dataset(submission, result_summary)
@@ -68,24 +57,8 @@ def get_all_experimentally_captured_images(
             logger.warning(message)
             continue
 
-        image_acquisition_title = [
-            association["image_acquisition"]
-            for association in dataset.attribute["associations"]
-        ]
-        # It would be nice to have a function like below ...
-        # image_acquisitions = get_image_acquisition_by_title(submission.accno, image_acquisition_title)
-        acquisition_process_uuid = [
-            ia.uuid
-            for ia in image_acquisitions
-            if ia.title_id in image_acquisition_title
-        ]
-
-        # TODO: revisit this once API up
-        subject_uuid = get_specimen_for_dataset(
-            submission, dataset, result_summary
-        ).uuid
-
-        # files_in_fl = [fr.file_path for fr in file_references]
+        subject_uuid = dataset.attribute["subject_uuid"]
+        acquisition_process_uuid = dataset.attribute["acquisition_process_uuid"]
         for file_reference in file_references:
             # Currently processing all single files bioformats can convert
             file_in_fl = file_reference.file_path
@@ -124,24 +97,8 @@ def get_experimentally_captured_image(
         dataset_uuid, bia_data_model.ExperimentalImagingDataset, submission.accno
     )
 
-    image_acquisition_title = [
-        association["image_acquisition"]
-        for association in dataset.attribute["associations"]
-    ]
-    # TODO: Use of API will affect this! Retrieve if exists (Create otherwise?)
-    # TODO: Write function to get all objects of Type in accession_id subdir
-    image_acquisitions = None
-
-    if not image_acquisitions:
-        # Get all image acquisitions in study
-        image_acquisitions = get_image_acquisition(
-            submission, result_summary, persist_artefacts=persist_artefacts
-        )
-
-    acquisition_process_uuid = [
-        ia.uuid for ia in image_acquisitions if ia.title_id in image_acquisition_title
-    ]
-    subject_uuid = get_specimen_for_dataset(submission, dataset, result_summary).uuid
+    subject_uuid = dataset.attribute["subject_uuid"]
+    acquisition_process_uuid = dataset.attribute["acquisition_process_uuid"]
 
     file_paths = ",".join([fr.file_path for fr in file_references])
     # Consolidate attributes from multiple file references into one dict
@@ -177,8 +134,6 @@ def prepare_experimentally_captured_image_dict(
     version: int = 1,
 ):
     model_dict = {
-        # TODO: Are file_reference uuids a better choice here?
-        # "file_reference_uuid": ",".join([str(f) for f in file_reference_uuids]),
         "path": file_paths,
         "acquisition_process_uuid": acquisition_process_uuid,
         "submission_dataset_uuid": dataset_uuid,
@@ -196,8 +151,6 @@ def generate_experimentally_captured_image_uuid(
     experimentally_captured_image_dict: Dict[str, Any],
 ) -> str:
     attributes_to_consider = [
-        # TODO: Are file_reference uuids a better choice here?
-        # "file_reference_uuid": ",".join([str(f) for f in file_reference_uuids]),
         "path",
         "acquisition_process_uuid",
         "submission_dataset_uuid",

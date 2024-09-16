@@ -14,10 +14,48 @@ from bia_ingest.conversion.utils import dict_to_uuid, filter_model_dictionary
 accession_id = "S-BIADTEST"
 
 
+def get_test_dataset_association_dicts() -> List[List[dict]]:
+    """Return list of List[dict]s for experimental imaging datasets associaions
+
+    Necessary to prevent recursion when computing EIDs as they contain
+    uuids of specimens and specimens are generated looking at
+    associations in dataset
+    """
+    return [
+        # Associations for study component (dataset) 1
+        [
+            {
+                "image_analysis": "Test image analysis",
+                "image_correlation": None,
+                "biosample": "Test Biosample 1",
+                "image_acquisition": "Test Primary Screen Image Acquisition",
+                "specimen": "Test specimen 1",
+            },
+            {
+                "image_analysis": "Test image analysis",
+                "image_correlation": None,
+                "biosample": "Test Biosample 2 ",
+                "image_acquisition": "Test Secondary Screen Image Acquisition",
+                "specimen": "Test specimen 1",
+            },
+        ],
+        # Associations for study component (dataset) 2
+        [
+            {
+                "image_analysis": "Test image analysis",
+                "image_correlation": None,
+                "biosample": "Test Biosample 2 ",
+                "image_acquisition": "Test Primary Screen Image Acquisition",
+                "specimen": "Test specimen 2",
+            },
+        ],
+    ]
+
+
 def get_test_experimentally_captured_image() -> (
     List[bia_data_model.ExperimentallyCapturedImage]
 ):
-    image_acquisition_uuids = [ia.uuid for ia in get_test_image_acquisition()]
+    image_acquisition_uuids = [str(ia.uuid) for ia in get_test_image_acquisition()]
     specimen_uuids = [
         specimen.uuid
         for specimen in get_test_specimen_for_experimentally_captured_image()
@@ -470,10 +508,9 @@ def get_test_specimen_for_experimentally_captured_image() -> bia_data_model.Spec
     }
 
     # Specimens correspond to associations in Experimental Imaging Dataset
-    datasets = get_test_experimental_imaging_dataset()
+    dataset_associations = get_test_dataset_association_dicts()
     specimens = []
-    for dataset in datasets:
-        associations = dataset.attribute["associations"]
+    for associations in dataset_associations:
         biosample_titles = [a["biosample"] for a in associations]
         specimen_title = associations[0]["specimen"]
         specimen_dict = {
@@ -590,6 +627,9 @@ def get_test_experimental_imaging_dataset() -> (
             "accession_id",
         ],
     )
+    associations = get_test_dataset_association_dicts()
+    specimens = get_test_specimen_for_experimentally_captured_image()
+    image_acquisition_uuids = [str(ia.uuid) for ia in get_test_image_acquisition()]
 
     experimental_imaging_dataset_dict = {
         "title_id": "Study Component 1",
@@ -604,22 +644,10 @@ def get_test_experimental_imaging_dataset() -> (
         "description": "Description of study component 1",
         "version": 1,
         "attribute": {
-            "associations": [
-                {
-                    "image_analysis": "Test image analysis",
-                    "image_correlation": None,
-                    "biosample": "Test Biosample 1",
-                    "image_acquisition": "Test Primary Screen Image Acquisition",
-                    "specimen": "Test specimen 1",
-                },
-                {
-                    "image_analysis": "Test image analysis",
-                    "image_correlation": None,
-                    "biosample": "Test Biosample 2 ",
-                    "image_acquisition": "Test Secondary Screen Image Acquisition",
-                    "specimen": "Test specimen 1",
-                },
-            ]
+            "associations": associations[0],
+            "acquisition_process_uuid": image_acquisition_uuids,
+            "subject_uuid": str(specimens[0].uuid),
+            "biosample_uuid": str(specimens[0].sample_of_uuid),
         },
     }
     experimental_imaging_dataset_uuid = dict_to_uuid(
@@ -652,15 +680,12 @@ def get_test_experimental_imaging_dataset() -> (
         "description": "Description of study component 2",
         "version": 1,
         "attribute": {
-            "associations": [
-                {
-                    "image_analysis": "Test image analysis",
-                    "image_correlation": None,
-                    "biosample": "Test Biosample 2 ",
-                    "image_acquisition": "Test Primary Screen Image Acquisition",
-                    "specimen": "Test specimen 2",
-                }
-            ]
+            "associations": associations[1],
+            "acquisition_process_uuid": [
+                image_acquisition_uuids[0],
+            ],
+            "subject_uuid": str(specimens[1].uuid),
+            "biosample_uuid": str(specimens[1].sample_of_uuid),
         },
     }
     experimental_imaging_dataset_uuid = dict_to_uuid(

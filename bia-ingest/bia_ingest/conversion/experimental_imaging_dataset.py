@@ -11,6 +11,9 @@ from .utils import (
     log_model_creation_count,
 )
 import bia_ingest.conversion.study as study_conversion
+from bia_ingest.conversion.image_acquisition import get_image_acquisition
+from bia_ingest.conversion.specimen import get_specimen_for_dataset
+
 from ..biostudies import (
     Submission,
     attributes_to_dict,
@@ -27,6 +30,11 @@ def get_experimental_imaging_dataset(
 ) -> List[bia_data_model.ExperimentalImagingDataset]:
     """
     Map biostudies.Submission study components to bia_data_model.ExperimentalImagingDataset
+
+    The bia_data_model.Specimen and ImageAcquisitions associated with the
+    dataset are also created here and their UUIDs stored in the
+    associations attribute of the dataset. This allows
+    ExperimentallyCapturedImages to access them.
     """
     study_components = find_sections_recursive(
         submission.section,
@@ -37,7 +45,12 @@ def get_experimental_imaging_dataset(
     )
     analysis_method_dict = get_image_analysis_method(submission, result_summary)
 
-    experimental_imaging_dataset = []
+    # Get all image acquisitions in study
+    image_acquisitions = get_image_acquisition(
+        submission, result_summary, persist_artefacts=persist_artefacts
+    )
+
+    experimental_imaging_datasets = []
     for section in study_components:
         attr_dict = attributes_to_dict(section.attributes)
         key_mapping = [
@@ -76,14 +89,15 @@ def get_experimental_imaging_dataset(
         )
 
         analysis_method_list = []
+
+        # TODO: We do not seem to have a function to get correlation methods!
         correlation_method_list = []
 
-        # TODO: move this to main CLI code to make object generation more independent
         if len(associations) > 0:
             # Image Analysis Method
-            analysis_methods_from_associations = [
+            analysis_methods_from_associations = {
                 a.get("image_analysis") for a in associations
-            ]
+            }
             for analysis_method in analysis_method_dict.values():
                 if (
                     analysis_method.protocol_description
@@ -109,7 +123,7 @@ def get_experimental_imaging_dataset(
         )
 
         try:
-            experimental_imaging_dataset.append(
+            experimental_imaging_dataset = (
                 bia_data_model.ExperimentalImagingDataset.model_validate(model_dict)
             )
         except ValidationError:
@@ -118,20 +132,44 @@ def get_experimental_imaging_dataset(
                 result_summary[submission.accno],
             )
 
+        # Create ImageAcquisition and Specimen and add uuids to dataset associations
+        image_acquisition_title = [
+            association["image_acquisition"]
+            for association in experimental_imaging_dataset.attribute["associations"]
+        ]
+        acquisition_process_uuid = [
+            str(ia.uuid)
+            for ia in image_acquisitions
+            if ia.title_id in image_acquisition_title
+        ]
+        experimental_imaging_dataset.attribute["acquisition_process_uuid"] = (
+            acquisition_process_uuid
+        )
+
+        subject = get_specimen_for_dataset(
+            submission, experimental_imaging_dataset, result_summary
+        )
+        experimental_imaging_dataset.attribute["subject_uuid"] = str(subject.uuid)
+        experimental_imaging_dataset.attribute["biosample_uuid"] = str(
+            subject.sample_of_uuid
+        )
+
+        experimental_imaging_datasets.append(experimental_imaging_dataset)
+
     log_model_creation_count(
         bia_data_model.ExperimentalImagingDataset,
-        len(experimental_imaging_dataset),
+        len(experimental_imaging_datasets),
         result_summary[submission.accno],
     )
 
-    if persist_artefacts and experimental_imaging_dataset:
+    if persist_artefacts and experimental_imaging_datasets:
         persist(
-            experimental_imaging_dataset,
+            experimental_imaging_datasets,
             "experimental_imaging_datasets",
             submission.accno,
         )
 
-    return experimental_imaging_dataset
+    return experimental_imaging_datasets
 
 
 def get_image_analysis_method(
