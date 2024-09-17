@@ -32,12 +32,18 @@ def create_image_representation(
 ) -> bia_data_model.ImageRepresentation:
     """Create ImageRepresentation for specified FileReference(s)"""
 
-    # TODO: this should be replaced by API client and we would not need
-    # accession_id
-    file_references = [
-        get_bia_data_model_by_uuid(uuid, bia_data_model.FileReference, submission.accno)
-        for uuid in file_reference_uuids
-    ]
+    # TODO: remove get_bia_data_model_by_uuid!!!
+    if serialiser:
+        file_references = serialiser.deserialise_by_uuid(
+            [str(uuid) for uuid in file_reference_uuids], bia_data_model.FileReference
+        )
+    else:
+        file_references = [
+            get_bia_data_model_by_uuid(
+                uuid, bia_data_model.FileReference, submission.accno
+            )
+            for uuid in file_reference_uuids
+        ]
     file_paths = [fr.file_path for fr in file_references]
     if not any(
         [in_bioformats_single_file_formats_list(file_path) for file_path in file_paths]
@@ -146,11 +152,19 @@ def create_images_and_image_representations(
     # Get image uploaded by submitter and update representation
     representation = representations["UPLOADED_BY_SUBMITTER"]
     # TODO file_uri of this representation = that of file reference(s)
-    file_reference = get_bia_data_model_by_uuid(
-        representation.original_file_reference_uuid[0],
-        bia_data_model.FileReference,
-        submission.accno,
-    )
+    if serialiser:
+        file_reference = serialiser.deserialise_by_uuid(
+            [
+                str(representation.original_file_reference_uuid[0]),
+            ],
+            bia_data_model.FileReference,
+        )[0]
+    else:
+        file_reference = get_bia_data_model_by_uuid(
+            representation.original_file_reference_uuid[0],
+            bia_data_model.FileReference,
+            submission.accno,
+        )
     local_path_to_uploaded_by_submitter_rep = stage_fileref_and_get_fpath(
         file_reference
     )
