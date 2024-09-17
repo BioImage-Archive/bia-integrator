@@ -22,3 +22,11 @@ This creates the following structure (using S-BIAD325 as an example):
     ...
 ```
 The base directory defaults to `~/.cache/bia-integrator-data-sm`. This can be changed by setting `bia_data_dir` environment variable, or creating a .env file in this folder setting this value.
+
+## Converter dependencies
+
+bioformats2raw see [this](https://github.com/glencoesoftware/bioformats2raw)
+
+On Ubuntu (at least): `sudo apt-get install libblosc-dev`
+
+aws cli see [this](https://aws.amazon.com/cli/)

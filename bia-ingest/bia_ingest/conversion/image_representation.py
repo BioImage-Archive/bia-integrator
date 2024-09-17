@@ -81,7 +81,7 @@ def create_image_representation(
         # separated into values and units whereas model expects just
         # values standardised to 'm' ...
         "attribute": {},
-        "version": 1,
+        "version": 0,
     }
     model_dict["uuid"] = generate_image_representation_uuid(model_dict)
     image_representation = bia_data_model.ImageRepresentation.model_validate(model_dict)
