@@ -31,6 +31,7 @@ biaingest = "bia_ingest.cli:app"
 
 [tool.poetry.group.dev.dependencies]
 ipython = "^8.22.1"
+pyqt6 = "^6.7.1"
 
 [build-system]
 requires = ["poetry-core"]

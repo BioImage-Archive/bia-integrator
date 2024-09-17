@@ -93,7 +93,7 @@ def create_image_representation(
         # separated into values and units whereas model expects just
         # values standardised to 'm' ...
         "attribute": {},
-        "version": 1,
+        "version": 0,
     }
     model_dict["uuid"] = generate_image_representation_uuid(model_dict)
     image_representation = bia_data_model.ImageRepresentation.model_validate(model_dict)
@@ -101,8 +101,8 @@ def create_image_representation(
     if serialiser and image_representation:
         serialiser.serialise(
             [
-                image_representation,
                 experimentally_captured_image,
+                image_representation,
             ]
         )
 
@@ -186,7 +186,7 @@ def create_images_and_image_representations(
         ),
     )
     representation.file_uri = [
-        file_uri,
+        file_uri + "/0",
     ]
     representation.version += 1
 
@@ -238,6 +238,32 @@ def create_images_and_image_representations(
         file_uri,
     ]
     representation.version += 1
+
+    # Update the dataset URI if there is a serialiser
+    if serialiser:
+        eci_uuid = f"{representation.representation_of_uuid}"
+        eci = serialiser.deserialise_by_uuid(
+            [
+                eci_uuid,
+            ],
+            bia_data_model.ExperimentallyCapturedImage,
+        )[0]
+        dataset_uuid = str(eci.submission_dataset_uuid)
+        dataset = serialiser.deserialise_by_uuid(
+            [
+                dataset_uuid,
+            ],
+            bia_data_model.ExperimentalImagingDataset,
+        )[0]
+        dataset.example_image_uri = [
+            file_uri,
+        ]
+        dataset.version += 1
+        serialiser.serialise(
+            [
+                dataset,
+            ]
+        )
 
     list_of_representations = list(representations.values())
     if serialiser and list_of_representations:

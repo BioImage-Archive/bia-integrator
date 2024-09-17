@@ -75,12 +75,38 @@ class MongodbSerialiser(Serialiser):
 
     def serialise(self, object_list: List[BaseModel]) -> None:
         for obj in object_list:
-            api_creation_method = f"post_{to_snake(obj.model.type_name)}"
+            # First try to retrieve object
+            try:
+                api_copy_of_obj = self.deserialise_by_uuid(
+                    [
+                        f"{obj.uuid}",
+                    ],
+                    type(obj),
+                )
+            except Exception:
+                api_copy_of_obj = []
+
+            n_obj_in_api = len(api_copy_of_obj)
+            if n_obj_in_api > 1:
+                api_copy_of_obj = sorted(api_copy_of_obj, lambda a: a.version)
+                api_copy_of_obj = api_copy_of_obj[-1]
+            elif n_obj_in_api == 1:
+                api_copy_of_obj = api_copy_of_obj[0]
+
+            if obj == api_copy_of_obj:
+                message = f"Not writing to object of with uuid: {obj.uuid} and type: {obj.model.type_name} to API becase an identical copy of object exists in API"
+                logger.warning(message)
+                continue
+            elif api_copy_of_obj:
+                obj.version = api_copy_of_obj.version + 1
+
             api_obj = getattr(api_models, obj.model.type_name).model_validate_json(
                 obj.model_dump_json()
             )
+
+            api_creation_method = f"post_{to_snake(obj.model.type_name)}"
             getattr(self.api_client, api_creation_method)(api_obj)
-            # logger.info(f"persisted {obj.uuid} to API")
+            logger.info(f"persisted {obj.uuid} to API")
 
     def deserialise_by_uuid(
         self, uuids: List[UUID], model_class: Type[BaseModel]
