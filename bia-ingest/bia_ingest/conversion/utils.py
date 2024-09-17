@@ -192,7 +192,6 @@ def persist(object_list: List[BaseModel], object_path: str, sumbission_accno: st
     for obj in object_list:
         # model_dump types _uuid fields as UUID
         #   but api client models expect it to be a string, not a UUID
-        #print(obj)
         obj = json.loads(obj.model_dump_json())
 
         logger.debug(f"Written {obj}")
@@ -203,7 +202,7 @@ def persist(object_list: List[BaseModel], object_path: str, sumbission_accno: st
             getattr(api_client, to_snake(f"post{obj['model']['type_name']}"))(api_model_obj)
         except Exception as e:
             # same ECI created multiple times, treat all exceptions as skippable
-            print(e)
+            logger.info(e)
 
 def filter_model_dictionary(dictionary: dict, target_model: Type[BaseModel]):
     accepted_fields = target_model.model_fields.keys()

@@ -24,6 +24,9 @@ class Settings(BaseSettings):
     cache_root_dirpath: Path = Field(Path.home() / ".cache" / "bia-converter")
     bioformats2raw_java_home: str = Field("")
     bioformats2raw_bin: str = Field("")
+    bia_api_url: str = Field("http://localhost:8080")
+    bia_api_username: str = Field("test@example.com")
+    bia_api_password: str = Field("test")
 
 
 # class Settings:
@@ -35,7 +38,7 @@ settings = Settings()
 
 # TODO
 api_client = get_client_private(
-    username="test@example.com",
-    password="test",
-    api_base_url="http://localhost:8080"
+    username=settings.bia_api_username,
+    password=settings.bia_api_password,
+    api_base_url=settings.bia_api_url
 )
