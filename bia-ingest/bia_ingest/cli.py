@@ -22,7 +22,7 @@ from bia_shared_datamodels.semantic_models import ImageRepresentationUseType
 import logging
 from rich import print
 from rich.logging import RichHandler
-from .cli_logging import tabulate_errors, IngestionResult
+from bia_ingest.cli_logging import tabulate_errors, IngestionResult
 
 app = typer.Typer()
 

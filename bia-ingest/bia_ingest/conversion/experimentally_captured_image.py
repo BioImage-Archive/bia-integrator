@@ -131,7 +131,7 @@ def prepare_experimentally_captured_image_dict(
     acquisition_process_uuid: List[UUID],
     subject_uuid: UUID,
     attribute: dict = {},
-    version: int = 1,
+    version: int = 0,
 ):
     model_dict = {
         "path": file_paths,

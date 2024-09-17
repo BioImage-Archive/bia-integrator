@@ -5,6 +5,8 @@ import hashlib
 import uuid
 from typing import List, Any, Dict, Optional, Tuple, Type, Union
 from pydantic import BaseModel, ValidationError
+from pydantic.alias_generators import to_snake
+import bia_integrator_api.models as api_models
 from ..biostudies import (
     Submission,
     attributes_to_dict,
@@ -12,7 +14,7 @@ from ..biostudies import (
     Attribute,
     find_file_lists_in_submission,
 )
-from ..config import settings
+from ..config import settings, api_client
 from ..cli_logging import IngestionResult
 
 logger = logging.getLogger("__main__." + __name__)
@@ -185,15 +187,22 @@ def dict_to_uuid(my_dict: Dict[str, Any], attributes_to_consider: List[str]) -> 
 
 
 def persist(object_list: List[BaseModel], object_path: str, sumbission_accno: str):
-    output_dir = Path(settings.bia_data_dir) / object_path / sumbission_accno
-    if not output_dir.is_dir():
-        output_dir.mkdir(parents=True)
-        logger.debug(f"Created {output_dir}")
-    for object in object_list:
-        output_path = output_dir / f"{object.uuid}.json"
-        output_path.write_text(object.model_dump_json(indent=2))
-        logger.debug(f"Written {output_path}")
+    import json
+    
+    for obj in object_list:
+        # model_dump types _uuid fields as UUID
+        #   but api client models expect it to be a string, not a UUID
+        obj = json.loads(obj.model_dump_json())
 
+        logger.debug(f"Written {obj}")
+
+        # don't skip validation errors
+        api_model_obj = getattr(api_models, obj['model']['type_name'])(**obj)
+        try:
+            getattr(api_client, to_snake(f"post{obj['model']['type_name']}"))(api_model_obj)
+        except Exception as e:
+            # same ECI created multiple times, treat all exceptions as skippable
+            logger.info(e)
 
 def filter_model_dictionary(dictionary: dict, target_model: Type[BaseModel]):
     accepted_fields = target_model.model_fields.keys()
@@ -259,16 +268,7 @@ def get_bia_data_model_by_uuid(
     uuid: UUID, model_class: Type[BaseModel], accession_id: str = ""
 ) -> BaseModel:
     """Instantiate a bia_data_model from a json file on disk"""
-    import re
-
-    model_name_parts = [
-        s.lower() for s in re.split(r"(?=[A-Z])", model_class.__name__) if len(s) > 0
-    ]
-    model_subdir = "_".join(model_name_parts) + "s"
-    input_path = (
-        Path(settings.bia_data_dir) / model_subdir / accession_id / f"{uuid}.json"
-    )
-    return model_class.model_validate_json(input_path.read_text())
+    return getattr(api_client, to_snake(f"get{model_class.__name__}"))(str(uuid))
 
 
 def merge_dicts(dict_list: List[Dict[str, str]]) -> Dict:
