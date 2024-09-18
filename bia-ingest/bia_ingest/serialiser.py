@@ -8,6 +8,7 @@ import logging
 from pydantic import BaseModel
 from pydantic.alias_generators import to_snake
 from bia_integrator_api.api.private_api import PrivateApi
+from bia_integrator_api.exceptions import NotFoundException
 import bia_integrator_api.models as api_models
 
 logger = logging.getLogger("__main__." + __name__)
@@ -82,16 +83,9 @@ class MongodbSerialiser(Serialiser):
                         f"{obj.uuid}",
                     ],
                     type(obj),
-                )
-            except Exception:
-                api_copy_of_obj = []
-
-            n_obj_in_api = len(api_copy_of_obj)
-            if n_obj_in_api > 1:
-                api_copy_of_obj = sorted(api_copy_of_obj, lambda a: a.version)
-                api_copy_of_obj = api_copy_of_obj[-1]
-            elif n_obj_in_api == 1:
-                api_copy_of_obj = api_copy_of_obj[0]
+                )[0]
+            except NotFoundException:
+                api_copy_of_obj = None
 
             if obj == api_copy_of_obj:
                 message = f"Not writing to object of with uuid: {obj.uuid} and type: {obj.model.type_name} to API becase an identical copy of object exists in API"
@@ -109,12 +103,12 @@ class MongodbSerialiser(Serialiser):
             logger.info(f"persisted {obj.uuid} to API")
 
     def deserialise_by_uuid(
-        self, uuids: List[UUID], model_class: Type[BaseModel]
+        self, uuids: List[UUID | str], model_class: Type[BaseModel]
     ) -> List[BaseModel]:
         object_list = []
         for uuid in uuids:
             api_get_method = f"get_{to_snake(model_class.__name__)}"
-            api_obj = getattr(self.api_client, api_get_method)(uuid)
+            api_obj = getattr(self.api_client, api_get_method)(str(uuid))
             obj = model_class.model_validate_json(api_obj.model_dump_json())
             object_list.append(obj)
         return object_list

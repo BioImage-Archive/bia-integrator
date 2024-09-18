@@ -1,10 +1,13 @@
 from pathlib import Path
 import os
+import logging
 
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from bia_integrator_api.util import get_client_private
+
+logger = logging.getLogger("__main__." + __name__)
 
 default_output_base = (
     f"{Path(os.environ.get('HOME', '')) / '.cache' / 'bia-integrator-data-sm'}"
@@ -25,6 +28,9 @@ class Settings(BaseSettings):
     cache_root_dirpath: Path = Field(Path.home() / ".cache" / "bia-converter")
     bioformats2raw_java_home: str = Field("")
     bioformats2raw_bin: str = Field("")
+    bia_api_basepath: str = Field("http://localhost:8080")
+    bia_api_username: str = Field("test@example.com")
+    bia_api_password: str = Field("test")
 
 
 # class Settings:
@@ -35,8 +41,13 @@ class Settings(BaseSettings):
 settings = Settings()
 
 # TODO: Put client details in .env (and maybe environment variables?)
-api_client = get_client_private(
-    username="test@example.com",
-    password="test",
-    api_base_url="http://localhost:8080",
-)
+try:
+    api_client = get_client_private(
+        username=settings.bia_api_username,
+        password=settings.bia_api_password,
+        api_base_url=settings.bia_api_basepath,
+    )
+except Exception as e:
+    message = f"Could not initialise api_client: {e}"
+    logger.warning(message)
+    api_client = None
