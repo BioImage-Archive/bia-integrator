@@ -77,9 +77,9 @@ class NGFFProxyImage(object):
         if len(self.darray.shape) == 5:
             size_t, size_c, size_z, size_y, size_x = self.darray.shape
         elif len(self.darray.shape) == 3:
-            size_c, size_y, size_x = self.darray.shape
+            size_z, size_y, size_x = self.darray.shape
             size_t = 1
-            size_z = 1
+            size_c = 1
         else:
             raise Exception("Can't handle this array shape")
 
