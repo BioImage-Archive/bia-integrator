@@ -28,9 +28,9 @@ class Settings(BaseSettings):
     cache_root_dirpath: Path = Field(Path.home() / ".cache" / "bia-converter")
     bioformats2raw_java_home: str = Field("")
     bioformats2raw_bin: str = Field("")
-    bia_api_basepath: str = Field("http://localhost:8080")
-    bia_api_username: str = Field("test@example.com")
-    bia_api_password: str = Field("test")
+    bia_api_basepath: str = Field("http://localhost:8080", env="BIA_API_BASEPATH")
+    bia_api_username: str = Field("test@example.com", env="BIA_API_USERNAME")
+    bia_api_password: str = Field("test", env="BIA_API_PASSWORD")
 
 
 # class Settings:
