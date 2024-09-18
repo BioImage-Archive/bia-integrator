@@ -1,6 +1,5 @@
 from bia_integrator_api.util import get_client
 
 api_client = get_client(
-    # api_base_url="https://wwwdev.ebi.ac.uk/bioimage-archive/api",
-    api_base_url="http://localhost:8080",
+    api_base_url="https://wwwdev.ebi.ac.uk/bioimage-archive/api",
 )
