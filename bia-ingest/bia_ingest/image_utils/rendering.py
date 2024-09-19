@@ -1,5 +1,5 @@
+import logging
 from typing import Dict, List, Optional
-from urllib.parse import urlparse
 
 import zarr
 import numpy as np
@@ -8,46 +8,34 @@ from PIL import Image, ImageOps
 from pydantic import BaseModel
 from microfilm.colorify import multichannel_to_rgb
 from matplotlib.colors import LinearSegmentedColormap
+
+from urllib.parse import urlparse
 import s3fs
 
+# from bia_integrator_tools.utils import get_ome_ngff_rep_by_accession_and_image
 from .omezarrmeta import ZMeta
 
+logger = logging.getLogger("__main__." + __name__)
 
 DEFAULT_COLORS = [[1, 0, 0], [0, 1, 0], [0, 0, 1], [0, 1, 1], [1, 0, 1], [1, 1, 0]]
-
-
-def open_zarr_wrapper(uri):
-    """Wrapper using s3fs to open a S3 zarr or normal method for file zarr"""
-
-    uri = f"{uri}"
-    if uri.startswith("http"):
-        uri_parts = urlparse(uri)
-        endpoint_url = f"{uri_parts.scheme}://{uri_parts.netloc}"
-        s3_bucket = f"s3:/{uri_parts.path}"
-        fs = s3fs.S3FileSystem(anon=True, endpoint_url=endpoint_url)
-        return zarr.open(s3fs.S3Map(s3_bucket, s3=fs), mode="r", path=r"/")
-    else:
-        if uri.startswith("/"):
-            uri = f"file://{uri}"
-        return zarr.open(uri)
 
 
 class ChannelRenderingSettings(BaseModel):
     """Rendering settings for a specific channel."""
 
     label: Optional[str] = ""
-    colormap_start: Optional[List[float]] = [0.0, 0.0, 0.0]
-    colormap_end: List[float]
-    window_start: Optional[int] = 0
-    window_end: Optional[int] = 255
+    colormap_start: List[float] = [0.0, 0.0, 0.0]
+    colormap_end: List[float] = None
+    window_start: Optional[int] = None
+    window_end: Optional[int] = None
 
 
 class RenderingInfo(BaseModel):
     """Rending settings for a whole image."""
 
     channel_renders: List[ChannelRenderingSettings]
-    default_z: Optional[int]
-    default_t: Optional[int]
+    default_z: Optional[int] = None
+    default_t: Optional[int] = None
 
 
 class NGFFProxyImage(object):
@@ -56,28 +44,92 @@ class NGFFProxyImage(object):
     resolutions."""
 
     def __init__(self, uri):
-        self.uri = uri
-        self._init_darray()
+        self.uri = uri.rstrip("/0")
         self.zgroup = open_zarr_wrapper(self.uri)
+        self.array_paths = []
+        try:
+            self.zgroup.visititems(self._get_array_paths)
+        except Exception as e:
+            print(
+                f"Exception {e} when trying to get array_paths. Setting array_paths to ['0,']"
+            )
+
+        if len(self.array_paths) == 0:
+            self.array_paths = [
+                "0",
+            ]
 
         self.ngff_metadata = ZMeta.parse_obj(self.zgroup.attrs.asdict())
+        self._init_darray()
 
-    # TODO Implement this when API is in use
-    #    @classmethod
-    #    def from_bia_accession_and_image_ids(cls, accession_id, image_id):
-    #        ome_ngff_rep = get_ome_ngff_rep_by_accession_and_image(accession_id, image_id)
-    #        return cls(ome_ngff_rep.uri)
+    def _get_array_paths(self, name, obj):
+        """Get the paths of groups containing array data"""
+        if not obj:
+            return None
+        if "Array" in obj.__str__():
+            self.array_paths.append(name)
+        elif len(self.array_paths) > 0:
+            # We terminate once we have array paths for a subgroup to
+            # prevent recursively traversing groups which may take a while
+            # especially when a store has a large number of groups
+            return obj
+        return None
+
+    # @classmethod
+    # def from_bia_accession_and_image_ids(cls, accession_id, image_id):
+    #    ome_ngff_rep = get_ome_ngff_rep_by_accession_and_image(accession_id, image_id)
+    #    return cls(ome_ngff_rep.uri)
 
     def _init_darray(self):
-        self.darray = dask_array_from_ome_ngff_uri(self.uri)
+        self.darray = dask_array_from_ome_ngff_uri(self.uri, self.array_paths[0])
+
+        # Try to get axes info from image metadata - if this goes wrong
+        # or if image is plate well, fallback to old method
+        try:
+            axes = self.ngff_metadata.multiscales[0].axes
+            if axes is not None and len(axes) > 2:
+                size_t, size_c, size_z, size_y, size_x = (1, 1, 1, 1, 1)
+                for index, axis in enumerate(axes):
+                    # The conditional statements below could be avoided
+                    # using eval(f"size_{axis.name} = self.darray.shape[index]")
+                    if axis.name == "t":
+                        size_t = self.darray.shape[index]
+                    elif axis.name == "c":
+                        size_c = self.darray.shape[index]
+                    elif axis.name == "z":
+                        size_z = self.darray.shape[index]
+                    elif axis.name == "y":
+                        size_y = self.darray.shape[index]
+                    elif axis.name == "x":
+                        size_x = self.darray.shape[index]
+
+                self.size_t = size_t
+                self.size_c = size_c
+                self.size_z = size_z
+                self.size_y = size_y
+                self.size_x = size_x
+                return
+            else:
+                raise Exception("NGFF metadata ({axes}) less than 2 entries")
+        except Exception as e:
+            message = f"Could not get axes info from NGFF. Message was {e}. Falling back to old method"
+            logger.warning(message)
 
         # FIXME - this is not a reliable way to determine which dimensions are present in which
         # order, we should be parsing the NGFF metadata to do this
 
         if len(self.darray.shape) == 5:
             size_t, size_c, size_z, size_y, size_x = self.darray.shape
+        elif len(self.darray.shape) == 4:
+            size_t = 1
+            size_c, size_z, size_y, size_x = self.darray.shape
         elif len(self.darray.shape) == 3:
             size_z, size_y, size_x = self.darray.shape
+            size_t = 1
+            size_c = 1
+        elif len(self.darray.shape) == 2:
+            size_y, size_x = self.darray.shape
+            size_z = 1
             size_t = 1
             size_c = 1
         else:
@@ -91,16 +143,13 @@ class NGFFProxyImage(object):
 
     def get_dask_array_with_min_dimensions(self, dims):
         ydim, xdim = dims
-        path_keys = [
-            dataset.path for dataset in self.ngff_metadata.multiscales[0].datasets
-        ]
+        # path_keys = [dataset.path for dataset in self.ngff_metadata.multiscales[0].datasets]
+        path_keys = self.array_paths
 
         for path_key in reversed(path_keys):
             zarr_array = self.zgroup[path_key]
-            if len(self.darray.shape) == 5:
-                _, _, _, size_y, size_x = zarr_array.shape
-            elif len(self.darray.shape) == 3:
-                _, size_y, size_x = zarr_array.shape
+            if len(zarr_array.shape) >= 2:
+                size_y, size_x = zarr_array.shape[-2:]
             else:
                 raise Exception("Can't handle this array shape")
 
@@ -160,6 +209,19 @@ class RenderingView(BaseModel):
     channel_rendering: Dict[int, ChannelRenderingSettings]
 
 
+def open_zarr_wrapper(uri):
+    """Wrapper using s3fs to open a S3 zarr or normal method for file zarr"""
+
+    if uri.startswith("http"):
+        uri_parts = urlparse(uri)
+        endpoint_url = f"{uri_parts.scheme}://{uri_parts.netloc}"
+        s3_bucket = f"s3:/{uri_parts.path}"
+        fs = s3fs.S3FileSystem(anon=True, client_kwargs={"endpoint_url": endpoint_url})
+        return zarr.open(s3fs.S3Map(s3_bucket, s3=fs), mode="r", path=r"/")
+    else:
+        return zarr.open(uri)
+
+
 def scale_to_uint8(array):
     """Given an input array, convert to uint8, including scaling to fill the
     0-255 range.
@@ -204,8 +266,11 @@ def generate_channel_renderings(n_channels):
 def dask_array_from_ome_ngff_uri(uri, path_key="0"):
     """Get a dask array from a specific OME-NGFF uri"""
 
+    # zgroup = zarr.open(uri)
+    # fs = s3fs.S3FileSystem(
+    #     anon=True, client_kwargs={"endpoint_url": "https://uk1s3.embassy.ebi.ac.uk"}
+    # )
     zgroup = open_zarr_wrapper(uri)
-    # pdb.set_trace()
     darray = da.from_zarr(zgroup[path_key])
 
     return darray
@@ -243,10 +308,8 @@ def pad_to_target_dims(im, target_dims, fill=(0, 0, 0)):
 def select_region_from_dask_array(darray, region):
     """Select a single plane from a Dask array, and compute it."""
 
-    if len(darray.shape) == 5:
-        _, _, _, ydim, xdim = darray.shape
-    elif len(darray.shape) == 3:
-        _, ydim, xdim = darray.shape
+    if len(darray.shape) >= 2:
+        ydim, xdim = darray.shape[-2:]
     else:
         raise Exception("Can't handle this array shape")
 
@@ -258,8 +321,12 @@ def select_region_from_dask_array(darray, region):
 
     if len(darray.shape) == 5:
         return darray[region.t, region.c, region.z, ymin:ymax, xmin:xmax].compute()
+    elif len(darray.shape) == 4:
+        return darray[region.c, region.z, ymin:ymax, xmin:xmax].compute()
     elif len(darray.shape) == 3:
         return darray[region.z, ymin:ymax, xmin:xmax].compute()
+    elif len(darray.shape) == 2:
+        return darray[ymin:ymax, xmin:xmax].compute()
     else:
         raise Exception("Can't handle this array shape")
 
@@ -346,9 +413,12 @@ def render_proxy_image(
             )
             channel_arrays[c] = windowed_array
 
+    # ToDo: Discuss whether to create global DEFAULT_COLORMAPS constant
+    #       so we do not call create_linear_cmap_dict too many times...
+    #       OR use hex values: https://stackoverflow.com/questions/38147997/how-to-change-a-linearsegmentedcolormap-to-a-different-distribution-of-color
     colormaps = {
-        c: LinearSegmentedColormap.from_list(
-            f"n{n}", ([0, 0, 0], csetting.colormap_end)
+        c: LinearSegmentedColormap(
+            f"n{n}", create_linear_cmap_dict([0, 0, 0], csetting.colormap_end)
         )
         for n, (c, csetting) in enumerate(csettings.items())
     }
@@ -363,7 +433,7 @@ def generate_padded_thumbnail_from_ngff_uri(
 ):
     """Given a NGFF URI, generate a 2D thumbnail of the given dimensions."""
 
-    proxy_im = NGFFProxyImage(ngff_uri)
+    proxy_im = NGFFProxyImage(str(ngff_uri))
 
     im = render_proxy_image(proxy_im)
     im.thumbnail(dims)
@@ -377,3 +447,27 @@ def generate_padded_thumbnail_from_ngff_uri(
     padded = pad_to_target_dims(cim, dims)
 
     return padded
+
+
+def create_linear_cmap_dict(
+    start_rgb=[
+        0.0,
+        0.0,
+        0.0,
+    ],
+    end_rgb=[
+        1.0,
+        1.0,
+        1.0,
+    ],
+):
+    """Return a colormap dict for 'segmentedData' of LinearSegmentedColormap"""
+    cdict = {
+        "red": None,
+        "green": None,
+        "blue": None,
+    }
+    for i, key in enumerate(cdict.keys()):
+        cdict[key] = [(0.0, start_rgb[i], start_rgb[i]), (1.0, end_rgb[i], end_rgb[i])]
+
+    return cdict
