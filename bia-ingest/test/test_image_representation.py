@@ -5,6 +5,7 @@ from typing import List
 from . import utils
 import pytest
 from bia_shared_datamodels import bia_data_model
+from bia_ingest.serialiser import DiskSerialiser
 from bia_ingest.conversion import (
     image_representation,
 )
@@ -54,7 +55,7 @@ def representation_dict_template() -> dict:
         "size_c": None,
         "size_t": None,
         "attribute": {},
-        "version": 1,
+        "version": 0,
     }
 
 
@@ -110,7 +111,11 @@ def test_create_representation_of_single_image(
     monkeypatch,
     attributes_for_uuid,
     representation_dict_template,
+    tmp_path,
 ):
+    disk_serialiser = DiskSerialiser(
+        accession_id=test_submission.accno, output_dir_base=str(tmp_path)
+    )
     model_dict = representation_dict_template | representation_dict
     model_dict["uuid"] = utils.dict_to_uuid(model_dict, attributes_for_uuid)
     expected = bia_data_model.ImageRepresentation.model_validate(model_dict)
@@ -137,6 +142,19 @@ def test_create_representation_of_single_image(
         test_file_reference_uuids,
         representation_use_type=representation_dict["use_type"],
         representation_location=representation_location,
+        serialiser=disk_serialiser,
         result_summary=result_summary,
     )
     assert created == expected
+
+    # Assert that correct artefacts were persisted to disk
+    from_disk = disk_serialiser.deserialise_by_uuid(
+        [
+            created.uuid,
+        ],
+        type(created),
+    )[0]
+    assert from_disk == expected
+
+    # TODO: Need to assert experimentally captured image created and
+    #       persisted correctly

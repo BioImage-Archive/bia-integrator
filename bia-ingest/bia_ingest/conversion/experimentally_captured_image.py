@@ -5,7 +5,6 @@ from .utils import (
     dicts_to_api_models,
     dict_to_uuid,
     filter_model_dictionary,
-    persist,
     merge_dicts,
 )
 from ..image_utils.image_utils import (
@@ -20,8 +19,7 @@ from ..biostudies import (
     Submission,
 )
 
-from bia_ingest.serialiser import MongodbSerialiser
-from bia_ingest.config import api_client
+from bia_ingest.serialiser import Serialiser
 
 from bia_shared_datamodels import bia_data_model
 
@@ -91,12 +89,11 @@ def get_experimentally_captured_image(
     dataset_uuid: UUID,
     file_references: List[bia_data_model.FileReference],
     result_summary: dict,
-    persist_artefacts=False,
+    serialiser: Serialiser,
 ) -> bia_data_model.ExperimentallyCapturedImage:
     """Get the ExperimentallyCapturedImage corresponding to the dataset/file_reference(s) combination"""
 
-    mongodb_serialiser = MongodbSerialiser(api_client)
-    dataset = mongodb_serialiser.deserialise_by_uuid(
+    dataset = serialiser.deserialise_by_uuid(
         [
             str(dataset_uuid),
         ],
@@ -124,13 +121,11 @@ def get_experimentally_captured_image(
     experimentally_captured_image = (
         bia_data_model.ExperimentallyCapturedImage.model_validate(model_dict)
     )
-    if persist_artefacts and experimentally_captured_image:
-        persist(
+    if experimentally_captured_image:
+        serialiser.serialise(
             [
                 experimentally_captured_image,
             ],
-            "experimentally_captured_images",
-            submission.accno,
         )
     return experimentally_captured_image
 

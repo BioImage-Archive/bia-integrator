@@ -27,8 +27,8 @@ def create_image_representation(
     file_reference_uuids: List[UUID],
     representation_use_type: ImageRepresentationUseType,
     result_summary: dict,
+    serialiser: Serialiser,
     representation_location: Optional[str] = None,
-    serialiser: Optional[Serialiser] = None,
 ) -> bia_data_model.ImageRepresentation:
     """Create ImageRepresentation for specified FileReference(s)"""
 
@@ -56,8 +56,7 @@ def create_image_representation(
         dataset_uuid=file_references[0].submission_dataset_uuid,
         file_references=file_references,
         result_summary=result_summary,
-        # Change below to serialiser
-        persist_artefacts=False,
+        serialiser=serialiser,
     )
 
     # TODO: Use bioformats or PIL for other formats (if on local disk)
@@ -120,7 +119,7 @@ def create_images_and_image_representations(
     submission: Submission,
     file_reference_uuid: str,
     result_summary: dict,
-    serialiser: Optional[Serialiser] = None,
+    serialiser: Serialiser,
 ) -> List[bia_data_model.ImageRepresentation]:
     """Create image representation model instances and their actual images
 
