@@ -76,9 +76,16 @@ def get_ome_zarr_pixel_metadata(zarr_location: str) -> dict:
     if metadata_path.is_file():
         metadata = parse_xml_string(metadata_path.read_text())
         try:
-            pixel_metadata = metadata[
+            image_metadata = metadata[
                 "{http://www.openmicroscopy.org/Schemas/OME/2016-06}OME"
-            ][r"{http://www.openmicroscopy.org/Schemas/OME/2016-06}Image"][
+            ][r"{http://www.openmicroscopy.org/Schemas/OME/2016-06}Image"]
+
+            # Multichannel images may have a list - use first element
+            # TODO: Discuss with team what to do in this case
+            if isinstance(image_metadata, list):
+                image_metadata = image_metadata[0]
+
+            pixel_metadata = image_metadata[
                 "{http://www.openmicroscopy.org/Schemas/OME/2016-06}Pixels"
             ]
         except KeyError:

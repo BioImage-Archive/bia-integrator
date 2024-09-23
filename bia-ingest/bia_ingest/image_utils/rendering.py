@@ -313,11 +313,25 @@ def select_region_from_dask_array(darray, region):
     else:
         raise Exception("Can't handle this array shape")
 
+    # Select region - reduce size if number of elements greater than
+    # N_ELEMENTS_MAX, to avoid OOM errors.
+    # TODO: Discuss using different pyramid levels with MH
+    N_ELEMENTS_MAX = 16384 * 16384
     ymin = int(region.bb.y * ydim)
     ymax = int((region.bb.y + region.bb.ysize) * ydim)
 
     xmin = int(region.bb.x * xdim)
     xmax = int((region.bb.x + region.bb.xsize) * xdim)
+    n_elements = (ymax - ymin + 1) * (xmax - xmin + 1)
+    to_truncate = 100
+    while n_elements > N_ELEMENTS_MAX:
+        ymin += to_truncate
+        ymax -= to_truncate
+
+        xmin += to_truncate
+        xmax -= to_truncate
+
+        n_elements = (ymax - ymin + 1) * (xmax - xmin + 1)
 
     if len(darray.shape) == 5:
         return darray[region.t, region.c, region.z, ymin:ymax, xmin:xmax].compute()

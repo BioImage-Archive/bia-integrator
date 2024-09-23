@@ -1,6 +1,7 @@
 # All code in this module originate from bia-converter/bia_converter/io.py
 
 from pathlib import Path
+import urllib
 import logging
 import shutil
 import subprocess
@@ -61,15 +62,17 @@ def fetch_fileref_to_local(fileref, dst_fpath, max_retries=3):
     if fileref.format == "file_in_zip":
         raise NotImplementedError
     else:
+        # Ensure uri is encoded
+        fileref_uri = urllib.parse.quote(fileref.uri, safe="/:")
         # Check size after download and retry if necessary
         expected_size = (
-            requests.header(fileref.uri)["content-length"]
+            requests.header(fileref_uri)["content-length"]
             if fileref.size_in_bytes == 0
             else fileref.size_in_bytes
         )
         for attempt in range(1, max_retries + 1):
             try:
-                copy_uri_to_local(fileref.uri, dst_fpath)
+                copy_uri_to_local(fileref_uri, dst_fpath)
                 download_size = dst_fpath.stat().st_size
                 if download_size == expected_size:
                     break
