@@ -33,6 +33,8 @@ for eid in eids:
 
 convertible_file_references = [
     {
+        "accession_id": accession_id,
+        "study_uuid": study.uuid,
         "name": fr.file_path,
         "uuid": fr.uuid,
         "size_in_bytes": fr.size_in_bytes,
@@ -47,5 +49,5 @@ convertible_file_references = sorted(
 )
 for cfr in convertible_file_references:
     print(
-        f"{cfr['name']}\t{cfr['uuid']}\t{cfr['size_in_bytes']}\t{cfr['size_human_readable']}"
+        f"{cfr['accession_id']}\t{cfr['study_uuid']}\t{cfr['name']}\t{cfr['uuid']}\t{cfr['size_in_bytes']}\t{cfr['size_human_readable']}"
     )

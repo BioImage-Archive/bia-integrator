@@ -1,0 +1,42 @@
+"""Create specimen(s) for expt imaging dataset and save to API. Also update eid attributes
+
+This script creates specimens in the 'correct' way. i.e. all artefacts associationed with the dataset are stored in one specimen. It also updates the experiemental imaging dataset attributes with uuids of the specimen, biosample and image acquisistion method which are needed to create experimentally captured images
+
+It should only be needed for studies that were ingested before the 20/09/2024, as studies ingested afterwards will create the correct Specimens and will update EID during ingest.
+"""
+
+import sys
+from bia_ingest.config import api_client
+from bia_ingest.serialiser import MongodbSerialiser
+from bia_ingest.conversion import specimen, experimental_imaging_dataset
+from bia_ingest.biostudies import load_submission
+from bia_ingest.cli_logging import IngestionResult
+
+mongodb_serialiser = MongodbSerialiser(api_client)
+
+
+def create_and_persist_specimens(accession_id):
+    result_summary = {accession_id: IngestionResult()}
+    submission = load_submission(accession_id)
+
+    eid = experimental_imaging_dataset.get_experimental_imaging_dataset(
+        submission, result_summary
+    )
+    mongodb_serialiser.serialise(eid)
+
+    for dataset in eid:
+        dataset_specimen = specimen.get_specimen_for_dataset(
+            submission, dataset, result_summary
+        )
+        mongodb_serialiser.serialise(
+            [
+                dataset_specimen,
+            ]
+        )
+
+    print(result_summary)
+
+
+if __name__ == "__main__":
+    accession_id = sys.argv[1]
+    create_and_persist_specimens(accession_id)
