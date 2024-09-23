@@ -1,7 +1,5 @@
 # All code in this module originate from bia-converter/bia_converter/io.py
 
-from typing import List
-from bia_shared_datamodels import bia_data_model
 import logging
 import subprocess
 
@@ -36,11 +34,3 @@ def cached_convert_to_zarr_and_get_fpath(image_representation, input_fpath):
         run_zarr_conversion(input_fpath, zarr_fpath)
 
     return zarr_fpath
-
-
-def convert_to_zarr(
-    file_references: List[bia_data_model.FileReference],
-    zarr_location: str,
-    overwrite: bool = False,
-) -> None:
-    """Convert the given file reference to a zarr at given location downloading if necessary"""

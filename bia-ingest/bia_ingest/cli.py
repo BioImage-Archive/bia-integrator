@@ -16,7 +16,6 @@ from bia_ingest.conversion.image_annotation_dataset import (
 from bia_ingest.conversion.annotation_method import get_annotation_method
 from bia_ingest.conversion.image_representation import (
     create_image_representation,
-    create_images_and_image_representations,
 )
 from bia_ingest.persistence_strategy import (
     PersistenceMode,
@@ -42,7 +41,7 @@ representations_app = typer.Typer()
 app.add_typer(
     representations_app,
     name="representations",
-    help="Create/list specified representations",
+    help="Create specified representations",
 )
 
 
@@ -131,36 +130,6 @@ def create(
                 result_summary=result_summary,
                 persister=persister,
             )
-
-
-@representations_app.command(
-    help="Convert images and create representations",
-)
-def convert_images(
-    accession_id: Annotated[str, typer.Argument()],
-    file_reference_uuid_list: Annotated[List[str], typer.Argument()],
-    persistence_mode: Annotated[
-        PersistenceMode, typer.Option(case_sensitive=False)
-    ] = PersistenceMode.api,
-) -> None:
-    """Convert images and create representations for specified file reference(s)"""
-
-    persister = persistence_strategy_factory(
-        persistence_mode,
-        output_dir_base=settings.bia_data_dir,
-        accession_id=accession_id,
-        api_client=api_client,
-    )
-
-    submission = load_submission(accession_id)
-    result_summary = {accession_id: IngestionResult()}
-    for file_reference_uuid in file_reference_uuid_list:
-        create_images_and_image_representations(
-            submission=submission,
-            file_reference_uuid=file_reference_uuid,
-            result_summary=result_summary,
-            persister=persister,
-        )
 
 
 @app.callback()

@@ -57,11 +57,11 @@ def get_test_experimentally_captured_image() -> (
 ):
     image_acquisition_uuids = [str(ia.uuid) for ia in get_test_image_acquisition()]
     specimen_uuids = [
-        specimen.uuid
+        str(specimen.uuid)
         for specimen in get_test_specimen_for_experimentally_captured_image()
     ]
     experimental_imaging_dataset_uuids = [
-        eid.uuid for eid in get_test_experimental_imaging_dataset()
+        str(eid.uuid) for eid in get_test_experimental_imaging_dataset()
     ]
     experimentally_captured_image_dicts = [
         {
@@ -127,7 +127,7 @@ def get_test_experimentally_captured_image() -> (
     ]
     for eci in experimentally_captured_image_dicts:
         eci["uuid"] = dict_to_uuid(eci, attributes_to_consider)
-        eci["version"] = 1
+        eci["version"] = 0
         eci.pop("path")
         experimentally_captured_images.append(
             bia_data_model.ExperimentallyCapturedImage.model_validate(eci)
@@ -568,6 +568,7 @@ def get_test_file_reference_data(filelist: str) -> List[Dict[str, str]]:
     data in ./data/file_list_study_component_2.json
     """
 
+    dataset_index = int(filelist.split("study_component_")[1][0]) - 1
     submission_dataset_uuids = [s.uuid for s in get_test_experimental_imaging_dataset()]
     uri_template = "https://www.ebi.ac.uk/biostudies/files/{accession_id}/{file_path}"
     file_list_data = get_test_file_list_data(filelist)
@@ -585,7 +586,7 @@ def get_test_file_reference_data(filelist: str) -> List[Dict[str, str]]:
                     accession_id=accession_id, file_path=fl_data["path"]
                 ),
                 "attribute": {a["name"]: a.get("value", None) for a in fl_data["attributes"]},
-                "submission_dataset_uuid": submission_dataset_uuids[1],
+                "submission_dataset_uuid": submission_dataset_uuids[dataset_index],
             }
         )
 
@@ -615,7 +616,6 @@ def get_test_file_reference(
     return file_references
 
 
-# TODO: Create ExperimentallyCapturedImage
 def get_test_experimental_imaging_dataset() -> (
     List[bia_data_model.ExperimentalImagingDataset]
 ):

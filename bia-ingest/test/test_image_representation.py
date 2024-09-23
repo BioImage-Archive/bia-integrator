@@ -9,7 +9,6 @@ from bia_ingest.persistence_strategy import DiskPersister
 from bia_ingest.conversion import (
     image_representation,
 )
-from bia_ingest.image_utils import image_utils
 
 experimentally_captured_image_uuid = utils.get_test_experimentally_captured_image()[
     0
@@ -68,20 +67,12 @@ def representation_dict_template() -> dict:
         (
             f"{representation_location_base / 'im06.ome.zarr'}",
             {
-                "image_format": ".ome.zarr",
                 "use_type": "INTERACTIVE_DISPLAY",
-                "total_size_in_bytes": zarr_total_size_in_bytes,
-                "size_x": 100,
-                "size_y": 80,
-                "size_z": 1,
-                "size_c": 3,
-                "size_t": 1,
             },
         ),
         (
             None,
             {
-                "image_format": ".png",
                 "use_type": "UPLOADED_BY_SUBMITTER",
                 "total_size_in_bytes": 3,
                 "file_uri": [
@@ -124,18 +115,26 @@ def test_create_representation_of_single_image(
         test_file_reference.uuid,
     ]
 
-    def mock_return_file_reference(input_path):
-        input_path = str(input_path)
-        if "file_reference" in input_path:
-            return test_file_reference.model_dump_json()
-        elif "experimental_imaging_dataset" in input_path:
-            return utils.get_test_experimental_imaging_dataset()[0].model_dump_json()
-        else:
-            with open(input_path, "rt") as fid:
-                text = "".join(fid.readlines())
-            return text
+    # Save file reference and eid required for test.
+    disk_persister.persist(
+        [
+            test_file_reference,
+        ]
+    )
+    disk_persister.persist(
+        utils.get_test_experimental_imaging_dataset(),
+    )
 
-    monkeypatch.setattr(image_utils.Path, "read_text", mock_return_file_reference)
+    # def mock_return_file_reference(input_path):
+    #    input_path = str(input_path)
+    #    if "file_reference" in input_path:
+    #        return test_file_reference.model_dump_json()
+    #    elif "experimental_imaging_dataset" in input_path:
+    #        return utils.get_test_experimental_imaging_dataset()[0].model_dump_json()
+    #    else:
+    #        with open(input_path, "rt") as fid:
+    #            text = "".join(fid.readlines())
+    #        return text
 
     created = image_representation.create_image_representation(
         test_submission,
