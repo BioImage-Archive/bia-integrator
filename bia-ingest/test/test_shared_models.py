@@ -10,7 +10,6 @@ from bia_ingest.conversion import (
     annotation_method,
     specimen,
     image_annotation_dataset,
-    experimentally_captured_image,
 )
 
 
@@ -68,10 +67,12 @@ from bia_ingest.conversion import (
             utils.get_test_image_annotation_dataset,
             image_annotation_dataset.get_image_annotation_dataset,
         ),
-        (
-            utils.get_test_experimentally_captured_image,
-            experimentally_captured_image.get_all_experimentally_captured_images,
-        ),
+        # This function will likely be deprecated. We will only create
+        # ECI at point of creating ImageRepresentation
+        # (
+        #     utils.get_test_experimentally_captured_image,
+        #     experimentally_captured_image.get_all_experimentally_captured_images,
+        # ),
         # Not testing as we need to deal with links that are not proper
         # urls
         # (utils.get_test_external_reference, conversion.get_external_reference,),

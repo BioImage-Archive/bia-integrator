@@ -69,7 +69,7 @@ def get_specimen_for_dataset(
         "imaging_preparation_protocol_uuid": imaging_preparation_protocol_list,
         "sample_of_uuid": biosample_list,
         "growth_protocol_uuid": growth_protocol_list,
-        "version": 1,
+        "version": 0,
         "accession_id": submission.accno,
     }
     model_dict["uuid"] = generate_specimen_uuid(model_dict)
@@ -170,7 +170,7 @@ def get_specimen(
             "imaging_preparation_protocol_uuid": imaging_preparation_protocol_list,
             "sample_of_uuid": biosample_list,
             "growth_protocol_uuid": growth_protocol_list,
-            "version": 1,
+            "version": 0,
             "accession_id": submission.accno,
         }
         model_dict["uuid"] = generate_specimen_uuid(model_dict)

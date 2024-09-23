@@ -12,6 +12,7 @@ python = "^3.10,<3.12"
 requests = "^2.31.0"
 pytest = "^7.0"
 bia-shared-datamodels = { path = "../bia-shared-datamodels", develop = true }
+bia-integrator-api = { path = "../clients/python", develop = true }
 typer = "^0.12.3"
 typing-extensions = "^4.12.2"
 pydantic-settings = "^2.3.4"
@@ -30,6 +31,7 @@ biaingest = "bia_ingest.cli:app"
 
 [tool.poetry.group.dev.dependencies]
 ipython = "^8.22.1"
+pyqt6 = "^6.7.1"
 
 [build-system]
 requires = ["poetry-core"]

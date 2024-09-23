@@ -4,9 +4,7 @@ from typing import List, Dict, Any
 from .utils import (
     dicts_to_api_models,
     dict_to_uuid,
-    get_bia_data_model_by_uuid,
     filter_model_dictionary,
-    persist,
     merge_dicts,
 )
 from ..image_utils.image_utils import (
@@ -20,6 +18,9 @@ from bia_ingest.conversion.file_reference import get_file_reference_by_dataset
 from ..biostudies import (
     Submission,
 )
+
+from bia_ingest.persistence_strategy import PersistenceStrategy
+
 from bia_shared_datamodels import bia_data_model
 
 
@@ -88,14 +89,20 @@ def get_experimentally_captured_image(
     dataset_uuid: UUID,
     file_references: List[bia_data_model.FileReference],
     result_summary: dict,
-    persist_artefacts=False,
+    persister: PersistenceStrategy,
 ) -> bia_data_model.ExperimentallyCapturedImage:
     """Get the ExperimentallyCapturedImage corresponding to the dataset/file_reference(s) combination"""
 
-    # Get the dataset
-    dataset = get_bia_data_model_by_uuid(
-        dataset_uuid, bia_data_model.ExperimentalImagingDataset, submission.accno
-    )
+    dataset = persister.fetch_by_uuid(
+        [
+            str(dataset_uuid),
+        ],
+        bia_data_model.ExperimentalImagingDataset,
+    )[0]
+    ## Get the dataset
+    # dataset = get_bia_data_model_by_uuid(
+    #    dataset_uuid, bia_data_model.ExperimentalImagingDataset, submission.accno
+    # )
 
     subject_uuid = dataset.attribute["subject_uuid"]
     acquisition_process_uuid = dataset.attribute["acquisition_process_uuid"]
@@ -114,13 +121,11 @@ def get_experimentally_captured_image(
     experimentally_captured_image = (
         bia_data_model.ExperimentallyCapturedImage.model_validate(model_dict)
     )
-    if persist_artefacts and experimentally_captured_image:
-        persist(
+    if experimentally_captured_image:
+        persister.persist(
             [
                 experimentally_captured_image,
             ],
-            "experimentally_captured_images",
-            submission.accno,
         )
     return experimentally_captured_image
 
@@ -131,7 +136,7 @@ def prepare_experimentally_captured_image_dict(
     acquisition_process_uuid: List[UUID],
     subject_uuid: UUID,
     attribute: dict = {},
-    version: int = 1,
+    version: int = 0,
 ):
     model_dict = {
         "path": file_paths,

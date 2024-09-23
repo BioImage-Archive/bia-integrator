@@ -1,7 +1,7 @@
 import logging
 from typing import List, Optional, Dict, Any
 from uuid import UUID
-from .utils import dict_to_uuid, get_bia_data_model_by_uuid, persist
+from .utils import dict_to_uuid, get_bia_data_model_by_uuid
 from .experimentally_captured_image import get_experimentally_captured_image
 from ..biostudies import (
     Submission,
@@ -13,6 +13,11 @@ from bia_ingest.image_utils import image_utils
 from bia_ingest.image_utils.io import stage_fileref_and_get_fpath, copy_local_to_s3
 from bia_ingest.image_utils.conversion import cached_convert_to_zarr_and_get_fpath
 from bia_ingest.image_utils.rendering import generate_padded_thumbnail_from_ngff_uri
+from bia_ingest.persistence_strategy import PersistenceStrategy
+
+from ..image_utils.image_utils import (
+    in_bioformats_single_file_formats_list,
+)
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -22,24 +27,36 @@ def create_image_representation(
     file_reference_uuids: List[UUID],
     representation_use_type: ImageRepresentationUseType,
     result_summary: dict,
+    persister: PersistenceStrategy,
     representation_location: Optional[str] = None,
-    persist_artefacts: Optional[bool] = False,
 ) -> bia_data_model.ImageRepresentation:
-    """Create ImageRepresentation for specified FileReference(s) zarr"""
+    """Create ImageRepresentation for specified FileReference(s)"""
 
-    # TODO: this should be replaced by API client and we would not need
-    # accession_id
-    file_references = [
-        get_bia_data_model_by_uuid(uuid, bia_data_model.FileReference, submission.accno)
-        for uuid in file_reference_uuids
-    ]
+    # TODO: remove get_bia_data_model_by_uuid!!!
+    if persister:
+        file_references = persister.fetch_by_uuid(
+            [str(uuid) for uuid in file_reference_uuids], bia_data_model.FileReference
+        )
+    else:
+        file_references = [
+            get_bia_data_model_by_uuid(
+                uuid, bia_data_model.FileReference, submission.accno
+            )
+            for uuid in file_reference_uuids
+        ]
+    file_paths = [fr.file_path for fr in file_references]
+    if not any(
+        [in_bioformats_single_file_formats_list(file_path) for file_path in file_paths]
+    ):
+        message = f"Cannot process file references that do not have at list on entry in list of extensions bioformats can convert. File paths of fileReference(s) are: {file_paths}"
+        raise Exception(message)
 
     experimentally_captured_image = get_experimentally_captured_image(
         submission=submission,
         dataset_uuid=file_references[0].submission_dataset_uuid,
         file_references=file_references,
         result_summary=result_summary,
-        persist_artefacts=persist_artefacts,
+        persister=persister,
     )
 
     # TODO: Use bioformats or PIL for other formats (if on local disk)
@@ -81,18 +98,17 @@ def create_image_representation(
         # separated into values and units whereas model expects just
         # values standardised to 'm' ...
         "attribute": {},
-        "version": 1,
+        "version": 0,
     }
     model_dict["uuid"] = generate_image_representation_uuid(model_dict)
     image_representation = bia_data_model.ImageRepresentation.model_validate(model_dict)
 
-    if persist_artefacts and image_representation:
-        persist(
+    if persister and image_representation:
+        persister.persist(
             [
+                experimentally_captured_image,
                 image_representation,
-            ],
-            "image_representations",
-            submission.accno,
+            ]
         )
 
     return image_representation
@@ -103,7 +119,7 @@ def create_images_and_image_representations(
     submission: Submission,
     file_reference_uuid: str,
     result_summary: dict,
-    persist_artefacts: Optional[bool] = False,
+    persister: PersistenceStrategy,
 ) -> List[bia_data_model.ImageRepresentation]:
     """Create image representation model instances and their actual images
 
@@ -130,16 +146,24 @@ def create_images_and_image_representations(
             ],
             representation_use_type=representation_use_type,
             result_summary=result_summary,
-            persist_artefacts=True,
+            persister=persister,
         )
     # Get image uploaded by submitter and update representation
     representation = representations["UPLOADED_BY_SUBMITTER"]
     # TODO file_uri of this representation = that of file reference(s)
-    file_reference = get_bia_data_model_by_uuid(
-        representation.original_file_reference_uuid[0],
-        bia_data_model.FileReference,
-        submission.accno,
-    )
+    if persister:
+        file_reference = persister.fetch_by_uuid(
+            [
+                str(representation.original_file_reference_uuid[0]),
+            ],
+            bia_data_model.FileReference,
+        )[0]
+    else:
+        file_reference = get_bia_data_model_by_uuid(
+            representation.original_file_reference_uuid[0],
+            bia_data_model.FileReference,
+            submission.accno,
+        )
     local_path_to_uploaded_by_submitter_rep = stage_fileref_and_get_fpath(
         file_reference
     )
@@ -175,8 +199,9 @@ def create_images_and_image_representations(
         ),
     )
     representation.file_uri = [
-        file_uri,
+        file_uri + "/0",
     ]
+    representation.version += 1
 
     # Create thumbnail representation
     representation = representations["THUMBNAIL"]
@@ -200,6 +225,7 @@ def create_images_and_image_representations(
     representation.file_uri = [
         file_uri,
     ]
+    representation.version += 1
 
     # Create static display (representative image) representation
     representation = representations["STATIC_DISPLAY"]
@@ -224,15 +250,39 @@ def create_images_and_image_representations(
     representation.file_uri = [
         file_uri,
     ]
+    representation.version += 1
 
-    if persist_artefacts:
-        persist(
-            list(representations.values()),
-            "image_representations",
-            submission.accno,
+    # Update the dataset URI if there is a persister
+    if persister:
+        eci_uuid = f"{representation.representation_of_uuid}"
+        eci = persister.fetch_by_uuid(
+            [
+                eci_uuid,
+            ],
+            bia_data_model.ExperimentallyCapturedImage,
+        )[0]
+        dataset_uuid = str(eci.submission_dataset_uuid)
+        dataset = persister.fetch_by_uuid(
+            [
+                dataset_uuid,
+            ],
+            bia_data_model.ExperimentalImagingDataset,
+        )[0]
+        dataset.example_image_uri = [
+            file_uri,
+        ]
+        dataset.version += 1
+        persister.persist(
+            [
+                dataset,
+            ]
         )
 
-    return representations
+    list_of_representations = list(representations.values())
+    if persister and list_of_representations:
+        persister.persist(list_of_representations)
+
+    return list_of_representations
 
 
 def generate_image_representation_uuid(

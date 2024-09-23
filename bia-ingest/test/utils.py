@@ -480,7 +480,7 @@ def get_test_specimen() -> bia_data_model.Specimen:
         # Accession ID only needed to generate UUID
         specimen_dict.pop("accession_id")
 
-        specimen_dict["version"] = 1
+        specimen_dict["version"] = 0
         specimens.append(bia_data_model.Specimen.model_validate(specimen_dict))
     return specimens
 
@@ -529,7 +529,7 @@ def get_test_specimen_for_experimentally_captured_image() -> bia_data_model.Spec
         # Accession ID only needed to generate UUID
         specimen_dict.pop("accession_id")
 
-        specimen_dict["version"] = 1
+        specimen_dict["version"] = 0
         specimens.append(bia_data_model.Specimen.model_validate(specimen_dict))
     return specimens
 
@@ -642,7 +642,7 @@ def get_test_experimental_imaging_dataset() -> (
         ],
         "example_image_uri": [],
         "description": "Description of study component 1",
-        "version": 1,
+        "version": 0,
         "attribute": {
             "associations": associations[0],
             "acquisition_process_uuid": image_acquisition_uuids,
@@ -678,7 +678,7 @@ def get_test_experimental_imaging_dataset() -> (
         ],
         "example_image_uri": [],
         "description": "Description of study component 2",
-        "version": 1,
+        "version": 0,
         "attribute": {
             "associations": associations[1],
             "acquisition_process_uuid": [
