@@ -5,7 +5,7 @@ This script creates specimens in the 'correct' way. i.e. all artefacts associati
 It should only be needed for studies that were ingested before the 20/09/2024, as studies ingested afterwards will create the correct Specimens and will update EID during ingest.
 """
 
-import sys
+import typer
 from bia_ingest.config import api_client
 from bia_ingest.persistence_strategy import ApiPersister
 from bia_ingest.conversion import specimen, experimental_imaging_dataset
@@ -13,9 +13,10 @@ from bia_ingest.biostudies import load_submission
 from bia_ingest.cli_logging import IngestionResult
 
 api_persister = ApiPersister(api_client)
+app = typer.Typer()
 
 
-def create_and_persist_specimens(accession_id):
+def create_and_persist_specimens(accession_id: str):
     result_summary = {accession_id: IngestionResult()}
     submission = load_submission(accession_id)
 
@@ -37,6 +38,13 @@ def create_and_persist_specimens(accession_id):
     print(result_summary)
 
 
-if __name__ == "__main__":
-    accession_id = sys.argv[1]
+@app.command()
+def create_and_persist(accession_id: str):
+    """
+    Creates specimens and updated eids for a given accession ID.
+    """
     create_and_persist_specimens(accession_id)
+
+
+if __name__ == "__main__":
+    app()
