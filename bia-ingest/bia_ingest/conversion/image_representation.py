@@ -13,7 +13,7 @@ from bia_ingest.image_utils import image_utils
 from bia_ingest.image_utils.io import stage_fileref_and_get_fpath, copy_local_to_s3
 from bia_ingest.image_utils.conversion import cached_convert_to_zarr_and_get_fpath
 from bia_ingest.image_utils.rendering import generate_padded_thumbnail_from_ngff_uri
-from bia_ingest.serialiser import Serialiser
+from bia_ingest.persistence_strategy import PersistenceStrategy
 
 from ..image_utils.image_utils import (
     in_bioformats_single_file_formats_list,
@@ -27,14 +27,14 @@ def create_image_representation(
     file_reference_uuids: List[UUID],
     representation_use_type: ImageRepresentationUseType,
     result_summary: dict,
-    serialiser: Serialiser,
+    persister: PersistenceStrategy,
     representation_location: Optional[str] = None,
 ) -> bia_data_model.ImageRepresentation:
     """Create ImageRepresentation for specified FileReference(s)"""
 
     # TODO: remove get_bia_data_model_by_uuid!!!
-    if serialiser:
-        file_references = serialiser.deserialise_by_uuid(
+    if persister:
+        file_references = persister.fetch_by_uuid(
             [str(uuid) for uuid in file_reference_uuids], bia_data_model.FileReference
         )
     else:
@@ -56,7 +56,7 @@ def create_image_representation(
         dataset_uuid=file_references[0].submission_dataset_uuid,
         file_references=file_references,
         result_summary=result_summary,
-        serialiser=serialiser,
+        persister=persister,
     )
 
     # TODO: Use bioformats or PIL for other formats (if on local disk)
@@ -103,8 +103,8 @@ def create_image_representation(
     model_dict["uuid"] = generate_image_representation_uuid(model_dict)
     image_representation = bia_data_model.ImageRepresentation.model_validate(model_dict)
 
-    if serialiser and image_representation:
-        serialiser.serialise(
+    if persister and image_representation:
+        persister.persist(
             [
                 experimentally_captured_image,
                 image_representation,
@@ -119,7 +119,7 @@ def create_images_and_image_representations(
     submission: Submission,
     file_reference_uuid: str,
     result_summary: dict,
-    serialiser: Serialiser,
+    persister: PersistenceStrategy,
 ) -> List[bia_data_model.ImageRepresentation]:
     """Create image representation model instances and their actual images
 
@@ -146,13 +146,13 @@ def create_images_and_image_representations(
             ],
             representation_use_type=representation_use_type,
             result_summary=result_summary,
-            serialiser=serialiser,
+            persister=persister,
         )
     # Get image uploaded by submitter and update representation
     representation = representations["UPLOADED_BY_SUBMITTER"]
     # TODO file_uri of this representation = that of file reference(s)
-    if serialiser:
-        file_reference = serialiser.deserialise_by_uuid(
+    if persister:
+        file_reference = persister.fetch_by_uuid(
             [
                 str(representation.original_file_reference_uuid[0]),
             ],
@@ -252,17 +252,17 @@ def create_images_and_image_representations(
     ]
     representation.version += 1
 
-    # Update the dataset URI if there is a serialiser
-    if serialiser:
+    # Update the dataset URI if there is a persister
+    if persister:
         eci_uuid = f"{representation.representation_of_uuid}"
-        eci = serialiser.deserialise_by_uuid(
+        eci = persister.fetch_by_uuid(
             [
                 eci_uuid,
             ],
             bia_data_model.ExperimentallyCapturedImage,
         )[0]
         dataset_uuid = str(eci.submission_dataset_uuid)
-        dataset = serialiser.deserialise_by_uuid(
+        dataset = persister.fetch_by_uuid(
             [
                 dataset_uuid,
             ],
@@ -272,15 +272,15 @@ def create_images_and_image_representations(
             file_uri,
         ]
         dataset.version += 1
-        serialiser.serialise(
+        persister.persist(
             [
                 dataset,
             ]
         )
 
     list_of_representations = list(representations.values())
-    if serialiser and list_of_representations:
-        serialiser.serialise(list_of_representations)
+    if persister and list_of_representations:
+        persister.persist(list_of_representations)
 
     return list_of_representations
 

@@ -34,7 +34,7 @@ aws cli see [this](https://aws.amazon.com/cli/)
 ## Creating representations without conversion of images
 Image representations for file references can be created without images being converted. E.g.:
 ```
-biaingest representations create --serialiser-type mongodb S-BIAD1348 a9125402-5e47-4afd-9abf-7393448acd07 e1c99f04-549d-4952-ba88-c921c707f01d f26e27e4-90ce-42b4-91ae-503dafed8b70
+biaingest representations create --persistence-mode api S-BIAD1348 a9125402-5e47-4afd-9abf-7393448acd07 e1c99f04-549d-4952-ba88-c921c707f01d f26e27e4-90ce-42b4-91ae-503dafed8b70
 ```
 
 This creates 4 image representations (but not the actual images) for each of the file references:
@@ -46,7 +46,7 @@ This creates 4 image representations (but not the actual images) for each of the
 ## Converting images
 This takes a list of file references and creates THUMBNAIL, STATIC_DISPLAY AND INTERACTIVE_DISPLAY(ome_zarr format) images for each file reference and pushes to s3:
 ```
-biaingest representations convert-images --serialiser-type mongodb S-BIAD1348 a9125402-5e47-4afd-9abf-7393448acd07 e1c99f04-549d-4952-ba88-c921c707f01d f26e27e4-90ce-42b4-91ae-503dafed8b70
+biaingest representations convert-images --persistence-mode api S-BIAD1348 a9125402-5e47-4afd-9abf-7393448acd07 e1c99f04-549d-4952-ba88-c921c707f01d f26e27e4-90ce-42b4-91ae-503dafed8b70
 ```
 
 This creates the four image representations listed above (if they do not already exist) for each file reference, and the actual images for 2nd, 3rd and 4th representations.

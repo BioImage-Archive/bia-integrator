@@ -14,20 +14,20 @@ import bia_integrator_api.models as api_models
 logger = logging.getLogger("__main__." + __name__)
 
 
-class SerialiserType(str, Enum):
-    """Destinations for serialisation/de-serialisation"""
+class PersistenceMode(str, Enum):
+    """Destinations for persistence"""
 
-    mongodb = "mongodb"
+    api = "api"
     disk = "disk"
 
 
-class Serialiser(ABC):
+class PersistenceStrategy(ABC):
     @abstractmethod
-    def serialise(self, object_list: List[BaseModel]) -> None:
+    def persist(self, object_list: List[BaseModel]) -> None:
         pass
 
     @abstractmethod
-    def deserialise_by_uuid(
+    def fetch_by_uuid(
         self, uuids: List[UUID], model_class: Type[BaseModel]
     ) -> List[BaseModel]:
         """Retrieve specified bia_data_models by their UUIDs"""
@@ -36,13 +36,13 @@ class Serialiser(ABC):
 # Implement concrete strategies
 
 
-# Serialise to disk
-class DiskSerialiser(Serialiser):
+# Persist to disk
+class DiskPersister(PersistenceStrategy):
     def __init__(self, output_dir_base: str, accession_id: str):
         self.accession_id = accession_id
         self.output_dir_base = Path(output_dir_base)
 
-    def serialise(self, object_list: List[BaseModel]) -> None:
+    def persist(self, object_list: List[BaseModel]) -> None:
         for obj in object_list:
             object_path = f"{to_snake(obj.model.type_name)}s"
             # This is computed in each iteration in case the object list
@@ -56,7 +56,7 @@ class DiskSerialiser(Serialiser):
             output_path.write_text(obj.model_dump_json(indent=2))
             logger.debug(f"Written {output_path}")
 
-    def deserialise_by_uuid(
+    def fetch_by_uuid(
         self, uuids: List[UUID], model_class: Type[BaseModel]
     ) -> List[BaseModel]:
         model_subdir = f"{to_snake(model_class.__name__)}s"
@@ -69,16 +69,16 @@ class DiskSerialiser(Serialiser):
         return object_list
 
 
-# Serialise to the MongoDB using API
-class MongodbSerialiser(Serialiser):
+# Persist using API
+class ApiPersister(PersistenceStrategy):
     def __init__(self, api_client: PrivateApi) -> None:
         self.api_client = api_client
 
-    def serialise(self, object_list: List[BaseModel]) -> None:
+    def persist(self, object_list: List[BaseModel]) -> None:
         for obj in object_list:
             # First try to retrieve object
             try:
-                api_copy_of_obj = self.deserialise_by_uuid(
+                api_copy_of_obj = self.fetch_by_uuid(
                     [
                         f"{obj.uuid}",
                     ],
@@ -102,7 +102,7 @@ class MongodbSerialiser(Serialiser):
             getattr(self.api_client, api_creation_method)(api_obj)
             logger.info(f"persisted {obj.uuid} to API")
 
-    def deserialise_by_uuid(
+    def fetch_by_uuid(
         self, uuids: List[UUID | str], model_class: Type[BaseModel]
     ) -> List[BaseModel]:
         object_list = []
@@ -114,22 +114,22 @@ class MongodbSerialiser(Serialiser):
         return object_list
 
 
-# Replacement for persist function using a serialiser
-def serialise(object_list: List[BaseModel], strategy: Serialiser) -> None:
+# Replacement for persist function using a persistence strategy
+def persist(object_list: List[BaseModel], strategy: PersistenceStrategy) -> None:
     strategy.persist(object_list)
 
 
-def serialiser_factory(serialiser_type: SerialiserType, **kwargs):
+def persistence_strategy_factory(persistence_mode: PersistenceMode, **kwargs):
     # Raise error if user passes in a value that cannot be converted
-    # to a valid serialiser
-    serialiser_type = SerialiserType(serialiser_type)
+    # to a valid persistence strategy
+    persistence_mode = PersistenceMode(persistence_mode)
 
-    if serialiser_type == SerialiserType.mongodb:
-        return MongodbSerialiser(api_client=kwargs["api_client"])
-    elif serialiser_type == SerialiserType.disk:
-        return DiskSerialiser(
+    if persistence_mode == PersistenceMode.api:
+        return ApiPersister(api_client=kwargs["api_client"])
+    elif persistence_mode == PersistenceMode.disk:
+        return DiskPersister(
             output_dir_base=kwargs["output_dir_base"],
             accession_id=kwargs["accession_id"],
         )
     else:
-        raise Exception(f"Unknown serialiser type: {serialiser_type}")
+        raise Exception(f"Unknown persistence strategy: {persistence_mode}")

@@ -18,7 +18,10 @@ from bia_ingest.conversion.image_representation import (
     create_image_representation,
     create_images_and_image_representations,
 )
-from bia_ingest.serialiser import SerialiserType, serialiser_factory
+from bia_ingest.persistence_strategy import (
+    PersistenceMode,
+    persistence_strategy_factory,
+)
 from bia_shared_datamodels.semantic_models import ImageRepresentationUseType
 
 import logging
@@ -98,14 +101,14 @@ def ingest(
 def create(
     accession_id: Annotated[str, typer.Argument()],
     file_reference_uuid_list: Annotated[List[str], typer.Argument()],
-    serialiser_type: Annotated[
-        SerialiserType, typer.Option(case_sensitive=False)
-    ] = SerialiserType.mongodb,
+    persistence_mode: Annotated[
+        PersistenceMode, typer.Option(case_sensitive=False)
+    ] = PersistenceMode.api,
 ) -> None:
     """Create representations for specified file reference(s)"""
 
-    serialiser = serialiser_factory(
-        serialiser_type,
+    persister = persistence_strategy_factory(
+        persistence_mode,
         output_dir_base=settings.bia_data_dir,
         accession_id=accession_id,
         api_client=api_client,
@@ -126,7 +129,7 @@ def create(
                 representation_use_type=representation_use_type,
                 # representation_location=representation_location,
                 result_summary=result_summary,
-                serialiser=serialiser,
+                persister=persister,
             )
 
 
@@ -136,14 +139,14 @@ def create(
 def convert_images(
     accession_id: Annotated[str, typer.Argument()],
     file_reference_uuid_list: Annotated[List[str], typer.Argument()],
-    serialiser_type: Annotated[
-        SerialiserType, typer.Option(case_sensitive=False)
-    ] = SerialiserType.mongodb,
+    persistence_mode: Annotated[
+        PersistenceMode, typer.Option(case_sensitive=False)
+    ] = PersistenceMode.api,
 ) -> None:
     """Convert images and create representations for specified file reference(s)"""
 
-    serialiser = serialiser_factory(
-        serialiser_type,
+    persister = persistence_strategy_factory(
+        persistence_mode,
         output_dir_base=settings.bia_data_dir,
         accession_id=accession_id,
         api_client=api_client,
@@ -156,7 +159,7 @@ def convert_images(
             submission=submission,
             file_reference_uuid=file_reference_uuid,
             result_summary=result_summary,
-            serialiser=serialiser,
+            persister=persister,
         )
 
 

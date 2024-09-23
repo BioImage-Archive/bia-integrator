@@ -5,7 +5,7 @@ from typing import List
 from . import utils
 import pytest
 from bia_shared_datamodels import bia_data_model
-from bia_ingest.serialiser import DiskSerialiser
+from bia_ingest.persistence_strategy import DiskPersister
 from bia_ingest.conversion import (
     image_representation,
 )
@@ -113,7 +113,7 @@ def test_create_representation_of_single_image(
     representation_dict_template,
     tmp_path,
 ):
-    disk_serialiser = DiskSerialiser(
+    disk_persister = DiskPersister(
         accession_id=test_submission.accno, output_dir_base=str(tmp_path)
     )
     model_dict = representation_dict_template | representation_dict
@@ -142,13 +142,13 @@ def test_create_representation_of_single_image(
         test_file_reference_uuids,
         representation_use_type=representation_dict["use_type"],
         representation_location=representation_location,
-        serialiser=disk_serialiser,
+        persister=disk_persister,
         result_summary=result_summary,
     )
     assert created == expected
 
     # Assert that correct artefacts were persisted to disk
-    from_disk = disk_serialiser.deserialise_by_uuid(
+    from_disk = disk_persister.fetch_by_uuid(
         [
             created.uuid,
         ],

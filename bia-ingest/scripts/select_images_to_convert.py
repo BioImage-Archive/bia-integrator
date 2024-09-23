@@ -15,10 +15,6 @@ def sizeof_fmt(num, suffix="B"):
 
 
 accession_id = sys.argv[1]
-# file_reference_path = Path(settings.bia_data_dir) / "file_references" / accession_id
-# file_reference_names = [ frp for frp in file_reference_path.glob("*.json")]
-# mongodb_serialiser = MongodbSerialisation(api_client)
-# mongodb_serialiser = MongodbSerialiser(api_client)
 studies = api_client.get_studies()
 study = next(s for s in studies if s.accession_id == accession_id)
 eids = api_client.get_experimental_imaging_dataset_in_study(study.uuid)
@@ -27,9 +23,6 @@ for eid in eids:
     file_references.extend(
         api_client.get_file_reference_in_experimental_imaging_dataset(eid.uuid)
     )
-# disk_serialiser = DiskSerialiser(accession_id=accession_id, output_dir_base=settings.bia_data_dir)
-
-# file_references = disk_serialiser.deserialise_by_uuid([f"{fr}".split(".")[0] for fr in file_reference_names], bia_data_model.FileReference)
 
 convertible_file_references = [
     {

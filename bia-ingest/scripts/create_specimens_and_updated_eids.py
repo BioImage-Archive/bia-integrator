@@ -7,12 +7,12 @@ It should only be needed for studies that were ingested before the 20/09/2024, a
 
 import sys
 from bia_ingest.config import api_client
-from bia_ingest.serialiser import MongodbSerialiser
+from bia_ingest.persistence_strategy import ApiPersister
 from bia_ingest.conversion import specimen, experimental_imaging_dataset
 from bia_ingest.biostudies import load_submission
 from bia_ingest.cli_logging import IngestionResult
 
-mongodb_serialiser = MongodbSerialiser(api_client)
+api_persister = ApiPersister(api_client)
 
 
 def create_and_persist_specimens(accession_id):
@@ -22,13 +22,13 @@ def create_and_persist_specimens(accession_id):
     eid = experimental_imaging_dataset.get_experimental_imaging_dataset(
         submission, result_summary
     )
-    mongodb_serialiser.serialise(eid)
+    api_persister.persist(eid)
 
     for dataset in eid:
         dataset_specimen = specimen.get_specimen_for_dataset(
             submission, dataset, result_summary
         )
-        mongodb_serialiser.serialise(
+        api_persister.persist(
             [
                 dataset_specimen,
             ]

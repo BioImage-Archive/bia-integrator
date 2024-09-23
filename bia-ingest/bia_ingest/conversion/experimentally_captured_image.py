@@ -19,7 +19,7 @@ from ..biostudies import (
     Submission,
 )
 
-from bia_ingest.serialiser import Serialiser
+from bia_ingest.persistence_strategy import PersistenceStrategy
 
 from bia_shared_datamodels import bia_data_model
 
@@ -89,11 +89,11 @@ def get_experimentally_captured_image(
     dataset_uuid: UUID,
     file_references: List[bia_data_model.FileReference],
     result_summary: dict,
-    serialiser: Serialiser,
+    persister: PersistenceStrategy,
 ) -> bia_data_model.ExperimentallyCapturedImage:
     """Get the ExperimentallyCapturedImage corresponding to the dataset/file_reference(s) combination"""
 
-    dataset = serialiser.deserialise_by_uuid(
+    dataset = persister.fetch_by_uuid(
         [
             str(dataset_uuid),
         ],
@@ -122,7 +122,7 @@ def get_experimentally_captured_image(
         bia_data_model.ExperimentallyCapturedImage.model_validate(model_dict)
     )
     if experimentally_captured_image:
-        serialiser.serialise(
+        persister.persist(
             [
                 experimentally_captured_image,
             ],
