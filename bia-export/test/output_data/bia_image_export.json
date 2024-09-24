@@ -112,6 +112,7 @@
                     "version": 1
                 },
                 "image_format": "Template image format",
+                "use_type": "INTERACTIVE_DISPLAY",
                 "file_uri": [
                     "https://dummy.uri.org"
                 ],
@@ -137,6 +138,7 @@
                     "version": 1
                 },
                 "image_format": "Template image format",
+                "use_type": "UPLOADED_BY_SUBMITTER",
                 "file_uri": [
                     "https://dummy.uri.org"
                 ],
@@ -162,6 +164,7 @@
                     "version": 1
                 },
                 "image_format": "png",
+                "use_type": "THUMBNAIL",
                 "file_uri": [],
                 "total_size_in_bytes": 0,
                 "physical_size_x": null,
