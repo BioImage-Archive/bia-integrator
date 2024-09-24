@@ -26,7 +26,7 @@ class AttributeDetail(BaseModel):
 
 class Attribute(BaseModel):
     name: str
-    value: Optional[str]
+    value: Optional[str] = None
     reference: bool = False
     nmqual: List[AttributeDetail] = []
     valqual: List[AttributeDetail] = []
