@@ -8,8 +8,8 @@ import subprocess
 
 import requests
 
-from ..config import settings
-from .image_utils import get_image_extension
+from .config import settings
+from .utils import get_image_extension
 
 
 logger = logging.getLogger(__name__)
