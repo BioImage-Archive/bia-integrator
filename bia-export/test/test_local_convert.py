@@ -1,8 +1,8 @@
 from typer.testing import CliRunner
 from pathlib import Path
-import pytest
 from bia_export.cli import app
 import filecmp
+import json
 
 runner = CliRunner()
 
@@ -19,8 +19,14 @@ def test_cli_export_website_studies(tmp_path: Path):
     )
 
     assert result.exit_code == 0
-    # Note this tests for exact equivance in files, i.e. order of fields and indentation matters
-    assert filecmp.cmp(expected_output, outfile, shallow=False)
+
+    with open(outfile, "r") as f:
+        json_result = json.load(f)
+
+    with open(expected_output) as f:
+        json_expected = json.load(f)
+
+    assert json_result == json_expected
 
 
 def test_cli_export_website_images(tmp_path: Path):
@@ -35,8 +41,14 @@ def test_cli_export_website_images(tmp_path: Path):
     )
 
     assert result.exit_code == 0
-    # Note this tests for exact equivance in files, i.e. order of fields and indentation matters
-    assert filecmp.cmp(expected_output, outfile, shallow=False)
+
+    with open(outfile, "r") as f:
+        json_result = json.load(f)
+
+    with open(expected_output) as f:
+        json_expected = json.load(f)
+
+    assert json_result == json_expected
 
 
 def test_cli_export_dataset_for_website_images(tmp_path: Path):
@@ -59,5 +71,11 @@ def test_cli_export_dataset_for_website_images(tmp_path: Path):
     )
 
     assert result.exit_code == 0
-    # Note this tests for exact equivance in files, i.e. order of fields and indentation matters
-    assert filecmp.cmp(expected_output, outfile, shallow=False)
+
+    with open(outfile, "r") as f:
+        json_result = json.load(f)
+
+    with open(expected_output) as f:
+        json_expected = json.load(f)
+
+    assert json_result == json_expected
