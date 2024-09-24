@@ -478,7 +478,7 @@ def get_test_file_reference_data(filelist: str) -> List[Dict[str, str]]:
                 "uri": uri_template.format(
                     accession_id=accession_id, file_path=fl_data["path"]
                 ),
-                "attribute": {a["name"]: a["value"] for a in fl_data["attributes"]},
+                "attribute": {a["name"]: a.get("value", None) for a in fl_data["attributes"]},
                 "submission_dataset_uuid": submission_dataset_uuids[1],
             }
         )

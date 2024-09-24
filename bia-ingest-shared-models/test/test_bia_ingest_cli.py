@@ -4,12 +4,15 @@ from bia_ingest_sm.conversion.utils import settings
 from bia_ingest_sm import biostudies
 from . import utils
 from bia_shared_datamodels import bia_data_model
+import pytest
 
 runner = CliRunner()
 
 accession_id = "S-BIADTEST"
 
-expected_objects_dict = {
+@pytest.fixture
+def expected_objects():
+    expected_objects_dict = {
     "studies": utils.get_test_study(),
     "experimental_imaging_dataset": utils.get_test_experimental_imaging_dataset(),
     "specimens": utils.get_test_specimen(),
@@ -19,26 +22,30 @@ expected_objects_dict = {
     "specimen_imaging_protocol": utils.get_test_specimen_imaging_preparation_protocol(),
     "annotation_method": utils.get_test_annotation_method(),
     "image_annotation_dataset": utils.get_test_image_annotation_dataset(),
-}
+    }
 
-# File references are a special case as they depend on experimental dataset
-expected_file_references = utils.get_test_file_reference(
+    # File references are a special case as they depend on experimental dataset
+    expected_file_references = utils.get_test_file_reference(
     ["file_list_study_component_1.json", "file_list_study_component_2.json"]
-)
-expected_objects_dict["file_references"] = expected_file_references
+    )
+    expected_objects_dict["file_references"] = expected_file_references
 
-n_expected_objects = 0
-for expected_objects in expected_objects_dict.values():
-    if isinstance(expected_objects, list):
-        n_expected_objects += len(expected_objects)
-    else:
-        n_expected_objects += 1
+    n_expected_objects = 0
+    for expected_objects in expected_objects_dict.values():
+        if isinstance(expected_objects, list):
+            n_expected_objects += len(expected_objects)
+        else:
+            n_expected_objects += 1
+    
+    return expected_objects_dict, n_expected_objects
 
 
 def test_cli_writes_expected_files(
-    monkeypatch, tmp_path, test_submission, mock_request_get
+    monkeypatch, tmp_path, test_submission, mock_request_get, expected_objects
 ):
     monkeypatch.setattr(settings, "bia_data_dir", str(tmp_path))
+
+    expected_objects_dict, n_expected_objects = expected_objects
 
     def _load_submission(accession_id: str) -> biostudies.Submission:
         return test_submission

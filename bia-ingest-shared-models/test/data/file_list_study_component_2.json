@@ -27,6 +27,9 @@
         "value": "ann06-10.json"
       },
       {
+        "name": "metadata1_key"
+      },
+      {
         "name": "metadata3_key",
         "value": "metadata3_value"
       },
