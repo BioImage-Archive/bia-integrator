@@ -1,5 +1,5 @@
 from pathlib import Path
-from bia_ingest.image_utils.rendering import generate_padded_thumbnail_from_ngff_uri
+from bia_converter_light.rendering import generate_padded_thumbnail_from_ngff_uri
 
 
 def test_generate_padded_thumbnail_from_ngff_uri():
