@@ -74,6 +74,7 @@ def representation_dict_template() -> dict:
             None,
             {
                 "use_type": "UPLOADED_BY_SUBMITTER",
+                "image_format": ".png",
                 "total_size_in_bytes": 3,
                 "file_uri": [
                     test_file_reference.uri,

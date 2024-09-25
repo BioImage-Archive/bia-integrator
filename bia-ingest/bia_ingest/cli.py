@@ -103,6 +103,13 @@ def create(
     persistence_mode: Annotated[
         PersistenceMode, typer.Option(case_sensitive=False)
     ] = PersistenceMode.api,
+    reps_to_create: Annotated[
+        List[ImageRepresentationUseType], typer.Option(case_sensitive=False)
+    ] = [
+        ImageRepresentationUseType.UPLOADED_BY_SUBMITTER,
+        ImageRepresentationUseType.THUMBNAIL,
+        ImageRepresentationUseType.INTERACTIVE_DISPLAY,
+    ],
 ) -> None:
     """Create representations for specified file reference(s)"""
 
@@ -114,19 +121,15 @@ def create(
     )
 
     submission = load_submission(accession_id)
-    representation_use_types = [
-        use_type.value for use_type in ImageRepresentationUseType
-    ]
     result_summary = {accession_id: IngestionResult()}
     for file_reference_uuid in file_reference_uuid_list:
-        for representation_use_type in representation_use_types:
+        for representation_use_type in reps_to_create:
             create_image_representation(
                 submission,
                 [
                     file_reference_uuid,
                 ],
                 representation_use_type=representation_use_type,
-                # representation_location=representation_location,
                 result_summary=result_summary,
                 persister=persister,
             )

@@ -1,7 +1,8 @@
 import logging
 from typing import List, Optional, Dict, Any
 from uuid import UUID
-from .utils import dict_to_uuid
+from .utils import dict_to_uuid, get_image_extension
+
 from .experimentally_captured_image import get_experimentally_captured_image
 from ..biostudies import (
     Submission,
@@ -10,12 +11,6 @@ from bia_shared_datamodels import bia_data_model
 from bia_shared_datamodels.semantic_models import ImageRepresentationUseType
 
 from bia_ingest.persistence_strategy import PersistenceStrategy
-
-# TODO: If I want to check if extension can be converted with bioformats2raw I need
-#       the lines below. However, this couples the package to bia-converter ...
-# from bia_converter_light.utils import (
-#    in_bioformats_single_file_formats_list,
-# )
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -48,31 +43,17 @@ def create_image_representation(
         persister=persister,
     )
 
-    # TODO: Use bioformats or PIL for other formats (if on local disk)
-    # Commented out to prevent coupling to bia-converter
     image_format = ""
-    # if representation_location:
-    #    image_format = image_utils.get_image_extension(representation_location)
-    # else:
-    #    image_format = ""
-
     pixel_metadata = {}
     total_size_in_bytes = 0
     file_uri = []
-    # Commented out to prevent coupling to bia-converter
-    # if image_format == ".ome.zarr":
-    #    pixel_metadata = image_utils.get_ome_zarr_pixel_metadata(
-    #        representation_location
-    #    )
-    #    total_size_in_bytes = image_utils.get_total_zarr_size(representation_location)
 
     if representation_use_type == ImageRepresentationUseType.UPLOADED_BY_SUBMITTER:
         if total_size_in_bytes == 0:
             total_size_in_bytes = sum([fr.size_in_bytes for fr in file_references])
         # TODO: Discuss what to do if file reference is list > 1 with different paths e.g. .hdr and .img for analyze. Currently just using first file reference
-        # Commented out to prevent coupling to bia-converter
-        # if image_format == "":
-        #    image_format = image_utils.get_image_extension(file_references[0].file_path)
+        if image_format == "":
+            image_format = get_image_extension(file_references[0].file_path)
         file_uri = [fr.uri for fr in file_references]
 
     model_dict = {
