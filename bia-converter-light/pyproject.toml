@@ -1,11 +1,11 @@
 [tool.poetry]
-name = "bia-ingest"
+name = "bia-converter-light"
 version = "0.1.0"
-description = "BIA ingest using shared models"
+description = "BIA simple approach to creation of images associated with image representations"
 authors = ["Kola Babalola <kola@ebi.ac.uk>"]
 license = "Apache Software License 2.0"
 readme = "README.md"
-packages = [{include = "bia_ingest"}]
+packages = [{include = "bia_converter_light"}]
 
 [tool.poetry.dependencies]
 python = "^3.10,<3.12"
@@ -13,12 +13,21 @@ requests = "^2.31.0"
 pytest = "^7.0"
 bia-shared-datamodels = { path = "../bia-shared-datamodels", develop = true }
 bia-integrator-api = { path = "../clients/python", develop = true }
+bia-ingest = { path = "../bia-ingest", develop = true }
 typer = "^0.12.3"
 typing-extensions = "^4.12.2"
 pydantic-settings = "^2.3.4"
 
+# Dependencies for image conversion and upload to Embassy S3
+zarr = "^2.18.3"
+dask = "^2024.8.2"
+microfilm = "^0.2.1"
+setuptools = "^74.1.2"
+fsspec = "^2024.9.0"
+s3fs = "^2024.9.0"
+
 [tool.poetry.scripts]
-biaingest = "bia_ingest.cli:app"
+bia-converter-light = "bia_converter_light.cli:app"
 
 
 [tool.poetry.group.dev.dependencies]

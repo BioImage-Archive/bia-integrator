@@ -54,7 +54,7 @@ class DiskPersister(PersistenceStrategy):
                 logger.debug(f"Created {output_dir}")
             output_path = output_dir / f"{obj.uuid}.json"
             output_path.write_text(obj.model_dump_json(indent=2))
-            logger.debug(f"Written {output_path}")
+            logger.info(f"Written {output_path}")
 
     def fetch_by_uuid(
         self, uuids: List[UUID], model_class: Type[BaseModel]
@@ -88,7 +88,7 @@ class ApiPersister(PersistenceStrategy):
                 api_copy_of_obj = None
 
             if obj == api_copy_of_obj:
-                message = f"Not writing to object of with uuid: {obj.uuid} and type: {obj.model.type_name} to API becase an identical copy of object exists in API"
+                message = f"Not writing to object with uuid: {obj.uuid} and type: {obj.model.type_name} to API becase an identical copy of object exists in API"
                 logger.warning(message)
                 continue
             elif api_copy_of_obj:
@@ -100,7 +100,7 @@ class ApiPersister(PersistenceStrategy):
 
             api_creation_method = f"post_{to_snake(obj.model.type_name)}"
             getattr(self.api_client, api_creation_method)(api_obj)
-            logger.info(f"persisted {obj.uuid} to API")
+            logger.info(f"persisted {obj.uuid} of type {obj.model.type_name} to API")
 
     def fetch_by_uuid(
         self, uuids: List[UUID | str], model_class: Type[BaseModel]

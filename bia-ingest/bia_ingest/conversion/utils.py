@@ -307,3 +307,33 @@ def merge_dicts(dict_list: List[Dict[str, str]]) -> Dict:
                 merged_dict[key] = value
 
     return merged_dict
+
+
+def get_image_extension(file_path: str) -> str:
+    """Return standardized image extension for a given file path."""
+
+    # Process files with multi suffix extensions
+    multi_suffix_ext = {
+        ".ome.zarr.zip": ".ome.zarr.zip",
+        ".zarr.zip": ".zarr.zip",
+        ".ome.zarr": ".ome.zarr",
+        ".ome.tiff": ".ome.tiff",
+        ".ome.tif": ".ome.tiff",
+        ".tar.gz": ".tar.gz",
+    }
+
+    for ext, mapped_value in multi_suffix_ext.items():
+        if file_path.lower().endswith(ext):
+            return mapped_value
+
+    # Standardise extensions expressed using different suffixes
+    ext_map = {
+        ".jpeg": ".jpg",
+        ".tif": ".tiff",
+    }
+
+    ext = Path(file_path).suffix.lower()
+    if ext in ext_map:
+        return ext_map[ext]
+    else:
+        return ext

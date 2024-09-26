@@ -1,8 +1,8 @@
 """Ad hoc script to select images to convert based on size"""
 
 import typer
-from bia_ingest.config import api_client
-from bia_ingest.image_utils.image_utils import in_bioformats_single_file_formats_list
+from bia_converter_light.config import api_client
+from bia_converter_light.utils import in_bioformats_single_file_formats_list
 
 
 # From https://stackoverflow.com/questions/1094841/get-human-readable-version-of-file-size
