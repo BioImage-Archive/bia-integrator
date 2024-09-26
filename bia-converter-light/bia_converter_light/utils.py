@@ -4,6 +4,9 @@ from pathlib import Path
 from bia_shared_datamodels import bia_data_model
 import xml.etree.ElementTree as ET
 
+# Import get_image_extension from bia_ingest instead of duplicating here
+from bia_ingest.conversion.utils import get_image_extension
+
 
 def get_total_zarr_size(zarr_path: str) -> int:
     """Return size of zarr archive in bytes"""
@@ -23,33 +26,6 @@ single_file_formats_path = (
 single_file_formats = [
     s for s in single_file_formats_path.read_text().split("\n") if len(s) > 0
 ]
-
-
-def get_image_extension(file_path: str) -> str:
-    """Return standardized image extension for a given file path."""
-
-    special_cases = {
-        ".ome.zarr.zip": ".ome.zarr.zip",
-        ".zarr.zip": ".zarr.zip",
-        ".ome.zarr": ".ome.zarr",
-        ".ome.tiff": ".ome.tiff",
-        ".ome.tif": ".ome.tiff",
-        ".tar.gz": ".tar.gz",
-    }
-
-    for special_ext, mapped_value in special_cases.items():
-        if file_path.lower().endswith(special_ext):
-            return mapped_value
-
-    ext_map = {
-        ".jpeg": ".jpg",
-        ".tif": ".tiff",
-    }
-    ext = Path(file_path).suffix.lower()
-    if ext in ext_map:
-        return ext_map[ext]
-    else:
-        return ext
 
 
 def extension_in_bioformats_single_file_formats_list(ext: str) -> bool:

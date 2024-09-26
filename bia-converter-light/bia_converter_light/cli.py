@@ -27,9 +27,10 @@ def convert_image(
     image_representation_uuid: Annotated[str, typer.Argument()],
     verbose: Annotated[bool, typer.Option("-v")] = False,
 ) -> None:
-    """Create image for supplied image rep, upload to s3 and return uri
+    """Create image for supplied image rep, upload to s3 and update uri in API
 
-    Create the actual image for the image representation and stage to S3.
+    Create the actual image for the image representation and stage to S3,
+    and upload the uri for the image representation in the API.
 
     This function is only temporary whilst the API image conversion
     using the API is being developed
@@ -39,12 +40,6 @@ def convert_image(
         logger.setLevel(logging.DEBUG)
 
     representation = api_client.get_image_representation(image_representation_uuid)
-    # try:
-    #    representation = api_client.get_image_representation(image_representation_uuid)
-    # except Exception as exception:
-    #    message = f"Could not retrieve image representation with uuid {image_representation_uuid}."
-    #    logging.error(message)
-    #    raise exception
     file_reference = api_client.get_file_reference(
         representation.original_file_reference_uuid[0]
     )
@@ -59,7 +54,7 @@ def convert_image(
 
     if representation.use_type == ImageRepresentationUseType.UPLOADED_BY_SUBMITTER:
         logger.warning(
-            "Cannot create/convert images for image representation of type: {representation.use_type - exiting"
+            f"Cannot create/convert images for image representation of type: {representation.use_type.value} - exiting"
         )
         return
     elif representation.use_type == ImageRepresentationUseType.INTERACTIVE_DISPLAY:

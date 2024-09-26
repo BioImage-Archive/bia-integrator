@@ -1,3 +1,13 @@
+## Description
+This sub-package creates actual images for image representations. It is named *bia-converter-light* because it only converts one file reference per image representation. Wherease the upcoming *bia-converter* sub-package will be able to handle more complex conversion including creation of multichannel images and multi-slice images from multiple file references per image representation.
+
+The input is an image representation uuid. The API is queried for the image representation object, and value of the `use_type` field determines the image created:
+1. INTERACTIVE_DISPLAY: creates an ome.zarr image from the #first# file reference in the image representation
+2. THUMBNAIL: creates a 256x256 .png image from the INTERACTIVE_DISPLAY image
+3. STATIC_DISPLAY: creates a 512x512 .png image from the INTERACTIVE_DISPLAY image
+
+Note that the STATIC_DISPLAY and THUMBNAIL images can only be created after creation of the INTERACTIVE_DISPLAY image.
+
 ## Usage
 Once you've installed the project using poetry, assuming you are in this directory:
 ```sh

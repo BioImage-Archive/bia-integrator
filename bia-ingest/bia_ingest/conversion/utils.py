@@ -309,12 +309,11 @@ def merge_dicts(dict_list: List[Dict[str, str]]) -> Dict:
     return merged_dict
 
 
-# Copied over from bia-converter/bia_converter/utils.py to prevent
-# coupling with the package
 def get_image_extension(file_path: str) -> str:
     """Return standardized image extension for a given file path."""
 
-    special_cases = {
+    # Process files with multi suffix extensions
+    multi_suffix_ext = {
         ".ome.zarr.zip": ".ome.zarr.zip",
         ".zarr.zip": ".zarr.zip",
         ".ome.zarr": ".ome.zarr",
@@ -323,14 +322,16 @@ def get_image_extension(file_path: str) -> str:
         ".tar.gz": ".tar.gz",
     }
 
-    for special_ext, mapped_value in special_cases.items():
-        if file_path.lower().endswith(special_ext):
+    for ext, mapped_value in multi_suffix_ext.items():
+        if file_path.lower().endswith(ext):
             return mapped_value
 
+    # Standardise extensions expressed using different suffixes
     ext_map = {
         ".jpeg": ".jpg",
         ".tif": ".tiff",
     }
+
     ext = Path(file_path).suffix.lower()
     if ext in ext_map:
         return ext_map[ext]
