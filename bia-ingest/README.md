@@ -29,11 +29,15 @@ Image representations for file references can be created without images being co
 biaingest representations create --persistence-mode api S-BIAD1348 a9125402-5e47-4afd-9abf-7393448acd07 e1c99f04-549d-4952-ba88-c921c707f01d f26e27e4-90ce-42b4-91ae-503dafed8b70
 ```
 
-This creates 4 image representations (but not the actual images) for each of the file references:
+This creates 3 image representations (but not the actual images) for each of the file references:
 1. UPLOADED_BY_SUBMITTER
 2. INTERACTIVE_DISPLAY (ome_zarr)
-3. STATIC_DISPLAY
-4. THUMBNAIL
+3. THUMBNAIL
+
+An option can be passed into the command to specify representations to create. E.g. to create only THUMBNAIL and STATIC_DISPLAY:
+```
+biaingest representations create --persistence-mode api --reps-to-create THUMBNAIL --reps-to-create STATIC_DISPLAY S-BIAD1348 a9125402-5e47-4afd-9abf-7393448acd07 e1c99f04-549d-4952-ba88-c921c707f01d f26e27e4-90ce-42b4-91ae-503dafed8b70
+```
 
 ## Converting images
 This is now handled by the `bia-converter-light` sub package
