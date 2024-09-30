@@ -80,7 +80,7 @@
         "experimental_imaging_component": [
             {
                 "file_count": 2,
-                "image_count": 0,
+                "image_count": 1,
                 "file_type_aggregation": [
                     ".tif",
                     ".zip"
@@ -293,7 +293,7 @@
         "image_annotation_component": [
             {
                 "file_count": 2,
-                "image_count": 0,
+                "image_count": 1,
                 "file_type_aggregation": [
                     ".tif",
                     ".zip"
