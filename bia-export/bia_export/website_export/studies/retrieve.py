@@ -86,8 +86,8 @@ def retrieve_aggregation_fields(
             file_type_aggregation.add(file_type)
 
         dataset_aggregation_fields = {
-            "file_count": len(images),
-            "image_count": len(files),
+            "file_count": len(files),
+            "image_count": len(images),
             "file_type_aggregation": sorted(list(file_type_aggregation)),
         }
 
@@ -114,6 +114,29 @@ def aggregate_file_list_data(context: StudyCLIContext) -> dict[UUID, dict]:
             }
         dataset_counts_map[submission_dataset]["file_count"] += 1
         dataset_counts_map[submission_dataset]["file_type_aggregation"].add(file_type)
+
+    experimentally_derived_images_directory = context.root_directory.joinpath(
+        f"experimentally_captured_images/{context.accession_id}/*.json"
+    )
+    derived_images_directory = context.root_directory.joinpath(
+        f"derived_images/{context.accession_id}/*.json"
+    )
+    image_paths = glob(str(experimentally_derived_images_directory)) + glob(
+        str(derived_images_directory)
+    )
+    for image_path in image_paths:
+        with open(image_path, "r") as object_file:
+            object_dict = json.load(object_file)
+        submission_dataset = object_dict["submission_dataset_uuid"]
+        file_type = Path(file_reference.file_path).suffix
+        if submission_dataset not in dataset_counts_map:
+            dataset_counts_map[submission_dataset] = {
+                "file_count": 0,
+                "image_count": 0,
+                "file_type_aggregation": set(),
+            }
+        dataset_counts_map[submission_dataset]["image_count"] += 1
+
     return dataset_counts_map
 
 
