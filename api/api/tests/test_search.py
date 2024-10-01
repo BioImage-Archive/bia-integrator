@@ -21,7 +21,8 @@ def test_search_missing_study(api_client: TestClient):
         "search/study/accession",
         params={"accession_id": "this_does_not_exist"},
     )
-    assert rsp.status_code == 404, rsp.json()
+    assert rsp.status_code == 200, rsp.json()
+    assert rsp.json() == None
 
 
 def test_search_image_representation(
