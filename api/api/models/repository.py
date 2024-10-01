@@ -303,4 +303,4 @@ async def get_db() -> AsyncGenerator[Repository, None]:
     try:
         yield db
     finally:
-        db.close()
+        await db.close()
