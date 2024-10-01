@@ -28,7 +28,7 @@ def create_image_representation(
     result_summary: dict,
     persister: PersistenceStrategy,
     representation_location: Optional[str] = None,
-) -> bia_data_model.ImageRepresentation:
+) -> bia_data_model.ImageRepresentation | None:
     """Create ImageRepresentation for specified FileReference(s)"""
 
     logger.debug(f"Fetching file reference with uuid(s) {file_reference_uuids}")
