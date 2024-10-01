@@ -1,7 +1,12 @@
 import logging
 from typing import List, Optional, Dict, Any
 from uuid import UUID
-from .utils import dict_to_uuid, get_image_extension
+from .utils import (
+    dict_to_uuid,
+    dicts_to_api_models,
+    log_model_creation_count,
+    get_image_extension,
+)
 
 from .experimentally_captured_image import get_experimentally_captured_image
 from ..biostudies import (
@@ -25,6 +30,7 @@ def create_image_representation(
 ) -> bia_data_model.ImageRepresentation:
     """Create ImageRepresentation for specified FileReference(s)"""
 
+    logger.debug(f"Fetching file reference with uuid(s) {file_reference_uuids}")
     file_references = persister.fetch_by_uuid(
         [str(uuid) for uuid in file_reference_uuids], bia_data_model.FileReference
     )
@@ -75,16 +81,22 @@ def create_image_representation(
         "version": 0,
     }
     model_dict["uuid"] = generate_image_representation_uuid(model_dict)
-    image_representation = bia_data_model.ImageRepresentation.model_validate(model_dict)
+    image_representation = dicts_to_api_models(
+        [
+            model_dict,
+        ],
+        bia_data_model.ImageRepresentation,
+        result_summary[submission.accno],
+    )
+    assert len(image_representation) == 1
 
-    if image_representation:
-        persister.persist(
-            [
-                image_representation,
-            ]
-        )
-
-    return image_representation
+    persister.persist(image_representation)
+    log_model_creation_count(
+        bia_data_model.ImageRepresentation,
+        1,
+        result_summary[submission.accno],
+    )
+    return image_representation[0]
 
 
 def generate_image_representation_uuid(

@@ -3,8 +3,10 @@ from uuid import UUID
 from typing import List, Dict, Any
 from .utils import (
     dict_to_uuid,
+    dicts_to_api_models,
     filter_model_dictionary,
     merge_dicts,
+    log_model_creation_count,
 )
 from ..biostudies import (
     Submission,
@@ -33,10 +35,6 @@ def get_experimentally_captured_image(
         ],
         bia_data_model.ExperimentalImagingDataset,
     )[0]
-    ## Get the dataset
-    # dataset = get_bia_data_model_by_uuid(
-    #    dataset_uuid, bia_data_model.ExperimentalImagingDataset, submission.accno
-    # )
 
     subject_uuid = dataset.attribute["subject_uuid"]
     acquisition_process_uuid = dataset.attribute["acquisition_process_uuid"]
@@ -52,16 +50,21 @@ def get_experimentally_captured_image(
         attribute=attributes,
     )
 
-    experimentally_captured_image = (
-        bia_data_model.ExperimentallyCapturedImage.model_validate(model_dict)
+    experimentally_captured_image = dicts_to_api_models(
+        [
+            model_dict,
+        ],
+        bia_data_model.ExperimentallyCapturedImage,
+        result_summary[submission.accno],
     )
-    if experimentally_captured_image:
-        persister.persist(
-            [
-                experimentally_captured_image,
-            ],
-        )
-    return experimentally_captured_image
+    assert len(experimentally_captured_image) == 1
+    persister.persist(experimentally_captured_image)
+    log_model_creation_count(
+        bia_data_model.ExperimentallyCapturedImage,
+        1,
+        result_summary[submission.accno],
+    )
+    return experimentally_captured_image[0]
 
 
 def prepare_experimentally_captured_image_dict(

@@ -48,7 +48,7 @@ app.add_typer(
 @app.command(help="Ingest from biostudies and echo json of bia_data_model.Study")
 def ingest(
     accession_id_list: Annotated[List[str], typer.Argument()],
-    verbose: Annotated[bool, typer.Option("-v")] = False,
+    verbose: Annotated[bool, typer.Option("--verbose", "-v")] = False,
 ) -> None:
     if verbose:
         logger.setLevel(logging.DEBUG)
@@ -110,8 +110,14 @@ def create(
         ImageRepresentationUseType.THUMBNAIL,
         ImageRepresentationUseType.INTERACTIVE_DISPLAY,
     ],
+    verbose: Annotated[bool, typer.Option("--verbose", "-v")] = False,
 ) -> None:
     """Create representations for specified file reference(s)"""
+
+    if verbose:
+        logger.setLevel(logging.DEBUG)
+
+    result_summary = {}
 
     persister = persistence_strategy_factory(
         persistence_mode,
@@ -123,7 +129,14 @@ def create(
     submission = load_submission(accession_id)
     result_summary = {accession_id: IngestionResult()}
     for file_reference_uuid in file_reference_uuid_list:
+        print(
+            f"[blue]-------- Starting creation of image representations for file reference {file_reference_uuid} of {accession_id} --------[/blue]"
+        )
+
         for representation_use_type in reps_to_create:
+            logger.debug(
+                f"starting creation of {representation_use_type.value} for file reference {file_reference_uuid}"
+            )
             create_image_representation(
                 submission,
                 [
@@ -133,6 +146,25 @@ def create(
                 result_summary=result_summary,
                 persister=persister,
             )
+
+    logger.debug(
+        f"COMPLETED: Creation of image representations for file reference(s) {file_reference_uuid_list} of {accession_id}"
+    )
+    print(
+        f"[green]-------- Completed creation of image representations for file reference(s) {file_reference_uuid_list} of {accession_id} --------[/green]"
+    )
+
+    result_summary = result_summary[submission.accno]
+    successes = ""
+    errors = ""
+    for item_name in result_summary.__fields__:
+        item_value = getattr(result_summary, item_name)
+        if item_name.endswith("CreationCount") and item_value > 0:
+            successes += f"{item_name}: {item_value}\n"
+        elif item_name.endswith("ErrorCount") and item_value > 0:
+            errors += f"{item_name}: {item_value}\n"
+    print(f"[green]--------- Successes ---------\n{successes}[/green]")
+    print(f"[red]--------- Errors ---------\n{errors}[/red]")
 
 
 @app.callback()

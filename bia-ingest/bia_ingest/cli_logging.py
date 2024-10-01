@@ -48,6 +48,8 @@ class IngestionResult(BaseModel):
     Organisation_ValidationErrorCount: int = Field(default=0)
     ExperimentallyCapturedImage_CreationCount: int = Field(default=0)
     ExperimentallyCapturedImage_ValidationErrorCount: int = Field(default=0)
+    ImageRepresentation_CreationCount: int = Field(default=0)
+    ImageRepresentation_ValidationErrorCount: int = Field(default=0)
 
 
 def tabulate_errors(dict_of_results: dict[str, IngestionResult]) -> Table:
@@ -60,21 +62,24 @@ def tabulate_errors(dict_of_results: dict[str, IngestionResult]) -> Table:
                 error_message += f"{field}: {value}; "
 
         if (
-            result.ExperimentalImagingDataset_CreationCount == 0 
-            & result.ImageAnnotationDataset_CreationCount == 0
+            result.ExperimentalImagingDataset_CreationCount
+            == 0 & result.ImageAnnotationDataset_CreationCount
+            == 0
         ):
             error_message += "No datasets were created; "
 
         if result.ExperimentalImagingDataset_CreationCount > 0:
             if not (
-                result.BioSample_CreationCount == 0 
-                & result.SpecimenImagingPreparationProtocol_CreationCount == 0
-                & result.ImageAcquisition_CreationCount == 0
+                result.BioSample_CreationCount
+                == 0 & result.SpecimenImagingPreparationProtocol_CreationCount
+                == 0 & result.ImageAcquisition_CreationCount
+                == 0
             ):
                 if (
-                    result.BioSample_CreationCount == 0 
-                    | result.SpecimenImagingPreparationProtocol_CreationCount == 0
-                    | result.ImageAcquisition_CreationCount == 0
+                    result.BioSample_CreationCount
+                    == 0 | result.SpecimenImagingPreparationProtocol_CreationCount
+                    == 0 | result.ImageAcquisition_CreationCount
+                    == 0
                 ):
                     error_message += "Incomplete REMBI objects created; "
             else:
