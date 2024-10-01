@@ -36,7 +36,7 @@ jobs:
             ${{ runner.os }}-buildx-
       - name: Docker Compose Up
         run: |
-          env DB_TIMEOUT_MS=5000 docker compose up -d --build 
+          docker compose up -d --build 
       - name: Run tests
         # api moved to api/ , src left in as a reference as we transition. All tests there are failing and that directory will be deleted anyway
         run: |
