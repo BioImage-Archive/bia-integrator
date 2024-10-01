@@ -1,9 +1,10 @@
 import logging
 from typing import List, Optional, Dict, Any
+from pydantic import ValidationError
 from uuid import UUID
 from .utils import (
     dict_to_uuid,
-    dicts_to_api_models,
+    log_failed_model_creation,
     log_model_creation_count,
     get_image_extension,
 )
@@ -31,9 +32,18 @@ def create_image_representation(
     """Create ImageRepresentation for specified FileReference(s)"""
 
     logger.debug(f"Fetching file reference with uuid(s) {file_reference_uuids}")
-    file_references = persister.fetch_by_uuid(
-        [str(uuid) for uuid in file_reference_uuids], bia_data_model.FileReference
-    )
+    try:
+        file_references = persister.fetch_by_uuid(
+            [str(uuid) for uuid in file_reference_uuids], bia_data_model.FileReference
+        )
+    except Exception as e:
+        logger.error(
+            f"Error fetching file references {file_reference_uuids}. Error was: {e}. Unable to create image representation and associated objects"
+        )
+        log_failed_model_creation(
+            bia_data_model.ImageRepresentation, result_summary[submission.accno]
+        )
+        return
     # file_paths = [fr.file_path for fr in file_references]
     # if not any(
     #    [in_bioformats_single_file_formats_list(file_path) for file_path in file_paths]
@@ -48,6 +58,14 @@ def create_image_representation(
         result_summary=result_summary,
         persister=persister,
     )
+    if not experimentally_captured_image:
+        logger.error(
+            "Experimentally captured image not created. Cannot create image representations for file references {file_references}"
+        )
+        log_failed_model_creation(
+            bia_data_model.ImageRepresentation, result_summary[submission.accno]
+        )
+        return
 
     image_format = ""
     pixel_metadata = {}
@@ -81,22 +99,29 @@ def create_image_representation(
         "version": 0,
     }
     model_dict["uuid"] = generate_image_representation_uuid(model_dict)
-    image_representation = dicts_to_api_models(
-        [
-            model_dict,
-        ],
-        bia_data_model.ImageRepresentation,
-        result_summary[submission.accno],
-    )
-    assert len(image_representation) == 1
 
-    persister.persist(image_representation)
+    try:
+        image_representation = bia_data_model.ImageRepresentation.model_validate(
+            model_dict
+        )
+    except ValidationError:
+        log_failed_model_creation(
+            bia_data_model.ImageRepresentation,
+            result_summary[submission.accno],
+        )
+        return
+
+    persister.persist(
+        [
+            image_representation,
+        ]
+    )
     log_model_creation_count(
         bia_data_model.ImageRepresentation,
         1,
         result_summary[submission.accno],
     )
-    return image_representation[0]
+    return image_representation
 
 
 def generate_image_representation_uuid(

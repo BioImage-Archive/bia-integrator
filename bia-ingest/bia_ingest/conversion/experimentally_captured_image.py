@@ -1,17 +1,17 @@
 import logging
 from uuid import UUID
 from typing import List, Dict, Any
+from pydantic import ValidationError
 from .utils import (
     dict_to_uuid,
-    dicts_to_api_models,
     filter_model_dictionary,
     merge_dicts,
     log_model_creation_count,
+    log_failed_model_creation,
 )
 from ..biostudies import (
     Submission,
 )
-
 from bia_ingest.persistence_strategy import PersistenceStrategy
 
 from bia_shared_datamodels import bia_data_model
@@ -50,21 +50,28 @@ def get_experimentally_captured_image(
         attribute=attributes,
     )
 
-    experimentally_captured_image = dicts_to_api_models(
+    try:
+        experimentally_captured_image = (
+            bia_data_model.ExperimentallyCapturedImage.model_validate(model_dict)
+        )
+    except ValidationError:
+        log_failed_model_creation(
+            bia_data_model.ExperimentallyCapturedImage,
+            result_summary[submission.accno],
+        )
+        return
+
+    persister.persist(
         [
-            model_dict,
-        ],
-        bia_data_model.ExperimentallyCapturedImage,
-        result_summary[submission.accno],
+            experimentally_captured_image,
+        ]
     )
-    assert len(experimentally_captured_image) == 1
-    persister.persist(experimentally_captured_image)
     log_model_creation_count(
         bia_data_model.ExperimentallyCapturedImage,
         1,
         result_summary[submission.accno],
     )
-    return experimentally_captured_image[0]
+    return experimentally_captured_image
 
 
 def prepare_experimentally_captured_image_dict(

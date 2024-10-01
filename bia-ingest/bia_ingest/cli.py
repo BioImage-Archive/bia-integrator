@@ -137,7 +137,7 @@ def create(
             logger.debug(
                 f"starting creation of {representation_use_type.value} for file reference {file_reference_uuid}"
             )
-            create_image_representation(
+            image_representation = create_image_representation(
                 submission,
                 [
                     file_reference_uuid,
@@ -146,13 +146,11 @@ def create(
                 result_summary=result_summary,
                 persister=persister,
             )
-
-    logger.debug(
-        f"COMPLETED: Creation of image representations for file reference(s) {file_reference_uuid_list} of {accession_id}"
-    )
-    print(
-        f"[green]-------- Completed creation of image representations for file reference(s) {file_reference_uuid_list} of {accession_id} --------[/green]"
-    )
+            if image_representation:
+                message = f"COMPLETED: Creation of image representation {representation_use_type.value} for file reference {file_reference_uuid} of {accession_id}"
+            else:
+                message = f"WARNING: Could NOT create image representation {representation_use_type.value} for file reference {file_reference_uuid} of {accession_id}"
+            logger.debug(message)
 
     result_summary = result_summary[submission.accno]
     successes = ""
@@ -163,8 +161,8 @@ def create(
             successes += f"{item_name}: {item_value}\n"
         elif item_name.endswith("ErrorCount") and item_value > 0:
             errors += f"{item_name}: {item_value}\n"
-    print(f"[green]--------- Successes ---------\n{successes}[/green]")
-    print(f"[red]--------- Errors ---------\n{errors}[/red]")
+    print(f"\n\n[green]--------- Successes ---------\n{successes}[/green]")
+    print(f"\n\n[red]--------- Errors ---------\n{errors}[/red]")
 
 
 @app.callback()
