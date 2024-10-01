@@ -26,7 +26,7 @@ def get_experimentally_captured_image(
     file_references: List[bia_data_model.FileReference],
     result_summary: dict,
     persister: PersistenceStrategy,
-) -> bia_data_model.ExperimentallyCapturedImage:
+) -> bia_data_model.ExperimentallyCapturedImage | None:
     """Get the ExperimentallyCapturedImage corresponding to the dataset/file_reference(s) combination"""
 
     dataset = persister.fetch_by_uuid(
