@@ -17,6 +17,7 @@ jobs:
       MONGO_INITDB_ROOT_USERNAME: ${{ vars.MONGO_INITDB_ROOT_USERNAME }}
       MONGO_CONNSTRING: mongodb://${{ vars.MONGO_INITDB_ROOT_USERNAME }}:${{ secrets.MONGO_INITDB_ROOT_PASSWORD }}@biaint-mongo:27017
       DB_NAME: ${{ vars.DB_NAME }}
+      DB_TIMEOUT_MS: 5000
       JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
       USER_CREATE_SECRET_TOKEN: ${{ secrets.USER_CREATE_SECRET_TOKEN }}
     defaults:
