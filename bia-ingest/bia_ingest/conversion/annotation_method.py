@@ -1,10 +1,9 @@
 import logging
-from typing import List, Any, Dict
+from typing import List, Any, Dict, Optional
 from .utils import (
     dicts_to_api_models,
     find_sections_recursive,
     dict_to_uuid,
-    persist,
     filter_model_dictionary,
     log_model_creation_count,
 )
@@ -13,12 +12,15 @@ from ..biostudies import (
     attributes_to_dict,
 )
 from bia_shared_datamodels import bia_data_model
+from ..persistence_strategy import PersistenceStrategy
 
 logger = logging.getLogger("__main__." + __name__)
 
 
 def get_annotation_method(
-    submission: Submission, result_summary: dict, persist_artefacts=False
+    submission: Submission,
+    result_summary: dict,
+    persister: Optional[PersistenceStrategy | None] = None,
 ) -> List[bia_data_model.AnnotationMethod]:
     annotation_method_model_dicts = extract_annotation_method_dicts(submission)
     annotation_methods = dicts_to_api_models(
@@ -33,8 +35,10 @@ def get_annotation_method(
         result_summary[submission.accno],
     )
 
-    if persist_artefacts and annotation_methods:
-        persist(annotation_methods, "annotation_methods", submission.accno)
+    if persister and annotation_methods:
+        persister.persist(
+            annotation_methods,
+        )
 
     return annotation_methods
 
@@ -79,7 +83,7 @@ def extract_annotation_method_dicts(submission: Submission) -> List[Dict[str, An
         model_dict["accno"] = section.__dict__.get("accno", "")
         model_dict["accession_id"] = submission.accno
         model_dict["uuid"] = generate_annotation_method_uuid(model_dict)
-        model_dict["version"] = 1
+        model_dict["version"] = 0
         model_dict = filter_model_dictionary(
             model_dict, bia_data_model.AnnotationMethod
         )

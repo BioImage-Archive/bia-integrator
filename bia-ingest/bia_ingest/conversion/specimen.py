@@ -1,12 +1,12 @@
 import logging
-from typing import Dict, List, Any
 
+from typing import List, Any, Dict, Optional
 from bia_shared_datamodels import bia_data_model
+from ..persistence_strategy import PersistenceStrategy
 
 from .utils import (
     dicts_to_api_models,
     dict_to_uuid,
-    persist,
     filter_model_dictionary,
     get_generic_section_as_list,
     object_value_pair_to_dict,
@@ -81,7 +81,9 @@ def get_specimen_for_dataset(
 # TODO: Discuss with @FS if we still need this function ( see clickup
 #       ticket https://app.clickup.com/t/8695fqxpy
 def get_specimen(
-    submission: Submission, result_summary: dict, persist_artefacts: bool = False
+    submission: Submission,
+    result_summary: dict,
+    persister: Optional[PersistenceStrategy | None] = None,
 ) -> List[bia_data_model.Specimen]:
     """Create and persist bia_data_model.Specimen and models it depends on
 
@@ -98,7 +100,7 @@ def get_specimen(
     # specimen_preparation_protocol?
     # Biosamples
     biosamples = biosample_conversion.get_biosample(
-        submission, result_summary, persist_artefacts
+        submission, result_summary, persister
     )
 
     # Index biosamples by title_id. Makes linking with associations more
@@ -112,7 +114,7 @@ def get_specimen(
     # ImagingPreparationProtocol
     imaging_preparation_protocols = (
         sipp_conversion.get_specimen_imaging_preparation_protocol(
-            submission, result_summary, persist_artefacts
+            submission, result_summary, persister
         )
     )
     imaging_preparation_protocol_uuids = object_value_pair_to_dict(
@@ -121,7 +123,7 @@ def get_specimen(
 
     # GrowthProtocol
     growth_protocols = sgp_conversion.get_specimen_growth_protocol(
-        submission, result_summary, persist_artefacts
+        submission, result_summary, persister
     )
     growth_protocol_uuids = object_value_pair_to_dict(
         growth_protocols, key_attr="title_id", value_attr="uuid"
@@ -186,8 +188,8 @@ def get_specimen(
         bia_data_model.Specimen, len(specimens), result_summary[submission.accno]
     )
 
-    if persist_artefacts and specimens:
-        persist(specimens, "specimens", submission.accno)
+    if persister and specimens:
+        persister.persist(specimens)
 
     # ToDo: How should we deal with situation where specimens for a
     # submission are exactly the same? E.g. see associations of S-BIAD1287

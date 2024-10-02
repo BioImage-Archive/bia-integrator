@@ -44,7 +44,7 @@ class DiskPersister(PersistenceStrategy):
 
     def persist(self, object_list: List[BaseModel]) -> None:
         for obj in object_list:
-            object_path = f"{to_snake(obj.model.type_name)}s"
+            object_path = f"{to_snake(obj.model.type_name)}"
             # This is computed in each iteration in case the object list
             # has different types of objects (which we don't expect but is
             # not forbidden)
@@ -59,7 +59,7 @@ class DiskPersister(PersistenceStrategy):
     def fetch_by_uuid(
         self, uuids: List[UUID], model_class: Type[BaseModel]
     ) -> List[BaseModel]:
-        model_subdir = f"{to_snake(model_class.__name__)}s"
+        model_subdir = f"{to_snake(model_class.__name__)}"
         object_list = []
         for uuid in uuids:
             input_path = (
@@ -88,7 +88,7 @@ class ApiPersister(PersistenceStrategy):
                 api_copy_of_obj = None
 
             if obj == api_copy_of_obj:
-                message = f"Not writing to object with uuid: {obj.uuid} and type: {obj.model.type_name} to API becase an identical copy of object exists in API"
+                message = f"Not writing object with uuid: {obj.uuid} and type: {obj.model.type_name} to API becase an identical copy of object exists in API"
                 logger.warning(message)
                 continue
             elif api_copy_of_obj:

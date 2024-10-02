@@ -1,7 +1,6 @@
 import logging
-from pathlib import Path
 from pydantic import ValidationError
-from typing import List, Dict
+from typing import List, Dict, Optional
 from .utils import (
     dict_to_uuid,
     filter_model_dictionary,
@@ -14,8 +13,8 @@ from ..biostudies import (
     file_uri,
 )
 from .. import biostudies  # To make reference to biostudies.File explicit
-from ..config import settings
 from bia_shared_datamodels import bia_data_model
+from ..persistence_strategy import PersistenceStrategy
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -27,7 +26,7 @@ def get_file_reference_by_dataset(
         | bia_data_model.ImageAnnotationDataset
     ],
     result_summary: dict,
-    persist_artefacts: bool = False,
+    persister: Optional[PersistenceStrategy | None] = None,
 ) -> Dict[str, List[bia_data_model.FileReference]]:
     """
     Return Dict of list of file references in datasets.
@@ -59,12 +58,6 @@ def get_file_reference_by_dataset(
             message = f"""Number of datasets with file lists ({n_datasets_with_file_lists}) is not equal to the number of datasets passed as input to this function ({n_datasets_in_submission}). Was this deliberate?"""
             logger.warning(message)
 
-    if persist_artefacts:
-        output_dir = Path(settings.bia_data_dir) / "file_references" / submission.accno
-        if not output_dir.is_dir():
-            output_dir.mkdir(parents=True)
-            logger.info(f"Created {output_dir}")
-
     fileref_to_datasets = {}
     for dataset_name, dataset in datasets_to_process.items():
         for file_list_dict in file_list_dicts[dataset_name]:
@@ -78,11 +71,8 @@ def get_file_reference_by_dataset(
                 submission.accno, dataset, files_in_fl, result_summary
             )
 
-            if persist_artefacts:
-                for file_reference in file_references:
-                    output_path = output_dir / f"{file_reference.uuid}.json"
-                    output_path.write_text(file_reference.model_dump_json(indent=2))
-                    logger.debug(f"Written {output_path}")
+            if persister:
+                persister.persist(file_references)
 
             fileref_to_datasets[dataset_name].extend(file_references)
 
@@ -115,7 +105,7 @@ def get_file_reference_for_submission_dataset(
         file_dict["submission_dataset_uuid"] = submission_dataset.uuid
         file_dict["format"] = f.type
         file_dict["attribute"] = attributes_to_dict(f.attributes)
-        file_dict["version"] = 1
+        file_dict["version"] = 0
         file_dict = filter_model_dictionary(file_dict, bia_data_model.FileReference)
 
         try:

@@ -1,10 +1,9 @@
 import logging
-from typing import List, Any, Dict
+from typing import List, Any, Dict, Optional
 from .utils import (
     dicts_to_api_models,
     find_sections_recursive,
     dict_to_uuid,
-    persist,
     filter_model_dictionary,
     log_model_creation_count,
 )
@@ -13,12 +12,15 @@ from ..biostudies import (
     attributes_to_dict,
 )
 from bia_shared_datamodels import bia_data_model, semantic_models
+from ..persistence_strategy import PersistenceStrategy
 
 logger = logging.getLogger("__main__." + __name__)
 
 
 def get_biosample(
-    submission: Submission, result_summary: dict, persist_artefacts=False
+    submission: Submission,
+    result_summary: dict,
+    persister: Optional[PersistenceStrategy | None] = None,
 ) -> List[bia_data_model.BioSample]:
     biosample_model_dicts = extract_biosample_dicts(submission)
     biosamples = dicts_to_api_models(
@@ -31,8 +33,10 @@ def get_biosample(
         bia_data_model.BioSample, len(biosamples), result_summary[submission.accno]
     )
 
-    if persist_artefacts and biosamples:
-        persist(biosamples, "biosamples", submission.accno)
+    if persister and biosamples:
+        persister.persist(
+            biosamples,
+        )
     return biosamples
 
 
@@ -88,7 +92,7 @@ def extract_biosample_dicts(submission: Submission) -> List[Dict[str, Any]]:
 
         model_dict["accession_id"] = submission.accno
         model_dict["uuid"] = generate_biosample_uuid(model_dict)
-        model_dict["version"] = 1
+        model_dict["version"] = 0
         model_dict = filter_model_dictionary(model_dict, bia_data_model.BioSample)
         model_dicts.append(model_dict)
 

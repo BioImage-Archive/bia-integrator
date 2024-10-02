@@ -159,7 +159,7 @@ def get_test_image_annotation_dataset() -> List[bia_data_model.ImageAnnotationDa
             "title_id": "Segmentation masks",
             "example_image_uri": [],
             "submitted_in_study_uuid": study_uuid,
-            "version": 1,
+            "version": 0,
             "attribute": {},
         },
     ]
@@ -202,7 +202,7 @@ def get_test_annotation_method() -> List[bia_data_model.AnnotationMethod]:
             "annotation_coverage": None,
             "method_type": "other",
             "source_dataset": [],
-            "version": 1,
+            "version": 0,
         },
     ]
 
@@ -234,14 +234,14 @@ def get_test_specimen_growth_protocol() -> List[bia_data_model.SpecimenGrowthPro
             "accession_id": accession_id,
             "title_id": "Test specimen 1",
             "protocol_description": "Test growth protocol 1",
-            "version": 1,
+            "version": 0,
         },
         {
             "accno": "Specimen-2",
             "accession_id": accession_id,
             "title_id": "Test specimen 2",
             "protocol_description": "Test growth protocol 2",
-            "version": 1,
+            "version": 0,
         },
     ]
 
@@ -274,7 +274,7 @@ def get_test_specimen_imaging_preparation_protocol() -> (
             "title_id": "Test specimen 1",
             "protocol_description": "Test sample preparation protocol 1",
             "signal_channel_information": [],
-            "version": 1,
+            "version": 0,
         },
         {
             "accno": "Specimen-2",
@@ -282,7 +282,7 @@ def get_test_specimen_imaging_preparation_protocol() -> (
             "title_id": "Test specimen 2",
             "protocol_description": "Test sample preparation protocol 2",
             "signal_channel_information": [],
-            "version": 1,
+            "version": 0,
         },
     ]
 
@@ -344,7 +344,7 @@ def get_test_biosample() -> List[bia_data_model.BioSample]:
             "intrinsic_variable_description": [
                 "Test intrinsic variable 1\nwith escaped character",
             ],
-            "version": 1,
+            "version": 0,
         },
         {
             "accno": "Biosample-2",
@@ -363,7 +363,7 @@ def get_test_biosample() -> List[bia_data_model.BioSample]:
             "intrinsic_variable_description": [
                 "Test intrinsic variable 2",
             ],
-            "version": 1,
+            "version": 0,
         },
     ]
 
@@ -398,7 +398,7 @@ def get_test_image_acquisition() -> List[bia_data_model.ImageAcquisition]:
                 "confocal microscopy",
             ],
             "fbbi_id": [],
-            "version": 1,
+            "version": 0,
         },
         {
             "accno": "Image acquisition-7",
@@ -410,7 +410,7 @@ def get_test_image_acquisition() -> List[bia_data_model.ImageAcquisition]:
                 "fluorescence microscopy",
             ],
             "fbbi_id": [],
-            "version": 1,
+            "version": 0,
         },
     ]
     image_acquisition = []
@@ -585,7 +585,9 @@ def get_test_file_reference_data(filelist: str) -> List[Dict[str, str]]:
                 "uri": uri_template.format(
                     accession_id=accession_id, file_path=fl_data["path"]
                 ),
-                "attribute": {a["name"]: a.get("value", None) for a in fl_data["attributes"]},
+                "attribute": {
+                    a["name"]: a.get("value", None) for a in fl_data["attributes"]
+                },
                 "submission_dataset_uuid": submission_dataset_uuids[dataset_index],
             }
         )
@@ -605,7 +607,7 @@ def get_test_file_reference(
         file_reference_uuids = get_test_file_reference_uuid(file_reference_data)
         for file_reference_dict, uuid in zip(file_reference_data, file_reference_uuids):
             file_reference_dict["uuid"] = uuid
-            file_reference_dict["version"] = 1
+            file_reference_dict["version"] = 0
             file_reference_dict = filter_model_dictionary(
                 file_reference_dict, bia_data_model.FileReference
             )
@@ -865,7 +867,7 @@ def get_test_study() -> bia_data_model.Study:
             "Test keyword3",
         ],
         "grant": [g.model_dump() for g in grant],
-        "version": 1,
+        "version": 0,
     }
     study_uuid = dict_to_uuid(
         study_dict,
