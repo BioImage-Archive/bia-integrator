@@ -103,8 +103,47 @@ class Repository:
     async def _init_collection_biaint(self) -> None:
         await self.biaint.create_index([("uuid", 1)], unique=True, name="doc_uuid")
 
+        await self._init_reverse_links_indices()
+
     async def _init_collection_users(self) -> None:
         await self.users.create_index([("email", 1)], unique=True)
+
+    async def _init_reverse_links_indices(self) -> None:
+        from api.public import models_public
+
+        for model in models_public:
+            model_type = model.get_model_metadata().type_name
+            for (
+                link_attribute_name,
+                _,
+            ) in model.get_object_reference_fields().items():
+                self.biaint.create_index(
+                    [(link_attribute_name, 1)],
+                    partialFilterExpression={
+                        "model": model.get_model_metadata().model_dump()
+                    },
+                    name=f"{model_type.lower()}_{link_attribute_name}",
+                )
+
+    async def find_docs_by_link_value(
+        self,
+        link_attribute_in_source: str,
+        link_attribute_value: str,
+        source_type: Type[shared_data_models.DocumentMixin],
+    ):
+        """
+        Always use this to query for documents with a *_uuid field (documents that link to some known document)
+        Ensures partialFilterExpression in _init_reverse_links_indices is added to the query so the index is used
+        """
+
+        return await self.get_docs(
+            # !!!!
+            # source_attribute has list values sometimes (for models that reference a list of other objects)
+            #   mongo queries just so happen have the semantics we want
+            # a.i. list_attribute: some_val means "any value in list_attribute is equal to some_val"
+            doc_filter={link_attribute_in_source: link_attribute_value},
+            doc_type=source_type,
+        )
 
     async def assert_model_doc_dependencies_exist(
         self, object_to_check: shared_data_models.DocumentMixin

@@ -2,12 +2,10 @@ from api import public
 from api import private
 from api import auth
 from api import search
-
-from api.models.repository import repository_create, Repository
-
+from api.models.repository import repository_create
 from fastapi import FastAPI, Depends
-
 from api.api_logging import log_info
+import os
 
 
 app = FastAPI(
@@ -24,12 +22,17 @@ app.include_router(auth.router, prefix="/v2")
 
 
 @app.on_event("startup")
-def on_start():
+async def on_start():
+    if os.getenv("DB_INDEX_REFRESH") == "True":
+        # just so "False" / other values don't accidentally trigger indexing
+        log_info("App updating indexes")
+        await repository_create(init=True)
+
     log_info("App started")
 
 
 @app.on_event("shutdown")
-def on_start():
+def on_shutdown():
     log_info("App stopped")
 
 
