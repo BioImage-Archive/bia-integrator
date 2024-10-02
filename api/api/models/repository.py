@@ -298,9 +298,5 @@ async def repository_create(init: bool) -> Repository:
     return repository
 
 
-async def get_db() -> AsyncGenerator[Repository, None]:
-    db = await repository_create(init=False)
-    try:
-        yield db
-    finally:
-        db.close()
+async def get_db() -> Repository:
+    return await repository_create(init=False)

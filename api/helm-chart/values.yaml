@@ -28,7 +28,7 @@ api_env:
   mongoRootUser: ""
   mongoRootPassword: ""
   mongoHost: "api-mongodb"
-  dbName: "bia-integrator"
+  dbName: "bia_integrator"
   jwtSecretKey: ""
   userCreateSecretToken: ""
 
