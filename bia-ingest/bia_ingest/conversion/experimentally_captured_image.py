@@ -1,15 +1,17 @@
 import logging
 from uuid import UUID
 from typing import List, Dict, Any
+from pydantic import ValidationError
 from .utils import (
     dict_to_uuid,
     filter_model_dictionary,
     merge_dicts,
+    log_model_creation_count,
+    log_failed_model_creation,
 )
 from ..biostudies import (
     Submission,
 )
-
 from bia_ingest.persistence_strategy import PersistenceStrategy
 
 from bia_shared_datamodels import bia_data_model
@@ -24,7 +26,7 @@ def get_experimentally_captured_image(
     file_references: List[bia_data_model.FileReference],
     result_summary: dict,
     persister: PersistenceStrategy,
-) -> bia_data_model.ExperimentallyCapturedImage:
+) -> bia_data_model.ExperimentallyCapturedImage | None:
     """Get the ExperimentallyCapturedImage corresponding to the dataset/file_reference(s) combination"""
 
     dataset = persister.fetch_by_uuid(
@@ -33,10 +35,6 @@ def get_experimentally_captured_image(
         ],
         bia_data_model.ExperimentalImagingDataset,
     )[0]
-    ## Get the dataset
-    # dataset = get_bia_data_model_by_uuid(
-    #    dataset_uuid, bia_data_model.ExperimentalImagingDataset, submission.accno
-    # )
 
     subject_uuid = dataset.attribute["subject_uuid"]
     acquisition_process_uuid = dataset.attribute["acquisition_process_uuid"]
@@ -52,15 +50,27 @@ def get_experimentally_captured_image(
         attribute=attributes,
     )
 
-    experimentally_captured_image = (
-        bia_data_model.ExperimentallyCapturedImage.model_validate(model_dict)
-    )
-    if experimentally_captured_image:
-        persister.persist(
-            [
-                experimentally_captured_image,
-            ],
+    try:
+        experimentally_captured_image = (
+            bia_data_model.ExperimentallyCapturedImage.model_validate(model_dict)
         )
+    except ValidationError:
+        log_failed_model_creation(
+            bia_data_model.ExperimentallyCapturedImage,
+            result_summary[submission.accno],
+        )
+        return
+
+    persister.persist(
+        [
+            experimentally_captured_image,
+        ]
+    )
+    log_model_creation_count(
+        bia_data_model.ExperimentallyCapturedImage,
+        1,
+        result_summary[submission.accno],
+    )
     return experimentally_captured_image
 
 
