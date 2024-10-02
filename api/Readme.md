@@ -100,8 +100,9 @@ To rebuild the api image and push it to the docker container registry.
 # building the api image
 docker login ghcr.io
 
-# !! Bump the version in ../docker-compose.yml if needed
-docker compose build bia-integrator-api --push
+docker compose build bia-integrator-api
+docker image tag bia-integrator-api ghcr.io/bioimage-archive/integrator-api:$(make api.version)
+docker image push ghcr.io/bioimage-archive/integrator-api:$(make api.version)
 ```
 
 ### Testing CI changes

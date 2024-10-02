@@ -20,7 +20,7 @@ services:
     build:
       context: .
       dockerfile: api/Dockerfile
-    image: ghcr.io/bioimage-archive/bia-integrator-api:0.2.0
+    image: bia-integrator-api
     env_file: api/.env_compose
     container_name: api
     hostname: api
