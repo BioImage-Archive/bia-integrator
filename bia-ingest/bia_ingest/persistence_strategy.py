@@ -39,6 +39,12 @@ class PersistenceStrategy(ABC):
 # Persist to disk
 class DiskPersister(PersistenceStrategy):
     def __init__(self, output_dir_base: str, accession_id: str):
+        assert (
+            len(accession_id) > 0
+        ), f"DiskPersister needs to be initialised with an accession id. Got accession_id={accession_id}."
+        assert (
+            len(output_dir_base) > 0
+        ), f"DiskPersister needs to be initialised with a base path for storing artefacts, got: output_dir_base={output_dir_base}"
         self.accession_id = accession_id
         self.output_dir_base = Path(output_dir_base)
 
@@ -72,6 +78,9 @@ class DiskPersister(PersistenceStrategy):
 # Persist using API
 class ApiPersister(PersistenceStrategy):
     def __init__(self, api_client: PrivateApi) -> None:
+        assert isinstance(
+            api_client, PrivateApi
+        ), f"ApiPersister cannot be created. Expected valid instance of <class 'PrivateApi'>. Got : {type(api_client)} - are your API credentials valid and/or is the API server online?"
         self.api_client = api_client
 
     def persist(self, object_list: List[BaseModel]) -> None:
