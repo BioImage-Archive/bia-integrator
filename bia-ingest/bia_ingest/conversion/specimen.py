@@ -83,7 +83,7 @@ def get_specimen_for_dataset(
 def get_specimen(
     submission: Submission,
     result_summary: dict,
-    persister: Optional[PersistenceStrategy | None] = None,
+    persister: Optional[PersistenceStrategy] = None,
 ) -> List[bia_data_model.Specimen]:
     """Create and persist bia_data_model.Specimen and models it depends on
 

@@ -22,7 +22,7 @@ logger = logging.getLogger("__main__." + __name__)
 def get_study(
     submission: Submission,
     result_summary: dict,
-    persister: Optional[PersistenceStrategy | None] = None,
+    persister: Optional[PersistenceStrategy] = None,
 ) -> bia_data_model.Study:
     """
     Return an API study model populated from the submission

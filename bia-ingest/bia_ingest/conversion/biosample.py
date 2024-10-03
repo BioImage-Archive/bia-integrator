@@ -20,7 +20,7 @@ logger = logging.getLogger("__main__." + __name__)
 def get_biosample(
     submission: Submission,
     result_summary: dict,
-    persister: Optional[PersistenceStrategy | None] = None,
+    persister: Optional[PersistenceStrategy] = None,
 ) -> List[bia_data_model.BioSample]:
     biosample_model_dicts = extract_biosample_dicts(submission)
     biosamples = dicts_to_api_models(

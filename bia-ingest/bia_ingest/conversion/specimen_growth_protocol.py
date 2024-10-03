@@ -20,7 +20,7 @@ logger = logging.getLogger("__main__." + __name__)
 def get_specimen_growth_protocol(
     submission: Submission,
     result_summary: dict,
-    persister: Optional[PersistenceStrategy | None] = None,
+    persister: Optional[PersistenceStrategy] = None,
 ) -> List[bia_data_model.SpecimenGrowthProtocol]:
     specimen_growth_protocol_model_dicts = extract_specimen_growth_protocol_dicts(
         submission

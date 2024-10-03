@@ -22,7 +22,7 @@ logger = logging.getLogger("__main__." + __name__)
 def get_image_annotation_dataset(
     submission: Submission,
     result_summary: dict,
-    persister: Optional[PersistenceStrategy | None] = None,
+    persister: Optional[PersistenceStrategy] = None,
 ) -> List[bia_data_model.ImageAnnotationDataset]:
     iad_model_dicts = extract_image_annotation_dataset_method_dicts(submission)
     image_annotation_datasets = dicts_to_api_models(

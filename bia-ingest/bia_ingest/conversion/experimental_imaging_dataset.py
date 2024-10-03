@@ -28,7 +28,7 @@ logger = logging.getLogger("__main__." + __name__)
 def get_experimental_imaging_dataset(
     submission: Submission,
     result_summary: dict,
-    persister: Optional[PersistenceStrategy | None] = None,
+    persister: Optional[PersistenceStrategy] = None,
 ) -> List[bia_data_model.ExperimentalImagingDataset]:
     """
     Map biostudies.Submission study components to bia_data_model.ExperimentalImagingDataset

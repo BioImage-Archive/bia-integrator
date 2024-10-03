@@ -26,7 +26,7 @@ def get_file_reference_by_dataset(
         | bia_data_model.ImageAnnotationDataset
     ],
     result_summary: dict,
-    persister: Optional[PersistenceStrategy | None] = None,
+    persister: Optional[PersistenceStrategy] = None,
 ) -> Dict[str, List[bia_data_model.FileReference]]:
     """
     Return Dict of list of file references in datasets.

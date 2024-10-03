@@ -20,7 +20,7 @@ logger = logging.getLogger("__main__." + __name__)
 def get_annotation_method(
     submission: Submission,
     result_summary: dict,
-    persister: Optional[PersistenceStrategy | None] = None,
+    persister: Optional[PersistenceStrategy] = None,
 ) -> List[bia_data_model.AnnotationMethod]:
     annotation_method_model_dicts = extract_annotation_method_dicts(submission)
     annotation_methods = dicts_to_api_models(

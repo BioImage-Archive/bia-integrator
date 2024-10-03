@@ -20,7 +20,7 @@ logger = logging.getLogger("__main__." + __name__)
 def get_image_acquisition(
     submission: Submission,
     result_summary: dict,
-    persister: Optional[PersistenceStrategy | None] = None,
+    persister: Optional[PersistenceStrategy] = None,
 ) -> List[bia_data_model.ImageAcquisition]:
     image_acquisition_model_dicts = extract_image_acquisition_dicts(submission)
     image_acquisitions = dicts_to_api_models(
