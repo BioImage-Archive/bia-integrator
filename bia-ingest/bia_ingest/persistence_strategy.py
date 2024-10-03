@@ -88,7 +88,7 @@ class ApiPersister(PersistenceStrategy):
                 api_copy_of_obj = None
 
             if obj == api_copy_of_obj:
-                message = f"Not writing object with uuid: {obj.uuid} and type: {obj.model.type_name} to API becase an identical copy of object exists in API"
+                message = f"Not writing object with uuid: {obj.uuid} and type: {obj.model.type_name} to API because an identical copy of object exists in API"
                 logger.warning(message)
                 continue
             elif api_copy_of_obj:

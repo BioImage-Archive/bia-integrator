@@ -7,14 +7,14 @@
         - bia_api_password
     * Alternatively, to read/persist to disk the default is `~/.cache/bia-integrator-data-sm/` which can be changed by setting `bia_data_dir`
 
-Ingesting using the API is the default. One or more accession ids can be supplied. Assuming you are in this directory:
+To ingest into the api, the persistence mode and one or more accession ids have to be supplied. Assuming you are in this directory:
 ```sh
-$ poetry run biaingest ingest S-BIAD325
+$ poetry run biaingest ingest --persistence-mode api S-BIAD325
 ```
 
-To store ingested artefacts on disk:
+Ingesting and writing to disk (`--persistence-mode disk`) is the default. To store ingested artefacts on disk:
 ```sh
-$ poetry run biaingest ingest --persistence-mode disk S-BIAD325
+$ poetry run biaingest ingest  S-BIAD325
 ```
 This creates the following structure (using S-BIAD325 as an example):
 ```sh
@@ -41,7 +41,7 @@ Image representations for file references can be created without images being co
 biaingest representations create S-BIAD1348 a9125402-5e47-4afd-9abf-7393448acd07 e1c99f04-549d-4952-ba88-c921c707f01d f26e27e4-90ce-42b4-91ae-503dafed8b70
 ```
 
-By default this creates 3 image representations (but not the actual images) for each of the file references and stores them in the api (use `--persistence-mode disk` to store them to disk):
+By default this creates 3 image representations (but not the actual images) for each of the file references and stores them in the api (use `--persistence-mode api` to store them using the API):
 1. UPLOADED_BY_SUBMITTER
 2. INTERACTIVE_DISPLAY (ome_zarr)
 3. THUMBNAIL
@@ -50,7 +50,7 @@ The STATIC_DISPLAY representation is not created by default because the website 
 
 An option can be passed into the command to specify representations to create. E.g. to create only THUMBNAIL and STATIC_DISPLAY:
 ```
-biaingest representations create --persistence-mode disk --reps-to-create THUMBNAIL --reps-to-create STATIC_DISPLAY S-BIAD1348 a9125402-5e47-4afd-9abf-7393448acd07 e1c99f04-549d-4952-ba88-c921c707f01d f26e27e4-90ce-42b4-91ae-503dafed8b70
+biaingest representations create --reps-to-create THUMBNAIL --reps-to-create STATIC_DISPLAY S-BIAD1348 a9125402-5e47-4afd-9abf-7393448acd07 e1c99f04-549d-4952-ba88-c921c707f01d f26e27e4-90ce-42b4-91ae-503dafed8b70
 ```
 
 ## Converting images

@@ -50,7 +50,7 @@ def ingest(
     accession_id_list: Annotated[List[str], typer.Argument()],
     persistence_mode: Annotated[
         PersistenceMode, typer.Option(case_sensitive=False)
-    ] = PersistenceMode.api,
+    ] = PersistenceMode.disk,
     verbose: Annotated[bool, typer.Option("--verbose", "-v")] = False,
 ) -> None:
     if verbose:
@@ -111,7 +111,7 @@ def create(
     file_reference_uuid_list: Annotated[List[str], typer.Argument()],
     persistence_mode: Annotated[
         PersistenceMode, typer.Option(case_sensitive=False)
-    ] = PersistenceMode.api,
+    ] = PersistenceMode.disk,
     reps_to_create: Annotated[
         List[ImageRepresentationUseType], typer.Option(case_sensitive=False)
     ] = [
