@@ -15,7 +15,7 @@ def get_source_directory(
     object_type: Type[BaseModel], context: CLIContext
 ) -> List[Path]:
     file_location = context.root_directory.joinpath(
-        f"{to_snake(object_type.__name__)}/{context.accession_id}/*.json"
+        to_snake(object_type.__name__), context.accession_id, "*.json"
     )
     return file_location
 
@@ -34,7 +34,7 @@ def read_file_by_uuid_and_type(
     uuid: str, object_type: Type[BaseModel], context: CLIContext
 ) -> BaseModel:
     file_path = context.root_directory.joinpath(
-        f"{to_snake(object_type.__name__)}/{context.accession_id}/{uuid}.json"
+        to_snake(object_type.__name__), context.accession_id, f"{uuid}.json"
     )
     return read_api_json_file(file_path, object_type)
 
