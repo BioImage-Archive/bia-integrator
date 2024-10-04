@@ -1,6 +1,11 @@
 from uuid import UUID
 from pydantic import BaseModel
-from bia_export.website_export.utils import read_all_json, read_api_json_file
+from pydantic.alias_generators import to_snake
+from bia_export.website_export.utils import (
+    read_all_json,
+    read_api_json_file,
+    read_file_by_uuid_and_type,
+)
 from bia_export.bia_client import api_client
 from .models import ImageCLIContext
 from bia_integrator_api import models as api_models
@@ -15,11 +20,9 @@ def retrieve_images(
 ) -> list[api_models.ExperimentallyCapturedImage]:
 
     if context.root_directory:
-        image_directory = context.root_directory.joinpath(
-            f"experimentally_captured_images/{context.accession_id}/*.json"
-        )
         api_ecis: List[api_models.ExperimentallyCapturedImage] = read_all_json(
-            image_directory, api_models.ExperimentallyCapturedImage
+            object_type=api_models.ExperimentallyCapturedImage,
+            context=context,
         )
 
     else:
@@ -40,12 +43,11 @@ def retrieve_specimen(
     specimen_uuid: UUID, context: ImageCLIContext
 ) -> api_models.Specimen:
     if context.root_directory:
-        specimen_path = context.root_directory.joinpath(
-            f"specimens/{context.accession_id}/{specimen_uuid}.json"
+
+        api_specimen: api_models.Specimen = read_file_by_uuid_and_type(
+            specimen_uuid, api_models.Specimen, context
         )
-        api_specimen: api_models.Specimen = read_api_json_file(
-            specimen_path, api_models.Specimen
-        )
+
     else:
         api_specimen = api_client.get_specimen(str(specimen_uuid))
     return api_specimen
@@ -55,22 +57,9 @@ def retrieve_object_list(
     uuid_list: list[UUID], api_class: Type[BaseModel], context: ImageCLIContext
 ) -> List[BaseModel]:
     if context.root_directory:
-
-        # Note could have done this programatically based on class name, but BioSample -> biosamples and not bio_samples.
-        # If this changes, recommend using the inflection library
-        type_path_map = {
-            api_models.BioSample: "biosamples",
-            api_models.SpecimenGrowthProtocol: "specimen_growth_protocols",
-            api_models.SpecimenImagingPreparationProtocol: "specimen_imaging_preparation_protocols",
-            api_models.ImageAcquisition: "image_acquisitions",
-        }
         obj_list = []
         for uuid in uuid_list:
-            path_name = type_path_map[api_class]
-            path = context.root_directory.joinpath(
-                f"{path_name}/{context.accession_id}/{uuid}.json"
-            )
-            obj_list.append(read_api_json_file(path, api_class))
+            obj_list.append(read_file_by_uuid_and_type(uuid, api_class, context))
     else:
         obj_list = []
         if api_class == api_models.BioSample:
@@ -100,11 +89,10 @@ def retrieve_representations(
     if context.root_directory:
         api_img_reps = []
         for img_rep in context.image_to_rep_uuid_map[image_uuid]:
-            img_rep_path = context.root_directory.joinpath(
-                f"image_representations/{context.accession_id}/{str(img_rep)}.json"
-            )
             api_img_reps.append(
-                read_api_json_file(img_rep_path, api_models.ImageRepresentation)
+                read_file_by_uuid_and_type(
+                    str(img_rep), api_models.ImageRepresentation, context
+                )
             )
     else:
         api_img_reps = (
@@ -116,11 +104,8 @@ def retrieve_representations(
 
 
 def get_local_img_rep_map(context: ImageCLIContext) -> dict[UUID, UUID]:
-    image_rep_path = context.root_directory.joinpath(
-        f"image_representations/{context.accession_id}/*.json"
-    )
     api_image_represenation: List[api_models.ImageRepresentation] = read_all_json(
-        image_rep_path, api_models.ImageRepresentation
+        object_type=api_models.ImageRepresentation, context=context
     )
     image_to_rep_map: dict[UUID, List[UUID]] = {}
     for image_rep in api_image_represenation:

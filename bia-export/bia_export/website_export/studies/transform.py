@@ -92,25 +92,21 @@ def transform_dataset_detail_objects(
 
     detail_map = {
         "acquisition_process": {
-            "source_directory": "image_acquisitions",
             "association_field": "image_acquisition",
             "bia_type": api_models.ImageAcquisition,
             "website_type": ImageAcquisition,
         },
         "biological_entity": {
-            "source_directory": "biosamples",
             "association_field": "biosample",
             "bia_type": api_models.BioSample,
             "website_type": BioSample,
         },
         "specimen_imaging_preparation_protocol": {
-            "source_directory": "specimen_imaging_preparation_protocols",
             "association_field": "specimen",
             "bia_type": api_models.SpecimenImagingPreparationProtocol,
             "website_type": SpecimenImagingPreparationProtocol,
         },
         "specimen_growth_protocol": {
-            "source_directory": "specimen_growth_protocols",
             "association_field": "specimen",
             "bia_type": api_models.SpecimenGrowthProtocol,
             "website_type": SpecimenGrowthProtocol,

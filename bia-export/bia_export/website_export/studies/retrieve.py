@@ -1,6 +1,10 @@
 from glob import glob
 from uuid import UUID
-from bia_export.website_export.utils import read_all_json, read_api_json_file
+from bia_export.website_export.utils import (
+    read_all_json,
+    read_api_json_file,
+    get_source_directory,
+)
 from pathlib import Path
 from .models import StudyCLIContext
 from bia_shared_datamodels import semantic_models, bia_data_model
@@ -15,10 +19,13 @@ logger = logging.getLogger("__main__." + __name__)
 
 def retrieve_study(context: StudyCLIContext) -> api_models.Study:
     if context.root_directory:
-        study_path = context.root_directory.joinpath(
-            f"studies/{context.accession_id}.json"
-        )
+        study_directory = get_source_directory(api_models.Study, context)
+        study_paths = glob(str(study_directory))
 
+        if len(study_paths) != 1:
+            raise Exception("Unexpected number of study objects")
+
+        study_path = study_paths[0]
         logger.info(f"Loading study from {study_path}")
 
         api_study = read_api_json_file(study_path, api_models.Study)
@@ -32,12 +39,8 @@ def retrieve_experimental_imaging_datasets(
     context: StudyCLIContext,
 ) -> api_models.ExperimentalImagingDataset:
     if context.root_directory:
-        eid_directory = context.root_directory.joinpath(
-            f"experimental_imaging_datasets/{context.accession_id}/*.json"
-        )
-
         api_eids: List[api_models.ExperimentalImagingDataset] = read_all_json(
-            eid_directory, api_models.ExperimentalImagingDataset
+            object_type=api_models.ExperimentalImagingDataset, context=context
         )
     else:
         api_eids = api_client.get_experimental_imaging_dataset_in_study(
@@ -96,9 +99,8 @@ def retrieve_aggregation_fields(
 
 def aggregate_file_list_data(context: StudyCLIContext) -> dict[UUID, dict]:
     dataset_counts_map = {}
-    file_reference_directory = context.root_directory.joinpath(
-        f"file_references/{context.accession_id}/*.json"
-    )
+
+    file_reference_directory = get_source_directory(api_models.FileReference, context)
     file_reference_paths = glob(str(file_reference_directory))
     for file_path in file_reference_paths:
         with open(file_path, "r") as object_file:
@@ -115,12 +117,11 @@ def aggregate_file_list_data(context: StudyCLIContext) -> dict[UUID, dict]:
         dataset_counts_map[submission_dataset]["file_count"] += 1
         dataset_counts_map[submission_dataset]["file_type_aggregation"].add(file_type)
 
-    experimentally_derived_images_directory = context.root_directory.joinpath(
-        f"experimentally_captured_images/{context.accession_id}/*.json"
+    experimentally_derived_images_directory = get_source_directory(
+        api_models.ExperimentallyCapturedImage, context
     )
-    derived_images_directory = context.root_directory.joinpath(
-        f"derived_images/{context.accession_id}/*.json"
-    )
+    derived_images_directory = get_source_directory(api_models.DerivedImage, context)
+
     image_paths = glob(str(experimentally_derived_images_directory)) + glob(
         str(derived_images_directory)
     )
@@ -147,16 +148,8 @@ def retrieve_dataset_images(
 ) -> List[api_models.ExperimentallyCapturedImage]:
     if context.root_directory:
 
-        directory_map = {
-            api_models.ExperimentallyCapturedImage: "experimentally_captured_images",
-            api_models.DerivedImage: "derived_images",
-        }
-
-        image_directory = context.root_directory.joinpath(
-            f"{directory_map[image_type]}/{context.accession_id}/*.json"
-        )
         all_api_images: List[semantic_models.AbstractImageMixin] = read_all_json(
-            image_directory, image_type
+            object_type=image_type, context=context
         )
         api_images = [
             image
@@ -179,8 +172,8 @@ def retrieve_dataset_images(
 
 def find_associated_objects(
     typed_associations: set,
-    directory_path: Path,
     object_type: Type[bia_data_model.UserIdentifiedObject],
+    context: StudyCLIContext,
 ) -> List[bia_data_model.UserIdentifiedObject]:
     linked_object = []
 
@@ -189,7 +182,7 @@ def find_associated_objects(
 
     # We read all the e.g. Biosamples multiple times per study because there aren't that many and their json is small
     typed_object_in_study: List[bia_data_model.UserIdentifiedObject] = read_all_json(
-        directory_path, object_type
+        object_type=object_type, context=context
     )
     for object in typed_object_in_study:
         if object.title_id in typed_associations:
@@ -215,13 +208,11 @@ def retrieve_detail_objects(
                 association_by_type[key].add(association[key])
 
         for field, source_info in detail_map.items():
-            detail_path = context.root_directory.joinpath(
-                f"{source_info['source_directory']}/{context.accession_id}/*.json"
-            )
+
             api_objects = find_associated_objects(
                 association_by_type[source_info["association_field"]],
-                detail_path,
                 source_info["bia_type"],
+                context,
             )
             detail_fields[field] = api_objects
 
@@ -275,12 +266,9 @@ def retrieve_image_annotatation_datasets(
     context: StudyCLIContext,
 ) -> List[api_models.ImageAnnotationDataset]:
     if context.root_directory:
-        iad_directory = context.root_directory.joinpath(
-            f"image_annotation_datasets/{context.accession_id}/*.json"
-        )
 
         api_aids: List[api_models.ImageAnnotationDataset] = read_all_json(
-            iad_directory, api_models.ImageAnnotationDataset
+            object_type=api_models.ImageAnnotationDataset, context=context
         )
     else:
         api_aids = api_client.get_image_annotation_dataset_in_study(
@@ -295,11 +283,8 @@ def retrieve_annotion_method(
 ):
     if context.root_directory:
         api_methods = []
-        methods_directory = context.root_directory.joinpath(
-            f"annotation_methods/{context.accession_id}/*.json"
-        )
         all_api_methods: List[api_models.AnnotationMethod] = read_all_json(
-            methods_directory, api_models.AnnotationMethod
+            object_type=api_models.AnnotationMethod, context=context
         )
         for api_method in all_api_methods:
             # Note that currently the title_ids are the same because the two objects are created from the same user input.
