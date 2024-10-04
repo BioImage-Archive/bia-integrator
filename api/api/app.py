@@ -26,7 +26,7 @@ async def on_start():
     if os.getenv("DB_INDEX_REFRESH") == "True":
         # just so "False" / other values don't accidentally trigger indexing
         log_info("App updating indexes")
-        await repository_create(init=True)
+        await repository_create(push_indices=True)
 
     log_info("App started")
 

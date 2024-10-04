@@ -3,7 +3,7 @@ name = "bia-integrator-api"
 version = "0.2.0"
 description = ""
 authors = []
-readme = "README.md"
+readme = "Readme.md"
 
 [tool.poetry.dependencies]
 python = "^3.10,<3.12"

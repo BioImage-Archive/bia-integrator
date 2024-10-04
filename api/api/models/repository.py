@@ -100,15 +100,15 @@ class Repository:
         self.users = self.db[collection_users]
         self.biaint = self.db[collection_bia_integrator]
 
-    async def _init_collection_biaint(self) -> None:
+    async def _add_indices_collection_biaint(self) -> None:
         await self.biaint.create_index([("uuid", 1)], unique=True, name="doc_uuid")
 
-        await self._init_reverse_links_indices()
+        await self._add_indices_reverse_links()
 
-    async def _init_collection_users(self) -> None:
+    async def _add_indices_collection_users(self) -> None:
         await self.users.create_index([("email", 1)], unique=True)
 
-    async def _init_reverse_links_indices(self) -> None:
+    async def _add_indices_reverse_links(self) -> None:
         from api.public import models_public
 
         for model in models_public:
@@ -326,16 +326,16 @@ class Repository:
         await self.db.close()
 
 
-async def repository_create(init: bool) -> Repository:
+async def repository_create(push_indices: bool) -> Repository:
     repository = Repository()
     repository.configure()
 
-    if init:
-        await repository._init_collection_biaint()
-        await repository._init_collection_users()
+    if push_indices:
+        await repository._add_indices_collection_biaint()
+        await repository._add_indices_collection_users()
 
     return repository
 
 
 async def get_db() -> Repository:
-    return await repository_create(init=False)
+    return await repository_create(push_indices=False)
