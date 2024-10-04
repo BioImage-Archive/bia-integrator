@@ -145,7 +145,6 @@ def create(
         ImageRepresentationUseType.THUMBNAIL,
         ImageRepresentationUseType.INTERACTIVE_DISPLAY,
     ],
-    dryrun: Annotated[bool, typer.Option()] = False,
     verbose: Annotated[bool, typer.Option("--verbose", "-v")] = False,
 ) -> None:
     """Create representations for specified file reference(s)"""
@@ -155,14 +154,13 @@ def create(
 
     result_summary = {}
 
-    persister = None
-    if not dryrun:
-        persister = persistence_strategy_factory(
-            persistence_mode,
-            output_dir_base=settings.bia_data_dir,
-            accession_id=accession_id,
-            api_client=api_client,
-        )
+
+    persister = persistence_strategy_factory(
+        persistence_mode,
+        output_dir_base=settings.bia_data_dir,
+        accession_id=accession_id,
+        api_client=api_client,
+    )
 
     submission = load_submission(accession_id)
     result_summary = {accession_id: IngestionResult()}
