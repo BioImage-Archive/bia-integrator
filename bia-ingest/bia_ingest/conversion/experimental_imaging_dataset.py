@@ -151,10 +151,11 @@ def get_experimental_imaging_dataset(
         subject = get_specimen_for_dataset(
             submission, experimental_imaging_dataset, result_summary
         )
-        experimental_imaging_dataset.attribute["subject_uuid"] = str(subject.uuid)
-        experimental_imaging_dataset.attribute["biosample_uuid"] = str(
-            subject.sample_of_uuid
-        )
+        if subject:
+            experimental_imaging_dataset.attribute["subject_uuid"] = str(subject.uuid)
+            experimental_imaging_dataset.attribute["biosample_uuid"] = str(
+                subject.sample_of_uuid
+            )
 
         experimental_imaging_datasets.append(experimental_imaging_dataset)
 
