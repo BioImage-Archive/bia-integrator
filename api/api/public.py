@@ -54,13 +54,10 @@ def make_reverse_link_handler(
         #   see workaround_union_reference_types
         await db.get_doc(uuid, target_type)
 
-        return await db.get_docs(
-            # !!!!
-            # source_attribute has list values sometimes (for models that reference a list of other objects)
-            #   mongo queries just so happen have the semantics we want
-            # a.i. list_attribute: some_val means "any value in list_attribute is equal to some_val"
-            doc_filter={source_attribute: uuid},
-            doc_type=source_type,
+        return await db.find_docs_by_link_value(
+            link_attribute_in_source=source_attribute,
+            link_attribute_value=uuid,
+            source_type=source_type,
         )
 
     return get_descendents

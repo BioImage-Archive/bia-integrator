@@ -100,11 +100,50 @@ class Repository:
         self.users = self.db[collection_users]
         self.biaint = self.db[collection_bia_integrator]
 
-    async def _init_collection_biaint(self) -> None:
+    async def _add_indices_collection_biaint(self) -> None:
         await self.biaint.create_index([("uuid", 1)], unique=True, name="doc_uuid")
 
-    async def _init_collection_users(self) -> None:
+        await self._add_indices_reverse_links()
+
+    async def _add_indices_collection_users(self) -> None:
         await self.users.create_index([("email", 1)], unique=True)
+
+    async def _add_indices_reverse_links(self) -> None:
+        from api.public import models_public
+
+        for model in models_public:
+            model_type = model.get_model_metadata().type_name
+            for (
+                link_attribute_name,
+                _,
+            ) in model.get_object_reference_fields().items():
+                self.biaint.create_index(
+                    [(link_attribute_name, 1)],
+                    partialFilterExpression={
+                        "model": model.get_model_metadata().model_dump()
+                    },
+                    name=f"{model_type.lower()}_{link_attribute_name}",
+                )
+
+    async def find_docs_by_link_value(
+        self,
+        link_attribute_in_source: str,
+        link_attribute_value: str,
+        source_type: Type[shared_data_models.DocumentMixin],
+    ):
+        """
+        Always use this to query for documents with a *_uuid field (documents that link to some known document)
+        Ensures partialFilterExpression in _init_reverse_links_indices is added to the query so the index is used
+        """
+
+        return await self.get_docs(
+            # !!!!
+            # source_attribute has list values sometimes (for models that reference a list of other objects)
+            #   mongo queries just so happen have the semantics we want
+            # a.i. list_attribute: some_val means "any value in list_attribute is equal to some_val"
+            doc_filter={link_attribute_in_source: link_attribute_value},
+            doc_type=source_type,
+        )
 
     async def assert_model_doc_dependencies_exist(
         self, object_to_check: shared_data_models.DocumentMixin
@@ -287,16 +326,16 @@ class Repository:
         await self.db.close()
 
 
-async def repository_create(init: bool) -> Repository:
+async def repository_create(push_indices: bool) -> Repository:
     repository = Repository()
     repository.configure()
 
-    if init:
-        await repository._init_collection_biaint()
-        await repository._init_collection_users()
+    if push_indices:
+        await repository._add_indices_collection_biaint()
+        await repository._add_indices_collection_users()
 
     return repository
 
 
 async def get_db() -> Repository:
-    return await repository_create(init=False)
+    return await repository_create(push_indices=False)
