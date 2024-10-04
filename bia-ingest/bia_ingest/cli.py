@@ -204,7 +204,6 @@ def create(
 def determine_file_processing(
     process_files_mode: ProcessFilelistMode, file_count_limit: int, file_count: int
 ) -> bool:
-    file_count_limit = 200000
     if process_files_mode == ProcessFilelistMode.always:
         process_files = True
     elif process_files_mode == ProcessFilelistMode.skip:
