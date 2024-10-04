@@ -3,7 +3,7 @@ import logging
 from typing import List, Any, Dict, Optional
 from bia_shared_datamodels import bia_data_model
 from ..persistence_strategy import PersistenceStrategy
-
+from pydantic import ValidationError
 from .utils import (
     dicts_to_api_models,
     dict_to_uuid,
@@ -11,6 +11,7 @@ from .utils import (
     get_generic_section_as_list,
     object_value_pair_to_dict,
     log_model_creation_count,
+    log_failed_model_creation,
 )
 from ..biostudies import (
     Submission,
@@ -75,7 +76,17 @@ def get_specimen_for_dataset(
     model_dict["uuid"] = generate_specimen_uuid(model_dict)
 
     model_dict = filter_model_dictionary(model_dict, bia_data_model.Specimen)
-    return bia_data_model.Specimen.model_validate(model_dict)
+
+    try:
+        specimen = bia_data_model.Specimen.model_validate(model_dict)
+    except ValidationError:
+        log_failed_model_creation(
+            bia_data_model.Specimen,
+            result_summary[submission.accno],
+        )
+        specimen = None
+
+    return specimen
 
 
 # TODO: Discuss with @FS if we still need this function ( see clickup
