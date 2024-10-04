@@ -42,7 +42,7 @@ def expected_objects():
 
 
 def test_cli_writes_expected_files(
-    monkeypatch, tmp_path, test_submission, mock_request_get, expected_objects
+    monkeypatch, tmp_path, test_submission, test_submission_table, mock_request_get, expected_objects
 ):
     monkeypatch.setattr(settings, "bia_data_dir", str(tmp_path))
 
@@ -51,7 +51,12 @@ def test_cli_writes_expected_files(
     def _load_submission(accession_id: str) -> biostudies.Submission:
         return test_submission
 
+    def _load_submission_table_info(accession_id: str):
+        return test_submission_table
+    
     monkeypatch.setattr(cli, "load_submission", _load_submission)
+    monkeypatch.setattr(cli, "load_submission_table_info", _load_submission_table_info)
+
 
     result = runner.invoke(
         cli.app,
@@ -60,6 +65,8 @@ def test_cli_writes_expected_files(
             accession_id,
             "--persistence-mode",
             "disk",
+            "--process-filelist",
+            "always",
         ],
     )
     assert result.exit_code == 0

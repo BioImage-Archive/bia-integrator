@@ -1,0 +1,115 @@
+{
+    "columns": [
+      {
+        "name": "Name",
+        "title": "Name",
+        "visible": true,
+        "searchable": true,
+        "data": "Name",
+        "defaultContent": ""
+      },
+      {
+        "name": "Size",
+        "title": "Size",
+        "visible": true,
+        "searchable": false,
+        "data": "Size",
+        "defaultContent": ""
+      },
+      {
+        "name": "Section",
+        "title": "Section",
+        "visible": true,
+        "searchable": true,
+        "data": "Section",
+        "defaultContent": ""
+      },
+      {
+        "name": "AnnotationsIn",
+        "title": "AnnotationsIn",
+        "visible": true,
+        "searchable": true,
+        "data": "AnnotationsIn",
+        "defaultContent": ""
+      },
+      {
+        "name": "metadata1 key",
+        "title": "metadata1 key",
+        "visible": true,
+        "searchable": true,
+        "data": "metadata1_key",
+        "defaultContent": ""
+      },
+      {
+        "name": "metadata2 key",
+        "title": "metadata2 key",
+        "visible": true,
+        "searchable": true,
+        "data": "metadata2_key",
+        "defaultContent": ""
+      },
+      {
+        "name": "metadata3 key",
+        "title": "metadata3 key",
+        "visible": true,
+        "searchable": true,
+        "data": "metadata3_key",
+        "defaultContent": ""
+      },
+      {
+        "name": "metadata4 key",
+        "title": "metadata4 key",
+        "visible": true,
+        "searchable": true,
+        "data": "metadata4_key",
+        "defaultContent": ""
+      },
+      {
+        "name": "metadata5 key",
+        "title": "metadata5 key",
+        "visible": true,
+        "searchable": true,
+        "data": "metadata5_key",
+        "defaultContent": ""
+      },
+      {
+        "name": "metadata6 key",
+        "title": "metadata6 key",
+        "visible": true,
+        "searchable": true,
+        "data": "metadata6_key",
+        "defaultContent": ""
+      },
+      {
+        "name": "metadata1",
+        "title": "metadata1",
+        "visible": true,
+        "searchable": true,
+        "data": "metadata1",
+        "defaultContent": ""
+      },
+      {
+        "name": "metadata2",
+        "title": "metadata2",
+        "visible": true,
+        "searchable": true,
+        "data": "metadata2",
+        "defaultContent": ""
+      }
+    ],
+    "files": 7,
+    "httpLink": "https://ftp.ebi.ac.uk/biostudies/fire/S-BIAD/TEST/S-BIADTEST",
+    "ftpLink": "ftp://ftp.ebi.ac.uk/biostudies/fire/S-BIAD/TEST/S-BIADTEST",
+    "globusLink": "https://app.globus.org/file-manager?origin_id=47772002-3e5b-4fd3-b97c-18cee38d6df2&origin_path=/biostudies/fire/S-BIAD/TEST/S-BIADTEST",
+    "isPublic": true,
+    "relPath": "S-BIAD/TEST/S-BIADTEST",
+    "hasZippedFolders": true,
+    "views": 0,
+    "released": 1717977600000,
+    "modified": 1719178151723,
+    "sections": [
+      "Study_Component-1",
+      "Study_Component-2",
+      "Annotations-29"
+    ]
+  }

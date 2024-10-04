@@ -3,7 +3,7 @@ from typing import Dict
 from pathlib import Path
 import json
 import pytest
-from bia_ingest.biostudies import Submission, requests
+from bia_ingest.biostudies import Submission, SubmissionTable, requests
 from .utils import accession_id
 from bia_ingest.cli_logging import IngestionResult
 
@@ -19,6 +19,14 @@ def test_submission(base_path: Path) -> Submission:
     submission_path = base_path / "data" / "S-BIADTEST.json"
     json_data = json.loads(submission_path.read_text())
     submission = Submission.model_validate(json_data)
+    return submission
+
+
+@pytest.fixture
+def test_submission_table(base_path: Path) -> SubmissionTable:
+    submission_path = base_path / "data" / "S-BIADTEST_INFO.json"
+    json_data = json.loads(submission_path.read_text())
+    submission = SubmissionTable.model_validate(json_data)
     return submission
 
 
