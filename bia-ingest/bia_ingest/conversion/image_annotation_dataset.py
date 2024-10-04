@@ -1,10 +1,9 @@
 import logging
-from typing import List, Dict, Any
+from typing import List, Any, Dict, Optional
 from .utils import (
     find_sections_recursive,
     dicts_to_api_models,
     dict_to_uuid,
-    persist,
     filter_model_dictionary,
     log_model_creation_count,
 )
@@ -14,13 +13,16 @@ from ..biostudies import (
     attributes_to_dict,
 )
 from bia_shared_datamodels import bia_data_model
+from ..persistence_strategy import PersistenceStrategy
 
 
 logger = logging.getLogger("__main__." + __name__)
 
 
 def get_image_annotation_dataset(
-    submission: Submission, result_summary: dict, persist_artefacts=False
+    submission: Submission,
+    result_summary: dict,
+    persister: Optional[PersistenceStrategy] = None,
 ) -> List[bia_data_model.ImageAnnotationDataset]:
     iad_model_dicts = extract_image_annotation_dataset_method_dicts(submission)
     image_annotation_datasets = dicts_to_api_models(
@@ -35,10 +37,8 @@ def get_image_annotation_dataset(
         result_summary[submission.accno],
     )
 
-    if persist_artefacts and image_annotation_datasets:
-        persist(
-            image_annotation_datasets, "image_annotation_datasets", submission.accno
-        )
+    if persister and image_annotation_datasets:
+        persister.persist(image_annotation_datasets)
 
     return image_annotation_datasets
 
@@ -61,14 +61,13 @@ def extract_image_annotation_dataset_method_dicts(
             "description": attr_dict.get("Description"),
             "submitted_in_study_uuid": study_conversion.get_study_uuid(submission),
             "example_image_uri": [],
-            "version": 1,
+            "version": 0,
             "attribute": {},
         }
 
         model_dict["accno"] = section.__dict__.get("accno", "")
         model_dict["accession_id"] = submission.accno
         model_dict["uuid"] = generate_annotation_method_uuid(model_dict)
-        model_dict["version"] = 1
         model_dict = filter_model_dictionary(
             model_dict, bia_data_model.ImageAnnotationDataset
         )

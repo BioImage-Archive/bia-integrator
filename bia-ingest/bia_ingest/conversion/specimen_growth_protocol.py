@@ -1,10 +1,9 @@
 import logging
-from typing import List, Any, Dict
+from typing import List, Any, Dict, Optional
 from .utils import (
     dicts_to_api_models,
     find_sections_recursive,
     dict_to_uuid,
-    persist,
     filter_model_dictionary,
     log_model_creation_count,
 )
@@ -12,13 +11,16 @@ from ..biostudies import (
     Submission,
     attributes_to_dict,
 )
+from ..persistence_strategy import PersistenceStrategy
 from bia_shared_datamodels import bia_data_model
 
 logger = logging.getLogger("__main__." + __name__)
 
 
 def get_specimen_growth_protocol(
-    submission: Submission, result_summary: dict, persist_artefacts=False
+    submission: Submission,
+    result_summary: dict,
+    persister: Optional[PersistenceStrategy] = None,
 ) -> List[bia_data_model.SpecimenGrowthProtocol]:
     specimen_growth_protocol_model_dicts = extract_specimen_growth_protocol_dicts(
         submission
@@ -35,10 +37,8 @@ def get_specimen_growth_protocol(
         result_summary[submission.accno],
     )
 
-    if persist_artefacts and specimen_growth_protocols:
-        persist(
-            specimen_growth_protocols, "specimen_growth_protocols", submission.accno
-        )
+    if persister and specimen_growth_protocols:
+        persister.persist(specimen_growth_protocols)
 
     return specimen_growth_protocols
 
@@ -62,7 +62,7 @@ def extract_specimen_growth_protocol_dicts(
         model_dict["accno"] = section.__dict__.get("accno", "")
         model_dict["accession_id"] = submission.accno
         model_dict["uuid"] = generate_specimen_growth_protocol_uuid(model_dict)
-        model_dict["version"] = 1
+        model_dict["version"] = 0
         model_dict = filter_model_dictionary(
             model_dict, bia_data_model.SpecimenGrowthProtocol
         )

@@ -1,11 +1,10 @@
 import logging
-from typing import List, Dict, Any
+from typing import List, Any, Dict, Optional
 from .utils import (
     find_sections_recursive,
     get_generic_section_as_list,
     dict_to_uuid,
     get_generic_section_as_dict,
-    persist,
     filter_model_dictionary,
     log_failed_model_creation,
     log_model_creation_count,
@@ -20,13 +19,16 @@ from ..biostudies import (
 )
 from pydantic import ValidationError
 from bia_shared_datamodels import bia_data_model, semantic_models
+from ..persistence_strategy import PersistenceStrategy
 
 
 logger = logging.getLogger("__main__." + __name__)
 
 
 def get_experimental_imaging_dataset(
-    submission: Submission, result_summary: dict, persist_artefacts=False
+    submission: Submission,
+    result_summary: dict,
+    persister: Optional[PersistenceStrategy] = None,
 ) -> List[bia_data_model.ExperimentalImagingDataset]:
     """
     Map biostudies.Submission study components to bia_data_model.ExperimentalImagingDataset
@@ -47,7 +49,7 @@ def get_experimental_imaging_dataset(
 
     # Get all image acquisitions in study
     image_acquisitions = get_image_acquisition(
-        submission, result_summary, persist_artefacts=persist_artefacts
+        submission, result_summary, persister=persister
     )
 
     experimental_imaging_datasets = []
@@ -162,11 +164,9 @@ def get_experimental_imaging_dataset(
         result_summary[submission.accno],
     )
 
-    if persist_artefacts and experimental_imaging_datasets:
-        persist(
+    if persister and experimental_imaging_datasets:
+        persister.persist(
             experimental_imaging_datasets,
-            "experimental_imaging_datasets",
-            submission.accno,
         )
 
     return experimental_imaging_datasets

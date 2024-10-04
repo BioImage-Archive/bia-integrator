@@ -1,10 +1,9 @@
 import logging
-from typing import List, Any, Dict
+from typing import List, Any, Dict, Optional
 from .utils import (
     dicts_to_api_models,
     find_sections_recursive,
     dict_to_uuid,
-    persist,
     filter_model_dictionary,
     log_model_creation_count,
 )
@@ -13,12 +12,15 @@ from ..biostudies import (
     attributes_to_dict,
 )
 from bia_shared_datamodels import bia_data_model
+from ..persistence_strategy import PersistenceStrategy
 
 logger = logging.getLogger("__main__." + __name__)
 
 
 def get_image_acquisition(
-    submission: Submission, result_summary: dict, persist_artefacts=False
+    submission: Submission,
+    result_summary: dict,
+    persister: Optional[PersistenceStrategy] = None,
 ) -> List[bia_data_model.ImageAcquisition]:
     image_acquisition_model_dicts = extract_image_acquisition_dicts(submission)
     image_acquisitions = dicts_to_api_models(
@@ -33,8 +35,10 @@ def get_image_acquisition(
         result_summary[submission.accno],
     )
 
-    if persist_artefacts and image_acquisitions:
-        persist(image_acquisitions, "image_acquisitions", submission.accno)
+    if persister and image_acquisitions:
+        persister.persist(
+            image_acquisitions,
+        )
 
     return image_acquisitions
 
@@ -68,7 +72,7 @@ def extract_image_acquisition_dicts(submission: Submission) -> List[Dict[str, An
         model_dict["accno"] = section.__dict__.get("accno", "")
         model_dict["accession_id"] = submission.accno
         model_dict["uuid"] = generate_image_acquisition_uuid(model_dict)
-        model_dict["version"] = 1
+        model_dict["version"] = 0
         model_dict = filter_model_dictionary(
             model_dict, bia_data_model.ImageAcquisition
         )

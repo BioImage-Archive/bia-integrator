@@ -39,12 +39,18 @@ class PersistenceStrategy(ABC):
 # Persist to disk
 class DiskPersister(PersistenceStrategy):
     def __init__(self, output_dir_base: str, accession_id: str):
+        assert (
+            len(accession_id) > 0
+        ), f"DiskPersister needs to be initialised with an accession id. Got accession_id={accession_id}."
+        assert (
+            len(output_dir_base) > 0
+        ), f"DiskPersister needs to be initialised with a base path for storing artefacts, got: output_dir_base={output_dir_base}"
         self.accession_id = accession_id
         self.output_dir_base = Path(output_dir_base)
 
     def persist(self, object_list: List[BaseModel]) -> None:
         for obj in object_list:
-            object_path = f"{to_snake(obj.model.type_name)}s"
+            object_path = f"{to_snake(obj.model.type_name)}"
             # This is computed in each iteration in case the object list
             # has different types of objects (which we don't expect but is
             # not forbidden)
@@ -54,12 +60,12 @@ class DiskPersister(PersistenceStrategy):
                 logger.debug(f"Created {output_dir}")
             output_path = output_dir / f"{obj.uuid}.json"
             output_path.write_text(obj.model_dump_json(indent=2))
-            logger.info(f"Written {output_path}")
+            logger.debug(f"Written {output_path}")
 
     def fetch_by_uuid(
         self, uuids: List[UUID], model_class: Type[BaseModel]
     ) -> List[BaseModel]:
-        model_subdir = f"{to_snake(model_class.__name__)}s"
+        model_subdir = f"{to_snake(model_class.__name__)}"
         object_list = []
         for uuid in uuids:
             input_path = (
@@ -72,6 +78,9 @@ class DiskPersister(PersistenceStrategy):
 # Persist using API
 class ApiPersister(PersistenceStrategy):
     def __init__(self, api_client: PrivateApi) -> None:
+        assert isinstance(
+            api_client, PrivateApi
+        ), f"ApiPersister cannot be created. Expected valid instance of <class 'PrivateApi'>. Got : {type(api_client)} - are your API credentials valid and/or is the API server online?"
         self.api_client = api_client
 
     def persist(self, object_list: List[BaseModel]) -> None:
@@ -88,7 +97,7 @@ class ApiPersister(PersistenceStrategy):
                 api_copy_of_obj = None
 
             if obj == api_copy_of_obj:
-                message = f"Not writing to object with uuid: {obj.uuid} and type: {obj.model.type_name} to API becase an identical copy of object exists in API"
+                message = f"Not writing object with uuid: {obj.uuid} and type: {obj.model.type_name} to API because an identical copy of object exists in API"
                 logger.warning(message)
                 continue
             elif api_copy_of_obj:
@@ -100,7 +109,7 @@ class ApiPersister(PersistenceStrategy):
 
             api_creation_method = f"post_{to_snake(obj.model.type_name)}"
             getattr(self.api_client, api_creation_method)(api_obj)
-            logger.info(f"persisted {obj.uuid} of type {obj.model.type_name} to API")
+            logger.debug(f"persisted {obj.uuid} of type {obj.model.type_name} to API")
 
     def fetch_by_uuid(
         self, uuids: List[UUID | str], model_class: Type[BaseModel]

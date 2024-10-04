@@ -48,6 +48,9 @@ app.add_typer(
 @app.command(help="Ingest from biostudies and echo json of bia_data_model.Study")
 def ingest(
     accession_id_list: Annotated[List[str], typer.Argument()],
+    persistence_mode: Annotated[
+        PersistenceMode, typer.Option(case_sensitive=False)
+    ] = PersistenceMode.disk,
     verbose: Annotated[bool, typer.Option("--verbose", "-v")] = False,
 ) -> None:
     if verbose:
@@ -60,33 +63,39 @@ def ingest(
         logger.debug(f"starting ingest of {accession_id}")
 
         result_summary[accession_id] = IngestionResult()
+        persister = persistence_strategy_factory(
+            persistence_mode,
+            output_dir_base=settings.bia_data_dir,
+            accession_id=accession_id,
+            api_client=api_client,
+        )
 
         submission = load_submission(accession_id)
 
-        get_study(submission, result_summary, persist_artefacts=True)
+        get_study(submission, result_summary, persister=persister)
 
         experimental_imaging_datasets = get_experimental_imaging_dataset(
-            submission, result_summary, persist_artefacts=True
+            submission, result_summary, persister=persister
         )
 
         image_annotation_datasets = get_image_annotation_dataset(
-            submission, result_summary, persist_artefacts=True
+            submission, result_summary, persister=persister
         )
 
         get_file_reference_by_dataset(
             submission,
             experimental_imaging_datasets + image_annotation_datasets,
             result_summary,
-            persist_artefacts=True,
+            persister=persister,
         )
 
-        get_image_acquisition(submission, result_summary, persist_artefacts=True)
+        get_image_acquisition(submission, result_summary, persister=persister)
 
         # Specimen
         # Biosample and Specimen artefacts are processed as part of bia_data_models.Specimen (note - this is very different from Biostudies.Specimen)
-        get_specimen(submission, result_summary, persist_artefacts=True)
+        get_specimen(submission, result_summary, persister=persister)
 
-        get_annotation_method(submission, result_summary, persist_artefacts=True)
+        get_annotation_method(submission, result_summary, persister=persister)
 
         # typer.echo(study.model_dump_json(indent=2))
 
@@ -102,7 +111,7 @@ def create(
     file_reference_uuid_list: Annotated[List[str], typer.Argument()],
     persistence_mode: Annotated[
         PersistenceMode, typer.Option(case_sensitive=False)
-    ] = PersistenceMode.api,
+    ] = PersistenceMode.disk,
     reps_to_create: Annotated[
         List[ImageRepresentationUseType], typer.Option(case_sensitive=False)
     ] = [

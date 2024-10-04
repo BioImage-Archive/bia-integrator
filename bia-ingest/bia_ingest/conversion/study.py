@@ -1,8 +1,7 @@
 import logging
-from pathlib import Path
 from pydantic import ValidationError
 import re
-from typing import List, Any, Dict
+from typing import List, Any, Dict, Optional
 from .utils import (
     get_generic_section_as_dict,
     mattributes_to_dict,
@@ -14,14 +13,16 @@ from ..biostudies import (
     Submission,
     attributes_to_dict,
 )
-from ..config import settings
+from ..persistence_strategy import PersistenceStrategy
 from bia_shared_datamodels import bia_data_model, semantic_models
 
 logger = logging.getLogger("__main__." + __name__)
 
 
 def get_study(
-    submission: Submission, result_summary: dict, persist_artefacts: bool = False
+    submission: Submission,
+    result_summary: dict,
+    persister: Optional[PersistenceStrategy] = None,
 ) -> bia_data_model.Study:
     """
     Return an API study model populated from the submission
@@ -64,7 +65,7 @@ def get_study(
         "author": [c.model_dump() for c in contributors],
         "grant": [g.model_dump() for g in grants],
         "attribute": study_attributes,
-        "version": 1,
+        "version": 0,
     }
     try:
         study = bia_data_model.Study.model_validate(study_dict)
@@ -73,18 +74,12 @@ def get_study(
             bia_data_model.Study, result_summary[submission.accno]
         )
 
-    if persist_artefacts:
-        output_dir = Path(settings.bia_data_dir) / "studies"
-        if not output_dir.is_dir():
-            output_dir.mkdir(parents=True)
-            logger.info(f"Created {output_dir}")
-        output_path = output_dir / f"{study.accession_id}.json"
-        output_path.write_text(study.model_dump_json(indent=2))
-        logger.info(f"Written {output_path}")
-        # Save ALL file references
-        # Save ALL biosamples
-        # Save experimental_imaging_datasets
-        # Save study
+    if persister:
+        persister.persist(
+            [
+                study,
+            ]
+        )
     return study
 
 
