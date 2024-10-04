@@ -13,6 +13,9 @@ logger = logging.getLogger("__main__." + __name__)
 
 
 STUDY_URL_TEMPLATE = "https://www.ebi.ac.uk/biostudies/api/v1/studies/{accession}"
+STUDY_TABLE_INFO_URL_TEMPLATE = (
+    "https://www.ebi.ac.uk/biostudies/api/v1/studies/{accession}/info"
+)
 FLIST_URI_TEMPLATE = (
     "https://www.ebi.ac.uk/biostudies/files/{accession_id}/{flist_fname}"
 )
@@ -132,7 +135,46 @@ class QueryResult(BaseModel):
     hits: List[StudyResult]
 
 
+# API table structure
+
+
+class Columns(BaseModel):
+    name: str
+    title: str
+    visible: bool
+    searchable: bool
+    data: str
+    defaultContent: str
+
+
+class SubmissionTable(BaseModel):
+    columns: List[Columns]
+    files: int
+    httpLink: str
+    ftpLink: str
+    globusLink: str
+    isPublic: bool
+    relPath: str
+    hasZippedFolders: bool
+    views: int
+    released: int
+    modified: int
+    sections: List[str]
+
+
 # API functions
+
+
+def load_submission_table_info(accession_id: str) -> SubmissionTable:
+    url = STUDY_TABLE_INFO_URL_TEMPLATE.format(accession=accession_id)
+    logger.debug(f"Fetching table information from {url}")
+    headers = {
+        "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36"
+    }
+    r = requests.get(url, headers=headers)
+    assert r.status_code == 200
+    table_info = SubmissionTable.model_validate_json(r.content)
+    return table_info
 
 
 def load_submission(accession_id: str) -> Submission:
