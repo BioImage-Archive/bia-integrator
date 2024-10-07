@@ -3,11 +3,11 @@ from typing import List, Optional, Dict, Any
 from pydantic import ValidationError
 from uuid import UUID
 
+from ..cli_logging import log_failed_model_creation, log_model_creation_count
+
 from .utils import get_image_extension
 from ..ingest.utils import (
     dict_to_uuid,
-    log_failed_model_creation,
-    log_model_creation_count,
 )
 
 from .experimentally_captured_image import get_experimentally_captured_image

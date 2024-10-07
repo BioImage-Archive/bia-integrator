@@ -2,6 +2,8 @@ import logging
 
 from typing import List, Any, Dict, Optional
 from bia_shared_datamodels import bia_data_model
+
+from ..cli_logging import log_failed_model_creation, log_model_creation_count
 from ..persistence_strategy import PersistenceStrategy
 from pydantic import ValidationError
 from .utils import (
@@ -10,8 +12,6 @@ from .utils import (
     filter_model_dictionary,
     get_generic_section_as_list,
     object_value_pair_to_dict,
-    log_model_creation_count,
-    log_failed_model_creation,
 )
 from .biostudies import (
     Submission,

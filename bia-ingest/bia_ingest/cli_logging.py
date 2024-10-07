@@ -1,6 +1,10 @@
+from typing import Type
 from rich.table import Table
 from rich.text import Text
 from pydantic import BaseModel, Field
+import logging
+
+logger = logging.getLogger("__main__." + __name__)
 
 
 class IngestionResult(BaseModel):
@@ -101,3 +105,24 @@ def tabulate_errors(dict_of_results: dict[str, IngestionResult]) -> Table:
         table.add_row(accession_id_key, status, error_message)
 
     return table
+
+
+def log_model_creation_count(
+    model_class: Type[BaseModel], count: int, valdiation_error_tracking: IngestionResult
+) -> None:
+    logger.info(f"Created {model_class.__name__}. Count: {count}")
+    field_name = f"{model_class.__name__}_CreationCount"
+    valdiation_error_tracking.__setattr__(
+        field_name, valdiation_error_tracking.__getattribute__(field_name) + count
+    )
+
+
+def log_failed_model_creation(
+    model_class: Type[BaseModel], valdiation_error_tracking: IngestionResult
+) -> None:
+    logger.error(f"Failed to create {model_class.__name__}")
+    logger.debug("Pydantic Validation Error:", exc_info=True)
+    field_name = f"{model_class.__name__}_ValidationErrorCount"
+    valdiation_error_tracking.__setattr__(
+        field_name, valdiation_error_tracking.__getattribute__(field_name) + 1
+    )

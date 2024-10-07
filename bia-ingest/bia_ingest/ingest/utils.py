@@ -6,6 +6,8 @@ import uuid
 from typing import List, Any, Dict, Optional, Tuple, Type, Union
 from pydantic import BaseModel, ValidationError
 from pydantic.alias_generators import to_snake
+
+from bia_ingest.cli_logging import log_failed_model_creation
 from .biostudies import (
     Submission,
     attributes_to_dict,
@@ -18,27 +20,6 @@ from ..cli_logging import IngestionResult
 import bia_integrator_api.models as api_models
 
 logger = logging.getLogger("__main__." + __name__)
-
-
-def log_failed_model_creation(
-    model_class: Type[BaseModel], valdiation_error_tracking: IngestionResult
-) -> None:
-    logger.error(f"Failed to create {model_class.__name__}")
-    logger.debug("Pydantic Validation Error:", exc_info=True)
-    field_name = f"{model_class.__name__}_ValidationErrorCount"
-    valdiation_error_tracking.__setattr__(
-        field_name, valdiation_error_tracking.__getattribute__(field_name) + 1
-    )
-
-
-def log_model_creation_count(
-    model_class: Type[BaseModel], count: int, valdiation_error_tracking: IngestionResult
-) -> None:
-    logger.info(f"Created {model_class.__name__}. Count: {count}")
-    field_name = f"{model_class.__name__}_CreationCount"
-    valdiation_error_tracking.__setattr__(
-        field_name, valdiation_error_tracking.__getattribute__(field_name) + count
-    )
 
 
 # TODO: Put comments and docstring

@@ -2,12 +2,13 @@ import logging
 from pydantic import ValidationError
 import re
 from typing import List, Any, Dict, Optional
+
+from ..cli_logging import log_failed_model_creation
 from .utils import (
     get_generic_section_as_dict,
     mattributes_to_dict,
     dict_to_uuid,
     find_sections_recursive,
-    log_failed_model_creation,
 )
 from .biostudies import (
     Submission,
