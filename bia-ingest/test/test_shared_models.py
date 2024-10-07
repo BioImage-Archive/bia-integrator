@@ -86,9 +86,9 @@ def test_create_models(
     expected_model_func,
     model_creation_func,
     test_submission,
-    result_summary,
+    ingestion_result_summary,
     mock_request_get,
 ):
     expected = expected_model_func()
-    created = model_creation_func(test_submission, result_summary)
+    created = model_creation_func(test_submission, ingestion_result_summary)
     assert expected == created
