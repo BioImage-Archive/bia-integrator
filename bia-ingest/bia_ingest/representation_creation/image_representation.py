@@ -6,7 +6,7 @@ from uuid import UUID
 from ..cli_logging import log_failed_model_creation, log_model_creation_count
 
 from .utils import get_image_extension
-from ..ingest.utils import (
+from ..bia_object_creation_utils import (
     dict_to_uuid,
 )
 

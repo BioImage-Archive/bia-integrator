@@ -1,13 +1,13 @@
 import logging
 from typing import List, Any, Dict, Optional
 
+from ..bia_object_creation_utils import dict_to_uuid, filter_model_dictionary
+
 from ..cli_logging import log_failed_model_creation, log_model_creation_count
 from .utils import (
     find_sections_recursive,
     get_generic_section_as_list,
-    dict_to_uuid,
     get_generic_section_as_dict,
-    filter_model_dictionary,
 )
 import bia_ingest.ingest.study as study_conversion
 from bia_ingest.ingest.image_acquisition import get_image_acquisition

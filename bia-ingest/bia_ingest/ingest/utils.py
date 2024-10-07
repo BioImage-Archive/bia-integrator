@@ -1,8 +1,6 @@
 import logging
 from pathlib import Path
 from uuid import UUID
-import hashlib
-import uuid
 from typing import List, Any, Dict, Optional, Tuple, Type, Union
 from pydantic import BaseModel, ValidationError
 from pydantic.alias_generators import to_snake
@@ -156,17 +154,6 @@ def mattributes_to_dict(
     return {attr.name: value_or_dereference(attr) for attr in attributes}
 
 
-# TODO: Need to use a canonical version for this function e.g. from API
-def dict_to_uuid(my_dict: Dict[str, Any], attributes_to_consider: List[str]) -> str:
-    """
-    Create uuid from specific keys in a dictionary
-    """
-
-    seed = "".join([f"{my_dict[attr]}" for attr in attributes_to_consider])
-    hexdigest = hashlib.md5(seed.encode("utf-8")).hexdigest()
-    return str(uuid.UUID(version=4, hex=hexdigest))
-
-
 def persist(object_list: List[BaseModel], object_path: str, sumbission_accno: str):
     if object_path == "api":
         for obj in object_list:
@@ -185,12 +172,6 @@ def persist(object_list: List[BaseModel], object_path: str, sumbission_accno: st
             output_path = output_dir / f"{obj.uuid}.json"
             output_path.write_text(obj.model_dump_json(indent=2))
             logger.debug(f"Written {output_path}")
-
-
-def filter_model_dictionary(dictionary: dict, target_model: Type[BaseModel]):
-    accepted_fields = target_model.model_fields.keys()
-    result_dict = {key: dictionary[key] for key in accepted_fields if key in dictionary}
-    return result_dict
 
 
 def find_datasets_with_file_lists(

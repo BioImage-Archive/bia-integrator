@@ -3,11 +3,12 @@ from pydantic import ValidationError
 import re
 from typing import List, Any, Dict, Optional
 
+from ..bia_object_creation_utils import dict_to_uuid
+
 from ..cli_logging import log_failed_model_creation
 from .utils import (
     get_generic_section_as_dict,
     mattributes_to_dict,
-    dict_to_uuid,
     find_sections_recursive,
 )
 from .biostudies import (

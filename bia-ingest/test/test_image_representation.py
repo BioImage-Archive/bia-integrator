@@ -2,6 +2,8 @@
 
 from pathlib import Path
 from typing import List
+
+import bia_ingest.bia_object_creation_utils
 from . import utils
 import pytest
 from bia_shared_datamodels import bia_data_model
@@ -109,7 +111,9 @@ def test_create_representation_of_single_image(
         accession_id=test_submission.accno, output_dir_base=str(tmp_path)
     )
     model_dict = representation_dict_template | representation_dict
-    model_dict["uuid"] = utils.dict_to_uuid(model_dict, attributes_for_uuid)
+    model_dict["uuid"] = bia_ingest.bia_object_creation_utils.dict_to_uuid(
+        model_dict, attributes_for_uuid
+    )
     expected = bia_data_model.ImageRepresentation.model_validate(model_dict)
 
     test_file_reference_uuids = [

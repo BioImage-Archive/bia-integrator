@@ -1,9 +1,9 @@
 import logging
 from pydantic import ValidationError
 from typing import List, Dict, Optional
+
+from ..bia_object_creation_utils import dict_to_uuid, filter_model_dictionary
 from .utils import (
-    dict_to_uuid,
-    filter_model_dictionary,
     find_datasets_with_file_lists,
 )
 from .biostudies import (
@@ -81,8 +81,10 @@ def get_file_reference_by_dataset(
 
 def get_file_reference_for_submission_dataset(
     accession_id: str,
-    submission_dataset: bia_data_model.ExperimentalImagingDataset
-    | bia_data_model.ImageAnnotationDataset,
+    submission_dataset: (
+        bia_data_model.ExperimentalImagingDataset
+        | bia_data_model.ImageAnnotationDataset
+    ),
     files_in_file_list: List[biostudies.File],
     result_summary: dict,
 ) -> List[bia_data_model.FileReference]:
