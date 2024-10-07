@@ -3,11 +3,16 @@ from rich.table import Table
 from rich.text import Text
 from pydantic import BaseModel, Field
 import logging
+from abc import ABC
 
 logger = logging.getLogger("__main__." + __name__)
 
 
-class IngestionResult(BaseModel):
+class CLIResult(BaseModel):
+    pass
+
+
+class IngestionResult(CLIResult):
     Study_CreationCount: int = Field(default=0)
     Study_ValidationErrorCount: int = Field(default=0)
     ExperimentalImagingDataset_CreationCount: int = Field(default=0)
@@ -50,13 +55,16 @@ class IngestionResult(BaseModel):
     Contributor_ValidationErrorCount: int = Field(default=0)
     Organisation_CreationCount: int = Field(default=0)
     Organisation_ValidationErrorCount: int = Field(default=0)
+
+
+class ImageCreationResult(CLIResult):
     ExperimentallyCapturedImage_CreationCount: int = Field(default=0)
     ExperimentallyCapturedImage_ValidationErrorCount: int = Field(default=0)
     ImageRepresentation_CreationCount: int = Field(default=0)
     ImageRepresentation_ValidationErrorCount: int = Field(default=0)
 
 
-def tabulate_errors(dict_of_results: dict[str, IngestionResult]) -> Table:
+def tabulate_ingestion_errors(dict_of_results: dict[str, IngestionResult]) -> Table:
     table = Table("Accession ID", "Status", "Error: Count;")
     for accession_id_key, result in dict_of_results.items():
         error_message = ""
@@ -108,7 +116,7 @@ def tabulate_errors(dict_of_results: dict[str, IngestionResult]) -> Table:
 
 
 def log_model_creation_count(
-    model_class: Type[BaseModel], count: int, valdiation_error_tracking: IngestionResult
+    model_class: Type[BaseModel], count: int, valdiation_error_tracking: CLIResult
 ) -> None:
     logger.info(f"Created {model_class.__name__}. Count: {count}")
     field_name = f"{model_class.__name__}_CreationCount"
@@ -118,7 +126,7 @@ def log_model_creation_count(
 
 
 def log_failed_model_creation(
-    model_class: Type[BaseModel], valdiation_error_tracking: IngestionResult
+    model_class: Type[BaseModel], valdiation_error_tracking: CLIResult
 ) -> None:
     logger.error(f"Failed to create {model_class.__name__}")
     logger.debug("Pydantic Validation Error:", exc_info=True)

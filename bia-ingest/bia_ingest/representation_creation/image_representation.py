@@ -3,7 +3,7 @@ from typing import List, Optional, Dict, Any
 from pydantic import ValidationError
 from uuid import UUID
 
-from ..cli_logging import log_failed_model_creation, log_model_creation_count
+from ..cli_logging import log_failed_model_creation, log_model_creation_count, ImageCreationResult
 
 from .utils import get_image_extension
 from ..bia_object_creation_utils import (
@@ -11,9 +11,7 @@ from ..bia_object_creation_utils import (
 )
 
 from .experimentally_captured_image import get_experimentally_captured_image
-from ..ingest.biostudies.api import (
-    Submission,
-)
+
 from bia_shared_datamodels import bia_data_model
 from bia_shared_datamodels.semantic_models import ImageRepresentationUseType
 
@@ -23,10 +21,9 @@ logger = logging.getLogger("__main__." + __name__)
 
 
 def create_image_representation(
-    submission: Submission,
     file_reference_uuids: List[UUID],
     representation_use_type: ImageRepresentationUseType,
-    result_summary: dict,
+    result_summary: ImageCreationResult,
     persister: PersistenceStrategy,
     representation_location: Optional[str] = None,
 ) -> bia_data_model.ImageRepresentation | None:
@@ -42,7 +39,7 @@ def create_image_representation(
             f"Error fetching file references {file_reference_uuids}. Error was: {e}. Unable to create image representation and associated objects"
         )
         log_failed_model_creation(
-            bia_data_model.ImageRepresentation, result_summary[submission.accno]
+            bia_data_model.ImageRepresentation, result_summary
         )
         return
     # file_paths = [fr.file_path for fr in file_references]
@@ -53,7 +50,6 @@ def create_image_representation(
     #    raise Exception(message)
 
     experimentally_captured_image = get_experimentally_captured_image(
-        submission=submission,
         dataset_uuid=file_references[0].submission_dataset_uuid,
         file_references=file_references,
         result_summary=result_summary,
@@ -64,7 +60,7 @@ def create_image_representation(
             "Experimentally captured image not created. Cannot create image representations for file references {file_references}"
         )
         log_failed_model_creation(
-            bia_data_model.ImageRepresentation, result_summary[submission.accno]
+            bia_data_model.ImageRepresentation, result_summary
         )
         return
 
@@ -108,7 +104,7 @@ def create_image_representation(
     except ValidationError:
         log_failed_model_creation(
             bia_data_model.ImageRepresentation,
-            result_summary[submission.accno],
+            result_summary,
         )
         return
 
@@ -120,7 +116,7 @@ def create_image_representation(
     log_model_creation_count(
         bia_data_model.ImageRepresentation,
         1,
-        result_summary[submission.accno],
+        result_summary,
     )
     return image_representation
 
