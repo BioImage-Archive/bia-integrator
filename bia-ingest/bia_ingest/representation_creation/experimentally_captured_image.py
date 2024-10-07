@@ -3,14 +3,12 @@ from uuid import UUID
 from typing import List, Dict, Any
 from pydantic import ValidationError
 
-from ..bia_object_creation_utils import filter_model_dictionary
+from ..bia_object_creation_utils import filter_model_dictionary, dict_to_uuid
 
 from ..cli_logging import log_failed_model_creation, log_model_creation_count
 
 from .utils import merge_dicts
-from ..bia_object_creation_utils import (
-    dict_to_uuid,
-)
+
 from ..ingest.biostudies.api import (
     Submission,
 )

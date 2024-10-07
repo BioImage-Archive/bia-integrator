@@ -1,5 +1,8 @@
 from pathlib import Path
 from typing import Dict, List
+import logging
+
+logger = logging.getLogger("__main__." + __name__)
 
 
 def get_image_extension(file_path: str) -> str:
