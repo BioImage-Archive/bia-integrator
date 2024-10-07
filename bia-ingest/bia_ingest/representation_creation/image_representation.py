@@ -2,11 +2,12 @@ import logging
 from typing import List, Optional, Dict, Any
 from pydantic import ValidationError
 from uuid import UUID
+
+from .utils import get_image_extension
 from ..ingest.utils import (
     dict_to_uuid,
     log_failed_model_creation,
     log_model_creation_count,
-    get_image_extension,
 )
 
 from .experimentally_captured_image import get_experimentally_captured_image

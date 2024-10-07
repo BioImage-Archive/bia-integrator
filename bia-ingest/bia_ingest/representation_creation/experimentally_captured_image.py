@@ -2,10 +2,11 @@ import logging
 from uuid import UUID
 from typing import List, Dict, Any
 from pydantic import ValidationError
+
+from .utils import merge_dicts
 from ..ingest.utils import (
     dict_to_uuid,
     filter_model_dictionary,
-    merge_dicts,
     log_model_creation_count,
     log_failed_model_creation,
 )
