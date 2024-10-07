@@ -1,6 +1,6 @@
 import pytest
 from . import utils
-from bia_ingest.conversion import (
+from bia_ingest.ingest import (
     biosample,
     experimental_imaging_dataset,
     specimen_imaging_preparation_protocol,

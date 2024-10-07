@@ -6,10 +6,10 @@ it now needs a submitted dataset
 """
 
 from . import utils
-from bia_ingest.conversion import (
+from bia_ingest.ingest import (
     file_reference,
 )
-from bia_ingest.biostudies import File
+from bia_ingest.ingest.biostudies import File
 
 
 # Get second study component as dataset in submission

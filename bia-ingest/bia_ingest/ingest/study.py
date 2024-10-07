@@ -9,7 +9,7 @@ from .utils import (
     find_sections_recursive,
     log_failed_model_creation,
 )
-from ..biostudies import (
+from .biostudies import (
     Submission,
     attributes_to_dict,
 )

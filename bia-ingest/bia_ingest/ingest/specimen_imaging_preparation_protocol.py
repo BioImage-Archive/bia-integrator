@@ -7,7 +7,7 @@ from .utils import (
     filter_model_dictionary,
     log_model_creation_count,
 )
-from ..biostudies import (
+from .biostudies import (
     Submission,
     attributes_to_dict,
 )

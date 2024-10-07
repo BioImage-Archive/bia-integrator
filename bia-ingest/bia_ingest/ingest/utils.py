@@ -6,7 +6,7 @@ import uuid
 from typing import List, Any, Dict, Optional, Tuple, Type, Union
 from pydantic import BaseModel, ValidationError
 from pydantic.alias_generators import to_snake
-from ..biostudies import (
+from .biostudies import (
     Submission,
     attributes_to_dict,
     Section,

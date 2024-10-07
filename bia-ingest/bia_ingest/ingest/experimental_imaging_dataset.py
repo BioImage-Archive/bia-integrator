@@ -9,11 +9,11 @@ from .utils import (
     log_failed_model_creation,
     log_model_creation_count,
 )
-import bia_ingest.conversion.study as study_conversion
-from bia_ingest.conversion.image_acquisition import get_image_acquisition
-from bia_ingest.conversion.specimen import get_specimen_for_dataset
+import bia_ingest.ingest.study as study_conversion
+from bia_ingest.ingest.image_acquisition import get_image_acquisition
+from bia_ingest.ingest.specimen import get_specimen_for_dataset
 
-from ..biostudies import (
+from .biostudies import (
     Submission,
     attributes_to_dict,
 )

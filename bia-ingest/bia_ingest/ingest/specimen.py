@@ -13,7 +13,7 @@ from .utils import (
     log_model_creation_count,
     log_failed_model_creation,
 )
-from ..biostudies import (
+from .biostudies import (
     Submission,
 )
 from . import (

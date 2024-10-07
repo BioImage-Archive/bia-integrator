@@ -6,13 +6,13 @@ from .utils import (
     filter_model_dictionary,
     find_datasets_with_file_lists,
 )
-from ..biostudies import (
+from .biostudies import (
     Submission,
     attributes_to_dict,
     flist_from_flist_fname,
     file_uri,
 )
-from .. import biostudies  # To make reference to biostudies.File explicit
+from . import biostudies  # To make reference to biostudies.File explicit
 from bia_shared_datamodels import bia_data_model
 from ..persistence_strategy import PersistenceStrategy
 

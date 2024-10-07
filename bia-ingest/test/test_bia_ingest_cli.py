@@ -1,7 +1,7 @@
 from typer.testing import CliRunner
 from bia_ingest import cli
-from bia_ingest.conversion.utils import settings
-from bia_ingest import biostudies
+from bia_ingest.ingest.utils import settings
+from bia_ingest.ingest import biostudies
 from . import utils
 from bia_shared_datamodels import bia_data_model
 import pytest

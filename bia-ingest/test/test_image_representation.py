@@ -6,7 +6,7 @@ from . import utils
 import pytest
 from bia_shared_datamodels import bia_data_model
 from bia_ingest.persistence_strategy import DiskPersister
-from bia_ingest.conversion import (
+from bia_ingest.representation_creation import (
     image_representation,
 )
 

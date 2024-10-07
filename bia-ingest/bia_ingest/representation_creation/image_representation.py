@@ -2,7 +2,7 @@ import logging
 from typing import List, Optional, Dict, Any
 from pydantic import ValidationError
 from uuid import UUID
-from .utils import (
+from ..ingest.utils import (
     dict_to_uuid,
     log_failed_model_creation,
     log_model_creation_count,
@@ -10,7 +10,7 @@ from .utils import (
 )
 
 from .experimentally_captured_image import get_experimentally_captured_image
-from ..biostudies import (
+from ..ingest.biostudies import (
     Submission,
 )
 from bia_shared_datamodels import bia_data_model

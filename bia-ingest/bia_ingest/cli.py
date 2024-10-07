@@ -2,20 +2,20 @@ import typer
 from typing import List
 from enum import Enum
 from typing_extensions import Annotated
-from bia_ingest.biostudies import load_submission, load_submission_table_info
+from bia_ingest.ingest.biostudies import load_submission, load_submission_table_info
 from bia_ingest.config import settings, api_client
-from bia_ingest.conversion.study import get_study
-from bia_ingest.conversion.experimental_imaging_dataset import (
+from bia_ingest.ingest.study import get_study
+from bia_ingest.ingest.experimental_imaging_dataset import (
     get_experimental_imaging_dataset,
 )
-from bia_ingest.conversion.file_reference import get_file_reference_by_dataset
-from bia_ingest.conversion.specimen import get_specimen
-from bia_ingest.conversion.image_acquisition import get_image_acquisition
-from bia_ingest.conversion.image_annotation_dataset import (
+from bia_ingest.ingest.file_reference import get_file_reference_by_dataset
+from bia_ingest.ingest.specimen import get_specimen
+from bia_ingest.ingest.image_acquisition import get_image_acquisition
+from bia_ingest.ingest.image_annotation_dataset import (
     get_image_annotation_dataset,
 )
-from bia_ingest.conversion.annotation_method import get_annotation_method
-from bia_ingest.conversion.image_representation import (
+from bia_ingest.ingest.annotation_method import get_annotation_method
+from bia_ingest.representation_creation.image_representation import (
     create_image_representation,
 )
 from bia_ingest.persistence_strategy import (
