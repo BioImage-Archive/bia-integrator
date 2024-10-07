@@ -11,7 +11,7 @@ from .utils import merge_dicts
 from ..bia_object_creation_utils import (
     dict_to_uuid,
 )
-from ..ingest.biostudies import (
+from ..ingest.biostudies.api import (
     Submission,
 )
 from bia_ingest.persistence_strategy import PersistenceStrategy

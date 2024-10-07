@@ -1,11 +1,15 @@
 import logging
 from typing import List, Any, Dict, Optional
 
+from .biostudies.submission_parsing_utils import (
+    attributes_to_dict,
+    find_sections_recursive,
+)
+
 from ..bia_object_creation_utils import dict_to_uuid, filter_model_dictionary
 
 from ..cli_logging import log_failed_model_creation, log_model_creation_count
 from .utils import (
-    find_sections_recursive,
     get_generic_section_as_list,
     get_generic_section_as_dict,
 )
@@ -13,9 +17,8 @@ import bia_ingest.ingest.study as study_conversion
 from bia_ingest.ingest.image_acquisition import get_image_acquisition
 from bia_ingest.ingest.specimen import get_specimen_for_dataset
 
-from .biostudies import (
+from .biostudies.api import (
     Submission,
-    attributes_to_dict,
 )
 from pydantic import ValidationError
 from bia_shared_datamodels import bia_data_model, semantic_models

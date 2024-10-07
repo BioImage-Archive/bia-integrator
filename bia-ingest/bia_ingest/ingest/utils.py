@@ -1,17 +1,20 @@
 import logging
 from pathlib import Path
-from uuid import UUID
-from typing import List, Any, Dict, Optional, Tuple, Type, Union
+from typing import List, Any, Dict, Optional, Tuple, Union
 from pydantic import BaseModel, ValidationError
 from pydantic.alias_generators import to_snake
 
 from bia_ingest.cli_logging import log_failed_model_creation
-from .biostudies import (
-    Submission,
+from bia_ingest.ingest.biostudies.submission_parsing_utils import mattributes_to_dict
+from bia_ingest.ingest.biostudies.submission_parsing_utils import (
+    find_sections_recursive,
+)
+from .biostudies.submission_parsing_utils import (
     attributes_to_dict,
+)
+from .biostudies.api import (
+    Submission,
     Section,
-    Attribute,
-    find_file_lists_in_submission,
 )
 from ..config import settings, api_client
 from ..cli_logging import IngestionResult
@@ -28,9 +31,9 @@ def get_generic_section_as_list(
     mapped_object: Optional[BaseModel] = None,
     mapped_attrs_dict: Optional[Dict[str, Any]] = None,
     valdiation_error_tracking: Optional[IngestionResult] = None,
-) -> List[Any | Dict[str, str | List[str]]]:
+) -> List[BaseModel | Dict[str, str | List[str]]]:
     """
-    Map biostudies.Submission objects to either semantic_models or bia_data_model equivalent
+    Map biostudies.Submission objects to a list of semantic_models or bia_data_model equivalent, or return a dictionary if no model provided.
     """
     if type(root) is Submission:
         sections = find_sections_recursive(root.section, section_name, [])
@@ -92,68 +95,6 @@ def get_generic_section_as_dict(
     return return_dict
 
 
-# This function instantiates any API model given a dict of its attributes
-# Hence the use of the pydantic BaseModel which all API models
-# are derived from in the type hinting
-def dicts_to_api_models(
-    dicts: List[Dict[str, Any]],
-    api_model_class: Type[BaseModel],
-    valdiation_error_tracking: IngestionResult,
-) -> BaseModel:
-    api_models = []
-    for model_dict in dicts:
-        try:
-            api_models.append(api_model_class.model_validate(model_dict))
-        except ValidationError:
-            log_failed_model_creation(api_model_class, valdiation_error_tracking)
-    return api_models
-
-
-def find_sections_recursive(
-    section: Section, search_types: List[str], results: Optional[List[Section]] = []
-) -> List[Section]:
-    """
-    Find all sections of search_types within tree, starting at given section
-    """
-
-    search_types_lower = [s.lower() for s in search_types]
-    if section.type.lower() in search_types_lower:
-        results.append(section)
-
-    # Each thing in section.subsections is either Section or List[Section]
-    # First, let's make sure we ensure they're all lists:
-    nested = [
-        [item] if not isinstance(item, list) else item for item in section.subsections
-    ]
-    # Then we can flatten this list of lists:
-    flattened = sum(nested, [])
-
-    for section in flattened:
-        find_sections_recursive(section, search_types, results)
-
-    return results
-
-
-# TODO check type of reference_dict. Possibly Dict[str, str], but need to
-# verify. This also determines type returned by function
-def mattributes_to_dict(
-    attributes: List[Attribute], reference_dict: Dict[str, Any]
-) -> Dict[str, Any]:
-    """Return attributes as dictionary dereferencing attribute references
-
-    Return the list of attributes supplied as a dictionary. Any attributes
-    whose values are references are 'dereferenced' using the reference_dict
-    """
-
-    def value_or_dereference(attr):
-        if attr.reference:
-            return reference_dict[attr.value]
-        else:
-            return attr.value
-
-    return {attr.name: value_or_dereference(attr) for attr in attributes}
-
-
 def persist(object_list: List[BaseModel], object_path: str, sumbission_accno: str):
     if object_path == "api":
         for obj in object_list:
@@ -172,38 +113,6 @@ def persist(object_list: List[BaseModel], object_path: str, sumbission_accno: st
             output_path = output_dir / f"{obj.uuid}.json"
             output_path.write_text(obj.model_dump_json(indent=2))
             logger.debug(f"Written {output_path}")
-
-
-def find_datasets_with_file_lists(
-    submission: Submission,
-) -> List[Dict[str, List[Dict[str, Union[str, None, List[str]]]]]]:
-    """
-    Return dict with dataset names as keys and file lists dicts as values
-
-    Wrapper around 'biostudies.find_file_lists_in_submission'. Creates a
-    dict whos keys are the dataset titles and values are list of dicts
-    of the file list details.
-
-    'datasets' can be sections of type 'Study component' or 'Annotation'
-    """
-
-    file_list_dicts = find_file_lists_in_submission(submission)
-
-    # Associate each dataset name with a list because there is no thing
-    # preventing different datasets having the same title. If this happens
-    # values will be appended instead of being overwritten
-    datasets_with_file_lists = {}
-    for fld in file_list_dicts:
-        if "Name" in fld:
-            if fld["Name"] not in datasets_with_file_lists:
-                datasets_with_file_lists[fld["Name"]] = []
-            datasets_with_file_lists[fld["Name"]].append(fld)
-        elif "Title" in fld:
-            if fld["Title"] not in datasets_with_file_lists:
-                datasets_with_file_lists[fld["Title"]] = []
-            datasets_with_file_lists[fld["Title"]].append(fld)
-
-    return datasets_with_file_lists
 
 
 def object_value_pair_to_dict(
@@ -225,20 +134,3 @@ def object_value_pair_to_dict(
             object_dict[key].append(obj)
 
     return object_dict
-
-
-# TODO: Find out how to get generic type for bia_data_model (baseclass?)
-def get_bia_data_model_by_uuid(
-    uuid: UUID, model_class: Type[BaseModel], accession_id: str = ""
-) -> BaseModel:
-    """Instantiate a bia_data_model from a json file on disk"""
-    import re
-
-    model_name_parts = [
-        s.lower() for s in re.split(r"(?=[A-Z])", model_class.__name__) if len(s) > 0
-    ]
-    model_subdir = "_".join(model_name_parts) + "s"
-    input_path = (
-        Path(settings.bia_data_dir) / model_subdir / accession_id / f"{uuid}.json"
-    )
-    return model_class.model_validate_json(input_path.read_text())

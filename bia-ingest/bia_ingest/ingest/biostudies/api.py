@@ -192,93 +192,6 @@ def load_submission(accession_id: str) -> Submission:
     return submission
 
 
-def attributes_to_dict(
-    attributes: List[Attribute],
-) -> Dict[str, Optional[str | List[str]]]:
-    attr_dict = {}
-    for attr in attributes:
-        if attr.name in attr_dict:
-            if isinstance(attr_dict[attr.name], list):
-                attr_dict[attr.name].append(attr.value)
-            else:
-                attr_dict[attr.name] = [
-                    attr_dict[attr.name],
-                ]
-                attr_dict[attr.name].append(attr.value)
-        else:
-            attr_dict[attr.name] = attr.value
-    return attr_dict
-
-
-def find_file_lists_in_section(
-    section: Section, flists: List[Dict[str, Union[str, None, List[str]]]]
-) -> List[Dict[str, Union[str, None, List[str]]]]:
-    """
-    Find all of the File Lists in a Section, recursively descending through the subsections.
-
-    Return a list of dictionaries.
-    """
-
-    attr_dict = attributes_to_dict(section.attributes)
-
-    if "File List" in attr_dict:
-        flists.append(attr_dict)
-        # Get details of any associations in this subsection
-        attr_dict["associations"] = []
-        for subsection in section.subsections:
-            if subsection.type == "Associations":
-                attr_dict["associations"].append(
-                    attributes_to_dict(subsection.attributes)
-                )
-
-    for subsection in section.subsections:
-        subsection_type = type(subsection)
-        if subsection_type == Section:
-            find_file_lists_in_section(subsection, flists)  # type: ignore
-        else:
-            logger.warning(
-                f"Not processing subsection as type is {subsection_type}, not 'Section'. Contents={subsection}"
-            )
-
-    return flists
-
-
-def find_file_lists_in_submission(
-    submission: Submission,
-) -> List[Dict[str, Union[str, None, List[str]]]]:
-    return find_file_lists_in_section(submission.section, [])
-
-
-def flist_from_flist_fname(
-    accession_id: str, flist_fname: str, extra_attribute: Union[List[str], str] = None
-) -> List[File]:
-    flist_url = FLIST_URI_TEMPLATE.format(
-        accession_id=accession_id, flist_fname=flist_fname
-    )
-
-    r = requests.get(flist_url)
-    logger.info(f"Fetching file list from {flist_url}")
-    assert r.status_code == 200
-
-    # fl = parse_raw_as(List[File], r.content)
-    # KB 18/08/2023 - Hack to fix error due to null values in attributes
-    # Remove attribute entries with {"value": "null"}
-    dict_content = json.loads(r.content)
-    dict_filtered_content = filter_filelist_content(dict_content)
-    filtered_content = bytes(json.dumps(dict_filtered_content), "utf-8")
-    fl = TypeAdapter(List[File]).validate_json(filtered_content)
-
-    if extra_attribute:
-        if not isinstance(extra_attribute, list):
-            extra_attribute = [
-                extra_attribute,
-            ]
-        for file in fl:
-            file.attributes.extend(extra_attribute)
-
-    return fl
-
-
 def file_uri(
     accession_id: str, file: File, file_uri_template: Optional[str] = FILE_URI_TEMPLATE
 ) -> str:
@@ -304,55 +217,6 @@ def get_file_uri_template_for_accession(accession_id: str) -> str:
     file_uri_template = accession_base_uri + "/{relpath}"
 
     return file_uri_template
-
-
-def find_files_in_submission_file_lists(submission: Submission) -> List[File]:
-    file_list_dicts = find_file_lists_in_submission(submission)
-    file_lists = []
-    for file_list_dict in file_list_dicts:
-        fname = file_list_dict["File List"]
-        extra_attribute = []
-        if "Title" in file_list_dict:
-            extra_attribute.append(
-                Attribute(name="Title", value=file_list_dict["Title"])
-            )
-        if "associations" in file_list_dict:
-            extra_attribute.append(
-                Attribute(
-                    name="associations", value=f"{file_list_dict['associations']}"
-                )
-            )
-        file_list = flist_from_flist_fname(submission.accno, fname, extra_attribute)
-        file_lists.append(file_list)
-
-    return sum(file_lists, [])
-
-
-def find_files_in_submission(submission: Submission) -> List[File]:
-    """Find all of the files in a submission, both attached directly to
-    the submission and as file lists."""
-
-    all_files = find_files_in_submission_file_lists(submission)
-
-    def descend_and_find_files(section, files_list=[]):
-        section_type = type(section)
-        if section_type == Section:
-            for file in section.files:
-                if isinstance(file, List):
-                    files_list += file
-                else:
-                    files_list.append(file)
-
-            for subsection in section.subsections:
-                descend_and_find_files(subsection, files_list)
-        else:
-            logger.warning(
-                f"Not processing subsection as type is {section_type}, not 'Section'. Contents={section}"
-            )
-
-    descend_and_find_files(submission.section, all_files)
-
-    return all_files
 
 
 def get_with_case_insensitive_key(dictionary: Dict[str, Any], key: str) -> Any:
@@ -383,3 +247,33 @@ def filter_filelist_content(dictionary: Dict[str, Any]) -> Dict[str, Any]:
                 d.pop("attributes")
 
     return dict_copy
+
+
+def flist_from_flist_fname(
+    accession_id: str, flist_fname: str, extra_attribute: Union[List[str], str] = None
+) -> List[File]:
+    flist_url = FLIST_URI_TEMPLATE.format(
+        accession_id=accession_id, flist_fname=flist_fname
+    )
+
+    r = requests.get(flist_url)
+    logger.info(f"Fetching file list from {flist_url}")
+    assert r.status_code == 200
+
+    # fl = parse_raw_as(List[File], r.content)
+    # KB 18/08/2023 - Hack to fix error due to null values in attributes
+    # Remove attribute entries with {"value": "null"}
+    dict_content = json.loads(r.content)
+    dict_filtered_content = filter_filelist_content(dict_content)
+    filtered_content = bytes(json.dumps(dict_filtered_content), "utf-8")
+    fl = TypeAdapter(List[File]).validate_json(filtered_content)
+
+    if extra_attribute:
+        if not isinstance(extra_attribute, list):
+            extra_attribute = [
+                extra_attribute,
+            ]
+        for file in fl:
+            file.attributes.extend(extra_attribute)
+
+    return fl

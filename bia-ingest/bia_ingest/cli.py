@@ -2,7 +2,7 @@ import typer
 from typing import List
 from enum import Enum
 from typing_extensions import Annotated
-from bia_ingest.ingest.biostudies import load_submission, load_submission_table_info
+from bia_ingest.ingest.biostudies.api import load_submission, load_submission_table_info
 from bia_ingest.config import settings, api_client
 from bia_ingest.ingest.study import get_study
 from bia_ingest.ingest.experimental_imaging_dataset import (

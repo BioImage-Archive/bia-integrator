@@ -9,7 +9,7 @@ import typer
 from bia_ingest.config import api_client
 from bia_ingest.persistence_strategy import ApiPersister
 from bia_ingest.ingest import specimen, experimental_imaging_dataset
-from bia_ingest.ingest.biostudies import load_submission
+from bia_ingest.ingest.biostudies.api import load_submission
 from bia_ingest.cli_logging import IngestionResult
 
 api_persister = ApiPersister(api_client)

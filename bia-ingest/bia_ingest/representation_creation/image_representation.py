@@ -11,7 +11,7 @@ from ..bia_object_creation_utils import (
 )
 
 from .experimentally_captured_image import get_experimentally_captured_image
-from ..ingest.biostudies import (
+from ..ingest.biostudies.api import (
     Submission,
 )
 from bia_shared_datamodels import bia_data_model

@@ -9,7 +9,7 @@ from . import utils
 from bia_ingest.ingest import (
     file_reference,
 )
-from bia_ingest.ingest.biostudies import File
+from bia_ingest.ingest.biostudies.api import File
 
 
 # Get second study component as dataset in submission
