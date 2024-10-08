@@ -2,6 +2,7 @@ from motor.motor_asyncio import (
     AsyncIOMotorClient,
     AsyncIOMotorCollection,
     AsyncIOMotorDatabase,
+    AsyncIOMotorCursor,
 )
 import os
 from enum import Enum
@@ -9,6 +10,7 @@ import bia_shared_datamodels.bia_data_model as shared_data_models
 import pymongo
 from typing import Type, List, Any
 from api import exceptions
+from api.models.api import Pagination
 import datetime
 
 from bson.codec_options import CodecOptions
@@ -276,7 +278,8 @@ class Repository:
         self,
         doc_filter: dict,
         doc_type: Type[shared_data_models.DocumentMixin],
-    ) -> Any:
+        pagination: Pagination,
+    ) -> List[Any]:
         if not len(doc_filter.keys()):
             raise Exception("Need at least one filter")
 
@@ -284,7 +287,7 @@ class Repository:
         doc_filter["model"] = doc_type.get_model_metadata().model_dump()
 
         docs = []
-        for doc in await self._get_docs_raw(**doc_filter):
+        for doc in await self._get_docs_raw(**doc_filter, pagination=pagination):
             docs.append(doc_type(**doc))
 
         return docs
@@ -313,10 +316,35 @@ class Repository:
 
         return doc
 
-    async def _get_docs_raw(self, **kwargs) -> List[dict]:
+    async def _find_paginated(
+        self, collection: AsyncIOMotorCollection, query: dict, pagination: Pagination
+    ) -> AsyncIOMotorCursor:
+        """
+        Isolates pagination implementation to keep code consistent
+        """
+        # @TODO: Any less awkward way to contain pagination gotchas?
+
+        if "uuid" in query:
+            # uuid filter needs to be set for pagination,
+            #   we shouldn't overwrite anything that could possibly be set in the query
+            # at the same time, it doesn't make sense for filters by uuid (unique) needing pagination (result set)
+            #   so instead of adding something like $and: [original_filter, gt_for_pagination] just raise
+            raise exceptions.GenericServerError(
+                "Unsupported uuid filter for function that returns a list"
+            )
+
+        if pagination.start_uuid:
+            query["uuid"] = {"$gt": pagination.start_uuid}
+        else:
+            # always keep a consistent order for the first page
+            query["uuid"] = {"$gt": 0}
+
+        return collection.find(query).limit(pagination.size).sort("uuid")
+
+    async def _get_docs_raw(self, pagination: Pagination, **kwargs) -> List[dict]:
         docs = []
 
-        async for doc in self.biaint.find(kwargs):
+        async for doc in self._find_paginated(self.biaint, kwargs, pagination):
             doc.pop("_id")
             docs.append(doc)
 

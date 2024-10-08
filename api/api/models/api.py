@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from typing import Literal, Optional
+from uuid import UUID
 
 
 class BIABaseModel(BaseModel):
@@ -18,3 +19,8 @@ class TokenData(BIABaseModel):
 class AuthResult(BIABaseModel):
     access_token: str
     token_type: Literal["bearer"] = "bearer"
+
+
+class Pagination(BIABaseModel):
+    start_uuid: Optional[UUID] = None
+    size: int
