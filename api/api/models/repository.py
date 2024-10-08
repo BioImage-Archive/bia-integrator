@@ -316,7 +316,7 @@ class Repository:
 
         return doc
 
-    async def _find_paginated(
+    def _find_paginated(
         self, collection: AsyncIOMotorCollection, query: dict, pagination: Pagination
     ) -> AsyncIOMotorCursor:
         """
@@ -337,9 +337,9 @@ class Repository:
             query["uuid"] = {"$gt": pagination.start_uuid}
         else:
             # always keep a consistent order for the first page
-            query["uuid"] = {"$gt": 0}
+            query["uuid"] = {"$gt": shared_data_models.UUID(int=0)}
 
-        return collection.find(query).limit(pagination.size).sort("uuid")
+        return collection.find(query).limit(pagination.page_size).sort("uuid")
 
     async def _get_docs_raw(self, pagination: Pagination, **kwargs) -> List[dict]:
         docs = []

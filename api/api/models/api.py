@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import Literal, Optional
 from uuid import UUID
 
@@ -23,4 +23,4 @@ class AuthResult(BIABaseModel):
 
 class Pagination(BIABaseModel):
     start_uuid: Optional[UUID] = None
-    size: int
+    page_size: int = Field(ge=1)

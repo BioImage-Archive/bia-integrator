@@ -4,9 +4,12 @@ from api import auth
 from api import search
 from api.models.repository import repository_create
 from fastapi import FastAPI, Depends
+from fastapi.responses import JSONResponse
+
 from api.api_logging import log_info
 import os
 
+from pydantic import ValidationError
 
 app = FastAPI(
     generate_unique_id_function=lambda route: route.name,
@@ -19,6 +22,17 @@ app = FastAPI(
 app.openapi_version = "3.0.2"
 
 app.include_router(auth.router, prefix="/v2")
+
+
+@app.exception_handler(ValidationError)
+def remap_validation_error(_, exc: ValidationError):
+    """
+    This is for Pagination being DI'd with Depends()
+    fastapi doesn't have uniform handling of pydantic.ValidationError in that case (default response is a 500)
+
+    See https://github.com/fastapi/fastapi/issues/4974
+    """
+    return JSONResponse(status_code=422, content={"message": str(exc)})
 
 
 @app.on_event("startup")
