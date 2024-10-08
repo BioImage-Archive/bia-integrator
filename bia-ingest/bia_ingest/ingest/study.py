@@ -12,7 +12,7 @@ from .biostudies.submission_parsing_utils import (
 from ..bia_object_creation_utils import dict_to_uuid
 
 from ..cli_logging import log_failed_model_creation
-from .utils import (
+from .generic_conversion_utils import (
     get_generic_section_as_dict,
 )
 from .biostudies.api import (

@@ -9,7 +9,7 @@ from .biostudies.submission_parsing_utils import (
 from ..bia_object_creation_utils import dict_to_uuid, filter_model_dictionary
 
 from ..cli_logging import log_failed_model_creation, log_model_creation_count
-from .utils import (
+from .generic_conversion_utils import (
     get_generic_section_as_list,
     get_generic_section_as_dict,
 )

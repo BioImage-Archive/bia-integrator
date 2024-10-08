@@ -12,7 +12,7 @@ from ..bia_object_creation_utils import (
 from ..cli_logging import log_failed_model_creation, log_model_creation_count
 from ..persistence_strategy import PersistenceStrategy
 from pydantic import ValidationError
-from .utils import (
+from .generic_conversion_utils import (
     get_generic_section_as_list,
     object_value_pair_to_dict,
 )
