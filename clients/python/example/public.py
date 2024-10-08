@@ -13,5 +13,15 @@ print(study_searched.title)
 study_missing = client.search_study_by_accession("S-BIAD")
 print(study_missing)
 
-image_representations_searched = client.search_image_representation_by_file_uri("https://")
-print(len(image_representations_searched))
+all_representations = []
+image_representations_searched = client.search_image_representation_by_file_uri("https://", page_size=10)
+all_representations += image_representations_searched
+while len(image_representations_searched) < 10:
+    image_representations_searched = client.search_image_representation_by_file_uri(
+        "https://",
+        start_uuid=image_representations_searched[-1].uuid,
+        page_size=10
+    )
+    all_representations += image_representations_searched
+
+print(len(all_representations))
