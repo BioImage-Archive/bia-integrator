@@ -1,8 +1,6 @@
 import logging
 from typing import List, Any, Dict, Optional
 
-from .biostudies.submission_parsing_utils import attributes_to_dict
-
 from ..bia_object_creation_utils import (
     dict_to_uuid,
     dicts_to_api_models,
@@ -12,6 +10,7 @@ from ..bia_object_creation_utils import (
 from ..cli_logging import log_model_creation_count
 from .biostudies.submission_parsing_utils import (
     find_sections_recursive,
+    attributes_to_dict,
 )
 from .biostudies.api import (
     Submission,

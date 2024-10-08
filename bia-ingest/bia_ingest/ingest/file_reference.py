@@ -2,13 +2,10 @@ import logging
 from pydantic import ValidationError
 from typing import List, Dict, Optional
 
-from .biostudies.submission_parsing_utils import (
-    attributes_to_dict,
-)
-
 from ..bia_object_creation_utils import dict_to_uuid, filter_model_dictionary
 from .biostudies.submission_parsing_utils import (
     find_datasets_with_file_lists,
+    attributes_to_dict,
 )
 from .biostudies.api import (
     Submission,

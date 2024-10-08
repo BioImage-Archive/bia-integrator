@@ -3,13 +3,9 @@ from pathlib import Path
 from typing import List, Any, Dict, Optional, Tuple, Union
 from pydantic import BaseModel, ValidationError
 from pydantic.alias_generators import to_snake
-
-from bia_ingest.cli_logging import log_failed_model_creation
-from bia_ingest.ingest.biostudies.submission_parsing_utils import mattributes_to_dict
 from bia_ingest.ingest.biostudies.submission_parsing_utils import (
     find_sections_recursive,
-)
-from .biostudies.submission_parsing_utils import (
+    mattributes_to_dict,
     attributes_to_dict,
 )
 from .biostudies.api import (
@@ -17,7 +13,7 @@ from .biostudies.api import (
     Section,
 )
 from ..config import settings, api_client
-from ..cli_logging import IngestionResult
+from ..cli_logging import IngestionResult, log_failed_model_creation
 import bia_integrator_api.models as api_models
 
 logger = logging.getLogger("__main__." + __name__)
