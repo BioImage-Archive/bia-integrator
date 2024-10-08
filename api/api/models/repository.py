@@ -132,6 +132,7 @@ class Repository:
         link_attribute_in_source: str,
         link_attribute_value: str,
         source_type: Type[shared_data_models.DocumentMixin],
+        pagination: Pagination,
     ):
         """
         Always use this to query for documents with a *_uuid field (documents that link to some known document)
@@ -145,6 +146,7 @@ class Repository:
             # a.i. list_attribute: some_val means "any value in list_attribute is equal to some_val"
             doc_filter={link_attribute_in_source: link_attribute_value},
             doc_type=source_type,
+            pagination=pagination,
         )
 
     async def assert_model_doc_dependencies_exist(
