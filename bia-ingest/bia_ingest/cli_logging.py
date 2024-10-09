@@ -3,7 +3,6 @@ from rich.table import Table
 from rich.text import Text
 from pydantic import BaseModel, Field
 import logging
-from abc import ABC
 
 logger = logging.getLogger("__main__." + __name__)
 

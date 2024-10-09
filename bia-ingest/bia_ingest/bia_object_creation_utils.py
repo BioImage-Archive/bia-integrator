@@ -42,20 +42,3 @@ def dicts_to_api_models(
         except ValidationError:
             log_failed_model_creation(api_model_class, valdiation_error_tracking)
     return api_models
-
-
-def get_bia_data_model_by_uuid(
-    uuid: UUID, model_class: Type[BaseModel], accession_id: str = ""
-) -> BaseModel:
-    """Instantiate a bia_data_model from a json file on disk"""
-    # TODO: Find out how to get generic type for bia_data_model (baseclass?)
-    import re
-
-    model_name_parts = [
-        s.lower() for s in re.split(r"(?=[A-Z])", model_class.__name__) if len(s) > 0
-    ]
-    model_subdir = "_".join(model_name_parts) + "s"
-    input_path = (
-        Path(settings.bia_data_dir) / model_subdir / accession_id / f"{uuid}.json"
-    )
-    return model_class.model_validate_json(input_path.read_text())
