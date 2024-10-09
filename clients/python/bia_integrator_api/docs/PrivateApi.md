@@ -127,7 +127,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_annotation_file_reference_in_annotation_method**
-> List[AnnotationFileReference] get_annotation_file_reference_in_annotation_method(uuid, page_size, start_uuid=start_uuid)
+> List[AnnotationFileReference] get_annotation_file_reference_in_annotation_method(uuid, page_size, start_from_uuid=start_from_uuid)
 
 Get AnnotationFileReference In AnnotationMethod
 
@@ -153,11 +153,11 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     api_instance = bia_integrator_api.PrivateApi(api_client)
     uuid = 'uuid_example' # str | 
     page_size = 56 # int | 
-    start_uuid = 'start_uuid_example' # str |  (optional)
+    start_from_uuid = 'start_from_uuid_example' # str |  (optional)
 
     try:
         # Get AnnotationFileReference In AnnotationMethod
-        api_response = api_instance.get_annotation_file_reference_in_annotation_method(uuid, page_size, start_uuid=start_uuid)
+        api_response = api_instance.get_annotation_file_reference_in_annotation_method(uuid, page_size, start_from_uuid=start_from_uuid)
         print("The response of PrivateApi->get_annotation_file_reference_in_annotation_method:\n")
         pprint(api_response)
     except Exception as e:
@@ -173,7 +173,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **uuid** | **str**|  | 
  **page_size** | **int**|  | 
- **start_uuid** | **str**|  | [optional] 
+ **start_from_uuid** | **str**|  | [optional] 
 
 ### Return type
 
@@ -198,7 +198,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_annotation_file_reference_in_derived_image**
-> List[AnnotationFileReference] get_annotation_file_reference_in_derived_image(uuid, page_size, start_uuid=start_uuid)
+> List[AnnotationFileReference] get_annotation_file_reference_in_derived_image(uuid, page_size, start_from_uuid=start_from_uuid)
 
 Get AnnotationFileReference In DerivedImage
 
@@ -224,11 +224,11 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     api_instance = bia_integrator_api.PrivateApi(api_client)
     uuid = 'uuid_example' # str | 
     page_size = 56 # int | 
-    start_uuid = 'start_uuid_example' # str |  (optional)
+    start_from_uuid = 'start_from_uuid_example' # str |  (optional)
 
     try:
         # Get AnnotationFileReference In DerivedImage
-        api_response = api_instance.get_annotation_file_reference_in_derived_image(uuid, page_size, start_uuid=start_uuid)
+        api_response = api_instance.get_annotation_file_reference_in_derived_image(uuid, page_size, start_from_uuid=start_from_uuid)
         print("The response of PrivateApi->get_annotation_file_reference_in_derived_image:\n")
         pprint(api_response)
     except Exception as e:
@@ -244,7 +244,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **uuid** | **str**|  | 
  **page_size** | **int**|  | 
- **start_uuid** | **str**|  | [optional] 
+ **start_from_uuid** | **str**|  | [optional] 
 
 ### Return type
 
@@ -269,7 +269,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_annotation_file_reference_in_experimental_imaging_dataset**
-> List[AnnotationFileReference] get_annotation_file_reference_in_experimental_imaging_dataset(uuid, page_size, start_uuid=start_uuid)
+> List[AnnotationFileReference] get_annotation_file_reference_in_experimental_imaging_dataset(uuid, page_size, start_from_uuid=start_from_uuid)
 
 Get AnnotationFileReference In ExperimentalImagingDataset
 
@@ -295,11 +295,11 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     api_instance = bia_integrator_api.PrivateApi(api_client)
     uuid = 'uuid_example' # str | 
     page_size = 56 # int | 
-    start_uuid = 'start_uuid_example' # str |  (optional)
+    start_from_uuid = 'start_from_uuid_example' # str |  (optional)
 
     try:
         # Get AnnotationFileReference In ExperimentalImagingDataset
-        api_response = api_instance.get_annotation_file_reference_in_experimental_imaging_dataset(uuid, page_size, start_uuid=start_uuid)
+        api_response = api_instance.get_annotation_file_reference_in_experimental_imaging_dataset(uuid, page_size, start_from_uuid=start_from_uuid)
         print("The response of PrivateApi->get_annotation_file_reference_in_experimental_imaging_dataset:\n")
         pprint(api_response)
     except Exception as e:
@@ -315,7 +315,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **uuid** | **str**|  | 
  **page_size** | **int**|  | 
- **start_uuid** | **str**|  | [optional] 
+ **start_from_uuid** | **str**|  | [optional] 
 
 ### Return type
 
@@ -340,7 +340,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_annotation_file_reference_in_experimentally_captured_image**
-> List[AnnotationFileReference] get_annotation_file_reference_in_experimentally_captured_image(uuid, page_size, start_uuid=start_uuid)
+> List[AnnotationFileReference] get_annotation_file_reference_in_experimentally_captured_image(uuid, page_size, start_from_uuid=start_from_uuid)
 
 Get AnnotationFileReference In ExperimentallyCapturedImage
 
@@ -366,11 +366,11 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     api_instance = bia_integrator_api.PrivateApi(api_client)
     uuid = 'uuid_example' # str | 
     page_size = 56 # int | 
-    start_uuid = 'start_uuid_example' # str |  (optional)
+    start_from_uuid = 'start_from_uuid_example' # str |  (optional)
 
     try:
         # Get AnnotationFileReference In ExperimentallyCapturedImage
-        api_response = api_instance.get_annotation_file_reference_in_experimentally_captured_image(uuid, page_size, start_uuid=start_uuid)
+        api_response = api_instance.get_annotation_file_reference_in_experimentally_captured_image(uuid, page_size, start_from_uuid=start_from_uuid)
         print("The response of PrivateApi->get_annotation_file_reference_in_experimentally_captured_image:\n")
         pprint(api_response)
     except Exception as e:
@@ -386,7 +386,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **uuid** | **str**|  | 
  **page_size** | **int**|  | 
- **start_uuid** | **str**|  | [optional] 
+ **start_from_uuid** | **str**|  | [optional] 
 
 ### Return type
 
@@ -411,7 +411,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_annotation_file_reference_in_image_annotation_dataset**
-> List[AnnotationFileReference] get_annotation_file_reference_in_image_annotation_dataset(uuid, page_size, start_uuid=start_uuid)
+> List[AnnotationFileReference] get_annotation_file_reference_in_image_annotation_dataset(uuid, page_size, start_from_uuid=start_from_uuid)
 
 Get AnnotationFileReference In ImageAnnotationDataset
 
@@ -437,11 +437,11 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     api_instance = bia_integrator_api.PrivateApi(api_client)
     uuid = 'uuid_example' # str | 
     page_size = 56 # int | 
-    start_uuid = 'start_uuid_example' # str |  (optional)
+    start_from_uuid = 'start_from_uuid_example' # str |  (optional)
 
     try:
         # Get AnnotationFileReference In ImageAnnotationDataset
-        api_response = api_instance.get_annotation_file_reference_in_image_annotation_dataset(uuid, page_size, start_uuid=start_uuid)
+        api_response = api_instance.get_annotation_file_reference_in_image_annotation_dataset(uuid, page_size, start_from_uuid=start_from_uuid)
         print("The response of PrivateApi->get_annotation_file_reference_in_image_annotation_dataset:\n")
         pprint(api_response)
     except Exception as e:
@@ -457,7 +457,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **uuid** | **str**|  | 
  **page_size** | **int**|  | 
- **start_uuid** | **str**|  | [optional] 
+ **start_from_uuid** | **str**|  | [optional] 
 
 ### Return type
 
@@ -683,7 +683,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_derived_image_in_annotation_method**
-> List[DerivedImage] get_derived_image_in_annotation_method(uuid, page_size, start_uuid=start_uuid)
+> List[DerivedImage] get_derived_image_in_annotation_method(uuid, page_size, start_from_uuid=start_from_uuid)
 
 Get DerivedImage In AnnotationMethod
 
@@ -709,11 +709,11 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     api_instance = bia_integrator_api.PrivateApi(api_client)
     uuid = 'uuid_example' # str | 
     page_size = 56 # int | 
-    start_uuid = 'start_uuid_example' # str |  (optional)
+    start_from_uuid = 'start_from_uuid_example' # str |  (optional)
 
     try:
         # Get DerivedImage In AnnotationMethod
-        api_response = api_instance.get_derived_image_in_annotation_method(uuid, page_size, start_uuid=start_uuid)
+        api_response = api_instance.get_derived_image_in_annotation_method(uuid, page_size, start_from_uuid=start_from_uuid)
         print("The response of PrivateApi->get_derived_image_in_annotation_method:\n")
         pprint(api_response)
     except Exception as e:
@@ -729,7 +729,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **uuid** | **str**|  | 
  **page_size** | **int**|  | 
- **start_uuid** | **str**|  | [optional] 
+ **start_from_uuid** | **str**|  | [optional] 
 
 ### Return type
 
@@ -754,7 +754,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_derived_image_in_derived_image**
-> List[DerivedImage] get_derived_image_in_derived_image(uuid, page_size, start_uuid=start_uuid)
+> List[DerivedImage] get_derived_image_in_derived_image(uuid, page_size, start_from_uuid=start_from_uuid)
 
 Get DerivedImage In DerivedImage
 
@@ -780,11 +780,11 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     api_instance = bia_integrator_api.PrivateApi(api_client)
     uuid = 'uuid_example' # str | 
     page_size = 56 # int | 
-    start_uuid = 'start_uuid_example' # str |  (optional)
+    start_from_uuid = 'start_from_uuid_example' # str |  (optional)
 
     try:
         # Get DerivedImage In DerivedImage
-        api_response = api_instance.get_derived_image_in_derived_image(uuid, page_size, start_uuid=start_uuid)
+        api_response = api_instance.get_derived_image_in_derived_image(uuid, page_size, start_from_uuid=start_from_uuid)
         print("The response of PrivateApi->get_derived_image_in_derived_image:\n")
         pprint(api_response)
     except Exception as e:
@@ -800,7 +800,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **uuid** | **str**|  | 
  **page_size** | **int**|  | 
- **start_uuid** | **str**|  | [optional] 
+ **start_from_uuid** | **str**|  | [optional] 
 
 ### Return type
 
@@ -825,7 +825,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_derived_image_in_experimentally_captured_image**
-> List[DerivedImage] get_derived_image_in_experimentally_captured_image(uuid, page_size, start_uuid=start_uuid)
+> List[DerivedImage] get_derived_image_in_experimentally_captured_image(uuid, page_size, start_from_uuid=start_from_uuid)
 
 Get DerivedImage In ExperimentallyCapturedImage
 
@@ -851,11 +851,11 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     api_instance = bia_integrator_api.PrivateApi(api_client)
     uuid = 'uuid_example' # str | 
     page_size = 56 # int | 
-    start_uuid = 'start_uuid_example' # str |  (optional)
+    start_from_uuid = 'start_from_uuid_example' # str |  (optional)
 
     try:
         # Get DerivedImage In ExperimentallyCapturedImage
-        api_response = api_instance.get_derived_image_in_experimentally_captured_image(uuid, page_size, start_uuid=start_uuid)
+        api_response = api_instance.get_derived_image_in_experimentally_captured_image(uuid, page_size, start_from_uuid=start_from_uuid)
         print("The response of PrivateApi->get_derived_image_in_experimentally_captured_image:\n")
         pprint(api_response)
     except Exception as e:
@@ -871,7 +871,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **uuid** | **str**|  | 
  **page_size** | **int**|  | 
- **start_uuid** | **str**|  | [optional] 
+ **start_from_uuid** | **str**|  | [optional] 
 
 ### Return type
 
@@ -896,7 +896,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_derived_image_in_image_annotation_dataset**
-> List[DerivedImage] get_derived_image_in_image_annotation_dataset(uuid, page_size, start_uuid=start_uuid)
+> List[DerivedImage] get_derived_image_in_image_annotation_dataset(uuid, page_size, start_from_uuid=start_from_uuid)
 
 Get DerivedImage In ImageAnnotationDataset
 
@@ -922,11 +922,11 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     api_instance = bia_integrator_api.PrivateApi(api_client)
     uuid = 'uuid_example' # str | 
     page_size = 56 # int | 
-    start_uuid = 'start_uuid_example' # str |  (optional)
+    start_from_uuid = 'start_from_uuid_example' # str |  (optional)
 
     try:
         # Get DerivedImage In ImageAnnotationDataset
-        api_response = api_instance.get_derived_image_in_image_annotation_dataset(uuid, page_size, start_uuid=start_uuid)
+        api_response = api_instance.get_derived_image_in_image_annotation_dataset(uuid, page_size, start_from_uuid=start_from_uuid)
         print("The response of PrivateApi->get_derived_image_in_image_annotation_dataset:\n")
         pprint(api_response)
     except Exception as e:
@@ -942,7 +942,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **uuid** | **str**|  | 
  **page_size** | **int**|  | 
- **start_uuid** | **str**|  | [optional] 
+ **start_from_uuid** | **str**|  | [optional] 
 
 ### Return type
 
@@ -1034,7 +1034,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_experimental_imaging_dataset_in_study**
-> List[ExperimentalImagingDataset] get_experimental_imaging_dataset_in_study(uuid, page_size, start_uuid=start_uuid)
+> List[ExperimentalImagingDataset] get_experimental_imaging_dataset_in_study(uuid, page_size, start_from_uuid=start_from_uuid)
 
 Get ExperimentalImagingDataset In Study
 
@@ -1060,11 +1060,11 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     api_instance = bia_integrator_api.PrivateApi(api_client)
     uuid = 'uuid_example' # str | 
     page_size = 56 # int | 
-    start_uuid = 'start_uuid_example' # str |  (optional)
+    start_from_uuid = 'start_from_uuid_example' # str |  (optional)
 
     try:
         # Get ExperimentalImagingDataset In Study
-        api_response = api_instance.get_experimental_imaging_dataset_in_study(uuid, page_size, start_uuid=start_uuid)
+        api_response = api_instance.get_experimental_imaging_dataset_in_study(uuid, page_size, start_from_uuid=start_from_uuid)
         print("The response of PrivateApi->get_experimental_imaging_dataset_in_study:\n")
         pprint(api_response)
     except Exception as e:
@@ -1080,7 +1080,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **uuid** | **str**|  | 
  **page_size** | **int**|  | 
- **start_uuid** | **str**|  | [optional] 
+ **start_from_uuid** | **str**|  | [optional] 
 
 ### Return type
 
@@ -1172,7 +1172,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_experimentally_captured_image_in_experimental_imaging_dataset**
-> List[ExperimentallyCapturedImage] get_experimentally_captured_image_in_experimental_imaging_dataset(uuid, page_size, start_uuid=start_uuid)
+> List[ExperimentallyCapturedImage] get_experimentally_captured_image_in_experimental_imaging_dataset(uuid, page_size, start_from_uuid=start_from_uuid)
 
 Get ExperimentallyCapturedImage In ExperimentalImagingDataset
 
@@ -1198,11 +1198,11 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     api_instance = bia_integrator_api.PrivateApi(api_client)
     uuid = 'uuid_example' # str | 
     page_size = 56 # int | 
-    start_uuid = 'start_uuid_example' # str |  (optional)
+    start_from_uuid = 'start_from_uuid_example' # str |  (optional)
 
     try:
         # Get ExperimentallyCapturedImage In ExperimentalImagingDataset
-        api_response = api_instance.get_experimentally_captured_image_in_experimental_imaging_dataset(uuid, page_size, start_uuid=start_uuid)
+        api_response = api_instance.get_experimentally_captured_image_in_experimental_imaging_dataset(uuid, page_size, start_from_uuid=start_from_uuid)
         print("The response of PrivateApi->get_experimentally_captured_image_in_experimental_imaging_dataset:\n")
         pprint(api_response)
     except Exception as e:
@@ -1218,7 +1218,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **uuid** | **str**|  | 
  **page_size** | **int**|  | 
- **start_uuid** | **str**|  | [optional] 
+ **start_from_uuid** | **str**|  | [optional] 
 
 ### Return type
 
@@ -1243,7 +1243,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_experimentally_captured_image_in_image_acquisition**
-> List[ExperimentallyCapturedImage] get_experimentally_captured_image_in_image_acquisition(uuid, page_size, start_uuid=start_uuid)
+> List[ExperimentallyCapturedImage] get_experimentally_captured_image_in_image_acquisition(uuid, page_size, start_from_uuid=start_from_uuid)
 
 Get ExperimentallyCapturedImage In ImageAcquisition
 
@@ -1269,11 +1269,11 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     api_instance = bia_integrator_api.PrivateApi(api_client)
     uuid = 'uuid_example' # str | 
     page_size = 56 # int | 
-    start_uuid = 'start_uuid_example' # str |  (optional)
+    start_from_uuid = 'start_from_uuid_example' # str |  (optional)
 
     try:
         # Get ExperimentallyCapturedImage In ImageAcquisition
-        api_response = api_instance.get_experimentally_captured_image_in_image_acquisition(uuid, page_size, start_uuid=start_uuid)
+        api_response = api_instance.get_experimentally_captured_image_in_image_acquisition(uuid, page_size, start_from_uuid=start_from_uuid)
         print("The response of PrivateApi->get_experimentally_captured_image_in_image_acquisition:\n")
         pprint(api_response)
     except Exception as e:
@@ -1289,7 +1289,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **uuid** | **str**|  | 
  **page_size** | **int**|  | 
- **start_uuid** | **str**|  | [optional] 
+ **start_from_uuid** | **str**|  | [optional] 
 
 ### Return type
 
@@ -1314,7 +1314,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_experimentally_captured_image_in_specimen**
-> List[ExperimentallyCapturedImage] get_experimentally_captured_image_in_specimen(uuid, page_size, start_uuid=start_uuid)
+> List[ExperimentallyCapturedImage] get_experimentally_captured_image_in_specimen(uuid, page_size, start_from_uuid=start_from_uuid)
 
 Get ExperimentallyCapturedImage In Specimen
 
@@ -1340,11 +1340,11 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     api_instance = bia_integrator_api.PrivateApi(api_client)
     uuid = 'uuid_example' # str | 
     page_size = 56 # int | 
-    start_uuid = 'start_uuid_example' # str |  (optional)
+    start_from_uuid = 'start_from_uuid_example' # str |  (optional)
 
     try:
         # Get ExperimentallyCapturedImage In Specimen
-        api_response = api_instance.get_experimentally_captured_image_in_specimen(uuid, page_size, start_uuid=start_uuid)
+        api_response = api_instance.get_experimentally_captured_image_in_specimen(uuid, page_size, start_from_uuid=start_from_uuid)
         print("The response of PrivateApi->get_experimentally_captured_image_in_specimen:\n")
         pprint(api_response)
     except Exception as e:
@@ -1360,7 +1360,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **uuid** | **str**|  | 
  **page_size** | **int**|  | 
- **start_uuid** | **str**|  | [optional] 
+ **start_from_uuid** | **str**|  | [optional] 
 
 ### Return type
 
@@ -1452,7 +1452,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_file_reference_in_experimental_imaging_dataset**
-> List[FileReference] get_file_reference_in_experimental_imaging_dataset(uuid, page_size, start_uuid=start_uuid)
+> List[FileReference] get_file_reference_in_experimental_imaging_dataset(uuid, page_size, start_from_uuid=start_from_uuid)
 
 Get FileReference In ExperimentalImagingDataset
 
@@ -1478,11 +1478,11 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     api_instance = bia_integrator_api.PrivateApi(api_client)
     uuid = 'uuid_example' # str | 
     page_size = 56 # int | 
-    start_uuid = 'start_uuid_example' # str |  (optional)
+    start_from_uuid = 'start_from_uuid_example' # str |  (optional)
 
     try:
         # Get FileReference In ExperimentalImagingDataset
-        api_response = api_instance.get_file_reference_in_experimental_imaging_dataset(uuid, page_size, start_uuid=start_uuid)
+        api_response = api_instance.get_file_reference_in_experimental_imaging_dataset(uuid, page_size, start_from_uuid=start_from_uuid)
         print("The response of PrivateApi->get_file_reference_in_experimental_imaging_dataset:\n")
         pprint(api_response)
     except Exception as e:
@@ -1498,7 +1498,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **uuid** | **str**|  | 
  **page_size** | **int**|  | 
- **start_uuid** | **str**|  | [optional] 
+ **start_from_uuid** | **str**|  | [optional] 
 
 ### Return type
 
@@ -1523,7 +1523,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_file_reference_in_image_annotation_dataset**
-> List[FileReference] get_file_reference_in_image_annotation_dataset(uuid, page_size, start_uuid=start_uuid)
+> List[FileReference] get_file_reference_in_image_annotation_dataset(uuid, page_size, start_from_uuid=start_from_uuid)
 
 Get FileReference In ImageAnnotationDataset
 
@@ -1549,11 +1549,11 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     api_instance = bia_integrator_api.PrivateApi(api_client)
     uuid = 'uuid_example' # str | 
     page_size = 56 # int | 
-    start_uuid = 'start_uuid_example' # str |  (optional)
+    start_from_uuid = 'start_from_uuid_example' # str |  (optional)
 
     try:
         # Get FileReference In ImageAnnotationDataset
-        api_response = api_instance.get_file_reference_in_image_annotation_dataset(uuid, page_size, start_uuid=start_uuid)
+        api_response = api_instance.get_file_reference_in_image_annotation_dataset(uuid, page_size, start_from_uuid=start_from_uuid)
         print("The response of PrivateApi->get_file_reference_in_image_annotation_dataset:\n")
         pprint(api_response)
     except Exception as e:
@@ -1569,7 +1569,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **uuid** | **str**|  | 
  **page_size** | **int**|  | 
- **start_uuid** | **str**|  | [optional] 
+ **start_from_uuid** | **str**|  | [optional] 
 
 ### Return type
 
@@ -1728,7 +1728,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_image_annotation_dataset_in_study**
-> List[ImageAnnotationDataset] get_image_annotation_dataset_in_study(uuid, page_size, start_uuid=start_uuid)
+> List[ImageAnnotationDataset] get_image_annotation_dataset_in_study(uuid, page_size, start_from_uuid=start_from_uuid)
 
 Get ImageAnnotationDataset In Study
 
@@ -1754,11 +1754,11 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     api_instance = bia_integrator_api.PrivateApi(api_client)
     uuid = 'uuid_example' # str | 
     page_size = 56 # int | 
-    start_uuid = 'start_uuid_example' # str |  (optional)
+    start_from_uuid = 'start_from_uuid_example' # str |  (optional)
 
     try:
         # Get ImageAnnotationDataset In Study
-        api_response = api_instance.get_image_annotation_dataset_in_study(uuid, page_size, start_uuid=start_uuid)
+        api_response = api_instance.get_image_annotation_dataset_in_study(uuid, page_size, start_from_uuid=start_from_uuid)
         print("The response of PrivateApi->get_image_annotation_dataset_in_study:\n")
         pprint(api_response)
     except Exception as e:
@@ -1774,7 +1774,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **uuid** | **str**|  | 
  **page_size** | **int**|  | 
- **start_uuid** | **str**|  | [optional] 
+ **start_from_uuid** | **str**|  | [optional] 
 
 ### Return type
 
@@ -1866,7 +1866,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_image_representation_in_derived_image**
-> List[ImageRepresentation] get_image_representation_in_derived_image(uuid, page_size, start_uuid=start_uuid)
+> List[ImageRepresentation] get_image_representation_in_derived_image(uuid, page_size, start_from_uuid=start_from_uuid)
 
 Get ImageRepresentation In DerivedImage
 
@@ -1892,11 +1892,11 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     api_instance = bia_integrator_api.PrivateApi(api_client)
     uuid = 'uuid_example' # str | 
     page_size = 56 # int | 
-    start_uuid = 'start_uuid_example' # str |  (optional)
+    start_from_uuid = 'start_from_uuid_example' # str |  (optional)
 
     try:
         # Get ImageRepresentation In DerivedImage
-        api_response = api_instance.get_image_representation_in_derived_image(uuid, page_size, start_uuid=start_uuid)
+        api_response = api_instance.get_image_representation_in_derived_image(uuid, page_size, start_from_uuid=start_from_uuid)
         print("The response of PrivateApi->get_image_representation_in_derived_image:\n")
         pprint(api_response)
     except Exception as e:
@@ -1912,7 +1912,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **uuid** | **str**|  | 
  **page_size** | **int**|  | 
- **start_uuid** | **str**|  | [optional] 
+ **start_from_uuid** | **str**|  | [optional] 
 
 ### Return type
 
@@ -1937,7 +1937,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_image_representation_in_experimentally_captured_image**
-> List[ImageRepresentation] get_image_representation_in_experimentally_captured_image(uuid, page_size, start_uuid=start_uuid)
+> List[ImageRepresentation] get_image_representation_in_experimentally_captured_image(uuid, page_size, start_from_uuid=start_from_uuid)
 
 Get ImageRepresentation In ExperimentallyCapturedImage
 
@@ -1963,11 +1963,11 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     api_instance = bia_integrator_api.PrivateApi(api_client)
     uuid = 'uuid_example' # str | 
     page_size = 56 # int | 
-    start_uuid = 'start_uuid_example' # str |  (optional)
+    start_from_uuid = 'start_from_uuid_example' # str |  (optional)
 
     try:
         # Get ImageRepresentation In ExperimentallyCapturedImage
-        api_response = api_instance.get_image_representation_in_experimentally_captured_image(uuid, page_size, start_uuid=start_uuid)
+        api_response = api_instance.get_image_representation_in_experimentally_captured_image(uuid, page_size, start_from_uuid=start_from_uuid)
         print("The response of PrivateApi->get_image_representation_in_experimentally_captured_image:\n")
         pprint(api_response)
     except Exception as e:
@@ -1983,7 +1983,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **uuid** | **str**|  | 
  **page_size** | **int**|  | 
- **start_uuid** | **str**|  | [optional] 
+ **start_from_uuid** | **str**|  | [optional] 
 
 ### Return type
 
@@ -2008,7 +2008,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_image_representation_in_file_reference**
-> List[ImageRepresentation] get_image_representation_in_file_reference(uuid, page_size, start_uuid=start_uuid)
+> List[ImageRepresentation] get_image_representation_in_file_reference(uuid, page_size, start_from_uuid=start_from_uuid)
 
 Get ImageRepresentation In FileReference
 
@@ -2034,11 +2034,11 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     api_instance = bia_integrator_api.PrivateApi(api_client)
     uuid = 'uuid_example' # str | 
     page_size = 56 # int | 
-    start_uuid = 'start_uuid_example' # str |  (optional)
+    start_from_uuid = 'start_from_uuid_example' # str |  (optional)
 
     try:
         # Get ImageRepresentation In FileReference
-        api_response = api_instance.get_image_representation_in_file_reference(uuid, page_size, start_uuid=start_uuid)
+        api_response = api_instance.get_image_representation_in_file_reference(uuid, page_size, start_from_uuid=start_from_uuid)
         print("The response of PrivateApi->get_image_representation_in_file_reference:\n")
         pprint(api_response)
     except Exception as e:
@@ -2054,7 +2054,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **uuid** | **str**|  | 
  **page_size** | **int**|  | 
- **start_uuid** | **str**|  | [optional] 
+ **start_from_uuid** | **str**|  | [optional] 
 
 ### Return type
 
@@ -2280,7 +2280,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_specimen_in_bio_sample**
-> List[Specimen] get_specimen_in_bio_sample(uuid, page_size, start_uuid=start_uuid)
+> List[Specimen] get_specimen_in_bio_sample(uuid, page_size, start_from_uuid=start_from_uuid)
 
 Get Specimen In BioSample
 
@@ -2306,11 +2306,11 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     api_instance = bia_integrator_api.PrivateApi(api_client)
     uuid = 'uuid_example' # str | 
     page_size = 56 # int | 
-    start_uuid = 'start_uuid_example' # str |  (optional)
+    start_from_uuid = 'start_from_uuid_example' # str |  (optional)
 
     try:
         # Get Specimen In BioSample
-        api_response = api_instance.get_specimen_in_bio_sample(uuid, page_size, start_uuid=start_uuid)
+        api_response = api_instance.get_specimen_in_bio_sample(uuid, page_size, start_from_uuid=start_from_uuid)
         print("The response of PrivateApi->get_specimen_in_bio_sample:\n")
         pprint(api_response)
     except Exception as e:
@@ -2326,7 +2326,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **uuid** | **str**|  | 
  **page_size** | **int**|  | 
- **start_uuid** | **str**|  | [optional] 
+ **start_from_uuid** | **str**|  | [optional] 
 
 ### Return type
 
@@ -2351,7 +2351,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_specimen_in_specimen_growth_protocol**
-> List[Specimen] get_specimen_in_specimen_growth_protocol(uuid, page_size, start_uuid=start_uuid)
+> List[Specimen] get_specimen_in_specimen_growth_protocol(uuid, page_size, start_from_uuid=start_from_uuid)
 
 Get Specimen In SpecimenGrowthProtocol
 
@@ -2377,11 +2377,11 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     api_instance = bia_integrator_api.PrivateApi(api_client)
     uuid = 'uuid_example' # str | 
     page_size = 56 # int | 
-    start_uuid = 'start_uuid_example' # str |  (optional)
+    start_from_uuid = 'start_from_uuid_example' # str |  (optional)
 
     try:
         # Get Specimen In SpecimenGrowthProtocol
-        api_response = api_instance.get_specimen_in_specimen_growth_protocol(uuid, page_size, start_uuid=start_uuid)
+        api_response = api_instance.get_specimen_in_specimen_growth_protocol(uuid, page_size, start_from_uuid=start_from_uuid)
         print("The response of PrivateApi->get_specimen_in_specimen_growth_protocol:\n")
         pprint(api_response)
     except Exception as e:
@@ -2397,7 +2397,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **uuid** | **str**|  | 
  **page_size** | **int**|  | 
- **start_uuid** | **str**|  | [optional] 
+ **start_from_uuid** | **str**|  | [optional] 
 
 ### Return type
 
@@ -2422,7 +2422,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_specimen_in_specimen_imaging_preparation_protocol**
-> List[Specimen] get_specimen_in_specimen_imaging_preparation_protocol(uuid, page_size, start_uuid=start_uuid)
+> List[Specimen] get_specimen_in_specimen_imaging_preparation_protocol(uuid, page_size, start_from_uuid=start_from_uuid)
 
 Get Specimen In SpecimenImagingPreparationProtocol
 
@@ -2448,11 +2448,11 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     api_instance = bia_integrator_api.PrivateApi(api_client)
     uuid = 'uuid_example' # str | 
     page_size = 56 # int | 
-    start_uuid = 'start_uuid_example' # str |  (optional)
+    start_from_uuid = 'start_from_uuid_example' # str |  (optional)
 
     try:
         # Get Specimen In SpecimenImagingPreparationProtocol
-        api_response = api_instance.get_specimen_in_specimen_imaging_preparation_protocol(uuid, page_size, start_uuid=start_uuid)
+        api_response = api_instance.get_specimen_in_specimen_imaging_preparation_protocol(uuid, page_size, start_from_uuid=start_from_uuid)
         print("The response of PrivateApi->get_specimen_in_specimen_imaging_preparation_protocol:\n")
         pprint(api_response)
     except Exception as e:
@@ -2468,7 +2468,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **uuid** | **str**|  | 
  **page_size** | **int**|  | 
- **start_uuid** | **str**|  | [optional] 
+ **start_from_uuid** | **str**|  | [optional] 
 
 ### Return type
 
@@ -2493,7 +2493,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_studies**
-> List[Study] get_studies(page_size, start_uuid=start_uuid)
+> List[Study] get_studies(page_size, start_from_uuid=start_from_uuid)
 
 Getstudies
 
@@ -2520,11 +2520,11 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = bia_integrator_api.PrivateApi(api_client)
     page_size = 56 # int | 
-    start_uuid = 'start_uuid_example' # str |  (optional)
+    start_from_uuid = 'start_from_uuid_example' # str |  (optional)
 
     try:
         # Getstudies
-        api_response = api_instance.get_studies(page_size, start_uuid=start_uuid)
+        api_response = api_instance.get_studies(page_size, start_from_uuid=start_from_uuid)
         print("The response of PrivateApi->get_studies:\n")
         pprint(api_response)
     except Exception as e:
@@ -2539,7 +2539,7 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **page_size** | **int**|  | 
- **start_uuid** | **str**|  | [optional] 
+ **start_from_uuid** | **str**|  | [optional] 
 
 ### Return type
 
