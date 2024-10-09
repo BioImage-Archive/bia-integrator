@@ -11,14 +11,14 @@
 ## Usage
 This package has 2 cli applications:
  * ingest: used to transform BioStudies submissions into various BioImage Archive API objects
- * represetations: used to create Image representations from BioImage Archive File Reference objects.
+ * representations: used to create Image representations from BioImage Archive File Reference objects.
 
 Note that this package does not convert images (i.e. create image files that contain pixel data) from existing objects.
 This is now handled by the [bia-converter-light](../bia-converter-light/README.md) sub package.
 This package only creates the objects that exist in the BIA API, which is used to store metadata about such images.
 
 ## Ingest Commands
-To create BIA API objects from one or more biostudies submissions, assuming the package was installed via peoetry and you are running from the same directory as this readme, run:
+To create BIA API objects from one or more biostudies submissions, assuming the package was installed via poetry and you are running from the same directory as this readme, run:
 ```sh
 $ poetry run biaingest ingest <LIST OF STUDY ACCESSION IDs>
 ```
@@ -92,4 +92,3 @@ An option can be passed into the command to specify representations to create. E
 $ poetry run biaingest representations create --reps-to-create THUMBNAIL --reps-to-create STATIC_DISPLAY S-BIAD1285 002e89fc-5a6c-4037-86ec-0dadd9553694
 ```
 
-## Converting images
