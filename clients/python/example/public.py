@@ -16,7 +16,7 @@ print(study_missing)
 all_representations = []
 image_representations_searched = client.search_image_representation_by_file_uri("https://", page_size=10)
 all_representations += image_representations_searched
-while len(image_representations_searched) < 10:
+while len(image_representations_searched) == 10:
     image_representations_searched = client.search_image_representation_by_file_uri(
         "https://",
         start_uuid=image_representations_searched[-1].uuid,
