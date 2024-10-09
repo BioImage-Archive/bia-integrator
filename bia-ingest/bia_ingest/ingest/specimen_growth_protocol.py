@@ -1,56 +1,61 @@
 import logging
 from typing import List, Any, Dict, Optional
-from .utils import (
-    dicts_to_api_models,
-    find_sections_recursive,
+
+
+from ..bia_object_creation_utils import (
     dict_to_uuid,
+    dicts_to_api_models,
     filter_model_dictionary,
-    log_model_creation_count,
 )
-from ..biostudies import (
-    Submission,
+
+from ..cli_logging import log_model_creation_count
+from .biostudies.submission_parsing_utils import (
+    find_sections_recursive,
     attributes_to_dict,
 )
-from bia_shared_datamodels import bia_data_model
+from .biostudies.api import (
+    Submission,
+)
 from ..persistence_strategy import PersistenceStrategy
+from bia_shared_datamodels import bia_data_model
 
 logger = logging.getLogger("__main__." + __name__)
 
 
-def get_specimen_imaging_preparation_protocol(
+def get_specimen_growth_protocol(
     submission: Submission,
     result_summary: dict,
     persister: Optional[PersistenceStrategy] = None,
-) -> List[bia_data_model.SpecimenImagingPreparationProtocol]:
-    specimen_preparation_protocol_model_dicts = (
-        extract_specimen_preparation_protocol_dicts(submission)
+) -> List[bia_data_model.SpecimenGrowthProtocol]:
+    specimen_growth_protocol_model_dicts = extract_specimen_growth_protocol_dicts(
+        submission
     )
-    specimen_preparation_protocols = dicts_to_api_models(
-        specimen_preparation_protocol_model_dicts,
-        bia_data_model.SpecimenImagingPreparationProtocol,
+    specimen_growth_protocols = dicts_to_api_models(
+        specimen_growth_protocol_model_dicts,
+        bia_data_model.SpecimenGrowthProtocol,
         result_summary[submission.accno],
     )
 
     log_model_creation_count(
-        bia_data_model.SpecimenImagingPreparationProtocol,
-        len(specimen_preparation_protocols),
+        bia_data_model.SpecimenGrowthProtocol,
+        len(specimen_growth_protocols),
         result_summary[submission.accno],
     )
 
-    if persister and specimen_preparation_protocols:
-        persister.persist(specimen_preparation_protocols)
+    if persister and specimen_growth_protocols:
+        persister.persist(specimen_growth_protocols)
 
-    return specimen_preparation_protocols
+    return specimen_growth_protocols
 
 
-def extract_specimen_preparation_protocol_dicts(
+def extract_specimen_growth_protocol_dicts(
     submission: Submission,
 ) -> List[Dict[str, Any]]:
     specimen_sections = find_sections_recursive(submission.section, ["Specimen"], [])
 
     key_mapping = [
         ("title_id", "Title", ""),
-        ("protocol_description", "Sample preparation protocol", ""),
+        ("protocol_description", "Growth protocol", ""),
     ]
 
     model_dicts = []
@@ -59,15 +64,12 @@ def extract_specimen_preparation_protocol_dicts(
 
         model_dict = {k: attr_dict.get(v, default) for k, v, default in key_mapping}
 
-        # Currently generates empty list as we need to change the submission template
-        model_dict["signal_channel_information"] = []
-
         model_dict["accno"] = section.__dict__.get("accno", "")
         model_dict["accession_id"] = submission.accno
-        model_dict["uuid"] = generate_specimen_imaging_preparation_uuid(model_dict)
+        model_dict["uuid"] = generate_specimen_growth_protocol_uuid(model_dict)
         model_dict["version"] = 0
         model_dict = filter_model_dictionary(
-            model_dict, bia_data_model.SpecimenImagingPreparationProtocol
+            model_dict, bia_data_model.SpecimenGrowthProtocol
         )
 
         model_dicts.append(model_dict)
@@ -75,7 +77,7 @@ def extract_specimen_preparation_protocol_dicts(
     return model_dicts
 
 
-def generate_specimen_imaging_preparation_uuid(protocol_dict: Dict[str, Any]) -> str:
+def generate_specimen_growth_protocol_uuid(protocol_dict: Dict[str, Any]) -> str:
     attributes_to_consider = [
         "accession_id",
         "accno",

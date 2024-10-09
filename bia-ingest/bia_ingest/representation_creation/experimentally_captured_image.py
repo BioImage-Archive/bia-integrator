@@ -2,16 +2,13 @@ import logging
 from uuid import UUID
 from typing import List, Dict, Any
 from pydantic import ValidationError
-from .utils import (
-    dict_to_uuid,
-    filter_model_dictionary,
-    merge_dicts,
-    log_model_creation_count,
-    log_failed_model_creation,
-)
-from ..biostudies import (
-    Submission,
-)
+
+from ..bia_object_creation_utils import filter_model_dictionary, dict_to_uuid
+
+from ..cli_logging import log_failed_model_creation, log_model_creation_count, ImageCreationResult
+
+from .utils import merge_dicts
+
 from bia_ingest.persistence_strategy import PersistenceStrategy
 
 from bia_shared_datamodels import bia_data_model
@@ -21,10 +18,9 @@ logger = logging.getLogger("__main__." + __name__)
 
 
 def get_experimentally_captured_image(
-    submission: Submission,
     dataset_uuid: UUID,
     file_references: List[bia_data_model.FileReference],
-    result_summary: dict,
+    result_summary: ImageCreationResult,
     persister: PersistenceStrategy,
 ) -> bia_data_model.ExperimentallyCapturedImage | None:
     """Get the ExperimentallyCapturedImage corresponding to the dataset/file_reference(s) combination"""
@@ -57,7 +53,7 @@ def get_experimentally_captured_image(
     except ValidationError:
         log_failed_model_creation(
             bia_data_model.ExperimentallyCapturedImage,
-            result_summary[submission.accno],
+            result_summary,
         )
         return
 
@@ -69,7 +65,7 @@ def get_experimentally_captured_image(
     log_model_creation_count(
         bia_data_model.ExperimentallyCapturedImage,
         1,
-        result_summary[submission.accno],
+        result_summary,
     )
     return experimentally_captured_image
 

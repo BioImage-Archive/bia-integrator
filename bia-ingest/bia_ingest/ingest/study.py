@@ -2,16 +2,21 @@ import logging
 from pydantic import ValidationError
 import re
 from typing import List, Any, Dict, Optional
-from .utils import (
-    get_generic_section_as_dict,
-    mattributes_to_dict,
-    dict_to_uuid,
-    find_sections_recursive,
-    log_failed_model_creation,
-)
-from ..biostudies import (
-    Submission,
+
+from .biostudies.submission_parsing_utils import (
     attributes_to_dict,
+    find_sections_recursive,
+    mattributes_to_dict,
+)
+
+from ..bia_object_creation_utils import dict_to_uuid
+
+from ..cli_logging import log_failed_model_creation
+from .generic_conversion_utils import (
+    get_generic_section_as_dict,
+)
+from .biostudies.api import (
+    Submission,
 )
 from ..persistence_strategy import PersistenceStrategy
 from bia_shared_datamodels import bia_data_model, semantic_models

@@ -1,16 +1,20 @@
 import logging
 from typing import List, Any, Dict, Optional
-from .utils import (
-    find_sections_recursive,
-    dicts_to_api_models,
+
+from ..bia_object_creation_utils import (
     dict_to_uuid,
+    dicts_to_api_models,
     filter_model_dictionary,
-    log_model_creation_count,
 )
-import bia_ingest.conversion.study as study_conversion
-from ..biostudies import (
-    Submission,
+
+from ..cli_logging import log_model_creation_count
+from .biostudies.submission_parsing_utils import (
+    find_sections_recursive,
     attributes_to_dict,
+)
+import bia_ingest.ingest.study as study_conversion
+from .biostudies.api import (
+    Submission,
 )
 from bia_shared_datamodels import bia_data_model
 from ..persistence_strategy import PersistenceStrategy

@@ -1,7 +1,7 @@
 from typer.testing import CliRunner
 from bia_ingest import cli
-from bia_ingest.conversion.utils import settings
-from bia_ingest import biostudies
+from bia_ingest.ingest.generic_conversion_utils import settings
+from bia_ingest.ingest.biostudies import api
 from . import utils
 from bia_shared_datamodels import bia_data_model
 import pytest
@@ -48,7 +48,7 @@ def test_cli_writes_expected_files(
 
     expected_objects_dict, n_expected_objects = expected_objects
 
-    def _load_submission(accession_id: str) -> biostudies.Submission:
+    def _load_submission(accession_id: str) -> api.Submission:
         return test_submission
 
     def _load_submission_table_info(accession_id: str):

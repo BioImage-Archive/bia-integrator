@@ -2,17 +2,16 @@
 
 from pathlib import Path
 from typing import List
+
+import bia_ingest.bia_object_creation_utils
 from . import utils
 import pytest
 from bia_shared_datamodels import bia_data_model
 from bia_ingest.persistence_strategy import DiskPersister
-from bia_ingest.conversion import (
+from bia_ingest.representation_creation import (
     image_representation,
 )
 
-experimentally_captured_image_uuid = utils.get_test_experimentally_captured_image()[
-    0
-].uuid
 test_file_reference = utils.get_test_file_reference(
     ["file_list_study_component_1.json"]
 )[0]
@@ -38,6 +37,10 @@ def attributes_for_uuid() -> List[str]:
 
 @pytest.fixture()
 def representation_dict_template() -> dict:
+    experimentally_captured_image_uuid = utils.get_test_experimentally_captured_image()[
+        0
+    ].uuid
+
     return {
         "image_format": "",
         # "use_type": to be added during test,
@@ -99,7 +102,7 @@ def test_create_representation_of_single_image(
     representation_location,
     representation_dict,
     test_submission,
-    result_summary,
+    image_creation_result_summary,
     monkeypatch,
     attributes_for_uuid,
     representation_dict_template,
@@ -109,7 +112,9 @@ def test_create_representation_of_single_image(
         accession_id=test_submission.accno, output_dir_base=str(tmp_path)
     )
     model_dict = representation_dict_template | representation_dict
-    model_dict["uuid"] = utils.dict_to_uuid(model_dict, attributes_for_uuid)
+    model_dict["uuid"] = bia_ingest.bia_object_creation_utils.dict_to_uuid(
+        model_dict, attributes_for_uuid
+    )
     expected = bia_data_model.ImageRepresentation.model_validate(model_dict)
 
     test_file_reference_uuids = [
@@ -138,12 +143,11 @@ def test_create_representation_of_single_image(
     #        return text
 
     created = image_representation.create_image_representation(
-        test_submission,
         test_file_reference_uuids,
         representation_use_type=representation_dict["use_type"],
         representation_location=representation_location,
         persister=disk_persister,
-        result_summary=result_summary,
+        result_summary=image_creation_result_summary,
     )
     assert created == expected
 

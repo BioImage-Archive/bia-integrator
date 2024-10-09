@@ -2,20 +2,20 @@ import typer
 from typing import List
 from enum import Enum
 from typing_extensions import Annotated
-from bia_ingest.biostudies import load_submission, load_submission_table_info
+from bia_ingest.ingest.biostudies.api import load_submission, load_submission_table_info
 from bia_ingest.config import settings, api_client
-from bia_ingest.conversion.study import get_study
-from bia_ingest.conversion.experimental_imaging_dataset import (
+from bia_ingest.ingest.study import get_study
+from bia_ingest.ingest.experimental_imaging_dataset import (
     get_experimental_imaging_dataset,
 )
-from bia_ingest.conversion.file_reference import get_file_reference_by_dataset
-from bia_ingest.conversion.specimen import get_specimen
-from bia_ingest.conversion.image_acquisition import get_image_acquisition
-from bia_ingest.conversion.image_annotation_dataset import (
+from bia_ingest.ingest.file_reference import get_file_reference_by_dataset
+from bia_ingest.ingest.specimen import get_specimen
+from bia_ingest.ingest.image_acquisition import get_image_acquisition
+from bia_ingest.ingest.image_annotation_dataset import (
     get_image_annotation_dataset,
 )
-from bia_ingest.conversion.annotation_method import get_annotation_method
-from bia_ingest.conversion.image_representation import (
+from bia_ingest.ingest.annotation_method import get_annotation_method
+from bia_ingest.representation_creation.image_representation import (
     create_image_representation,
 )
 from bia_ingest.persistence_strategy import (
@@ -27,7 +27,7 @@ from bia_shared_datamodels.semantic_models import ImageRepresentationUseType
 import logging
 from rich import print
 from rich.logging import RichHandler
-from .cli_logging import tabulate_errors, IngestionResult
+from .cli_logging import tabulate_ingestion_errors, IngestionResult, ImageCreationResult
 
 app = typer.Typer()
 
@@ -128,7 +128,7 @@ def ingest(
         logger.debug(f"COMPLETED: Ingest of: {accession_id}")
         print(f"[green]-------- Completed ingest of {accession_id} --------[/green]")
 
-    print(tabulate_errors(result_summary))
+    print(tabulate_ingestion_errors(result_summary))
 
 
 @representations_app.command(help="Create specified representations")
@@ -154,7 +154,6 @@ def create(
 
     result_summary = {}
 
-
     persister = persistence_strategy_factory(
         persistence_mode,
         output_dir_base=settings.bia_data_dir,
@@ -162,8 +161,7 @@ def create(
         api_client=api_client,
     )
 
-    submission = load_submission(accession_id)
-    result_summary = {accession_id: IngestionResult()}
+    result_summary = IngestionResult()
     for file_reference_uuid in file_reference_uuid_list:
         print(
             f"[blue]-------- Starting creation of image representations for file reference {file_reference_uuid} of {accession_id} --------[/blue]"
@@ -174,7 +172,6 @@ def create(
                 f"starting creation of {representation_use_type.value} for file reference {file_reference_uuid}"
             )
             image_representation = create_image_representation(
-                submission,
                 [
                     file_reference_uuid,
                 ],
@@ -188,10 +185,9 @@ def create(
                 message = f"WARNING: Could NOT create image representation {representation_use_type.value} for file reference {file_reference_uuid} of {accession_id}"
             logger.debug(message)
 
-    result_summary = result_summary[submission.accno]
     successes = ""
     errors = ""
-    for item_name in result_summary.__fields__:
+    for item_name in result_summary.model_fields:
         item_value = getattr(result_summary, item_name)
         if item_name.endswith("CreationCount") and item_value > 0:
             successes += f"{item_name}: {item_value}\n"
@@ -208,7 +204,9 @@ def determine_file_processing(
         process_files = True
     elif process_files_mode == ProcessFilelistMode.skip:
         process_files = False
-    elif process_files_mode == ProcessFilelistMode.ask and file_count > file_count_limit:
+    elif (
+        process_files_mode == ProcessFilelistMode.ask and file_count > file_count_limit
+    ):
         process_files = typer.confirm(
             f"The submission has {int(file_count):,} files, which is above the recommended limit of {int(file_count_limit):,}.\n Do you wish to attempt to process them?"
         )

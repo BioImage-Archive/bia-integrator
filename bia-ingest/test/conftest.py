@@ -3,9 +3,9 @@ from typing import Dict
 from pathlib import Path
 import json
 import pytest
-from bia_ingest.biostudies import Submission, SubmissionTable, requests
+from bia_ingest.ingest.biostudies.api import Submission, SubmissionTable, requests
 from .utils import accession_id
-from bia_ingest.cli_logging import IngestionResult
+from bia_ingest.cli_logging import IngestionResult, ImageCreationResult
 
 
 @pytest.fixture
@@ -31,9 +31,12 @@ def test_submission_table(base_path: Path) -> SubmissionTable:
 
 
 @pytest.fixture
-def result_summary():
+def ingestion_result_summary():
     return {accession_id: IngestionResult()}
 
+@pytest.fixture
+def image_creation_result_summary():
+    return ImageCreationResult()
 
 @pytest.fixture
 def mock_request_get(monkeypatch):
