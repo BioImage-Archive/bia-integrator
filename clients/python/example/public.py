@@ -19,7 +19,7 @@ all_representations += image_representations_searched
 while len(image_representations_searched) == 10:
     image_representations_searched = client.search_image_representation_by_file_uri(
         "https://",
-        start_uuid=image_representations_searched[-1].uuid,
+        start_from_uuid=image_representations_searched[-1].uuid,
         page_size=10
     )
     all_representations += image_representations_searched
