@@ -27,11 +27,18 @@ models_private: List[shared_data_models.DocumentMixin] = [
 
 
 def make_post_item(t: Type[shared_data_models.DocumentMixin]):
-    async def post_item(doc: t, db: Annotated[Repository, Depends(get_db)]) -> None:
+    async def post_item(
+        doc: Type[shared_data_models.DocumentMixin],
+        db: Annotated[Repository, Depends(get_db)],
+    ) -> None:
         if doc.version < 0:
             raise ValueError("Bad doc version")
 
         await db.persist_doc(doc)
+
+    # Setting the annotation for the client to generate correctly.
+    # Variable type annotations are currently not allowed in python typing spec, so setting it manually after creating the function.
+    post_item.__annotations__["doc"] = t
 
     return post_item
 

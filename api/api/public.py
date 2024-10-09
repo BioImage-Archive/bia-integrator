@@ -36,8 +36,12 @@ def make_get_item(t: Type[shared_data_models.DocumentMixin]):
     # @TODO: nicer wrapper?
     async def get_item(
         uuid: shared_data_models.UUID, db: Annotated[Repository, Depends(get_db)]
-    ) -> t:
+    ) -> Type[shared_data_models.DocumentMixin]:
         return await db.get_doc(uuid, t)
+
+    # Setting the annotation for the client to generate correctly.
+    # Variable type annotations are currently not allowed in python typing spec, so setting it manually after creating the function.
+    get_item.__annotations__["return"] = t
 
     return get_item
 
@@ -49,7 +53,7 @@ def make_reverse_link_handler(
 ):
     async def get_descendents(
         uuid: shared_data_models.UUID, db: Annotated[Repository, Depends(get_db)]
-    ) -> List[source_type]:
+    ) -> List[Type[shared_data_models.DocumentMixin]]:
         # Check target document actually exists (and is typed correctly - esp. important for union-typed links)
         #   see workaround_union_reference_types
         await db.get_doc(uuid, target_type)
@@ -59,6 +63,10 @@ def make_reverse_link_handler(
             link_attribute_value=uuid,
             source_type=source_type,
         )
+
+    # Setting the annotation for the client to generate correctly.
+    # Variable type annotations are currently not allowed in python typing spec, so setting it manually after creating the function.
+    get_descendents.__annotations__["return"] = List[source_type]
 
     return get_descendents
 
