@@ -22,5 +22,5 @@ class AuthResult(BIABaseModel):
 
 
 class Pagination(BIABaseModel):
-    start_uuid: Optional[UUID] = None
+    start_from_uuid: Optional[UUID] = None
     page_size: int = Field(ge=1)

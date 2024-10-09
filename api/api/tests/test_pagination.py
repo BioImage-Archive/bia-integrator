@@ -67,26 +67,26 @@ def test_bad_page_size_rejected(
     assert rsp.status_code == 422
 
 
-def test_page_excludes_start_uuid(
+def test_page_excludes_start_from_uuid(
     api_client: TestClient, existing_study: dict, datasets_many: List[dict]
 ):
     rsp = api_client.get(
         f"study/{existing_study['uuid']}/experimental_imaging_dataset",
-        params={"page_size": 2, "start_uuid": datasets_many[0]["uuid"]},
+        params={"page_size": 2, "start_from_uuid": datasets_many[0]["uuid"]},
     )
     assert rsp.status_code == 200
     assert rsp.json() == datasets_many[1:3]
 
 
-def test_start_uuid_untyped(
+def test_start_from_uuid_untyped(
     api_client: TestClient, existing_study: dict, datasets_many: List[dict]
 ):
     """
-    This just fixes behaviour - start_uuid in pagination isn't validated to be of the same type as the objects being paginated
+    This just fixes behaviour - start_from_uuid in pagination isn't validated to be of the same type as the objects being paginated
     """
     rsp = api_client.get(
         f"study/{existing_study['uuid']}/experimental_imaging_dataset",
-        params={"page_size": 100, "start_uuid": existing_study["uuid"]},
+        params={"page_size": 100, "start_from_uuid": existing_study["uuid"]},
     )
     assert rsp.status_code == 200
 
@@ -103,7 +103,7 @@ def test_paginate_full_result_list(
 
     rsp = api_client.get(
         f"study/{existing_study['uuid']}/experimental_imaging_dataset",
-        params={"page_size": 3, "start_uuid": first_page[-1]["uuid"]},
+        params={"page_size": 3, "start_from_uuid": first_page[-1]["uuid"]},
     )
     assert rsp.status_code == 200
     second_page = rsp.json()

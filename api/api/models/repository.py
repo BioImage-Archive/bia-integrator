@@ -335,8 +335,8 @@ class Repository:
                 "Unsupported uuid filter for function that returns a list"
             )
 
-        if pagination.start_uuid:
-            query["uuid"] = {"$gt": pagination.start_uuid}
+        if pagination.start_from_uuid:
+            query["uuid"] = {"$gt": pagination.start_from_uuid}
         else:
             # always keep a consistent order for the first page
             query["uuid"] = {"$gt": shared_data_models.UUID(int=0)}

@@ -16,7 +16,7 @@ async def searchStudyByAccession(
     studies = await db.get_docs(
         {"accession_id": accession_id},
         shared_data_models.Study,
-        pagination=Pagination(start_uuid=None, page_size=1),
+        pagination=Pagination(start_from_uuid=None, page_size=1),
     )
 
     if not studies:
