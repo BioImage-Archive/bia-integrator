@@ -16,7 +16,10 @@ def test_get_created_study(api_client: TestClient, existing_study):
 def test_get_study_datasets(
     api_client: TestClient, existing_study, existing_experimental_imaging_dataset
 ):
-    rsp = api_client.get(f"study/{existing_study['uuid']}/experimental_imaging_dataset")
+    rsp = api_client.get(
+        f"study/{existing_study['uuid']}/experimental_imaging_dataset",
+        params={"page_size": 100},
+    )
     assert rsp.status_code == 200, rsp.json()
     assert rsp.json() == [existing_experimental_imaging_dataset]
 
@@ -24,7 +27,10 @@ def test_get_study_datasets(
 def test_get_biosample_specimens(
     api_client: TestClient, existing_biosample, existing_specimen
 ):
-    rsp = api_client.get(f"bio_sample/{existing_biosample['uuid']}/specimen")
+    rsp = api_client.get(
+        f"bio_sample/{existing_biosample['uuid']}/specimen",
+        params={"page_size": 100},
+    )
     assert rsp.status_code == 200, rsp.json()
     assert rsp.json() == [existing_specimen]
 
@@ -129,7 +135,8 @@ def test_optional_reverse_link(
     api_client: TestClient, existing_image_representation: dict
 ):
     rsp = api_client.get(
-        f"file_reference/{existing_image_representation['original_file_reference_uuid'][0]}/image_representation"
+        f"file_reference/{existing_image_representation['original_file_reference_uuid'][0]}/image_representation",
+        params={"page_size": 100},
     )
     assert rsp.status_code == 200, rsp.json()
     assert rsp.json() == [existing_image_representation]
@@ -177,6 +184,7 @@ def test_cannot_resolve_reverse_union_link_from_mistyped_parent(
     rsp = api_client.get(
         # existing_experimentally_captured_image exists but is not a derived_image
         f"derived_image/{existing_experimentally_captured_image['uuid']}/annotation_file_reference",
+        params={"page_size": 100},
     )
     assert rsp.status_code == 404
 
@@ -260,6 +268,7 @@ def test_db_timeout():
     from pymongo.errors import ExecutionTimeout, NetworkTimeout
     import asyncio
     from api.models.repository import Repository
+    from api.models.api import Pagination
 
     loop = asyncio.get_event_loop()
 
@@ -267,7 +276,7 @@ def test_db_timeout():
         db = Repository()
         db.configure(db_timeout_ms=5)
 
-        await db._get_docs_raw()
+        await db._get_docs_raw(pagination=Pagination(page_size=100))
 
     try:
         loop.run_until_complete(large_query())
@@ -280,7 +289,8 @@ def test_db_timeout():
 
 
 def test_get_studies(api_client: TestClient, existing_study: dict):
-    rsp = api_client.get("study")
+    # @TODO: page_size makes this test fail eventually!
+    rsp = api_client.get("study", params={"page_size": 100000})
     assert rsp.status_code == 200
 
     studies = rsp.json()

@@ -16,7 +16,7 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field, StrictStr, field_validator
+from pydantic import Field, StrictInt, StrictStr, field_validator
 from typing import Any, List, Optional
 from typing_extensions import Annotated
 from bia_integrator_api.models.annotation_file_reference import AnnotationFileReference
@@ -316,6 +316,8 @@ class PrivateApi:
     def get_annotation_file_reference_in_annotation_method(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -334,6 +336,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -358,6 +364,8 @@ class PrivateApi:
 
         _param = self._get_annotation_file_reference_in_annotation_method_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -383,6 +391,8 @@ class PrivateApi:
     def get_annotation_file_reference_in_annotation_method_with_http_info(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -401,6 +411,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -425,6 +439,8 @@ class PrivateApi:
 
         _param = self._get_annotation_file_reference_in_annotation_method_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -450,6 +466,8 @@ class PrivateApi:
     def get_annotation_file_reference_in_annotation_method_without_preload_content(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -468,6 +486,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -492,6 +514,8 @@ class PrivateApi:
 
         _param = self._get_annotation_file_reference_in_annotation_method_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -512,6 +536,8 @@ class PrivateApi:
     def _get_annotation_file_reference_in_annotation_method_serialize(
         self,
         uuid,
+        page_size,
+        start_from_uuid,
         _request_auth,
         _content_type,
         _headers,
@@ -534,6 +560,14 @@ class PrivateApi:
         if uuid is not None:
             _path_params['uuid'] = uuid
         # process the query parameters
+        if start_from_uuid is not None:
+            
+            _query_params.append(('start_from_uuid', start_from_uuid))
+            
+        if page_size is not None:
+            
+            _query_params.append(('page_size', page_size))
+            
         # process the header parameters
         # process the form parameters
         # process the body parameter
@@ -574,6 +608,8 @@ class PrivateApi:
     def get_annotation_file_reference_in_derived_image(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -592,6 +628,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -616,6 +656,8 @@ class PrivateApi:
 
         _param = self._get_annotation_file_reference_in_derived_image_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -641,6 +683,8 @@ class PrivateApi:
     def get_annotation_file_reference_in_derived_image_with_http_info(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -659,6 +703,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -683,6 +731,8 @@ class PrivateApi:
 
         _param = self._get_annotation_file_reference_in_derived_image_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -708,6 +758,8 @@ class PrivateApi:
     def get_annotation_file_reference_in_derived_image_without_preload_content(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -726,6 +778,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -750,6 +806,8 @@ class PrivateApi:
 
         _param = self._get_annotation_file_reference_in_derived_image_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -770,6 +828,8 @@ class PrivateApi:
     def _get_annotation_file_reference_in_derived_image_serialize(
         self,
         uuid,
+        page_size,
+        start_from_uuid,
         _request_auth,
         _content_type,
         _headers,
@@ -792,6 +852,14 @@ class PrivateApi:
         if uuid is not None:
             _path_params['uuid'] = uuid
         # process the query parameters
+        if start_from_uuid is not None:
+            
+            _query_params.append(('start_from_uuid', start_from_uuid))
+            
+        if page_size is not None:
+            
+            _query_params.append(('page_size', page_size))
+            
         # process the header parameters
         # process the form parameters
         # process the body parameter
@@ -832,6 +900,8 @@ class PrivateApi:
     def get_annotation_file_reference_in_experimental_imaging_dataset(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -850,6 +920,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -874,6 +948,8 @@ class PrivateApi:
 
         _param = self._get_annotation_file_reference_in_experimental_imaging_dataset_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -899,6 +975,8 @@ class PrivateApi:
     def get_annotation_file_reference_in_experimental_imaging_dataset_with_http_info(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -917,6 +995,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -941,6 +1023,8 @@ class PrivateApi:
 
         _param = self._get_annotation_file_reference_in_experimental_imaging_dataset_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -966,6 +1050,8 @@ class PrivateApi:
     def get_annotation_file_reference_in_experimental_imaging_dataset_without_preload_content(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -984,6 +1070,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1008,6 +1098,8 @@ class PrivateApi:
 
         _param = self._get_annotation_file_reference_in_experimental_imaging_dataset_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1028,6 +1120,8 @@ class PrivateApi:
     def _get_annotation_file_reference_in_experimental_imaging_dataset_serialize(
         self,
         uuid,
+        page_size,
+        start_from_uuid,
         _request_auth,
         _content_type,
         _headers,
@@ -1050,6 +1144,14 @@ class PrivateApi:
         if uuid is not None:
             _path_params['uuid'] = uuid
         # process the query parameters
+        if start_from_uuid is not None:
+            
+            _query_params.append(('start_from_uuid', start_from_uuid))
+            
+        if page_size is not None:
+            
+            _query_params.append(('page_size', page_size))
+            
         # process the header parameters
         # process the form parameters
         # process the body parameter
@@ -1090,6 +1192,8 @@ class PrivateApi:
     def get_annotation_file_reference_in_experimentally_captured_image(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1108,6 +1212,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1132,6 +1240,8 @@ class PrivateApi:
 
         _param = self._get_annotation_file_reference_in_experimentally_captured_image_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1157,6 +1267,8 @@ class PrivateApi:
     def get_annotation_file_reference_in_experimentally_captured_image_with_http_info(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1175,6 +1287,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1199,6 +1315,8 @@ class PrivateApi:
 
         _param = self._get_annotation_file_reference_in_experimentally_captured_image_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1224,6 +1342,8 @@ class PrivateApi:
     def get_annotation_file_reference_in_experimentally_captured_image_without_preload_content(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1242,6 +1362,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1266,6 +1390,8 @@ class PrivateApi:
 
         _param = self._get_annotation_file_reference_in_experimentally_captured_image_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1286,6 +1412,8 @@ class PrivateApi:
     def _get_annotation_file_reference_in_experimentally_captured_image_serialize(
         self,
         uuid,
+        page_size,
+        start_from_uuid,
         _request_auth,
         _content_type,
         _headers,
@@ -1308,6 +1436,14 @@ class PrivateApi:
         if uuid is not None:
             _path_params['uuid'] = uuid
         # process the query parameters
+        if start_from_uuid is not None:
+            
+            _query_params.append(('start_from_uuid', start_from_uuid))
+            
+        if page_size is not None:
+            
+            _query_params.append(('page_size', page_size))
+            
         # process the header parameters
         # process the form parameters
         # process the body parameter
@@ -1348,6 +1484,8 @@ class PrivateApi:
     def get_annotation_file_reference_in_image_annotation_dataset(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1366,6 +1504,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1390,6 +1532,8 @@ class PrivateApi:
 
         _param = self._get_annotation_file_reference_in_image_annotation_dataset_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1415,6 +1559,8 @@ class PrivateApi:
     def get_annotation_file_reference_in_image_annotation_dataset_with_http_info(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1433,6 +1579,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1457,6 +1607,8 @@ class PrivateApi:
 
         _param = self._get_annotation_file_reference_in_image_annotation_dataset_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1482,6 +1634,8 @@ class PrivateApi:
     def get_annotation_file_reference_in_image_annotation_dataset_without_preload_content(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1500,6 +1654,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1524,6 +1682,8 @@ class PrivateApi:
 
         _param = self._get_annotation_file_reference_in_image_annotation_dataset_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1544,6 +1704,8 @@ class PrivateApi:
     def _get_annotation_file_reference_in_image_annotation_dataset_serialize(
         self,
         uuid,
+        page_size,
+        start_from_uuid,
         _request_auth,
         _content_type,
         _headers,
@@ -1566,6 +1728,14 @@ class PrivateApi:
         if uuid is not None:
             _path_params['uuid'] = uuid
         # process the query parameters
+        if start_from_uuid is not None:
+            
+            _query_params.append(('start_from_uuid', start_from_uuid))
+            
+        if page_size is not None:
+            
+            _query_params.append(('page_size', page_size))
+            
         # process the header parameters
         # process the form parameters
         # process the body parameter
@@ -2380,6 +2550,8 @@ class PrivateApi:
     def get_derived_image_in_annotation_method(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2398,6 +2570,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2422,6 +2598,8 @@ class PrivateApi:
 
         _param = self._get_derived_image_in_annotation_method_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2447,6 +2625,8 @@ class PrivateApi:
     def get_derived_image_in_annotation_method_with_http_info(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2465,6 +2645,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2489,6 +2673,8 @@ class PrivateApi:
 
         _param = self._get_derived_image_in_annotation_method_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2514,6 +2700,8 @@ class PrivateApi:
     def get_derived_image_in_annotation_method_without_preload_content(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2532,6 +2720,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2556,6 +2748,8 @@ class PrivateApi:
 
         _param = self._get_derived_image_in_annotation_method_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2576,6 +2770,8 @@ class PrivateApi:
     def _get_derived_image_in_annotation_method_serialize(
         self,
         uuid,
+        page_size,
+        start_from_uuid,
         _request_auth,
         _content_type,
         _headers,
@@ -2598,6 +2794,14 @@ class PrivateApi:
         if uuid is not None:
             _path_params['uuid'] = uuid
         # process the query parameters
+        if start_from_uuid is not None:
+            
+            _query_params.append(('start_from_uuid', start_from_uuid))
+            
+        if page_size is not None:
+            
+            _query_params.append(('page_size', page_size))
+            
         # process the header parameters
         # process the form parameters
         # process the body parameter
@@ -2638,6 +2842,8 @@ class PrivateApi:
     def get_derived_image_in_derived_image(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2656,6 +2862,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2680,6 +2890,8 @@ class PrivateApi:
 
         _param = self._get_derived_image_in_derived_image_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2705,6 +2917,8 @@ class PrivateApi:
     def get_derived_image_in_derived_image_with_http_info(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2723,6 +2937,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2747,6 +2965,8 @@ class PrivateApi:
 
         _param = self._get_derived_image_in_derived_image_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2772,6 +2992,8 @@ class PrivateApi:
     def get_derived_image_in_derived_image_without_preload_content(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2790,6 +3012,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2814,6 +3040,8 @@ class PrivateApi:
 
         _param = self._get_derived_image_in_derived_image_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2834,6 +3062,8 @@ class PrivateApi:
     def _get_derived_image_in_derived_image_serialize(
         self,
         uuid,
+        page_size,
+        start_from_uuid,
         _request_auth,
         _content_type,
         _headers,
@@ -2856,6 +3086,14 @@ class PrivateApi:
         if uuid is not None:
             _path_params['uuid'] = uuid
         # process the query parameters
+        if start_from_uuid is not None:
+            
+            _query_params.append(('start_from_uuid', start_from_uuid))
+            
+        if page_size is not None:
+            
+            _query_params.append(('page_size', page_size))
+            
         # process the header parameters
         # process the form parameters
         # process the body parameter
@@ -2896,6 +3134,8 @@ class PrivateApi:
     def get_derived_image_in_experimentally_captured_image(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2914,6 +3154,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2938,6 +3182,8 @@ class PrivateApi:
 
         _param = self._get_derived_image_in_experimentally_captured_image_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2963,6 +3209,8 @@ class PrivateApi:
     def get_derived_image_in_experimentally_captured_image_with_http_info(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2981,6 +3229,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3005,6 +3257,8 @@ class PrivateApi:
 
         _param = self._get_derived_image_in_experimentally_captured_image_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3030,6 +3284,8 @@ class PrivateApi:
     def get_derived_image_in_experimentally_captured_image_without_preload_content(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3048,6 +3304,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3072,6 +3332,8 @@ class PrivateApi:
 
         _param = self._get_derived_image_in_experimentally_captured_image_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3092,6 +3354,8 @@ class PrivateApi:
     def _get_derived_image_in_experimentally_captured_image_serialize(
         self,
         uuid,
+        page_size,
+        start_from_uuid,
         _request_auth,
         _content_type,
         _headers,
@@ -3114,6 +3378,14 @@ class PrivateApi:
         if uuid is not None:
             _path_params['uuid'] = uuid
         # process the query parameters
+        if start_from_uuid is not None:
+            
+            _query_params.append(('start_from_uuid', start_from_uuid))
+            
+        if page_size is not None:
+            
+            _query_params.append(('page_size', page_size))
+            
         # process the header parameters
         # process the form parameters
         # process the body parameter
@@ -3154,6 +3426,8 @@ class PrivateApi:
     def get_derived_image_in_image_annotation_dataset(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3172,6 +3446,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3196,6 +3474,8 @@ class PrivateApi:
 
         _param = self._get_derived_image_in_image_annotation_dataset_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3221,6 +3501,8 @@ class PrivateApi:
     def get_derived_image_in_image_annotation_dataset_with_http_info(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3239,6 +3521,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3263,6 +3549,8 @@ class PrivateApi:
 
         _param = self._get_derived_image_in_image_annotation_dataset_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3288,6 +3576,8 @@ class PrivateApi:
     def get_derived_image_in_image_annotation_dataset_without_preload_content(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3306,6 +3596,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3330,6 +3624,8 @@ class PrivateApi:
 
         _param = self._get_derived_image_in_image_annotation_dataset_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3350,6 +3646,8 @@ class PrivateApi:
     def _get_derived_image_in_image_annotation_dataset_serialize(
         self,
         uuid,
+        page_size,
+        start_from_uuid,
         _request_auth,
         _content_type,
         _headers,
@@ -3372,6 +3670,14 @@ class PrivateApi:
         if uuid is not None:
             _path_params['uuid'] = uuid
         # process the query parameters
+        if start_from_uuid is not None:
+            
+            _query_params.append(('start_from_uuid', start_from_uuid))
+            
+        if page_size is not None:
+            
+            _query_params.append(('page_size', page_size))
+            
         # process the header parameters
         # process the form parameters
         # process the body parameter
@@ -3670,6 +3976,8 @@ class PrivateApi:
     def get_experimental_imaging_dataset_in_study(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3688,6 +3996,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3712,6 +4024,8 @@ class PrivateApi:
 
         _param = self._get_experimental_imaging_dataset_in_study_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3737,6 +4051,8 @@ class PrivateApi:
     def get_experimental_imaging_dataset_in_study_with_http_info(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3755,6 +4071,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3779,6 +4099,8 @@ class PrivateApi:
 
         _param = self._get_experimental_imaging_dataset_in_study_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3804,6 +4126,8 @@ class PrivateApi:
     def get_experimental_imaging_dataset_in_study_without_preload_content(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3822,6 +4146,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3846,6 +4174,8 @@ class PrivateApi:
 
         _param = self._get_experimental_imaging_dataset_in_study_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3866,6 +4196,8 @@ class PrivateApi:
     def _get_experimental_imaging_dataset_in_study_serialize(
         self,
         uuid,
+        page_size,
+        start_from_uuid,
         _request_auth,
         _content_type,
         _headers,
@@ -3888,6 +4220,14 @@ class PrivateApi:
         if uuid is not None:
             _path_params['uuid'] = uuid
         # process the query parameters
+        if start_from_uuid is not None:
+            
+            _query_params.append(('start_from_uuid', start_from_uuid))
+            
+        if page_size is not None:
+            
+            _query_params.append(('page_size', page_size))
+            
         # process the header parameters
         # process the form parameters
         # process the body parameter
@@ -4186,6 +4526,8 @@ class PrivateApi:
     def get_experimentally_captured_image_in_experimental_imaging_dataset(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4204,6 +4546,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4228,6 +4574,8 @@ class PrivateApi:
 
         _param = self._get_experimentally_captured_image_in_experimental_imaging_dataset_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4253,6 +4601,8 @@ class PrivateApi:
     def get_experimentally_captured_image_in_experimental_imaging_dataset_with_http_info(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4271,6 +4621,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4295,6 +4649,8 @@ class PrivateApi:
 
         _param = self._get_experimentally_captured_image_in_experimental_imaging_dataset_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4320,6 +4676,8 @@ class PrivateApi:
     def get_experimentally_captured_image_in_experimental_imaging_dataset_without_preload_content(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4338,6 +4696,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4362,6 +4724,8 @@ class PrivateApi:
 
         _param = self._get_experimentally_captured_image_in_experimental_imaging_dataset_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4382,6 +4746,8 @@ class PrivateApi:
     def _get_experimentally_captured_image_in_experimental_imaging_dataset_serialize(
         self,
         uuid,
+        page_size,
+        start_from_uuid,
         _request_auth,
         _content_type,
         _headers,
@@ -4404,6 +4770,14 @@ class PrivateApi:
         if uuid is not None:
             _path_params['uuid'] = uuid
         # process the query parameters
+        if start_from_uuid is not None:
+            
+            _query_params.append(('start_from_uuid', start_from_uuid))
+            
+        if page_size is not None:
+            
+            _query_params.append(('page_size', page_size))
+            
         # process the header parameters
         # process the form parameters
         # process the body parameter
@@ -4444,6 +4818,8 @@ class PrivateApi:
     def get_experimentally_captured_image_in_image_acquisition(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4462,6 +4838,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4486,6 +4866,8 @@ class PrivateApi:
 
         _param = self._get_experimentally_captured_image_in_image_acquisition_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4511,6 +4893,8 @@ class PrivateApi:
     def get_experimentally_captured_image_in_image_acquisition_with_http_info(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4529,6 +4913,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4553,6 +4941,8 @@ class PrivateApi:
 
         _param = self._get_experimentally_captured_image_in_image_acquisition_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4578,6 +4968,8 @@ class PrivateApi:
     def get_experimentally_captured_image_in_image_acquisition_without_preload_content(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4596,6 +4988,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4620,6 +5016,8 @@ class PrivateApi:
 
         _param = self._get_experimentally_captured_image_in_image_acquisition_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4640,6 +5038,8 @@ class PrivateApi:
     def _get_experimentally_captured_image_in_image_acquisition_serialize(
         self,
         uuid,
+        page_size,
+        start_from_uuid,
         _request_auth,
         _content_type,
         _headers,
@@ -4662,6 +5062,14 @@ class PrivateApi:
         if uuid is not None:
             _path_params['uuid'] = uuid
         # process the query parameters
+        if start_from_uuid is not None:
+            
+            _query_params.append(('start_from_uuid', start_from_uuid))
+            
+        if page_size is not None:
+            
+            _query_params.append(('page_size', page_size))
+            
         # process the header parameters
         # process the form parameters
         # process the body parameter
@@ -4702,6 +5110,8 @@ class PrivateApi:
     def get_experimentally_captured_image_in_specimen(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4720,6 +5130,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4744,6 +5158,8 @@ class PrivateApi:
 
         _param = self._get_experimentally_captured_image_in_specimen_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4769,6 +5185,8 @@ class PrivateApi:
     def get_experimentally_captured_image_in_specimen_with_http_info(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4787,6 +5205,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4811,6 +5233,8 @@ class PrivateApi:
 
         _param = self._get_experimentally_captured_image_in_specimen_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4836,6 +5260,8 @@ class PrivateApi:
     def get_experimentally_captured_image_in_specimen_without_preload_content(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4854,6 +5280,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4878,6 +5308,8 @@ class PrivateApi:
 
         _param = self._get_experimentally_captured_image_in_specimen_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4898,6 +5330,8 @@ class PrivateApi:
     def _get_experimentally_captured_image_in_specimen_serialize(
         self,
         uuid,
+        page_size,
+        start_from_uuid,
         _request_auth,
         _content_type,
         _headers,
@@ -4920,6 +5354,14 @@ class PrivateApi:
         if uuid is not None:
             _path_params['uuid'] = uuid
         # process the query parameters
+        if start_from_uuid is not None:
+            
+            _query_params.append(('start_from_uuid', start_from_uuid))
+            
+        if page_size is not None:
+            
+            _query_params.append(('page_size', page_size))
+            
         # process the header parameters
         # process the form parameters
         # process the body parameter
@@ -5218,6 +5660,8 @@ class PrivateApi:
     def get_file_reference_in_experimental_imaging_dataset(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5236,6 +5680,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -5260,6 +5708,8 @@ class PrivateApi:
 
         _param = self._get_file_reference_in_experimental_imaging_dataset_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -5285,6 +5735,8 @@ class PrivateApi:
     def get_file_reference_in_experimental_imaging_dataset_with_http_info(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5303,6 +5755,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -5327,6 +5783,8 @@ class PrivateApi:
 
         _param = self._get_file_reference_in_experimental_imaging_dataset_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -5352,6 +5810,8 @@ class PrivateApi:
     def get_file_reference_in_experimental_imaging_dataset_without_preload_content(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5370,6 +5830,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -5394,6 +5858,8 @@ class PrivateApi:
 
         _param = self._get_file_reference_in_experimental_imaging_dataset_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -5414,6 +5880,8 @@ class PrivateApi:
     def _get_file_reference_in_experimental_imaging_dataset_serialize(
         self,
         uuid,
+        page_size,
+        start_from_uuid,
         _request_auth,
         _content_type,
         _headers,
@@ -5436,6 +5904,14 @@ class PrivateApi:
         if uuid is not None:
             _path_params['uuid'] = uuid
         # process the query parameters
+        if start_from_uuid is not None:
+            
+            _query_params.append(('start_from_uuid', start_from_uuid))
+            
+        if page_size is not None:
+            
+            _query_params.append(('page_size', page_size))
+            
         # process the header parameters
         # process the form parameters
         # process the body parameter
@@ -5476,6 +5952,8 @@ class PrivateApi:
     def get_file_reference_in_image_annotation_dataset(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5494,6 +5972,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -5518,6 +6000,8 @@ class PrivateApi:
 
         _param = self._get_file_reference_in_image_annotation_dataset_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -5543,6 +6027,8 @@ class PrivateApi:
     def get_file_reference_in_image_annotation_dataset_with_http_info(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5561,6 +6047,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -5585,6 +6075,8 @@ class PrivateApi:
 
         _param = self._get_file_reference_in_image_annotation_dataset_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -5610,6 +6102,8 @@ class PrivateApi:
     def get_file_reference_in_image_annotation_dataset_without_preload_content(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5628,6 +6122,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -5652,6 +6150,8 @@ class PrivateApi:
 
         _param = self._get_file_reference_in_image_annotation_dataset_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -5672,6 +6172,8 @@ class PrivateApi:
     def _get_file_reference_in_image_annotation_dataset_serialize(
         self,
         uuid,
+        page_size,
+        start_from_uuid,
         _request_auth,
         _content_type,
         _headers,
@@ -5694,6 +6196,14 @@ class PrivateApi:
         if uuid is not None:
             _path_params['uuid'] = uuid
         # process the query parameters
+        if start_from_uuid is not None:
+            
+            _query_params.append(('start_from_uuid', start_from_uuid))
+            
+        if page_size is not None:
+            
+            _query_params.append(('page_size', page_size))
+            
         # process the header parameters
         # process the form parameters
         # process the body parameter
@@ -6250,6 +6760,8 @@ class PrivateApi:
     def get_image_annotation_dataset_in_study(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -6268,6 +6780,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -6292,6 +6808,8 @@ class PrivateApi:
 
         _param = self._get_image_annotation_dataset_in_study_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -6317,6 +6835,8 @@ class PrivateApi:
     def get_image_annotation_dataset_in_study_with_http_info(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -6335,6 +6855,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -6359,6 +6883,8 @@ class PrivateApi:
 
         _param = self._get_image_annotation_dataset_in_study_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -6384,6 +6910,8 @@ class PrivateApi:
     def get_image_annotation_dataset_in_study_without_preload_content(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -6402,6 +6930,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -6426,6 +6958,8 @@ class PrivateApi:
 
         _param = self._get_image_annotation_dataset_in_study_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -6446,6 +6980,8 @@ class PrivateApi:
     def _get_image_annotation_dataset_in_study_serialize(
         self,
         uuid,
+        page_size,
+        start_from_uuid,
         _request_auth,
         _content_type,
         _headers,
@@ -6468,6 +7004,14 @@ class PrivateApi:
         if uuid is not None:
             _path_params['uuid'] = uuid
         # process the query parameters
+        if start_from_uuid is not None:
+            
+            _query_params.append(('start_from_uuid', start_from_uuid))
+            
+        if page_size is not None:
+            
+            _query_params.append(('page_size', page_size))
+            
         # process the header parameters
         # process the form parameters
         # process the body parameter
@@ -6766,6 +7310,8 @@ class PrivateApi:
     def get_image_representation_in_derived_image(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -6784,6 +7330,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -6808,6 +7358,8 @@ class PrivateApi:
 
         _param = self._get_image_representation_in_derived_image_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -6833,6 +7385,8 @@ class PrivateApi:
     def get_image_representation_in_derived_image_with_http_info(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -6851,6 +7405,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -6875,6 +7433,8 @@ class PrivateApi:
 
         _param = self._get_image_representation_in_derived_image_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -6900,6 +7460,8 @@ class PrivateApi:
     def get_image_representation_in_derived_image_without_preload_content(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -6918,6 +7480,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -6942,6 +7508,8 @@ class PrivateApi:
 
         _param = self._get_image_representation_in_derived_image_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -6962,6 +7530,8 @@ class PrivateApi:
     def _get_image_representation_in_derived_image_serialize(
         self,
         uuid,
+        page_size,
+        start_from_uuid,
         _request_auth,
         _content_type,
         _headers,
@@ -6984,6 +7554,14 @@ class PrivateApi:
         if uuid is not None:
             _path_params['uuid'] = uuid
         # process the query parameters
+        if start_from_uuid is not None:
+            
+            _query_params.append(('start_from_uuid', start_from_uuid))
+            
+        if page_size is not None:
+            
+            _query_params.append(('page_size', page_size))
+            
         # process the header parameters
         # process the form parameters
         # process the body parameter
@@ -7024,6 +7602,8 @@ class PrivateApi:
     def get_image_representation_in_experimentally_captured_image(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -7042,6 +7622,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -7066,6 +7650,8 @@ class PrivateApi:
 
         _param = self._get_image_representation_in_experimentally_captured_image_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -7091,6 +7677,8 @@ class PrivateApi:
     def get_image_representation_in_experimentally_captured_image_with_http_info(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -7109,6 +7697,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -7133,6 +7725,8 @@ class PrivateApi:
 
         _param = self._get_image_representation_in_experimentally_captured_image_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -7158,6 +7752,8 @@ class PrivateApi:
     def get_image_representation_in_experimentally_captured_image_without_preload_content(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -7176,6 +7772,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -7200,6 +7800,8 @@ class PrivateApi:
 
         _param = self._get_image_representation_in_experimentally_captured_image_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -7220,6 +7822,8 @@ class PrivateApi:
     def _get_image_representation_in_experimentally_captured_image_serialize(
         self,
         uuid,
+        page_size,
+        start_from_uuid,
         _request_auth,
         _content_type,
         _headers,
@@ -7242,6 +7846,14 @@ class PrivateApi:
         if uuid is not None:
             _path_params['uuid'] = uuid
         # process the query parameters
+        if start_from_uuid is not None:
+            
+            _query_params.append(('start_from_uuid', start_from_uuid))
+            
+        if page_size is not None:
+            
+            _query_params.append(('page_size', page_size))
+            
         # process the header parameters
         # process the form parameters
         # process the body parameter
@@ -7282,6 +7894,8 @@ class PrivateApi:
     def get_image_representation_in_file_reference(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -7300,6 +7914,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -7324,6 +7942,8 @@ class PrivateApi:
 
         _param = self._get_image_representation_in_file_reference_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -7349,6 +7969,8 @@ class PrivateApi:
     def get_image_representation_in_file_reference_with_http_info(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -7367,6 +7989,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -7391,6 +8017,8 @@ class PrivateApi:
 
         _param = self._get_image_representation_in_file_reference_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -7416,6 +8044,8 @@ class PrivateApi:
     def get_image_representation_in_file_reference_without_preload_content(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -7434,6 +8064,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -7458,6 +8092,8 @@ class PrivateApi:
 
         _param = self._get_image_representation_in_file_reference_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -7478,6 +8114,8 @@ class PrivateApi:
     def _get_image_representation_in_file_reference_serialize(
         self,
         uuid,
+        page_size,
+        start_from_uuid,
         _request_auth,
         _content_type,
         _headers,
@@ -7500,6 +8138,14 @@ class PrivateApi:
         if uuid is not None:
             _path_params['uuid'] = uuid
         # process the query parameters
+        if start_from_uuid is not None:
+            
+            _query_params.append(('start_from_uuid', start_from_uuid))
+            
+        if page_size is not None:
+            
+            _query_params.append(('page_size', page_size))
+            
         # process the header parameters
         # process the form parameters
         # process the body parameter
@@ -8314,6 +8960,8 @@ class PrivateApi:
     def get_specimen_in_bio_sample(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -8332,6 +8980,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -8356,6 +9008,8 @@ class PrivateApi:
 
         _param = self._get_specimen_in_bio_sample_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -8381,6 +9035,8 @@ class PrivateApi:
     def get_specimen_in_bio_sample_with_http_info(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -8399,6 +9055,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -8423,6 +9083,8 @@ class PrivateApi:
 
         _param = self._get_specimen_in_bio_sample_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -8448,6 +9110,8 @@ class PrivateApi:
     def get_specimen_in_bio_sample_without_preload_content(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -8466,6 +9130,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -8490,6 +9158,8 @@ class PrivateApi:
 
         _param = self._get_specimen_in_bio_sample_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -8510,6 +9180,8 @@ class PrivateApi:
     def _get_specimen_in_bio_sample_serialize(
         self,
         uuid,
+        page_size,
+        start_from_uuid,
         _request_auth,
         _content_type,
         _headers,
@@ -8532,6 +9204,14 @@ class PrivateApi:
         if uuid is not None:
             _path_params['uuid'] = uuid
         # process the query parameters
+        if start_from_uuid is not None:
+            
+            _query_params.append(('start_from_uuid', start_from_uuid))
+            
+        if page_size is not None:
+            
+            _query_params.append(('page_size', page_size))
+            
         # process the header parameters
         # process the form parameters
         # process the body parameter
@@ -8572,6 +9252,8 @@ class PrivateApi:
     def get_specimen_in_specimen_growth_protocol(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -8590,6 +9272,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -8614,6 +9300,8 @@ class PrivateApi:
 
         _param = self._get_specimen_in_specimen_growth_protocol_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -8639,6 +9327,8 @@ class PrivateApi:
     def get_specimen_in_specimen_growth_protocol_with_http_info(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -8657,6 +9347,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -8681,6 +9375,8 @@ class PrivateApi:
 
         _param = self._get_specimen_in_specimen_growth_protocol_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -8706,6 +9402,8 @@ class PrivateApi:
     def get_specimen_in_specimen_growth_protocol_without_preload_content(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -8724,6 +9422,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -8748,6 +9450,8 @@ class PrivateApi:
 
         _param = self._get_specimen_in_specimen_growth_protocol_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -8768,6 +9472,8 @@ class PrivateApi:
     def _get_specimen_in_specimen_growth_protocol_serialize(
         self,
         uuid,
+        page_size,
+        start_from_uuid,
         _request_auth,
         _content_type,
         _headers,
@@ -8790,6 +9496,14 @@ class PrivateApi:
         if uuid is not None:
             _path_params['uuid'] = uuid
         # process the query parameters
+        if start_from_uuid is not None:
+            
+            _query_params.append(('start_from_uuid', start_from_uuid))
+            
+        if page_size is not None:
+            
+            _query_params.append(('page_size', page_size))
+            
         # process the header parameters
         # process the form parameters
         # process the body parameter
@@ -8830,6 +9544,8 @@ class PrivateApi:
     def get_specimen_in_specimen_imaging_preparation_protocol(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -8848,6 +9564,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -8872,6 +9592,8 @@ class PrivateApi:
 
         _param = self._get_specimen_in_specimen_imaging_preparation_protocol_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -8897,6 +9619,8 @@ class PrivateApi:
     def get_specimen_in_specimen_imaging_preparation_protocol_with_http_info(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -8915,6 +9639,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -8939,6 +9667,8 @@ class PrivateApi:
 
         _param = self._get_specimen_in_specimen_imaging_preparation_protocol_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -8964,6 +9694,8 @@ class PrivateApi:
     def get_specimen_in_specimen_imaging_preparation_protocol_without_preload_content(
         self,
         uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -8982,6 +9714,10 @@ class PrivateApi:
 
         :param uuid: (required)
         :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -9006,6 +9742,8 @@ class PrivateApi:
 
         _param = self._get_specimen_in_specimen_imaging_preparation_protocol_serialize(
             uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -9026,6 +9764,8 @@ class PrivateApi:
     def _get_specimen_in_specimen_imaging_preparation_protocol_serialize(
         self,
         uuid,
+        page_size,
+        start_from_uuid,
         _request_auth,
         _content_type,
         _headers,
@@ -9048,6 +9788,14 @@ class PrivateApi:
         if uuid is not None:
             _path_params['uuid'] = uuid
         # process the query parameters
+        if start_from_uuid is not None:
+            
+            _query_params.append(('start_from_uuid', start_from_uuid))
+            
+        if page_size is not None:
+            
+            _query_params.append(('page_size', page_size))
+            
         # process the header parameters
         # process the form parameters
         # process the body parameter
@@ -9087,6 +9835,8 @@ class PrivateApi:
     @validate_call
     def get_studies(
         self,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -9104,6 +9854,10 @@ class PrivateApi:
 
         @TODO: Filters?  @TODO: Not pluralizing clashes with getStudy(study_uuid) - non-pluralised convention?
 
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -9127,6 +9881,8 @@ class PrivateApi:
         """ # noqa: E501
 
         _param = self._get_studies_serialize(
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -9135,6 +9891,7 @@ class PrivateApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "List[Study]",
+            '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -9150,6 +9907,8 @@ class PrivateApi:
     @validate_call
     def get_studies_with_http_info(
         self,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -9167,6 +9926,10 @@ class PrivateApi:
 
         @TODO: Filters?  @TODO: Not pluralizing clashes with getStudy(study_uuid) - non-pluralised convention?
 
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -9190,6 +9953,8 @@ class PrivateApi:
         """ # noqa: E501
 
         _param = self._get_studies_serialize(
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -9198,6 +9963,7 @@ class PrivateApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "List[Study]",
+            '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -9213,6 +9979,8 @@ class PrivateApi:
     @validate_call
     def get_studies_without_preload_content(
         self,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -9230,6 +9998,10 @@ class PrivateApi:
 
         @TODO: Filters?  @TODO: Not pluralizing clashes with getStudy(study_uuid) - non-pluralised convention?
 
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -9253,6 +10025,8 @@ class PrivateApi:
         """ # noqa: E501
 
         _param = self._get_studies_serialize(
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -9261,6 +10035,7 @@ class PrivateApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "List[Study]",
+            '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
             *_param,
@@ -9271,6 +10046,8 @@ class PrivateApi:
 
     def _get_studies_serialize(
         self,
+        page_size,
+        start_from_uuid,
         _request_auth,
         _content_type,
         _headers,
@@ -9291,6 +10068,14 @@ class PrivateApi:
 
         # process the path parameters
         # process the query parameters
+        if start_from_uuid is not None:
+            
+            _query_params.append(('start_from_uuid', start_from_uuid))
+            
+        if page_size is not None:
+            
+            _query_params.append(('page_size', page_size))
+            
         # process the header parameters
         # process the form parameters
         # process the body parameter

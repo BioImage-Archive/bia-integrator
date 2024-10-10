@@ -45,7 +45,7 @@ def test_search_image_representation(
 
     rsp = api_client.get(
         "search/image_representation/file_uri_fragment",
-        params={"file_uri": search_fragment},
+        params={"file_uri": search_fragment, "page_size": 100},
     )
     assert rsp.status_code == 200
     assert rsp.json() == [img_rep]
@@ -68,7 +68,10 @@ def test_search_image_multiple_results(
 ):
     rsp = api_client.get(
         "search/image_representation/file_uri_fragment",
-        params={"file_uri": existing_image_representation["file_uri"][0]},
+        params={
+            "file_uri": existing_image_representation["file_uri"][0],
+            "page_size": 100,
+        },
     )
     assert rsp.status_code == 200
     assert len(rsp.json()) > 1

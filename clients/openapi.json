@@ -719,6 +719,32 @@
               "format": "uuid",
               "title": "Uuid"
             }
+          },
+          {
+            "name": "start_from_uuid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start From Uuid"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Page Size"
+            }
           }
         ],
         "responses": {
@@ -766,6 +792,32 @@
               "type": "string",
               "format": "uuid",
               "title": "Uuid"
+            }
+          },
+          {
+            "name": "start_from_uuid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start From Uuid"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Page Size"
             }
           }
         ],
@@ -815,6 +867,32 @@
               "format": "uuid",
               "title": "Uuid"
             }
+          },
+          {
+            "name": "start_from_uuid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start From Uuid"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Page Size"
+            }
           }
         ],
         "responses": {
@@ -862,6 +940,32 @@
               "type": "string",
               "format": "uuid",
               "title": "Uuid"
+            }
+          },
+          {
+            "name": "start_from_uuid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start From Uuid"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Page Size"
             }
           }
         ],
@@ -911,6 +1015,32 @@
               "format": "uuid",
               "title": "Uuid"
             }
+          },
+          {
+            "name": "start_from_uuid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start From Uuid"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Page Size"
+            }
           }
         ],
         "responses": {
@@ -958,6 +1088,32 @@
               "type": "string",
               "format": "uuid",
               "title": "Uuid"
+            }
+          },
+          {
+            "name": "start_from_uuid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start From Uuid"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Page Size"
             }
           }
         ],
@@ -1007,6 +1163,32 @@
               "format": "uuid",
               "title": "Uuid"
             }
+          },
+          {
+            "name": "start_from_uuid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start From Uuid"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Page Size"
+            }
           }
         ],
         "responses": {
@@ -1054,6 +1236,32 @@
               "type": "string",
               "format": "uuid",
               "title": "Uuid"
+            }
+          },
+          {
+            "name": "start_from_uuid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start From Uuid"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Page Size"
             }
           }
         ],
@@ -1103,6 +1311,32 @@
               "format": "uuid",
               "title": "Uuid"
             }
+          },
+          {
+            "name": "start_from_uuid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start From Uuid"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Page Size"
+            }
           }
         ],
         "responses": {
@@ -1150,6 +1384,32 @@
               "type": "string",
               "format": "uuid",
               "title": "Uuid"
+            }
+          },
+          {
+            "name": "start_from_uuid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start From Uuid"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Page Size"
             }
           }
         ],
@@ -1199,6 +1459,32 @@
               "format": "uuid",
               "title": "Uuid"
             }
+          },
+          {
+            "name": "start_from_uuid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start From Uuid"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Page Size"
+            }
           }
         ],
         "responses": {
@@ -1246,6 +1532,32 @@
               "type": "string",
               "format": "uuid",
               "title": "Uuid"
+            }
+          },
+          {
+            "name": "start_from_uuid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start From Uuid"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Page Size"
             }
           }
         ],
@@ -1295,6 +1607,32 @@
               "format": "uuid",
               "title": "Uuid"
             }
+          },
+          {
+            "name": "start_from_uuid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start From Uuid"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Page Size"
+            }
           }
         ],
         "responses": {
@@ -1342,6 +1680,32 @@
               "type": "string",
               "format": "uuid",
               "title": "Uuid"
+            }
+          },
+          {
+            "name": "start_from_uuid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start From Uuid"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Page Size"
             }
           }
         ],
@@ -1391,6 +1755,32 @@
               "format": "uuid",
               "title": "Uuid"
             }
+          },
+          {
+            "name": "start_from_uuid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start From Uuid"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Page Size"
+            }
           }
         ],
         "responses": {
@@ -1438,6 +1828,32 @@
               "type": "string",
               "format": "uuid",
               "title": "Uuid"
+            }
+          },
+          {
+            "name": "start_from_uuid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start From Uuid"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Page Size"
             }
           }
         ],
@@ -1487,6 +1903,32 @@
               "format": "uuid",
               "title": "Uuid"
             }
+          },
+          {
+            "name": "start_from_uuid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start From Uuid"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Page Size"
+            }
           }
         ],
         "responses": {
@@ -1534,6 +1976,32 @@
               "type": "string",
               "format": "uuid",
               "title": "Uuid"
+            }
+          },
+          {
+            "name": "start_from_uuid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start From Uuid"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Page Size"
             }
           }
         ],
@@ -1583,6 +2051,32 @@
               "format": "uuid",
               "title": "Uuid"
             }
+          },
+          {
+            "name": "start_from_uuid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start From Uuid"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Page Size"
+            }
           }
         ],
         "responses": {
@@ -1630,6 +2124,32 @@
               "type": "string",
               "format": "uuid",
               "title": "Uuid"
+            }
+          },
+          {
+            "name": "start_from_uuid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start From Uuid"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Page Size"
             }
           }
         ],
@@ -1679,6 +2199,32 @@
               "format": "uuid",
               "title": "Uuid"
             }
+          },
+          {
+            "name": "start_from_uuid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start From Uuid"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Page Size"
+            }
           }
         ],
         "responses": {
@@ -1727,6 +2273,32 @@
               "format": "uuid",
               "title": "Uuid"
             }
+          },
+          {
+            "name": "start_from_uuid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start From Uuid"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Page Size"
+            }
           }
         ],
         "responses": {
@@ -1766,17 +2338,55 @@
         "summary": "Getstudies",
         "description": "@TODO: Filters?\n\n@TODO: Not pluralizing clashes with getStudy(study_uuid) - non-pluralised convention?",
         "operationId": "getStudies",
+        "parameters": [
+          {
+            "name": "start_from_uuid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start From Uuid"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Page Size"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/Study"
                   },
-                  "type": "array",
                   "title": "Response Getstudies"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
                 }
               }
             }
@@ -1851,6 +2461,32 @@
               "minLength": 5,
               "maxLength": 1000,
               "title": "File Uri"
+            }
+          },
+          {
+            "name": "start_from_uuid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start From Uuid"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Page Size"
             }
           }
         ],

@@ -4,6 +4,7 @@ from pydantic.alias_generators import to_snake
 # ?
 import bia_shared_datamodels.bia_data_model as shared_data_models
 from api.models.repository import Repository, get_db
+from api.models.api import Pagination
 from api import constants
 from typing import List, Type, Annotated
 
@@ -48,7 +49,9 @@ def make_reverse_link_handler(
     target_type: Type[shared_data_models.DocumentMixin],
 ):
     async def get_descendents(
-        uuid: shared_data_models.UUID, db: Annotated[Repository, Depends(get_db)]
+        uuid: shared_data_models.UUID,
+        db: Annotated[Repository, Depends(get_db)],
+        pagination: Annotated[Pagination, Depends()],
     ) -> List[source_type]:
         # Check target document actually exists (and is typed correctly - esp. important for union-typed links)
         #   see workaround_union_reference_types
@@ -58,6 +61,7 @@ def make_reverse_link_handler(
             link_attribute_in_source=source_attribute,
             link_attribute_value=uuid,
             source_type=source_type,
+            pagination=pagination,
         )
 
     return get_descendents
@@ -119,14 +123,19 @@ def make_router() -> APIRouter:
     from bia_shared_datamodels.bia_data_model import Study
 
     @router.get("/study")
-    async def getStudies(db: Annotated[Repository, Depends(get_db)]) -> List[Study]:
+    async def getStudies(
+        db: Annotated[Repository, Depends(get_db)],
+        pagination: Annotated[Pagination, Depends()],
+    ) -> List[Study]:
         """
         @TODO: Filters?
 
         @TODO: Not pluralizing clashes with getStudy(study_uuid) - non-pluralised convention?
         """
         return await db.get_docs(
-            doc_filter={"model": {"type_name": "Study"}}, doc_type=Study
+            doc_filter={"model": {"type_name": "Study"}},
+            doc_type=Study,
+            pagination=pagination,
         )
 
     return router
