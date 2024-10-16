@@ -8,10 +8,8 @@
         "editor.defaultFormatter": "ms-python.black-formatter",
         "editor.formatOnSave": true
     },
-    "[json]": {
-        "editor.insertSpaces": true,
-        "editor.tabSize": 2
-    },
+    "python.defaultInterpreterPath": "./.venv/bin/python",
+    "python.analysis.diagnosticMode": "workspace",
     "python.analysis.extraPaths": [
         "${workspaceFolder}/../clients/python/"
     ]
