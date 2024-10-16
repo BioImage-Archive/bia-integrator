@@ -1,22 +1,23 @@
 from fastapi import APIRouter, Body
 
 from datetime import datetime, timedelta
-from typing import Annotated, Union
+from typing import Annotated, Union, Optional
 
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 from passlib.utils import consteq
-from typing import Optional
 import uuid
 
+from api.app import get_db
 from api import constants
-from api.models.repository import Repository, get_db
+from api.models.repository import Repository
 from api.models.persistence import User
 from api.models.api import AuthenticationToken, TokenData, AuthResult
 import os
 import base64
+
 
 router = APIRouter(prefix="/auth", tags=[constants.OPENAPI_TAG_PRIVATE])
 
@@ -150,3 +151,7 @@ async def register_user(
     await create_user(db, email, password_plain)
 
     return None
+
+
+def make_router() -> APIRouter:
+    return router

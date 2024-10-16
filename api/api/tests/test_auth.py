@@ -15,7 +15,7 @@ def test_authenticate_missing_user(api_client_public: TestClient, existing_user:
     new_user["username"] = "this_user_does_not_exist"
     rsp = api_client_public.post("auth/token", data=new_user)
 
-    assert rsp.status_code == 401
+    assert rsp.status_code == 401, rsp.json()
     assert rsp.json() == {
         "detail": "Incorrect username or password"
     }, "More/different info than expected provided at login failure"

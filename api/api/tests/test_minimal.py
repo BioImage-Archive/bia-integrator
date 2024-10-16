@@ -269,12 +269,16 @@ def test_db_timeout():
     import asyncio
     from api.models.repository import Repository
     from api.models.api import Pagination
+    from api.settings import Settings
 
     loop = asyncio.get_event_loop()
 
     async def large_query():
         db = Repository()
-        db.configure(db_timeout_ms=5)
+        settings = Settings()
+        settings.mongo_timeout_ms = 5
+        
+        db.configure(settings)
 
         await db._get_docs_raw(pagination=Pagination(page_size=100))
 

@@ -4,12 +4,11 @@ from fastapi.testclient import TestClient
 import pytest
 import json
 import os
+from api.settings import Settings
 
-from api.auth import create_user, get_user
-from api.models.repository import repository_create
 import asyncio
 
-
+test_settings = Settings()
 TEST_SERVER_BASE_URL = "http://localhost.com/v2"
 
 
@@ -59,10 +58,13 @@ def create_user_if_missing(email: str, password: str):
     Exception from the general rule used in this project, of tests being as high-level as possible
     Just to avoid compromising on security for easy test user creation / the logistics of a seed db
     """
+    from api.models.repository import repository_create
+    from api.auth import create_user, get_user
+
     loop = asyncio.get_event_loop()
 
     async def create_test_user_if_missing():
-        db = await repository_create(push_indices=True)
+        db = await repository_create(test_settings)
 
         if not await get_user(db, email):
             await create_user(db, email, password)
