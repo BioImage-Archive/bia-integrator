@@ -56,17 +56,9 @@ class Study(ConfiguredBaseModel):
         None, description="""Description of how the study was funded."""
     )
 
-    # TODO: In order to maintian consistency these will be endpoints that run a query in the DB, rather than a stored field.
-    # experimental_imaging_component: Optional[List[ExperimentalImagingDataset]] = Field(
-    #     default_factory=list,
-    #     description="""A dataset of that is associated with the study.""",
-    # )
-    # annotation_component: Optional[List[ImageAnnotationDataset]] = Field(
-    #     default_factory=list, description=""""""
-    # )
-
-    attribute: dict = Field(
-        description="""Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."""
+    attribute: Optional[list[Attribute]] = Field(
+        default_factory=list,
+        description="""Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields.""",
     )
 
 
@@ -222,22 +214,12 @@ class DatasetMixin(ConfiguredBaseModel):
     A logical grouping of data (in files) based on the process involved in it's creation.
     """
 
-    # TODO: In order to maintain consistency this will be an endpoint that runs a query in the DB, rather than a stored field.
-    # file_reference_count: int = Field(
-    #     description="""Number of files associated with the study."""
-    # )
-
-    # TODO: submitted_in_study information is stored in submitted_in_study_uuid defined in bia_data_model.
-    # The field here will eventually be used to generate endpoints.
-    # submitted_in_study: Study = Field(
-    #     description="""The study in which this dataset was submitted"""
-    # )
-
     description: Optional[str] = Field(
         None, description="""Brief description of the dataset."""
     )
-    attribute: dict = Field(
-        description="""Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."""
+    attribute: Optional[list[Attribute]] = Field(
+        default_factory=list,
+        description="""Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields.""",
     )
 
 
@@ -251,15 +233,10 @@ class FileReference(ConfiguredBaseModel):
     format: str = Field(description="""File format or type.""")
     size_in_bytes: int = Field(description="""Disc size in bytes.""")
     uri: str = Field(description="""URI from which the file can be accessed.""")
-    attribute: dict = Field(
-        description="""Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."""
+    attribute: Optional[list[Attribute]] = Field(
+        default_factory=list,
+        description="""Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields.""",
     )
-
-    # TODO: submission_dataset information is stored in submission_dataset_uuid defined in bia_data_model.
-    # The field here will eventually be used to generate endpoints.
-    # submission_dataset: DatasetMixin = Field(
-    #     description="""The datatset in which this file was submitted to the BioImage Archive."""
-    # )
 
 
 class ProtocolMixin(ConfiguredBaseModel):
@@ -282,12 +259,9 @@ class AbstractImageMixin(ConfiguredBaseModel):
     The abstract notion of an image that can have many representions in different image formats.
     """
 
-    # TODO: In order to maintain consistency this will be an endpoint that runs a query in the DB, rather than a stored field.
-    # representation: List[ImageRepresentation] = Field(
-    #     description="""Representation(s) of the image in a specific image format."""
-    # )
-    attribute: dict = Field(
-        description="""Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."""
+    attribute: Optional[list[Attribute]] = Field(
+        default_factory=list,
+        description="""Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields.""",
     )
 
 
@@ -297,9 +271,6 @@ class ImageRepresentation(ConfiguredBaseModel):
     This object was created from one or more file refences (usually one) provided by submitters to the BioImage Archive.
     """
 
-    # TODO: representation_of information is stored in representation_of_uuid defined in bia_data_model.
-    # The field here will eventually be used to generate endpoints.
-    # representation_of: AbstractImageMixin = Field( description="The abstraction of this image represtation.")
     image_format: str = Field(description="""Image format of the combined files.""")
     use_type: ImageRepresentationUseType = Field(
         description="""The use case of this particular image representation i.e. thumbnail, interactive display etc."""
@@ -346,15 +317,9 @@ class ImageRepresentation(ConfiguredBaseModel):
         default_factory=list,
         description="""Settings of a particular view of an image, such as a specific timestamp of a timeseries, or camera placement in a 3D model.""",
     )
-    # TODO: representation_of information is stored in representation_of_uuid defined in bia_data_model.
-    # The field here will eventually be used to generate endpoints.
-    # original_file_reference: Optional[List[FileReference]] = Field(
-    #     default_factory=list,
-    #     description="""The user sumbitted file references from which this image representation was created.
-    #                 If this ImageRepresentation was created by conversion from another representation this will be empty.""",
-    # )
-    attribute: dict = Field(
-        description="""Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."""
+    attribute: Optional[list[Attribute]] = Field(
+        default_factory=list,
+        description="""Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields.""",
     )
 
 
@@ -398,19 +363,6 @@ class ExperimentalImagingDataset(DatasetMixin):
     A logical collection of images that were created by the same acquisition and preparation procols being applied to a biosample.
     """
 
-    # TODO: In order to maintain consistency these fields will be endpoints that runs a query in the DB, rather than a stored field.
-    # acquisition_process: list[ImageAcquisition] = Field(
-    #     description="""Processes involved in the creation of the images and files in this dataset."""
-    # )
-    # specimen_imaging_preparation_protocol: list[SpecimenImagingPreparationProtocol] = Field(
-    #     description="""Processes involved in the preprapartion of the samples for imaged."""
-    # )
-    # biological_entity: list[BioSample] = Field(
-    #     description="""The biological entity or entities that were imaged."""
-    # )
-    # specimen_growth_protocol: Optional[list[SpecimenImagingPreparationProtocol]] = Field(
-    #     description="""Processes involved in the growth of the samples that were then imaged."""
-    # )
     analysis_method: Optional[list[ImageAnalysisMethod]] = Field(
         default_factory=list,
         description="""Data analysis processes performed on the images.""",
@@ -422,10 +374,6 @@ class ExperimentalImagingDataset(DatasetMixin):
     example_image_uri: list[str] = Field(
         description="A viewable image that is typical of the dataset."
     )
-    # TODO: Image_count will be a computed endpoint, rather than stored, so that consistency is maintained
-    # image_count: int = Field(
-    #     description="""Number of images associated with the dataset."""
-    # )
 
 
 class ExperimentallyCapturedImage(AbstractImageMixin):
@@ -434,17 +382,6 @@ class ExperimentallyCapturedImage(AbstractImageMixin):
     """
 
     pass
-    # TODO: All the fields below are stored in _uuid named fields defined in bia_data_model.
-    # These fields will eventually be used to generate endpoints
-    # acquisition_process: List[ImageAcquisition] = Field(
-    #     description="""The processes involved in the creation of the image."""
-    # )
-    # subject: Specimen = Field(
-    #     description="""The specimen that was prepared for and captured in the field of view of the image."""
-    # )
-    # submission_dataset: ExperimentalImagingDataset = Field(
-    #     description="""The dataset in which image was first submitted to the BIA."""
-    # )
 
 
 class ImageAcquisition(ProtocolMixin):
@@ -507,18 +444,6 @@ class Specimen(ConfiguredBaseModel):
     """
 
     pass
-    # TODO: All the fields below are stored in _uuid named fields defined in bia_data_model.
-    # These fields will eventually be used to generate endpoints
-    # sample_of: List[BioSample] = Field(
-    #     description="""The biological matter that sampled to create the specimen."""
-    # )
-    # imaging_preparation_protocol: List[SpecimenImagingPreparationProtocol] = Field(
-    #     description="""How the biosample was prepared for imaging."""
-    # )
-    # growth_protocol: Optional[List[SpecimenGrowthProtocol]] = Field(
-    #     None,
-    #     description="""How the specimen was grown, e.g. cell line cultures, crosses or plant growth.""",
-    # )
 
 
 class BioSample(ConfiguredBaseModel):
@@ -592,17 +517,9 @@ class ImageAnnotationDataset(DatasetMixin):
     Information about the annotation process, such as methods used, or how much of a dataset was annotated.
     """
 
-    # TODO: In order to maintain consistency this will be an endpoint that runs a query in the DB, rather than a stored field.
-    # annotation_method: List[AnnotationMethod] = Field(
-    #     description="""The process(es) that were performed to create the annotated data."""
-    # )
     example_image_uri: List[str] = Field(
         description="A viewable image that is typical of the dataset."
     )
-    # TODO: In order to maintain consistency this will be an endpoint that runs a query in the DB, rather than a stored field.
-    # image_count: int = Field(
-    #     description="""Number of images associated with the dataset."""
-    # )
 
 
 class AnnotationMethod(ProtocolMixin):
@@ -610,10 +527,6 @@ class AnnotationMethod(ProtocolMixin):
     Information about the annotation process, such as methods used, or how much of a dataset was annotated.
     """
 
-    # TODO: This could be a UUID or a URL. In linked-data these would be the same, but this makes naming tricky in UUID world
-    # source_dataset: Optional[List[Union[ExperimentalImagingDataset | AnyUrl]]] = Field(
-    #     description="""The datasets that were annotated."""
-    # )
     annotation_criteria: Optional[str] = Field(
         None, description="""Rules used to generate annotations."""
     )
@@ -621,7 +534,7 @@ class AnnotationMethod(ProtocolMixin):
         None,
         description="""Which images from the dataset were annotated, and what percentage of the data has been annotated from what is available.""",
     )
-    method_type: AnnotationType = Field(
+    method_type: List[AnnotationType] = Field(
         description="""Classification of the kind of annotation that was performed."""
     )
 
@@ -631,14 +544,6 @@ class AnnotationMixin(ConfiguredBaseModel):
     Information providing additional metadata or highlighting parts of an image.
     """
 
-    # TODO: the fields below are stored in _uuid named fields defined in bia_data_model.
-    # The fields here will eventually be used to generate endpoints.
-    # source_image: List[ImageRepresentation] = Field(
-    #     description="""The original image(s) this file is annotating."""
-    # )
-    # creation_process: List[AnnotationMethod] = Field(
-    #     description="""The process that was followed to create the annotation."""
-    # )
     transformation_description: Optional[str] = Field(
         None,
         description="""Any transformations required to link annotations to the image.""",
@@ -661,11 +566,7 @@ class DerivedImage(AnnotationMixin, AbstractImageMixin):
     An image that is an annotation of another image.
     """
 
-    # TODO: the fields below are stored in _uuid named fields defined in bia_data_model.
-    # The fields here will eventually be used to generate endpoints.
-    # submission_dataset: ImageAnnotationDataset = Field(
-    #     description="""The dataset in which image was first submitted to the BIA."""
-    # )
+    pass
 
 
 class AnnotationType(str, Enum):
@@ -698,6 +599,26 @@ class AnnotationType(str, Enum):
 #######################################################################################################
 
 
+class AttributeProvenance(str, Enum):
+    submittor = "submittor"
+
+    bia_ingest = "bia_ingest"
+
+    bia_conversion = "bia_conversion"
+
+
+class Attribute(ConfiguredBaseModel):
+    provenance: AttributeProvenance = Field(
+        description="The category of the source of the annotaton"
+    )
+    name: str = Field(
+        description="A descriptive name or identifier for the annotation."
+    )
+    value: dict = Field(
+        description="The value of an annotation, which is a stored in a freeform dicitionary"
+    )
+
+
 # Model rebuild
 # see https://pydantic-docs.helpmanual.io/usage/models/#rebuilding-a-model
 # Need to do this in order to auto-generate the class diagram
@@ -710,3 +631,7 @@ BioSample.model_rebuild()
 SpecimenImagingPreparationProtocol.model_rebuild()
 AnnotationMethod.model_rebuild()
 ImageRepresentation.model_rebuild()
+ExperimentallyCapturedImage.model_rebuild()
+DerivedImage.model_rebuild()
+AnnotationFileReference.model_rebuild()
+FileReference.model_rebuild()

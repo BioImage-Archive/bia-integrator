@@ -154,16 +154,26 @@ def get_annotation_method_dict(completeness=Completeness.COMPLETE) -> dict:
         "uuid": uuid4(),
         "title_id": "Template annotation method",
         "protocol_description": "Template annotation method description",
-        "method_type": semantic_models.AnnotationType.class_labels,
+        "method_type": [],
         "version": 1,
     }
     if completeness == Completeness.COMPLETE:
         annotation_method |= {
             "annotation_criteria": "Template annotation criteria",
             "annotation_coverage": "Template annotation coverage",
-            "model": {"type_name": "AnnotationMethod", "version": 1},
+            "method_type": [semantic_models.AnnotationType.class_labels],
+            "model": {"type_name": "AnnotationMethod", "version": 2},
         }
     return annotation_method
+
+
+def get_attribute_dict(completeness=Completeness.COMPLETE) -> dict:
+    attribute = {
+        "provenance": semantic_models.AttributeProvenance.submittor,
+        "name": "file_list_columns",
+        "value": {},
+    }
+    return attribute
 
 
 def get_experimentally_captured_image_dict(completeness=Completeness.COMPLETE) -> dict:
@@ -173,12 +183,12 @@ def get_experimentally_captured_image_dict(completeness=Completeness.COMPLETE) -
         "subject_uuid": get_specimen_dict()["uuid"],
         "submission_dataset_uuid": get_experimental_imaging_dataset_dict()["uuid"],
         "version": 1,
-        "attribute": {},
     }
     if completeness == Completeness.COMPLETE:
         experimentally_captured_image |= {
             "acquisition_process_uuid": [get_image_acquisition_dict()["uuid"]],
-            "model": {"type_name": "ExperimentallyCapturedImage", "version": 1},
+            "model": {"type_name": "ExperimentallyCapturedImage", "version": 2},
+            "attribute": [get_attribute_dict()],
         }
     return experimentally_captured_image
 
@@ -189,7 +199,6 @@ def get_derived_image_dict(completeness=Completeness.COMPLETE) -> dict:
         "source_image_uuid": [],
         "submission_dataset_uuid": get_image_annotation_dataset_dict()["uuid"],
         "creation_process_uuid": [],
-        "attribute": {},
         "version": 1,
     }
     if completeness == Completeness.COMPLETE:
@@ -200,7 +209,8 @@ def get_derived_image_dict(completeness=Completeness.COMPLETE) -> dict:
             "creation_process_uuid": [get_annotation_method_dict()["uuid"]],
             "transformation_description": "Template transformation description",
             "spatial_information": "Template spatial information",
-            "model": {"type_name": "DerivedImage", "version": 1},
+            "model": {"type_name": "DerivedImage", "version": 2},
+            "attribute": [get_attribute_dict()],
         }
     return derived_image
 
@@ -212,13 +222,13 @@ def get_image_annotation_dataset_dict(completeness=Completeness.COMPLETE) -> dic
         "title_id": "Template image annotation dataset",
         "example_image_uri": [],
         "version": 1,
-        "attribute": {},
     }
     if completeness == Completeness.COMPLETE:
         image_annotation_dataset |= {
             "example_image_uri": ["https://dummy.url.org"],
             "description": "Template description",
-            "model": {"type_name": "ImageAnnotationDataset", "version": 1},
+            "model": {"type_name": "ImageAnnotationDataset", "version": 2},
+            "attribute": [get_attribute_dict()],
         }
     return image_annotation_dataset
 
@@ -274,7 +284,6 @@ def get_experimental_imaging_dataset_dict(
         "title_id": "Template experimental image dataset",
         "example_image_uri": [],
         "version": 1,
-        "attribute": {},
     }
     if completeness == Completeness.COMPLETE:
         experimental_imaging_dataset |= {
@@ -286,7 +295,8 @@ def get_experimental_imaging_dataset_dict(
                 get_image_correlation_method_dict(),
             ],
             "example_image_uri": ["https://dummy.url.org"],
-            "model": {"type_name": "ExperimentalImagingDataset", "version": 1},
+            "model": {"type_name": "ExperimentalImagingDataset", "version": 2},
+            "attribute": [get_attribute_dict()],
         }
     return experimental_imaging_dataset
 
@@ -298,7 +308,6 @@ def get_annotation_file_reference_dict(completeness=Completeness.COMPLETE) -> di
         "format": "Dummy format",
         "size_in_bytes": 10,
         "uri": "https://dummy.uri.co",
-        "attribute": {},
         "source_image_uuid": [],
         "creation_process_uuid": [],
         "submission_dataset_uuid": get_image_annotation_dataset_dict()["uuid"],
@@ -312,7 +321,8 @@ def get_annotation_file_reference_dict(completeness=Completeness.COMPLETE) -> di
             "transformation_description": "Template transformation description",
             "spatial_information": "Template spatial information",
             "creation_process_uuid": [get_annotation_method_dict()["uuid"]],
-            "model": {"type_name": "AnnotationFileReference", "version": 1},
+            "model": {"type_name": "AnnotationFileReference", "version": 2},
+            "attribute": [get_attribute_dict()],
         }
     return annotation_file_reference
 
@@ -324,13 +334,13 @@ def get_file_reference_dict(completeness=Completeness.COMPLETE) -> dict:
         "format": "Dummy format",
         "size_in_bytes": 10,
         "uri": "https://dummy.uri.co",
-        "attribute": {},
         "submission_dataset_uuid": get_experimental_imaging_dataset_dict()["uuid"],
         "version": 1,
     }
     if completeness == Completeness.COMPLETE:
         file_reference |= {
-            "model": {"type_name": "FileReference", "version": 1},
+            "model": {"type_name": "FileReference", "version": 2},
+            "attribute": [get_attribute_dict()],
         }
     return file_reference
 
@@ -341,7 +351,6 @@ def get_image_representation_dict(completeness=Completeness.COMPLETE) -> dict:
         "representation_of_uuid": get_experimentally_captured_image_dict()["uuid"],
         "use_type": "UPLOADED_BY_SUBMITTER",
         "image_format": "Template image format",
-        "attribute": {},
         "total_size_in_bytes": 0,
         "file_uri": [],
         "version": 1,
@@ -365,7 +374,8 @@ def get_image_representation_dict(completeness=Completeness.COMPLETE) -> dict:
             "image_viewer_setting": [
                 get_rendered_view_dict(),
             ],
-            "model": {"type_name": "ImageRepresentation", "version": 1},
+            "model": {"type_name": "ImageRepresentation", "version": 2},
+            "attribute": [get_attribute_dict()],
         }
     return image_representation
 
@@ -410,7 +420,6 @@ def get_study_dict(completeness=Completeness.COMPLETE) -> dict:
         "accession_id": "S-BIADTEST",
         "licence": semantic_models.LicenceType.CC0,
         "author": [get_contributor_dict(Completeness.MINIMAL)],
-        "attribute": {},
         "title": "Test publication",
         "release_date": "2024-06-23",
         "version": 1,
@@ -430,7 +439,8 @@ def get_study_dict(completeness=Completeness.COMPLETE) -> dict:
                 "Template keyword1",
                 "Template keyword2",
             ],
-            "model": {"type_name": "Study", "version": 1},
+            "model": {"type_name": "Study", "version": 2},
+            "attribute": [get_attribute_dict()],
         }
 
     return study_dict
