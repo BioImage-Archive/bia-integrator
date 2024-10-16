@@ -116,6 +116,8 @@ Class | Method | HTTP request | Description
 *PrivateApi* | [**post_specimen_imaging_preparation_protocol**](bia_integrator_api/docs/PrivateApi.md#post_specimen_imaging_preparation_protocol) | **POST** /v2/private/specimen_imaging_preparation_protocol | Create SpecimenImagingPreparationProtocol
 *PrivateApi* | [**post_study**](bia_integrator_api/docs/PrivateApi.md#post_study) | **POST** /v2/private/study | Create Study
 *PrivateApi* | [**register_user**](bia_integrator_api/docs/PrivateApi.md#register_user) | **POST** /v2/auth/user/register | Register User
+*PrivateApi* | [**search_image_representation_by_file_uri**](bia_integrator_api/docs/PrivateApi.md#search_image_representation_by_file_uri) | **GET** /v2/search/image_representation/file_uri_fragment | Searchimagerepresentationbyfileuri
+*PrivateApi* | [**search_study_by_accession**](bia_integrator_api/docs/PrivateApi.md#search_study_by_accession) | **GET** /v2/search/study/accession | Searchstudybyaccession
 *PublicApi* | [**get_annotation_file_reference**](bia_integrator_api/docs/PublicApi.md#get_annotation_file_reference) | **GET** /v2/annotation_file_reference/{uuid} | Get AnnotationFileReference
 *PublicApi* | [**get_annotation_file_reference_in_annotation_method**](bia_integrator_api/docs/PublicApi.md#get_annotation_file_reference_in_annotation_method) | **GET** /v2/annotation_method/{uuid}/annotation_file_reference | Get AnnotationFileReference In AnnotationMethod
 *PublicApi* | [**get_annotation_file_reference_in_derived_image**](bia_integrator_api/docs/PublicApi.md#get_annotation_file_reference_in_derived_image) | **GET** /v2/derived_image/{uuid}/annotation_file_reference | Get AnnotationFileReference In DerivedImage

@@ -2397,7 +2397,8 @@
     "/v2/search/study/accession": {
       "get": {
         "tags": [
-          "public"
+          "public",
+          "private"
         ],
         "summary": "Searchstudybyaccession",
         "operationId": "searchStudyByAccession",
@@ -2447,7 +2448,8 @@
     "/v2/search/image_representation/file_uri_fragment": {
       "get": {
         "tags": [
-          "public"
+          "public",
+          "private"
         ],
         "summary": "Searchimagerepresentationbyfileuri",
         "operationId": "searchImageRepresentationByFileUri",
