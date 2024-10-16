@@ -29,6 +29,8 @@ api_env:
   mongoRootPassword: ""
   mongoHost: "api-mongodb"
   dbName: "bia_integrator"
+  mongoTimeoutMs: 500
+  mongoIndexPush: false
   jwtSecretKey: ""
   userCreateSecretToken: ""
 

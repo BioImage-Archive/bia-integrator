@@ -11,6 +11,7 @@ import pymongo
 from typing import Type, List, Any
 from api import exceptions
 from api.models.api import Pagination
+from api.settings import Settings
 import datetime
 
 from bson.codec_options import CodecOptions
@@ -18,14 +19,7 @@ from bson.datetime_ms import DatetimeMS
 from bson.codec_options import TypeCodec, TypeRegistry
 from bson.binary import UuidRepresentation
 
-from typing import AsyncGenerator
-
 from pydantic_core import Url
-
-DB_NAME = os.environ["DB_NAME"]
-DB_TIMEOUT_MS = os.environ.get("DB_TIMEOUT_MS", 500)
-COLLECTION_BIA_INTEGRATOR = "bia_integrator"
-COLLECTION_USERS = "users"
 
 
 class DateCodec(TypeCodec):
@@ -76,22 +70,15 @@ class Repository:
         """
         pass
 
-    def configure(
-        self,
-        db_timeout_ms=DB_TIMEOUT_MS,
-        db_name=DB_NAME,
-        collection_users=COLLECTION_USERS,
-        collection_bia_integrator=COLLECTION_BIA_INTEGRATOR,
-    ):
-        mongo_connstring = os.environ["MONGO_CONNSTRING"]
+    def configure(self, settings: Settings):
         self.connection = AsyncIOMotorClient(
-            mongo_connstring,
+            settings.mongo_connstring,
             uuidRepresentation="standard",
             maxPoolSize=10,
-            timeoutms=db_timeout_ms,
+            timeoutms=settings.mongo_timeout_ms,
         )
         self.db = self.connection.get_database(
-            db_name,
+            settings.db_name,
             # Looks like explicitly setting codec_options excludes settings from the client
             #   so uuid_representation needs to be defined even if already defined in connection
             codec_options=CodecOptions(
@@ -99,8 +86,8 @@ class Repository:
                 uuid_representation=UuidRepresentation.STANDARD,
             ),
         )
-        self.users = self.db[collection_users]
-        self.biaint = self.db[collection_bia_integrator]
+        self.users = self.db[settings.mongo_collection_users]
+        self.biaint = self.db[settings.mongo_collection_biaint]
 
     async def _add_indices_collection_biaint(self) -> None:
         await self.biaint.create_index([("uuid", 1)], unique=True, name="doc_uuid")
@@ -356,16 +343,12 @@ class Repository:
         await self.db.close()
 
 
-async def repository_create(push_indices: bool) -> Repository:
+async def repository_create(settings: Settings) -> Repository:
     repository = Repository()
-    repository.configure()
+    repository.configure(settings)
 
-    if push_indices:
+    if settings.mongo_index_push:
         await repository._add_indices_collection_biaint()
         await repository._add_indices_collection_users()
 
     return repository
-
-
-async def get_db() -> Repository:
-    return await repository_create(push_indices=False)

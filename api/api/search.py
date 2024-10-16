@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends, Query
 from api import constants
 from typing import List, Annotated, Optional
-from api.models.repository import Repository, get_db
+from api.models.repository import Repository
+from api.app import get_db
 from api.models.api import Pagination
 import bia_shared_datamodels.bia_data_model as shared_data_models
 import re
