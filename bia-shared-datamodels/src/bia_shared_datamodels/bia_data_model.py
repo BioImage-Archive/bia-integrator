@@ -152,7 +152,7 @@ class Study(
 ):
     author: List[semantic_models.Contributor] = Field(min_length=1)
 
-    model_config = ConfigDict(model_version_latest=1)
+    model_config = ConfigDict(model_version_latest=2)
 
 
 class FileReference(
@@ -170,7 +170,7 @@ class FileReference(
         ),
     ] = Field()
 
-    model_config = ConfigDict(model_version_latest=1)
+    model_config = ConfigDict(model_version_latest=2)
 
 
 class ImageRepresentation(
@@ -192,7 +192,7 @@ class ImageRepresentation(
         ),
     ] = Field()
 
-    model_config = ConfigDict(model_version_latest=1)
+    model_config = ConfigDict(model_version_latest=2)
 
 
 class ExperimentalImagingDataset(
@@ -202,7 +202,7 @@ class ExperimentalImagingDataset(
 ):
     submitted_in_study_uuid: Annotated[UUID, ObjectReference(Study)] = Field()
 
-    model_config = ConfigDict(model_version_latest=1)
+    model_config = ConfigDict(model_version_latest=2)
 
 
 class Specimen(semantic_models.Specimen, DocumentMixin):
@@ -231,7 +231,7 @@ class ExperimentallyCapturedImage(
     ] = Field()
     subject_uuid: Annotated[UUID, ObjectReference(Specimen)] = Field()
 
-    model_config = ConfigDict(model_version_latest=1)
+    model_config = ConfigDict(model_version_latest=2)
 
 
 class ImageAcquisition(
@@ -273,7 +273,7 @@ class ImageAnnotationDataset(
 ):
     submitted_in_study_uuid: Annotated[UUID, ObjectReference(Study)] = Field()
 
-    model_config = ConfigDict(model_version_latest=1)
+    model_config = ConfigDict(model_version_latest=2)
 
 
 class AnnotationFileReference(
@@ -304,7 +304,7 @@ class AnnotationFileReference(
         Field()
     )
 
-    model_config = ConfigDict(model_version_latest=1)
+    model_config = ConfigDict(model_version_latest=2)
 
 
 class DerivedImage(
@@ -328,7 +328,7 @@ class DerivedImage(
         Field()
     )
 
-    model_config = ConfigDict(model_version_latest=1)
+    model_config = ConfigDict(model_version_latest=2)
 
 
 class AnnotationMethod(
@@ -336,7 +336,7 @@ class AnnotationMethod(
     DocumentMixin,
     UserIdentifiedObject,
 ):
-    model_config = ConfigDict(model_version_latest=1)
+    model_config = ConfigDict(model_version_latest=2)
 
 
 Specimen.model_rebuild()
