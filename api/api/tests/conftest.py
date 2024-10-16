@@ -8,7 +8,8 @@ from api.settings import Settings
 
 import asyncio
 
-test_settings = Settings()
+test_settings = Settings(mongo_index_push=True)
+
 TEST_SERVER_BASE_URL = "http://localhost.com/v2"
 
 
