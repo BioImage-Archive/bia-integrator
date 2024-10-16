@@ -42,8 +42,6 @@ spec:
             failureThreshold: 10
             periodSeconds: 60
           env:
-            - name: DB_NAME
-              value: {{ .Values.api_env.dbName }}
             - name: JWT_SECRET_KEY
               valueFrom:
                 secretKeyRef:
@@ -59,3 +57,9 @@ spec:
                 secretKeyRef:
                   name: {{ include "api.fullname" . }}
                   key: mongoConnstring
+            - name: DB_NAME
+              value: {{ .Values.api_env.dbName }}
+            - name: MONGO_TIMEOUT_MS
+              value: {{ .Values.api_env.mongoTimeoutMs }}
+            - name: MONGO_INDEX_PUSH
+              value: {{ .Values.api_env.mongoIndexPush }}
