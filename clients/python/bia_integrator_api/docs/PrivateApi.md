@@ -57,6 +57,8 @@ Method | HTTP request | Description
 [**post_specimen_imaging_preparation_protocol**](PrivateApi.md#post_specimen_imaging_preparation_protocol) | **POST** /v2/private/specimen_imaging_preparation_protocol | Create SpecimenImagingPreparationProtocol
 [**post_study**](PrivateApi.md#post_study) | **POST** /v2/private/study | Create Study
 [**register_user**](PrivateApi.md#register_user) | **POST** /v2/auth/user/register | Register User
+[**search_image_representation_by_file_uri**](PrivateApi.md#search_image_representation_by_file_uri) | **GET** /v2/search/image_representation/file_uri_fragment | Searchimagerepresentationbyfileuri
+[**search_study_by_accession**](PrivateApi.md#search_study_by_accession) | **GET** /v2/search/study/accession | Searchstudybyaccession
 
 
 # **get_annotation_file_reference**
@@ -3799,6 +3801,144 @@ No authorization required
 ### HTTP request headers
 
  - **Content-Type**: application/json
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **search_image_representation_by_file_uri**
+> List[ImageRepresentation] search_image_representation_by_file_uri(file_uri, page_size, start_from_uuid=start_from_uuid)
+
+Searchimagerepresentationbyfileuri
+
+### Example
+
+
+```python
+import bia_integrator_api
+from bia_integrator_api.models.image_representation import ImageRepresentation
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PrivateApi(api_client)
+    file_uri = 'file_uri_example' # str | 
+    page_size = 56 # int | 
+    start_from_uuid = 'start_from_uuid_example' # str |  (optional)
+
+    try:
+        # Searchimagerepresentationbyfileuri
+        api_response = api_instance.search_image_representation_by_file_uri(file_uri, page_size, start_from_uuid=start_from_uuid)
+        print("The response of PrivateApi->search_image_representation_by_file_uri:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PrivateApi->search_image_representation_by_file_uri: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **file_uri** | **str**|  | 
+ **page_size** | **int**|  | 
+ **start_from_uuid** | **str**|  | [optional] 
+
+### Return type
+
+[**List[ImageRepresentation]**](ImageRepresentation.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **search_study_by_accession**
+> Study search_study_by_accession(accession_id)
+
+Searchstudybyaccession
+
+### Example
+
+
+```python
+import bia_integrator_api
+from bia_integrator_api.models.study import Study
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PrivateApi(api_client)
+    accession_id = 'accession_id_example' # str | 
+
+    try:
+        # Searchstudybyaccession
+        api_response = api_instance.search_study_by_accession(accession_id)
+        print("The response of PrivateApi->search_study_by_accession:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PrivateApi->search_study_by_accession: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **accession_id** | **str**|  | 
+
+### Return type
+
+[**Study**](Study.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
  - **Accept**: application/json
 
 ### HTTP response details

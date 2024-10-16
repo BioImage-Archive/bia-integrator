@@ -6,7 +6,9 @@ from api.models.api import Pagination
 import bia_shared_datamodels.bia_data_model as shared_data_models
 import re
 
-router = APIRouter(prefix="/search", tags=[constants.OPENAPI_TAG_PUBLIC])
+router = APIRouter(
+    prefix="/search", tags=[constants.OPENAPI_TAG_PUBLIC, constants.OPENAPI_TAG_PRIVATE]
+)
 
 
 @router.get("/study/accession")
