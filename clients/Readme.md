@@ -1,5 +1,5 @@
 ## Generating clients
 
 ```sh
-make client.generate
+make -C .. client.generate
 ```
