@@ -1,0 +1,5193 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "FastAPI",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/v2/auth/token": {
+      "post": {
+        "tags": [
+          "private"
+        ],
+        "summary": "Login For Access Token",
+        "operationId": "login_for_access_token",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_login_for_access_token"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthenticationToken"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/auth/user/register": {
+      "post": {
+        "tags": [
+          "private"
+        ],
+        "summary": "Register User",
+        "operationId": "register_user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_register_user"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/study/{uuid}": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Get Study",
+        "operationId": "getStudy",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Study"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/file_reference/{uuid}": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Get FileReference",
+        "operationId": "getFileReference",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileReference"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/image_representation/{uuid}": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Get ImageRepresentation",
+        "operationId": "getImageRepresentation",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImageRepresentation"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/experimental_imaging_dataset/{uuid}": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Get ExperimentalImagingDataset",
+        "operationId": "getExperimentalImagingDataset",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExperimentalImagingDataset"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/specimen/{uuid}": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Get Specimen",
+        "operationId": "getSpecimen",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Specimen"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/experimentally_captured_image/{uuid}": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Get ExperimentallyCapturedImage",
+        "operationId": "getExperimentallyCapturedImage",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExperimentallyCapturedImage"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/image_acquisition/{uuid}": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Get ImageAcquisition",
+        "operationId": "getImageAcquisition",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImageAcquisition"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/specimen_imaging_preparation_protocol/{uuid}": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Get SpecimenImagingPreparationProtocol",
+        "operationId": "getSpecimenImagingPreparationProtocol",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpecimenImagingPreparationProtocol"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/specimen_growth_protocol/{uuid}": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Get SpecimenGrowthProtocol",
+        "operationId": "getSpecimenGrowthProtocol",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpecimenGrowthProtocol"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/bio_sample/{uuid}": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Get BioSample",
+        "operationId": "getBioSample",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BioSample"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/image_annotation_dataset/{uuid}": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Get ImageAnnotationDataset",
+        "operationId": "getImageAnnotationDataset",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImageAnnotationDataset"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/annotation_file_reference/{uuid}": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Get AnnotationFileReference",
+        "operationId": "getAnnotationFileReference",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnnotationFileReference"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/derived_image/{uuid}": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Get DerivedImage",
+        "operationId": "getDerivedImage",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DerivedImage"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/annotation_method/{uuid}": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Get AnnotationMethod",
+        "operationId": "getAnnotationMethod",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnnotationMethod"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/image_annotation_dataset/{uuid}/file_reference": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Get FileReference In ImageAnnotationDataset",
+        "operationId": "getFileReferenceInImageAnnotationDataset",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Uuid"
+            }
+          },
+          {
+            "name": "start_from_uuid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start From Uuid"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Page Size"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FileReference"
+                  },
+                  "title": "Response Getfilereferenceinimageannotationdataset"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/experimental_imaging_dataset/{uuid}/file_reference": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Get FileReference In ExperimentalImagingDataset",
+        "operationId": "getFileReferenceInExperimentalImagingDataset",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Uuid"
+            }
+          },
+          {
+            "name": "start_from_uuid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start From Uuid"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Page Size"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FileReference"
+                  },
+                  "title": "Response Getfilereferenceinexperimentalimagingdataset"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/file_reference/{uuid}/image_representation": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Get ImageRepresentation In FileReference",
+        "operationId": "getImageRepresentationInFileReference",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Uuid"
+            }
+          },
+          {
+            "name": "start_from_uuid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start From Uuid"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Page Size"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ImageRepresentation"
+                  },
+                  "title": "Response Getimagerepresentationinfilereference"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/derived_image/{uuid}/image_representation": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Get ImageRepresentation In DerivedImage",
+        "operationId": "getImageRepresentationInDerivedImage",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Uuid"
+            }
+          },
+          {
+            "name": "start_from_uuid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start From Uuid"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Page Size"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ImageRepresentation"
+                  },
+                  "title": "Response Getimagerepresentationinderivedimage"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/experimentally_captured_image/{uuid}/image_representation": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Get ImageRepresentation In ExperimentallyCapturedImage",
+        "operationId": "getImageRepresentationInExperimentallyCapturedImage",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Uuid"
+            }
+          },
+          {
+            "name": "start_from_uuid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start From Uuid"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Page Size"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ImageRepresentation"
+                  },
+                  "title": "Response Getimagerepresentationinexperimentallycapturedimage"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/study/{uuid}/experimental_imaging_dataset": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Get ExperimentalImagingDataset In Study",
+        "operationId": "getExperimentalImagingDatasetInStudy",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Uuid"
+            }
+          },
+          {
+            "name": "start_from_uuid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start From Uuid"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Page Size"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ExperimentalImagingDataset"
+                  },
+                  "title": "Response Getexperimentalimagingdatasetinstudy"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/specimen_imaging_preparation_protocol/{uuid}/specimen": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Get Specimen In SpecimenImagingPreparationProtocol",
+        "operationId": "getSpecimenInSpecimenImagingPreparationProtocol",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Uuid"
+            }
+          },
+          {
+            "name": "start_from_uuid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start From Uuid"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Page Size"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Specimen"
+                  },
+                  "title": "Response Getspecimeninspecimenimagingpreparationprotocol"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/bio_sample/{uuid}/specimen": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Get Specimen In BioSample",
+        "operationId": "getSpecimenInBioSample",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Uuid"
+            }
+          },
+          {
+            "name": "start_from_uuid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start From Uuid"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Page Size"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Specimen"
+                  },
+                  "title": "Response Getspecimeninbiosample"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/specimen_growth_protocol/{uuid}/specimen": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Get Specimen In SpecimenGrowthProtocol",
+        "operationId": "getSpecimenInSpecimenGrowthProtocol",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Uuid"
+            }
+          },
+          {
+            "name": "start_from_uuid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start From Uuid"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Page Size"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Specimen"
+                  },
+                  "title": "Response Getspecimeninspecimengrowthprotocol"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/image_acquisition/{uuid}/experimentally_captured_image": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Get ExperimentallyCapturedImage In ImageAcquisition",
+        "operationId": "getExperimentallyCapturedImageInImageAcquisition",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Uuid"
+            }
+          },
+          {
+            "name": "start_from_uuid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start From Uuid"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Page Size"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ExperimentallyCapturedImage"
+                  },
+                  "title": "Response Getexperimentallycapturedimageinimageacquisition"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/experimental_imaging_dataset/{uuid}/experimentally_captured_image": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Get ExperimentallyCapturedImage In ExperimentalImagingDataset",
+        "operationId": "getExperimentallyCapturedImageInExperimentalImagingDataset",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Uuid"
+            }
+          },
+          {
+            "name": "start_from_uuid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start From Uuid"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Page Size"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ExperimentallyCapturedImage"
+                  },
+                  "title": "Response Getexperimentallycapturedimageinexperimentalimagingdataset"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/specimen/{uuid}/experimentally_captured_image": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Get ExperimentallyCapturedImage In Specimen",
+        "operationId": "getExperimentallyCapturedImageInSpecimen",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Uuid"
+            }
+          },
+          {
+            "name": "start_from_uuid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start From Uuid"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Page Size"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ExperimentallyCapturedImage"
+                  },
+                  "title": "Response Getexperimentallycapturedimageinspecimen"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/study/{uuid}/image_annotation_dataset": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Get ImageAnnotationDataset In Study",
+        "operationId": "getImageAnnotationDatasetInStudy",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Uuid"
+            }
+          },
+          {
+            "name": "start_from_uuid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start From Uuid"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Page Size"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ImageAnnotationDataset"
+                  },
+                  "title": "Response Getimageannotationdatasetinstudy"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/image_annotation_dataset/{uuid}/annotation_file_reference": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Get AnnotationFileReference In ImageAnnotationDataset",
+        "operationId": "getAnnotationFileReferenceInImageAnnotationDataset",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Uuid"
+            }
+          },
+          {
+            "name": "start_from_uuid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start From Uuid"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Page Size"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AnnotationFileReference"
+                  },
+                  "title": "Response Getannotationfilereferenceinimageannotationdataset"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/experimental_imaging_dataset/{uuid}/annotation_file_reference": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Get AnnotationFileReference In ExperimentalImagingDataset",
+        "operationId": "getAnnotationFileReferenceInExperimentalImagingDataset",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Uuid"
+            }
+          },
+          {
+            "name": "start_from_uuid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start From Uuid"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Page Size"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AnnotationFileReference"
+                  },
+                  "title": "Response Getannotationfilereferenceinexperimentalimagingdataset"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/derived_image/{uuid}/annotation_file_reference": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Get AnnotationFileReference In DerivedImage",
+        "operationId": "getAnnotationFileReferenceInDerivedImage",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Uuid"
+            }
+          },
+          {
+            "name": "start_from_uuid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start From Uuid"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Page Size"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AnnotationFileReference"
+                  },
+                  "title": "Response Getannotationfilereferenceinderivedimage"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/experimentally_captured_image/{uuid}/annotation_file_reference": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Get AnnotationFileReference In ExperimentallyCapturedImage",
+        "operationId": "getAnnotationFileReferenceInExperimentallyCapturedImage",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Uuid"
+            }
+          },
+          {
+            "name": "start_from_uuid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start From Uuid"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Page Size"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AnnotationFileReference"
+                  },
+                  "title": "Response Getannotationfilereferenceinexperimentallycapturedimage"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/annotation_method/{uuid}/annotation_file_reference": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Get AnnotationFileReference In AnnotationMethod",
+        "operationId": "getAnnotationFileReferenceInAnnotationMethod",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Uuid"
+            }
+          },
+          {
+            "name": "start_from_uuid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start From Uuid"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Page Size"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AnnotationFileReference"
+                  },
+                  "title": "Response Getannotationfilereferenceinannotationmethod"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/derived_image/{uuid}/derived_image": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Get DerivedImage In DerivedImage",
+        "operationId": "getDerivedImageInDerivedImage",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Uuid"
+            }
+          },
+          {
+            "name": "start_from_uuid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start From Uuid"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Page Size"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DerivedImage"
+                  },
+                  "title": "Response Getderivedimageinderivedimage"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/experimentally_captured_image/{uuid}/derived_image": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Get DerivedImage In ExperimentallyCapturedImage",
+        "operationId": "getDerivedImageInExperimentallyCapturedImage",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Uuid"
+            }
+          },
+          {
+            "name": "start_from_uuid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start From Uuid"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Page Size"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DerivedImage"
+                  },
+                  "title": "Response Getderivedimageinexperimentallycapturedimage"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/image_annotation_dataset/{uuid}/derived_image": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Get DerivedImage In ImageAnnotationDataset",
+        "operationId": "getDerivedImageInImageAnnotationDataset",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Uuid"
+            }
+          },
+          {
+            "name": "start_from_uuid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start From Uuid"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Page Size"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DerivedImage"
+                  },
+                  "title": "Response Getderivedimageinimageannotationdataset"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/annotation_method/{uuid}/derived_image": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Get DerivedImage In AnnotationMethod",
+        "operationId": "getDerivedImageInAnnotationMethod",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Uuid"
+            }
+          },
+          {
+            "name": "start_from_uuid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start From Uuid"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Page Size"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DerivedImage"
+                  },
+                  "title": "Response Getderivedimageinannotationmethod"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/study": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Getstudies",
+        "description": "@TODO: Filters?\n\n@TODO: Not pluralizing clashes with getStudy(study_uuid) - non-pluralised convention?",
+        "operationId": "getStudies",
+        "parameters": [
+          {
+            "name": "start_from_uuid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start From Uuid"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Page Size"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Study"
+                  },
+                  "title": "Response Getstudies"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/search/study/accession": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Searchstudybyaccession",
+        "operationId": "searchStudyByAccession",
+        "parameters": [
+          {
+            "name": "accession_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Accession Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/Study"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "title": "Response Searchstudybyaccession"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/search/image_representation/file_uri_fragment": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Searchimagerepresentationbyfileuri",
+        "operationId": "searchImageRepresentationByFileUri",
+        "parameters": [
+          {
+            "name": "file_uri",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 5,
+              "maxLength": 1000,
+              "title": "File Uri"
+            }
+          },
+          {
+            "name": "start_from_uuid",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start From Uuid"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Page Size"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ImageRepresentation"
+                  },
+                  "title": "Response Searchimagerepresentationbyfileuri"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/private/study": {
+      "post": {
+        "tags": [
+          "private"
+        ],
+        "summary": "Create Study",
+        "operationId": "postStudy",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Study"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/v2/private/file_reference": {
+      "post": {
+        "tags": [
+          "private"
+        ],
+        "summary": "Create FileReference",
+        "operationId": "postFileReference",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FileReference"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/v2/private/image_representation": {
+      "post": {
+        "tags": [
+          "private"
+        ],
+        "summary": "Create ImageRepresentation",
+        "operationId": "postImageRepresentation",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageRepresentation"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/v2/private/experimental_imaging_dataset": {
+      "post": {
+        "tags": [
+          "private"
+        ],
+        "summary": "Create ExperimentalImagingDataset",
+        "operationId": "postExperimentalImagingDataset",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExperimentalImagingDataset"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/v2/private/specimen": {
+      "post": {
+        "tags": [
+          "private"
+        ],
+        "summary": "Create Specimen",
+        "operationId": "postSpecimen",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Specimen"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/v2/private/experimentally_captured_image": {
+      "post": {
+        "tags": [
+          "private"
+        ],
+        "summary": "Create ExperimentallyCapturedImage",
+        "operationId": "postExperimentallyCapturedImage",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExperimentallyCapturedImage"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/v2/private/image_acquisition": {
+      "post": {
+        "tags": [
+          "private"
+        ],
+        "summary": "Create ImageAcquisition",
+        "operationId": "postImageAcquisition",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageAcquisition"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/v2/private/specimen_imaging_preparation_protocol": {
+      "post": {
+        "tags": [
+          "private"
+        ],
+        "summary": "Create SpecimenImagingPreparationProtocol",
+        "operationId": "postSpecimenImagingPreparationProtocol",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpecimenImagingPreparationProtocol"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/v2/private/specimen_growth_protocol": {
+      "post": {
+        "tags": [
+          "private"
+        ],
+        "summary": "Create SpecimenGrowthProtocol",
+        "operationId": "postSpecimenGrowthProtocol",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpecimenGrowthProtocol"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/v2/private/bio_sample": {
+      "post": {
+        "tags": [
+          "private"
+        ],
+        "summary": "Create BioSample",
+        "operationId": "postBioSample",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BioSample"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/v2/private/image_annotation_dataset": {
+      "post": {
+        "tags": [
+          "private"
+        ],
+        "summary": "Create ImageAnnotationDataset",
+        "operationId": "postImageAnnotationDataset",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageAnnotationDataset"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/v2/private/annotation_file_reference": {
+      "post": {
+        "tags": [
+          "private"
+        ],
+        "summary": "Create AnnotationFileReference",
+        "operationId": "postAnnotationFileReference",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AnnotationFileReference"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/v2/private/derived_image": {
+      "post": {
+        "tags": [
+          "private"
+        ],
+        "summary": "Create DerivedImage",
+        "operationId": "postDerivedImage",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DerivedImage"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/v2/private/annotation_method": {
+      "post": {
+        "tags": [
+          "private"
+        ],
+        "summary": "Create AnnotationMethod",
+        "operationId": "postAnnotationMethod",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AnnotationMethod"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Affiliation": {
+        "properties": {
+          "rorid": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rorid",
+            "description": "Reasearch Organisation Registry ID."
+          },
+          "address": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Address",
+            "description": "Comma separated lines of the address."
+          },
+          "website": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "format": "uri"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Website",
+            "description": "The website page with information about the Organisation."
+          },
+          "display_name": {
+            "type": "string",
+            "title": "Display Name",
+            "description": "Name as it should be displayed on the BioImage Archive."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "display_name"
+        ],
+        "title": "Affiliation",
+        "description": "An organsiation that a contributor is affiliated with."
+      },
+      "AnnotationFileReference": {
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Uuid",
+            "description": "Unique ID (across the BIA database) used to refer to and identify a document."
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0,
+            "title": "Version",
+            "description": "Document version. This can't be optional to make sure we never persist objects without it"
+          },
+          "model": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ModelMetadata"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Model type and version. Used to map arbitrary objects to a known (possibly previously-used) type.\n        Optional because for some usecases (e.g. api) we want to accept objects without it because we have the info we need to set it."
+          },
+          "transformation_description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Transformation Description",
+            "description": "Any transformations required to link annotations to the image."
+          },
+          "spatial_information": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Spatial Information",
+            "description": "Spatial information for non-pixel annotations."
+          },
+          "file_path": {
+            "type": "string",
+            "title": "File Path",
+            "description": "The path (including the name) of the file."
+          },
+          "format": {
+            "type": "string",
+            "title": "Format",
+            "description": "File format or type."
+          },
+          "size_in_bytes": {
+            "type": "integer",
+            "title": "Size In Bytes",
+            "description": "Disc size in bytes."
+          },
+          "uri": {
+            "type": "string",
+            "title": "Uri",
+            "description": "URI from which the file can be accessed."
+          },
+          "attribute": {
+            "type": "object",
+            "title": "Attribute",
+            "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
+          },
+          "submission_dataset_uuid": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Submission Dataset Uuid"
+          },
+          "source_image_uuid": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "title": "Source Image Uuid"
+          },
+          "creation_process_uuid": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "title": "Creation Process Uuid"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "uuid",
+          "version",
+          "file_path",
+          "format",
+          "size_in_bytes",
+          "uri",
+          "attribute",
+          "submission_dataset_uuid",
+          "source_image_uuid",
+          "creation_process_uuid"
+        ],
+        "title": "AnnotationFileReference"
+      },
+      "AnnotationMethod": {
+        "properties": {
+          "title_id": {
+            "type": "string",
+            "title": "Title Id",
+            "description": "User provided title, which is unqiue within a submission, used to identify a part of a submission."
+          },
+          "uuid": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Uuid",
+            "description": "Unique ID (across the BIA database) used to refer to and identify a document."
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0,
+            "title": "Version",
+            "description": "Document version. This can't be optional to make sure we never persist objects without it"
+          },
+          "model": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ModelMetadata"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Model type and version. Used to map arbitrary objects to a known (possibly previously-used) type.\n        Optional because for some usecases (e.g. api) we want to accept objects without it because we have the info we need to set it."
+          },
+          "protocol_description": {
+            "type": "string",
+            "title": "Protocol Description",
+            "description": "Description of steps involved in the process."
+          },
+          "annotation_criteria": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Annotation Criteria",
+            "description": "Rules used to generate annotations."
+          },
+          "annotation_coverage": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Annotation Coverage",
+            "description": "Which images from the dataset were annotated, and what percentage of the data has been annotated from what is available."
+          },
+          "method_type": {
+            "$ref": "#/components/schemas/AnnotationType",
+            "description": "Classification of the kind of annotation that was performed."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "title_id",
+          "uuid",
+          "version",
+          "protocol_description",
+          "method_type"
+        ],
+        "title": "AnnotationMethod"
+      },
+      "AnnotationType": {
+        "type": "string",
+        "enum": [
+          "class_labels",
+          "bounding_boxes",
+          "counts",
+          "derived_annotations",
+          "geometrical_annotations",
+          "graphs",
+          "point_annotations",
+          "segmentation_mask",
+          "tracks",
+          "weak_annotations",
+          "other"
+        ],
+        "title": "AnnotationType"
+      },
+      "AuthenticationToken": {
+        "properties": {
+          "access_token": {
+            "type": "string",
+            "title": "Access Token"
+          },
+          "token_type": {
+            "type": "string",
+            "title": "Token Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "access_token",
+          "token_type"
+        ],
+        "title": "AuthenticationToken"
+      },
+      "BioSample": {
+        "properties": {
+          "title_id": {
+            "type": "string",
+            "title": "Title Id",
+            "description": "User provided title, which is unqiue within a submission, used to identify a part of a submission."
+          },
+          "uuid": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Uuid",
+            "description": "Unique ID (across the BIA database) used to refer to and identify a document."
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0,
+            "title": "Version",
+            "description": "Document version. This can't be optional to make sure we never persist objects without it"
+          },
+          "model": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ModelMetadata"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Model type and version. Used to map arbitrary objects to a known (possibly previously-used) type.\n        Optional because for some usecases (e.g. api) we want to accept objects without it because we have the info we need to set it."
+          },
+          "organism_classification": {
+            "items": {
+              "$ref": "#/components/schemas/Taxon"
+            },
+            "type": "array",
+            "title": "Organism Classification",
+            "description": "The classification of th ebiological matter."
+          },
+          "biological_entity_description": {
+            "type": "string",
+            "title": "Biological Entity Description",
+            "description": "A short description of the biological entity."
+          },
+          "experimental_variable_description": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Experimental Variable Description",
+            "description": "What is intentionally varied (e.g. time) between multiple entries in this study component"
+          },
+          "extrinsic_variable_description": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Extrinsic Variable Description",
+            "description": "External treatment (e.g. reagent)."
+          },
+          "intrinsic_variable_description": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Intrinsic Variable Description",
+            "description": "Intrinsic (e.g. genetic) alteration."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "title_id",
+          "uuid",
+          "version",
+          "organism_classification",
+          "biological_entity_description"
+        ],
+        "title": "BioSample"
+      },
+      "Body_login_for_access_token": {
+        "properties": {
+          "grant_type": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "password"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Grant Type"
+          },
+          "username": {
+            "type": "string",
+            "title": "Username"
+          },
+          "password": {
+            "type": "string",
+            "title": "Password"
+          },
+          "scope": {
+            "type": "string",
+            "title": "Scope",
+            "default": ""
+          },
+          "client_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Client Id"
+          },
+          "client_secret": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Client Secret"
+          }
+        },
+        "type": "object",
+        "required": [
+          "username",
+          "password"
+        ],
+        "title": "Body_login_for_access_token"
+      },
+      "Body_register_user": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "title": "Email"
+          },
+          "password_plain": {
+            "type": "string",
+            "title": "Password Plain"
+          },
+          "secret_token": {
+            "type": "string",
+            "title": "Secret Token"
+          }
+        },
+        "type": "object",
+        "required": [
+          "email",
+          "password_plain",
+          "secret_token"
+        ],
+        "title": "Body_register_user"
+      },
+      "Channel": {
+        "properties": {
+          "colormap_start": {
+            "type": "number",
+            "title": "Colormap Start",
+            "description": "Start value of colormap"
+          },
+          "colormap_end": {
+            "type": "number",
+            "title": "Colormap End",
+            "description": "End value of colormap"
+          },
+          "scale_factor": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scale Factor"
+          },
+          "label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Label",
+            "description": "Label describing the channel for display."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "colormap_start",
+          "colormap_end"
+        ],
+        "title": "Channel",
+        "description": "An image channel."
+      },
+      "Contributor": {
+        "properties": {
+          "rorid": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rorid",
+            "description": "Reasearch Organisation Registry ID."
+          },
+          "address": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Address",
+            "description": "Comma separated lines of the address."
+          },
+          "website": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "format": "uri"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Website",
+            "description": "The website page with information about the Organisation."
+          },
+          "orcid": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Orcid",
+            "description": "Open Researcher and Contributor ID."
+          },
+          "display_name": {
+            "type": "string",
+            "title": "Display Name",
+            "description": "Name as it should be displayed on the BioImage Archive."
+          },
+          "affiliation": {
+            "items": {
+              "$ref": "#/components/schemas/Affiliation"
+            },
+            "type": "array",
+            "title": "Affiliation",
+            "description": "The organisation(s) a contributor is afiliated with."
+          },
+          "contact_email": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "email"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Contact Email",
+            "description": "An email address to contact the Contributor."
+          },
+          "role": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Role",
+            "description": "The role of the contributor."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "display_name",
+          "affiliation"
+        ],
+        "title": "Contributor",
+        "description": "A person or group that contributed to the creation of a Document."
+      },
+      "DerivedImage": {
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Uuid",
+            "description": "Unique ID (across the BIA database) used to refer to and identify a document."
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0,
+            "title": "Version",
+            "description": "Document version. This can't be optional to make sure we never persist objects without it"
+          },
+          "model": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ModelMetadata"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Model type and version. Used to map arbitrary objects to a known (possibly previously-used) type.\n        Optional because for some usecases (e.g. api) we want to accept objects without it because we have the info we need to set it."
+          },
+          "attribute": {
+            "type": "object",
+            "title": "Attribute",
+            "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
+          },
+          "transformation_description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Transformation Description",
+            "description": "Any transformations required to link annotations to the image."
+          },
+          "spatial_information": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Spatial Information",
+            "description": "Spatial information for non-pixel annotations."
+          },
+          "source_image_uuid": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "title": "Source Image Uuid"
+          },
+          "submission_dataset_uuid": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Submission Dataset Uuid"
+          },
+          "creation_process_uuid": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "title": "Creation Process Uuid"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "uuid",
+          "version",
+          "attribute",
+          "source_image_uuid",
+          "submission_dataset_uuid",
+          "creation_process_uuid"
+        ],
+        "title": "DerivedImage"
+      },
+      "ExperimentalImagingDataset": {
+        "properties": {
+          "title_id": {
+            "type": "string",
+            "title": "Title Id",
+            "description": "User provided title, which is unqiue within a submission, used to identify a part of a submission."
+          },
+          "uuid": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Uuid",
+            "description": "Unique ID (across the BIA database) used to refer to and identify a document."
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0,
+            "title": "Version",
+            "description": "Document version. This can't be optional to make sure we never persist objects without it"
+          },
+          "model": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ModelMetadata"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Model type and version. Used to map arbitrary objects to a known (possibly previously-used) type.\n        Optional because for some usecases (e.g. api) we want to accept objects without it because we have the info we need to set it."
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description",
+            "description": "Brief description of the dataset."
+          },
+          "attribute": {
+            "type": "object",
+            "title": "Attribute",
+            "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
+          },
+          "analysis_method": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ImageAnalysisMethod"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Analysis Method",
+            "description": "Data analysis processes performed on the images."
+          },
+          "correlation_method": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ImageCorrelationMethod"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Correlation Method",
+            "description": "Processes performed to correlate image data."
+          },
+          "example_image_uri": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Example Image Uri",
+            "description": "A viewable image that is typical of the dataset."
+          },
+          "submitted_in_study_uuid": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Submitted In Study Uuid"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "title_id",
+          "uuid",
+          "version",
+          "attribute",
+          "example_image_uri",
+          "submitted_in_study_uuid"
+        ],
+        "title": "ExperimentalImagingDataset"
+      },
+      "ExperimentallyCapturedImage": {
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Uuid",
+            "description": "Unique ID (across the BIA database) used to refer to and identify a document."
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0,
+            "title": "Version",
+            "description": "Document version. This can't be optional to make sure we never persist objects without it"
+          },
+          "model": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ModelMetadata"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Model type and version. Used to map arbitrary objects to a known (possibly previously-used) type.\n        Optional because for some usecases (e.g. api) we want to accept objects without it because we have the info we need to set it."
+          },
+          "attribute": {
+            "type": "object",
+            "title": "Attribute",
+            "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
+          },
+          "acquisition_process_uuid": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "title": "Acquisition Process Uuid"
+          },
+          "submission_dataset_uuid": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Submission Dataset Uuid"
+          },
+          "subject_uuid": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Subject Uuid"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "uuid",
+          "version",
+          "attribute",
+          "acquisition_process_uuid",
+          "submission_dataset_uuid",
+          "subject_uuid"
+        ],
+        "title": "ExperimentallyCapturedImage"
+      },
+      "ExternalReference": {
+        "properties": {
+          "link": {
+            "type": "string",
+            "minLength": 1,
+            "format": "uri",
+            "title": "Link",
+            "description": "A URL linking to the refered resource."
+          },
+          "link_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Link Type",
+            "description": "Classifies the link by website domain and/or use-case, which is useful for display purposes and faceting search."
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description",
+            "description": "Brief description of the resource and how it relates to the document providing the reference."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "link"
+        ],
+        "title": "ExternalReference",
+        "description": "An object outside the BIA that a user wants to refer to."
+      },
+      "FileReference": {
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Uuid",
+            "description": "Unique ID (across the BIA database) used to refer to and identify a document."
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0,
+            "title": "Version",
+            "description": "Document version. This can't be optional to make sure we never persist objects without it"
+          },
+          "model": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ModelMetadata"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Model type and version. Used to map arbitrary objects to a known (possibly previously-used) type.\n        Optional because for some usecases (e.g. api) we want to accept objects without it because we have the info we need to set it."
+          },
+          "file_path": {
+            "type": "string",
+            "title": "File Path",
+            "description": "The path (including the name) of the file."
+          },
+          "format": {
+            "type": "string",
+            "title": "Format",
+            "description": "File format or type."
+          },
+          "size_in_bytes": {
+            "type": "integer",
+            "title": "Size In Bytes",
+            "description": "Disc size in bytes."
+          },
+          "uri": {
+            "type": "string",
+            "title": "Uri",
+            "description": "URI from which the file can be accessed."
+          },
+          "attribute": {
+            "type": "object",
+            "title": "Attribute",
+            "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
+          },
+          "submission_dataset_uuid": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Submission Dataset Uuid"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "uuid",
+          "version",
+          "file_path",
+          "format",
+          "size_in_bytes",
+          "uri",
+          "attribute",
+          "submission_dataset_uuid"
+        ],
+        "title": "FileReference"
+      },
+      "FundingBody": {
+        "properties": {
+          "display_name": {
+            "type": "string",
+            "title": "Display Name",
+            "description": "Name as it should be displayed on the BioImage Archive."
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Id",
+            "description": "A unique identifier for the Funder, such as an Open Funder Registry ID."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "display_name"
+        ],
+        "title": "FundingBody",
+        "description": ""
+      },
+      "Grant": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Id",
+            "description": "A unique identifier for the grant, such as an Open Funder Registry ID."
+          },
+          "funder": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/FundingBody"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Funder",
+            "description": "The name of the funding body providing support for the grant."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "Grant",
+        "description": ""
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ImageAcquisition": {
+        "properties": {
+          "title_id": {
+            "type": "string",
+            "title": "Title Id",
+            "description": "User provided title, which is unqiue within a submission, used to identify a part of a submission."
+          },
+          "uuid": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Uuid",
+            "description": "Unique ID (across the BIA database) used to refer to and identify a document."
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0,
+            "title": "Version",
+            "description": "Document version. This can't be optional to make sure we never persist objects without it"
+          },
+          "model": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ModelMetadata"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Model type and version. Used to map arbitrary objects to a known (possibly previously-used) type.\n        Optional because for some usecases (e.g. api) we want to accept objects without it because we have the info we need to set it."
+          },
+          "protocol_description": {
+            "type": "string",
+            "title": "Protocol Description",
+            "description": "Description of steps involved in the process."
+          },
+          "imaging_instrument_description": {
+            "type": "string",
+            "title": "Imaging Instrument Description",
+            "description": "Names, types, or description of how the instruments used to create the image."
+          },
+          "fbbi_id": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fbbi Id",
+            "description": "Biological Imaging Methods Ontology id indicating the kind of imaging that was perfomed."
+          },
+          "imaging_method_name": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Imaging Method Name",
+            "description": "Name of the kind of imaging method that was performed."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "title_id",
+          "uuid",
+          "version",
+          "protocol_description",
+          "imaging_instrument_description"
+        ],
+        "title": "ImageAcquisition"
+      },
+      "ImageAnalysisMethod": {
+        "properties": {
+          "protocol_description": {
+            "type": "string",
+            "title": "Protocol Description",
+            "description": "Description of steps involved in the process."
+          },
+          "features_analysed": {
+            "type": "string",
+            "title": "Features Analysed",
+            "description": ""
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "protocol_description",
+          "features_analysed"
+        ],
+        "title": "ImageAnalysisMethod",
+        "description": "Information about image analysis methods."
+      },
+      "ImageAnnotationDataset": {
+        "properties": {
+          "title_id": {
+            "type": "string",
+            "title": "Title Id",
+            "description": "User provided title, which is unqiue within a submission, used to identify a part of a submission."
+          },
+          "uuid": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Uuid",
+            "description": "Unique ID (across the BIA database) used to refer to and identify a document."
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0,
+            "title": "Version",
+            "description": "Document version. This can't be optional to make sure we never persist objects without it"
+          },
+          "model": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ModelMetadata"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Model type and version. Used to map arbitrary objects to a known (possibly previously-used) type.\n        Optional because for some usecases (e.g. api) we want to accept objects without it because we have the info we need to set it."
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description",
+            "description": "Brief description of the dataset."
+          },
+          "attribute": {
+            "type": "object",
+            "title": "Attribute",
+            "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
+          },
+          "example_image_uri": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Example Image Uri",
+            "description": "A viewable image that is typical of the dataset."
+          },
+          "submitted_in_study_uuid": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Submitted In Study Uuid"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "title_id",
+          "uuid",
+          "version",
+          "attribute",
+          "example_image_uri",
+          "submitted_in_study_uuid"
+        ],
+        "title": "ImageAnnotationDataset"
+      },
+      "ImageCorrelationMethod": {
+        "properties": {
+          "protocol_description": {
+            "type": "string",
+            "title": "Protocol Description",
+            "description": "Description of steps involved in the process."
+          },
+          "fiducials_used": {
+            "type": "string",
+            "title": "Fiducials Used",
+            "description": "Features from correlated datasets used for colocalization."
+          },
+          "transformation_matrix": {
+            "type": "string",
+            "title": "Transformation Matrix",
+            "description": "Correlation transforms."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "protocol_description",
+          "fiducials_used",
+          "transformation_matrix"
+        ],
+        "title": "ImageCorrelationMethod",
+        "description": "Information about the process of correlating the positions of multiple images."
+      },
+      "ImageRepresentation": {
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Uuid",
+            "description": "Unique ID (across the BIA database) used to refer to and identify a document."
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0,
+            "title": "Version",
+            "description": "Document version. This can't be optional to make sure we never persist objects without it"
+          },
+          "model": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ModelMetadata"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Model type and version. Used to map arbitrary objects to a known (possibly previously-used) type.\n        Optional because for some usecases (e.g. api) we want to accept objects without it because we have the info we need to set it."
+          },
+          "image_format": {
+            "type": "string",
+            "title": "Image Format",
+            "description": "Image format of the combined files."
+          },
+          "use_type": {
+            "$ref": "#/components/schemas/ImageRepresentationUseType",
+            "description": "The use case of this particular image representation i.e. thumbnail, interactive display etc."
+          },
+          "file_uri": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "File Uri",
+            "description": "URI(s) of the file(s) which together make up this image representation."
+          },
+          "total_size_in_bytes": {
+            "type": "integer",
+            "title": "Total Size In Bytes",
+            "description": "Combined disc size in bytes of all the files."
+          },
+          "physical_size_x": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Physical Size X",
+            "description": "Size of the physical space (in meters) captured in the field of view of the image."
+          },
+          "physical_size_y": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Physical Size Y",
+            "description": "Size of the physical space (in meters) captured in the field of view of the image."
+          },
+          "physical_size_z": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Physical Size Z",
+            "description": "Size of the physical space (in meters) captured in the field of view of the image."
+          },
+          "size_x": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Size X",
+            "description": "Pixels or voxels dimension of the data array of the image."
+          },
+          "size_y": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Size Y",
+            "description": "Pixels or voxels dimension of the data array of the image."
+          },
+          "size_z": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Size Z",
+            "description": "Pixels or voxels dimension of the data array of the image."
+          },
+          "size_c": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Size C",
+            "description": "Number of channels of the image."
+          },
+          "size_t": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Size T",
+            "description": "Size of temporal dimension of the data array of the image."
+          },
+          "image_viewer_setting": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/RenderedView"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Image Viewer Setting",
+            "description": "Settings of a particular view of an image, such as a specific timestamp of a timeseries, or camera placement in a 3D model."
+          },
+          "attribute": {
+            "type": "object",
+            "title": "Attribute",
+            "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
+          },
+          "original_file_reference_uuid": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Original File Reference Uuid"
+          },
+          "representation_of_uuid": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Representation Of Uuid"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "uuid",
+          "version",
+          "image_format",
+          "use_type",
+          "file_uri",
+          "total_size_in_bytes",
+          "attribute",
+          "representation_of_uuid"
+        ],
+        "title": "ImageRepresentation"
+      },
+      "ImageRepresentationUseType": {
+        "type": "string",
+        "enum": [
+          "UPLOADED_BY_SUBMITTER",
+          "STATIC_DISPLAY",
+          "THUMBNAIL",
+          "INTERACTIVE_DISPLAY"
+        ],
+        "title": "ImageRepresentationUseType",
+        "description": "Enumerate use types of ImageRepresentations"
+      },
+      "LicenceType": {
+        "type": "string",
+        "enum": [
+          "CC0",
+          "CC_BY_4.0",
+          "CC_BY-SA_3.0",
+          "CC_BY-NC-SA_3.0",
+          "CC_BY-NC-ND_4.0",
+          "CC_BY-SA_2.1_JP"
+        ],
+        "title": "LicenceType"
+      },
+      "ModelMetadata": {
+        "properties": {
+          "type_name": {
+            "type": "string",
+            "title": "Type Name"
+          },
+          "version": {
+            "type": "integer",
+            "title": "Version"
+          }
+        },
+        "type": "object",
+        "required": [
+          "type_name",
+          "version"
+        ],
+        "title": "ModelMetadata"
+      },
+      "Publication": {
+        "properties": {
+          "authors_name": {
+            "type": "string",
+            "title": "Authors Name",
+            "description": "The list of names of the authors as displayed in the publication."
+          },
+          "title": {
+            "type": "string",
+            "title": "Title",
+            "description": "The title of the publication."
+          },
+          "publication_year": {
+            "type": "integer",
+            "title": "Publication Year",
+            "description": "Year the article was published"
+          },
+          "pubmed_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pubmed Id",
+            "description": "Identifier for journal articles/abstracts in PubMed"
+          },
+          "doi": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Doi",
+            "description": "Digital Object Identifier (DOI)"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "authors_name",
+          "title",
+          "publication_year"
+        ],
+        "title": "Publication",
+        "description": "A published paper or written work."
+      },
+      "RenderedView": {
+        "properties": {
+          "z": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Z",
+            "description": "A z-value for the position of the image view"
+          },
+          "t": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "T",
+            "description": "A t-value for the timestamp of the image view"
+          },
+          "channel_information": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Channel"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Channel Information",
+            "description": "Information about the channels involved in displaying this view of the image."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "RenderedView",
+        "description": "A particular view of an image, such as as a specific timestamp of a time series, or a view direction of a 3D model."
+      },
+      "SignalChannelInformation": {
+        "properties": {
+          "signal_contrast_mechanism_description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Signal Contrast Mechanism Description",
+            "description": "How is the signal is generated by this sample."
+          },
+          "channel_content_description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Channel Content Description",
+            "description": "What staining was used in preparation of the specimen (e.g. IEM, DAB)."
+          },
+          "channel_biological_entity": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Channel Biological Entity",
+            "description": "What molecule is stained."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "SignalChannelInformation",
+        "description": "Information about how signals were generated, staining compounds and their targets."
+      },
+      "Specimen": {
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Uuid",
+            "description": "Unique ID (across the BIA database) used to refer to and identify a document."
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0,
+            "title": "Version",
+            "description": "Document version. This can't be optional to make sure we never persist objects without it"
+          },
+          "model": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ModelMetadata"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Model type and version. Used to map arbitrary objects to a known (possibly previously-used) type.\n        Optional because for some usecases (e.g. api) we want to accept objects without it because we have the info we need to set it."
+          },
+          "imaging_preparation_protocol_uuid": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Imaging Preparation Protocol Uuid"
+          },
+          "sample_of_uuid": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Sample Of Uuid"
+          },
+          "growth_protocol_uuid": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "title": "Growth Protocol Uuid"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "uuid",
+          "version",
+          "imaging_preparation_protocol_uuid",
+          "sample_of_uuid",
+          "growth_protocol_uuid"
+        ],
+        "title": "Specimen"
+      },
+      "SpecimenGrowthProtocol": {
+        "properties": {
+          "title_id": {
+            "type": "string",
+            "title": "Title Id",
+            "description": "User provided title, which is unqiue within a submission, used to identify a part of a submission."
+          },
+          "uuid": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Uuid",
+            "description": "Unique ID (across the BIA database) used to refer to and identify a document."
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0,
+            "title": "Version",
+            "description": "Document version. This can't be optional to make sure we never persist objects without it"
+          },
+          "model": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ModelMetadata"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Model type and version. Used to map arbitrary objects to a known (possibly previously-used) type.\n        Optional because for some usecases (e.g. api) we want to accept objects without it because we have the info we need to set it."
+          },
+          "protocol_description": {
+            "type": "string",
+            "title": "Protocol Description",
+            "description": "Description of steps involved in the process."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "title_id",
+          "uuid",
+          "version",
+          "protocol_description"
+        ],
+        "title": "SpecimenGrowthProtocol"
+      },
+      "SpecimenImagingPreparationProtocol": {
+        "properties": {
+          "title_id": {
+            "type": "string",
+            "title": "Title Id",
+            "description": "User provided title, which is unqiue within a submission, used to identify a part of a submission."
+          },
+          "uuid": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Uuid",
+            "description": "Unique ID (across the BIA database) used to refer to and identify a document."
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0,
+            "title": "Version",
+            "description": "Document version. This can't be optional to make sure we never persist objects without it"
+          },
+          "model": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ModelMetadata"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Model type and version. Used to map arbitrary objects to a known (possibly previously-used) type.\n        Optional because for some usecases (e.g. api) we want to accept objects without it because we have the info we need to set it."
+          },
+          "protocol_description": {
+            "type": "string",
+            "title": "Protocol Description",
+            "description": "Description of steps involved in the process."
+          },
+          "signal_channel_information": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/SignalChannelInformation"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Signal Channel Information",
+            "description": "Information about how channels in the image relate to image signal generation."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "title_id",
+          "uuid",
+          "version",
+          "protocol_description"
+        ],
+        "title": "SpecimenImagingPreparationProtocol"
+      },
+      "Study": {
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Uuid",
+            "description": "Unique ID (across the BIA database) used to refer to and identify a document."
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0,
+            "title": "Version",
+            "description": "Document version. This can't be optional to make sure we never persist objects without it"
+          },
+          "model": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ModelMetadata"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Model type and version. Used to map arbitrary objects to a known (possibly previously-used) type.\n        Optional because for some usecases (e.g. api) we want to accept objects without it because we have the info we need to set it."
+          },
+          "accession_id": {
+            "type": "string",
+            "title": "Accession Id",
+            "description": "Unique ID provided by BioStudies."
+          },
+          "licence": {
+            "$ref": "#/components/schemas/LicenceType",
+            "description": "The license under which the data associated with the study is made avaliable."
+          },
+          "author": {
+            "items": {
+              "$ref": "#/components/schemas/Contributor"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Author"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title",
+            "description": "The title of a study. This will usually be displayed when search results including your data are shown."
+          },
+          "release_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Release Date",
+            "description": "Date of first publication"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description",
+            "description": "Brief description of the study."
+          },
+          "keyword": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Keyword",
+            "description": "Keywords or tags used to describe the subject or context of the study."
+          },
+          "acknowledgement": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Acknowledgement",
+            "description": "Any person or group that should be acknowledged outside of the authors/main contributors to the study."
+          },
+          "see_also": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ExternalReference"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "See Also",
+            "description": "Links to publications, github repositories, and other pages related to this Study."
+          },
+          "related_publication": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Publication"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Related Publication",
+            "description": "The publications that the work involved in the study contributed to."
+          },
+          "grant": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Grant"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Grant",
+            "description": "The grants that funded the study."
+          },
+          "funding_statement": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Funding Statement",
+            "description": "Description of how the study was funded."
+          },
+          "attribute": {
+            "type": "object",
+            "title": "Attribute",
+            "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "uuid",
+          "version",
+          "accession_id",
+          "licence",
+          "author",
+          "title",
+          "release_date",
+          "description",
+          "attribute"
+        ],
+        "title": "Study"
+      },
+      "Taxon": {
+        "properties": {
+          "common_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Common Name",
+            "description": "Name used to refer to the species that can vary by locallity."
+          },
+          "scientific_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scientific Name",
+            "description": "unique name used by the scientific community to identify species."
+          },
+          "ncbi_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ncbi Id",
+            "description": "unique name used by the scientific community to identify species."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "Taxon",
+        "description": "The classification of a biological entity."
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    },
+    "securitySchemes": {
+      "OAuth2PasswordBearer": {
+        "type": "oauth2",
+        "flows": {
+          "password": {
+            "scopes": {},
+            "tokenUrl": "v2/auth/token"
+          }
+        }
+      }
+    }
+  }
+}
