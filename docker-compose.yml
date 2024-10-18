@@ -12,10 +12,6 @@ services:
       interval: 1s
       timeout: 1s
       retries: 5
-      # command: "mongod --config /etc/mongo.conf --oplogMinRetentionHours 10"
-      # volumes:
-      #   - "./.share/mongo.conf:/etc/mongo.conf"
-      #     #- "./.share/keyfile.secret:/home/share/keyfile/keyfile.secret"
   bia-integrator-api:
     build:
       context: .
@@ -30,8 +26,24 @@ services:
       - 8080
     depends_on:
       - biaint-mongo
-
-volumes:
-  api_data:
-    #? do we always want a 'seed db'?
-    #external: true
+    healthcheck:
+      # !! important to sync services
+      test: ["CMD", "wget", "-O", "-", "api:8080/openapi.json"]
+      interval: 1s
+      timeout: 10s
+      retries: 10
+  client-refresh:
+    depends_on:
+      bia-integrator-api:
+        condition: service_healthy
+    container_name: openapi-generator
+    user: ${MY_UID}
+    image: openapitools/openapi-generator-cli:v7.8.0
+    # docker-entrypoint.sh does argument parsing in the entrypoint and only picks up the bash command
+    #   so re-run after pulling openapi.json to have the right env setup
+    command: bash -c "wget -q -O - api:8080/openapi.json > openapi.json && docker-entrypoint.sh generate --config openapi_config_python.yml -i openapi.json -g python -o python"
+    working_dir: /mnt/share
+    volumes:
+      - ./clients:/mnt/share
+    profiles:
+      - codegen
