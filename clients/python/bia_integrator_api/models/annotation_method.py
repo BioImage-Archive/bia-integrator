@@ -36,7 +36,7 @@ class AnnotationMethod(BaseModel):
     protocol_description: StrictStr = Field(description="Description of steps involved in the process.")
     annotation_criteria: Optional[StrictStr] = None
     annotation_coverage: Optional[StrictStr] = None
-    method_type: AnnotationType = Field(description="Classification of the kind of annotation that was performed.")
+    method_type: AnnotationType
     __properties: ClassVar[List[str]] = ["title_id", "uuid", "version", "model", "protocol_description", "annotation_criteria", "annotation_coverage", "method_type"]
 
     model_config = ConfigDict(

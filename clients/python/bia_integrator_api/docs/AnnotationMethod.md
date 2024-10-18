@@ -12,7 +12,7 @@ Name | Type | Description | Notes
 **protocol_description** | **str** | Description of steps involved in the process. | 
 **annotation_criteria** | **str** |  | [optional] 
 **annotation_coverage** | **str** |  | [optional] 
-**method_type** | [**AnnotationType**](AnnotationType.md) | Classification of the kind of annotation that was performed. | 
+**method_type** | [**AnnotationType**](AnnotationType.md) |  | 
 
 ## Example
 

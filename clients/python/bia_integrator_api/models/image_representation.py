@@ -34,7 +34,7 @@ class ImageRepresentation(BaseModel):
     version: Annotated[int, Field(strict=True, ge=0)] = Field(description="Document version. This can't be optional to make sure we never persist objects without it")
     model: Optional[ModelMetadata] = None
     image_format: StrictStr = Field(description="Image format of the combined files.")
-    use_type: ImageRepresentationUseType = Field(description="The use case of this particular image representation i.e. thumbnail, interactive display etc.")
+    use_type: ImageRepresentationUseType
     file_uri: List[StrictStr] = Field(description="URI(s) of the file(s) which together make up this image representation.")
     total_size_in_bytes: StrictInt = Field(description="Combined disc size in bytes of all the files.")
     physical_size_x: Optional[Union[StrictFloat, StrictInt]] = None

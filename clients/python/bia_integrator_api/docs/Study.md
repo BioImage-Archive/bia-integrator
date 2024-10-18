@@ -9,7 +9,7 @@ Name | Type | Description | Notes
 **version** | **int** | Document version. This can&#39;t be optional to make sure we never persist objects without it | 
 **model** | [**ModelMetadata**](ModelMetadata.md) |  | [optional] 
 **accession_id** | **str** | Unique ID provided by BioStudies. | 
-**licence** | [**LicenceType**](LicenceType.md) | The license under which the data associated with the study is made avaliable. | 
+**licence** | [**LicenceType**](LicenceType.md) |  | 
 **author** | [**List[Contributor]**](Contributor.md) |  | 
 **title** | **str** | The title of a study. This will usually be displayed when search results including your data are shown. | 
 **release_date** | **date** | Date of first publication | 
