@@ -241,14 +241,14 @@ class Specimen(semantic_models.Specimen, DocumentMixin):
 
 
 class CreationProcess(semantic_models.CreationProcess, DocumentMixin):
-    specimen_uuid: Annotated[Optional[UUID], ObjectReference(Specimen)] = Field(
+    subject_specimen_uuid: Annotated[Optional[UUID], ObjectReference(Specimen)] = Field(
         default=None
     )
     image_acquisition_protocol_uuid: Annotated[
         Optional[UUID], ObjectReference(ImageAcquisitionProtocol)
     ] = Field(default=None)
 
-    image_uuid: Annotated[Optional[List[UUID]], ObjectReference(Specimen)] = Field(
+    input_image_uuid: Annotated[Optional[List[UUID]], ObjectReference(Specimen)] = Field(
         default_factory=lambda: []
     )
     protocol_uuid: Annotated[Optional[List[UUID]], ObjectReference(Protocol)] = Field(
