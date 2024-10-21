@@ -9,7 +9,13 @@ import pytest
 from bia_shared_datamodels import bia_data_model, mock_objects
 from bia_ingest.persistence_strategy import DiskPersister
 from bia_ingest.bia_object_creation_utils import dict_to_uuid
+from bia_ingest.cli_logging import ImageCreationResult
 from bia_converter_light import image_representation
+
+
+@pytest.fixture
+def image_creation_result_summary():
+    return ImageCreationResult()
 
 
 @pytest.fixture()
