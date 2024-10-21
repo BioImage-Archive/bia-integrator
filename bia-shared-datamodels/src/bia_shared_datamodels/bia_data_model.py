@@ -212,7 +212,6 @@ class ImageRepresentation(
     semantic_models.ImageRepresentation,
     DocumentMixin,
 ):
-    # We may want to store the FileReference -> Image(Represenation) rather than in the original_file_reference_uuid
     original_file_reference_uuid: Annotated[
         Optional[List[UUID]], ObjectReference(FileReference)
     ] = Field(default_factory=lambda: [])
@@ -232,9 +231,13 @@ class ImageRepresentation(
 class Specimen(semantic_models.Specimen, DocumentMixin):
     imaging_preparation_protocol_uuid: Annotated[
         List[UUID], ObjectReference(SpecimenImagingPreparationProtocol)
-    ] = Field(min_length=1)
+    ] = Field(
+        min_length=1,
+        description="The protocol that was followed in order to perpare a biosample for imaging.",
+    )
     sample_of_uuid: Annotated[List[UUID], ObjectReference(BioSample)] = Field(
-        min_length=1
+        min_length=1,
+        description="The biosample from which this specimen was created.",
     )
 
     model_config = ConfigDict(model_version_latest=1)
@@ -242,21 +245,30 @@ class Specimen(semantic_models.Specimen, DocumentMixin):
 
 class CreationProcess(semantic_models.CreationProcess, DocumentMixin):
     subject_specimen_uuid: Annotated[Optional[UUID], ObjectReference(Specimen)] = Field(
-        default=None
+        default=None,
+        description="The biological specimen that is the subject of the image.",
     )
     image_acquisition_protocol_uuid: Annotated[
         Optional[List[UUID]], ObjectReference(ImageAcquisitionProtocol)
-    ] = Field(default_factory=lambda: [])
+    ] = Field(
+        default_factory=lambda: [],
+        description="The imaging protocol, describing the technique that was used to create the image.",
+    )
 
     input_image_uuid: Annotated[Optional[List[UUID]], ObjectReference(Image)] = Field(
-        default_factory=lambda: []
+        default_factory=lambda: [],
+        description="The images used as input data for the creation of a new image.",
     )
     protocol_uuid: Annotated[Optional[List[UUID]], ObjectReference(Protocol)] = Field(
-        None
+        default_factory=lambda: [],
+        description="A protocol which was followed that resulted in the creation of this new image from existing image data.",
     )
     annotation_method_uuid: Annotated[
         Optional[List[UUID]], ObjectReference(AnnotationMethod)
-    ] = Field(default_factory=lambda: [])
+    ] = Field(
+        default_factory=lambda: [],
+        description="The annotation method describing the process followed to create a new image from exsiting image data.",
+    )
 
     model_config = ConfigDict(model_version_latest=1)
 
@@ -288,7 +300,8 @@ class BioSample(
 ):
     model_config = ConfigDict(model_version_latest=2)
     growth_protocol_uuid: Annotated[Optional[UUID], ObjectReference(Protocol)] = Field(
-        None
+        None,
+        description="The protocol that was followed in order to create this biosample.",
     )
 
 
