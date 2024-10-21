@@ -241,27 +241,24 @@ class Specimen(semantic_models.Specimen, DocumentMixin):
 
 
 class CreationProcess(semantic_models.CreationProcess, DocumentMixin):
-    input_uuid: Annotated[
-        List[UUID],
-        ObjectReference(
-            None,
-            workaround_union_reference_types=[
-                Image,
-                Specimen,
-            ],
-        ),
-    ] = Field()
-    protocol_uuid: Annotated[
-        List[UUID],
-        ObjectReference(
-            None,
-            workaround_union_reference_types=[
-                ImageAcquisitionProtocol,
-                AnnotationMethod,
-                Protocol,
-            ],
-        ),
-    ] = Field()
+    specimen_uuid: Annotated[Optional[UUID], ObjectReference(Specimen)] = Field(
+        default=None
+    )
+    image_acquisition_protocol_uuid: Annotated[
+        Optional[UUID], ObjectReference(ImageAcquisitionProtocol)
+    ] = Field(default=None)
+
+    image_uuid: Annotated[Optional[List[UUID]], ObjectReference(Specimen)] = Field(
+        default_factory=lambda: []
+    )
+    protocol_uuid: Annotated[Optional[List[UUID]], ObjectReference(Protocol)] = Field(
+        None
+    )
+    annotation_method_uuid: Annotated[
+        Optional[List[UUID]], ObjectReference(AnnotationMethod)
+    ] = Field(default_factory=lambda: [])
+
+    model_config = ConfigDict(model_version_latest=1)
 
 
 class Protocol(semantic_models.Protocol, DocumentMixin):

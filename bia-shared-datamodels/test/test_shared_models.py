@@ -54,6 +54,7 @@ from typing import Callable
         (semantic_models.Contributor, mock_objects.get_contributor_dict),
         (bia_data_model.Study, mock_objects.get_study_dict),
         (semantic_models.Attribute, mock_objects.get_attribute_dict),
+        (bia_data_model.CreationProcess, mock_objects.get_creation_process_dict)
     ),
 )
 class TestCreateObject:

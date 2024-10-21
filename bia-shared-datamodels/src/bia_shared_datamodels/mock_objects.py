@@ -233,6 +233,15 @@ def get_creation_process_dict(completeness=Completeness.COMPLETE) -> dict:
     if completeness == Completeness.COMPLETE:
         process |= {
             "model": {"type_name": "CreationProcess", "version": 1},
+            "specimen_uuid": get_specimen_dict()["uuid"],
+            "image_acquisition_protocol_uuid": get_image_acquisition_protocol_dict()[
+                "uuid"
+            ],
+            "image_uuid": [
+                uuid4()  # Can't call get_image_dict() otherwise we loop endlessly
+            ],
+            "protocol_uuid": [get_protocol_dict()["uuid"]],
+            "annotation_method_uuid": [get_annotation_method_dict()["uuid"]],
         }
 
     return process
