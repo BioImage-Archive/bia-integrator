@@ -1,8 +1,8 @@
 import typer
-from typing_extensions import Annotated
+from typing_extensions import Annotated, List
 
 from bia_shared_datamodels.semantic_models import ImageRepresentationUseType
-from .config import api_client
+from .config import api_client, settings
 
 from .io import stage_fileref_and_get_fpath, copy_local_to_s3
 from .conversion import cached_convert_to_zarr_and_get_fpath, get_local_path_to_zarr
@@ -12,6 +12,15 @@ from .rendering import generate_padded_thumbnail_from_ngff_uri
 import logging
 from rich.logging import RichHandler
 
+from bia_integrator_api.api.private_api import PrivateApi
+from bia_ingest.persistence_strategy import (
+    persistence_strategy_factory,
+    PersistenceMode,
+)
+from bia_ingest.cli_logging import ImageCreationResult
+
+from bia_converter_light.image_representation import create_image_representation
+
 app = typer.Typer()
 
 
@@ -19,7 +28,17 @@ logging.basicConfig(
     level=logging.INFO, format="%(message)s", handlers=[RichHandler(show_time=False)]
 )
 
+# Set default page size for API queries
+DEFAULT_PAGE_SIZE = 10000
+
 logger = logging.getLogger()
+
+representations_app = typer.Typer()
+app.add_typer(
+    representations_app,
+    name="representations",
+    help="Create specified representations",
+)
 
 
 @app.command(help="Convert image for given image representation UUID")
@@ -39,6 +58,9 @@ def convert_image(
     if verbose:
         logger.setLevel(logging.DEBUG)
 
+    assert isinstance(
+        api_client, PrivateApi
+    ), f"Expected valid instance of <class 'PrivateApi'>. Got : {type(api_client)} - are your API credentials valid and/or is the API server online?"
     representation = api_client.get_image_representation(image_representation_uuid)
     file_reference = api_client.get_file_reference(
         representation.original_file_reference_uuid[0]
@@ -111,7 +133,8 @@ def convert_image(
         )
         representations_for_eci = (
             api_client.get_image_representation_in_experimentally_captured_image(
-                eci.uuid
+                eci.uuid,
+                page_size=DEFAULT_PAGE_SIZE,
             )
         )
         try:
@@ -176,6 +199,72 @@ def convert_image(
         raise Exception(
             f"Unknown image representation use type: {representation.use_type}"
         )
+
+
+@representations_app.command(help="Create specified representations")
+def create(
+    accession_id: Annotated[str, typer.Argument()],
+    file_reference_uuid_list: Annotated[List[str], typer.Argument()],
+    persistence_mode: Annotated[
+        PersistenceMode, typer.Option(case_sensitive=False)
+    ] = PersistenceMode.disk,
+    reps_to_create: Annotated[
+        List[ImageRepresentationUseType], typer.Option(case_sensitive=False)
+    ] = [
+        ImageRepresentationUseType.UPLOADED_BY_SUBMITTER,
+        ImageRepresentationUseType.THUMBNAIL,
+        ImageRepresentationUseType.INTERACTIVE_DISPLAY,
+    ],
+    verbose: Annotated[bool, typer.Option("--verbose", "-v")] = False,
+) -> None:
+    """Create representations for specified file reference(s)"""
+
+    if verbose:
+        logger.setLevel(logging.DEBUG)
+
+    result_summary = {}
+
+    persister = persistence_strategy_factory(
+        persistence_mode,
+        output_dir_base=settings.bia_data_dir,
+        accession_id=accession_id,
+        api_client=api_client,
+    )
+
+    result_summary = ImageCreationResult()
+    for file_reference_uuid in file_reference_uuid_list:
+        print(
+            f"[blue]-------- Starting creation of image representations for file reference {file_reference_uuid} of {accession_id} --------[/blue]"
+        )
+
+        for representation_use_type in reps_to_create:
+            logger.debug(
+                f"starting creation of {representation_use_type.value} for file reference {file_reference_uuid}"
+            )
+            image_representation = create_image_representation(
+                [
+                    file_reference_uuid,
+                ],
+                representation_use_type=representation_use_type,
+                result_summary=result_summary,
+                persister=persister,
+            )
+            if image_representation:
+                message = f"COMPLETED: Creation of image representation {representation_use_type.value} for file reference {file_reference_uuid} of {accession_id}"
+            else:
+                message = f"WARNING: Could NOT create image representation {representation_use_type.value} for file reference {file_reference_uuid} of {accession_id}"
+            logger.debug(message)
+
+    successes = ""
+    errors = ""
+    for item_name in result_summary.model_fields:
+        item_value = getattr(result_summary, item_name)
+        if item_name.endswith("CreationCount") and item_value > 0:
+            successes += f"{item_name}: {item_value}\n"
+        elif item_name.endswith("ErrorCount") and item_value > 0:
+            errors += f"{item_name}: {item_value}\n"
+    print(f"\n\n[green]--------- Successes ---------\n{successes}[/green]")
+    print(f"\n\n[red]--------- Errors ---------\n{errors}[/red]")
 
 
 @app.callback()

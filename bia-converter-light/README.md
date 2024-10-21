@@ -1,12 +1,5 @@
 ## Description
-This sub-package creates actual images for image representations. It is named *bia-converter-light* because it only converts one file reference per image representation. Whereas the upcoming *bia-converter* sub-package will be able to handle more complex conversion including creation of multichannel images and multi-slice images from multiple file references per image representation.
-
-The input is an image representation uuid. The API/disk is queried for the image representation object, and value of the `use_type` field determines the image created:
-1. INTERACTIVE_DISPLAY: creates an ome.zarr image from the *first* file reference in the image representation
-2. THUMBNAIL: creates a 256x256 .png image from the INTERACTIVE_DISPLAY image
-3. STATIC_DISPLAY: creates a 512x512 .png image from the INTERACTIVE_DISPLAY image
-
-Note that the STATIC_DISPLAY and THUMBNAIL images can only be created after creation of the INTERACTIVE_DISPLAY image.
+This sub-package creates image representations *and* actual images associated with the representations. It is named *bia-converter-light* because it only converts one file reference per image representation. Whereas the upcoming *bia-converter* sub-package will be able to handle more complex conversion including creation of multichannel images and multi-slice images from multiple file references per image representation.
 
 ## Setup
 
@@ -29,17 +22,63 @@ The AWS credentails for the endpoint also need to be set. This is done using exc
 * AWS_ACCESS_KEY_ID *and* AWS_SECRET_ACCESS_KEY
 <br>OR
 * AWS_SHARED_CREDENTIALS_FILE with optional AWS_PROFILE and/or AWS_CONFIG_FILE
+
 ## Usage
-Once the project is installed and the environment configured, assuming this is the working directory:
+This package has 2 cli applications:
+ * **representations**: used to create image representation objects (without conversion of images) from BioImage Archive File Reference objects.
+ * **convert-image**: used to create actual images associated with the representations.
+
+Subsequent instructions assume the project is installed and the environment configured, assuming this is the working directory.
+
+## Creating representations (without conversion of images)
+To create Image representations and experimentally captured images from file references (without image conversion also occuring), run:
+``` sh
+$ poetry run bia-converter-light representations create <STUDY ACCESSION ID> <LIST OF FILE REFERNCE UUIDS>
+```
+E.g.:
+```sh
+$ poetry run bia-converter-light representations create S-BIAD1285 002e89fc-5a6c-4037-86ec-0dadd9553694
+```
+
+By default this create image representations and experimentally captured images locally under:
+```sh
+~/.cache/bia-integrator-data-sm/
+  experimentally_captured_image/
+    experimentally_captured_image_1_uuid.json
+    ...
+  image_representation/
+    image_representation_1_uuid.json
+    image_representation_2_uuid.json
+    image_representation_3_uuid.json
+    ...
+```
+Use `--persistence-mode api` to store them using the API.
+
+By default this creates 3 image representations (but not the actual images) for each of the file references.
+1. UPLOADED_BY_SUBMITTER
+2. INTERACTIVE_DISPLAY (ome_zarr)
+3. THUMBNAIL
+
+The STATIC_DISPLAY representation is not created by default because the BIA website only needs one static display per experimental imaging dataset. All interactive images need a thumbnail for the website, so they are usually created together.
+
+An option can be passed into the command to specify representations to create. E.g. to create only THUMBNAIL and STATIC_DISPLAY:
+```sh
+$ poetry run bia-converter-light representations create --reps-to-create THUMBNAIL --reps-to-create STATIC_DISPLAY S-BIAD1285 002e89fc-5a6c-4037-86ec-0dadd9553694
+```
+
+## Converting images associated with representations
+The input in this case is an image representation uuid and this command only works with the API. The API is queried for the image representation object, and value of the `use_type` field of the image representation determines the image created:
+1. INTERACTIVE_DISPLAY: creates an ome.zarr image from the *first* file reference in the image representation
+2. THUMBNAIL: creates a 256x256 .png image from the INTERACTIVE_DISPLAY image
+3. STATIC_DISPLAY: creates a 512x512 .png image from the INTERACTIVE_DISPLAY image
+
+Note that the STATIC_DISPLAY and THUMBNAIL images can only be created after creation of the INTERACTIVE_DISPLAY image.
+
+Example cli use:
 ```sh
 $ poetry run bia-converter-light convert-image da612702-e612-4891-b440-816d0a2b15be
 ```
 This assumes that the UUID supplied (`da612702-e612-4891-b440-816d0a2b15be`) is that of an image representation in the API
-
-To run a conversion against an image representation stored on disk:
-```sh
-$ poetry run bia-converter-light convert-image --persistence_mode disk da612702-e612-4891-b440-816d0a2b15be
-```
 
 ## convert-images dependencies
 

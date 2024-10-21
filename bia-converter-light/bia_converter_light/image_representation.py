@@ -3,19 +3,20 @@ from typing import List, Optional, Dict, Any
 from pydantic import ValidationError
 from uuid import UUID
 
-from ..cli_logging import log_failed_model_creation, log_model_creation_count, ImageCreationResult
+from bia_ingest.bia_object_creation_utils import dict_to_uuid
+from bia_ingest.cli_logging import (
+    log_failed_model_creation,
+    log_model_creation_count,
+    ImageCreationResult,
+)
+from bia_ingest.persistence_strategy import PersistenceStrategy
 
 from .utils import get_image_extension
-from ..bia_object_creation_utils import (
-    dict_to_uuid,
-)
-
 from .experimentally_captured_image import get_experimentally_captured_image
 
 from bia_shared_datamodels import bia_data_model
 from bia_shared_datamodels.semantic_models import ImageRepresentationUseType
 
-from bia_ingest.persistence_strategy import PersistenceStrategy
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -38,9 +39,7 @@ def create_image_representation(
         logger.error(
             f"Error fetching file references {file_reference_uuids}. Error was: {e}. Unable to create image representation and associated objects"
         )
-        log_failed_model_creation(
-            bia_data_model.ImageRepresentation, result_summary
-        )
+        log_failed_model_creation(bia_data_model.ImageRepresentation, result_summary)
         return
     # file_paths = [fr.file_path for fr in file_references]
     # if not any(
@@ -57,11 +56,9 @@ def create_image_representation(
     )
     if not experimentally_captured_image:
         logger.error(
-            "Experimentally captured image not created. Cannot create image representations for file references {file_references}"
+            f"Experimentally captured image not created. Cannot create image representations for file references {file_references}"
         )
-        log_failed_model_creation(
-            bia_data_model.ImageRepresentation, result_summary
-        )
+        log_failed_model_creation(bia_data_model.ImageRepresentation, result_summary)
         return
 
     image_format = ""

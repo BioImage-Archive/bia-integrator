@@ -3,13 +3,17 @@ from uuid import UUID
 from typing import List, Dict, Any
 from pydantic import ValidationError
 
-from ..bia_object_creation_utils import filter_model_dictionary, dict_to_uuid
+from bia_ingest.bia_object_creation_utils import filter_model_dictionary, dict_to_uuid
 
-from ..cli_logging import log_failed_model_creation, log_model_creation_count, ImageCreationResult
+from bia_ingest.cli_logging import (
+    log_failed_model_creation,
+    log_model_creation_count,
+    ImageCreationResult,
+)
+from bia_ingest.persistence_strategy import PersistenceStrategy
 
 from .utils import merge_dicts
 
-from bia_ingest.persistence_strategy import PersistenceStrategy
 
 from bia_shared_datamodels import bia_data_model
 
