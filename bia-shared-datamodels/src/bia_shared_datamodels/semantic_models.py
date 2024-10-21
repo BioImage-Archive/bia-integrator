@@ -467,8 +467,12 @@ class AnnotationMethod(Protocol):
     spatial_information: Optional[str] = Field(
         None, description="""Spatial information for non-pixel annotations."""
     )
-    method_type: List[AnnotationType] = Field(
+    method_type: List[AnnotationMethodType] = Field(
         description="""Classification of the kind of annotation that was performed."""
+    )
+    annotation_source_indicator: Optional[AnnotationSourceIndicator] = Field(
+        None,
+        description="""How the file(s) containing annotation data can be linked to the original images that were annotated.""",
     )
 
 
@@ -491,7 +495,7 @@ class ImageCorrelationMethod(Protocol):
     transformation_matrix: str = Field(description="""Correlation transforms.""")
 
 
-class AnnotationType(str, Enum):
+class AnnotationMethodType(str, Enum):
     # tags that identify specific features, patterns or classes in images
     class_labels = "class_labels"
     # rectangles completely enclosing a structure of interest within an image
@@ -513,6 +517,19 @@ class AnnotationType(str, Enum):
     # rough imprecise annotations that are fast to generate. These annotations are used, for example,  to detect an object without providing accurate boundaries
     weak_annotations = "weak_annotations"
     # other types of annotations, please specify in the annotation overview section
+    other = "other"
+
+
+class AnnotationSourceIndicator(str, Enum):
+    # A metadata file is provided linking every annotation to their source file(s)
+    metadata_file = "metadata_file"
+    # files are named exactly the same, but exist in different directories
+    file_name_exact_match = "class_labels"
+    # files follow a similar naming pattern e.g. img_1_raw and img_1_annotation
+    file_name_pattern = "class_labels"
+    # Annotation and their source are grouped together by a parent directory
+    file_path = "class_labels"
+    # Some other method is used to connect the files, please specify in the annotation method description.
     other = "other"
 
 

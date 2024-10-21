@@ -245,10 +245,10 @@ class CreationProcess(semantic_models.CreationProcess, DocumentMixin):
         default=None
     )
     image_acquisition_protocol_uuid: Annotated[
-        Optional[UUID], ObjectReference(ImageAcquisitionProtocol)
-    ] = Field(default=None)
+        Optional[List[UUID]], ObjectReference(ImageAcquisitionProtocol)
+    ] = Field(default_factory=lambda: [])
 
-    input_image_uuid: Annotated[Optional[List[UUID]], ObjectReference(Specimen)] = Field(
+    input_image_uuid: Annotated[Optional[List[UUID]], ObjectReference(Image)] = Field(
         default_factory=lambda: []
     )
     protocol_uuid: Annotated[Optional[List[UUID]], ObjectReference(Protocol)] = Field(

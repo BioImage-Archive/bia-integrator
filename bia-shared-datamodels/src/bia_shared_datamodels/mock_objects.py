@@ -234,8 +234,8 @@ def get_creation_process_dict(completeness=Completeness.COMPLETE) -> dict:
         process |= {
             "model": {"type_name": "CreationProcess", "version": 1},
             "subject_specimen_uuid": get_specimen_dict()["uuid"],
-            "image_acquisition_protocol_uuid": get_image_acquisition_protocol_dict()[
-                "uuid"
+            "image_acquisition_protocol_uuid": [
+                get_image_acquisition_protocol_dict()["uuid"]
             ],
             "input_image_uuid": [
                 uuid4()  # Can't call get_image_dict() otherwise we loop endlessly
@@ -296,7 +296,8 @@ def get_annotation_method_dict(completeness=Completeness.COMPLETE) -> dict:
             "annotation_coverage": "Template annotation coverage",
             "transformation_description": "Template transformation description",
             "spatial_information": "Template spatial information",
-            "method_type": [semantic_models.AnnotationType.class_labels],
+            "method_type": [semantic_models.AnnotationMethodType.class_labels],
+            "annotation_source_indicator": semantic_models.AnnotationSourceIndicator.metadata_file,
             "model": {"type_name": "AnnotationMethod", "version": 2},
         }
     return annotation_method
