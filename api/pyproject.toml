@@ -25,6 +25,13 @@ lxml = "^4.9.3"
 json-log-formatter = "^1.0"
 #@TODO: CHANGEME
 bia-shared-datamodels = { path = "../bia-shared-datamodels", develop = true }
+pydantic-settings = "^2.3"
+# FIXME
+#   gevent 24.10.3 released https://pypi.org/project/gevent/#history
+#   but getting 'Unable to find installation candidates for gevent (24.10.3)' from poetry when trying to install
+#   so pin to the latest previous version
+#   to check if issue still occurs, comment line below & poetry lock; if it doesn't, delete this
+gevent = "24.10.2"
 
 [tool.poetry.group.dev.dependencies]
 locust = "^2.16.1"

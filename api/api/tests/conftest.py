@@ -3,12 +3,11 @@ import uuid as uuid_lib
 from fastapi.testclient import TestClient
 import pytest
 import json
-import os
+from api.settings import Settings
 
-from api.auth import create_user, get_user
-from api.models.repository import repository_create
 import asyncio
 
+test_settings = Settings(mongo_index_push=True)
 
 TEST_SERVER_BASE_URL = "http://localhost.com/v2"
 
@@ -59,10 +58,16 @@ def create_user_if_missing(email: str, password: str):
     Exception from the general rule used in this project, of tests being as high-level as possible
     Just to avoid compromising on security for easy test user creation / the logistics of a seed db
     """
+    # !! settings not used, but needs to be resolve first to avoid cyclic dependencies
+    #   repro: Delete import below and run just test_minimal (not test_auth)
+    from api.app import settings
+    from api.models.repository import repository_create
+    from api.auth import create_user, get_user
+
     loop = asyncio.get_event_loop()
 
     async def create_test_user_if_missing():
-        db = await repository_create(push_indices=True)
+        db = await repository_create(test_settings)
 
         if not await get_user(db, email):
             await create_user(db, email, password)
@@ -91,8 +96,13 @@ def existing_user() -> dict:
 
 
 @pytest.fixture(scope="module")
-def user_create_token() -> str:
-    return os.environ["USER_CREATE_SECRET_TOKEN"]
+def settings() -> Settings:
+    return test_settings
+
+
+@pytest.fixture(scope="module")
+def user_create_token(settings: Settings) -> str:
+    return settings.user_create_secret_token
 
 
 @pytest.fixture(scope="module")

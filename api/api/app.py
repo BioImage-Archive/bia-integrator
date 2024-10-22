@@ -1,13 +1,23 @@
-from api import public
-from api import private
-from api import auth
-from api import search
-from api.models.repository import repository_create
+from api.settings import Settings
+
+from api.models.repository import repository_create, Repository
+
+
+settings = Settings()
+
+
+async def get_db() -> Repository:
+    return await repository_create(settings)
+
+
 from fastapi import FastAPI, Depends
+from api.public import make_router as public_make_router
+from api.private import make_router as private_make_router
+from api.search import make_router as search_make_router
+from api.auth import make_router as auth_make_router, get_current_user
 from fastapi.responses import JSONResponse
 
 from api.api_logging import log_info
-import os
 
 from pydantic import ValidationError
 
@@ -16,12 +26,12 @@ app = FastAPI(
     # Setting this to true results in duplicated client classes (into *Input and *Output) where the api model has default values
     # See https://fastapi.tiangolo.com/how-to/separate-openapi-schemas/#do-not-separate-schemas
     separate_input_output_schemas=False,
-    debug=True,
+    debug=False,
 )
 
 app.openapi_version = "3.0.2"
 
-app.include_router(auth.router, prefix="/v2")
+app.include_router(auth_make_router(), prefix="/v2")
 
 
 @app.exception_handler(ValidationError)
@@ -37,10 +47,10 @@ def remap_validation_error(_, exc: ValidationError):
 
 @app.on_event("startup")
 async def on_start():
-    if os.getenv("DB_INDEX_REFRESH") == "True":
-        # just so "False" / other values don't accidentally trigger indexing
+    if settings.mongo_index_push:
         log_info("App updating indexes")
-        await repository_create(push_indices=True)
+
+    await repository_create(settings)
 
     log_info("App started")
 
@@ -51,15 +61,15 @@ def on_shutdown():
 
 
 app.include_router(
-    public.make_router(),
+    public_make_router(),
     prefix="/v2",
 )
 app.include_router(
-    search.make_router(),
+    search_make_router(),
     prefix="/v2",
 )
 app.include_router(
-    private.make_router(),
+    private_make_router(),
     prefix="/v2",
-    dependencies=[Depends(auth.get_current_user)],
+    dependencies=[Depends(get_current_user)],
 )
