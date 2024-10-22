@@ -58,8 +58,8 @@ spec:
                   name: {{ include "api.fullname" . }}
                   key: mongoConnstring
             - name: DB_NAME
-              value: {{ .Values.api_env.dbName }}
+              value: "{{ .Values.api_env.dbName }}"
             - name: MONGO_TIMEOUT_MS
-              value: {{ .Values.api_env.mongoTimeoutMs }}
+              value: "{{ .Values.api_env.mongoTimeoutMs }}"
             - name: MONGO_INDEX_PUSH
-              value: {{ .Values.api_env.mongoIndexPush }}
+              value: "{{ .Values.api_env.mongoIndexPush }}"
