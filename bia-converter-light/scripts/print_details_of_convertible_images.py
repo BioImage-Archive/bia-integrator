@@ -16,15 +16,21 @@ def sizeof_fmt(num, suffix="B"):
 
 app = typer.Typer()
 
+DEFAULT_PAGE_SIZE = 100000
+
 
 def get_details_of_images_that_can_be_converted(accession_id: str):
-    studies = api_client.get_studies()
+    studies = api_client.get_studies(page_size=DEFAULT_PAGE_SIZE)
     study = next(s for s in studies if s.accession_id == accession_id)
-    eids = api_client.get_experimental_imaging_dataset_in_study(study.uuid)
+    eids = api_client.get_experimental_imaging_dataset_in_study(
+        study.uuid, page_size=DEFAULT_PAGE_SIZE
+    )
     file_references = []
     for eid in eids:
         file_references.extend(
-            api_client.get_file_reference_in_experimental_imaging_dataset(eid.uuid)
+            api_client.get_file_reference_in_experimental_imaging_dataset(
+                eid.uuid, page_size=DEFAULT_PAGE_SIZE
+            )
         )
 
     convertible_file_references = [
@@ -37,7 +43,7 @@ def get_details_of_images_that_can_be_converted(accession_id: str):
             "size_human_readable": sizeof_fmt(fr.size_in_bytes),
         }
         for fr in file_references
-        if in_bioformats_single_file_formats_list(fr.file_path)
+        if not in_bioformats_single_file_formats_list(fr.file_path)
     ]
 
     convertible_file_references = sorted(
