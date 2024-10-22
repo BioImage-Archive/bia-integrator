@@ -30,6 +30,10 @@ from typing import Callable
             mock_objects.get_image_dict,
         ),
         (
+            bia_data_model.AnnotationData,
+            mock_objects.get_annotation_data_dict,
+        ),
+        (
             bia_data_model.Dataset,
             mock_objects.get_dataset_dict,
         ),

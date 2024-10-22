@@ -282,7 +282,7 @@ class FileReference(ConfiguredBaseModel):
 
 class Image(ConfiguredBaseModel):
     """
-    The abstract notion of an image that can have many representions in different image formats.
+    The abstract notion of an image that can have many representions in different image formats. A BIA image has been created from a unique set of File References.
     """
 
     attribute: Optional[list[Attribute]] = Field(
@@ -376,6 +376,17 @@ class Channel(ConfiguredBaseModel):
     scale_factor: Optional[float] = Field(None)
     label: Optional[str] = Field(
         None, description="""Label describing the channel for display."""
+    )
+
+
+class AnnotationData(ConfiguredBaseModel):
+    """
+    Annotation data that is not captured in an image/viewable form, such as a table of labels for many different images.
+    """
+
+    attribute: Optional[list[Attribute]] = Field(
+        default_factory=list,
+        description="""Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields.""",
     )
 
 

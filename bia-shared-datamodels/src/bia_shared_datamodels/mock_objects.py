@@ -149,12 +149,16 @@ def get_image_dict(completeness=Completeness.COMPLETE) -> dict:
         "uuid": uuid4(),
         "creation_process_uuid": get_creation_process_dict()["uuid"],
         "submission_dataset_uuid": get_dataset_dict()["uuid"],
+        "original_file_reference_uuid": [],
         "version": 1,
     }
     if completeness == Completeness.COMPLETE:
         image |= {
             "model": {"type_name": "Image", "version": 1},
             "attribute": [get_attribute_dict()],
+            "original_file_reference_uuid": [
+                get_file_reference_dict()["uuid"],
+            ],
         }
     return image
 
@@ -171,9 +175,6 @@ def get_image_representation_dict(completeness=Completeness.COMPLETE) -> dict:
     }
     if completeness == Completeness.COMPLETE:
         image_representation |= {
-            "original_file_reference_uuid": [
-                get_file_reference_dict()["uuid"],
-            ],
             "file_uri": [
                 "https://dummy.uri.org",
             ],
@@ -218,6 +219,25 @@ def get_channel_dict(completeness=Completeness.COMPLETE) -> dict:
             "label": "Template label",
         }
     return channel
+
+
+def get_annotation_data_dict(completeness=Completeness.COMPLETE) -> dict:
+    annotation_data = {
+        "uuid": uuid4(),
+        "creation_process_uuid": get_creation_process_dict()["uuid"],
+        "submission_dataset_uuid": get_dataset_dict()["uuid"],
+        "original_file_reference_uuid": [],
+        "version": 1,
+    }
+    if completeness == Completeness.COMPLETE:
+        annotation_data |= {
+            "model": {"type_name": "AnnotationData", "version": 1},
+            "attribute": [get_attribute_dict()],
+            "original_file_reference_uuid": [
+                get_file_reference_dict()["uuid"],
+            ],
+        }
+    return annotation_data
 
 
 #######################################################################################################

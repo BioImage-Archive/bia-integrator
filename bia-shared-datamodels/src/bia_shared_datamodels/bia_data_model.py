@@ -193,7 +193,7 @@ class FileReference(
 
 
 #######################################################################################################
-# Subgraph 4: Images & representations
+# Subgraph 4: Images & their representations, and AnnotationData
 #######################################################################################################
 
 
@@ -204,6 +204,9 @@ class Image(
 
     submission_dataset_uuid: Annotated[UUID, ObjectReference(Dataset)] = Field()
     creation_process_uuid: Annotated[UUID, ObjectReference(CreationProcess)] = Field()
+    original_file_reference_uuid: Annotated[
+        List[UUID], ObjectReference(FileReference)
+    ] = Field()
 
     model_config = ConfigDict(model_version_latest=1)
 
@@ -212,15 +215,23 @@ class ImageRepresentation(
     semantic_models.ImageRepresentation,
     DocumentMixin,
 ):
-    original_file_reference_uuid: Annotated[
-        Optional[List[UUID]], ObjectReference(FileReference)
-    ] = Field(default_factory=lambda: [])
+
     representation_of_uuid: Annotated[
         UUID,
         ObjectReference(None, Image),
     ] = Field()
 
     model_config = ConfigDict(model_version_latest=2)
+
+
+class AnnotationData(semantic_models.AnnotationData, DocumentMixin):
+    submission_dataset_uuid: Annotated[UUID, ObjectReference(Dataset)] = Field()
+    creation_process_uuid: Annotated[UUID, ObjectReference(CreationProcess)] = Field()
+    original_file_reference_uuid: Annotated[
+        List[UUID], ObjectReference(FileReference)
+    ] = Field()
+
+    model_config = ConfigDict(model_version_latest=1)
 
 
 #######################################################################################################
