@@ -1,4 +1,4 @@
-from bia_ingest.representation_creation import utils
+from bia_converter_light import utils
 
 
 def test_merge_dicts():
