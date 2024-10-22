@@ -43,7 +43,7 @@ def get_details_of_images_that_can_be_converted(accession_id: str):
             "size_human_readable": sizeof_fmt(fr.size_in_bytes),
         }
         for fr in file_references
-        if not in_bioformats_single_file_formats_list(fr.file_path)
+        if in_bioformats_single_file_formats_list(fr.file_path)
     ]
 
     convertible_file_references = sorted(
