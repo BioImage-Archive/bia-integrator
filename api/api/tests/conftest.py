@@ -3,7 +3,6 @@ import uuid as uuid_lib
 from fastapi.testclient import TestClient
 import pytest
 import json
-import os
 from api.settings import Settings
 
 import asyncio
@@ -97,8 +96,13 @@ def existing_user() -> dict:
 
 
 @pytest.fixture(scope="module")
-def user_create_token() -> str:
-    return os.environ["USER_CREATE_SECRET_TOKEN"]
+def settings() -> Settings:
+    return test_settings
+
+
+@pytest.fixture(scope="module")
+def user_create_token(settings: Settings) -> str:
+    return settings.user_create_secret_token
 
 
 @pytest.fixture(scope="module")
