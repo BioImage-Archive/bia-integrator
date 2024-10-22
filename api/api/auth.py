@@ -10,18 +10,16 @@ from passlib.context import CryptContext
 from passlib.utils import consteq
 import uuid
 
-from api.app import get_db
+from api.app import get_db, settings
 from api import constants
 from api.models.repository import Repository
 from api.models.persistence import User
 from api.models.api import AuthenticationToken, TokenData, AuthResult
-import os
 import base64
 
 
 router = APIRouter(prefix="/auth", tags=[constants.OPENAPI_TAG_PRIVATE])
 
-JWT_SECRET_KEY = os.environ["JWT_SECRET_KEY"]
 ALGORITHM = "HS256"
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -76,7 +74,7 @@ async def authenticate_user(db: Repository, email: str, password: str):
 
 
 def create_access_token(data: dict, expires_delta: Union[timedelta, None] = None):
-    validate_secret_token(JWT_SECRET_KEY)
+    validate_secret_token(settings.jwt_secret_key)
 
     to_encode = data.copy()
     if expires_delta:
@@ -84,7 +82,7 @@ def create_access_token(data: dict, expires_delta: Union[timedelta, None] = None
     else:
         expire = datetime.utcnow() + timedelta(minutes=15)
     to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode, JWT_SECRET_KEY, algorithm=ALGORITHM)
+    encoded_jwt = jwt.encode(to_encode, settings.jwt_secret_key, algorithm=ALGORITHM)
     return encoded_jwt
 
 
@@ -92,7 +90,7 @@ async def get_current_user(
     token: Annotated[str, Depends(oauth2_scheme)],
     db: Annotated[Repository, Depends(get_db)],
 ):
-    validate_secret_token(JWT_SECRET_KEY)
+    validate_secret_token(settings.jwt_secret_key)
 
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
@@ -101,7 +99,7 @@ async def get_current_user(
     )
 
     try:
-        payload = jwt.decode(token, JWT_SECRET_KEY, algorithms=[ALGORITHM])
+        payload = jwt.decode(token, settings.jwt_secret_key, algorithms=[ALGORITHM])
         email = payload.get("sub")
         if email is None:
             raise credentials_exception
@@ -142,7 +140,7 @@ async def register_user(
     secret_token: Annotated[str, Body()],
     db: Annotated[Repository, Depends(get_db)],
 ) -> None:
-    user_create_token = os.environ["USER_CREATE_SECRET_TOKEN"]
+    user_create_token = settings.user_create_secret_token
     validate_secret_token(user_create_token)
 
     if not consteq(secret_token, user_create_token):

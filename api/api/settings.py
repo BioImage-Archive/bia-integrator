@@ -1,4 +1,5 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from pathlib import Path
 
 
 class Settings(BaseSettings):
@@ -15,4 +16,6 @@ class Settings(BaseSettings):
     # Run db.bia_integrator.dropIndexes() to delete all indices (then restart app for a refresh)
     mongo_index_push: bool = False
 
-    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+    model_config = SettingsConfigDict(
+        env_file=Path(__file__).parent / ".env", extra="ignore"
+    )

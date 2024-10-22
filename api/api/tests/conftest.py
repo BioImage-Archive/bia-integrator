@@ -59,6 +59,9 @@ def create_user_if_missing(email: str, password: str):
     Exception from the general rule used in this project, of tests being as high-level as possible
     Just to avoid compromising on security for easy test user creation / the logistics of a seed db
     """
+    # !! settings not used, but needs to be resolve first to avoid cyclic dependencies
+    #   repro: Delete import below and run just test_minimal (not test_auth)
+    from api.app import settings
     from api.models.repository import repository_create
     from api.auth import create_user, get_user
 
