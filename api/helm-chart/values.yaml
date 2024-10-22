@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  tag: "0.2.0"
+  tag: "0.2.1"
   pullPolicy: IfNotPresent
 
 service:
@@ -29,8 +29,8 @@ api_env:
   mongoRootPassword: ""
   mongoHost: "api-mongodb"
   dbName: "bia_integrator"
-  mongoTimeoutMs: 500
-  mongoIndexPush: false
+  mongoTimeoutMs: "500"
+  mongoIndexPush: "false"
   jwtSecretKey: ""
   userCreateSecretToken: ""
 
