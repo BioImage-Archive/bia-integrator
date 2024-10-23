@@ -1,5 +1,4 @@
-from bia_ingest.ingest.biostudies.api import Section, Submission
-from .api import (
+from bia_ingest.ingest.biostudies.api import (
     Attribute,
     File,
     Section,
@@ -194,3 +193,21 @@ def find_datasets_with_file_lists(
             datasets_with_file_lists[fld["Title"]].append(fld)
 
     return datasets_with_file_lists
+
+
+def case_insensitive_get(d: dict, key: str, default: Any = "") -> Any:
+    """Access dict values with case insensitive keys
+
+    i.e. get value from {"Key": value} using "Key", "key", "KEY", etc.
+    """
+    if key in d:
+        return d[key]
+
+    # Line below assumes dict keys are unique when converted to lcase.
+    mapping_dict = {k.lower(): k for k in d.keys()}
+
+    key = key.lower()
+    if key in mapping_dict:
+        return d[mapping_dict[key]]
+    else:
+        return default

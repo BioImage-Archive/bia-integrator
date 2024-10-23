@@ -12,6 +12,7 @@ from ..bia_object_creation_utils import (
 from ..cli_logging import log_model_creation_count
 from .biostudies.submission_parsing_utils import (
     find_sections_recursive,
+    case_insensitive_get,
 )
 from .biostudies.api import (
     Submission,
@@ -64,7 +65,10 @@ def extract_image_acquisition_dicts(submission: Submission) -> List[Dict[str, An
     for section in acquisition_sections:
         attr_dict = attributes_to_dict(section.attributes)
 
-        model_dict = {k: attr_dict.get(v, default) for k, v, default in key_mapping}
+        model_dict = {
+            k: case_insensitive_get(attr_dict, v, default)
+            for k, v, default in key_mapping
+        }
 
         if isinstance(model_dict["imaging_method_name"], str):
             model_dict["imaging_method_name"] = [
