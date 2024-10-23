@@ -7,6 +7,7 @@ from .biostudies.submission_parsing_utils import (
     attributes_to_dict,
     find_sections_recursive,
     mattributes_to_dict,
+    case_insensitive_get,
 )
 
 from ..bia_object_creation_utils import dict_to_uuid
@@ -139,7 +140,10 @@ def get_external_reference(
     return_list = []
     for section in sections:
         attr_dict = attributes_to_dict(section.attributes)
-        model_dict = {k: attr_dict.get(v, default) for k, v, default in key_mapping}
+        model_dict = {
+            k: case_insensitive_get(attr_dict, v, default)
+            for k, v, default in key_mapping
+        }
         try:
             return_list.append(
                 semantic_models.ExternalReference.model_validate(model_dict)
@@ -224,7 +228,10 @@ def get_affiliation(
     for section in organisation_sections:
         attr_dict = attributes_to_dict(section.attributes)
 
-        model_dict = {k: attr_dict.get(v, default) for k, v, default in key_mapping}
+        model_dict = {
+            k: case_insensitive_get(attr_dict, v, default)
+            for k, v, default in key_mapping
+        }
         try:
             affiliation_dict[section.accno] = (
                 semantic_models.Affiliation.model_validate(model_dict)
@@ -258,7 +265,10 @@ def get_publication(
     for section in publication_sections:
         attr_dict = attributes_to_dict(section.attributes)
 
-        model_dict = {k: attr_dict.get(v, default) for k, v, default in key_mapping}
+        model_dict = {
+            k: case_insensitive_get(attr_dict, v, default)
+            for k, v, default in key_mapping
+        }
         try:
             publications.append(semantic_models.Publication.model_validate(model_dict))
         except ValidationError:
@@ -293,7 +303,10 @@ def get_contributor(
     contributors = []
     for section in author_sections:
         attr_dict = mattributes_to_dict(section.attributes, affiliation_dict)
-        model_dict = {k: attr_dict.get(v, default) for k, v, default in key_mapping}
+        model_dict = {
+            k: case_insensitive_get(attr_dict, v, default)
+            for k, v, default in key_mapping
+        }
         # TODO: Find out if authors can have more than one organisation ->
         #       what are the implications for mattributes_to_dict?
         if model_dict["affiliation"] is None:

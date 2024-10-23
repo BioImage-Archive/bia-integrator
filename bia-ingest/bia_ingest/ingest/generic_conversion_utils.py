@@ -7,6 +7,7 @@ from bia_ingest.ingest.biostudies.submission_parsing_utils import (
     find_sections_recursive,
     mattributes_to_dict,
     attributes_to_dict,
+    case_insensitive_get,
 )
 from .biostudies.api import (
     Submission,
@@ -42,7 +43,10 @@ def get_generic_section_as_list(
             attr_dict = attributes_to_dict(section.attributes)
         else:
             attr_dict = mattributes_to_dict(section.attributes, mapped_attrs_dict)
-        model_dict = {k: attr_dict.get(v, default) for k, v, default in key_mapping}
+        model_dict = {
+            k: case_insensitive_get(attr_dict, v, default)
+            for k, v, default in key_mapping
+        }
         if mapped_object is None:
             return_list.append(model_dict)
         else:

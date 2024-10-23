@@ -11,6 +11,7 @@ from ..cli_logging import log_model_creation_count
 from .biostudies.submission_parsing_utils import (
     find_sections_recursive,
     attributes_to_dict,
+    case_insensitive_get,
 )
 from .biostudies.api import (
     Submission,
@@ -62,7 +63,10 @@ def extract_annotation_method_dicts(submission: Submission) -> List[Dict[str, An
     for section in annotation_sections:
         attr_dict = attributes_to_dict(section.attributes)
 
-        model_dict = {k: attr_dict.get(v, default) for k, v, default in key_mapping}
+        model_dict = {
+            k: case_insensitive_get(attr_dict, v, default)
+            for k, v, default in key_mapping
+        }
 
         # TODO: change template to get source dataset information
         model_dict["source_dataset"] = []
