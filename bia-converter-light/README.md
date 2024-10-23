@@ -84,6 +84,10 @@ This assumes that the UUID supplied (`da612702-e612-4891-b440-816d0a2b15be`) is 
 
 bioformats2raw see [this](https://github.com/glencoesoftware/bioformats2raw)
 
+As a prerequisitite to installing bioformats2raw (which is documented in the link above) need to install blosc for image file compression
 On Ubuntu (at least): `sudo apt-get install libblosc-dev`
+On mac: `brew install c-blosc`
 
 aws cli see [this](https://aws.amazon.com/cli/)
+
+note: issue on mac that fsherwood had: bioformats2raw may not be able to find blosc, and fails with an error along the lines of 'Exception java.lang.UnsatisfiedLinkError: Unable to load library 'blosc'' even after adding to Djna.library.path. To solve, I created a symlink to the library in a location that was being searched: e.g. in `/opt/homebrew/Cellar/openjdk/23/libexec/openjdk.jdk/Contents/Home/bin` running `ln -s /opt/homebrew/Cellar/c-blosc/1.21.6/lib/libblosc.dylib libblosc.dylib`.
