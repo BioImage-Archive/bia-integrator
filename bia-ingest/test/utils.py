@@ -7,7 +7,8 @@ This module attempts to create models starting from the outer nodes (leaves) of 
 import json
 from typing import Dict, List
 from pathlib import Path
-from bia_shared_datamodels import bia_data_model, semantic_models
+from bia_shared_datamodels import semantic_models
+from bia_integrator_api import models as api_models
 from bia_ingest.bia_object_creation_utils import filter_model_dictionary, dict_to_uuid
 
 
@@ -53,7 +54,7 @@ def get_test_dataset_association_dicts() -> List[List[dict]]:
 
 
 def get_test_experimentally_captured_image() -> (
-    List[bia_data_model.ExperimentallyCapturedImage]
+    List[api_models.ExperimentallyCapturedImage]
 ):
     image_acquisition_uuids = [str(ia.uuid) for ia in get_test_image_acquisition()]
     specimen_uuids = [
@@ -130,13 +131,13 @@ def get_test_experimentally_captured_image() -> (
         eci["version"] = 0
         eci.pop("path")
         experimentally_captured_images.append(
-            bia_data_model.ExperimentallyCapturedImage.model_validate(eci)
+            api_models.ExperimentallyCapturedImage.model_validate(eci)
         )
 
     return experimentally_captured_images
 
 
-def get_test_image_annotation_dataset() -> List[bia_data_model.ImageAnnotationDataset]:
+def get_test_image_annotation_dataset() -> List[api_models.ImageAnnotationDataset]:
     study_uuid = dict_to_uuid(
         {
             "accession_id": accession_id,
@@ -170,10 +171,10 @@ def get_test_image_annotation_dataset() -> List[bia_data_model.ImageAnnotationDa
             image_annotation_dataset_dict, attributes_to_consider
         )
         image_annotation_dataset_dict = filter_model_dictionary(
-            image_annotation_dataset_dict, bia_data_model.ImageAnnotationDataset
+            image_annotation_dataset_dict, api_models.ImageAnnotationDataset
         )
         image_annotation_dataset.append(
-            bia_data_model.ImageAnnotationDataset.model_validate(
+            api_models.ImageAnnotationDataset.model_validate(
                 image_annotation_dataset_dict
             )
         )
@@ -212,15 +213,15 @@ def get_test_annotation_method() -> List[bia_data_model.AnnotationMethod]:
             annotation_method_dict, attributes_to_consider
         )
         annotation_method_dict = filter_model_dictionary(
-            annotation_method_dict, bia_data_model.AnnotationMethod
+            annotation_method_dict, api_models.AnnotationMethod
         )
         annotation_method.append(
-            bia_data_model.AnnotationMethod.model_validate(annotation_method_dict)
+            api_models.AnnotationMethod.model_validate(annotation_method_dict)
         )
     return annotation_method
 
 
-def get_test_specimen_growth_protocol() -> List[bia_data_model.SpecimenGrowthProtocol]:
+def get_test_specimen_growth_protocol() -> List[api_models.SpecimenGrowthProtocol]:
     # For UUID
     attributes_to_consider = [
         "accession_id",
@@ -300,7 +301,7 @@ def get_test_specimen_imaging_preparation_protocol() -> (
     return protocol
 
 
-def get_test_biosample() -> List[bia_data_model.BioSample]:
+def get_test_biosample() -> List[api_models.BioSample]:
     # For UUID
     attributes_to_consider = [
         "accession_id",
@@ -371,13 +372,13 @@ def get_test_biosample() -> List[bia_data_model.BioSample]:
     for biosample_dict in biosample_info:
         biosample_dict["uuid"] = dict_to_uuid(biosample_dict, attributes_to_consider)
         biosample_dict = filter_model_dictionary(
-            biosample_dict, bia_data_model.BioSample
+            biosample_dict, api_models.BioSample
         )
-        biosample.append(bia_data_model.BioSample.model_validate(biosample_dict))
+        biosample.append(api_models.BioSample.model_validate(biosample_dict))
     return biosample
 
 
-def get_test_image_acquisition() -> List[bia_data_model.ImageAcquisition]:
+def get_test_image_acquisition() -> List[api_models.ImageAcquisition]:
     attributes_to_consider = [
         "accession_id",
         "accno",
@@ -419,15 +420,15 @@ def get_test_image_acquisition() -> List[bia_data_model.ImageAcquisition]:
             image_acquisition_dict, attributes_to_consider
         )
         image_acquisition_dict = filter_model_dictionary(
-            image_acquisition_dict, bia_data_model.ImageAcquisition
+            image_acquisition_dict, api_models.ImageAcquisition
         )
         image_acquisition.append(
-            bia_data_model.ImageAcquisition.model_validate(image_acquisition_dict)
+            api_models.ImageAcquisition.model_validate(image_acquisition_dict)
         )
     return image_acquisition
 
 
-def get_test_specimen() -> bia_data_model.Specimen:
+def get_test_specimen() -> api_models.Specimen:
     attributes_to_consider = [
         "accession_id",
         "imaging_preparation_protocol_uuid",
@@ -481,7 +482,7 @@ def get_test_specimen() -> bia_data_model.Specimen:
         specimen_dict.pop("accession_id")
 
         specimen_dict["version"] = 0
-        specimens.append(bia_data_model.Specimen.model_validate(specimen_dict))
+        specimens.append(api_models.Specimen.model_validate(specimen_dict))
     return specimens
 
 
@@ -489,7 +490,7 @@ def get_test_specimen() -> bia_data_model.Specimen:
 # uses correct form of Specimen where all artefacts in association for
 # a dataset are in one Specimen object (see https://app.clickup.com/t/8695fqxpy )
 # TODO: Consolidate this function and get_test_specimen() into one
-def get_test_specimen_for_experimentally_captured_image() -> bia_data_model.Specimen:
+def get_test_specimen_for_experimentally_captured_image() -> api_models.Specimen:
     attributes_to_consider = [
         "accession_id",
         "imaging_preparation_protocol_uuid",
@@ -530,7 +531,7 @@ def get_test_specimen_for_experimentally_captured_image() -> bia_data_model.Spec
         specimen_dict.pop("accession_id")
 
         specimen_dict["version"] = 0
-        specimens.append(bia_data_model.Specimen.model_validate(specimen_dict))
+        specimens.append(api_models.Specimen.model_validate(specimen_dict))
     return specimens
 
 
@@ -600,7 +601,7 @@ def get_test_file_reference(
     filelists: List[str] = [
         "file_list_study_component_2.json",
     ],
-) -> List[bia_data_model.FileReference]:
+) -> List[api_models.FileReference]:
     file_references = []
     for filelist in filelists:
         file_reference_data = get_test_file_reference_data(filelist)
@@ -609,17 +610,17 @@ def get_test_file_reference(
             file_reference_dict["uuid"] = uuid
             file_reference_dict["version"] = 0
             file_reference_dict = filter_model_dictionary(
-                file_reference_dict, bia_data_model.FileReference
+                file_reference_dict, api_models.FileReference
             )
             file_references.append(
-                bia_data_model.FileReference.model_validate(file_reference_dict)
+                api_models.FileReference.model_validate(file_reference_dict)
             )
 
     return file_references
 
 
 def get_test_experimental_imaging_dataset() -> (
-    List[bia_data_model.ExperimentalImagingDataset]
+    List[api_models.ExperimentalImagingDataset]
 ):
     study_uuid = dict_to_uuid(
         {
@@ -661,10 +662,10 @@ def get_test_experimental_imaging_dataset() -> (
     )
     experimental_imaging_dataset_dict["uuid"] = experimental_imaging_dataset_uuid
     experimental_imaging_dataset_dict = filter_model_dictionary(
-        experimental_imaging_dataset_dict, bia_data_model.ExperimentalImagingDataset
+        experimental_imaging_dataset_dict, api_models.ExperimentalImagingDataset
     )
     experimental_imaging_dataset1 = (
-        bia_data_model.ExperimentalImagingDataset.model_validate(
+        api_models.ExperimentalImagingDataset.model_validate(
             experimental_imaging_dataset_dict
         )
     )
@@ -699,7 +700,7 @@ def get_test_experimental_imaging_dataset() -> (
     )
     experimental_imaging_dataset_dict["uuid"] = experimental_imaging_dataset_uuid
     experimental_imaging_dataset2 = (
-        bia_data_model.ExperimentalImagingDataset.model_validate(
+        api_models.ExperimentalImagingDataset.model_validate(
             experimental_imaging_dataset_dict
         )
     )
@@ -847,7 +848,7 @@ def get_test_grant() -> List[semantic_models.Grant]:
     ]
 
 
-def get_test_study() -> bia_data_model.Study:
+def get_test_study() -> api_models.Study:
     contributor = get_test_contributor()
     grant = get_test_grant()
     study_dict = {
@@ -876,7 +877,7 @@ def get_test_study() -> bia_data_model.Study:
         ],
     )
     study_dict["uuid"] = study_uuid
-    study = bia_data_model.Study.model_validate(study_dict)
+    study = api_models.Study.model_validate(study_dict)
     return study
 
 
