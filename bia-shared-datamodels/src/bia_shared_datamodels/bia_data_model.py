@@ -181,12 +181,7 @@ class FileReference(
 ):
     submission_dataset_uuid: Annotated[
         UUID,
-        ObjectReference(
-            None,
-            workaround_union_reference_types=[
-                Dataset,
-            ],
-        ),
+        ObjectReference(Dataset),
     ] = Field()
 
     model_config = ConfigDict(model_version_latest=2)
@@ -218,7 +213,7 @@ class ImageRepresentation(
 
     representation_of_uuid: Annotated[
         UUID,
-        ObjectReference(None, Image),
+        ObjectReference(Image),
     ] = Field()
 
     model_config = ConfigDict(model_version_latest=2)
