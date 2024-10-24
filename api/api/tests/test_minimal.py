@@ -13,19 +13,19 @@ def test_get_created_study(api_client: TestClient, existing_study):
     assert rsp.json() == existing_study
 
 
-def test_get_study_datasets(
-    api_client: TestClient, existing_study, existing_experimental_imaging_dataset
-):
+def test_get_study_datasets(api_client: TestClient, existing_study, existing_dataset):
     rsp = api_client.get(
-        f"study/{existing_study['uuid']}/experimental_imaging_dataset",
+        f"study/{existing_study['uuid']}/dataset",
         params={"page_size": 100},
     )
     assert rsp.status_code == 200, rsp.json()
-    assert rsp.json() == [existing_experimental_imaging_dataset]
+    assert rsp.json() == [existing_dataset]
 
 
 def test_get_biosample_specimens(
-    api_client: TestClient, existing_biosample, existing_specimen
+    api_client: TestClient,
+    existing_biosample,
+    existing_specimen,
 ):
     rsp = api_client.get(
         f"bio_sample/{existing_biosample['uuid']}/specimen",
@@ -116,77 +116,26 @@ def test_create_object_duplicate_dependency_fails(
 #    assert rsp.status_code == 404, rsp.json()
 
 
-def test_optional_link_unset_passes(
-    api_client: TestClient, existing_image_representation: dict
-):
-    image_representation = existing_image_representation.copy()
+def test_optional_link_unset_passes(api_client: TestClient, existing_biosample: dict):
+    biosample = existing_biosample.copy()
 
-    image_representation["uuid"] = get_uuid()
-    del image_representation["original_file_reference_uuid"]
+    biosample["uuid"] = get_uuid()
+    del biosample["growth_protocol_uuid"]
 
     rsp = api_client.post(
-        "private/image_representation",
-        json=image_representation,
+        "private/bio_sample",
+        json=biosample,
     )
     assert rsp.status_code == 201, rsp.json()
 
 
-def test_optional_reverse_link(
-    api_client: TestClient, existing_image_representation: dict
-):
+def test_optional_reverse_link(api_client: TestClient, existing_biosample: dict):
     rsp = api_client.get(
-        f"file_reference/{existing_image_representation['original_file_reference_uuid'][0]}/image_representation",
+        f"protocol/{existing_biosample['growth_protocol_uuid']}/bio_sample",
         params={"page_size": 100},
     )
     assert rsp.status_code == 200, rsp.json()
-    assert rsp.json() == [existing_image_representation]
-
-
-def test_known_bug_should_not_pass_but_does_union_reference_typed_lists_not_exclusive(
-    api_client: TestClient,
-    existing_annotaton_file_reference: dict,
-    existing_derived_image: dict,
-    existing_experimentally_captured_image: dict,
-):
-    existing_annotaton_file_reference |= {
-        "uuid": get_uuid(),
-        "source_image_uuid": [
-            # this should cause an error, because the source images aren't of the same type
-            existing_derived_image["uuid"],
-            existing_experimentally_captured_image["uuid"],
-        ],
-    }
-    rsp = api_client.post(
-        "private/annotation_file_reference",
-        json=existing_annotaton_file_reference,
-    )
-    assert rsp.status_code == 201, "Fixed the bug!"
-
-
-def test_cannot_resolve_reverse_union_link_from_mistyped_parent(
-    api_client: TestClient,
-    existing_annotaton_file_reference: dict,
-    existing_experimentally_captured_image: dict,
-):
-    existing_annotaton_file_reference |= {
-        "uuid": get_uuid(),
-        "source_image_uuid": [
-            # Note no derived_image anywhere
-            existing_experimentally_captured_image["uuid"],
-        ],
-    }
-    rsp = api_client.post(
-        "private/annotation_file_reference",
-        json=existing_annotaton_file_reference,
-    )
-    assert rsp.status_code == 201
-
-    rsp = api_client.get(
-        # existing_experimentally_captured_image exists but is not a derived_image
-        f"derived_image/{existing_experimentally_captured_image['uuid']}/annotation_file_reference",
-        params={"page_size": 100},
-    )
-    assert rsp.status_code == 404
+    assert rsp.json() == [existing_biosample]
 
 
 def test_object_update_same_version_zero_rejected(
@@ -277,7 +226,7 @@ def test_db_timeout():
         db = Repository()
         settings = Settings()
         settings.mongo_timeout_ms = 5
-        
+
         db.configure(settings)
 
         await db._get_docs_raw(pagination=Pagination(page_size=100))
