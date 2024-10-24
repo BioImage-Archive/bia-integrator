@@ -19,22 +19,28 @@ from typing import Callable
             mock_objects.get_specimen_imaging_preparation_protocol_dict,
         ),
         (
-            bia_data_model.SpecimenGrowthProtocol,
-            mock_objects.get_specimen_growth_protocol_dict,
+            bia_data_model.Protocol,
+            mock_objects.get_protocol_dict,
         ),
         (bia_data_model.BioSample, mock_objects.get_biosample_dict),
         (bia_data_model.Specimen, mock_objects.get_specimen_dict),
         (bia_data_model.AnnotationMethod, mock_objects.get_annotation_method_dict),
         (
-            bia_data_model.ExperimentallyCapturedImage,
-            mock_objects.get_experimentally_captured_image_dict,
+            bia_data_model.Image,
+            mock_objects.get_image_dict,
         ),
-        (bia_data_model.DerivedImage, mock_objects.get_derived_image_dict),
         (
-            bia_data_model.ImageAnnotationDataset,
-            mock_objects.get_image_annotation_dataset_dict,
+            bia_data_model.AnnotationData,
+            mock_objects.get_annotation_data_dict,
         ),
-        (bia_data_model.ImageAcquisition, mock_objects.get_image_acquisition_dict),
+        (
+            bia_data_model.Dataset,
+            mock_objects.get_dataset_dict,
+        ),
+        (
+            bia_data_model.ImageAcquisitionProtocol,
+            mock_objects.get_image_acquisition_protocol_dict,
+        ),
         (
             semantic_models.ImageAnalysisMethod,
             mock_objects.get_image_analysis_method_dict,
@@ -42,14 +48,6 @@ from typing import Callable
         (
             semantic_models.ImageCorrelationMethod,
             mock_objects.get_image_correlation_method_dict,
-        ),
-        (
-            bia_data_model.ExperimentalImagingDataset,
-            mock_objects.get_experimental_imaging_dataset_dict,
-        ),
-        (
-            bia_data_model.AnnotationFileReference,
-            mock_objects.get_annotation_file_reference_dict,
         ),
         (bia_data_model.FileReference, mock_objects.get_file_reference_dict),
         (
@@ -59,6 +57,8 @@ from typing import Callable
         (semantic_models.Affiliation, mock_objects.get_affiliation_dict),
         (semantic_models.Contributor, mock_objects.get_contributor_dict),
         (bia_data_model.Study, mock_objects.get_study_dict),
+        (semantic_models.Attribute, mock_objects.get_attribute_dict),
+        (bia_data_model.CreationProcess, mock_objects.get_creation_process_dict)
     ),
 )
 class TestCreateObject:

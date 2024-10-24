@@ -1,9 +1,11 @@
 ### First time setup
-Package containing the shared BIA models in link-ml yaml format, and the generate pydantic and readmes.
+poetry init
+
+### Description
 
 Below shows the class diagram for the Shared BIA Models.
 
-<img src="./src/bia_models/Datamodel-class_diagram.svg">
+<img src=".src/bia_shared_datamodels/Data model - document based - 2024_09.svg">
 
-To edit the diagram, see: https://docs.google.com/drawings/d/1l0Yjy5bGBDlu6qoNfE7Mta7XdBmydRNCQTciY-KeztQ/edit
+To edit the diagram, see: https://docs.google.com/drawings/d/1y_0GjhIxhB1hVvjIBoTyEv8_SE1jXuJ_9-QK6ScouBg/edit
 
