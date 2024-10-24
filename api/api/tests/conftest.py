@@ -144,16 +144,14 @@ def updated_study(api_client: TestClient, existing_study: dict) -> dict:
 
 
 @pytest.fixture(scope="function")
-def existing_experimental_imaging_dataset(
-    existing_study, api_client: TestClient
-) -> dict:
+def existing_dataset(existing_study, api_client: TestClient) -> dict:
     dataset = mock_object_jsonsafe(
-        mock_objects.get_experimental_imaging_dataset_dict,
+        mock_objects.get_dataset_dict,
         passthrough={"completeness": mock_objects.Completeness.COMPLETE},
     )
     dataset["submitted_in_study_uuid"] = existing_study["uuid"]
 
-    rsp = api_client.post("private/experimental_imaging_dataset", json=dataset)
+    rsp = api_client.post("private/dataset", json=dataset)
     assert rsp.status_code == 201, rsp.json()
 
     return dataset
@@ -176,11 +174,12 @@ def existing_specimen_imaging_preparation_protocol(api_client: TestClient):
 
 
 @pytest.fixture(scope="function")
-def existing_biosample(api_client: TestClient):
+def existing_biosample(existing_protocol, api_client: TestClient):
     biosample = mock_object_jsonsafe(
         mock_objects.get_biosample_dict,
         passthrough={"completeness": mock_objects.Completeness.COMPLETE},
     )
+    biosample |= {"growth_protocol_uuid": existing_protocol["uuid"]}
 
     rsp = api_client.post(
         "private/bio_sample",
@@ -192,21 +191,21 @@ def existing_biosample(api_client: TestClient):
 
 
 @pytest.fixture(scope="function")
-def existing_specimen_growth_protocol(
+def existing_protocol(
     api_client: TestClient,
 ):
-    specimen_growth_protocol = mock_object_jsonsafe(
-        mock_objects.get_specimen_growth_protocol_dict,
+    protocol = mock_object_jsonsafe(
+        mock_objects.get_protocol_dict,
         passthrough={"completeness": mock_objects.Completeness.COMPLETE},
     )
 
     rsp = api_client.post(
-        "private/specimen_growth_protocol",
-        json=specimen_growth_protocol,
+        "private/protocol",
+        json=protocol,
     )
     assert rsp.status_code == 201, rsp.json()
 
-    return specimen_growth_protocol
+    return protocol
 
 
 @pytest.fixture(scope="function")
@@ -214,7 +213,6 @@ def existing_specimen(
     api_client: TestClient,
     existing_specimen_imaging_preparation_protocol,
     existing_biosample,
-    existing_specimen_growth_protocol,
 ):
     specimen = mock_object_jsonsafe(
         mock_objects.get_specimen_dict,
@@ -225,7 +223,6 @@ def existing_specimen(
             existing_specimen_imaging_preparation_protocol["uuid"]
         ],
         "sample_of_uuid": [existing_biosample["uuid"]],
-        "growth_protocol_uuid": [existing_specimen_growth_protocol["uuid"]],
     }
 
     rsp = api_client.post(
@@ -238,17 +235,13 @@ def existing_specimen(
 
 
 @pytest.fixture(scope="function")
-def existing_file_reference(
-    api_client: TestClient, existing_experimental_imaging_dataset: dict
-):
+def existing_file_reference(api_client: TestClient, existing_dataset: dict):
     file_reference = mock_object_jsonsafe(
         mock_objects.get_file_reference_dict,
         passthrough={"completeness": mock_objects.Completeness.COMPLETE},
     )
 
-    file_reference |= {
-        "submission_dataset_uuid": existing_experimental_imaging_dataset["uuid"]
-    }
+    file_reference |= {"submission_dataset_uuid": existing_dataset["uuid"]}
 
     rsp = api_client.post(
         "private/file_reference",
@@ -260,122 +253,83 @@ def existing_file_reference(
 
 
 @pytest.fixture(scope="function")
-def existing_image_acquisition(api_client: TestClient):
-    image_acquisition = mock_object_jsonsafe(
-        mock_objects.get_image_acquisition_dict,
+def existing_image_acquisition_protocol(api_client: TestClient):
+    image_acquisition_protocol = mock_object_jsonsafe(
+        mock_objects.get_image_acquisition_protocol_dict,
         passthrough={"completeness": mock_objects.Completeness.COMPLETE},
     )
 
     rsp = api_client.post(
-        "private/image_acquisition",
-        json=image_acquisition,
+        "private/image_acquisition_protocol",
+        json=image_acquisition_protocol,
     )
     assert rsp.status_code == 201, rsp.json()
 
-    return image_acquisition
+    return image_acquisition_protocol
 
 
 @pytest.fixture(scope="function")
-def existing_experimentally_captured_image(
+def existing_image(
     api_client: TestClient,
-    existing_specimen: dict,
-    existing_experimental_imaging_dataset: dict,
-    existing_image_acquisition: dict,
+    existing_creation_process: dict,
+    existing_dataset: dict,
+    existing_file_reference: dict,
 ):
-    experimentally_captured_image = mock_object_jsonsafe(
-        mock_objects.get_experimentally_captured_image_dict,
+    image = mock_object_jsonsafe(
+        mock_objects.get_image_dict,
         passthrough={"completeness": mock_objects.Completeness.COMPLETE},
     )
 
-    experimentally_captured_image |= {
-        "subject_uuid": existing_specimen["uuid"],
-        "submission_dataset_uuid": existing_experimental_imaging_dataset["uuid"],
-        "acquisition_process_uuid": [existing_image_acquisition["uuid"]],
+    image |= {
+        "submission_dataset_uuid": existing_dataset["uuid"],
+        "creation_process_uuid": existing_creation_process["uuid"],
+        "original_file_reference_uuid": [existing_file_reference["uuid"]],
     }
 
     rsp = api_client.post(
-        "private/experimentally_captured_image",
-        json=experimentally_captured_image,
+        "private/image",
+        json=image,
     )
     assert rsp.status_code == 201, rsp.json()
 
-    return experimentally_captured_image
+    return image
 
 
 @pytest.fixture(scope="function")
-def existing_image_annotation_dataset(api_client: TestClient, existing_study: dict):
-    image_annotation_dataset = mock_object_jsonsafe(
-        mock_objects.get_image_annotation_dataset_dict,
-        passthrough={"completeness": mock_objects.Completeness.COMPLETE},
-    )
-    image_annotation_dataset |= {"submitted_in_study_uuid": existing_study["uuid"]}
-
-    rsp = api_client.post(
-        "private/image_annotation_dataset",
-        json=image_annotation_dataset,
-    )
-    assert rsp.status_code == 201, rsp.json()
-
-    return image_annotation_dataset
-
-
-@pytest.fixture(scope="function")
-def existing_annotaton_file_reference(
-    api_client: TestClient, existing_image_annotation_dataset: dict
+def existing_annotaton_data_reference(
+    api_client: TestClient,
+    existing_image_annotation_dataset: dict,
+    existing_creation_process: dict,
 ):
-    annotation_file_reference = mock_object_jsonsafe(
-        mock_objects.get_annotation_file_reference_dict,
+    annotation_data = mock_object_jsonsafe(
+        mock_objects.get_annotation_data_dict,
         passthrough={"completeness": mock_objects.Completeness.COMPLETE},
     )
-    annotation_file_reference |= {
+    annotation_data |= {
         "submission_dataset_uuid": existing_image_annotation_dataset["uuid"],
-        "source_image_uuid": [],
-        "creation_process_uuid": [],
+        "creation_process_uuid": existing_creation_process["uuid"],
     }
 
     rsp = api_client.post(
         "private/annotation_file_reference",
-        json=annotation_file_reference,
+        json=annotation_data,
     )
     assert rsp.status_code == 201, rsp.json()
 
-    return annotation_file_reference
-
-
-@pytest.fixture(scope="function")
-def existing_derived_image(
-    api_client: TestClient, existing_image_annotation_dataset: dict
-):
-    derived_image = mock_object_jsonsafe(
-        mock_objects.get_derived_image_dict,
-        passthrough={"completeness": mock_objects.Completeness.MINIMAL},
-    )
-    derived_image |= {
-        "submission_dataset_uuid": existing_image_annotation_dataset["uuid"]
-    }
-
-    rsp = api_client.post(
-        "private/derived_image",
-        json=derived_image,
-    )
-    assert rsp.status_code == 201, rsp.json()
-
-    return derived_image
+    return annotation_data
 
 
 @pytest.fixture(scope="function")
 def existing_image_representation(
     api_client: TestClient,
-    existing_experimentally_captured_image: dict,
-    existing_file_reference: dict,
+    existing_image: dict,
 ):
     image_representation = mock_object_jsonsafe(
         mock_objects.get_image_representation_dict,
         passthrough={"completeness": mock_objects.Completeness.COMPLETE},
     )
     image_representation |= {
-        "representation_of_uuid": existing_experimentally_captured_image["uuid"],
-        "original_file_reference_uuid": [existing_file_reference["uuid"]],
+        "representation_of_uuid": existing_image["uuid"],
     }
 
     rsp = api_client.post(
@@ -385,3 +339,32 @@ def existing_image_representation(
     assert rsp.status_code == 201, rsp.json()
 
     return image_representation
+
+
+@pytest.fixture(scope="function")
+def existing_creation_process(
+    api_client: TestClient,
+    existing_specimen: dict,
+    existing_image_acquisition_protocol: dict,
+):
+    creation_process = mock_object_jsonsafe(
+        mock_objects.get_creation_process_dict,
+        passthrough={"completeness": mock_objects.Completeness.COMPLETE},
+    )
+    creation_process |= {
+        "subject_specimen_uuid": existing_specimen["uuid"],
+        "image_acquisition_protocol_uuid": [
+            existing_image_acquisition_protocol["uuid"]
+        ],
+        "input_image_uuid": [],
+        "protocol_uuid": [],
+        "annotation_method_uuid": [],
+    }
+
+    rsp = api_client.post(
+        "private/creation_process",
+        json=creation_process,
+    )
+    assert rsp.status_code == 201, rsp.json()
+
+    return creation_process
