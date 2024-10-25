@@ -20,6 +20,7 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
+from bia_integrator_api.models.attribute import Attribute
 from bia_integrator_api.models.model_metadata import ModelMetadata
 from typing import Optional, Set
 from typing_extensions import Self
@@ -35,7 +36,7 @@ class FileReference(BaseModel):
     format: StrictStr = Field(description="File format or type.")
     size_in_bytes: StrictInt = Field(description="Disc size in bytes.")
     uri: StrictStr = Field(description="URI from which the file can be accessed.")
-    attribute: Dict[str, Any] = Field(description="Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields.")
+    attribute: Optional[List[Attribute]] = None
     submission_dataset_uuid: StrictStr
     __properties: ClassVar[List[str]] = ["uuid", "version", "model", "file_path", "format", "size_in_bytes", "uri", "attribute", "submission_dataset_uuid"]
 
@@ -81,10 +82,22 @@ class FileReference(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of model
         if self.model:
             _dict['model'] = self.model.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of each item in attribute (list)
+        _items = []
+        if self.attribute:
+            for _item_attribute in self.attribute:
+                if _item_attribute:
+                    _items.append(_item_attribute.to_dict())
+            _dict['attribute'] = _items
         # set to None if model (nullable) is None
         # and model_fields_set contains the field
         if self.model is None and "model" in self.model_fields_set:
             _dict['model'] = None
+
+        # set to None if attribute (nullable) is None
+        # and model_fields_set contains the field
+        if self.attribute is None and "attribute" in self.model_fields_set:
+            _dict['attribute'] = None
 
         return _dict
 
@@ -105,7 +118,7 @@ class FileReference(BaseModel):
             "format": obj.get("format"),
             "size_in_bytes": obj.get("size_in_bytes"),
             "uri": obj.get("uri"),
-            "attribute": obj.get("attribute"),
+            "attribute": [Attribute.from_dict(_item) for _item in obj["attribute"]] if obj.get("attribute") is not None else None,
             "submission_dataset_uuid": obj.get("submission_dataset_uuid")
         })
         return _obj

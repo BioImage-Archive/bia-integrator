@@ -217,14 +217,14 @@
         }
       }
     },
-    "/v2/experimental_imaging_dataset/{uuid}": {
+    "/v2/dataset/{uuid}": {
       "get": {
         "tags": [
           "public",
           "private"
         ],
-        "summary": "Get ExperimentalImagingDataset",
-        "operationId": "getExperimentalImagingDataset",
+        "summary": "Get Dataset",
+        "operationId": "getDataset",
         "parameters": [
           {
             "name": "uuid",
@@ -243,7 +243,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ExperimentalImagingDataset"
+                  "$ref": "#/components/schemas/Dataset"
                 }
               }
             }
@@ -305,14 +305,14 @@
         }
       }
     },
-    "/v2/experimentally_captured_image/{uuid}": {
+    "/v2/image/{uuid}": {
       "get": {
         "tags": [
           "public",
           "private"
         ],
-        "summary": "Get ExperimentallyCapturedImage",
-        "operationId": "getExperimentallyCapturedImage",
+        "summary": "Get Image",
+        "operationId": "getImage",
         "parameters": [
           {
             "name": "uuid",
@@ -331,7 +331,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ExperimentallyCapturedImage"
+                  "$ref": "#/components/schemas/Image"
                 }
               }
             }
@@ -349,14 +349,14 @@
         }
       }
     },
-    "/v2/image_acquisition/{uuid}": {
+    "/v2/image_acquisition_protocol/{uuid}": {
       "get": {
         "tags": [
           "public",
           "private"
         ],
-        "summary": "Get ImageAcquisition",
-        "operationId": "getImageAcquisition",
+        "summary": "Get ImageAcquisitionProtocol",
+        "operationId": "getImageAcquisitionProtocol",
         "parameters": [
           {
             "name": "uuid",
@@ -375,7 +375,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ImageAcquisition"
+                  "$ref": "#/components/schemas/ImageAcquisitionProtocol"
                 }
               }
             }
@@ -437,14 +437,14 @@
         }
       }
     },
-    "/v2/specimen_growth_protocol/{uuid}": {
+    "/v2/protocol/{uuid}": {
       "get": {
         "tags": [
           "public",
           "private"
         ],
-        "summary": "Get SpecimenGrowthProtocol",
-        "operationId": "getSpecimenGrowthProtocol",
+        "summary": "Get Protocol",
+        "operationId": "getProtocol",
         "parameters": [
           {
             "name": "uuid",
@@ -463,7 +463,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/SpecimenGrowthProtocol"
+                  "$ref": "#/components/schemas/Protocol"
                 }
               }
             }
@@ -525,14 +525,14 @@
         }
       }
     },
-    "/v2/image_annotation_dataset/{uuid}": {
+    "/v2/creation_process/{uuid}": {
       "get": {
         "tags": [
           "public",
           "private"
         ],
-        "summary": "Get ImageAnnotationDataset",
-        "operationId": "getImageAnnotationDataset",
+        "summary": "Get CreationProcess",
+        "operationId": "getCreationProcess",
         "parameters": [
           {
             "name": "uuid",
@@ -551,7 +551,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ImageAnnotationDataset"
+                  "$ref": "#/components/schemas/CreationProcess"
                 }
               }
             }
@@ -569,14 +569,14 @@
         }
       }
     },
-    "/v2/annotation_file_reference/{uuid}": {
+    "/v2/annotation_data/{uuid}": {
       "get": {
         "tags": [
           "public",
           "private"
         ],
-        "summary": "Get AnnotationFileReference",
-        "operationId": "getAnnotationFileReference",
+        "summary": "Get AnnotationData",
+        "operationId": "getAnnotationData",
         "parameters": [
           {
             "name": "uuid",
@@ -595,51 +595,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AnnotationFileReference"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v2/derived_image/{uuid}": {
-      "get": {
-        "tags": [
-          "public",
-          "private"
-        ],
-        "summary": "Get DerivedImage",
-        "operationId": "getDerivedImage",
-        "parameters": [
-          {
-            "name": "uuid",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "title": "Uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DerivedImage"
+                  "$ref": "#/components/schemas/AnnotationData"
                 }
               }
             }
@@ -701,14 +657,14 @@
         }
       }
     },
-    "/v2/image_annotation_dataset/{uuid}/file_reference": {
+    "/v2/dataset/{uuid}/file_reference": {
       "get": {
         "tags": [
           "public",
           "private"
         ],
-        "summary": "Get FileReference In ImageAnnotationDataset",
-        "operationId": "getFileReferenceInImageAnnotationDataset",
+        "summary": "Get FileReference In Dataset",
+        "operationId": "getFileReferenceInDataset",
         "parameters": [
           {
             "name": "uuid",
@@ -757,7 +713,7 @@
                   "items": {
                     "$ref": "#/components/schemas/FileReference"
                   },
-                  "title": "Response Getfilereferenceinimageannotationdataset"
+                  "title": "Response Getfilereferenceindataset"
                 }
               }
             }
@@ -775,88 +731,14 @@
         }
       }
     },
-    "/v2/experimental_imaging_dataset/{uuid}/file_reference": {
+    "/v2/image/{uuid}/image_representation": {
       "get": {
         "tags": [
           "public",
           "private"
         ],
-        "summary": "Get FileReference In ExperimentalImagingDataset",
-        "operationId": "getFileReferenceInExperimentalImagingDataset",
-        "parameters": [
-          {
-            "name": "uuid",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "title": "Uuid"
-            }
-          },
-          {
-            "name": "start_from_uuid",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "format": "uuid"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Start From Uuid"
-            }
-          },
-          {
-            "name": "page_size",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "title": "Page Size"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/FileReference"
-                  },
-                  "title": "Response Getfilereferenceinexperimentalimagingdataset"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v2/file_reference/{uuid}/image_representation": {
-      "get": {
-        "tags": [
-          "public",
-          "private"
-        ],
-        "summary": "Get ImageRepresentation In FileReference",
-        "operationId": "getImageRepresentationInFileReference",
+        "summary": "Get ImageRepresentation In Image",
+        "operationId": "getImageRepresentationInImage",
         "parameters": [
           {
             "name": "uuid",
@@ -905,7 +787,7 @@
                   "items": {
                     "$ref": "#/components/schemas/ImageRepresentation"
                   },
-                  "title": "Response Getimagerepresentationinfilereference"
+                  "title": "Response Getimagerepresentationinimage"
                 }
               }
             }
@@ -923,14 +805,14 @@
         }
       }
     },
-    "/v2/derived_image/{uuid}/image_representation": {
+    "/v2/study/{uuid}/dataset": {
       "get": {
         "tags": [
           "public",
           "private"
         ],
-        "summary": "Get ImageRepresentation In DerivedImage",
-        "operationId": "getImageRepresentationInDerivedImage",
+        "summary": "Get Dataset In Study",
+        "operationId": "getDatasetInStudy",
         "parameters": [
           {
             "name": "uuid",
@@ -977,157 +859,9 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ImageRepresentation"
+                    "$ref": "#/components/schemas/Dataset"
                   },
-                  "title": "Response Getimagerepresentationinderivedimage"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v2/experimentally_captured_image/{uuid}/image_representation": {
-      "get": {
-        "tags": [
-          "public",
-          "private"
-        ],
-        "summary": "Get ImageRepresentation In ExperimentallyCapturedImage",
-        "operationId": "getImageRepresentationInExperimentallyCapturedImage",
-        "parameters": [
-          {
-            "name": "uuid",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "title": "Uuid"
-            }
-          },
-          {
-            "name": "start_from_uuid",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "format": "uuid"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Start From Uuid"
-            }
-          },
-          {
-            "name": "page_size",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "title": "Page Size"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ImageRepresentation"
-                  },
-                  "title": "Response Getimagerepresentationinexperimentallycapturedimage"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v2/study/{uuid}/experimental_imaging_dataset": {
-      "get": {
-        "tags": [
-          "public",
-          "private"
-        ],
-        "summary": "Get ExperimentalImagingDataset In Study",
-        "operationId": "getExperimentalImagingDatasetInStudy",
-        "parameters": [
-          {
-            "name": "uuid",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "title": "Uuid"
-            }
-          },
-          {
-            "name": "start_from_uuid",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "format": "uuid"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Start From Uuid"
-            }
-          },
-          {
-            "name": "page_size",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "title": "Page Size"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ExperimentalImagingDataset"
-                  },
-                  "title": "Response Getexperimentalimagingdatasetinstudy"
+                  "title": "Response Getdatasetinstudy"
                 }
               }
             }
@@ -1293,14 +1027,14 @@
         }
       }
     },
-    "/v2/specimen_growth_protocol/{uuid}/specimen": {
+    "/v2/dataset/{uuid}/image": {
       "get": {
         "tags": [
           "public",
           "private"
         ],
-        "summary": "Get Specimen In SpecimenGrowthProtocol",
-        "operationId": "getSpecimenInSpecimenGrowthProtocol",
+        "summary": "Get Image In Dataset",
+        "operationId": "getImageInDataset",
         "parameters": [
           {
             "name": "uuid",
@@ -1347,9 +1081,9 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Specimen"
+                    "$ref": "#/components/schemas/Image"
                   },
-                  "title": "Response Getspecimeninspecimengrowthprotocol"
+                  "title": "Response Getimageindataset"
                 }
               }
             }
@@ -1367,14 +1101,14 @@
         }
       }
     },
-    "/v2/image_acquisition/{uuid}/experimentally_captured_image": {
+    "/v2/creation_process/{uuid}/image": {
       "get": {
         "tags": [
           "public",
           "private"
         ],
-        "summary": "Get ExperimentallyCapturedImage In ImageAcquisition",
-        "operationId": "getExperimentallyCapturedImageInImageAcquisition",
+        "summary": "Get Image In CreationProcess",
+        "operationId": "getImageInCreationProcess",
         "parameters": [
           {
             "name": "uuid",
@@ -1421,9 +1155,9 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ExperimentallyCapturedImage"
+                    "$ref": "#/components/schemas/Image"
                   },
-                  "title": "Response Getexperimentallycapturedimageinimageacquisition"
+                  "title": "Response Getimageincreationprocess"
                 }
               }
             }
@@ -1441,14 +1175,14 @@
         }
       }
     },
-    "/v2/experimental_imaging_dataset/{uuid}/experimentally_captured_image": {
+    "/v2/file_reference/{uuid}/image": {
       "get": {
         "tags": [
           "public",
           "private"
         ],
-        "summary": "Get ExperimentallyCapturedImage In ExperimentalImagingDataset",
-        "operationId": "getExperimentallyCapturedImageInExperimentalImagingDataset",
+        "summary": "Get Image In FileReference",
+        "operationId": "getImageInFileReference",
         "parameters": [
           {
             "name": "uuid",
@@ -1495,9 +1229,9 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ExperimentallyCapturedImage"
+                    "$ref": "#/components/schemas/Image"
                   },
-                  "title": "Response Getexperimentallycapturedimageinexperimentalimagingdataset"
+                  "title": "Response Getimageinfilereference"
                 }
               }
             }
@@ -1515,14 +1249,14 @@
         }
       }
     },
-    "/v2/specimen/{uuid}/experimentally_captured_image": {
+    "/v2/protocol/{uuid}/bio_sample": {
       "get": {
         "tags": [
           "public",
           "private"
         ],
-        "summary": "Get ExperimentallyCapturedImage In Specimen",
-        "operationId": "getExperimentallyCapturedImageInSpecimen",
+        "summary": "Get BioSample In Protocol",
+        "operationId": "getBioSampleInProtocol",
         "parameters": [
           {
             "name": "uuid",
@@ -1569,9 +1303,9 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ExperimentallyCapturedImage"
+                    "$ref": "#/components/schemas/BioSample"
                   },
-                  "title": "Response Getexperimentallycapturedimageinspecimen"
+                  "title": "Response Getbiosampleinprotocol"
                 }
               }
             }
@@ -1589,14 +1323,14 @@
         }
       }
     },
-    "/v2/study/{uuid}/image_annotation_dataset": {
+    "/v2/specimen/{uuid}/creation_process": {
       "get": {
         "tags": [
           "public",
           "private"
         ],
-        "summary": "Get ImageAnnotationDataset In Study",
-        "operationId": "getImageAnnotationDatasetInStudy",
+        "summary": "Get CreationProcess In Specimen",
+        "operationId": "getCreationProcessInSpecimen",
         "parameters": [
           {
             "name": "uuid",
@@ -1643,9 +1377,9 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ImageAnnotationDataset"
+                    "$ref": "#/components/schemas/CreationProcess"
                   },
-                  "title": "Response Getimageannotationdatasetinstudy"
+                  "title": "Response Getcreationprocessinspecimen"
                 }
               }
             }
@@ -1663,14 +1397,14 @@
         }
       }
     },
-    "/v2/image_annotation_dataset/{uuid}/annotation_file_reference": {
+    "/v2/image_acquisition_protocol/{uuid}/creation_process": {
       "get": {
         "tags": [
           "public",
           "private"
         ],
-        "summary": "Get AnnotationFileReference In ImageAnnotationDataset",
-        "operationId": "getAnnotationFileReferenceInImageAnnotationDataset",
+        "summary": "Get CreationProcess In ImageAcquisitionProtocol",
+        "operationId": "getCreationProcessInImageAcquisitionProtocol",
         "parameters": [
           {
             "name": "uuid",
@@ -1717,9 +1451,9 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/AnnotationFileReference"
+                    "$ref": "#/components/schemas/CreationProcess"
                   },
-                  "title": "Response Getannotationfilereferenceinimageannotationdataset"
+                  "title": "Response Getcreationprocessinimageacquisitionprotocol"
                 }
               }
             }
@@ -1737,14 +1471,14 @@
         }
       }
     },
-    "/v2/experimental_imaging_dataset/{uuid}/annotation_file_reference": {
+    "/v2/image/{uuid}/creation_process": {
       "get": {
         "tags": [
           "public",
           "private"
         ],
-        "summary": "Get AnnotationFileReference In ExperimentalImagingDataset",
-        "operationId": "getAnnotationFileReferenceInExperimentalImagingDataset",
+        "summary": "Get CreationProcess In Image",
+        "operationId": "getCreationProcessInImage",
         "parameters": [
           {
             "name": "uuid",
@@ -1791,9 +1525,9 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/AnnotationFileReference"
+                    "$ref": "#/components/schemas/CreationProcess"
                   },
-                  "title": "Response Getannotationfilereferenceinexperimentalimagingdataset"
+                  "title": "Response Getcreationprocessinimage"
                 }
               }
             }
@@ -1811,14 +1545,14 @@
         }
       }
     },
-    "/v2/derived_image/{uuid}/annotation_file_reference": {
+    "/v2/protocol/{uuid}/creation_process": {
       "get": {
         "tags": [
           "public",
           "private"
         ],
-        "summary": "Get AnnotationFileReference In DerivedImage",
-        "operationId": "getAnnotationFileReferenceInDerivedImage",
+        "summary": "Get CreationProcess In Protocol",
+        "operationId": "getCreationProcessInProtocol",
         "parameters": [
           {
             "name": "uuid",
@@ -1865,9 +1599,9 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/AnnotationFileReference"
+                    "$ref": "#/components/schemas/CreationProcess"
                   },
-                  "title": "Response Getannotationfilereferenceinderivedimage"
+                  "title": "Response Getcreationprocessinprotocol"
                 }
               }
             }
@@ -1885,14 +1619,14 @@
         }
       }
     },
-    "/v2/experimentally_captured_image/{uuid}/annotation_file_reference": {
+    "/v2/annotation_method/{uuid}/creation_process": {
       "get": {
         "tags": [
           "public",
           "private"
         ],
-        "summary": "Get AnnotationFileReference In ExperimentallyCapturedImage",
-        "operationId": "getAnnotationFileReferenceInExperimentallyCapturedImage",
+        "summary": "Get CreationProcess In AnnotationMethod",
+        "operationId": "getCreationProcessInAnnotationMethod",
         "parameters": [
           {
             "name": "uuid",
@@ -1939,9 +1673,9 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/AnnotationFileReference"
+                    "$ref": "#/components/schemas/CreationProcess"
                   },
-                  "title": "Response Getannotationfilereferenceinexperimentallycapturedimage"
+                  "title": "Response Getcreationprocessinannotationmethod"
                 }
               }
             }
@@ -1959,14 +1693,14 @@
         }
       }
     },
-    "/v2/annotation_method/{uuid}/annotation_file_reference": {
+    "/v2/dataset/{uuid}/annotation_data": {
       "get": {
         "tags": [
           "public",
           "private"
         ],
-        "summary": "Get AnnotationFileReference In AnnotationMethod",
-        "operationId": "getAnnotationFileReferenceInAnnotationMethod",
+        "summary": "Get AnnotationData In Dataset",
+        "operationId": "getAnnotationDataInDataset",
         "parameters": [
           {
             "name": "uuid",
@@ -2013,9 +1747,9 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/AnnotationFileReference"
+                    "$ref": "#/components/schemas/AnnotationData"
                   },
-                  "title": "Response Getannotationfilereferenceinannotationmethod"
+                  "title": "Response Getannotationdataindataset"
                 }
               }
             }
@@ -2033,14 +1767,14 @@
         }
       }
     },
-    "/v2/derived_image/{uuid}/derived_image": {
+    "/v2/creation_process/{uuid}/annotation_data": {
       "get": {
         "tags": [
           "public",
           "private"
         ],
-        "summary": "Get DerivedImage In DerivedImage",
-        "operationId": "getDerivedImageInDerivedImage",
+        "summary": "Get AnnotationData In CreationProcess",
+        "operationId": "getAnnotationDataInCreationProcess",
         "parameters": [
           {
             "name": "uuid",
@@ -2087,9 +1821,9 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/DerivedImage"
+                    "$ref": "#/components/schemas/AnnotationData"
                   },
-                  "title": "Response Getderivedimageinderivedimage"
+                  "title": "Response Getannotationdataincreationprocess"
                 }
               }
             }
@@ -2107,14 +1841,14 @@
         }
       }
     },
-    "/v2/experimentally_captured_image/{uuid}/derived_image": {
+    "/v2/file_reference/{uuid}/annotation_data": {
       "get": {
         "tags": [
           "public",
           "private"
         ],
-        "summary": "Get DerivedImage In ExperimentallyCapturedImage",
-        "operationId": "getDerivedImageInExperimentallyCapturedImage",
+        "summary": "Get AnnotationData In FileReference",
+        "operationId": "getAnnotationDataInFileReference",
         "parameters": [
           {
             "name": "uuid",
@@ -2161,157 +1895,9 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/DerivedImage"
+                    "$ref": "#/components/schemas/AnnotationData"
                   },
-                  "title": "Response Getderivedimageinexperimentallycapturedimage"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v2/image_annotation_dataset/{uuid}/derived_image": {
-      "get": {
-        "tags": [
-          "public",
-          "private"
-        ],
-        "summary": "Get DerivedImage In ImageAnnotationDataset",
-        "operationId": "getDerivedImageInImageAnnotationDataset",
-        "parameters": [
-          {
-            "name": "uuid",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "title": "Uuid"
-            }
-          },
-          {
-            "name": "start_from_uuid",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "format": "uuid"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Start From Uuid"
-            }
-          },
-          {
-            "name": "page_size",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "title": "Page Size"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DerivedImage"
-                  },
-                  "title": "Response Getderivedimageinimageannotationdataset"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v2/annotation_method/{uuid}/derived_image": {
-      "get": {
-        "tags": [
-          "public",
-          "private"
-        ],
-        "summary": "Get DerivedImage In AnnotationMethod",
-        "operationId": "getDerivedImageInAnnotationMethod",
-        "parameters": [
-          {
-            "name": "uuid",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "title": "Uuid"
-            }
-          },
-          {
-            "name": "start_from_uuid",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "format": "uuid"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Start From Uuid"
-            }
-          },
-          {
-            "name": "page_size",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "title": "Page Size"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DerivedImage"
-                  },
-                  "title": "Response Getderivedimageinannotationmethod"
+                  "title": "Response Getannotationdatainfilereference"
                 }
               }
             }
@@ -2652,18 +2238,18 @@
         ]
       }
     },
-    "/v2/private/experimental_imaging_dataset": {
+    "/v2/private/dataset": {
       "post": {
         "tags": [
           "private"
         ],
-        "summary": "Create ExperimentalImagingDataset",
-        "operationId": "postExperimentalImagingDataset",
+        "summary": "Create Dataset",
+        "operationId": "postDataset",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ExperimentalImagingDataset"
+                "$ref": "#/components/schemas/Dataset"
               }
             }
           },
@@ -2740,18 +2326,18 @@
         ]
       }
     },
-    "/v2/private/experimentally_captured_image": {
+    "/v2/private/image": {
       "post": {
         "tags": [
           "private"
         ],
-        "summary": "Create ExperimentallyCapturedImage",
-        "operationId": "postExperimentallyCapturedImage",
+        "summary": "Create Image",
+        "operationId": "postImage",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ExperimentallyCapturedImage"
+                "$ref": "#/components/schemas/Image"
               }
             }
           },
@@ -2784,18 +2370,18 @@
         ]
       }
     },
-    "/v2/private/image_acquisition": {
+    "/v2/private/image_acquisition_protocol": {
       "post": {
         "tags": [
           "private"
         ],
-        "summary": "Create ImageAcquisition",
-        "operationId": "postImageAcquisition",
+        "summary": "Create ImageAcquisitionProtocol",
+        "operationId": "postImageAcquisitionProtocol",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ImageAcquisition"
+                "$ref": "#/components/schemas/ImageAcquisitionProtocol"
               }
             }
           },
@@ -2872,18 +2458,18 @@
         ]
       }
     },
-    "/v2/private/specimen_growth_protocol": {
+    "/v2/private/protocol": {
       "post": {
         "tags": [
           "private"
         ],
-        "summary": "Create SpecimenGrowthProtocol",
-        "operationId": "postSpecimenGrowthProtocol",
+        "summary": "Create Protocol",
+        "operationId": "postProtocol",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/SpecimenGrowthProtocol"
+                "$ref": "#/components/schemas/Protocol"
               }
             }
           },
@@ -2960,18 +2546,18 @@
         ]
       }
     },
-    "/v2/private/image_annotation_dataset": {
+    "/v2/private/creation_process": {
       "post": {
         "tags": [
           "private"
         ],
-        "summary": "Create ImageAnnotationDataset",
-        "operationId": "postImageAnnotationDataset",
+        "summary": "Create CreationProcess",
+        "operationId": "postCreationProcess",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ImageAnnotationDataset"
+                "$ref": "#/components/schemas/CreationProcess"
               }
             }
           },
@@ -3004,62 +2590,18 @@
         ]
       }
     },
-    "/v2/private/annotation_file_reference": {
+    "/v2/private/annotation_data": {
       "post": {
         "tags": [
           "private"
         ],
-        "summary": "Create AnnotationFileReference",
-        "operationId": "postAnnotationFileReference",
+        "summary": "Create AnnotationData",
+        "operationId": "postAnnotationData",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AnnotationFileReference"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
-      }
-    },
-    "/v2/private/derived_image": {
-      "post": {
-        "tags": [
-          "private"
-        ],
-        "summary": "Create DerivedImage",
-        "operationId": "postDerivedImage",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DerivedImage"
+                "$ref": "#/components/schemas/AnnotationData"
               }
             }
           },
@@ -3193,7 +2735,7 @@
         "title": "Affiliation",
         "description": "An organsiation that a contributor is affiliated with."
       },
-      "AnnotationFileReference": {
+      "AnnotationData": {
         "properties": {
           "uuid": {
             "type": "string",
@@ -3203,7 +2745,7 @@
           },
           "version": {
             "type": "integer",
-            "minimum": 0,
+            "minimum": 0.0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -3218,52 +2760,18 @@
             ],
             "description": "Model type and version. Used to map arbitrary objects to a known (possibly previously-used) type.\n        Optional because for some usecases (e.g. api) we want to accept objects without it because we have the info we need to set it."
           },
-          "transformation_description": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Transformation Description",
-            "description": "Any transformations required to link annotations to the image."
-          },
-          "spatial_information": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Spatial Information",
-            "description": "Spatial information for non-pixel annotations."
-          },
-          "file_path": {
-            "type": "string",
-            "title": "File Path",
-            "description": "The path (including the name) of the file."
-          },
-          "format": {
-            "type": "string",
-            "title": "Format",
-            "description": "File format or type."
-          },
-          "size_in_bytes": {
-            "type": "integer",
-            "title": "Size In Bytes",
-            "description": "Disc size in bytes."
-          },
-          "uri": {
-            "type": "string",
-            "title": "Uri",
-            "description": "URI from which the file can be accessed."
-          },
           "attribute": {
-            "type": "object",
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Attribute"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Attribute",
             "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
           },
@@ -3272,21 +2780,18 @@
             "format": "uuid",
             "title": "Submission Dataset Uuid"
           },
-          "source_image_uuid": {
-            "items": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "type": "array",
-            "title": "Source Image Uuid"
-          },
           "creation_process_uuid": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Creation Process Uuid"
+          },
+          "original_file_reference_uuid": {
             "items": {
               "type": "string",
               "format": "uuid"
             },
             "type": "array",
-            "title": "Creation Process Uuid"
+            "title": "Original File Reference Uuid"
           }
         },
         "additionalProperties": false,
@@ -3294,16 +2799,11 @@
         "required": [
           "uuid",
           "version",
-          "file_path",
-          "format",
-          "size_in_bytes",
-          "uri",
-          "attribute",
           "submission_dataset_uuid",
-          "source_image_uuid",
-          "creation_process_uuid"
+          "creation_process_uuid",
+          "original_file_reference_uuid"
         ],
-        "title": "AnnotationFileReference"
+        "title": "AnnotationData"
       },
       "AnnotationMethod": {
         "properties": {
@@ -3320,7 +2820,7 @@
           },
           "version": {
             "type": "integer",
-            "minimum": 0,
+            "minimum": 0.0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -3338,7 +2838,7 @@
           "protocol_description": {
             "type": "string",
             "title": "Protocol Description",
-            "description": "Description of steps involved in the process."
+            "description": "Description of actions involved in the process."
           },
           "annotation_criteria": {
             "anyOf": [
@@ -3364,9 +2864,48 @@
             "title": "Annotation Coverage",
             "description": "Which images from the dataset were annotated, and what percentage of the data has been annotated from what is available."
           },
+          "transformation_description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Transformation Description",
+            "description": "Any transformations required to link annotations to the image."
+          },
+          "spatial_information": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Spatial Information",
+            "description": "Spatial information for non-pixel annotations."
+          },
           "method_type": {
-            "$ref": "#/components/schemas/AnnotationType",
+            "items": {
+              "$ref": "#/components/schemas/AnnotationMethodType"
+            },
+            "type": "array",
+            "title": "Method Type",
             "description": "Classification of the kind of annotation that was performed."
+          },
+          "annotation_source_indicator": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AnnotationSourceIndicator"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "How the file(s) containing annotation data can be linked to the original images that were annotated."
           }
         },
         "additionalProperties": false,
@@ -3380,7 +2919,7 @@
         ],
         "title": "AnnotationMethod"
       },
-      "AnnotationType": {
+      "AnnotationMethodType": {
         "type": "string",
         "enum": [
           "class_labels",
@@ -3395,7 +2934,53 @@
           "weak_annotations",
           "other"
         ],
-        "title": "AnnotationType"
+        "title": "AnnotationMethodType"
+      },
+      "AnnotationSourceIndicator": {
+        "type": "string",
+        "enum": [
+          "metadata_file",
+          "class_labels",
+          "class_labels",
+          "class_labels",
+          "other"
+        ],
+        "title": "AnnotationSourceIndicator"
+      },
+      "Attribute": {
+        "properties": {
+          "provenance": {
+            "$ref": "#/components/schemas/AttributeProvenance",
+            "description": "The category of the source of the annotaton"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "A descriptive name or identifier for the annotation."
+          },
+          "value": {
+            "type": "object",
+            "title": "Value",
+            "description": "The value of an annotation, which is a stored in a freeform dicitionary"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "provenance",
+          "name",
+          "value"
+        ],
+        "title": "Attribute"
+      },
+      "AttributeProvenance": {
+        "type": "string",
+        "enum": [
+          "submittor",
+          "bia_ingest",
+          "bia_conversion"
+        ],
+        "title": "AttributeProvenance"
       },
       "AuthenticationToken": {
         "properties": {
@@ -3430,7 +3015,7 @@
           },
           "version": {
             "type": "integer",
-            "minimum": 0,
+            "minimum": 0.0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -3502,6 +3087,19 @@
             ],
             "title": "Intrinsic Variable Description",
             "description": "Intrinsic (e.g. genetic) alteration."
+          },
+          "growth_protocol_uuid": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Growth Protocol Uuid",
+            "description": "The protocol that was followed in order to create this biosample."
           }
         },
         "additionalProperties": false,
@@ -3740,7 +3338,7 @@
         "title": "Contributor",
         "description": "A person or group that contributed to the creation of a Document."
       },
-      "DerivedImage": {
+      "CreationProcess": {
         "properties": {
           "uuid": {
             "type": "string",
@@ -3750,7 +3348,7 @@
           },
           "version": {
             "type": "integer",
-            "minimum": 0,
+            "minimum": 0.0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -3765,70 +3363,93 @@
             ],
             "description": "Model type and version. Used to map arbitrary objects to a known (possibly previously-used) type.\n        Optional because for some usecases (e.g. api) we want to accept objects without it because we have the info we need to set it."
           },
-          "attribute": {
-            "type": "object",
-            "title": "Attribute",
-            "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
-          },
-          "transformation_description": {
+          "subject_specimen_uuid": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "string",
+                "format": "uuid"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Transformation Description",
-            "description": "Any transformations required to link annotations to the image."
+            "title": "Subject Specimen Uuid",
+            "description": "The biological specimen that is the subject of the image."
           },
-          "spatial_information": {
+          "image_acquisition_protocol_uuid": {
             "anyOf": [
               {
-                "type": "string"
+                "items": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "type": "array"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Spatial Information",
-            "description": "Spatial information for non-pixel annotations."
+            "title": "Image Acquisition Protocol Uuid",
+            "description": "The imaging protocol, describing the technique that was used to create the image."
           },
-          "source_image_uuid": {
-            "items": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "type": "array",
-            "title": "Source Image Uuid"
+          "input_image_uuid": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Input Image Uuid",
+            "description": "The images used as input data for the creation of a new image."
           },
-          "submission_dataset_uuid": {
-            "type": "string",
-            "format": "uuid",
-            "title": "Submission Dataset Uuid"
+          "protocol_uuid": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Protocol Uuid",
+            "description": "A protocol which was followed that resulted in the creation of this new image from existing image data."
           },
-          "creation_process_uuid": {
-            "items": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "type": "array",
-            "title": "Creation Process Uuid"
+          "annotation_method_uuid": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Annotation Method Uuid",
+            "description": "The annotation method describing the process followed to create a new image from exsiting image data."
           }
         },
         "additionalProperties": false,
         "type": "object",
         "required": [
           "uuid",
-          "version",
-          "attribute",
-          "source_image_uuid",
-          "submission_dataset_uuid",
-          "creation_process_uuid"
+          "version"
         ],
-        "title": "DerivedImage"
+        "title": "CreationProcess"
       },
-      "ExperimentalImagingDataset": {
+      "Dataset": {
         "properties": {
           "title_id": {
             "type": "string",
@@ -3843,7 +3464,7 @@
           },
           "version": {
             "type": "integer",
-            "minimum": 0,
+            "minimum": 0.0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -3871,7 +3492,17 @@
             "description": "Brief description of the dataset."
           },
           "attribute": {
-            "type": "object",
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Attribute"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Attribute",
             "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
           },
@@ -3925,72 +3556,10 @@
           "title_id",
           "uuid",
           "version",
-          "attribute",
           "example_image_uri",
           "submitted_in_study_uuid"
         ],
-        "title": "ExperimentalImagingDataset"
-      },
-      "ExperimentallyCapturedImage": {
-        "properties": {
-          "uuid": {
-            "type": "string",
-            "format": "uuid",
-            "title": "Uuid",
-            "description": "Unique ID (across the BIA database) used to refer to and identify a document."
-          },
-          "version": {
-            "type": "integer",
-            "minimum": 0,
-            "title": "Version",
-            "description": "Document version. This can't be optional to make sure we never persist objects without it"
-          },
-          "model": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/ModelMetadata"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "Model type and version. Used to map arbitrary objects to a known (possibly previously-used) type.\n        Optional because for some usecases (e.g. api) we want to accept objects without it because we have the info we need to set it."
-          },
-          "attribute": {
-            "type": "object",
-            "title": "Attribute",
-            "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
-          },
-          "acquisition_process_uuid": {
-            "items": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "type": "array",
-            "title": "Acquisition Process Uuid"
-          },
-          "submission_dataset_uuid": {
-            "type": "string",
-            "format": "uuid",
-            "title": "Submission Dataset Uuid"
-          },
-          "subject_uuid": {
-            "type": "string",
-            "format": "uuid",
-            "title": "Subject Uuid"
-          }
-        },
-        "additionalProperties": false,
-        "type": "object",
-        "required": [
-          "uuid",
-          "version",
-          "attribute",
-          "acquisition_process_uuid",
-          "submission_dataset_uuid",
-          "subject_uuid"
-        ],
-        "title": "ExperimentallyCapturedImage"
+        "title": "Dataset"
       },
       "ExternalReference": {
         "properties": {
@@ -4044,7 +3613,7 @@
           },
           "version": {
             "type": "integer",
-            "minimum": 0,
+            "minimum": 0.0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -4080,7 +3649,17 @@
             "description": "URI from which the file can be accessed."
           },
           "attribute": {
-            "type": "object",
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Attribute"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Attribute",
             "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
           },
@@ -4099,7 +3678,6 @@
           "format",
           "size_in_bytes",
           "uri",
-          "attribute",
           "submission_dataset_uuid"
         ],
         "title": "FileReference"
@@ -4180,7 +3758,77 @@
         "type": "object",
         "title": "HTTPValidationError"
       },
-      "ImageAcquisition": {
+      "Image": {
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Uuid",
+            "description": "Unique ID (across the BIA database) used to refer to and identify a document."
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Version",
+            "description": "Document version. This can't be optional to make sure we never persist objects without it"
+          },
+          "model": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ModelMetadata"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Model type and version. Used to map arbitrary objects to a known (possibly previously-used) type.\n        Optional because for some usecases (e.g. api) we want to accept objects without it because we have the info we need to set it."
+          },
+          "attribute": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Attribute"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Attribute",
+            "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
+          },
+          "submission_dataset_uuid": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Submission Dataset Uuid"
+          },
+          "creation_process_uuid": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Creation Process Uuid"
+          },
+          "original_file_reference_uuid": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "title": "Original File Reference Uuid"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "uuid",
+          "version",
+          "submission_dataset_uuid",
+          "creation_process_uuid",
+          "original_file_reference_uuid"
+        ],
+        "title": "Image"
+      },
+      "ImageAcquisitionProtocol": {
         "properties": {
           "title_id": {
             "type": "string",
@@ -4195,7 +3843,7 @@
           },
           "version": {
             "type": "integer",
-            "minimum": 0,
+            "minimum": 0.0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -4213,7 +3861,7 @@
           "protocol_description": {
             "type": "string",
             "title": "Protocol Description",
-            "description": "Description of steps involved in the process."
+            "description": "Description of actions involved in the process."
           },
           "imaging_instrument_description": {
             "type": "string",
@@ -4260,14 +3908,14 @@
           "protocol_description",
           "imaging_instrument_description"
         ],
-        "title": "ImageAcquisition"
+        "title": "ImageAcquisitionProtocol"
       },
       "ImageAnalysisMethod": {
         "properties": {
           "protocol_description": {
             "type": "string",
             "title": "Protocol Description",
-            "description": "Description of steps involved in the process."
+            "description": "Description of actions involved in the process."
           },
           "features_analysed": {
             "type": "string",
@@ -4284,85 +3932,12 @@
         "title": "ImageAnalysisMethod",
         "description": "Information about image analysis methods."
       },
-      "ImageAnnotationDataset": {
-        "properties": {
-          "title_id": {
-            "type": "string",
-            "title": "Title Id",
-            "description": "User provided title, which is unqiue within a submission, used to identify a part of a submission."
-          },
-          "uuid": {
-            "type": "string",
-            "format": "uuid",
-            "title": "Uuid",
-            "description": "Unique ID (across the BIA database) used to refer to and identify a document."
-          },
-          "version": {
-            "type": "integer",
-            "minimum": 0,
-            "title": "Version",
-            "description": "Document version. This can't be optional to make sure we never persist objects without it"
-          },
-          "model": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/ModelMetadata"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "Model type and version. Used to map arbitrary objects to a known (possibly previously-used) type.\n        Optional because for some usecases (e.g. api) we want to accept objects without it because we have the info we need to set it."
-          },
-          "description": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Description",
-            "description": "Brief description of the dataset."
-          },
-          "attribute": {
-            "type": "object",
-            "title": "Attribute",
-            "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
-          },
-          "example_image_uri": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "title": "Example Image Uri",
-            "description": "A viewable image that is typical of the dataset."
-          },
-          "submitted_in_study_uuid": {
-            "type": "string",
-            "format": "uuid",
-            "title": "Submitted In Study Uuid"
-          }
-        },
-        "additionalProperties": false,
-        "type": "object",
-        "required": [
-          "title_id",
-          "uuid",
-          "version",
-          "attribute",
-          "example_image_uri",
-          "submitted_in_study_uuid"
-        ],
-        "title": "ImageAnnotationDataset"
-      },
       "ImageCorrelationMethod": {
         "properties": {
           "protocol_description": {
             "type": "string",
             "title": "Protocol Description",
-            "description": "Description of steps involved in the process."
+            "description": "Description of actions involved in the process."
           },
           "fiducials_used": {
             "type": "string",
@@ -4395,7 +3970,7 @@
           },
           "version": {
             "type": "integer",
-            "minimum": 0,
+            "minimum": 0.0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -4544,16 +4119,10 @@
             "description": "Settings of a particular view of an image, such as a specific timestamp of a timeseries, or camera placement in a 3D model."
           },
           "attribute": {
-            "type": "object",
-            "title": "Attribute",
-            "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
-          },
-          "original_file_reference_uuid": {
             "anyOf": [
               {
                 "items": {
-                  "type": "string",
-                  "format": "uuid"
+                  "$ref": "#/components/schemas/Attribute"
                 },
                 "type": "array"
               },
@@ -4561,7 +4130,8 @@
                 "type": "null"
               }
             ],
-            "title": "Original File Reference Uuid"
+            "title": "Attribute",
+            "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
           },
           "representation_of_uuid": {
             "type": "string",
@@ -4578,7 +4148,6 @@
           "use_type",
           "file_uri",
           "total_size_in_bytes",
-          "attribute",
           "representation_of_uuid"
         ],
         "title": "ImageRepresentation"
@@ -4623,6 +4192,46 @@
           "version"
         ],
         "title": "ModelMetadata"
+      },
+      "Protocol": {
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Uuid",
+            "description": "Unique ID (across the BIA database) used to refer to and identify a document."
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Version",
+            "description": "Document version. This can't be optional to make sure we never persist objects without it"
+          },
+          "model": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ModelMetadata"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Model type and version. Used to map arbitrary objects to a known (possibly previously-used) type.\n        Optional because for some usecases (e.g. api) we want to accept objects without it because we have the info we need to set it."
+          },
+          "protocol_description": {
+            "type": "string",
+            "title": "Protocol Description",
+            "description": "Description of actions involved in the process."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "uuid",
+          "version",
+          "protocol_description"
+        ],
+        "title": "Protocol"
       },
       "Publication": {
         "properties": {
@@ -4777,7 +4386,7 @@
           },
           "version": {
             "type": "integer",
-            "minimum": 0,
+            "minimum": 0.0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -4799,7 +4408,8 @@
             },
             "type": "array",
             "minItems": 1,
-            "title": "Imaging Preparation Protocol Uuid"
+            "title": "Imaging Preparation Protocol Uuid",
+            "description": "The protocol that was followed in order to perpare a biosample for imaging."
           },
           "sample_of_uuid": {
             "items": {
@@ -4808,15 +4418,8 @@
             },
             "type": "array",
             "minItems": 1,
-            "title": "Sample Of Uuid"
-          },
-          "growth_protocol_uuid": {
-            "items": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "type": "array",
-            "title": "Growth Protocol Uuid"
+            "title": "Sample Of Uuid",
+            "description": "The biosample from which this specimen was created."
           }
         },
         "additionalProperties": false,
@@ -4825,56 +4428,9 @@
           "uuid",
           "version",
           "imaging_preparation_protocol_uuid",
-          "sample_of_uuid",
-          "growth_protocol_uuid"
+          "sample_of_uuid"
         ],
         "title": "Specimen"
-      },
-      "SpecimenGrowthProtocol": {
-        "properties": {
-          "title_id": {
-            "type": "string",
-            "title": "Title Id",
-            "description": "User provided title, which is unqiue within a submission, used to identify a part of a submission."
-          },
-          "uuid": {
-            "type": "string",
-            "format": "uuid",
-            "title": "Uuid",
-            "description": "Unique ID (across the BIA database) used to refer to and identify a document."
-          },
-          "version": {
-            "type": "integer",
-            "minimum": 0,
-            "title": "Version",
-            "description": "Document version. This can't be optional to make sure we never persist objects without it"
-          },
-          "model": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/ModelMetadata"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "Model type and version. Used to map arbitrary objects to a known (possibly previously-used) type.\n        Optional because for some usecases (e.g. api) we want to accept objects without it because we have the info we need to set it."
-          },
-          "protocol_description": {
-            "type": "string",
-            "title": "Protocol Description",
-            "description": "Description of steps involved in the process."
-          }
-        },
-        "additionalProperties": false,
-        "type": "object",
-        "required": [
-          "title_id",
-          "uuid",
-          "version",
-          "protocol_description"
-        ],
-        "title": "SpecimenGrowthProtocol"
       },
       "SpecimenImagingPreparationProtocol": {
         "properties": {
@@ -4891,7 +4447,7 @@
           },
           "version": {
             "type": "integer",
-            "minimum": 0,
+            "minimum": 0.0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -4909,7 +4465,7 @@
           "protocol_description": {
             "type": "string",
             "title": "Protocol Description",
-            "description": "Description of steps involved in the process."
+            "description": "Description of actions involved in the process."
           },
           "signal_channel_information": {
             "anyOf": [
@@ -4947,7 +4503,7 @@
           },
           "version": {
             "type": "integer",
-            "minimum": 0,
+            "minimum": 0.0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -5080,7 +4636,17 @@
             "description": "Description of how the study was funded."
           },
           "attribute": {
-            "type": "object",
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Attribute"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Attribute",
             "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
           }
@@ -5095,8 +4661,7 @@
           "author",
           "title",
           "release_date",
-          "description",
-          "attribute"
+          "description"
         ],
         "title": "Study"
       },

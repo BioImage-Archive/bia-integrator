@@ -19,17 +19,18 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List
+from bia_integrator_api.models.attribute_provenance import AttributeProvenance
 from typing import Optional, Set
 from typing_extensions import Self
 
-class ImageCorrelationMethod(BaseModel):
+class Attribute(BaseModel):
     """
-    Information about the process of correlating the positions of multiple images.
+    Attribute
     """ # noqa: E501
-    protocol_description: StrictStr = Field(description="Description of actions involved in the process.")
-    fiducials_used: StrictStr = Field(description="Features from correlated datasets used for colocalization.")
-    transformation_matrix: StrictStr = Field(description="Correlation transforms.")
-    __properties: ClassVar[List[str]] = ["protocol_description", "fiducials_used", "transformation_matrix"]
+    provenance: AttributeProvenance
+    name: StrictStr = Field(description="A descriptive name or identifier for the annotation.")
+    value: Dict[str, Any] = Field(description="The value of an annotation, which is a stored in a freeform dicitionary")
+    __properties: ClassVar[List[str]] = ["provenance", "name", "value"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -49,7 +50,7 @@ class ImageCorrelationMethod(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of ImageCorrelationMethod from a JSON string"""
+        """Create an instance of Attribute from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -74,7 +75,7 @@ class ImageCorrelationMethod(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of ImageCorrelationMethod from a dict"""
+        """Create an instance of Attribute from a dict"""
         if obj is None:
             return None
 
@@ -82,9 +83,9 @@ class ImageCorrelationMethod(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "protocol_description": obj.get("protocol_description"),
-            "fiducials_used": obj.get("fiducials_used"),
-            "transformation_matrix": obj.get("transformation_matrix")
+            "provenance": obj.get("provenance"),
+            "name": obj.get("name"),
+            "value": obj.get("value")
         })
         return _obj
 

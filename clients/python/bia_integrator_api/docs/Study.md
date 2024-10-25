@@ -20,7 +20,7 @@ Name | Type | Description | Notes
 **related_publication** | [**List[Publication]**](Publication.md) |  | [optional] 
 **grant** | [**List[Grant]**](Grant.md) |  | [optional] 
 **funding_statement** | **str** |  | [optional] 
-**attribute** | **object** | Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields. | 
+**attribute** | [**List[Attribute]**](Attribute.md) |  | [optional] 
 
 ## Example
 

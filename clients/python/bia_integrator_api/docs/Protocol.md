@@ -1,4 +1,4 @@
-# Specimen
+# Protocol
 
 
 ## Properties
@@ -8,25 +8,24 @@ Name | Type | Description | Notes
 **uuid** | **str** | Unique ID (across the BIA database) used to refer to and identify a document. | 
 **version** | **int** | Document version. This can&#39;t be optional to make sure we never persist objects without it | 
 **model** | [**ModelMetadata**](ModelMetadata.md) |  | [optional] 
-**imaging_preparation_protocol_uuid** | **List[str]** | The protocol that was followed in order to perpare a biosample for imaging. | 
-**sample_of_uuid** | **List[str]** | The biosample from which this specimen was created. | 
+**protocol_description** | **str** | Description of actions involved in the process. | 
 
 ## Example
 
 ```python
-from bia_integrator_api.models.specimen import Specimen
+from bia_integrator_api.models.protocol import Protocol
 
 # TODO update the JSON string below
 json = "{}"
-# create an instance of Specimen from a JSON string
-specimen_instance = Specimen.from_json(json)
+# create an instance of Protocol from a JSON string
+protocol_instance = Protocol.from_json(json)
 # print the JSON string representation of the object
-print(Specimen.to_json())
+print(Protocol.to_json())
 
 # convert the object into a dict
-specimen_dict = specimen_instance.to_dict()
-# create an instance of Specimen from a dict
-specimen_from_dict = Specimen.from_dict(specimen_dict)
+protocol_dict = protocol_instance.to_dict()
+# create an instance of Protocol from a dict
+protocol_from_dict = Protocol.from_dict(protocol_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

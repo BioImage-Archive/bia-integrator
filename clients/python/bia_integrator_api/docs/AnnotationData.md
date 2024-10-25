@@ -1,4 +1,4 @@
-# FileReference
+# AnnotationData
 
 
 ## Properties
@@ -8,29 +8,27 @@ Name | Type | Description | Notes
 **uuid** | **str** | Unique ID (across the BIA database) used to refer to and identify a document. | 
 **version** | **int** | Document version. This can&#39;t be optional to make sure we never persist objects without it | 
 **model** | [**ModelMetadata**](ModelMetadata.md) |  | [optional] 
-**file_path** | **str** | The path (including the name) of the file. | 
-**format** | **str** | File format or type. | 
-**size_in_bytes** | **int** | Disc size in bytes. | 
-**uri** | **str** | URI from which the file can be accessed. | 
 **attribute** | [**List[Attribute]**](Attribute.md) |  | [optional] 
 **submission_dataset_uuid** | **str** |  | 
+**creation_process_uuid** | **str** |  | 
+**original_file_reference_uuid** | **List[str]** |  | 
 
 ## Example
 
 ```python
-from bia_integrator_api.models.file_reference import FileReference
+from bia_integrator_api.models.annotation_data import AnnotationData
 
 # TODO update the JSON string below
 json = "{}"
-# create an instance of FileReference from a JSON string
-file_reference_instance = FileReference.from_json(json)
+# create an instance of AnnotationData from a JSON string
+annotation_data_instance = AnnotationData.from_json(json)
 # print the JSON string representation of the object
-print(FileReference.to_json())
+print(AnnotationData.to_json())
 
 # convert the object into a dict
-file_reference_dict = file_reference_instance.to_dict()
-# create an instance of FileReference from a dict
-file_reference_from_dict = FileReference.from_dict(file_reference_dict)
+annotation_data_dict = annotation_data_instance.to_dict()
+# create an instance of AnnotationData from a dict
+annotation_data_from_dict = AnnotationData.from_dict(annotation_data_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

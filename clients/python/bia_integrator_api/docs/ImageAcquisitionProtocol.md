@@ -1,4 +1,4 @@
-# SpecimenImagingPreparationProtocol
+# ImageAcquisitionProtocol
 
 
 ## Properties
@@ -10,24 +10,26 @@ Name | Type | Description | Notes
 **version** | **int** | Document version. This can&#39;t be optional to make sure we never persist objects without it | 
 **model** | [**ModelMetadata**](ModelMetadata.md) |  | [optional] 
 **protocol_description** | **str** | Description of actions involved in the process. | 
-**signal_channel_information** | [**List[SignalChannelInformation]**](SignalChannelInformation.md) |  | [optional] 
+**imaging_instrument_description** | **str** | Names, types, or description of how the instruments used to create the image. | 
+**fbbi_id** | **List[str]** |  | [optional] 
+**imaging_method_name** | **List[str]** |  | [optional] 
 
 ## Example
 
 ```python
-from bia_integrator_api.models.specimen_imaging_preparation_protocol import SpecimenImagingPreparationProtocol
+from bia_integrator_api.models.image_acquisition_protocol import ImageAcquisitionProtocol
 
 # TODO update the JSON string below
 json = "{}"
-# create an instance of SpecimenImagingPreparationProtocol from a JSON string
-specimen_imaging_preparation_protocol_instance = SpecimenImagingPreparationProtocol.from_json(json)
+# create an instance of ImageAcquisitionProtocol from a JSON string
+image_acquisition_protocol_instance = ImageAcquisitionProtocol.from_json(json)
 # print the JSON string representation of the object
-print(SpecimenImagingPreparationProtocol.to_json())
+print(ImageAcquisitionProtocol.to_json())
 
 # convert the object into a dict
-specimen_imaging_preparation_protocol_dict = specimen_imaging_preparation_protocol_instance.to_dict()
-# create an instance of SpecimenImagingPreparationProtocol from a dict
-specimen_imaging_preparation_protocol_from_dict = SpecimenImagingPreparationProtocol.from_dict(specimen_imaging_preparation_protocol_dict)
+image_acquisition_protocol_dict = image_acquisition_protocol_instance.to_dict()
+# create an instance of ImageAcquisitionProtocol from a dict
+image_acquisition_protocol_from_dict = ImageAcquisitionProtocol.from_dict(image_acquisition_protocol_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

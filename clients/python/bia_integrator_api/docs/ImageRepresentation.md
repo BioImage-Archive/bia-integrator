@@ -21,8 +21,7 @@ Name | Type | Description | Notes
 **size_c** | **int** |  | [optional] 
 **size_t** | **int** |  | [optional] 
 **image_viewer_setting** | [**List[RenderedView]**](RenderedView.md) |  | [optional] 
-**attribute** | **object** | Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields. | 
-**original_file_reference_uuid** | **List[str]** |  | [optional] 
+**attribute** | [**List[Attribute]**](Attribute.md) |  | [optional] 
 **representation_of_uuid** | **str** |  | 
 
 ## Example

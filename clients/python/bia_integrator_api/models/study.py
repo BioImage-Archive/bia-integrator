@@ -21,6 +21,7 @@ from datetime import date
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
+from bia_integrator_api.models.attribute import Attribute
 from bia_integrator_api.models.contributor import Contributor
 from bia_integrator_api.models.external_reference import ExternalReference
 from bia_integrator_api.models.grant import Grant
@@ -49,7 +50,7 @@ class Study(BaseModel):
     related_publication: Optional[List[Publication]] = None
     grant: Optional[List[Grant]] = None
     funding_statement: Optional[StrictStr] = None
-    attribute: Dict[str, Any] = Field(description="Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields.")
+    attribute: Optional[List[Attribute]] = None
     __properties: ClassVar[List[str]] = ["uuid", "version", "model", "accession_id", "licence", "author", "title", "release_date", "description", "keyword", "acknowledgement", "see_also", "related_publication", "grant", "funding_statement", "attribute"]
 
     model_config = ConfigDict(
@@ -122,6 +123,13 @@ class Study(BaseModel):
                 if _item_grant:
                     _items.append(_item_grant.to_dict())
             _dict['grant'] = _items
+        # override the default output from pydantic by calling `to_dict()` of each item in attribute (list)
+        _items = []
+        if self.attribute:
+            for _item_attribute in self.attribute:
+                if _item_attribute:
+                    _items.append(_item_attribute.to_dict())
+            _dict['attribute'] = _items
         # set to None if model (nullable) is None
         # and model_fields_set contains the field
         if self.model is None and "model" in self.model_fields_set:
@@ -157,6 +165,11 @@ class Study(BaseModel):
         if self.funding_statement is None and "funding_statement" in self.model_fields_set:
             _dict['funding_statement'] = None
 
+        # set to None if attribute (nullable) is None
+        # and model_fields_set contains the field
+        if self.attribute is None and "attribute" in self.model_fields_set:
+            _dict['attribute'] = None
+
         return _dict
 
     @classmethod
@@ -184,7 +197,7 @@ class Study(BaseModel):
             "related_publication": [Publication.from_dict(_item) for _item in obj["related_publication"]] if obj.get("related_publication") is not None else None,
             "grant": [Grant.from_dict(_item) for _item in obj["grant"]] if obj.get("grant") is not None else None,
             "funding_statement": obj.get("funding_statement"),
-            "attribute": obj.get("attribute")
+            "attribute": [Attribute.from_dict(_item) for _item in obj["attribute"]] if obj.get("attribute") is not None else None
         })
         return _obj
 

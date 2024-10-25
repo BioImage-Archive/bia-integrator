@@ -21,25 +21,22 @@ from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from bia_integrator_api.models.model_metadata import ModelMetadata
-from bia_integrator_api.models.taxon import Taxon
 from typing import Optional, Set
 from typing_extensions import Self
 
-class BioSample(BaseModel):
+class ImageAcquisitionProtocol(BaseModel):
     """
-    BioSample
+    ImageAcquisitionProtocol
     """ # noqa: E501
     title_id: StrictStr = Field(description="User provided title, which is unqiue within a submission, used to identify a part of a submission.")
     uuid: StrictStr = Field(description="Unique ID (across the BIA database) used to refer to and identify a document.")
     version: Annotated[int, Field(strict=True, ge=0)] = Field(description="Document version. This can't be optional to make sure we never persist objects without it")
     model: Optional[ModelMetadata] = None
-    organism_classification: List[Taxon] = Field(description="The classification of th ebiological matter.")
-    biological_entity_description: StrictStr = Field(description="A short description of the biological entity.")
-    experimental_variable_description: Optional[List[StrictStr]] = None
-    extrinsic_variable_description: Optional[List[StrictStr]] = None
-    intrinsic_variable_description: Optional[List[StrictStr]] = None
-    growth_protocol_uuid: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["title_id", "uuid", "version", "model", "organism_classification", "biological_entity_description", "experimental_variable_description", "extrinsic_variable_description", "intrinsic_variable_description", "growth_protocol_uuid"]
+    protocol_description: StrictStr = Field(description="Description of actions involved in the process.")
+    imaging_instrument_description: StrictStr = Field(description="Names, types, or description of how the instruments used to create the image.")
+    fbbi_id: Optional[List[StrictStr]] = None
+    imaging_method_name: Optional[List[StrictStr]] = None
+    __properties: ClassVar[List[str]] = ["title_id", "uuid", "version", "model", "protocol_description", "imaging_instrument_description", "fbbi_id", "imaging_method_name"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -59,7 +56,7 @@ class BioSample(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of BioSample from a JSON string"""
+        """Create an instance of ImageAcquisitionProtocol from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -83,43 +80,26 @@ class BioSample(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of model
         if self.model:
             _dict['model'] = self.model.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of each item in organism_classification (list)
-        _items = []
-        if self.organism_classification:
-            for _item_organism_classification in self.organism_classification:
-                if _item_organism_classification:
-                    _items.append(_item_organism_classification.to_dict())
-            _dict['organism_classification'] = _items
         # set to None if model (nullable) is None
         # and model_fields_set contains the field
         if self.model is None and "model" in self.model_fields_set:
             _dict['model'] = None
 
-        # set to None if experimental_variable_description (nullable) is None
+        # set to None if fbbi_id (nullable) is None
         # and model_fields_set contains the field
-        if self.experimental_variable_description is None and "experimental_variable_description" in self.model_fields_set:
-            _dict['experimental_variable_description'] = None
+        if self.fbbi_id is None and "fbbi_id" in self.model_fields_set:
+            _dict['fbbi_id'] = None
 
-        # set to None if extrinsic_variable_description (nullable) is None
+        # set to None if imaging_method_name (nullable) is None
         # and model_fields_set contains the field
-        if self.extrinsic_variable_description is None and "extrinsic_variable_description" in self.model_fields_set:
-            _dict['extrinsic_variable_description'] = None
-
-        # set to None if intrinsic_variable_description (nullable) is None
-        # and model_fields_set contains the field
-        if self.intrinsic_variable_description is None and "intrinsic_variable_description" in self.model_fields_set:
-            _dict['intrinsic_variable_description'] = None
-
-        # set to None if growth_protocol_uuid (nullable) is None
-        # and model_fields_set contains the field
-        if self.growth_protocol_uuid is None and "growth_protocol_uuid" in self.model_fields_set:
-            _dict['growth_protocol_uuid'] = None
+        if self.imaging_method_name is None and "imaging_method_name" in self.model_fields_set:
+            _dict['imaging_method_name'] = None
 
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of BioSample from a dict"""
+        """Create an instance of ImageAcquisitionProtocol from a dict"""
         if obj is None:
             return None
 
@@ -131,12 +111,10 @@ class BioSample(BaseModel):
             "uuid": obj.get("uuid"),
             "version": obj.get("version"),
             "model": ModelMetadata.from_dict(obj["model"]) if obj.get("model") is not None else None,
-            "organism_classification": [Taxon.from_dict(_item) for _item in obj["organism_classification"]] if obj.get("organism_classification") is not None else None,
-            "biological_entity_description": obj.get("biological_entity_description"),
-            "experimental_variable_description": obj.get("experimental_variable_description"),
-            "extrinsic_variable_description": obj.get("extrinsic_variable_description"),
-            "intrinsic_variable_description": obj.get("intrinsic_variable_description"),
-            "growth_protocol_uuid": obj.get("growth_protocol_uuid")
+            "protocol_description": obj.get("protocol_description"),
+            "imaging_instrument_description": obj.get("imaging_instrument_description"),
+            "fbbi_id": obj.get("fbbi_id"),
+            "imaging_method_name": obj.get("imaging_method_name")
         })
         return _obj
 
