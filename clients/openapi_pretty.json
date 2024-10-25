@@ -2940,9 +2940,9 @@
         "type": "string",
         "enum": [
           "metadata_file",
-          "class_labels",
-          "class_labels",
-          "class_labels",
+          "file_name_exact_match",
+          "file_name_pattern",
+          "file_path",
           "other"
         ],
         "title": "AnnotationSourceIndicator"

@@ -5,11 +5,11 @@
 
 * `METADATA_FILE` (value: `'metadata_file'`)
 
-* `CLASS_LABELS` (value: `'class_labels'`)
+* `FILE_NAME_EXACT_MATCH` (value: `'file_name_exact_match'`)
 
-* `CLASS_LABELS` (value: `'class_labels'`)
+* `FILE_NAME_PATTERN` (value: `'file_name_pattern'`)
 
-* `CLASS_LABELS` (value: `'class_labels'`)
+* `FILE_PATH` (value: `'file_path'`)
 
 * `OTHER` (value: `'other'`)
 

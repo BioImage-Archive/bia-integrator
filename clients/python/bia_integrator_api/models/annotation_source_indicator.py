@@ -27,9 +27,9 @@ class AnnotationSourceIndicator(str, Enum):
     allowed enum values
     """
     METADATA_FILE = 'metadata_file'
-    CLASS_LABELS = 'class_labels'
-    CLASS_LABELS = 'class_labels'
-    CLASS_LABELS = 'class_labels'
+    FILE_NAME_EXACT_MATCH = 'file_name_exact_match'
+    FILE_NAME_PATTERN = 'file_name_pattern'
+    FILE_PATH = 'file_path'
     OTHER = 'other'
 
     @classmethod

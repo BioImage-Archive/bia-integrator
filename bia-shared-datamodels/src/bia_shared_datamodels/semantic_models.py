@@ -535,11 +535,11 @@ class AnnotationSourceIndicator(str, Enum):
     # A metadata file is provided linking every annotation to their source file(s)
     metadata_file = "metadata_file"
     # files are named exactly the same, but exist in different directories
-    file_name_exact_match = "class_labels"
+    file_name_exact_match = "file_name_exact_match"
     # files follow a similar naming pattern e.g. img_1_raw and img_1_annotation
-    file_name_pattern = "class_labels"
+    file_name_pattern = "file_name_pattern"
     # Annotation and their source are grouped together by a parent directory
-    file_path = "class_labels"
+    file_path = "file_path"
     # Some other method is used to connect the files, please specify in the annotation method description.
     other = "other"
 
