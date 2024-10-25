@@ -20,6 +20,7 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing_extensions import Annotated
+from bia_integrator_api.models.attribute import Attribute
 from bia_integrator_api.models.image_representation_use_type import ImageRepresentationUseType
 from bia_integrator_api.models.model_metadata import ModelMetadata
 from bia_integrator_api.models.rendered_view import RenderedView
@@ -46,10 +47,9 @@ class ImageRepresentation(BaseModel):
     size_c: Optional[StrictInt] = None
     size_t: Optional[StrictInt] = None
     image_viewer_setting: Optional[List[RenderedView]] = None
-    attribute: Dict[str, Any] = Field(description="Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields.")
-    original_file_reference_uuid: Optional[List[StrictStr]] = None
+    attribute: Optional[List[Attribute]] = None
     representation_of_uuid: StrictStr
-    __properties: ClassVar[List[str]] = ["uuid", "version", "model", "image_format", "use_type", "file_uri", "total_size_in_bytes", "physical_size_x", "physical_size_y", "physical_size_z", "size_x", "size_y", "size_z", "size_c", "size_t", "image_viewer_setting", "attribute", "original_file_reference_uuid", "representation_of_uuid"]
+    __properties: ClassVar[List[str]] = ["uuid", "version", "model", "image_format", "use_type", "file_uri", "total_size_in_bytes", "physical_size_x", "physical_size_y", "physical_size_z", "size_x", "size_y", "size_z", "size_c", "size_t", "image_viewer_setting", "attribute", "representation_of_uuid"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -100,6 +100,13 @@ class ImageRepresentation(BaseModel):
                 if _item_image_viewer_setting:
                     _items.append(_item_image_viewer_setting.to_dict())
             _dict['image_viewer_setting'] = _items
+        # override the default output from pydantic by calling `to_dict()` of each item in attribute (list)
+        _items = []
+        if self.attribute:
+            for _item_attribute in self.attribute:
+                if _item_attribute:
+                    _items.append(_item_attribute.to_dict())
+            _dict['attribute'] = _items
         # set to None if model (nullable) is None
         # and model_fields_set contains the field
         if self.model is None and "model" in self.model_fields_set:
@@ -150,10 +157,10 @@ class ImageRepresentation(BaseModel):
         if self.image_viewer_setting is None and "image_viewer_setting" in self.model_fields_set:
             _dict['image_viewer_setting'] = None
 
-        # set to None if original_file_reference_uuid (nullable) is None
+        # set to None if attribute (nullable) is None
         # and model_fields_set contains the field
-        if self.original_file_reference_uuid is None and "original_file_reference_uuid" in self.model_fields_set:
-            _dict['original_file_reference_uuid'] = None
+        if self.attribute is None and "attribute" in self.model_fields_set:
+            _dict['attribute'] = None
 
         return _dict
 
@@ -183,8 +190,7 @@ class ImageRepresentation(BaseModel):
             "size_c": obj.get("size_c"),
             "size_t": obj.get("size_t"),
             "image_viewer_setting": [RenderedView.from_dict(_item) for _item in obj["image_viewer_setting"]] if obj.get("image_viewer_setting") is not None else None,
-            "attribute": obj.get("attribute"),
-            "original_file_reference_uuid": obj.get("original_file_reference_uuid"),
+            "attribute": [Attribute.from_dict(_item) for _item in obj["attribute"]] if obj.get("attribute") is not None else None,
             "representation_of_uuid": obj.get("representation_of_uuid")
         })
         return _obj

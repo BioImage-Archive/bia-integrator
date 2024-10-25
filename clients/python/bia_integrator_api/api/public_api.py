@@ -19,18 +19,17 @@ from typing_extensions import Annotated
 from pydantic import Field, StrictInt, StrictStr
 from typing import List, Optional
 from typing_extensions import Annotated
-from bia_integrator_api.models.annotation_file_reference import AnnotationFileReference
+from bia_integrator_api.models.annotation_data import AnnotationData
 from bia_integrator_api.models.annotation_method import AnnotationMethod
 from bia_integrator_api.models.bio_sample import BioSample
-from bia_integrator_api.models.derived_image import DerivedImage
-from bia_integrator_api.models.experimental_imaging_dataset import ExperimentalImagingDataset
-from bia_integrator_api.models.experimentally_captured_image import ExperimentallyCapturedImage
+from bia_integrator_api.models.creation_process import CreationProcess
+from bia_integrator_api.models.dataset import Dataset
 from bia_integrator_api.models.file_reference import FileReference
-from bia_integrator_api.models.image_acquisition import ImageAcquisition
-from bia_integrator_api.models.image_annotation_dataset import ImageAnnotationDataset
+from bia_integrator_api.models.image import Image
+from bia_integrator_api.models.image_acquisition_protocol import ImageAcquisitionProtocol
 from bia_integrator_api.models.image_representation import ImageRepresentation
+from bia_integrator_api.models.protocol import Protocol
 from bia_integrator_api.models.specimen import Specimen
-from bia_integrator_api.models.specimen_growth_protocol import SpecimenGrowthProtocol
 from bia_integrator_api.models.specimen_imaging_preparation_protocol import SpecimenImagingPreparationProtocol
 from bia_integrator_api.models.study import Study
 
@@ -53,7 +52,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_annotation_file_reference(
+    def get_annotation_data(
         self,
         uuid: StrictStr,
         _request_timeout: Union[
@@ -68,8 +67,8 @@ class PublicApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> AnnotationFileReference:
-        """Get AnnotationFileReference
+    ) -> AnnotationData:
+        """Get AnnotationData
 
 
         :param uuid: (required)
@@ -96,7 +95,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_annotation_file_reference_serialize(
+        _param = self._get_annotation_data_serialize(
             uuid=uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -105,7 +104,7 @@ class PublicApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "AnnotationFileReference",
+            '200': "AnnotationData",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -120,7 +119,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_annotation_file_reference_with_http_info(
+    def get_annotation_data_with_http_info(
         self,
         uuid: StrictStr,
         _request_timeout: Union[
@@ -135,8 +134,8 @@ class PublicApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[AnnotationFileReference]:
-        """Get AnnotationFileReference
+    ) -> ApiResponse[AnnotationData]:
+        """Get AnnotationData
 
 
         :param uuid: (required)
@@ -163,7 +162,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_annotation_file_reference_serialize(
+        _param = self._get_annotation_data_serialize(
             uuid=uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -172,7 +171,7 @@ class PublicApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "AnnotationFileReference",
+            '200': "AnnotationData",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -187,7 +186,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_annotation_file_reference_without_preload_content(
+    def get_annotation_data_without_preload_content(
         self,
         uuid: StrictStr,
         _request_timeout: Union[
@@ -203,7 +202,7 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Get AnnotationFileReference
+        """Get AnnotationData
 
 
         :param uuid: (required)
@@ -230,7 +229,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_annotation_file_reference_serialize(
+        _param = self._get_annotation_data_serialize(
             uuid=uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -239,7 +238,7 @@ class PublicApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "AnnotationFileReference",
+            '200': "AnnotationData",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -249,7 +248,7 @@ class PublicApi:
         return response_data.response
 
 
-    def _get_annotation_file_reference_serialize(
+    def _get_annotation_data_serialize(
         self,
         uuid,
         _request_auth,
@@ -294,7 +293,7 @@ class PublicApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v2/annotation_file_reference/{uuid}',
+            resource_path='/v2/annotation_data/{uuid}',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -311,7 +310,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_annotation_file_reference_in_annotation_method(
+    def get_annotation_data_in_creation_process(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -328,8 +327,8 @@ class PublicApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> List[AnnotationFileReference]:
-        """Get AnnotationFileReference In AnnotationMethod
+    ) -> List[AnnotationData]:
+        """Get AnnotationData In CreationProcess
 
 
         :param uuid: (required)
@@ -360,7 +359,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_annotation_file_reference_in_annotation_method_serialize(
+        _param = self._get_annotation_data_in_creation_process_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -371,7 +370,7 @@ class PublicApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[AnnotationFileReference]",
+            '200': "List[AnnotationData]",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -386,7 +385,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_annotation_file_reference_in_annotation_method_with_http_info(
+    def get_annotation_data_in_creation_process_with_http_info(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -403,8 +402,8 @@ class PublicApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[List[AnnotationFileReference]]:
-        """Get AnnotationFileReference In AnnotationMethod
+    ) -> ApiResponse[List[AnnotationData]]:
+        """Get AnnotationData In CreationProcess
 
 
         :param uuid: (required)
@@ -435,7 +434,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_annotation_file_reference_in_annotation_method_serialize(
+        _param = self._get_annotation_data_in_creation_process_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -446,7 +445,7 @@ class PublicApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[AnnotationFileReference]",
+            '200': "List[AnnotationData]",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -461,7 +460,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_annotation_file_reference_in_annotation_method_without_preload_content(
+    def get_annotation_data_in_creation_process_without_preload_content(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -479,7 +478,7 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Get AnnotationFileReference In AnnotationMethod
+        """Get AnnotationData In CreationProcess
 
 
         :param uuid: (required)
@@ -510,7 +509,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_annotation_file_reference_in_annotation_method_serialize(
+        _param = self._get_annotation_data_in_creation_process_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -521,7 +520,7 @@ class PublicApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[AnnotationFileReference]",
+            '200': "List[AnnotationData]",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -531,7 +530,7 @@ class PublicApi:
         return response_data.response
 
 
-    def _get_annotation_file_reference_in_annotation_method_serialize(
+    def _get_annotation_data_in_creation_process_serialize(
         self,
         uuid,
         page_size,
@@ -586,7 +585,7 @@ class PublicApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v2/annotation_method/{uuid}/annotation_file_reference',
+            resource_path='/v2/creation_process/{uuid}/annotation_data',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -603,7 +602,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_annotation_file_reference_in_derived_image(
+    def get_annotation_data_in_dataset(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -620,8 +619,8 @@ class PublicApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> List[AnnotationFileReference]:
-        """Get AnnotationFileReference In DerivedImage
+    ) -> List[AnnotationData]:
+        """Get AnnotationData In Dataset
 
 
         :param uuid: (required)
@@ -652,7 +651,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_annotation_file_reference_in_derived_image_serialize(
+        _param = self._get_annotation_data_in_dataset_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -663,7 +662,7 @@ class PublicApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[AnnotationFileReference]",
+            '200': "List[AnnotationData]",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -678,7 +677,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_annotation_file_reference_in_derived_image_with_http_info(
+    def get_annotation_data_in_dataset_with_http_info(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -695,8 +694,8 @@ class PublicApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[List[AnnotationFileReference]]:
-        """Get AnnotationFileReference In DerivedImage
+    ) -> ApiResponse[List[AnnotationData]]:
+        """Get AnnotationData In Dataset
 
 
         :param uuid: (required)
@@ -727,7 +726,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_annotation_file_reference_in_derived_image_serialize(
+        _param = self._get_annotation_data_in_dataset_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -738,7 +737,7 @@ class PublicApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[AnnotationFileReference]",
+            '200': "List[AnnotationData]",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -753,7 +752,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_annotation_file_reference_in_derived_image_without_preload_content(
+    def get_annotation_data_in_dataset_without_preload_content(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -771,7 +770,7 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Get AnnotationFileReference In DerivedImage
+        """Get AnnotationData In Dataset
 
 
         :param uuid: (required)
@@ -802,7 +801,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_annotation_file_reference_in_derived_image_serialize(
+        _param = self._get_annotation_data_in_dataset_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -813,7 +812,7 @@ class PublicApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[AnnotationFileReference]",
+            '200': "List[AnnotationData]",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -823,7 +822,7 @@ class PublicApi:
         return response_data.response
 
 
-    def _get_annotation_file_reference_in_derived_image_serialize(
+    def _get_annotation_data_in_dataset_serialize(
         self,
         uuid,
         page_size,
@@ -878,7 +877,7 @@ class PublicApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v2/derived_image/{uuid}/annotation_file_reference',
+            resource_path='/v2/dataset/{uuid}/annotation_data',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -895,7 +894,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_annotation_file_reference_in_experimental_imaging_dataset(
+    def get_annotation_data_in_file_reference(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -912,8 +911,8 @@ class PublicApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> List[AnnotationFileReference]:
-        """Get AnnotationFileReference In ExperimentalImagingDataset
+    ) -> List[AnnotationData]:
+        """Get AnnotationData In FileReference
 
 
         :param uuid: (required)
@@ -944,7 +943,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_annotation_file_reference_in_experimental_imaging_dataset_serialize(
+        _param = self._get_annotation_data_in_file_reference_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -955,7 +954,7 @@ class PublicApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[AnnotationFileReference]",
+            '200': "List[AnnotationData]",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -970,7 +969,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_annotation_file_reference_in_experimental_imaging_dataset_with_http_info(
+    def get_annotation_data_in_file_reference_with_http_info(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -987,8 +986,8 @@ class PublicApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[List[AnnotationFileReference]]:
-        """Get AnnotationFileReference In ExperimentalImagingDataset
+    ) -> ApiResponse[List[AnnotationData]]:
+        """Get AnnotationData In FileReference
 
 
         :param uuid: (required)
@@ -1019,7 +1018,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_annotation_file_reference_in_experimental_imaging_dataset_serialize(
+        _param = self._get_annotation_data_in_file_reference_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -1030,7 +1029,7 @@ class PublicApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[AnnotationFileReference]",
+            '200': "List[AnnotationData]",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -1045,7 +1044,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_annotation_file_reference_in_experimental_imaging_dataset_without_preload_content(
+    def get_annotation_data_in_file_reference_without_preload_content(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -1063,7 +1062,7 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Get AnnotationFileReference In ExperimentalImagingDataset
+        """Get AnnotationData In FileReference
 
 
         :param uuid: (required)
@@ -1094,7 +1093,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_annotation_file_reference_in_experimental_imaging_dataset_serialize(
+        _param = self._get_annotation_data_in_file_reference_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -1105,7 +1104,7 @@ class PublicApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[AnnotationFileReference]",
+            '200': "List[AnnotationData]",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -1115,7 +1114,7 @@ class PublicApi:
         return response_data.response
 
 
-    def _get_annotation_file_reference_in_experimental_imaging_dataset_serialize(
+    def _get_annotation_data_in_file_reference_serialize(
         self,
         uuid,
         page_size,
@@ -1170,591 +1169,7 @@ class PublicApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v2/experimental_imaging_dataset/{uuid}/annotation_file_reference',
-            path_params=_path_params,
-            query_params=_query_params,
-            header_params=_header_params,
-            body=_body_params,
-            post_params=_form_params,
-            files=_files,
-            auth_settings=_auth_settings,
-            collection_formats=_collection_formats,
-            _host=_host,
-            _request_auth=_request_auth
-        )
-
-
-
-
-    @validate_call
-    def get_annotation_file_reference_in_experimentally_captured_image(
-        self,
-        uuid: StrictStr,
-        page_size: StrictInt,
-        start_from_uuid: Optional[StrictStr] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> List[AnnotationFileReference]:
-        """Get AnnotationFileReference In ExperimentallyCapturedImage
-
-
-        :param uuid: (required)
-        :type uuid: str
-        :param page_size: (required)
-        :type page_size: int
-        :param start_from_uuid:
-        :type start_from_uuid: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._get_annotation_file_reference_in_experimentally_captured_image_serialize(
-            uuid=uuid,
-            page_size=page_size,
-            start_from_uuid=start_from_uuid,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[AnnotationFileReference]",
-            '422': "HTTPValidationError",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
-
-
-    @validate_call
-    def get_annotation_file_reference_in_experimentally_captured_image_with_http_info(
-        self,
-        uuid: StrictStr,
-        page_size: StrictInt,
-        start_from_uuid: Optional[StrictStr] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[List[AnnotationFileReference]]:
-        """Get AnnotationFileReference In ExperimentallyCapturedImage
-
-
-        :param uuid: (required)
-        :type uuid: str
-        :param page_size: (required)
-        :type page_size: int
-        :param start_from_uuid:
-        :type start_from_uuid: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._get_annotation_file_reference_in_experimentally_captured_image_serialize(
-            uuid=uuid,
-            page_size=page_size,
-            start_from_uuid=start_from_uuid,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[AnnotationFileReference]",
-            '422': "HTTPValidationError",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        )
-
-
-    @validate_call
-    def get_annotation_file_reference_in_experimentally_captured_image_without_preload_content(
-        self,
-        uuid: StrictStr,
-        page_size: StrictInt,
-        start_from_uuid: Optional[StrictStr] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RESTResponseType:
-        """Get AnnotationFileReference In ExperimentallyCapturedImage
-
-
-        :param uuid: (required)
-        :type uuid: str
-        :param page_size: (required)
-        :type page_size: int
-        :param start_from_uuid:
-        :type start_from_uuid: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._get_annotation_file_reference_in_experimentally_captured_image_serialize(
-            uuid=uuid,
-            page_size=page_size,
-            start_from_uuid=start_from_uuid,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[AnnotationFileReference]",
-            '422': "HTTPValidationError",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        return response_data.response
-
-
-    def _get_annotation_file_reference_in_experimentally_captured_image_serialize(
-        self,
-        uuid,
-        page_size,
-        start_from_uuid,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
-    ) -> RequestSerialized:
-
-        _host = None
-
-        _collection_formats: Dict[str, str] = {
-        }
-
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, Union[str, bytes]] = {}
-        _body_params: Optional[bytes] = None
-
-        # process the path parameters
-        if uuid is not None:
-            _path_params['uuid'] = uuid
-        # process the query parameters
-        if start_from_uuid is not None:
-            
-            _query_params.append(('start_from_uuid', start_from_uuid))
-            
-        if page_size is not None:
-            
-            _query_params.append(('page_size', page_size))
-            
-        # process the header parameters
-        # process the form parameters
-        # process the body parameter
-
-
-        # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
-                [
-                    'application/json'
-                ]
-            )
-
-
-        # authentication setting
-        _auth_settings: List[str] = [
-        ]
-
-        return self.api_client.param_serialize(
-            method='GET',
-            resource_path='/v2/experimentally_captured_image/{uuid}/annotation_file_reference',
-            path_params=_path_params,
-            query_params=_query_params,
-            header_params=_header_params,
-            body=_body_params,
-            post_params=_form_params,
-            files=_files,
-            auth_settings=_auth_settings,
-            collection_formats=_collection_formats,
-            _host=_host,
-            _request_auth=_request_auth
-        )
-
-
-
-
-    @validate_call
-    def get_annotation_file_reference_in_image_annotation_dataset(
-        self,
-        uuid: StrictStr,
-        page_size: StrictInt,
-        start_from_uuid: Optional[StrictStr] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> List[AnnotationFileReference]:
-        """Get AnnotationFileReference In ImageAnnotationDataset
-
-
-        :param uuid: (required)
-        :type uuid: str
-        :param page_size: (required)
-        :type page_size: int
-        :param start_from_uuid:
-        :type start_from_uuid: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._get_annotation_file_reference_in_image_annotation_dataset_serialize(
-            uuid=uuid,
-            page_size=page_size,
-            start_from_uuid=start_from_uuid,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[AnnotationFileReference]",
-            '422': "HTTPValidationError",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
-
-
-    @validate_call
-    def get_annotation_file_reference_in_image_annotation_dataset_with_http_info(
-        self,
-        uuid: StrictStr,
-        page_size: StrictInt,
-        start_from_uuid: Optional[StrictStr] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[List[AnnotationFileReference]]:
-        """Get AnnotationFileReference In ImageAnnotationDataset
-
-
-        :param uuid: (required)
-        :type uuid: str
-        :param page_size: (required)
-        :type page_size: int
-        :param start_from_uuid:
-        :type start_from_uuid: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._get_annotation_file_reference_in_image_annotation_dataset_serialize(
-            uuid=uuid,
-            page_size=page_size,
-            start_from_uuid=start_from_uuid,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[AnnotationFileReference]",
-            '422': "HTTPValidationError",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        )
-
-
-    @validate_call
-    def get_annotation_file_reference_in_image_annotation_dataset_without_preload_content(
-        self,
-        uuid: StrictStr,
-        page_size: StrictInt,
-        start_from_uuid: Optional[StrictStr] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RESTResponseType:
-        """Get AnnotationFileReference In ImageAnnotationDataset
-
-
-        :param uuid: (required)
-        :type uuid: str
-        :param page_size: (required)
-        :type page_size: int
-        :param start_from_uuid:
-        :type start_from_uuid: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._get_annotation_file_reference_in_image_annotation_dataset_serialize(
-            uuid=uuid,
-            page_size=page_size,
-            start_from_uuid=start_from_uuid,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[AnnotationFileReference]",
-            '422': "HTTPValidationError",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        return response_data.response
-
-
-    def _get_annotation_file_reference_in_image_annotation_dataset_serialize(
-        self,
-        uuid,
-        page_size,
-        start_from_uuid,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
-    ) -> RequestSerialized:
-
-        _host = None
-
-        _collection_formats: Dict[str, str] = {
-        }
-
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, Union[str, bytes]] = {}
-        _body_params: Optional[bytes] = None
-
-        # process the path parameters
-        if uuid is not None:
-            _path_params['uuid'] = uuid
-        # process the query parameters
-        if start_from_uuid is not None:
-            
-            _query_params.append(('start_from_uuid', start_from_uuid))
-            
-        if page_size is not None:
-            
-            _query_params.append(('page_size', page_size))
-            
-        # process the header parameters
-        # process the form parameters
-        # process the body parameter
-
-
-        # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
-                [
-                    'application/json'
-                ]
-            )
-
-
-        # authentication setting
-        _auth_settings: List[str] = [
-        ]
-
-        return self.api_client.param_serialize(
-            method='GET',
-            resource_path='/v2/image_annotation_dataset/{uuid}/annotation_file_reference',
+            resource_path='/v2/file_reference/{uuid}/annotation_data',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -2287,265 +1702,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_derived_image(
-        self,
-        uuid: StrictStr,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> DerivedImage:
-        """Get DerivedImage
-
-
-        :param uuid: (required)
-        :type uuid: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._get_derived_image_serialize(
-            uuid=uuid,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "DerivedImage",
-            '422': "HTTPValidationError",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
-
-
-    @validate_call
-    def get_derived_image_with_http_info(
-        self,
-        uuid: StrictStr,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[DerivedImage]:
-        """Get DerivedImage
-
-
-        :param uuid: (required)
-        :type uuid: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._get_derived_image_serialize(
-            uuid=uuid,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "DerivedImage",
-            '422': "HTTPValidationError",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        )
-
-
-    @validate_call
-    def get_derived_image_without_preload_content(
-        self,
-        uuid: StrictStr,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RESTResponseType:
-        """Get DerivedImage
-
-
-        :param uuid: (required)
-        :type uuid: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._get_derived_image_serialize(
-            uuid=uuid,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "DerivedImage",
-            '422': "HTTPValidationError",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        return response_data.response
-
-
-    def _get_derived_image_serialize(
-        self,
-        uuid,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
-    ) -> RequestSerialized:
-
-        _host = None
-
-        _collection_formats: Dict[str, str] = {
-        }
-
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, Union[str, bytes]] = {}
-        _body_params: Optional[bytes] = None
-
-        # process the path parameters
-        if uuid is not None:
-            _path_params['uuid'] = uuid
-        # process the query parameters
-        # process the header parameters
-        # process the form parameters
-        # process the body parameter
-
-
-        # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
-                [
-                    'application/json'
-                ]
-            )
-
-
-        # authentication setting
-        _auth_settings: List[str] = [
-        ]
-
-        return self.api_client.param_serialize(
-            method='GET',
-            resource_path='/v2/derived_image/{uuid}',
-            path_params=_path_params,
-            query_params=_query_params,
-            header_params=_header_params,
-            body=_body_params,
-            post_params=_form_params,
-            files=_files,
-            auth_settings=_auth_settings,
-            collection_formats=_collection_formats,
-            _host=_host,
-            _request_auth=_request_auth
-        )
-
-
-
-
-    @validate_call
-    def get_derived_image_in_annotation_method(
+    def get_bio_sample_in_protocol(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -2562,8 +1719,8 @@ class PublicApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> List[DerivedImage]:
-        """Get DerivedImage In AnnotationMethod
+    ) -> List[BioSample]:
+        """Get BioSample In Protocol
 
 
         :param uuid: (required)
@@ -2594,7 +1751,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_derived_image_in_annotation_method_serialize(
+        _param = self._get_bio_sample_in_protocol_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -2605,7 +1762,7 @@ class PublicApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[DerivedImage]",
+            '200': "List[BioSample]",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -2620,7 +1777,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_derived_image_in_annotation_method_with_http_info(
+    def get_bio_sample_in_protocol_with_http_info(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -2637,8 +1794,8 @@ class PublicApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[List[DerivedImage]]:
-        """Get DerivedImage In AnnotationMethod
+    ) -> ApiResponse[List[BioSample]]:
+        """Get BioSample In Protocol
 
 
         :param uuid: (required)
@@ -2669,7 +1826,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_derived_image_in_annotation_method_serialize(
+        _param = self._get_bio_sample_in_protocol_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -2680,7 +1837,7 @@ class PublicApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[DerivedImage]",
+            '200': "List[BioSample]",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -2695,7 +1852,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_derived_image_in_annotation_method_without_preload_content(
+    def get_bio_sample_in_protocol_without_preload_content(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -2713,7 +1870,7 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Get DerivedImage In AnnotationMethod
+        """Get BioSample In Protocol
 
 
         :param uuid: (required)
@@ -2744,7 +1901,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_derived_image_in_annotation_method_serialize(
+        _param = self._get_bio_sample_in_protocol_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -2755,7 +1912,7 @@ class PublicApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[DerivedImage]",
+            '200': "List[BioSample]",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -2765,7 +1922,7 @@ class PublicApi:
         return response_data.response
 
 
-    def _get_derived_image_in_annotation_method_serialize(
+    def _get_bio_sample_in_protocol_serialize(
         self,
         uuid,
         page_size,
@@ -2820,7 +1977,7 @@ class PublicApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v2/annotation_method/{uuid}/derived_image',
+            resource_path='/v2/protocol/{uuid}/bio_sample',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -2837,11 +1994,9 @@ class PublicApi:
 
 
     @validate_call
-    def get_derived_image_in_derived_image(
+    def get_creation_process(
         self,
         uuid: StrictStr,
-        page_size: StrictInt,
-        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2854,16 +2009,12 @@ class PublicApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> List[DerivedImage]:
-        """Get DerivedImage In DerivedImage
+    ) -> CreationProcess:
+        """Get CreationProcess
 
 
         :param uuid: (required)
         :type uuid: str
-        :param page_size: (required)
-        :type page_size: int
-        :param start_from_uuid:
-        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2886,10 +2037,8 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_derived_image_in_derived_image_serialize(
+        _param = self._get_creation_process_serialize(
             uuid=uuid,
-            page_size=page_size,
-            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2897,7 +2046,7 @@ class PublicApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[DerivedImage]",
+            '200': "CreationProcess",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -2912,7 +2061,198 @@ class PublicApi:
 
 
     @validate_call
-    def get_derived_image_in_derived_image_with_http_info(
+    def get_creation_process_with_http_info(
+        self,
+        uuid: StrictStr,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[CreationProcess]:
+        """Get CreationProcess
+
+
+        :param uuid: (required)
+        :type uuid: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._get_creation_process_serialize(
+            uuid=uuid,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "CreationProcess",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def get_creation_process_without_preload_content(
+        self,
+        uuid: StrictStr,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Get CreationProcess
+
+
+        :param uuid: (required)
+        :type uuid: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._get_creation_process_serialize(
+            uuid=uuid,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "CreationProcess",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _get_creation_process_serialize(
+        self,
+        uuid,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[str, Union[str, bytes]] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if uuid is not None:
+            _path_params['uuid'] = uuid
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+
+        # authentication setting
+        _auth_settings: List[str] = [
+        ]
+
+        return self.api_client.param_serialize(
+            method='GET',
+            resource_path='/v2/creation_process/{uuid}',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def get_creation_process_in_annotation_method(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -2929,8 +2269,8 @@ class PublicApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[List[DerivedImage]]:
-        """Get DerivedImage In DerivedImage
+    ) -> List[CreationProcess]:
+        """Get CreationProcess In AnnotationMethod
 
 
         :param uuid: (required)
@@ -2961,7 +2301,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_derived_image_in_derived_image_serialize(
+        _param = self._get_creation_process_in_annotation_method_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -2972,7 +2312,82 @@ class PublicApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[DerivedImage]",
+            '200': "List[CreationProcess]",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def get_creation_process_in_annotation_method_with_http_info(
+        self,
+        uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[List[CreationProcess]]:
+        """Get CreationProcess In AnnotationMethod
+
+
+        :param uuid: (required)
+        :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._get_creation_process_in_annotation_method_serialize(
+            uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "List[CreationProcess]",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -2987,7 +2402,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_derived_image_in_derived_image_without_preload_content(
+    def get_creation_process_in_annotation_method_without_preload_content(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -3005,7 +2420,7 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Get DerivedImage In DerivedImage
+        """Get CreationProcess In AnnotationMethod
 
 
         :param uuid: (required)
@@ -3036,7 +2451,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_derived_image_in_derived_image_serialize(
+        _param = self._get_creation_process_in_annotation_method_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -3047,7 +2462,7 @@ class PublicApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[DerivedImage]",
+            '200': "List[CreationProcess]",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -3057,7 +2472,7 @@ class PublicApi:
         return response_data.response
 
 
-    def _get_derived_image_in_derived_image_serialize(
+    def _get_creation_process_in_annotation_method_serialize(
         self,
         uuid,
         page_size,
@@ -3112,7 +2527,7 @@ class PublicApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v2/derived_image/{uuid}/derived_image',
+            resource_path='/v2/annotation_method/{uuid}/creation_process',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -3129,7 +2544,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_derived_image_in_experimentally_captured_image(
+    def get_creation_process_in_image(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -3146,8 +2561,8 @@ class PublicApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> List[DerivedImage]:
-        """Get DerivedImage In ExperimentallyCapturedImage
+    ) -> List[CreationProcess]:
+        """Get CreationProcess In Image
 
 
         :param uuid: (required)
@@ -3178,7 +2593,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_derived_image_in_experimentally_captured_image_serialize(
+        _param = self._get_creation_process_in_image_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -3189,7 +2604,7 @@ class PublicApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[DerivedImage]",
+            '200': "List[CreationProcess]",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -3204,7 +2619,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_derived_image_in_experimentally_captured_image_with_http_info(
+    def get_creation_process_in_image_with_http_info(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -3221,8 +2636,8 @@ class PublicApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[List[DerivedImage]]:
-        """Get DerivedImage In ExperimentallyCapturedImage
+    ) -> ApiResponse[List[CreationProcess]]:
+        """Get CreationProcess In Image
 
 
         :param uuid: (required)
@@ -3253,7 +2668,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_derived_image_in_experimentally_captured_image_serialize(
+        _param = self._get_creation_process_in_image_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -3264,7 +2679,7 @@ class PublicApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[DerivedImage]",
+            '200': "List[CreationProcess]",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -3279,7 +2694,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_derived_image_in_experimentally_captured_image_without_preload_content(
+    def get_creation_process_in_image_without_preload_content(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -3297,7 +2712,7 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Get DerivedImage In ExperimentallyCapturedImage
+        """Get CreationProcess In Image
 
 
         :param uuid: (required)
@@ -3328,7 +2743,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_derived_image_in_experimentally_captured_image_serialize(
+        _param = self._get_creation_process_in_image_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -3339,7 +2754,7 @@ class PublicApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[DerivedImage]",
+            '200': "List[CreationProcess]",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -3349,7 +2764,7 @@ class PublicApi:
         return response_data.response
 
 
-    def _get_derived_image_in_experimentally_captured_image_serialize(
+    def _get_creation_process_in_image_serialize(
         self,
         uuid,
         page_size,
@@ -3404,7 +2819,7 @@ class PublicApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v2/experimentally_captured_image/{uuid}/derived_image',
+            resource_path='/v2/image/{uuid}/creation_process',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -3421,7 +2836,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_derived_image_in_image_annotation_dataset(
+    def get_creation_process_in_image_acquisition_protocol(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -3438,8 +2853,8 @@ class PublicApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> List[DerivedImage]:
-        """Get DerivedImage In ImageAnnotationDataset
+    ) -> List[CreationProcess]:
+        """Get CreationProcess In ImageAcquisitionProtocol
 
 
         :param uuid: (required)
@@ -3470,7 +2885,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_derived_image_in_image_annotation_dataset_serialize(
+        _param = self._get_creation_process_in_image_acquisition_protocol_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -3481,7 +2896,7 @@ class PublicApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[DerivedImage]",
+            '200': "List[CreationProcess]",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -3496,7 +2911,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_derived_image_in_image_annotation_dataset_with_http_info(
+    def get_creation_process_in_image_acquisition_protocol_with_http_info(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -3513,8 +2928,8 @@ class PublicApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[List[DerivedImage]]:
-        """Get DerivedImage In ImageAnnotationDataset
+    ) -> ApiResponse[List[CreationProcess]]:
+        """Get CreationProcess In ImageAcquisitionProtocol
 
 
         :param uuid: (required)
@@ -3545,7 +2960,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_derived_image_in_image_annotation_dataset_serialize(
+        _param = self._get_creation_process_in_image_acquisition_protocol_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -3556,7 +2971,7 @@ class PublicApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[DerivedImage]",
+            '200': "List[CreationProcess]",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -3571,7 +2986,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_derived_image_in_image_annotation_dataset_without_preload_content(
+    def get_creation_process_in_image_acquisition_protocol_without_preload_content(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -3589,7 +3004,7 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Get DerivedImage In ImageAnnotationDataset
+        """Get CreationProcess In ImageAcquisitionProtocol
 
 
         :param uuid: (required)
@@ -3620,7 +3035,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_derived_image_in_image_annotation_dataset_serialize(
+        _param = self._get_creation_process_in_image_acquisition_protocol_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -3631,7 +3046,7 @@ class PublicApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[DerivedImage]",
+            '200': "List[CreationProcess]",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -3641,7 +3056,7 @@ class PublicApi:
         return response_data.response
 
 
-    def _get_derived_image_in_image_annotation_dataset_serialize(
+    def _get_creation_process_in_image_acquisition_protocol_serialize(
         self,
         uuid,
         page_size,
@@ -3696,7 +3111,7 @@ class PublicApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v2/image_annotation_dataset/{uuid}/derived_image',
+            resource_path='/v2/image_acquisition_protocol/{uuid}/creation_process',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -3713,265 +3128,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_experimental_imaging_dataset(
-        self,
-        uuid: StrictStr,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ExperimentalImagingDataset:
-        """Get ExperimentalImagingDataset
-
-
-        :param uuid: (required)
-        :type uuid: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._get_experimental_imaging_dataset_serialize(
-            uuid=uuid,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "ExperimentalImagingDataset",
-            '422': "HTTPValidationError",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
-
-
-    @validate_call
-    def get_experimental_imaging_dataset_with_http_info(
-        self,
-        uuid: StrictStr,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[ExperimentalImagingDataset]:
-        """Get ExperimentalImagingDataset
-
-
-        :param uuid: (required)
-        :type uuid: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._get_experimental_imaging_dataset_serialize(
-            uuid=uuid,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "ExperimentalImagingDataset",
-            '422': "HTTPValidationError",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        )
-
-
-    @validate_call
-    def get_experimental_imaging_dataset_without_preload_content(
-        self,
-        uuid: StrictStr,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RESTResponseType:
-        """Get ExperimentalImagingDataset
-
-
-        :param uuid: (required)
-        :type uuid: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._get_experimental_imaging_dataset_serialize(
-            uuid=uuid,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "ExperimentalImagingDataset",
-            '422': "HTTPValidationError",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        return response_data.response
-
-
-    def _get_experimental_imaging_dataset_serialize(
-        self,
-        uuid,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
-    ) -> RequestSerialized:
-
-        _host = None
-
-        _collection_formats: Dict[str, str] = {
-        }
-
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, Union[str, bytes]] = {}
-        _body_params: Optional[bytes] = None
-
-        # process the path parameters
-        if uuid is not None:
-            _path_params['uuid'] = uuid
-        # process the query parameters
-        # process the header parameters
-        # process the form parameters
-        # process the body parameter
-
-
-        # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
-                [
-                    'application/json'
-                ]
-            )
-
-
-        # authentication setting
-        _auth_settings: List[str] = [
-        ]
-
-        return self.api_client.param_serialize(
-            method='GET',
-            resource_path='/v2/experimental_imaging_dataset/{uuid}',
-            path_params=_path_params,
-            query_params=_query_params,
-            header_params=_header_params,
-            body=_body_params,
-            post_params=_form_params,
-            files=_files,
-            auth_settings=_auth_settings,
-            collection_formats=_collection_formats,
-            _host=_host,
-            _request_auth=_request_auth
-        )
-
-
-
-
-    @validate_call
-    def get_experimental_imaging_dataset_in_study(
+    def get_creation_process_in_protocol(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -3988,8 +3145,8 @@ class PublicApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> List[ExperimentalImagingDataset]:
-        """Get ExperimentalImagingDataset In Study
+    ) -> List[CreationProcess]:
+        """Get CreationProcess In Protocol
 
 
         :param uuid: (required)
@@ -4020,7 +3177,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_experimental_imaging_dataset_in_study_serialize(
+        _param = self._get_creation_process_in_protocol_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -4031,7 +3188,7 @@ class PublicApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[ExperimentalImagingDataset]",
+            '200': "List[CreationProcess]",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -4046,7 +3203,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_experimental_imaging_dataset_in_study_with_http_info(
+    def get_creation_process_in_protocol_with_http_info(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -4063,8 +3220,8 @@ class PublicApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[List[ExperimentalImagingDataset]]:
-        """Get ExperimentalImagingDataset In Study
+    ) -> ApiResponse[List[CreationProcess]]:
+        """Get CreationProcess In Protocol
 
 
         :param uuid: (required)
@@ -4095,7 +3252,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_experimental_imaging_dataset_in_study_serialize(
+        _param = self._get_creation_process_in_protocol_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -4106,7 +3263,7 @@ class PublicApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[ExperimentalImagingDataset]",
+            '200': "List[CreationProcess]",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -4121,7 +3278,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_experimental_imaging_dataset_in_study_without_preload_content(
+    def get_creation_process_in_protocol_without_preload_content(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -4139,7 +3296,7 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Get ExperimentalImagingDataset In Study
+        """Get CreationProcess In Protocol
 
 
         :param uuid: (required)
@@ -4170,7 +3327,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_experimental_imaging_dataset_in_study_serialize(
+        _param = self._get_creation_process_in_protocol_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -4181,7 +3338,7 @@ class PublicApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[ExperimentalImagingDataset]",
+            '200': "List[CreationProcess]",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -4191,7 +3348,7 @@ class PublicApi:
         return response_data.response
 
 
-    def _get_experimental_imaging_dataset_in_study_serialize(
+    def _get_creation_process_in_protocol_serialize(
         self,
         uuid,
         page_size,
@@ -4246,7 +3403,7 @@ class PublicApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v2/study/{uuid}/experimental_imaging_dataset',
+            resource_path='/v2/protocol/{uuid}/creation_process',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -4263,265 +3420,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_experimentally_captured_image(
-        self,
-        uuid: StrictStr,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ExperimentallyCapturedImage:
-        """Get ExperimentallyCapturedImage
-
-
-        :param uuid: (required)
-        :type uuid: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._get_experimentally_captured_image_serialize(
-            uuid=uuid,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "ExperimentallyCapturedImage",
-            '422': "HTTPValidationError",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
-
-
-    @validate_call
-    def get_experimentally_captured_image_with_http_info(
-        self,
-        uuid: StrictStr,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[ExperimentallyCapturedImage]:
-        """Get ExperimentallyCapturedImage
-
-
-        :param uuid: (required)
-        :type uuid: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._get_experimentally_captured_image_serialize(
-            uuid=uuid,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "ExperimentallyCapturedImage",
-            '422': "HTTPValidationError",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        )
-
-
-    @validate_call
-    def get_experimentally_captured_image_without_preload_content(
-        self,
-        uuid: StrictStr,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RESTResponseType:
-        """Get ExperimentallyCapturedImage
-
-
-        :param uuid: (required)
-        :type uuid: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._get_experimentally_captured_image_serialize(
-            uuid=uuid,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "ExperimentallyCapturedImage",
-            '422': "HTTPValidationError",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        return response_data.response
-
-
-    def _get_experimentally_captured_image_serialize(
-        self,
-        uuid,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
-    ) -> RequestSerialized:
-
-        _host = None
-
-        _collection_formats: Dict[str, str] = {
-        }
-
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, Union[str, bytes]] = {}
-        _body_params: Optional[bytes] = None
-
-        # process the path parameters
-        if uuid is not None:
-            _path_params['uuid'] = uuid
-        # process the query parameters
-        # process the header parameters
-        # process the form parameters
-        # process the body parameter
-
-
-        # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
-                [
-                    'application/json'
-                ]
-            )
-
-
-        # authentication setting
-        _auth_settings: List[str] = [
-        ]
-
-        return self.api_client.param_serialize(
-            method='GET',
-            resource_path='/v2/experimentally_captured_image/{uuid}',
-            path_params=_path_params,
-            query_params=_query_params,
-            header_params=_header_params,
-            body=_body_params,
-            post_params=_form_params,
-            files=_files,
-            auth_settings=_auth_settings,
-            collection_formats=_collection_formats,
-            _host=_host,
-            _request_auth=_request_auth
-        )
-
-
-
-
-    @validate_call
-    def get_experimentally_captured_image_in_experimental_imaging_dataset(
+    def get_creation_process_in_specimen(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -4538,8 +3437,8 @@ class PublicApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> List[ExperimentallyCapturedImage]:
-        """Get ExperimentallyCapturedImage In ExperimentalImagingDataset
+    ) -> List[CreationProcess]:
+        """Get CreationProcess In Specimen
 
 
         :param uuid: (required)
@@ -4570,7 +3469,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_experimentally_captured_image_in_experimental_imaging_dataset_serialize(
+        _param = self._get_creation_process_in_specimen_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -4581,7 +3480,7 @@ class PublicApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[ExperimentallyCapturedImage]",
+            '200': "List[CreationProcess]",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -4596,7 +3495,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_experimentally_captured_image_in_experimental_imaging_dataset_with_http_info(
+    def get_creation_process_in_specimen_with_http_info(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -4613,8 +3512,8 @@ class PublicApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[List[ExperimentallyCapturedImage]]:
-        """Get ExperimentallyCapturedImage In ExperimentalImagingDataset
+    ) -> ApiResponse[List[CreationProcess]]:
+        """Get CreationProcess In Specimen
 
 
         :param uuid: (required)
@@ -4645,7 +3544,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_experimentally_captured_image_in_experimental_imaging_dataset_serialize(
+        _param = self._get_creation_process_in_specimen_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -4656,7 +3555,7 @@ class PublicApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[ExperimentallyCapturedImage]",
+            '200': "List[CreationProcess]",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -4671,7 +3570,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_experimentally_captured_image_in_experimental_imaging_dataset_without_preload_content(
+    def get_creation_process_in_specimen_without_preload_content(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -4689,7 +3588,7 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Get ExperimentallyCapturedImage In ExperimentalImagingDataset
+        """Get CreationProcess In Specimen
 
 
         :param uuid: (required)
@@ -4720,7 +3619,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_experimentally_captured_image_in_experimental_imaging_dataset_serialize(
+        _param = self._get_creation_process_in_specimen_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -4731,7 +3630,7 @@ class PublicApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[ExperimentallyCapturedImage]",
+            '200': "List[CreationProcess]",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -4741,7 +3640,7 @@ class PublicApi:
         return response_data.response
 
 
-    def _get_experimentally_captured_image_in_experimental_imaging_dataset_serialize(
+    def _get_creation_process_in_specimen_serialize(
         self,
         uuid,
         page_size,
@@ -4796,7 +3695,7 @@ class PublicApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v2/experimental_imaging_dataset/{uuid}/experimentally_captured_image',
+            resource_path='/v2/specimen/{uuid}/creation_process',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -4813,11 +3712,9 @@ class PublicApi:
 
 
     @validate_call
-    def get_experimentally_captured_image_in_image_acquisition(
+    def get_dataset(
         self,
         uuid: StrictStr,
-        page_size: StrictInt,
-        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -4830,16 +3727,12 @@ class PublicApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> List[ExperimentallyCapturedImage]:
-        """Get ExperimentallyCapturedImage In ImageAcquisition
+    ) -> Dataset:
+        """Get Dataset
 
 
         :param uuid: (required)
         :type uuid: str
-        :param page_size: (required)
-        :type page_size: int
-        :param start_from_uuid:
-        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -4862,10 +3755,8 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_experimentally_captured_image_in_image_acquisition_serialize(
+        _param = self._get_dataset_serialize(
             uuid=uuid,
-            page_size=page_size,
-            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -4873,7 +3764,7 @@ class PublicApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[ExperimentallyCapturedImage]",
+            '200': "Dataset",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -4888,7 +3779,198 @@ class PublicApi:
 
 
     @validate_call
-    def get_experimentally_captured_image_in_image_acquisition_with_http_info(
+    def get_dataset_with_http_info(
+        self,
+        uuid: StrictStr,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[Dataset]:
+        """Get Dataset
+
+
+        :param uuid: (required)
+        :type uuid: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._get_dataset_serialize(
+            uuid=uuid,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "Dataset",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def get_dataset_without_preload_content(
+        self,
+        uuid: StrictStr,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Get Dataset
+
+
+        :param uuid: (required)
+        :type uuid: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._get_dataset_serialize(
+            uuid=uuid,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "Dataset",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _get_dataset_serialize(
+        self,
+        uuid,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[str, Union[str, bytes]] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if uuid is not None:
+            _path_params['uuid'] = uuid
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+
+        # authentication setting
+        _auth_settings: List[str] = [
+        ]
+
+        return self.api_client.param_serialize(
+            method='GET',
+            resource_path='/v2/dataset/{uuid}',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def get_dataset_in_study(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -4905,8 +3987,8 @@ class PublicApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[List[ExperimentallyCapturedImage]]:
-        """Get ExperimentallyCapturedImage In ImageAcquisition
+    ) -> List[Dataset]:
+        """Get Dataset In Study
 
 
         :param uuid: (required)
@@ -4937,7 +4019,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_experimentally_captured_image_in_image_acquisition_serialize(
+        _param = self._get_dataset_in_study_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -4948,7 +4030,82 @@ class PublicApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[ExperimentallyCapturedImage]",
+            '200': "List[Dataset]",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def get_dataset_in_study_with_http_info(
+        self,
+        uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[List[Dataset]]:
+        """Get Dataset In Study
+
+
+        :param uuid: (required)
+        :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._get_dataset_in_study_serialize(
+            uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "List[Dataset]",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -4963,7 +4120,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_experimentally_captured_image_in_image_acquisition_without_preload_content(
+    def get_dataset_in_study_without_preload_content(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -4981,7 +4138,7 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Get ExperimentallyCapturedImage In ImageAcquisition
+        """Get Dataset In Study
 
 
         :param uuid: (required)
@@ -5012,7 +4169,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_experimentally_captured_image_in_image_acquisition_serialize(
+        _param = self._get_dataset_in_study_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -5023,7 +4180,7 @@ class PublicApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[ExperimentallyCapturedImage]",
+            '200': "List[Dataset]",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -5033,7 +4190,7 @@ class PublicApi:
         return response_data.response
 
 
-    def _get_experimentally_captured_image_in_image_acquisition_serialize(
+    def _get_dataset_in_study_serialize(
         self,
         uuid,
         page_size,
@@ -5088,299 +4245,7 @@ class PublicApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v2/image_acquisition/{uuid}/experimentally_captured_image',
-            path_params=_path_params,
-            query_params=_query_params,
-            header_params=_header_params,
-            body=_body_params,
-            post_params=_form_params,
-            files=_files,
-            auth_settings=_auth_settings,
-            collection_formats=_collection_formats,
-            _host=_host,
-            _request_auth=_request_auth
-        )
-
-
-
-
-    @validate_call
-    def get_experimentally_captured_image_in_specimen(
-        self,
-        uuid: StrictStr,
-        page_size: StrictInt,
-        start_from_uuid: Optional[StrictStr] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> List[ExperimentallyCapturedImage]:
-        """Get ExperimentallyCapturedImage In Specimen
-
-
-        :param uuid: (required)
-        :type uuid: str
-        :param page_size: (required)
-        :type page_size: int
-        :param start_from_uuid:
-        :type start_from_uuid: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._get_experimentally_captured_image_in_specimen_serialize(
-            uuid=uuid,
-            page_size=page_size,
-            start_from_uuid=start_from_uuid,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[ExperimentallyCapturedImage]",
-            '422': "HTTPValidationError",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
-
-
-    @validate_call
-    def get_experimentally_captured_image_in_specimen_with_http_info(
-        self,
-        uuid: StrictStr,
-        page_size: StrictInt,
-        start_from_uuid: Optional[StrictStr] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[List[ExperimentallyCapturedImage]]:
-        """Get ExperimentallyCapturedImage In Specimen
-
-
-        :param uuid: (required)
-        :type uuid: str
-        :param page_size: (required)
-        :type page_size: int
-        :param start_from_uuid:
-        :type start_from_uuid: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._get_experimentally_captured_image_in_specimen_serialize(
-            uuid=uuid,
-            page_size=page_size,
-            start_from_uuid=start_from_uuid,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[ExperimentallyCapturedImage]",
-            '422': "HTTPValidationError",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        )
-
-
-    @validate_call
-    def get_experimentally_captured_image_in_specimen_without_preload_content(
-        self,
-        uuid: StrictStr,
-        page_size: StrictInt,
-        start_from_uuid: Optional[StrictStr] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RESTResponseType:
-        """Get ExperimentallyCapturedImage In Specimen
-
-
-        :param uuid: (required)
-        :type uuid: str
-        :param page_size: (required)
-        :type page_size: int
-        :param start_from_uuid:
-        :type start_from_uuid: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._get_experimentally_captured_image_in_specimen_serialize(
-            uuid=uuid,
-            page_size=page_size,
-            start_from_uuid=start_from_uuid,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[ExperimentallyCapturedImage]",
-            '422': "HTTPValidationError",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        return response_data.response
-
-
-    def _get_experimentally_captured_image_in_specimen_serialize(
-        self,
-        uuid,
-        page_size,
-        start_from_uuid,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
-    ) -> RequestSerialized:
-
-        _host = None
-
-        _collection_formats: Dict[str, str] = {
-        }
-
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, Union[str, bytes]] = {}
-        _body_params: Optional[bytes] = None
-
-        # process the path parameters
-        if uuid is not None:
-            _path_params['uuid'] = uuid
-        # process the query parameters
-        if start_from_uuid is not None:
-            
-            _query_params.append(('start_from_uuid', start_from_uuid))
-            
-        if page_size is not None:
-            
-            _query_params.append(('page_size', page_size))
-            
-        # process the header parameters
-        # process the form parameters
-        # process the body parameter
-
-
-        # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
-                [
-                    'application/json'
-                ]
-            )
-
-
-        # authentication setting
-        _auth_settings: List[str] = [
-        ]
-
-        return self.api_client.param_serialize(
-            method='GET',
-            resource_path='/v2/specimen/{uuid}/experimentally_captured_image',
+            resource_path='/v2/study/{uuid}/dataset',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -5655,7 +4520,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_file_reference_in_experimental_imaging_dataset(
+    def get_file_reference_in_dataset(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -5673,7 +4538,7 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> List[FileReference]:
-        """Get FileReference In ExperimentalImagingDataset
+        """Get FileReference In Dataset
 
 
         :param uuid: (required)
@@ -5704,7 +4569,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_file_reference_in_experimental_imaging_dataset_serialize(
+        _param = self._get_file_reference_in_dataset_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -5730,7 +4595,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_file_reference_in_experimental_imaging_dataset_with_http_info(
+    def get_file_reference_in_dataset_with_http_info(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -5748,7 +4613,7 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[List[FileReference]]:
-        """Get FileReference In ExperimentalImagingDataset
+        """Get FileReference In Dataset
 
 
         :param uuid: (required)
@@ -5779,7 +4644,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_file_reference_in_experimental_imaging_dataset_serialize(
+        _param = self._get_file_reference_in_dataset_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -5805,7 +4670,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_file_reference_in_experimental_imaging_dataset_without_preload_content(
+    def get_file_reference_in_dataset_without_preload_content(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -5823,7 +4688,7 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Get FileReference In ExperimentalImagingDataset
+        """Get FileReference In Dataset
 
 
         :param uuid: (required)
@@ -5854,7 +4719,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_file_reference_in_experimental_imaging_dataset_serialize(
+        _param = self._get_file_reference_in_dataset_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -5875,7 +4740,7 @@ class PublicApi:
         return response_data.response
 
 
-    def _get_file_reference_in_experimental_imaging_dataset_serialize(
+    def _get_file_reference_in_dataset_serialize(
         self,
         uuid,
         page_size,
@@ -5930,7 +4795,7 @@ class PublicApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v2/experimental_imaging_dataset/{uuid}/file_reference',
+            resource_path='/v2/dataset/{uuid}/file_reference',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -5947,11 +4812,9 @@ class PublicApi:
 
 
     @validate_call
-    def get_file_reference_in_image_annotation_dataset(
+    def get_image(
         self,
         uuid: StrictStr,
-        page_size: StrictInt,
-        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -5964,16 +4827,12 @@ class PublicApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> List[FileReference]:
-        """Get FileReference In ImageAnnotationDataset
+    ) -> Image:
+        """Get Image
 
 
         :param uuid: (required)
         :type uuid: str
-        :param page_size: (required)
-        :type page_size: int
-        :param start_from_uuid:
-        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -5996,10 +4855,8 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_file_reference_in_image_annotation_dataset_serialize(
+        _param = self._get_image_serialize(
             uuid=uuid,
-            page_size=page_size,
-            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -6007,7 +4864,7 @@ class PublicApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[FileReference]",
+            '200': "Image",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -6022,7 +4879,456 @@ class PublicApi:
 
 
     @validate_call
-    def get_file_reference_in_image_annotation_dataset_with_http_info(
+    def get_image_with_http_info(
+        self,
+        uuid: StrictStr,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[Image]:
+        """Get Image
+
+
+        :param uuid: (required)
+        :type uuid: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._get_image_serialize(
+            uuid=uuid,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "Image",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def get_image_without_preload_content(
+        self,
+        uuid: StrictStr,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Get Image
+
+
+        :param uuid: (required)
+        :type uuid: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._get_image_serialize(
+            uuid=uuid,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "Image",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _get_image_serialize(
+        self,
+        uuid,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[str, Union[str, bytes]] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if uuid is not None:
+            _path_params['uuid'] = uuid
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+
+        # authentication setting
+        _auth_settings: List[str] = [
+        ]
+
+        return self.api_client.param_serialize(
+            method='GET',
+            resource_path='/v2/image/{uuid}',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def get_image_acquisition_protocol(
+        self,
+        uuid: StrictStr,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ImageAcquisitionProtocol:
+        """Get ImageAcquisitionProtocol
+
+
+        :param uuid: (required)
+        :type uuid: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._get_image_acquisition_protocol_serialize(
+            uuid=uuid,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "ImageAcquisitionProtocol",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def get_image_acquisition_protocol_with_http_info(
+        self,
+        uuid: StrictStr,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[ImageAcquisitionProtocol]:
+        """Get ImageAcquisitionProtocol
+
+
+        :param uuid: (required)
+        :type uuid: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._get_image_acquisition_protocol_serialize(
+            uuid=uuid,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "ImageAcquisitionProtocol",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def get_image_acquisition_protocol_without_preload_content(
+        self,
+        uuid: StrictStr,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Get ImageAcquisitionProtocol
+
+
+        :param uuid: (required)
+        :type uuid: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._get_image_acquisition_protocol_serialize(
+            uuid=uuid,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "ImageAcquisitionProtocol",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _get_image_acquisition_protocol_serialize(
+        self,
+        uuid,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[str, Union[str, bytes]] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if uuid is not None:
+            _path_params['uuid'] = uuid
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+
+        # authentication setting
+        _auth_settings: List[str] = [
+        ]
+
+        return self.api_client.param_serialize(
+            method='GET',
+            resource_path='/v2/image_acquisition_protocol/{uuid}',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def get_image_in_creation_process(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -6039,8 +5345,8 @@ class PublicApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[List[FileReference]]:
-        """Get FileReference In ImageAnnotationDataset
+    ) -> List[Image]:
+        """Get Image In CreationProcess
 
 
         :param uuid: (required)
@@ -6071,7 +5377,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_file_reference_in_image_annotation_dataset_serialize(
+        _param = self._get_image_in_creation_process_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -6082,7 +5388,82 @@ class PublicApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[FileReference]",
+            '200': "List[Image]",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def get_image_in_creation_process_with_http_info(
+        self,
+        uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[List[Image]]:
+        """Get Image In CreationProcess
+
+
+        :param uuid: (required)
+        :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._get_image_in_creation_process_serialize(
+            uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "List[Image]",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -6097,7 +5478,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_file_reference_in_image_annotation_dataset_without_preload_content(
+    def get_image_in_creation_process_without_preload_content(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -6115,7 +5496,7 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Get FileReference In ImageAnnotationDataset
+        """Get Image In CreationProcess
 
 
         :param uuid: (required)
@@ -6146,7 +5527,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_file_reference_in_image_annotation_dataset_serialize(
+        _param = self._get_image_in_creation_process_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -6157,7 +5538,7 @@ class PublicApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[FileReference]",
+            '200': "List[Image]",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -6167,7 +5548,7 @@ class PublicApi:
         return response_data.response
 
 
-    def _get_file_reference_in_image_annotation_dataset_serialize(
+    def _get_image_in_creation_process_serialize(
         self,
         uuid,
         page_size,
@@ -6222,7 +5603,7 @@ class PublicApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v2/image_annotation_dataset/{uuid}/file_reference',
+            resource_path='/v2/creation_process/{uuid}/image',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -6239,523 +5620,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_image_acquisition(
-        self,
-        uuid: StrictStr,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ImageAcquisition:
-        """Get ImageAcquisition
-
-
-        :param uuid: (required)
-        :type uuid: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._get_image_acquisition_serialize(
-            uuid=uuid,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "ImageAcquisition",
-            '422': "HTTPValidationError",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
-
-
-    @validate_call
-    def get_image_acquisition_with_http_info(
-        self,
-        uuid: StrictStr,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[ImageAcquisition]:
-        """Get ImageAcquisition
-
-
-        :param uuid: (required)
-        :type uuid: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._get_image_acquisition_serialize(
-            uuid=uuid,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "ImageAcquisition",
-            '422': "HTTPValidationError",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        )
-
-
-    @validate_call
-    def get_image_acquisition_without_preload_content(
-        self,
-        uuid: StrictStr,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RESTResponseType:
-        """Get ImageAcquisition
-
-
-        :param uuid: (required)
-        :type uuid: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._get_image_acquisition_serialize(
-            uuid=uuid,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "ImageAcquisition",
-            '422': "HTTPValidationError",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        return response_data.response
-
-
-    def _get_image_acquisition_serialize(
-        self,
-        uuid,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
-    ) -> RequestSerialized:
-
-        _host = None
-
-        _collection_formats: Dict[str, str] = {
-        }
-
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, Union[str, bytes]] = {}
-        _body_params: Optional[bytes] = None
-
-        # process the path parameters
-        if uuid is not None:
-            _path_params['uuid'] = uuid
-        # process the query parameters
-        # process the header parameters
-        # process the form parameters
-        # process the body parameter
-
-
-        # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
-                [
-                    'application/json'
-                ]
-            )
-
-
-        # authentication setting
-        _auth_settings: List[str] = [
-        ]
-
-        return self.api_client.param_serialize(
-            method='GET',
-            resource_path='/v2/image_acquisition/{uuid}',
-            path_params=_path_params,
-            query_params=_query_params,
-            header_params=_header_params,
-            body=_body_params,
-            post_params=_form_params,
-            files=_files,
-            auth_settings=_auth_settings,
-            collection_formats=_collection_formats,
-            _host=_host,
-            _request_auth=_request_auth
-        )
-
-
-
-
-    @validate_call
-    def get_image_annotation_dataset(
-        self,
-        uuid: StrictStr,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ImageAnnotationDataset:
-        """Get ImageAnnotationDataset
-
-
-        :param uuid: (required)
-        :type uuid: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._get_image_annotation_dataset_serialize(
-            uuid=uuid,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "ImageAnnotationDataset",
-            '422': "HTTPValidationError",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
-
-
-    @validate_call
-    def get_image_annotation_dataset_with_http_info(
-        self,
-        uuid: StrictStr,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[ImageAnnotationDataset]:
-        """Get ImageAnnotationDataset
-
-
-        :param uuid: (required)
-        :type uuid: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._get_image_annotation_dataset_serialize(
-            uuid=uuid,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "ImageAnnotationDataset",
-            '422': "HTTPValidationError",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        )
-
-
-    @validate_call
-    def get_image_annotation_dataset_without_preload_content(
-        self,
-        uuid: StrictStr,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RESTResponseType:
-        """Get ImageAnnotationDataset
-
-
-        :param uuid: (required)
-        :type uuid: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._get_image_annotation_dataset_serialize(
-            uuid=uuid,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "ImageAnnotationDataset",
-            '422': "HTTPValidationError",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        return response_data.response
-
-
-    def _get_image_annotation_dataset_serialize(
-        self,
-        uuid,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
-    ) -> RequestSerialized:
-
-        _host = None
-
-        _collection_formats: Dict[str, str] = {
-        }
-
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, Union[str, bytes]] = {}
-        _body_params: Optional[bytes] = None
-
-        # process the path parameters
-        if uuid is not None:
-            _path_params['uuid'] = uuid
-        # process the query parameters
-        # process the header parameters
-        # process the form parameters
-        # process the body parameter
-
-
-        # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
-                [
-                    'application/json'
-                ]
-            )
-
-
-        # authentication setting
-        _auth_settings: List[str] = [
-        ]
-
-        return self.api_client.param_serialize(
-            method='GET',
-            resource_path='/v2/image_annotation_dataset/{uuid}',
-            path_params=_path_params,
-            query_params=_query_params,
-            header_params=_header_params,
-            body=_body_params,
-            post_params=_form_params,
-            files=_files,
-            auth_settings=_auth_settings,
-            collection_formats=_collection_formats,
-            _host=_host,
-            _request_auth=_request_auth
-        )
-
-
-
-
-    @validate_call
-    def get_image_annotation_dataset_in_study(
+    def get_image_in_dataset(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -6772,8 +5637,8 @@ class PublicApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> List[ImageAnnotationDataset]:
-        """Get ImageAnnotationDataset In Study
+    ) -> List[Image]:
+        """Get Image In Dataset
 
 
         :param uuid: (required)
@@ -6804,7 +5669,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_image_annotation_dataset_in_study_serialize(
+        _param = self._get_image_in_dataset_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -6815,7 +5680,7 @@ class PublicApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[ImageAnnotationDataset]",
+            '200': "List[Image]",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -6830,7 +5695,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_image_annotation_dataset_in_study_with_http_info(
+    def get_image_in_dataset_with_http_info(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -6847,8 +5712,8 @@ class PublicApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[List[ImageAnnotationDataset]]:
-        """Get ImageAnnotationDataset In Study
+    ) -> ApiResponse[List[Image]]:
+        """Get Image In Dataset
 
 
         :param uuid: (required)
@@ -6879,7 +5744,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_image_annotation_dataset_in_study_serialize(
+        _param = self._get_image_in_dataset_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -6890,7 +5755,7 @@ class PublicApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[ImageAnnotationDataset]",
+            '200': "List[Image]",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -6905,7 +5770,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_image_annotation_dataset_in_study_without_preload_content(
+    def get_image_in_dataset_without_preload_content(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -6923,7 +5788,7 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Get ImageAnnotationDataset In Study
+        """Get Image In Dataset
 
 
         :param uuid: (required)
@@ -6954,7 +5819,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_image_annotation_dataset_in_study_serialize(
+        _param = self._get_image_in_dataset_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -6965,7 +5830,7 @@ class PublicApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[ImageAnnotationDataset]",
+            '200': "List[Image]",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -6975,7 +5840,7 @@ class PublicApi:
         return response_data.response
 
 
-    def _get_image_annotation_dataset_in_study_serialize(
+    def _get_image_in_dataset_serialize(
         self,
         uuid,
         page_size,
@@ -7030,7 +5895,299 @@ class PublicApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v2/study/{uuid}/image_annotation_dataset',
+            resource_path='/v2/dataset/{uuid}/image',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def get_image_in_file_reference(
+        self,
+        uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> List[Image]:
+        """Get Image In FileReference
+
+
+        :param uuid: (required)
+        :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._get_image_in_file_reference_serialize(
+            uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "List[Image]",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def get_image_in_file_reference_with_http_info(
+        self,
+        uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[List[Image]]:
+        """Get Image In FileReference
+
+
+        :param uuid: (required)
+        :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._get_image_in_file_reference_serialize(
+            uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "List[Image]",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def get_image_in_file_reference_without_preload_content(
+        self,
+        uuid: StrictStr,
+        page_size: StrictInt,
+        start_from_uuid: Optional[StrictStr] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Get Image In FileReference
+
+
+        :param uuid: (required)
+        :type uuid: str
+        :param page_size: (required)
+        :type page_size: int
+        :param start_from_uuid:
+        :type start_from_uuid: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._get_image_in_file_reference_serialize(
+            uuid=uuid,
+            page_size=page_size,
+            start_from_uuid=start_from_uuid,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "List[Image]",
+            '422': "HTTPValidationError",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _get_image_in_file_reference_serialize(
+        self,
+        uuid,
+        page_size,
+        start_from_uuid,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[str, Union[str, bytes]] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if uuid is not None:
+            _path_params['uuid'] = uuid
+        # process the query parameters
+        if start_from_uuid is not None:
+            
+            _query_params.append(('start_from_uuid', start_from_uuid))
+            
+        if page_size is not None:
+            
+            _query_params.append(('page_size', page_size))
+            
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+
+        # authentication setting
+        _auth_settings: List[str] = [
+        ]
+
+        return self.api_client.param_serialize(
+            method='GET',
+            resource_path='/v2/file_reference/{uuid}/image',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -7305,7 +6462,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_image_representation_in_derived_image(
+    def get_image_representation_in_image(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -7323,7 +6480,7 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> List[ImageRepresentation]:
-        """Get ImageRepresentation In DerivedImage
+        """Get ImageRepresentation In Image
 
 
         :param uuid: (required)
@@ -7354,7 +6511,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_image_representation_in_derived_image_serialize(
+        _param = self._get_image_representation_in_image_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -7380,7 +6537,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_image_representation_in_derived_image_with_http_info(
+    def get_image_representation_in_image_with_http_info(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -7398,7 +6555,7 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[List[ImageRepresentation]]:
-        """Get ImageRepresentation In DerivedImage
+        """Get ImageRepresentation In Image
 
 
         :param uuid: (required)
@@ -7429,7 +6586,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_image_representation_in_derived_image_serialize(
+        _param = self._get_image_representation_in_image_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -7455,7 +6612,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_image_representation_in_derived_image_without_preload_content(
+    def get_image_representation_in_image_without_preload_content(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -7473,7 +6630,7 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Get ImageRepresentation In DerivedImage
+        """Get ImageRepresentation In Image
 
 
         :param uuid: (required)
@@ -7504,7 +6661,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_image_representation_in_derived_image_serialize(
+        _param = self._get_image_representation_in_image_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -7525,7 +6682,7 @@ class PublicApi:
         return response_data.response
 
 
-    def _get_image_representation_in_derived_image_serialize(
+    def _get_image_representation_in_image_serialize(
         self,
         uuid,
         page_size,
@@ -7580,7 +6737,7 @@ class PublicApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v2/derived_image/{uuid}/image_representation',
+            resource_path='/v2/image/{uuid}/image_representation',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -7597,11 +6754,9 @@ class PublicApi:
 
 
     @validate_call
-    def get_image_representation_in_experimentally_captured_image(
+    def get_protocol(
         self,
         uuid: StrictStr,
-        page_size: StrictInt,
-        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -7614,16 +6769,12 @@ class PublicApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> List[ImageRepresentation]:
-        """Get ImageRepresentation In ExperimentallyCapturedImage
+    ) -> Protocol:
+        """Get Protocol
 
 
         :param uuid: (required)
         :type uuid: str
-        :param page_size: (required)
-        :type page_size: int
-        :param start_from_uuid:
-        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -7646,10 +6797,8 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_image_representation_in_experimentally_captured_image_serialize(
+        _param = self._get_protocol_serialize(
             uuid=uuid,
-            page_size=page_size,
-            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -7657,7 +6806,7 @@ class PublicApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[ImageRepresentation]",
+            '200': "Protocol",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -7672,11 +6821,9 @@ class PublicApi:
 
 
     @validate_call
-    def get_image_representation_in_experimentally_captured_image_with_http_info(
+    def get_protocol_with_http_info(
         self,
         uuid: StrictStr,
-        page_size: StrictInt,
-        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -7689,16 +6836,12 @@ class PublicApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[List[ImageRepresentation]]:
-        """Get ImageRepresentation In ExperimentallyCapturedImage
+    ) -> ApiResponse[Protocol]:
+        """Get Protocol
 
 
         :param uuid: (required)
         :type uuid: str
-        :param page_size: (required)
-        :type page_size: int
-        :param start_from_uuid:
-        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -7721,10 +6864,8 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_image_representation_in_experimentally_captured_image_serialize(
+        _param = self._get_protocol_serialize(
             uuid=uuid,
-            page_size=page_size,
-            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -7732,7 +6873,7 @@ class PublicApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[ImageRepresentation]",
+            '200': "Protocol",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -7747,11 +6888,9 @@ class PublicApi:
 
 
     @validate_call
-    def get_image_representation_in_experimentally_captured_image_without_preload_content(
+    def get_protocol_without_preload_content(
         self,
         uuid: StrictStr,
-        page_size: StrictInt,
-        start_from_uuid: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -7765,15 +6904,11 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Get ImageRepresentation In ExperimentallyCapturedImage
+        """Get Protocol
 
 
         :param uuid: (required)
         :type uuid: str
-        :param page_size: (required)
-        :type page_size: int
-        :param start_from_uuid:
-        :type start_from_uuid: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -7796,10 +6931,8 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_image_representation_in_experimentally_captured_image_serialize(
+        _param = self._get_protocol_serialize(
             uuid=uuid,
-            page_size=page_size,
-            start_from_uuid=start_from_uuid,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -7807,7 +6940,7 @@ class PublicApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[ImageRepresentation]",
+            '200': "Protocol",
             '422': "HTTPValidationError",
         }
         response_data = self.api_client.call_api(
@@ -7817,11 +6950,9 @@ class PublicApi:
         return response_data.response
 
 
-    def _get_image_representation_in_experimentally_captured_image_serialize(
+    def _get_protocol_serialize(
         self,
         uuid,
-        page_size,
-        start_from_uuid,
         _request_auth,
         _content_type,
         _headers,
@@ -7844,14 +6975,6 @@ class PublicApi:
         if uuid is not None:
             _path_params['uuid'] = uuid
         # process the query parameters
-        if start_from_uuid is not None:
-            
-            _query_params.append(('start_from_uuid', start_from_uuid))
-            
-        if page_size is not None:
-            
-            _query_params.append(('page_size', page_size))
-            
         # process the header parameters
         # process the form parameters
         # process the body parameter
@@ -7872,299 +6995,7 @@ class PublicApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/v2/experimentally_captured_image/{uuid}/image_representation',
-            path_params=_path_params,
-            query_params=_query_params,
-            header_params=_header_params,
-            body=_body_params,
-            post_params=_form_params,
-            files=_files,
-            auth_settings=_auth_settings,
-            collection_formats=_collection_formats,
-            _host=_host,
-            _request_auth=_request_auth
-        )
-
-
-
-
-    @validate_call
-    def get_image_representation_in_file_reference(
-        self,
-        uuid: StrictStr,
-        page_size: StrictInt,
-        start_from_uuid: Optional[StrictStr] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> List[ImageRepresentation]:
-        """Get ImageRepresentation In FileReference
-
-
-        :param uuid: (required)
-        :type uuid: str
-        :param page_size: (required)
-        :type page_size: int
-        :param start_from_uuid:
-        :type start_from_uuid: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._get_image_representation_in_file_reference_serialize(
-            uuid=uuid,
-            page_size=page_size,
-            start_from_uuid=start_from_uuid,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[ImageRepresentation]",
-            '422': "HTTPValidationError",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
-
-
-    @validate_call
-    def get_image_representation_in_file_reference_with_http_info(
-        self,
-        uuid: StrictStr,
-        page_size: StrictInt,
-        start_from_uuid: Optional[StrictStr] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[List[ImageRepresentation]]:
-        """Get ImageRepresentation In FileReference
-
-
-        :param uuid: (required)
-        :type uuid: str
-        :param page_size: (required)
-        :type page_size: int
-        :param start_from_uuid:
-        :type start_from_uuid: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._get_image_representation_in_file_reference_serialize(
-            uuid=uuid,
-            page_size=page_size,
-            start_from_uuid=start_from_uuid,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[ImageRepresentation]",
-            '422': "HTTPValidationError",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        )
-
-
-    @validate_call
-    def get_image_representation_in_file_reference_without_preload_content(
-        self,
-        uuid: StrictStr,
-        page_size: StrictInt,
-        start_from_uuid: Optional[StrictStr] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RESTResponseType:
-        """Get ImageRepresentation In FileReference
-
-
-        :param uuid: (required)
-        :type uuid: str
-        :param page_size: (required)
-        :type page_size: int
-        :param start_from_uuid:
-        :type start_from_uuid: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._get_image_representation_in_file_reference_serialize(
-            uuid=uuid,
-            page_size=page_size,
-            start_from_uuid=start_from_uuid,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[ImageRepresentation]",
-            '422': "HTTPValidationError",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        return response_data.response
-
-
-    def _get_image_representation_in_file_reference_serialize(
-        self,
-        uuid,
-        page_size,
-        start_from_uuid,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
-    ) -> RequestSerialized:
-
-        _host = None
-
-        _collection_formats: Dict[str, str] = {
-        }
-
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, Union[str, bytes]] = {}
-        _body_params: Optional[bytes] = None
-
-        # process the path parameters
-        if uuid is not None:
-            _path_params['uuid'] = uuid
-        # process the query parameters
-        if start_from_uuid is not None:
-            
-            _query_params.append(('start_from_uuid', start_from_uuid))
-            
-        if page_size is not None:
-            
-            _query_params.append(('page_size', page_size))
-            
-        # process the header parameters
-        # process the form parameters
-        # process the body parameter
-
-
-        # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
-                [
-                    'application/json'
-                ]
-            )
-
-
-        # authentication setting
-        _auth_settings: List[str] = [
-        ]
-
-        return self.api_client.param_serialize(
-            method='GET',
-            resource_path='/v2/file_reference/{uuid}/image_representation',
+            resource_path='/v2/protocol/{uuid}',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -8423,264 +7254,6 @@ class PublicApi:
         return self.api_client.param_serialize(
             method='GET',
             resource_path='/v2/specimen/{uuid}',
-            path_params=_path_params,
-            query_params=_query_params,
-            header_params=_header_params,
-            body=_body_params,
-            post_params=_form_params,
-            files=_files,
-            auth_settings=_auth_settings,
-            collection_formats=_collection_formats,
-            _host=_host,
-            _request_auth=_request_auth
-        )
-
-
-
-
-    @validate_call
-    def get_specimen_growth_protocol(
-        self,
-        uuid: StrictStr,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> SpecimenGrowthProtocol:
-        """Get SpecimenGrowthProtocol
-
-
-        :param uuid: (required)
-        :type uuid: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._get_specimen_growth_protocol_serialize(
-            uuid=uuid,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "SpecimenGrowthProtocol",
-            '422': "HTTPValidationError",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
-
-
-    @validate_call
-    def get_specimen_growth_protocol_with_http_info(
-        self,
-        uuid: StrictStr,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[SpecimenGrowthProtocol]:
-        """Get SpecimenGrowthProtocol
-
-
-        :param uuid: (required)
-        :type uuid: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._get_specimen_growth_protocol_serialize(
-            uuid=uuid,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "SpecimenGrowthProtocol",
-            '422': "HTTPValidationError",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        )
-
-
-    @validate_call
-    def get_specimen_growth_protocol_without_preload_content(
-        self,
-        uuid: StrictStr,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RESTResponseType:
-        """Get SpecimenGrowthProtocol
-
-
-        :param uuid: (required)
-        :type uuid: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._get_specimen_growth_protocol_serialize(
-            uuid=uuid,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "SpecimenGrowthProtocol",
-            '422': "HTTPValidationError",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        return response_data.response
-
-
-    def _get_specimen_growth_protocol_serialize(
-        self,
-        uuid,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
-    ) -> RequestSerialized:
-
-        _host = None
-
-        _collection_formats: Dict[str, str] = {
-        }
-
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, Union[str, bytes]] = {}
-        _body_params: Optional[bytes] = None
-
-        # process the path parameters
-        if uuid is not None:
-            _path_params['uuid'] = uuid
-        # process the query parameters
-        # process the header parameters
-        # process the form parameters
-        # process the body parameter
-
-
-        # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
-                [
-                    'application/json'
-                ]
-            )
-
-
-        # authentication setting
-        _auth_settings: List[str] = [
-        ]
-
-        return self.api_client.param_serialize(
-            method='GET',
-            resource_path='/v2/specimen_growth_protocol/{uuid}',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -9231,298 +7804,6 @@ class PublicApi:
         return self.api_client.param_serialize(
             method='GET',
             resource_path='/v2/bio_sample/{uuid}/specimen',
-            path_params=_path_params,
-            query_params=_query_params,
-            header_params=_header_params,
-            body=_body_params,
-            post_params=_form_params,
-            files=_files,
-            auth_settings=_auth_settings,
-            collection_formats=_collection_formats,
-            _host=_host,
-            _request_auth=_request_auth
-        )
-
-
-
-
-    @validate_call
-    def get_specimen_in_specimen_growth_protocol(
-        self,
-        uuid: StrictStr,
-        page_size: StrictInt,
-        start_from_uuid: Optional[StrictStr] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> List[Specimen]:
-        """Get Specimen In SpecimenGrowthProtocol
-
-
-        :param uuid: (required)
-        :type uuid: str
-        :param page_size: (required)
-        :type page_size: int
-        :param start_from_uuid:
-        :type start_from_uuid: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._get_specimen_in_specimen_growth_protocol_serialize(
-            uuid=uuid,
-            page_size=page_size,
-            start_from_uuid=start_from_uuid,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[Specimen]",
-            '422': "HTTPValidationError",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
-
-
-    @validate_call
-    def get_specimen_in_specimen_growth_protocol_with_http_info(
-        self,
-        uuid: StrictStr,
-        page_size: StrictInt,
-        start_from_uuid: Optional[StrictStr] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[List[Specimen]]:
-        """Get Specimen In SpecimenGrowthProtocol
-
-
-        :param uuid: (required)
-        :type uuid: str
-        :param page_size: (required)
-        :type page_size: int
-        :param start_from_uuid:
-        :type start_from_uuid: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._get_specimen_in_specimen_growth_protocol_serialize(
-            uuid=uuid,
-            page_size=page_size,
-            start_from_uuid=start_from_uuid,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[Specimen]",
-            '422': "HTTPValidationError",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        )
-
-
-    @validate_call
-    def get_specimen_in_specimen_growth_protocol_without_preload_content(
-        self,
-        uuid: StrictStr,
-        page_size: StrictInt,
-        start_from_uuid: Optional[StrictStr] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RESTResponseType:
-        """Get Specimen In SpecimenGrowthProtocol
-
-
-        :param uuid: (required)
-        :type uuid: str
-        :param page_size: (required)
-        :type page_size: int
-        :param start_from_uuid:
-        :type start_from_uuid: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._get_specimen_in_specimen_growth_protocol_serialize(
-            uuid=uuid,
-            page_size=page_size,
-            start_from_uuid=start_from_uuid,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[Specimen]",
-            '422': "HTTPValidationError",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        return response_data.response
-
-
-    def _get_specimen_in_specimen_growth_protocol_serialize(
-        self,
-        uuid,
-        page_size,
-        start_from_uuid,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
-    ) -> RequestSerialized:
-
-        _host = None
-
-        _collection_formats: Dict[str, str] = {
-        }
-
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, Union[str, bytes]] = {}
-        _body_params: Optional[bytes] = None
-
-        # process the path parameters
-        if uuid is not None:
-            _path_params['uuid'] = uuid
-        # process the query parameters
-        if start_from_uuid is not None:
-            
-            _query_params.append(('start_from_uuid', start_from_uuid))
-            
-        if page_size is not None:
-            
-            _query_params.append(('page_size', page_size))
-            
-        # process the header parameters
-        # process the form parameters
-        # process the body parameter
-
-
-        # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
-                [
-                    'application/json'
-                ]
-            )
-
-
-        # authentication setting
-        _auth_settings: List[str] = [
-        ]
-
-        return self.api_client.param_serialize(
-            method='GET',
-            resource_path='/v2/specimen_growth_protocol/{uuid}/specimen',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,

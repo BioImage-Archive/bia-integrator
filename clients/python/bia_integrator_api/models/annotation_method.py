@@ -20,7 +20,8 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
-from bia_integrator_api.models.annotation_type import AnnotationType
+from bia_integrator_api.models.annotation_method_type import AnnotationMethodType
+from bia_integrator_api.models.annotation_source_indicator import AnnotationSourceIndicator
 from bia_integrator_api.models.model_metadata import ModelMetadata
 from typing import Optional, Set
 from typing_extensions import Self
@@ -33,11 +34,14 @@ class AnnotationMethod(BaseModel):
     uuid: StrictStr = Field(description="Unique ID (across the BIA database) used to refer to and identify a document.")
     version: Annotated[int, Field(strict=True, ge=0)] = Field(description="Document version. This can't be optional to make sure we never persist objects without it")
     model: Optional[ModelMetadata] = None
-    protocol_description: StrictStr = Field(description="Description of steps involved in the process.")
+    protocol_description: StrictStr = Field(description="Description of actions involved in the process.")
     annotation_criteria: Optional[StrictStr] = None
     annotation_coverage: Optional[StrictStr] = None
-    method_type: AnnotationType
-    __properties: ClassVar[List[str]] = ["title_id", "uuid", "version", "model", "protocol_description", "annotation_criteria", "annotation_coverage", "method_type"]
+    transformation_description: Optional[StrictStr] = None
+    spatial_information: Optional[StrictStr] = None
+    method_type: List[AnnotationMethodType] = Field(description="Classification of the kind of annotation that was performed.")
+    annotation_source_indicator: Optional[AnnotationSourceIndicator] = None
+    __properties: ClassVar[List[str]] = ["title_id", "uuid", "version", "model", "protocol_description", "annotation_criteria", "annotation_coverage", "transformation_description", "spatial_information", "method_type", "annotation_source_indicator"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -96,6 +100,21 @@ class AnnotationMethod(BaseModel):
         if self.annotation_coverage is None and "annotation_coverage" in self.model_fields_set:
             _dict['annotation_coverage'] = None
 
+        # set to None if transformation_description (nullable) is None
+        # and model_fields_set contains the field
+        if self.transformation_description is None and "transformation_description" in self.model_fields_set:
+            _dict['transformation_description'] = None
+
+        # set to None if spatial_information (nullable) is None
+        # and model_fields_set contains the field
+        if self.spatial_information is None and "spatial_information" in self.model_fields_set:
+            _dict['spatial_information'] = None
+
+        # set to None if annotation_source_indicator (nullable) is None
+        # and model_fields_set contains the field
+        if self.annotation_source_indicator is None and "annotation_source_indicator" in self.model_fields_set:
+            _dict['annotation_source_indicator'] = None
+
         return _dict
 
     @classmethod
@@ -115,7 +134,10 @@ class AnnotationMethod(BaseModel):
             "protocol_description": obj.get("protocol_description"),
             "annotation_criteria": obj.get("annotation_criteria"),
             "annotation_coverage": obj.get("annotation_coverage"),
-            "method_type": obj.get("method_type")
+            "transformation_description": obj.get("transformation_description"),
+            "spatial_information": obj.get("spatial_information"),
+            "method_type": obj.get("method_type"),
+            "annotation_source_indicator": obj.get("annotation_source_indicator")
         })
         return _obj
 

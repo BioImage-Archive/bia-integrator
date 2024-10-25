@@ -9,10 +9,13 @@ Name | Type | Description | Notes
 **uuid** | **str** | Unique ID (across the BIA database) used to refer to and identify a document. | 
 **version** | **int** | Document version. This can&#39;t be optional to make sure we never persist objects without it | 
 **model** | [**ModelMetadata**](ModelMetadata.md) |  | [optional] 
-**protocol_description** | **str** | Description of steps involved in the process. | 
+**protocol_description** | **str** | Description of actions involved in the process. | 
 **annotation_criteria** | **str** |  | [optional] 
 **annotation_coverage** | **str** |  | [optional] 
-**method_type** | [**AnnotationType**](AnnotationType.md) |  | 
+**transformation_description** | **str** |  | [optional] 
+**spatial_information** | **str** |  | [optional] 
+**method_type** | [**List[AnnotationMethodType]**](AnnotationMethodType.md) | Classification of the kind of annotation that was performed. | 
+**annotation_source_indicator** | [**AnnotationSourceIndicator**](AnnotationSourceIndicator.md) |  | [optional] 
 
 ## Example
 

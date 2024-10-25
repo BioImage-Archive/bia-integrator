@@ -26,7 +26,7 @@ class ImageAnalysisMethod(BaseModel):
     """
     Information about image analysis methods.
     """ # noqa: E501
-    protocol_description: StrictStr = Field(description="Description of steps involved in the process.")
+    protocol_description: StrictStr = Field(description="Description of actions involved in the process.")
     features_analysed: StrictStr
     __properties: ClassVar[List[str]] = ["protocol_description", "features_analysed"]
 

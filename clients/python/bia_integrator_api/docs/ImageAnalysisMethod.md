@@ -6,7 +6,7 @@ Information about image analysis methods.
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**protocol_description** | **str** | Description of steps involved in the process. | 
+**protocol_description** | **str** | Description of actions involved in the process. | 
 **features_analysed** | **str** |  | 
 
 ## Example

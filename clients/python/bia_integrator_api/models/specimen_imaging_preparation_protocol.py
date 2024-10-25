@@ -33,7 +33,7 @@ class SpecimenImagingPreparationProtocol(BaseModel):
     uuid: StrictStr = Field(description="Unique ID (across the BIA database) used to refer to and identify a document.")
     version: Annotated[int, Field(strict=True, ge=0)] = Field(description="Document version. This can't be optional to make sure we never persist objects without it")
     model: Optional[ModelMetadata] = None
-    protocol_description: StrictStr = Field(description="Description of steps involved in the process.")
+    protocol_description: StrictStr = Field(description="Description of actions involved in the process.")
     signal_channel_information: Optional[List[SignalChannelInformation]] = None
     __properties: ClassVar[List[str]] = ["title_id", "uuid", "version", "model", "protocol_description", "signal_channel_information"]
 

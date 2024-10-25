@@ -18,18 +18,21 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
-from typing import Any, ClassVar, Dict, List
+from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
+from bia_integrator_api.models.model_metadata import ModelMetadata
 from typing import Optional, Set
 from typing_extensions import Self
 
-class ImageCorrelationMethod(BaseModel):
+class Protocol(BaseModel):
     """
-    Information about the process of correlating the positions of multiple images.
+    Protocol
     """ # noqa: E501
+    uuid: StrictStr = Field(description="Unique ID (across the BIA database) used to refer to and identify a document.")
+    version: Annotated[int, Field(strict=True, ge=0)] = Field(description="Document version. This can't be optional to make sure we never persist objects without it")
+    model: Optional[ModelMetadata] = None
     protocol_description: StrictStr = Field(description="Description of actions involved in the process.")
-    fiducials_used: StrictStr = Field(description="Features from correlated datasets used for colocalization.")
-    transformation_matrix: StrictStr = Field(description="Correlation transforms.")
-    __properties: ClassVar[List[str]] = ["protocol_description", "fiducials_used", "transformation_matrix"]
+    __properties: ClassVar[List[str]] = ["uuid", "version", "model", "protocol_description"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -49,7 +52,7 @@ class ImageCorrelationMethod(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of ImageCorrelationMethod from a JSON string"""
+        """Create an instance of Protocol from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -70,11 +73,19 @@ class ImageCorrelationMethod(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of model
+        if self.model:
+            _dict['model'] = self.model.to_dict()
+        # set to None if model (nullable) is None
+        # and model_fields_set contains the field
+        if self.model is None and "model" in self.model_fields_set:
+            _dict['model'] = None
+
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of ImageCorrelationMethod from a dict"""
+        """Create an instance of Protocol from a dict"""
         if obj is None:
             return None
 
@@ -82,9 +93,10 @@ class ImageCorrelationMethod(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "protocol_description": obj.get("protocol_description"),
-            "fiducials_used": obj.get("fiducials_used"),
-            "transformation_matrix": obj.get("transformation_matrix")
+            "uuid": obj.get("uuid"),
+            "version": obj.get("version"),
+            "model": ModelMetadata.from_dict(obj["model"]) if obj.get("model") is not None else None,
+            "protocol_description": obj.get("protocol_description")
         })
         return _obj
 
