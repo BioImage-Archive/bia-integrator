@@ -146,11 +146,31 @@ class UserIdentifiedObject(BaseModel):
     )
 
 
+#######################################################################################################
+# Subgraph 1: Studies and links to external information (publications, grants etc)
+#######################################################################################################
+
+
 class Study(
     semantic_models.Study,
     DocumentMixin,
 ):
     author: List[semantic_models.Contributor] = Field(min_length=1)
+
+    model_config = ConfigDict(model_version_latest=2)
+
+
+#######################################################################################################
+# Subgraph 3: Dataset, File References
+#######################################################################################################
+
+
+class Dataset(
+    semantic_models.Dataset,
+    DocumentMixin,
+    UserIdentifiedObject,
+):
+    submitted_in_study_uuid: Annotated[UUID, ObjectReference(Study)] = Field()
 
     model_config = ConfigDict(model_version_latest=1)
 
@@ -161,13 +181,26 @@ class FileReference(
 ):
     submission_dataset_uuid: Annotated[
         UUID,
-        ObjectReference(
-            None,
-            workaround_union_reference_types=[
-                ImageAnnotationDataset,
-                ExperimentalImagingDataset,
-            ],
-        ),
+        ObjectReference(Dataset),
+    ] = Field()
+
+    model_config = ConfigDict(model_version_latest=2)
+
+
+#######################################################################################################
+# Subgraph 4: Images & their representations, and AnnotationData
+#######################################################################################################
+
+
+class Image(
+    semantic_models.Image,
+    DocumentMixin,
+):
+
+    submission_dataset_uuid: Annotated[UUID, ObjectReference(Dataset)] = Field()
+    creation_process_uuid: Annotated[UUID, ObjectReference(CreationProcess)] = Field()
+    original_file_reference_uuid: Annotated[
+        List[UUID], ObjectReference(FileReference)
     ] = Field()
 
     model_config = ConfigDict(model_version_latest=1)
@@ -177,65 +210,81 @@ class ImageRepresentation(
     semantic_models.ImageRepresentation,
     DocumentMixin,
 ):
-    # We may want to store the FileReference -> Image(Represenation) rather than in the original_file_reference_uuid
-    original_file_reference_uuid: Annotated[
-        Optional[List[UUID]], ObjectReference(FileReference)
-    ] = Field(default_factory=lambda: [])
+
     representation_of_uuid: Annotated[
         UUID,
-        ObjectReference(
-            None,
-            workaround_union_reference_types=[
-                DerivedImage,
-                ExperimentallyCapturedImage,
-            ],
-        ),
+        ObjectReference(Image),
+    ] = Field()
+
+    model_config = ConfigDict(model_version_latest=2)
+
+
+class AnnotationData(semantic_models.AnnotationData, DocumentMixin):
+    submission_dataset_uuid: Annotated[UUID, ObjectReference(Dataset)] = Field()
+    creation_process_uuid: Annotated[UUID, ObjectReference(CreationProcess)] = Field()
+    original_file_reference_uuid: Annotated[
+        List[UUID], ObjectReference(FileReference)
     ] = Field()
 
     model_config = ConfigDict(model_version_latest=1)
 
 
-class ExperimentalImagingDataset(
-    semantic_models.ExperimentalImagingDataset,
-    DocumentMixin,
-    UserIdentifiedObject,
-):
-    submitted_in_study_uuid: Annotated[UUID, ObjectReference(Study)] = Field()
-
-    model_config = ConfigDict(model_version_latest=1)
+#######################################################################################################
+# Subgraph 5:  Process & Protocols
+#######################################################################################################
 
 
 class Specimen(semantic_models.Specimen, DocumentMixin):
     imaging_preparation_protocol_uuid: Annotated[
         List[UUID], ObjectReference(SpecimenImagingPreparationProtocol)
-    ] = Field(min_length=1)
-    sample_of_uuid: Annotated[List[UUID], ObjectReference(BioSample)] = Field(
-        min_length=1
+    ] = Field(
+        min_length=1,
+        description="The protocol that was followed in order to perpare a biosample for imaging.",
     )
-    growth_protocol_uuid: Annotated[
-        List[UUID], ObjectReference(SpecimenGrowthProtocol)
-    ] = Field()
+    sample_of_uuid: Annotated[List[UUID], ObjectReference(BioSample)] = Field(
+        min_length=1,
+        description="The biosample from which this specimen was created.",
+    )
 
     model_config = ConfigDict(model_version_latest=1)
 
 
-class ExperimentallyCapturedImage(
-    semantic_models.ExperimentallyCapturedImage,
-    DocumentMixin,
-):
-    acquisition_process_uuid: Annotated[
-        List[UUID], ObjectReference(ImageAcquisition)
-    ] = Field()
-    submission_dataset_uuid: Annotated[
-        UUID, ObjectReference(ExperimentalImagingDataset)
-    ] = Field()
-    subject_uuid: Annotated[UUID, ObjectReference(Specimen)] = Field()
+class CreationProcess(semantic_models.CreationProcess, DocumentMixin):
+    subject_specimen_uuid: Annotated[Optional[UUID], ObjectReference(Specimen)] = Field(
+        default=None,
+        description="The biological specimen that is the subject of the image.",
+    )
+    image_acquisition_protocol_uuid: Annotated[
+        Optional[List[UUID]], ObjectReference(ImageAcquisitionProtocol)
+    ] = Field(
+        default_factory=lambda: [],
+        description="The imaging protocol, describing the technique that was used to create the image.",
+    )
+
+    input_image_uuid: Annotated[Optional[List[UUID]], ObjectReference(Image)] = Field(
+        default_factory=lambda: [],
+        description="The images used as input data for the creation of a new image.",
+    )
+    protocol_uuid: Annotated[Optional[List[UUID]], ObjectReference(Protocol)] = Field(
+        default_factory=lambda: [],
+        description="A protocol which was followed that resulted in the creation of this new image from existing image data.",
+    )
+    annotation_method_uuid: Annotated[
+        Optional[List[UUID]], ObjectReference(AnnotationMethod)
+    ] = Field(
+        default_factory=lambda: [],
+        description="The annotation method describing the process followed to create a new image from exsiting image data.",
+    )
 
     model_config = ConfigDict(model_version_latest=1)
 
 
-class ImageAcquisition(
-    semantic_models.ImageAcquisition,
+class Protocol(semantic_models.Protocol, DocumentMixin):
+    model_config = ConfigDict(model_version_latest=1)
+
+
+class ImageAcquisitionProtocol(
+    semantic_models.ImageAcquisitionProtocol,
     DocumentMixin,
     UserIdentifiedObject,
 ):
@@ -250,85 +299,16 @@ class SpecimenImagingPreparationProtocol(
     model_config = ConfigDict(model_version_latest=1)
 
 
-class SpecimenGrowthProtocol(
-    semantic_models.SpecimenGrowthProtocol,
-    DocumentMixin,
-    UserIdentifiedObject,
-):
-    model_config = ConfigDict(model_version_latest=1)
-
-
 class BioSample(
     semantic_models.BioSample,
     DocumentMixin,
     UserIdentifiedObject,
 ):
-    model_config = ConfigDict(model_version_latest=1)
-
-
-class ImageAnnotationDataset(
-    semantic_models.ImageAnnotationDataset,
-    DocumentMixin,
-    UserIdentifiedObject,
-):
-    submitted_in_study_uuid: Annotated[UUID, ObjectReference(Study)] = Field()
-
-    model_config = ConfigDict(model_version_latest=1)
-
-
-class AnnotationFileReference(
-    semantic_models.AnnotationFileReference,
-    DocumentMixin,
-):
-    submission_dataset_uuid: Annotated[
-        UUID,
-        ObjectReference(
-            None,
-            workaround_union_reference_types=[
-                ImageAnnotationDataset,
-                ExperimentalImagingDataset,
-            ],
-        ),
-    ] = Field()
-    source_image_uuid: Annotated[
-        List[UUID],
-        ObjectReference(
-            None,
-            workaround_union_reference_types=[
-                DerivedImage,
-                ExperimentallyCapturedImage,
-            ],
-        ),
-    ] = Field()
-    creation_process_uuid: Annotated[List[UUID], ObjectReference(AnnotationMethod)] = (
-        Field()
+    model_config = ConfigDict(model_version_latest=2)
+    growth_protocol_uuid: Annotated[Optional[UUID], ObjectReference(Protocol)] = Field(
+        None,
+        description="The protocol that was followed in order to create this biosample.",
     )
-
-    model_config = ConfigDict(model_version_latest=1)
-
-
-class DerivedImage(
-    semantic_models.DerivedImage,
-    DocumentMixin,
-):
-    source_image_uuid: Annotated[
-        List[UUID],
-        ObjectReference(
-            None,
-            workaround_union_reference_types=[
-                DerivedImage,
-                ExperimentallyCapturedImage,
-            ],
-        ),
-    ] = Field()
-    submission_dataset_uuid: Annotated[
-        UUID, ObjectReference(ImageAnnotationDataset)
-    ] = Field()
-    creation_process_uuid: Annotated[List[UUID], ObjectReference(AnnotationMethod)] = (
-        Field()
-    )
-
-    model_config = ConfigDict(model_version_latest=1)
 
 
 class AnnotationMethod(
@@ -336,8 +316,8 @@ class AnnotationMethod(
     DocumentMixin,
     UserIdentifiedObject,
 ):
-    model_config = ConfigDict(model_version_latest=1)
+    model_config = ConfigDict(model_version_latest=2)
 
 
 Specimen.model_rebuild()
-ExperimentallyCapturedImage.model_rebuild()
+Image.model_rebuild()
