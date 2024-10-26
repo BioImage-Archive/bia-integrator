@@ -160,6 +160,13 @@ def get_experimental_imaging_dataset(
                 subject.sample_of_uuid
             )
 
+            if persister:
+                persister.persist(
+                    [
+                        subject,
+                    ],
+                )
+
         experimental_imaging_datasets.append(experimental_imaging_dataset)
 
     log_model_creation_count(
