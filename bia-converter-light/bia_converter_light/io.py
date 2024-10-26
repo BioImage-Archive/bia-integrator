@@ -5,11 +5,12 @@ import urllib
 import logging
 import shutil
 import subprocess
+from zipfile import ZipFile
 
 import requests
 
 from .config import settings
-from .utils import get_image_extension
+from .utils import get_image_extension, get_local_path_for_representation
 
 
 logger = logging.getLogger(__name__)
@@ -117,3 +118,25 @@ def stage_fileref_and_get_fpath(fileref) -> Path:
         logger.info(f"File exists at {dst_fpath}")
 
     return dst_fpath
+
+
+def unzip_fileref_and_get_fpath(image_representation, input_fpath):
+    unzip_fpath = get_local_path_for_representation(
+        image_representation.uuid, image_representation.image_format
+    )
+
+    zf = ZipFile(input_fpath)
+    logger.info(f"Unzipping to {unzip_fpath}")
+    zf.extractall(path=unzip_fpath)
+
+    # Assume unzipped contents contain a single top level .zarr dir
+    # Otherwise check if zarr contents were zipped without top level .zarr dir
+    unzip_fpath_list = list(unzip_fpath.glob("*"))
+    if len(unzip_fpath_list) == 1:
+        return unzip_fpath_list[0]
+    elif (unzip_fpath / ".zattrs").exists() or (unzip_fpath / ".zgroup").exists():
+        return unzip_fpath
+    else:
+        raise (
+            f"Unexpected zip contents structure: {unzip_fpath_list}. Expected single top-level .zarr directory"
+        )
