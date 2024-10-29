@@ -73,12 +73,13 @@ def router_add_reverse_link(
     router.add_api_route(
         f"/{to_snake(link_target_type.__name__)}/{{uuid}}/{to_snake(link_source_type.__name__)}",
         response_model=List[link_source_type],
-        operation_id=f"get{link_source_type.__name__}In{link_target_type.__name__}",
-        summary=f"Get {link_source_type.__name__} In {link_target_type.__name__}",
+        operation_id=f"get{link_target_type.__name__}In{link_source_type.__name__}",
+        summary=f"Get {link_target_type.__name__} In {link_source_type.__name__}",
         methods=["GET"],
         endpoint=make_reverse_link_handler(
             link_attribute_name, link_source_type, link_target_type
         ),
+        description="In here means that the UUID of the object on the left is set as an attribute of the object on the right",
     )
 
 
