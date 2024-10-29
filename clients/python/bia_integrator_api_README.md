@@ -64,36 +64,36 @@ All URIs are relative to *http://localhost*
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *PrivateApi* | [**get_annotation_data**](bia_integrator_api/docs/PrivateApi.md#get_annotation_data) | **GET** /v2/annotation_data/{uuid} | Get AnnotationData
+*PrivateApi* | [**get_annotation_data_linking_creation_process**](bia_integrator_api/docs/PrivateApi.md#get_annotation_data_linking_creation_process) | **GET** /v2/creation_process/{uuid}/annotation_data | Get AnnotationData Linking CreationProcess
+*PrivateApi* | [**get_annotation_data_linking_dataset**](bia_integrator_api/docs/PrivateApi.md#get_annotation_data_linking_dataset) | **GET** /v2/dataset/{uuid}/annotation_data | Get AnnotationData Linking Dataset
+*PrivateApi* | [**get_annotation_data_linking_file_reference**](bia_integrator_api/docs/PrivateApi.md#get_annotation_data_linking_file_reference) | **GET** /v2/file_reference/{uuid}/annotation_data | Get AnnotationData Linking FileReference
 *PrivateApi* | [**get_annotation_method**](bia_integrator_api/docs/PrivateApi.md#get_annotation_method) | **GET** /v2/annotation_method/{uuid} | Get AnnotationMethod
-*PrivateApi* | [**get_annotation_method_linking_creation_process**](bia_integrator_api/docs/PrivateApi.md#get_annotation_method_linking_creation_process) | **GET** /v2/annotation_method/{uuid}/creation_process | Get AnnotationMethod Linking CreationProcess
 *PrivateApi* | [**get_bio_sample**](bia_integrator_api/docs/PrivateApi.md#get_bio_sample) | **GET** /v2/bio_sample/{uuid} | Get BioSample
-*PrivateApi* | [**get_bio_sample_linking_specimen**](bia_integrator_api/docs/PrivateApi.md#get_bio_sample_linking_specimen) | **GET** /v2/bio_sample/{uuid}/specimen | Get BioSample Linking Specimen
+*PrivateApi* | [**get_bio_sample_linking_protocol**](bia_integrator_api/docs/PrivateApi.md#get_bio_sample_linking_protocol) | **GET** /v2/protocol/{uuid}/bio_sample | Get BioSample Linking Protocol
 *PrivateApi* | [**get_creation_process**](bia_integrator_api/docs/PrivateApi.md#get_creation_process) | **GET** /v2/creation_process/{uuid} | Get CreationProcess
-*PrivateApi* | [**get_creation_process_linking_annotation_data**](bia_integrator_api/docs/PrivateApi.md#get_creation_process_linking_annotation_data) | **GET** /v2/creation_process/{uuid}/annotation_data | Get CreationProcess Linking AnnotationData
-*PrivateApi* | [**get_creation_process_linking_image**](bia_integrator_api/docs/PrivateApi.md#get_creation_process_linking_image) | **GET** /v2/creation_process/{uuid}/image | Get CreationProcess Linking Image
+*PrivateApi* | [**get_creation_process_linking_annotation_method**](bia_integrator_api/docs/PrivateApi.md#get_creation_process_linking_annotation_method) | **GET** /v2/annotation_method/{uuid}/creation_process | Get CreationProcess Linking AnnotationMethod
+*PrivateApi* | [**get_creation_process_linking_image**](bia_integrator_api/docs/PrivateApi.md#get_creation_process_linking_image) | **GET** /v2/image/{uuid}/creation_process | Get CreationProcess Linking Image
+*PrivateApi* | [**get_creation_process_linking_image_acquisition_protocol**](bia_integrator_api/docs/PrivateApi.md#get_creation_process_linking_image_acquisition_protocol) | **GET** /v2/image_acquisition_protocol/{uuid}/creation_process | Get CreationProcess Linking ImageAcquisitionProtocol
+*PrivateApi* | [**get_creation_process_linking_protocol**](bia_integrator_api/docs/PrivateApi.md#get_creation_process_linking_protocol) | **GET** /v2/protocol/{uuid}/creation_process | Get CreationProcess Linking Protocol
+*PrivateApi* | [**get_creation_process_linking_specimen**](bia_integrator_api/docs/PrivateApi.md#get_creation_process_linking_specimen) | **GET** /v2/specimen/{uuid}/creation_process | Get CreationProcess Linking Specimen
 *PrivateApi* | [**get_dataset**](bia_integrator_api/docs/PrivateApi.md#get_dataset) | **GET** /v2/dataset/{uuid} | Get Dataset
-*PrivateApi* | [**get_dataset_linking_annotation_data**](bia_integrator_api/docs/PrivateApi.md#get_dataset_linking_annotation_data) | **GET** /v2/dataset/{uuid}/annotation_data | Get Dataset Linking AnnotationData
-*PrivateApi* | [**get_dataset_linking_file_reference**](bia_integrator_api/docs/PrivateApi.md#get_dataset_linking_file_reference) | **GET** /v2/dataset/{uuid}/file_reference | Get Dataset Linking FileReference
-*PrivateApi* | [**get_dataset_linking_image**](bia_integrator_api/docs/PrivateApi.md#get_dataset_linking_image) | **GET** /v2/dataset/{uuid}/image | Get Dataset Linking Image
+*PrivateApi* | [**get_dataset_linking_study**](bia_integrator_api/docs/PrivateApi.md#get_dataset_linking_study) | **GET** /v2/study/{uuid}/dataset | Get Dataset Linking Study
 *PrivateApi* | [**get_file_reference**](bia_integrator_api/docs/PrivateApi.md#get_file_reference) | **GET** /v2/file_reference/{uuid} | Get FileReference
-*PrivateApi* | [**get_file_reference_linking_annotation_data**](bia_integrator_api/docs/PrivateApi.md#get_file_reference_linking_annotation_data) | **GET** /v2/file_reference/{uuid}/annotation_data | Get FileReference Linking AnnotationData
-*PrivateApi* | [**get_file_reference_linking_image**](bia_integrator_api/docs/PrivateApi.md#get_file_reference_linking_image) | **GET** /v2/file_reference/{uuid}/image | Get FileReference Linking Image
+*PrivateApi* | [**get_file_reference_linking_dataset**](bia_integrator_api/docs/PrivateApi.md#get_file_reference_linking_dataset) | **GET** /v2/dataset/{uuid}/file_reference | Get FileReference Linking Dataset
 *PrivateApi* | [**get_image**](bia_integrator_api/docs/PrivateApi.md#get_image) | **GET** /v2/image/{uuid} | Get Image
 *PrivateApi* | [**get_image_acquisition_protocol**](bia_integrator_api/docs/PrivateApi.md#get_image_acquisition_protocol) | **GET** /v2/image_acquisition_protocol/{uuid} | Get ImageAcquisitionProtocol
-*PrivateApi* | [**get_image_acquisition_protocol_linking_creation_process**](bia_integrator_api/docs/PrivateApi.md#get_image_acquisition_protocol_linking_creation_process) | **GET** /v2/image_acquisition_protocol/{uuid}/creation_process | Get ImageAcquisitionProtocol Linking CreationProcess
-*PrivateApi* | [**get_image_linking_creation_process**](bia_integrator_api/docs/PrivateApi.md#get_image_linking_creation_process) | **GET** /v2/image/{uuid}/creation_process | Get Image Linking CreationProcess
-*PrivateApi* | [**get_image_linking_image_representation**](bia_integrator_api/docs/PrivateApi.md#get_image_linking_image_representation) | **GET** /v2/image/{uuid}/image_representation | Get Image Linking ImageRepresentation
+*PrivateApi* | [**get_image_linking_creation_process**](bia_integrator_api/docs/PrivateApi.md#get_image_linking_creation_process) | **GET** /v2/creation_process/{uuid}/image | Get Image Linking CreationProcess
+*PrivateApi* | [**get_image_linking_dataset**](bia_integrator_api/docs/PrivateApi.md#get_image_linking_dataset) | **GET** /v2/dataset/{uuid}/image | Get Image Linking Dataset
+*PrivateApi* | [**get_image_linking_file_reference**](bia_integrator_api/docs/PrivateApi.md#get_image_linking_file_reference) | **GET** /v2/file_reference/{uuid}/image | Get Image Linking FileReference
 *PrivateApi* | [**get_image_representation**](bia_integrator_api/docs/PrivateApi.md#get_image_representation) | **GET** /v2/image_representation/{uuid} | Get ImageRepresentation
+*PrivateApi* | [**get_image_representation_linking_image**](bia_integrator_api/docs/PrivateApi.md#get_image_representation_linking_image) | **GET** /v2/image/{uuid}/image_representation | Get ImageRepresentation Linking Image
 *PrivateApi* | [**get_protocol**](bia_integrator_api/docs/PrivateApi.md#get_protocol) | **GET** /v2/protocol/{uuid} | Get Protocol
-*PrivateApi* | [**get_protocol_linking_bio_sample**](bia_integrator_api/docs/PrivateApi.md#get_protocol_linking_bio_sample) | **GET** /v2/protocol/{uuid}/bio_sample | Get Protocol Linking BioSample
-*PrivateApi* | [**get_protocol_linking_creation_process**](bia_integrator_api/docs/PrivateApi.md#get_protocol_linking_creation_process) | **GET** /v2/protocol/{uuid}/creation_process | Get Protocol Linking CreationProcess
 *PrivateApi* | [**get_specimen**](bia_integrator_api/docs/PrivateApi.md#get_specimen) | **GET** /v2/specimen/{uuid} | Get Specimen
 *PrivateApi* | [**get_specimen_imaging_preparation_protocol**](bia_integrator_api/docs/PrivateApi.md#get_specimen_imaging_preparation_protocol) | **GET** /v2/specimen_imaging_preparation_protocol/{uuid} | Get SpecimenImagingPreparationProtocol
-*PrivateApi* | [**get_specimen_imaging_preparation_protocol_linking_specimen**](bia_integrator_api/docs/PrivateApi.md#get_specimen_imaging_preparation_protocol_linking_specimen) | **GET** /v2/specimen_imaging_preparation_protocol/{uuid}/specimen | Get SpecimenImagingPreparationProtocol Linking Specimen
-*PrivateApi* | [**get_specimen_linking_creation_process**](bia_integrator_api/docs/PrivateApi.md#get_specimen_linking_creation_process) | **GET** /v2/specimen/{uuid}/creation_process | Get Specimen Linking CreationProcess
+*PrivateApi* | [**get_specimen_linking_bio_sample**](bia_integrator_api/docs/PrivateApi.md#get_specimen_linking_bio_sample) | **GET** /v2/bio_sample/{uuid}/specimen | Get Specimen Linking BioSample
+*PrivateApi* | [**get_specimen_linking_specimen_imaging_preparation_protocol**](bia_integrator_api/docs/PrivateApi.md#get_specimen_linking_specimen_imaging_preparation_protocol) | **GET** /v2/specimen_imaging_preparation_protocol/{uuid}/specimen | Get Specimen Linking SpecimenImagingPreparationProtocol
 *PrivateApi* | [**get_studies**](bia_integrator_api/docs/PrivateApi.md#get_studies) | **GET** /v2/study | Getstudies
 *PrivateApi* | [**get_study**](bia_integrator_api/docs/PrivateApi.md#get_study) | **GET** /v2/study/{uuid} | Get Study
-*PrivateApi* | [**get_study_linking_dataset**](bia_integrator_api/docs/PrivateApi.md#get_study_linking_dataset) | **GET** /v2/study/{uuid}/dataset | Get Study Linking Dataset
 *PrivateApi* | [**login_for_access_token**](bia_integrator_api/docs/PrivateApi.md#login_for_access_token) | **POST** /v2/auth/token | Login For Access Token
 *PrivateApi* | [**post_annotation_data**](bia_integrator_api/docs/PrivateApi.md#post_annotation_data) | **POST** /v2/private/annotation_data | Create AnnotationData
 *PrivateApi* | [**post_annotation_method**](bia_integrator_api/docs/PrivateApi.md#post_annotation_method) | **POST** /v2/private/annotation_method | Create AnnotationMethod
@@ -112,36 +112,36 @@ Class | Method | HTTP request | Description
 *PrivateApi* | [**search_image_representation_by_file_uri**](bia_integrator_api/docs/PrivateApi.md#search_image_representation_by_file_uri) | **GET** /v2/search/image_representation/file_uri_fragment | Searchimagerepresentationbyfileuri
 *PrivateApi* | [**search_study_by_accession**](bia_integrator_api/docs/PrivateApi.md#search_study_by_accession) | **GET** /v2/search/study/accession | Searchstudybyaccession
 *PublicApi* | [**get_annotation_data**](bia_integrator_api/docs/PublicApi.md#get_annotation_data) | **GET** /v2/annotation_data/{uuid} | Get AnnotationData
+*PublicApi* | [**get_annotation_data_linking_creation_process**](bia_integrator_api/docs/PublicApi.md#get_annotation_data_linking_creation_process) | **GET** /v2/creation_process/{uuid}/annotation_data | Get AnnotationData Linking CreationProcess
+*PublicApi* | [**get_annotation_data_linking_dataset**](bia_integrator_api/docs/PublicApi.md#get_annotation_data_linking_dataset) | **GET** /v2/dataset/{uuid}/annotation_data | Get AnnotationData Linking Dataset
+*PublicApi* | [**get_annotation_data_linking_file_reference**](bia_integrator_api/docs/PublicApi.md#get_annotation_data_linking_file_reference) | **GET** /v2/file_reference/{uuid}/annotation_data | Get AnnotationData Linking FileReference
 *PublicApi* | [**get_annotation_method**](bia_integrator_api/docs/PublicApi.md#get_annotation_method) | **GET** /v2/annotation_method/{uuid} | Get AnnotationMethod
-*PublicApi* | [**get_annotation_method_linking_creation_process**](bia_integrator_api/docs/PublicApi.md#get_annotation_method_linking_creation_process) | **GET** /v2/annotation_method/{uuid}/creation_process | Get AnnotationMethod Linking CreationProcess
 *PublicApi* | [**get_bio_sample**](bia_integrator_api/docs/PublicApi.md#get_bio_sample) | **GET** /v2/bio_sample/{uuid} | Get BioSample
-*PublicApi* | [**get_bio_sample_linking_specimen**](bia_integrator_api/docs/PublicApi.md#get_bio_sample_linking_specimen) | **GET** /v2/bio_sample/{uuid}/specimen | Get BioSample Linking Specimen
+*PublicApi* | [**get_bio_sample_linking_protocol**](bia_integrator_api/docs/PublicApi.md#get_bio_sample_linking_protocol) | **GET** /v2/protocol/{uuid}/bio_sample | Get BioSample Linking Protocol
 *PublicApi* | [**get_creation_process**](bia_integrator_api/docs/PublicApi.md#get_creation_process) | **GET** /v2/creation_process/{uuid} | Get CreationProcess
-*PublicApi* | [**get_creation_process_linking_annotation_data**](bia_integrator_api/docs/PublicApi.md#get_creation_process_linking_annotation_data) | **GET** /v2/creation_process/{uuid}/annotation_data | Get CreationProcess Linking AnnotationData
-*PublicApi* | [**get_creation_process_linking_image**](bia_integrator_api/docs/PublicApi.md#get_creation_process_linking_image) | **GET** /v2/creation_process/{uuid}/image | Get CreationProcess Linking Image
+*PublicApi* | [**get_creation_process_linking_annotation_method**](bia_integrator_api/docs/PublicApi.md#get_creation_process_linking_annotation_method) | **GET** /v2/annotation_method/{uuid}/creation_process | Get CreationProcess Linking AnnotationMethod
+*PublicApi* | [**get_creation_process_linking_image**](bia_integrator_api/docs/PublicApi.md#get_creation_process_linking_image) | **GET** /v2/image/{uuid}/creation_process | Get CreationProcess Linking Image
+*PublicApi* | [**get_creation_process_linking_image_acquisition_protocol**](bia_integrator_api/docs/PublicApi.md#get_creation_process_linking_image_acquisition_protocol) | **GET** /v2/image_acquisition_protocol/{uuid}/creation_process | Get CreationProcess Linking ImageAcquisitionProtocol
+*PublicApi* | [**get_creation_process_linking_protocol**](bia_integrator_api/docs/PublicApi.md#get_creation_process_linking_protocol) | **GET** /v2/protocol/{uuid}/creation_process | Get CreationProcess Linking Protocol
+*PublicApi* | [**get_creation_process_linking_specimen**](bia_integrator_api/docs/PublicApi.md#get_creation_process_linking_specimen) | **GET** /v2/specimen/{uuid}/creation_process | Get CreationProcess Linking Specimen
 *PublicApi* | [**get_dataset**](bia_integrator_api/docs/PublicApi.md#get_dataset) | **GET** /v2/dataset/{uuid} | Get Dataset
-*PublicApi* | [**get_dataset_linking_annotation_data**](bia_integrator_api/docs/PublicApi.md#get_dataset_linking_annotation_data) | **GET** /v2/dataset/{uuid}/annotation_data | Get Dataset Linking AnnotationData
-*PublicApi* | [**get_dataset_linking_file_reference**](bia_integrator_api/docs/PublicApi.md#get_dataset_linking_file_reference) | **GET** /v2/dataset/{uuid}/file_reference | Get Dataset Linking FileReference
-*PublicApi* | [**get_dataset_linking_image**](bia_integrator_api/docs/PublicApi.md#get_dataset_linking_image) | **GET** /v2/dataset/{uuid}/image | Get Dataset Linking Image
+*PublicApi* | [**get_dataset_linking_study**](bia_integrator_api/docs/PublicApi.md#get_dataset_linking_study) | **GET** /v2/study/{uuid}/dataset | Get Dataset Linking Study
 *PublicApi* | [**get_file_reference**](bia_integrator_api/docs/PublicApi.md#get_file_reference) | **GET** /v2/file_reference/{uuid} | Get FileReference
-*PublicApi* | [**get_file_reference_linking_annotation_data**](bia_integrator_api/docs/PublicApi.md#get_file_reference_linking_annotation_data) | **GET** /v2/file_reference/{uuid}/annotation_data | Get FileReference Linking AnnotationData
-*PublicApi* | [**get_file_reference_linking_image**](bia_integrator_api/docs/PublicApi.md#get_file_reference_linking_image) | **GET** /v2/file_reference/{uuid}/image | Get FileReference Linking Image
+*PublicApi* | [**get_file_reference_linking_dataset**](bia_integrator_api/docs/PublicApi.md#get_file_reference_linking_dataset) | **GET** /v2/dataset/{uuid}/file_reference | Get FileReference Linking Dataset
 *PublicApi* | [**get_image**](bia_integrator_api/docs/PublicApi.md#get_image) | **GET** /v2/image/{uuid} | Get Image
 *PublicApi* | [**get_image_acquisition_protocol**](bia_integrator_api/docs/PublicApi.md#get_image_acquisition_protocol) | **GET** /v2/image_acquisition_protocol/{uuid} | Get ImageAcquisitionProtocol
-*PublicApi* | [**get_image_acquisition_protocol_linking_creation_process**](bia_integrator_api/docs/PublicApi.md#get_image_acquisition_protocol_linking_creation_process) | **GET** /v2/image_acquisition_protocol/{uuid}/creation_process | Get ImageAcquisitionProtocol Linking CreationProcess
-*PublicApi* | [**get_image_linking_creation_process**](bia_integrator_api/docs/PublicApi.md#get_image_linking_creation_process) | **GET** /v2/image/{uuid}/creation_process | Get Image Linking CreationProcess
-*PublicApi* | [**get_image_linking_image_representation**](bia_integrator_api/docs/PublicApi.md#get_image_linking_image_representation) | **GET** /v2/image/{uuid}/image_representation | Get Image Linking ImageRepresentation
+*PublicApi* | [**get_image_linking_creation_process**](bia_integrator_api/docs/PublicApi.md#get_image_linking_creation_process) | **GET** /v2/creation_process/{uuid}/image | Get Image Linking CreationProcess
+*PublicApi* | [**get_image_linking_dataset**](bia_integrator_api/docs/PublicApi.md#get_image_linking_dataset) | **GET** /v2/dataset/{uuid}/image | Get Image Linking Dataset
+*PublicApi* | [**get_image_linking_file_reference**](bia_integrator_api/docs/PublicApi.md#get_image_linking_file_reference) | **GET** /v2/file_reference/{uuid}/image | Get Image Linking FileReference
 *PublicApi* | [**get_image_representation**](bia_integrator_api/docs/PublicApi.md#get_image_representation) | **GET** /v2/image_representation/{uuid} | Get ImageRepresentation
+*PublicApi* | [**get_image_representation_linking_image**](bia_integrator_api/docs/PublicApi.md#get_image_representation_linking_image) | **GET** /v2/image/{uuid}/image_representation | Get ImageRepresentation Linking Image
 *PublicApi* | [**get_protocol**](bia_integrator_api/docs/PublicApi.md#get_protocol) | **GET** /v2/protocol/{uuid} | Get Protocol
-*PublicApi* | [**get_protocol_linking_bio_sample**](bia_integrator_api/docs/PublicApi.md#get_protocol_linking_bio_sample) | **GET** /v2/protocol/{uuid}/bio_sample | Get Protocol Linking BioSample
-*PublicApi* | [**get_protocol_linking_creation_process**](bia_integrator_api/docs/PublicApi.md#get_protocol_linking_creation_process) | **GET** /v2/protocol/{uuid}/creation_process | Get Protocol Linking CreationProcess
 *PublicApi* | [**get_specimen**](bia_integrator_api/docs/PublicApi.md#get_specimen) | **GET** /v2/specimen/{uuid} | Get Specimen
 *PublicApi* | [**get_specimen_imaging_preparation_protocol**](bia_integrator_api/docs/PublicApi.md#get_specimen_imaging_preparation_protocol) | **GET** /v2/specimen_imaging_preparation_protocol/{uuid} | Get SpecimenImagingPreparationProtocol
-*PublicApi* | [**get_specimen_imaging_preparation_protocol_linking_specimen**](bia_integrator_api/docs/PublicApi.md#get_specimen_imaging_preparation_protocol_linking_specimen) | **GET** /v2/specimen_imaging_preparation_protocol/{uuid}/specimen | Get SpecimenImagingPreparationProtocol Linking Specimen
-*PublicApi* | [**get_specimen_linking_creation_process**](bia_integrator_api/docs/PublicApi.md#get_specimen_linking_creation_process) | **GET** /v2/specimen/{uuid}/creation_process | Get Specimen Linking CreationProcess
+*PublicApi* | [**get_specimen_linking_bio_sample**](bia_integrator_api/docs/PublicApi.md#get_specimen_linking_bio_sample) | **GET** /v2/bio_sample/{uuid}/specimen | Get Specimen Linking BioSample
+*PublicApi* | [**get_specimen_linking_specimen_imaging_preparation_protocol**](bia_integrator_api/docs/PublicApi.md#get_specimen_linking_specimen_imaging_preparation_protocol) | **GET** /v2/specimen_imaging_preparation_protocol/{uuid}/specimen | Get Specimen Linking SpecimenImagingPreparationProtocol
 *PublicApi* | [**get_studies**](bia_integrator_api/docs/PublicApi.md#get_studies) | **GET** /v2/study | Getstudies
 *PublicApi* | [**get_study**](bia_integrator_api/docs/PublicApi.md#get_study) | **GET** /v2/study/{uuid} | Get Study
-*PublicApi* | [**get_study_linking_dataset**](bia_integrator_api/docs/PublicApi.md#get_study_linking_dataset) | **GET** /v2/study/{uuid}/dataset | Get Study Linking Dataset
 *PublicApi* | [**search_image_representation_by_file_uri**](bia_integrator_api/docs/PublicApi.md#search_image_representation_by_file_uri) | **GET** /v2/search/image_representation/file_uri_fragment | Searchimagerepresentationbyfileuri
 *PublicApi* | [**search_study_by_accession**](bia_integrator_api/docs/PublicApi.md#search_study_by_accession) | **GET** /v2/search/study/accession | Searchstudybyaccession
 

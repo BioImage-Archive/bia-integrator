@@ -663,9 +663,9 @@
           "public",
           "private"
         ],
-        "summary": "Get Dataset Linking FileReference",
-        "description": "Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram",
-        "operationId": "getDatasetLinkingFileReference",
+        "summary": "Get FileReference Linking Dataset",
+        "description": "Naming convention is getSourceLinkingTarget, where source/target refer to the start/end of the linking arrow in the model diagram",
+        "operationId": "getFileReferenceLinkingDataset",
         "parameters": [
           {
             "name": "uuid",
@@ -714,7 +714,7 @@
                   "items": {
                     "$ref": "#/components/schemas/FileReference"
                   },
-                  "title": "Response Getdatasetlinkingfilereference"
+                  "title": "Response Getfilereferencelinkingdataset"
                 }
               }
             }
@@ -738,9 +738,9 @@
           "public",
           "private"
         ],
-        "summary": "Get Image Linking ImageRepresentation",
-        "description": "Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram",
-        "operationId": "getImageLinkingImageRepresentation",
+        "summary": "Get ImageRepresentation Linking Image",
+        "description": "Naming convention is getSourceLinkingTarget, where source/target refer to the start/end of the linking arrow in the model diagram",
+        "operationId": "getImageRepresentationLinkingImage",
         "parameters": [
           {
             "name": "uuid",
@@ -789,7 +789,7 @@
                   "items": {
                     "$ref": "#/components/schemas/ImageRepresentation"
                   },
-                  "title": "Response Getimagelinkingimagerepresentation"
+                  "title": "Response Getimagerepresentationlinkingimage"
                 }
               }
             }
@@ -813,9 +813,9 @@
           "public",
           "private"
         ],
-        "summary": "Get Study Linking Dataset",
-        "description": "Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram",
-        "operationId": "getStudyLinkingDataset",
+        "summary": "Get Dataset Linking Study",
+        "description": "Naming convention is getSourceLinkingTarget, where source/target refer to the start/end of the linking arrow in the model diagram",
+        "operationId": "getDatasetLinkingStudy",
         "parameters": [
           {
             "name": "uuid",
@@ -864,7 +864,7 @@
                   "items": {
                     "$ref": "#/components/schemas/Dataset"
                   },
-                  "title": "Response Getstudylinkingdataset"
+                  "title": "Response Getdatasetlinkingstudy"
                 }
               }
             }
@@ -888,9 +888,9 @@
           "public",
           "private"
         ],
-        "summary": "Get SpecimenImagingPreparationProtocol Linking Specimen",
-        "description": "Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram",
-        "operationId": "getSpecimenImagingPreparationProtocolLinkingSpecimen",
+        "summary": "Get Specimen Linking SpecimenImagingPreparationProtocol",
+        "description": "Naming convention is getSourceLinkingTarget, where source/target refer to the start/end of the linking arrow in the model diagram",
+        "operationId": "getSpecimenLinkingSpecimenImagingPreparationProtocol",
         "parameters": [
           {
             "name": "uuid",
@@ -939,7 +939,7 @@
                   "items": {
                     "$ref": "#/components/schemas/Specimen"
                   },
-                  "title": "Response Getspecimenimagingpreparationprotocollinkingspecimen"
+                  "title": "Response Getspecimenlinkingspecimenimagingpreparationprotocol"
                 }
               }
             }
@@ -963,9 +963,9 @@
           "public",
           "private"
         ],
-        "summary": "Get BioSample Linking Specimen",
-        "description": "Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram",
-        "operationId": "getBioSampleLinkingSpecimen",
+        "summary": "Get Specimen Linking BioSample",
+        "description": "Naming convention is getSourceLinkingTarget, where source/target refer to the start/end of the linking arrow in the model diagram",
+        "operationId": "getSpecimenLinkingBioSample",
         "parameters": [
           {
             "name": "uuid",
@@ -1014,7 +1014,7 @@
                   "items": {
                     "$ref": "#/components/schemas/Specimen"
                   },
-                  "title": "Response Getbiosamplelinkingspecimen"
+                  "title": "Response Getspecimenlinkingbiosample"
                 }
               }
             }
@@ -1038,9 +1038,9 @@
           "public",
           "private"
         ],
-        "summary": "Get Dataset Linking Image",
-        "description": "Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram",
-        "operationId": "getDatasetLinkingImage",
+        "summary": "Get Image Linking Dataset",
+        "description": "Naming convention is getSourceLinkingTarget, where source/target refer to the start/end of the linking arrow in the model diagram",
+        "operationId": "getImageLinkingDataset",
         "parameters": [
           {
             "name": "uuid",
@@ -1089,7 +1089,7 @@
                   "items": {
                     "$ref": "#/components/schemas/Image"
                   },
-                  "title": "Response Getdatasetlinkingimage"
+                  "title": "Response Getimagelinkingdataset"
                 }
               }
             }
@@ -1113,9 +1113,9 @@
           "public",
           "private"
         ],
-        "summary": "Get CreationProcess Linking Image",
-        "description": "Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram",
-        "operationId": "getCreationProcessLinkingImage",
+        "summary": "Get Image Linking CreationProcess",
+        "description": "Naming convention is getSourceLinkingTarget, where source/target refer to the start/end of the linking arrow in the model diagram",
+        "operationId": "getImageLinkingCreationProcess",
         "parameters": [
           {
             "name": "uuid",
@@ -1164,7 +1164,7 @@
                   "items": {
                     "$ref": "#/components/schemas/Image"
                   },
-                  "title": "Response Getcreationprocesslinkingimage"
+                  "title": "Response Getimagelinkingcreationprocess"
                 }
               }
             }
@@ -1188,9 +1188,9 @@
           "public",
           "private"
         ],
-        "summary": "Get FileReference Linking Image",
-        "description": "Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram",
-        "operationId": "getFileReferenceLinkingImage",
+        "summary": "Get Image Linking FileReference",
+        "description": "Naming convention is getSourceLinkingTarget, where source/target refer to the start/end of the linking arrow in the model diagram",
+        "operationId": "getImageLinkingFileReference",
         "parameters": [
           {
             "name": "uuid",
@@ -1239,7 +1239,7 @@
                   "items": {
                     "$ref": "#/components/schemas/Image"
                   },
-                  "title": "Response Getfilereferencelinkingimage"
+                  "title": "Response Getimagelinkingfilereference"
                 }
               }
             }
@@ -1263,9 +1263,9 @@
           "public",
           "private"
         ],
-        "summary": "Get Protocol Linking BioSample",
-        "description": "Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram",
-        "operationId": "getProtocolLinkingBioSample",
+        "summary": "Get BioSample Linking Protocol",
+        "description": "Naming convention is getSourceLinkingTarget, where source/target refer to the start/end of the linking arrow in the model diagram",
+        "operationId": "getBioSampleLinkingProtocol",
         "parameters": [
           {
             "name": "uuid",
@@ -1314,7 +1314,7 @@
                   "items": {
                     "$ref": "#/components/schemas/BioSample"
                   },
-                  "title": "Response Getprotocollinkingbiosample"
+                  "title": "Response Getbiosamplelinkingprotocol"
                 }
               }
             }
@@ -1338,9 +1338,9 @@
           "public",
           "private"
         ],
-        "summary": "Get Specimen Linking CreationProcess",
-        "description": "Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram",
-        "operationId": "getSpecimenLinkingCreationProcess",
+        "summary": "Get CreationProcess Linking Specimen",
+        "description": "Naming convention is getSourceLinkingTarget, where source/target refer to the start/end of the linking arrow in the model diagram",
+        "operationId": "getCreationProcessLinkingSpecimen",
         "parameters": [
           {
             "name": "uuid",
@@ -1389,7 +1389,7 @@
                   "items": {
                     "$ref": "#/components/schemas/CreationProcess"
                   },
-                  "title": "Response Getspecimenlinkingcreationprocess"
+                  "title": "Response Getcreationprocesslinkingspecimen"
                 }
               }
             }
@@ -1413,9 +1413,9 @@
           "public",
           "private"
         ],
-        "summary": "Get ImageAcquisitionProtocol Linking CreationProcess",
-        "description": "Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram",
-        "operationId": "getImageAcquisitionProtocolLinkingCreationProcess",
+        "summary": "Get CreationProcess Linking ImageAcquisitionProtocol",
+        "description": "Naming convention is getSourceLinkingTarget, where source/target refer to the start/end of the linking arrow in the model diagram",
+        "operationId": "getCreationProcessLinkingImageAcquisitionProtocol",
         "parameters": [
           {
             "name": "uuid",
@@ -1464,7 +1464,7 @@
                   "items": {
                     "$ref": "#/components/schemas/CreationProcess"
                   },
-                  "title": "Response Getimageacquisitionprotocollinkingcreationprocess"
+                  "title": "Response Getcreationprocesslinkingimageacquisitionprotocol"
                 }
               }
             }
@@ -1488,9 +1488,9 @@
           "public",
           "private"
         ],
-        "summary": "Get Image Linking CreationProcess",
-        "description": "Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram",
-        "operationId": "getImageLinkingCreationProcess",
+        "summary": "Get CreationProcess Linking Image",
+        "description": "Naming convention is getSourceLinkingTarget, where source/target refer to the start/end of the linking arrow in the model diagram",
+        "operationId": "getCreationProcessLinkingImage",
         "parameters": [
           {
             "name": "uuid",
@@ -1539,7 +1539,7 @@
                   "items": {
                     "$ref": "#/components/schemas/CreationProcess"
                   },
-                  "title": "Response Getimagelinkingcreationprocess"
+                  "title": "Response Getcreationprocesslinkingimage"
                 }
               }
             }
@@ -1563,9 +1563,9 @@
           "public",
           "private"
         ],
-        "summary": "Get Protocol Linking CreationProcess",
-        "description": "Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram",
-        "operationId": "getProtocolLinkingCreationProcess",
+        "summary": "Get CreationProcess Linking Protocol",
+        "description": "Naming convention is getSourceLinkingTarget, where source/target refer to the start/end of the linking arrow in the model diagram",
+        "operationId": "getCreationProcessLinkingProtocol",
         "parameters": [
           {
             "name": "uuid",
@@ -1614,7 +1614,7 @@
                   "items": {
                     "$ref": "#/components/schemas/CreationProcess"
                   },
-                  "title": "Response Getprotocollinkingcreationprocess"
+                  "title": "Response Getcreationprocesslinkingprotocol"
                 }
               }
             }
@@ -1638,9 +1638,9 @@
           "public",
           "private"
         ],
-        "summary": "Get AnnotationMethod Linking CreationProcess",
-        "description": "Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram",
-        "operationId": "getAnnotationMethodLinkingCreationProcess",
+        "summary": "Get CreationProcess Linking AnnotationMethod",
+        "description": "Naming convention is getSourceLinkingTarget, where source/target refer to the start/end of the linking arrow in the model diagram",
+        "operationId": "getCreationProcessLinkingAnnotationMethod",
         "parameters": [
           {
             "name": "uuid",
@@ -1689,7 +1689,7 @@
                   "items": {
                     "$ref": "#/components/schemas/CreationProcess"
                   },
-                  "title": "Response Getannotationmethodlinkingcreationprocess"
+                  "title": "Response Getcreationprocesslinkingannotationmethod"
                 }
               }
             }
@@ -1713,9 +1713,9 @@
           "public",
           "private"
         ],
-        "summary": "Get Dataset Linking AnnotationData",
-        "description": "Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram",
-        "operationId": "getDatasetLinkingAnnotationData",
+        "summary": "Get AnnotationData Linking Dataset",
+        "description": "Naming convention is getSourceLinkingTarget, where source/target refer to the start/end of the linking arrow in the model diagram",
+        "operationId": "getAnnotationDataLinkingDataset",
         "parameters": [
           {
             "name": "uuid",
@@ -1764,7 +1764,7 @@
                   "items": {
                     "$ref": "#/components/schemas/AnnotationData"
                   },
-                  "title": "Response Getdatasetlinkingannotationdata"
+                  "title": "Response Getannotationdatalinkingdataset"
                 }
               }
             }
@@ -1788,9 +1788,9 @@
           "public",
           "private"
         ],
-        "summary": "Get CreationProcess Linking AnnotationData",
-        "description": "Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram",
-        "operationId": "getCreationProcessLinkingAnnotationData",
+        "summary": "Get AnnotationData Linking CreationProcess",
+        "description": "Naming convention is getSourceLinkingTarget, where source/target refer to the start/end of the linking arrow in the model diagram",
+        "operationId": "getAnnotationDataLinkingCreationProcess",
         "parameters": [
           {
             "name": "uuid",
@@ -1839,7 +1839,7 @@
                   "items": {
                     "$ref": "#/components/schemas/AnnotationData"
                   },
-                  "title": "Response Getcreationprocesslinkingannotationdata"
+                  "title": "Response Getannotationdatalinkingcreationprocess"
                 }
               }
             }
@@ -1863,9 +1863,9 @@
           "public",
           "private"
         ],
-        "summary": "Get FileReference Linking AnnotationData",
-        "description": "Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram",
-        "operationId": "getFileReferenceLinkingAnnotationData",
+        "summary": "Get AnnotationData Linking FileReference",
+        "description": "Naming convention is getSourceLinkingTarget, where source/target refer to the start/end of the linking arrow in the model diagram",
+        "operationId": "getAnnotationDataLinkingFileReference",
         "parameters": [
           {
             "name": "uuid",
@@ -1914,7 +1914,7 @@
                   "items": {
                     "$ref": "#/components/schemas/AnnotationData"
                   },
-                  "title": "Response Getfilereferencelinkingannotationdata"
+                  "title": "Response Getannotationdatalinkingfilereference"
                 }
               }
             }
