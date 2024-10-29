@@ -73,13 +73,13 @@ def router_add_reverse_link(
     router.add_api_route(
         f"/{to_snake(link_target_type.__name__)}/{{uuid}}/{to_snake(link_source_type.__name__)}",
         response_model=List[link_source_type],
-        operation_id=f"get{link_target_type.__name__}Linking{link_source_type.__name__}",
-        summary=f"Get {link_target_type.__name__} Linking {link_source_type.__name__}",
+        operation_id=f"get{link_source_type.__name__}Linking{link_target_type.__name__}",
+        summary=f"Get {link_source_type.__name__} Linking {link_target_type.__name__}",
         methods=["GET"],
         endpoint=make_reverse_link_handler(
             link_attribute_name, link_source_type, link_target_type
         ),
-        description="Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram",
+        description="Naming convention is getSourceLinkingTarget, where source/target refer to the start/end of the linking arrow in the model diagram",
     )
 
 
