@@ -568,7 +568,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_annotation_method_in_creation_process(
+    def get_annotation_method_linking_creation_process(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -586,9 +586,9 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> List[CreationProcess]:
-        """Get AnnotationMethod In CreationProcess
+        """Get AnnotationMethod Linking CreationProcess
 
-        In here means that the UUID of the object on the left is set as an attribute of the object on the right
+        Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram
 
         :param uuid: (required)
         :type uuid: str
@@ -618,7 +618,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_annotation_method_in_creation_process_serialize(
+        _param = self._get_annotation_method_linking_creation_process_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -644,7 +644,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_annotation_method_in_creation_process_with_http_info(
+    def get_annotation_method_linking_creation_process_with_http_info(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -662,9 +662,9 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[List[CreationProcess]]:
-        """Get AnnotationMethod In CreationProcess
+        """Get AnnotationMethod Linking CreationProcess
 
-        In here means that the UUID of the object on the left is set as an attribute of the object on the right
+        Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram
 
         :param uuid: (required)
         :type uuid: str
@@ -694,7 +694,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_annotation_method_in_creation_process_serialize(
+        _param = self._get_annotation_method_linking_creation_process_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -720,7 +720,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_annotation_method_in_creation_process_without_preload_content(
+    def get_annotation_method_linking_creation_process_without_preload_content(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -738,9 +738,9 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Get AnnotationMethod In CreationProcess
+        """Get AnnotationMethod Linking CreationProcess
 
-        In here means that the UUID of the object on the left is set as an attribute of the object on the right
+        Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram
 
         :param uuid: (required)
         :type uuid: str
@@ -770,7 +770,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_annotation_method_in_creation_process_serialize(
+        _param = self._get_annotation_method_linking_creation_process_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -791,7 +791,7 @@ class PublicApi:
         return response_data.response
 
 
-    def _get_annotation_method_in_creation_process_serialize(
+    def _get_annotation_method_linking_creation_process_serialize(
         self,
         uuid,
         page_size,
@@ -1121,7 +1121,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_bio_sample_in_specimen(
+    def get_bio_sample_linking_specimen(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -1139,9 +1139,9 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> List[Specimen]:
-        """Get BioSample In Specimen
+        """Get BioSample Linking Specimen
 
-        In here means that the UUID of the object on the left is set as an attribute of the object on the right
+        Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram
 
         :param uuid: (required)
         :type uuid: str
@@ -1171,7 +1171,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_bio_sample_in_specimen_serialize(
+        _param = self._get_bio_sample_linking_specimen_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -1197,7 +1197,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_bio_sample_in_specimen_with_http_info(
+    def get_bio_sample_linking_specimen_with_http_info(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -1215,9 +1215,9 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[List[Specimen]]:
-        """Get BioSample In Specimen
+        """Get BioSample Linking Specimen
 
-        In here means that the UUID of the object on the left is set as an attribute of the object on the right
+        Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram
 
         :param uuid: (required)
         :type uuid: str
@@ -1247,7 +1247,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_bio_sample_in_specimen_serialize(
+        _param = self._get_bio_sample_linking_specimen_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -1273,7 +1273,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_bio_sample_in_specimen_without_preload_content(
+    def get_bio_sample_linking_specimen_without_preload_content(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -1291,9 +1291,9 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Get BioSample In Specimen
+        """Get BioSample Linking Specimen
 
-        In here means that the UUID of the object on the left is set as an attribute of the object on the right
+        Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram
 
         :param uuid: (required)
         :type uuid: str
@@ -1323,7 +1323,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_bio_sample_in_specimen_serialize(
+        _param = self._get_bio_sample_linking_specimen_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -1344,7 +1344,7 @@ class PublicApi:
         return response_data.response
 
 
-    def _get_bio_sample_in_specimen_serialize(
+    def _get_bio_sample_linking_specimen_serialize(
         self,
         uuid,
         page_size,
@@ -1674,7 +1674,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_creation_process_in_annotation_data(
+    def get_creation_process_linking_annotation_data(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -1692,9 +1692,9 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> List[AnnotationData]:
-        """Get CreationProcess In AnnotationData
+        """Get CreationProcess Linking AnnotationData
 
-        In here means that the UUID of the object on the left is set as an attribute of the object on the right
+        Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram
 
         :param uuid: (required)
         :type uuid: str
@@ -1724,7 +1724,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_creation_process_in_annotation_data_serialize(
+        _param = self._get_creation_process_linking_annotation_data_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -1750,7 +1750,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_creation_process_in_annotation_data_with_http_info(
+    def get_creation_process_linking_annotation_data_with_http_info(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -1768,9 +1768,9 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[List[AnnotationData]]:
-        """Get CreationProcess In AnnotationData
+        """Get CreationProcess Linking AnnotationData
 
-        In here means that the UUID of the object on the left is set as an attribute of the object on the right
+        Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram
 
         :param uuid: (required)
         :type uuid: str
@@ -1800,7 +1800,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_creation_process_in_annotation_data_serialize(
+        _param = self._get_creation_process_linking_annotation_data_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -1826,7 +1826,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_creation_process_in_annotation_data_without_preload_content(
+    def get_creation_process_linking_annotation_data_without_preload_content(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -1844,9 +1844,9 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Get CreationProcess In AnnotationData
+        """Get CreationProcess Linking AnnotationData
 
-        In here means that the UUID of the object on the left is set as an attribute of the object on the right
+        Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram
 
         :param uuid: (required)
         :type uuid: str
@@ -1876,7 +1876,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_creation_process_in_annotation_data_serialize(
+        _param = self._get_creation_process_linking_annotation_data_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -1897,7 +1897,7 @@ class PublicApi:
         return response_data.response
 
 
-    def _get_creation_process_in_annotation_data_serialize(
+    def _get_creation_process_linking_annotation_data_serialize(
         self,
         uuid,
         page_size,
@@ -1969,7 +1969,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_creation_process_in_image(
+    def get_creation_process_linking_image(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -1987,9 +1987,9 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> List[Image]:
-        """Get CreationProcess In Image
+        """Get CreationProcess Linking Image
 
-        In here means that the UUID of the object on the left is set as an attribute of the object on the right
+        Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram
 
         :param uuid: (required)
         :type uuid: str
@@ -2019,7 +2019,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_creation_process_in_image_serialize(
+        _param = self._get_creation_process_linking_image_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -2045,7 +2045,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_creation_process_in_image_with_http_info(
+    def get_creation_process_linking_image_with_http_info(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -2063,9 +2063,9 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[List[Image]]:
-        """Get CreationProcess In Image
+        """Get CreationProcess Linking Image
 
-        In here means that the UUID of the object on the left is set as an attribute of the object on the right
+        Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram
 
         :param uuid: (required)
         :type uuid: str
@@ -2095,7 +2095,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_creation_process_in_image_serialize(
+        _param = self._get_creation_process_linking_image_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -2121,7 +2121,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_creation_process_in_image_without_preload_content(
+    def get_creation_process_linking_image_without_preload_content(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -2139,9 +2139,9 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Get CreationProcess In Image
+        """Get CreationProcess Linking Image
 
-        In here means that the UUID of the object on the left is set as an attribute of the object on the right
+        Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram
 
         :param uuid: (required)
         :type uuid: str
@@ -2171,7 +2171,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_creation_process_in_image_serialize(
+        _param = self._get_creation_process_linking_image_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -2192,7 +2192,7 @@ class PublicApi:
         return response_data.response
 
 
-    def _get_creation_process_in_image_serialize(
+    def _get_creation_process_linking_image_serialize(
         self,
         uuid,
         page_size,
@@ -2522,7 +2522,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_dataset_in_annotation_data(
+    def get_dataset_linking_annotation_data(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -2540,9 +2540,9 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> List[AnnotationData]:
-        """Get Dataset In AnnotationData
+        """Get Dataset Linking AnnotationData
 
-        In here means that the UUID of the object on the left is set as an attribute of the object on the right
+        Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram
 
         :param uuid: (required)
         :type uuid: str
@@ -2572,7 +2572,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_dataset_in_annotation_data_serialize(
+        _param = self._get_dataset_linking_annotation_data_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -2598,7 +2598,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_dataset_in_annotation_data_with_http_info(
+    def get_dataset_linking_annotation_data_with_http_info(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -2616,9 +2616,9 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[List[AnnotationData]]:
-        """Get Dataset In AnnotationData
+        """Get Dataset Linking AnnotationData
 
-        In here means that the UUID of the object on the left is set as an attribute of the object on the right
+        Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram
 
         :param uuid: (required)
         :type uuid: str
@@ -2648,7 +2648,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_dataset_in_annotation_data_serialize(
+        _param = self._get_dataset_linking_annotation_data_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -2674,7 +2674,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_dataset_in_annotation_data_without_preload_content(
+    def get_dataset_linking_annotation_data_without_preload_content(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -2692,9 +2692,9 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Get Dataset In AnnotationData
+        """Get Dataset Linking AnnotationData
 
-        In here means that the UUID of the object on the left is set as an attribute of the object on the right
+        Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram
 
         :param uuid: (required)
         :type uuid: str
@@ -2724,7 +2724,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_dataset_in_annotation_data_serialize(
+        _param = self._get_dataset_linking_annotation_data_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -2745,7 +2745,7 @@ class PublicApi:
         return response_data.response
 
 
-    def _get_dataset_in_annotation_data_serialize(
+    def _get_dataset_linking_annotation_data_serialize(
         self,
         uuid,
         page_size,
@@ -2817,7 +2817,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_dataset_in_file_reference(
+    def get_dataset_linking_file_reference(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -2835,9 +2835,9 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> List[FileReference]:
-        """Get Dataset In FileReference
+        """Get Dataset Linking FileReference
 
-        In here means that the UUID of the object on the left is set as an attribute of the object on the right
+        Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram
 
         :param uuid: (required)
         :type uuid: str
@@ -2867,7 +2867,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_dataset_in_file_reference_serialize(
+        _param = self._get_dataset_linking_file_reference_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -2893,7 +2893,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_dataset_in_file_reference_with_http_info(
+    def get_dataset_linking_file_reference_with_http_info(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -2911,9 +2911,9 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[List[FileReference]]:
-        """Get Dataset In FileReference
+        """Get Dataset Linking FileReference
 
-        In here means that the UUID of the object on the left is set as an attribute of the object on the right
+        Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram
 
         :param uuid: (required)
         :type uuid: str
@@ -2943,7 +2943,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_dataset_in_file_reference_serialize(
+        _param = self._get_dataset_linking_file_reference_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -2969,7 +2969,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_dataset_in_file_reference_without_preload_content(
+    def get_dataset_linking_file_reference_without_preload_content(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -2987,9 +2987,9 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Get Dataset In FileReference
+        """Get Dataset Linking FileReference
 
-        In here means that the UUID of the object on the left is set as an attribute of the object on the right
+        Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram
 
         :param uuid: (required)
         :type uuid: str
@@ -3019,7 +3019,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_dataset_in_file_reference_serialize(
+        _param = self._get_dataset_linking_file_reference_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -3040,7 +3040,7 @@ class PublicApi:
         return response_data.response
 
 
-    def _get_dataset_in_file_reference_serialize(
+    def _get_dataset_linking_file_reference_serialize(
         self,
         uuid,
         page_size,
@@ -3112,7 +3112,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_dataset_in_image(
+    def get_dataset_linking_image(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -3130,9 +3130,9 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> List[Image]:
-        """Get Dataset In Image
+        """Get Dataset Linking Image
 
-        In here means that the UUID of the object on the left is set as an attribute of the object on the right
+        Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram
 
         :param uuid: (required)
         :type uuid: str
@@ -3162,7 +3162,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_dataset_in_image_serialize(
+        _param = self._get_dataset_linking_image_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -3188,7 +3188,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_dataset_in_image_with_http_info(
+    def get_dataset_linking_image_with_http_info(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -3206,9 +3206,9 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[List[Image]]:
-        """Get Dataset In Image
+        """Get Dataset Linking Image
 
-        In here means that the UUID of the object on the left is set as an attribute of the object on the right
+        Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram
 
         :param uuid: (required)
         :type uuid: str
@@ -3238,7 +3238,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_dataset_in_image_serialize(
+        _param = self._get_dataset_linking_image_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -3264,7 +3264,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_dataset_in_image_without_preload_content(
+    def get_dataset_linking_image_without_preload_content(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -3282,9 +3282,9 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Get Dataset In Image
+        """Get Dataset Linking Image
 
-        In here means that the UUID of the object on the left is set as an attribute of the object on the right
+        Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram
 
         :param uuid: (required)
         :type uuid: str
@@ -3314,7 +3314,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_dataset_in_image_serialize(
+        _param = self._get_dataset_linking_image_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -3335,7 +3335,7 @@ class PublicApi:
         return response_data.response
 
 
-    def _get_dataset_in_image_serialize(
+    def _get_dataset_linking_image_serialize(
         self,
         uuid,
         page_size,
@@ -3665,7 +3665,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_file_reference_in_annotation_data(
+    def get_file_reference_linking_annotation_data(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -3683,9 +3683,9 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> List[AnnotationData]:
-        """Get FileReference In AnnotationData
+        """Get FileReference Linking AnnotationData
 
-        In here means that the UUID of the object on the left is set as an attribute of the object on the right
+        Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram
 
         :param uuid: (required)
         :type uuid: str
@@ -3715,7 +3715,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_file_reference_in_annotation_data_serialize(
+        _param = self._get_file_reference_linking_annotation_data_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -3741,7 +3741,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_file_reference_in_annotation_data_with_http_info(
+    def get_file_reference_linking_annotation_data_with_http_info(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -3759,9 +3759,9 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[List[AnnotationData]]:
-        """Get FileReference In AnnotationData
+        """Get FileReference Linking AnnotationData
 
-        In here means that the UUID of the object on the left is set as an attribute of the object on the right
+        Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram
 
         :param uuid: (required)
         :type uuid: str
@@ -3791,7 +3791,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_file_reference_in_annotation_data_serialize(
+        _param = self._get_file_reference_linking_annotation_data_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -3817,7 +3817,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_file_reference_in_annotation_data_without_preload_content(
+    def get_file_reference_linking_annotation_data_without_preload_content(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -3835,9 +3835,9 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Get FileReference In AnnotationData
+        """Get FileReference Linking AnnotationData
 
-        In here means that the UUID of the object on the left is set as an attribute of the object on the right
+        Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram
 
         :param uuid: (required)
         :type uuid: str
@@ -3867,7 +3867,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_file_reference_in_annotation_data_serialize(
+        _param = self._get_file_reference_linking_annotation_data_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -3888,7 +3888,7 @@ class PublicApi:
         return response_data.response
 
 
-    def _get_file_reference_in_annotation_data_serialize(
+    def _get_file_reference_linking_annotation_data_serialize(
         self,
         uuid,
         page_size,
@@ -3960,7 +3960,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_file_reference_in_image(
+    def get_file_reference_linking_image(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -3978,9 +3978,9 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> List[Image]:
-        """Get FileReference In Image
+        """Get FileReference Linking Image
 
-        In here means that the UUID of the object on the left is set as an attribute of the object on the right
+        Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram
 
         :param uuid: (required)
         :type uuid: str
@@ -4010,7 +4010,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_file_reference_in_image_serialize(
+        _param = self._get_file_reference_linking_image_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -4036,7 +4036,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_file_reference_in_image_with_http_info(
+    def get_file_reference_linking_image_with_http_info(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -4054,9 +4054,9 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[List[Image]]:
-        """Get FileReference In Image
+        """Get FileReference Linking Image
 
-        In here means that the UUID of the object on the left is set as an attribute of the object on the right
+        Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram
 
         :param uuid: (required)
         :type uuid: str
@@ -4086,7 +4086,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_file_reference_in_image_serialize(
+        _param = self._get_file_reference_linking_image_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -4112,7 +4112,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_file_reference_in_image_without_preload_content(
+    def get_file_reference_linking_image_without_preload_content(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -4130,9 +4130,9 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Get FileReference In Image
+        """Get FileReference Linking Image
 
-        In here means that the UUID of the object on the left is set as an attribute of the object on the right
+        Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram
 
         :param uuid: (required)
         :type uuid: str
@@ -4162,7 +4162,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_file_reference_in_image_serialize(
+        _param = self._get_file_reference_linking_image_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -4183,7 +4183,7 @@ class PublicApi:
         return response_data.response
 
 
-    def _get_file_reference_in_image_serialize(
+    def _get_file_reference_linking_image_serialize(
         self,
         uuid,
         page_size,
@@ -4771,7 +4771,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_image_acquisition_protocol_in_creation_process(
+    def get_image_acquisition_protocol_linking_creation_process(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -4789,9 +4789,9 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> List[CreationProcess]:
-        """Get ImageAcquisitionProtocol In CreationProcess
+        """Get ImageAcquisitionProtocol Linking CreationProcess
 
-        In here means that the UUID of the object on the left is set as an attribute of the object on the right
+        Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram
 
         :param uuid: (required)
         :type uuid: str
@@ -4821,7 +4821,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_image_acquisition_protocol_in_creation_process_serialize(
+        _param = self._get_image_acquisition_protocol_linking_creation_process_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -4847,7 +4847,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_image_acquisition_protocol_in_creation_process_with_http_info(
+    def get_image_acquisition_protocol_linking_creation_process_with_http_info(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -4865,9 +4865,9 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[List[CreationProcess]]:
-        """Get ImageAcquisitionProtocol In CreationProcess
+        """Get ImageAcquisitionProtocol Linking CreationProcess
 
-        In here means that the UUID of the object on the left is set as an attribute of the object on the right
+        Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram
 
         :param uuid: (required)
         :type uuid: str
@@ -4897,7 +4897,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_image_acquisition_protocol_in_creation_process_serialize(
+        _param = self._get_image_acquisition_protocol_linking_creation_process_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -4923,7 +4923,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_image_acquisition_protocol_in_creation_process_without_preload_content(
+    def get_image_acquisition_protocol_linking_creation_process_without_preload_content(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -4941,9 +4941,9 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Get ImageAcquisitionProtocol In CreationProcess
+        """Get ImageAcquisitionProtocol Linking CreationProcess
 
-        In here means that the UUID of the object on the left is set as an attribute of the object on the right
+        Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram
 
         :param uuid: (required)
         :type uuid: str
@@ -4973,7 +4973,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_image_acquisition_protocol_in_creation_process_serialize(
+        _param = self._get_image_acquisition_protocol_linking_creation_process_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -4994,7 +4994,7 @@ class PublicApi:
         return response_data.response
 
 
-    def _get_image_acquisition_protocol_in_creation_process_serialize(
+    def _get_image_acquisition_protocol_linking_creation_process_serialize(
         self,
         uuid,
         page_size,
@@ -5066,7 +5066,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_image_in_creation_process(
+    def get_image_linking_creation_process(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -5084,9 +5084,9 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> List[CreationProcess]:
-        """Get Image In CreationProcess
+        """Get Image Linking CreationProcess
 
-        In here means that the UUID of the object on the left is set as an attribute of the object on the right
+        Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram
 
         :param uuid: (required)
         :type uuid: str
@@ -5116,7 +5116,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_image_in_creation_process_serialize(
+        _param = self._get_image_linking_creation_process_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -5142,7 +5142,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_image_in_creation_process_with_http_info(
+    def get_image_linking_creation_process_with_http_info(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -5160,9 +5160,9 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[List[CreationProcess]]:
-        """Get Image In CreationProcess
+        """Get Image Linking CreationProcess
 
-        In here means that the UUID of the object on the left is set as an attribute of the object on the right
+        Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram
 
         :param uuid: (required)
         :type uuid: str
@@ -5192,7 +5192,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_image_in_creation_process_serialize(
+        _param = self._get_image_linking_creation_process_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -5218,7 +5218,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_image_in_creation_process_without_preload_content(
+    def get_image_linking_creation_process_without_preload_content(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -5236,9 +5236,9 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Get Image In CreationProcess
+        """Get Image Linking CreationProcess
 
-        In here means that the UUID of the object on the left is set as an attribute of the object on the right
+        Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram
 
         :param uuid: (required)
         :type uuid: str
@@ -5268,7 +5268,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_image_in_creation_process_serialize(
+        _param = self._get_image_linking_creation_process_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -5289,7 +5289,7 @@ class PublicApi:
         return response_data.response
 
 
-    def _get_image_in_creation_process_serialize(
+    def _get_image_linking_creation_process_serialize(
         self,
         uuid,
         page_size,
@@ -5361,7 +5361,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_image_in_image_representation(
+    def get_image_linking_image_representation(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -5379,9 +5379,9 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> List[ImageRepresentation]:
-        """Get Image In ImageRepresentation
+        """Get Image Linking ImageRepresentation
 
-        In here means that the UUID of the object on the left is set as an attribute of the object on the right
+        Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram
 
         :param uuid: (required)
         :type uuid: str
@@ -5411,7 +5411,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_image_in_image_representation_serialize(
+        _param = self._get_image_linking_image_representation_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -5437,7 +5437,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_image_in_image_representation_with_http_info(
+    def get_image_linking_image_representation_with_http_info(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -5455,9 +5455,9 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[List[ImageRepresentation]]:
-        """Get Image In ImageRepresentation
+        """Get Image Linking ImageRepresentation
 
-        In here means that the UUID of the object on the left is set as an attribute of the object on the right
+        Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram
 
         :param uuid: (required)
         :type uuid: str
@@ -5487,7 +5487,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_image_in_image_representation_serialize(
+        _param = self._get_image_linking_image_representation_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -5513,7 +5513,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_image_in_image_representation_without_preload_content(
+    def get_image_linking_image_representation_without_preload_content(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -5531,9 +5531,9 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Get Image In ImageRepresentation
+        """Get Image Linking ImageRepresentation
 
-        In here means that the UUID of the object on the left is set as an attribute of the object on the right
+        Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram
 
         :param uuid: (required)
         :type uuid: str
@@ -5563,7 +5563,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_image_in_image_representation_serialize(
+        _param = self._get_image_linking_image_representation_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -5584,7 +5584,7 @@ class PublicApi:
         return response_data.response
 
 
-    def _get_image_in_image_representation_serialize(
+    def _get_image_linking_image_representation_serialize(
         self,
         uuid,
         page_size,
@@ -6172,7 +6172,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_protocol_in_bio_sample(
+    def get_protocol_linking_bio_sample(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -6190,9 +6190,9 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> List[BioSample]:
-        """Get Protocol In BioSample
+        """Get Protocol Linking BioSample
 
-        In here means that the UUID of the object on the left is set as an attribute of the object on the right
+        Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram
 
         :param uuid: (required)
         :type uuid: str
@@ -6222,7 +6222,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_protocol_in_bio_sample_serialize(
+        _param = self._get_protocol_linking_bio_sample_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -6248,7 +6248,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_protocol_in_bio_sample_with_http_info(
+    def get_protocol_linking_bio_sample_with_http_info(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -6266,9 +6266,9 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[List[BioSample]]:
-        """Get Protocol In BioSample
+        """Get Protocol Linking BioSample
 
-        In here means that the UUID of the object on the left is set as an attribute of the object on the right
+        Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram
 
         :param uuid: (required)
         :type uuid: str
@@ -6298,7 +6298,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_protocol_in_bio_sample_serialize(
+        _param = self._get_protocol_linking_bio_sample_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -6324,7 +6324,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_protocol_in_bio_sample_without_preload_content(
+    def get_protocol_linking_bio_sample_without_preload_content(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -6342,9 +6342,9 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Get Protocol In BioSample
+        """Get Protocol Linking BioSample
 
-        In here means that the UUID of the object on the left is set as an attribute of the object on the right
+        Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram
 
         :param uuid: (required)
         :type uuid: str
@@ -6374,7 +6374,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_protocol_in_bio_sample_serialize(
+        _param = self._get_protocol_linking_bio_sample_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -6395,7 +6395,7 @@ class PublicApi:
         return response_data.response
 
 
-    def _get_protocol_in_bio_sample_serialize(
+    def _get_protocol_linking_bio_sample_serialize(
         self,
         uuid,
         page_size,
@@ -6467,7 +6467,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_protocol_in_creation_process(
+    def get_protocol_linking_creation_process(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -6485,9 +6485,9 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> List[CreationProcess]:
-        """Get Protocol In CreationProcess
+        """Get Protocol Linking CreationProcess
 
-        In here means that the UUID of the object on the left is set as an attribute of the object on the right
+        Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram
 
         :param uuid: (required)
         :type uuid: str
@@ -6517,7 +6517,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_protocol_in_creation_process_serialize(
+        _param = self._get_protocol_linking_creation_process_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -6543,7 +6543,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_protocol_in_creation_process_with_http_info(
+    def get_protocol_linking_creation_process_with_http_info(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -6561,9 +6561,9 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[List[CreationProcess]]:
-        """Get Protocol In CreationProcess
+        """Get Protocol Linking CreationProcess
 
-        In here means that the UUID of the object on the left is set as an attribute of the object on the right
+        Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram
 
         :param uuid: (required)
         :type uuid: str
@@ -6593,7 +6593,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_protocol_in_creation_process_serialize(
+        _param = self._get_protocol_linking_creation_process_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -6619,7 +6619,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_protocol_in_creation_process_without_preload_content(
+    def get_protocol_linking_creation_process_without_preload_content(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -6637,9 +6637,9 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Get Protocol In CreationProcess
+        """Get Protocol Linking CreationProcess
 
-        In here means that the UUID of the object on the left is set as an attribute of the object on the right
+        Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram
 
         :param uuid: (required)
         :type uuid: str
@@ -6669,7 +6669,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_protocol_in_creation_process_serialize(
+        _param = self._get_protocol_linking_creation_process_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -6690,7 +6690,7 @@ class PublicApi:
         return response_data.response
 
 
-    def _get_protocol_in_creation_process_serialize(
+    def _get_protocol_linking_creation_process_serialize(
         self,
         uuid,
         page_size,
@@ -7278,7 +7278,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_specimen_imaging_preparation_protocol_in_specimen(
+    def get_specimen_imaging_preparation_protocol_linking_specimen(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -7296,9 +7296,9 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> List[Specimen]:
-        """Get SpecimenImagingPreparationProtocol In Specimen
+        """Get SpecimenImagingPreparationProtocol Linking Specimen
 
-        In here means that the UUID of the object on the left is set as an attribute of the object on the right
+        Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram
 
         :param uuid: (required)
         :type uuid: str
@@ -7328,7 +7328,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_specimen_imaging_preparation_protocol_in_specimen_serialize(
+        _param = self._get_specimen_imaging_preparation_protocol_linking_specimen_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -7354,7 +7354,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_specimen_imaging_preparation_protocol_in_specimen_with_http_info(
+    def get_specimen_imaging_preparation_protocol_linking_specimen_with_http_info(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -7372,9 +7372,9 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[List[Specimen]]:
-        """Get SpecimenImagingPreparationProtocol In Specimen
+        """Get SpecimenImagingPreparationProtocol Linking Specimen
 
-        In here means that the UUID of the object on the left is set as an attribute of the object on the right
+        Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram
 
         :param uuid: (required)
         :type uuid: str
@@ -7404,7 +7404,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_specimen_imaging_preparation_protocol_in_specimen_serialize(
+        _param = self._get_specimen_imaging_preparation_protocol_linking_specimen_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -7430,7 +7430,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_specimen_imaging_preparation_protocol_in_specimen_without_preload_content(
+    def get_specimen_imaging_preparation_protocol_linking_specimen_without_preload_content(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -7448,9 +7448,9 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Get SpecimenImagingPreparationProtocol In Specimen
+        """Get SpecimenImagingPreparationProtocol Linking Specimen
 
-        In here means that the UUID of the object on the left is set as an attribute of the object on the right
+        Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram
 
         :param uuid: (required)
         :type uuid: str
@@ -7480,7 +7480,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_specimen_imaging_preparation_protocol_in_specimen_serialize(
+        _param = self._get_specimen_imaging_preparation_protocol_linking_specimen_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -7501,7 +7501,7 @@ class PublicApi:
         return response_data.response
 
 
-    def _get_specimen_imaging_preparation_protocol_in_specimen_serialize(
+    def _get_specimen_imaging_preparation_protocol_linking_specimen_serialize(
         self,
         uuid,
         page_size,
@@ -7573,7 +7573,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_specimen_in_creation_process(
+    def get_specimen_linking_creation_process(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -7591,9 +7591,9 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> List[CreationProcess]:
-        """Get Specimen In CreationProcess
+        """Get Specimen Linking CreationProcess
 
-        In here means that the UUID of the object on the left is set as an attribute of the object on the right
+        Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram
 
         :param uuid: (required)
         :type uuid: str
@@ -7623,7 +7623,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_specimen_in_creation_process_serialize(
+        _param = self._get_specimen_linking_creation_process_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -7649,7 +7649,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_specimen_in_creation_process_with_http_info(
+    def get_specimen_linking_creation_process_with_http_info(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -7667,9 +7667,9 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[List[CreationProcess]]:
-        """Get Specimen In CreationProcess
+        """Get Specimen Linking CreationProcess
 
-        In here means that the UUID of the object on the left is set as an attribute of the object on the right
+        Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram
 
         :param uuid: (required)
         :type uuid: str
@@ -7699,7 +7699,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_specimen_in_creation_process_serialize(
+        _param = self._get_specimen_linking_creation_process_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -7725,7 +7725,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_specimen_in_creation_process_without_preload_content(
+    def get_specimen_linking_creation_process_without_preload_content(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -7743,9 +7743,9 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Get Specimen In CreationProcess
+        """Get Specimen Linking CreationProcess
 
-        In here means that the UUID of the object on the left is set as an attribute of the object on the right
+        Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram
 
         :param uuid: (required)
         :type uuid: str
@@ -7775,7 +7775,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_specimen_in_creation_process_serialize(
+        _param = self._get_specimen_linking_creation_process_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -7796,7 +7796,7 @@ class PublicApi:
         return response_data.response
 
 
-    def _get_specimen_in_creation_process_serialize(
+    def _get_specimen_linking_creation_process_serialize(
         self,
         uuid,
         page_size,
@@ -8406,7 +8406,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_study_in_dataset(
+    def get_study_linking_dataset(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -8424,9 +8424,9 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> List[Dataset]:
-        """Get Study In Dataset
+        """Get Study Linking Dataset
 
-        In here means that the UUID of the object on the left is set as an attribute of the object on the right
+        Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram
 
         :param uuid: (required)
         :type uuid: str
@@ -8456,7 +8456,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_study_in_dataset_serialize(
+        _param = self._get_study_linking_dataset_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -8482,7 +8482,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_study_in_dataset_with_http_info(
+    def get_study_linking_dataset_with_http_info(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -8500,9 +8500,9 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[List[Dataset]]:
-        """Get Study In Dataset
+        """Get Study Linking Dataset
 
-        In here means that the UUID of the object on the left is set as an attribute of the object on the right
+        Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram
 
         :param uuid: (required)
         :type uuid: str
@@ -8532,7 +8532,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_study_in_dataset_serialize(
+        _param = self._get_study_linking_dataset_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -8558,7 +8558,7 @@ class PublicApi:
 
 
     @validate_call
-    def get_study_in_dataset_without_preload_content(
+    def get_study_linking_dataset_without_preload_content(
         self,
         uuid: StrictStr,
         page_size: StrictInt,
@@ -8576,9 +8576,9 @@ class PublicApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Get Study In Dataset
+        """Get Study Linking Dataset
 
-        In here means that the UUID of the object on the left is set as an attribute of the object on the right
+        Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram
 
         :param uuid: (required)
         :type uuid: str
@@ -8608,7 +8608,7 @@ class PublicApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_study_in_dataset_serialize(
+        _param = self._get_study_linking_dataset_serialize(
             uuid=uuid,
             page_size=page_size,
             start_from_uuid=start_from_uuid,
@@ -8629,7 +8629,7 @@ class PublicApi:
         return response_data.response
 
 
-    def _get_study_in_dataset_serialize(
+    def _get_study_linking_dataset_serialize(
         self,
         uuid,
         page_size,

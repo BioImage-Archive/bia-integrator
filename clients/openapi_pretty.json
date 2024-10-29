@@ -663,9 +663,9 @@
           "public",
           "private"
         ],
-        "summary": "Get Dataset In FileReference",
-        "description": "In here means that the UUID of the object on the left is set as an attribute of the object on the right",
-        "operationId": "getDatasetInFileReference",
+        "summary": "Get Dataset Linking FileReference",
+        "description": "Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram",
+        "operationId": "getDatasetLinkingFileReference",
         "parameters": [
           {
             "name": "uuid",
@@ -714,7 +714,7 @@
                   "items": {
                     "$ref": "#/components/schemas/FileReference"
                   },
-                  "title": "Response Getdatasetinfilereference"
+                  "title": "Response Getdatasetlinkingfilereference"
                 }
               }
             }
@@ -738,9 +738,9 @@
           "public",
           "private"
         ],
-        "summary": "Get Image In ImageRepresentation",
-        "description": "In here means that the UUID of the object on the left is set as an attribute of the object on the right",
-        "operationId": "getImageInImageRepresentation",
+        "summary": "Get Image Linking ImageRepresentation",
+        "description": "Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram",
+        "operationId": "getImageLinkingImageRepresentation",
         "parameters": [
           {
             "name": "uuid",
@@ -789,7 +789,7 @@
                   "items": {
                     "$ref": "#/components/schemas/ImageRepresentation"
                   },
-                  "title": "Response Getimageinimagerepresentation"
+                  "title": "Response Getimagelinkingimagerepresentation"
                 }
               }
             }
@@ -813,9 +813,9 @@
           "public",
           "private"
         ],
-        "summary": "Get Study In Dataset",
-        "description": "In here means that the UUID of the object on the left is set as an attribute of the object on the right",
-        "operationId": "getStudyInDataset",
+        "summary": "Get Study Linking Dataset",
+        "description": "Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram",
+        "operationId": "getStudyLinkingDataset",
         "parameters": [
           {
             "name": "uuid",
@@ -864,7 +864,7 @@
                   "items": {
                     "$ref": "#/components/schemas/Dataset"
                   },
-                  "title": "Response Getstudyindataset"
+                  "title": "Response Getstudylinkingdataset"
                 }
               }
             }
@@ -888,9 +888,9 @@
           "public",
           "private"
         ],
-        "summary": "Get SpecimenImagingPreparationProtocol In Specimen",
-        "description": "In here means that the UUID of the object on the left is set as an attribute of the object on the right",
-        "operationId": "getSpecimenImagingPreparationProtocolInSpecimen",
+        "summary": "Get SpecimenImagingPreparationProtocol Linking Specimen",
+        "description": "Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram",
+        "operationId": "getSpecimenImagingPreparationProtocolLinkingSpecimen",
         "parameters": [
           {
             "name": "uuid",
@@ -939,7 +939,7 @@
                   "items": {
                     "$ref": "#/components/schemas/Specimen"
                   },
-                  "title": "Response Getspecimenimagingpreparationprotocolinspecimen"
+                  "title": "Response Getspecimenimagingpreparationprotocollinkingspecimen"
                 }
               }
             }
@@ -963,9 +963,9 @@
           "public",
           "private"
         ],
-        "summary": "Get BioSample In Specimen",
-        "description": "In here means that the UUID of the object on the left is set as an attribute of the object on the right",
-        "operationId": "getBioSampleInSpecimen",
+        "summary": "Get BioSample Linking Specimen",
+        "description": "Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram",
+        "operationId": "getBioSampleLinkingSpecimen",
         "parameters": [
           {
             "name": "uuid",
@@ -1014,7 +1014,7 @@
                   "items": {
                     "$ref": "#/components/schemas/Specimen"
                   },
-                  "title": "Response Getbiosampleinspecimen"
+                  "title": "Response Getbiosamplelinkingspecimen"
                 }
               }
             }
@@ -1038,9 +1038,9 @@
           "public",
           "private"
         ],
-        "summary": "Get Dataset In Image",
-        "description": "In here means that the UUID of the object on the left is set as an attribute of the object on the right",
-        "operationId": "getDatasetInImage",
+        "summary": "Get Dataset Linking Image",
+        "description": "Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram",
+        "operationId": "getDatasetLinkingImage",
         "parameters": [
           {
             "name": "uuid",
@@ -1089,7 +1089,7 @@
                   "items": {
                     "$ref": "#/components/schemas/Image"
                   },
-                  "title": "Response Getdatasetinimage"
+                  "title": "Response Getdatasetlinkingimage"
                 }
               }
             }
@@ -1113,9 +1113,9 @@
           "public",
           "private"
         ],
-        "summary": "Get CreationProcess In Image",
-        "description": "In here means that the UUID of the object on the left is set as an attribute of the object on the right",
-        "operationId": "getCreationProcessInImage",
+        "summary": "Get CreationProcess Linking Image",
+        "description": "Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram",
+        "operationId": "getCreationProcessLinkingImage",
         "parameters": [
           {
             "name": "uuid",
@@ -1164,7 +1164,7 @@
                   "items": {
                     "$ref": "#/components/schemas/Image"
                   },
-                  "title": "Response Getcreationprocessinimage"
+                  "title": "Response Getcreationprocesslinkingimage"
                 }
               }
             }
@@ -1188,9 +1188,9 @@
           "public",
           "private"
         ],
-        "summary": "Get FileReference In Image",
-        "description": "In here means that the UUID of the object on the left is set as an attribute of the object on the right",
-        "operationId": "getFileReferenceInImage",
+        "summary": "Get FileReference Linking Image",
+        "description": "Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram",
+        "operationId": "getFileReferenceLinkingImage",
         "parameters": [
           {
             "name": "uuid",
@@ -1239,7 +1239,7 @@
                   "items": {
                     "$ref": "#/components/schemas/Image"
                   },
-                  "title": "Response Getfilereferenceinimage"
+                  "title": "Response Getfilereferencelinkingimage"
                 }
               }
             }
@@ -1263,9 +1263,9 @@
           "public",
           "private"
         ],
-        "summary": "Get Protocol In BioSample",
-        "description": "In here means that the UUID of the object on the left is set as an attribute of the object on the right",
-        "operationId": "getProtocolInBioSample",
+        "summary": "Get Protocol Linking BioSample",
+        "description": "Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram",
+        "operationId": "getProtocolLinkingBioSample",
         "parameters": [
           {
             "name": "uuid",
@@ -1314,7 +1314,7 @@
                   "items": {
                     "$ref": "#/components/schemas/BioSample"
                   },
-                  "title": "Response Getprotocolinbiosample"
+                  "title": "Response Getprotocollinkingbiosample"
                 }
               }
             }
@@ -1338,9 +1338,9 @@
           "public",
           "private"
         ],
-        "summary": "Get Specimen In CreationProcess",
-        "description": "In here means that the UUID of the object on the left is set as an attribute of the object on the right",
-        "operationId": "getSpecimenInCreationProcess",
+        "summary": "Get Specimen Linking CreationProcess",
+        "description": "Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram",
+        "operationId": "getSpecimenLinkingCreationProcess",
         "parameters": [
           {
             "name": "uuid",
@@ -1389,7 +1389,7 @@
                   "items": {
                     "$ref": "#/components/schemas/CreationProcess"
                   },
-                  "title": "Response Getspecimenincreationprocess"
+                  "title": "Response Getspecimenlinkingcreationprocess"
                 }
               }
             }
@@ -1413,9 +1413,9 @@
           "public",
           "private"
         ],
-        "summary": "Get ImageAcquisitionProtocol In CreationProcess",
-        "description": "In here means that the UUID of the object on the left is set as an attribute of the object on the right",
-        "operationId": "getImageAcquisitionProtocolInCreationProcess",
+        "summary": "Get ImageAcquisitionProtocol Linking CreationProcess",
+        "description": "Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram",
+        "operationId": "getImageAcquisitionProtocolLinkingCreationProcess",
         "parameters": [
           {
             "name": "uuid",
@@ -1464,7 +1464,7 @@
                   "items": {
                     "$ref": "#/components/schemas/CreationProcess"
                   },
-                  "title": "Response Getimageacquisitionprotocolincreationprocess"
+                  "title": "Response Getimageacquisitionprotocollinkingcreationprocess"
                 }
               }
             }
@@ -1488,9 +1488,9 @@
           "public",
           "private"
         ],
-        "summary": "Get Image In CreationProcess",
-        "description": "In here means that the UUID of the object on the left is set as an attribute of the object on the right",
-        "operationId": "getImageInCreationProcess",
+        "summary": "Get Image Linking CreationProcess",
+        "description": "Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram",
+        "operationId": "getImageLinkingCreationProcess",
         "parameters": [
           {
             "name": "uuid",
@@ -1539,7 +1539,7 @@
                   "items": {
                     "$ref": "#/components/schemas/CreationProcess"
                   },
-                  "title": "Response Getimageincreationprocess"
+                  "title": "Response Getimagelinkingcreationprocess"
                 }
               }
             }
@@ -1563,9 +1563,9 @@
           "public",
           "private"
         ],
-        "summary": "Get Protocol In CreationProcess",
-        "description": "In here means that the UUID of the object on the left is set as an attribute of the object on the right",
-        "operationId": "getProtocolInCreationProcess",
+        "summary": "Get Protocol Linking CreationProcess",
+        "description": "Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram",
+        "operationId": "getProtocolLinkingCreationProcess",
         "parameters": [
           {
             "name": "uuid",
@@ -1614,7 +1614,7 @@
                   "items": {
                     "$ref": "#/components/schemas/CreationProcess"
                   },
-                  "title": "Response Getprotocolincreationprocess"
+                  "title": "Response Getprotocollinkingcreationprocess"
                 }
               }
             }
@@ -1638,9 +1638,9 @@
           "public",
           "private"
         ],
-        "summary": "Get AnnotationMethod In CreationProcess",
-        "description": "In here means that the UUID of the object on the left is set as an attribute of the object on the right",
-        "operationId": "getAnnotationMethodInCreationProcess",
+        "summary": "Get AnnotationMethod Linking CreationProcess",
+        "description": "Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram",
+        "operationId": "getAnnotationMethodLinkingCreationProcess",
         "parameters": [
           {
             "name": "uuid",
@@ -1689,7 +1689,7 @@
                   "items": {
                     "$ref": "#/components/schemas/CreationProcess"
                   },
-                  "title": "Response Getannotationmethodincreationprocess"
+                  "title": "Response Getannotationmethodlinkingcreationprocess"
                 }
               }
             }
@@ -1713,9 +1713,9 @@
           "public",
           "private"
         ],
-        "summary": "Get Dataset In AnnotationData",
-        "description": "In here means that the UUID of the object on the left is set as an attribute of the object on the right",
-        "operationId": "getDatasetInAnnotationData",
+        "summary": "Get Dataset Linking AnnotationData",
+        "description": "Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram",
+        "operationId": "getDatasetLinkingAnnotationData",
         "parameters": [
           {
             "name": "uuid",
@@ -1764,7 +1764,7 @@
                   "items": {
                     "$ref": "#/components/schemas/AnnotationData"
                   },
-                  "title": "Response Getdatasetinannotationdata"
+                  "title": "Response Getdatasetlinkingannotationdata"
                 }
               }
             }
@@ -1788,9 +1788,9 @@
           "public",
           "private"
         ],
-        "summary": "Get CreationProcess In AnnotationData",
-        "description": "In here means that the UUID of the object on the left is set as an attribute of the object on the right",
-        "operationId": "getCreationProcessInAnnotationData",
+        "summary": "Get CreationProcess Linking AnnotationData",
+        "description": "Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram",
+        "operationId": "getCreationProcessLinkingAnnotationData",
         "parameters": [
           {
             "name": "uuid",
@@ -1839,7 +1839,7 @@
                   "items": {
                     "$ref": "#/components/schemas/AnnotationData"
                   },
-                  "title": "Response Getcreationprocessinannotationdata"
+                  "title": "Response Getcreationprocesslinkingannotationdata"
                 }
               }
             }
@@ -1863,9 +1863,9 @@
           "public",
           "private"
         ],
-        "summary": "Get FileReference In AnnotationData",
-        "description": "In here means that the UUID of the object on the left is set as an attribute of the object on the right",
-        "operationId": "getFileReferenceInAnnotationData",
+        "summary": "Get FileReference Linking AnnotationData",
+        "description": "Naming convention is getTargetLinkingSource, where source/target refer to the start/end of the linking arrow in the model diagram",
+        "operationId": "getFileReferenceLinkingAnnotationData",
         "parameters": [
           {
             "name": "uuid",
@@ -1914,7 +1914,7 @@
                   "items": {
                     "$ref": "#/components/schemas/AnnotationData"
                   },
-                  "title": "Response Getfilereferenceinannotationdata"
+                  "title": "Response Getfilereferencelinkingannotationdata"
                 }
               }
             }
