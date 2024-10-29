@@ -3,12 +3,22 @@ Example script that creates and gets some objects. Please see the api client rea
 """
 
 from bia_integrator_api.util import get_client_private
-from bia_integrator_api.models import Study, LicenceType, Contributor, ExperimentalImagingDataset
+from bia_integrator_api.models import Study, LicenceType, Contributor, Dataset
 from datetime import date
 from bia_integrator_api import exceptions as api_exceptions
 from pydantic import ValidationError
+from uuid import uuid4
 
-api_base_url = "https://wwwdev.ebi.ac.uk/bioimage-archive/api"
+def get_uuid() -> str:
+    """
+    @return example "06c19696-00e8-4c2e-a27f-23587aedb782"
+    """
+    generated = uuid4()
+
+    return str(generated)
+
+
+api_base_url = "http://api:8080"
 client = get_client_private(
     username="test@example.com",
     password="test",
@@ -17,7 +27,7 @@ client = get_client_private(
 
 # Example create/get - equivalent for every object
 study = Study(
-    uuid="06c19696-00e8-4c2e-a27f-23587aedb782",
+    uuid=get_uuid(),
     version=0,
     accession_id="test",
     licence=LicenceType.CC0,
@@ -28,29 +38,27 @@ study = Study(
     title = "test",
     release_date = date.today(),
     description = "test",
-    attribute = {}
+    attribute = []
 )
 client.post_study(study)
 
-study = client.get_study(study.uuid)
-print(study)
+study_fetched = client.get_study(study.uuid)
+assert study_fetched.uuid == study.uuid
 
 # attach a dataset to a study, and get all datasets for the study
-
-dataset = ExperimentalImagingDataset(
-    uuid = "06c19696-00e8-4c2e-a27f-23587aedb780",
+dataset = Dataset(
+    uuid = get_uuid(),
     title_id = "test",
     version = 0,
-    attribute = {},
+    attribute = [],
     example_image_uri = [],
     submitted_in_study_uuid = study.uuid
 )
-client.post_experimental_imaging_dataset(dataset)
+client.post_dataset(dataset)
 
-study_datasets = client.get_experimental_imaging_dataset_in_study(study.uuid)
-
-# NOTE same dataset
-print(study_datasets)
+study_datasets = client.get_dataset_linking_study(study.uuid, page_size=100)
+assert len(study_datasets) == 1
+assert study_datasets[0].uuid == dataset.uuid
 
 """
 Example errors
@@ -67,6 +75,8 @@ try:
     client_unauthenticated.post_study(study)
 except api_exceptions.UnauthorizedException:
     pass
+else:
+    assert False, "UnauthorizedException should have been raised"
 
 try:
     # authenticate with bad credentials
@@ -77,22 +87,30 @@ try:
     )
 except api_exceptions.UnauthorizedException:
     pass
+else:
+    assert False, "UnauthorizedException should have been raised"
 
 try:
     # mistyped parameter - NOTE pydantic exception, not api exception
     client.post_study("")
 except ValidationError:
     pass
+else:
+    assert False, "ValidationError should have been raised"
 
 try:
     # mistyped attribute - NOTE pydantic exception, not api exception
     client.post_study(Study(uuid=123))
 except ValidationError:
     pass
+else:
+    assert False, "ValidationError should have been raised"
 
 #! "foreign key" links (all fields typed UUID that are not uuid) are validated
 try:
     dataset.submitted_in_study_uuid = dataset.uuid
-    client.post_experimental_imaging_dataset(dataset)
+    client.post_dataset(dataset)
 except api_exceptions.NotFoundException:
     pass
+else:
+    assert False, "NotFoundException should have been raised"

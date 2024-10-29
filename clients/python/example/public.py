@@ -5,7 +5,10 @@ private_api more complete
 
 from bia_integrator_api.util import get_client
 
-client = get_client()
+api_base_url = "http://api:8080"
+client = get_client(
+    api_base_url=api_base_url
+)
 
 study_searched = client.search_study_by_accession("S-BIADTEST")
 print(study_searched.title)
