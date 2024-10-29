@@ -296,7 +296,7 @@ def existing_image(
 
 
 @pytest.fixture(scope="function")
-def existing_annotaton_data_reference(
+def existing_annotaton_data(
     api_client: TestClient,
     existing_image_annotation_dataset: dict,
     existing_creation_process: dict,
