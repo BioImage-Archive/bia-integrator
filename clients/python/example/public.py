@@ -10,7 +10,7 @@ client = get_client(
     api_base_url=api_base_url
 )
 
-study_searched = client.search_study_by_accession("S-BIADTEST")
+study_searched = client.search_study_by_accession("test")
 print(study_searched.title)
 
 study_missing = client.search_study_by_accession("S-BIAD")
