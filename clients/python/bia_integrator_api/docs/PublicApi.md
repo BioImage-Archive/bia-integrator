@@ -5,34 +5,34 @@ All URIs are relative to *http://localhost*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**get_annotation_data**](PublicApi.md#get_annotation_data) | **GET** /v2/annotation_data/{uuid} | Get AnnotationData
-[**get_annotation_data_in_creation_process**](PublicApi.md#get_annotation_data_in_creation_process) | **GET** /v2/creation_process/{uuid}/annotation_data | Get AnnotationData In CreationProcess
-[**get_annotation_data_in_dataset**](PublicApi.md#get_annotation_data_in_dataset) | **GET** /v2/dataset/{uuid}/annotation_data | Get AnnotationData In Dataset
-[**get_annotation_data_in_file_reference**](PublicApi.md#get_annotation_data_in_file_reference) | **GET** /v2/file_reference/{uuid}/annotation_data | Get AnnotationData In FileReference
+[**get_annotation_data_linking_creation_process**](PublicApi.md#get_annotation_data_linking_creation_process) | **GET** /v2/creation_process/{uuid}/annotation_data | Get AnnotationData Linking CreationProcess
+[**get_annotation_data_linking_dataset**](PublicApi.md#get_annotation_data_linking_dataset) | **GET** /v2/dataset/{uuid}/annotation_data | Get AnnotationData Linking Dataset
+[**get_annotation_data_linking_file_reference**](PublicApi.md#get_annotation_data_linking_file_reference) | **GET** /v2/file_reference/{uuid}/annotation_data | Get AnnotationData Linking FileReference
 [**get_annotation_method**](PublicApi.md#get_annotation_method) | **GET** /v2/annotation_method/{uuid} | Get AnnotationMethod
 [**get_bio_sample**](PublicApi.md#get_bio_sample) | **GET** /v2/bio_sample/{uuid} | Get BioSample
-[**get_bio_sample_in_protocol**](PublicApi.md#get_bio_sample_in_protocol) | **GET** /v2/protocol/{uuid}/bio_sample | Get BioSample In Protocol
+[**get_bio_sample_linking_protocol**](PublicApi.md#get_bio_sample_linking_protocol) | **GET** /v2/protocol/{uuid}/bio_sample | Get BioSample Linking Protocol
 [**get_creation_process**](PublicApi.md#get_creation_process) | **GET** /v2/creation_process/{uuid} | Get CreationProcess
-[**get_creation_process_in_annotation_method**](PublicApi.md#get_creation_process_in_annotation_method) | **GET** /v2/annotation_method/{uuid}/creation_process | Get CreationProcess In AnnotationMethod
-[**get_creation_process_in_image**](PublicApi.md#get_creation_process_in_image) | **GET** /v2/image/{uuid}/creation_process | Get CreationProcess In Image
-[**get_creation_process_in_image_acquisition_protocol**](PublicApi.md#get_creation_process_in_image_acquisition_protocol) | **GET** /v2/image_acquisition_protocol/{uuid}/creation_process | Get CreationProcess In ImageAcquisitionProtocol
-[**get_creation_process_in_protocol**](PublicApi.md#get_creation_process_in_protocol) | **GET** /v2/protocol/{uuid}/creation_process | Get CreationProcess In Protocol
-[**get_creation_process_in_specimen**](PublicApi.md#get_creation_process_in_specimen) | **GET** /v2/specimen/{uuid}/creation_process | Get CreationProcess In Specimen
+[**get_creation_process_linking_annotation_method**](PublicApi.md#get_creation_process_linking_annotation_method) | **GET** /v2/annotation_method/{uuid}/creation_process | Get CreationProcess Linking AnnotationMethod
+[**get_creation_process_linking_image**](PublicApi.md#get_creation_process_linking_image) | **GET** /v2/image/{uuid}/creation_process | Get CreationProcess Linking Image
+[**get_creation_process_linking_image_acquisition_protocol**](PublicApi.md#get_creation_process_linking_image_acquisition_protocol) | **GET** /v2/image_acquisition_protocol/{uuid}/creation_process | Get CreationProcess Linking ImageAcquisitionProtocol
+[**get_creation_process_linking_protocol**](PublicApi.md#get_creation_process_linking_protocol) | **GET** /v2/protocol/{uuid}/creation_process | Get CreationProcess Linking Protocol
+[**get_creation_process_linking_specimen**](PublicApi.md#get_creation_process_linking_specimen) | **GET** /v2/specimen/{uuid}/creation_process | Get CreationProcess Linking Specimen
 [**get_dataset**](PublicApi.md#get_dataset) | **GET** /v2/dataset/{uuid} | Get Dataset
-[**get_dataset_in_study**](PublicApi.md#get_dataset_in_study) | **GET** /v2/study/{uuid}/dataset | Get Dataset In Study
+[**get_dataset_linking_study**](PublicApi.md#get_dataset_linking_study) | **GET** /v2/study/{uuid}/dataset | Get Dataset Linking Study
 [**get_file_reference**](PublicApi.md#get_file_reference) | **GET** /v2/file_reference/{uuid} | Get FileReference
-[**get_file_reference_in_dataset**](PublicApi.md#get_file_reference_in_dataset) | **GET** /v2/dataset/{uuid}/file_reference | Get FileReference In Dataset
+[**get_file_reference_linking_dataset**](PublicApi.md#get_file_reference_linking_dataset) | **GET** /v2/dataset/{uuid}/file_reference | Get FileReference Linking Dataset
 [**get_image**](PublicApi.md#get_image) | **GET** /v2/image/{uuid} | Get Image
 [**get_image_acquisition_protocol**](PublicApi.md#get_image_acquisition_protocol) | **GET** /v2/image_acquisition_protocol/{uuid} | Get ImageAcquisitionProtocol
-[**get_image_in_creation_process**](PublicApi.md#get_image_in_creation_process) | **GET** /v2/creation_process/{uuid}/image | Get Image In CreationProcess
-[**get_image_in_dataset**](PublicApi.md#get_image_in_dataset) | **GET** /v2/dataset/{uuid}/image | Get Image In Dataset
-[**get_image_in_file_reference**](PublicApi.md#get_image_in_file_reference) | **GET** /v2/file_reference/{uuid}/image | Get Image In FileReference
+[**get_image_linking_creation_process**](PublicApi.md#get_image_linking_creation_process) | **GET** /v2/creation_process/{uuid}/image | Get Image Linking CreationProcess
+[**get_image_linking_dataset**](PublicApi.md#get_image_linking_dataset) | **GET** /v2/dataset/{uuid}/image | Get Image Linking Dataset
+[**get_image_linking_file_reference**](PublicApi.md#get_image_linking_file_reference) | **GET** /v2/file_reference/{uuid}/image | Get Image Linking FileReference
 [**get_image_representation**](PublicApi.md#get_image_representation) | **GET** /v2/image_representation/{uuid} | Get ImageRepresentation
-[**get_image_representation_in_image**](PublicApi.md#get_image_representation_in_image) | **GET** /v2/image/{uuid}/image_representation | Get ImageRepresentation In Image
+[**get_image_representation_linking_image**](PublicApi.md#get_image_representation_linking_image) | **GET** /v2/image/{uuid}/image_representation | Get ImageRepresentation Linking Image
 [**get_protocol**](PublicApi.md#get_protocol) | **GET** /v2/protocol/{uuid} | Get Protocol
 [**get_specimen**](PublicApi.md#get_specimen) | **GET** /v2/specimen/{uuid} | Get Specimen
 [**get_specimen_imaging_preparation_protocol**](PublicApi.md#get_specimen_imaging_preparation_protocol) | **GET** /v2/specimen_imaging_preparation_protocol/{uuid} | Get SpecimenImagingPreparationProtocol
-[**get_specimen_in_bio_sample**](PublicApi.md#get_specimen_in_bio_sample) | **GET** /v2/bio_sample/{uuid}/specimen | Get Specimen In BioSample
-[**get_specimen_in_specimen_imaging_preparation_protocol**](PublicApi.md#get_specimen_in_specimen_imaging_preparation_protocol) | **GET** /v2/specimen_imaging_preparation_protocol/{uuid}/specimen | Get Specimen In SpecimenImagingPreparationProtocol
+[**get_specimen_linking_bio_sample**](PublicApi.md#get_specimen_linking_bio_sample) | **GET** /v2/bio_sample/{uuid}/specimen | Get Specimen Linking BioSample
+[**get_specimen_linking_specimen_imaging_preparation_protocol**](PublicApi.md#get_specimen_linking_specimen_imaging_preparation_protocol) | **GET** /v2/specimen_imaging_preparation_protocol/{uuid}/specimen | Get Specimen Linking SpecimenImagingPreparationProtocol
 [**get_studies**](PublicApi.md#get_studies) | **GET** /v2/study | Getstudies
 [**get_study**](PublicApi.md#get_study) | **GET** /v2/study/{uuid} | Get Study
 [**search_image_representation_by_file_uri**](PublicApi.md#search_image_representation_by_file_uri) | **GET** /v2/search/image_representation/file_uri_fragment | Searchimagerepresentationbyfileuri
@@ -106,10 +106,12 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **get_annotation_data_in_creation_process**
-> List[AnnotationData] get_annotation_data_in_creation_process(uuid, page_size, start_from_uuid=start_from_uuid)
+# **get_annotation_data_linking_creation_process**
+> List[AnnotationData] get_annotation_data_linking_creation_process(uuid, page_size, start_from_uuid=start_from_uuid)
 
-Get AnnotationData In CreationProcess
+Get AnnotationData Linking CreationProcess
+
+Naming convention is getSourceLinkingTarget, where source/target refer to the start/end of the linking arrow in the model diagram
 
 ### Example
 
@@ -136,12 +138,12 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     start_from_uuid = 'start_from_uuid_example' # str |  (optional)
 
     try:
-        # Get AnnotationData In CreationProcess
-        api_response = api_instance.get_annotation_data_in_creation_process(uuid, page_size, start_from_uuid=start_from_uuid)
-        print("The response of PublicApi->get_annotation_data_in_creation_process:\n")
+        # Get AnnotationData Linking CreationProcess
+        api_response = api_instance.get_annotation_data_linking_creation_process(uuid, page_size, start_from_uuid=start_from_uuid)
+        print("The response of PublicApi->get_annotation_data_linking_creation_process:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling PublicApi->get_annotation_data_in_creation_process: %s\n" % e)
+        print("Exception when calling PublicApi->get_annotation_data_linking_creation_process: %s\n" % e)
 ```
 
 
@@ -177,10 +179,12 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **get_annotation_data_in_dataset**
-> List[AnnotationData] get_annotation_data_in_dataset(uuid, page_size, start_from_uuid=start_from_uuid)
+# **get_annotation_data_linking_dataset**
+> List[AnnotationData] get_annotation_data_linking_dataset(uuid, page_size, start_from_uuid=start_from_uuid)
 
-Get AnnotationData In Dataset
+Get AnnotationData Linking Dataset
+
+Naming convention is getSourceLinkingTarget, where source/target refer to the start/end of the linking arrow in the model diagram
 
 ### Example
 
@@ -207,12 +211,12 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     start_from_uuid = 'start_from_uuid_example' # str |  (optional)
 
     try:
-        # Get AnnotationData In Dataset
-        api_response = api_instance.get_annotation_data_in_dataset(uuid, page_size, start_from_uuid=start_from_uuid)
-        print("The response of PublicApi->get_annotation_data_in_dataset:\n")
+        # Get AnnotationData Linking Dataset
+        api_response = api_instance.get_annotation_data_linking_dataset(uuid, page_size, start_from_uuid=start_from_uuid)
+        print("The response of PublicApi->get_annotation_data_linking_dataset:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling PublicApi->get_annotation_data_in_dataset: %s\n" % e)
+        print("Exception when calling PublicApi->get_annotation_data_linking_dataset: %s\n" % e)
 ```
 
 
@@ -248,10 +252,12 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **get_annotation_data_in_file_reference**
-> List[AnnotationData] get_annotation_data_in_file_reference(uuid, page_size, start_from_uuid=start_from_uuid)
+# **get_annotation_data_linking_file_reference**
+> List[AnnotationData] get_annotation_data_linking_file_reference(uuid, page_size, start_from_uuid=start_from_uuid)
 
-Get AnnotationData In FileReference
+Get AnnotationData Linking FileReference
+
+Naming convention is getSourceLinkingTarget, where source/target refer to the start/end of the linking arrow in the model diagram
 
 ### Example
 
@@ -278,12 +284,12 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     start_from_uuid = 'start_from_uuid_example' # str |  (optional)
 
     try:
-        # Get AnnotationData In FileReference
-        api_response = api_instance.get_annotation_data_in_file_reference(uuid, page_size, start_from_uuid=start_from_uuid)
-        print("The response of PublicApi->get_annotation_data_in_file_reference:\n")
+        # Get AnnotationData Linking FileReference
+        api_response = api_instance.get_annotation_data_linking_file_reference(uuid, page_size, start_from_uuid=start_from_uuid)
+        print("The response of PublicApi->get_annotation_data_linking_file_reference:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling PublicApi->get_annotation_data_in_file_reference: %s\n" % e)
+        print("Exception when calling PublicApi->get_annotation_data_linking_file_reference: %s\n" % e)
 ```
 
 
@@ -453,10 +459,12 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **get_bio_sample_in_protocol**
-> List[BioSample] get_bio_sample_in_protocol(uuid, page_size, start_from_uuid=start_from_uuid)
+# **get_bio_sample_linking_protocol**
+> List[BioSample] get_bio_sample_linking_protocol(uuid, page_size, start_from_uuid=start_from_uuid)
 
-Get BioSample In Protocol
+Get BioSample Linking Protocol
+
+Naming convention is getSourceLinkingTarget, where source/target refer to the start/end of the linking arrow in the model diagram
 
 ### Example
 
@@ -483,12 +491,12 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     start_from_uuid = 'start_from_uuid_example' # str |  (optional)
 
     try:
-        # Get BioSample In Protocol
-        api_response = api_instance.get_bio_sample_in_protocol(uuid, page_size, start_from_uuid=start_from_uuid)
-        print("The response of PublicApi->get_bio_sample_in_protocol:\n")
+        # Get BioSample Linking Protocol
+        api_response = api_instance.get_bio_sample_linking_protocol(uuid, page_size, start_from_uuid=start_from_uuid)
+        print("The response of PublicApi->get_bio_sample_linking_protocol:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling PublicApi->get_bio_sample_in_protocol: %s\n" % e)
+        print("Exception when calling PublicApi->get_bio_sample_linking_protocol: %s\n" % e)
 ```
 
 
@@ -591,10 +599,12 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **get_creation_process_in_annotation_method**
-> List[CreationProcess] get_creation_process_in_annotation_method(uuid, page_size, start_from_uuid=start_from_uuid)
+# **get_creation_process_linking_annotation_method**
+> List[CreationProcess] get_creation_process_linking_annotation_method(uuid, page_size, start_from_uuid=start_from_uuid)
 
-Get CreationProcess In AnnotationMethod
+Get CreationProcess Linking AnnotationMethod
+
+Naming convention is getSourceLinkingTarget, where source/target refer to the start/end of the linking arrow in the model diagram
 
 ### Example
 
@@ -621,12 +631,12 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     start_from_uuid = 'start_from_uuid_example' # str |  (optional)
 
     try:
-        # Get CreationProcess In AnnotationMethod
-        api_response = api_instance.get_creation_process_in_annotation_method(uuid, page_size, start_from_uuid=start_from_uuid)
-        print("The response of PublicApi->get_creation_process_in_annotation_method:\n")
+        # Get CreationProcess Linking AnnotationMethod
+        api_response = api_instance.get_creation_process_linking_annotation_method(uuid, page_size, start_from_uuid=start_from_uuid)
+        print("The response of PublicApi->get_creation_process_linking_annotation_method:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling PublicApi->get_creation_process_in_annotation_method: %s\n" % e)
+        print("Exception when calling PublicApi->get_creation_process_linking_annotation_method: %s\n" % e)
 ```
 
 
@@ -662,10 +672,12 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **get_creation_process_in_image**
-> List[CreationProcess] get_creation_process_in_image(uuid, page_size, start_from_uuid=start_from_uuid)
+# **get_creation_process_linking_image**
+> List[CreationProcess] get_creation_process_linking_image(uuid, page_size, start_from_uuid=start_from_uuid)
 
-Get CreationProcess In Image
+Get CreationProcess Linking Image
+
+Naming convention is getSourceLinkingTarget, where source/target refer to the start/end of the linking arrow in the model diagram
 
 ### Example
 
@@ -692,12 +704,12 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     start_from_uuid = 'start_from_uuid_example' # str |  (optional)
 
     try:
-        # Get CreationProcess In Image
-        api_response = api_instance.get_creation_process_in_image(uuid, page_size, start_from_uuid=start_from_uuid)
-        print("The response of PublicApi->get_creation_process_in_image:\n")
+        # Get CreationProcess Linking Image
+        api_response = api_instance.get_creation_process_linking_image(uuid, page_size, start_from_uuid=start_from_uuid)
+        print("The response of PublicApi->get_creation_process_linking_image:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling PublicApi->get_creation_process_in_image: %s\n" % e)
+        print("Exception when calling PublicApi->get_creation_process_linking_image: %s\n" % e)
 ```
 
 
@@ -733,10 +745,12 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **get_creation_process_in_image_acquisition_protocol**
-> List[CreationProcess] get_creation_process_in_image_acquisition_protocol(uuid, page_size, start_from_uuid=start_from_uuid)
+# **get_creation_process_linking_image_acquisition_protocol**
+> List[CreationProcess] get_creation_process_linking_image_acquisition_protocol(uuid, page_size, start_from_uuid=start_from_uuid)
 
-Get CreationProcess In ImageAcquisitionProtocol
+Get CreationProcess Linking ImageAcquisitionProtocol
+
+Naming convention is getSourceLinkingTarget, where source/target refer to the start/end of the linking arrow in the model diagram
 
 ### Example
 
@@ -763,12 +777,12 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     start_from_uuid = 'start_from_uuid_example' # str |  (optional)
 
     try:
-        # Get CreationProcess In ImageAcquisitionProtocol
-        api_response = api_instance.get_creation_process_in_image_acquisition_protocol(uuid, page_size, start_from_uuid=start_from_uuid)
-        print("The response of PublicApi->get_creation_process_in_image_acquisition_protocol:\n")
+        # Get CreationProcess Linking ImageAcquisitionProtocol
+        api_response = api_instance.get_creation_process_linking_image_acquisition_protocol(uuid, page_size, start_from_uuid=start_from_uuid)
+        print("The response of PublicApi->get_creation_process_linking_image_acquisition_protocol:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling PublicApi->get_creation_process_in_image_acquisition_protocol: %s\n" % e)
+        print("Exception when calling PublicApi->get_creation_process_linking_image_acquisition_protocol: %s\n" % e)
 ```
 
 
@@ -804,10 +818,12 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **get_creation_process_in_protocol**
-> List[CreationProcess] get_creation_process_in_protocol(uuid, page_size, start_from_uuid=start_from_uuid)
+# **get_creation_process_linking_protocol**
+> List[CreationProcess] get_creation_process_linking_protocol(uuid, page_size, start_from_uuid=start_from_uuid)
 
-Get CreationProcess In Protocol
+Get CreationProcess Linking Protocol
+
+Naming convention is getSourceLinkingTarget, where source/target refer to the start/end of the linking arrow in the model diagram
 
 ### Example
 
@@ -834,12 +850,12 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     start_from_uuid = 'start_from_uuid_example' # str |  (optional)
 
     try:
-        # Get CreationProcess In Protocol
-        api_response = api_instance.get_creation_process_in_protocol(uuid, page_size, start_from_uuid=start_from_uuid)
-        print("The response of PublicApi->get_creation_process_in_protocol:\n")
+        # Get CreationProcess Linking Protocol
+        api_response = api_instance.get_creation_process_linking_protocol(uuid, page_size, start_from_uuid=start_from_uuid)
+        print("The response of PublicApi->get_creation_process_linking_protocol:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling PublicApi->get_creation_process_in_protocol: %s\n" % e)
+        print("Exception when calling PublicApi->get_creation_process_linking_protocol: %s\n" % e)
 ```
 
 
@@ -875,10 +891,12 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **get_creation_process_in_specimen**
-> List[CreationProcess] get_creation_process_in_specimen(uuid, page_size, start_from_uuid=start_from_uuid)
+# **get_creation_process_linking_specimen**
+> List[CreationProcess] get_creation_process_linking_specimen(uuid, page_size, start_from_uuid=start_from_uuid)
 
-Get CreationProcess In Specimen
+Get CreationProcess Linking Specimen
+
+Naming convention is getSourceLinkingTarget, where source/target refer to the start/end of the linking arrow in the model diagram
 
 ### Example
 
@@ -905,12 +923,12 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     start_from_uuid = 'start_from_uuid_example' # str |  (optional)
 
     try:
-        # Get CreationProcess In Specimen
-        api_response = api_instance.get_creation_process_in_specimen(uuid, page_size, start_from_uuid=start_from_uuid)
-        print("The response of PublicApi->get_creation_process_in_specimen:\n")
+        # Get CreationProcess Linking Specimen
+        api_response = api_instance.get_creation_process_linking_specimen(uuid, page_size, start_from_uuid=start_from_uuid)
+        print("The response of PublicApi->get_creation_process_linking_specimen:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling PublicApi->get_creation_process_in_specimen: %s\n" % e)
+        print("Exception when calling PublicApi->get_creation_process_linking_specimen: %s\n" % e)
 ```
 
 
@@ -1013,10 +1031,12 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **get_dataset_in_study**
-> List[Dataset] get_dataset_in_study(uuid, page_size, start_from_uuid=start_from_uuid)
+# **get_dataset_linking_study**
+> List[Dataset] get_dataset_linking_study(uuid, page_size, start_from_uuid=start_from_uuid)
 
-Get Dataset In Study
+Get Dataset Linking Study
+
+Naming convention is getSourceLinkingTarget, where source/target refer to the start/end of the linking arrow in the model diagram
 
 ### Example
 
@@ -1043,12 +1063,12 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     start_from_uuid = 'start_from_uuid_example' # str |  (optional)
 
     try:
-        # Get Dataset In Study
-        api_response = api_instance.get_dataset_in_study(uuid, page_size, start_from_uuid=start_from_uuid)
-        print("The response of PublicApi->get_dataset_in_study:\n")
+        # Get Dataset Linking Study
+        api_response = api_instance.get_dataset_linking_study(uuid, page_size, start_from_uuid=start_from_uuid)
+        print("The response of PublicApi->get_dataset_linking_study:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling PublicApi->get_dataset_in_study: %s\n" % e)
+        print("Exception when calling PublicApi->get_dataset_linking_study: %s\n" % e)
 ```
 
 
@@ -1151,10 +1171,12 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **get_file_reference_in_dataset**
-> List[FileReference] get_file_reference_in_dataset(uuid, page_size, start_from_uuid=start_from_uuid)
+# **get_file_reference_linking_dataset**
+> List[FileReference] get_file_reference_linking_dataset(uuid, page_size, start_from_uuid=start_from_uuid)
 
-Get FileReference In Dataset
+Get FileReference Linking Dataset
+
+Naming convention is getSourceLinkingTarget, where source/target refer to the start/end of the linking arrow in the model diagram
 
 ### Example
 
@@ -1181,12 +1203,12 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     start_from_uuid = 'start_from_uuid_example' # str |  (optional)
 
     try:
-        # Get FileReference In Dataset
-        api_response = api_instance.get_file_reference_in_dataset(uuid, page_size, start_from_uuid=start_from_uuid)
-        print("The response of PublicApi->get_file_reference_in_dataset:\n")
+        # Get FileReference Linking Dataset
+        api_response = api_instance.get_file_reference_linking_dataset(uuid, page_size, start_from_uuid=start_from_uuid)
+        print("The response of PublicApi->get_file_reference_linking_dataset:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling PublicApi->get_file_reference_in_dataset: %s\n" % e)
+        print("Exception when calling PublicApi->get_file_reference_linking_dataset: %s\n" % e)
 ```
 
 
@@ -1356,10 +1378,12 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **get_image_in_creation_process**
-> List[Image] get_image_in_creation_process(uuid, page_size, start_from_uuid=start_from_uuid)
+# **get_image_linking_creation_process**
+> List[Image] get_image_linking_creation_process(uuid, page_size, start_from_uuid=start_from_uuid)
 
-Get Image In CreationProcess
+Get Image Linking CreationProcess
+
+Naming convention is getSourceLinkingTarget, where source/target refer to the start/end of the linking arrow in the model diagram
 
 ### Example
 
@@ -1386,12 +1410,12 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     start_from_uuid = 'start_from_uuid_example' # str |  (optional)
 
     try:
-        # Get Image In CreationProcess
-        api_response = api_instance.get_image_in_creation_process(uuid, page_size, start_from_uuid=start_from_uuid)
-        print("The response of PublicApi->get_image_in_creation_process:\n")
+        # Get Image Linking CreationProcess
+        api_response = api_instance.get_image_linking_creation_process(uuid, page_size, start_from_uuid=start_from_uuid)
+        print("The response of PublicApi->get_image_linking_creation_process:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling PublicApi->get_image_in_creation_process: %s\n" % e)
+        print("Exception when calling PublicApi->get_image_linking_creation_process: %s\n" % e)
 ```
 
 
@@ -1427,10 +1451,12 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **get_image_in_dataset**
-> List[Image] get_image_in_dataset(uuid, page_size, start_from_uuid=start_from_uuid)
+# **get_image_linking_dataset**
+> List[Image] get_image_linking_dataset(uuid, page_size, start_from_uuid=start_from_uuid)
 
-Get Image In Dataset
+Get Image Linking Dataset
+
+Naming convention is getSourceLinkingTarget, where source/target refer to the start/end of the linking arrow in the model diagram
 
 ### Example
 
@@ -1457,12 +1483,12 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     start_from_uuid = 'start_from_uuid_example' # str |  (optional)
 
     try:
-        # Get Image In Dataset
-        api_response = api_instance.get_image_in_dataset(uuid, page_size, start_from_uuid=start_from_uuid)
-        print("The response of PublicApi->get_image_in_dataset:\n")
+        # Get Image Linking Dataset
+        api_response = api_instance.get_image_linking_dataset(uuid, page_size, start_from_uuid=start_from_uuid)
+        print("The response of PublicApi->get_image_linking_dataset:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling PublicApi->get_image_in_dataset: %s\n" % e)
+        print("Exception when calling PublicApi->get_image_linking_dataset: %s\n" % e)
 ```
 
 
@@ -1498,10 +1524,12 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **get_image_in_file_reference**
-> List[Image] get_image_in_file_reference(uuid, page_size, start_from_uuid=start_from_uuid)
+# **get_image_linking_file_reference**
+> List[Image] get_image_linking_file_reference(uuid, page_size, start_from_uuid=start_from_uuid)
 
-Get Image In FileReference
+Get Image Linking FileReference
+
+Naming convention is getSourceLinkingTarget, where source/target refer to the start/end of the linking arrow in the model diagram
 
 ### Example
 
@@ -1528,12 +1556,12 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     start_from_uuid = 'start_from_uuid_example' # str |  (optional)
 
     try:
-        # Get Image In FileReference
-        api_response = api_instance.get_image_in_file_reference(uuid, page_size, start_from_uuid=start_from_uuid)
-        print("The response of PublicApi->get_image_in_file_reference:\n")
+        # Get Image Linking FileReference
+        api_response = api_instance.get_image_linking_file_reference(uuid, page_size, start_from_uuid=start_from_uuid)
+        print("The response of PublicApi->get_image_linking_file_reference:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling PublicApi->get_image_in_file_reference: %s\n" % e)
+        print("Exception when calling PublicApi->get_image_linking_file_reference: %s\n" % e)
 ```
 
 
@@ -1636,10 +1664,12 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **get_image_representation_in_image**
-> List[ImageRepresentation] get_image_representation_in_image(uuid, page_size, start_from_uuid=start_from_uuid)
+# **get_image_representation_linking_image**
+> List[ImageRepresentation] get_image_representation_linking_image(uuid, page_size, start_from_uuid=start_from_uuid)
 
-Get ImageRepresentation In Image
+Get ImageRepresentation Linking Image
+
+Naming convention is getSourceLinkingTarget, where source/target refer to the start/end of the linking arrow in the model diagram
 
 ### Example
 
@@ -1666,12 +1696,12 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     start_from_uuid = 'start_from_uuid_example' # str |  (optional)
 
     try:
-        # Get ImageRepresentation In Image
-        api_response = api_instance.get_image_representation_in_image(uuid, page_size, start_from_uuid=start_from_uuid)
-        print("The response of PublicApi->get_image_representation_in_image:\n")
+        # Get ImageRepresentation Linking Image
+        api_response = api_instance.get_image_representation_linking_image(uuid, page_size, start_from_uuid=start_from_uuid)
+        print("The response of PublicApi->get_image_representation_linking_image:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling PublicApi->get_image_representation_in_image: %s\n" % e)
+        print("Exception when calling PublicApi->get_image_representation_linking_image: %s\n" % e)
 ```
 
 
@@ -1908,10 +1938,12 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **get_specimen_in_bio_sample**
-> List[Specimen] get_specimen_in_bio_sample(uuid, page_size, start_from_uuid=start_from_uuid)
+# **get_specimen_linking_bio_sample**
+> List[Specimen] get_specimen_linking_bio_sample(uuid, page_size, start_from_uuid=start_from_uuid)
 
-Get Specimen In BioSample
+Get Specimen Linking BioSample
+
+Naming convention is getSourceLinkingTarget, where source/target refer to the start/end of the linking arrow in the model diagram
 
 ### Example
 
@@ -1938,12 +1970,12 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     start_from_uuid = 'start_from_uuid_example' # str |  (optional)
 
     try:
-        # Get Specimen In BioSample
-        api_response = api_instance.get_specimen_in_bio_sample(uuid, page_size, start_from_uuid=start_from_uuid)
-        print("The response of PublicApi->get_specimen_in_bio_sample:\n")
+        # Get Specimen Linking BioSample
+        api_response = api_instance.get_specimen_linking_bio_sample(uuid, page_size, start_from_uuid=start_from_uuid)
+        print("The response of PublicApi->get_specimen_linking_bio_sample:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling PublicApi->get_specimen_in_bio_sample: %s\n" % e)
+        print("Exception when calling PublicApi->get_specimen_linking_bio_sample: %s\n" % e)
 ```
 
 
@@ -1979,10 +2011,12 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **get_specimen_in_specimen_imaging_preparation_protocol**
-> List[Specimen] get_specimen_in_specimen_imaging_preparation_protocol(uuid, page_size, start_from_uuid=start_from_uuid)
+# **get_specimen_linking_specimen_imaging_preparation_protocol**
+> List[Specimen] get_specimen_linking_specimen_imaging_preparation_protocol(uuid, page_size, start_from_uuid=start_from_uuid)
 
-Get Specimen In SpecimenImagingPreparationProtocol
+Get Specimen Linking SpecimenImagingPreparationProtocol
+
+Naming convention is getSourceLinkingTarget, where source/target refer to the start/end of the linking arrow in the model diagram
 
 ### Example
 
@@ -2009,12 +2043,12 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
     start_from_uuid = 'start_from_uuid_example' # str |  (optional)
 
     try:
-        # Get Specimen In SpecimenImagingPreparationProtocol
-        api_response = api_instance.get_specimen_in_specimen_imaging_preparation_protocol(uuid, page_size, start_from_uuid=start_from_uuid)
-        print("The response of PublicApi->get_specimen_in_specimen_imaging_preparation_protocol:\n")
+        # Get Specimen Linking SpecimenImagingPreparationProtocol
+        api_response = api_instance.get_specimen_linking_specimen_imaging_preparation_protocol(uuid, page_size, start_from_uuid=start_from_uuid)
+        print("The response of PublicApi->get_specimen_linking_specimen_imaging_preparation_protocol:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling PublicApi->get_specimen_in_specimen_imaging_preparation_protocol: %s\n" % e)
+        print("Exception when calling PublicApi->get_specimen_linking_specimen_imaging_preparation_protocol: %s\n" % e)
 ```
 
 
