@@ -41,6 +41,9 @@ jobs:
         # api moved to api/ , src left in as a reference as we transition. All tests there are failing and that directory will be deleted anyway
         run: |
           docker compose run -T bia-integrator-api poetry run pytest --ignore src
+      - name: Run client example tests to reuse db
+        run: |
+          make client.examples
       # Always cleanup - even for cancelled jobs
       - name: Docker Compose Down
         run: |
