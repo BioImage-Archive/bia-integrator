@@ -14,7 +14,7 @@ from .generic_conversion_utils import (
     get_generic_section_as_dict,
 )
 import bia_ingest.ingest.study as study_conversion
-from bia_ingest.ingest.image_acquisition import get_image_acquisition
+from bia_ingest.ingest.image_acquisition_protocol import get_image_acquisition_protocol
 from bia_ingest.ingest.specimen import get_specimen_for_dataset
 
 from .biostudies.api import (
@@ -28,18 +28,18 @@ from ..persistence_strategy import PersistenceStrategy
 logger = logging.getLogger("__main__." + __name__)
 
 
-def get_experimental_imaging_dataset(
+def get_dataset(
     submission: Submission,
     result_summary: dict,
     persister: Optional[PersistenceStrategy] = None,
-) -> List[bia_data_model.ExperimentalImagingDataset]:
+) -> List[bia_data_model.Dataset]:
     """
-    Map biostudies.Submission study components to bia_data_model.ExperimentalImagingDataset
+    Map biostudies.Submission study components to bia_data_model.Image
 
     The bia_data_model.Specimen and ImageAcquisitions associated with the
     dataset are also created here and their UUIDs stored in the
     associations attribute of the dataset. This allows
-    ExperimentallyCapturedImages to access them.
+    bia_data_model.Image objects to access them.
     """
     study_components = find_sections_recursive(
         submission.section,
@@ -51,11 +51,11 @@ def get_experimental_imaging_dataset(
     analysis_method_dict = get_image_analysis_method(submission, result_summary)
 
     # Get all image acquisitions in study
-    image_acquisitions = get_image_acquisition(
+    image_acquisition_protocols = get_image_acquisition_protocol(
         submission, result_summary, persister=persister
     )
 
-    experimental_imaging_datasets = []
+    datasets = []
     for section in study_components:
         attr_dict = attributes_to_dict(section.attributes)
         key_mapping = [
@@ -110,6 +110,14 @@ def get_experimental_imaging_dataset(
                 ):
                     analysis_method_list.append(analysis_method)
 
+        associations_as_attribute = {
+            "provenance": semantic_models.AttributeProvenance("bia_ingest"),
+            "name": "associations",
+            "value": {
+                "associations": associations,
+            },
+        }
+
         section_name = attr_dict["Name"]
         model_dict = {
             "title_id": section_name,
@@ -119,61 +127,79 @@ def get_experimental_imaging_dataset(
             "correlation_method": correlation_method_list,
             "example_image_uri": [],
             "version": 0,
-            "attribute": {"associations": associations},
+            "attribute": [
+                associations_as_attribute,
+            ],
         }
-        model_dict["uuid"] = generate_experimental_imaging_dataset_uuid(model_dict)
+        model_dict["uuid"] = generate_dataset_uuid(model_dict)
 
-        model_dict = filter_model_dictionary(
-            model_dict, bia_data_model.ExperimentalImagingDataset
-        )
+        model_dict = filter_model_dictionary(model_dict, bia_data_model.Dataset)
 
         try:
-            experimental_imaging_dataset = (
-                bia_data_model.ExperimentalImagingDataset.model_validate(model_dict)
-            )
-        except ValidationError:
+            dataset = bia_data_model.Dataset.model_validate(model_dict)
+        except ValidationError as validation_error:
+            logger.error(f"Error creating dataset. Error was: {validation_error}")
             log_failed_model_creation(
-                bia_data_model.ExperimentalImagingDataset,
+                bia_data_model.Dataset,
                 result_summary[submission.accno],
             )
 
         # Create ImageAcquisition and Specimen and add uuids to dataset associations
         image_acquisition_title = [
-            association["image_acquisition"]
-            for association in experimental_imaging_dataset.attribute["associations"]
+            association["image_acquisition"] for association in associations
         ]
         acquisition_process_uuid = [
-            str(ia.uuid)
-            for ia in image_acquisitions
-            if ia.title_id in image_acquisition_title
+            str(iap.uuid)
+            for iap in image_acquisition_protocols
+            if iap.title_id in image_acquisition_title
         ]
-        experimental_imaging_dataset.attribute["acquisition_process_uuid"] = (
-            acquisition_process_uuid
+        acquisition_process_uuid_attr_dict = {
+            "provenance": semantic_models.AttributeProvenance("bia_ingest"),
+            "name": "acquisition_process_uuid",
+            "value": {"acquisition_process_uuid": acquisition_process_uuid},
+        }
+        acquisition_process_uuid_as_attr = semantic_models.Attribute.model_validate(
+            acquisition_process_uuid_attr_dict
         )
+        dataset.attribute.append(acquisition_process_uuid_as_attr)
 
-        subject = get_specimen_for_dataset(
-            submission, experimental_imaging_dataset, result_summary
-        )
+        subject = get_specimen_for_dataset(submission, dataset, result_summary)
         if subject:
-            experimental_imaging_dataset.attribute["subject_uuid"] = str(subject.uuid)
-            experimental_imaging_dataset.attribute["biosample_uuid"] = str(
-                subject.sample_of_uuid
+            subject_uuid_attr_dict = {
+                "provenance": semantic_models.AttributeProvenance("bia_ingest"),
+                "name": "subject_uuid",
+                "value": {
+                    "subject_uuid": str(subject.uuid),
+                },
+            }
+            dataset.attribute.append(
+                semantic_models.Attribute.model_validate(subject_uuid_attr_dict)
+            )
+            sample_of_uuid_attr_dict = {
+                "provenance": semantic_models.AttributeProvenance("bia_ingest"),
+                "name": "biosample_uuid",
+                "value": {
+                    "biosample_uuid": str(subject.sample_of_uuid),
+                },
+            }
+            dataset.attribute.append(
+                semantic_models.Attribute.model_validate(sample_of_uuid_attr_dict)
             )
 
-        experimental_imaging_datasets.append(experimental_imaging_dataset)
+        datasets.append(dataset)
 
     log_model_creation_count(
-        bia_data_model.ExperimentalImagingDataset,
-        len(experimental_imaging_datasets),
+        bia_data_model.Dataset,
+        len(datasets),
         result_summary[submission.accno],
     )
 
-    if persister and experimental_imaging_datasets:
+    if persister and datasets:
         persister.persist(
-            experimental_imaging_datasets,
+            datasets,
         )
 
-    return experimental_imaging_datasets
+    return datasets
 
 
 def get_image_analysis_method(
@@ -203,12 +229,12 @@ def get_image_analysis_method(
     )
 
 
-def generate_experimental_imaging_dataset_uuid(
-    experimental_imaging_dataset_dict: Dict[str, Any],
+def generate_dataset_uuid(
+    dataset_dict: Dict[str, Any],
 ) -> str:
     # TODO: Add 'description' to computation of uuid (Maybe accno?)
     attributes_to_consider = [
         "title_id",
         "submitted_in_study_uuid",
     ]
-    return dict_to_uuid(experimental_imaging_dataset_dict, attributes_to_consider)
+    return dict_to_uuid(dataset_dict, attributes_to_consider)

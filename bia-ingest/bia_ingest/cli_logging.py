@@ -14,28 +14,22 @@ class CLIResult(BaseModel):
 class IngestionResult(CLIResult):
     Study_CreationCount: int = Field(default=0)
     Study_ValidationErrorCount: int = Field(default=0)
-    ExperimentalImagingDataset_CreationCount: int = Field(default=0)
-    ExperimentalImagingDataset_ValidationErrorCount: int = Field(default=0)
+    Dataset_CreationCount: int = Field(default=0)
+    Dataset_ValidationErrorCount: int = Field(default=0)
     AnnotationDataset_CreationCount: int = Field(default=0)
     AnnotationDataset_ValidationErrorCount: int = Field(default=0)
     FileReference_CreationCount: int = Field(default=0)
     FileReferenceValidation_ErrorCount: int = Field(default=0)
     BioSample_CreationCount: int = Field(default=0)
     BioSample_ValidationErrorCount: int = Field(default=0)
-    SpecimenGrowthProtocol_CreationCount: int = Field(default=0)
-    SpecimenGrowthProtocol_ValidationErrorCount: int = Field(default=0)
     SpecimenImagingPreparationProtocol_CreationCount: int = Field(default=0)
     SpecimenImagingPreparationProtocol_ValidationErrorCount: int = Field(default=0)
     Specimen_CreationCount: int = Field(default=0)
     Specimen_ValidationErrorCount: int = Field(default=0)
-    ImageAcquisition_CreationCount: int = Field(default=0)
-    ImageAcquisition_ValidationErrorCount: int = Field(default=0)
-    DerivedImage_CreationCount: int = Field(default=0)
-    DerivedImage_ValidationErrorCount: int = Field(default=0)
+    ImageAcquisitionProtocol_CreationCount: int = Field(default=0)
+    ImageAcquisitionProtocol_ValidationErrorCount: int = Field(default=0)
     AnnotationMethod_CreationCount: int = Field(default=0)
     AnnotationMethod_ValidationErrorCount: int = Field(default=0)
-    ImageAnnotationDataset_CreationCount: int = Field(default=0)
-    ImageAnnotationDataset_ValidationErrorCount: int = Field(default=0)
     AnnotationFile_CreationCount: int = Field(default=0)
     AnnotationFile_ValidationErrorCount: int = Field(default=0)
     ImageAnalysisMethod_CreationCount: int = Field(default=0)
@@ -72,33 +66,25 @@ def tabulate_ingestion_errors(dict_of_results: dict[str, IngestionResult]) -> Ta
             if field.endswith("ValidationErrorCount") & value > 0:
                 error_message += f"{field}: {value}; "
 
-        if (
-            result.ExperimentalImagingDataset_CreationCount
-            == 0 & result.ImageAnnotationDataset_CreationCount
-            == 0
-        ):
+        if result.Dataset_CreationCount == 0:
             error_message += "No datasets were created; "
 
-        if result.ExperimentalImagingDataset_CreationCount > 0:
+        if result.Dataset_CreationCount > 0:
             if not (
                 result.BioSample_CreationCount
                 == 0 & result.SpecimenImagingPreparationProtocol_CreationCount
-                == 0 & result.ImageAcquisition_CreationCount
+                == 0 & result.ImageAcquisitionProtocol_CreationCount
                 == 0
             ):
                 if (
                     result.BioSample_CreationCount
                     == 0 | result.SpecimenImagingPreparationProtocol_CreationCount
-                    == 0 | result.ImageAcquisition_CreationCount
+                    == 0 | result.ImageAcquisitionProtocol_CreationCount
                     == 0
                 ):
                     error_message += "Incomplete REMBI objects created; "
             else:
                 error_message += "No REMBI objects associated with Dataset; "
-
-        if result.ImageAnnotationDataset_CreationCount > 0:
-            if result.AnnotationMethod_CreationCount == 0:
-                error_message += "No Annotation Method associated with Dataset; "
 
         if error_message == "":
             status = Text("Success")

@@ -56,28 +56,44 @@ def get_study(
     if "Keywords" in study_attributes:
         study_attributes.pop("Keywords")
 
+    description = study_attributes.pop("Description", "")
+    acknowledgement = study_attributes.pop("Acknowledgements", "")
+    funding_statement = study_attributes.pop("Funding statement", "")
+    # Put remaining attributes in bia_data_model.study.attribute
+    attribute = [
+        {
+            "provenance": semantic_models.AttributeProvenance("bia_ingest"),
+            "name": "Extras from biostudies.Submission.attributes",
+            "value": {key: value},
+        }
+        for key, value in study_attributes.items()
+    ]
+
     study_dict = {
         "uuid": get_study_uuid(submission),
         "accession_id": submission.accno,
         # TODO: Do more robust search for title - sometimes it is in
         #       actual submission - see old ingest code
         "title": study_title,
-        "description": study_attributes.pop("Description", None),
+        "description": description,
         "release_date": submission_attributes.pop("ReleaseDate"),
         "licence": licence,
-        "acknowledgement": study_attributes.pop("Acknowledgements", None),
-        "funding_statement": study_attributes.pop("Funding statement", None),
+        "acknowledgement": acknowledgement,
+        "funding_statement": funding_statement,
         "keyword": keywords,
         "author": [c.model_dump() for c in contributors],
         "grant": [g.model_dump() for g in grants],
-        "attribute": study_attributes,
+        "attribute": attribute,
         "version": 0,
     }
     try:
         study = bia_data_model.Study.model_validate(study_dict)
-    except ValidationError:
+    except ValidationError as validation_error:
         log_failed_model_creation(
             bia_data_model.Study, result_summary[submission.accno]
+        )
+        logger.error(
+            f"Error creating study for {submission.accno}. Error was: {validation_error}"
         )
 
     if persister:

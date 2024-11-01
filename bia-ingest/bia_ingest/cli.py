@@ -5,15 +5,10 @@ from typing_extensions import Annotated
 from bia_ingest.ingest.biostudies.api import load_submission, load_submission_table_info
 from bia_ingest.config import settings, api_client
 from bia_ingest.ingest.study import get_study
-from bia_ingest.ingest.experimental_imaging_dataset import (
-    get_experimental_imaging_dataset,
-)
+from bia_ingest.ingest.dataset import get_dataset
 from bia_ingest.ingest.file_reference import get_file_reference_by_dataset
 from bia_ingest.ingest.specimen import get_specimen
-from bia_ingest.ingest.image_acquisition import get_image_acquisition
-from bia_ingest.ingest.image_annotation_dataset import (
-    get_image_annotation_dataset,
-)
+from bia_ingest.ingest.image_acquisition_protocol import get_image_acquisition_protocol
 from bia_ingest.ingest.annotation_method import get_annotation_method
 from bia_ingest.persistence_strategy import (
     PersistenceMode,
@@ -81,13 +76,7 @@ def ingest(
 
         get_study(submission, result_summary, persister=persister)
 
-        experimental_imaging_datasets = get_experimental_imaging_dataset(
-            submission, result_summary, persister=persister
-        )
-
-        image_annotation_datasets = get_image_annotation_dataset(
-            submission, result_summary, persister=persister
-        )
+        datasets = get_dataset(submission, result_summary, persister=persister)
 
         process_files = determine_file_processing(
             process_filelist,
@@ -97,14 +86,14 @@ def ingest(
         if process_files:
             get_file_reference_by_dataset(
                 submission,
-                experimental_imaging_datasets + image_annotation_datasets,
+                datasets,
                 result_summary,
                 persister=persister,
             )
         else:
             logger.info("Skipping file reference creation.")
 
-        get_image_acquisition(submission, result_summary, persister=persister)
+        get_image_acquisition_protocol(submission, result_summary, persister=persister)
 
         # Specimen
         # Biosample and Specimen artefacts are processed as part of bia_data_models.Specimen (note - this is very different from Biostudies.Specimen)

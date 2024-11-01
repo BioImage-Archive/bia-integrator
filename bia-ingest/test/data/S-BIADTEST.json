@@ -41,7 +41,14 @@
     }, {
       "name" : "Funding statement",
       "value" : "This work was funded by the EBI"
-    } ],
+    }, {
+      "name" : "Extra attribute 1",
+      "value" : "Extra attribute 1 to test semantic_model.study.attribute"
+    }, {
+      "name" : "Extra attribute 2",
+      "value" : "Extra attribute 2 to test semantic_model.study.attribute"
+    }
+  ],
     "links" : [ {
       "url" : "https://www.test.link1.com/",
       "attributes" : [ {
