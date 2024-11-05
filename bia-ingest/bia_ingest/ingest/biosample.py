@@ -57,6 +57,8 @@ def extract_biosample_dicts(submission: Submission) -> List[Dict[str, Any]]:
     model_dicts = []
     for section in biosample_sections:
         attr_dict = attributes_to_dict(section.attributes)
+        for subsection in section.subsections:
+            attr_dict |= attributes_to_dict(subsection.attributes)
 
         model_dict = {
             k: case_insensitive_get(attr_dict, v, default)
@@ -73,13 +75,16 @@ def extract_biosample_dicts(submission: Submission) -> List[Dict[str, Any]]:
         except ValueError:
             organism_scientific_name = organism
             organism_common_name = ""
-        taxon = semantic_models.Taxon.model_validate(
-            {
-                "common_name": organism_common_name.strip(),
-                "scientific_name": organism_scientific_name.strip(),
-                "ncbi_id": None,
-            }
-        )
+        taxon_key_mapping = [
+            ("common_name", "Common name", organism_common_name.strip()),
+            ("scientific_name", "Scientific name", organism_scientific_name.strip()),
+            ("ncbi_id", "NCBI taxon ID", None),
+        ]
+        taxon_dict = {
+            k: case_insensitive_get(attr_dict, v, default)
+            for k, v, default in taxon_key_mapping
+        }
+        taxon = semantic_models.Taxon.model_validate(taxon_dict)
         model_dict["organism_classification"] = [taxon.model_dump()]
 
         # Populate intrinsic and extrinsic variables
