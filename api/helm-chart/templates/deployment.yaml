@@ -61,5 +61,7 @@ spec:
               value: "{{ .Values.api_env.dbName }}"
             - name: MONGO_TIMEOUT_MS
               value: "{{ .Values.api_env.mongoTimeoutMs }}"
+            - name: FASTAPI_ROOT_PATH
+              value: "{{ .Values.api_env.fastapiRootPath }}"
             - name: MONGO_INDEX_PUSH
               value: "{{ .Values.api_env.mongoIndexPush }}"

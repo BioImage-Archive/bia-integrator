@@ -33,6 +33,7 @@ api_env:
   mongoIndexPush: "false"
   jwtSecretKey: ""
   userCreateSecretToken: ""
+  fastapiRootPath: ""
 
 mongodb:
   enabled: false
