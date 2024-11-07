@@ -52,134 +52,134 @@ def get_test_dataset_association_dicts() -> List[List[dict]]:
     ]
 
 
-def get_test_experimentally_captured_image() -> (
-    List[bia_data_model.ExperimentallyCapturedImage]
-):
-    image_acquisition_uuids = [str(ia.uuid) for ia in get_test_image_acquisition()]
-    specimen_uuids = [
-        str(specimen.uuid)
-        for specimen in get_test_specimen_for_experimentally_captured_image()
-    ]
-    experimental_imaging_dataset_uuids = [
-        str(eid.uuid) for eid in get_test_experimental_imaging_dataset()
-    ]
-    experimentally_captured_image_dicts = [
-        {
-            "path": "study_component1/im06.png",
-            "acquisition_process_uuid": image_acquisition_uuids,
-            "submission_dataset_uuid": experimental_imaging_dataset_uuids[0],
-            # TODO: All details from all associations have to be made
-            # into a single bia_data_model.Specimen - see clickup ticket
-            # https://app.clickup.com/t/8695fqxpy
-            # For now just storing uuid of specimen for first association
-            "subject_uuid": specimen_uuids[0],
-            "attribute": {
-                "AnnotationsIn": "ann06-10.json",
-                "metadata1_key": "metadata1_value",
-                "metadata2_key": "metadata2_value",
-            },
-        },
-        {
-            "path": "study_component1/im08.png",
-            "acquisition_process_uuid": image_acquisition_uuids,
-            "submission_dataset_uuid": experimental_imaging_dataset_uuids[0],
-            "subject_uuid": specimen_uuids[0],
-            "attribute": {
-                "AnnotationsIn": "ann06-10.json",
-                "metadata3_key": "metadata3_value",
-                "metadata4_key": "metadata4_value",
-            },
-        },
-        {
-            "path": "study_component2/im06.png",
-            "acquisition_process_uuid": [
-                image_acquisition_uuids[0],
-            ],
-            "submission_dataset_uuid": experimental_imaging_dataset_uuids[1],
-            "subject_uuid": specimen_uuids[1],
-            "attribute": {
-                "AnnotationsIn": "ann06-10.json",
-                "metadata1_key": "metadata1_value",
-                "metadata2_key": "metadata2_value",
-            },
-        },
-        {
-            "path": "study_component2/im08.png",
-            "acquisition_process_uuid": [
-                image_acquisition_uuids[0],
-            ],
-            "submission_dataset_uuid": experimental_imaging_dataset_uuids[1],
-            "subject_uuid": specimen_uuids[1],
-            "attribute": {
-                "AnnotationsIn": "ann06-10.json",
-                "metadata3_key": "metadata3_value",
-                "metadata4_key": "metadata4_value",
-            },
-        },
-    ]
-
-    experimentally_captured_images = []
-    attributes_to_consider = [
-        "path",
-        "acquisition_process_uuid",
-        "submission_dataset_uuid",
-        "subject_uuid",
-    ]
-    for eci in experimentally_captured_image_dicts:
-        eci["uuid"] = dict_to_uuid(eci, attributes_to_consider)
-        eci["version"] = 0
-        eci.pop("path")
-        experimentally_captured_images.append(
-            bia_data_model.ExperimentallyCapturedImage.model_validate(eci)
-        )
-
-    return experimentally_captured_images
-
-
-def get_test_image_annotation_dataset() -> List[bia_data_model.ImageAnnotationDataset]:
-    study_uuid = dict_to_uuid(
-        {
-            "accession_id": accession_id,
-        },
-        attributes_to_consider=[
-            "accession_id",
-        ],
-    )
-
-    attributes_to_consider = [
-        "accession_id",
-        "accno",
-        "title_id",
-    ]
-
-    image_annotation_dataset_info = [
-        {
-            "accno": "Annotations-29",
-            "accession_id": accession_id,
-            "title_id": "Segmentation masks",
-            "example_image_uri": [],
-            "submitted_in_study_uuid": study_uuid,
-            "version": 0,
-            "attribute": {},
-        },
-    ]
-
-    image_annotation_dataset = []
-    for image_annotation_dataset_dict in image_annotation_dataset_info:
-        image_annotation_dataset_dict["uuid"] = dict_to_uuid(
-            image_annotation_dataset_dict, attributes_to_consider
-        )
-        image_annotation_dataset_dict = filter_model_dictionary(
-            image_annotation_dataset_dict, bia_data_model.ImageAnnotationDataset
-        )
-        image_annotation_dataset.append(
-            bia_data_model.ImageAnnotationDataset.model_validate(
-                image_annotation_dataset_dict
-            )
-        )
-    return image_annotation_dataset
-
-
+# def get_test_image() -> (
+#    List[bia_data_model.Image]
+# ):
+#    image_acquisition_protocol_uuids = [str(iap.uuid) for iap in get_test_image_acquisition_protocol()]
+#    specimen_uuids = [
+#        str(specimen.uuid)
+#        for specimen in get_test_specimen_for_experimentally_captured_image()
+#    ]
+#    experimental_imaging_dataset_uuids = [
+#        str(eid.uuid) for eid in get_test_experimental_imaging_dataset()
+#    ]
+#    experimentally_captured_image_dicts = [
+#        {
+#            "path": "study_component1/im06.png",
+#            "acquisition_process_uuid": image_acquisition_protocol_uuids,
+#            "submission_dataset_uuid": experimental_imaging_dataset_uuids[0],
+#            # TODO: All details from all associations have to be made
+#            # into a single bia_data_model.Specimen - see clickup ticket
+#            # https://app.clickup.com/t/8695fqxpy
+#            # For now just storing uuid of specimen for first association
+#            "subject_uuid": specimen_uuids[0],
+#            "attribute": {
+#                "AnnotationsIn": "ann06-10.json",
+#                "metadata1_key": "metadata1_value",
+#                "metadata2_key": "metadata2_value",
+#            },
+#        },
+#        {
+#            "path": "study_component1/im08.png",
+#            "acquisition_process_uuid": image_acquisition_protocol_uuids,
+#            "submission_dataset_uuid": experimental_imaging_dataset_uuids[0],
+#            "subject_uuid": specimen_uuids[0],
+#            "attribute": {
+#                "AnnotationsIn": "ann06-10.json",
+#                "metadata3_key": "metadata3_value",
+#                "metadata4_key": "metadata4_value",
+#            },
+#        },
+#        {
+#            "path": "study_component2/im06.png",
+#            "acquisition_process_uuid": [
+#                image_acquisition_protocol_uuids[0],
+#            ],
+#            "submission_dataset_uuid": experimental_imaging_dataset_uuids[1],
+#            "subject_uuid": specimen_uuids[1],
+#            "attribute": {
+#                "AnnotationsIn": "ann06-10.json",
+#                "metadata1_key": "metadata1_value",
+#                "metadata2_key": "metadata2_value",
+#            },
+#        },
+#        {
+#            "path": "study_component2/im08.png",
+#            "acquisition_process_uuid": [
+#                image_acquisition_protocol_uuids[0],
+#            ],
+#            "submission_dataset_uuid": experimental_imaging_dataset_uuids[1],
+#            "subject_uuid": specimen_uuids[1],
+#            "attribute": {
+#                "AnnotationsIn": "ann06-10.json",
+#                "metadata3_key": "metadata3_value",
+#                "metadata4_key": "metadata4_value",
+#            },
+#        },
+#    ]
+#
+#    experimentally_captured_images = []
+#    attributes_to_consider = [
+#        "path",
+#        "acquisition_process_uuid",
+#        "submission_dataset_uuid",
+#        "subject_uuid",
+#    ]
+#    for eci in experimentally_captured_image_dicts:
+#        eci["uuid"] = dict_to_uuid(eci, attributes_to_consider)
+#        eci["version"] = 0
+#        eci.pop("path")
+#        experimentally_captured_images.append(
+#            bia_data_model.ExperimentallyCapturedImage.model_validate(eci)
+#        )
+#
+#    return experimentally_captured_images
+#
+#
+# def get_test_image_annotation_dataset() -> List[bia_data_model.ImageAnnotationDataset]:
+#    study_uuid = dict_to_uuid(
+#        {
+#            "accession_id": accession_id,
+#        },
+#        attributes_to_consider=[
+#            "accession_id",
+#        ],
+#    )
+#
+#    attributes_to_consider = [
+#        "accession_id",
+#        "accno",
+#        "title_id",
+#    ]
+#
+#    image_annotation_dataset_info = [
+#        {
+#            "accno": "Annotations-29",
+#            "accession_id": accession_id,
+#            "title_id": "Segmentation masks",
+#            "example_image_uri": [],
+#            "submitted_in_study_uuid": study_uuid,
+#            "version": 0,
+#            "attribute": {},
+#        },
+#    ]
+#
+#    image_annotation_dataset = []
+#    for image_annotation_dataset_dict in image_annotation_dataset_info:
+#        image_annotation_dataset_dict["uuid"] = dict_to_uuid(
+#            image_annotation_dataset_dict, attributes_to_consider
+#        )
+#        image_annotation_dataset_dict = filter_model_dictionary(
+#            image_annotation_dataset_dict, bia_data_model.ImageAnnotationDataset
+#        )
+#        image_annotation_dataset.append(
+#            bia_data_model.ImageAnnotationDataset.model_validate(
+#                image_annotation_dataset_dict
+#            )
+#        )
+#    return image_annotation_dataset
+#
+#
 def get_test_annotation_method() -> List[bia_data_model.AnnotationMethod]:
     # For UUID
     attributes_to_consider = [
@@ -190,7 +190,6 @@ def get_test_annotation_method() -> List[bia_data_model.AnnotationMethod]:
         "annotation_criteria",
         "annotation_coverage",
         "method_type",
-        "source_dataset",
     ]
     annotation_method_info = [
         {
@@ -200,8 +199,9 @@ def get_test_annotation_method() -> List[bia_data_model.AnnotationMethod]:
             "protocol_description": "Test annotation overview 1",
             "annotation_criteria": "Test annotation criteria 1",
             "annotation_coverage": None,
-            "method_type": "other",
-            "source_dataset": [],
+            "method_type": [
+                semantic_models.AnnotationMethodType("other"),
+            ],
             "version": 0,
         },
     ]
@@ -220,7 +220,7 @@ def get_test_annotation_method() -> List[bia_data_model.AnnotationMethod]:
     return annotation_method
 
 
-def get_test_specimen_growth_protocol() -> List[bia_data_model.SpecimenGrowthProtocol]:
+def get_test_specimen_growth_protocol() -> List[bia_data_model.Protocol]:
     # For UUID
     attributes_to_consider = [
         "accession_id",
@@ -248,12 +248,8 @@ def get_test_specimen_growth_protocol() -> List[bia_data_model.SpecimenGrowthPro
     protocol = []
     for protocol_dict in protocol_info:
         protocol_dict["uuid"] = dict_to_uuid(protocol_dict, attributes_to_consider)
-        protocol_dict = filter_model_dictionary(
-            protocol_dict, bia_data_model.SpecimenGrowthProtocol
-        )
-        protocol.append(
-            bia_data_model.SpecimenGrowthProtocol.model_validate(protocol_dict)
-        )
+        protocol_dict = filter_model_dictionary(protocol_dict, bia_data_model.Protocol)
+        protocol.append(bia_data_model.Protocol.model_validate(protocol_dict))
     return protocol
 
 
@@ -377,7 +373,9 @@ def get_test_biosample() -> List[bia_data_model.BioSample]:
     return biosample
 
 
-def get_test_image_acquisition() -> List[bia_data_model.ImageAcquisition]:
+def get_test_image_acquisition_protocol() -> (
+    List[bia_data_model.ImageAcquisitionProtocol]
+):
     attributes_to_consider = [
         "accession_id",
         "accno",
@@ -387,7 +385,7 @@ def get_test_image_acquisition() -> List[bia_data_model.ImageAcquisition]:
         "imaging_method_name",
         "fbbi_id",
     ]
-    image_acquisition_info = [
+    image_acquisition_protocol_info = [
         {
             "accno": "Image acquisition-3",
             "accession_id": accession_id,
@@ -413,18 +411,20 @@ def get_test_image_acquisition() -> List[bia_data_model.ImageAcquisition]:
             "version": 0,
         },
     ]
-    image_acquisition = []
-    for image_acquisition_dict in image_acquisition_info:
-        image_acquisition_dict["uuid"] = dict_to_uuid(
-            image_acquisition_dict, attributes_to_consider
+    image_acquisition_protocol = []
+    for image_acquisition_protocol_dict in image_acquisition_protocol_info:
+        image_acquisition_protocol_dict["uuid"] = dict_to_uuid(
+            image_acquisition_protocol_dict, attributes_to_consider
         )
-        image_acquisition_dict = filter_model_dictionary(
-            image_acquisition_dict, bia_data_model.ImageAcquisition
+        image_acquisition_protocol_dict = filter_model_dictionary(
+            image_acquisition_protocol_dict, bia_data_model.ImageAcquisitionProtocol
         )
-        image_acquisition.append(
-            bia_data_model.ImageAcquisition.model_validate(image_acquisition_dict)
+        image_acquisition_protocol.append(
+            bia_data_model.ImageAcquisitionProtocol.model_validate(
+                image_acquisition_protocol_dict
+            )
         )
-    return image_acquisition
+    return image_acquisition_protocol
 
 
 def get_test_specimen() -> bia_data_model.Specimen:
@@ -432,14 +432,10 @@ def get_test_specimen() -> bia_data_model.Specimen:
         "accession_id",
         "imaging_preparation_protocol_uuid",
         "sample_of_uuid",
-        "growth_protocol_uuid",
     ]
     imaging_preparation_protocols = {
         ipp.title_id: ipp.uuid
         for ipp in get_test_specimen_imaging_preparation_protocol()
-    }
-    growth_protocols = {
-        gp.title_id: gp.uuid for gp in get_test_specimen_growth_protocol()
     }
     biosamples = {
         biosample.title_id: biosample.uuid for biosample in get_test_biosample()
@@ -471,9 +467,6 @@ def get_test_specimen() -> bia_data_model.Specimen:
             "sample_of_uuid": [
                 biosamples[biosample_title],
             ],
-            "growth_protocol_uuid": [
-                growth_protocols[specimen_title],
-            ],
             "accession_id": accession_id,
         }
         specimen_dict["uuid"] = dict_to_uuid(specimen_dict, attributes_to_consider)
@@ -489,19 +482,15 @@ def get_test_specimen() -> bia_data_model.Specimen:
 # uses correct form of Specimen where all artefacts in association for
 # a dataset are in one Specimen object (see https://app.clickup.com/t/8695fqxpy )
 # TODO: Consolidate this function and get_test_specimen() into one
-def get_test_specimen_for_experimentally_captured_image() -> bia_data_model.Specimen:
+def get_test_specimen_for_image() -> bia_data_model.Specimen:
     attributes_to_consider = [
         "accession_id",
         "imaging_preparation_protocol_uuid",
         "sample_of_uuid",
-        "growth_protocol_uuid",
     ]
     imaging_preparation_protocols = {
         ipp.title_id: ipp.uuid
         for ipp in get_test_specimen_imaging_preparation_protocol()
-    }
-    growth_protocols = {
-        gp.title_id: gp.uuid for gp in get_test_specimen_growth_protocol()
     }
     biosamples = {
         biosample.title_id: biosample.uuid for biosample in get_test_biosample()
@@ -519,9 +508,6 @@ def get_test_specimen_for_experimentally_captured_image() -> bia_data_model.Spec
             ],
             "sample_of_uuid": [
                 biosamples[biosample_title] for biosample_title in biosample_titles
-            ],
-            "growth_protocol_uuid": [
-                growth_protocols[specimen_title],
             ],
             "accession_id": accession_id,
         }
@@ -543,16 +529,16 @@ def get_test_image_analysis_method() -> semantic_models.ImageAnalysisMethod:
     )
 
 
-def get_test_image_correlation_method() -> semantic_models.ImageCorrelationMethod:
-    return semantic_models.ImageCorrelationMethod.model_validate(
-        {
-            "protocol_description": "Template Analysis method",
-            "fiducials_used": "Template fiducials used",
-            "transformation_matrix": "Template transformation matrix",
-        }
-    )
-
-
+# def get_test_image_correlation_method() -> semantic_models.ImageCorrelationMethod:
+#    return semantic_models.ImageCorrelationMethod.model_validate(
+#        {
+#            "protocol_description": "Template Analysis method",
+#            "fiducials_used": "Template fiducials used",
+#            "transformation_matrix": "Template transformation matrix",
+#        }
+#    )
+#
+#
 def get_test_file_list_data(file_list_name) -> List[Dict[str, int | str]]:
     """Return file list contents as dict"""
 
@@ -569,13 +555,21 @@ def get_test_file_reference_data(filelist: str) -> List[Dict[str, str]]:
     """
 
     dataset_index = int(filelist.split("study_component_")[1][0]) - 1
-    submission_dataset_uuids = [s.uuid for s in get_test_experimental_imaging_dataset()]
+    submission_dataset_uuids = [s.uuid for s in get_test_dataset()]
     uri_template = "https://www.ebi.ac.uk/biostudies/files/{accession_id}/{file_path}"
     file_list_data = get_test_file_list_data(filelist)
 
     file_reference_data = []
 
     for fl_data in file_list_data:
+        attributes = {a["name"]: a.get("value", None) for a in fl_data["attributes"]}
+        attributes_as_attr_dict = {
+            "provenance": semantic_models.AttributeProvenance("bia_ingest"),
+            "name": "attributes_from_biostudies.File",
+            "value": {
+                "attributes": attributes,
+            },
+        }
         file_reference_data.append(
             {
                 "accession_id": accession_id,
@@ -585,9 +579,9 @@ def get_test_file_reference_data(filelist: str) -> List[Dict[str, str]]:
                 "uri": uri_template.format(
                     accession_id=accession_id, file_path=fl_data["path"]
                 ),
-                "attribute": {
-                    a["name"]: a.get("value", None) for a in fl_data["attributes"]
-                },
+                "attribute": [
+                    attributes_as_attr_dict,
+                ],
                 "submission_dataset_uuid": submission_dataset_uuids[dataset_index],
             }
         )
@@ -618,9 +612,7 @@ def get_test_file_reference(
     return file_references
 
 
-def get_test_experimental_imaging_dataset() -> (
-    List[bia_data_model.ExperimentalImagingDataset]
-):
+def get_test_dataset() -> List[bia_data_model.Dataset]:
     study_uuid = dict_to_uuid(
         {
             "accession_id": accession_id,
@@ -630,10 +622,12 @@ def get_test_experimental_imaging_dataset() -> (
         ],
     )
     associations = get_test_dataset_association_dicts()
-    specimens = get_test_specimen_for_experimentally_captured_image()
-    image_acquisition_uuids = [str(ia.uuid) for ia in get_test_image_acquisition()]
+    specimens = get_test_specimen_for_image()
+    image_acquisition_protocol_uuids = [
+        str(iap.uuid) for iap in get_test_image_acquisition_protocol()
+    ]
 
-    experimental_imaging_dataset_dict = {
+    dataset_dict = {
         "title_id": "Study Component 1",
         "submitted_in_study_uuid": study_uuid,
         "analysis_method": [
@@ -645,31 +639,48 @@ def get_test_experimental_imaging_dataset() -> (
         "example_image_uri": [],
         "description": "Description of study component 1",
         "version": 0,
-        "attribute": {
-            "associations": associations[0],
-            "acquisition_process_uuid": image_acquisition_uuids,
-            "subject_uuid": str(specimens[0].uuid),
-            "biosample_uuid": str(specimens[0].sample_of_uuid),
-        },
+        "attribute": [
+            {
+                "provenance": semantic_models.AttributeProvenance("bia_ingest"),
+                "name": "associations",
+                "value": {
+                    "associations": associations[0],
+                },
+            },
+            {
+                "provenance": semantic_models.AttributeProvenance("bia_ingest"),
+                "name": "acquisition_process_uuid",
+                "value": {
+                    "acquisition_process_uuid": image_acquisition_protocol_uuids,
+                },
+            },
+            {
+                "provenance": semantic_models.AttributeProvenance("bia_ingest"),
+                "name": "subject_uuid",
+                "value": {"subject_uuid": str(specimens[0].uuid)},
+            },
+            {
+                "provenance": semantic_models.AttributeProvenance("bia_ingest"),
+                "name": "biosample_uuid",
+                "value": {
+                    "biosample_uuid": str(specimens[0].sample_of_uuid),
+                },
+            },
+        ],
     }
-    experimental_imaging_dataset_uuid = dict_to_uuid(
-        experimental_imaging_dataset_dict,
+
+    dataset_uuid = dict_to_uuid(
+        dataset_dict,
         [
             "title_id",
             "submitted_in_study_uuid",
         ],
     )
-    experimental_imaging_dataset_dict["uuid"] = experimental_imaging_dataset_uuid
-    experimental_imaging_dataset_dict = filter_model_dictionary(
-        experimental_imaging_dataset_dict, bia_data_model.ExperimentalImagingDataset
-    )
-    experimental_imaging_dataset1 = (
-        bia_data_model.ExperimentalImagingDataset.model_validate(
-            experimental_imaging_dataset_dict
-        )
-    )
+    dataset_dict["uuid"] = dataset_uuid
+    dataset_dict = filter_model_dictionary(dataset_dict, bia_data_model.Dataset)
+    dataset1 = bia_data_model.Dataset.model_validate(dataset_dict)
 
-    experimental_imaging_dataset_dict = {
+    dataset_dict = {
         "title_id": "Study Component 2",
         "submitted_in_study_uuid": study_uuid,
         "analysis_method": [
@@ -681,29 +692,47 @@ def get_test_experimental_imaging_dataset() -> (
         "example_image_uri": [],
         "description": "Description of study component 2",
         "version": 0,
-        "attribute": {
-            "associations": associations[1],
-            "acquisition_process_uuid": [
-                image_acquisition_uuids[0],
-            ],
-            "subject_uuid": str(specimens[1].uuid),
-            "biosample_uuid": str(specimens[1].sample_of_uuid),
-        },
+        "attribute": [
+            {
+                "provenance": semantic_models.AttributeProvenance("bia_ingest"),
+                "name": "associations",
+                "value": {
+                    "associations": associations[1],
+                },
+            },
+            {
+                "provenance": semantic_models.AttributeProvenance("bia_ingest"),
+                "name": "acquisition_process_uuid",
+                "value": {
+                    "acquisition_process_uuid": [
+                        image_acquisition_protocol_uuids[0],
+                    ]
+                },
+            },
+            {
+                "provenance": semantic_models.AttributeProvenance("bia_ingest"),
+                "name": "subject_uuid",
+                "value": {"subject_uuid": str(specimens[1].uuid)},
+            },
+            {
+                "provenance": semantic_models.AttributeProvenance("bia_ingest"),
+                "name": "biosample_uuid",
+                "value": {
+                    "biosample_uuid": str(specimens[1].sample_of_uuid),
+                },
+            },
+        ],
     }
-    experimental_imaging_dataset_uuid = dict_to_uuid(
-        experimental_imaging_dataset_dict,
+    dataset_uuid = dict_to_uuid(
+        dataset_dict,
         [
             "title_id",
             "submitted_in_study_uuid",
         ],
     )
-    experimental_imaging_dataset_dict["uuid"] = experimental_imaging_dataset_uuid
-    experimental_imaging_dataset2 = (
-        bia_data_model.ExperimentalImagingDataset.model_validate(
-            experimental_imaging_dataset_dict
-        )
-    )
-    return [experimental_imaging_dataset1, experimental_imaging_dataset2]
+    dataset_dict["uuid"] = dataset_uuid
+    dataset2 = bia_data_model.Dataset.model_validate(dataset_dict)
+    return [dataset1, dataset2]
 
 
 def get_test_affiliation() -> Dict[str, semantic_models.Affiliation]:
@@ -858,7 +887,22 @@ def get_test_study() -> bia_data_model.Study:
         "licence": semantic_models.LicenceType.CC0,
         "acknowledgement": "We thank you",
         "funding_statement": "This work was funded by the EBI",
-        "attribute": {},
+        "attribute": [
+            {
+                "provenance": semantic_models.AttributeProvenance("bia_ingest"),
+                "name": "Extras from biostudies.Submission.attributes",
+                "value": {
+                    "Extra attribute 1": "Extra attribute 1 to test semantic_model.study.attribute",
+                },
+            },
+            {
+                "provenance": semantic_models.AttributeProvenance("bia_ingest"),
+                "name": "Extras from biostudies.Submission.attributes",
+                "value": {
+                    "Extra attribute 2": "Extra attribute 2 to test semantic_model.study.attribute",
+                },
+            },
+        ],
         "related_publication": [],
         "author": [c.model_dump() for c in contributor],
         "keyword": [

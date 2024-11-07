@@ -13,7 +13,7 @@ from .biostudies.api import (
     flist_from_flist_fname,
 )
 from .biostudies import api  # To make reference to biostudies.File explicit
-from bia_shared_datamodels import bia_data_model
+from bia_shared_datamodels import bia_data_model, semantic_models
 from ..persistence_strategy import PersistenceStrategy
 
 logger = logging.getLogger("__main__." + __name__)
@@ -21,10 +21,7 @@ logger = logging.getLogger("__main__." + __name__)
 
 def get_file_reference_by_dataset(
     submission: Submission,
-    datasets_in_submission: List[
-        bia_data_model.ExperimentalImagingDataset
-        | bia_data_model.ImageAnnotationDataset
-    ],
+    datasets_in_submission: List[bia_data_model.Dataset],
     result_summary: dict,
     persister: Optional[PersistenceStrategy] = None,
 ) -> Dict[str, List[bia_data_model.FileReference]]:
@@ -81,10 +78,7 @@ def get_file_reference_by_dataset(
 
 def get_file_reference_for_submission_dataset(
     accession_id: str,
-    submission_dataset: (
-        bia_data_model.ExperimentalImagingDataset
-        | bia_data_model.ImageAnnotationDataset
-    ),
+    submission_dataset: (bia_data_model.Dataset),
     files_in_file_list: List[api.File],
     result_summary: dict,
 ) -> List[bia_data_model.FileReference]:
@@ -106,15 +100,28 @@ def get_file_reference_for_submission_dataset(
         file_dict["uri"] = file_uri(accession_id, f)
         file_dict["submission_dataset_uuid"] = submission_dataset.uuid
         file_dict["format"] = f.type
-        file_dict["attribute"] = attributes_to_dict(f.attributes)
         file_dict["version"] = 0
+
+        attributes = attributes_to_dict(f.attributes)
+        # Make into dict for semantic_models.Attribute
+        attributes_as_attr_dict = {
+            "provenance": semantic_models.AttributeProvenance("bia_ingest"),
+            "name": "attributes_from_biostudies.File",
+            "value": {
+                "attributes": attributes,
+            },
+        }
+        file_dict["attribute"] = [
+            attributes_as_attr_dict,
+        ]
+
         file_dict = filter_model_dictionary(file_dict, bia_data_model.FileReference)
 
         try:
             file_reference = bia_data_model.FileReference.model_validate(file_dict)
             file_references.append(file_reference)
         except ValidationError:
-            logger.warn("Failed to create FileReference")
+            logger.warning("Failed to create FileReference")
             logger.debug("Pydantic Validation Error:", exc_info=True)
             result_summary[accession_id].FileReference_ValidationErrorCount += 1
 

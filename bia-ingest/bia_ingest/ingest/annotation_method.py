@@ -16,7 +16,7 @@ from .biostudies.submission_parsing_utils import (
 from .biostudies.api import (
     Submission,
 )
-from bia_shared_datamodels import bia_data_model
+from bia_shared_datamodels import bia_data_model, semantic_models
 from ..persistence_strategy import PersistenceStrategy
 
 logger = logging.getLogger("__main__." + __name__)
@@ -68,8 +68,10 @@ def extract_annotation_method_dicts(submission: Submission) -> List[Dict[str, An
             for k, v, default in key_mapping
         }
 
-        # TODO: change template to get source dataset information
-        model_dict["source_dataset"] = []
+        # TODO: We are not capturing
+        # annotation_source_indicator
+        # spatial_information
+        # transformation_description
 
         # TODO: Deal with protocol descriptions more consistently.
         if "Annotation Overview" in attr_dict:
@@ -86,7 +88,9 @@ def extract_annotation_method_dicts(submission: Submission) -> List[Dict[str, An
         model_dict["protocol_description"] = protocol_descrption
 
         # TODO: should use "annotation_type" field, but need to update models & deal with more complex mapping logic here.
-        model_dict["method_type"] = "other"
+        model_dict["method_type"] = [
+            semantic_models.AnnotationMethodType("other"),
+        ]
 
         model_dict["accno"] = section.__dict__.get("accno", "")
         model_dict["accession_id"] = submission.accno
@@ -110,6 +114,5 @@ def generate_annotation_method_uuid(protocol_dict: Dict[str, Any]) -> str:
         "annotation_criteria",
         "annotation_coverage",
         "method_type",
-        "source_dataset",
     ]
     return dict_to_uuid(protocol_dict, attributes_to_consider)

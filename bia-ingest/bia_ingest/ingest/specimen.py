@@ -22,7 +22,6 @@ from .biostudies.api import (
 from . import (
     biosample as biosample_conversion,
     specimen_imaging_preparation_protocol as sipp_conversion,
-    specimen_growth_protocol as sgp_conversion,
 )
 
 logger = logging.getLogger("__main__." + __name__)
@@ -30,7 +29,7 @@ logger = logging.getLogger("__main__." + __name__)
 
 def get_specimen_for_dataset(
     submission: Submission,
-    dataset: bia_data_model.ExperimentalImagingDataset,
+    dataset: bia_data_model.Dataset,
     result_summary: dict,
 ) -> bia_data_model.Specimen:
     """Return bia_data_model.Specimen for a particular dataset"""
@@ -38,7 +37,11 @@ def get_specimen_for_dataset(
     # According to https://app.clickup.com/t/8695fqxpy we want one specimen
     # per dataset, so if more than one association we are concatenation
     # the required information from each.
-    associations = [association for association in dataset.attribute["associations"]]
+    associations = next(
+        attr.value.get("associations", [])
+        for attr in dataset.attribute
+        if attr.name == "associations"
+    )
     specimen_titles = set([association["specimen"] for association in associations])
 
     biosamples = biosample_conversion.get_biosample(submission, result_summary)
@@ -62,17 +65,9 @@ def get_specimen_for_dataset(
         if sipp.title_id in specimen_titles
     ]
 
-    growth_protocols = sgp_conversion.get_specimen_growth_protocol(
-        submission, result_summary
-    )
-    growth_protocol_list = [
-        gp.uuid for gp in growth_protocols if gp.title_id in specimen_titles
-    ]
-
     model_dict = {
         "imaging_preparation_protocol_uuid": imaging_preparation_protocol_list,
         "sample_of_uuid": biosample_list,
-        "growth_protocol_uuid": growth_protocol_list,
         "version": 0,
         "accession_id": submission.accno,
     }
@@ -102,15 +97,14 @@ def get_specimen(
     """Create and persist bia_data_model.Specimen and models it depends on
 
     Create and persist the bia_data_model.Specimen and the models it
-    depends on - Biosample, (specimen) ImagePreparationProtocol, and
-    (specimen) GrowthProtocol.
+    depends on - Biosample and (specimen) ImagePreparationProtocol.
     """
 
     logger.debug(
         f"Starting creation of bia_shared_models.Specimen models for submission: {submission.accno}"
     )
     # ToDo - when API in operation do we attempt to retreive from
-    # API first before creating biosample, specimen_growth_protocol and
+    # API first before creating biosample, and
     # specimen_preparation_protocol?
     # Biosamples
     biosamples = biosample_conversion.get_biosample(
@@ -133,14 +127,6 @@ def get_specimen(
     )
     imaging_preparation_protocol_uuids = object_value_pair_to_dict(
         imaging_preparation_protocols, key_attr="title_id", value_attr="uuid"
-    )
-
-    # GrowthProtocol
-    growth_protocols = sgp_conversion.get_specimen_growth_protocol(
-        submission, result_summary, persister
-    )
-    growth_protocol_uuids = object_value_pair_to_dict(
-        growth_protocols, key_attr="title_id", value_attr="uuid"
     )
 
     # ToDo - associations needed in multiple places -> create util func?
@@ -180,12 +166,10 @@ def get_specimen(
         imaging_preparation_protocol_list = _extend_uuid_list(
             specimen_titles, imaging_preparation_protocol_uuids
         )
-        growth_protocol_list = _extend_uuid_list(specimen_titles, growth_protocol_uuids)
 
         model_dict = {
             "imaging_preparation_protocol_uuid": imaging_preparation_protocol_list,
             "sample_of_uuid": biosample_list,
-            "growth_protocol_uuid": growth_protocol_list,
             "version": 0,
             "accession_id": submission.accno,
         }
@@ -216,7 +200,6 @@ def generate_specimen_uuid(specimen_dict: Dict[str, Any]) -> str:
         "accession_id",
         "imaging_preparation_protocol_uuid",
         "sample_of_uuid",
-        "growth_protocol_uuid",
     ]
     return dict_to_uuid(specimen_dict, attributes_to_consider)
 

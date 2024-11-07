@@ -14,7 +14,7 @@ from bia_ingest.ingest.biostudies.api import File
 
 # Get second study component as dataset in submission
 datasets_in_submission = [
-    utils.get_test_experimental_imaging_dataset()[1],
+    utils.get_test_dataset()[1],
 ]
 
 
@@ -59,7 +59,7 @@ def test_create_file_reference_for_study_component_when_no_matching_sc_in_file_l
     components in dataset do not match does in file_list
     """
 
-    dataset = utils.get_test_experimental_imaging_dataset()[0]
+    dataset = utils.get_test_dataset()[0]
     dataset.title_id = "Test name not in file list"
     created = file_reference.get_file_reference_by_dataset(
         test_submission,

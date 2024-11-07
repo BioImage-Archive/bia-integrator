@@ -15,17 +15,17 @@ accession_id = "S-BIADTEST"
 def expected_objects():
     expected_objects_dict = {
         "study": utils.get_test_study(),
-        "experimental_imaging_dataset": utils.get_test_experimental_imaging_dataset(),
+        "dataset": utils.get_test_dataset(),
         "specimen": utils.get_test_specimen(),
         "bio_sample": utils.get_test_biosample(),
-        "image_acquisition": utils.get_test_image_acquisition(),
-        "specimen_growth_protocol": utils.get_test_specimen_growth_protocol(),
+        "image_acquisition_protocol": utils.get_test_image_acquisition_protocol(),
         "specimen_imaging_preparation_protocol": utils.get_test_specimen_imaging_preparation_protocol(),
         "annotation_method": utils.get_test_annotation_method(),
-        "image_annotation_dataset": utils.get_test_image_annotation_dataset(),
+        #        "protocol": utils.get_test_specimen_growth_protocol(),
     }
 
     # File references are a special case as they depend on experimental dataset
+    expected_file_references = []
     expected_file_references = utils.get_test_file_reference(
         ["file_list_study_component_1.json", "file_list_study_component_2.json"]
     )
@@ -42,7 +42,12 @@ def expected_objects():
 
 
 def test_cli_writes_expected_files(
-    monkeypatch, tmp_path, test_submission, test_submission_table, mock_request_get, expected_objects
+    monkeypatch,
+    tmp_path,
+    test_submission,
+    test_submission_table,
+    mock_request_get,
+    expected_objects,
 ):
     monkeypatch.setattr(settings, "bia_data_dir", str(tmp_path))
 
@@ -53,10 +58,9 @@ def test_cli_writes_expected_files(
 
     def _load_submission_table_info(accession_id: str):
         return test_submission_table
-    
+
     monkeypatch.setattr(cli, "load_submission", _load_submission)
     monkeypatch.setattr(cli, "load_submission_table_info", _load_submission_table_info)
-
 
     result = runner.invoke(
         cli.app,
