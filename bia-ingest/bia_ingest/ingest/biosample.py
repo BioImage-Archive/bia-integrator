@@ -16,6 +16,8 @@ from .biostudies.submission_parsing_utils import (
 from .biostudies.api import (
     Submission,
 )
+
+# from bia_ingest.ingest.specimen_growth_protocol import get_specimen_growth_protocol
 from bia_shared_datamodels import bia_data_model, semantic_models
 from ..persistence_strategy import PersistenceStrategy
 
@@ -28,6 +30,11 @@ def get_biosample(
     persister: Optional[PersistenceStrategy] = None,
 ) -> List[bia_data_model.BioSample]:
     biosample_model_dicts = extract_biosample_dicts(submission)
+    #
+    #   growth_protocols = get_specimen_growth_protocol(
+    #       submission, result_summary, persister
+    #   )
+
     biosamples = dicts_to_api_models(
         biosample_model_dicts,
         bia_data_model.BioSample,

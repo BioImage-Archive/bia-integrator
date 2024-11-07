@@ -42,6 +42,8 @@ class IngestionResult(CLIResult):
     Channel_ValidationErrorCount: int = Field(default=0)
     Organism_CreationCount: int = Field(default=0)
     Organism_ValidationErrorCount: int = Field(default=0)
+    Protocol_CreationCount: int = Field(default=0)
+    Protocol_ValidationErrorCount: int = Field(default=0)
     ExternalLink_CreationCount: int = Field(default=0)
     ExternalLink_ValidationErrorCount: int = Field(default=0)
     Contributor_CreationCount: int = Field(default=0)

@@ -21,6 +21,7 @@ def expected_objects():
         "image_acquisition_protocol": utils.get_test_image_acquisition_protocol(),
         "specimen_imaging_preparation_protocol": utils.get_test_specimen_imaging_preparation_protocol(),
         "annotation_method": utils.get_test_annotation_method(),
+        #        "protocol": utils.get_test_specimen_growth_protocol(),
     }
 
     # File references are a special case as they depend on experimental dataset

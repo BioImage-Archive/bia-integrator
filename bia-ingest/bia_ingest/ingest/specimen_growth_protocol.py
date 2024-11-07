@@ -27,18 +27,18 @@ def get_specimen_growth_protocol(
     submission: Submission,
     result_summary: dict,
     persister: Optional[PersistenceStrategy] = None,
-) -> List[bia_data_model.SpecimenGrowthProtocol]:
+) -> List[bia_data_model.Protocol]:
     specimen_growth_protocol_model_dicts = extract_specimen_growth_protocol_dicts(
         submission
     )
     specimen_growth_protocols = dicts_to_api_models(
         specimen_growth_protocol_model_dicts,
-        bia_data_model.SpecimenGrowthProtocol,
+        bia_data_model.Protocol,
         result_summary[submission.accno],
     )
 
     log_model_creation_count(
-        bia_data_model.SpecimenGrowthProtocol,
+        bia_data_model.Protocol,
         len(specimen_growth_protocols),
         result_summary[submission.accno],
     )
@@ -72,9 +72,7 @@ def extract_specimen_growth_protocol_dicts(
         model_dict["accession_id"] = submission.accno
         model_dict["uuid"] = generate_specimen_growth_protocol_uuid(model_dict)
         model_dict["version"] = 0
-        model_dict = filter_model_dictionary(
-            model_dict, bia_data_model.SpecimenGrowthProtocol
-        )
+        model_dict = filter_model_dictionary(model_dict, bia_data_model.Protocol)
 
         model_dicts.append(model_dict)
 

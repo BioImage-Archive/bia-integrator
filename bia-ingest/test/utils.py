@@ -220,43 +220,39 @@ def get_test_annotation_method() -> List[bia_data_model.AnnotationMethod]:
     return annotation_method
 
 
-# def get_test_specimen_growth_protocol() -> List[bia_data_model.SpecimenGrowthProtocol]:
-#    # For UUID
-#    attributes_to_consider = [
-#        "accession_id",
-#        "accno",
-#        "title_id",
-#        "protocol_description",
-#    ]
-#    protocol_info = [
-#        {
-#            "accno": "Specimen-1",
-#            "accession_id": accession_id,
-#            "title_id": "Test specimen 1",
-#            "protocol_description": "Test growth protocol 1",
-#            "version": 0,
-#        },
-#        {
-#            "accno": "Specimen-2",
-#            "accession_id": accession_id,
-#            "title_id": "Test specimen 2",
-#            "protocol_description": "Test growth protocol 2",
-#            "version": 0,
-#        },
-#    ]
-#
-#    protocol = []
-#    for protocol_dict in protocol_info:
-#        protocol_dict["uuid"] = dict_to_uuid(protocol_dict, attributes_to_consider)
-#        protocol_dict = filter_model_dictionary(
-#            protocol_dict, bia_data_model.SpecimenGrowthProtocol
-#        )
-#        protocol.append(
-#            bia_data_model.SpecimenGrowthProtocol.model_validate(protocol_dict)
-#        )
-#    return protocol
-#
-#
+def get_test_specimen_growth_protocol() -> List[bia_data_model.Protocol]:
+    # For UUID
+    attributes_to_consider = [
+        "accession_id",
+        "accno",
+        "title_id",
+        "protocol_description",
+    ]
+    protocol_info = [
+        {
+            "accno": "Specimen-1",
+            "accession_id": accession_id,
+            "title_id": "Test specimen 1",
+            "protocol_description": "Test growth protocol 1",
+            "version": 0,
+        },
+        {
+            "accno": "Specimen-2",
+            "accession_id": accession_id,
+            "title_id": "Test specimen 2",
+            "protocol_description": "Test growth protocol 2",
+            "version": 0,
+        },
+    ]
+
+    protocol = []
+    for protocol_dict in protocol_info:
+        protocol_dict["uuid"] = dict_to_uuid(protocol_dict, attributes_to_consider)
+        protocol_dict = filter_model_dictionary(protocol_dict, bia_data_model.Protocol)
+        protocol.append(bia_data_model.Protocol.model_validate(protocol_dict))
+    return protocol
+
+
 def get_test_specimen_imaging_preparation_protocol() -> (
     List[bia_data_model.SpecimenImagingPreparationProtocol]
 ):

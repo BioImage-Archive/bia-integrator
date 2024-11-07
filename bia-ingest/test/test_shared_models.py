@@ -8,6 +8,7 @@ from bia_ingest.ingest import (
     image_acquisition_protocol,
     annotation_method,
     specimen,
+    specimen_growth_protocol,
 )
 
 
@@ -56,6 +57,10 @@ from bia_ingest.ingest import (
         (
             utils.get_test_annotation_method,
             annotation_method.get_annotation_method,
+        ),
+        (
+            utils.get_test_specimen_growth_protocol,
+            specimen_growth_protocol.get_specimen_growth_protocol,
         ),
         #    (
         #    # Not testing as we need to deal with links that are not proper
