@@ -1,5 +1,14 @@
 import pytest
-from . import utils
+from .mock_objects import (
+    mock_study,
+    mock_biosample,
+    mock_dataset,
+    mock_specimen_imaging_preparation_protocol,
+    mock_image_acquisition_protocol,
+    mock_specimen,
+    mock_annotation_method,
+    mock_specimen_growth_protocol,
+)
 from bia_ingest.ingest import (
     biosample,
     dataset,
@@ -19,47 +28,47 @@ from bia_ingest.ingest import (
     ),
     (
         (
-            utils.get_test_affiliation,
+            mock_study.get_affiliation,
             study.get_affiliation,
         ),
         (
-            utils.get_test_contributor,
+            mock_study.get_contributor,
             study.get_contributor,
         ),
         (
-            utils.get_test_grant,
+            mock_study.get_grant,
             study.get_grant,
         ),
         (
-            utils.get_test_study,
+            mock_study.get_study,
             study.get_study,
         ),
         (
-            utils.get_test_biosample,
+            mock_biosample.get_biosample,
             biosample.get_biosample,
         ),
         (
-            utils.get_test_dataset,
+            mock_dataset.get_dataset,
             dataset.get_dataset,
         ),
         (
-            utils.get_test_specimen_imaging_preparation_protocol,
+            mock_specimen_imaging_preparation_protocol.get_specimen_imaging_preparation_protocol,
             specimen_imaging_preparation_protocol.get_specimen_imaging_preparation_protocol,
         ),
         (
-            utils.get_test_image_acquisition_protocol,
+            mock_image_acquisition_protocol.get_image_acquisition_protocol,
             image_acquisition_protocol.get_image_acquisition_protocol,
         ),
         (
-            utils.get_test_specimen,
+            mock_specimen.get_specimen,
             specimen.get_specimen,
         ),
         (
-            utils.get_test_annotation_method,
+            mock_annotation_method.get_annotation_method,
             annotation_method.get_annotation_method,
         ),
         (
-            utils.get_test_specimen_growth_protocol,
+            mock_specimen_growth_protocol.get_specimen_growth_protocol,
             specimen_growth_protocol.get_specimen_growth_protocol,
         ),
         #    (

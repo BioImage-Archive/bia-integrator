@@ -4,7 +4,7 @@ from pathlib import Path
 import json
 import pytest
 from bia_ingest.ingest.biostudies.api import Submission, SubmissionTable, requests
-from .utils import accession_id
+from .mock_objects.utils import accession_id
 from bia_ingest.cli_logging import IngestionResult
 
 

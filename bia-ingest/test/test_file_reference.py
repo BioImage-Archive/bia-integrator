@@ -5,7 +5,7 @@ now has a different pattern of creation from other artefacts i.e.
 it now needs a submitted dataset
 """
 
-from . import utils
+from .mock_objects import mock_file_reference, mock_dataset
 from bia_ingest.ingest import (
     file_reference,
 )
@@ -14,7 +14,7 @@ from bia_ingest.ingest.biostudies.api import File
 
 # Get second study component as dataset in submission
 datasets_in_submission = [
-    utils.get_test_dataset()[1],
+    mock_dataset.get_dataset()[1],
 ]
 
 
@@ -24,10 +24,12 @@ def test_get_file_reference_for_submission_dataset(
     """
     Test creation of FileReferences for dataset with file list supplied
     """
-    file_list_data = utils.get_test_file_list_data("file_list_study_component_2.json")
+    file_list_data = mock_file_reference.get_file_list_data(
+        "file_list_study_component_2.json"
+    )
     files_in_filelist = [File.model_validate(f) for f in file_list_data]
 
-    expected = utils.get_test_file_reference()
+    expected = mock_file_reference.get_file_reference()
     created = file_reference.get_file_reference_for_submission_dataset(
         accession_id=test_submission.accno,
         submission_dataset=datasets_in_submission[0],
@@ -40,7 +42,9 @@ def test_get_file_reference_for_submission_dataset(
 def test_create_file_reference_for_study_component(
     test_submission, caplog, ingestion_result_summary, mock_request_get
 ):
-    expected = {datasets_in_submission[0].title_id: utils.get_test_file_reference()}
+    expected = {
+        datasets_in_submission[0].title_id: mock_file_reference.get_file_reference()
+    }
     created = file_reference.get_file_reference_by_dataset(
         test_submission,
         datasets_in_submission=datasets_in_submission,
@@ -59,7 +63,7 @@ def test_create_file_reference_for_study_component_when_no_matching_sc_in_file_l
     components in dataset do not match does in file_list
     """
 
-    dataset = utils.get_test_dataset()[0]
+    dataset = mock_dataset.get_dataset()[0]
     dataset.title_id = "Test name not in file list"
     created = file_reference.get_file_reference_by_dataset(
         test_submission,
