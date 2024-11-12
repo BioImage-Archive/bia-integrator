@@ -26,4 +26,4 @@ RUN poetry install --no-root
 
 ADD . ..
 
-CMD ["poetry", "run", "uvicorn", "--workers", "4", "--port", "8080", "--log-config", "api/log_config.yml", "--host", "0.0.0.0", "api.app:app"]
+CMD ["poetry", "run", "uvicorn", "--workers", "4", "--port", "8080", "--log-config", "api/log_config.yml", "--host", "0.0.0.0", "--no-access-log", "api.app:app"]

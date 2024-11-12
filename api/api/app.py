@@ -10,16 +10,17 @@ async def get_db() -> Repository:
     return await repository_create(settings)
 
 
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, Request
 from api.public import make_router as public_make_router
 from api.private import make_router as private_make_router
 from api.search import make_router as search_make_router
 from api.auth import make_router as auth_make_router, get_current_user
 from fastapi.responses import JSONResponse
 
-from api.api_logging import log_info
+from api.api_logging import log_info, log_access
 
 from pydantic import ValidationError
+import datetime
 
 app = FastAPI(
     generate_unique_id_function=lambda route: route.name,
@@ -28,6 +29,27 @@ app = FastAPI(
     separate_input_output_schemas=False,
     debug=False,
 )
+
+
+@app.middleware("http")
+async def custom_access_log(request: Request, call_next):
+    start = datetime.datetime.now(datetime.timezone.utc)
+
+    response = await call_next(request)
+
+    end = datetime.datetime.now(datetime.timezone.utc)
+
+    log_access(
+        "",
+        extra={
+            "method": request.method,
+            "status": response.status_code,
+            "path": request.url.path,
+            "response_time_ms": int((end - start).total_seconds() * 1000),
+        },
+    )
+    return response
+
 
 app.openapi_version = "3.0.2"
 
