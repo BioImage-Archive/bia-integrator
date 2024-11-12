@@ -57,32 +57,32 @@ def api_push_json(delete_after_push: bool, json_path: str):
         try:
             if data_parsed.model.type_name == "Study":
                 api_client.post_study(data_parsed)
-            elif data_parsed.model.type_name == "ImageAnnotationDataset":
-                api_client.post_image_annotation_dataset(data_parsed)
-            elif data_parsed.model.type_name == "ExperimentalImagingDataset":
-                api_client.post_experimental_imaging_dataset(data_parsed)
-            elif data_parsed.model.type_name == "AnnotationMethod":
-                api_client.post_annotation_method(data_parsed)
-            elif data_parsed.model.type_name == "FileReference":
+            elif data_parsed.model.type_name == 'FileReference':
                 api_client.post_file_reference(data_parsed)
-            elif data_parsed.model.type_name == "Specimen":
-                api_client.post_specimen(data_parsed)
             elif data_parsed.model.type_name == "ImageRepresentation":
                 api_client.post_image_representation(data_parsed)
-            elif data_parsed.model.type_name == "DerivedImage":
-                api_client.post_derived_image(data_parsed)
-            elif data_parsed.model.type_name == "ExperimentallyCapturedImage":
-                api_client.post_experimentally_captured_image(data_parsed)
-            elif data_parsed.model.type_name == "SpecimenGrowthProtocol":
-                api_client.post_specimen_growth_protocol(data_parsed)
-            elif data_parsed.model.type_name == "BioSample":
-                api_client.post_bio_sample(data_parsed)
-            elif data_parsed.model.type_name == "ImageAcquisition":
-                api_client.post_image_acquisition(data_parsed)
+            elif data_parsed.model.type_name == "Dataset":
+                api_client.post_dataset(data_parsed)
+            elif data_parsed.model.type_name == "Specimen":
+                api_client.post_specimen(data_parsed)
+            elif data_parsed.model.type_name == "Image":
+                api_client.post_image(data_parsed)
+            elif data_parsed.model.type_name == "ImageAcquisitionProtocol":
+                api_client.post_image_acquisition_protocol(data_parsed)
             elif data_parsed.model.type_name == "SpecimenImagingPreparationProtocol":
                 api_client.post_specimen_imaging_preparation_protocol(data_parsed)
+            elif data_parsed.model.type_name == "Protocol":
+                api_client.post_protocol(data_parsed)
+            elif data_parsed.model.type_name == "BioSample":
+                api_client.post_bio_sample(data_parsed)
+            elif data_parsed.model.type_name == "CreationProcess":
+                api_client.post_creation_process(data_parsed)
+            elif data_parsed.model.type_name == "AnnotationData":
+                api_client.post_annotation_data(data_parsed)
+            elif data_parsed.model.type_name == "AnnotationMethod":
+                api_client.post_annotation_method(data_parsed)
             else:
-                raise Exception("Unable to create object", json_path, data_parsed)
+                raise Exception(f"Unable to create {data_parsed.model.type_name} {data_parsed.model.type_name == 'FileReference'}", json_path, data_parsed)
 
             if delete_after_push:
                 os.remove(json_path)
@@ -127,7 +127,25 @@ def json_import(
     limit: int = 0,
     warning_this_deletes_source_data_delete_after_push: bool = False,
 ):
-    jsons_to_push = [str(json_path) for json_path in data_root.glob("**/*.json")]
+    def glob_key_order(file_abspath):
+        # dependency order in https://docs.google.com/drawings/d/1y_0GjhIxhB1hVvjIBoTyEv8_SE1jXuJ_9-QK6ScouBg/edit
+        #   to avoid having to rerun
+        # or only rerun for cyclical dependencies (if any)
+        sort_order = [
+            'study',
+            'dataset',
+            'file_reference',
+            'specimen_imaging_preparation_protocol',
+            'bio_sample',
+            'image_acquisition_protocol'
+        ]
+        for idx, file_type in enumerate(sort_order):
+            if file_type in str(file_abspath):
+                return idx
+
+        return len(sort_order) + 1
+
+    jsons_to_push = [str(json_path) for json_path in sorted(data_root.glob("**/*.json"), key=glob_key_order)]
     if limit:
         jsons_to_push = jsons_to_push[:limit]
 
@@ -135,6 +153,11 @@ def json_import(
         raise Exception(
             f"Report must be {ReportModes.REPORT_SUM.value}, not {ReportModes.REPORT_LIST.value}"
         )
+
+    #make_client(api_base_url, api_username, api_password)
+    #for json in jsons_to_push:
+    #    api_push_json(warning_this_deletes_source_data_delete_after_push, json)
+    #return
 
     with Pool(
         processes=threads,
@@ -145,8 +168,8 @@ def json_import(
         for report_job in p.map(
             partial(api_push_json, warning_this_deletes_source_data_delete_after_push),
             jsons_to_push,
+            chunksize=1000 # smaller chunks mean sorted jsons at the start get pushed first -> fewer reruns 
         ):
-
             for k, v in report_job.items():
                 if report_mode is ReportModes.REPORT_SUM:
                     report[k] = report.get(k, 0) + len(v)
