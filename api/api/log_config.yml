@@ -4,8 +4,6 @@
 version: 1
 disable_existing_loggers: true
 formatters:
-    json_request:
-        class: api.api_logging.AccesslogFormatter
     json_error:
         class: api.api_logging.VerboseJSONFormatter
     json_catchall:
@@ -17,10 +15,6 @@ handlers:
         class: logging.StreamHandler
         stream: ext://sys.stdout
         formatter: json_api
-    json_request:
-        class: logging.StreamHandler
-        stream: ext://sys.stdout
-        formatter: json_request
     json_error:
         class: logging.StreamHandler
         stream: ext://sys.stderr
@@ -33,11 +27,11 @@ handlers:
 loggers:
     starlette:
         level: INFO
-        handlers: [json_request]
+        handlers: [json_api]
         propagate: false
-    uvicorn.access:
+    bia.access:
         level: INFO
-        handlers: [json_request]
+        handlers: [json_api]
         propagate: false
     uvicorn.error:
         level: ERROR

@@ -18,25 +18,6 @@ class APILogFormatter(json_log_formatter.JSONFormatter):
             extra=extra,
         )
 
-
-class AccesslogFormatter(json_log_formatter.JSONFormatter):
-    def json_record(
-        self,
-        message: str,
-        extra: dict[str, str | int | float],
-        record: logging.LogRecord,
-    ) -> dict[str, str | int | float]:
-        return dict(
-            level=record.levelname,
-            response_time_ms=int(record.msecs),
-            time=datetime.datetime.fromtimestamp(record.created),
-            source=record.args[0],
-            verb=record.args[1],
-            path=record.args[2],
-            status=record.args[4],
-        )
-
-
 class VerboseJSONFormatter(json_log_formatter.VerboseJSONFormatter):
     """
     Wrapper to make logs uniform / easy to search
@@ -55,17 +36,16 @@ class VerboseJSONFormatter(json_log_formatter.VerboseJSONFormatter):
 
 
 """
-Wrappers to make sure we always do logs right
-    - never use a global logger to avoid locks
-    - don't DI the logger to avoid messyness
-Name tweaked to avoid mixup with logging functions
+Wrappers to make logger name typo-proof
 """
-
 
 def log_info(msg, *args, **kwargs):
     logger = logging.getLogger("bia.api")
     return logger.info(msg, *args, **kwargs)
 
+def log_access(msg, *args, **kwargs):
+    logger = logging.getLogger("bia.access")
+    return logger.info(msg, *args, **kwargs)
 
 def log_error(msg, *args, **kwargs):
     logger = logging.getLogger("bia.api")
