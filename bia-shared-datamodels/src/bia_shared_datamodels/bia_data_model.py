@@ -216,7 +216,7 @@ class ImageRepresentation(
         ObjectReference(Image),
     ] = Field()
 
-    model_config = ConfigDict(model_version_latest=2)
+    model_config = ConfigDict(model_version_latest=3)
 
 
 class AnnotationData(semantic_models.AnnotationData, DocumentMixin):
@@ -246,7 +246,7 @@ class Specimen(semantic_models.Specimen, DocumentMixin):
         description="The biosample from which this specimen was created.",
     )
 
-    model_config = ConfigDict(model_version_latest=1)
+    model_config = ConfigDict(model_version_latest=2)
 
 
 class CreationProcess(semantic_models.CreationProcess, DocumentMixin):
@@ -276,11 +276,11 @@ class CreationProcess(semantic_models.CreationProcess, DocumentMixin):
         description="The annotation method describing the process followed to create a new image from exsiting image data.",
     )
 
-    model_config = ConfigDict(model_version_latest=1)
+    model_config = ConfigDict(model_version_latest=2)
 
 
-class Protocol(semantic_models.Protocol, DocumentMixin):
-    model_config = ConfigDict(model_version_latest=1)
+class Protocol(semantic_models.Protocol, DocumentMixin, UserIdentifiedObject):
+    model_config = ConfigDict(model_version_latest=2)
 
 
 class ImageAcquisitionProtocol(
@@ -288,7 +288,7 @@ class ImageAcquisitionProtocol(
     DocumentMixin,
     UserIdentifiedObject,
 ):
-    model_config = ConfigDict(model_version_latest=1)
+    model_config = ConfigDict(model_version_latest=2)
 
 
 class SpecimenImagingPreparationProtocol(
@@ -296,7 +296,7 @@ class SpecimenImagingPreparationProtocol(
     DocumentMixin,
     UserIdentifiedObject,
 ):
-    model_config = ConfigDict(model_version_latest=1)
+    model_config = ConfigDict(model_version_latest=2)
 
 
 class BioSample(
@@ -304,7 +304,7 @@ class BioSample(
     DocumentMixin,
     UserIdentifiedObject,
 ):
-    model_config = ConfigDict(model_version_latest=2)
+    model_config = ConfigDict(model_version_latest=3)
     growth_protocol_uuid: Annotated[Optional[UUID], ObjectReference(Protocol)] = Field(
         None,
         description="The protocol that was followed in order to create this biosample.",
@@ -316,7 +316,7 @@ class AnnotationMethod(
     DocumentMixin,
     UserIdentifiedObject,
 ):
-    model_config = ConfigDict(model_version_latest=2)
+    model_config = ConfigDict(model_version_latest=3)
 
 
 Specimen.model_rebuild()
