@@ -1,10 +1,15 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic import Field
 from pathlib import Path
 
 
 class Settings(BaseSettings):
     mongo_connstring: str
     mongo_timeout_ms: int
+    mongo_max_pool_size: int = Field(
+        default=10,
+        description="Max size of the Mongo connection pool. If 1 process/api, this should be higher if the link to Mongo is fast",
+    )
     mongo_collection_users: str = "users"
     mongo_collection_biaint: str = "bia_integrator"
     db_name: str

@@ -5,9 +5,11 @@ from api.models.repository import repository_create, Repository
 
 settings = Settings()
 
+repository = None
+
 
 async def get_db() -> Repository:
-    return await repository_create(settings)
+    return repository
 
 
 from fastapi import FastAPI, Depends, Request
@@ -28,7 +30,7 @@ app = FastAPI(
     # See https://fastapi.tiangolo.com/how-to/separate-openapi-schemas/#do-not-separate-schemas
     separate_input_output_schemas=False,
     debug=False,
-    root_path=settings.fastapi_root_path
+    root_path=settings.fastapi_root_path,
 )
 
 
@@ -73,7 +75,8 @@ async def on_start():
     if settings.mongo_index_push:
         log_info("App updating indexes")
 
-    await repository_create(settings)
+    global repository
+    repository = await repository_create(settings)
 
     log_info("App started")
 

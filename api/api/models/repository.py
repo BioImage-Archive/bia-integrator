@@ -74,8 +74,9 @@ class Repository:
         self.connection = AsyncIOMotorClient(
             settings.mongo_connstring,
             uuidRepresentation="standard",
-            maxPoolSize=10,
+            maxPoolSize=settings.mongo_max_pool_size,
             timeoutms=settings.mongo_timeout_ms,
+            compressors="zlib",
         )
         self.db = self.connection.get_database(
             settings.db_name,
