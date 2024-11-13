@@ -20,6 +20,7 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
+from bia_integrator_api.models.attribute import Attribute
 from bia_integrator_api.models.model_metadata import ModelMetadata
 from typing import Optional, Set
 from typing_extensions import Self
@@ -31,12 +32,13 @@ class CreationProcess(BaseModel):
     uuid: StrictStr = Field(description="Unique ID (across the BIA database) used to refer to and identify a document.")
     version: Annotated[int, Field(strict=True, ge=0)] = Field(description="Document version. This can't be optional to make sure we never persist objects without it")
     model: Optional[ModelMetadata] = None
+    attribute: Optional[List[Attribute]] = None
     subject_specimen_uuid: Optional[StrictStr] = None
     image_acquisition_protocol_uuid: Optional[List[StrictStr]] = None
     input_image_uuid: Optional[List[StrictStr]] = None
     protocol_uuid: Optional[List[StrictStr]] = None
     annotation_method_uuid: Optional[List[StrictStr]] = None
-    __properties: ClassVar[List[str]] = ["uuid", "version", "model", "subject_specimen_uuid", "image_acquisition_protocol_uuid", "input_image_uuid", "protocol_uuid", "annotation_method_uuid"]
+    __properties: ClassVar[List[str]] = ["uuid", "version", "model", "attribute", "subject_specimen_uuid", "image_acquisition_protocol_uuid", "input_image_uuid", "protocol_uuid", "annotation_method_uuid"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -80,10 +82,22 @@ class CreationProcess(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of model
         if self.model:
             _dict['model'] = self.model.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of each item in attribute (list)
+        _items = []
+        if self.attribute:
+            for _item_attribute in self.attribute:
+                if _item_attribute:
+                    _items.append(_item_attribute.to_dict())
+            _dict['attribute'] = _items
         # set to None if model (nullable) is None
         # and model_fields_set contains the field
         if self.model is None and "model" in self.model_fields_set:
             _dict['model'] = None
+
+        # set to None if attribute (nullable) is None
+        # and model_fields_set contains the field
+        if self.attribute is None and "attribute" in self.model_fields_set:
+            _dict['attribute'] = None
 
         # set to None if subject_specimen_uuid (nullable) is None
         # and model_fields_set contains the field
@@ -125,6 +139,7 @@ class CreationProcess(BaseModel):
             "uuid": obj.get("uuid"),
             "version": obj.get("version"),
             "model": ModelMetadata.from_dict(obj["model"]) if obj.get("model") is not None else None,
+            "attribute": [Attribute.from_dict(_item) for _item in obj["attribute"]] if obj.get("attribute") is not None else None,
             "subject_specimen_uuid": obj.get("subject_specimen_uuid"),
             "image_acquisition_protocol_uuid": obj.get("image_acquisition_protocol_uuid"),
             "input_image_uuid": obj.get("input_image_uuid"),

@@ -6,6 +6,7 @@ Information about image analysis methods.
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**attribute** | [**List[Attribute]**](Attribute.md) |  | [optional] 
 **protocol_description** | **str** | Description of actions involved in the process. | 
 **features_analysed** | **str** |  | 
 

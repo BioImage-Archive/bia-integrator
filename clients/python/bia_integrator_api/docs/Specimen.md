@@ -8,6 +8,7 @@ Name | Type | Description | Notes
 **uuid** | **str** | Unique ID (across the BIA database) used to refer to and identify a document. | 
 **version** | **int** | Document version. This can&#39;t be optional to make sure we never persist objects without it | 
 **model** | [**ModelMetadata**](ModelMetadata.md) |  | [optional] 
+**attribute** | [**List[Attribute]**](Attribute.md) |  | [optional] 
 **imaging_preparation_protocol_uuid** | **List[str]** | The protocol that was followed in order to perpare a biosample for imaging. | 
 **sample_of_uuid** | **List[str]** | The biosample from which this specimen was created. | 
 

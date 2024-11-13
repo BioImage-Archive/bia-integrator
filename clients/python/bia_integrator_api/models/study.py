@@ -38,6 +38,7 @@ class Study(BaseModel):
     uuid: StrictStr = Field(description="Unique ID (across the BIA database) used to refer to and identify a document.")
     version: Annotated[int, Field(strict=True, ge=0)] = Field(description="Document version. This can't be optional to make sure we never persist objects without it")
     model: Optional[ModelMetadata] = None
+    attribute: Optional[List[Attribute]] = None
     accession_id: StrictStr = Field(description="Unique ID provided by BioStudies.")
     licence: LicenceType
     author: Annotated[List[Contributor], Field(min_length=1)]
@@ -50,8 +51,7 @@ class Study(BaseModel):
     related_publication: Optional[List[Publication]] = None
     grant: Optional[List[Grant]] = None
     funding_statement: Optional[StrictStr] = None
-    attribute: Optional[List[Attribute]] = None
-    __properties: ClassVar[List[str]] = ["uuid", "version", "model", "accession_id", "licence", "author", "title", "release_date", "description", "keyword", "acknowledgement", "see_also", "related_publication", "grant", "funding_statement", "attribute"]
+    __properties: ClassVar[List[str]] = ["uuid", "version", "model", "attribute", "accession_id", "licence", "author", "title", "release_date", "description", "keyword", "acknowledgement", "see_also", "related_publication", "grant", "funding_statement"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -95,6 +95,13 @@ class Study(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of model
         if self.model:
             _dict['model'] = self.model.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of each item in attribute (list)
+        _items = []
+        if self.attribute:
+            for _item_attribute in self.attribute:
+                if _item_attribute:
+                    _items.append(_item_attribute.to_dict())
+            _dict['attribute'] = _items
         # override the default output from pydantic by calling `to_dict()` of each item in author (list)
         _items = []
         if self.author:
@@ -123,17 +130,15 @@ class Study(BaseModel):
                 if _item_grant:
                     _items.append(_item_grant.to_dict())
             _dict['grant'] = _items
-        # override the default output from pydantic by calling `to_dict()` of each item in attribute (list)
-        _items = []
-        if self.attribute:
-            for _item_attribute in self.attribute:
-                if _item_attribute:
-                    _items.append(_item_attribute.to_dict())
-            _dict['attribute'] = _items
         # set to None if model (nullable) is None
         # and model_fields_set contains the field
         if self.model is None and "model" in self.model_fields_set:
             _dict['model'] = None
+
+        # set to None if attribute (nullable) is None
+        # and model_fields_set contains the field
+        if self.attribute is None and "attribute" in self.model_fields_set:
+            _dict['attribute'] = None
 
         # set to None if keyword (nullable) is None
         # and model_fields_set contains the field
@@ -165,11 +170,6 @@ class Study(BaseModel):
         if self.funding_statement is None and "funding_statement" in self.model_fields_set:
             _dict['funding_statement'] = None
 
-        # set to None if attribute (nullable) is None
-        # and model_fields_set contains the field
-        if self.attribute is None and "attribute" in self.model_fields_set:
-            _dict['attribute'] = None
-
         return _dict
 
     @classmethod
@@ -185,6 +185,7 @@ class Study(BaseModel):
             "uuid": obj.get("uuid"),
             "version": obj.get("version"),
             "model": ModelMetadata.from_dict(obj["model"]) if obj.get("model") is not None else None,
+            "attribute": [Attribute.from_dict(_item) for _item in obj["attribute"]] if obj.get("attribute") is not None else None,
             "accession_id": obj.get("accession_id"),
             "licence": obj.get("licence"),
             "author": [Contributor.from_dict(_item) for _item in obj["author"]] if obj.get("author") is not None else None,
@@ -196,8 +197,7 @@ class Study(BaseModel):
             "see_also": [ExternalReference.from_dict(_item) for _item in obj["see_also"]] if obj.get("see_also") is not None else None,
             "related_publication": [Publication.from_dict(_item) for _item in obj["related_publication"]] if obj.get("related_publication") is not None else None,
             "grant": [Grant.from_dict(_item) for _item in obj["grant"]] if obj.get("grant") is not None else None,
-            "funding_statement": obj.get("funding_statement"),
-            "attribute": [Attribute.from_dict(_item) for _item in obj["attribute"]] if obj.get("attribute") is not None else None
+            "funding_statement": obj.get("funding_statement")
         })
         return _obj
 

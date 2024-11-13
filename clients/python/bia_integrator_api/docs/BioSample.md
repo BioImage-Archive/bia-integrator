@@ -9,6 +9,7 @@ Name | Type | Description | Notes
 **uuid** | **str** | Unique ID (across the BIA database) used to refer to and identify a document. | 
 **version** | **int** | Document version. This can&#39;t be optional to make sure we never persist objects without it | 
 **model** | [**ModelMetadata**](ModelMetadata.md) |  | [optional] 
+**attribute** | [**List[Attribute]**](Attribute.md) |  | [optional] 
 **organism_classification** | [**List[Taxon]**](Taxon.md) | The classification of th ebiological matter. | 
 **biological_entity_description** | **str** | A short description of the biological entity. | 
 **experimental_variable_description** | **List[str]** |  | [optional] 

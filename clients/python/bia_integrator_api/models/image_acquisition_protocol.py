@@ -20,6 +20,7 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
+from bia_integrator_api.models.attribute import Attribute
 from bia_integrator_api.models.model_metadata import ModelMetadata
 from typing import Optional, Set
 from typing_extensions import Self
@@ -32,11 +33,12 @@ class ImageAcquisitionProtocol(BaseModel):
     uuid: StrictStr = Field(description="Unique ID (across the BIA database) used to refer to and identify a document.")
     version: Annotated[int, Field(strict=True, ge=0)] = Field(description="Document version. This can't be optional to make sure we never persist objects without it")
     model: Optional[ModelMetadata] = None
+    attribute: Optional[List[Attribute]] = None
     protocol_description: StrictStr = Field(description="Description of actions involved in the process.")
     imaging_instrument_description: StrictStr = Field(description="Names, types, or description of how the instruments used to create the image.")
     fbbi_id: Optional[List[StrictStr]] = None
     imaging_method_name: Optional[List[StrictStr]] = None
-    __properties: ClassVar[List[str]] = ["title_id", "uuid", "version", "model", "protocol_description", "imaging_instrument_description", "fbbi_id", "imaging_method_name"]
+    __properties: ClassVar[List[str]] = ["title_id", "uuid", "version", "model", "attribute", "protocol_description", "imaging_instrument_description", "fbbi_id", "imaging_method_name"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -80,10 +82,22 @@ class ImageAcquisitionProtocol(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of model
         if self.model:
             _dict['model'] = self.model.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of each item in attribute (list)
+        _items = []
+        if self.attribute:
+            for _item_attribute in self.attribute:
+                if _item_attribute:
+                    _items.append(_item_attribute.to_dict())
+            _dict['attribute'] = _items
         # set to None if model (nullable) is None
         # and model_fields_set contains the field
         if self.model is None and "model" in self.model_fields_set:
             _dict['model'] = None
+
+        # set to None if attribute (nullable) is None
+        # and model_fields_set contains the field
+        if self.attribute is None and "attribute" in self.model_fields_set:
+            _dict['attribute'] = None
 
         # set to None if fbbi_id (nullable) is None
         # and model_fields_set contains the field
@@ -111,6 +125,7 @@ class ImageAcquisitionProtocol(BaseModel):
             "uuid": obj.get("uuid"),
             "version": obj.get("version"),
             "model": ModelMetadata.from_dict(obj["model"]) if obj.get("model") is not None else None,
+            "attribute": [Attribute.from_dict(_item) for _item in obj["attribute"]] if obj.get("attribute") is not None else None,
             "protocol_description": obj.get("protocol_description"),
             "imaging_instrument_description": obj.get("imaging_instrument_description"),
             "fbbi_id": obj.get("fbbi_id"),

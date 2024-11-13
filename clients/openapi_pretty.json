@@ -2762,7 +2762,7 @@
           },
           "version": {
             "type": "integer",
-            "minimum": 0,
+            "minimum": 0.0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -2837,7 +2837,7 @@
           },
           "version": {
             "type": "integer",
-            "minimum": 0,
+            "minimum": 0.0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -2851,6 +2851,21 @@
               }
             ],
             "description": "Model type and version. Used to map arbitrary objects to a known (possibly previously-used) type.\n        Optional because for some usecases (e.g. api) we want to accept objects without it because we have the info we need to set it."
+          },
+          "attribute": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Attribute"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Attribute",
+            "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
           },
           "protocol_description": {
             "type": "string",
@@ -3032,7 +3047,7 @@
           },
           "version": {
             "type": "integer",
-            "minimum": 0,
+            "minimum": 0.0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -3046,6 +3061,21 @@
               }
             ],
             "description": "Model type and version. Used to map arbitrary objects to a known (possibly previously-used) type.\n        Optional because for some usecases (e.g. api) we want to accept objects without it because we have the info we need to set it."
+          },
+          "attribute": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Attribute"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Attribute",
+            "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
           },
           "organism_classification": {
             "items": {
@@ -3212,6 +3242,21 @@
       },
       "Channel": {
         "properties": {
+          "attribute": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Attribute"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Attribute",
+            "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
+          },
           "colormap_start": {
             "type": "number",
             "title": "Colormap Start",
@@ -3365,7 +3410,7 @@
           },
           "version": {
             "type": "integer",
-            "minimum": 0,
+            "minimum": 0.0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -3379,6 +3424,21 @@
               }
             ],
             "description": "Model type and version. Used to map arbitrary objects to a known (possibly previously-used) type.\n        Optional because for some usecases (e.g. api) we want to accept objects without it because we have the info we need to set it."
+          },
+          "attribute": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Attribute"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Attribute",
+            "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
           },
           "subject_specimen_uuid": {
             "anyOf": [
@@ -3481,7 +3541,7 @@
           },
           "version": {
             "type": "integer",
-            "minimum": 0,
+            "minimum": 0.0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -3495,18 +3555,6 @@
               }
             ],
             "description": "Model type and version. Used to map arbitrary objects to a known (possibly previously-used) type.\n        Optional because for some usecases (e.g. api) we want to accept objects without it because we have the info we need to set it."
-          },
-          "description": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Description",
-            "description": "Brief description of the dataset."
           },
           "attribute": {
             "anyOf": [
@@ -3522,6 +3570,18 @@
             ],
             "title": "Attribute",
             "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description",
+            "description": "Brief description of the dataset."
           },
           "analysis_method": {
             "anyOf": [
@@ -3630,7 +3690,7 @@
           },
           "version": {
             "type": "integer",
-            "minimum": 0,
+            "minimum": 0.0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -3644,6 +3704,21 @@
               }
             ],
             "description": "Model type and version. Used to map arbitrary objects to a known (possibly previously-used) type.\n        Optional because for some usecases (e.g. api) we want to accept objects without it because we have the info we need to set it."
+          },
+          "attribute": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Attribute"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Attribute",
+            "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
           },
           "file_path": {
             "type": "string",
@@ -3664,21 +3739,6 @@
             "type": "string",
             "title": "Uri",
             "description": "URI from which the file can be accessed."
-          },
-          "attribute": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/Attribute"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Attribute",
-            "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
           },
           "submission_dataset_uuid": {
             "type": "string",
@@ -3785,7 +3845,7 @@
           },
           "version": {
             "type": "integer",
-            "minimum": 0,
+            "minimum": 0.0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -3860,7 +3920,7 @@
           },
           "version": {
             "type": "integer",
-            "minimum": 0,
+            "minimum": 0.0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -3874,6 +3934,21 @@
               }
             ],
             "description": "Model type and version. Used to map arbitrary objects to a known (possibly previously-used) type.\n        Optional because for some usecases (e.g. api) we want to accept objects without it because we have the info we need to set it."
+          },
+          "attribute": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Attribute"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Attribute",
+            "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
           },
           "protocol_description": {
             "type": "string",
@@ -3929,6 +4004,21 @@
       },
       "ImageAnalysisMethod": {
         "properties": {
+          "attribute": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Attribute"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Attribute",
+            "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
+          },
           "protocol_description": {
             "type": "string",
             "title": "Protocol Description",
@@ -3951,6 +4041,21 @@
       },
       "ImageCorrelationMethod": {
         "properties": {
+          "attribute": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Attribute"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Attribute",
+            "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
+          },
           "protocol_description": {
             "type": "string",
             "title": "Protocol Description",
@@ -3987,7 +4092,7 @@
           },
           "version": {
             "type": "integer",
-            "minimum": 0,
+            "minimum": 0.0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -4001,6 +4106,21 @@
               }
             ],
             "description": "Model type and version. Used to map arbitrary objects to a known (possibly previously-used) type.\n        Optional because for some usecases (e.g. api) we want to accept objects without it because we have the info we need to set it."
+          },
+          "attribute": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Attribute"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Attribute",
+            "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
           },
           "image_format": {
             "type": "string",
@@ -4135,21 +4255,6 @@
             "title": "Image Viewer Setting",
             "description": "Settings of a particular view of an image, such as a specific timestamp of a timeseries, or camera placement in a 3D model."
           },
-          "attribute": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/Attribute"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Attribute",
-            "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
-          },
           "representation_of_uuid": {
             "type": "string",
             "format": "uuid",
@@ -4212,6 +4317,11 @@
       },
       "Protocol": {
         "properties": {
+          "title_id": {
+            "type": "string",
+            "title": "Title Id",
+            "description": "User provided title, which is unqiue within a submission, used to identify a part of a submission."
+          },
           "uuid": {
             "type": "string",
             "format": "uuid",
@@ -4220,7 +4330,7 @@
           },
           "version": {
             "type": "integer",
-            "minimum": 0,
+            "minimum": 0.0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -4235,6 +4345,21 @@
             ],
             "description": "Model type and version. Used to map arbitrary objects to a known (possibly previously-used) type.\n        Optional because for some usecases (e.g. api) we want to accept objects without it because we have the info we need to set it."
           },
+          "attribute": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Attribute"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Attribute",
+            "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
+          },
           "protocol_description": {
             "type": "string",
             "title": "Protocol Description",
@@ -4244,6 +4369,7 @@
         "additionalProperties": false,
         "type": "object",
         "required": [
+          "title_id",
           "uuid",
           "version",
           "protocol_description"
@@ -4304,6 +4430,21 @@
       },
       "RenderedView": {
         "properties": {
+          "attribute": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Attribute"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Attribute",
+            "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
+          },
           "z": {
             "anyOf": [
               {
@@ -4351,6 +4492,21 @@
       },
       "SignalChannelInformation": {
         "properties": {
+          "attribute": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Attribute"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Attribute",
+            "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
+          },
           "signal_contrast_mechanism_description": {
             "anyOf": [
               {
@@ -4403,7 +4559,7 @@
           },
           "version": {
             "type": "integer",
-            "minimum": 0,
+            "minimum": 0.0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -4417,6 +4573,21 @@
               }
             ],
             "description": "Model type and version. Used to map arbitrary objects to a known (possibly previously-used) type.\n        Optional because for some usecases (e.g. api) we want to accept objects without it because we have the info we need to set it."
+          },
+          "attribute": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Attribute"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Attribute",
+            "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
           },
           "imaging_preparation_protocol_uuid": {
             "items": {
@@ -4464,7 +4635,7 @@
           },
           "version": {
             "type": "integer",
-            "minimum": 0,
+            "minimum": 0.0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -4478,6 +4649,21 @@
               }
             ],
             "description": "Model type and version. Used to map arbitrary objects to a known (possibly previously-used) type.\n        Optional because for some usecases (e.g. api) we want to accept objects without it because we have the info we need to set it."
+          },
+          "attribute": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Attribute"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Attribute",
+            "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
           },
           "protocol_description": {
             "type": "string",
@@ -4520,7 +4706,7 @@
           },
           "version": {
             "type": "integer",
-            "minimum": 0,
+            "minimum": 0.0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -4534,6 +4720,21 @@
               }
             ],
             "description": "Model type and version. Used to map arbitrary objects to a known (possibly previously-used) type.\n        Optional because for some usecases (e.g. api) we want to accept objects without it because we have the info we need to set it."
+          },
+          "attribute": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Attribute"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Attribute",
+            "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
           },
           "accession_id": {
             "type": "string",
@@ -4651,21 +4852,6 @@
             ],
             "title": "Funding Statement",
             "description": "Description of how the study was funded."
-          },
-          "attribute": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/Attribute"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Attribute",
-            "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
           }
         },
         "additionalProperties": false,
@@ -4684,6 +4870,21 @@
       },
       "Taxon": {
         "properties": {
+          "attribute": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Attribute"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Attribute",
+            "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
+          },
           "common_name": {
             "anyOf": [
               {
