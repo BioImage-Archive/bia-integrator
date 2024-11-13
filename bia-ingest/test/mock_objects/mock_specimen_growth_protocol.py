@@ -34,6 +34,5 @@ def get_specimen_growth_protocol() -> List[bia_data_model.Protocol]:
         protocol_dict["uuid"] = dict_to_uuid(protocol_dict, attributes_to_consider)
         protocol_dict.pop("accno")
         protocol_dict.pop("accession_id")
-        protocol_dict.pop("title_id")
         protocol.append(bia_data_model.Protocol.model_validate(protocol_dict))
     return protocol
