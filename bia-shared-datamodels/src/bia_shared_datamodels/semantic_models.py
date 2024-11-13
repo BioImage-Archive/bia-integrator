@@ -37,12 +37,23 @@ class Attribute(ConfiguredBaseModel):
     )
 
 
+class AttributeMixin(BaseModel):
+    """
+    Mixin for just the attribute field
+    """
+
+    attribute: Optional[list[Attribute]] = Field(
+        default_factory=list,
+        description="""Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields.""",
+    )
+
+
 #######################################################################################################
 # Subgraph 1: Studies and links to external information (publications, grants etc)
 #######################################################################################################
 
 
-class Study(ConfiguredBaseModel):
+class Study(ConfiguredBaseModel, AttributeMixin):
     """
     A piece of scientific work that resulted in the creation of imaging data.
     """
@@ -79,11 +90,6 @@ class Study(ConfiguredBaseModel):
     )
     funding_statement: Optional[str] = Field(
         None, description="""Description of how the study was funded."""
-    )
-
-    attribute: Optional[list[Attribute]] = Field(
-        default_factory=list,
-        description="""Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields.""",
     )
 
 
@@ -234,17 +240,13 @@ class Affiliation(OrganisationMixin):
 #######################################################################################################
 
 
-class Dataset(ConfiguredBaseModel):
+class Dataset(ConfiguredBaseModel, AttributeMixin):
     """
     A logical collection of images that were created by the same acquisition and preparation procols being applied to a biosample.
     """
 
     description: Optional[str] = Field(
         None, description="""Brief description of the dataset."""
-    )
-    attribute: Optional[list[Attribute]] = Field(
-        default_factory=list,
-        description="""Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields.""",
     )
     analysis_method: Optional[list[ImageAnalysisMethod]] = Field(
         default_factory=list,
@@ -259,7 +261,7 @@ class Dataset(ConfiguredBaseModel):
     )
 
 
-class FileReference(ConfiguredBaseModel):
+class FileReference(ConfiguredBaseModel, AttributeMixin):
     """
     Information about a file, provided in file list.
     """
@@ -269,10 +271,6 @@ class FileReference(ConfiguredBaseModel):
     format: str = Field(description="""File format or type.""")
     size_in_bytes: int = Field(description="""Disc size in bytes.""")
     uri: str = Field(description="""URI from which the file can be accessed.""")
-    attribute: Optional[list[Attribute]] = Field(
-        default_factory=list,
-        description="""Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields.""",
-    )
 
 
 #######################################################################################################
@@ -280,18 +278,15 @@ class FileReference(ConfiguredBaseModel):
 #######################################################################################################
 
 
-class Image(ConfiguredBaseModel):
+class Image(ConfiguredBaseModel, AttributeMixin):
     """
     The abstract notion of an image that can have many representions in different image formats. A BIA image has been created from a unique set of File References.
     """
 
-    attribute: Optional[list[Attribute]] = Field(
-        default_factory=list,
-        description="""Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields.""",
-    )
+    pass
 
 
-class ImageRepresentation(ConfiguredBaseModel):
+class ImageRepresentation(ConfiguredBaseModel, AttributeMixin):
     """
     The viewable or processable represention of an image in a particular image file format.
     This object was created from one or more file refences (usually one) provided by submitters to the BioImage Archive.
@@ -343,13 +338,9 @@ class ImageRepresentation(ConfiguredBaseModel):
         default_factory=list,
         description="""Settings of a particular view of an image, such as a specific timestamp of a timeseries, or camera placement in a 3D model.""",
     )
-    attribute: Optional[list[Attribute]] = Field(
-        default_factory=list,
-        description="""Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields.""",
-    )
 
 
-class RenderedView(ConfiguredBaseModel):
+class RenderedView(ConfiguredBaseModel, AttributeMixin):
     """
     A particular view of an image, such as as a specific timestamp of a time series, or a view direction of a 3D model.
     """
@@ -366,7 +357,7 @@ class RenderedView(ConfiguredBaseModel):
     )
 
 
-class Channel(ConfiguredBaseModel):
+class Channel(ConfiguredBaseModel, AttributeMixin):
     """
     An image channel.
     """
@@ -379,15 +370,12 @@ class Channel(ConfiguredBaseModel):
     )
 
 
-class AnnotationData(ConfiguredBaseModel):
+class AnnotationData(ConfiguredBaseModel, AttributeMixin):
     """
     Annotation data that is not captured in an image/viewable form, such as a table of labels for many different images.
     """
 
-    attribute: Optional[list[Attribute]] = Field(
-        default_factory=list,
-        description="""Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields.""",
-    )
+    pass
 
 
 #######################################################################################################
@@ -395,7 +383,7 @@ class AnnotationData(ConfiguredBaseModel):
 #######################################################################################################
 
 
-class CreationProcess(ConfiguredBaseModel):
+class CreationProcess(ConfiguredBaseModel, AttributeMixin):
     """
     The combination of some protocol that was followed with particular inputs that resulted in the creation of an image.
     """
@@ -403,7 +391,7 @@ class CreationProcess(ConfiguredBaseModel):
     pass
 
 
-class Protocol(ConfiguredBaseModel):
+class Protocol(ConfiguredBaseModel, AttributeMixin):
     """
     The description of a sequence of actions that were perfomed.
     """
@@ -442,7 +430,7 @@ class SpecimenImagingPreparationProtocol(Protocol):
     )
 
 
-class SignalChannelInformation(ConfiguredBaseModel):
+class SignalChannelInformation(ConfiguredBaseModel, AttributeMixin):
     """
     Information about how signals were generated, staining compounds and their targets.
     """
@@ -549,7 +537,7 @@ class AnnotationSourceIndicator(str, Enum):
 #######################################################################################################
 
 
-class Specimen(ConfiguredBaseModel):
+class Specimen(ConfiguredBaseModel, AttributeMixin):
     """
     The subject of an image acquisition, and the result of a BioSample being prepared to be imaged.
     """
@@ -557,7 +545,7 @@ class Specimen(ConfiguredBaseModel):
     pass
 
 
-class BioSample(ConfiguredBaseModel):
+class BioSample(ConfiguredBaseModel, AttributeMixin):
     """
     The biological entity that has undergone preparation (as a Sample) in order to be imaged.
     """
@@ -580,7 +568,7 @@ class BioSample(ConfiguredBaseModel):
     )
 
 
-class Taxon(ConfiguredBaseModel):
+class Taxon(ConfiguredBaseModel, AttributeMixin):
     """
     The classification of a biological entity.
     """
@@ -604,10 +592,12 @@ class Taxon(ConfiguredBaseModel):
 #######################################################################################################
 
 
-class SupportingFile(ConfiguredBaseModel):
+class SupportingFile(ConfiguredBaseModel, AttributeMixin):
     """
     A logical grouping of data (in files) based on the process involved in it's creation.
     """
+
+    pass
 
 
 # Model rebuild

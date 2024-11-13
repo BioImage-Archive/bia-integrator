@@ -189,7 +189,7 @@ def get_image_representation_dict(completeness=Completeness.COMPLETE) -> dict:
             "image_viewer_setting": [
                 get_rendered_view_dict(),
             ],
-            "model": {"type_name": "ImageRepresentation", "version": 2},
+            "model": {"type_name": "ImageRepresentation", "version": 3},
             "attribute": [get_attribute_dict()],
         }
     return image_representation
@@ -204,6 +204,7 @@ def get_rendered_view_dict(completeness=Completeness.COMPLETE) -> dict:
             "channel_information": [
                 get_channel_dict(Completeness.COMPLETE),
             ],
+            "attribute": [get_attribute_dict()],
         }
     return rendered_view
 
@@ -217,6 +218,7 @@ def get_channel_dict(completeness=Completeness.COMPLETE) -> dict:
         channel |= {
             "scale_factor": 1.0,
             "label": "Template label",
+            "attribute": [get_attribute_dict()],
         }
     return channel
 
@@ -252,7 +254,7 @@ def get_creation_process_dict(completeness=Completeness.COMPLETE) -> dict:
     }
     if completeness == Completeness.COMPLETE:
         process |= {
-            "model": {"type_name": "CreationProcess", "version": 1},
+            "model": {"type_name": "CreationProcess", "version": 2},
             "subject_specimen_uuid": get_specimen_dict()["uuid"],
             "image_acquisition_protocol_uuid": [
                 get_image_acquisition_protocol_dict()["uuid"]
@@ -262,6 +264,7 @@ def get_creation_process_dict(completeness=Completeness.COMPLETE) -> dict:
             ],
             "protocol_uuid": [get_protocol_dict()["uuid"]],
             "annotation_method_uuid": [get_annotation_method_dict()["uuid"]],
+            "attribute": [get_attribute_dict()],
         }
 
     return process
@@ -270,12 +273,14 @@ def get_creation_process_dict(completeness=Completeness.COMPLETE) -> dict:
 def get_protocol_dict(completeness=Completeness.COMPLETE) -> dict:
     protocol = {
         "uuid": uuid4(),
+        "title_id": "Template Protocol",
         "protocol_description": "Template method description",
         "version": 1,
     }
     if completeness == Completeness.COMPLETE:
         protocol |= {
-            "model": {"type_name": "Protocol", "version": 1},
+            "model": {"type_name": "Protocol", "version": 2},
+            "attribute": [get_attribute_dict()],
         }
 
     return protocol
@@ -297,7 +302,8 @@ def get_image_acquisition_protocol_dict(completeness=Completeness.COMPLETE) -> d
             "imaging_method_name": [
                 "Template imaging method name",
             ],
-            "model": {"type_name": "ImageAcquisitionProtocol", "version": 1},
+            "attribute": [get_attribute_dict()],
+            "model": {"type_name": "ImageAcquisitionProtocol", "version": 2},
         }
     return image_acquisition_protocol
 
@@ -318,7 +324,8 @@ def get_annotation_method_dict(completeness=Completeness.COMPLETE) -> dict:
             "spatial_information": "Template spatial information",
             "method_type": [semantic_models.AnnotationMethodType.class_labels],
             "annotation_source_indicator": semantic_models.AnnotationSourceIndicator.metadata_file,
-            "model": {"type_name": "AnnotationMethod", "version": 2},
+            "attribute": [get_attribute_dict()],
+            "model": {"type_name": "AnnotationMethod", "version": 3},
         }
     return annotation_method
 
@@ -329,7 +336,9 @@ def get_image_analysis_method_dict(completeness=Completeness.COMPLETE) -> dict:
         "features_analysed": "Template features analysed",
     }
     if completeness == Completeness.COMPLETE:
-        image_analysis_method |= {}
+        image_analysis_method |= {
+            "attribute": [get_attribute_dict()],
+        }
     return image_analysis_method
 
 
@@ -340,7 +349,9 @@ def get_image_correlation_method_dict(completeness=Completeness.COMPLETE) -> dic
         "transformation_matrix": "Template transformation matrix",
     }
     if completeness == Completeness.COMPLETE:
-        image_correlation_method |= {}
+        image_correlation_method |= {
+            "attribute": [get_attribute_dict()],
+        }
     return image_correlation_method
 
 
@@ -362,7 +373,8 @@ def get_specimen_dict(completeness=Completeness.COMPLETE) -> dict:
     }
     if completeness == Completeness.COMPLETE:
         specimen |= {
-            "model": {"type_name": "Specimen", "version": 1},
+            "model": {"type_name": "Specimen", "version": 2},
+            "attribute": [get_attribute_dict()],
         }
     return specimen
 
@@ -381,9 +393,10 @@ def get_specimen_imaging_preparation_protocol_dict(
             "signal_channel_information": [
                 get_signal_channel_information_dict(Completeness.COMPLETE)
             ],
+            "attribute": [get_attribute_dict()],
             "model": {
                 "type_name": "SpecimenImagingPreparationProtocol",
-                "version": 1,
+                "version": 2,
             },
         }
     return specimen_imaging_preparation_protocol
@@ -396,6 +409,7 @@ def get_signal_channel_information_dict(completeness=Completeness.COMPLETE) -> d
             "signal_contrast_mechanism_description": "Test description",
             "channel_content_description": "Test description",
             "channel_biological_entity": "Test Entity",
+            "attribute": [get_attribute_dict()],
         }
     return signal_channel_information
 
@@ -423,7 +437,8 @@ def get_biosample_dict(completeness=Completeness.COMPLETE) -> dict:
                 "Description of internal treatment",
             ],
             "growth_protocol_uuid": get_protocol_dict()["uuid"],
-            "model": {"type_name": "BioSample", "version": 2},
+            "attribute": [get_attribute_dict()],
+            "model": {"type_name": "BioSample", "version": 3},
         }
     return biosample
 
@@ -435,6 +450,7 @@ def get_taxon_dict(completeness=Completeness.COMPLETE) -> dict:
             "common_name": "Test Common Name",
             "scientific_name": "Test Scientific Name",
             "ncbi_id": "Test_NCBI_ID",
+            "attribute": [get_attribute_dict()],
         }
     return taxon
 
