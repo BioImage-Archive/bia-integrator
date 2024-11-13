@@ -20,6 +20,7 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
+from bia_integrator_api.models.attribute import Attribute
 from bia_integrator_api.models.model_metadata import ModelMetadata
 from bia_integrator_api.models.taxon import Taxon
 from typing import Optional, Set
@@ -33,13 +34,14 @@ class BioSample(BaseModel):
     uuid: StrictStr = Field(description="Unique ID (across the BIA database) used to refer to and identify a document.")
     version: Annotated[int, Field(strict=True, ge=0)] = Field(description="Document version. This can't be optional to make sure we never persist objects without it")
     model: Optional[ModelMetadata] = None
+    attribute: Optional[List[Attribute]] = None
     organism_classification: List[Taxon] = Field(description="The classification of th ebiological matter.")
     biological_entity_description: StrictStr = Field(description="A short description of the biological entity.")
     experimental_variable_description: Optional[List[StrictStr]] = None
     extrinsic_variable_description: Optional[List[StrictStr]] = None
     intrinsic_variable_description: Optional[List[StrictStr]] = None
     growth_protocol_uuid: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["title_id", "uuid", "version", "model", "organism_classification", "biological_entity_description", "experimental_variable_description", "extrinsic_variable_description", "intrinsic_variable_description", "growth_protocol_uuid"]
+    __properties: ClassVar[List[str]] = ["title_id", "uuid", "version", "model", "attribute", "organism_classification", "biological_entity_description", "experimental_variable_description", "extrinsic_variable_description", "intrinsic_variable_description", "growth_protocol_uuid"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -83,6 +85,13 @@ class BioSample(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of model
         if self.model:
             _dict['model'] = self.model.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of each item in attribute (list)
+        _items = []
+        if self.attribute:
+            for _item_attribute in self.attribute:
+                if _item_attribute:
+                    _items.append(_item_attribute.to_dict())
+            _dict['attribute'] = _items
         # override the default output from pydantic by calling `to_dict()` of each item in organism_classification (list)
         _items = []
         if self.organism_classification:
@@ -94,6 +103,11 @@ class BioSample(BaseModel):
         # and model_fields_set contains the field
         if self.model is None and "model" in self.model_fields_set:
             _dict['model'] = None
+
+        # set to None if attribute (nullable) is None
+        # and model_fields_set contains the field
+        if self.attribute is None and "attribute" in self.model_fields_set:
+            _dict['attribute'] = None
 
         # set to None if experimental_variable_description (nullable) is None
         # and model_fields_set contains the field
@@ -131,6 +145,7 @@ class BioSample(BaseModel):
             "uuid": obj.get("uuid"),
             "version": obj.get("version"),
             "model": ModelMetadata.from_dict(obj["model"]) if obj.get("model") is not None else None,
+            "attribute": [Attribute.from_dict(_item) for _item in obj["attribute"]] if obj.get("attribute") is not None else None,
             "organism_classification": [Taxon.from_dict(_item) for _item in obj["organism_classification"]] if obj.get("organism_classification") is not None else None,
             "biological_entity_description": obj.get("biological_entity_description"),
             "experimental_variable_description": obj.get("experimental_variable_description"),

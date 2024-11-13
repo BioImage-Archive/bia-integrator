@@ -34,6 +34,7 @@ class ImageRepresentation(BaseModel):
     uuid: StrictStr = Field(description="Unique ID (across the BIA database) used to refer to and identify a document.")
     version: Annotated[int, Field(strict=True, ge=0)] = Field(description="Document version. This can't be optional to make sure we never persist objects without it")
     model: Optional[ModelMetadata] = None
+    attribute: Optional[List[Attribute]] = None
     image_format: StrictStr = Field(description="Image format of the combined files.")
     use_type: ImageRepresentationUseType
     file_uri: List[StrictStr] = Field(description="URI(s) of the file(s) which together make up this image representation.")
@@ -47,9 +48,8 @@ class ImageRepresentation(BaseModel):
     size_c: Optional[StrictInt] = None
     size_t: Optional[StrictInt] = None
     image_viewer_setting: Optional[List[RenderedView]] = None
-    attribute: Optional[List[Attribute]] = None
     representation_of_uuid: StrictStr
-    __properties: ClassVar[List[str]] = ["uuid", "version", "model", "image_format", "use_type", "file_uri", "total_size_in_bytes", "physical_size_x", "physical_size_y", "physical_size_z", "size_x", "size_y", "size_z", "size_c", "size_t", "image_viewer_setting", "attribute", "representation_of_uuid"]
+    __properties: ClassVar[List[str]] = ["uuid", "version", "model", "attribute", "image_format", "use_type", "file_uri", "total_size_in_bytes", "physical_size_x", "physical_size_y", "physical_size_z", "size_x", "size_y", "size_z", "size_c", "size_t", "image_viewer_setting", "representation_of_uuid"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -93,13 +93,6 @@ class ImageRepresentation(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of model
         if self.model:
             _dict['model'] = self.model.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of each item in image_viewer_setting (list)
-        _items = []
-        if self.image_viewer_setting:
-            for _item_image_viewer_setting in self.image_viewer_setting:
-                if _item_image_viewer_setting:
-                    _items.append(_item_image_viewer_setting.to_dict())
-            _dict['image_viewer_setting'] = _items
         # override the default output from pydantic by calling `to_dict()` of each item in attribute (list)
         _items = []
         if self.attribute:
@@ -107,10 +100,22 @@ class ImageRepresentation(BaseModel):
                 if _item_attribute:
                     _items.append(_item_attribute.to_dict())
             _dict['attribute'] = _items
+        # override the default output from pydantic by calling `to_dict()` of each item in image_viewer_setting (list)
+        _items = []
+        if self.image_viewer_setting:
+            for _item_image_viewer_setting in self.image_viewer_setting:
+                if _item_image_viewer_setting:
+                    _items.append(_item_image_viewer_setting.to_dict())
+            _dict['image_viewer_setting'] = _items
         # set to None if model (nullable) is None
         # and model_fields_set contains the field
         if self.model is None and "model" in self.model_fields_set:
             _dict['model'] = None
+
+        # set to None if attribute (nullable) is None
+        # and model_fields_set contains the field
+        if self.attribute is None and "attribute" in self.model_fields_set:
+            _dict['attribute'] = None
 
         # set to None if physical_size_x (nullable) is None
         # and model_fields_set contains the field
@@ -157,11 +162,6 @@ class ImageRepresentation(BaseModel):
         if self.image_viewer_setting is None and "image_viewer_setting" in self.model_fields_set:
             _dict['image_viewer_setting'] = None
 
-        # set to None if attribute (nullable) is None
-        # and model_fields_set contains the field
-        if self.attribute is None and "attribute" in self.model_fields_set:
-            _dict['attribute'] = None
-
         return _dict
 
     @classmethod
@@ -177,6 +177,7 @@ class ImageRepresentation(BaseModel):
             "uuid": obj.get("uuid"),
             "version": obj.get("version"),
             "model": ModelMetadata.from_dict(obj["model"]) if obj.get("model") is not None else None,
+            "attribute": [Attribute.from_dict(_item) for _item in obj["attribute"]] if obj.get("attribute") is not None else None,
             "image_format": obj.get("image_format"),
             "use_type": obj.get("use_type"),
             "file_uri": obj.get("file_uri"),
@@ -190,7 +191,6 @@ class ImageRepresentation(BaseModel):
             "size_c": obj.get("size_c"),
             "size_t": obj.get("size_t"),
             "image_viewer_setting": [RenderedView.from_dict(_item) for _item in obj["image_viewer_setting"]] if obj.get("image_viewer_setting") is not None else None,
-            "attribute": [Attribute.from_dict(_item) for _item in obj["attribute"]] if obj.get("attribute") is not None else None,
             "representation_of_uuid": obj.get("representation_of_uuid")
         })
         return _obj

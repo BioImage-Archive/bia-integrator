@@ -9,8 +9,8 @@ Name | Type | Description | Notes
 **uuid** | **str** | Unique ID (across the BIA database) used to refer to and identify a document. | 
 **version** | **int** | Document version. This can&#39;t be optional to make sure we never persist objects without it | 
 **model** | [**ModelMetadata**](ModelMetadata.md) |  | [optional] 
-**description** | **str** |  | [optional] 
 **attribute** | [**List[Attribute]**](Attribute.md) |  | [optional] 
+**description** | **str** |  | [optional] 
 **analysis_method** | [**List[ImageAnalysisMethod]**](ImageAnalysisMethod.md) |  | [optional] 
 **correlation_method** | [**List[ImageCorrelationMethod]**](ImageCorrelationMethod.md) |  | [optional] 
 **example_image_uri** | **List[str]** | A viewable image that is typical of the dataset. | 

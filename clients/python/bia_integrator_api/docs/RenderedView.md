@@ -6,6 +6,7 @@ A particular view of an image, such as as a specific timestamp of a time series,
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**attribute** | [**List[Attribute]**](Attribute.md) |  | [optional] 
 **z** | **str** |  | [optional] 
 **t** | **str** |  | [optional] 
 **channel_information** | [**List[Channel]**](Channel.md) |  | [optional] 

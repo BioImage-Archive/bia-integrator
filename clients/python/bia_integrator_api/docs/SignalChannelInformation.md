@@ -6,6 +6,7 @@ Information about how signals were generated, staining compounds and their targe
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**attribute** | [**List[Attribute]**](Attribute.md) |  | [optional] 
 **signal_contrast_mechanism_description** | **str** |  | [optional] 
 **channel_content_description** | **str** |  | [optional] 
 **channel_biological_entity** | **str** |  | [optional] 

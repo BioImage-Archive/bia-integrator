@@ -35,13 +35,13 @@ class Dataset(BaseModel):
     uuid: StrictStr = Field(description="Unique ID (across the BIA database) used to refer to and identify a document.")
     version: Annotated[int, Field(strict=True, ge=0)] = Field(description="Document version. This can't be optional to make sure we never persist objects without it")
     model: Optional[ModelMetadata] = None
-    description: Optional[StrictStr] = None
     attribute: Optional[List[Attribute]] = None
+    description: Optional[StrictStr] = None
     analysis_method: Optional[List[ImageAnalysisMethod]] = None
     correlation_method: Optional[List[ImageCorrelationMethod]] = None
     example_image_uri: List[StrictStr] = Field(description="A viewable image that is typical of the dataset.")
     submitted_in_study_uuid: StrictStr
-    __properties: ClassVar[List[str]] = ["title_id", "uuid", "version", "model", "description", "attribute", "analysis_method", "correlation_method", "example_image_uri", "submitted_in_study_uuid"]
+    __properties: ClassVar[List[str]] = ["title_id", "uuid", "version", "model", "attribute", "description", "analysis_method", "correlation_method", "example_image_uri", "submitted_in_study_uuid"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -111,15 +111,15 @@ class Dataset(BaseModel):
         if self.model is None and "model" in self.model_fields_set:
             _dict['model'] = None
 
-        # set to None if description (nullable) is None
-        # and model_fields_set contains the field
-        if self.description is None and "description" in self.model_fields_set:
-            _dict['description'] = None
-
         # set to None if attribute (nullable) is None
         # and model_fields_set contains the field
         if self.attribute is None and "attribute" in self.model_fields_set:
             _dict['attribute'] = None
+
+        # set to None if description (nullable) is None
+        # and model_fields_set contains the field
+        if self.description is None and "description" in self.model_fields_set:
+            _dict['description'] = None
 
         # set to None if analysis_method (nullable) is None
         # and model_fields_set contains the field
@@ -147,8 +147,8 @@ class Dataset(BaseModel):
             "uuid": obj.get("uuid"),
             "version": obj.get("version"),
             "model": ModelMetadata.from_dict(obj["model"]) if obj.get("model") is not None else None,
-            "description": obj.get("description"),
             "attribute": [Attribute.from_dict(_item) for _item in obj["attribute"]] if obj.get("attribute") is not None else None,
+            "description": obj.get("description"),
             "analysis_method": [ImageAnalysisMethod.from_dict(_item) for _item in obj["analysis_method"]] if obj.get("analysis_method") is not None else None,
             "correlation_method": [ImageCorrelationMethod.from_dict(_item) for _item in obj["correlation_method"]] if obj.get("correlation_method") is not None else None,
             "example_image_uri": obj.get("example_image_uri"),

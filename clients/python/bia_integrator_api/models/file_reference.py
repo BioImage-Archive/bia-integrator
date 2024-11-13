@@ -32,13 +32,13 @@ class FileReference(BaseModel):
     uuid: StrictStr = Field(description="Unique ID (across the BIA database) used to refer to and identify a document.")
     version: Annotated[int, Field(strict=True, ge=0)] = Field(description="Document version. This can't be optional to make sure we never persist objects without it")
     model: Optional[ModelMetadata] = None
+    attribute: Optional[List[Attribute]] = None
     file_path: StrictStr = Field(description="The path (including the name) of the file.")
     format: StrictStr = Field(description="File format or type.")
     size_in_bytes: StrictInt = Field(description="Disc size in bytes.")
     uri: StrictStr = Field(description="URI from which the file can be accessed.")
-    attribute: Optional[List[Attribute]] = None
     submission_dataset_uuid: StrictStr
-    __properties: ClassVar[List[str]] = ["uuid", "version", "model", "file_path", "format", "size_in_bytes", "uri", "attribute", "submission_dataset_uuid"]
+    __properties: ClassVar[List[str]] = ["uuid", "version", "model", "attribute", "file_path", "format", "size_in_bytes", "uri", "submission_dataset_uuid"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -114,11 +114,11 @@ class FileReference(BaseModel):
             "uuid": obj.get("uuid"),
             "version": obj.get("version"),
             "model": ModelMetadata.from_dict(obj["model"]) if obj.get("model") is not None else None,
+            "attribute": [Attribute.from_dict(_item) for _item in obj["attribute"]] if obj.get("attribute") is not None else None,
             "file_path": obj.get("file_path"),
             "format": obj.get("format"),
             "size_in_bytes": obj.get("size_in_bytes"),
             "uri": obj.get("uri"),
-            "attribute": [Attribute.from_dict(_item) for _item in obj["attribute"]] if obj.get("attribute") is not None else None,
             "submission_dataset_uuid": obj.get("submission_dataset_uuid")
         })
         return _obj

@@ -6,6 +6,7 @@ An image channel.
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**attribute** | [**List[Attribute]**](Attribute.md) |  | [optional] 
 **colormap_start** | **float** | Start value of colormap | 
 **colormap_end** | **float** | End value of colormap | 
 **scale_factor** | **float** |  | [optional] 

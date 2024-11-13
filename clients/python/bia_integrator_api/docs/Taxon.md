@@ -6,6 +6,7 @@ The classification of a biological entity.
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**attribute** | [**List[Attribute]**](Attribute.md) |  | [optional] 
 **common_name** | **str** |  | [optional] 
 **scientific_name** | **str** |  | [optional] 
 **ncbi_id** | **str** |  | [optional] 

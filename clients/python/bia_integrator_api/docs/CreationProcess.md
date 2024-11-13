@@ -8,6 +8,7 @@ Name | Type | Description | Notes
 **uuid** | **str** | Unique ID (across the BIA database) used to refer to and identify a document. | 
 **version** | **int** | Document version. This can&#39;t be optional to make sure we never persist objects without it | 
 **model** | [**ModelMetadata**](ModelMetadata.md) |  | [optional] 
+**attribute** | [**List[Attribute]**](Attribute.md) |  | [optional] 
 **subject_specimen_uuid** | **str** |  | [optional] 
 **image_acquisition_protocol_uuid** | **List[str]** |  | [optional] 
 **input_image_uuid** | **List[str]** |  | [optional] 

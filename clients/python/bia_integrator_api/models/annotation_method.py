@@ -22,6 +22,7 @@ from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from bia_integrator_api.models.annotation_method_type import AnnotationMethodType
 from bia_integrator_api.models.annotation_source_indicator import AnnotationSourceIndicator
+from bia_integrator_api.models.attribute import Attribute
 from bia_integrator_api.models.model_metadata import ModelMetadata
 from typing import Optional, Set
 from typing_extensions import Self
@@ -34,6 +35,7 @@ class AnnotationMethod(BaseModel):
     uuid: StrictStr = Field(description="Unique ID (across the BIA database) used to refer to and identify a document.")
     version: Annotated[int, Field(strict=True, ge=0)] = Field(description="Document version. This can't be optional to make sure we never persist objects without it")
     model: Optional[ModelMetadata] = None
+    attribute: Optional[List[Attribute]] = None
     protocol_description: StrictStr = Field(description="Description of actions involved in the process.")
     annotation_criteria: Optional[StrictStr] = None
     annotation_coverage: Optional[StrictStr] = None
@@ -41,7 +43,7 @@ class AnnotationMethod(BaseModel):
     spatial_information: Optional[StrictStr] = None
     method_type: List[AnnotationMethodType] = Field(description="Classification of the kind of annotation that was performed.")
     annotation_source_indicator: Optional[AnnotationSourceIndicator] = None
-    __properties: ClassVar[List[str]] = ["title_id", "uuid", "version", "model", "protocol_description", "annotation_criteria", "annotation_coverage", "transformation_description", "spatial_information", "method_type", "annotation_source_indicator"]
+    __properties: ClassVar[List[str]] = ["title_id", "uuid", "version", "model", "attribute", "protocol_description", "annotation_criteria", "annotation_coverage", "transformation_description", "spatial_information", "method_type", "annotation_source_indicator"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -85,10 +87,22 @@ class AnnotationMethod(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of model
         if self.model:
             _dict['model'] = self.model.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of each item in attribute (list)
+        _items = []
+        if self.attribute:
+            for _item_attribute in self.attribute:
+                if _item_attribute:
+                    _items.append(_item_attribute.to_dict())
+            _dict['attribute'] = _items
         # set to None if model (nullable) is None
         # and model_fields_set contains the field
         if self.model is None and "model" in self.model_fields_set:
             _dict['model'] = None
+
+        # set to None if attribute (nullable) is None
+        # and model_fields_set contains the field
+        if self.attribute is None and "attribute" in self.model_fields_set:
+            _dict['attribute'] = None
 
         # set to None if annotation_criteria (nullable) is None
         # and model_fields_set contains the field
@@ -131,6 +145,7 @@ class AnnotationMethod(BaseModel):
             "uuid": obj.get("uuid"),
             "version": obj.get("version"),
             "model": ModelMetadata.from_dict(obj["model"]) if obj.get("model") is not None else None,
+            "attribute": [Attribute.from_dict(_item) for _item in obj["attribute"]] if obj.get("attribute") is not None else None,
             "protocol_description": obj.get("protocol_description"),
             "annotation_criteria": obj.get("annotation_criteria"),
             "annotation_coverage": obj.get("annotation_coverage"),

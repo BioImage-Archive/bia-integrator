@@ -6,6 +6,7 @@ Information about the process of correlating the positions of multiple images.
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**attribute** | [**List[Attribute]**](Attribute.md) |  | [optional] 
 **protocol_description** | **str** | Description of actions involved in the process. | 
 **fiducials_used** | **str** | Features from correlated datasets used for colocalization. | 
 **transformation_matrix** | **str** | Correlation transforms. | 
