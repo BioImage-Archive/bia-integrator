@@ -82,7 +82,7 @@ def api_push_json(delete_after_push: bool, json_path: str):
             elif data_parsed.model.type_name == "AnnotationMethod":
                 api_client.post_annotation_method(data_parsed)
             else:
-                raise Exception(f"Unable to create {data_parsed.model.type_name} {data_parsed.model.type_name == 'FileReference'}", json_path, data_parsed)
+                raise Exception(f"Unable to create {data_parsed.model.type_name}", json_path, data_parsed)
 
             if delete_after_push:
                 os.remove(json_path)
