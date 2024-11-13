@@ -45,7 +45,7 @@ def get_specimen_for_dataset(
     specimen_titles = set([association["specimen"] for association in associations])
 
     biosamples = biosample_conversion.get_biosample(submission, result_summary)
-    # Put UUIDs from assoication in set to prevent duplication
+    # Put UUIDs from association in set to prevent duplication
     biosample_uuids = set()
     for association in associations:
         biosample_uuids.add(

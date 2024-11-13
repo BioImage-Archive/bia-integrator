@@ -1,3 +1,4 @@
+from test.mock_objects import mock_specimen_growth_protocol
 from typer.testing import CliRunner
 from bia_ingest import cli
 from bia_ingest.ingest.generic_conversion_utils import settings
@@ -31,7 +32,7 @@ def expected_objects():
         "image_acquisition_protocol": mock_image_acquisition_protocol.get_image_acquisition_protocol(),
         "specimen_imaging_preparation_protocol": mock_specimen_imaging_preparation_protocol.get_specimen_imaging_preparation_protocol(),
         "annotation_method": mock_annotation_method.get_annotation_method(),
-        #        "protocol": mock_specimen_growth_protocol.get_specimen_growth_protocol(),
+        "protocol": mock_specimen_growth_protocol.get_specimen_growth_protocol(),
     }
 
     # File references are a special case as they depend on experimental dataset

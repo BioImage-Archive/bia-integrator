@@ -1,6 +1,12 @@
 import logging
 from typing import List, Any, Dict, Optional
 
+from bia_ingest.ingest.generic_conversion_utils import get_associations_for_section
+from bia_ingest.ingest.specimen_growth_protocol import (
+    extract_specimen_growth_protocol_dicts,
+    get_specimen_growth_protocol,
+)
+
 from ..bia_object_creation_utils import (
     dict_to_uuid,
     dicts_to_api_models,
@@ -29,11 +35,9 @@ def get_biosample(
     result_summary: dict,
     persister: Optional[PersistenceStrategy] = None,
 ) -> List[bia_data_model.BioSample]:
-    biosample_model_dicts = extract_biosample_dicts(submission)
-    #
-    #   growth_protocols = get_specimen_growth_protocol(
-    #       submission, result_summary, persister
-    #   )
+    biosample_model_dicts = extract_biosample_dicts(
+        submission, result_summary, persister
+    )
 
     biosamples = dicts_to_api_models(
         biosample_model_dicts,
@@ -52,7 +56,52 @@ def get_biosample(
     return biosamples
 
 
-def extract_biosample_dicts(submission: Submission) -> List[Dict[str, Any]]:
+def extract_biosample_dicts(
+    submission: Submission,
+    result_summary: dict,
+    persister: Optional[PersistenceStrategy] = None,
+) -> List[Dict[str, Any]]:
+    # Get growth protocols as UUIDs needed in biosample
+    # If we are persisting this call ensures the growth protocols
+    # are created and persisted. However, the models do not have
+    # the info needed for mapping to biosamples. This is obtained
+    # from the unfiltered dicts.
+    if persister:
+        get_specimen_growth_protocol(submission, result_summary, persister)
+    growth_protocol_dicts = extract_specimen_growth_protocol_dicts(
+        submission, filter_dict=False
+    )
+
+    biosample_growth_protocol_associations = {}
+    if growth_protocol_dicts:
+        # Get associations to allow mapping to biosample
+        study_components = find_sections_recursive(
+            submission.section,
+            [
+                "Study Component",
+            ],
+            [],
+        )
+        for study_component in study_components:
+            associations = get_associations_for_section(study_component)
+            for association in associations:
+                biosample_title = association.get("biosample", None)
+                specimen_title = association.get("specimen", None)
+                if biosample_title and specimen_title:
+                    growth_protocol_uuids = [
+                        gp["uuid"]
+                        for gp in growth_protocol_dicts
+                        if gp["title_id"] == specimen_title
+                    ]
+                    if biosample_title not in biosample_growth_protocol_associations:
+                        biosample_growth_protocol_associations[biosample_title] = (
+                            growth_protocol_uuids
+                        )
+                    else:
+                        biosample_growth_protocol_associations[biosample_title].extend(
+                            growth_protocol_uuids
+                        )
+
     biosample_sections = find_sections_recursive(submission.section, ["Biosample"], [])
 
     key_mapping = [
@@ -109,6 +158,16 @@ def extract_biosample_dicts(submission: Submission) -> List[Dict[str, Any]]:
             model_dict[api_key] = []
             if biostudies_key in attr_dict:
                 model_dict[api_key].append(attr_dict[biostudies_key])
+
+        # Attach specimen growth protocol uuid
+        # Currently assuming there should be only one growth protocol
+        # per biosample
+        # TODO: Log warning if more than one. Info if 0.
+        growth_protocol_uuid = biosample_growth_protocol_associations.get(
+            model_dict["title_id"], []
+        )
+        if growth_protocol_uuid:
+            model_dict["growth_protocol_uuid"] = growth_protocol_uuid[0]
 
         model_dict["accession_id"] = submission.accno
         model_dict["uuid"] = generate_biosample_uuid(model_dict)
