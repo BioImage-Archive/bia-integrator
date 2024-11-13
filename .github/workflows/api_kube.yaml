@@ -56,6 +56,7 @@ jobs:
       - name: Start everything
         run: |
           helm install bia-api-local ./api/helm-chart \
+            --set "api_env.mongoTimeoutMs=${{ vars.MONGO_TIMEOUT_MS }}" \
             --set "api_env.mongoRootUser=${{ vars.MONGO_INITDB_ROOT_USERNAME }}" \
             --set "api_env.mongoRootPassword=${{ secrets.MONGO_INITDB_ROOT_PASSWORD }}" \
             --set "api_env.jwtSecretKey=${{ secrets.JWT_SECRET_KEY }}" \

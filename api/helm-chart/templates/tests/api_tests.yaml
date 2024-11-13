@@ -20,6 +20,8 @@ spec:
       command: ["poetry", "run", "pytest", "--ignore", "src"]
       workingDir: /bia-integrator/api
       env:
+        - name: MONGO_TIMEOUT_MS
+          value: "{{ .Values.api_env.mongoTimeoutMs }}"
         - name: DB_NAME
           value: {{ .Values.api_env.dbName }}
         - name: JWT_SECRET_KEY
