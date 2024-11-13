@@ -1,5 +1,5 @@
-from bia_export.website_export.images.models import (
-    ExperimentalImagingDataset,
+from bia_export.website_export.datasets_for_images.models import (
+    Dataset,
 )
 from bia_export.website_export.datasets_for_images.retrieve import (
     retrieve_study,
@@ -17,9 +17,9 @@ def transform_datasets(context: CLIContext) -> dict:
     api_datasets = retrieve_datasets(context)
     for api_dataset in api_datasets:
 
-        api_eid_dict = api_dataset.model_dump()
-        api_eid_dict["submitted_in_study"] = api_study
-        api_eid = ExperimentalImagingDataset(**api_eid_dict)
-        dataset_map[str(api_eid.uuid)] = api_eid.model_dump(mode="json")
+        api_dataset_dict = api_dataset.model_dump()
+        api_dataset_dict["submitted_in_study"] = api_study
+        api_dataset = Dataset(**api_dataset_dict)
+        dataset_map[str(api_dataset.uuid)] = api_dataset.model_dump(mode="json")
 
     return dataset_map

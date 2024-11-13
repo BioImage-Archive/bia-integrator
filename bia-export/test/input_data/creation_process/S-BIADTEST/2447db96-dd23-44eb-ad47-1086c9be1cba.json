@@ -1,0 +1,12 @@
+{
+  "uuid": "2447db96-dd23-44eb-ad47-1086c9be1cba",
+  "image_acquisition_protocol_uuid": [
+    "c2e44a1b-a43c-476e-8ddf-8587f4c955b3"
+  ],
+  "annotation_method_uuid": [],
+  "protocol_uuid": [],
+  "input_image_uuid": [],
+  "attribute": [],
+  "subject_specimen_uuid": "dcc18482-fa1a-468f-878f-c00f9cd46376",
+  "version": 1
+}

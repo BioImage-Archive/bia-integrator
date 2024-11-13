@@ -9,5 +9,6 @@
   "protocol_description": "Test protocol description",
   "annotation_criteria": "Test annotation criteria.",
   "annotation_coverage": "Test annotation coverage.",
-  "method_type": "other"
+  "attribute": [],
+  "method_type": ["other"]
 }

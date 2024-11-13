@@ -3,11 +3,11 @@
   "uuid": "21999a9f-6f16-45d4-91c9-ed46cbfe015c",
   "version": 1,
   "model": {
-    "type_name": "ImageAnnotationDataset",
+    "type_name": "Dataset",
     "version": 1
   },
   "description": null,
-  "attribute": {},
+  "attribute": [],
   "example_image_uri": [],
   "submitted_in_study_uuid": "a2fdbd58-ee11-4cd9-bc6a-f3d3da7fff71"
 }

@@ -1,107 +1,102 @@
 {
+    "7966aa52-e3db-4ce3-801e-44c524b73ee3": {
+        "uuid": "7966aa52-e3db-4ce3-801e-44c524b73ee3",
+        "version": 1,
+        "model": {
+            "type_name": "Image",
+            "version": 1
+        },
+        "attribute": [],
+        "submission_dataset_uuid": "21999a9f-6f16-45d4-91c9-ed46cbfe015c",
+        "creation_process_uuid": "8444ff28-e32b-4c6f-9677-d9ff597b0c29",
+        "original_file_reference_uuid": [],
+        "creation_process": {
+            "uuid": "8444ff28-e32b-4c6f-9677-d9ff597b0c29",
+            "version": 1,
+            "model": null,
+            "attribute": [],
+            "subject_specimen_uuid": null,
+            "image_acquisition_protocol_uuid": [],
+            "input_image_uuid": [
+                "e7322131-8e27-455d-b9fc-8add0719af70"
+            ],
+            "protocol_uuid": [],
+            "annotation_method_uuid": [
+                "ef019f5d-d3e0-4122-89ae-1d1d07d2830f"
+            ],
+            "acquisition_process": [],
+            "subject": null,
+            "protocol": [],
+            "annotation_method": [
+                {
+                    "default_open": true,
+                    "title_id": "Annotations and segmentation masks",
+                    "uuid": "ef019f5d-d3e0-4122-89ae-1d1d07d2830f",
+                    "version": 1,
+                    "model": {
+                        "type_name": "AnnotationMethod",
+                        "version": 1
+                    },
+                    "attribute": [],
+                    "protocol_description": "Test protocol description",
+                    "annotation_criteria": "Test annotation criteria.",
+                    "annotation_coverage": "Test annotation coverage.",
+                    "transformation_description": null,
+                    "spatial_information": null,
+                    "method_type": [
+                        "other"
+                    ],
+                    "annotation_source_indicator": null
+                }
+            ]
+        },
+        "representation": []
+    },
     "e7322131-8e27-455d-b9fc-8add0719af70": {
         "uuid": "e7322131-8e27-455d-b9fc-8add0719af70",
         "version": 1,
         "model": {
-            "type_name": "ExperimentallyCapturedImage",
+            "type_name": "Image",
             "version": 1
         },
-        "attribute": {},
-        "acquisition_process_uuid": [
-            "c2e44a1b-a43c-476e-8ddf-8587f4c955b3"
-        ],
+        "attribute": [],
         "submission_dataset_uuid": "47a4ab60-c76d-4424-bfaa-c2a024de720c",
-        "subject_uuid": "dcc18482-fa1a-468f-878f-c00f9cd46376",
-        "acquisition_process": [
-            {
-                "default_open": true,
-                "title_id": "Test Primary Screen Image Acquisition",
-                "uuid": "c2e44a1b-a43c-476e-8ddf-8587f4c955b3",
-                "version": 1,
-                "model": {
-                    "type_name": "ImageAcquisition",
-                    "version": 1
-                },
-                "protocol_description": "Test image acquisition parameters 1",
-                "imaging_instrument_description": "Test imaging instrument 1",
-                "fbbi_id": [],
-                "imaging_method_name": [
-                    "confocal microscopy"
-                ]
-            }
-        ],
-        "subject": {
-            "uuid": "dcc18482-fa1a-468f-878f-c00f9cd46376",
+        "creation_process_uuid": "2447db96-dd23-44eb-ad47-1086c9be1cba",
+        "original_file_reference_uuid": [],
+        "creation_process": {
+            "uuid": "2447db96-dd23-44eb-ad47-1086c9be1cba",
             "version": 1,
-            "model": {
-                "type_name": "Specimen",
-                "version": 1
-            },
-            "imaging_preparation_protocol_uuid": [
-                "7199d730-29f1-4ad8-b599-e9089cbb2d7b"
+            "model": null,
+            "attribute": [],
+            "subject_specimen_uuid": "dcc18482-fa1a-468f-878f-c00f9cd46376",
+            "image_acquisition_protocol_uuid": [
+                "c2e44a1b-a43c-476e-8ddf-8587f4c955b3"
             ],
-            "sample_of_uuid": [
-                "64a67727-4e7c-469a-91c4-6219ae072e99"
-            ],
-            "growth_protocol_uuid": [
-                "a2ce3950-3b28-40b3-a6a5-23c4f7864912"
-            ],
-            "imaging_preparation_protocol": [
+            "input_image_uuid": [],
+            "protocol_uuid": [],
+            "annotation_method_uuid": [],
+            "acquisition_process": [
                 {
                     "default_open": true,
-                    "title_id": "Test specimen 1",
-                    "uuid": "7199d730-29f1-4ad8-b599-e9089cbb2d7b",
+                    "title_id": "Test Primary Screen Image Acquisition",
+                    "uuid": "c2e44a1b-a43c-476e-8ddf-8587f4c955b3",
                     "version": 1,
                     "model": {
-                        "type_name": "SpecimenImagingPreparationProtocol",
-                        "version": 1
+                        "type_name": "ImageAcquisitionProtocol",
+                        "version": 2
                     },
-                    "protocol_description": "Test sample preparation protocol 1",
-                    "signal_channel_information": []
-                }
-            ],
-            "sample_of": [
-                {
-                    "default_open": true,
-                    "title_id": "Test Biosample 1",
-                    "uuid": "64a67727-4e7c-469a-91c4-6219ae072e99",
-                    "version": 1,
-                    "model": {
-                        "type_name": "BioSample",
-                        "version": 1
-                    },
-                    "organism_classification": [
-                        {
-                            "common_name": "human",
-                            "scientific_name": "Homo sapiens",
-                            "ncbi_id": null
-                        }
-                    ],
-                    "biological_entity_description": "Test biological entity 1",
-                    "experimental_variable_description": [
-                        "Test experimental entity 1"
-                    ],
-                    "extrinsic_variable_description": [
-                        "Test extrinsic variable 1"
-                    ],
-                    "intrinsic_variable_description": [
-                        "Test intrinsic variable 1\\nwith escaped character"
+                    "attribute": [],
+                    "protocol_description": "Test image acquisition parameters 1",
+                    "imaging_instrument_description": "Test imaging instrument 1",
+                    "fbbi_id": [],
+                    "imaging_method_name": [
+                        "confocal microscopy"
                     ]
                 }
             ],
-            "growth_protocol": [
-                {
-                    "default_open": true,
-                    "title_id": "Test specimen 1",
-                    "uuid": "a2ce3950-3b28-40b3-a6a5-23c4f7864912",
-                    "version": 1,
-                    "model": {
-                        "type_name": "SpecimenGrowthProtocol",
-                        "version": 1
-                    },
-                    "protocol_description": "Test sample preparation protocol 1"
-                }
-            ]
+            "subject": null,
+            "protocol": [],
+            "annotation_method": []
         },
         "representation": [
             {
@@ -111,6 +106,7 @@
                     "type_name": "ImageRepresentation",
                     "version": 1
                 },
+                "attribute": [],
                 "image_format": "Template image format",
                 "use_type": "INTERACTIVE_DISPLAY",
                 "file_uri": [
@@ -126,8 +122,6 @@
                 "size_c": 1,
                 "size_t": 1,
                 "image_viewer_setting": [],
-                "attribute": {},
-                "original_file_reference_uuid": [],
                 "representation_of_uuid": "e7322131-8e27-455d-b9fc-8add0719af70"
             },
             {
@@ -137,6 +131,7 @@
                     "type_name": "ImageRepresentation",
                     "version": 1
                 },
+                "attribute": [],
                 "image_format": "Template image format",
                 "use_type": "UPLOADED_BY_SUBMITTER",
                 "file_uri": [
@@ -152,8 +147,6 @@
                 "size_c": 1,
                 "size_t": 1,
                 "image_viewer_setting": [],
-                "attribute": {},
-                "original_file_reference_uuid": [],
                 "representation_of_uuid": "e7322131-8e27-455d-b9fc-8add0719af70"
             },
             {
@@ -163,6 +156,7 @@
                     "type_name": "ImageRepresentation",
                     "version": 1
                 },
+                "attribute": [],
                 "image_format": "png",
                 "use_type": "THUMBNAIL",
                 "file_uri": [],
@@ -176,8 +170,6 @@
                 "size_c": null,
                 "size_t": null,
                 "image_viewer_setting": [],
-                "attribute": {},
-                "original_file_reference_uuid": [],
                 "representation_of_uuid": "e7322131-8e27-455d-b9fc-8add0719af70"
             }
         ]

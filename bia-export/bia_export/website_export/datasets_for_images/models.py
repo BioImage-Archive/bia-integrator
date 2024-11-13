@@ -4,5 +4,5 @@ from bia_integrator_api import models
 from pydantic import Field
 
 
-class ExperimentalImagingDataset(models.ExperimentalImagingDataset):
+class Dataset(models.Dataset):
     submitted_in_study: models.Study = Field()

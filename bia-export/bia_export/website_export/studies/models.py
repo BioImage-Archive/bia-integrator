@@ -2,8 +2,7 @@ from __future__ import annotations
 
 from bia_export.website_export.website_models import (
     BioSample,
-    ImageAcquisition,
-    SpecimenGrowthProtocol,
+    ImageAcquisitionProtocol,
     SpecimenImagingPreparationProtocol,
     CLIContext,
 )
@@ -15,7 +14,25 @@ from pydantic import BaseModel, Field
 from typing import List, Optional, Type
 
 
-class ImageDataset(BaseModel):
+class Dataset(models.Dataset):
+    acquisition_process: Optional[List[ImageAcquisitionProtocol]] = Field(
+        description="""Processes involved in the creation of the images and files in this dataset.""",
+        default_factory=list,
+    )
+    specimen_imaging_preparation_protocol: Optional[
+        List[SpecimenImagingPreparationProtocol]
+    ] = Field(
+        description="""Processes involved in the preprapartion of the samples for imaged.""",
+        default_factory=list,
+    )
+    biological_entity: Optional[List[BioSample]] = Field(
+        description="""The biological entity or entities that were imaged.""",
+        default_factory=list,
+    )
+    image: List[models.Image] = Field(
+        default_factory=list,
+        description="List of image associated with the dataset.",
+    )
     file_count: int = Field(description="Count of file references in the dataset")
     image_count: int = Field(description="Count of images in the dataset")
     file_type_aggregation: list = Field(
@@ -23,48 +40,10 @@ class ImageDataset(BaseModel):
     )
 
 
-class ExperimentalImagingDataset(
-    models.ExperimentalImagingDataset, ImageDataset
-):
-    acquisition_process: List[ImageAcquisition] = Field(
-        description="""Processes involved in the creation of the images and files in this dataset."""
-    )
-    specimen_imaging_preparation_protocol: List[SpecimenImagingPreparationProtocol] = (
-        Field(
-            description="""Processes involved in the preprapartion of the samples for imaged."""
-        )
-    )
-    biological_entity: List[BioSample] = Field(
-        description="""The biological entity or entities that were imaged."""
-    )
-    specimen_growth_protocol: Optional[List[SpecimenGrowthProtocol]] = Field(
-        default_factory=list,
-        description="""Processes involved in the growth of the samples that were then imaged.""",
-    )
-    image: List[models.ExperimentallyCapturedImage] = Field(
-        default_factory=list,
-        description="List of image associated with the dataset.",
-    )
-
-
-class ImageAnnotationDataset(models.ImageAnnotationDataset, ImageDataset):
-    annotation_method: List[models.AnnotationMethod] = Field(
-        description="""The process(es) that were performed to create the annotated data."""
-    )
-    image: List[models.DerivedImage] = Field(
-        default_factory=list,
-        description="List of image associated with the dataset.",
-    )
-
-
 class Study(models.Study):
-    experimental_imaging_component: Optional[List[ExperimentalImagingDataset]] = Field(
+    dataset: Optional[List[Dataset]] = Field(
         default_factory=list,
-        description="""An experimental imaging dataset of that is associated with the study.""",
-    )
-    image_annotation_component: Optional[List[ImageAnnotationDataset]] = Field(
-        default_factory=list,
-        description="""An image annotation dataset of that is associated with the study.""",
+        description="""A dataset that is associated with the study.""",
     )
 
 
@@ -75,10 +54,9 @@ class StudyCLIContext(CLIContext):
     )
     displayed_dataset_detail: dict[Type, set] = Field(
         default={
-            ImageAcquisition: set(),
+            ImageAcquisitionProtocol: set(),
             BioSample: set(),
             SpecimenImagingPreparationProtocol: set(),
-            SpecimenGrowthProtocol: set(),
         },
         description="""Tracks e.g. which BioSamples have been displayed in previous dataset sections to 
         determine whether details should default to open or closed.""",
