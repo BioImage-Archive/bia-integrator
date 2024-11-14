@@ -8,7 +8,7 @@ class Settings(BaseSettings):
     mongo_timeout_ms: int
     mongo_max_pool_size: int = Field(
         default=10,
-        description="Max size of the Mongo connection pool. If 1 process/api, this should be higher if the link to Mongo is fast",
+        description="Max size of the Mongo connection pool. The pool is shared among all workers, but we usually run uvicorn with --workers=1",
     )
     mongo_collection_users: str = "users"
     mongo_collection_biaint: str = "bia_integrator"
