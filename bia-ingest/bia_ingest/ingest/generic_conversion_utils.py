@@ -24,7 +24,7 @@ logger = logging.getLogger("__main__." + __name__)
 def get_generic_section_as_list(
     root: Submission | Section,
     section_name: List[str],
-    key_mapping: List[Tuple[str, str, str | None | List]],
+    key_mapping: List[Tuple[str, str, Union[str, None, List]]],
     mapped_object: Optional[BaseModel] = None,
     mapped_attrs_dict: Optional[Dict[str, Any]] = None,
     valdiation_error_tracking: Optional[IngestionResult] = None,
@@ -134,3 +134,44 @@ def object_value_pair_to_dict(
             object_dict[key].append(obj)
 
     return object_dict
+
+
+def get_associations_for_section(
+    section: Section,
+) -> List[BaseModel | Dict[str, str | List[str]]]:
+    """Return the associations for a section (assume Study Component)"""
+    key_mapping = [
+        (
+            "image_analysis",
+            "Image analysis",
+            None,
+        ),
+        (
+            "image_correlation",
+            "Image correlation",
+            None,
+        ),
+        (
+            "biosample",
+            "Biosample",
+            None,
+        ),
+        (
+            "image_acquisition",
+            "Image acquisition",
+            None,
+        ),
+        (
+            "specimen",
+            "Specimen",
+            None,
+        ),
+    ]
+    associations = get_generic_section_as_list(
+        section,
+        [
+            "Associations",
+        ],
+        key_mapping,
+    )
+    return associations

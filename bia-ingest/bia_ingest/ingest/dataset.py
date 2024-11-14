@@ -10,7 +10,7 @@ from ..bia_object_creation_utils import dict_to_uuid, filter_model_dictionary
 
 from ..cli_logging import log_failed_model_creation, log_model_creation_count
 from .generic_conversion_utils import (
-    get_generic_section_as_list,
+    get_associations_for_section,
     get_generic_section_as_dict,
 )
 import bia_ingest.ingest.study as study_conversion
@@ -58,40 +58,7 @@ def get_dataset(
     datasets = []
     for section in study_components:
         attr_dict = attributes_to_dict(section.attributes)
-        key_mapping = [
-            (
-                "image_analysis",
-                "Image analysis",
-                None,
-            ),
-            (
-                "image_correlation",
-                "Image correlation",
-                None,
-            ),
-            (
-                "biosample",
-                "Biosample",
-                None,
-            ),
-            (
-                "image_acquisition",
-                "Image acquisition",
-                None,
-            ),
-            (
-                "specimen",
-                "Specimen",
-                None,
-            ),
-        ]
-        associations = get_generic_section_as_list(
-            section,
-            [
-                "Associations",
-            ],
-            key_mapping,
-        )
+        associations = get_associations_for_section(section)
 
         analysis_method_list = []
 
@@ -163,7 +130,9 @@ def get_dataset(
         )
         dataset.attribute.append(acquisition_process_uuid_as_attr)
 
-        subject = get_specimen_for_dataset(submission, dataset, result_summary)
+        subject = get_specimen_for_dataset(
+            submission, dataset, result_summary, persister
+        )
         if subject:
             subject_uuid_attr_dict = {
                 "provenance": semantic_models.AttributeProvenance("bia_ingest"),

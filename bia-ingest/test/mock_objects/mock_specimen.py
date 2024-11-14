@@ -7,7 +7,7 @@ from .mock_association import get_association_dicts
 from .mock_specimen_imaging_preparation_protocol import (
     get_specimen_imaging_preparation_protocol,
 )
-from .mock_biosample import get_biosample
+from .mock_biosample import get_biosample, get_biosample_by_study_component
 
 
 # This function is written to provide test data for bia_data_model.Image. It currently
@@ -23,21 +23,21 @@ def get_test_specimen_for_image() -> List[bia_data_model.Specimen]:
     imaging_preparation_protocols = {
         ipp.title_id: ipp.uuid for ipp in get_specimen_imaging_preparation_protocol()
     }
-    biosamples = {biosample.title_id: biosample.uuid for biosample in get_biosample()}
+    biosamples_by_study_component = get_biosample_by_study_component()
 
     # Specimens correspond to associations in Experimental Imaging Dataset
     dataset_associations = get_association_dicts()
     specimens = []
-    for associations in dataset_associations:
-        biosample_titles = [a["biosample"] for a in associations]
+    for study_component, associations in dataset_associations.items():
+        biosamples = biosamples_by_study_component.get(study_component, [])
+        biosample_uuids = [biosample.uuid for biosample in biosamples]
+        biosample_uuids.sort()
         specimen_title = associations[0]["specimen"]
         specimen_dict = {
             "imaging_preparation_protocol_uuid": [
                 imaging_preparation_protocols[specimen_title]
             ],
-            "sample_of_uuid": [
-                biosamples[biosample_title] for biosample_title in biosample_titles
-            ],
+            "sample_of_uuid": biosample_uuids,
             "accession_id": accession_id,
         }
         specimen_dict["uuid"] = dict_to_uuid(specimen_dict, attributes_to_consider)

@@ -51,6 +51,7 @@ def get_specimen_growth_protocol(
 
 def extract_specimen_growth_protocol_dicts(
     submission: Submission,
+    filter_dict: bool = True,
 ) -> List[Dict[str, Any]]:
     specimen_sections = find_sections_recursive(submission.section, ["Specimen"], [])
 
@@ -72,7 +73,13 @@ def extract_specimen_growth_protocol_dicts(
         model_dict["accession_id"] = submission.accno
         model_dict["uuid"] = generate_specimen_growth_protocol_uuid(model_dict)
         model_dict["version"] = 0
-        model_dict = filter_model_dictionary(model_dict, bia_data_model.Protocol)
+
+        # Allow return of either filtered or unfiltered dict.
+        # The unfiltered dict is useful to get more information about
+        # the specimen growth protocol. E.g. the title_id is used in
+        # identifying parent specimen in biostudies pagetab
+        if filter_dict:
+            model_dict = filter_model_dictionary(model_dict, bia_data_model.Protocol)
 
         model_dicts.append(model_dict)
 
