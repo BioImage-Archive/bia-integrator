@@ -1,10 +1,15 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic import Field
 from pathlib import Path
 
 
 class Settings(BaseSettings):
     mongo_connstring: str
     mongo_timeout_ms: int
+    mongo_max_pool_size: int = Field(
+        default=10,
+        description="Max size of the Mongo connection pool. The pool is shared among all workers, but we usually run uvicorn with --workers=1",
+    )
     mongo_collection_users: str = "users"
     mongo_collection_biaint: str = "bia_integrator"
     db_name: str
