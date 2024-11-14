@@ -6,6 +6,7 @@ spec:
   selector:
     matchLabels:
       {{- include "api.selectorLabels" . | nindent 6 }}
+  replicas: {{ .Values.replicaCount }}
   strategy:
     type: Recreate
   template:
