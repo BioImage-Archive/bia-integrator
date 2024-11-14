@@ -9,6 +9,8 @@ from enum import Enum
 import bia_shared_datamodels.bia_data_model as shared_data_models
 import pymongo
 from typing import Type, List, Any
+
+import pymongo.errors
 from api import exceptions
 from api.models.api import Pagination
 from api.settings import Settings
@@ -20,6 +22,7 @@ from bson.codec_options import TypeCodec, TypeRegistry
 from bson.binary import UuidRepresentation
 
 from pydantic_core import Url
+from api.api_logging import log_error
 
 
 class DateCodec(TypeCodec):
@@ -101,19 +104,29 @@ class Repository:
     async def _add_indices_reverse_links(self) -> None:
         from api.public import models_public
 
+        existing_indexes = [
+            idx["name"] for idx in await self.biaint.list_indexes().to_list()
+        ]
+
         for model in models_public:
             model_type = model.get_model_metadata().type_name
             for (
                 link_attribute_name,
                 _,
             ) in model.get_object_reference_fields().items():
-                self.biaint.create_index(
-                    [(link_attribute_name, 1)],
-                    partialFilterExpression={
-                        "model": model.get_model_metadata().model_dump()
-                    },
-                    name=f"{model_type.lower()}_{link_attribute_name}",
-                )
+                name = f"{model_type.lower()}_{link_attribute_name}"
+
+                if name not in existing_indexes:
+                    try:
+                        await self.biaint.create_index(
+                            [(link_attribute_name, 1)],
+                            partialFilterExpression={
+                                "model": model.get_model_metadata().model_dump()
+                            },
+                            name=name,
+                        )
+                    except pymongo.errors.OperationFailure as e:
+                        log_error("Skipping index build error", extra={"err": e})
 
     async def find_docs_by_link_value(
         self,
