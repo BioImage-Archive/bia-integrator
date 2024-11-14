@@ -44,6 +44,10 @@ from bia_ingest.ingest import (
             study.get_study,
         ),
         (
+            mock_biosample.get_biosample_by_study_component,
+            biosample.get_biosample_by_study_component,
+        ),
+        (
             mock_biosample.get_biosample,
             biosample.get_biosample,
         ),

@@ -17,7 +17,7 @@ def get_dataset() -> List[bia_data_model.Dataset]:
             "accession_id",
         ],
     )
-    associations = get_association_dicts()
+    associations = list(get_association_dicts().values())
     specimens = get_test_specimen_for_image()
     image_acquisition_protocol_uuids = [
         str(iap.uuid) for iap in get_image_acquisition_protocol()

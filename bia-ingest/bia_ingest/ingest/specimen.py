@@ -9,9 +9,8 @@ from ..bia_object_creation_utils import (
     filter_model_dictionary,
 )
 
-from ..cli_logging import log_failed_model_creation, log_model_creation_count
+from ..cli_logging import log_model_creation_count
 from ..persistence_strategy import PersistenceStrategy
-from pydantic import ValidationError
 from .generic_conversion_utils import (
     get_generic_section_as_list,
     object_value_pair_to_dict,
@@ -31,32 +30,34 @@ def get_specimen_for_dataset(
     submission: Submission,
     dataset: bia_data_model.Dataset,
     result_summary: dict,
+    persister: Optional[PersistenceStrategy] = None,
 ) -> bia_data_model.Specimen:
     """Return bia_data_model.Specimen for a particular dataset"""
 
-    # According to https://app.clickup.com/t/8695fqxpy we want one specimen
-    # per dataset, so if more than one association we are concatenation
-    # the required information from each.
     associations = next(
         attr.value.get("associations", [])
         for attr in dataset.attribute
         if attr.name == "associations"
     )
+    # According to https://app.clickup.com/t/8695fqxpy we want one specimen
+    # per dataset, so if more than one association we are concatenation
+    # the required information from each.
     specimen_titles = set([association["specimen"] for association in associations])
 
-    biosamples = biosample_conversion.get_biosample(submission, result_summary)
-    # Put UUIDs from association in set to prevent duplication
-    biosample_uuids = set()
-    for association in associations:
-        biosample_uuids.add(
-            *[b.uuid for b in biosamples if b.title_id == association["biosample"]]
+    biosamples_by_study_component = (
+        biosample_conversion.get_biosample_by_study_component(
+            submission, result_summary, persister
         )
+    )
+    biosamples = biosamples_by_study_component.get(dataset.title_id, [])
+    # Put UUIDs of biosamples for study component in set to prevent duplication
+    biosample_uuids = set([biosample.uuid for biosample in biosamples])
     biosample_list = list(biosample_uuids)
     biosample_list.sort()
 
     imaging_preparation_protocols = (
         sipp_conversion.get_specimen_imaging_preparation_protocol(
-            submission, result_summary
+            submission, result_summary, persister
         )
     )
     imaging_preparation_protocol_list = [
@@ -75,16 +76,24 @@ def get_specimen_for_dataset(
 
     model_dict = filter_model_dictionary(model_dict, bia_data_model.Specimen)
 
-    try:
-        specimen = bia_data_model.Specimen.model_validate(model_dict)
-    except ValidationError:
-        log_failed_model_creation(
-            bia_data_model.Specimen,
-            result_summary[submission.accno],
-        )
-        specimen = None
+    specimen = dicts_to_api_models(
+        [
+            model_dict,
+        ],
+        bia_data_model.Specimen,
+        result_summary[submission.accno],
+    )
 
-    return specimen
+    log_model_creation_count(
+        bia_data_model.Specimen, len(specimen), result_summary[submission.accno]
+    )
+
+    if specimen:
+        if persister:
+            persister.persist(specimen)
+        return specimen[0]
+    else:
+        return None
 
 
 # TODO: Discuss with @FS if we still need this function ( see clickup

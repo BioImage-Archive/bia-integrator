@@ -130,7 +130,9 @@ def get_dataset(
         )
         dataset.attribute.append(acquisition_process_uuid_as_attr)
 
-        subject = get_specimen_for_dataset(submission, dataset, result_summary)
+        subject = get_specimen_for_dataset(
+            submission, dataset, result_summary, persister
+        )
         if subject:
             subject_uuid_attr_dict = {
                 "provenance": semantic_models.AttributeProvenance("bia_ingest"),

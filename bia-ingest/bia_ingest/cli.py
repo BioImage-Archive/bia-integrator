@@ -7,7 +7,6 @@ from bia_ingest.config import settings, api_client
 from bia_ingest.ingest.study import get_study
 from bia_ingest.ingest.dataset import get_dataset
 from bia_ingest.ingest.file_reference import get_file_reference_by_dataset
-from bia_ingest.ingest.specimen import get_specimen
 from bia_ingest.ingest.image_acquisition_protocol import get_image_acquisition_protocol
 from bia_ingest.ingest.annotation_method import get_annotation_method
 from bia_ingest.persistence_strategy import (
@@ -97,7 +96,7 @@ def ingest(
 
         # Specimen
         # Biosample and Specimen artefacts are processed as part of bia_data_models.Specimen (note - this is very different from Biostudies.Specimen)
-        get_specimen(submission, result_summary, persister=persister)
+        # get_specimen(submission, result_summary, persister=persister)
 
         get_annotation_method(submission, result_summary, persister=persister)
 

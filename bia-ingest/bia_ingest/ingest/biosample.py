@@ -3,7 +3,6 @@ from typing import List, Any, Dict, Optional
 
 from bia_ingest.ingest.generic_conversion_utils import get_associations_for_section
 from bia_ingest.ingest.specimen_growth_protocol import (
-    extract_specimen_growth_protocol_dicts,
     get_specimen_growth_protocol,
 )
 
@@ -35,9 +34,7 @@ def get_biosample(
     result_summary: dict,
     persister: Optional[PersistenceStrategy] = None,
 ) -> List[bia_data_model.BioSample]:
-    biosample_model_dicts = extract_biosample_dicts(
-        submission, result_summary, persister
-    )
+    biosample_model_dicts = extract_biosample_dicts(submission)
 
     biosamples = dicts_to_api_models(
         biosample_model_dicts,
@@ -56,52 +53,113 @@ def get_biosample(
     return biosamples
 
 
-def extract_biosample_dicts(
+# TODO: Rewrite this function. What we need is
+# get_biosample_for_association https://app.clickup.com/t/8696nan92
+def get_biosample_by_study_component(
     submission: Submission,
     result_summary: dict,
     persister: Optional[PersistenceStrategy] = None,
-) -> List[Dict[str, Any]]:
+) -> Dict[str, bia_data_model.BioSample]:
+    """Return biosample associated with growth protocol for s.component
+
+    Return a dict with study component title as key and biosample as
+    value. The biosample will be associated with the growth protocol
+    for the study component if one exists.
+    """
+
+    biosample_model_dicts = extract_biosample_dicts(submission, filter_dict=False)
+
     # Get growth protocols as UUIDs needed in biosample
     # If we are persisting this call ensures the growth protocols
-    # are created and persisted. However, the models do not have
-    # the info needed for mapping to biosamples. This is obtained
-    # from the unfiltered dicts.
-    if persister:
-        get_specimen_growth_protocol(submission, result_summary, persister)
-    growth_protocol_dicts = extract_specimen_growth_protocol_dicts(
-        submission, filter_dict=False
+    # are created and persisted.
+    growth_protocols = get_specimen_growth_protocol(
+        submission, result_summary, persister
+    )
+    growth_protocol_title_to_uuid_map = {
+        gp.title_id: gp.uuid for gp in growth_protocols
+    }
+
+    # Get associations to allow mapping to biosample
+    study_components = find_sections_recursive(
+        submission.section,
+        [
+            "Study Component",
+        ],
+        [],
     )
 
-    biosample_growth_protocol_associations = {}
-    if growth_protocol_dicts:
-        # Get associations to allow mapping to biosample
-        study_components = find_sections_recursive(
-            submission.section,
-            [
-                "Study Component",
-            ],
-            [],
+    biosample_by_study_component = {}
+    for study_component in study_components:
+        study_component_name = next(
+            attr.value for attr in study_component.attributes if attr.name == "Name"
         )
-        for study_component in study_components:
-            associations = get_associations_for_section(study_component)
-            for association in associations:
-                biosample_title = association.get("biosample", None)
-                specimen_title = association.get("specimen", None)
-                if biosample_title and specimen_title:
-                    growth_protocol_uuids = [
-                        gp["uuid"]
-                        for gp in growth_protocol_dicts
-                        if gp["title_id"] == specimen_title
-                    ]
-                    if biosample_title not in biosample_growth_protocol_associations:
-                        biosample_growth_protocol_associations[biosample_title] = (
-                            growth_protocol_uuids
-                        )
-                    else:
-                        biosample_growth_protocol_associations[biosample_title].extend(
-                            growth_protocol_uuids
-                        )
+        if study_component_name not in biosample_by_study_component:
+            biosample_by_study_component[study_component_name] = []
+        associations = get_associations_for_section(study_component)
+        for association in associations:
+            biosample_title = association.get("biosample", None)
+            specimen_title = association.get("specimen", None)
+            growth_protocol_uuid = None
+            if biosample_title and specimen_title:
+                growth_protocol_uuid = growth_protocol_title_to_uuid_map.get(
+                    specimen_title, None
+                )
+            elif biosample_title:
+                logger.warning(
+                    f"Could not find specimen association for biosample {biosample_title} in study component {study_component}"
+                )
+            else:
+                # TODO: tidy up this name
+                logger.warning(
+                    f"Could not find biosample for study component {study_component}"
+                )
+                continue
 
+            # Attach specimen growth protocol uuid and recompute biosample uuid
+            # Currently assuming there should be only one growth protocol
+            # per biosample AND biosample titles are unique
+            # TODO: Log warning if above is not true.
+            biosample_model_dict = next(
+                model_dict
+                for model_dict in biosample_model_dicts
+                if model_dict["title_id"] == biosample_title
+            )
+            if growth_protocol_uuid:
+                biosample_model_dict["growth_protocol_uuid"] = growth_protocol_uuid
+                biosample_model_dict["uuid"] = generate_biosample_uuid(
+                    biosample_model_dict
+                )
+            biosample_model_dict = filter_model_dictionary(
+                biosample_model_dict, bia_data_model.BioSample
+            )
+            biosample_model = dicts_to_api_models(
+                [
+                    biosample_model_dict,
+                ],
+                bia_data_model.BioSample,
+                result_summary[submission.accno],
+            )
+            biosample_by_study_component[study_component_name].append(
+                biosample_model[0]
+            )
+
+    # Save unique biosample models
+    biosamples = {}
+    for biosample_list in biosample_by_study_component.values():
+        biosamples |= {biosample.uuid: biosample for biosample in biosample_list}
+    biosamples = list(biosamples.values())
+    if persister and biosamples:
+        persister.persist(biosamples)
+        log_model_creation_count(
+            bia_data_model.BioSample, len(biosamples), result_summary[submission.accno]
+        )
+    return biosample_by_study_component
+
+
+def extract_biosample_dicts(
+    submission: Submission,
+    filter_dict: bool = True,
+) -> List[Dict[str, Any]]:
     biosample_sections = find_sections_recursive(submission.section, ["Biosample"], [])
 
     key_mapping = [
@@ -159,20 +217,12 @@ def extract_biosample_dicts(
             if biostudies_key in attr_dict:
                 model_dict[api_key].append(attr_dict[biostudies_key])
 
-        # Attach specimen growth protocol uuid
-        # Currently assuming there should be only one growth protocol
-        # per biosample
-        # TODO: Log warning if more than one. Info if 0.
-        growth_protocol_uuid = biosample_growth_protocol_associations.get(
-            model_dict["title_id"], []
-        )
-        if growth_protocol_uuid:
-            model_dict["growth_protocol_uuid"] = growth_protocol_uuid[0]
-
         model_dict["accession_id"] = submission.accno
+        model_dict["growth_protocol_uuid"] = None
         model_dict["uuid"] = generate_biosample_uuid(model_dict)
         model_dict["version"] = 0
-        model_dict = filter_model_dictionary(model_dict, bia_data_model.BioSample)
+        if filter_dict:
+            model_dict = filter_model_dictionary(model_dict, bia_data_model.BioSample)
         model_dicts.append(model_dict)
 
     return model_dicts
@@ -188,5 +238,6 @@ def generate_biosample_uuid(biosample_dict: Dict[str, Any]) -> str:
         "intrinsic_variable_description",
         "extrinsic_variable_description",
         "experimental_variable_description",
+        "growth_protocol_uuid",
     ]
     return dict_to_uuid(biosample_dict, attributes_to_consider)

@@ -6,7 +6,6 @@ from bia_ingest.ingest.biostudies import api
 from bia_shared_datamodels import bia_data_model
 import pytest
 from .mock_objects import (
-    utils,
     mock_study,
     mock_biosample,
     mock_dataset,
@@ -19,17 +18,14 @@ from .mock_objects import (
 
 runner = CliRunner()
 
-accession_id = utils.accession_id
-
 
 @pytest.fixture
 def expected_objects():
     expected_objects_dict = {
         "study": mock_study.get_study(),
         "dataset": mock_dataset.get_dataset(),
-        "specimen": mock_specimen.get_specimen(),
-        "bio_sample": mock_biosample.get_biosample(),
         "image_acquisition_protocol": mock_image_acquisition_protocol.get_image_acquisition_protocol(),
+        "specimen": mock_specimen.get_test_specimen_for_image(),
         "specimen_imaging_preparation_protocol": mock_specimen_imaging_preparation_protocol.get_specimen_imaging_preparation_protocol(),
         "annotation_method": mock_annotation_method.get_annotation_method(),
         "protocol": mock_specimen_growth_protocol.get_specimen_growth_protocol(),
@@ -41,6 +37,13 @@ def expected_objects():
         ["file_list_study_component_1.json", "file_list_study_component_2.json"]
     )
     expected_objects_dict["file_reference"] = expected_file_references
+
+    # Biosamples are also a special case as each study component association can
+    # potentially create it's own biosample.
+    expected_biosamples = []
+    for biosample_list in mock_biosample.get_biosample_by_study_component().values():
+        expected_biosamples.extend(biosample_list)
+    expected_objects_dict["bio_sample"] = expected_biosamples
 
     n_expected_objects = 0
     for expected_objects in expected_objects_dict.values():
@@ -77,7 +80,7 @@ def test_cli_writes_expected_files(
         cli.app,
         [
             "ingest",
-            accession_id,
+            test_submission.accno,
             "--persistence-mode",
             "disk",
             "--process-filelist",
@@ -91,7 +94,7 @@ def test_cli_writes_expected_files(
     assert len(files_written) == n_expected_objects
 
     for dir_name, expected_objects in expected_objects_dict.items():
-        dir_path = tmp_path / dir_name / accession_id
+        dir_path = tmp_path / dir_name / test_submission.accno
 
         if not isinstance(expected_objects, list):
             expected_objects = [

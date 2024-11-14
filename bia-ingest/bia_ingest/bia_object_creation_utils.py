@@ -1,12 +1,9 @@
-from pathlib import Path
-from uuid import UUID
 from pydantic import BaseModel, ValidationError
 import hashlib
 import uuid
 from typing import Any, Dict, List, Type
 
 from bia_ingest.cli_logging import IngestionResult, log_failed_model_creation
-from bia_ingest.config import settings
 
 
 def filter_model_dictionary(dictionary: dict, target_model: Type[BaseModel]):
@@ -30,7 +27,7 @@ def dicts_to_api_models(
     dicts: List[Dict[str, Any]],
     api_model_class: Type[BaseModel],
     valdiation_error_tracking: IngestionResult,
-) -> BaseModel:
+) -> List[BaseModel]:
     """
     This function instantiates any API model given a dict of its attributes
     Hence the use of the pydantic BaseModel which all API models are derived from in the type hinting
