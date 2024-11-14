@@ -6,6 +6,8 @@ spec:
   selector:
     matchLabels:
       {{- include "api.selectorLabels" . | nindent 6 }}
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:

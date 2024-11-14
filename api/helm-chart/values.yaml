@@ -21,8 +21,8 @@ ingress:
 
 resources:
   limits:
-    memory: "1G"
-    cpu: "1"
+    memory: "256M"
+    cpu: ".25"
 
 api_env:
   mongoRootUser: ""
@@ -30,7 +30,7 @@ api_env:
   mongoHost: "api-mongodb"
   dbName: "bia_integrator"
   mongoTimeoutMs: "500"
-  mongoIndexPush: "false"
+  mongoIndexPush: "True"
   jwtSecretKey: ""
   userCreateSecretToken: ""
   fastapiRootPath: ""
