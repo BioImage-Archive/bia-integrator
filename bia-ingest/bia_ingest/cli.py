@@ -75,6 +75,9 @@ def ingest(
 
         get_study(submission, result_summary, persister=persister)
 
+        # Specimen, BioSample and Protocol (specimen growth protocol) depend on Dataset
+        # Specimen (note - this is very different from Biostudies.Specimen) artefacts are processed as part of bia_data_models.Dataset
+        # BioSamples are processed as part of Specimen and specimen growth protocol (Protocol) are processed as part of BioSample
         datasets = get_dataset(submission, result_summary, persister=persister)
 
         process_files = determine_file_processing(
@@ -93,10 +96,6 @@ def ingest(
             logger.info("Skipping file reference creation.")
 
         get_image_acquisition_protocol(submission, result_summary, persister=persister)
-
-        # Specimen
-        # Biosample and Specimen artefacts are processed as part of bia_data_models.Specimen (note - this is very different from Biostudies.Specimen)
-        # get_specimen(submission, result_summary, persister=persister)
 
         get_annotation_method(submission, result_summary, persister=persister)
 

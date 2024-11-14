@@ -44,6 +44,7 @@ def get_specimen_for_dataset(
     # the required information from each.
     specimen_titles = set([association["specimen"] for association in associations])
 
+    # TODO: This function has redundancy - will be re-written: https://app.clickup.com/t/8696nan92
     biosamples_by_study_component = (
         biosample_conversion.get_biosample_by_study_component(
             submission, result_summary, persister
