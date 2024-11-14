@@ -6,20 +6,6 @@ from bia_ingest.bia_object_creation_utils import dict_to_uuid
 from .utils import accession_id
 
 
-# For UUID
-attributes_to_consider_for_uuid = [
-    "accession_id",
-    "accno",
-    "title_id",
-    "organism_classification",
-    "biological_entity_description",
-    "intrinsic_variable_description",
-    "extrinsic_variable_description",
-    "experimental_variable_description",
-    "growth_protocol_uuid",
-]
-
-
 def get_biosample_dicts() -> List[dict]:
     taxon1 = semantic_models.Taxon.model_validate(
         {
@@ -81,6 +67,18 @@ def get_biosample_dicts() -> List[dict]:
 
 
 def create_biosample(biosample_dict) -> bia_data_model.BioSample:
+    # For UUID
+    attributes_to_consider_for_uuid = [
+        "accession_id",
+        "accno",
+        "title_id",
+        "organism_classification",
+        "biological_entity_description",
+        "intrinsic_variable_description",
+        "extrinsic_variable_description",
+        "experimental_variable_description",
+        "growth_protocol_uuid",
+    ]
     biosample_dict2 = copy.deepcopy(biosample_dict)
     biosample_dict2["uuid"] = dict_to_uuid(
         biosample_dict, attributes_to_consider_for_uuid

@@ -106,12 +106,12 @@ def get_biosample_by_study_component(
                 )
             elif biosample_title:
                 logger.warning(
-                    f"Could not find specimen association for biosample {biosample_title} in study component {study_component}"
+                    f"Could not find specimen association for biosample {biosample_title} in study component {study_component_name}"
                 )
             else:
-                # TODO: tidy up this name
+                # This is to be expected in some cases. E.g. Annotation datasets ...
                 logger.warning(
-                    f"Could not find biosample for study component {study_component}"
+                    f"Could not find biosample for study component {study_component_name}"
                 )
                 continue
 
