@@ -22,12 +22,12 @@ class CreationProcess(api_models.CreationProcess):
         description="""The specimen that was prepared for and captured in the field of view of the image.""",
         default=None,
     )
-    protocol: List[Protocol] = Field(
-        description="""The processes involved in the experimental aquisition of the image.""",
+    annotation_method: List[AnnotationMethod] = Field(
+        description="""The processes involved in the creation of annotation of images.""",
         default_factory=list,
     )
-    annotation_method: List[AnnotationMethod] = Field(
-        description="""The processes involved in the experimental aquisition of the image.""",
+    protocol: List[Protocol] = Field(
+        description="""Other protocols involved in the creation of the image.""",
         default_factory=list,
     )
 
