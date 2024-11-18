@@ -1,7 +1,8 @@
 from glob import glob
+from uuid import UUID
 from pydantic import BaseModel
 from pydantic.alias_generators import to_snake
-
+from bia_export.bia_client import api_client
 from .website_models import CLIContext
 import json
 from pathlib import Path
@@ -55,4 +56,53 @@ def read_all_json(
     file_paths = sorted(glob(str(directory_path)))
     for file_path in file_paths:
         object_list.append(read_api_json_file(file_path, object_type))
+    return object_list
+
+
+def retrieve_object_list(
+    uuid_list: list[UUID], api_class: Type[BaseModel], context: CLIContext
+) -> List[BaseModel]:
+    if context.root_directory:
+        obj_list = []
+        for uuid in uuid_list:
+            obj_list.append(read_file_by_uuid_and_type(uuid, api_class, context))
+    else:
+        obj_list = []
+        client_method = "get_" + to_snake(api_class.__name__)
+        client_function = api_client.__getattribute__(client_method)
+        for uuid in uuid_list:
+            obj_list.append(client_function(str(uuid)))
+
+    return obj_list
+
+
+def retrieve_object(
+    uuid: list[UUID], api_class: Type[BaseModel], context: CLIContext
+) -> List[BaseModel]:
+    if context.root_directory:
+        obj = read_file_by_uuid_and_type(str(uuid), api_class, context)
+    else:
+        client_method = "get_" + to_snake(api_class.__name__)
+        client_function = api_client.__getattribute__(client_method)
+        obj = client_function(str(uuid))
+
+    return obj
+
+
+def get_all_api_results(
+    uuid: UUID, api_method, page_size_setting=20
+) -> List[BaseModel]:
+    object_list = []
+    added_objects = api_method(str(uuid), page_size=page_size_setting)
+    if len(added_objects) > 0:
+        object_list += added_objects
+        start_uuid = added_objects[-1].uuid
+        while page_size_setting == len(added_objects):
+            added_objects = api_method(
+                str(uuid),
+                page_size=page_size_setting,
+                start_from_uuid=start_uuid,
+            )
+            object_list += added_objects
+            start_uuid = added_objects[-1].uuid
     return object_list

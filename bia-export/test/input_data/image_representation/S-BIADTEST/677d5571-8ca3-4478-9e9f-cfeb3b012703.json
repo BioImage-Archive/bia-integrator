@@ -3,10 +3,9 @@
   "representation_of_uuid": "e7322131-8e27-455d-b9fc-8add0719af70",
   "use_type": "UPLOADED_BY_SUBMITTER",
   "image_format": "Template image format",
-  "attribute": {},
+  "attribute": [],
   "total_size_in_bytes": 0,
   "version": 1,
-  "original_file_reference_uuid": [],
   "file_uri": [
       "https://dummy.uri.org"
   ],

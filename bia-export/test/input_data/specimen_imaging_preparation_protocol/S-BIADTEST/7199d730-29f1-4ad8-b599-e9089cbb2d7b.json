@@ -6,6 +6,7 @@
     "version": 1,
     "model": {
         "type_name": "SpecimenImagingPreparationProtocol",
-        "version": 1
-    }
+        "version": 2
+    },
+    "attribute": []
 }

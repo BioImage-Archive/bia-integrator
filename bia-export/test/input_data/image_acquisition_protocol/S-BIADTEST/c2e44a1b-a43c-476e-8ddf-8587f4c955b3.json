@@ -4,11 +4,11 @@
     "protocol_description": "Test image acquisition parameters 1",
     "imaging_instrument_description": "Test imaging instrument 1",
     "fbbi_id": [],
+    "attribute": [],
     "imaging_method_name": ["confocal microscopy"],
     "version": 1,
-
     "model": {
-        "type_name": "ImageAcquisition",
-        "version": 1
+        "type_name": "ImageAcquisitionProtocol",
+        "version": 2
     }
 }

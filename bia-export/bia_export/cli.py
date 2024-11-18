@@ -6,7 +6,7 @@ from typing_extensions import Annotated
 from pathlib import Path
 from .website_export.studies.transform import transform_study
 from .website_export.studies.models import StudyCLIContext
-from .website_export.images.transform import transform_ec_images
+from .website_export.images.transform import transform_images
 from .website_export.images.models import ImageCLIContext
 from .website_export.datasets_for_images.transform import transform_datasets
 from .website_export.website_models import CLIContext
@@ -80,7 +80,7 @@ def website_image(
     ] = Path("bia-image-export.json"),
 ):
     # NB: currently only exports for ExperimentallyCapturedImages
-    # TODO: get this working for 
+    # TODO: get this working for
     if root_directory:
         abs_root = root_directory.resolve()
 
@@ -91,7 +91,7 @@ def website_image(
         else:
             context = ImageCLIContext(study_uuid=id)
 
-        image_map = image_map | transform_ec_images(context)
+        image_map = image_map | transform_images(context)
 
     logging.info(f"Writing website images to {output_filename.absolute()}")
     with open(output_filename, "w") as output:

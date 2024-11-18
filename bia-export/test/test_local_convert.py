@@ -1,7 +1,6 @@
 from typer.testing import CliRunner
 from pathlib import Path
 from bia_export.cli import app
-import filecmp
 import json
 
 runner = CliRunner()

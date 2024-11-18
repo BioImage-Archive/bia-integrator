@@ -10,7 +10,7 @@
     ],
     "model": {
         "type_name": "BioSample",
-        "version": 1
+        "version": 3
     },
     "biological_entity_description": "Test biological entity 2",
     "experimental_variable_description": [
@@ -22,5 +22,7 @@
     "intrinsic_variable_description": [
         "Test intrinsic variable 2"
     ],
+    "growth_protocol_uuid": "a2ce3950-3b28-40b3-a6a5-23c4f7864912",
+    "attribute": [],
     "version": 1
 }

@@ -1,7 +1,8 @@
-from bia_export.website_export.utils import (
+from bia_export.website_export.generic_object_retrieval import (
     read_all_json,
     read_api_json_file,
     get_source_directory,
+    get_all_api_results,
 )
 from bia_export.website_export.website_models import CLIContext
 from bia_export.bia_client import api_client
@@ -16,15 +17,12 @@ logger = logging.getLogger("__main__." + __name__)
 
 def retrieve_datasets(
     context: CLIContext,
-) -> List[api_models.ExperimentalImagingDataset]:
+) -> List[api_models.Dataset]:
     if context.root_directory:
-
-        api_datasets = read_all_json(
-            object_type=api_models.ExperimentalImagingDataset, context=context
-        )
+        api_datasets = read_all_json(object_type=api_models.Dataset, context=context)
     else:
-        api_datasets = api_client.get_experimental_imaging_dataset_in_study(
-            str(context.study_uuid)
+        api_datasets = get_all_api_results(
+            context.study_uuid, api_client.get_dataset_linking_study
         )
 
     return api_datasets

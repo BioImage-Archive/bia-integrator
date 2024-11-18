@@ -1,10 +1,11 @@
 {
     "title_id": "Test specimen 1",
     "uuid": "a2ce3950-3b28-40b3-a6a5-23c4f7864912",
-    "protocol_description": "Test sample preparation protocol 1",
+    "protocol_description": "Test sample growth protocol 1",
+    "attribute": [],
     "model": {
-        "type_name": "SpecimenGrowthProtocol",
+        "type_name": "Protocol",
         "version": 1
     },
-    "version": 1
+    "version": 2
 }

@@ -1,15 +1,13 @@
 from uuid import UUID
-from pydantic import BaseModel
-from pydantic.alias_generators import to_snake
-from bia_export.website_export.utils import (
+from bia_export.website_export.generic_object_retrieval import (
     read_all_json,
-    read_api_json_file,
     read_file_by_uuid_and_type,
+    get_all_api_results,
 )
 from bia_export.bia_client import api_client
 from .models import ImageCLIContext
 from bia_integrator_api import models as api_models
-from typing import List, Type
+from typing import List
 import logging
 
 logger = logging.getLogger("__main__." + __name__)
@@ -17,70 +15,25 @@ logger = logging.getLogger("__main__." + __name__)
 
 def retrieve_images(
     context: ImageCLIContext,
-) -> list[api_models.ExperimentallyCapturedImage]:
+) -> list[api_models.Image]:
 
     if context.root_directory:
-        api_ecis: List[api_models.ExperimentallyCapturedImage] = read_all_json(
-            object_type=api_models.ExperimentallyCapturedImage,
+        api_images: List[api_models.Image] = read_all_json(
+            object_type=api_models.Image,
             context=context,
         )
 
     else:
-        eid_list = api_client.get_experimental_imaging_dataset_in_study(
+        dataset_list: List[api_models.Dataset] = api_client.get_dataset_linking_study(
             str(context.study_uuid)
         )
-        api_ecis = []
-        for eid in eid_list:
-            images = api_client.get_experimentally_captured_image_in_experimental_imaging_dataset(
-                str(eid.uuid)
+        api_images = []
+        for dataset in dataset_list:
+            api_images += get_all_api_results(
+                dataset.uuid, api_client.get_image_linking_dataset
             )
-            api_ecis += images
 
-    return api_ecis
-
-
-def retrieve_specimen(
-    specimen_uuid: UUID, context: ImageCLIContext
-) -> api_models.Specimen:
-    if context.root_directory:
-
-        api_specimen: api_models.Specimen = read_file_by_uuid_and_type(
-            specimen_uuid, api_models.Specimen, context
-        )
-
-    else:
-        api_specimen = api_client.get_specimen(str(specimen_uuid))
-    return api_specimen
-
-
-def retrieve_object_list(
-    uuid_list: list[UUID], api_class: Type[BaseModel], context: ImageCLIContext
-) -> List[BaseModel]:
-    if context.root_directory:
-        obj_list = []
-        for uuid in uuid_list:
-            obj_list.append(read_file_by_uuid_and_type(uuid, api_class, context))
-    else:
-        obj_list = []
-        if api_class == api_models.BioSample:
-            for uuid in uuid_list:
-                obj_list.append(api_client.get_bio_sample(str(uuid)))
-
-        elif api_class == api_models.SpecimenGrowthProtocol:
-            for uuid in uuid_list:
-                obj_list.append(api_client.get_specimen_growth_protocol(str(uuid)))
-
-        elif api_class == api_models.SpecimenImagingPreparationProtocol:
-            for uuid in uuid_list:
-                obj_list.append(
-                    api_client.get_specimen_imaging_preparation_protocol(str(uuid))
-                )
-
-        elif api_class == api_models.ImageAcquisition:
-            for uuid in uuid_list:
-                obj_list.append(api_client.get_image_acquisition(str(uuid)))
-
-    return obj_list
+    return api_images
 
 
 def retrieve_representations(
@@ -88,17 +41,16 @@ def retrieve_representations(
 ) -> List[api_models.ImageRepresentation]:
     if context.root_directory:
         api_img_reps = []
-        for img_rep in context.image_to_rep_uuid_map[image_uuid]:
-            api_img_reps.append(
-                read_file_by_uuid_and_type(
-                    str(img_rep), api_models.ImageRepresentation, context
+        if image_uuid in context.image_to_rep_uuid_map.keys():
+            for img_rep in context.image_to_rep_uuid_map[image_uuid]:
+                api_img_reps.append(
+                    read_file_by_uuid_and_type(
+                        str(img_rep), api_models.ImageRepresentation, context
+                    )
                 )
-            )
     else:
-        api_img_reps = (
-            api_client.get_image_representation_in_experimentally_captured_image(
-                str(image_uuid)
-            )
+        api_img_reps = get_all_api_results(
+            image_uuid, api_client.get_image_representation_linking_image
         )
     return api_img_reps
 

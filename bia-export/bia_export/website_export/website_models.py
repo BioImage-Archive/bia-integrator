@@ -1,7 +1,7 @@
 from __future__ import annotations
 from pydantic import Field, BaseModel
-from typing import List, Optional, Type
-from bia_shared_datamodels import bia_data_model
+from typing import List, Optional
+from bia_integrator_api import models as api_models
 from uuid import UUID
 from pathlib import Path
 import logging
@@ -18,34 +18,29 @@ class DetailSection(BaseModel):
     )
 
 
-class ImageAcquisition(bia_data_model.ImageAcquisition, DetailSection):
+class ImageAcquisitionProtocol(api_models.ImageAcquisitionProtocol, DetailSection):
     pass
 
 
-class BioSample(bia_data_model.BioSample, DetailSection):
+class BioSample(api_models.BioSample, DetailSection):
+    growth_protocol: Optional[api_models.Protocol] = Field(
+        description="""How the specimen was grown, e.g. cell line cultures, crosses or plant growth.""",
+        default=None,
+    )
+
+
+class Protocol(api_models.Protocol, DetailSection):
     pass
 
 
-class SpecimenGrowthProtocol(bia_data_model.SpecimenGrowthProtocol, DetailSection):
+class AnnotationMethod(api_models.AnnotationMethod, DetailSection):
     pass
 
 
 class SpecimenImagingPreparationProtocol(
-    bia_data_model.SpecimenImagingPreparationProtocol, DetailSection
+    api_models.SpecimenImagingPreparationProtocol, DetailSection
 ):
     pass
-
-
-class Specimen(bia_data_model.Specimen):
-    imaging_preparation_protocol: List[SpecimenImagingPreparationProtocol] = Field(
-        description="""How the biosample was prepared for imaging."""
-    )
-    sample_of: List[BioSample] = Field(
-        description="""The biological matter that sampled to create the specimen."""
-    )
-    growth_protocol: List[SpecimenGrowthProtocol] = Field(
-        description="""How the specimen was grown, e.g. cell line cultures, crosses or plant growth.""",
-    )
 
 
 class CLIContext(BaseModel):

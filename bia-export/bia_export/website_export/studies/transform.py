@@ -1,26 +1,23 @@
 from pydantic import BaseModel
 from typing import List, Type
 from bia_export.website_export.studies.models import (
-    ExperimentalImagingDataset,
-    ImageAnnotationDataset,
+    Dataset,
     Study,
     StudyCLIContext,
 )
 from bia_export.website_export.studies.retrieve import (
     retrieve_study,
     retrieve_dataset_images,
-    retrieve_image_annotatation_datasets,
     aggregate_file_list_data,
     retrieve_aggregation_fields,
     retrieve_detail_objects,
-    retrieve_experimental_imaging_datasets,
-    retrieve_annotion_method,
+    retrieve_datasets,
 )
 from bia_export.website_export.website_models import (
     BioSample,
     DetailSection,
-    ImageAcquisition,
-    SpecimenGrowthProtocol,
+    ImageAcquisitionProtocol,
+    Protocol,
     SpecimenImagingPreparationProtocol,
 )
 from bia_integrator_api import models as api_models
@@ -39,36 +36,28 @@ def transform_study(context: StudyCLIContext) -> Study:
     if context.root_directory:
         context.dataset_file_aggregate_data = aggregate_file_list_data(context)
 
-    study_dict["experimental_imaging_component"] = (
-        transform_experimental_imaging_datasets(context)
-    )
-
-    study_dict["image_annotation_component"] = transform_image_annotation_datasets(
-        context
-    )
+    study_dict["dataset"] = transform_datasets(context)
 
     study = Study(**study_dict)
     return study
 
 
-def transform_experimental_imaging_datasets(
+def transform_datasets(
     context: StudyCLIContext,
-) -> List[ExperimentalImagingDataset]:
-    api_datasets = retrieve_experimental_imaging_datasets(context)
+) -> List[Dataset]:
+    api_datasets = retrieve_datasets(context)
 
     dataset_list = []
     for api_dataset in api_datasets:
-        dataset_list.append(
-            transform_experimental_imaging_dataset(api_dataset, context)
-        )
+        dataset_list.append(transform_dataset(api_dataset, context))
 
     return dataset_list
 
 
-def transform_experimental_imaging_dataset(
-    api_dataset: api_models.ExperimentalImagingDataset,
+def transform_dataset(
+    api_dataset: api_models.Dataset,
     context: StudyCLIContext,
-) -> ExperimentalImagingDataset:
+) -> Dataset:
 
     dataset_dict = api_dataset.model_dump()
 
@@ -78,23 +67,23 @@ def transform_experimental_imaging_dataset(
     dataset_dict = dataset_dict | retrieve_aggregation_fields(api_dataset, context)
 
     dataset_api_images = retrieve_dataset_images(
-        api_dataset.uuid, api_models.ExperimentallyCapturedImage, context
+        api_dataset.uuid, api_models.Image, context
     )
     dataset_dict = dataset_dict | {"image": dataset_api_images}
 
-    dataset = ExperimentalImagingDataset(**dataset_dict)
+    dataset = Dataset(**dataset_dict)
     return dataset
 
 
 def transform_dataset_detail_objects(
-    dataset: api_models.ExperimentalImagingDataset, context: StudyCLIContext
+    dataset: api_models.Dataset, context: StudyCLIContext
 ):
 
     detail_map = {
         "acquisition_process": {
             "association_field": "image_acquisition",
-            "bia_type": api_models.ImageAcquisition,
-            "website_type": ImageAcquisition,
+            "bia_type": api_models.ImageAcquisitionProtocol,
+            "website_type": ImageAcquisitionProtocol,
         },
         "biological_entity": {
             "association_field": "biosample",
@@ -105,11 +94,6 @@ def transform_dataset_detail_objects(
             "association_field": "specimen",
             "bia_type": api_models.SpecimenImagingPreparationProtocol,
             "website_type": SpecimenImagingPreparationProtocol,
-        },
-        "specimen_growth_protocol": {
-            "association_field": "specimen",
-            "bia_type": api_models.SpecimenGrowthProtocol,
-            "website_type": SpecimenGrowthProtocol,
         },
     }
 
@@ -142,33 +126,3 @@ def transform_detail_object(
         detail_dict["default_open"] = False
     detail = target_type(**detail_dict)
     return detail
-
-
-def transform_image_annotation_datasets(
-    context: StudyCLIContext,
-) -> List[ImageAnnotationDataset]:
-    api_datasets = retrieve_image_annotatation_datasets(context)
-
-    dataset_list = []
-    for api_dataset in api_datasets:
-        dataset_list.append(transform_image_annotatation_dataset(api_dataset, context))
-
-    return dataset_list
-
-
-def transform_image_annotatation_dataset(
-    api_dataset: api_models.ImageAnnotationDataset, context: StudyCLIContext
-) -> ImageAnnotationDataset:
-    dataset_dict = api_dataset.model_dump()
-
-    dataset_dict["annotation_method"] = retrieve_annotion_method(api_dataset, context)
-
-    dataset_dict = dataset_dict | retrieve_aggregation_fields(api_dataset, context)
-
-    dataset_api_images = retrieve_dataset_images(
-        api_dataset.uuid, api_models.DerivedImage, context
-    )
-    dataset_dict = dataset_dict | {"image": dataset_api_images}
-
-    dataset = ImageAnnotationDataset(**dataset_dict)
-    return dataset

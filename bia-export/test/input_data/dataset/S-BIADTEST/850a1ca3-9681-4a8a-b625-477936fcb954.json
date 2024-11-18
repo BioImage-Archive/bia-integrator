@@ -3,21 +3,23 @@
     "uuid": "850a1ca3-9681-4a8a-b625-477936fcb954",
     "version": 1,
     "model": {
-        "type_name": "ExperimentalImagingDataset",
+        "type_name": "Dataset",
         "version": 1
     },
     "description": "Description of study component 2",
-    "attribute": {
-        "associations": [
-            {
+    "attribute": [
+        {
+            "value": {
                 "image_analysis": "Test image analysis",
                 "image_correlation": null,
                 "biosample": "Test Biosample 2 ",
                 "image_acquisition": "Test Primary Screen Image Acquisition",
                 "specimen": "Test specimen 2"
-            }
-        ]
-    },
+            },
+            "name": "associations",
+            "provenance": "bia_ingest"
+        }        
+    ],
     "analysis_method": [
         {
             "protocol_description": "Test image analysis",

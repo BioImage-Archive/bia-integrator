@@ -1,9 +1,10 @@
 from glob import glob
 from uuid import UUID
-from bia_export.website_export.utils import (
+from bia_export.website_export.generic_object_retrieval import (
     read_all_json,
     read_api_json_file,
     get_source_directory,
+    get_all_api_results,
 )
 from pathlib import Path
 from .models import StudyCLIContext
@@ -35,19 +36,19 @@ def retrieve_study(context: StudyCLIContext) -> api_models.Study:
     return api_study
 
 
-def retrieve_experimental_imaging_datasets(
+def retrieve_datasets(
     context: StudyCLIContext,
-) -> api_models.ExperimentalImagingDataset:
+) -> api_models.Dataset:
     if context.root_directory:
-        api_eids: List[api_models.ExperimentalImagingDataset] = read_all_json(
-            object_type=api_models.ExperimentalImagingDataset, context=context
+        api_datasets: List[api_models.Dataset] = read_all_json(
+            object_type=api_models.Dataset, context=context
         )
     else:
-        api_eids = api_client.get_experimental_imaging_dataset_in_study(
-            str(context.study_uuid)
+        api_datasets = get_all_api_results(
+            context.study_uuid, api_client.get_dataset_linking_study
         )
 
-    return api_eids
+    return api_datasets
 
 
 def retrieve_aggregation_fields(
@@ -68,20 +69,12 @@ def retrieve_aggregation_fields(
                 "file_type_aggregation": [],
             }
     else:
-        if dataset.model.type_name == "ExperimentalImagingDataset":
-            images = api_client.get_experimentally_captured_image_in_experimental_imaging_dataset(
-                str(dataset.uuid)
-            )
-            files = api_client.get_file_reference_in_experimental_imaging_dataset(
-                str(dataset.uuid)
-            )
-        elif dataset.model.type_name == "ImageAnnotationDataset":
-            images = api_client.get_derived_image_in_image_annotation_dataset(
-                str(dataset.uuid)
-            )
-            files = api_client.get_file_reference_in_image_annotation_dataset(
-                str(dataset.uuid)
-            )
+        images: List[bia_data_model.Image] = get_all_api_results(
+            dataset.uuid, api_client.get_image_linking_dataset
+        )
+        files: List[bia_data_model.FileReference] = get_all_api_results(
+            dataset.uuid, api_client.get_file_reference_linking_dataset
+        )
 
         file_type_aggregation = set()
         for file_reference in files:
@@ -117,14 +110,9 @@ def aggregate_file_list_data(context: StudyCLIContext) -> dict[UUID, dict]:
         dataset_counts_map[submission_dataset]["file_count"] += 1
         dataset_counts_map[submission_dataset]["file_type_aggregation"].add(file_type)
 
-    experimentally_derived_images_directory = get_source_directory(
-        api_models.ExperimentallyCapturedImage, context
-    )
-    derived_images_directory = get_source_directory(api_models.DerivedImage, context)
+    images_directory = get_source_directory(api_models.Image, context)
+    image_paths = glob(str(images_directory))
 
-    image_paths = glob(str(experimentally_derived_images_directory)) + glob(
-        str(derived_images_directory)
-    )
     for image_path in image_paths:
         with open(image_path, "r") as object_file:
             object_dict = json.load(object_file)
@@ -143,12 +131,12 @@ def aggregate_file_list_data(context: StudyCLIContext) -> dict[UUID, dict]:
 
 def retrieve_dataset_images(
     dataset_uuid: UUID,
-    image_type: Type[semantic_models.AbstractImageMixin],
+    image_type: Type[bia_data_model.Image],
     context: StudyCLIContext,
-) -> List[api_models.ExperimentallyCapturedImage]:
+) -> List[api_models.Image]:
     if context.root_directory:
 
-        all_api_images: List[semantic_models.AbstractImageMixin] = read_all_json(
+        all_api_images: List[bia_data_model.Image] = read_all_json(
             object_type=image_type, context=context
         )
         api_images = [
@@ -158,14 +146,9 @@ def retrieve_dataset_images(
         ]
 
     else:
-        if image_type == api_models.ExperimentallyCapturedImage:
-            api_images = api_client.get_experimentally_captured_image_in_experimental_imaging_dataset(
-                str(dataset_uuid)
-            )
-        elif image_type == api_models.DerivedImage:
-            api_images = api_client.get_derived_image_in_image_annotation_dataset(
-                str(dataset_uuid)
-            )
+        api_images = get_all_api_results(
+            dataset_uuid, api_client.get_image_linking_dataset
+        )
 
     return api_images
 
@@ -191,7 +174,7 @@ def find_associated_objects(
 
 
 def retrieve_detail_objects(
-    dataset: api_models.ExperimentalImagingDataset,
+    dataset: api_models.Dataset,
     detail_map: dict,
     context: StudyCLIContext,
 ) -> dict[str, List]:
@@ -203,9 +186,10 @@ def retrieve_detail_objects(
             "image_acquisition": set(),
             "specimen": set(),
         }
-        for association in dataset.attribute["associations"]:
-            for key in association_by_type.keys():
-                association_by_type[key].add(association[key])
+        for attribute in dataset.attribute:
+            if attribute.name == "associations":
+                for key in association_by_type.keys():
+                    association_by_type[key].add(attribute.value[key])
 
         for field, source_info in detail_map.items():
 
@@ -218,37 +202,39 @@ def retrieve_detail_objects(
 
     else:
         # Currently performing graph traversal of:
-        # Dataset -> Images[0] -> specimen -> details (while all images have all the same specimen info)
+        # Dataset -> Images[0] -> Creation Process-> specimen -> details (while all images have all the same specimen info)
         # but could alternatively switch to the much simpler (for the exporter!):
         # Dataset -> details field (when we have multi-hop api endpoints)
-        dataset_images = api_client.get_experimentally_captured_image_in_experimental_imaging_dataset(
-            str(dataset.uuid)
-        )
+        dataset_images = api_client.get_image_linking_dataset(str(dataset.uuid), 1)
 
         acquisition_process = []
         biological_entity = []
         specimen_imaging_preparation_protocol = []
-        specimen_growth_protocol = []
 
         if len(dataset_images) != 0:
-            single_dataset_image = dataset_images[0]
+            single_dataset_image: bia_data_model.Image = dataset_images[0]
+            creation_process = api_client.get_creation_process(
+                single_dataset_image.creation_process_uuid
+            )
 
-            for ia_uuid in single_dataset_image.acquisition_process_uuid:
+            if creation_process.subject_specimen_uuid:
+                specimen = api_client.get_specimen(
+                    creation_process.subject_specimen_uuid
+                )
+                for biosample_uuid in specimen.sample_of_uuid:
+                    biological_entity.append(
+                        api_client.get_bio_sample(str(biosample_uuid))
+                    )
+                for sipp_uuid in specimen.imaging_preparation_protocol_uuid:
+                    specimen_imaging_preparation_protocol.append(
+                        api_client.get_specimen_imaging_preparation_protocol(
+                            str(sipp_uuid)
+                        )
+                    )
+
+            for ia_uuid in creation_process.image_acquisition_protocol_uuid:
                 acquisition_process.append(
-                    api_client.get_image_acquisition(str(ia_uuid))
-                )
-
-            specimen = api_client.get_specimen(str(single_dataset_image.subject_uuid))
-
-            for biosample_uuid in specimen.sample_of_uuid:
-                biological_entity.append(api_client.get_bio_sample(str(biosample_uuid)))
-            for sipp_uuid in specimen.imaging_preparation_protocol_uuid:
-                specimen_imaging_preparation_protocol.append(
-                    api_client.get_specimen_imaging_preparation_protocol(str(sipp_uuid))
-                )
-            for sgp_uuid in specimen.growth_protocol_uuid:
-                specimen_growth_protocol.append(
-                    api_client.get_specimen_growth_protocol(str(sgp_uuid))
+                    api_client.get_image_acquisition_protocol(str(ia_uuid))
                 )
 
         # TODO: Use detail map to namage field names in a single place
@@ -256,54 +242,6 @@ def retrieve_detail_objects(
             "acquisition_process": acquisition_process,
             "biological_entity": biological_entity,
             "specimen_imaging_preparation_protocol": specimen_imaging_preparation_protocol,
-            "specimen_growth_protocol": specimen_growth_protocol,
         }
 
     return detail_fields
-
-
-def retrieve_image_annotatation_datasets(
-    context: StudyCLIContext,
-) -> List[api_models.ImageAnnotationDataset]:
-    if context.root_directory:
-
-        api_aids: List[api_models.ImageAnnotationDataset] = read_all_json(
-            object_type=api_models.ImageAnnotationDataset, context=context
-        )
-    else:
-        api_aids = api_client.get_image_annotation_dataset_in_study(
-            str(context.study_uuid)
-        )
-
-    return api_aids
-
-
-def retrieve_annotion_method(
-    api_dataset: api_models.ImageAnnotationDataset, context: StudyCLIContext
-):
-    if context.root_directory:
-        api_methods = []
-        all_api_methods: List[api_models.AnnotationMethod] = read_all_json(
-            object_type=api_models.AnnotationMethod, context=context
-        )
-        for api_method in all_api_methods:
-            # Note that currently the title_ids are the same because the two objects are created from the same user input.
-            if api_method.title_id == api_dataset.title_id:
-                api_methods.append(api_method)
-    else:
-        # Currently performing graph traversal of:
-        # Dataset -> Derived Images[0] -> annotation_method (while all images have all the same info)
-        # but could alternatively switch to the much simpler (for the exporter!):
-        # Dataset -> annotation_method field (when we have multi-hop api endpoints)
-
-        dataset_images = api_client.get_derived_image_in_image_annotation_dataset(
-            str(api_dataset.uuid)
-        )
-
-        api_methods = []
-        if len(dataset_images) != 0:
-            single_dataset_image = dataset_images[0]
-            for method_uuid in single_dataset_image.creation_process_uuid:
-                api_methods.append(api_client.get_annotation_method(str(method_uuid)))
-
-    return api_methods
