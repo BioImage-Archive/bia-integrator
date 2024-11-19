@@ -1,8 +1,12 @@
 from typing import Type
 from rich.table import Table
 from rich.text import Text
+
+from rich_tools import table_to_df
+from csv import DictWriter
 from pydantic import BaseModel, Field
 import logging
+from pathlib import Path
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -18,6 +22,8 @@ class IngestionResult(CLIResult):
     Dataset_ValidationErrorCount: int = Field(default=0)
     AnnotationDataset_CreationCount: int = Field(default=0)
     AnnotationDataset_ValidationErrorCount: int = Field(default=0)
+    Affiliation_CreationCount: int = Field(default=0)
+    Affiliation_ValidationErrorCount: int = Field(default=0)
     FileReference_CreationCount: int = Field(default=0)
     FileReferenceValidation_ErrorCount: int = Field(default=0)
     BioSample_CreationCount: int = Field(default=0)
@@ -50,6 +56,7 @@ class IngestionResult(CLIResult):
     Contributor_ValidationErrorCount: int = Field(default=0)
     Organisation_CreationCount: int = Field(default=0)
     Organisation_ValidationErrorCount: int = Field(default=0)
+    Uncaught_Exception: str = Field(default=None)
 
 
 class ImageCreationResult(CLIResult):
@@ -65,7 +72,7 @@ def tabulate_ingestion_errors(dict_of_results: dict[str, IngestionResult]) -> Ta
         error_message = ""
         result_dict = result.model_dump()
         for field, value in result_dict.items():
-            if field.endswith("ValidationErrorCount") & value > 0:
+            if field.endswith("ValidationErrorCount") and (value > 0):
                 error_message += f"{field}: {value}; "
 
         if result.Dataset_CreationCount == 0:
@@ -88,6 +95,9 @@ def tabulate_ingestion_errors(dict_of_results: dict[str, IngestionResult]) -> Ta
             else:
                 error_message += "No REMBI objects associated with Dataset; "
 
+        if result.Uncaught_Exception:
+            error_message += f"Uncaught exception: {result.Uncaught_Exception}"
+
         if error_message == "":
             status = Text("Success")
             status.stylize("green")
@@ -100,6 +110,12 @@ def tabulate_ingestion_errors(dict_of_results: dict[str, IngestionResult]) -> Ta
         table.add_row(accession_id_key, status, error_message)
 
     return table
+
+
+def write_table(table: Table, location: str):
+    df = table_to_df(table, remove_markup=False)
+    df.to_csv(location, index=False)
+    print(f"Written result table to: {Path(location).absolute()}")
 
 
 def log_model_creation_count(

@@ -17,7 +17,7 @@ from bia_ingest.persistence_strategy import (
 import logging
 from rich import print
 from rich.logging import RichHandler
-from .cli_logging import tabulate_ingestion_errors, IngestionResult
+from .cli_logging import tabulate_ingestion_errors, write_table, IngestionResult
 
 app = typer.Typer()
 
@@ -48,6 +48,7 @@ def ingest(
         ProcessFilelistMode, typer.Option(case_sensitive=False)
     ] = ProcessFilelistMode.ask,
     dryrun: Annotated[bool, typer.Option()] = False,
+    write_csv: Annotated[str, typer.Option()] = None,
 ) -> None:
     if verbose:
         logger.setLevel(logging.DEBUG)
@@ -69,42 +70,49 @@ def ingest(
                 api_client=api_client,
             )
 
-        submission = load_submission(accession_id)
+        try:
+            submission = load_submission(accession_id)
 
-        submission_table = load_submission_table_info(accession_id)
+            submission_table = load_submission_table_info(accession_id)
 
-        get_study(submission, result_summary, persister=persister)
+            get_study(submission, result_summary, persister=persister)
 
-        # Specimen, BioSample and Protocol (specimen growth protocol) depend on Dataset
-        # Specimen (note - this is very different from Biostudies.Specimen) artefacts are processed as part of bia_data_models.Dataset
-        # BioSamples are processed as part of Specimen and specimen growth protocol (Protocol) are processed as part of BioSample
-        datasets = get_dataset(submission, result_summary, persister=persister)
+            # Specimen, BioSample and Protocol (specimen growth protocol) depend on Dataset
+            # Specimen (note - this is very different from Biostudies.Specimen) artefacts are processed as part of bia_data_models.Dataset
+            # BioSamples are processed as part of Specimen and specimen growth protocol (Protocol) are processed as part of BioSample
+            datasets = get_dataset(submission, result_summary, persister=persister)
 
-        process_files = determine_file_processing(
-            process_filelist,
-            file_count_limit=200000,
-            file_count=submission_table.files,
-        )
-        if process_files:
-            get_file_reference_by_dataset(
-                submission,
-                datasets,
-                result_summary,
-                persister=persister,
+            process_files = determine_file_processing(
+                process_filelist,
+                file_count_limit=200000,
+                file_count=submission_table.files,
             )
-        else:
-            logger.info("Skipping file reference creation.")
+            if process_files:
+                get_file_reference_by_dataset(
+                    submission,
+                    datasets,
+                    result_summary,
+                    persister=persister,
+                )
+            else:
+                logger.info("Skipping file reference creation.")
 
-        get_image_acquisition_protocol(submission, result_summary, persister=persister)
+            get_image_acquisition_protocol(
+                submission, result_summary, persister=persister
+            )
 
-        get_annotation_method(submission, result_summary, persister=persister)
-
-        # typer.echo(study.model_dump_json(indent=2))
+            get_annotation_method(submission, result_summary, persister=persister)
+        except Exception as error:
+            result_summary[accession_id].__setattr__("Uncaught_Exception", str(error))
 
         logger.debug(f"COMPLETED: Ingest of: {accession_id}")
         print(f"[green]-------- Completed ingest of {accession_id} --------[/green]")
 
-    print(tabulate_ingestion_errors(result_summary))
+    result_table = tabulate_ingestion_errors(result_summary)
+    print(result_table)
+
+    if write_csv:
+        write_table(result_table, write_csv)
 
 
 def determine_file_processing(

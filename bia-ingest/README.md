@@ -46,3 +46,17 @@ To run ingest without either saving to disk or writing to the api run with --dry
 ```sh
 $ poetry run biaingest ingest --dryrun S-BIAD1285
 ```
+
+### Filelist processing settings
+
+Some studies have huge filelists, which can cause issues when running locally. Therefore, there is a --process-filelist setting to control how file lists are handled (and therefore whether FileReferences get generated). The default value, "ask", will prompt the user with a y/n question for studies that have more than 200,000 files. "skip" avoids attempting to even download or process the filelist. "always" processes the filelist regardless of number of files in the study. An example of skipping, e.g. for debugging, alongside the dryrun option would be:
+```sh
+$ poetry run biaingest ingest --dryrun --process-filelist skip S-BIAD1285
+```
+
+### Results table
+When ingest finishes a table of results is printed out. To also get this table written to a csv (which can be useful when running ingest on a lot of studies), add the --write-csv option with the path of where to write out the file.
+
+```sh
+$ poetry run biaingest ingest S-BIAD1285 S-BIAD1385 --write-csv output_table.csv
+```
