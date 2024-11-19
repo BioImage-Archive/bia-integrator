@@ -148,11 +148,12 @@ def get_biosample_by_study_component(
     for biosample_list in biosample_by_study_component.values():
         biosamples |= {biosample.uuid: biosample for biosample in biosample_list}
     biosamples = list(biosamples.values())
+    log_model_creation_count(
+        bia_data_model.BioSample, len(biosamples), result_summary[submission.accno]
+    )
     if persister and biosamples:
         persister.persist(biosamples)
-        log_model_creation_count(
-            bia_data_model.BioSample, len(biosamples), result_summary[submission.accno]
-        )
+
     return biosample_by_study_component
 
 
