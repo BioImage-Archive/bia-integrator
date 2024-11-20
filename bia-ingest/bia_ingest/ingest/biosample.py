@@ -172,8 +172,13 @@ def extract_biosample_dicts(
     model_dicts = []
     for section in biosample_sections:
         attr_dict = attributes_to_dict(section.attributes)
+
         for subsection in section.subsections:
-            attr_dict |= attributes_to_dict(subsection.attributes)
+            if isinstance(subsection, list):
+                for sub_subsection in subsection:
+                    attr_dict |= attributes_to_dict(sub_subsection.attributes)
+            else:
+                attr_dict |= attributes_to_dict(subsection.attributes)
 
         model_dict = {
             k: case_insensitive_get(attr_dict, v, default)
