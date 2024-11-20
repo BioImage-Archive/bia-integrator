@@ -56,7 +56,7 @@ class IngestionResult(CLIResult):
     Contributor_ValidationErrorCount: int = Field(default=0)
     Organisation_CreationCount: int = Field(default=0)
     Organisation_ValidationErrorCount: int = Field(default=0)
-    Uncaught_Exception: str = Field(default=None)
+    Uncaught_Exception: str = Field(default="")
 
 
 class ImageCreationResult(CLIResult):

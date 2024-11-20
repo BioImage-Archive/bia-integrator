@@ -103,7 +103,11 @@ def ingest(
 
             get_annotation_method(submission, result_summary, persister=persister)
         except Exception as error:
-            result_summary[accession_id].__setattr__("Uncaught_Exception", str(error))
+            logging.exception("message")
+            result_summary[accession_id].__setattr__(
+                "Uncaught_Exception",
+                str(result_summary[accession_id].Uncaught_Exception) + str(error),
+            )
 
         logger.debug(f"COMPLETED: Ingest of: {accession_id}")
         print(f"[green]-------- Completed ingest of {accession_id} --------[/green]")

@@ -2,7 +2,7 @@ import logging
 from pydantic import ValidationError
 import re
 from typing import List, Any, Dict, Optional
-
+from ..cli_logging import IngestionResult
 from .biostudies.submission_parsing_utils import (
     attributes_to_dict,
     find_sections_recursive,
@@ -10,6 +10,9 @@ from .biostudies.submission_parsing_utils import (
     case_insensitive_get,
 )
 
+from bia_ingest.ingest.biostudies.api import (
+    Attribute,
+)
 from ..bia_object_creation_utils import dict_to_uuid
 
 from ..cli_logging import log_failed_model_creation
@@ -302,9 +305,10 @@ def get_contributor(
     Map authors in submission to semantic_model.Contributors
     """
     affiliation_dict = get_affiliation(submission, result_summary)
+
     key_mapping = [
         ("display_name", "Name", None),
-        ("contact_email", "E-mail", "not@supplied.com"),
+        ("contact_email", "E-mail", None),
         ("role", "Role", None),
         ("orcid", "ORCID", None),
         ("affiliation", "affiliation", []),
@@ -317,8 +321,15 @@ def get_contributor(
         [],
     )
     contributors = []
+
     for section in author_sections:
-        attr_dict = mattributes_to_dict(section.attributes, affiliation_dict)
+
+        attributes = sanitise_affiliation_attribute(
+            section.attributes, affiliation_dict, result_summary, submission.accno
+        )
+
+        attr_dict = mattributes_to_dict(attributes, affiliation_dict)
+
         model_dict = {
             k: case_insensitive_get(attr_dict, v, default)
             for k, v, default in key_mapping
@@ -331,6 +342,8 @@ def get_contributor(
             model_dict["affiliation"] = [
                 model_dict["affiliation"],
             ]
+        if model_dict["contact_email"] == "UNKNOWN":
+            model_dict["contact_email"] = None
         try:
             contributors.append(semantic_models.Contributor.model_validate(model_dict))
         except ValidationError:
@@ -339,3 +352,29 @@ def get_contributor(
             )
 
     return contributors
+
+
+def sanitise_affiliation_attribute(
+    attribute_list: List[Attribute],
+    affiliation_dict: dict,
+    result_summary: dict[str, IngestionResult],
+    accno: str,
+):
+    sanitised_attribute_list = []
+    for attribute in attribute_list:
+        if attribute.name == "affiliation":
+            affiliations_refs = [x.strip() for x in attribute.value.split(",")]
+            for affiliation in affiliations_refs:
+                if affiliation not in affiliation_dict.keys():
+                    result_summary[accno].__setattr__(
+                        "Uncaught_Exception",
+                        str(result_summary[accno].Uncaught_Exception)
+                        + f"Cannot find author's referenced affiliation: {affiliation};",
+                    )
+                else:
+                    sanitised_attribute_list.append(
+                        Attribute(name="affiliation", value=affiliation, reference=True)
+                    )
+        else:
+            sanitised_attribute_list.append(attribute)
+    return sanitised_attribute_list
