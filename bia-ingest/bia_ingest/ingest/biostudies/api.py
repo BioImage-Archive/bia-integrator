@@ -6,7 +6,7 @@ from typing import List, Union, Dict, Optional, Any
 from copy import deepcopy
 
 import requests
-from pydantic import BaseModel, TypeAdapter
+from pydantic import BaseModel, TypeAdapter, Field
 
 
 logger = logging.getLogger("__main__." + __name__)
@@ -70,7 +70,7 @@ class Section(BaseModel):
     accno: Optional[str] = ""
     attributes: List[Attribute] = []
     subsections: List[Union["Section", List["Section"]]] = []
-    links: List[Link] = []
+    links: Union[List[Link], List[List[Link]]] = []
     files: List[Union[File, List[File]]] = []
 
     def as_tsv(self, parent_accno: Optional[str] = None) -> str:
@@ -143,7 +143,8 @@ class Columns(BaseModel):
     title: str
     visible: bool
     searchable: bool
-    data: str
+    data: Optional[str] = Field(default=None)
+    sortable: Optional[bool] = Field(default=True)
     defaultContent: str
 
 
@@ -159,7 +160,7 @@ class SubmissionTable(BaseModel):
     views: int
     released: int
     modified: int
-    sections: List[str]
+    sections: Optional[List[str]] = Field(default=None)
 
 
 # API functions
