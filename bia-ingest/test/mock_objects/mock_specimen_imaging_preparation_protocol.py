@@ -44,3 +44,7 @@ def get_specimen_imaging_preparation_protocol() -> (
             )
         )
     return protocol
+
+
+def get_specimen_imaging_preparation_protocol_as_map():
+    return {obj.title_id: obj for obj in get_specimen_imaging_preparation_protocol()}

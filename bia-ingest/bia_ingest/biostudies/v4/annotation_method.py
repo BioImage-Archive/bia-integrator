@@ -1,34 +1,45 @@
 import logging
 from typing import List, Any, Dict, Optional
 
-from ..bia_object_creation_utils import (
+from ...bia_object_creation_utils import (
     dict_to_uuid,
-    dicts_to_api_models,
+    dict_map_to_api_models,
     filter_model_dictionary,
 )
 
-from ..cli_logging import log_model_creation_count
-from .biostudies.submission_parsing_utils import (
+from ...cli_logging import log_model_creation_count
+from ..submission_parsing_utils import (
     find_sections_recursive,
     attributes_to_dict,
     case_insensitive_get,
 )
-from .biostudies.api import (
+from ..api import (
     Submission,
 )
 from bia_shared_datamodels import bia_data_model, semantic_models
-from ..persistence_strategy import PersistenceStrategy
+from ...persistence_strategy import PersistenceStrategy
 
 logger = logging.getLogger("__main__." + __name__)
 
 
-def get_annotation_method(
+def get_annotation_method_as_map(
     submission: Submission,
     result_summary: dict,
     persister: Optional[PersistenceStrategy] = None,
-) -> List[bia_data_model.AnnotationMethod]:
+) -> dict[str, bia_data_model.AnnotationMethod]:
+    """
+    Returns a dictionary of the form:
+
+    {
+      "Annotation Component Title": bia_data_model.AnnotationMethod:(title_id: "Annotation Component Title", uuid:... )
+    }
+
+    Where the Key will be the user provided title of the Annotation Component provided by the user.
+    There is no annotation method object in biostudies, so no need to link it via associations.
+    """
+
     annotation_method_model_dicts = extract_annotation_method_dicts(submission)
-    annotation_methods = dicts_to_api_models(
+    annotation_methods = dict_map_to_api_models(
         annotation_method_model_dicts,
         bia_data_model.AnnotationMethod,
         result_summary[submission.accno],
@@ -48,10 +59,10 @@ def get_annotation_method(
     return annotation_methods
 
 
-def extract_annotation_method_dicts(submission: Submission) -> List[Dict[str, Any]]:
-    annotation_sections = find_sections_recursive(
-        submission.section, ["Annotations"], []
-    )
+def extract_annotation_method_dicts(
+    submission: Submission,
+) -> dict[str, dict[str, Any]]:
+    annotation_sections = find_sections_recursive(submission.section, ["Annotations"])
 
     key_mapping = [
         ("title_id", "Title", ""),
@@ -59,7 +70,7 @@ def extract_annotation_method_dicts(submission: Submission) -> List[Dict[str, An
         ("annotation_coverage", "Annotation Coverage", None),
     ]
 
-    model_dicts = []
+    model_dict_map = {}
     for section in annotation_sections:
         attr_dict = attributes_to_dict(section.attributes)
 
@@ -100,9 +111,9 @@ def extract_annotation_method_dicts(submission: Submission) -> List[Dict[str, An
             model_dict, bia_data_model.AnnotationMethod
         )
 
-        model_dicts.append(model_dict)
+        model_dict_map[attr_dict["Title"]] = model_dict
 
-    return model_dicts
+    return model_dict_map
 
 
 def generate_annotation_method_uuid(protocol_dict: Dict[str, Any]) -> str:

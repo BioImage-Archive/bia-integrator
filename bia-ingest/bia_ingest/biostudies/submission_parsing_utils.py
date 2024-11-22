@@ -1,4 +1,4 @@
-from bia_ingest.ingest.biostudies.api import (
+from bia_ingest.biostudies.api import (
     Attribute,
     File,
     Section,
@@ -139,23 +139,26 @@ def mattributes_to_dict(
 
 
 def find_sections_recursive(
-    section: Section, search_types: List[str], results: Optional[List[Section]] = []
+    section: Section, search_types: List[str], results: Optional[list[Section]] = None
 ) -> List[Section]:
     """
     Find all sections of search_types within tree, starting at given section
     """
+    if results == None:
+        results = []
 
     search_types_lower = [s.lower() for s in search_types]
     if section.type.lower() in search_types_lower:
         results.append(section)
 
-    # Each thing in section.subsections is either Section or List[Section]
-    # First, let's make sure we ensure they're all lists:
-    nested = [
-        [item] if not isinstance(item, list) else item for item in section.subsections
-    ]
-    # Then we can flatten this list of lists:
-    flattened = sum(nested, [])
+    # Each thing in section.subsections is either Section or List[Section] which we want to flatten
+    flattened = []
+    for item in section.subsections:
+        if isinstance(item, list):
+            for sub_item in item:
+                flattened.append(sub_item)
+        else:
+            flattened.append(item)
 
     for section in flattened:
         find_sections_recursive(section, search_types, results)

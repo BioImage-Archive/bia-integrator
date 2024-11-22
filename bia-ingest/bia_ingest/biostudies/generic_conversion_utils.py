@@ -3,13 +3,13 @@ from pathlib import Path
 from typing import List, Any, Dict, Optional, Tuple, Union
 from pydantic import BaseModel, ValidationError
 from pydantic.alias_generators import to_snake
-from bia_ingest.ingest.biostudies.submission_parsing_utils import (
+from bia_ingest.biostudies.submission_parsing_utils import (
     find_sections_recursive,
     mattributes_to_dict,
     attributes_to_dict,
     case_insensitive_get,
 )
-from .biostudies.api import (
+from .api import (
     Submission,
     Section,
 )
@@ -33,9 +33,9 @@ def get_generic_section_as_list(
     Map biostudies.Submission objects to a list of semantic_models or bia_data_model equivalent, or return a dictionary if no model provided.
     """
     if type(root) is Submission:
-        sections = find_sections_recursive(root.section, section_name, [])
+        sections = find_sections_recursive(root.section, section_name)
     else:
-        sections = find_sections_recursive(root, section_name, [])
+        sections = find_sections_recursive(root, section_name)
 
     return_list = []
     for section in sections:
@@ -50,10 +50,6 @@ def get_generic_section_as_list(
         if mapped_object is None:
             return_list.append(model_dict)
         else:
-            if not valdiation_error_tracking:
-                raise RuntimeError(
-                    "If a mapped_object is provided, valdiation_error_tracking needs to also be provided."
-                )
             try:
                 return_list.append(mapped_object.model_validate(model_dict))
             except ValidationError:
@@ -84,10 +80,6 @@ def get_generic_section_as_dict(
         if mapped_object is None:
             return_dict[section.accno] = model_dict
         else:
-            if not valdiation_error_tracking:
-                raise RuntimeError(
-                    "If a mapped_object is provided, valdiation_error_tracking needs to also be provided."
-                )
             try:
                 return_dict[section.accno] = mapped_object.model_validate(model_dict)
             except ValidationError:
@@ -136,9 +128,17 @@ def object_value_pair_to_dict(
     return object_dict
 
 
+class Association(BaseModel):
+    image_analysis: Optional[str] = None
+    image_correlation: Optional[str] = None
+    biosample: Optional[str] = None
+    image_acquisition: Optional[str] = None
+    specimen: Optional[str] = None
+
+
 def get_associations_for_section(
     section: Section,
-) -> List[BaseModel | Dict[str, str | List[str]]]:
+) -> list[Association]:
     """Return the associations for a section (assume Study Component)"""
     key_mapping = [
         (
@@ -173,5 +173,6 @@ def get_associations_for_section(
             "Associations",
         ],
         key_mapping,
+        mapped_object=Association,
     )
     return associations

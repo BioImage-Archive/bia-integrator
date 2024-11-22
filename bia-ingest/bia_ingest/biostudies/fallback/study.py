@@ -2,27 +2,21 @@ import logging
 from pydantic import ValidationError
 import re
 from typing import List, Any, Dict, Optional
-from ..cli_logging import IngestionResult
-from .biostudies.submission_parsing_utils import (
+from ...cli_logging import IngestionResult, log_failed_model_creation
+from ..submission_parsing_utils import (
     attributes_to_dict,
     find_sections_recursive,
     mattributes_to_dict,
     case_insensitive_get,
 )
 
-from bia_ingest.ingest.biostudies.api import (
-    Attribute,
-)
-from ..bia_object_creation_utils import dict_to_uuid
+from bia_ingest.biostudies.api import Attribute, Submission
+from ...bia_object_creation_utils import dict_to_uuid
 
-from ..cli_logging import log_failed_model_creation
-from .generic_conversion_utils import (
+from ..generic_conversion_utils import (
     get_generic_section_as_dict,
 )
-from .biostudies.api import (
-    Submission,
-)
-from ..persistence_strategy import PersistenceStrategy
+from ...persistence_strategy import PersistenceStrategy
 from bia_shared_datamodels import bia_data_model, semantic_models
 
 logger = logging.getLogger("__main__." + __name__)
@@ -313,13 +307,7 @@ def get_contributor(
         ("orcid", "ORCID", None),
         ("affiliation", "affiliation", []),
     ]
-    author_sections = find_sections_recursive(
-        submission.section,
-        [
-            "author",
-        ],
-        [],
-    )
+    author_sections = find_sections_recursive(submission.section, ["author"])
     contributors = []
 
     for section in author_sections:
@@ -329,7 +317,6 @@ def get_contributor(
         )
 
         attr_dict = mattributes_to_dict(attributes, affiliation_dict)
-
         model_dict = {
             k: case_insensitive_get(attr_dict, v, default)
             for k, v, default in key_mapping

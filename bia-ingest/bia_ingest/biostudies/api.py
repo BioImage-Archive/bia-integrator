@@ -95,7 +95,7 @@ class Section(BaseModel):
 
 
 class Submission(BaseModel):
-    accno: Optional[str]
+    accno: Optional[str] = ""
     section: Section
     attributes: List[Attribute]
 

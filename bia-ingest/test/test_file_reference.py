@@ -6,10 +6,10 @@ it now needs a submitted dataset
 """
 
 from .mock_objects import mock_file_reference, mock_dataset
-from bia_ingest.ingest import (
+from bia_ingest.biostudies import (
     file_reference,
 )
-from bia_ingest.ingest.biostudies.api import File
+from bia_ingest.biostudies.api import File
 
 
 # Get second study component as dataset in submission

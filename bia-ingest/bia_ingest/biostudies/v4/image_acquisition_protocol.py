@@ -1,37 +1,47 @@
 import logging
 from typing import List, Any, Dict, Optional
 
-from .biostudies.submission_parsing_utils import attributes_to_dict
-
-from ..bia_object_creation_utils import (
+from ...bia_object_creation_utils import (
     dict_to_uuid,
     dicts_to_api_models,
+    dict_map_to_api_models,
     filter_model_dictionary,
 )
 
-from ..cli_logging import log_model_creation_count
-from .biostudies.submission_parsing_utils import (
+from ...cli_logging import log_model_creation_count
+from ..submission_parsing_utils import (
     find_sections_recursive,
     case_insensitive_get,
+    attributes_to_dict,
 )
-from .biostudies.api import (
+from ..api import (
     Submission,
 )
 from bia_shared_datamodels import bia_data_model
-from ..persistence_strategy import PersistenceStrategy
+from ...persistence_strategy import PersistenceStrategy
 
 logger = logging.getLogger("__main__." + __name__)
 
 
-def get_image_acquisition_protocol(
+# TODO: MAKE MAP
+def get_image_acquisition_protocol_map(
     submission: Submission,
     result_summary: dict,
     persister: Optional[PersistenceStrategy] = None,
-) -> List[bia_data_model.ImageAcquisitionProtocol]:
+) -> dict[str, bia_data_model.ImageAcquisitionProtocol]:
+    """
+    Returns a dictionary of the form:
+
+    {
+      "Image Acquisition Title": bia_data_model.ImageAcquisitionProtocol(title_id: "Image Acquisition Title", uuid:... )
+    }
+
+    The titles are what Biostudies uses in association objects to link study components to the relevant objects.
+    """
     image_acquisition_protocol_model_dicts = extract_image_acquisition_protocol_dicts(
         submission
     )
-    image_acquisition_protocols = dicts_to_api_models(
+    image_acquisition_protocols = dict_map_to_api_models(
         image_acquisition_protocol_model_dicts,
         bia_data_model.ImageAcquisitionProtocol,
         result_summary[submission.accno],
@@ -55,7 +65,7 @@ def extract_image_acquisition_protocol_dicts(
     submission: Submission,
 ) -> List[Dict[str, Any]]:
     acquisition_sections = find_sections_recursive(
-        submission.section, ["Image acquisition"], []
+        submission.section, ["Image acquisition"]
     )
 
     key_mapping = [
@@ -65,7 +75,7 @@ def extract_image_acquisition_protocol_dicts(
         ("imaging_method_name", "Imaging method", ""),
     ]
 
-    model_dicts = []
+    model_dict_map = {}
     for section in acquisition_sections:
         attr_dict = attributes_to_dict(section.attributes)
 
@@ -89,9 +99,9 @@ def extract_image_acquisition_protocol_dicts(
         model_dict = filter_model_dictionary(
             model_dict, bia_data_model.ImageAcquisitionProtocol
         )
-        model_dicts.append(model_dict)
+        model_dict_map[attr_dict["Title"]] = model_dict
 
-    return model_dicts
+    return model_dict_map
 
 
 def generate_image_acquisition_protocol_uuid(protocol_dict: Dict[str, Any]) -> str:

@@ -53,3 +53,6 @@ def get_image_acquisition_protocol() -> List[bia_data_model.ImageAcquisitionProt
             )
         )
     return image_acquisition_protocol
+
+def get_image_acquisition_protocol_as_map():
+    return {obj.title_id: obj for obj in get_image_acquisition_protocol()}

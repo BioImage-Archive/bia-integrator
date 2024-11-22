@@ -1,37 +1,46 @@
 import logging
-from typing import List, Any, Dict, Optional
+from typing import Any, Optional
 
 
-from ..bia_object_creation_utils import (
+from ...bia_object_creation_utils import (
     dict_to_uuid,
     dicts_to_api_models,
+    dict_map_to_api_models,
     filter_model_dictionary,
 )
 
-from ..cli_logging import log_model_creation_count
-from .biostudies.submission_parsing_utils import (
+from ...cli_logging import log_model_creation_count
+from ..submission_parsing_utils import (
     find_sections_recursive,
     attributes_to_dict,
     case_insensitive_get,
 )
-from .biostudies.api import (
+from ..api import (
     Submission,
 )
-from ..persistence_strategy import PersistenceStrategy
+from ...persistence_strategy import PersistenceStrategy
 from bia_shared_datamodels import bia_data_model
 
 logger = logging.getLogger("__main__." + __name__)
 
 
-def get_specimen_growth_protocol(
+def get_growth_protocol_as_map(
     submission: Submission,
     result_summary: dict,
     persister: Optional[PersistenceStrategy] = None,
-) -> List[bia_data_model.Protocol]:
-    specimen_growth_protocol_model_dicts = extract_specimen_growth_protocol_dicts(
-        submission
-    )
-    specimen_growth_protocols = dicts_to_api_models(
+) -> dict[str, bia_data_model.Protocol]:
+    """
+    Returns a dictionary of the form:
+
+    {
+      "Specimen Title.growth_protocol": bia_data_model.Protocol(title_id: "Specimen Title", uuid:... )
+    }
+
+    The titles are what Biostudies uses in association objects to link study components to the relevant objects.
+    We append .growth_protocol to it since the specimen object is also used to create Specimen Imaging Preparation Protocols.
+    """
+    specimen_growth_protocol_model_dicts = extract_growth_protocol_dicts(submission)
+    specimen_growth_protocols = dict_map_to_api_models(
         specimen_growth_protocol_model_dicts,
         bia_data_model.Protocol,
         result_summary[submission.accno],
@@ -49,18 +58,17 @@ def get_specimen_growth_protocol(
     return specimen_growth_protocols
 
 
-def extract_specimen_growth_protocol_dicts(
+def extract_growth_protocol_dicts(
     submission: Submission,
-    filter_dict: bool = True,
-) -> List[Dict[str, Any]]:
-    specimen_sections = find_sections_recursive(submission.section, ["Specimen"], [])
+) -> dict[str, dict[str, Any]]:
+    specimen_sections = find_sections_recursive(submission.section, ["Specimen"])
 
     key_mapping = [
         ("title_id", "Title", ""),
         ("protocol_description", "Growth protocol", ""),
     ]
 
-    model_dicts = []
+    model_dict_map = {}
     for section in specimen_sections:
         attr_dict = attributes_to_dict(section.attributes)
 
@@ -69,24 +77,19 @@ def extract_specimen_growth_protocol_dicts(
             for k, v, default in key_mapping
         }
 
-        model_dict["accno"] = section.__dict__.get("accno", "")
+        model_dict["accno"] = section.accno
         model_dict["accession_id"] = submission.accno
-        model_dict["uuid"] = generate_specimen_growth_protocol_uuid(model_dict)
         model_dict["version"] = 0
+        model_dict["uuid"] = generate_growth_protocol_uuid(model_dict)
 
-        # Allow return of either filtered or unfiltered dict.
-        # The unfiltered dict is useful to get more information about
-        # the specimen growth protocol. E.g. the title_id is used in
-        # identifying parent specimen in biostudies pagetab
-        if filter_dict:
-            model_dict = filter_model_dictionary(model_dict, bia_data_model.Protocol)
+        model_dict = filter_model_dictionary(model_dict, bia_data_model.Protocol)
 
-        model_dicts.append(model_dict)
+        model_dict_map[attr_dict["Title"] + ".growth_protocol"] = model_dict
 
-    return model_dicts
+    return model_dict_map
 
 
-def generate_specimen_growth_protocol_uuid(protocol_dict: Dict[str, Any]) -> str:
+def generate_growth_protocol_uuid(protocol_dict: dict[str, Any]) -> str:
     attributes_to_consider = [
         "accession_id",
         "accno",

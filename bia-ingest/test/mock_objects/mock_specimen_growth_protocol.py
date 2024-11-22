@@ -36,3 +36,9 @@ def get_specimen_growth_protocol() -> List[bia_data_model.Protocol]:
         protocol_dict.pop("accession_id")
         protocol.append(bia_data_model.Protocol.model_validate(protocol_dict))
     return protocol
+
+
+def get_growth_protocol_as_map():
+    return {
+        obj.title_id + ".growth_protocol": obj for obj in get_specimen_growth_protocol()
+    }
