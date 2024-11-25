@@ -19,20 +19,24 @@ def process_submission_v4(submission, result_summary, process_files, persister):
     study = get_study(submission, result_summary, persister=persister)
 
     association_object_dict = {}
-    association_object_dict |= get_image_acquisition_protocol_map(
+    association_object_dict["image_acquisition_protocol"] = (
+        get_image_acquisition_protocol_map(
+            submission, result_summary, persister=persister
+        )
+    )
+    association_object_dict["annotation_method"] = get_annotation_method_as_map(
         submission, result_summary, persister=persister
     )
-    association_object_dict |= get_annotation_method_as_map(
-        submission, result_summary, persister=persister
-    )
-    association_object_dict |= get_specimen_imaging_preparation_protocol_as_map(
-        submission, result_summary, persister=persister
+    association_object_dict["specimen_imaging_preparation_protocol"] = (
+        get_specimen_imaging_preparation_protocol_as_map(
+            submission, result_summary, persister=persister
+        )
     )
     growth_protocol_map = get_growth_protocol_as_map(
         submission, result_summary, persister=persister
     )
-    association_object_dict |= growth_protocol_map
-    association_object_dict |= get_bio_sample_as_map(
+    association_object_dict["growth_protocol"] = growth_protocol_map
+    association_object_dict["bio_sample"] = get_bio_sample_as_map(
         submission, growth_protocol_map, result_summary, persister=persister
     )
 

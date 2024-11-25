@@ -108,7 +108,7 @@ def test_create_models_dataset(
     ingestion_result_summary,
 ):
     expected = mock_dataset.get_dataset()
-    created = dataset.get_dataset_dict_from_component(
+    created = dataset.get_dataset_dict_from_study_component(
         test_submission,
         association_dict,
         ingestion_result_summary,

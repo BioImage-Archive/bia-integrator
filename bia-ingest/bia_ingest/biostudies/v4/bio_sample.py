@@ -57,9 +57,6 @@ def get_bio_sample_as_map(
         result_summary[submission.accno],
     )
 
-    log_model_creation_count(
-        bia_data_model.BioSample, len(biosamples), result_summary[submission.accno]
-    )
     if persister and biosamples:
         persister.persist(biosamples.values())
 

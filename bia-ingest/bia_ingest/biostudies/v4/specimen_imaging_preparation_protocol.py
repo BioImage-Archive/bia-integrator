@@ -45,14 +45,8 @@ def get_specimen_imaging_preparation_protocol_as_map(
         result_summary[submission.accno],
     )
 
-    log_model_creation_count(
-        bia_data_model.SpecimenImagingPreparationProtocol,
-        len(specimen_preparation_protocols),
-        result_summary[submission.accno],
-    )
-
     if persister and specimen_preparation_protocols:
-        persister.persist(specimen_preparation_protocols)
+        persister.persist(specimen_preparation_protocols.values())
 
     return specimen_preparation_protocols
 

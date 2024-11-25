@@ -45,15 +45,9 @@ def get_annotation_method_as_map(
         result_summary[submission.accno],
     )
 
-    log_model_creation_count(
-        bia_data_model.AnnotationMethod,
-        len(annotation_methods),
-        result_summary[submission.accno],
-    )
-
     if persister and annotation_methods:
         persister.persist(
-            annotation_methods,
+            annotation_methods.values(),
         )
 
     return annotation_methods

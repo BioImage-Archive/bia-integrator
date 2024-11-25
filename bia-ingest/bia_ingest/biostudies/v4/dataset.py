@@ -37,12 +37,18 @@ def get_dataset(
     persister: Optional[PersistenceStrategy] = None,
 ) -> List[bia_data_model.Dataset]:
 
-    bsst_title_to_bia_object_map |= get_image_analysis_method(
+    bsst_title_to_bia_object_map["image_analysis_method"] = get_image_analysis_method(
         submission, result_summary
     )
 
+    bsst_title_to_bia_object_map["image_correlation_method"] = (
+        get_image_correlation_method(submission, result_summary)
+    )
+
     dataset = []
-    dataset += get_dataset_dict_from_component(submission, bsst_title_to_bia_object_map)
+    dataset += get_dataset_dict_from_study_component(
+        submission, bsst_title_to_bia_object_map
+    )
     dataset += get_dataset_dict_from_annotation(
         submission, bsst_title_to_bia_object_map
     )
@@ -65,7 +71,7 @@ def get_dataset(
     return image_annotation_datasets
 
 
-def get_dataset_dict_from_component(
+def get_dataset_dict_from_study_component(
     submission: Submission,
     bsst_title_to_bia_object_map: dict,
 ) -> list[dict]:
@@ -80,8 +86,10 @@ def get_dataset_dict_from_component(
         analysis_method_list = get_image_analysis_method_from_associations(
             associations, bsst_title_to_bia_object_map
         )
-        # TODO: write correlation method code
-        correlation_method_list = []
+
+        correlation_method_list = get_image_correlation_method_from_associations(
+            associations, bsst_title_to_bia_object_map
+        )
 
         attribute_list = []
         if len(associations) > 0:
@@ -100,6 +108,7 @@ def get_dataset_dict_from_component(
                 associations, bsst_title_to_bia_object_map
             )
 
+        # TODO: Actually use correlation methods?
         model_dict = {
             "title_id": attr_dict["Name"],
             "description": attr_dict["Description"],
@@ -169,10 +178,9 @@ def generate_dataset_uuid(
 
 def get_uuid_attribute_from_associations(
     associations: List[Association],
-    bsst_title_to_bia_object_map: dict[str, bia_data_model.DocumentMixin],
+    object_map: dict[str, dict[str, bia_data_model.DocumentMixin]],
 ):
     attribute_dicts = []
-
     for association in associations:
         bio_sample_uuids = []
         specimen_prepartion_protocol_uuids = []
@@ -180,17 +188,17 @@ def get_uuid_attribute_from_associations(
 
         if association.biosample:
             biosample_with_gp_key = association.biosample + "." + association.specimen
-            if biosample_with_gp_key in bsst_title_to_bia_object_map:
+            if biosample_with_gp_key in object_map["bio_sample"]:
                 bio_sample_uuids.append(
-                    bsst_title_to_bia_object_map[biosample_with_gp_key].uuid
+                    object_map["bio_sample"][biosample_with_gp_key].uuid
                 )
-            elif association.biosample in bsst_title_to_bia_object_map:
-                attribute_dicts.append(
-                    bsst_title_to_bia_object_map[association.biosample].uuid
+            elif association.biosample in object_map["bio_sample"]:
+                bio_sample_uuids.append(
+                    object_map["bio_sample"][association.biosample].uuid
                 )
             else:
                 raise RuntimeError(
-                    "Dataset cannot find BioSample that exists in its associations"
+                    f"Dataset cannot find BioSample that exists in its associations: {association.biosample}"
                 )
         if bio_sample_uuids:
             attribute_dicts.append(
@@ -202,13 +210,18 @@ def get_uuid_attribute_from_associations(
             )
 
         if association.image_acquisition:
-            if association.image_acquisition in bsst_title_to_bia_object_map:
+            if (
+                association.image_acquisition
+                in object_map["image_acquisition_protocol"]
+            ):
                 image_acquisition_uuids.append(
-                    bsst_title_to_bia_object_map[association.image_acquisition].uuid
+                    object_map["image_acquisition_protocol"][
+                        association.image_acquisition
+                    ].uuid
                 )
             else:
                 raise RuntimeError(
-                    "Dataset cannot find Image Acquisition that exists in its associations"
+                    f"Dataset cannot find Image Acquisition that exists in its associations: {association.image_acquisition}"
                 )
         if image_acquisition_uuids:
             attribute_dicts.append(
@@ -222,13 +235,18 @@ def get_uuid_attribute_from_associations(
             )
 
         if association.specimen:
-            if association.specimen in bsst_title_to_bia_object_map:
+            if (
+                association.specimen
+                in object_map["specimen_imaging_preparation_protocol"]
+            ):
                 specimen_prepartion_protocol_uuids.append(
-                    bsst_title_to_bia_object_map[association.image_acquisition].uuid
+                    object_map["specimen_imaging_preparation_protocol"][
+                        association.specimen
+                    ].uuid
                 )
             else:
                 raise RuntimeError(
-                    "Dataset cannot find Specimen Imaging Prepration Protocol that exists in its associations"
+                    f"Dataset cannot find Specimen Imaging Prepration Protocol that exists in its associations: {association.specimen}"
                 )
         if specimen_prepartion_protocol_uuids:
             attribute_dicts.append(
@@ -275,29 +293,32 @@ def get_image_analysis_method(
 
 
 def get_image_analysis_method_from_associations(
-    associations: List[Association], bsst_title_to_bia_object_map
+    associations: List[Association], object_map
 ):
     image_analysis = []
     for association in associations:
-        if association.image_analysis:
+        if (
+            association.image_analysis
+            and association.image_analysis in object_map["image_analysis_method"]
+        ):
             image_analysis.append(
-                bsst_title_to_bia_object_map[association.image_analysis]
+                object_map["image_analysis_method"][association.image_analysis]
             )
     return image_analysis
 
 
 def store_annotation_method_in_attribute(
     attr_dict: dict,
-    bsst_title_to_bia_object_map: dict[str, bia_data_model.DocumentMixin],
+    object_map: dict[str, dict[str, bia_data_model.DocumentMixin]],
 ):
     attribute_dicts = []
-    if attr_dict["Title"] in bsst_title_to_bia_object_map:
+    if attr_dict["Title"] in object_map["annotation_method"]:
         attribute_dicts.append(
             {
                 "provenance": semantic_models.AttributeProvenance("bia_ingest"),
                 "name": "annotation_method_uuid",
                 "value": {
-                    "annotation_method_uuid": bsst_title_to_bia_object_map[
+                    "annotation_method_uuid": object_map["annotation_method"][
                         attr_dict["Title"]
                     ].uuid
                 },
@@ -308,3 +329,53 @@ def store_annotation_method_in_attribute(
             "Dataset cannot find Annotation Method that should have been created"
         )
     return attribute_dicts
+
+
+def get_image_correlation_method(
+    submission: Submission, result_summary: dict
+) -> Dict[str, semantic_models.ImageCorrelationMethod]:
+
+    image_analysis_sections = find_sections_recursive(
+        submission.section, ["Image correlation"], []
+    )
+
+    # TODO: review image correlation model, as we shouldn't be setting strings to "" to get around non-optional fields.
+    key_mapping = [
+        ("protocol_description", "Title", ""),
+        ("fiducials_used", "Spatial and temporal alignment", ""),
+        ("transformation_matrix", "Transformation matrix", ""),
+    ]
+
+    model_dicts_map = {}
+    for section in image_analysis_sections:
+        attr_dict = attributes_to_dict(section.attributes)
+
+        model_dict = {
+            k: case_insensitive_get(attr_dict, v, default)
+            for k, v, default in key_mapping
+        }
+
+        model_dicts_map[attr_dict["Title"]] = model_dict
+
+    return dict_map_to_api_models(
+        model_dicts_map,
+        semantic_models.ImageCorrelationMethod,
+        result_summary[submission.accno],
+    )
+
+
+def get_image_correlation_method_from_associations(
+    associations: List[Association],
+    object_map: dict[str, dict[str, bia_data_model.DocumentMixin]],
+):
+    image_correlations = []
+    for association in associations:
+        if (
+            association.image_correlation
+            and association.image_correlation in object_map["image_correlation_method"]
+        ):
+            image_correlations.append(
+                object_map["image_correlation_method"][association.image_correlation]
+            )
+
+    return image_correlations

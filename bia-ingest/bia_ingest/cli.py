@@ -24,7 +24,7 @@ from bia_ingest.biostudies.process_submission_v4 import (
 from bia_ingest.biostudies.process_submission_biostudies_default import (
     process_submission_biostudies_default,
 )
-
+from pydantic import ValidationError
 
 import logging
 from rich import print
@@ -87,7 +87,7 @@ def ingest(
             # Get information from biostudies
             submission = load_submission(accession_id)
             submission_table = load_submission_table_info(accession_id)
-        except:
+        except Exception as error:
             logger.error("Failed to parse information from BioStudies")
             logging.exception("message")
             result_summary[accession_id].__setattr__(
@@ -114,7 +114,9 @@ def ingest(
                     submission, result_summary, process_files, persister
                 )
             else:
-                logger.info("No ingestion processing option found.")
+                process_submission_biostudies_default(
+                    submission, result_summary, process_files, persister
+                )
 
         except Exception as error:
             logging.exception("message")

@@ -47,15 +47,9 @@ def get_image_acquisition_protocol_map(
         result_summary[submission.accno],
     )
 
-    log_model_creation_count(
-        bia_data_model.ImageAcquisitionProtocol,
-        len(image_acquisition_protocols),
-        result_summary[submission.accno],
-    )
-
     if persister and image_acquisition_protocols:
         persister.persist(
-            image_acquisition_protocols,
+            image_acquisition_protocols.values(),
         )
 
     return image_acquisition_protocols

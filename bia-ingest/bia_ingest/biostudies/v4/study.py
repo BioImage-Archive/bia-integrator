@@ -336,7 +336,7 @@ def get_contributor(
         contributor_dicts.append(model_dict)
 
     contributors = dicts_to_api_models(
-        contributor_dicts, semantic_models.Contributor, result_summary
+        contributor_dicts, semantic_models.Contributor, result_summary[submission.accno]
     )
     log_model_creation_count(
         semantic_models.Contributor, len(contributors), result_summary[submission.accno]

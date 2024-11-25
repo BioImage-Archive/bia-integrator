@@ -46,14 +46,8 @@ def get_growth_protocol_as_map(
         result_summary[submission.accno],
     )
 
-    log_model_creation_count(
-        bia_data_model.Protocol,
-        len(specimen_growth_protocols),
-        result_summary[submission.accno],
-    )
-
     if persister and specimen_growth_protocols:
-        persister.persist(specimen_growth_protocols)
+        persister.persist(specimen_growth_protocols.values())
 
     return specimen_growth_protocols
 
@@ -72,19 +66,21 @@ def extract_growth_protocol_dicts(
     for section in specimen_sections:
         attr_dict = attributes_to_dict(section.attributes)
 
-        model_dict = {
-            k: case_insensitive_get(attr_dict, v, default)
-            for k, v, default in key_mapping
-        }
+        if "Growth protocol" in attr_dict:
 
-        model_dict["accno"] = section.accno
-        model_dict["accession_id"] = submission.accno
-        model_dict["version"] = 0
-        model_dict["uuid"] = generate_growth_protocol_uuid(model_dict)
+            model_dict = {
+                k: case_insensitive_get(attr_dict, v, default)
+                for k, v, default in key_mapping
+            }
 
-        model_dict = filter_model_dictionary(model_dict, bia_data_model.Protocol)
+            model_dict["accno"] = section.accno
+            model_dict["accession_id"] = submission.accno
+            model_dict["version"] = 0
+            model_dict["uuid"] = generate_growth_protocol_uuid(model_dict)
 
-        model_dict_map[attr_dict["Title"] + ".growth_protocol"] = model_dict
+            model_dict = filter_model_dictionary(model_dict, bia_data_model.Protocol)
+
+            model_dict_map[attr_dict["Title"] + ".growth_protocol"] = model_dict
 
     return model_dict_map
 
