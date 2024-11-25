@@ -1,5 +1,3 @@
-from bia_ingest.biostudies.generic_conversion_utils import attributes_to_dict
-from bia_ingest.config import settings, api_client
 from bia_ingest.biostudies.v4.study import get_study
 from bia_ingest.biostudies.v4.dataset import get_dataset
 from bia_ingest.biostudies.v4.bio_sample import get_bio_sample_as_map
@@ -7,7 +5,7 @@ from bia_ingest.biostudies.v4.growth_protocol import get_growth_protocol_as_map
 from bia_ingest.biostudies.v4.specimen_imaging_preparation_protocol import (
     get_specimen_imaging_preparation_protocol_as_map,
 )
-from bia_ingest.biostudies.file_reference import get_file_reference_by_dataset
+from bia_ingest.biostudies.v4.file_reference import get_file_reference_by_dataset
 from bia_ingest.biostudies.v4.image_acquisition_protocol import (
     get_image_acquisition_protocol_map,
 )

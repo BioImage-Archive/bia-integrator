@@ -1,7 +1,7 @@
 import typer
 from typing import List
 from enum import Enum
-from typing_extensions import Annotated
+from typing import Annotated
 from bia_ingest.biostudies.api import (
     load_submission,
     load_submission_table_info,
@@ -9,13 +9,22 @@ from bia_ingest.biostudies.api import (
 )
 from bia_ingest.biostudies.generic_conversion_utils import attributes_to_dict
 from bia_ingest.config import settings, api_client
-from bia_ingest.biostudies.v4.study import get_study
 from bia_ingest.persistence_strategy import (
     PersistenceMode,
     persistence_strategy_factory,
 )
 
-from bia_ingest.biostudies.process_submission_v4 import process_submission_v4
+from bia_ingest.biostudies.biostudies_processing_version import (
+    BioStudiesProcessingVersion,
+)
+
+from bia_ingest.biostudies.process_submission_v4 import (
+    process_submission_v4,
+)
+from bia_ingest.biostudies.process_submission_biostudies_default import (
+    process_submission_biostudies_default,
+)
+
 
 import logging
 from rich import print
@@ -40,13 +49,6 @@ class ProcessFilelistMode(str, Enum):
     skip = "skip"
 
 
-class BioStudiesProcessingVersion(str, Enum):
-    """Wether to process all file references, ask if there are a lot of files, or always skip."""
-
-    V4 = "v4"
-    FALLBACK = "fallback"
-
-
 @app.command(help="Ingest from biostudies and echo json of bia_data_model.Study")
 def ingest(
     accession_id_list: Annotated[List[str], typer.Argument()],
@@ -59,6 +61,7 @@ def ingest(
     ] = ProcessFilelistMode.ask,
     dryrun: Annotated[bool, typer.Option()] = False,
     write_csv: Annotated[str, typer.Option()] = None,
+    counts: Annotated[bool, typer.Option("--counts", "-c")] = False,
 ) -> None:
     if verbose:
         logger.setLevel(logging.DEBUG)
@@ -94,6 +97,7 @@ def ingest(
             continue
 
         processing_version = determine_biostudies_processing_version(submission)
+        result_summary[accession_id].ProcessingVersion = processing_version
         process_files = determine_file_processing(
             process_filelist,
             file_count_limit=200000,
@@ -105,8 +109,12 @@ def ingest(
                 process_submission_v4(
                     submission, result_summary, process_files, persister
                 )
+            elif processing_version == BioStudiesProcessingVersion.BIOSTUDIES_DEFAULT:
+                process_submission_biostudies_default(
+                    submission, result_summary, process_files, persister
+                )
             else:
-                study = get_study(submission, result_summary, persister=persister)
+                logger.info("No ingestion processing option found.")
 
         except Exception as error:
             logging.exception("message")
@@ -118,7 +126,7 @@ def ingest(
         logger.debug(f"COMPLETED: Ingest of: {accession_id}")
         print(f"[green]-------- Completed ingest of {accession_id} --------[/green]")
 
-    result_table = tabulate_ingestion_errors(result_summary)
+    result_table = tabulate_ingestion_errors(result_summary, counts)
     print(result_table)
 
     if write_csv:
@@ -156,6 +164,8 @@ def determine_biostudies_processing_version(submission: Submission):
         submission_template = submission_attributees.get("Template", None)
         if submission_template == "BioImages.v4":
             return BioStudiesProcessingVersion.V4
+        elif submission_template == "Default":
+            return BioStudiesProcessingVersion.BIOSTUDIES_DEFAULT
         else:
             return BioStudiesProcessingVersion.FALLBACK
 

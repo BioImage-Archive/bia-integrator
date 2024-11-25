@@ -2,8 +2,12 @@ import logging
 from pydantic import ValidationError
 import re
 from typing import List, Any, Dict, Optional
-from ...cli_logging import IngestionResult, log_failed_model_creation
-from ..submission_parsing_utils import (
+from bia_ingest.cli_logging import (
+    IngestionResult,
+    log_failed_model_creation,
+    log_model_creation_count,
+)
+from bia_ingest.biostudies.submission_parsing_utils import (
     attributes_to_dict,
     find_sections_recursive,
     mattributes_to_dict,
@@ -11,12 +15,16 @@ from ..submission_parsing_utils import (
 )
 
 from bia_ingest.biostudies.api import Attribute, Submission
-from ...bia_object_creation_utils import dict_to_uuid
+from bia_ingest.bia_object_creation_utils import (
+    dict_to_uuid,
+    dict_to_api_model,
+    dicts_to_api_models,
+)
 
-from ..generic_conversion_utils import (
+from bia_ingest.biostudies.generic_conversion_utils import (
     get_generic_section_as_dict,
 )
-from ...persistence_strategy import PersistenceStrategy
+from bia_ingest.persistence_strategy import PersistenceStrategy
 from bia_shared_datamodels import bia_data_model, semantic_models
 
 logger = logging.getLogger("__main__." + __name__)
@@ -83,17 +91,12 @@ def get_study(
         "attribute": attribute,
         "version": 0,
     }
-    try:
-        study = bia_data_model.Study.model_validate(study_dict)
-    except ValidationError as validation_error:
-        log_failed_model_creation(
-            bia_data_model.Study, result_summary[submission.accno]
-        )
-        logger.error(
-            f"Error creating study for {submission.accno}. Error was: {validation_error}"
-        )
 
-    if persister:
+    study = dict_to_api_model(
+        study_dict, bia_data_model.Study, result_summary[submission.accno]
+    )
+
+    if persister and study:
         persister.persist(
             [
                 study,
@@ -157,14 +160,14 @@ def get_external_reference(
             k: case_insensitive_get(attr_dict, v, default)
             for k, v, default in key_mapping
         }
-        try:
-            return_list.append(
-                semantic_models.ExternalReference.model_validate(model_dict)
-            )
-        except ValidationError:
-            log_failed_model_creation(
-                semantic_models.ExternalReference, result_summary[submission.accno]
-            )
+
+        external_ref = dict_to_api_model(
+            model_dict,
+            semantic_models.ExternalReference,
+            result_summary[submission.accno],
+        )
+        if external_ref:
+            return_list.append(external_ref)
     return return_list
 
 
@@ -245,14 +248,12 @@ def get_affiliation(
             k: case_insensitive_get(attr_dict, v, default)
             for k, v, default in key_mapping
         }
-        try:
-            affiliation_dict[section.accno] = (
-                semantic_models.Affiliation.model_validate(model_dict)
-            )
-        except ValidationError:
-            log_failed_model_creation(
-                semantic_models.Affiliation, result_summary[submission.accno]
-            )
+
+        affiliation = dict_to_api_model(
+            model_dict, semantic_models.Affiliation, result_summary[submission.accno]
+        )
+        if affiliation:
+            affiliation_dict[section.accno] = affiliation
 
     return affiliation_dict
 
@@ -308,8 +309,8 @@ def get_contributor(
         ("affiliation", "affiliation", []),
     ]
     author_sections = find_sections_recursive(submission.section, ["author"])
-    contributors = []
 
+    contributor_dicts = []
     for section in author_sections:
 
         attributes = sanitise_affiliation_attribute(
@@ -331,12 +332,15 @@ def get_contributor(
             ]
         if model_dict["contact_email"] == "UNKNOWN":
             model_dict["contact_email"] = None
-        try:
-            contributors.append(semantic_models.Contributor.model_validate(model_dict))
-        except ValidationError:
-            log_failed_model_creation(
-                semantic_models.Contributor, result_summary[submission.accno]
-            )
+
+        contributor_dicts.append(model_dict)
+
+    contributors = dicts_to_api_models(
+        contributor_dicts, semantic_models.Contributor, result_summary
+    )
+    log_model_creation_count(
+        semantic_models.Contributor, len(contributors), result_summary[submission.accno]
+    )
 
     return contributors
 

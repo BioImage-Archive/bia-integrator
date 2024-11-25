@@ -1,9 +1,13 @@
 from pydantic import BaseModel, ValidationError
 import hashlib
 import uuid
-from typing import Any, Dict, List, Type
+from typing import Any, Dict, List, Type, Optional
 
-from bia_ingest.cli_logging import IngestionResult, log_failed_model_creation
+from bia_ingest.cli_logging import (
+    IngestionResult,
+    log_failed_model_creation,
+    log_model_creation_count,
+)
 
 
 def filter_model_dictionary(dictionary: dict, target_model: Type[BaseModel]):
@@ -21,6 +25,21 @@ def dict_to_uuid(my_dict: Dict[str, Any], attributes_to_consider: List[str]) -> 
     seed = "".join([f"{my_dict[attr]}" for attr in attributes_to_consider])
     hexdigest = hashlib.md5(seed.encode("utf-8")).hexdigest()
     return str(uuid.UUID(version=4, hex=hexdigest))
+
+
+def dict_to_api_model(
+    dict: List[Dict[str, Any]],
+    api_model_class: Type[BaseModel],
+    valdiation_error_tracking: IngestionResult,
+) -> Optional[BaseModel]:
+    api_model = None
+    try:
+        api_model = api_model_class.model_validate(dict)
+    except ValidationError:
+        log_failed_model_creation(api_model_class, valdiation_error_tracking)
+    if api_model:
+        log_model_creation_count(api_model_class, 1, valdiation_error_tracking)
+    return api_model
 
 
 def dicts_to_api_models(

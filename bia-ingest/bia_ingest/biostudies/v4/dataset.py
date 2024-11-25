@@ -1,32 +1,30 @@
 import logging
 from typing import List, Any, Dict, Optional
-from ..submission_parsing_utils import (
+from bia_ingest.biostudies.submission_parsing_utils import (
     attributes_to_dict,
     find_sections_recursive,
     case_insensitive_get,
 )
 
-from ...bia_object_creation_utils import (
+from bia_ingest.bia_object_creation_utils import (
     dict_to_uuid,
     filter_model_dictionary,
     dict_map_to_api_models,
     dicts_to_api_models,
 )
 
-from ...cli_logging import log_failed_model_creation, log_model_creation_count
-from ..generic_conversion_utils import (
+from bia_ingest.cli_logging import log_model_creation_count
+from bia_ingest.biostudies.generic_conversion_utils import (
     get_associations_for_section,
     Association,
 )
 from bia_ingest.biostudies.v4.study import get_study_uuid
-from bia_shared_datamodels.bia_data_model import DocumentMixin
 
-from ..api import (
+from bia_ingest.biostudies.api import (
     Submission,
 )
-from pydantic import ValidationError
 from bia_shared_datamodels import bia_data_model, semantic_models
-from ...persistence_strategy import PersistenceStrategy
+from bia_ingest.persistence_strategy import PersistenceStrategy
 
 
 logger = logging.getLogger("__main__." + __name__)
@@ -171,7 +169,7 @@ def generate_dataset_uuid(
 
 def get_uuid_attribute_from_associations(
     associations: List[Association],
-    bsst_title_to_bia_object_map: dict[str, DocumentMixin],
+    bsst_title_to_bia_object_map: dict[str, bia_data_model.DocumentMixin],
 ):
     attribute_dicts = []
 
@@ -289,7 +287,8 @@ def get_image_analysis_method_from_associations(
 
 
 def store_annotation_method_in_attribute(
-    attr_dict: dict, bsst_title_to_bia_object_map: dict[str, DocumentMixin]
+    attr_dict: dict,
+    bsst_title_to_bia_object_map: dict[str, bia_data_model.DocumentMixin],
 ):
     attribute_dicts = []
     if attr_dict["Title"] in bsst_title_to_bia_object_map:

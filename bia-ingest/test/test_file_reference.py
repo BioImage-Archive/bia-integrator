@@ -6,7 +6,7 @@ it now needs a submitted dataset
 """
 
 from .mock_objects import mock_file_reference, mock_dataset
-from bia_ingest.biostudies import (
+from bia_ingest.biostudies.v4 import (
     file_reference,
 )
 from bia_ingest.biostudies.api import File

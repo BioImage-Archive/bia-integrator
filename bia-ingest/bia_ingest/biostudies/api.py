@@ -98,6 +98,7 @@ class Submission(BaseModel):
     accno: Optional[str] = ""
     section: Section
     attributes: List[Attribute]
+    files: Optional[list] = []
 
     def as_tsv(self) -> str:
         tsv_rep = "Submission"

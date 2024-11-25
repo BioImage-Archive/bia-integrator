@@ -3,10 +3,12 @@ from rich.table import Table
 from rich.text import Text
 
 from rich_tools import table_to_df
-from csv import DictWriter
 from pydantic import BaseModel, Field
 import logging
 from pathlib import Path
+from bia_ingest.biostudies.biostudies_processing_version import (
+    BioStudiesProcessingVersion,
+)
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -16,14 +18,17 @@ class CLIResult(BaseModel):
 
 
 class IngestionResult(CLIResult):
+    ProcessingVersion: BioStudiesProcessingVersion = (
+        BioStudiesProcessingVersion.FALLBACK
+    )
     Study_CreationCount: int = Field(default=0)
     Study_ValidationErrorCount: int = Field(default=0)
     Dataset_CreationCount: int = Field(default=0)
     Dataset_ValidationErrorCount: int = Field(default=0)
-    AnnotationDataset_CreationCount: int = Field(default=0)
-    AnnotationDataset_ValidationErrorCount: int = Field(default=0)
     Affiliation_CreationCount: int = Field(default=0)
     Affiliation_ValidationErrorCount: int = Field(default=0)
+    Contributor_CreationCount: int = Field(default=0)
+    Contributor_ValidationErrorCount: int = Field(default=0)
     FileReference_CreationCount: int = Field(default=0)
     FileReferenceValidation_ErrorCount: int = Field(default=0)
     BioSample_CreationCount: int = Field(default=0)
@@ -59,15 +64,21 @@ class IngestionResult(CLIResult):
     Uncaught_Exception: str = Field(default="")
 
 
-class ImageCreationResult(CLIResult):
-    ExperimentallyCapturedImage_CreationCount: int = Field(default=0)
-    ExperimentallyCapturedImage_ValidationErrorCount: int = Field(default=0)
-    ImageRepresentation_CreationCount: int = Field(default=0)
-    ImageRepresentation_ValidationErrorCount: int = Field(default=0)
+def tabulate_ingestion_errors(
+    dict_of_results: dict[str, IngestionResult], include_object_count=False
+) -> Table:
 
+    table = Table()
+    headers = ["Accession ID", "Processing Mode", "Status", "Error: Count;"]
 
-def tabulate_ingestion_errors(dict_of_results: dict[str, IngestionResult]) -> Table:
-    table = Table("Accession ID", "Status", "Error: Count;")
+    if include_object_count:
+        for field in IngestionResult.model_fields:
+            if field.endswith("_CreationCount"):
+                headers.append(field.removesuffix("_CreationCount"))
+
+    for header in headers:
+        table.add_column(header, overflow="fold")
+
     for accession_id_key, result in dict_of_results.items():
         error_message = ""
         result_dict = result.model_dump()
@@ -79,21 +90,27 @@ def tabulate_ingestion_errors(dict_of_results: dict[str, IngestionResult]) -> Ta
             error_message += "No datasets were created; "
 
         if result.Dataset_CreationCount > 0:
-            if not (
-                result.BioSample_CreationCount
-                == 0 & result.SpecimenImagingPreparationProtocol_CreationCount
-                == 0 & result.ImageAcquisitionProtocol_CreationCount
-                == 0
-            ):
-                if (
+            if result.ProcessingVersion == BioStudiesProcessingVersion.V4:
+                if not (
                     result.BioSample_CreationCount
-                    == 0 | result.SpecimenImagingPreparationProtocol_CreationCount
-                    == 0 | result.ImageAcquisitionProtocol_CreationCount
+                    == 0 & result.SpecimenImagingPreparationProtocol_CreationCount
+                    == 0 & result.ImageAcquisitionProtocol_CreationCount
                     == 0
                 ):
-                    error_message += "Incomplete REMBI objects created; "
-            else:
-                error_message += "No REMBI objects associated with Dataset; "
+                    if (
+                        result.BioSample_CreationCount
+                        == 0 | result.SpecimenImagingPreparationProtocol_CreationCount
+                        == 0 | result.ImageAcquisitionProtocol_CreationCount
+                        == 0
+                    ):
+                        error_message += "Incomplete REMBI objects created; "
+                else:
+                    error_message += "No REMBI objects associated with Dataset; "
+            elif (
+                result.ProcessingVersion
+                == BioStudiesProcessingVersion.BIOSTUDIES_DEFAULT
+            ):
+                pass
 
         if result.Uncaught_Exception:
             error_message += f"Uncaught exception: {result.Uncaught_Exception}"
@@ -107,7 +124,13 @@ def tabulate_ingestion_errors(dict_of_results: dict[str, IngestionResult]) -> Ta
             error_message = Text(error_message)
             error_message.stylize("red")
 
-        table.add_row(accession_id_key, status, error_message)
+        row_info = [accession_id_key, result.ProcessingVersion, status, error_message]
+
+        if include_object_count:
+            for header in headers[4:]:
+                row_info.append(str(result_dict[header + "_CreationCount"]))
+
+        table.add_row(*row_info)
 
     return table
 
