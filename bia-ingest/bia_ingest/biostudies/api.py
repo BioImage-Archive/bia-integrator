@@ -144,8 +144,8 @@ class Columns(BaseModel):
     title: str
     visible: bool
     searchable: bool
-    data: Optional[str] = Field(default=None)
-    sortable: Optional[bool] = Field(default=True)
+    data: Optional[str] = None
+    sortable: Optional[bool] = True
     defaultContent: str
 
 
@@ -161,7 +161,7 @@ class SubmissionTable(BaseModel):
     views: int
     released: int
     modified: int
-    sections: Optional[List[str]] = Field(default=None)
+    sections: Optional[List[str]] = None
 
 
 # API functions
