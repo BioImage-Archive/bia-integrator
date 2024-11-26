@@ -14,13 +14,12 @@ from ...bia_object_creation_utils import (
     filter_model_dictionary,
 )
 
-from ...cli_logging import log_model_creation_count
 from ..submission_parsing_utils import (
     find_sections_recursive,
     attributes_to_dict,
     case_insensitive_get,
 )
-from ..api import Submission, Section
+from ..api import Submission
 
 from bia_shared_datamodels import bia_data_model, semantic_models
 from ...persistence_strategy import PersistenceStrategy
@@ -108,22 +107,21 @@ def extract_biosample_dicts(
             get_taxon(model_dict, attr_dict).model_dump()
         ]
         model_dict["accession_id"] = submission.accno
-        growth_protocol_uuids: list[tuple] = get_growth_protocol_title_uuids(
+        bs_without_gp, growth_protocol_uuids = check_for_growth_protocol_uuids(
             attr_dict["Title"], submission, growth_protocol_map
         )
         model_dict["version"] = 0
-        if len(growth_protocol_uuids) > 0:
-            for gp_uuid in growth_protocol_uuids:
-                model_dict_with_gp = deepcopy(model_dict)
-                model_dict_with_gp["growth_protocol_uuid"] = gp_uuid[1]
-                model_dict_with_gp["uuid"] = generate_biosample_uuid(model_dict_with_gp)
-                model_dict_with_gp = filter_model_dictionary(
-                    model_dict_with_gp, bia_data_model.BioSample
-                )
-                model_dicts_map[attr_dict["Title"] + "." + gp_uuid[0]] = (
-                    model_dict_with_gp
-                )
-        else:
+
+        for gp_uuid in growth_protocol_uuids:
+            model_dict_with_gp = deepcopy(model_dict)
+            model_dict_with_gp["growth_protocol_uuid"] = gp_uuid[1]
+            model_dict_with_gp["uuid"] = generate_biosample_uuid(model_dict_with_gp)
+            model_dict_with_gp = filter_model_dictionary(
+                model_dict_with_gp, bia_data_model.BioSample
+            )
+            model_dicts_map[attr_dict["Title"] + "." + gp_uuid[0]] = model_dict_with_gp
+
+        if bs_without_gp:
             model_dict["growth_protocol_uuid"] = None
             model_dict["uuid"] = generate_biosample_uuid(model_dict)
             model_dict = filter_model_dictionary(model_dict, bia_data_model.BioSample)
@@ -167,11 +165,11 @@ def get_taxon(model_dict: dict, attr_dict: dict) -> semantic_models.Taxon:
     return taxon
 
 
-def get_growth_protocol_title_uuids(
+def check_for_growth_protocol_uuids(
     biosample_title: str,
     submission: Submission,
     growth_protocol_map: dict[str, bia_data_model.Protocol],
-) -> list[tuple[str, UUID]]:
+) -> tuple[bool, list[tuple[str, UUID]]]:
 
     # Get associations to allow mapping to biosample
     associations: List[Association] = [
@@ -179,15 +177,27 @@ def get_growth_protocol_title_uuids(
         for section in find_sections_recursive(submission.section, ["Associations"], [])
     ]
 
+    create_gp_without_bs = False
+
     title_uuids = []
-    for gp_title in growth_protocol_map.keys():
-        for association in associations:
+    for association in associations:
+        # Check for non-growth protocol associations
+
+        if (
+            biosample_title == association.biosample
+            and association.specimen + ".growth_protocol"
+            not in growth_protocol_map.keys()
+        ):
+            create_gp_without_bs = True
+
+        # Check for associations with growth protocol (note not disjoint with non-growth protocol case)
+        for gp_title in growth_protocol_map.keys():
             if (
-                gp_title.rstrip(".growth_protocol") == association.specimen
+                association.specimen + ".growth_protocol" == gp_title
                 and biosample_title == association.biosample
             ):
                 title_uuids.append(
                     (association.specimen, growth_protocol_map[gp_title].uuid)
                 )
 
-    return title_uuids
+    return create_gp_without_bs, title_uuids

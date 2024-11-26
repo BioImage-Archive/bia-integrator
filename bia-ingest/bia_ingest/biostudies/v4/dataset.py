@@ -180,12 +180,12 @@ def get_uuid_attribute_from_associations(
     associations: List[Association],
     object_map: dict[str, dict[str, bia_data_model.DocumentMixin]],
 ):
+
     attribute_dicts = []
     for association in associations:
         bio_sample_uuids = []
         specimen_prepartion_protocol_uuids = []
         image_acquisition_uuids = []
-
         if association.biosample:
             biosample_with_gp_key = association.biosample + "." + association.specimen
             if biosample_with_gp_key in object_map["bio_sample"]:
@@ -342,8 +342,8 @@ def get_image_correlation_method(
     # TODO: review image correlation model, as we shouldn't be setting strings to "" to get around non-optional fields.
     key_mapping = [
         ("protocol_description", "Title", ""),
-        ("fiducials_used", "Spatial and temporal alignment", ""),
-        ("transformation_matrix", "Transformation matrix", ""),
+        ("fiducials_used", "Spatial and temporal alignment", None),
+        ("transformation_matrix", "Transformation matrix", None),
     ]
 
     model_dicts_map = {}

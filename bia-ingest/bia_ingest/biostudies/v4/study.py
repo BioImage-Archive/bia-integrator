@@ -332,6 +332,8 @@ def get_contributor(
             ]
         if model_dict["contact_email"] == "UNKNOWN":
             model_dict["contact_email"] = None
+        elif model_dict["contact_email"]:
+            model_dict["contact_email"] = model_dict["contact_email"].strip("<>")
 
         contributor_dicts.append(model_dict)
 
