@@ -16,7 +16,7 @@ def base_path() -> Path:
 
 @pytest.fixture
 def test_submission(base_path: Path) -> Submission:
-    submission_path = base_path / "data" / "S-BIADTEST.json"
+    submission_path = base_path / "data" / "biad_v4" / "S-BIADTEST.json"
     json_data = json.loads(submission_path.read_text())
     submission = Submission.model_validate(json_data)
     return submission
@@ -24,7 +24,7 @@ def test_submission(base_path: Path) -> Submission:
 
 @pytest.fixture
 def test_submission_table(base_path: Path) -> SubmissionTable:
-    submission_path = base_path / "data" / "S-BIADTEST_INFO.json"
+    submission_path = base_path / "data" / "biad_v4" / "S-BIADTEST_INFO.json"
     json_data = json.loads(submission_path.read_text())
     submission = SubmissionTable.model_validate(json_data)
     return submission
@@ -32,7 +32,8 @@ def test_submission_table(base_path: Path) -> SubmissionTable:
 
 @pytest.fixture
 def ingestion_result_summary():
-    return {accession_id: IngestionResult()}
+    result_summary = {accession_id: IngestionResult()}
+    return result_summary
 
 
 @pytest.fixture
@@ -40,7 +41,7 @@ def mock_request_get(monkeypatch):
     """Requests.get mocked to read file from disk"""
 
     def _mock_request_get(flist_url: str) -> Dict[str, str]:
-        data_dir = Path(__file__).parent / "data"
+        data_dir = Path(__file__).parent / "data" / "biad_v4"
         path_to_load = data_dir / Path(flist_url).name
         return_value = Mock()
         return_value.status_code = 200

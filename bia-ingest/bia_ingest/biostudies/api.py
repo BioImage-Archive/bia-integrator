@@ -6,7 +6,7 @@ from typing import List, Union, Dict, Optional, Any
 from copy import deepcopy
 
 import requests
-from pydantic import BaseModel, TypeAdapter, Field
+from pydantic import BaseModel, TypeAdapter
 
 
 logger = logging.getLogger("__main__." + __name__)

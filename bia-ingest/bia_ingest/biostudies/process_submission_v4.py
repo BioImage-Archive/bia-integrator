@@ -10,6 +10,12 @@ from bia_ingest.biostudies.v4.image_acquisition_protocol import (
     get_image_acquisition_protocol_map,
 )
 from bia_ingest.biostudies.v4.annotation_method import get_annotation_method_as_map
+from bia_ingest.biostudies.v4.image_analysis_method import (
+    get_image_analysis_method_as_map,
+)
+from bia_ingest.biostudies.v4.image_correlation_method import (
+    get_image_correlation_method_as_map,
+)
 import logging
 
 logger = logging.getLogger("__main__." + __name__)
@@ -38,6 +44,14 @@ def process_submission_v4(submission, result_summary, process_files, persister):
     association_object_dict["growth_protocol"] = growth_protocol_map
     association_object_dict["bio_sample"] = get_bio_sample_as_map(
         submission, growth_protocol_map, result_summary, persister=persister
+    )
+
+    association_object_dict["image_analysis_method"] = get_image_analysis_method_as_map(
+        submission, result_summary
+    )
+
+    association_object_dict["image_correlation_method"] = (
+        get_image_correlation_method_as_map(submission, result_summary)
     )
 
     datasets = get_dataset(

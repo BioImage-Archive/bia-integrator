@@ -3,9 +3,14 @@ from bia_shared_datamodels import bia_data_model, semantic_models
 from bia_ingest.bia_object_creation_utils import dict_to_uuid
 from .utils import accession_id
 from .mock_image_analysis_method import get_image_analysis_method
-from .mock_image_acquisition_protocol import get_image_acquisition_protocol
+from .mock_image_correlation_method import get_test_image_correlation_method
+from .mock_image_acquisition_protocol import get_image_acquisition_protocol_as_map
 from .mock_association import get_association_dicts
-from .mock_specimen import get_test_specimen_for_image
+from .mock_biosample import get_bio_sample_as_map
+from .mock_specimen_imaging_preparation_protocol import (
+    get_specimen_imaging_preparation_protocol_as_map,
+)
+from .mock_annotation_method import get_annotation_method_as_map
 
 
 def get_dataset() -> List[bia_data_model.Dataset]:
@@ -18,9 +23,14 @@ def get_dataset() -> List[bia_data_model.Dataset]:
         ],
     )
     associations = list(get_association_dicts().values())
-    specimens = get_test_specimen_for_image()
+
     image_acquisition_protocol_uuids = [
-        str(iap.uuid) for iap in get_image_acquisition_protocol()
+        str(iap.uuid) for iap in get_image_acquisition_protocol_as_map().values()
+    ]
+    bio_sample_uuids = [str(bs.uuid) for bs in get_bio_sample_as_map().values()]
+    specimen_imaging_preparation_protocol_uuids = [
+        str(sipp.uuid)
+        for sipp in get_specimen_imaging_preparation_protocol_as_map().values()
     ]
 
     dataset_dict = {
@@ -45,21 +55,25 @@ def get_dataset() -> List[bia_data_model.Dataset]:
             },
             {
                 "provenance": semantic_models.AttributeProvenance("bia_ingest"),
-                "name": "acquisition_process_uuid",
+                "name": "image_acquisition_protocol_uuid",
                 "value": {
-                    "acquisition_process_uuid": image_acquisition_protocol_uuids,
+                    "image_acquisition_protocol_uuid": image_acquisition_protocol_uuids,
                 },
             },
             {
                 "provenance": semantic_models.AttributeProvenance("bia_ingest"),
-                "name": "subject_uuid",
-                "value": {"subject_uuid": str(specimens[0].uuid)},
+                "name": "specimen_imaging_preparation_protocol_uuid",
+                "value": {
+                    "specimen_imaging_preparation_protocol_uuid": [
+                        specimen_imaging_preparation_protocol_uuids[0]
+                    ]
+                },
             },
             {
                 "provenance": semantic_models.AttributeProvenance("bia_ingest"),
-                "name": "biosample_uuid",
+                "name": "bio_sample_uuid",
                 "value": {
-                    "biosample_uuid": str(specimens[0].sample_of_uuid),
+                    "bio_sample_uuid": bio_sample_uuids[0:2],
                 },
             },
         ],
@@ -97,23 +111,27 @@ def get_dataset() -> List[bia_data_model.Dataset]:
             },
             {
                 "provenance": semantic_models.AttributeProvenance("bia_ingest"),
-                "name": "acquisition_process_uuid",
+                "name": "image_acquisition_protocol_uuid",
                 "value": {
-                    "acquisition_process_uuid": [
-                        image_acquisition_protocol_uuids[0],
+                    "image_acquisition_protocol_uuid": [
+                        image_acquisition_protocol_uuids[0]
+                    ],
+                },
+            },
+            {
+                "provenance": semantic_models.AttributeProvenance("bia_ingest"),
+                "name": "specimen_imaging_preparation_protocol_uuid",
+                "value": {
+                    "specimen_imaging_preparation_protocol_uuid": [
+                        specimen_imaging_preparation_protocol_uuids[1]
                     ]
                 },
             },
             {
                 "provenance": semantic_models.AttributeProvenance("bia_ingest"),
-                "name": "subject_uuid",
-                "value": {"subject_uuid": str(specimens[1].uuid)},
-            },
-            {
-                "provenance": semantic_models.AttributeProvenance("bia_ingest"),
-                "name": "biosample_uuid",
+                "name": "bio_sample_uuid",
                 "value": {
-                    "biosample_uuid": str(specimens[1].sample_of_uuid),
+                    "bio_sample_uuid": [bio_sample_uuids[2]],
                 },
             },
         ],
@@ -127,4 +145,36 @@ def get_dataset() -> List[bia_data_model.Dataset]:
     )
     dataset_dict["uuid"] = dataset_uuid
     dataset2 = bia_data_model.Dataset.model_validate(dataset_dict)
-    return [dataset1, dataset2]
+
+    annotation_method_uuids = [
+        str(am.uuid) for am in get_annotation_method_as_map().values()
+    ]
+
+    dataset_dict = {
+        "title_id": "Segmentation masks",
+        "submitted_in_study_uuid": study_uuid,
+        "analysis_method": [],
+        "correlation_method": [],
+        "example_image_uri": [],
+        "description": None,
+        "version": 0,
+        "attribute": [
+            {
+                "provenance": semantic_models.AttributeProvenance("bia_ingest"),
+                "name": "annotation_method_uuid",
+                "value": {
+                    "annotation_method_uuid": annotation_method_uuids,
+                },
+            },
+        ],
+    }
+    dataset_uuid = dict_to_uuid(
+        dataset_dict,
+        [
+            "title_id",
+            "submitted_in_study_uuid",
+        ],
+    )
+    dataset_dict["uuid"] = dataset_uuid
+    dataset_annotation = bia_data_model.Dataset.model_validate(dataset_dict)
+    return [dataset1, dataset2, dataset_annotation]

@@ -9,3 +9,9 @@ def get_test_image_correlation_method() -> semantic_models.ImageCorrelationMetho
             "transformation_matrix": "Template transformation matrix",
         }
     )
+
+
+def get_test_image_correlation_method_as_map() -> (
+    dict[str, semantic_models.ImageCorrelationMethod]
+):
+    return {"Test image correlation": get_test_image_correlation_method()}

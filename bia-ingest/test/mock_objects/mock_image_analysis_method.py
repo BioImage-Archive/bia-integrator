@@ -8,3 +8,9 @@ def get_image_analysis_method() -> semantic_models.ImageAnalysisMethod:
             "features_analysed": "Test image analysis overview",
         }
     )
+
+
+def get_image_analysis_method_as_map() -> (
+    dict[str, semantic_models.ImageAnalysisMethod]
+):
+    return {"Test image analysis": get_image_analysis_method()}

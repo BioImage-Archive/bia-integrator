@@ -4,7 +4,7 @@ from bia_ingest.bia_object_creation_utils import dict_to_uuid
 from .utils import accession_id
 
 
-def get_specimen_growth_protocol() -> List[bia_data_model.Protocol]:
+def get_growth_protocol() -> List[bia_data_model.Protocol]:
     # For UUID
     attributes_to_consider = [
         "accession_id",
@@ -39,6 +39,4 @@ def get_specimen_growth_protocol() -> List[bia_data_model.Protocol]:
 
 
 def get_growth_protocol_as_map():
-    return {
-        obj.title_id + ".growth_protocol": obj for obj in get_specimen_growth_protocol()
-    }
+    return {obj.title_id + ".growth_protocol": obj for obj in get_growth_protocol()}
