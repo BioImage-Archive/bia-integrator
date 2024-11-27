@@ -54,9 +54,9 @@ Some studies have huge filelists, which can cause issues when running locally. T
 $ poetry run biaingest ingest --dryrun --process-filelist skip S-BIAD1285
 ```
 
-### Results table
-When ingest finishes a table of results is printed out. To also get this table written to a csv (which can be useful when running ingest on a lot of studies), add the --write-csv option with the path of where to write out the file.
+### Results table & object count
+When ingest finishes a table of results is printed out. To also get this table written to a csv (which can be useful when running ingest on a lot of studies), add the --write-csv option with the path of where to write out the file. You can also include a count of all the objects that were created with the --count/-c options:
 
 ```sh
-$ poetry run biaingest ingest S-BIAD1285 S-BIAD1385 --write-csv output_table.csv
+$ poetry run biaingest ingest S-BIAD1285 S-BIAD1385 -c --write-csv output_table.csv
 ```
