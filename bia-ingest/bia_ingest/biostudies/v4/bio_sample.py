@@ -177,7 +177,7 @@ def check_for_growth_protocol_uuids(
         for section in find_sections_recursive(submission.section, ["Associations"], [])
     ]
 
-    create_gp_without_bs = False
+    create_bio_sample_without_growth_protocol = False
 
     title_uuids = []
     for association in associations:
@@ -188,7 +188,7 @@ def check_for_growth_protocol_uuids(
             and association.specimen + ".growth_protocol"
             not in growth_protocol_map.keys()
         ):
-            create_gp_without_bs = True
+            create_bio_sample_without_growth_protocol = True
 
         # Check for associations with growth protocol (note not disjoint with non-growth protocol case)
         for gp_title in growth_protocol_map.keys():
@@ -200,4 +200,4 @@ def check_for_growth_protocol_uuids(
                     (association.specimen, growth_protocol_map[gp_title].uuid)
                 )
 
-    return create_gp_without_bs, title_uuids
+    return create_bio_sample_without_growth_protocol, title_uuids
