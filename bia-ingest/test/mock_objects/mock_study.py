@@ -171,6 +171,14 @@ def get_study() -> bia_data_model.Study:
                     "Extra attribute 2": "Extra attribute 2 to test semantic_model.study.attribute",
                 },
             },
+            {
+                "provenance": semantic_models.AttributeProvenance("bia_ingest"),
+                "name": "biostudies json/pagetab entry",
+                "value": {
+                    "json": f"https://www.ebi.ac.uk/biostudies/files/{accession_id}/{accession_id}.json",
+                    "pagetab": f"https://www.ebi.ac.uk/biostudies/files/{accession_id}/{accession_id}.tsv",
+                },
+            },
         ],
         "related_publication": [],
         "author": [c.model_dump() for c in contributor],
