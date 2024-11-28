@@ -156,11 +156,33 @@ class LicenceType(str, Enum):
     CC0 = "CC0"
     # You are free to: Share — copy and redistribute the material in any medium or format. Adapt — remix, transform, and build upon the material  for any purpose, even commercially. You must give appropriate credit, provide a link to the license, and indicate if changes were made.  You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
     CC_BY_40 = "CC_BY_4.0"
+    CC_BY_30 = "CC_BY_3.0"
+    CC_BY_25 = "CC_BY_2.5"
+    CC_BY_20 = "CC_BY_2.0"
+    CC_BY_10 = "CC_BY_1.0"
+
+    CC_BY_SA_40 = "CC_BY-SA_4.0"
     CC_BY_SA_30 = "CC_BY-SA_3.0"
-    CC_BY_NC_SA_30 = "CC_BY-NC-SA_3.0"
-    CC_BY_NC_ND_40 = "CC_BY-NC-ND_4.0"
+    CC_BY_SA_25 = "CC_BY-SA_2.5"
+    CC_BY_SA_20 = "CC_BY-SA_2.0"
+    CC_BY_SA_10 = "CC_BY-SA_1.0"
 
     CC_BY_SA_21_JP = "CC_BY-SA_2.1_JP"
+
+    CC_BY_NC_40 = "CC_BY-NC_4.0"
+    CC_BY_NC_30 = "CC_BY-NC_3.0"
+    CC_BY_NC_25 = "CC_BY-NC_2.5"
+    CC_BY_NC_20 = "CC_BY-NC_2.0"
+    CC_BY_NC_10 = "CC_BY-NC_1.0"
+
+    CC_BY_NC_SA_40 = "CC_BY-NC-SA_4.0"
+    CC_BY_NC_SA_30 = "CC_BY-NC-SA_3.0"
+    CC_BY_NC_SA_25 = "CC_BY-NC-SA_2.5"
+    CC_BY_NC_SA_20 = "CC_BY-NC-SA_2.0"
+    CC_BY_NC_SA_10 = "CC_BY-NC-SA_1.0"
+
+    # Note ND is 'No derivatives'
+    CC_BY_NC_ND_40 = "CC_BY-NC-ND_4.0"
 
 
 class ImageRepresentationUseType(str, Enum):
@@ -480,7 +502,10 @@ class ImageAnalysisMethod(Protocol):
     Information about image analysis methods.
     """
 
-    features_analysed: str = Field(description="""""")
+    features_analysed: Optional[str] = Field(
+        None,
+        description="""Which features of the image were central to the analysis method.""",
+    )
 
 
 class ImageCorrelationMethod(Protocol):
@@ -488,10 +513,13 @@ class ImageCorrelationMethod(Protocol):
     Information about the process of correlating the positions of multiple images.
     """
 
-    fiducials_used: str = Field(
-        description="""Features from correlated datasets used for colocalization."""
+    fiducials_used: Optional[str] = Field(
+        None,
+        description="""Features from correlated datasets used for colocalization.""",
     )
-    transformation_matrix: str = Field(description="""Correlation transforms.""")
+    transformation_matrix: Optional[str] = Field(
+        None, description="""Correlation transforms."""
+    )
 
 
 class AnnotationMethodType(str, Enum):

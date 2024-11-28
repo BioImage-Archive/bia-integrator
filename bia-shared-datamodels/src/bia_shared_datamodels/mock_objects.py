@@ -6,7 +6,7 @@ from bia_shared_datamodels import semantic_models
 from uuid import uuid4
 from enum import Enum
 import datetime
-from pydantic_core import Url
+from pydantic import AnyUrl
 
 
 class Completeness(str, Enum):
@@ -69,7 +69,7 @@ def get_contributor_dict(
             ],
             "rorid": "None",
             "address": "None",
-            "website": Url("https://www.none.com"),
+            "website": AnyUrl("https://www.none.com"),
             "orcid": "None",
         }
     return contributor_dict
@@ -85,7 +85,7 @@ def get_affiliation_dict(
         affiliation |= {
             "rorid": "None",
             "address": "None",
-            "website": Url("https://www.none.com"),
+            "website": AnyUrl("https://www.none.com"),
         }
     return affiliation
 
@@ -333,11 +333,11 @@ def get_annotation_method_dict(completeness=Completeness.COMPLETE) -> dict:
 def get_image_analysis_method_dict(completeness=Completeness.COMPLETE) -> dict:
     image_analysis_method = {
         "protocol_description": "Template Analysis method",
-        "features_analysed": "Template features analysed",
     }
     if completeness == Completeness.COMPLETE:
         image_analysis_method |= {
             "attribute": [get_attribute_dict()],
+            "features_analysed": "Template features analysed",
         }
     return image_analysis_method
 
@@ -345,12 +345,12 @@ def get_image_analysis_method_dict(completeness=Completeness.COMPLETE) -> dict:
 def get_image_correlation_method_dict(completeness=Completeness.COMPLETE) -> dict:
     image_correlation_method = {
         "protocol_description": "Template Analysis method",
-        "fiducials_used": "Template fiducials used",
-        "transformation_matrix": "Template transformation matrix",
     }
     if completeness == Completeness.COMPLETE:
         image_correlation_method |= {
             "attribute": [get_attribute_dict()],
+            "fiducials_used": "Template fiducials used",
+            "transformation_matrix": "Template transformation matrix",
         }
     return image_correlation_method
 
