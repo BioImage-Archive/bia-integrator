@@ -70,7 +70,7 @@ class Section(BaseModel):
     accno: Optional[str] = ""
     attributes: List[Attribute] = []
     subsections: List[Union["Section", List["Section"]]] = []
-    links: List[Link] = []
+    links: Union[List[Link], List[List[Link]]] = []
     files: List[Union[File, List[File]]] = []
 
     def as_tsv(self, parent_accno: Optional[str] = None) -> str:
@@ -95,9 +95,10 @@ class Section(BaseModel):
 
 
 class Submission(BaseModel):
-    accno: Optional[str]
+    accno: Optional[str] = ""
     section: Section
     attributes: List[Attribute]
+    files: Optional[list] = []
 
     def as_tsv(self) -> str:
         tsv_rep = "Submission"
@@ -143,7 +144,8 @@ class Columns(BaseModel):
     title: str
     visible: bool
     searchable: bool
-    data: str
+    data: Optional[str] = None
+    sortable: Optional[bool] = True
     defaultContent: str
 
 
@@ -159,7 +161,7 @@ class SubmissionTable(BaseModel):
     views: int
     released: int
     modified: int
-    sections: List[str]
+    sections: Optional[List[str]] = None
 
 
 # API functions

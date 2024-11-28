@@ -1,23 +1,32 @@
 import typer
 from typing import List
 from enum import Enum
-from typing_extensions import Annotated
-from bia_ingest.ingest.biostudies.api import load_submission, load_submission_table_info
+from typing import Annotated
+from bia_ingest.biostudies.api import (
+    load_submission,
+    load_submission_table_info,
+    Submission,
+)
+from bia_ingest.biostudies.generic_conversion_utils import attributes_to_dict
 from bia_ingest.config import settings, api_client
-from bia_ingest.ingest.study import get_study
-from bia_ingest.ingest.dataset import get_dataset
-from bia_ingest.ingest.file_reference import get_file_reference_by_dataset
-from bia_ingest.ingest.image_acquisition_protocol import get_image_acquisition_protocol
-from bia_ingest.ingest.annotation_method import get_annotation_method
 from bia_ingest.persistence_strategy import (
     PersistenceMode,
     persistence_strategy_factory,
 )
 
+from bia_ingest.biostudies.biostudies_processing_version import (
+    BioStudiesProcessingVersion,
+)
+
+from bia_ingest.biostudies.process_submission_v4 import (
+    process_submission_v4,
+)
+from bia_ingest.biostudies.v4.study import get_study
+
 import logging
 from rich import print
 from rich.logging import RichHandler
-from .cli_logging import tabulate_ingestion_errors, IngestionResult
+from .cli_logging import tabulate_ingestion_errors, write_table, IngestionResult
 
 app = typer.Typer()
 
@@ -48,6 +57,8 @@ def ingest(
         ProcessFilelistMode, typer.Option(case_sensitive=False)
     ] = ProcessFilelistMode.ask,
     dryrun: Annotated[bool, typer.Option()] = False,
+    write_csv: Annotated[str, typer.Option()] = None,
+    counts: Annotated[bool, typer.Option("--counts", "-c")] = False,
 ) -> None:
     if verbose:
         logger.setLevel(logging.DEBUG)
@@ -69,42 +80,52 @@ def ingest(
                 api_client=api_client,
             )
 
-        submission = load_submission(accession_id)
+        try:
+            # Get information from biostudies
+            submission = load_submission(accession_id)
+            submission_table = load_submission_table_info(accession_id)
+        except Exception as error:
+            logger.error("Failed to parse information from BioStudies")
+            logging.exception("message")
+            result_summary[accession_id].__setattr__(
+                "Uncaught_Exception",
+                str(result_summary[accession_id].Uncaught_Exception) + str(error),
+            )
+            continue
 
-        submission_table = load_submission_table_info(accession_id)
-
-        get_study(submission, result_summary, persister=persister)
-
-        # Specimen, BioSample and Protocol (specimen growth protocol) depend on Dataset
-        # Specimen (note - this is very different from Biostudies.Specimen) artefacts are processed as part of bia_data_models.Dataset
-        # BioSamples are processed as part of Specimen and specimen growth protocol (Protocol) are processed as part of BioSample
-        datasets = get_dataset(submission, result_summary, persister=persister)
-
+        processing_version = determine_biostudies_processing_version(submission)
+        result_summary[accession_id].ProcessingVersion = processing_version
         process_files = determine_file_processing(
             process_filelist,
             file_count_limit=200000,
             file_count=submission_table.files,
         )
-        if process_files:
-            get_file_reference_by_dataset(
-                submission,
-                datasets,
-                result_summary,
-                persister=persister,
+
+        try:
+            if processing_version == BioStudiesProcessingVersion.V4:
+                process_submission_v4(
+                    submission, result_summary, process_files, persister
+                )
+            elif processing_version == BioStudiesProcessingVersion.BIOSTUDIES_DEFAULT:
+                get_study(submission, result_summary, persister)
+            else:
+                get_study(submission, result_summary, persister)
+
+        except Exception as error:
+            logging.exception("message")
+            result_summary[accession_id].__setattr__(
+                "Uncaught_Exception",
+                str(result_summary[accession_id].Uncaught_Exception) + str(error),
             )
-        else:
-            logger.info("Skipping file reference creation.")
-
-        get_image_acquisition_protocol(submission, result_summary, persister=persister)
-
-        get_annotation_method(submission, result_summary, persister=persister)
-
-        # typer.echo(study.model_dump_json(indent=2))
 
         logger.debug(f"COMPLETED: Ingest of: {accession_id}")
         print(f"[green]-------- Completed ingest of {accession_id} --------[/green]")
 
-    print(tabulate_ingestion_errors(result_summary))
+    result_table = tabulate_ingestion_errors(result_summary, counts)
+    print(result_table)
+
+    if write_csv:
+        write_table(result_table, write_csv)
 
 
 def determine_file_processing(
@@ -123,6 +144,25 @@ def determine_file_processing(
     else:
         process_files = True
     return process_files
+
+
+def determine_biostudies_processing_version(submission: Submission):
+    override_map = {
+        "S-BIAD43": BioStudiesProcessingVersion.V4,
+        "S-BIAD44": BioStudiesProcessingVersion.V4,
+    }
+    accession_id = submission.accno
+    if accession_id in override_map:
+        return override_map[accession_id]
+    else:
+        submission_attributes = attributes_to_dict(submission.attributes)
+        submission_template = submission_attributes.get("Template", None)
+        if submission_template == "BioImages.v4":
+            return BioStudiesProcessingVersion.V4
+        elif submission_template == "Default":
+            return BioStudiesProcessingVersion.BIOSTUDIES_DEFAULT
+        else:
+            return BioStudiesProcessingVersion.FALLBACK
 
 
 @app.callback()

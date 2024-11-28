@@ -321,7 +321,6 @@
       } ],
       "subsections" : [ {
         "type" : "Associations",
-        "accno" : "association1",
         "attributes" : [ {
           "name" : "Biosample",
           "value" : "Test Biosample 1"
@@ -337,7 +336,6 @@
         } ]
       }, {
         "type" : "Associations",
-        "accno" : "association2",
         "attributes" : [ {
           "name" : "Biosample",
           "value" : "Test Biosample 2 "
@@ -367,7 +365,6 @@
       } ],
       "subsections" : [ {
         "type" : "Associations",
-        "accno" : "association3",
         "attributes" : [ {
           "name" : "Biosample",
           "value" : "Test Biosample 2 "

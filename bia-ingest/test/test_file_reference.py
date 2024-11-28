@@ -5,27 +5,31 @@ now has a different pattern of creation from other artefacts i.e.
 it now needs a submitted dataset
 """
 
+import pytest
 from .mock_objects import mock_file_reference, mock_dataset
-from bia_ingest.ingest import (
+from bia_ingest.biostudies.v4 import (
     file_reference,
 )
-from bia_ingest.ingest.biostudies.api import File
+from bia_ingest.biostudies.api import File
 
 
 # Get second study component as dataset in submission
-datasets_in_submission = [
-    mock_dataset.get_dataset()[1],
-]
+@pytest.fixture
+def datasets_in_submission():
+    datasets = [
+        mock_dataset.get_dataset()[1],
+    ]
+    return datasets
 
 
 def test_get_file_reference_for_submission_dataset(
-    test_submission, ingestion_result_summary
+    test_submission, ingestion_result_summary, datasets_in_submission
 ):
     """
     Test creation of FileReferences for dataset with file list supplied
     """
     file_list_data = mock_file_reference.get_file_list_data(
-        "file_list_study_component_2.json"
+        "biad_v4/file_list_study_component_2.json"
     )
     files_in_filelist = [File.model_validate(f) for f in file_list_data]
 
@@ -40,7 +44,11 @@ def test_get_file_reference_for_submission_dataset(
 
 
 def test_create_file_reference_for_study_component(
-    test_submission, caplog, ingestion_result_summary, mock_request_get
+    test_submission,
+    caplog,
+    ingestion_result_summary,
+    datasets_in_submission,
+    mock_request_get,
 ):
     expected = {
         datasets_in_submission[0].title_id: mock_file_reference.get_file_reference()

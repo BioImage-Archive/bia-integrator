@@ -41,3 +41,7 @@ def get_annotation_method() -> List[bia_data_model.AnnotationMethod]:
             bia_data_model.AnnotationMethod.model_validate(annotation_method_dict)
         )
     return annotation_method
+
+
+def get_annotation_method_as_map():
+    return {obj.title_id: obj for obj in get_annotation_method()}

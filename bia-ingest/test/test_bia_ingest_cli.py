@@ -1,8 +1,8 @@
-from test.mock_objects import mock_specimen_growth_protocol
+from test.mock_objects import mock_growth_protocol
 from typer.testing import CliRunner
 from bia_ingest import cli
-from bia_ingest.ingest.generic_conversion_utils import settings
-from bia_ingest.ingest.biostudies import api
+from bia_ingest.biostudies.generic_conversion_utils import settings
+from bia_ingest.biostudies import api
 from bia_shared_datamodels import bia_data_model
 import pytest
 from .mock_objects import (
@@ -11,7 +11,6 @@ from .mock_objects import (
     mock_dataset,
     mock_specimen_imaging_preparation_protocol,
     mock_image_acquisition_protocol,
-    mock_specimen,
     mock_annotation_method,
     mock_file_reference,
 )
@@ -25,25 +24,21 @@ def expected_objects():
         "study": mock_study.get_study(),
         "dataset": mock_dataset.get_dataset(),
         "image_acquisition_protocol": mock_image_acquisition_protocol.get_image_acquisition_protocol(),
-        "specimen": mock_specimen.get_test_specimen_for_image(),
         "specimen_imaging_preparation_protocol": mock_specimen_imaging_preparation_protocol.get_specimen_imaging_preparation_protocol(),
         "annotation_method": mock_annotation_method.get_annotation_method(),
-        "protocol": mock_specimen_growth_protocol.get_specimen_growth_protocol(),
+        "protocol": mock_growth_protocol.get_growth_protocol(),
+        "bio_sample": [bs for bs in mock_biosample.get_bio_sample_as_map().values()],
     }
 
     # File references are a special case as they depend on experimental dataset
     expected_file_references = []
     expected_file_references = mock_file_reference.get_file_reference(
-        ["file_list_study_component_1.json", "file_list_study_component_2.json"]
+        [
+            "biad_v4/file_list_study_component_1.json",
+            "biad_v4/file_list_study_component_2.json",
+        ]
     )
     expected_objects_dict["file_reference"] = expected_file_references
-
-    # Biosamples are also a special case as each study component association can
-    # potentially create it's own biosample.
-    expected_biosamples = []
-    for biosample_list in mock_biosample.get_biosample_by_study_component().values():
-        expected_biosamples.extend(biosample_list)
-    expected_objects_dict["bio_sample"] = expected_biosamples
 
     n_expected_objects = 0
     for expected_objects in expected_objects_dict.values():

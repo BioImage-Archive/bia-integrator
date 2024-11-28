@@ -61,7 +61,7 @@ def get_file_reference_data(filelist: str) -> List[Dict]:
 # Returns expected FileReference models for study component 2 by default
 def get_file_reference(
     filelists: List[str] = [
-        "file_list_study_component_2.json",
+        "biad_v4/file_list_study_component_2.json",
     ],
 ) -> List[bia_data_model.FileReference]:
     file_references = []
