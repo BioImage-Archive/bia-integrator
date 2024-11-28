@@ -73,6 +73,16 @@ def get_study(
         }
         for key, value in study_attributes.items()
     ]
+    attribute.append(
+        {
+            "provenance": semantic_models.AttributeProvenance("bia_ingest"),
+            "name": "biostudies json/pagetab entry",
+            "value": {
+                "json": f"https://www.ebi.ac.uk/biostudies/files/{submission.accno}/{submission.accno}.json",
+                "pagetab": f"https://www.ebi.ac.uk/biostudies/files/{submission.accno}/{submission.accno}.tsv",
+            },
+        }
+    )
 
     study_dict = {
         "uuid": get_study_uuid(submission),
@@ -249,7 +259,7 @@ def get_affiliation(
             for k, v, default in key_mapping
         }
 
-        result_summary_for_accession_if =  result_summary[submission.accno]
+        result_summary_for_accession_if = result_summary[submission.accno]
 
         affiliation = dict_to_api_model(
             model_dict, semantic_models.Affiliation, result_summary[submission.accno]
