@@ -29,7 +29,7 @@ class ImageAnalysisMethod(BaseModel):
     """ # noqa: E501
     attribute: Optional[List[Attribute]] = None
     protocol_description: StrictStr = Field(description="Description of actions involved in the process.")
-    features_analysed: StrictStr
+    features_analysed: Optional[StrictStr] = None
     __properties: ClassVar[List[str]] = ["attribute", "protocol_description", "features_analysed"]
 
     model_config = ConfigDict(
@@ -82,6 +82,11 @@ class ImageAnalysisMethod(BaseModel):
         # and model_fields_set contains the field
         if self.attribute is None and "attribute" in self.model_fields_set:
             _dict['attribute'] = None
+
+        # set to None if features_analysed (nullable) is None
+        # and model_fields_set contains the field
+        if self.features_analysed is None and "features_analysed" in self.model_fields_set:
+            _dict['features_analysed'] = None
 
         return _dict
 

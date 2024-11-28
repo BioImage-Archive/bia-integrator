@@ -29,8 +29,8 @@ class ImageCorrelationMethod(BaseModel):
     """ # noqa: E501
     attribute: Optional[List[Attribute]] = None
     protocol_description: StrictStr = Field(description="Description of actions involved in the process.")
-    fiducials_used: StrictStr = Field(description="Features from correlated datasets used for colocalization.")
-    transformation_matrix: StrictStr = Field(description="Correlation transforms.")
+    fiducials_used: Optional[StrictStr] = None
+    transformation_matrix: Optional[StrictStr] = None
     __properties: ClassVar[List[str]] = ["attribute", "protocol_description", "fiducials_used", "transformation_matrix"]
 
     model_config = ConfigDict(
@@ -83,6 +83,16 @@ class ImageCorrelationMethod(BaseModel):
         # and model_fields_set contains the field
         if self.attribute is None and "attribute" in self.model_fields_set:
             _dict['attribute'] = None
+
+        # set to None if fiducials_used (nullable) is None
+        # and model_fields_set contains the field
+        if self.fiducials_used is None and "fiducials_used" in self.model_fields_set:
+            _dict['fiducials_used'] = None
+
+        # set to None if transformation_matrix (nullable) is None
+        # and model_fields_set contains the field
+        if self.transformation_matrix is None and "transformation_matrix" in self.model_fields_set:
+            _dict['transformation_matrix'] = None
 
         return _dict
 

@@ -4025,16 +4025,22 @@
             "description": "Description of actions involved in the process."
           },
           "features_analysed": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Features Analysed",
-            "description": ""
+            "description": "Which features of the image were central to the analysis method."
           }
         },
         "additionalProperties": false,
         "type": "object",
         "required": [
-          "protocol_description",
-          "features_analysed"
+          "protocol_description"
         ],
         "title": "ImageAnalysisMethod",
         "description": "Information about image analysis methods."
@@ -4062,12 +4068,26 @@
             "description": "Description of actions involved in the process."
           },
           "fiducials_used": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Fiducials Used",
             "description": "Features from correlated datasets used for colocalization."
           },
           "transformation_matrix": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Transformation Matrix",
             "description": "Correlation transforms."
           }
@@ -4075,9 +4095,7 @@
         "additionalProperties": false,
         "type": "object",
         "required": [
-          "protocol_description",
-          "fiducials_used",
-          "transformation_matrix"
+          "protocol_description"
         ],
         "title": "ImageCorrelationMethod",
         "description": "Information about the process of correlating the positions of multiple images."
@@ -4290,10 +4308,27 @@
         "enum": [
           "CC0",
           "CC_BY_4.0",
+          "CC_BY_3.0",
+          "CC_BY_2.5",
+          "CC_BY_2.0",
+          "CC_BY_1.0",
+          "CC_BY-SA_4.0",
           "CC_BY-SA_3.0",
+          "CC_BY-SA_2.5",
+          "CC_BY-SA_2.0",
+          "CC_BY-SA_1.0",
+          "CC_BY-SA_2.1_JP",
+          "CC_BY-NC_4.0",
+          "CC_BY-NC_3.0",
+          "CC_BY-NC_2.5",
+          "CC_BY-NC_2.0",
+          "CC_BY-NC_1.0",
+          "CC_BY-NC-SA_4.0",
           "CC_BY-NC-SA_3.0",
-          "CC_BY-NC-ND_4.0",
-          "CC_BY-SA_2.1_JP"
+          "CC_BY-NC-SA_2.5",
+          "CC_BY-NC-SA_2.0",
+          "CC_BY-NC-SA_1.0",
+          "CC_BY-NC-ND_4.0"
         ],
         "title": "LicenceType"
       },
