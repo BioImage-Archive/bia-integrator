@@ -44,7 +44,7 @@ def get_dataset(
         submission, bsst_title_to_bia_object_map
     )
 
-    image_annotation_datasets = dicts_to_api_models(
+    datasets = dicts_to_api_models(
         dataset,
         bia_data_model.Dataset,
         result_summary[submission.accno],
@@ -52,14 +52,14 @@ def get_dataset(
 
     log_model_creation_count(
         bia_data_model.Dataset,
-        len(image_annotation_datasets),
+        len(datasets),
         result_summary[submission.accno],
     )
 
-    if persister and image_annotation_datasets:
-        persister.persist(image_annotation_datasets)
+    if persister and datasets:
+        persister.persist(datasets)
 
-    return image_annotation_datasets
+    return datasets
 
 
 def get_dataset_dict_from_study_component(
@@ -290,13 +290,16 @@ def get_image_analysis_method_from_associations(
 ):
 
     image_analysis = []
-    for ia_key, ia_value in object_map["image_analysis_method"].items():
-        add_ia = False
+    for association_key, method_object in object_map["image_analysis_method"].items():
+        add_object = False
         for association in associations:
-            if association.image_analysis and association.image_analysis == ia_key:
-                add_ia = True
-        if add_ia:
-            image_analysis.append(ia_value)
+            if (
+                association.image_analysis
+                and association.image_analysis == association_key
+            ):
+                add_object = True
+        if add_object:
+            image_analysis.append(method_object)
 
     return image_analysis
 
@@ -305,16 +308,18 @@ def get_image_correlation_method_from_associations(
     associations: List[Association], object_map: dict[str, dict]
 ):
     image_correlations = []
-    for ia_key, ia_value in object_map["image_analysis_method"].items():
-        add_ic = False
+    for association_key, method_object in object_map[
+        "image_correlation_method"
+    ].items():
+        add_object = False
         for association in associations:
             if (
                 association.image_correlation
-                and association.image_correlation == ia_key
+                and association.image_correlation == association_key
             ):
-                add_ia = True
-        if add_ic:
-            image_correlations.append(ia_value)
+                add_object = True
+        if add_object:
+            image_correlations.append(method_object)
 
     return image_correlations
 

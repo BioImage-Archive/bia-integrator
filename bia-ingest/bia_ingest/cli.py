@@ -155,8 +155,8 @@ def determine_biostudies_processing_version(submission: Submission):
     if accession_id in override_map:
         return override_map[accession_id]
     else:
-        submission_attributees = attributes_to_dict(submission.attributes)
-        submission_template = submission_attributees.get("Template", None)
+        submission_attributes = attributes_to_dict(submission.attributes)
+        submission_template = submission_attributes.get("Template", None)
         if submission_template == "BioImages.v4":
             return BioStudiesProcessingVersion.V4
         elif submission_template == "Default":

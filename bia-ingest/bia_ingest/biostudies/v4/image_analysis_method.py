@@ -18,7 +18,7 @@ def get_image_analysis_method_as_map(
 ) -> Dict[str, semantic_models.ImageAnalysisMethod]:
 
     image_analysis_sections = find_sections_recursive(
-        submission.section, ["Image analysis"], []
+        submission.section, ["Image analysis"]
     )
 
     key_mapping = [

@@ -17,8 +17,8 @@ def get_image_correlation_method_as_map(
     submission: Submission, result_summary: dict
 ) -> Dict[str, semantic_models.ImageCorrelationMethod]:
 
-    image_analysis_sections = find_sections_recursive(
-        submission.section, ["Image correlation"], []
+    image_correlation_sections = find_sections_recursive(
+        submission.section, ["Image correlation"]
     )
 
     # TODO: review image correlation model, as we shouldn't be setting strings to "" to get around non-optional fields.
@@ -29,7 +29,7 @@ def get_image_correlation_method_as_map(
     ]
 
     model_dicts_map = {}
-    for section in image_analysis_sections:
+    for section in image_correlation_sections:
         attr_dict = attributes_to_dict(section.attributes)
 
         model_dict = {

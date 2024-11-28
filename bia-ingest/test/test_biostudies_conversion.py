@@ -107,6 +107,7 @@ def association_dict():
     association_object_dict["image_analysis_method"] = (
         mock_image_analysis_method.get_image_analysis_method_as_map()
     )
+    association_object_dict["image_correlation_method"] = {}
 
     return association_object_dict
 
