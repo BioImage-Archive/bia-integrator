@@ -2,7 +2,7 @@
 Functions to create example dictionaries that satisfy various degrees of completeness of BIA models
 """
 
-from bia_shared_datamodels import semantic_models
+from bia_shared_datamodels import semantic_models, uuid_creation
 from uuid import uuid4
 from enum import Enum
 import datetime
@@ -20,9 +20,11 @@ class Completeness(str, Enum):
 
 
 def get_study_dict(completeness=Completeness.COMPLETE) -> dict:
+    accession_id = "S-BIADTEST"
+
     study_dict = {
-        "uuid": uuid4(),
-        "accession_id": "S-BIADTEST",
+        "uuid": uuid_creation.create_study_uuid(accession_id),
+        "accession_id": accession_id,
         "licence": semantic_models.LicenceType.CC0,
         "author": [get_contributor_dict(Completeness.MINIMAL)],
         "title": "Test publication",
@@ -98,10 +100,13 @@ def get_affiliation_dict(
 def get_dataset_dict(
     completeness=Completeness.COMPLETE,
 ) -> dict:
+    title_id = "Template experimental image dataset"
+    study_uuid = get_study_dict()["uuid"]
+
     dataset = {
-        "uuid": uuid4(),
-        "submitted_in_study_uuid": get_study_dict()["uuid"],
-        "title_id": "Template experimental image dataset",
+        "uuid": uuid_creation.create_dataset_uuid(title_id, study_uuid),
+        "submitted_in_study_uuid": study_uuid,
+        "title_id": title_id,
         "example_image_uri": [],
         "version": 1,
     }
@@ -122,9 +127,12 @@ def get_dataset_dict(
 
 
 def get_file_reference_dict(completeness=Completeness.COMPLETE) -> dict:
+    study_uuid = get_study_dict()["uuid"]
+    file_path = "Dummy file path"
+
     file_reference = {
-        "uuid": uuid4(),
-        "file_path": "Dummy file path",
+        "uuid": uuid_creation.create_file_reference_uuid(file_path, study_uuid),
+        "file_path": file_path,
         "format": "Dummy format",
         "size_in_bytes": 10,
         "uri": "https://dummy.uri.co",
@@ -145,6 +153,7 @@ def get_file_reference_dict(completeness=Completeness.COMPLETE) -> dict:
 
 
 def get_image_dict(completeness=Completeness.COMPLETE) -> dict:
+    # TODO: update UUID generation
     image = {
         "uuid": uuid4(),
         "creation_process_uuid": get_creation_process_dict()["uuid"],
@@ -164,6 +173,7 @@ def get_image_dict(completeness=Completeness.COMPLETE) -> dict:
 
 
 def get_image_representation_dict(completeness=Completeness.COMPLETE) -> dict:
+    # TODO: update UUID generation
     image_representation = {
         "uuid": uuid4(),
         "representation_of_uuid": get_image_dict()["uuid"],
@@ -224,6 +234,7 @@ def get_channel_dict(completeness=Completeness.COMPLETE) -> dict:
 
 
 def get_annotation_data_dict(completeness=Completeness.COMPLETE) -> dict:
+    # TODO: update UUID generation
     annotation_data = {
         "uuid": uuid4(),
         "creation_process_uuid": get_creation_process_dict()["uuid"],
@@ -248,6 +259,7 @@ def get_annotation_data_dict(completeness=Completeness.COMPLETE) -> dict:
 
 
 def get_creation_process_dict(completeness=Completeness.COMPLETE) -> dict:
+    # TODO: update UUID generation
     process = {
         "uuid": uuid4(),
         "version": 1,
@@ -271,9 +283,12 @@ def get_creation_process_dict(completeness=Completeness.COMPLETE) -> dict:
 
 
 def get_protocol_dict(completeness=Completeness.COMPLETE) -> dict:
+    study_uuid = get_study_dict()["uuid"]
+    title_id = "Template image acquisition"
+
     protocol = {
-        "uuid": uuid4(),
-        "title_id": "Template Protocol",
+        "uuid": uuid_creation.create_protocol_uuid(title_id, study_uuid),
+        "title_id": title_id,
         "protocol_description": "Template method description",
         "version": 1,
     }
@@ -287,9 +302,14 @@ def get_protocol_dict(completeness=Completeness.COMPLETE) -> dict:
 
 
 def get_image_acquisition_protocol_dict(completeness=Completeness.COMPLETE) -> dict:
+    study_uuid = get_study_dict()["uuid"]
+    title_id = "Template image acquisition"
+
     image_acquisition_protocol = {
-        "uuid": uuid4(),
-        "title_id": "Template image acquisition",
+        "uuid": uuid_creation.create_image_acquisition_protocol_uuid(
+            title_id, study_uuid
+        ),
+        "title_id": title_id,
         "protocol_description": "Template method description",
         "imaging_instrument_description": "Template imaging instrument",
         "version": 1,
@@ -309,9 +329,12 @@ def get_image_acquisition_protocol_dict(completeness=Completeness.COMPLETE) -> d
 
 
 def get_annotation_method_dict(completeness=Completeness.COMPLETE) -> dict:
+    study_uuid = get_study_dict()["uuid"]
+    title_id = "Template annotation method"
+
     annotation_method = {
-        "uuid": uuid4(),
-        "title_id": "Template annotation method",
+        "uuid": uuid_creation.create_annotation_method_uuid(title_id, study_uuid),
+        "title_id": title_id,
         "protocol_description": "Template annotation method description",
         "method_type": [],
         "version": 1,
@@ -361,6 +384,7 @@ def get_image_correlation_method_dict(completeness=Completeness.COMPLETE) -> dic
 
 
 def get_specimen_dict(completeness=Completeness.COMPLETE) -> dict:
+    # TODO: update specimen uuid generation
     specimen = {
         "uuid": uuid4(),
         "imaging_preparation_protocol_uuid": [
@@ -382,9 +406,13 @@ def get_specimen_dict(completeness=Completeness.COMPLETE) -> dict:
 def get_specimen_imaging_preparation_protocol_dict(
     completeness=Completeness.COMPLETE,
 ) -> dict:
+    study_uuid = get_study_dict()["uuid"]
+    title_id = "Test specimen preparation protocol"
     specimen_imaging_preparation_protocol = {
-        "uuid": uuid4(),
-        "title_id": "Test specimen preparation protocol",
+        "uuid": uuid_creation.create_specimen_imaging_preparation_protocol_uuid(
+            title_id, study_uuid
+        ),
+        "title_id": title_id,
         "protocol_description": "Test description",
         "version": 1,
     }
@@ -415,9 +443,11 @@ def get_signal_channel_information_dict(completeness=Completeness.COMPLETE) -> d
 
 
 def get_biosample_dict(completeness=Completeness.COMPLETE) -> dict:
+    study_uuid = get_study_dict()["uuid"]
+    title_id = "Template BioSample"
     biosample = {
-        "uuid": uuid4(),
-        "title_id": "Template BioSample",
+        "uuid": uuid_creation.create_bio_sample_uuid(title_id, study_uuid),
+        "title_id": title_id,
         "biological_entity_description": "Test biological entity description",
         "version": 1,
         "organism_classification": [],
