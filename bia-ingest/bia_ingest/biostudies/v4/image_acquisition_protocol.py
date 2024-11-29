@@ -1,24 +1,22 @@
 import logging
 from typing import List, Any, Dict, Optional
 
-from ...bia_object_creation_utils import (
+from bia_ingest.bia_object_creation_utils import (
     dict_to_uuid,
     dicts_to_api_models,
     dict_map_to_api_models,
     filter_model_dictionary,
 )
 
-from ...cli_logging import log_model_creation_count
-from ..submission_parsing_utils import (
+from bia_ingest.cli_logging import log_model_creation_count
+from bia_ingest.biostudies.submission_parsing_utils import (
     find_sections_recursive,
     case_insensitive_get,
     attributes_to_dict,
 )
-from ..api import (
-    Submission,
-)
+from bia_ingest.biostudies.api import Submission, Section
 from bia_shared_datamodels import bia_data_model
-from ...persistence_strategy import PersistenceStrategy
+from bia_ingest.persistence_strategy import PersistenceStrategy
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -66,7 +64,7 @@ def extract_image_acquisition_protocol_dicts(
         ("title_id", "Title", ""),
         ("protocol_description", "Image acquisition parameters", ""),
         ("imaging_instrument_description", "Imaging instrument", ""),
-        ("imaging_method_name", "Imaging method", ""),
+        ("imaging_method_name", "Imaging method", None),
     ]
 
     model_dict_map = {}
@@ -78,7 +76,11 @@ def extract_image_acquisition_protocol_dicts(
             for k, v, default in key_mapping
         }
 
-        if isinstance(model_dict["imaging_method_name"], str):
+        if not model_dict["imaging_method_name"]:
+            model_dict["imaging_method_name"] = (
+                get_imaging_method_names_from_subsection(section)
+            )
+        elif isinstance(model_dict["imaging_method_name"], str):
             model_dict["imaging_method_name"] = [
                 model_dict["imaging_method_name"],
             ]
@@ -109,3 +111,19 @@ def generate_image_acquisition_protocol_uuid(protocol_dict: Dict[str, Any]) -> s
         "fbbi_id",
     ]
     return dict_to_uuid(protocol_dict, attributes_to_consider)
+
+
+def get_imaging_method_names_from_subsection(
+    image_acquisition_section: Section,
+) -> list[str]:
+    sections = find_sections_recursive(image_acquisition_section, ["Imaging Method"])
+    imaging_method_name = []
+    for section in sections:
+        attr_dict = attributes_to_dict(section.attributes)
+        if attr_dict["Ontology Name"] and attr_dict["Ontology Value"]:
+            imaging_method_name.append(
+                f"{attr_dict['Ontology Name']}:{attr_dict['Ontology Value']}"
+            )
+        elif attr_dict["Ontology Value"]:
+            imaging_method_name.append(f"{attr_dict['Ontology Value']}")
+    return imaging_method_name

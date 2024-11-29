@@ -179,9 +179,6 @@
         "name" : "Title",
         "value" : "Test Biosample 1"
       }, {
-        "name" : "Organism",
-        "value" : "Homo sapiens (human)"
-      }, {
         "name" : "Description",
         "value" : "Test description 1 (\"with some escaped chars\") "
       }, {
@@ -196,7 +193,20 @@
       }, {
         "name" : "Intrinsic variable",
         "value" : "Test intrinsic variable 1\nwith escaped character"
-      } ]
+      } ],
+      "subsections": [
+        {
+          "accno" : "Organism-1",
+          "type" : "Organism",
+          "attributes" : [ {
+            "name": "Common name",
+            "value" : "human"
+          }, {
+            "name": "Scientific name",
+            "value" : "Homo sapiens"
+          } ]
+        } 
+      ]
     }, {
       "accno" : "Biosample-2",
       "type" : "Biosample",

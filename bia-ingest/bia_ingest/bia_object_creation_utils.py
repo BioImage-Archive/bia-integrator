@@ -57,6 +57,10 @@ def dicts_to_api_models(
             api_models.append(api_model_class.model_validate(model_dict))
         except ValidationError:
             log_failed_model_creation(api_model_class, valdiation_error_tracking)
+
+    log_model_creation_count(
+        api_model_class, len(api_models), valdiation_error_tracking
+    )
     return api_models
 
 
@@ -75,7 +79,7 @@ def dict_map_to_api_models(
             api_models[reference_id] = api_model_class.model_validate(model_dict)
         except ValidationError:
             log_failed_model_creation(api_model_class, valdiation_error_tracking)
-    
+
     log_model_creation_count(
         api_model_class, len(api_models), valdiation_error_tracking
     )

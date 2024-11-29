@@ -50,12 +50,6 @@ def get_dataset(
         result_summary[submission.accno],
     )
 
-    log_model_creation_count(
-        bia_data_model.Dataset,
-        len(datasets),
-        result_summary[submission.accno],
-    )
-
     if persister and datasets:
         persister.persist(datasets)
 

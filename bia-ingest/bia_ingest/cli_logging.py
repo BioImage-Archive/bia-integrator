@@ -23,44 +23,48 @@ class IngestionResult(CLIResult):
     )
     Study_CreationCount: int = Field(default=0)
     Study_ValidationErrorCount: int = Field(default=0)
-    Dataset_CreationCount: int = Field(default=0)
-    Dataset_ValidationErrorCount: int = Field(default=0)
+    Contributor_CreationCount: int = Field(default=0)
+    Contributor_ValidationErrorCount: int = Field(default=0)
     Affiliation_CreationCount: int = Field(default=0)
     Affiliation_ValidationErrorCount: int = Field(default=0)
-    Contributor_CreationCount: int = Field(default=0)
-    Contributor_ValidationErrorCount: int = Field(default=0)
+    # TODO: start ingesting these from biostudies
+    # ExternalLink_CreationCount: int = Field(default=0)
+    # ExternalLink_ValidationErrorCount: int = Field(default=0)
+    # Publication_CreationCount: int = Field(default=0)
+    # Publication_ValidationErrorCount: int = Field(default=0)
+
+    Dataset_CreationCount: int = Field(default=0)
+    Dataset_ValidationErrorCount: int = Field(default=0)
+
     FileReference_CreationCount: int = Field(default=0)
     FileReferenceValidation_ErrorCount: int = Field(default=0)
-    BioSample_CreationCount: int = Field(default=0)
-    BioSample_ValidationErrorCount: int = Field(default=0)
-    SpecimenImagingPreparationProtocol_CreationCount: int = Field(default=0)
-    SpecimenImagingPreparationProtocol_ValidationErrorCount: int = Field(default=0)
-    Specimen_CreationCount: int = Field(default=0)
-    Specimen_ValidationErrorCount: int = Field(default=0)
-    ImageAcquisitionProtocol_CreationCount: int = Field(default=0)
-    ImageAcquisitionProtocol_ValidationErrorCount: int = Field(default=0)
-    AnnotationMethod_CreationCount: int = Field(default=0)
-    AnnotationMethod_ValidationErrorCount: int = Field(default=0)
+
     AnnotationFile_CreationCount: int = Field(default=0)
     AnnotationFile_ValidationErrorCount: int = Field(default=0)
-    ImageAnalysisMethod_CreationCount: int = Field(default=0)
-    ImageAnalysisMethod_ValidationErrorCount: int = Field(default=0)
-    ImageCorrelationMethod_CreationCount: int = Field(default=0)
-    ImageCorrelationMethod_ValidationErrorCount: int = Field(default=0)
-    RenderedView_CreationCount: int = Field(default=0)
-    RenderedView_ValidationErrorCount: int = Field(default=0)
-    Channel_CreationCount: int = Field(default=0)
-    Channel_ValidationErrorCount: int = Field(default=0)
-    Organism_CreationCount: int = Field(default=0)
-    Organism_ValidationErrorCount: int = Field(default=0)
+
     Protocol_CreationCount: int = Field(default=0)
     Protocol_ValidationErrorCount: int = Field(default=0)
-    ExternalLink_CreationCount: int = Field(default=0)
-    ExternalLink_ValidationErrorCount: int = Field(default=0)
-    Contributor_CreationCount: int = Field(default=0)
-    Contributor_ValidationErrorCount: int = Field(default=0)
-    Organisation_CreationCount: int = Field(default=0)
-    Organisation_ValidationErrorCount: int = Field(default=0)
+
+    BioSample_CreationCount: int = Field(default=0)
+    BioSample_ValidationErrorCount: int = Field(default=0)
+    Taxon_CreationCount: int = Field(default=0)
+    Taxon_ValidationErrorCount: int = Field(default=0)
+
+    SpecimenImagingPreparationProtocol_CreationCount: int = Field(default=0)
+    SpecimenImagingPreparationProtocol_ValidationErrorCount: int = Field(default=0)
+
+    ImageAcquisitionProtocol_CreationCount: int = Field(default=0)
+    ImageAcquisitionProtocol_ValidationErrorCount: int = Field(default=0)
+
+    AnnotationMethod_CreationCount: int = Field(default=0)
+    AnnotationMethod_ValidationErrorCount: int = Field(default=0)
+
+    ImageAnalysisMethod_CreationCount: int = Field(default=0)
+    ImageAnalysisMethod_ValidationErrorCount: int = Field(default=0)
+
+    ImageCorrelationMethod_CreationCount: int = Field(default=0)
+    ImageCorrelationMethod_ValidationErrorCount: int = Field(default=0)
+
     Uncaught_Exception: str = Field(default="")
 
 
