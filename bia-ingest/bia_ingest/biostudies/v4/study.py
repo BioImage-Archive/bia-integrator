@@ -259,8 +259,6 @@ def get_affiliation(
             for k, v, default in key_mapping
         }
 
-        result_summary_for_accession_if = result_summary[submission.accno]
-
         affiliation = dict_to_api_model(
             model_dict, semantic_models.Affiliation, result_summary[submission.accno]
         )
