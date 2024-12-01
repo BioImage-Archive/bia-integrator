@@ -1,11 +1,11 @@
-from test.mock_objects import mock_growth_protocol
 from typer.testing import CliRunner
 from bia_ingest import cli
 from bia_ingest.biostudies.generic_conversion_utils import settings
 from bia_ingest.biostudies import api
 from bia_shared_datamodels import bia_data_model
 import pytest
-from .mock_objects import (
+from bia_test_data.mock_objects import (
+    mock_growth_protocol,
     mock_study,
     mock_biosample,
     mock_dataset,
