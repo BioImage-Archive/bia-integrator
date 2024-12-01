@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "bia-test-data"
+version = "0.1.0"
+description = ""
+authors = ["Kola <kola@ebi.ac.uk>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
