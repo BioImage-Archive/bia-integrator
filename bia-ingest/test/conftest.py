@@ -4,27 +4,22 @@ from pathlib import Path
 import json
 import pytest
 from bia_ingest.biostudies.api import Submission, SubmissionTable, requests
-from .mock_objects.utils import accession_id
+from bia_test_data.mock_objects.utils import accession_id
 from bia_ingest.cli_logging import IngestionResult
+from bia_test_data import bia_test_data_dir
 
 
 @pytest.fixture
-def base_path() -> Path:
-    """Return full path to test directory"""
-    return Path(__file__).parent
-
-
-@pytest.fixture
-def test_submission(base_path: Path) -> Submission:
-    submission_path = base_path / "data" / "biad_v4" / "S-BIADTEST.json"
+def test_submission() -> Submission:
+    submission_path = bia_test_data_dir / "biad_v4" / "S-BIADTEST.json"
     json_data = json.loads(submission_path.read_text())
     submission = Submission.model_validate(json_data)
     return submission
 
 
 @pytest.fixture
-def test_submission_table(base_path: Path) -> SubmissionTable:
-    submission_path = base_path / "data" / "biad_v4" / "S-BIADTEST_INFO.json"
+def test_submission_table() -> SubmissionTable:
+    submission_path = bia_test_data_dir / "biad_v4" / "S-BIADTEST_INFO.json"
     json_data = json.loads(submission_path.read_text())
     submission = SubmissionTable.model_validate(json_data)
     return submission
@@ -41,8 +36,7 @@ def mock_request_get(monkeypatch):
     """Requests.get mocked to read file from disk"""
 
     def _mock_request_get(flist_url: str) -> Dict[str, str]:
-        data_dir = Path(__file__).parent / "data" / "biad_v4"
-        path_to_load = data_dir / Path(flist_url).name
+        path_to_load = bia_test_data_dir / "biad_v4" / Path(flist_url).name
         return_value = Mock()
         return_value.status_code = 200
         return_value.content = path_to_load.read_text()

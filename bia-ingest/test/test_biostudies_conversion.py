@@ -1,5 +1,5 @@
 import pytest
-from .mock_objects import (
+from bia_test_data.mock_objects import (
     mock_growth_protocol,
     mock_study,
     mock_biosample,

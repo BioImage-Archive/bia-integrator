@@ -3,6 +3,7 @@ from typing import Dict, List
 from pathlib import Path
 from bia_shared_datamodels import bia_data_model, semantic_models
 from bia_ingest.bia_object_creation_utils import dict_to_uuid
+from bia_test_data import bia_test_data_dir
 from .utils import accession_id
 
 from .mock_dataset import get_dataset
@@ -11,7 +12,7 @@ from .mock_dataset import get_dataset
 def get_file_list_data(file_list_name) -> List[Dict]:
     """Return file list contents as dict"""
 
-    file_list_path = Path(__file__).parent.parent / "data" / file_list_name
+    file_list_path = bia_test_data_dir / file_list_name
     file_list_data = json.loads(file_list_path.read_text())
     return file_list_data
 
