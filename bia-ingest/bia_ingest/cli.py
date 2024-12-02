@@ -150,6 +150,21 @@ def determine_biostudies_processing_version(submission: Submission):
     override_map = {
         "S-BIAD43": BioStudiesProcessingVersion.V4,
         "S-BIAD44": BioStudiesProcessingVersion.V4,
+        "S-BIAD590": BioStudiesProcessingVersion.V4,
+        "S-BIAD599": BioStudiesProcessingVersion.V4,
+        "S-BIAD628": BioStudiesProcessingVersion.V4,
+        "S-BIAD677": BioStudiesProcessingVersion.V4,
+        "S-BIAD686": BioStudiesProcessingVersion.V4,
+        "S-BIAD822": BioStudiesProcessingVersion.V4,
+        "S-BIAD843": BioStudiesProcessingVersion.V4,
+        "S-BIAD887": BioStudiesProcessingVersion.V4,
+        "S-BIAD916": BioStudiesProcessingVersion.V4,
+        "S-BIAD970": BioStudiesProcessingVersion.V4,
+        "S-BIAD1021": BioStudiesProcessingVersion.V4,
+        "S-BIAD1070": BioStudiesProcessingVersion.V4,
+        "S-BIAD1076": BioStudiesProcessingVersion.V4,
+        "S-BIAD1244": BioStudiesProcessingVersion.V4,
+        "S-BIAD650": BioStudiesProcessingVersion.FALLBACK,  # Uses v4 template but doesn't actually have rembi components
     }
     accession_id = submission.accno
     if accession_id in override_map:

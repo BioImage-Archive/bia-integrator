@@ -7,22 +7,22 @@ from bia_ingest.biostudies.generic_conversion_utils import (
 )
 from copy import deepcopy
 
-
-from ...bia_object_creation_utils import (
+from bia_ingest.bia_object_creation_utils import (
     dict_to_uuid,
+    dicts_to_api_models,
     dict_map_to_api_models,
     filter_model_dictionary,
 )
 
-from ..submission_parsing_utils import (
+from bia_ingest.biostudies.submission_parsing_utils import (
     find_sections_recursive,
     attributes_to_dict,
     case_insensitive_get,
 )
-from ..api import Submission
-
+from bia_ingest.biostudies.api import Submission, Section
+from bia_ingest.cli_logging import IngestionResult
 from bia_shared_datamodels import bia_data_model, semantic_models
-from ...persistence_strategy import PersistenceStrategy
+from bia_ingest.persistence_strategy import PersistenceStrategy
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -48,7 +48,9 @@ def get_bio_sample_as_map(
     These titles are what Biostudies uses in association objects to link study components to the relevant objects.
     """
 
-    biosample_model_dicts = extract_biosample_dicts(submission, growth_protocol_map)
+    biosample_model_dicts = extract_biosample_dicts(
+        submission, growth_protocol_map, result_summary
+    )
 
     biosamples = dict_map_to_api_models(
         biosample_model_dicts,
@@ -65,6 +67,7 @@ def get_bio_sample_as_map(
 def extract_biosample_dicts(
     submission: Submission,
     growth_protocol_map: dict[str, bia_data_model.BioSample],
+    result_summary: dict,
 ) -> list[dict[str, Any]]:
     biosample_sections = find_sections_recursive(submission.section, ["Biosample"])
 
@@ -77,9 +80,6 @@ def extract_biosample_dicts(
     model_dicts_map = {}
     for section in biosample_sections:
         attr_dict = attributes_to_dict(section.attributes)
-
-        for subsection in section.subsections:
-            attr_dict |= attributes_to_dict(subsection.attributes)
 
         model_dict = {
             k: case_insensitive_get(attr_dict, v, default)
@@ -104,8 +104,10 @@ def extract_biosample_dicts(
 
         model_dict["accno"] = section.accno
         model_dict["organism_classification"] = [
-            get_taxon(model_dict, attr_dict).model_dump()
+            t.model_dump()
+            for t in get_taxon(model_dict, section, result_summary[submission.accno])
         ]
+
         model_dict["accession_id"] = submission.accno
         bs_without_gp, growth_protocol_uuids = check_for_growth_protocol_uuids(
             attr_dict["Title"], submission, growth_protocol_map
@@ -144,24 +146,47 @@ def generate_biosample_uuid(biosample_dict: dict[str, Any]) -> str:
     return dict_to_uuid(biosample_dict, attributes_to_consider)
 
 
-def get_taxon(model_dict: dict, attr_dict: dict) -> semantic_models.Taxon:
-    organism = model_dict.pop("organism", "")
-    try:
-        organism_scientific_name, organism_common_name = organism.split("(")
-        organism_common_name = organism_common_name.rstrip(")")
-    except ValueError:
-        organism_scientific_name = organism
-        organism_common_name = ""
-    taxon_key_mapping = [
-        ("common_name", "Common name", organism_common_name.strip()),
-        ("scientific_name", "Scientific name", organism_scientific_name.strip()),
-        ("ncbi_id", "NCBI taxon ID", None),
-    ]
-    taxon_dict = {
-        k: case_insensitive_get(attr_dict, v, default)
-        for k, v, default in taxon_key_mapping
-    }
-    taxon = semantic_models.Taxon.model_validate(taxon_dict)
+def get_taxon(
+    model_dict: dict, biosample_section: Section, ingestion_result: IngestionResult
+) -> list[semantic_models.Taxon]:
+    taxon_dicts = []
+
+    subsection_organisms = find_sections_recursive(biosample_section, ["Organism"])
+    if subsection_organisms:
+        key_mapping = [
+            ("common_name", "Common name", None),
+            ("scientific_name", "Scientific name", None),
+            ("ncbi_id", "NCBI taxon ID", None),
+        ]
+        for section in subsection_organisms:
+            attr_dict = attributes_to_dict(section.attributes)
+
+            model_dict = {
+                k: case_insensitive_get(attr_dict, v, default)
+                for k, v, default in key_mapping
+            }
+
+            taxon_dicts.append(model_dict)
+
+    else:
+        organism: str = model_dict.pop("organism", "")
+        try:
+            organism_scientific_name, organism_common_name = organism.split("(")
+            organism_common_name = organism_common_name.rstrip(")")
+        except ValueError:
+            organism_scientific_name = organism
+            organism_common_name = ""
+
+        taxon_dicts.append(
+            {
+                "common_name": organism_common_name.strip(),
+                "scientific_name": organism_scientific_name.strip(),
+                "ncbi_id": None,
+            }
+        )
+
+    taxon = dicts_to_api_models(taxon_dicts, semantic_models.Taxon, ingestion_result)
+    
     return taxon
 
 

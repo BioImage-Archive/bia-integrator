@@ -4,7 +4,6 @@ from typing import Any, Optional
 
 from ...bia_object_creation_utils import (
     dict_to_uuid,
-    dicts_to_api_models,
     dict_map_to_api_models,
     filter_model_dictionary,
 )
