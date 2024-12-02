@@ -1,44 +1,42 @@
-"""Test FileReference creation
-
-Test FileReference creation separately from other shared models as it
-now has a different pattern of creation from other artefacts i.e.
-it now needs a submitted dataset
-"""
-
 import pytest
 from bia_test_data.mock_objects import mock_file_reference, mock_dataset
 from bia_ingest.biostudies.v4 import (
     file_reference,
 )
 from bia_ingest.biostudies.api import File
+from bia_shared_datamodels.bia_data_model import Dataset
+from bia_test_data.mock_objects.mock_object_constants import study_uuid, accession_id
 
 
-# Get second study component as dataset in submission
 @pytest.fixture
-def datasets_in_submission():
-    datasets = [
-        mock_dataset.get_dataset()[1],
-    ]
-    return datasets
+def dataset_in_submission() -> Dataset:
+    """
+    Return the 2nd datast in the submission to test files lists
+    """
+    return mock_dataset.get_dataset()[1]
 
 
-def test_get_file_reference_for_submission_dataset(
-    test_submission, ingestion_result_summary, datasets_in_submission
-):
-    """
-    Test creation of FileReferences for dataset with file list supplied
-    """
+@pytest.fixture
+def biostudies_api_files():
     file_list_data = mock_file_reference.get_file_list_data(
         "biad_v4/file_list_study_component_2.json"
     )
     files_in_filelist = [File.model_validate(f) for f in file_list_data]
+    return files_in_filelist
 
-    expected = mock_file_reference.get_file_reference()
-    created = file_reference.get_file_reference_for_submission_dataset(
-        accession_id=test_submission.accno,
-        submission_dataset=datasets_in_submission[0],
-        files_in_file_list=files_in_filelist,
-        result_summary=ingestion_result_summary,
+
+def test_get_file_reference_for_submission_dataset(
+    dataset_in_submission, biostudies_api_files
+):
+    """
+    Test creation of FileReferences for dataset with file list supplied
+    """
+    expected = mock_file_reference.get_file_reference_data()
+    created = file_reference.get_file_reference_dicts_for_submission_dataset(
+        accession_id=accession_id,
+        study_uuid=study_uuid,
+        submission_dataset=dataset_in_submission,
+        files_in_file_list=biostudies_api_files,
     )
     assert created == expected
 
@@ -47,15 +45,16 @@ def test_create_file_reference_for_study_component(
     test_submission,
     caplog,
     ingestion_result_summary,
-    datasets_in_submission,
+    dataset_in_submission,
     mock_request_get,
 ):
     expected = {
-        datasets_in_submission[0].title_id: mock_file_reference.get_file_reference()
+        dataset_in_submission.title_id: mock_file_reference.get_file_reference()
     }
     created = file_reference.get_file_reference_by_dataset(
         test_submission,
-        datasets_in_submission=datasets_in_submission,
+        study_uuid,
+        datasets_in_submission=[dataset_in_submission],
         result_summary=ingestion_result_summary,
     )
     assert created == expected
@@ -75,6 +74,7 @@ def test_create_file_reference_for_study_component_when_no_matching_sc_in_file_l
     dataset.title_id = "Test name not in file list"
     created = file_reference.get_file_reference_by_dataset(
         test_submission,
+        study_uuid,
         datasets_in_submission=[
             dataset,
         ],

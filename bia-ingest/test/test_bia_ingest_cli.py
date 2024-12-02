@@ -1,4 +1,5 @@
 from typer.testing import CliRunner
+from pathlib import Path
 from bia_ingest import cli
 from bia_ingest.biostudies.generic_conversion_utils import settings
 from bia_ingest.biostudies import api
@@ -19,34 +20,28 @@ runner = CliRunner()
 
 
 @pytest.fixture
-def expected_objects():
+def expected_objects() -> tuple[dict, dict]:
+    datasets = mock_dataset.get_dataset()
     expected_objects_dict = {
-        "study": mock_study.get_study(),
-        "dataset": mock_dataset.get_dataset(),
+        "study": [mock_study.get_study()],
+        "dataset": datasets,
         "image_acquisition_protocol": mock_image_acquisition_protocol.get_image_acquisition_protocol(),
         "specimen_imaging_preparation_protocol": mock_specimen_imaging_preparation_protocol.get_specimen_imaging_preparation_protocol(),
         "annotation_method": mock_annotation_method.get_annotation_method(),
         "protocol": mock_growth_protocol.get_growth_protocol(),
         "bio_sample": [bs for bs in mock_biosample.get_bio_sample_as_map().values()],
+        "file_reference": mock_file_reference.get_file_reference(
+            {
+                datasets[0].uuid: "biad_v4/file_list_study_component_1.json",
+                datasets[1].uuid: "biad_v4/file_list_study_component_2.json",
+                datasets[2].uuid: "biad_v4/file_list_annotations_1.json",
+            }
+        ),
     }
-
-    # File references are a special case as they depend on experimental dataset
-    expected_file_references = []
-    expected_file_references = mock_file_reference.get_file_reference(
-        [
-            "biad_v4/file_list_study_component_1.json",
-            "biad_v4/file_list_study_component_2.json",
-        ]
-    )
-    expected_objects_dict["file_reference"] = expected_file_references
 
     n_expected_objects = 0
     for expected_objects in expected_objects_dict.values():
-        if isinstance(expected_objects, list):
-            n_expected_objects += len(expected_objects)
-        else:
-            n_expected_objects += 1
-
+        n_expected_objects += len(expected_objects)
     return expected_objects_dict, n_expected_objects
 
 
@@ -85,7 +80,16 @@ def test_cli_writes_expected_files(
     assert result.exit_code == 0
 
     files_written = [f for f in tmp_path.rglob("*.json")]
+    files_written_by_type = {k: [] for k in expected_objects_dict.keys()}
+    file: Path
+    for file in files_written:
+        for key in files_written_by_type.keys():
+            if file.parts[10] == key:
+                files_written_by_type[key].append(file)
+                break
 
+    for key in expected_objects_dict:
+        assert len(expected_objects_dict[key]) == len(files_written_by_type[key])
     assert len(files_written) == n_expected_objects
 
     for dir_name, expected_objects in expected_objects_dict.items():

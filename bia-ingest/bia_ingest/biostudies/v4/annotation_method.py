@@ -1,29 +1,27 @@
 import logging
-from typing import List, Any, Dict, Optional
+from typing import Any, Dict, Optional
+from uuid import UUID
 
-from ...bia_object_creation_utils import (
-    dict_to_uuid,
-    dict_map_to_api_models,
-    filter_model_dictionary,
-)
+from bia_ingest.bia_object_creation_utils import dict_map_to_api_models
+from bia_ingest.persistence_strategy import PersistenceStrategy
 
-from ...cli_logging import log_model_creation_count
-from ..submission_parsing_utils import (
+from bia_ingest.biostudies.submission_parsing_utils import (
     find_sections_recursive,
     attributes_to_dict,
     case_insensitive_get,
 )
-from ..api import (
+from bia_ingest.biostudies.api import (
     Submission,
 )
 from bia_shared_datamodels import bia_data_model, semantic_models
-from ...persistence_strategy import PersistenceStrategy
+from bia_shared_datamodels.uuid_creation import create_annotation_method_uuid
 
 logger = logging.getLogger("__main__." + __name__)
 
 
 def get_annotation_method_as_map(
     submission: Submission,
+    study_uuid: UUID,
     result_summary: dict,
     persister: Optional[PersistenceStrategy] = None,
 ) -> dict[str, bia_data_model.AnnotationMethod]:
@@ -38,7 +36,9 @@ def get_annotation_method_as_map(
     There is no annotation method object in biostudies, so no need to link it via associations.
     """
 
-    annotation_method_model_dicts = extract_annotation_method_dicts(submission)
+    annotation_method_model_dicts = extract_annotation_method_dicts(
+        submission, study_uuid
+    )
     annotation_methods = dict_map_to_api_models(
         annotation_method_model_dicts,
         bia_data_model.AnnotationMethod,
@@ -55,6 +55,7 @@ def get_annotation_method_as_map(
 
 def extract_annotation_method_dicts(
     submission: Submission,
+    study_uuid: UUID,
 ) -> dict[str, dict[str, Any]]:
     annotation_sections = find_sections_recursive(submission.section, ["Annotations"])
 
@@ -97,27 +98,11 @@ def extract_annotation_method_dicts(
             semantic_models.AnnotationMethodType("other"),
         ]
 
-        model_dict["accno"] = section.__dict__.get("accno", "")
-        model_dict["accession_id"] = submission.accno
-        model_dict["uuid"] = generate_annotation_method_uuid(model_dict)
-        model_dict["version"] = 0
-        model_dict = filter_model_dictionary(
-            model_dict, bia_data_model.AnnotationMethod
+        model_dict["uuid"] = create_annotation_method_uuid(
+            model_dict["title_id"], study_uuid
         )
+        model_dict["version"] = 0
 
         model_dict_map[attr_dict["Title"]] = model_dict
 
     return model_dict_map
-
-
-def generate_annotation_method_uuid(protocol_dict: Dict[str, Any]) -> str:
-    attributes_to_consider = [
-        "accession_id",
-        "accno",
-        "title_id",
-        "protocol_description",
-        "annotation_criteria",
-        "annotation_coverage",
-        "method_type",
-    ]
-    return dict_to_uuid(protocol_dict, attributes_to_consider)

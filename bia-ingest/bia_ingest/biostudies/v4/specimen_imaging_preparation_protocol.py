@@ -1,29 +1,30 @@
 import logging
 from typing import Any, Optional
+from uuid import UUID
 
-from ...bia_object_creation_utils import (
-    dict_to_uuid,
+from bia_ingest.bia_object_creation_utils import (
     dict_map_to_api_models,
-    filter_model_dictionary,
 )
+from bia_ingest.persistence_strategy import PersistenceStrategy
 
-from ...cli_logging import log_model_creation_count
-from ..submission_parsing_utils import (
+from bia_ingest.biostudies.submission_parsing_utils import (
     find_sections_recursive,
     attributes_to_dict,
     case_insensitive_get,
 )
-from ..api import (
-    Submission,
-)
+from bia_ingest.biostudies.api import Submission
+
 from bia_shared_datamodels import bia_data_model
-from ...persistence_strategy import PersistenceStrategy
+from bia_shared_datamodels.uuid_creation import (
+    create_specimen_imaging_preparation_protocol_uuid,
+)
 
 logger = logging.getLogger("__main__." + __name__)
 
 
 def get_specimen_imaging_preparation_protocol_as_map(
     submission: Submission,
+    study_uuid: UUID,
     result_summary: dict,
     persister: Optional[PersistenceStrategy] = None,
 ) -> dict[str, bia_data_model.SpecimenImagingPreparationProtocol]:
@@ -37,7 +38,7 @@ def get_specimen_imaging_preparation_protocol_as_map(
     The titles are what Biostudies uses in association objects to link study components to the relevant objects.
     """
     specimen_preparation_protocol_model_dicts = (
-        extract_specimen_preparation_protocol_dicts(submission)
+        extract_specimen_preparation_protocol_dicts(submission, study_uuid)
     )
     specimen_preparation_protocols = dict_map_to_api_models(
         specimen_preparation_protocol_model_dicts,
@@ -53,6 +54,7 @@ def get_specimen_imaging_preparation_protocol_as_map(
 
 def extract_specimen_preparation_protocol_dicts(
     submission: Submission,
+    study_uuid: UUID,
 ) -> dict[str, dict[str, Any]]:
     specimen_sections = find_sections_recursive(submission.section, ["Specimen"])
 
@@ -73,24 +75,11 @@ def extract_specimen_preparation_protocol_dicts(
         # Currently generates empty list as we need to change the submission template
         model_dict["signal_channel_information"] = []
 
-        model_dict["accno"] = section.accno
-        model_dict["accession_id"] = submission.accno
-        model_dict["uuid"] = generate_specimen_imaging_preparation_uuid(model_dict)
-        model_dict["version"] = 0
-        model_dict = filter_model_dictionary(
-            model_dict, bia_data_model.SpecimenImagingPreparationProtocol
+        model_dict["uuid"] = create_specimen_imaging_preparation_protocol_uuid(
+            model_dict["title_id"], study_uuid
         )
+        model_dict["version"] = 0
 
         model_dict_map[attr_dict["Title"]] = model_dict
 
     return model_dict_map
-
-
-def generate_specimen_imaging_preparation_uuid(protocol_dict: dict[str, Any]) -> str:
-    attributes_to_consider = [
-        "accession_id",
-        "accno",
-        "title_id",
-        "protocol_description",
-    ]
-    return dict_to_uuid(protocol_dict, attributes_to_consider)
