@@ -6,7 +6,7 @@ from typing import List, Union, Dict, Optional, Any
 from copy import deepcopy
 
 import requests
-from pydantic import BaseModel, TypeAdapter
+from pydantic import BaseModel, TypeAdapter, ConfigDict
 
 
 logger = logging.getLogger("__main__." + __name__)
@@ -54,7 +54,7 @@ class File(BaseModel):
 
 
 class Link(BaseModel):
-    url: str
+    url: Optional[str] = None
     attributes: List[Attribute] = []
 
     def as_tsv(self) -> str:
@@ -65,12 +65,20 @@ class Link(BaseModel):
         return tsv_rep
 
 
+class Empty(BaseModel):
+    """
+    A class for empty objects, i.e. { } in a json document, that can come up in biostudies responses (e.g. some submission links).
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+
 class Section(BaseModel):
     type: str
     accno: Optional[str] = ""
     attributes: List[Attribute] = []
     subsections: List[Union["Section", List["Section"]]] = []
-    links: Union[List[Link], List[List[Link]]] = []
+    links: List[Union[Link, List[Link], Empty]] = []
     files: List[Union[File, List[File]]] = []
 
     def as_tsv(self, parent_accno: Optional[str] = None) -> str:
