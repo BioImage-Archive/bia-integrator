@@ -87,26 +87,25 @@ def tabulate_ingestion_errors(
                 error_message += f"{field}: {value}; "
 
         if result.ProcessingVersion == BioStudiesProcessingVersion.V4:
-
             if result.Dataset_CreationCount == 0:
                 error_message += "No datasets were created; "
 
-            if result.Dataset_CreationCount > 0:
-                if not (
-                    result.BioSample_CreationCount
-                    == 0 & result.SpecimenImagingPreparationProtocol_CreationCount
-                    == 0 & result.ImageAcquisitionProtocol_CreationCount
-                    == 0
-                ):
-                    if (
-                        result.BioSample_CreationCount
-                        == 0 | result.SpecimenImagingPreparationProtocol_CreationCount
-                        == 0 | result.ImageAcquisitionProtocol_CreationCount
-                        == 0
-                    ):
-                        error_message += "Incomplete REMBI objects created; "
-                else:
-                    error_message += "No REMBI objects associated with Dataset; "
+            rembi_object_creation_count = [
+                result.BioSample_CreationCount,
+                result.SpecimenImagingPreparationProtocol_CreationCount,
+                result.ImageAcquisitionProtocol_CreationCount,
+            ]
+            if any(rembi_object_creation_count) and not all(
+                rembi_object_creation_count
+            ):
+                error_message += "Incomplete REMBI objects created; "
+
+            if (
+                not any(rembi_object_creation_count)
+                and not result.AnnotationMethod_CreationCount
+                and not result.Protocol_CreationCount
+            ):
+                error_message += "No creation protocols created; "
 
         if result.Uncaught_Exception:
             error_message += f"Uncaught exception: {result.Uncaught_Exception}"

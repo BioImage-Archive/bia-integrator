@@ -66,6 +66,10 @@ class Link(BaseModel):
 
 
 class Empty(BaseModel):
+    """
+    A class for empty objects, i.e. { } in a json document, that can come up in biostudies responses (e.g. some submission links).
+    """
+
     model_config = ConfigDict(extra="forbid")
 
 
