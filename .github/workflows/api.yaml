@@ -40,7 +40,7 @@ jobs:
       - name: Run tests
         # api moved to api/ , src left in as a reference as we transition. All tests there are failing and that directory will be deleted anyway
         run: |
-          docker compose run -e PYTHONDEVMODE=1 -T bia-integrator-api poetry run pytest -vvv --ignore src api/tests/test_auth.py -k 'test_unauthenticated_bad_token_get_accepted'
+          docker compose run -T bia-integrator-api poetry run pytest --ignore src
       - name: Run client example tests to reuse db
         run: |
           make client.examples

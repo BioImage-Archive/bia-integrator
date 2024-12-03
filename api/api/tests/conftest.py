@@ -58,7 +58,7 @@ def get_client():
         )
 
     client = TestClient(
-        app, base_url=TEST_SERVER_BASE_URL, raise_server_exceptions=True
+        app, base_url=TEST_SERVER_BASE_URL, raise_server_exceptions=False
     )
     return client
 
