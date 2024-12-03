@@ -73,13 +73,14 @@ class Repository:
         """
         pass
 
-    def configure(self, settings: Settings):
+    def configure(self, settings: Settings, event_loop=None):
         self.connection = AsyncIOMotorClient(
             settings.mongo_connstring,
             uuidRepresentation="standard",
             maxPoolSize=settings.mongo_max_pool_size,
             timeoutms=settings.mongo_timeout_ms,
             compressors="zlib",
+            io_loop=event_loop,
         )
         self.db = self.connection.get_database(
             settings.db_name,
@@ -357,9 +358,9 @@ class Repository:
         await self.db.close()
 
 
-async def repository_create(settings: Settings) -> Repository:
+async def repository_create(settings: Settings, event_loop=None) -> Repository:
     repository = Repository()
-    repository.configure(settings)
+    repository.configure(settings, event_loop)
 
     if settings.mongo_index_push:
         await repository._add_indices_collection_biaint()

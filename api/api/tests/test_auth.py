@@ -34,7 +34,8 @@ def test_authenticate_bad_password(api_client_public: TestClient, existing_user:
 
 
 def test_unauthenticated_get_accepted(
-    api_client_public: TestClient, existing_study: dict
+    existing_study: dict,
+    api_client_public: TestClient,
 ):
     rsp = api_client_public.get(f"study/{existing_study['uuid']}")
     assert rsp.status_code == 200
@@ -42,7 +43,7 @@ def test_unauthenticated_get_accepted(
 
 
 def test_unauthenticated_bad_token_get_accepted(
-    api_client_public: TestClient, existing_study: dict
+    existing_study: dict, api_client_public: TestClient
 ):
     # get requests don't check authorization headers at all
     rsp = api_client_public.get(

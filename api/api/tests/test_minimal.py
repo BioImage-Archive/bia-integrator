@@ -5,6 +5,7 @@ tl;dr avoid importing get_uuid to make sure we reuse mocks
 
 from fastapi.testclient import TestClient
 from api.tests.conftest import get_uuid
+import pytest
 
 
 def test_get_created_study(api_client: TestClient, existing_study):
@@ -208,30 +209,27 @@ def test_create_object_nonzero_positive_version(
     assert rsp.status_code == 404
 
 
-def test_db_timeout():
+@pytest.mark.asyncio
+async def test_db_timeout():
     """
     ! This is very flimsy and dependent on the test env. Maybe just delete it?
     """
 
     from pymongo.errors import ExecutionTimeout, NetworkTimeout
+
     import asyncio
     from api.models.repository import Repository
     from api.models.api import Pagination
     from api.settings import Settings
 
-    loop = asyncio.get_event_loop()
+    db = Repository()
+    settings = Settings()
+    settings.mongo_timeout_ms = 5
 
-    async def large_query():
-        db = Repository()
-        settings = Settings()
-        settings.mongo_timeout_ms = 5
-
-        db.configure(settings)
-
-        await db._get_docs_raw(pagination=Pagination(page_size=100))
+    db.configure(settings, event_loop=asyncio.get_event_loop())
 
     try:
-        loop.run_until_complete(large_query())
+        await db._get_docs_raw(pagination=Pagination(page_size=100))
     except ExecutionTimeout as e:
         pass
     except NetworkTimeout as e:

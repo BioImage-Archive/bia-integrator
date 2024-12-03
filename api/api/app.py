@@ -5,11 +5,9 @@ from api.models.repository import repository_create, Repository
 
 settings = Settings()
 
-repository = None
-
 
 async def get_db() -> Repository:
-    return repository
+    return app.extra["db"]
 
 
 from fastapi import FastAPI, Depends, Request
@@ -24,6 +22,7 @@ from api.api_logging import log_info, log_access
 
 from pydantic import ValidationError
 import datetime
+import asyncio
 
 app = FastAPI(
     generate_unique_id_function=lambda route: route.name,
@@ -32,6 +31,7 @@ app = FastAPI(
     separate_input_output_schemas=False,
     debug=False,
     root_path=settings.fastapi_root_path,
+    extra={"db": None},
 )
 
 app.add_middleware(
@@ -82,9 +82,9 @@ def remap_validation_error(_, exc: ValidationError):
 async def on_start():
     if settings.mongo_index_push:
         log_info("App updating indexes")
-
-    global repository
-    repository = await repository_create(settings)
+    app.extra["db"] = await repository_create(
+        settings, event_loop=asyncio.get_event_loop()
+    )
 
     log_info("App started")
 
