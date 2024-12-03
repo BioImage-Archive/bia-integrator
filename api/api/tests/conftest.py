@@ -113,11 +113,10 @@ def user_create_token(settings: Settings) -> str:
 # @pytest_asyncio.fixture(scope="function")  # session
 @pytest.fixture(scope="session")
 def api_client(existing_user: dict):
-    client = get_client()
-    with client as asd:
-        authenticate_client(asd, existing_user)  # @TODO: DELETEME
+    with get_client() as client:
+        authenticate_client(client, existing_user)
 
-        yield asd
+        yield client
 
 
 # @pytest_asyncio.fixture(scope="function")  # session
