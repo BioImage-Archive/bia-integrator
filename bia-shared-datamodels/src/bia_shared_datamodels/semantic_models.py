@@ -114,7 +114,7 @@ class ExternalReference(ConfiguredBaseModel):
     An object outside the BIA that a user wants to refer to.
     """
 
-    link: str = Field(description="""A URL linking to the refered resource.""")
+    link: AnyUrl = Field(description="""A URL linking to the refered resource.""")
     link_type: Optional[str] = Field(
         None,
         description="""Classifies the link by website domain and/or use-case, which is useful for display purposes and faceting search.""",
@@ -224,7 +224,7 @@ class OrganisationMixin(ConfiguredBaseModel):
     address: Optional[str] = Field(
         None, description="""Comma separated lines of the address."""
     )
-    website: Optional[str] = Field(
+    website: Optional[AnyUrl] = Field(
         None,
         description="""The website page with information about the Organisation.""",
     )

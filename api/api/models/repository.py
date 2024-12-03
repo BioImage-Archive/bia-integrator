@@ -22,6 +22,7 @@ from bson.codec_options import TypeCodec, TypeRegistry
 from bson.binary import UuidRepresentation
 
 from pydantic_core import Url
+from pydantic import AnyUrl
 from api.api_logging import log_error
 
 
@@ -40,11 +41,11 @@ class DateCodec(TypeCodec):
         return value.as_datetime().date()
 
 
-class UrlCodec(TypeCodec):
-    python_type = Url
+class AnyUrlCodec(TypeCodec):
+    python_type = AnyUrl
     bson_type = str
 
-    def transform_python(self, value: Url) -> str:
+    def transform_python(self, value: AnyUrl) -> str:
         return str(value)
 
     def transform_bson(self, value: str) -> str:
@@ -89,7 +90,7 @@ class Repository:
             # Looks like explicitly setting codec_options excludes settings from the client
             #   so uuid_representation needs to be defined even if already defined in connection
             codec_options=CodecOptions(
-                type_registry=TypeRegistry([DateCodec(), UrlCodec()]),
+                type_registry=TypeRegistry([DateCodec(), AnyUrlCodec()]),
                 uuid_representation=UuidRepresentation.STANDARD,
             ),
         )

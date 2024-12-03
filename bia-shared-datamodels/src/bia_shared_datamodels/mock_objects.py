@@ -71,7 +71,7 @@ def get_contributor_dict(
             ],
             "rorid": "None",
             "address": "None",
-            "website": "https://www.none.com",
+            "website": AnyUrl("https://www.none.com"),
             "orcid": "None",
         }
     return contributor_dict
@@ -87,7 +87,7 @@ def get_affiliation_dict(
         affiliation |= {
             "rorid": "None",
             "address": "None",
-            "website": "https://www.none.com",
+            "website": AnyUrl("https://www.none.com"),
         }
     return affiliation
 
