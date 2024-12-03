@@ -92,6 +92,10 @@ async def on_start():
 
     log_info("App started")
 
+@app.on_event("shutdown")
+async def of_stop():
+    event_loop = asyncio.get_event_loop()
+    app.extra["extra"]["event_loop_specific"][event_loop]["db"].connection.close()
 
 @app.on_event("shutdown")
 def on_shutdown():
