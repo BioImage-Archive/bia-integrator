@@ -5,6 +5,7 @@ import pytest
 import pytest_asyncio
 import json
 from api.settings import Settings
+import asyncio
 
 test_settings = Settings(mongo_index_push=True)
 
@@ -35,7 +36,14 @@ def uuid() -> str:
     return get_uuid()
 
 
-def get_client(event_loop):
+@pytest.fixture(scope="session")
+def event_loop():
+    yield asyncio.get_event_loop()
+
+    asyncio.get_event_loop().close()
+
+
+def get_client():
     from fastapi.responses import JSONResponse
     from fastapi import Request
     import traceback
@@ -49,15 +57,13 @@ def get_client(event_loop):
             content=traceback.format_exception(exc, value=exc, tb=exc.__traceback__),
         )
 
-    # app.extra = {"event_loop": event_loop}
-
     client = TestClient(
         app, base_url=TEST_SERVER_BASE_URL, raise_server_exceptions=False
     )
     return client
 
 
-async def create_user_if_missing(email: str, password: str, event_loop):
+async def create_user_if_missing(email: str, password: str):
     """
     Exception from the general rule used in this project, of tests being as high-level as possible
     Just to avoid compromising on security for easy test user creation / the logistics of a seed db
@@ -68,7 +74,7 @@ async def create_user_if_missing(email: str, password: str, event_loop):
     from api.models.repository import repository_create
     from api.auth import create_user, get_user
 
-    db = await repository_create(test_settings, event_loop=event_loop)
+    db = await repository_create(test_settings)
 
     if not await get_user(db, email):
         await create_user(db, email, password)
@@ -83,15 +89,13 @@ def authenticate_client(api_client: TestClient, user_details: dict):
     api_client.headers["Authorization"] = f"Bearer {token['access_token']}"
 
 
-@pytest_asyncio.fixture(scope="function")
-async def existing_user(event_loop) -> dict:
+@pytest_asyncio.fixture(scope="session")
+async def existing_user() -> dict:
     user_details = {
         "username": "test@example.com",
         "password": "test",
     }
-    await create_user_if_missing(
-        user_details["username"], user_details["password"], event_loop=event_loop
-    )
+    await create_user_if_missing(user_details["username"], user_details["password"])
 
     return user_details
 
@@ -107,9 +111,9 @@ def user_create_token(settings: Settings) -> str:
 
 
 # @pytest_asyncio.fixture(scope="function")  # session
-@pytest.fixture(scope="function")
-def api_client(existing_user: dict, event_loop):
-    client = get_client(event_loop)
+@pytest.fixture(scope="session")
+def api_client(existing_user: dict):
+    client = get_client()
     with client as asd:
         authenticate_client(asd, existing_user)  # @TODO: DELETEME
 
@@ -117,9 +121,9 @@ def api_client(existing_user: dict, event_loop):
 
 
 # @pytest_asyncio.fixture(scope="function")  # session
-@pytest.fixture(scope="function")
-def api_client_public(event_loop):
-    with get_client(event_loop) as client:
+@pytest.fixture(scope="session")
+def api_client_public():
+    with get_client() as client:
         yield client
 
 

@@ -1,13 +1,15 @@
 from api.settings import Settings
 
 from api.models.repository import repository_create, Repository
+import asyncio
 
 
 settings = Settings()
 
 
 async def get_db() -> Repository:
-    return app.extra["db"]
+    event_loop = asyncio.get_event_loop()
+    return app.extra["extra"]["event_loop_specific"][event_loop]["db"]
 
 
 from fastapi import FastAPI, Depends, Request
@@ -22,7 +24,6 @@ from api.api_logging import log_info, log_access
 
 from pydantic import ValidationError
 import datetime
-import asyncio
 
 app = FastAPI(
     generate_unique_id_function=lambda route: route.name,
@@ -31,7 +32,7 @@ app = FastAPI(
     separate_input_output_schemas=False,
     debug=False,
     root_path=settings.fastapi_root_path,
-    extra={"db": None},
+    extra={"event_loop_specific": {}},
 )
 
 app.add_middleware(
@@ -80,11 +81,14 @@ def remap_validation_error(_, exc: ValidationError):
 
 @app.on_event("startup")
 async def on_start():
+    event_loop = asyncio.get_event_loop()
+
     if settings.mongo_index_push:
         log_info("App updating indexes")
-    app.extra["db"] = await repository_create(
-        settings, event_loop=asyncio.get_event_loop()
-    )
+
+    app.extra["extra"]["event_loop_specific"][event_loop] = {
+        "db": await repository_create(settings)
+    }
 
     log_info("App started")
 

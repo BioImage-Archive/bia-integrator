@@ -226,7 +226,7 @@ async def test_db_timeout():
     settings = Settings()
     settings.mongo_timeout_ms = 5
 
-    db.configure(settings, event_loop=asyncio.get_event_loop())
+    db.configure(settings)
 
     try:
         await db._get_docs_raw(pagination=Pagination(page_size=100))
