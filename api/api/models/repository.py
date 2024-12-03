@@ -73,6 +73,9 @@ class Repository:
         """
         pass
 
+    def __del__(self):
+        self.connection.close()
+
     def configure(self, settings: Settings):
         self.connection = AsyncIOMotorClient(
             settings.mongo_connstring,
