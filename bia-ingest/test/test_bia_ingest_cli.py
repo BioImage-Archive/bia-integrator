@@ -84,7 +84,7 @@ def test_cli_writes_expected_files(
     file: Path
     for file in files_written:
         for key in files_written_by_type.keys():
-            if file.parts[10] == key:
+            if file.parts[-3] == key:
                 files_written_by_type[key].append(file)
                 break
 
