@@ -12,6 +12,7 @@ python = "^3.11,<3.12"
 bia-ingest = { path = "../bia-ingest", develop = true }
 bia-shared-datamodels = { path = "../bia-shared-datamodels", develop = true }
 bia-integrator-api = { path = "../clients/python", develop = true }
+bia-test-data = { path = "../bia-test-data", develop = true }
 
 [tool.poetry.scripts]
 bia-assign-image = "bia_assign_image.cli:app"
