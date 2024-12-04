@@ -80,6 +80,8 @@ def test_cli_writes_expected_files(
     assert result.exit_code == 0
 
     files_written = [f for f in tmp_path.rglob("*.json")]
+    assert len(files_written) == n_expected_objects
+
     files_written_by_type = {k: [] for k in expected_objects_dict.keys()}
     file: Path
     for file in files_written:
@@ -90,7 +92,6 @@ def test_cli_writes_expected_files(
 
     for key in expected_objects_dict:
         assert len(expected_objects_dict[key]) == len(files_written_by_type[key])
-    assert len(files_written) == n_expected_objects
 
     for dir_name, expected_objects in expected_objects_dict.items():
         dir_path = tmp_path / dir_name / test_submission.accno
