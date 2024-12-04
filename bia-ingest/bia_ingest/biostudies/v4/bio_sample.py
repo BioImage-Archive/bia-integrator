@@ -1,34 +1,37 @@
 import logging
 from typing import List, Any, Optional
 from uuid import UUID
+from copy import deepcopy
+
 from bia_ingest.biostudies.generic_conversion_utils import (
     get_associations_for_section,
     Association,
 )
-from copy import deepcopy
-
-from bia_ingest.bia_object_creation_utils import (
-    dict_to_uuid,
-    dicts_to_api_models,
-    dict_map_to_api_models,
-    filter_model_dictionary,
-)
-
 from bia_ingest.biostudies.submission_parsing_utils import (
     find_sections_recursive,
     attributes_to_dict,
     case_insensitive_get,
 )
 from bia_ingest.biostudies.api import Submission, Section
+
+
+from bia_ingest.bia_object_creation_utils import (
+    dicts_to_api_models,
+    dict_map_to_api_models,
+)
 from bia_ingest.cli_logging import IngestionResult
-from bia_shared_datamodels import bia_data_model, semantic_models
 from bia_ingest.persistence_strategy import PersistenceStrategy
+
+
+from bia_shared_datamodels import bia_data_model, semantic_models
+from bia_shared_datamodels.uuid_creation import create_bio_sample_uuid
 
 logger = logging.getLogger("__main__." + __name__)
 
 
 def get_bio_sample_as_map(
     submission: Submission,
+    study_uuid: UUID,
     growth_protocol_map: dict[str, bia_data_model.Protocol],
     result_summary: dict,
     persister: Optional[PersistenceStrategy] = None,
@@ -49,7 +52,7 @@ def get_bio_sample_as_map(
     """
 
     biosample_model_dicts = extract_biosample_dicts(
-        submission, growth_protocol_map, result_summary
+        submission, study_uuid, growth_protocol_map, result_summary
     )
 
     biosamples = dict_map_to_api_models(
@@ -66,6 +69,7 @@ def get_bio_sample_as_map(
 
 def extract_biosample_dicts(
     submission: Submission,
+    study_uuid: UUID,
     growth_protocol_map: dict[str, bia_data_model.BioSample],
     result_summary: dict,
 ) -> list[dict[str, Any]]:
@@ -74,7 +78,6 @@ def extract_biosample_dicts(
     key_mapping = [
         ("title_id", "Title", ""),
         ("biological_entity_description", "Biological entity", ""),
-        ("organism", "Organism", ""),
     ]
 
     model_dicts_map = {}
@@ -102,13 +105,11 @@ def extract_biosample_dicts(
             if biostudies_key in attr_dict:
                 model_dict[api_key].append(attr_dict[biostudies_key])
 
-        model_dict["accno"] = section.accno
         model_dict["organism_classification"] = [
             t.model_dump()
-            for t in get_taxon(model_dict, section, result_summary[submission.accno])
+            for t in get_taxon(attr_dict, section, result_summary[submission.accno])
         ]
 
-        model_dict["accession_id"] = submission.accno
         bs_without_gp, growth_protocol_uuids = check_for_growth_protocol_uuids(
             attr_dict["Title"], submission, growth_protocol_map
         )
@@ -117,37 +118,26 @@ def extract_biosample_dicts(
         for gp_uuid in growth_protocol_uuids:
             model_dict_with_gp = deepcopy(model_dict)
             model_dict_with_gp["growth_protocol_uuid"] = gp_uuid[1]
-            model_dict_with_gp["uuid"] = generate_biosample_uuid(model_dict_with_gp)
-            model_dict_with_gp = filter_model_dictionary(
-                model_dict_with_gp, bia_data_model.BioSample
+            model_dict_with_gp["uuid"] = create_bio_sample_uuid(
+                model_dict_with_gp["title_id"],
+                study_uuid,
+                model_dict_with_gp["growth_protocol_uuid"],
             )
             model_dicts_map[attr_dict["Title"] + "." + gp_uuid[0]] = model_dict_with_gp
 
         if bs_without_gp:
             model_dict["growth_protocol_uuid"] = None
-            model_dict["uuid"] = generate_biosample_uuid(model_dict)
-            model_dict = filter_model_dictionary(model_dict, bia_data_model.BioSample)
+            model_dict["uuid"] = create_bio_sample_uuid(
+                model_dict["title_id"], study_uuid
+            )
             model_dicts_map[attr_dict["Title"]] = model_dict
     return model_dicts_map
 
 
-def generate_biosample_uuid(biosample_dict: dict[str, Any]) -> str:
-    attributes_to_consider = [
-        "accession_id",
-        "accno",
-        "title_id",
-        "organism_classification",
-        "biological_entity_description",
-        "intrinsic_variable_description",
-        "extrinsic_variable_description",
-        "experimental_variable_description",
-        "growth_protocol_uuid",
-    ]
-    return dict_to_uuid(biosample_dict, attributes_to_consider)
-
-
 def get_taxon(
-    model_dict: dict, biosample_section: Section, ingestion_result: IngestionResult
+    biosample_attr_dict: dict,
+    biosample_section: Section,
+    ingestion_result: IngestionResult,
 ) -> list[semantic_models.Taxon]:
     taxon_dicts = []
 
@@ -169,7 +159,7 @@ def get_taxon(
             taxon_dicts.append(model_dict)
 
     else:
-        organism: str = model_dict.pop("organism", "")
+        organism: str = biosample_attr_dict.pop("Organism", "")
         try:
             organism_scientific_name, organism_common_name = organism.split("(")
             organism_common_name = organism_common_name.rstrip(")")
@@ -186,7 +176,7 @@ def get_taxon(
         )
 
     taxon = dicts_to_api_models(taxon_dicts, semantic_models.Taxon, ingestion_result)
-    
+
     return taxon
 
 

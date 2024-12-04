@@ -1,24 +1,21 @@
 from typing import List
 from bia_shared_datamodels import bia_data_model
-from bia_ingest.bia_object_creation_utils import dict_to_uuid
-from .utils import accession_id
+from bia_shared_datamodels.uuid_creation import (
+    create_image_acquisition_protocol_uuid,
+)
+from .mock_object_constants import study_uuid
 
 
 def get_image_acquisition_protocol() -> List[bia_data_model.ImageAcquisitionProtocol]:
-    attributes_to_consider = [
-        "accession_id",
-        "accno",
-        "title_id",
-        "protocol_description",
-        "imaging_instrument_description",
-        "imaging_method_name",
-        "fbbi_id",
-    ]
-    image_acquisition_protocol_info = [
+
+    title_id_1 = "Test Primary Screen Image Acquisition"
+    title_id_2 = "Test Secondary Screen Image Acquisition"
+    object_dicts = [
         {
-            "accno": "Image acquisition-3",
-            "accession_id": accession_id,
-            "title_id": "Test Primary Screen Image Acquisition",
+            "uuid": create_image_acquisition_protocol_uuid(
+                title_id_1, study_uuid
+            ),
+            "title_id": title_id_1,
             "protocol_description": "Test image acquisition parameters 1",
             "imaging_instrument_description": "Test imaging instrument 1",
             "imaging_method_name": [
@@ -28,9 +25,10 @@ def get_image_acquisition_protocol() -> List[bia_data_model.ImageAcquisitionProt
             "version": 0,
         },
         {
-            "accno": "Image acquisition-7",
-            "accession_id": accession_id,
-            "title_id": "Test Secondary Screen Image Acquisition",
+            "uuid": create_image_acquisition_protocol_uuid(
+                title_id_2, study_uuid
+            ),
+            "title_id": title_id_2,
             "protocol_description": "Test image acquisition parameters 2",
             "imaging_instrument_description": "Test imaging instrument 2",
             "imaging_method_name": [
@@ -40,19 +38,12 @@ def get_image_acquisition_protocol() -> List[bia_data_model.ImageAcquisitionProt
             "version": 0,
         },
     ]
-    image_acquisition_protocol = []
-    for image_acquisition_protocol_dict in image_acquisition_protocol_info:
-        image_acquisition_protocol_dict["uuid"] = dict_to_uuid(
-            image_acquisition_protocol_dict, attributes_to_consider
-        )
-        image_acquisition_protocol_dict.pop("accno")
-        image_acquisition_protocol_dict.pop("accession_id")
-        image_acquisition_protocol.append(
-            bia_data_model.ImageAcquisitionProtocol.model_validate(
-                image_acquisition_protocol_dict
-            )
-        )
-    return image_acquisition_protocol
+    bia_objects = [
+        bia_data_model.ImageAcquisitionProtocol.model_validate(object_dict)
+        for object_dict in object_dicts
+    ]
+    return bia_objects
+
 
 def get_image_acquisition_protocol_as_map():
     return {obj.title_id: obj for obj in get_image_acquisition_protocol()}

@@ -9,6 +9,7 @@ from bia_test_data.mock_objects import (
     mock_annotation_method,
     mock_image_analysis_method,
     mock_image_correlation_method,
+    mock_object_constants,
 )
 
 from bia_ingest.biostudies.v4 import (
@@ -30,7 +31,7 @@ def test_create_models_specimen_imaging_preparation_protocol(
         mock_specimen_imaging_preparation_protocol.get_specimen_imaging_preparation_protocol_as_map()
     )
     created = specimen_imaging_preparation_protocol.get_specimen_imaging_preparation_protocol_as_map(
-        test_submission, ingestion_result_summary
+        test_submission, mock_object_constants.study_uuid, ingestion_result_summary
     )
     assert expected == created
 
@@ -41,7 +42,7 @@ def test_create_models_annotation_method(
 ):
     expected = mock_annotation_method.get_annotation_method_as_map()
     created = annotation_method.get_annotation_method_as_map(
-        test_submission, ingestion_result_summary
+        test_submission, mock_object_constants.study_uuid, ingestion_result_summary
     )
     assert expected == created
 
@@ -52,7 +53,7 @@ def test_create_models_image_acquisition_protocol(
 ):
     expected = mock_image_acquisition_protocol.get_image_acquisition_protocol_as_map()
     created = image_acquisition_protocol.get_image_acquisition_protocol_map(
-        test_submission, ingestion_result_summary
+        test_submission, mock_object_constants.study_uuid, ingestion_result_summary
     )
     assert expected == created
 
@@ -63,7 +64,7 @@ def test_create_models_growth_protocol(
 ):
     expected = mock_growth_protocol.get_growth_protocol_as_map()
     created = growth_protocol.get_growth_protocol_as_map(
-        test_submission, ingestion_result_summary
+        test_submission, mock_object_constants.study_uuid, ingestion_result_summary
     )
     assert expected == created
 
@@ -81,6 +82,7 @@ def test_create_models_biosample(
     expected = mock_biosample.get_bio_sample_as_map()
     created = bio_sample.get_bio_sample_as_map(
         test_submission,
+        mock_object_constants.study_uuid,
         growth_protocol_map,
         ingestion_result_summary,
     )
@@ -120,13 +122,12 @@ def test_create_models_dataset(
     expected = mock_dataset.get_dataset()
     created = dataset.get_dataset(
         test_submission,
+        mock_object_constants.study_uuid,
         association_dict,
         ingestion_result_summary,
     )
 
-    assert expected[0] == created[0]
-    assert expected[1] == created[1]
-    assert expected[2] == created[2]
+    assert expected == created
 
 
 def test_create_models_study(test_submission, ingestion_result_summary):

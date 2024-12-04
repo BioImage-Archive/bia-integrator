@@ -1,6 +1,7 @@
 from uuid import UUID
 import hashlib
 from pathlib import Path
+from typing import Optional
 from .bia_data_model import (
     Dataset,
     FileReference,
@@ -76,8 +77,14 @@ def create_image_acquisition_protocol_uuid(title_id: str, study_uuid: UUID) -> U
 def create_specimen_imaging_preparation_protocol_uuid(
     title_id: str, study_uuid: UUID
 ) -> UUID:
-    return __list_to_uuid([title_id, study_uuid, SpecimenImagingPreparationProtocol.__name__])
+    return __list_to_uuid(
+        [title_id, study_uuid, SpecimenImagingPreparationProtocol.__name__]
+    )
 
 
-def create_bio_sample_uuid(title_id: str, study_uuid: UUID) -> UUID:
-    return __list_to_uuid([title_id, study_uuid, BioSample.__name__])
+def create_bio_sample_uuid(
+    title_id: str, study_uuid: UUID, growth_protocol_uuid: Optional[UUID] = None
+) -> UUID:
+    return __list_to_uuid(
+        [title_id, study_uuid, growth_protocol_uuid, BioSample.__name__]
+    )

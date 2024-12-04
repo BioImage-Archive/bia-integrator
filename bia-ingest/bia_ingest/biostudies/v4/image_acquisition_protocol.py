@@ -1,22 +1,19 @@
 import logging
 from typing import List, Any, Dict, Optional
+from uuid import UUID
 
-from bia_ingest.bia_object_creation_utils import (
-    dict_to_uuid,
-    dicts_to_api_models,
-    dict_map_to_api_models,
-    filter_model_dictionary,
-)
+from bia_ingest.bia_object_creation_utils import dict_map_to_api_models
+from bia_ingest.persistence_strategy import PersistenceStrategy
 
-from bia_ingest.cli_logging import log_model_creation_count
 from bia_ingest.biostudies.submission_parsing_utils import (
     find_sections_recursive,
     case_insensitive_get,
     attributes_to_dict,
 )
 from bia_ingest.biostudies.api import Submission, Section
+
 from bia_shared_datamodels import bia_data_model
-from bia_ingest.persistence_strategy import PersistenceStrategy
+from bia_shared_datamodels.uuid_creation import create_image_acquisition_protocol_uuid
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -24,6 +21,7 @@ logger = logging.getLogger("__main__." + __name__)
 # TODO: MAKE MAP
 def get_image_acquisition_protocol_map(
     submission: Submission,
+    study_uuid: UUID,
     result_summary: dict,
     persister: Optional[PersistenceStrategy] = None,
 ) -> dict[str, bia_data_model.ImageAcquisitionProtocol]:
@@ -37,7 +35,7 @@ def get_image_acquisition_protocol_map(
     The titles are what Biostudies uses in association objects to link study components to the relevant objects.
     """
     image_acquisition_protocol_model_dicts = extract_image_acquisition_protocol_dicts(
-        submission
+        submission, study_uuid
     )
     image_acquisition_protocols = dict_map_to_api_models(
         image_acquisition_protocol_model_dicts,
@@ -55,6 +53,7 @@ def get_image_acquisition_protocol_map(
 
 def extract_image_acquisition_protocol_dicts(
     submission: Submission,
+    study_uuid: UUID,
 ) -> List[Dict[str, Any]]:
     acquisition_sections = find_sections_recursive(
         submission.section, ["Image acquisition"]
@@ -88,29 +87,14 @@ def extract_image_acquisition_protocol_dicts(
         # TODO: change template / create logic to lookup the fbbi ID
         model_dict["fbbi_id"] = []
 
-        model_dict["accno"] = section.__dict__.get("accno", "")
-        model_dict["accession_id"] = submission.accno
-        model_dict["uuid"] = generate_image_acquisition_protocol_uuid(model_dict)
         model_dict["version"] = 0
-        model_dict = filter_model_dictionary(
-            model_dict, bia_data_model.ImageAcquisitionProtocol
+        model_dict["uuid"] = create_image_acquisition_protocol_uuid(
+            model_dict["title_id"], study_uuid
         )
+
         model_dict_map[attr_dict["Title"]] = model_dict
 
     return model_dict_map
-
-
-def generate_image_acquisition_protocol_uuid(protocol_dict: Dict[str, Any]) -> str:
-    attributes_to_consider = [
-        "accession_id",
-        "accno",
-        "title_id",
-        "protocol_description",
-        "imaging_instrument_description",
-        "imaging_method_name",
-        "fbbi_id",
-    ]
-    return dict_to_uuid(protocol_dict, attributes_to_consider)
 
 
 def get_imaging_method_names_from_subsection(

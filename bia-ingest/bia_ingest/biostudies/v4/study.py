@@ -5,27 +5,27 @@ from typing import List, Any, Dict, Optional
 from bia_ingest.cli_logging import (
     IngestionResult,
     log_failed_model_creation,
-    log_model_creation_count,
 )
+from bia_ingest.persistence_strategy import PersistenceStrategy
+from bia_ingest.bia_object_creation_utils import (
+    dict_to_api_model,
+    dicts_to_api_models,
+)
+
 from bia_ingest.biostudies.submission_parsing_utils import (
     attributes_to_dict,
     find_sections_recursive,
     mattributes_to_dict,
     case_insensitive_get,
 )
-
 from bia_ingest.biostudies.api import Attribute, Submission
-from bia_ingest.bia_object_creation_utils import (
-    dict_to_uuid,
-    dict_to_api_model,
-    dicts_to_api_models,
-)
-
 from bia_ingest.biostudies.generic_conversion_utils import (
     get_generic_section_as_dict,
 )
-from bia_ingest.persistence_strategy import PersistenceStrategy
+
 from bia_shared_datamodels import bia_data_model, semantic_models
+from bia_shared_datamodels.uuid_creation import create_study_uuid
+
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -85,7 +85,7 @@ def get_study(
     )
 
     study_dict = {
-        "uuid": get_study_uuid(submission),
+        "uuid": create_study_uuid(submission.accno),
         "accession_id": submission.accno,
         # TODO: Do more robust search for title - sometimes it is in
         #       actual submission - see old ingest code
@@ -113,15 +113,6 @@ def get_study(
             ]
         )
     return study
-
-
-def get_study_uuid(submission: Submission) -> str:
-    return dict_to_uuid(
-        {"accession_id": submission.accno},
-        [
-            "accession_id",
-        ],
-    )
 
 
 def study_title_from_submission(submission: Submission) -> str:

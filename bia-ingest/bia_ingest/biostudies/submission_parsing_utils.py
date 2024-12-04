@@ -168,7 +168,7 @@ def find_sections_recursive(
 
 def find_datasets_with_file_lists(
     submission: Submission,
-) -> List[Dict[str, List[Dict[str, Union[str, None, List[str]]]]]]:
+) -> Dict[str, List[Dict[str, Union[str, None, List[str]]]]]:
     """
     Return dict with dataset names as keys and file lists dicts as values
 
