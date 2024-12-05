@@ -1,5 +1,5 @@
 import pytest
-from bia_assign_image import image, specimen
+from bia_assign_image import image, specimen, creation_process
 from .mock_objects import mock_image, mock_specimen, mock_creation_process
 from bia_ingest import persistence_strategy
 from bia_test_data.mock_objects.utils import accession_id
@@ -23,14 +23,14 @@ def persister(tmpdir):
 
 
 def test_bia_image_with_one_file_reference():
-    expected_image = mock_image.get_image_with_one_file_reference()
-    created_image = image.get_image(
+    expected = mock_image.get_image_with_one_file_reference()
+    created = image.get_image(
         submission_dataset_uuid=mock_image.dataset.uuid,
-        creation_process_uuid=expected_image.creation_process_uuid,
-        original_file_reference_uuid=expected_image.original_file_reference_uuid,
+        creation_process_uuid=expected.creation_process_uuid,
+        original_file_reference_uuid=expected.original_file_reference_uuid,
     )
 
-    assert expected_image == created_image
+    assert expected == created
 
 def test_bia_specimen(persister):
     expected= mock_specimen.get_specimen_for_image_with_one_file_reference()
@@ -43,4 +43,10 @@ def test_bia_specimen(persister):
 
 def test_bia_creation_process(persister):
     expected = mock_creation_process.get_creation_process_with_one_file_reference()
-    assert expected
+    input_image_uuid = mock_image.get_image_with_one_file_reference().uuid
+    dataset = mock_dataset.get_dataset()[1]
+    subject_specimen_uuid = mock_specimen.get_specimen_for_image_with_one_file_reference().uuid
+    created = creation_process.get_creation_process(
+        input_image_uuid, dataset, subject_specimen_uuid
+    )
+    assert expected == created
