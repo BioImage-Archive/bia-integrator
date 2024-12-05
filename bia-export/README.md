@@ -46,7 +46,7 @@ This will create `bia-image-export.json` using the example test data.
 Image Dataset Export
 Run:
     `poetry run bia-export datasets-for-website-image S-BIADTEST -o bia-dataset-export.json -r test/input_data`
-This will create `bia-dataset-exportt.json` using the example test data.
+This will create `bia-dataset-export.json` using the example test data.
 
 
 Commands to generate the current BIA data

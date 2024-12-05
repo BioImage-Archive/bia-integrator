@@ -4,6 +4,8 @@ from bia_export.website_export.website_models import (
     BioSample,
     ImageAcquisitionProtocol,
     SpecimenImagingPreparationProtocol,
+    AnnotationMethod,
+    Protocol,
     CLIContext,
 )
 from bia_integrator_api import models
@@ -22,11 +24,19 @@ class Dataset(models.Dataset):
     specimen_imaging_preparation_protocol: Optional[
         List[SpecimenImagingPreparationProtocol]
     ] = Field(
-        description="""Processes involved in the preprapartion of the samples for imaged.""",
+        description="""Processes involved in the preprapartion of the samples for imaging.""",
         default_factory=list,
     )
     biological_entity: Optional[List[BioSample]] = Field(
         description="""The biological entity or entities that were imaged.""",
+        default_factory=list,
+    )
+    annotation_process: Optional[List[AnnotationMethod]] = Field(
+        description="""Methods used to create the annotated image.""",
+        default_factory=list,
+    )
+    other_creation_process: Optional[List[Protocol]] = Field(
+        description="""Other protocols followed in order to create the images in this dataset.""",
         default_factory=list,
     )
     image: List[models.Image] = Field(
@@ -57,6 +67,8 @@ class StudyCLIContext(CLIContext):
             ImageAcquisitionProtocol: set(),
             BioSample: set(),
             SpecimenImagingPreparationProtocol: set(),
+            AnnotationMethod: set(),
+            Protocol: set(),
         },
         description="""Tracks e.g. which BioSamples have been displayed in previous dataset sections to 
         determine whether details should default to open or closed.""",
