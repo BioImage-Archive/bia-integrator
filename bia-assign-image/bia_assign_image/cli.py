@@ -1,3 +1,4 @@
+from pathlib import Path
 from typing import List
 from enum import Enum
 from typing import Annotated
@@ -25,8 +26,9 @@ app.add_typer(
     help="Create specified representations",
 )
 
-# TODO: Obtain this from settings
-output_dir_base = "/home/kola/.cache/bia-integrator-data-sm"
+# TODO: Use settings for this os
+import os
+output_dir_base = str(Path(os.environ["HOME"]) / ".cache" / "bia-integrator-data-sm")
 
 
 logging.basicConfig(
