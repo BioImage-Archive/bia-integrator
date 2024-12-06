@@ -66,6 +66,7 @@ class IngestionResult(CLIResult):
     ImageCorrelationMethod_ValidationErrorCount: int = Field(default=0)
 
     Uncaught_Exception: str = Field(default="")
+    Warning: str = Field(default="")
 
 
 def tabulate_ingestion_errors(
@@ -73,7 +74,7 @@ def tabulate_ingestion_errors(
 ) -> Table:
 
     table = Table()
-    headers = ["Accession ID", "Processing Mode", "Status", "Error: Count;"]
+    headers = ["Accession ID", "Processing Mode", "Status", "Error: Count", "Warnings"]
 
     if include_object_count:
         for field in IngestionResult.model_fields:
@@ -113,20 +114,36 @@ def tabulate_ingestion_errors(
 
         if result.Uncaught_Exception:
             error_message += f"Uncaught exception: {result.Uncaught_Exception}"
-
-        if error_message == "":
+        
+        warning_message = ""
+        if result.Warning:
+            warning_message = result.Warning
+        
+        if (error_message == "") & (warning_message == ""):
             status = Text("Success")
             status.stylize("green")
-        else:
+        elif (error_message == "") & (warning_message != ""):
+            status = Text("Success with warnings")
+            status.stylize("orange")
+            warning_message = Text(warning_message)
+            warning_message.stylize("orange")
+        elif (error_message != "") & (warning_message != ""):
+            status = Text("Failures with warnings")
+            status.stylize("red")
+            warning_message = Text(warning_message)
+            warning_message.stylize("orange")
+            error_message = Text(error_message)
+            error_message.stylize("red")
+        elif (error_message != "") & (warning_message == ""):
             status = Text("Failures")
             status.stylize("red")
             error_message = Text(error_message)
             error_message.stylize("red")
 
-        row_info = [accession_id_key, result.ProcessingVersion, status, error_message]
+        row_info = [accession_id_key, result.ProcessingVersion, status, error_message, warning_message]
 
         if include_object_count:
-            for header in headers[4:]:
+            for header in headers[5:]:
                 row_info.append(str(result_dict[header + "_CreationCount"]))
 
         table.add_row(*row_info)

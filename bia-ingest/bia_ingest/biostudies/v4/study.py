@@ -2,6 +2,8 @@ import logging
 from pydantic import ValidationError
 import re
 from typing import List, Any, Dict, Optional
+from email_validator import validate_email, EmailNotValidError
+
 from bia_ingest.cli_logging import (
     IngestionResult,
     log_failed_model_creation,
@@ -340,10 +342,11 @@ def get_contributor(
             model_dict["affiliation"] = [
                 model_dict["affiliation"],
             ]
-        if model_dict["contact_email"] == "UNKNOWN":
-            model_dict["contact_email"] = None
-        elif model_dict["contact_email"]:
-            model_dict["contact_email"] = model_dict["contact_email"].strip("<>")
+        
+        sanitised_email = sanitise_contributor_email(
+            model_dict["contact_email"], result_summary, submission.accno
+        )
+        model_dict["contact_email"] = sanitised_email
 
         contributor_dicts.append(model_dict)
 
@@ -352,7 +355,6 @@ def get_contributor(
     )
 
     return contributors
-
 
 def sanitise_affiliation_attribute(
     attribute_list: List[Attribute],
@@ -378,3 +380,25 @@ def sanitise_affiliation_attribute(
         else:
             sanitised_attribute_list.append(attribute)
     return sanitised_attribute_list
+
+def sanitise_contributor_email(
+        email: str | None, 
+        result_summary: dict[str, IngestionResult],
+        accno: str,
+):
+    if email is not None:
+        try:
+            email_info = validate_email(email, check_deliverability=False)
+            email = email_info.normalized
+            return email
+        except EmailNotValidError as e:
+            current_warnings = result_summary[accno].Warning
+            logger.info(f"type of warning: {type(current_warnings)}")
+            result_summary[accno].__setattr__(
+                "Warning",
+                current_warnings + "WARNING: " + str(e) + "\n"
+            )
+            logger.info(f"the warning is: {result_summary[accno].Warning}")
+            email = None
+    
+    return email
