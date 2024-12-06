@@ -7,7 +7,15 @@
     "version": 1
   },
   "description": null,
-  "attribute": [],
+  "attribute": [
+    {
+      "provenance": "bia_ingest",
+      "name": "annotation_method_uuid",
+      "value": {
+          "annotation_method_uuid": ["ef019f5d-d3e0-4122-89ae-1d1d07d2830f"]
+      }
+    }
+  ],
   "example_image_uri": [],
   "submitted_in_study_uuid": "a2fdbd58-ee11-4cd9-bc6a-f3d3da7fff71"
 }

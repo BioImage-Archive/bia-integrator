@@ -86,7 +86,17 @@
                     "type_name": "Dataset",
                     "version": 1
                 },
-                "attribute": [],
+                "attribute": [
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "annotation_method_uuid",
+                        "value": {
+                            "annotation_method_uuid": [
+                                "ef019f5d-d3e0-4122-89ae-1d1d07d2830f"
+                            ]
+                        }
+                    }
+                ],
                 "description": null,
                 "analysis_method": null,
                 "correlation_method": null,
@@ -95,6 +105,29 @@
                 "acquisition_process": [],
                 "specimen_imaging_preparation_protocol": [],
                 "biological_entity": [],
+                "annotation_process": [
+                    {
+                        "default_open": true,
+                        "title_id": "Annotations and segmentation masks",
+                        "uuid": "ef019f5d-d3e0-4122-89ae-1d1d07d2830f",
+                        "version": 1,
+                        "model": {
+                            "type_name": "AnnotationMethod",
+                            "version": 1
+                        },
+                        "attribute": [],
+                        "protocol_description": "Test protocol description",
+                        "annotation_criteria": "Test annotation criteria.",
+                        "annotation_coverage": "Test annotation coverage.",
+                        "transformation_description": null,
+                        "spatial_information": null,
+                        "method_type": [
+                            "other"
+                        ],
+                        "annotation_source_indicator": null
+                    }
+                ],
+                "other_creation_process": [],
                 "image": [
                     {
                         "uuid": "7966aa52-e3db-4ce3-801e-44c524b73ee3",
@@ -125,6 +158,34 @@
                     "version": 1
                 },
                 "attribute": [
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "image_acquisition_protocol_uuid",
+                        "value": {
+                            "image_acquisition_protocol_uuid": [
+                                "c2e44a1b-a43c-476e-8ddf-8587f4c955b3"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "specimen_imaging_preparation_protocol_uuid",
+                        "value": {
+                            "specimen_imaging_preparation_protocol_uuid": [
+                                "7199d730-29f1-4ad8-b599-e9089cbb2d7b"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "bio_sample_uuid",
+                        "value": {
+                            "bio_sample_uuid": [
+                                "64a67727-4e7c-469a-91c4-6219ae072e99",
+                                "6950718c-4917-47a1-a807-11b874e80a23"
+                            ]
+                        }
+                    },
                     {
                         "provenance": "bia_ingest",
                         "name": "associations",
@@ -223,7 +284,17 @@
                             "Test intrinsic variable 1\\nwith escaped character"
                         ],
                         "growth_protocol_uuid": "a2ce3950-3b28-40b3-a6a5-23c4f7864912",
-                        "growth_protocol": null
+                        "growth_protocol": {
+                            "title_id": "Test specimen 1",
+                            "uuid": "a2ce3950-3b28-40b3-a6a5-23c4f7864912",
+                            "version": 2,
+                            "model": {
+                                "type_name": "Protocol",
+                                "version": 1
+                            },
+                            "attribute": [],
+                            "protocol_description": "Test sample growth protocol 1"
+                        }
                     },
                     {
                         "default_open": true,
@@ -254,9 +325,21 @@
                             "Test intrinsic variable 2"
                         ],
                         "growth_protocol_uuid": "a2ce3950-3b28-40b3-a6a5-23c4f7864912",
-                        "growth_protocol": null
+                        "growth_protocol": {
+                            "title_id": "Test specimen 1",
+                            "uuid": "a2ce3950-3b28-40b3-a6a5-23c4f7864912",
+                            "version": 2,
+                            "model": {
+                                "type_name": "Protocol",
+                                "version": 1
+                            },
+                            "attribute": [],
+                            "protocol_description": "Test sample growth protocol 1"
+                        }
                     }
                 ],
+                "annotation_process": [],
+                "other_creation_process": [],
                 "image": [
                     {
                         "uuid": "e7322131-8e27-455d-b9fc-8add0719af70",
@@ -287,6 +370,33 @@
                     "version": 1
                 },
                 "attribute": [
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "image_acquisition_protocol_uuid",
+                        "value": {
+                            "image_acquisition_protocol_uuid": [
+                                "c2e44a1b-a43c-476e-8ddf-8587f4c955b3"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "specimen_imaging_preparation_protocol_uuid",
+                        "value": {
+                            "specimen_imaging_preparation_protocol_uuid": [
+                                "7199d730-29f1-4ad8-b599-e9089cbb2d7b"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "bio_sample_uuid",
+                        "value": {
+                            "bio_sample_uuid": [
+                                "64a67727-4e7c-469a-91c4-6219ae072e99"
+                            ]
+                        }
+                    },
                     {
                         "provenance": "bia_ingest",
                         "name": "associations",
@@ -329,8 +439,66 @@
                         ]
                     }
                 ],
-                "specimen_imaging_preparation_protocol": [],
-                "biological_entity": [],
+                "specimen_imaging_preparation_protocol": [
+                    {
+                        "default_open": false,
+                        "title_id": "Test specimen 1",
+                        "uuid": "7199d730-29f1-4ad8-b599-e9089cbb2d7b",
+                        "version": 1,
+                        "model": {
+                            "type_name": "SpecimenImagingPreparationProtocol",
+                            "version": 2
+                        },
+                        "attribute": [],
+                        "protocol_description": "Test sample preparation protocol 1",
+                        "signal_channel_information": []
+                    }
+                ],
+                "biological_entity": [
+                    {
+                        "default_open": false,
+                        "title_id": "Test Biosample 1",
+                        "uuid": "64a67727-4e7c-469a-91c4-6219ae072e99",
+                        "version": 1,
+                        "model": {
+                            "type_name": "BioSample",
+                            "version": 3
+                        },
+                        "attribute": [],
+                        "organism_classification": [
+                            {
+                                "attribute": null,
+                                "common_name": "human",
+                                "scientific_name": "Homo sapiens",
+                                "ncbi_id": null
+                            }
+                        ],
+                        "biological_entity_description": "Test biological entity 1",
+                        "experimental_variable_description": [
+                            "Test experimental entity 1"
+                        ],
+                        "extrinsic_variable_description": [
+                            "Test extrinsic variable 1"
+                        ],
+                        "intrinsic_variable_description": [
+                            "Test intrinsic variable 1\\nwith escaped character"
+                        ],
+                        "growth_protocol_uuid": "a2ce3950-3b28-40b3-a6a5-23c4f7864912",
+                        "growth_protocol": {
+                            "title_id": "Test specimen 1",
+                            "uuid": "a2ce3950-3b28-40b3-a6a5-23c4f7864912",
+                            "version": 2,
+                            "model": {
+                                "type_name": "Protocol",
+                                "version": 1
+                            },
+                            "attribute": [],
+                            "protocol_description": "Test sample growth protocol 1"
+                        }
+                    }
+                ],
+                "annotation_process": [],
+                "other_creation_process": [],
                 "image": [],
                 "file_count": 0,
                 "image_count": 0,

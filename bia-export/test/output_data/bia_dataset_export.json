@@ -7,7 +7,17 @@
             "type_name": "Dataset",
             "version": 1
         },
-        "attribute": [],
+        "attribute": [
+            {
+                "provenance": "bia_ingest",
+                "name": "annotation_method_uuid",
+                "value": {
+                    "annotation_method_uuid": [
+                        "ef019f5d-d3e0-4122-89ae-1d1d07d2830f"
+                    ]
+                }
+            }
+        ],
         "description": null,
         "analysis_method": null,
         "correlation_method": null,
@@ -102,6 +112,34 @@
             "version": 1
         },
         "attribute": [
+            {
+                "provenance": "bia_ingest",
+                "name": "image_acquisition_protocol_uuid",
+                "value": {
+                    "image_acquisition_protocol_uuid": [
+                        "c2e44a1b-a43c-476e-8ddf-8587f4c955b3"
+                    ]
+                }
+            },
+            {
+                "provenance": "bia_ingest",
+                "name": "specimen_imaging_preparation_protocol_uuid",
+                "value": {
+                    "specimen_imaging_preparation_protocol_uuid": [
+                        "7199d730-29f1-4ad8-b599-e9089cbb2d7b"
+                    ]
+                }
+            },
+            {
+                "provenance": "bia_ingest",
+                "name": "bio_sample_uuid",
+                "value": {
+                    "bio_sample_uuid": [
+                        "64a67727-4e7c-469a-91c4-6219ae072e99",
+                        "6950718c-4917-47a1-a807-11b874e80a23"
+                    ]
+                }
+            },
             {
                 "provenance": "bia_ingest",
                 "name": "associations",
@@ -225,6 +263,33 @@
             "version": 1
         },
         "attribute": [
+            {
+                "provenance": "bia_ingest",
+                "name": "image_acquisition_protocol_uuid",
+                "value": {
+                    "image_acquisition_protocol_uuid": [
+                        "c2e44a1b-a43c-476e-8ddf-8587f4c955b3"
+                    ]
+                }
+            },
+            {
+                "provenance": "bia_ingest",
+                "name": "specimen_imaging_preparation_protocol_uuid",
+                "value": {
+                    "specimen_imaging_preparation_protocol_uuid": [
+                        "7199d730-29f1-4ad8-b599-e9089cbb2d7b"
+                    ]
+                }
+            },
+            {
+                "provenance": "bia_ingest",
+                "name": "bio_sample_uuid",
+                "value": {
+                    "bio_sample_uuid": [
+                        "64a67727-4e7c-469a-91c4-6219ae072e99"
+                    ]
+                }
+            },
             {
                 "provenance": "bia_ingest",
                 "name": "associations",

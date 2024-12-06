@@ -19,7 +19,9 @@ from bia_export.website_export.website_models import (
     ImageAcquisitionProtocol,
     Protocol,
     SpecimenImagingPreparationProtocol,
+    AnnotationMethod,
 )
+from bia_export.website_export.generic_object_retrieval import retrieve_object
 from bia_integrator_api import models as api_models
 import logging
 
@@ -79,36 +81,36 @@ def transform_dataset_detail_objects(
     dataset: api_models.Dataset, context: StudyCLIContext
 ):
 
-    detail_map = {
-        "acquisition_process": {
-            "association_field": "image_acquisition",
-            "bia_type": api_models.ImageAcquisitionProtocol,
-            "website_type": ImageAcquisitionProtocol,
-        },
-        "biological_entity": {
-            "association_field": "biosample",
-            "bia_type": api_models.BioSample,
-            "website_type": BioSample,
-        },
-        "specimen_imaging_preparation_protocol": {
-            "association_field": "specimen",
-            "bia_type": api_models.SpecimenImagingPreparationProtocol,
-            "website_type": SpecimenImagingPreparationProtocol,
-        },
+    dataset_detail_class_map = {
+        api_models.ImageAcquisitionProtocol: ImageAcquisitionProtocol,
+        api_models.SpecimenImagingPreparationProtocol: SpecimenImagingPreparationProtocol,
+        api_models.BioSample: BioSample,
+        api_models.Protocol: Protocol,
+        api_models.AnnotationMethod: AnnotationMethod,
     }
 
-    api_details = retrieve_detail_objects(dataset, detail_map, context)
+    dataset_field = {
+        ImageAcquisitionProtocol: "acquisition_process",
+        SpecimenImagingPreparationProtocol: "specimen_imaging_preparation_protocol",
+        BioSample: "biological_entity",
+        Protocol: "other_creation_process",
+        AnnotationMethod: "annotation_process",
+    }
+
+    api_details = retrieve_detail_objects(dataset, context)
 
     detail_fields: dict[str, List[BaseModel]] = {}
-    for field, object_list in api_details.items():
-        detail_fields[field] = []
-        for api_object in object_list:
-            detail = transform_detail_object(
-                api_object,
-                detail_map[field]["website_type"],
-                context,
-            )
-            detail_fields[field].append(detail)
+    for object_type, object_list in api_details.items():
+        if len(object_list) > 0:
+            website_class = dataset_detail_class_map[object_type]
+            detail_fields[dataset_field[website_class]] = []
+            for api_object in object_list:
+                detail = transform_detail_object(
+                    api_object,
+                    website_class,
+                    context,
+                )
+                detail_fields[dataset_field[website_class]].append(detail)
 
     return detail_fields
 
@@ -124,5 +126,9 @@ def transform_detail_object(
         context.displayed_dataset_detail[target_type].add(detail_dict["uuid"])
     else:
         detail_dict["default_open"] = False
+    if target_type == BioSample and detail_dict["growth_protocol_uuid"]:
+        api_growth_protocol = retrieve_object( detail_dict["growth_protocol_uuid"], api_models.Protocol, context)
+        detail_dict["growth_protocol"] = api_growth_protocol
+
     detail = target_type(**detail_dict)
     return detail
