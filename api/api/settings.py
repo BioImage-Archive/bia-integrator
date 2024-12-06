@@ -14,6 +14,7 @@ class Settings(BaseSettings):
     mongo_collection_biaint: str = "bia_integrator"
     db_name: str
     jwt_secret_key: str
+    jwt_ttl_minutes: int = 1440
     user_create_secret_token: str
     fastapi_root_path: str = ""
 
