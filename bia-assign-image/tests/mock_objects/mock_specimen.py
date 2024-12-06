@@ -33,7 +33,5 @@ def get_specimen_for_image_with_one_file_reference() -> bia_data_model.Specimen:
         []
         )
 
-    # TODO: Do we want tests to include a test protocol?
-    # TODO: Do we want tests to include a test annotation method?
 
     return bia_data_model.Specimen.model_validate(specimen_dict)

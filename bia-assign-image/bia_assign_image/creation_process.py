@@ -1,5 +1,4 @@
 from uuid import UUID
-from bia_ingest.persistence_strategy import PersistenceStrategy
 from bia_shared_datamodels import bia_data_model, uuid_creation
 
 def get_creation_process(

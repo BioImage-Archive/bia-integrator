@@ -1,9 +1,9 @@
-import pdb
-import typer
 from typing import List
 from enum import Enum
 from typing import Annotated
+import typer
 from bia_shared_datamodels import bia_data_model, uuid_creation
+from bia_shared_datamodels.semantic_models import ImageRepresentationUseType
 from bia_ingest.persistence_strategy import (
     PersistenceMode,
     persistence_strategy_factory,
@@ -13,10 +13,17 @@ from bia_assign_image import (
     specimen,
     creation_process,
 )
+from bia_assign_image.image_representation import get_image_representation
 
 import logging
 
 app = typer.Typer()
+representations_app = typer.Typer()
+app.add_typer(
+    representations_app,
+    name="representations",
+    help="Create specified representations",
+)
 
 # TODO: Obtain this from settings
 output_dir_base = "/home/kola/.cache/bia-integrator-data-sm"
@@ -49,22 +56,85 @@ def assign(
             accession_id=accession_id,
             #api_client=api_client,
         )
-    #pdb.set_trace()
     file_reference_uuid_list = file_reference_uuids[0].split(" ")
     file_references = persister.fetch_by_uuid(file_reference_uuid_list, bia_data_model.FileReference)
     dataset_uuids = [f.submission_dataset_uuid for f in file_references]
     submission_dataset_uuid = dataset_uuids[0]
     assert all([dataset_uuid == submission_dataset_uuid for dataset_uuid in dataset_uuids])
+    dataset = persister.fetch_by_uuid([submission_dataset_uuid,], bia_data_model.Dataset)[0]
+    
     image_uuid = uuid_creation.create_image_uuid(file_reference_uuid_list)
-    creation_process_uuid = uuid_creation.create_creation_process_uuid(image_uuid)
+    
+    bia_specimen = specimen.get_specimen(image_uuid, dataset)
+    persister.persist([bia_specimen,])
+    logger.info(f"Generated bia_data_model.Specimen object {bia_specimen.uuid} and persisted to {persistence_mode}")
+    
+    bia_creation_process = creation_process.get_creation_process(
+        image_uuid, dataset, bia_specimen.uuid
+    )
+    persister.persist([bia_creation_process,])
+    logger.info(f"Generated bia_data_model.CreationProcess object {bia_creation_process.uuid} and persisted to {persistence_mode}")
+    
+
     bia_image = image.get_image(
         submission_dataset_uuid,
-        creation_process_uuid,
-        original_file_reference_uuid=file_reference_uuid_list,
+        bia_creation_process.uuid,
+        file_references=file_references,
     )
-    logger.info(f"Generated bia.Image object {bia_image}")
-    print(f"Generated bia.Image object {bia_image}")
+    persister.persist([bia_image,])
+    logger.info(f"Generated bia_data_model.Image object {bia_image.uuid} and persisted to {persistence_mode}")
 
+@representations_app.command(help="Create specified representations")
+def create(
+    accession_id: Annotated[str, typer.Argument()],
+    image_uuid_list: Annotated[List[str], typer.Argument()],
+    persistence_mode: Annotated[
+        PersistenceMode, typer.Option(case_sensitive=False)
+    ] = PersistenceMode.disk,
+    reps_to_create: Annotated[
+        List[ImageRepresentationUseType], typer.Option(case_sensitive=False)
+    ] = [
+        ImageRepresentationUseType.UPLOADED_BY_SUBMITTER,
+        ImageRepresentationUseType.THUMBNAIL,
+        ImageRepresentationUseType.INTERACTIVE_DISPLAY,
+    ],
+    verbose: Annotated[bool, typer.Option("--verbose", "-v")] = False,
+) -> None:
+    """Create representations for specified file reference(s)"""
+
+    if verbose:
+        logger.setLevel(logging.DEBUG)
+
+    persister = persistence_strategy_factory(
+        persistence_mode,
+        #output_dir_base=settings.bia_data_dir,
+        output_dir_base=output_dir_base,
+        accession_id=accession_id,
+        #api_client=api_client,
+    )
+
+    bia_images = persister.fetch_by_uuid(image_uuid_list, bia_data_model.Image)
+    for bia_image in bia_images:
+        file_references = persister.fetch_by_uuid(bia_image.original_file_reference_uuid, bia_data_model.FileReference)
+        for representation_use_type in reps_to_create:
+            logger.debug(
+                f"starting creation of {representation_use_type.value} for file reference {bia_image.uuid}"
+            )
+            image_representation = get_image_representation(
+                accession_id,
+                file_references,
+                bia_image.uuid,
+                use_type=representation_use_type,
+            )
+            if image_representation:
+                message = f"COMPLETED: Creation of image representation {image_representation.uuid} of use type {representation_use_type.value} for bia_data_model.Image {bia_image.uuid} of {accession_id}"
+                logger.info(message)
+                persister.persist([image_representation,])
+                logger.info(f"Persisted image_representation {image_representation.uuid}")
+
+            else:
+                message = f"WARNING: Could NOT create image representation {representation_use_type.value} for bia_data_model.Image {bia_image.uuid} of {accession_id}"
+                logger.warning(message)
 
 @app.callback()
 def main() -> None:

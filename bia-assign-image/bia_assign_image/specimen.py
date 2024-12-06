@@ -1,17 +1,13 @@
-from bia_ingest.persistence_strategy import PersistenceStrategy
+from uuid import UUID
 from bia_shared_datamodels import bia_data_model, uuid_creation
 
-def get_specimen(image:bia_data_model.Image, persister: PersistenceStrategy) -> bia_data_model.Specimen:
+def get_specimen(image_uuid: UUID, dataset: bia_data_model.Dataset) -> bia_data_model.Specimen:
 
     model_dict = {
         "version": 0,
-        "uuid": uuid_creation.create_specimen_uuid(image.uuid),
+        "uuid": uuid_creation.create_specimen_uuid(image_uuid),
     }
 
-    dataset = persister.fetch_by_uuid(
-        [image.submission_dataset_uuid,],
-        bia_data_model.Dataset
-        )[0]
     attribute_names = (
         (
             "specimen_imaging_preparation_protocol_uuid",
