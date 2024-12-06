@@ -36,7 +36,8 @@ def get_image_representation_of_uploaded_by_submitter() -> bia_data_model.ImageR
     representation_dict["uuid"] = uuid_creation.create_image_representation_uuid(
         image_uuid,
         representation_dict["image_format"],
-        representation_dict["use_type"],
+        # Note that using the Enum ImageRepresentation gives a different UUID than using its value
+        representation_dict["use_type"].value,
     )
     return bia_data_model.ImageRepresentation.model_validate(representation_dict)
 
@@ -52,7 +53,7 @@ def get_image_representation_of_thumbnail() -> bia_data_model.ImageRepresentatio
     image_representation_uuid = uuid_creation.create_image_representation_uuid(
         image_uuid,
         representation_dict["image_format"],
-        representation_dict["use_type"],
+        representation_dict["use_type"].value,
     )
     representation_dict["uuid"] = image_representation_uuid
     file_uri = f"{file_uri_base}/{accession_id}/{image_uuid}/{image_representation_uuid}.png"
@@ -69,7 +70,7 @@ def get_image_representation_of_static_display() -> bia_data_model.ImageRepresen
     image_representation_uuid = uuid_creation.create_image_representation_uuid(
         image_uuid,
         representation_dict["image_format"],
-        representation_dict["use_type"],
+        representation_dict["use_type"].value,
     )
     representation_dict["uuid"] = image_representation_uuid
     file_uri = f"{file_uri_base}/{accession_id}/{image_uuid}/{image_representation_uuid}.png"
@@ -86,7 +87,7 @@ def get_image_representation_of_interactive_display() -> bia_data_model.ImageRep
     image_representation_uuid = uuid_creation.create_image_representation_uuid(
         image_uuid,
         representation_dict["image_format"],
-        representation_dict["use_type"],
+        representation_dict["use_type"].value,
     )
     representation_dict["uuid"] = image_representation_uuid
     file_uri = f"{file_uri_base}/{accession_id}/{image_uuid}/{image_representation_uuid}.ome.zarr"

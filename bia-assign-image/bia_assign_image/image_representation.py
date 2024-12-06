@@ -46,7 +46,8 @@ def get_image_representation(
     image_representation_uuid = uuid_creation.create_image_representation_uuid(
         image_uuid,
         image_format,
-        use_type,
+        # Note that using the Enum ImageRepresentation gives a different UUID than using its value
+        use_type.value,
     )
 
     if use_type == semantic_models.ImageRepresentationUseType.UPLOADED_BY_SUBMITTER:
