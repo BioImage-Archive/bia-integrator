@@ -8,6 +8,7 @@ import logging
 from pydantic import BaseModel
 from pydantic.alias_generators import to_snake
 from bia_integrator_api.api.private_api import PrivateApi
+from bia_integrator_api.api.public_api import PublicApi
 from bia_integrator_api.exceptions import NotFoundException
 import bia_integrator_api.models as api_models
 
@@ -78,9 +79,9 @@ class DiskPersister(PersistenceStrategy):
 # Persist using API
 class ApiPersister(PersistenceStrategy):
     def __init__(self, api_client: PrivateApi) -> None:
-        assert isinstance(
-            api_client, PrivateApi
-        ), f"ApiPersister cannot be created. Expected valid instance of <class 'PrivateApi'>. Got : {type(api_client)} - are your API credentials valid and/or is the API server online?"
+        assert (
+            isinstance(api_client, PrivateApi) or isinstance(api_client, PublicApi)
+        ), f"ApiPersister cannot be created. Expected valid instance of <class 'PrivateApi'> or <class 'PublicApi'>. Got : {type(api_client)} - are your API credentials valid and/or is the API server online?"
         self.api_client = api_client
 
     def persist(self, object_list: List[BaseModel]) -> None:
