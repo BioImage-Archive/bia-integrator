@@ -6,9 +6,12 @@ from bia_test_data.mock_objects import mock_file_reference, mock_dataset
 from .mock_objects import mock_image, mock_image_representation
 from bia_ingest.persistence_strategy import persistence_strategy_factory
 
+
 def test_bia_assign_cli(monkeypatch, tmpdir):
     runner = CliRunner()
-    file_reference_uuids = " ". join([str(f.uuid) for f in mock_file_reference.get_file_reference()])
+    file_reference_uuids = " ".join(
+        [str(f.uuid) for f in mock_file_reference.get_file_reference()]
+    )
 
     output_dir_base = tmpdir
     persister = persistence_strategy_factory(
@@ -28,9 +31,10 @@ def test_bia_assign_cli(monkeypatch, tmpdir):
                 d.rmdir()
         created_image_path.rmdir()
 
-    monkeypatch.setattr(cli, "output_dir_base", str(output_dir_base))
+    monkeypatch.setattr(cli.settings, "bia_data_dir", str(output_dir_base))
     result = runner.invoke(
-        cli.app, [
+        cli.app,
+        [
             "assign",
             accession_id,
             file_reference_uuids,
@@ -41,27 +45,48 @@ def test_bia_assign_cli(monkeypatch, tmpdir):
     created = [p for p in created_image_path.rglob("*.json")]
     assert len(created) == 1
 
+
 def test_bia_create_image_representation_cli(monkeypatch, tmpdir):
     runner = CliRunner(mix_stderr=False)
-    file_reference_uuids = " ". join([str(f.uuid) for f in mock_file_reference.get_file_reference()])
 
     output_dir_base = tmpdir
     persister = persistence_strategy_factory(
         persistence_mode="disk",
-       output_dir_base=str(output_dir_base),
+        output_dir_base=str(output_dir_base),
         accession_id=accession_id,
     )
     persister.persist(mock_file_reference.get_file_reference())
-    persister.persist([mock_image.get_image_with_one_file_reference(),])
-    persister.persist([mock_image_representation.get_image_representation_of_interactive_display(),])
-    persister.persist([mock_image_representation.get_image_representation_of_thumbnail(),])
-    persister.persist([mock_image_representation.get_image_representation_of_uploaded_by_submitter(),])
-    persister.persist([mock_image_representation.get_image_representation_of_static_display(),])
+    persister.persist(
+        [
+            mock_image.get_image_with_one_file_reference(),
+        ]
+    )
+    persister.persist(
+        [
+            mock_image_representation.get_image_representation_of_interactive_display(),
+        ]
+    )
+    persister.persist(
+        [
+            mock_image_representation.get_image_representation_of_thumbnail(),
+        ]
+    )
+    persister.persist(
+        [
+            mock_image_representation.get_image_representation_of_uploaded_by_submitter(),
+        ]
+    )
+    persister.persist(
+        [
+            mock_image_representation.get_image_representation_of_static_display(),
+        ]
+    )
 
     image_uuid = mock_image.get_image_with_one_file_reference().uuid
-    monkeypatch.setattr(cli, "output_dir_base", str(output_dir_base))
+    monkeypatch.setattr(cli.settings, "bia_data_dir", str(output_dir_base))
     result = runner.invoke(
-        cli.app, [
+        cli.app,
+        [
             "representations",
             "create",
             accession_id,
