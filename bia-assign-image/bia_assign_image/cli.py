@@ -15,6 +15,9 @@ from bia_assign_image import (
 from bia_assign_image.image_representation import get_image_representation
 from bia_assign_image.config import settings, api_client
 
+# For read only client
+from bia_integrator_api.util import get_client
+
 import logging
 
 app = typer.Typer()
@@ -38,11 +41,20 @@ logger = logging.getLogger()
 def assign(
     accession_id: Annotated[str, typer.Argument()],
     file_reference_uuids: Annotated[List[str], typer.Argument()],
+    retrieval_mode: Annotated[
+        PersistenceMode, typer.Option(case_sensitive=False)
+    ] = PersistenceMode.disk,
     persistence_mode: Annotated[
         PersistenceMode, typer.Option(case_sensitive=False)
     ] = PersistenceMode.disk,
     dryrun: Annotated[bool, typer.Option()] = False,
 ) -> None:
+    retriever = persistence_strategy_factory(
+        retrieval_mode,
+        output_dir_base=settings.bia_data_dir,
+        accession_id=accession_id,
+        api_client=get_client(api_base_url=settings.bia_api_basepath),
+    )
     persister = None
     if not dryrun:
         persister = persistence_strategy_factory(
@@ -52,7 +64,7 @@ def assign(
             api_client=api_client,
         )
     file_reference_uuid_list = file_reference_uuids[0].split(" ")
-    file_references = persister.fetch_by_uuid(
+    file_references = retriever.fetch_by_uuid(
         file_reference_uuid_list, bia_data_model.FileReference
     )
     dataset_uuids = [f.submission_dataset_uuid for f in file_references]
@@ -60,7 +72,7 @@ def assign(
     assert all(
         [dataset_uuid == submission_dataset_uuid for dataset_uuid in dataset_uuids]
     )
-    dataset = persister.fetch_by_uuid(
+    dataset = retriever.fetch_by_uuid(
         [
             submission_dataset_uuid,
         ],
@@ -110,6 +122,9 @@ def assign(
 def create(
     accession_id: Annotated[str, typer.Argument()],
     image_uuid_list: Annotated[List[str], typer.Argument()],
+    retrieval_mode: Annotated[
+        PersistenceMode, typer.Option(case_sensitive=False)
+    ] = PersistenceMode.disk,
     persistence_mode: Annotated[
         PersistenceMode, typer.Option(case_sensitive=False)
     ] = PersistenceMode.disk,
@@ -127,6 +142,12 @@ def create(
     if verbose:
         logger.setLevel(logging.DEBUG)
 
+    retriever = persistence_strategy_factory(
+        retrieval_mode,
+        output_dir_base=settings.bia_data_dir,
+        accession_id=accession_id,
+        api_client=api_client,
+    )
     persister = persistence_strategy_factory(
         persistence_mode,
         output_dir_base=settings.bia_data_dir,
@@ -134,9 +155,10 @@ def create(
         api_client=api_client,
     )
 
+    # I am getting images from disk for the moment
     bia_images = persister.fetch_by_uuid(image_uuid_list, bia_data_model.Image)
     for bia_image in bia_images:
-        file_references = persister.fetch_by_uuid(
+        file_references = retriever.fetch_by_uuid(
             bia_image.original_file_reference_uuid, bia_data_model.FileReference
         )
         for representation_use_type in reps_to_create:
