@@ -21,6 +21,7 @@ from bia_ingest.biostudies.submission_parsing_utils import (
 from bia_ingest.biostudies.api import Attribute, Submission
 from bia_ingest.biostudies.generic_conversion_utils import (
     get_generic_section_as_dict,
+    get_generic_section_as_list,
 )
 
 from bia_shared_datamodels import bia_data_model, semantic_models
@@ -176,25 +177,31 @@ def get_external_reference(
 def get_grant(
     submission: Submission, result_summary: dict
 ) -> List[semantic_models.Grant]:
-    funding_body_dict = get_funding_body(submission, result_summary)
-    key_mapping = [
-        ("id", "grant_id", None),
-    ]
-    grant_dict = get_generic_section_as_dict(
-        submission,
-        [
-            "Funding",
-        ],
-        key_mapping,
-        semantic_models.Grant,
-        result_summary[submission.accno],
-    )
+    funding_sections = find_sections_recursive(submission.section, ["Funding"])
 
     grant_list = []
-    for k, v in grant_dict.items():
-        if k in funding_body_dict:
-            v.funder.append(funding_body_dict[k])
-        grant_list.append(v)
+    for section in funding_sections:
+        attr = attributes_to_dict(section.attributes)
+
+        funding_body = None
+        if "Agency" in attr:
+            funding_body_dict = {"display_name": attr["Agency"]}
+            funding_body = dict_to_api_model(
+                funding_body_dict,
+                semantic_models.FundingBody,
+                result_summary[submission.accno],
+            )
+
+        if "grant_id" in attr:
+            grant_dict = {"id": attr["grant_id"]}
+            if funding_body:
+                grant_dict["funder"] = [funding_body]
+            grant = dict_to_api_model(
+                grant_dict, semantic_models.Grant, result_summary[submission.accno]
+            )
+            grant_list.append(grant)
+        elif funding_body:
+            logger.warning("Found funding body information but no grant")
     return grant_list
 
 

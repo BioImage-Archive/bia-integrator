@@ -64,9 +64,9 @@ def get_generic_section_as_dict(
     key_mapping: List[Tuple[str, str, Union[str, None, List]]],
     mapped_object: Optional[BaseModel] = None,
     valdiation_error_tracking: Optional[IngestionResult] = None,
-) -> Dict[str, Any | Dict[str, Dict[str, str | List[str]]]]:
+) -> Dict[str, Dict[str, str|List[str]] | BaseModel]:
     """
-    Map biostudies.Submission objects to dict containing either semantic_models or bia_data_model equivalent
+    Map biostudies.Submission objects to dict or an object 
     """
     if type(root) is Submission:
         sections = find_sections_recursive(root.section, section_name, [])
