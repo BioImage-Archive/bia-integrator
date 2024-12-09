@@ -86,11 +86,11 @@ def ingest(
             submission_table = load_submission_table_info(accession_id)
         except Exception as error:
             logger.error("Failed to parse information from BioStudies")
-            logging.exception("message")
             result_summary[accession_id].__setattr__(
                 "Uncaught_Exception",
-                str(result_summary[accession_id].Uncaught_Exception) + str(error),
+                "Failed to parse information from BioStudies",
             )
+            logging.exception("message")
             continue
 
         processing_version = determine_biostudies_processing_version(submission)

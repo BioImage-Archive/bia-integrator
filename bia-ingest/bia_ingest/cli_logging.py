@@ -21,12 +21,17 @@ class IngestionResult(CLIResult):
     ProcessingVersion: BioStudiesProcessingVersion = (
         BioStudiesProcessingVersion.FALLBACK
     )
+    
     Study_CreationCount: int = Field(default=0)
     Study_ValidationErrorCount: int = Field(default=0)
     Contributor_CreationCount: int = Field(default=0)
     Contributor_ValidationErrorCount: int = Field(default=0)
     Affiliation_CreationCount: int = Field(default=0)
     Affiliation_ValidationErrorCount: int = Field(default=0)
+    FundingBody_CreationCount: int = Field(default=0)
+    FundingBody_ValidationErrorCount: int = Field(default=0)
+    Grant_CreationCount: int = Field(default=0)
+    Grant_ValidationErrorCount: int = Field(default=0)
     # TODO: start ingesting these from biostudies
     # ExternalLink_CreationCount: int = Field(default=0)
     # ExternalLink_ValidationErrorCount: int = Field(default=0)
