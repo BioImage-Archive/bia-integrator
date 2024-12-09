@@ -42,7 +42,7 @@ def get_study(
 
     submission_attributes = attributes_to_dict(submission.attributes)
     contributors = get_contributor(submission, result_summary)
-    grants = get_grant(submission, result_summary)
+    grants = get_grant_and_funding_body(submission, result_summary)
 
     study_attributes = attributes_to_dict(submission.section.attributes)
 
@@ -174,7 +174,7 @@ def get_external_reference(
 
 
 # TODO: Put comments and docstring
-def get_grant(
+def get_grant_and_funding_body(
     submission: Submission, result_summary: dict
 ) -> List[semantic_models.Grant]:
     funding_sections = find_sections_recursive(submission.section, ["Funding"])
@@ -203,29 +203,6 @@ def get_grant(
         elif funding_body:
             logger.warning("Found funding body information but no grant")
     return grant_list
-
-
-# TODO: Put comments and docstring
-def get_funding_body(
-    submission: Submission, result_summary: dict
-) -> semantic_models.FundingBody:
-    key_mapping = [
-        (
-            "display_name",
-            "Agency",
-            None,
-        ),
-    ]
-    funding_body = get_generic_section_as_dict(
-        submission,
-        [
-            "Funding",
-        ],
-        key_mapping,
-        semantic_models.FundingBody,
-        result_summary[submission.accno],
-    )
-    return funding_body
 
 
 def get_affiliation(
