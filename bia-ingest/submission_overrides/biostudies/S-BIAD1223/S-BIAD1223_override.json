@@ -1,0 +1,336 @@
+{
+    "accno" : "S-BIAD1223",
+    "attributes" : [ {
+      "name" : "Template",
+      "value" : "BioImages.v4"
+    }, {
+      "name" : "DOI",
+      "value" : "10.6019/S-BIAD1223"
+    }, {
+      "name" : "ReleaseDate",
+      "value" : "2024-06-13"
+    }, {
+      "name" : "AttachTo",
+      "value" : "BioImages"
+    } ],
+    "section" : {
+      "type" : "Study",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Fiji 3Dprojections of Z-stacks of confocal fluorescence microscopy to assess the cellular localisation of EGFP-ABRAXAS1 wild-type/mutant and EGFP-CDC45 wild-type/mutant"
+      }, {
+        "name" : "Description",
+        "value" : "Fiji 3Dprojections of Z-stacks recorded on a LSM700 confocal microscopy (Zeiss) represented in Figure 5H and I and Appendix Figure 8-11, Kliche et al., (2024). DAPI was visualised with the 405 nm laser and GFP with the 488 nm laser."
+      }, {
+        "name" : "Keywords",
+        "value" : "Nuclear localisation"
+      }, {
+        "name" : "Keywords",
+        "value" : "CDC45"
+      }, {
+        "name" : "Keywords",
+        "value" : "ABRAXAS1"
+      }, {
+        "name" : "Keywords",
+        "value" : "Disease mutations"
+      }, {
+        "name" : "Acknowledgements",
+        "value" : "We thank Prof. Robert Winqvist for the FLAG-ABRAXAS1 wild-type and mutant constructs."
+      }, {
+        "name" : "License",
+        "value" : "CC BY 4.0",
+        "valqual" : [ {
+          "name" : "URL",
+          "value" : "https://creativecommons.org/licenses/by/4.0/legalcode"
+        } ]
+      }, {
+        "name" : "Funding statement",
+        "value" : "This work was supported by the grants from the Swedish Research Council (YI: 2020-03380 a Marie Sklodowska-Curie European Training Network Grant #860517 (Ubimotif). Work at the Novo Nordisk Foundation Center for Protein Research is supported by grant NNF14CC0001 and NNF23OC0082227. "
+      } ],
+      "subsections" : [ {
+        "type" : "author",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "Johanna Kliche"
+        }, {
+          "name" : "E-mail",
+          "value" : "johanna.kliche@cpr.ku.dk"
+        }, {
+          "name" : "ORCID",
+          "value" : "0000-0003-3179-4635"
+        }, {
+          "name" : "affiliation",
+          "value" : "o1",
+          "reference" : true
+        } ]
+      }, {
+        "type" : "author",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "Ylva Ivarsson"
+        }, {
+          "name" : "E-mail",
+          "value" : "ylva.ivarsson@kemi.u.se"
+        }, {
+          "name" : "affiliation",
+          "value" : "o2",
+          "reference" : true
+        } ]
+      }, {
+        "accno" : "o1",
+        "type" : "organisation",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "University of Copenhagen"
+        } ]
+      }, {
+        "accno" : "o2",
+        "type" : "organisation",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "Uppsala University"
+        } ]
+      }, {
+        "type" : "Funding",
+        "attributes" : [ {
+          "name" : "Agency",
+          "value" : "Swedish research council"
+        }, {
+          "name" : "grant_id",
+          "value" : "2020-03380"
+        } ]
+      }, {
+        "type" : "Funding",
+        "attributes" : [ {
+          "name" : "Agency",
+          "value" : "Marie Sklodowska-Curie European Training Network Grant \"UbiMotif\""
+        }, {
+          "name" : "grant_id",
+          "value" : "860517 "
+        } ]
+      }, {
+        "type" : "Funding",
+        "attributes" : [ {
+          "name" : "Agency",
+          "value" : "Novo Nordisk Foundation"
+        }, {
+          "name" : "grant_id",
+          "value" : "NNF14CC0001"
+        } ]
+      }, {
+        "type" : "Funding",
+        "attributes" : [ {
+          "name" : "Agency",
+          "value" : "Novo Nordisk Foundation"
+        }, {
+          "name" : "grant_id",
+          "value" : "NNF23OC0082227"
+        } ]
+      }, {
+        "accno" : "Biosample-7",
+        "type" : "Biosample",
+        "attributes" : [ {
+          "name" : "Title",
+          "value" : "ABRAXAS1 wild-type"
+        }, {
+          "name" : "Organism",
+          "value" : "Homo sapiens (human)"
+        }, {
+          "name" : "Description",
+          "value" : "HEK293 cells transfected with EGFP-ABRAXAS1 wild-type, fixed and stained for DAPI"
+        }, {
+          "name" : "Biological entity",
+          "value" : "Human Embryonic Kidney 293 Cells"
+        } ]
+      }, {
+        "accno" : "Biosample-6",
+        "type" : "Biosample",
+        "attributes" : [ {
+          "name" : "Title",
+          "value" : "ABRAXAS1 mutant"
+        }, {
+          "name" : "Organism",
+          "value" : "Homo sapiens (human)"
+        }, {
+          "name" : "Description",
+          "value" : "HEK293 cells transfected with EGFP-ABRAXAS1 mutant, fixed and stained for DAPI"
+        }, {
+          "name" : "Biological entity",
+          "value" : "Human Embryonic Kidney 293 Cells"
+        } ]
+      }, {
+        "accno" : "Biosample-7",
+        "type" : "Biosample",
+        "attributes" : [ {
+          "name" : "Title",
+          "value" : "CDC45 wild-type"
+        }, {
+          "name" : "Organism",
+          "value" : "Homo sapiens (human)"
+        }, {
+          "name" : "Description",
+          "value" : "HEK293 cells transfected with EGFP-CDC45 wild-type, fixed and stained for DAPI"
+        }, {
+          "name" : "Biological entity",
+          "value" : "Human Embryonic Kidney 293 Cells"
+        } ]
+      }, {
+        "accno" : "Biosample-8",
+        "type" : "Biosample",
+        "attributes" : [ {
+          "name" : "Title",
+          "value" : "CDC45 mutant"
+        }, {
+          "name" : "Organism",
+          "value" : "Homo sapiens (human)"
+        }, {
+          "name" : "Description",
+          "value" : "HEK293 cells transfected with EGFP-CDC45 mutant, fixed and stained for DAPI"
+        }, {
+          "name" : "Biological entity",
+          "value" : "Human Embryonic Kidney 293 Cells"
+        } ]
+      }, {
+        "accno" : "Specimen-2",
+        "type" : "Specimen",
+        "attributes" : [ {
+          "name" : "Title",
+          "value" : "Fixed HEK293 cells transfected with EGFP-constructs (ABRAXAS1 and R361Q mutant; CDC45 wild-type and R157C mutant)"
+        }, {
+          "name" : "Sample preparation protocol",
+          "value" : "From bioRxiv 2023.09.18.558189: HEK293 cells were transfected with 0.25 µg of respective plasmid (EGFP-ABRAXAS1 and R361Q mutant; EGFP-CDC45 wild-type and R157C mutant) while seeding (ca. 25% confluency) in a 8 chamber slide system (Nunc Lab-Tek II CC2). Medium was changed after 24 h and protein expression allowed for 48 h in total after transfection. After that, cells were fixed and mounted with cell nuclei stained with NucBlue Live ReadyProbes (Invitrogen). Z-stacks of the cells were recorded on a LSM700 confocal microscope (Zeiss) and images analysed with Fiji. "
+        } ]
+      }, {
+        "accno" : "Image acquisition-3",
+        "type" : "Image acquisition",
+        "attributes" : [ {
+          "name" : "Title",
+          "value" : "Z-stacks obtained by confocal microscopy"
+        }, {
+          "name" : "Imaging instrument",
+          "value" : "LSM700 confocal microscope (Zeiss) "
+        }, {
+          "name" : "Image acquisition parameters",
+          "value" : "Z-stacks were recorded using the 63x/1.4 oil objective, 405 nm and 488 nm laser"
+        }, {
+          "name" : "Imaging method",
+          "value" : "confocal microscopy"
+        } ]
+      }, {
+        "accno" : "Image analysis-5",
+        "type" : "Image analysis",
+        "attributes" : [ {
+          "name" : "Title",
+          "value" : "Fiji 3Dprojections of confocal microscopy images"
+        }, {
+          "name" : "Image analysis overview",
+          "value" : "Z-stacks were analysed in Fiji as 3D projections. No quantification of the images was performed."
+        } ]
+      }, {
+        "accno" : "Study Component-4",
+        "type" : "Study Component",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "EGFP-ABRAXAS1 wild-type"
+        }, {
+          "name" : "Description",
+          "value" : "Fiji 3Dprojections of confocal images of HEK293 cells transfected with EGFP-ABRAXAS1 wild-type, fixed and stained for DAPI"
+        }, {
+          "name" : "File List",
+          "value" : "ABRAXAS1_wt.json"
+        } ],
+        "subsections" : [ {
+          "type" : "Associations",
+          "attributes" : [ {
+            "name" : "Biosample",
+            "value" : "ABRAXAS1 wild-type"
+          }, {
+            "name" : "Specimen",
+            "value" : "Fixed HEK293 cells transfected with EGFP-constructs (ABRAXAS1 and R361Q mutant; CDC45 wild-type and R157C mutant)"
+          }, {
+            "name" : "Image acquisition",
+            "value" : "Z-stacks obtained by confocal microscopy"
+          } ]
+        } ]
+      }, {
+        "accno" : "Study Component-9",
+        "type" : "Study Component",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "ABRAXAS1 mutant"
+        }, {
+          "name" : "Description",
+          "value" : "Fiji 3Dprojections of confocal images of HEK293 cells transfected with EGFP-ABRAXAS1 mutant, fixed and stained for DAPI"
+        }, {
+          "name" : "File List",
+          "value" : "ABRAXAS1_mut.json"
+        } ],
+        "subsections" : [ {
+          "type" : "Associations",
+          "attributes" : [ {
+            "name" : "Biosample",
+            "value" : "ABRAXAS1 mutant"
+          }, {
+            "name" : "Specimen",
+            "value" : "Fixed HEK293 cells transfected with EGFP-constructs (ABRAXAS1 and R361Q mutant; CDC45 wild-type and R157C mutant)"
+          }, {
+            "name" : "Image acquisition",
+            "value" : "Z-stacks obtained by confocal microscopy"
+          } ]
+        } ]
+      }, {
+        "accno" : "Study Component-10",
+        "type" : "Study Component",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "CDC45 wild-type"
+        }, {
+          "name" : "Description",
+          "value" : "Fiji 3Dprojections of confocal images of HEK293 cells transfected with EGFP-CDC45 wild-type, fixed and stained for DAPI"
+        }, {
+          "name" : "File List",
+          "value" : "CDC45_wt.json"
+        } ],
+        "subsections" : [ {
+          "type" : "Associations",
+          "attributes" : [ {
+            "name" : "Biosample",
+            "value" : "CDC45 wild-type"
+          }, {
+            "name" : "Specimen",
+            "value" : "Fixed HEK293 cells transfected with EGFP-constructs (ABRAXAS1 and R361Q mutant; CDC45 wild-type and R157C mutant)"
+          }, {
+            "name" : "Image acquisition",
+            "value" : "Z-stacks obtained by confocal microscopy"
+          } ]
+        } ]
+      }, {
+        "accno" : "Study Component-11",
+        "type" : "Study Component",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "CDC45 mutant"
+        }, {
+          "name" : "Description",
+          "value" : "Fiji 3Dprojections of confocal images of HEK293 cells transfected with EGFP-CDC45 mutant, fixed and stained for DAPI"
+        }, {
+          "name" : "File List",
+          "value" : "CDC45_mut.json"
+        } ],
+        "subsections" : [ {
+          "type" : "Associations",
+          "attributes" : [ {
+            "name" : "Biosample",
+            "value" : "CDC45 mutant"
+          }, {
+            "name" : "Specimen",
+            "value" : "Fixed HEK293 cells transfected with EGFP-constructs (ABRAXAS1 and R361Q mutant; CDC45 wild-type and R157C mutant)"
+          }, {
+            "name" : "Image acquisition",
+            "value" : "Z-stacks obtained by confocal microscopy"
+          } ]
+        } ]
+      } ]
+    },
+    "type" : "submission"
+  }

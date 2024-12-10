@@ -1,0 +1,300 @@
+{
+    "accno" : "S-BIAD954",
+    "attributes" : [ {
+      "name" : "Template",
+      "value" : "BioImages.v4"
+    }, {
+      "name" : "ReleaseDate",
+      "value" : "2023-11-30"
+    }, {
+      "name" : "AttachTo",
+      "value" : "BioImages"
+    } ],
+    "section" : {
+      "type" : "Study",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Analysis of vascular disruption in zebrafish embryos as an endpoint to predict developmental toxicity - High Content Screening Raw Data (OBI/WIK strain)"
+      }, {
+        "name" : "Description",
+        "value" : "A novel automated imaging-based method to detect inhibition of angiogenesis in early life stage zebrafish. Video subtraction was used to identify the location and number of functional intersegmental vessels according to the detection of moving blood cells. By exposing embryos to multiple tyrosine kinase inhibitors including SU4312, SU5416, Sorafenib, or PTK787, we confirmed that this method can detect concentration-dependent inhibition of angiogenesis. The new test method showed higher sensitivity, i.e. lower effect concentrations, relative to a fluorescent reporter gene strain (Tg(KDR:EGFP)) exposed to the same tyrosine kinase inhibitors. Indicating that functional effects due to altered tubulogenesis or blood transport can be detected before structural changes of the endothelium are visible by fluorescence imaging. Comparison of exposure windows indicated higher specificity for angiogenesis when exposure started at later embryonic stages (24 hours post fertilization). Our findings establish video imaging in wild-type strains as viable, non-invasive, high-throughput method for the detection of chemical-induced angiogenic disruption in zebrafish embryos. We established a lable-free and non-invasive method to visualize the blood vessel network in the developing wild type zebrafish embryo. We quantified ISV inhibition by comparing WT control, treated with tyrosine kinase inhibitors (SU4312, SU5416, Sorafenib and PTK787) and a fluorescent strain (TG(KDR:EGFP)). Dose-response curves and EC50 values were determined by KNIME-Workflows"
+      }, {
+        "name" : "Keywords",
+        "value" : "zebrafish"
+      }, {
+        "name" : "Keywords",
+        "value" : "angiogenesis"
+      }, {
+        "name" : "Keywords",
+        "value" : "tyrosine kinase inhibitors"
+      }, {
+        "name" : "Keywords",
+        "value" : "developmental toxicity"
+      }, {
+        "name" : "Acknowledgements",
+        "value" : "We acknowledge Philipe Rocce-Sera (Oxford University) and Nils Klüver (UFZ) for help with translation of FishInspector annotation metrics to ontology terms. The transgenic strain Tg(kdr:EGFP) was kindly provided by Leibniz Institute on Aging - Fritz Lipmann Institute research group of Christoph Englert"
+      }, {
+        "name" : "License",
+        "value" : "CC0",
+        "valqual" : [ {
+          "name" : "URL",
+          "value" : "https://creativecommons.org/publicdomain/zero/1.0/legalcode"
+        } ]
+      }, {
+        "name" : "Funding statement",
+        "value" : "The project was funded by the German Minister of Education and Research in the funding scheme “Alternatives to Animal Tests” (Grant number 031L0232A)\nRiccardo Massei was funded by the Deutsche Forschungsgemeinschaft (DFG, German Research Foundation) under the National Research Data Infrastructure – 501864659"
+      } ],
+      "links" : [ {
+        "url" : "https://www.ufz.de/index.php?de=44460",
+        "attributes" : [ {
+          "name" : "Description",
+          "value" : "FishInspector - Information on the analysis software"
+        } ]
+      }, {
+        "url" : "https://codebase.helmholtz.cloud/ufz/tb3-cite/biotox/FishInspector",
+        "attributes" : [ {
+          "name" : "Description",
+          "value" : "FishInspector - GitLab Repository"
+        } ]
+      } ],
+      "subsections" : [ {
+        "type" : "author",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "Julia Nöth"
+        }, {
+          "name" : "E-mail",
+          "value" : "Julia Nöth <julia.noeth@ufz.de>"
+        }, {
+          "name" : "Role",
+          "value" : "first author"
+        }, {
+          "name" : "ORCID",
+          "value" : "0000-0002-5695-2209"
+        }, {
+          "name" : "affiliation",
+          "value" : "o1",
+          "reference" : true
+        } ]
+      }, {
+        "type" : "author",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "Stefan Scholz"
+        }, {
+          "name" : "E-mail",
+          "value" : "stefan.scholz@ufz.de"
+        }, {
+          "name" : "affiliation",
+          "value" : "o1",
+          "reference" : true
+        } ]
+      }, {
+        "type" : "author",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "Wibke Busch"
+        }, {
+          "name" : "E-mail",
+          "value" : "wibke.busch@ufz.de"
+        }, {
+          "name" : "affiliation",
+          "value" : "o1",
+          "reference" : true
+        } ]
+      }, {
+        "type" : "author",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "Tamara Tal"
+        }, {
+          "name" : "E-mail",
+          "value" : "tamara.tal@ufz.de"
+        }, {
+          "name" : "affiliation",
+          "value" : "o1",
+          "reference" : true
+        } ]
+      }, {
+        "type" : "author",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "Chih Lai"
+        }, {
+          "name" : "E-mail",
+          "value" : "CLAI@stthomas.edu"
+        }, {
+          "name" : "affiliation",
+          "value" : "o2",
+          "reference" : true
+        } ]
+      }, {
+        "type" : "author",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "Akhil Ambekar"
+        }, {
+          "name" : "affiliation",
+          "value" : "o2",
+          "reference" : true
+        }, {
+          "name" : "affiliation",
+          "value" : "o3",
+          "reference" : true
+        } ]
+      }, {
+        "type" : "author",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "Riccardo Massei"
+        }, {
+          "name" : "E-mail",
+          "value" : "riccardo.massei@ufz.de"
+        }, {
+          "name" : "Role",
+          "value" : "submitter"
+        }, {
+          "name" : "affiliation",
+          "value" : "o1",
+          "reference" : true
+        } ]
+      }, {
+        "accno" : "o1",
+        "type" : "organisation",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "Helmholtz Centre for Environmental Research"
+        } ]
+      }, {
+        "accno" : "o2",
+        "type" : "organisation",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "St. Thomas University"
+        } ]
+      }, {
+        "accno" : "o3",
+        "type" : "organisation",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "Duke University"
+        } ]
+      }, {
+        "type" : "Funding",
+        "attributes" : [ {
+          "name" : "Agency",
+          "value" : "German Minister of Education and Research"
+        }, {
+          "name" : "grant_id",
+          "value" : "031L0232A"
+        } ]
+      }, {
+        "accno" : "Biosample-1",
+        "type" : "Biosample",
+        "attributes" : [ {
+          "name" : "Title",
+          "value" : "OBI/WIK"
+        }, {
+          "name" : "Organism",
+          "value" : "Danio rerio (zebrafish)"
+        }, {
+          "name" : "Description",
+          "value" : "Danio rerio embryos"
+        }, {
+          "name" : "Biological entity",
+          "value" : "Four days old zebrafish eleuthero-embryos"
+        }, {
+          "name" : "Experimental variable",
+          "value" : "Chemical exposure "
+        }, {
+          "name" : "Extrinsic variable",
+          "value" : "SU4312, SU5416, Sorafenib,  PTK787, Valproic acid"
+        }, {
+          "name" : "Intrinsic variable",
+          "value" : "OBI-WIK strain"
+        } ]
+      }, {
+        "accno" : "Specimen-2",
+        "type" : "Specimen",
+        "attributes" : [ {
+          "name" : "Title",
+          "value" : "Protocols"
+        }, {
+          "name" : "Sample preparation protocol",
+          "value" : "Prior to imaging, all embryos were anesthetized by adding 20 µl tricaine solution (6 mg/l tricaine, TRIS 26 mM, pH 7.5 ±0.1) to each well of the microplate. "
+        }, {
+          "name" : "Growth protocol",
+          "value" : "A wild type adult zebrafish strain (D. rerio, strain OBI/WIK, generation F3), originating from an in-house cross of zebrafish strains UFZ-OBI and WIK, was used for all experiments. TFish were fed twice daily with dry food (SDS-400, Special Diets Services, Essex England) and once daily with Artemia sp. Fish were cultured under 14h light/10h dark photoperiod in 20 L aquaria with 1-2 fish per liter density (26.5±1 °C). Water quality parameters were pH 7–8; water hardness 2–3 mmol/L, conductivity 540–560 S/cm, nitrate < 2.5 mg/L, nitrite < 0.025 mg/L, ammonia < 0.6 mg/L, oxygen saturation 87–91 %. Spawning trays were inserted 4-6 hours before the end of the light cycle. The following day, spawning was initiated by the onset of light and eggs were collected within 1 h. Exposure in all experiment was ceased at 96 hpf. Facilities for breeding and the production of embryos were licensed by Landesdirektion Leipzig (Aktenzeichen 75-9185.64).\nFertilized and normally developed embryos were selected according to Kimmel et al. (Kimmel et al. 1995) with a dissection microscope (Olympus SZx7-ILLT) at 1 hpf. Depending on experiment, exposure was started within 2-3 h post fertilization (16 to 128 cell stages) or at 24 hpf. Exposure was conducted in rectangular 96-well microplates (Clear Polystyrene, flat bottom, Uniplate, Whatman, GE Healthcare) covered by a lid with a test volume of 400 µL of exposure media. For each replicate one embryo per well and 16 wells per concentration were assessed. Experiments were performed with at least two replicates on independent days and breeding.\n"
+        } ]
+      }, {
+        "accno" : "Image acquisition-3",
+        "type" : "Image acquisition",
+        "attributes" : [ {
+          "name" : "Title",
+          "value" : "VAST BioImage"
+        }, {
+          "name" : "Imaging instrument",
+          "value" : "VAST BioImager (Union Biometrica, Gees, Belgium) equipped with a large particle sampler (LP sampler, Union Biometrica). "
+        }, {
+          "name" : "Image acquisition parameters",
+          "value" : "Lateral and dorsoventral images were obtained at 10 µm resolution at 96 hpf"
+        }, {
+          "name" : "Imaging method",
+          "value" : "bright-field microscopy"
+        } ]
+      }, {
+        "accno" : "Image analysis-5",
+        "type" : "Image analysis",
+        "attributes" : [ {
+          "name" : "Title",
+          "value" : "Automated high-throughput image analysis "
+        }, {
+          "name" : "Image analysis overview",
+          "value" : "Images were processed with an amended version (1.70, available via https://github.com/sscholz-UFZ/FishInspector) of the FishInspector imaging software (Teixidó et al. 2019). The FishInspector software allows to automatically annotate morphological features including body contour, eye, lower mouth tip, pericard, otoliths, notochord, swimbladder, and yolk and to calculate diverse metrics such as feature length, size, curvature indices, or angle between feature-connecting lines. In contrast to the previously published version, FishInspector 1.70 detects morphological features based on a deep learning approach using the Matlab Neural Network Toolbox and Matlab Image Processing Toolbox (Mathworks, Natick, MS). In addition, metric calculation were included into the software, and meta information such as test compound, exposure window or test concentration was associated to each image using a microplate layout file. To facilitate training of the models, two additional programs were generated in Matlab including FishTrainer 0.9 (for training of semantic segmentation models of structural features) and FishClassificator 0.9 (for training of position classes to be used in automated flipping of images). For image training, image size was adjusted to 450 x 300 pixel to reduce computing time. This resolution was sufficient to detect the selected features (data not shown). For training of the deep learning models, approximately 3000 previously annotated images (Teixidó et al. 2022) were used. The automated annotations were corrected by the user in the event that they were not adequately detecting visible structures. User-bias was avoided by a blinded assessment of images. Following model training, experimental images used for annotation had a resolution of 1024 x 190 pixels\n\nFishInspector provided a JSON file corresponding to each image file containing the coordinates of all features and the applied smoothing factor. For each image, a csv file was generated containing calculated metrics. The software automatically provides a summary table containing metrics r of individual embryos. All experimental images and corresponding csv files can be found in Supplementary Material. All subsequent analyses were conducted using the summary excel file and a KNIME workflows with embedded R-scripts, as previously described (Teixidó et al. 2022). The KNIME workflow (all workflows are available via https://git.ufz.de/automated-fish-embryotest/zebrafish-embryo-crc/zebrafish-isv) will be provided after publication) converted pixel metrics into µm or µm², combined results from different replicates, and conducted concentration response analysis to calculate effect concentrations (EC10 and EC50). "
+        } ],
+        "subsections" : [ [ {
+          "type" : "Software Informations",
+          "attributes" : [ {
+            "name" : "Column 1",
+            "value" : "https://www.ufz.de/index.php?de=44460"
+          } ]
+        }, {
+          "type" : "Software Informations",
+          "attributes" : [ {
+            "name" : "Column 1",
+            "value" : "https://codebase.helmholtz.cloud/ufz/tb3-cite/biotox/FishInspector"
+          } ]
+        } ] ]
+      }, {
+        "accno" : "Study Component-7",
+        "type" : "Study Component",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "High Content Screening - WIK/OBI"
+        }, {
+          "name" : "Description",
+          "value" : "VAST Biomage Data analyzed with FishInspector"
+        }, {
+          "name" : "File List",
+          "value" : "COMP1_sample_list.json"
+        } ],
+        "subsections" : [ {
+          "type" : "Associations",
+          "attributes" : [ {
+            "name" : "Biosample",
+            "value" : "OBI/WIK"
+          }, {
+            "name" : "Specimen",
+            "value" : "Protocols"
+          }, {
+            "name" : "Image acquisition",
+            "value" : "VAST BioImage"
+          }, {
+            "name" : "Image analysis",
+            "value" : "Automated high-throughput image analysis "
+          } ]
+        } ]
+      } ]
+    },
+    "type" : "submission"
+  }

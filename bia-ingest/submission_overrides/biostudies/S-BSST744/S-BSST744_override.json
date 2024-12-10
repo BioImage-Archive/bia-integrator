@@ -1,0 +1,284 @@
+{
+  "accno" : "S-BSST744",
+  "attributes" : [ {
+    "name" : "Template",
+    "value" : "Default"
+  }, {
+    "name" : "Title",
+    "value" : "Nano-scale Architecture of Blood-Brain Barrier Tight-Junctions"
+  }, {
+    "name" : "ReleaseDate",
+    "value" : "2021-12-12"
+  }, {
+    "name" : "AttachTo",
+    "value" : "BioImages"
+  } ],
+  "section" : {
+    "type" : "Study",
+    "attributes" : [ {
+      "name" : "Description",
+      "value" : "Tight junctions (TJs) between blood-brain barrier (BBB) endothelial cells construct a robust physical barrier, whose damage underlies BBB dysfunctions related to several neurodegenerative diseases. What makes these highly specialized BBB-TJs extremely restrictive remains unknown. Here, we use super-resolution microscopy (dSTORM) to uncover new structural and functional properties of BBB TJs. Focusing on three major components, Nano-scale resolution revealed sparse (occludin) vs. clustered (ZO1/claudin-5) molecular architecture. Developmentally, permeable TJs become first restrictive to large molecules, and only later to small molecules, with claudin-5 proteins arrangement compacting during this maturation process. Mechanistically, we reveal that ZO1 clustering is independent of claudin-5 in-vivo. In contrast to accepted knowledge, we found that in the developmental context, total levels of claudin-5 inversely correlate with TJ functionality"
+    }, {
+      "name" : "Organism",
+      "value" : "Mus musculus (mouse)"
+    } ],
+    "files" : [ {
+      "path" : "fig 8",
+      "size" : 12674822,
+      "attributes" : [ {
+        "name" : "Description",
+        "value" : "Fig. 8: Investigating BBB TJ function using super-resolution microscopy. Tracer challenges testing cortical capillaries permeability with dSTORM imaging, provides evidence of leakage across immature TJs. a, E12 TJ function tested with an in utero embryonic liver tracer injection method (Ben-Zvi et al., 2014). 10 kDa dextran signals (upper-left) and ?443 Dalton sulfo-NHS-biotin signals (lower-left) were found in the luminal side, intermingling with claudin-5 clusters (arrows) and in the abluminal side and further away (presumably brain tissue, arrowheads). These were interpreted as evidence of tracer leakage across immature TJs. Following trans-cardiac tracer challenges, dSTORM imaging shows P9 capillaries can restrict movement of tracer molecules from the lumen to the brain side (10 kDa dextran upper-right, and ?443 Dalton sulfo-NHS-biotin lower-right). E16 cortical capillaries were previously found to prevent leakage of 10-kDa tracers (Ben-Zvi et al., 2014; Licht, Dor-Wollman, Ben-Zvi, Rothe, & Keshet, 2015), also validated here with dSTORM imaging (middle-upper). Surprisingly, at this stage sulfo-NHS-biotin was not restricted to the vessels’ lumen, evident also on the brain side (middle-lower arrowheads) and intermingling with claudin-5 clusters (arrows). Scale bars, 100 nm. L – capillary lumen. n=40 capillaries for each tracer of 3 pups/embryos. b-c, Developmental changes in permeability are reflected in quantification of tracer signal density at the abluminal side of the junctions (10 kDa dextran at b, and 443 Dalton sulfo-NHS-biotin at c). Relative leakage index was calculated as tracer signal density (signals/area) in a fixed area and distance from the abluminal side of the claudin-5 signal, and was normalized to the average signal density at P9 (set as leakage index=1). n=10 capillaries for each tracer of 3 pups/embryos, *P<0.0123, **P<0.0031,***P<0.0006, ****P<0.0001, Kruskal-Wallis test and Dunn’s test for multiple comparisons."
+      } ],
+      "type" : "directory"
+    }, {
+      "path" : "fig 7",
+      "size" : 367688755,
+      "attributes" : [ {
+        "name" : "Description",
+        "value" : "Fig. 7: Nano-scale organization of both ZO1 and occludin are independent of claudin-5 expression. a-b, Claudin-5 antibodies specificity was confirmed by both confocal microscopy (a, Scale bars, 50 µm) and dSTORM microscopy (b, Scale bars, 0.1 µm), with no detectable staining in E16 cortical null tissues (Isolectin staining used to localize vasculature, n=4 wild-type, 4 claudin-5 null embryos). c, E16 claudin-5 null and wild-type littermates cortical capillaries imaged with dSTORM display unaltered ZO1 clustering organization and occludin dispersed organization patterns. Scale bars, 100 nm. d, Total cellular signal quantifications revealed that occludin levels were ?1.29-fold higher in claudin-5 null capillaries compared to wild-type. Total cellular ZO1 signal levels were also higher in claudin-5 null capillaries (not statistically significant). Data are mean±s.e.m. *P < 0.05 (Two tailed Mann–Whitney U-test). L – capillary lumen. n=109 capillaries of 4 wild-type embryos and 86 capillaries of 4 claudin-5 null embryos."
+      } ],
+      "type" : "directory"
+    }, {
+      "path" : "fig 6",
+      "size" : 14873534,
+      "attributes" : [ {
+        "name" : "Description",
+        "value" : "Fig. 6: Molecular organization of mouse cortical BBB TJs. Nano-scale molecular organization of TJ proteins in cortical capillaries of postnatal wild-type mice (P9). a, Claudin-5 and ZO1 display clustered organization (left) whereas occludin was much less organized in discrete clusters and had more dispersed organization patterns (right). 2D-STORM imaging data demonstrates that signals of all three TJ proteins are in close proximity (‘Gaussian visualization’ in which signal intensity correlates with localization precision). An inset with magnifications of each cluster (right images) demonstrates the very high molecular density of TJ proteins (‘Cross visualization’ shows all resolved signals where each single-molecule signal displays as a cross). Scale bars, 100 nm. Representative signal numbers are shown. n=40 capillaries of 4 wild-type pups. L – capillary lumen. b, dSTORM imaging (Gaussian visualization) of claudin-5 (green) and ZO1 (red) immunostaining of E12 and P9 cortical capillary cross-sections. Note that some claudin-5 clusters are coupled with ZO1 clusters (high magnification insets, arrows) while some are independent claudin-5 clusters (arrowhead). Scale bars, 1 µm and 100 nm in insets. c, Average density of P9 claudin-5 clusters that were coupled with ZO1 clusters was ?5-fold higher than independent claudin-5 clusters. The average density of E12 claudin-5 clusters was similar regardless of proximity to ZO1 clusters, and was low compared to P9 independent claudin-5 clusters. n=40 clusters from 11 capillaries and 43 clusters from 11 capillaries (of 3 embryos/pups, P9 and E12 respectively). Data are mean±s.e.m. *P < 0.05 (Two tailed Mann–Whitney U-test)"
+      } ],
+      "type" : "directory"
+    }, {
+      "path" : "fig 5",
+      "size" : 23503480,
+      "attributes" : [ {
+        "name" : "Description",
+        "value" : "Fig. 5: Total cellular claudin-5 abundance does not correlate with BBB restrictive properties. Quantifications of claudin-5 levels and clustering properties along developmental BBB maturation a, dSTORM (right) compared to epi-fluorescent images (left) of claudin-5 immunostaining in E12 and P9 cortical capillary cross-sections. Two distinct claudin-5 organizations could be observed; discrete clusters (arrowheads) and a more defused claudin-5 appearance composed of many small clusters with relatively small gaps between them, evident only in E12 capillaries (arrow, see Extended Data Fig. S1a for further analysis). Scale bars, 1 µm. b, Claudin-5 clustering-properties analysis showed that there were about 2.6 times more discrete clusters per capillary at E12 than at P9 (a set of 20 capillaries of each age). Distribution of claudin-5 clusters area in E12 capillaries was skewed towards smaller clusters and the average cluster area was slightly smaller in E12 with no dramatic difference between the distributions (average of 0.309 µm2 (E12) vs. 0.3413 µm2 (P9). There was no dramatic difference in the distribution of signals per cluster or signal densities between the two groups (see Fig. S1b). n=3 pups/embryos, 20 capillaries, 657 clusters (E12) and 246 clusters (P9). Data are mean±s.e.m. c, Quantifications of total cellular claudin-5 per capillary cross section shows a shift towards lower claudin-5 levels and smaller capillary diameter in P9 than in E12 vasculature. Capillary diameter was significantly smaller (5.9±0.39 µm (P9), 11.1±0.47µm (E12)), total number of claudin-5 signals per capillary was significantly lower (3,590±372 (P9), 14,341±1,257 (E12)). d, Normalizing the total number of signals per capillary to its diameter shows the average claudin-5 cellular abundance is significantly lower at P9. n=25 capillaries (E12) and 27 capillaries (P9) of 3 embryos/pups. Data are mean±s.e.m. *P < 0.05 (Two tailed Mann–Whitney U-test)."
+      } ],
+      "type" : "directory"
+    }, {
+      "path" : "fig 4",
+      "size" : 48910371,
+      "attributes" : [ {
+        "name" : "Description",
+        "value" : "Fig. 4: Claudin-5 exhibits clustered organization in cortical capillaries. Imaging in cortical fixed tissue sections of post-natal day 9 mice. a, Low magnification view of claudin-5 staining imaged by epi-fluorescent microscopy showing vascular fragments in cross-sections (arrows) or in sagittal-sections (arrowheads, scale bar, 50 µm). b, Claudin-5 exhibits clustered organization in vivo; dSTORM (right) compared to epi-fluorescent images (left) of claudin-5 immunostaining in P9 cortical capillary cross-section (upper panel) or sagittal-section (lower panel) (scale bars, 1 µm), n>30 capillaries."
+      } ],
+      "type" : "directory"
+    }, {
+      "path" : "fig 3",
+      "size" : 48541160,
+      "attributes" : [ {
+        "name" : "Description",
+        "value" : "Fig. 3: Claudin-5 signals in dSTORM imaging are exclusively localized to vascular structures. dSTORM imaging in cortical fixed tissue sections of post-natal day 9 mice. a, Illustration of a vascular structure with cross versus sagittal section directions, and the projected orientation of endothelial cells contact points. b, Claudin-5 staining (green) together with fluorescent circulating tracers (10 kDa dextran, and ?443 Dalton sulfo-NHS-biotin, magenta) are used to demarcate sagittal views of elongated vessels (dashed line, Scale bars, 1 µm). c, Staining for claudin-5 (green) together with the endothelial-specific transcription factor ERG (gray) showing capillary cross and sagittal sections (Scale bars, 1 µm). L – capillary lumen, N – endothelial nucleus. n>30 capillaries."
+      } ],
+      "type" : "directory"
+    }, {
+      "path" : "fig 2",
+      "size" : 190806164,
+      "attributes" : [ {
+        "name" : "Description",
+        "value" : "Fig. 2: Changes in nano-scale architecture correlates with tight junction function. Enhanced TJ function is accompanied by formation of smaller and denser clusters of claudin-5. a, Enhanced TJ function demonstrated by increase in TEER, along the first days of induced human brain microvascular endothelial-like cell (iBMEC) culture (n=4 experiments/12 inserts. TEER here shows data of a representative experiment. For average change in TEER across all experiments see Supplementary Figure S1b. n=4 inserts for permeability). b, Enhanced TJ function demonstrated by reduced permeability to sodium fluorescein (T0 represents low TEER and T1 represents high TEER states, n=4 inserts). Data are mean ± SD. *** P<0.0003 (two tailed pair t-test). c, dSTORM imaging (Gaussian visualization) of claudin-5 (green) and ZO1 (red) immunostaining in iBMEC confluent monolayers. Claudin-5 signals are concentrated in discrete and short foci at both time points. Scale bar, 1 µm. d, Examples of dSTORM imaging simulation of claudin-5 in iBMECs used for quantifications of clustering properties (produced by a custom clustering Matlab code, see methods for details). Cluster pattern visualization showing all points that belong to the same cluster with the same identifying color. e, Quantifications of claudin-5 clustering properties showed a shift towards smaller clusters with more claudin-5 signals per cluster along the improvement in TJ function. f, Average claudin-5 cluster density more than doubled (from 14,341 to 33,141 signals/µm2) with the improvement in TJ function (n=90 clusters (in lower TEER) and 278 clusters (in higher TEER) in triplicate cultures of two independent experiments). Data are mean ± s.e.m. *P < 0.01 (two tailed Mann–Whitney U-test)."
+      } ],
+      "type" : "directory"
+    }, {
+      "path" : "fig 1",
+      "size" : 104960161,
+      "attributes" : [ {
+        "name" : "Description",
+        "value" : "Fig. 1: Super-resolution microscopy of endothelial tight junctions. In vitro process of TJ maturation is accompanied by TJ architectural changes characterized by the formation of smaller, denser and more discrete clusters of TJ proteins. a, Epi-fluorescent imaging of claudin-5 (green) and ZO1 (red) immunostaining of bEND.3 cells in indicated time points after the cultures reached confluence state. Note translocation of claudin-5 from cytoplasmic localizations into continuous lines around the boundaries of the cells (known as ‘strands’), along the in vitro maturation process. Scale bars, 10 µm and 5 µm in insets. b, dSTORM imaging (Gaussian visualization) of claudin-5 (green) and ZO1 (red) immunostaining of bEND.3 cells confluent monolayers. TJ proteins form bead-like structures, especially in the super-confluence state. Claudin-5 signals are more concentrated in discrete and shorter foci (flanking ZO1 signals, arrowheads, right) than in the post-confluence state (arrows, left). During maturation TJ proteins translocate from different cellular locations (left) almost exclusively into the lateral cell membranes (right). Scale bar, 1 µm. c, Examples of dSTORM imaging simulation of claudin-5 in bEND.3 cells used for quantifications of clustering properties (produced by a custom clustering Matlab code, see methods for details). Signals were defined to be clustered if their 2D location was smaller than 70 nm threshold distance. Cluster pattern visualization showing all points that belong to the same cluster with the same identifying color. d, Quantifications of claudin-5 clustering properties showed a shift towards smaller clusters with more claudin-5 signals per cluster at the super-confluence state. Clusters with higher numbers of signals were more abundant at this late state, especially in clusters with area smaller than 0.3 µm2. e, Average claudin-5 cluster density was ?4-fold higher at the super-confluence state than in the post-confluence state (n=183 clusters (post-confluence) and 281 clusters (super-confluence) in 5 independent experiments). Data are mean±s.e.m. *P < 0.05 (Two tailed Mann–Whitney U-test)."
+      } ],
+      "type" : "directory"
+    } ],
+    "links" : [ {
+      "url" : "https://www.biorxiv.org/content/10.1101/2021.08.12.456150v1.article-info",
+      "attributes" : [ {
+        "name" : "Description",
+        "value" : "pre print"
+      } ]
+    } ],
+    "subsections" : [ {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Ayal Ben zvi"
+      }, {
+        "name" : "E-mail",
+        "value" : "ayalb@ekmd.huji.ac.il"
+      }, {
+        "name" : "ORCID",
+        "value" : "0000-0003-4012-7789"
+      }, {
+        "name" : "affiliation",
+        "value" : "o1",
+        "reference" : true
+      } ]
+    }, {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Ron Dzikowski"
+      }, {
+        "name" : "E-mail",
+        "value" : "rond@ekmd.huji.ac.il"
+      }, {
+        "name" : "affiliation",
+        "value" : "o5",
+        "reference" : true
+      } ]
+    }, {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Gad D. Vatine"
+      }, {
+        "name" : "E-mail",
+        "value" : "vatineg@bgu.ac.il"
+      }, {
+        "name" : "affiliation",
+        "value" : "o3",
+        "reference" : true
+      } ]
+    }, {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Eilon Sherman"
+      }, {
+        "name" : "E-mail",
+        "value" : "eilonsher@gmail.com"
+      }, {
+        "name" : "affiliation",
+        "value" : "o2",
+        "reference" : true
+      } ]
+    }, {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Britta Engelhardt"
+      }, {
+        "name" : "E-mail",
+        "value" : "britta.engelhardt@tki.unibe.ch"
+      }, {
+        "name" : "affiliation",
+        "value" : "o4",
+        "reference" : true
+      } ]
+    }, {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : " Urban Deutsch"
+      }, {
+        "name" : "E-mail",
+        "value" : " urban.deutsch@tki.unibe.ch"
+      }, {
+        "name" : "affiliation",
+        "value" : "o4",
+        "reference" : true
+      } ]
+    }, {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Meshi Zorsky"
+      }, {
+        "name" : "E-mail",
+        "value" : "meshiz@post.bgu.ac.il"
+      }, {
+        "name" : "affiliation",
+        "value" : "o3",
+        "reference" : true
+      } ]
+    }, {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Oren Yakovian"
+      }, {
+        "name" : "E-mail",
+        "value" : "oren.yakovian@mail.huji.ac.il"
+      }, {
+        "name" : "affiliation",
+        "value" : "o2",
+        "reference" : true
+      } ]
+    }, {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Batia Bell"
+      }, {
+        "name" : "E-mail",
+        "value" : "batia.bell@mail.huji.ac.il"
+      }, {
+        "name" : "affiliation",
+        "value" : "o1",
+        "reference" : true
+      } ]
+    }, {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Shira Anzi"
+      }, {
+        "name" : "E-mail",
+        "value" : "shira.anzi@mail.huji.ac.il"
+      }, {
+        "name" : "affiliation",
+        "value" : "o1",
+        "reference" : true
+      } ]
+    }, {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Esther Sasson"
+      }, {
+        "name" : "E-mail",
+        "value" : "esti.sasson@mail.huji.ac.il"
+      }, {
+        "name" : "ORCID",
+        "value" : "0000-0001-7156-1516"
+      }, {
+        "name" : "affiliation",
+        "value" : "o1",
+        "reference" : true
+      } ]
+    }, {
+      "accno" : "o1",
+      "type" : "organisation",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Department of Developmental Biology and Cancer Research, The Institute for Medical Research Israel-Canada, Faculty of Medicine, Hebrew University of Jerusalem, Jerusalem 91120, Israel"
+      } ]
+    }, {
+      "accno" : "o2",
+      "type" : "organisation",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Racah Institute of Physics, The Hebrew University, Jerusalem 9190401, Israel"
+      } ]
+    }, {
+      "accno" : "o3",
+      "type" : "organisation",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "The Department of Physiology and Cell Biology, Faculty of Health Sciences, The Regenerative Medicine and Stem Cell (RMSC) research Center and the Zlotowski Center for Neuroscience, Ben-Gurion University of the Negev, Beer Sheva 84105, Israel"
+      } ]
+    }, {
+      "accno" : "o4",
+      "type" : "organisation",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Theodor Kocher Institute, University of Bern, Bern, Switzerland"
+      } ]
+    }, {
+      "accno" : "o5",
+      "type" : "organisation",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Department of Microbiology and Molecular Genetics, The Kuvin Center for the Study of Infectious and Tropical Diseases, IMRIC, Faculty of Medicine, Hebrew University of Jerusalem, Jerusalem 91120, Israel."
+      } ]
+    } ]
+  },
+  "type" : "submission"
+}

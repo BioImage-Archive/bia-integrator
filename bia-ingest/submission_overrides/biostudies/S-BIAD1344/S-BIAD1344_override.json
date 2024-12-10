@@ -1,0 +1,280 @@
+{
+    "accno" : "S-BIAD1344",
+    "attributes" : [ {
+      "name" : "Template",
+      "value" : "BioImages.v4"
+    }, {
+      "name" : "DOI",
+      "value" : "10.6019/S-BIAD1344"
+    }, {
+      "name" : "ReleaseDate",
+      "value" : "2024-08-29"
+    }, {
+      "name" : "AttachTo",
+      "value" : "BioImages"
+    } ],
+    "section" : {
+      "type" : "Study",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Multiplex Immunofluorescent Whole Slide Images of Renal Cancer"
+      }, {
+        "name" : "Description",
+        "value" : "The dataset is composed of 98 whole slide images (WSIs) of renal cell carcinoma, a type of kidney cancer. These WSIs are multiplex immunofluorescent (mIF) images. They have been labeled using tow distinct panels of protein markers to allow simultaneous visualisation of multiple targets withing the same tissue sample.\nPanel 1 includes markers TIM-3, PD1, PD-L1, and CD8 with a DNA counterstain (Hoechst). These markers are often associated with immune response and are crucial in understanding how the immune system interacts with cancer cells. Panel 2 includes OCT4a, ZEB1, Snail, and CD44, also combined with Hoechst for DNA visualisation. These markers are particularly important because they are linked to cancer stem cells (CSC) and the epithelial-to-mesenchymal transition (EMT), processes that play significant roles in cancer progression and metastasis.\nThis dataset will be expected to be highly valuable in the development of tools and methods aimed at characterising the differences between primary renal cancer and its metastatic forms. By analyzing these images, researchers can gain deeper insights into how renal cancer evolves and spreads, potentially leading to improved prognostic tools and personalised treatment strategies for patients."
+      }, {
+        "name" : "Keywords",
+        "value" : "Multiplex immunofluorescence; WSI; Renal cancer; Image analysis; "
+      }, {
+        "name" : "Acknowledgements",
+        "value" : "We would like to acknowledge Frances Rae and NHS Lothian tissue bank for collecting tissue samples used in this study, John O’Connor for preparing the whole slide samples, and East of Scotland Research Ethics Service for granting the ethical approval."
+      }, {
+        "name" : "License",
+        "value" : "CC BY 4.0",
+        "valqual" : [ {
+          "name" : "URL",
+          "value" : "https://creativecommons.org/licenses/by/4.0/legalcode"
+        } ]
+      }, {
+        "name" : "Funding statement",
+        "value" : "This work was supported by Medical Research Scotland (MRS), NHS Lothian, NanoString Technologies, and the Industrial Centre for AI Research in Digital Diagnostics (iCAIRD) which is funded by Innovate UK on behalf of UK Research and Innovation (UKRI) [project number: 104690]. It was also partially supported by the KATY project which has received funding from the European Union’s Horizon 2020 research and innovation program under grant agreement No 101017453."
+      } ],
+      "subsections" : [ {
+        "type" : "author",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "In Hwa Um"
+        }, {
+          "name" : "E-mail",
+          "value" : "ihu@st-andrews.ac.uk"
+        }, {
+          "name" : "Role",
+          "value" : "corresponding author"
+        }, {
+          "name" : "ORCID",
+          "value" : "0000-0001-9999-4292"
+        }, {
+          "name" : "affiliation",
+          "value" : "o1",
+          "reference" : true
+        } ]
+      }, {
+        "type" : "author",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "Raffaele De Philippis"
+        }, {
+          "name" : "E-mail",
+          "value" : "raffaeledefilippis92@gmail.com"
+        }, {
+          "name" : "Role",
+          "value" : "experiment performer"
+        }, {
+          "name" : "affiliation",
+          "value" : "o1",
+          "reference" : true
+        } ]
+      }, {
+        "type" : "author",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "Georg Wölflein"
+        }, {
+          "name" : "E-mail",
+          "value" : "gw66@st-andrews.ac.uk"
+        }, {
+          "name" : "Role",
+          "value" : "data analyst"
+        }, {
+          "name" : "affiliation",
+          "value" : "o1",
+          "reference" : true
+        } ]
+      }, {
+        "type" : "author",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "Grant D. Stewart"
+        }, {
+          "name" : "E-mail",
+          "value" : "gds35@cam.ac.uk"
+        }, {
+          "name" : "Role",
+          "value" : "investigator"
+        }, {
+          "name" : "affiliation",
+          "value" : "o2",
+          "reference" : true
+        } ]
+      }, {
+        "type" : "author",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "Alex Laird"
+        }, {
+          "name" : "E-mail",
+          "value" : "alex.laird@ed.ac.uk"
+        }, {
+          "name" : "Role",
+          "value" : "investigator"
+        }, {
+          "name" : "affiliation",
+          "value" : "o3",
+          "reference" : true
+        } ]
+      }, {
+        "type" : "author",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "David J. Harrison"
+        }, {
+          "name" : "E-mail",
+          "value" : "djh20@st-andrews.ac.uk"
+        }, {
+          "name" : "Role",
+          "value" : "principal investigator"
+        }, {
+          "name" : "affiliation",
+          "value" : "o1",
+          "reference" : true
+        } ]
+      }, {
+        "accno" : "o1",
+        "type" : "organisation",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "University of St Andrews"
+        } ]
+      }, {
+        "accno" : "o2",
+        "type" : "organisation",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "University of Cambridge"
+        } ]
+      }, {
+        "accno" : "o3",
+        "type" : "organisation",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "University of Edinburgh"
+        }, {
+          "name" : "RORID",
+          "value" : "https://ror.org/01nrxwf90"
+        } ]
+      }, {
+        "type" : "Publication",
+        "attributes" : [ {
+          "name" : "Pubmed ID",
+          "value" : "36358805"
+        }, {
+          "name" : "Title",
+          "value" : "Use of High-Plex Data Reveals Novel Insights into the Tumour Microenvironment of Clear Cell Renal Cell Carcinoma."
+        }, {
+          "name" : "Authors",
+          "value" : "De Filippis R, Wölflein G, Um IH, Caie PD, Warren S, White A, Suen E, To E, Arandjelović O, Harrison DJ."
+        }, {
+          "name" : "Year",
+          "value" : "2022"
+        } ]
+      }, {
+        "type" : "Funding",
+        "attributes" : [ {
+          "name" : "Agency",
+          "value" : "Medical Research Scotland (MRS)"
+        } ]
+      }, {
+        "type" : "Funding",
+        "attributes" : [ {
+          "name" : "Agency",
+          "value" : "NHS Lothian"
+        } ]
+      }, {
+        "type" : "Funding",
+        "attributes" : [ {
+          "name" : "Agency",
+          "value" : "Innovate UK"
+        }, {
+          "name" : "grant_id",
+          "value" : "104690"
+        } ]
+      }, {
+        "type" : "Funding",
+        "attributes" : [ {
+          "name" : "Agency",
+          "value" : "European Union’s Horizon 2020 research and innovation program"
+        }, {
+          "name" : "grant_id",
+          "value" : "101017453"
+        }, {
+          "name" : "Column 3",
+          "value" : "KATY project"
+        } ]
+      }, {
+        "accno" : "Biosample-1",
+        "type" : "Biosample",
+        "attributes" : [ {
+          "name" : "Title",
+          "value" : "Biosample"
+        }, {
+          "name" : "Organism",
+          "value" : "Homo sapiens (human)"
+        }, {
+          "name" : "Biological entity",
+          "value" : "Renal cell carcinoma"
+        } ]
+      }, {
+        "accno" : "Specimen-2",
+        "type" : "Specimen",
+        "attributes" : [ {
+          "name" : "Title",
+          "value" : "Specimen"
+        }, {
+          "name" : "Sample preparation protocol",
+          "value" : "Formalin-fixed, paraffin-embedded (FFPE) tissues were first de-waxed in xylene and then re-hydrated through descending concentrations of ethanol. In order to expose epitopes, heat-mediated antigen retrieval was performed in an electric pressure cooker using TRIS EDTA buffer (pH 9). Subsequently, slides were treated with 3% hydrogen peroxide to block endogenous peroxidase activity, and with protein block (Agilent, Santa Clara, CA, USA, X090930-2), in order to prevent non-specific staining. Slides were then incubated with primary antibodies for either one hour or 30 min at room temperature or overnight at 4 °C. After primary incubation, tissues were then incubated with secondary HRP-conjugated or biotin-conjugated antibodies for 30 min at room temperature. Slides were treated either with cyanine 3, cyanine 5, fluorescein, using Tyramide Signal Amplification (TSA) system, or Alexa Fluor 750 (ThermoFisher, Waltham, MA, USA, S21384), diluted in amplification diluent (Perkin Elmer, FP1498) and antibody diluent (Agilent, S080983-2), respectively.\nHoechst 33342 (ThermoFisher, H3570), diluted in PBS, was used for nuclear counterstaining.\nFinally, slides were dehydrated in ethanol, air-dried, and mounted using Prolong anti-fade mounting medium (ThermoFisher, P36930)."
+        } ]
+      }, {
+        "accno" : "Image acquisition-3",
+        "type" : "Image acquisition",
+        "attributes" : [ {
+          "name" : "Title",
+          "value" : "Image acquisition"
+        }, {
+          "name" : "Imaging instrument",
+          "value" : "Zeiss Axio Z1 scanner"
+        }, {
+          "name" : "Image acquisition parameters",
+          "value" : "1. Panel 1 - TIM-3 (FITC channel, Exposure time-60ms), PD1 (Cy5 channel, Exposure time-50ms), PD-L1 (Cy3 channel, Exposure time-100ms), CD8 (Alexa Fluore 750 channel, Exposure time-800ms), Hoechst (Hoechst channel, Exposure time-7ms)\n2. Panel 2 - ZEB1 (FITC channel, Exposure time-50ms), SNAIL (Cy5 channel, Exposure time-50ms), OCT4a (Cy3 channel, Exposure time-50ms), CD44 (Alexa Fluore 750 channel, Exposure time-300ms), Hoechst (Hoechst channel, Exposure time-6ms)"
+        }, {
+          "name" : "Imaging method",
+          "value" : "fluorescence microscopy"
+        } ]
+      }, {
+        "accno" : "Study Component-4",
+        "type" : "Study Component",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "Multiplex Immunofluorescent Whole Slide Images of Renal Cancer"
+        }, {
+          "name" : "Description",
+          "value" : "The dataset is composed of 98 whole slide images (WSIs) of renal cell carcinoma, a type of kidney cancer. These WSIs are multiplex immunofluorescent (mIF) images. They have been labeled using tow distinct panels of protein markers to allow simultaneous visualisation of multiple targets withing the same tissue sample. Panel 1 includes markers TIM-3, PD1, PD-L1, and CD8 with a DNA counterstain (Hoechst). These markers are often associated with immune response and are crucial in understanding how the immune system interacts with cancer cells. Panel 2 includes OCT4a, ZEB1, Snail, and CD44, also combined with Hoechst for DNA visualisation. These markers are particularly important because they are linked to cancer stem cells (CSC) and the epithelial-to-mesenchymal transition (EMT), processes that play significant roles in cancer progression and metastasis. This dataset will be expected to be highly valuable in the development of tools and methods aimed at characterising the differences between primary renal cancer and its metastatic forms. By analyzing these images, researchers can gain deeper insights into how renal cancer evolves and spreads, potentially leading to improved prognostic tools and personalised treatment strategies for patients."
+        }, {
+          "name" : "File List",
+          "value" : "Multiplex immunofluorescence WSI-renal cancer.json"
+        } ],
+        "subsections" : [ {
+          "type" : "Associations",
+          "attributes" : [ {
+            "name" : "Biosample",
+            "value" : "Biosample"
+          }, {
+            "name" : "Specimen",
+            "value" : "Specimen"
+          }, {
+            "name" : "Image acquisition",
+            "value" : "Image acquisition"
+          } ]
+        } ]
+      } ]
+    },
+    "type" : "submission"
+  }

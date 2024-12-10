@@ -1,0 +1,154 @@
+{
+    "accno" : "S-BIAD978",
+    "attributes" : [ {
+      "name" : "Template",
+      "value" : "BioImages.v4"
+    }, {
+      "name" : "ReleaseDate",
+      "value" : "2023-12-21"
+    }, {
+      "name" : "AttachTo",
+      "value" : "BioImages"
+    } ],
+    "section" : {
+      "type" : "Study",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "SLE Serum Induces Altered Goblet Cell Differentiation and Leakiness in Human Intestinal Organoids"
+      }, {
+        "name" : "Description",
+        "value" : "Human intestinal epithelial cells are the interface between luminal content and basally residing immune cells. They form a tight monolayer that constantly secretes mucus creating a multi-layered protective barrier. Alterations in this barrier can lead to increased permeability which is common in Systemic Lupus Erythematosus (SLE) patients. However, it remains unexplored how the barrier is affected. Here, we present an in vitro model specifically designed to examine the effects of SLE on epithelial cells. We utilize human colon organoids that are stimulated with serum from SLE patients. Combining transcriptomic with functional analyses revealed that SLE serum induced an expression profile marked by a reduction of goblet cell markers and changed mucus composition. Additionally, organoids exhibited imbalanced cellular composition along with enhanced permeability, altered mitochondrial function, and an interferon gene signature. Similarly, transcriptomic analysis of SLE colon biopsies revealed a downregulation of secretory markers. Our work uncovers a crucial connection between SLE and intestinal homeostasis that might be promoted in vivo through the blood, offering insights into the causal connection of barrier dysfunction and autoimmune diseases."
+      }, {
+        "name" : "Keywords",
+        "value" : "Organoids, brightfield, serum stimulation"
+      }, {
+        "name" : "License",
+        "value" : "CC0",
+        "valqual" : [ {
+          "name" : "URL",
+          "value" : "https://creativecommons.org/publicdomain/zero/1.0/legalcode"
+        } ]
+      } ],
+      "links" : [ {
+        "url" : "https://www.biorxiv.org/content/10.1101/2023.07.04.547690v1"
+      } ],
+      "subsections" : [ {
+        "type" : "author",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "Inga Hensel"
+        }, {
+          "name" : "E-mail",
+          "value" : "hensel@bio.mx"
+        }, {
+          "name" : "Role",
+          "value" : "first author"
+        }, {
+          "name" : "ORCID",
+          "value" : "0000-0003-2716-5879"
+        }, {
+          "name" : "affiliation",
+          "value" : "o1",
+          "reference" : true
+        } ]
+      }, {
+        "accno" : "o1",
+        "type" : "organisation",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "BioMedX Institute"
+        } ]
+      }, {
+        "accno" : "Biosample-1",
+        "type" : "Biosample",
+        "attributes" : [ {
+          "name" : "Title",
+          "value" : "Brightfield images of serum stimulated organoids"
+        }, {
+          "name" : "Organism",
+          "value" : "Homo sapiens (human)"
+        }, {
+          "name" : "Description",
+          "value" : "This is the source data for figure 1B of https://www.biorxiv.org/content/10.1101/2023.07.04.547690v1."
+        }, {
+          "name" : "Biological entity",
+          "value" : "Human descending colon organoids"
+        }, {
+          "name" : "Experimental variable",
+          "value" : "The organoids were stimulated for 72h with either control or SLE serum. Images were acquired and analyzed using the OrgaQuant tool. "
+        }, {
+          "name" : "Extrinsic variable",
+          "value" : "Control or Systemic Lupus Erythematosus serum from patients"
+        } ]
+      }, {
+        "accno" : "Specimen-2",
+        "type" : "Specimen",
+        "attributes" : [ {
+          "name" : "Title",
+          "value" : "Organoid serum stimulation"
+        }, {
+          "name" : "Sample preparation protocol",
+          "value" : "Organoids were passaged as described above with the modification of excluding bigger sized fragments by using a 70 µm strainer after the dissociation. In addition, fragments were counted and 400 fragments/µl were seeded. Organoids were grown in growth medium (Table EV2) for four days before dissociating them into single cells by incubation for 90s in Accutase followed by mechanical dissociation as described above. Bigger fragments were removed by using a 40 µm strainer. Then 800 cells/µl were seeded in 10 µl Matrigel mix in 96-well plate. After polymerization 100 µl expansion medium were added containing Y-27632. Organoids were stimulated with 5% SLE or 5% control serum in stimulation medium (Table EV2). In case of IFN-α stimulation 100 pg/ml IFN-α2B (Humankine, HZ-1072) were added in addition to control serum. Anifrolumab was added at a final concentration of 10 µg/ml. Stimulation started either 24h, 48h or 72h before harvesting organoids on day five."
+        }, {
+          "name" : "Growth protocol",
+          "value" : "Crypt isolation was performed as previously published.(Sato et al, 2011) The mucosa of approximately 1 cm2 was separated from the underlying tissue and cut into small pieces, washed with cold PBS before incubation in 10 mM EDTA/PBS for 1h at 4°C under constant rocking. The biopsies were then transferred to 5 ml cold PBS and crypts were liberated by pipetting. This was repeated twice, and the pooled fractions were centrifuged at 250g for 5 min at 4°C. The pellet was once washed in base medium (Table EV2) before the crypts were resuspended in 45 µl 80% Matrigel (#356231, Corning) in expansion medium (Table EV2) and plated in small drops in a 24-well plate. After polymerization 500 µl expansion medium containing Y-27632 was added until the first passage or later for the first days after passaging. Organoids were cultured at 37°C and 95% O2, 5% CO2 humid atmosphere. Initial passage was performed when organoids reached a size of approximately 200-300 µm in diameter. After establishing the organoid line organoids were passaged at a ratio of 1:6-1:10 every 4-5 days by a 45s incubation in Accutase at 37°C followed by mechanical dissociation in 6 ml base medium with a 10 ml pipet equipped with a 200 µl pipet tip. Organoid fragments were centrifuged at 150g for 5 min at 4°C and plated as stated above. Medium was changed every 2-3 days. "
+        } ]
+      }, {
+        "accno" : "Image acquisition-3",
+        "type" : "Image acquisition",
+        "attributes" : [ {
+          "name" : "Title",
+          "value" : "Brightfield images of stimulated organoids"
+        }, {
+          "name" : "Imaging instrument",
+          "value" : "Nikon Eclipse Ti2 inverted microscope"
+        }, {
+          "name" : "Image acquisition parameters",
+          "value" : "Several images were taken per well and stitched to show the whole Matrigel dome containing organoids. Different z planes were imaged."
+        }, {
+          "name" : "Imaging method",
+          "value" : "bright-field microscopy"
+        } ]
+      }, {
+        "accno" : "Study Component-4",
+        "type" : "Study Component",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "Organoid size"
+        }, {
+          "name" : "Description",
+          "value" : "The organoid size after serum stimulation was analyzed"
+        }, {
+          "name" : "File List",
+          "value" : "1B - source images.json"
+        } ],
+        "subsections" : [ {
+          "type" : "Associations",
+          "attributes" : [ {
+            "name" : "Biosample",
+            "value" : "Brightfield images of serum stimulated organoids"
+          }, {
+            "name" : "Specimen",
+            "value" : "Organoid serum stimulation"
+          }, {
+            "name" : "Image acquisition",
+            "value" : "Brightfield images of stimulated organoids"
+          } ]
+        }, {
+          "accno" : "Image analysis-1",
+          "type" : "Image analysis"
+        } ]
+      }, {
+        "accno" : "Image analysis-5",
+        "type" : "Image analysis",
+        "attributes" : [ {
+          "name" : "Title",
+          "value" : "Organoid size analysis using OrgaQuant"
+        }, {
+          "name" : "Image analysis overview",
+          "value" : "Images were analyzed using OrgaQuant tool (Kassis et al, 2019) with settings adjusted to 1600 (image size), 2 (contrast) and 0.7 (confidence threshold). Average diameter was calculated. "
+        } ]
+      } ]
+    },
+    "type" : "submission"
+  }
