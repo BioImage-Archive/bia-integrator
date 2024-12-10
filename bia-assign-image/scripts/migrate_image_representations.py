@@ -1,5 +1,6 @@
 """Ad hoc script to migrate image representations from v2"""
 
+import re
 import typer
 import json
 from pathlib import Path
@@ -29,29 +30,37 @@ def process_exported_json(exported_json_path: str):
     poetry_base_dir = str(Path(__file__).parent.parent)
     exported_json = json.loads(Path(exported_json_path).read_text())
 
-    # For test run only process S-BIAD1285
-    accession_id_to_process = "S-BIAD1285"
+    accession_id_pattern = r"/(S-B[A-Z]*[0-9]*)/"
 
     for eci in exported_json.values():
         representations_to_process = []
         accession_id = None
         file_path = None
+        interactive_display_found = False
         for representation in eci["representation"]:
-            if (
-                len(representation["file_uri"]) > 0
-                and representation["file_uri"][0].find(accession_id_to_process) > 0
-            ):
+            if len(representation["file_uri"]) > 0:
                 representations_to_process.append(representation)
                 if representation["use_type"] == "UPLOADED_BY_SUBMITTER":
-                    file_path = representation["file_uri"][0].split(
-                        f"{accession_id_to_process}/"
-                    )[-1]
+                    accession_id = re.findall(
+                        accession_id_pattern, representation["file_uri"][0]
+                    )[0]
+                    file_path = representation["file_uri"][0].split(f"{accession_id}/")[
+                        -1
+                    ]
+                elif representation["use_type"] == "INTERACTIVE_DISPLAY":
+                    interactive_display_found = True
 
         if not representations_to_process or not file_path:
             continue
 
-        # use regex to get accession_id
-        accession_id = accession_id_to_process
+        # We only want to migrate instances where conversion was successful
+        # -> has an interactive display representation
+        if not interactive_display_found:
+            logger.info(
+                f"Accession ID: {accession_id}. No interactive display for representations {representation}"
+            )
+            continue
+
         persister = persistence_strategy_factory(
             PersistenceMode.disk,
             output_dir_base=settings.bia_data_dir,
@@ -78,7 +87,9 @@ def process_exported_json(exported_json_path: str):
         try:
             image = persister.fetch_by_uuid(image_uuid, bia_data_model.Image)
         except FileNotFoundError:
-            logger.info(f"Could not find Image with uuid {image_uuid[0]}. Creating it.")
+            logger.info(
+                f"Accession ID: {accession_id}: Could not find Image with uuid {image_uuid[0]}. Creating it."
+            )
             result = subprocess.run(
                 [
                     "poetry",
@@ -107,7 +118,7 @@ def process_exported_json(exported_json_path: str):
             # Create representation
             use_type = old_representation["use_type"]
             logger.info(
-                f"Creating new representation for old representation with uuid {old_representation['uuid']}."
+                f"Accession ID: {accession_id}: Creating new representation for old representation with uuid {old_representation['uuid']}."
             )
             result = subprocess.run(
                 [
@@ -189,7 +200,7 @@ def process_exported_json(exported_json_path: str):
                     ]
             else:
                 logger.error(
-                    f"Unknown use type: {use_type} Not updating ImageRepresentation with UUID {new_representation.uuid}"
+                    f"Accession ID: {accession_id}: Unknown use type: {use_type} Not updating ImageRepresentation with UUID {new_representation.uuid}"
                 )
                 continue
 
@@ -200,7 +211,7 @@ def process_exported_json(exported_json_path: str):
                 ]
             )
             logger.info(
-                f"Saved updated ImageRepresentation with UUID {new_representation.uuid}"
+                f"Accession ID: {accession_id}: Saved updated ImageRepresentation with UUID {new_representation.uuid}"
             )
 
 
