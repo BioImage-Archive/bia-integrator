@@ -188,6 +188,28 @@ def load_submission_table_info(accession_id: str) -> SubmissionTable:
 
 
 def load_submission(accession_id: str) -> Submission:
+    # Note this is a dictionary to include reasons why the override was made
+    overrides = {
+        "S-BSMS4": "Author links to affiliations were missing 'reference: true'"
+    }
+    if accession_id in overrides:
+        submission_path = pathlib.Path(
+            "submission_overrides/biostudies", f"{accession_id}.json"
+        )
+        abs_path = submission_path.absolute()
+        return read_override(abs_path)
+    else:
+        submission_from_biostudies_api(accession_id)
+
+
+def read_override(path: pathlib.Path) -> Submission:
+    logger.info(f"Reading submission from {path}")
+    file = path.read_text()
+    submission = Submission.model_validate_json(file)
+    return submission
+
+
+def submission_from_biostudies_api(accession_id) -> Submission:
     url = STUDY_URL_TEMPLATE.format(accession=accession_id)
     logger.info(f"Fetching submission from {url}")
     headers = {
