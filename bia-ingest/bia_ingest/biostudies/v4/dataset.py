@@ -26,7 +26,9 @@ from bia_shared_datamodels import bia_data_model, semantic_models
 from bia_ingest.persistence_strategy import PersistenceStrategy
 from uuid import UUID
 
-logger = logging.getLogger("__main__." + __name__)
+from bia_ingest.logging_configuration import logging_config
+
+logger = logging_config.getLogger("__main__." + __name__)
 
 
 def get_dataset(
@@ -199,6 +201,7 @@ def get_uuid_attribute_from_associations(
                     ].uuid
                 )
             else:
+                logger.error(f"TABLE ::: ERROR ::: Dataset cannot find Image Acquisition that exists in its associations: {association.image_acquisition}")
                 raise RuntimeError(
                     f"Dataset cannot find Image Acquisition that exists in its associations: {association.image_acquisition}"
                 )

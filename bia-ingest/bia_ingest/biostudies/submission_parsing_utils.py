@@ -7,9 +7,10 @@ from bia_ingest.biostudies.api import (
 )
 
 from typing import Any, Dict, List, Optional, Union
-import logging
 
-logger = logging.getLogger("__main__." + __name__)
+from bia_ingest.logging_configuration import logging_config
+
+logger = logging_config.getLogger("__main__." + __name__)
 
 
 def attributes_to_dict(
@@ -61,6 +62,8 @@ def find_file_lists_in_section(
             logger.warning(
                 f"Not processing subsection as type is {subsection_type}, not 'Section'. Contents={subsection}"
             )
+            logger.info(f"TABLE ::: WARNING ::: Unprocessed subsection, type: {subsection_type} :::")
+
 
     return flists
 

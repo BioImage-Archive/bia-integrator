@@ -26,17 +26,13 @@ from bia_ingest.biostudies.v4.study import get_study
 import logging
 from rich import print
 from rich.logging import RichHandler
-from .cli_logging import tabulate_ingestion_errors, write_table, IngestionResult
+from .cli_logging import tabulate_ingestion_errors, write_table, tabulate_log, IngestionResult
+
+from .logging_configuration import logging_config
 
 app = typer.Typer()
 
-
-logging.basicConfig(
-    level=logging.INFO, format="%(message)s", handlers=[RichHandler(show_time=False)]
-)
-
-logger = logging.getLogger()
-
+logger = logging_config.getLogger("__main__." + __name__)
 
 class ProcessFilelistMode(str, Enum):
     """Wether to process all file references, ask if there are a lot of files, or always skip."""
@@ -68,6 +64,7 @@ def ingest(
     for accession_id in accession_id_list:
         print(f"[blue]-------- Starting ingest of {accession_id} --------[/blue]")
         logger.debug(f"starting ingest of {accession_id}")
+        logger.info(f"TABLE ::: START ::: {accession_id} :::")
 
         result_summary[accession_id] = IngestionResult()
 
@@ -126,6 +123,13 @@ def ingest(
 
     if write_csv:
         write_table(result_table, write_csv)
+
+    logger.info("TABLE ::: END :::")
+    
+    log_table = tabulate_log()
+    print(log_table)
+    write_table(log_table, 'log_table.csv')
+
 
 
 def determine_file_processing(

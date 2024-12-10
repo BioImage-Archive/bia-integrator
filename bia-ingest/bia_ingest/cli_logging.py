@@ -10,8 +10,8 @@ from bia_ingest.biostudies.biostudies_processing_version import (
     BioStudiesProcessingVersion,
 )
 
-logger = logging.getLogger("__main__." + __name__)
-
+#logger = logging.getLogger("__main__." + __name__)
+logger = logging.getLogger("__main__")
 
 class CLIResult(BaseModel):
     pass
@@ -144,6 +144,7 @@ def log_model_creation_count(
     model_class: Type[BaseModel], count: int, valdiation_error_tracking: CLIResult
 ) -> None:
     logger.info(f"Created {model_class.__name__}. Count: {count}")
+    #logger.info(f"CREATE ::: {model_class.__name__} ::: {count}")
     field_name = f"{model_class.__name__}_CreationCount"
     valdiation_error_tracking.__setattr__(
         field_name, valdiation_error_tracking.__getattribute__(field_name) + count
@@ -153,9 +154,61 @@ def log_model_creation_count(
 def log_failed_model_creation(
     model_class: Type[BaseModel], valdiation_error_tracking: CLIResult
 ) -> None:
-    logger.error(f"Failed to create {model_class.__name__}")
+    #logger.error(f"Failed to create {model_class.__name__}")
+    logger.info(f"FAIL ::: {model_class.__name__}")
     logger.debug("Pydantic Validation Error:", exc_info=True)
     field_name = f"{model_class.__name__}_ValidationErrorCount"
     valdiation_error_tracking.__setattr__(
         field_name, valdiation_error_tracking.__getattribute__(field_name) + 1
     )
+
+
+def tabulate_log() -> Table:
+
+    log_table = Table()
+    headers = ["Accession ID", "WARNINGS", "COUNT", "ERRORS", "COUNT"]
+    for header in headers:
+        log_table.add_column(header, overflow="fold")
+    
+    with open('table.log', 'r') as file:
+        row = []
+        wrn = ""
+        err = ""
+        wrn_count = 0
+        err_count = 0
+        for line in file:
+            #line_squashed = line.replace(" ", "")
+            split_line = line.split(":::")
+            action = split_line[1].replace(" ", "")
+            print(split_line)
+            if action == "START":
+                print("IN START")
+                acc = split_line[2]
+                if row != []:
+                    row[1] = wrn
+                    row[2] = str(wrn_count)
+                    row[3] = err
+                    row[4] = str(err_count)
+                    log_table.add_row(*row)
+                    wrn = ""
+                    err = ""
+                    wrn_count = 0
+                    err_count = 0
+                row = [acc, None, "0", None, "0"]
+            elif action == "WARNING":
+                print("IN WARNING")
+                wrn = wrn + split_line[2] + "\n"
+                wrn_count += 1
+            elif action == "ERROR":
+                print("IN ERROR")
+                err = err + split_line[2] + "\n"
+                err_count += 1
+            elif action == "END":
+                print("IN END")
+                row[1] = wrn
+                row[2] = str(wrn_count)
+                row[3] = err
+                row[4] = str(err_count)
+                log_table.add_row(*row)
+
+    return log_table

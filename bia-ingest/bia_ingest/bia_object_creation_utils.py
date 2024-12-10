@@ -9,6 +9,9 @@ from bia_ingest.cli_logging import (
     log_model_creation_count,
 )
 
+from bia_ingest.logging_configuration import logging_config
+
+logger = logging_config.getLogger("__main__" + __name__)
 
 def filter_model_dictionary(dictionary: dict, target_model: Type[BaseModel]):
     accepted_fields = target_model.model_fields.keys()
@@ -37,6 +40,7 @@ def dict_to_api_model(
         api_model = api_model_class.model_validate(dict)
     except ValidationError:
         log_failed_model_creation(api_model_class, valdiation_error_tracking)
+        logger.error(f"TABLE ::: ERROR ::: Failed model creation: {api_model_class} :::")
     if api_model:
         log_model_creation_count(api_model_class, 1, valdiation_error_tracking)
     return api_model
@@ -57,6 +61,7 @@ def dicts_to_api_models(
             api_models.append(api_model_class.model_validate(model_dict))
         except ValidationError:
             log_failed_model_creation(api_model_class, valdiation_error_tracking)
+            logger.error(f"TABLE ::: ERROR ::: Failed model creation: {api_model_class} :::")
 
     log_model_creation_count(
         api_model_class, len(api_models), valdiation_error_tracking
@@ -79,6 +84,7 @@ def dict_map_to_api_models(
             api_models[reference_id] = api_model_class.model_validate(model_dict)
         except ValidationError:
             log_failed_model_creation(api_model_class, valdiation_error_tracking)
+            logger.error(f"TABLE ::: ERROR ::: Failed model creation: {api_model_class} :::")
 
     log_model_creation_count(
         api_model_class, len(api_models), valdiation_error_tracking
