@@ -84,11 +84,19 @@ def ingest(
             # Get information from biostudies
             submission = load_submission(accession_id)
             submission_table = load_submission_table_info(accession_id)
+        except AssertionError as error:
+            logger.error("Failed to retrieve information from BioStudies")
+            result_summary[accession_id].__setattr__(
+                "Uncaught_Exception",
+                "Non-200 repsonse from BioStudies",
+            )
+            logging.exception("message")
+            continue
         except Exception as error:
             logger.error("Failed to parse information from BioStudies")
             result_summary[accession_id].__setattr__(
                 "Uncaught_Exception",
-                "Failed to parse information from BioStudies",
+                str(result_summary[accession_id].Uncaught_Exception) + str(error),
             )
             logging.exception("message")
             continue
