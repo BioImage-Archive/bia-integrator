@@ -323,6 +323,7 @@ def get_contributor(
     author_sections = find_sections_recursive(submission.section, ["author"])
 
     contributor_dicts = []
+    email_warnings = []
     for section in author_sections:
 
         attributes = sanitise_affiliation_attribute(
@@ -343,12 +344,14 @@ def get_contributor(
                 model_dict["affiliation"],
             ]
         
-        sanitised_email = sanitise_contributor_email(
-            model_dict["contact_email"], result_summary, submission.accno
+        sanitised_email, email_warnings = sanitise_contributor_email(
+            model_dict["contact_email"], email_warnings
         )
         model_dict["contact_email"] = sanitised_email
 
         contributor_dicts.append(model_dict)
+
+    get_unique_email_warnings(email_warnings, result_summary, submission.accno)
 
     contributors = dicts_to_api_models(
         contributor_dicts, semantic_models.Contributor, result_summary[submission.accno]
@@ -383,22 +386,28 @@ def sanitise_affiliation_attribute(
 
 def sanitise_contributor_email(
         email: str | None, 
-        result_summary: dict[str, IngestionResult],
-        accno: str,
+        email_warnings: list
 ):
     if email is not None:
         try:
             email_info = validate_email(email, check_deliverability=False)
             email = email_info.normalized
-            return email
         except EmailNotValidError as e:
-            current_warnings = result_summary[accno].Warning
-            logger.info(f"type of warning: {type(current_warnings)}")
-            result_summary[accno].__setattr__(
-                "Warning",
-                current_warnings + "WARNING: " + str(e) + "\n"
-            )
-            logger.info(f"the warning is: {result_summary[accno].Warning}")
+            email_warnings.append(str(e))
             email = None
     
-    return email
+    return [email, email_warnings]
+
+def get_unique_email_warnings(
+        email_warnings: list,
+        result_summary: dict[str, IngestionResult],
+        accno: str
+):
+    if email_warnings != []:
+        unique_warnings = list(set(email_warnings))
+        for warning in unique_warnings:
+            result_summary[accno].__setattr__(
+                "Warning",
+                "Email warning: " + str(warning) + "\n"
+            )
+            logger.warning(f"Email warning: {warning}")
