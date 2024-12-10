@@ -26,7 +26,6 @@
             ],
             "acquisition_process": [],
             "subject": null,
-            "protocol": [],
             "annotation_method": [
                 {
                     "default_open": true,
@@ -48,7 +47,8 @@
                     ],
                     "annotation_source_indicator": null
                 }
-            ]
+            ],
+            "protocol": []
         },
         "representation": []
     },
@@ -94,9 +94,81 @@
                     ]
                 }
             ],
-            "subject": null,
-            "protocol": [],
-            "annotation_method": []
+            "subject": {
+                "uuid": "dcc18482-fa1a-468f-878f-c00f9cd46376",
+                "version": 1,
+                "model": {
+                    "type_name": "Specimen",
+                    "version": 1
+                },
+                "attribute": [],
+                "imaging_preparation_protocol_uuid": [
+                    "7199d730-29f1-4ad8-b599-e9089cbb2d7b"
+                ],
+                "sample_of_uuid": [
+                    "64a67727-4e7c-469a-91c4-6219ae072e99"
+                ],
+                "imaging_preparation_protocol": [
+                    {
+                        "default_open": true,
+                        "title_id": "Test specimen 1",
+                        "uuid": "7199d730-29f1-4ad8-b599-e9089cbb2d7b",
+                        "version": 1,
+                        "model": {
+                            "type_name": "SpecimenImagingPreparationProtocol",
+                            "version": 2
+                        },
+                        "attribute": [],
+                        "protocol_description": "Test sample preparation protocol 1",
+                        "signal_channel_information": []
+                    }
+                ],
+                "sample_of": [
+                    {
+                        "default_open": true,
+                        "title_id": "Test Biosample 1",
+                        "uuid": "64a67727-4e7c-469a-91c4-6219ae072e99",
+                        "version": 1,
+                        "model": {
+                            "type_name": "BioSample",
+                            "version": 3
+                        },
+                        "attribute": [],
+                        "organism_classification": [
+                            {
+                                "attribute": null,
+                                "common_name": "human",
+                                "scientific_name": "Homo sapiens",
+                                "ncbi_id": null
+                            }
+                        ],
+                        "biological_entity_description": "Test biological entity 1",
+                        "experimental_variable_description": [
+                            "Test experimental entity 1"
+                        ],
+                        "extrinsic_variable_description": [
+                            "Test extrinsic variable 1"
+                        ],
+                        "intrinsic_variable_description": [
+                            "Test intrinsic variable 1\\nwith escaped character"
+                        ],
+                        "growth_protocol_uuid": "a2ce3950-3b28-40b3-a6a5-23c4f7864912",
+                        "growth_protocol": {
+                            "title_id": "Test specimen 1",
+                            "uuid": "a2ce3950-3b28-40b3-a6a5-23c4f7864912",
+                            "version": 2,
+                            "model": {
+                                "type_name": "Protocol",
+                                "version": 1
+                            },
+                            "attribute": [],
+                            "protocol_description": "Test sample growth protocol 1"
+                        }
+                    }
+                ]
+            },
+            "annotation_method": [],
+            "protocol": []
         },
         "representation": [
             {
