@@ -1,5 +1,8 @@
 from typing import List, Type
-from bia_export.website_export.generic_object_retrieval import retrieve_object_list, retrieve_object
+from bia_export.website_export.generic_object_retrieval import (
+    retrieve_object_list,
+    retrieve_object,
+)
 from bia_integrator_api import models as api_models
 from pydantic import BaseModel
 from bia_export.website_export.images.models import (
@@ -75,7 +78,7 @@ def transform_creation_process(
         api_specimen: api_models.Specimen = retrieve_object(
             api_creation_process.subject_specimen_uuid, api_models.Specimen, context
         )
-        website_fields["subject_specimen"] = transform_specimen(api_specimen, context)
+        website_fields["subject"] = transform_specimen(api_specimen, context)
 
     if len(api_creation_process.annotation_method_uuid) > 0:
         api_annotation_method = retrieve_object_list(
@@ -106,8 +109,9 @@ def transform_specimen(
     api_bio_samples = retrieve_object_list(
         api_specimen.sample_of_uuid, api_models.BioSample, context
     )
+    biosamples = []
     for api_bio_sample in api_bio_samples:
-        transform_biosample(api_bio_sample, context)
+        biosamples.append(transform_biosample(api_bio_sample, context))
 
     api_specimen_imaging_preparation_protocols = retrieve_object_list(
         api_specimen.imaging_preparation_protocol_uuid,
@@ -120,7 +124,7 @@ def transform_specimen(
             api_specimen_imaging_preparation_protocols,
             SpecimenImagingPreparationProtocol,
         ),
-        "sample_of": transform_details_object_list(api_bio_samples, BioSample),
+        "sample_of": biosamples,
     }
     return Specimen(**specimen_dict)
 
