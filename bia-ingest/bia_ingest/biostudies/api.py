@@ -188,6 +188,39 @@ def load_submission_table_info(accession_id: str) -> SubmissionTable:
 
 
 def load_submission(accession_id: str) -> Submission:
+    # Note this is a dictionary to include reasons why the override was made
+    overrides = {
+        "S-BSMS4": "Author links to affiliations were missing 'reference: true'",
+        "S-BIAD15": "Invalid licence, and affilicaiton was missing accno",
+        "S-BIAD1076": "Biosample had the Experimental variables text split up into 3 sections, possibly due to commas?",
+        "S-BIAD1261": "Author had no name, and the email was for a whole lab. Name added as Cytology Department RUB",
+        "S-BIAD978": "Unreferenced Image analysis-5, and a broken association to image analysis 1 (that doesn't exist)",
+        "S-BIAD954": "invalid email: Julia Nöth <julia.noeth@ufz.de> changed to: julia.noeth@ufz.de",
+        "S-BIAD1136": "invalid email: oona.paavolainen@ut changed to: oona.k.paavolainen@utu.fi (same ending as other authors - seemed to be missing the .k. based off google search)",
+        "S-BIAD1223": "invalid email: ylva.ivarsson@kemi..u.se changed to: ylva.ivarsson@kemi.uu.se",
+        "S-BIAD1344": "invalid email: raffaeledefilippis92@gmail.comraffaeledefilippis92@gmail.com changed to: raffaeledefilippis92@gmail.com",
+        "S-BSST651": "invalid email: huw.williams@williams@nottingham.ac.uk changed to: huw.williams@nottingham.ac.uk",
+        "S-BSST744": "invalid email: ‫britta.engelhardt@tki.unibe.ch (right-to-left embedding) changed to: britta.engelhardt@tki.unibe.ch",
+    }
+    if accession_id in overrides:
+        return read_override(accession_id)
+    else:
+        return submission_from_biostudies_api(accession_id)
+
+
+def read_override(accession_id: str) -> Submission:
+    submission_path = pathlib.Path(
+        "submission_overrides/biostudies", accession_id, f"{accession_id}_override.json"
+    )
+    abs_path = submission_path.absolute()
+    logger.info(f"Reading submission from {abs_path}")
+    file = abs_path.read_text()
+    submission = Submission.model_validate_json(file)
+    assert submission.accno == accession_id
+    return submission
+
+
+def submission_from_biostudies_api(accession_id) -> Submission:
     url = STUDY_URL_TEMPLATE.format(accession=accession_id)
     logger.info(f"Fetching submission from {url}")
     headers = {

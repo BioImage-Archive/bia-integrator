@@ -1,0 +1,356 @@
+{
+    "accno" : "S-BIAD1076",
+    "attributes" : [ {
+      "name" : "Template",
+      "value" : "BioImages.MIFA.v1"
+    }, {
+      "name" : "REMBI_PageTab Conversion Script Version",
+      "value" : "1.0.0"
+    }, {
+      "name" : "Title",
+      "value" : "Image-based and machine learning-guided multiplexed serology test for SARS-CoV-2"
+    }, {
+      "name" : "ReleaseDate",
+      "value" : "2024-04-01"
+    }, {
+      "name" : "AttachTo",
+      "value" : "BioImages"
+    } ],
+    "section" : {
+      "type" : "Study",
+      "attributes" : [ {
+        "name" : "Description",
+        "value" : "Mini-immunofluorescence assay that builds on a custom neural network-based image analysis pipeline for automated and multiplexed detection of immunoglobulins (IgG, IgA, and IgM) in patient samples."
+      }, {
+        "name" : "Keyword",
+        "value" : "COVID-19"
+      }, {
+        "name" : "Keyword",
+        "value" : "SARS-CoV-2"
+      }, {
+        "name" : "Keyword",
+        "value" : "high-content imaging"
+      }, {
+        "name" : "Keyword",
+        "value" : "antibody response"
+      }, {
+        "name" : "Keyword",
+        "value" : "machine-learning"
+      }, {
+        "name" : "Keyword",
+        "value" : "immunofluorescence"
+      }, {
+        "name" : "Keyword",
+        "value" : "serology"
+      }, {
+        "name" : "Keyword",
+        "value" : "virus"
+      }, {
+        "name" : "Acknowledgements",
+        "value" : "The authors thank the Minerva Institute (Helsinki, Finland) for providing utilities for the project, Prof. Perttu Hämäläinen (Aalto University, Finland) for providing the expertise of his group for the project, the FIMM High Throughput Biomedicine Unit for providing access to high-throughput robotics, the FIMM High Content Imaging and Analysis Unit for HC imaging and analysis (HiLIFE, University of Helsinki and Biocenter Finland; EuroBioImaging, ISIDORe partner), and the CSC – IT Center for Science, Finland, for computational resources."
+      }, {
+        "name" : "Funding statement",
+        "value" : "We acknowledge support from the LENDULET-BIOMAG grant (2018-342), from the European Regional Development Funds (GINOP-2.3.2-15-2016-00006, GINOP-2.3.2-15-2016-00026, and GINOP-2.3.2-15-2016-00037), from the H2020-discovAIR (874656), from the H2020 ATTRACT-SpheroidPicker, and from the Chan Zuckerberg Initiative, Seed Networks for the HCA-DVP. The Finnish TEKES/BusinessFinland FiDiPro Fellow Grant 40294/13 (to V.P., O.K., L.P., and P.H.), grants awarded by the Academy of Finland (iCOIN-336496 to O.K., V.P., and O.V.; 308613 to J.H.; 321809 to T.S.; 310552 to L.P.; 337530 to I.J.; and FIRI2020-337036 to FIMM-HCA, A.H., L.P., V.P., and P.H.), the EU H2020 VEO project (O.V.), and a Minerva Foundation for COVID-19 Research project grant (to V.P.) are also acknowledged. C.G. is funded by the Academy of Finland Flagship program, Finnish Center for Artificial Intelligence. OrthoSera Ltd. was funded by NKFIH grants (2020-1.1.6-JÖVŐ-2021-00010 and TKP2020-NKA-17).Networks for the HCA-DVP, the Finnish TEKES FiDiPro Fellow Grant 40294/13 (VP, OK, LP, PH), grants awarded by the Academy of Finland (iCOIN-336496: OK, VP, OV; 308613: JH; 321809: TS; 310552: LP; 337530: IJ, FIRI2020-337036: FIMM-HCA, AH, LP, VP, PH), the EU H2020 VEO project (OV), Minerva Foundation COVID-19 research project grant (VP), the Academy of Finland Flagship programme (CG, Finnish Center for Artificial Intelligence), and NKFIH grants (2020-1.1.6-JOVO-2021-00010, and TKP2020-NKA-17) to OrthoSera Ltd. I.K. receives funding from EU Horizon 2020 under grant agreement no. 101046203 (BY-COVID)."
+      } ],
+      "links" : [ {
+        "url" : "https://github.com/fimm-covid-19-hca/mini-IFA_paper",
+        "attributes" : [ {
+          "name" : "Description",
+          "value" : "Supplementary code of machine-learning model training, prediction and evaluation pipeline"
+        } ]
+      }, {
+        "url" : "https://dx.doi.org/10.5281/zenodo.6352550",
+        "attributes" : [ {
+          "name" : "Description",
+          "value" : "Extracted single-cell features from microscopic images to train and test models"
+        } ]
+      } ],
+      "subsections" : [ {
+        "type" : "author",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "Lassi Paavolainen"
+        }, {
+          "name" : "E-mail",
+          "value" : "lassi.paavolainen@helsinki.fi"
+        }, {
+          "name" : "Role",
+          "value" : "submitter, data acquisition, data analysis"
+        }, {
+          "name" : "ORCID",
+          "value" : "0000-0003-1508-2718"
+        }, {
+          "name" : "affiliation",
+          "value" : "o2",
+          "reference" : true
+        } ]
+      }, {
+        "type" : "author",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "Antti Hassinen"
+        }, {
+          "name" : "E-mail",
+          "value" : "antti.hassinen@helsinki.fi"
+        }, {
+          "name" : "Role",
+          "value" : "data aquisition, data analysis"
+        }, {
+          "name" : "ORCID",
+          "value" : "0000-0001-9491-2868"
+        }, {
+          "name" : "affiliation",
+          "value" : "o2",
+          "reference" : true
+        } ]
+      }, {
+        "type" : "author",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "Minttu Polso"
+        }, {
+          "name" : "E-mail",
+          "value" : "minttu.polso@helsinki.fi"
+        }, {
+          "name" : "Role",
+          "value" : "data aquisition, data analysis"
+        }, {
+          "name" : "ORCID",
+          "value" : "0009-0007-2029-9707"
+        }, {
+          "name" : "affiliation",
+          "value" : "o2",
+          "reference" : true
+        } ]
+      }, {
+        "type" : "author",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "Vilja Pietiäinen"
+        }, {
+          "name" : "E-mail",
+          "value" : "vilja.pietiainen@helsinki.fi"
+        }, {
+          "name" : "Role",
+          "value" : "first author, corresponding author"
+        }, {
+          "name" : "ORCID",
+          "value" : "0000-0003-3125-2406"
+        }, {
+          "name" : "affiliation",
+          "value" : "o2",
+          "reference" : true
+        } ]
+      }, {
+        "type" : "author",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "Isabel Kemmer"
+        }, {
+          "name" : "E-mail",
+          "value" : "isabel.kemmer@eurobioimaging.eu"
+        }, {
+          "name" : "Role",
+          "value" : "data steward"
+        }, {
+          "name" : "ORCID",
+          "value" : "0000-0002-8799-4671"
+        }, {
+          "name" : "affiliation",
+          "value" : "o1",
+          "reference" : true
+        } ]
+      }, {
+        "accno" : "o1",
+        "type" : "organization",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "Euro-BioImaging ERIC"
+        }, {
+          "name" : "Address",
+          "value" : "Euro-BioImaging Bio-Hub, EMBL, Meyerhofstrasse 1, 69117 Heidelberg."
+        } ]
+      }, {
+        "accno" : "o2",
+        "type" : "organization",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "Institute for Molecular Medicine Finland"
+        }, {
+          "name" : "Address",
+          "value" : "P.O.Box 20, FI-00014 University of Helsinki, Finland"
+        } ]
+      }, {
+        "type" : "Publication",
+        "attributes" : [ {
+          "name" : "Title",
+          "value" : "Image-based and machine learning-guided multiplexed serology test for SARS-CoV-2"
+        }, {
+          "name" : "Year",
+          "value" : "2023"
+        }, {
+          "name" : "Authors",
+          "value" : "Vilja Pietiäinen, Minttu Polso, Ede Migh, Christian Guckelsberger, Maria Harmati, Akos Diosdi, Laura Turunen, Antti Hassinen, Swapnil Potdar, Annika Koponen, Edina Gyukity Sebestyen, Ferenc Kovacs, Andras Kriston, Reka Hollandi, Katalin Burian, Gabriella Terhes, Adam Visnyovszki, Eszter Fodor, Zsombor Lacza, Anu Kantele, Pekka Kolehmainen, Laura Kakkola, Tomas Strandin, Lev Levanov, Olli Kallioniemi, Lajos Kemeny, Ilkka Julkunen, Olli Vapalahti, Krisztina Buzas, Lassi Paavolainen, Peter Horvath, Jussi Hepojoki"
+        }, {
+          "name" : "DOI",
+          "value" : "https://doi.org/10.1016/j.crmeth.2023.100565"
+        }, {
+          "name" : "PMC ID",
+          "value" : "37671026"
+        } ]
+      }, {
+        "accno" : "Biosample-1",
+        "type" : "Biosample",
+        "attributes" : [ {
+          "name" : "Title",
+          "value" : "Biosample"
+        }, {
+          "name" : "Biological entity",
+          "value" : "Vero E6 cells"
+        }, {
+          "name" : "Description",
+          "value" : "African green monkey kidney cell line, ATCC; mycoplasma tested"
+        }, {
+          "name" : "Intrinsic variable",
+          "value" : "cells transfected to express SARS-CoV-2 antigens: N [nucleo proteins], M [Membrane], R [Receptor-binding domain], and S [Spike]"
+        }, {
+          "name" : "Extrinsic variable",
+          "value" : "addition of serum samples obtained from positive (COVID-19+) and negative (COVID-19–) patients"
+        }, {
+          "name" : "Experimental variable",
+          "value" : "imaging of four different fluorescent channels to detect three immunoglobulins (IgG"
+        }, {
+          "name" : "Experimental variable",
+          "value" : "IgA"
+        }, {
+          "name" : "Experimental variable",
+          "value" : "IgM; binding to transiently transfected virus antigens) with fluorescently labelled secondary antibodies and cell nuclei"
+        } ],
+        "subsections" : [ {
+          "accno" : "Organism-1",
+          "type" : "Organism",
+          "attributes" : [ {
+            "name" : "Scientific name",
+            "value" : "Chlorocebus aethiops"
+          }, {
+            "name" : "Common name",
+            "value" : "African green monkey"
+          }, {
+            "name" : "NCBI taxon ID",
+            "value" : "NCBI:txid9534"
+          } ]
+        } ]
+      }, {
+        "accno" : "Specimen-1",
+        "type" : "Specimen",
+        "attributes" : [ {
+          "name" : "Title",
+          "value" : "Specimen"
+        }, {
+          "name" : "Sample Preparation Protocol",
+          "value" : "The transiently transfected Vero E6 cells on 384-well plates were fixed with 4 % PFA and washed before storing at +4° C. For control purposes, Hoechst 33342 (Invitrogen H1399) was added to serum samples before aquiring them to plate (final concentration of Hoechst on plates was 1:5000). Protocol: The transfected and fixed Vero E6 cells were permeabilized and blocked with 3 % BSA-TBSTx (0.25 %) and incubated at RT for 15 min before washing. Serum samples (including Hoechst) were dispensed to wells in 1/100 and 1/50 dilutions and incubated at RT for 1.5 h followed by washing with TBS. A secondary antibody mixture with Alexa Fluor 647 Anti-Human Serum IgA (1/1000 dilution, ), anti-Human IgM Alexa Fluor 488 (1/1000 dilution, Invitrogen A-21215) and anti-Human IgG DyLight 550 Secondary Antibody (1/500 dilution, Invitrogen SA5-10135) was used to detect the SARS-CoV-2 antibodies from plates."
+        }, {
+          "name" : "Growth Protocol",
+          "value" : "Vero E6 Cells were transfected with plasmid DNA (S-pCAGG, RBD-pCAGG, N-pCAGG or M-pEBB) and incubated at RT for 15-30 min. The cells were then seeded to a 384 plate and incubated for 48 hours at 37° C with 5 % CO2. The plasmids: S-pCAGGS, SARS-CoV-2 spike protein/plasmid (Amanat et al. 2020. A serological assay to detect SARS-CoV-2 seroconversion in humans); RBD-pCAGGS, SARS-CoV-2 receptor-binding domain/plasmid (Amanat et al. 2020); NP-pCAGGS, SARS-CoV-2 nucleoprotein/plasmid (Rusanen et al. 2021. A 10-Minute “Mix and Read” Antibody Assay for SARS-CoV-2), M-pEBB, SARS-CoV-2 membrane, protein/plasmid, hCoV-19/Finland/1/2020, (Genbank accession MT020781) with pEBB-N-HA mammalian expression plasmid."
+        } ]
+      }, {
+        "accno" : "Image Acquisition-1",
+        "type" : "Image Acquisition",
+        "attributes" : [ {
+          "name" : "Title",
+          "value" : "Acquisition"
+        }, {
+          "name" : "Imaging Instrument",
+          "value" : "PerkinElmer Opera Phenix high-throughput spinning disc confocal microscope using Harmony 4.9 software, 20x water-immersion objective (NA 1.0, working distance 1.7 mm, depth of focus 1.8 μm, effective xy resolution 0.66 μm) and two Andor Zyla sCMOS cameras"
+        }, {
+          "name" : "Image Acquisition Parameters",
+          "value" : "Two-peak autofocus in confocal mode with binning 1, Four excitation lasers (ex) with 100% laser power and emission band-pass filters (em) were used:  Channel 1 (Hoechst): ex 405 nm, em 435-480 nm, 100 ms exposure time Channel 2 (IgM): ex 488 nm, em 500-550 nm, 100 ms exposure time Channel 3 (IgG): ex 561 nm, em 570-630 nm, 200 ms exposure time Channel 4 (IgA):  ex 640 nm, em 650-760 nm, 200 ms exposure time A grid of nine adjacent fields selected from the center of the well, 5 % overlap between the images. Area of the selection is 3,83 mm^2 or 36 % of the total well area.  Z-stack of 2 fields selected, first plane at -4.0 µm, 3 µm distance between planes"
+        }, {
+          "name" : "Image data: file format: TIFF, Bit depth: 16 bit, Image dimensions: 2160x2160 px, pixel size: 0.298988040478381 µm"
+        } ],
+        "subsections" : [ {
+          "accno" : "Imaging Method-1",
+          "type" : "Imaging Method",
+          "attributes" : [ {
+            "name" : "Ontology Value",
+            "value" : "spinning disk confocal microscopy"
+          }, {
+            "name" : "Ontology Name",
+            "value" : "Biological Imaging Methods Ontology (FBbi)"
+          }, {
+            "name" : "Ontology Term ID",
+            "value" : "http://purl.obolibrary.org/obo/FBbi_00000253"
+          } ]
+        } ]
+      }, {
+        "accno" : "Image-Analysis-1",
+        "type" : "Image Analysis",
+        "attributes" : [ {
+          "name" : "Title",
+          "value" : "Analysis"
+        }, {
+          "name" : "Image Analysis Overview",
+          "value" : "Images were processed using BIAS software (Mund et al., 2021; Piccinini et al., 2017). Pipeline created for the analysis consisted of pre-processing of the images, and nuclear/cell segmentation. In the pre-processing, a maximum intensity projection was created from each stack of images in different focus depths. Non-uniform illumination was corrected separately for each channel using the CIDRE method (Smith et al., 2015)."
+        } ]
+      }, {
+        "accno" : "Annotations-1",
+        "type" : "Annotations",
+        "attributes" : [ {
+          "name" : "Title",
+          "value" : "Segmentation masks"
+        }, {
+          "name" : "Annotation Overview",
+          "value" : "Segmentations underlying the machine learning-guided image analysis. Machine learning is employed for (i) nuclei and cell segmentation, and (ii) phenotypic cell classification."
+        }, {
+          "name" : "Annotation Type",
+          "value" : "segmentation_mask"
+        }, {
+          "name" : "Annotation Method",
+          "value" : "Pre-trained deep learning segmentation method (Hollandi et al., 2020) was applied to segment nuclei in images. From these nuclei regions, two additional segmented regions were defined: 1) the cells were defined by dilating nuclei regions with maximum 7 μm radius so that adjacent cells did not overlap, and 2) cytoplasm regions were defined by subtracting nuclei segmentation from the cell segmentation."
+        }, {
+          "name" : "File List",
+          "value" : "file_list_annotations.json"
+        } ],
+        "subsections" : [ {
+          "type" : "Version",
+          "attributes" : [ {
+            "name" : "Annotation version",
+            "value" : "1.0"
+          }, {
+            "name" : "Version timestamp",
+            "value" : "2024-03-06 16:30:00"
+          } ]
+        } ]
+      }, {
+        "accno" : "Study Component-1",
+        "type" : "Study Component",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "Image-based and machine learning-guided multiplexed serology test for SARS-CoV-2"
+        }, {
+          "name" : "Description",
+          "value" : "Images underlying the machine learning-guided image analysis. Vero E6 cells, transfected to express SARS-CoV-2 antigens (N, M, R, and S), are fixed in 384-well plates for incubation with serum samples. The immunoglobulins (IgG, IgA, and IgM) are detected simultaneously with fluorophore-labelled secondary antibodies using automated high-content fluorescence microscopy. Machine learning is employed for (i) nuclei and cell segmentation, and (ii) phenotypic cell classification."
+        }, {
+          "name" : "File List",
+          "value" : "file_list_images.json"
+        } ],
+        "subsections" : [ {
+          "type" : "Associations",
+          "attributes" : [ {
+            "name" : "Biosample",
+            "value" : "Biosample"
+          }, {
+            "name" : "Specimen",
+            "value" : "Specimen"
+          }, {
+            "name" : "Image acquisition",
+            "value" : "Acquisition"
+          }, {
+            "name" : "Image Analysis",
+            "value" : "Analysis"
+          } ]
+        } ]
+      } ]
+    },
+    "type" : "submission"
+  }
