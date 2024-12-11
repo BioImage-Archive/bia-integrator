@@ -1,7 +1,7 @@
 from typing import Dict, List
 from bia_shared_datamodels import bia_data_model, semantic_models
-from bia_ingest.bia_object_creation_utils import dict_to_uuid
-from .utils import accession_id
+from bia_shared_datamodels.uuid_creation import create_study_uuid
+from .mock_object_constants import accession_id
 
 
 def get_affiliation() -> Dict[str, semantic_models.Affiliation]:
@@ -149,6 +149,7 @@ def get_study() -> bia_data_model.Study:
     contributor = get_contributor()
     grant = get_grant()
     study_dict = {
+        "uuid": create_study_uuid(accession_id),
         "accession_id": accession_id,
         "title": "A test submission with title greater than 25 characters",
         "description": "A test submission to allow testing without retrieving from bia server",
@@ -190,12 +191,5 @@ def get_study() -> bia_data_model.Study:
         "grant": [g.model_dump() for g in grant],
         "version": 0,
     }
-    study_uuid = dict_to_uuid(
-        study_dict,
-        [
-            "accession_id",
-        ],
-    )
-    study_dict["uuid"] = study_uuid
     study = bia_data_model.Study.model_validate(study_dict)
     return study

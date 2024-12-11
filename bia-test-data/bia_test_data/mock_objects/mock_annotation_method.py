@@ -1,25 +1,16 @@
 from typing import List
 from bia_shared_datamodels import bia_data_model, semantic_models
-from bia_ingest.bia_object_creation_utils import dict_to_uuid
-from .utils import accession_id
+from bia_shared_datamodels.uuid_creation import create_annotation_method_uuid
+from .mock_object_constants import study_uuid
 
 
 def get_annotation_method() -> List[bia_data_model.AnnotationMethod]:
-    # For UUID
-    attributes_to_consider = [
-        "accession_id",
-        "accno",
-        "title_id",
-        "protocol_description",
-        "annotation_criteria",
-        "annotation_coverage",
-        "method_type",
-    ]
-    annotation_method_info = [
+
+    title_id = "Segmentation masks"
+    object_dicts = [
         {
-            "accno": "Annotations-29",
-            "accession_id": accession_id,
-            "title_id": "Segmentation masks",
+            "uuid": create_annotation_method_uuid(title_id, study_uuid),
+            "title_id": title_id,
             "protocol_description": "Test annotation overview 1",
             "annotation_criteria": "Test annotation criteria 1",
             "annotation_coverage": None,
@@ -30,17 +21,11 @@ def get_annotation_method() -> List[bia_data_model.AnnotationMethod]:
         },
     ]
 
-    annotation_method = []
-    for annotation_method_dict in annotation_method_info:
-        annotation_method_dict["uuid"] = dict_to_uuid(
-            annotation_method_dict, attributes_to_consider
-        )
-        annotation_method_dict.pop("accno")
-        annotation_method_dict.pop("accession_id")
-        annotation_method.append(
-            bia_data_model.AnnotationMethod.model_validate(annotation_method_dict)
-        )
-    return annotation_method
+    bia_objects = [
+        bia_data_model.AnnotationMethod.model_validate(object_dict)
+        for object_dict in object_dicts
+    ]
+    return bia_objects
 
 
 def get_annotation_method_as_map():

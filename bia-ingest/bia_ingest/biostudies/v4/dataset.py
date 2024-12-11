@@ -1,30 +1,23 @@
 import logging
-from typing import List, Any, Dict, Optional
-from pydantic import BaseModel
+from typing import List, Optional
+from uuid import UUID
+
+from bia_ingest.bia_object_creation_utils import dicts_to_api_models
+from bia_ingest.persistence_strategy import PersistenceStrategy
+
+
+from bia_ingest.biostudies.generic_conversion_utils import (
+    get_associations_for_section,
+    Association,
+)
+from bia_ingest.biostudies.api import Submission
 from bia_ingest.biostudies.submission_parsing_utils import (
     attributes_to_dict,
     find_sections_recursive,
 )
 
-from bia_ingest.bia_object_creation_utils import (
-    dict_to_uuid,
-    filter_model_dictionary,
-    dicts_to_api_models,
-)
-
-from bia_ingest.cli_logging import log_model_creation_count
-from bia_ingest.biostudies.generic_conversion_utils import (
-    get_associations_for_section,
-    Association,
-)
-from bia_ingest.biostudies.v4.study import get_study_uuid
-
-from bia_ingest.biostudies.api import (
-    Submission,
-)
 from bia_shared_datamodels import bia_data_model, semantic_models
-from bia_ingest.persistence_strategy import PersistenceStrategy
-from uuid import UUID
+from bia_shared_datamodels.uuid_creation import create_dataset_uuid
 
 from bia_ingest.logging_configuration import logging_config
 
@@ -33,6 +26,7 @@ logger = logging_config.getLogger("__main__." + __name__)
 
 def get_dataset(
     submission: Submission,
+    study_uuid: UUID,
     bsst_title_to_bia_object_map: dict,
     result_summary: dict,
     persister: Optional[PersistenceStrategy] = None,
@@ -40,10 +34,10 @@ def get_dataset(
 
     dataset = []
     dataset += get_dataset_dict_from_study_component(
-        submission, bsst_title_to_bia_object_map
+        submission, study_uuid, bsst_title_to_bia_object_map
     )
     dataset += get_dataset_dict_from_annotation(
-        submission, bsst_title_to_bia_object_map
+        submission, study_uuid, bsst_title_to_bia_object_map
     )
 
     datasets = dicts_to_api_models(
@@ -60,6 +54,7 @@ def get_dataset(
 
 def get_dataset_dict_from_study_component(
     submission: Submission,
+    study_uuid: UUID,
     bsst_title_to_bia_object_map: dict,
 ) -> list[dict]:
 
@@ -99,18 +94,16 @@ def get_dataset_dict_from_study_component(
 
         # TODO: Actually use correlation methods?
         model_dict = {
+            "uuid": create_dataset_uuid(attr_dict["Name"], study_uuid),
             "title_id": attr_dict["Name"],
             "description": attr_dict["Description"],
-            "submitted_in_study_uuid": get_study_uuid(submission),
+            "submitted_in_study_uuid": study_uuid,
             "analysis_method": analysis_method_list,
             "correlation_method": correlation_method_list,
             "example_image_uri": [],
             "version": 0,
             "attribute": attribute_list,
         }
-        model_dict["uuid"] = generate_dataset_uuid(model_dict)
-
-        model_dict = filter_model_dictionary(model_dict, bia_data_model.Dataset)
 
         model_dicts.append(model_dict)
 
@@ -119,6 +112,7 @@ def get_dataset_dict_from_study_component(
 
 def get_dataset_dict_from_annotation(
     submission: Submission,
+    study_uuid: UUID,
     bsst_title_to_bia_object_map: dict,
 ) -> list[dict]:
     annotation_sections = find_sections_recursive(
@@ -137,32 +131,19 @@ def get_dataset_dict_from_annotation(
         # TODO: there is no "Description" field in the biostudies model.
         # We should probably decide how we want to map the overview between here and the AnotationMethod.
         model_dict = {
+            "uuid": create_dataset_uuid(attr_dict["Title"], study_uuid),
             "title_id": attr_dict["Title"],
             "description": attr_dict.get("Description", None),
-            "submitted_in_study_uuid": get_study_uuid(submission),
+            "submitted_in_study_uuid": study_uuid,
             "analysis_method": [],
             "correlation_method": [],
             "example_image_uri": [],
             "version": 0,
             "attribute": attribute_list,
         }
-        model_dict["accession_id"] = submission.accno
-        model_dict["uuid"] = generate_dataset_uuid(model_dict)
-        model_dict = filter_model_dictionary(model_dict, bia_data_model.Dataset)
         model_dicts.append(model_dict)
 
     return model_dicts
-
-
-def generate_dataset_uuid(
-    dataset_dict: Dict[str, Any],
-) -> str:
-    # TODO: Add 'description' to computation of uuid (Maybe accno?)
-    attributes_to_consider = [
-        "title_id",
-        "submitted_in_study_uuid",
-    ]
-    return dict_to_uuid(dataset_dict, attributes_to_consider)
 
 
 def get_uuid_attribute_from_associations(

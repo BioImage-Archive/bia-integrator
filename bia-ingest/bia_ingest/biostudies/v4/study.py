@@ -2,30 +2,33 @@ import logging
 from pydantic import ValidationError
 import re
 from typing import List, Any, Dict, Optional
+from email_validator import validate_email, EmailNotValidError
+
 from bia_ingest.cli_logging import (
     IngestionResult,
     log_failed_model_creation,
-    log_model_creation_count,
 )
+from bia_ingest.persistence_strategy import PersistenceStrategy
+from bia_ingest.bia_object_creation_utils import (
+    dict_to_api_model,
+    dicts_to_api_models,
+)
+
 from bia_ingest.biostudies.submission_parsing_utils import (
     attributes_to_dict,
     find_sections_recursive,
     mattributes_to_dict,
     case_insensitive_get,
 )
-
 from bia_ingest.biostudies.api import Attribute, Submission
-from bia_ingest.bia_object_creation_utils import (
-    dict_to_uuid,
-    dict_to_api_model,
-    dicts_to_api_models,
-)
-
 from bia_ingest.biostudies.generic_conversion_utils import (
     get_generic_section_as_dict,
+    get_generic_section_as_list,
 )
-from bia_ingest.persistence_strategy import PersistenceStrategy
+
 from bia_shared_datamodels import bia_data_model, semantic_models
+from bia_shared_datamodels.uuid_creation import create_study_uuid
+
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -41,7 +44,7 @@ def get_study(
 
     submission_attributes = attributes_to_dict(submission.attributes)
     contributors = get_contributor(submission, result_summary)
-    grants = get_grant(submission, result_summary)
+    grants = get_grant_and_funding_body(submission, result_summary)
 
     study_attributes = attributes_to_dict(submission.section.attributes)
 
@@ -85,7 +88,7 @@ def get_study(
     )
 
     study_dict = {
-        "uuid": get_study_uuid(submission),
+        "uuid": create_study_uuid(submission.accno),
         "accession_id": submission.accno,
         # TODO: Do more robust search for title - sometimes it is in
         #       actual submission - see old ingest code
@@ -113,15 +116,6 @@ def get_study(
             ]
         )
     return study
-
-
-def get_study_uuid(submission: Submission) -> str:
-    return dict_to_uuid(
-        {"accession_id": submission.accno},
-        [
-            "accession_id",
-        ],
-    )
 
 
 def study_title_from_submission(submission: Submission) -> str:
@@ -182,52 +176,35 @@ def get_external_reference(
 
 
 # TODO: Put comments and docstring
-def get_grant(
+def get_grant_and_funding_body(
     submission: Submission, result_summary: dict
 ) -> List[semantic_models.Grant]:
-    funding_body_dict = get_funding_body(submission, result_summary)
-    key_mapping = [
-        ("id", "grant_id", None),
-    ]
-    grant_dict = get_generic_section_as_dict(
-        submission,
-        [
-            "Funding",
-        ],
-        key_mapping,
-        semantic_models.Grant,
-        result_summary[submission.accno],
-    )
+    funding_sections = find_sections_recursive(submission.section, ["Funding"])
 
     grant_list = []
-    for k, v in grant_dict.items():
-        if k in funding_body_dict:
-            v.funder.append(funding_body_dict[k])
-        grant_list.append(v)
+    for section in funding_sections:
+        attr = attributes_to_dict(section.attributes)
+
+        funding_body = None
+        if "Agency" in attr:
+            funding_body_dict = {"display_name": attr["Agency"]}
+            funding_body = dict_to_api_model(
+                funding_body_dict,
+                semantic_models.FundingBody,
+                result_summary[submission.accno],
+            )
+
+        if "grant_id" in attr:
+            grant_dict = {"id": attr["grant_id"]}
+            if funding_body:
+                grant_dict["funder"] = [funding_body]
+            grant = dict_to_api_model(
+                grant_dict, semantic_models.Grant, result_summary[submission.accno]
+            )
+            grant_list.append(grant)
+        elif funding_body:
+            logger.warning("Found funding body information but no grant")
     return grant_list
-
-
-# TODO: Put comments and docstring
-def get_funding_body(
-    submission: Submission, result_summary: dict
-) -> semantic_models.FundingBody:
-    key_mapping = [
-        (
-            "display_name",
-            "Agency",
-            None,
-        ),
-    ]
-    funding_body = get_generic_section_as_dict(
-        submission,
-        [
-            "Funding",
-        ],
-        key_mapping,
-        semantic_models.FundingBody,
-        result_summary[submission.accno],
-    )
-    return funding_body
 
 
 def get_affiliation(
@@ -321,6 +298,7 @@ def get_contributor(
     author_sections = find_sections_recursive(submission.section, ["author"])
 
     contributor_dicts = []
+    email_warnings = []
     for section in author_sections:
 
         attributes = sanitise_affiliation_attribute(
@@ -340,19 +318,21 @@ def get_contributor(
             model_dict["affiliation"] = [
                 model_dict["affiliation"],
             ]
-        if model_dict["contact_email"] == "UNKNOWN":
-            model_dict["contact_email"] = None
-        elif model_dict["contact_email"]:
-            model_dict["contact_email"] = model_dict["contact_email"].strip("<>")
+        
+        sanitised_email, email_warnings = sanitise_contributor_email(
+            model_dict["contact_email"], email_warnings
+        )
+        model_dict["contact_email"] = sanitised_email
 
         contributor_dicts.append(model_dict)
+
+    get_unique_email_warnings(email_warnings, result_summary, submission.accno)
 
     contributors = dicts_to_api_models(
         contributor_dicts, semantic_models.Contributor, result_summary[submission.accno]
     )
 
     return contributors
-
 
 def sanitise_affiliation_attribute(
     attribute_list: List[Attribute],
@@ -378,3 +358,31 @@ def sanitise_affiliation_attribute(
         else:
             sanitised_attribute_list.append(attribute)
     return sanitised_attribute_list
+
+def sanitise_contributor_email(
+        email: str | None, 
+        email_warnings: list
+):
+    if email is not None:
+        try:
+            email_info = validate_email(email, check_deliverability=False)
+            email = email_info.normalized
+        except EmailNotValidError as e:
+            email_warnings.append(str(e))
+            email = None
+    
+    return [email, email_warnings]
+
+def get_unique_email_warnings(
+        email_warnings: list,
+        result_summary: dict[str, IngestionResult],
+        accno: str
+):
+    if email_warnings != []:
+        unique_warnings = list(set(email_warnings))
+        for warning in unique_warnings:
+            result_summary[accno].__setattr__(
+                "Warning",
+                "Skipped invalid author email: " + str(warning) + "\n"
+            )
+            logger.warning(f"Skipped invalid author email: {warning}")

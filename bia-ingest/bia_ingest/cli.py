@@ -81,13 +81,21 @@ def ingest(
             # Get information from biostudies
             submission = load_submission(accession_id)
             submission_table = load_submission_table_info(accession_id)
+        except AssertionError as error:
+            logger.error("Failed to retrieve information from BioStudies")
+            result_summary[accession_id].__setattr__(
+                "Uncaught_Exception",
+                "Non-200 repsonse from BioStudies",
+            )
+            logging.exception("message")
+            continue
         except Exception as error:
             logger.error("Failed to parse information from BioStudies")
-            logging.exception("message")
             result_summary[accession_id].__setattr__(
                 "Uncaught_Exception",
                 str(result_summary[accession_id].Uncaught_Exception) + str(error),
             )
+            logging.exception("message")
             continue
 
         processing_version = determine_biostudies_processing_version(submission)
@@ -154,10 +162,10 @@ def determine_biostudies_processing_version(submission: Submission):
     override_map = {
         "S-BIAD43": BioStudiesProcessingVersion.V4,
         "S-BIAD44": BioStudiesProcessingVersion.V4,
-        "S-BIAD590": BioStudiesProcessingVersion.V4,
-        "S-BIAD599": BioStudiesProcessingVersion.V4,
-        "S-BIAD628": BioStudiesProcessingVersion.V4,
-        "S-BIAD677": BioStudiesProcessingVersion.V4,
+        #"S-BIAD590": BioStudiesProcessingVersion.V4, TODO: deal with nested associations
+        #"S-BIAD599": BioStudiesProcessingVersion.V4, TODO: deal with nested associations
+        #"S-BIAD628": BioStudiesProcessingVersion.V4, TODO: deal with nested associations
+        #"S-BIAD677": BioStudiesProcessingVersion.V4, TODO: deal with nested associations
         "S-BIAD686": BioStudiesProcessingVersion.V4,
         "S-BIAD822": BioStudiesProcessingVersion.V4,
         "S-BIAD843": BioStudiesProcessingVersion.V4,

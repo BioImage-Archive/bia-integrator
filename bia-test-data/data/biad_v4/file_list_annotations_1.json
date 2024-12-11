@@ -1,2 +1,40 @@
 [
+  {
+    "path": "study_component1/ann01-05",
+    "size": 11,
+    "attributes": [
+      {
+        "name": "AnnotationsIn",
+        "value": "None"
+      },
+      {
+        "name": "metadata1",
+        "value": "None"
+      },
+      {
+        "name": "metadata2",
+        "value": "None"
+      }
+    ],
+    "type": "directory"
+  },
+  {
+    "path": "study_component1/ann06-10.json",
+    "size": 12,
+    "attributes": [
+      {
+        "name": "AnnotationsIn",
+        "value": "None"
+      },
+      {
+        "name": "metadata1",
+        "value": "None"
+      },
+      {
+        "name": "metadata2",
+        "value": "None"
+      }
+    ],
+    "type": "file"
+  }
 ]

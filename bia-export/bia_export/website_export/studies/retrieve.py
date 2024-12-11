@@ -5,8 +5,10 @@ from bia_export.website_export.generic_object_retrieval import (
     read_api_json_file,
     get_source_directory,
     get_all_api_results,
+    retrieve_object,
 )
 from pathlib import Path
+from pydantic.alias_generators import to_snake
 from .models import StudyCLIContext
 from bia_shared_datamodels import semantic_models, bia_data_model
 from bia_integrator_api import models as api_models
@@ -175,73 +177,38 @@ def find_associated_objects(
 
 def retrieve_detail_objects(
     dataset: api_models.Dataset,
-    detail_map: dict,
     context: StudyCLIContext,
 ) -> dict[str, List]:
-    if context.root_directory:
-        detail_fields = {}
+    """
+    Returns a dictionary of the form:
+    {
+        api_models.ImageAcquisitionProtocol: [ api_models.ImageAcquisitionProtocol(IAP1), ... ],
+        api_models.BioSample: [ api_models.BioSample(BS1), ... ]
+        ...
+    }
+    """
 
-        association_by_type = {
-            "biosample": set(),
-            "image_acquisition": set(),
-            "specimen": set(),
-        }
-        for attribute in dataset.attribute:
-            if attribute.name == "associations":
-                for key in association_by_type.keys():
-                    association_by_type[key].add(attribute.value[key])
+    detail_classes = [
+        api_models.ImageAcquisitionProtocol,
+        api_models.BioSample,
+        api_models.SpecimenImagingPreparationProtocol,
+        api_models.AnnotationMethod,
+        api_models.Protocol,
+    ]
+    detail_fields = {cls: [] for cls in detail_classes}
+    attribute_name_type_map = {
+        f"{to_snake(cls.__name__)}_uuid": cls for cls in detail_classes
+    }
 
-        for field, source_info in detail_map.items():
-
-            api_objects = find_associated_objects(
-                association_by_type[source_info["association_field"]],
-                source_info["bia_type"],
-                context,
-            )
-            detail_fields[field] = api_objects
-
-    else:
-        # Currently performing graph traversal of:
-        # Dataset -> Images[0] -> Creation Process-> specimen -> details (while all images have all the same specimen info)
-        # but could alternatively switch to the much simpler (for the exporter!):
-        # Dataset -> details field (when we have multi-hop api endpoints)
-        dataset_images = api_client.get_image_linking_dataset(str(dataset.uuid), 1)
-
-        acquisition_process = []
-        biological_entity = []
-        specimen_imaging_preparation_protocol = []
-
-        if len(dataset_images) != 0:
-            single_dataset_image: bia_data_model.Image = dataset_images[0]
-            creation_process = api_client.get_creation_process(
-                single_dataset_image.creation_process_uuid
-            )
-
-            if creation_process.subject_specimen_uuid:
-                specimen = api_client.get_specimen(
-                    creation_process.subject_specimen_uuid
+    for attribute in dataset.attribute:
+        if attribute.name in attribute_name_type_map:
+            for uuid in attribute.value[attribute.name]:
+                # retrieve_object handles whether to retrieve from file or from api
+                api_object = retrieve_object(
+                    uuid, attribute_name_type_map[attribute.name], context
                 )
-                for biosample_uuid in specimen.sample_of_uuid:
-                    biological_entity.append(
-                        api_client.get_bio_sample(str(biosample_uuid))
-                    )
-                for sipp_uuid in specimen.imaging_preparation_protocol_uuid:
-                    specimen_imaging_preparation_protocol.append(
-                        api_client.get_specimen_imaging_preparation_protocol(
-                            str(sipp_uuid)
-                        )
-                    )
-
-            for ia_uuid in creation_process.image_acquisition_protocol_uuid:
-                acquisition_process.append(
-                    api_client.get_image_acquisition_protocol(str(ia_uuid))
+                detail_fields[attribute_name_type_map[attribute.name]].append(
+                    api_object
                 )
-
-        # TODO: Use detail map to namage field names in a single place
-        detail_fields = {
-            "acquisition_process": acquisition_process,
-            "biological_entity": biological_entity,
-            "specimen_imaging_preparation_protocol": specimen_imaging_preparation_protocol,
-        }
 
     return detail_fields

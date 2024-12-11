@@ -1,49 +1,43 @@
 from typing import List
 from bia_shared_datamodels import bia_data_model
-from bia_ingest.bia_object_creation_utils import dict_to_uuid
-from .utils import accession_id
+from bia_shared_datamodels.uuid_creation import (
+    create_specimen_imaging_preparation_protocol_uuid,
+)
+from .mock_object_constants import study_uuid
 
 
 def get_specimen_imaging_preparation_protocol() -> (
     List[bia_data_model.SpecimenImagingPreparationProtocol]
 ):
-    # For UUID
-    attributes_to_consider = [
-        "accession_id",
-        "accno",
-        "title_id",
-        "protocol_description",
-    ]
-    protocol_info = [
+
+    title_id_1 = "Test specimen 1"
+    title_id_2 = "Test specimen 2"
+    object_dicts = [
         {
-            "accno": "Specimen-1",
-            "accession_id": accession_id,
-            "title_id": "Test specimen 1",
+            "uuid": create_specimen_imaging_preparation_protocol_uuid(
+                title_id_1, study_uuid
+            ),
+            "title_id": title_id_1,
             "protocol_description": "Test sample preparation protocol 1",
             "signal_channel_information": [],
             "version": 0,
         },
         {
-            "accno": "Specimen-2",
-            "accession_id": accession_id,
-            "title_id": "Test specimen 2",
+            "uuid": create_specimen_imaging_preparation_protocol_uuid(
+                title_id_2, study_uuid
+            ),
+            "title_id": title_id_2,
             "protocol_description": "Test sample preparation protocol 2",
             "signal_channel_information": [],
             "version": 0,
         },
     ]
 
-    protocol = []
-    for protocol_dict in protocol_info:
-        protocol_dict["uuid"] = dict_to_uuid(protocol_dict, attributes_to_consider)
-        protocol_dict.pop("accno")
-        protocol_dict.pop("accession_id")
-        protocol.append(
-            bia_data_model.SpecimenImagingPreparationProtocol.model_validate(
-                protocol_dict
-            )
-        )
-    return protocol
+    bia_objects = [
+        bia_data_model.SpecimenImagingPreparationProtocol.model_validate(object_dict)
+        for object_dict in object_dicts
+    ]
+    return bia_objects
 
 
 def get_specimen_imaging_preparation_protocol_as_map():
