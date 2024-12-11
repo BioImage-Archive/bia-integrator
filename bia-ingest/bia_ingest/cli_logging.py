@@ -124,14 +124,14 @@ def tabulate_ingestion_errors(
             status.stylize("green")
         elif (error_message == "") & (warning_message != ""):
             status = Text("Success with warnings")
-            status.stylize("orange")
+            status.stylize("yellow")
             warning_message = Text(warning_message)
-            warning_message.stylize("orange")
+            warning_message.stylize("yellow")
         elif (error_message != "") & (warning_message != ""):
             status = Text("Failures with warnings")
             status.stylize("red")
             warning_message = Text(warning_message)
-            warning_message.stylize("orange")
+            warning_message.stylize("yellow")
             error_message = Text(error_message)
             error_message.stylize("red")
         elif (error_message != "") & (warning_message == ""):

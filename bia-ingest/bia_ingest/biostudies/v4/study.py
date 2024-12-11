@@ -408,6 +408,6 @@ def get_unique_email_warnings(
         for warning in unique_warnings:
             result_summary[accno].__setattr__(
                 "Warning",
-                "Email warning: " + str(warning) + "\n"
+                "Skipped invalid author email: " + str(warning) + "\n"
             )
-            logger.warning(f"Email warning: {warning}")
+            logger.warning(f"Skipped invalid author email: {warning}")
