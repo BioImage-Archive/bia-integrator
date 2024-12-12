@@ -1,4 +1,3 @@
-from uuid import uuid4, UUID
 from copy import deepcopy
 from bia_shared_datamodels import bia_data_model, uuid_creation, semantic_models
 from bia_test_data.mock_objects import mock_dataset, mock_file_reference
@@ -14,6 +13,7 @@ basic_image_dict = {
     "version": 0,
     "submission_dataset_uuid": dataset.uuid,
 }
+
 
 def get_image_with_one_file_reference() -> bia_data_model.Image:
     image_dict = deepcopy(basic_image_dict)

@@ -1,7 +1,7 @@
-from typing import List
+from typing import List, Any
 from typing import Annotated
 import typer
-from bia_shared_datamodels import bia_data_model, uuid_creation
+from bia_shared_datamodels import bia_data_model, uuid_creation, semantic_models
 from bia_shared_datamodels.semantic_models import ImageRepresentationUseType
 from bia_ingest.persistence_strategy import (
     PersistenceMode,
@@ -36,6 +36,24 @@ logging.basicConfig(
 logger = logging.getLogger()
 
 
+def _get_value_from_attribute_list(
+    attribute_list: List[semantic_models.Attribute],
+    attribute_name: str,
+    default: Any = [],
+) -> Any:
+    """Get the value of named attribute from a list of attributes"""
+
+    # Assumes attribute.value is a Dict
+    return next(
+        (
+            attribute.value[attribute_name]
+            for attribute in attribute_list
+            if attribute.name == attribute_name
+        ),
+        default,
+    )
+
+
 @app.command(help="Assign listed file references to an image")
 def assign(
     accession_id: Annotated[str, typer.Argument()],
@@ -57,10 +75,8 @@ def assign(
         file_reference_uuid_list, bia_data_model.FileReference
     )
     dataset_uuids = [f.submission_dataset_uuid for f in file_references]
+    assert len(set(dataset_uuids)) == 1
     submission_dataset_uuid = dataset_uuids[0]
-    assert all(
-        [dataset_uuid == submission_dataset_uuid for dataset_uuid in dataset_uuids]
-    )
     dataset = persister.fetch_by_uuid(
         [
             submission_dataset_uuid,
@@ -70,21 +86,62 @@ def assign(
 
     image_uuid = uuid_creation.create_image_uuid(file_reference_uuid_list)
 
-    bia_specimen = specimen.get_specimen(image_uuid, dataset)
-    if dryrun:
-        logger.info(f"Dryrun: Created specimen(s) {bia_specimen}, but not persisting.")
-    else:
-        persister.persist(
-            [
-                bia_specimen,
-            ]
-        )
-        logger.info(
-            f"Generated bia_data_model.Specimen object {bia_specimen.uuid} and persisted to {persistence_mode}"
-        )
+    image_acquisition_protocol_uuid = _get_value_from_attribute_list(
+        dataset.attribute, "image_acquisition_protocol_uuid"
+    )
+    image_preparation_protocol_uuid = _get_value_from_attribute_list(
+        dataset.attribute, "specimen_imaging_preparation_protocol_uuid"
+    )
+    bio_sample_uuid = _get_value_from_attribute_list(
+        dataset.attribute, "bio_sample_uuid"
+    )
+    image_pre_requisites = [
+        len(image_acquisition_protocol_uuid),
+        len(image_preparation_protocol_uuid),
+        len(bio_sample_uuid),
+    ]
 
+    assert_error_msg = (
+        "Incomplete requisites for creating Specimen AND CreationProcess. "
+        + "Need ImageAcquisitionProtocol, SpecimenImagePreparationProtocol and BioSample UUIDs in "
+        + "dataset attributes. Got "
+        + f"ImageAcquisitionProtocol: {image_acquisition_protocol_uuid},"
+        + f"SpecimenImagePreparationProtocol: {image_preparation_protocol_uuid},"
+        + f"BioSample: {bio_sample_uuid}"
+    )
+    assert any(image_pre_requisites) and all(image_pre_requisites), assert_error_msg
+
+    if not any(image_pre_requisites):
+        logger.warning(
+            "No image_preparation_protocol or bio_sample uuids found in dataset attributes. No Specimen object will be created for this image!"
+        )
+        bia_specimen = None
+    else:
+        bia_specimen = specimen.get_specimen(
+            image_uuid, image_preparation_protocol_uuid, bio_sample_uuid
+        )
+        if dryrun:
+            logger.info(
+                f"Dryrun: Created specimen(s) {bia_specimen}, but not persisting."
+            )
+        else:
+            persister.persist(
+                [
+                    bia_specimen,
+                ]
+            )
+            logger.info(
+                f"Generated bia_data_model.Specimen object {bia_specimen.uuid} and persisted to {persistence_mode}"
+            )
+
+    if not bia_specimen:
+        logger.warning("Creating CreationProcess with no Specimen")
+    if not image_acquisition_protocol_uuid:
+        logger.warning("Creating CreationProcess with no ImageAcquisitionProtocol")
     bia_creation_process = creation_process.get_creation_process(
-        image_uuid, dataset, bia_specimen.uuid
+        image_uuid,
+        bia_specimen.uuid,
+        image_acquisition_protocol_uuid,
     )
     if dryrun:
         logger.info(
@@ -154,12 +211,12 @@ def create(
         )
         for representation_use_type in reps_to_create:
             logger.debug(
-                f"starting creation of {representation_use_type.value} for file reference {bia_image.uuid}"
+                f"starting creation of image representation of use type {representation_use_type.value} for Image {bia_image.uuid}"
             )
             image_representation = get_image_representation(
                 accession_id,
                 file_references,
-                bia_image.uuid,
+                bia_image,
                 use_type=representation_use_type,
             )
             if image_representation:
@@ -180,7 +237,7 @@ def create(
                     )
 
             else:
-                message = f"WARNING: Could NOT create image representation {representation_use_type.value} for bia_data_model.Image {bia_image.uuid} of {accession_id}"
+                message = f"WARNING: Could NOT create image representation of use type {representation_use_type.value} for bia_data_model.Image {bia_image.uuid} of {accession_id}"
                 logger.warning(message)
 
 
