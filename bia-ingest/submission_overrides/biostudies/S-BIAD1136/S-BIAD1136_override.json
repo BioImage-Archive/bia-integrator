@@ -1,0 +1,221 @@
+{
+    "accno" : "S-BIAD1136",
+    "attributes" : [ {
+      "name" : "Template",
+      "value" : "BioImages.v4"
+    }, {
+      "name" : "DOI",
+      "value" : "10.6019/S-BIAD1136"
+    }, {
+      "name" : "ReleaseDate",
+      "value" : "2024-09-22"
+    }, {
+      "name" : "AttachTo",
+      "value" : "BioImages"
+    } ],
+    "section" : {
+      "type" : "Study",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "3D light sheet microscopy imaging of cleared human mammary gland terminal ductal lobular unit"
+      }, {
+        "name" : "Description",
+        "value" : "3D image dataset of cleared human mammary gland terminal ductal lobular unit imaged using light sheet microscopy. Cytokeratin 8 was stained to visualize luminal mammary epithelial cells."
+      }, {
+        "name" : "Keywords",
+        "value" : "light sheet microscopy"
+      }, {
+        "name" : "Keywords",
+        "value" : "human mammary gland"
+      }, {
+        "name" : "Keywords",
+        "value" : "terminal ductal lobular unit"
+      }, {
+        "name" : "License",
+        "value" : "CC BY 4.0",
+        "valqual" : [ {
+          "name" : "URL",
+          "value" : "https://creativecommons.org/licenses/by/4.0/legalcode"
+        } ]
+      } ],
+      "subsections" : [ {
+        "type" : "author",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "Oona Paavolainen"
+        }, {
+          "name" : "E-mail",
+          "value" : "oona.k.paavolainen@utu.fi"
+        }, {
+          "name" : "affiliation",
+          "value" : "o1",
+          "reference" : true
+        } ]
+      }, {
+        "type" : "author",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "Markus Peurla"
+        }, {
+          "name" : "E-mail",
+          "value" : "markus.peurla@utu.fi"
+        }, {
+          "name" : "affiliation",
+          "value" : "o1",
+          "reference" : true
+        } ]
+      }, {
+        "type" : "author",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "Emilia Peuhu"
+        }, {
+          "name" : "E-mail",
+          "value" : "emilia.peuhu@utu.fi"
+        }, {
+          "name" : "affiliation",
+          "value" : "o1",
+          "reference" : true
+        } ]
+      }, {
+        "type" : "author",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "Larissa Mourao"
+        }, {
+          "name" : "affiliation",
+          "value" : "o2",
+          "reference" : true
+        } ]
+      }, {
+        "type" : "author",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "Colinda LGJ Scheele"
+        }, {
+          "name" : "affiliation",
+          "value" : "o2",
+          "reference" : true
+        } ]
+      }, {
+        "type" : "author",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "Pia Boström"
+        }, {
+          "name" : "affiliation",
+          "value" : "o1",
+          "reference" : true
+        } ]
+      }, {
+        "type" : "author",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "Pauliina Hartiala"
+        }, {
+          "name" : "affiliation",
+          "value" : "o3",
+          "reference" : true
+        } ]
+      }, {
+        "accno" : "o1",
+        "type" : "organisation",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "University of Turku"
+        } ]
+      }, {
+        "accno" : "o2",
+        "type" : "organisation",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "KU Leuven"
+        } ]
+      }, {
+        "accno" : "o3",
+        "type" : "organisation",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "Turku University Hospital"
+        } ]
+      }, {
+        "type" : "Publication",
+        "attributes" : [ {
+          "name" : "DOI",
+          "value" : "10.1101/2023.03.12.532249"
+        }, {
+          "name" : "Year",
+          "value" : "2023"
+        } ]
+      }, {
+        "accno" : "Biosample-1",
+        "type" : "Biosample",
+        "attributes" : [ {
+          "name" : "Title",
+          "value" : "Human mammary gland"
+        }, {
+          "name" : "Organism",
+          "value" : "Homo sapiens (human)"
+        }, {
+          "name" : "Description",
+          "value" : "Human mammary gland tissue"
+        }, {
+          "name" : "Biological entity",
+          "value" : "Human mammary gland terminal ductal lobular unit"
+        } ]
+      }, {
+        "accno" : "Specimen-2",
+        "type" : "Specimen",
+        "attributes" : [ {
+          "name" : "Title",
+          "value" : "Cleared human mammary gland tissue"
+        }, {
+          "name" : "Sample preparation protocol",
+          "value" : "All incubation steps were performed on a roller mixer. Tissue pieces were fixed with 4% PFA in SDS permeabilization buffer (10% SDS in H2O, pH 7.4) o/n in +4°C. The next day, pieces were washed 3x5 min with PBS and moved to SDS permeabilization buffer for 1-2 days in +37°C. Fixed tissue pieces were then transferred to 25-50ml of CUBIC 1 (1.6 M urea, 5% Quadrol [Sigma, 122262], 15% Triton X-100, 25 mM NaCL [Fisher Scientific, S/3160/60] in ddH2O) and incubated in +37°C for a minimum of 3 weeks, changing the buffer every 2-3 days. Next, the pieces were labelled with DAPI (1:1000-1:3000, [Life Technologies, D1306]) in PBS o/n at room temperature. The areas with TDLU structures were visualized with fluorescence microscopy, and chosen areas cut into pieces of approximately 2-5mm in diameter. Tissues were then permeabilized again using SDS permeabilization buffer for 2 days in +37°C, changing the buffer between the days. The tissues were then washed 3x1h in PBT at room temperature (PBS + 0.2% Triton X-100, pH 7.4) and blocked with iFLASH blocking buffer (10% FBS [Sigma, 122262], 5% DMSO [Chem Cruz, 358801], 0.1% NaN3, 1% BSA in PBT) for 1h at room temperature, and incubated in primary antibodies diluted in iFLASH blocking buffer for 3 days (anti-keratin 8 primary antibody 1:100 [Hybridoma Bank, TROMA-1). Tissues were washed 3x1h with PBT at room temperature, and pieces incubated in secondary antibodies (anti-rat secondary antibody (H+L) 1:400 [Thermo Scientific, Alexa Fluor 488]) in +37°C. Finally, the pieces were washed 3x1h with PBT at room temperature, and transferred to 25-50ml of CUBIC2 (1.2 M sucrose [Millipore, 107651], 3.6M urea, 9% triethanolamine [Sigma, 90279], 0.1% Triton X-100 in ddH2O) for a minimum of 2 days in +37°C, or until mounting and imaging. "
+        } ]
+      }, {
+        "accno" : "Image acquisition-3",
+        "type" : "Image acquisition",
+        "attributes" : [ {
+          "name" : "Title",
+          "value" : "Light sheet imaging"
+        }, {
+          "name" : "Imaging instrument",
+          "value" : "MSquared Aurora Airy Beam Light Sheet microscope using Aurora acquisition software version 0.5. The objective used was a Special Optics dipping objective which has dipping medium refractive index (RI) dependent magnification 15.3×-17.9× (NA 0.37-0.43) in immersion medium refractive index range 1.33-1.56."
+        }, {
+          "name" : "Image acquisition parameters",
+          "value" : "Alexa488 secondary antibody was imaged with a 488 nm laser and emission filter at 500-540 nm. 3D images were acquired by taking z-stacks with 400 nm spacing with a pixel size of 387 nm. Images were deconvoluted using Aurora Deconvolution software version 0.5 using point spread functions of fluorescent beads obtained from agarose embedded samples. Images were downsampled by ImageJ Bin function using x, y, z shrink factors 2 and bin method Average. "
+        }, {
+          "name" : "Imaging method",
+          "value" : "light sheet microscopy"
+        } ]
+      }, {
+        "accno" : "Study Component-4",
+        "type" : "Study Component",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "Light sheet microscopy imaging of cleared human mammary gland"
+        }, {
+          "name" : "Description",
+          "value" : "3D light sheet microscopy imaging of cleared human mammary gland terminal ductal lobular unit"
+        }, {
+          "name" : "File List",
+          "value" : "filelist.json"
+        } ],
+        "subsections" : [ {
+          "type" : "Associations",
+          "attributes" : [ {
+            "name" : "Biosample",
+            "value" : "Human mammary gland"
+          }, {
+            "name" : "Specimen",
+            "value" : "Cleared human mammary gland tissue"
+          }, {
+            "name" : "Image acquisition",
+            "value" : "Light sheet imaging"
+          } ]
+        } ]
+      } ]
+    },
+    "type" : "submission"
+  }

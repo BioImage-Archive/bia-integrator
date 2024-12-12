@@ -1,0 +1,3762 @@
+{
+    "accno" : "S-BSMS4",
+    "attributes" : [ {
+      "name" : "Title",
+      "value" : "Mutational landscape of a chemically induced mouse model of liver cancer"
+    }, {
+      "name" : "ReleaseDate",
+      "value" : "2018-01-12"
+    }, {
+      "name" : "AttachTo",
+      "value" : "BioImages"
+    } ],
+    "section" : {
+      "type" : "Study",
+      "attributes" : [ {
+        "name" : "Abstract",
+        "value" : "Liver cancer is one of the most prevalent and lethal human cancers. Mouse models of cancer are instrumental in the understanding of disease and the development of new treatments for patients. In this project we compare similarity of chemically induced mouse liver cancers to human liver cancers."
+      }, {
+        "name" : "Data availability",
+        "value" : "Complementary views on this dataset are available through different repositories. Image data files are available from BioStudies archive at the European Bioinformatics Institute (EMBL-EBI). Exome sequencing data is available from ENA at EMBL-EBI. Protocol: Liver tissue was harvested from mice, fixed for 24 hours in 10% neutral buffered formalin, processed and paraffin embedded. 3um tissue sections were stained with haematoxylin and eosin (H&E) using Leica ST5020 multistainer with following protocol: 1. Xylene (2 x 10 min); 2. 100% ethanol (2 x 5 min); 3. 70% ethanol (5 min); 4. Tap water (5 min); 5. Harris Haematoxylin (5 min); 6. Tap water (5 min); 7. 1% acid alcohol (10 sec); 8. Tap water (5 min); 9. Eosin (2 min); 10. Tap water (20 sec); 11. 70% ethanol (20 sec); 12. 100% ethanol (2 x 30 sec); 13. Xylene (2 x 5 min). Slides were scanned at with Aperio AT2 (Leica) x20 (0.5 microns per pixel). H&E tissue sections were reviewed twice by a histopathologist to determine tumour diagnosis and grade."
+      }, {
+        "name" : "Study variable",
+        "value" : "Sample name"
+      }, {
+        "name" : "Study variable",
+        "value" : "Code"
+      }, {
+        "name" : "Study variable",
+        "value" : "Organism"
+      }, {
+        "name" : "Study variable",
+        "value" : "Strain"
+      }, {
+        "name" : "Study variable",
+        "value" : "Sex"
+      }, {
+        "name" : "Study variable",
+        "value" : "Tissue"
+      }, {
+        "name" : "Study variable",
+        "value" : "Region"
+      }, {
+        "name" : "Study variable",
+        "value" : "Diagnosis"
+      }, {
+        "name" : "Study variable",
+        "value" : "Tumour grade"
+      }, {
+        "name" : "Study variable",
+        "value" : "Date of birth"
+      }, {
+        "name" : "Study variable",
+        "value" : "Date of death"
+      }, {
+        "name" : "Study variable",
+        "value" : "Treatment date"
+      }, {
+        "name" : "Study variable",
+        "value" : "Treatment agent"
+      }, {
+        "name" : "Study variable",
+        "value" : "Treatment dose"
+      }, {
+        "name" : "Study variable",
+        "value" : "Treatment dose unit"
+      }, {
+        "name" : "Study variable",
+        "value" : "Batch"
+      }, {
+        "name" : "Study variable",
+        "value" : "Block"
+      }, {
+        "name" : "Organism",
+        "value" : "Mus musculus"
+      }, {
+        "name" : "NCBI Taxonomy ID",
+        "value" : "10090"
+      }, {
+        "name" : "Strain",
+        "value" : "C3H/HeOuJ"
+      }, {
+        "name" : "Sex",
+        "value" : "male"
+      }, {
+        "name" : "Tissue",
+        "value" : "liver"
+      }, {
+        "name" : "Region",
+        "value" : "nodule"
+      }, {
+        "name" : "Technology type",
+        "value" : "brightfield microscopy"
+      }, {
+        "name" : "Technology platform",
+        "value" : "Aperio AT2 (Leica)"
+      } ],
+      "subsections" : [ {
+        "type" : "Author",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "Margus Lukk"
+        }, {
+          "name" : "Affiliation",
+          "value" : "o1"
+        } ]
+      }, {
+        "type" : "Author",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "Sarah Aitken"
+        }, {
+          "name" : "Affiliation",
+          "value" : "o1"
+        } ]
+      }, {
+        "type" : "Author",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "Frances Connor"
+        }, {
+          "name" : "Affiliation",
+          "value" : "o1"
+        } ]
+      }, {
+        "type" : "Author",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "Christine Feig"
+        }, {
+          "name" : "Affiliation",
+          "value" : "o1"
+        } ]
+      }, {
+        "type" : "Author",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "Tim Rayner"
+        }, {
+          "name" : "Affiliation",
+          "value" : "o1"
+        } ]
+      }, {
+        "type" : "Author",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "Duncan Odom"
+        }, {
+          "name" : "Affiliation",
+          "value" : "o1"
+        } ]
+      }, {
+        "accno" : "o1",
+        "type" : "Organization",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "Cancer Research UK Cambridge Institute, University of Cambridge"
+        } ],
+        "files" : [ [ {
+          "path" : "HR8337-BL105968-87104_C1.svs",
+          "size" : 149284815,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "87104_C1-slice_1"
+          }, {
+            "name" : "Md5",
+            "value" : "c572329e8fb8f90b1139176779c9ed92"
+          }, {
+            "name" : "Sample Name",
+            "value" : "87104_C1-slice_1"
+          }, {
+            "name" : "Code",
+            "value" : "do6513"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "HCC"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "moderate"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-07-18 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-04-04 00:00:00.000000"
+          }, {
+            "name" : "Treatment date",
+            "value" : "2013-08-02_00:00:00.000000"
+          }, {
+            "name" : "Treatment agent",
+            "value" : "DEN"
+          }, {
+            "name" : "Treatment dose",
+            "value" : "20"
+          }, {
+            "name" : "Treatment dose unit",
+            "value" : "ug/g body weight"
+          }, {
+            "name" : "Batch",
+            "value" : "HR8337"
+          }, {
+            "name" : "Block",
+            "value" : "BL105968"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR8480-BL106848-86772_C6.svs",
+          "size" : 162775877,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "86772_C6-slice_1"
+          }, {
+            "name" : "Md5",
+            "value" : "8f6eb8c601d4716cf76c2c495fdfa8a5"
+          }, {
+            "name" : "Sample Name",
+            "value" : "86772_C6-slice_1"
+          }, {
+            "name" : "Code",
+            "value" : "do6514"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "HCC"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "poor"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-07-14 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-05-02 00:00:00.000000"
+          }, {
+            "name" : "Treatment date",
+            "value" : "2013-07-29_00:00:00.000000"
+          }, {
+            "name" : "Treatment agent",
+            "value" : "DEN"
+          }, {
+            "name" : "Treatment dose",
+            "value" : "20"
+          }, {
+            "name" : "Treatment dose unit",
+            "value" : "ug/g body weight"
+          }, {
+            "name" : "Batch",
+            "value" : "HR8480"
+          }, {
+            "name" : "Block",
+            "value" : "BL106848"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR8480-BL106853-87574_C5.svs",
+          "size" : 58161397,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "87574_C5-slice_1"
+          }, {
+            "name" : "Md5",
+            "value" : "8c505270ebe5ced12b4434b6761d77a4"
+          }, {
+            "name" : "Sample Name",
+            "value" : "87574_C5-slice_1"
+          }, {
+            "name" : "Code",
+            "value" : "do6515"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "HCC"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "well"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-07-28 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-05-02 00:00:00.000000"
+          }, {
+            "name" : "Treatment date",
+            "value" : "2013-08-12_00:00:00.000000"
+          }, {
+            "name" : "Treatment agent",
+            "value" : "DEN"
+          }, {
+            "name" : "Treatment dose",
+            "value" : "20"
+          }, {
+            "name" : "Treatment dose unit",
+            "value" : "ug/g body weight"
+          }, {
+            "name" : "Batch",
+            "value" : "HR8480"
+          }, {
+            "name" : "Block",
+            "value" : "BL106853"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR8480-BL106855-87575_C1.svs",
+          "size" : 56058003,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "87575_C1"
+          }, {
+            "name" : "Md5",
+            "value" : "d2e15eb9727db412a95b5af9c2f112f6"
+          }, {
+            "name" : "Sample Name",
+            "value" : "87575_C1"
+          }, {
+            "name" : "Code",
+            "value" : "do6516"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "HCC"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "well"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-07-28 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-05-02 00:00:00.000000"
+          }, {
+            "name" : "Treatment date",
+            "value" : "2013-08-12_00:00:00.000000"
+          }, {
+            "name" : "Treatment agent",
+            "value" : "DEN"
+          }, {
+            "name" : "Treatment dose",
+            "value" : "20"
+          }, {
+            "name" : "Treatment dose unit",
+            "value" : "ug/g body weight"
+          }, {
+            "name" : "Batch",
+            "value" : "HR8480"
+          }, {
+            "name" : "Block",
+            "value" : "BL106855"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR8480-BL106867-87187_C5.svs",
+          "size" : 41773797,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "87187_C5"
+          }, {
+            "name" : "Md5",
+            "value" : "462d254c630db3c341a8824ce6bf8079"
+          }, {
+            "name" : "Sample Name",
+            "value" : "87187_C5"
+          }, {
+            "name" : "Code",
+            "value" : "do6517"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "HCC"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "poor"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-07-21 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-05-02 00:00:00.000000"
+          }, {
+            "name" : "Treatment date",
+            "value" : "2013-08-05_00:00:00.000000"
+          }, {
+            "name" : "Treatment agent",
+            "value" : "DEN"
+          }, {
+            "name" : "Treatment dose",
+            "value" : "20"
+          }, {
+            "name" : "Treatment dose unit",
+            "value" : "ug/g body weight"
+          }, {
+            "name" : "Batch",
+            "value" : "HR8480"
+          }, {
+            "name" : "Block",
+            "value" : "BL106867"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR8480-BL106877-89072_C4.svs",
+          "size" : 61895767,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "89072_C4"
+          }, {
+            "name" : "Md5",
+            "value" : "484c0ebb574a5bd96590dd8ec4970812"
+          }, {
+            "name" : "Sample Name",
+            "value" : "89072_C4"
+          }, {
+            "name" : "Code",
+            "value" : "do6518"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "HCC"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "moderate"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-08-23 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-05-06 00:00:00.000000"
+          }, {
+            "name" : "Treatment date",
+            "value" : "2013-09-06_00:00:00.000000"
+          }, {
+            "name" : "Treatment agent",
+            "value" : "DEN"
+          }, {
+            "name" : "Treatment dose",
+            "value" : "20"
+          }, {
+            "name" : "Treatment dose unit",
+            "value" : "ug/g body weight"
+          }, {
+            "name" : "Batch",
+            "value" : "HR8480"
+          }, {
+            "name" : "Block",
+            "value" : "BL106877"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR8480-BL106903-91419_C8.svs",
+          "size" : 39821947,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "91419_C8"
+          }, {
+            "name" : "Md5",
+            "value" : "018a7a2ecffafcb34d355b86407486bd"
+          }, {
+            "name" : "Sample Name",
+            "value" : "91419_C8"
+          }, {
+            "name" : "Code",
+            "value" : "do6519"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "HCC"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "well"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-10-01 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-05-08 00:00:00.000000"
+          }, {
+            "name" : "Treatment date",
+            "value" : "2013-10-16_00:00:00.000000"
+          }, {
+            "name" : "Treatment agent",
+            "value" : "DEN"
+          }, {
+            "name" : "Treatment dose",
+            "value" : "20"
+          }, {
+            "name" : "Treatment dose unit",
+            "value" : "ug/g body weight"
+          }, {
+            "name" : "Batch",
+            "value" : "HR8480"
+          }, {
+            "name" : "Block",
+            "value" : "BL106903"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR8482-BL107008-90997_C7.svs",
+          "size" : 52289831,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "90997_C7"
+          }, {
+            "name" : "Md5",
+            "value" : "acae1bf687ee6bcbb52e914dca61c5ee"
+          }, {
+            "name" : "Sample Name",
+            "value" : "90997_C7"
+          }, {
+            "name" : "Code",
+            "value" : "do6520"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "HCC"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "well"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-09-23 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-05-12 00:00:00.000000"
+          }, {
+            "name" : "Treatment date",
+            "value" : "2013-10-08_00:00:00.000000"
+          }, {
+            "name" : "Treatment agent",
+            "value" : "DEN"
+          }, {
+            "name" : "Treatment dose",
+            "value" : "20"
+          }, {
+            "name" : "Treatment dose unit",
+            "value" : "ug/g body weight"
+          }, {
+            "name" : "Batch",
+            "value" : "HR8482"
+          }, {
+            "name" : "Block",
+            "value" : "BL107008"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR8337-BL105969-87104_C2.svs",
+          "size" : 212221039,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "87104_C2-slice_1"
+          }, {
+            "name" : "Md5",
+            "value" : "c0d86f0ea4ff883fb01e1f7bd5156f21"
+          }, {
+            "name" : "Sample Name",
+            "value" : "87104_C2-slice_1"
+          }, {
+            "name" : "Code",
+            "value" : "do6529"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "HCC"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "moderate"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-07-18 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-04-04 00:00:00.000000"
+          }, {
+            "name" : "Treatment date",
+            "value" : "2013-08-02_00:00:00.000000"
+          }, {
+            "name" : "Treatment agent",
+            "value" : "DEN"
+          }, {
+            "name" : "Treatment dose",
+            "value" : "20"
+          }, {
+            "name" : "Treatment dose unit",
+            "value" : "ug/g body weight"
+          }, {
+            "name" : "Batch",
+            "value" : "HR8337"
+          }, {
+            "name" : "Block",
+            "value" : "BL105969"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR8480-BL106829-89073_C3.svs",
+          "size" : 46115075,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "89073_C3"
+          }, {
+            "name" : "Md5",
+            "value" : "093eee08b748c12559260656ce296507"
+          }, {
+            "name" : "Sample Name",
+            "value" : "89073_C3"
+          }, {
+            "name" : "Code",
+            "value" : "do6530"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "HCC"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "well"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-08-23 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-04-25 00:00:00.000000"
+          }, {
+            "name" : "Treatment date",
+            "value" : "2013-09-06_00:00:00.000000"
+          }, {
+            "name" : "Treatment agent",
+            "value" : "DEN"
+          }, {
+            "name" : "Treatment dose",
+            "value" : "20"
+          }, {
+            "name" : "Treatment dose unit",
+            "value" : "ug/g body weight"
+          }, {
+            "name" : "Batch",
+            "value" : "HR8480"
+          }, {
+            "name" : "Block",
+            "value" : "BL106829"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR8480-BL106843-86772_C1.svs",
+          "size" : 57040815,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "86772_C1"
+          }, {
+            "name" : "Md5",
+            "value" : "7fde95795f9e0ada423c9700fc5d02e8"
+          }, {
+            "name" : "Sample Name",
+            "value" : "86772_C1"
+          }, {
+            "name" : "Code",
+            "value" : "do6531"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "HCC"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "moderate"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-07-14 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-05-02 00:00:00.000000"
+          }, {
+            "name" : "Treatment date",
+            "value" : "2013-07-29_00:00:00.000000"
+          }, {
+            "name" : "Treatment agent",
+            "value" : "DEN"
+          }, {
+            "name" : "Treatment dose",
+            "value" : "20"
+          }, {
+            "name" : "Treatment dose unit",
+            "value" : "ug/g body weight"
+          }, {
+            "name" : "Batch",
+            "value" : "HR8480"
+          }, {
+            "name" : "Block",
+            "value" : "BL106843"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR8480-BL106851-87574_C3.svs",
+          "size" : 49889739,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "87574_C3"
+          }, {
+            "name" : "Md5",
+            "value" : "f55c72fc5c382feabdd2191c211f3d19"
+          }, {
+            "name" : "Sample Name",
+            "value" : "87574_C3"
+          }, {
+            "name" : "Code",
+            "value" : "do6532"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "HCC"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "moderate"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-07-28 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-05-02 00:00:00.000000"
+          }, {
+            "name" : "Treatment date",
+            "value" : "2013-08-12_00:00:00.000000"
+          }, {
+            "name" : "Treatment agent",
+            "value" : "DEN"
+          }, {
+            "name" : "Treatment dose",
+            "value" : "20"
+          }, {
+            "name" : "Treatment dose unit",
+            "value" : "ug/g body weight"
+          }, {
+            "name" : "Batch",
+            "value" : "HR8480"
+          }, {
+            "name" : "Block",
+            "value" : "BL106851"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR8480-BL106868-87187_C6.svs",
+          "size" : 91827455,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "87187_C6"
+          }, {
+            "name" : "Md5",
+            "value" : "e186e12932a009cfaffced7a4faecce0"
+          }, {
+            "name" : "Sample Name",
+            "value" : "87187_C6"
+          }, {
+            "name" : "Code",
+            "value" : "do6533"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "HCC"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "well"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-07-21 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-05-02 00:00:00.000000"
+          }, {
+            "name" : "Treatment date",
+            "value" : "2013-08-05_00:00:00.000000"
+          }, {
+            "name" : "Treatment agent",
+            "value" : "DEN"
+          }, {
+            "name" : "Treatment dose",
+            "value" : "20"
+          }, {
+            "name" : "Treatment dose unit",
+            "value" : "ug/g body weight"
+          }, {
+            "name" : "Batch",
+            "value" : "HR8480"
+          }, {
+            "name" : "Block",
+            "value" : "BL106868"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR8480-BL106869-87187_C7.svs",
+          "size" : 164970895,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "87187_C7"
+          }, {
+            "name" : "Md5",
+            "value" : "5ae6e429b335fd4dc92013f23212b320"
+          }, {
+            "name" : "Sample Name",
+            "value" : "87187_C7"
+          }, {
+            "name" : "Code",
+            "value" : "do6534"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "HCC"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "well"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-07-21 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-05-02 00:00:00.000000"
+          }, {
+            "name" : "Treatment date",
+            "value" : "2013-08-05_00:00:00.000000"
+          }, {
+            "name" : "Treatment agent",
+            "value" : "DEN"
+          }, {
+            "name" : "Treatment dose",
+            "value" : "20"
+          }, {
+            "name" : "Treatment dose unit",
+            "value" : "ug/g body weight"
+          }, {
+            "name" : "Batch",
+            "value" : "HR8480"
+          }, {
+            "name" : "Block",
+            "value" : "BL106869"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR8480-BL106873-91596_C4.svs",
+          "size" : 52732869,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "91596_C4"
+          }, {
+            "name" : "Md5",
+            "value" : "ff79c7c0b54e91955e0166fc736a885e"
+          }, {
+            "name" : "Sample Name",
+            "value" : "91596_C4"
+          }, {
+            "name" : "Code",
+            "value" : "do6535"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "HCC"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "moderate"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-10-03 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-05-02 00:00:00.000000"
+          }, {
+            "name" : "Treatment date",
+            "value" : "2013-10-18_00:00:00.000000"
+          }, {
+            "name" : "Treatment agent",
+            "value" : "DEN"
+          }, {
+            "name" : "Treatment dose",
+            "value" : "20"
+          }, {
+            "name" : "Treatment dose unit",
+            "value" : "ug/g body weight"
+          }, {
+            "name" : "Batch",
+            "value" : "HR8480"
+          }, {
+            "name" : "Block",
+            "value" : "BL106873"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR8482-BL107010-90997_C9.svs",
+          "size" : 101331401,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "90997_C9-slice1"
+          }, {
+            "name" : "Md5",
+            "value" : "7b1412a8b9d739c678ae05ea918de277"
+          }, {
+            "name" : "Sample Name",
+            "value" : "90997_C9-slice1"
+          }, {
+            "name" : "Code",
+            "value" : "do6536"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "HCC"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "moderate"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-09-23 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-05-12 00:00:00.000000"
+          }, {
+            "name" : "Treatment date",
+            "value" : "2013-10-08_00:00:00.000000"
+          }, {
+            "name" : "Treatment agent",
+            "value" : "DEN"
+          }, {
+            "name" : "Treatment dose",
+            "value" : "20"
+          }, {
+            "name" : "Treatment dose unit",
+            "value" : "ug/g body weight"
+          }, {
+            "name" : "Batch",
+            "value" : "HR8482"
+          }, {
+            "name" : "Block",
+            "value" : "BL107010"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR8402-BL106385-92186_N2.svs",
+          "size" : 34790579,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "92186_N2"
+          }, {
+            "name" : "Md5",
+            "value" : "1e75b68fd80ceef76c71f2112b44e7f6"
+          }, {
+            "name" : "Sample Name",
+            "value" : "92186_N2"
+          }, {
+            "name" : "Code",
+            "value" : "do8135"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "dysplastic nodule"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "high"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-10-15 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-04-22 00:00:00.000000"
+          }, {
+            "name" : "Treatment date",
+            "value" : "2013-10-30_00:00:00.000000"
+          }, {
+            "name" : "Treatment agent",
+            "value" : "DEN"
+          }, {
+            "name" : "Treatment dose",
+            "value" : "20"
+          }, {
+            "name" : "Treatment dose unit",
+            "value" : "ug/g body weight"
+          }, {
+            "name" : "Batch",
+            "value" : "HR8402"
+          }, {
+            "name" : "Block",
+            "value" : "BL106385"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR8402-BL106400-92188_N3.svs",
+          "size" : 29223249,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "92188_N3"
+          }, {
+            "name" : "Md5",
+            "value" : "ac0cf20c9ab9361d7200009243d50a70"
+          }, {
+            "name" : "Sample Name",
+            "value" : "92188_N3"
+          }, {
+            "name" : "Code",
+            "value" : "do8136"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "dysplastic nodule"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "low"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-10-15 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-04-22 00:00:00.000000"
+          }, {
+            "name" : "Treatment date",
+            "value" : "2013-10-30_00:00:00.000000"
+          }, {
+            "name" : "Treatment agent",
+            "value" : "DEN"
+          }, {
+            "name" : "Treatment dose",
+            "value" : "20"
+          }, {
+            "name" : "Treatment dose unit",
+            "value" : "ug/g body weight"
+          }, {
+            "name" : "Batch",
+            "value" : "HR8402"
+          }, {
+            "name" : "Block",
+            "value" : "BL106400"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR8481-BL106904-93091_N1.svs",
+          "size" : 28105849,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "93091_N1"
+          }, {
+            "name" : "Md5",
+            "value" : "16e46969b204d5b24e3c4dcb0bde6a5b"
+          }, {
+            "name" : "Sample Name",
+            "value" : "93091_N1"
+          }, {
+            "name" : "Code",
+            "value" : "do8137"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "dysplastic nodule"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "high"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-10-30 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-05-08 00:00:00.000000"
+          }, {
+            "name" : "Treatment date",
+            "value" : "2013-11-14_00:00:00.000000"
+          }, {
+            "name" : "Treatment agent",
+            "value" : "DEN"
+          }, {
+            "name" : "Treatment dose",
+            "value" : "20"
+          }, {
+            "name" : "Treatment dose unit",
+            "value" : "ug/g body weight"
+          }, {
+            "name" : "Batch",
+            "value" : "HR8481"
+          }, {
+            "name" : "Block",
+            "value" : "BL106904"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR8481-BL106906-93091_N3.svs",
+          "size" : 26302347,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "93091_N3"
+          }, {
+            "name" : "Md5",
+            "value" : "ce9b79b2eecee2790335e6b9ffaf00cf"
+          }, {
+            "name" : "Sample Name",
+            "value" : "93091_N3"
+          }, {
+            "name" : "Code",
+            "value" : "do8138"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "dysplastic nodule"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "high"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-10-30 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-05-08 00:00:00.000000"
+          }, {
+            "name" : "Treatment date",
+            "value" : "2013-11-14_00:00:00.000000"
+          }, {
+            "name" : "Treatment agent",
+            "value" : "DEN"
+          }, {
+            "name" : "Treatment dose",
+            "value" : "20"
+          }, {
+            "name" : "Treatment dose unit",
+            "value" : "ug/g body weight"
+          }, {
+            "name" : "Batch",
+            "value" : "HR8481"
+          }, {
+            "name" : "Block",
+            "value" : "BL106906"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR8481-BL106911-93091_N8.svs",
+          "size" : 48880995,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "93091_N8"
+          }, {
+            "name" : "Md5",
+            "value" : "273c1edd665d50fa59ba95bfd1e0845b"
+          }, {
+            "name" : "Sample Name",
+            "value" : "93091_N8"
+          }, {
+            "name" : "Code",
+            "value" : "do8139"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "dysplastic nodule"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "low"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-10-30 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-05-08 00:00:00.000000"
+          }, {
+            "name" : "Treatment date",
+            "value" : "2013-11-14_00:00:00.000000"
+          }, {
+            "name" : "Treatment agent",
+            "value" : "DEN"
+          }, {
+            "name" : "Treatment dose",
+            "value" : "20"
+          }, {
+            "name" : "Treatment dose unit",
+            "value" : "ug/g body weight"
+          }, {
+            "name" : "Batch",
+            "value" : "HR8481"
+          }, {
+            "name" : "Block",
+            "value" : "BL106911"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR8482-BL106982-93258_N4.svs",
+          "size" : 26107185,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "93258_N4"
+          }, {
+            "name" : "Md5",
+            "value" : "79e798f536f3d94ce19949b6100f1b1b"
+          }, {
+            "name" : "Sample Name",
+            "value" : "93258_N4"
+          }, {
+            "name" : "Code",
+            "value" : "do8140"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "dysplastic nodule"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "high"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-11-06 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-05-12 00:00:00.000000"
+          }, {
+            "name" : "Treatment date",
+            "value" : "2013-11-20_00:00:00.000000"
+          }, {
+            "name" : "Treatment agent",
+            "value" : "DEN"
+          }, {
+            "name" : "Treatment dose",
+            "value" : "20"
+          }, {
+            "name" : "Treatment dose unit",
+            "value" : "ug/g body weight"
+          }, {
+            "name" : "Batch",
+            "value" : "HR8482"
+          }, {
+            "name" : "Block",
+            "value" : "BL106982"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR8481-BL106941-93100_N6.svs",
+          "size" : 75754329,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "93100_N6"
+          }, {
+            "name" : "Md5",
+            "value" : "c212db845970e8ba85ce8b3354caf604"
+          }, {
+            "name" : "Sample Name",
+            "value" : "93100_N6"
+          }, {
+            "name" : "Code",
+            "value" : "do8141"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "dysplastic nodule"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "low"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-10-30 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-05-09 00:00:00.000000"
+          }, {
+            "name" : "Treatment date",
+            "value" : "2013-11-14_00:00:00.000000"
+          }, {
+            "name" : "Treatment agent",
+            "value" : "DEN"
+          }, {
+            "name" : "Treatment dose",
+            "value" : "20"
+          }, {
+            "name" : "Treatment dose unit",
+            "value" : "ug/g body weight"
+          }, {
+            "name" : "Batch",
+            "value" : "HR8481"
+          }, {
+            "name" : "Block",
+            "value" : "BL106941"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR8481-BL106948-93129_N7.svs",
+          "size" : 40282993,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "93129_N7"
+          }, {
+            "name" : "Md5",
+            "value" : "19dd89bddc32178a0d4686efe28c6058"
+          }, {
+            "name" : "Sample Name",
+            "value" : "93129_N7"
+          }, {
+            "name" : "Code",
+            "value" : "do8142"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "dysplastic nodule"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "high"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-10-31 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-05-09 00:00:00.000000"
+          }, {
+            "name" : "Treatment date",
+            "value" : "2013-11-15_00:00:00.000000"
+          }, {
+            "name" : "Treatment agent",
+            "value" : "DEN"
+          }, {
+            "name" : "Treatment dose",
+            "value" : "20"
+          }, {
+            "name" : "Treatment dose unit",
+            "value" : "ug/g body weight"
+          }, {
+            "name" : "Batch",
+            "value" : "HR8481"
+          }, {
+            "name" : "Block",
+            "value" : "BL106948"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR8235-BL105249-89986_N3.svs",
+          "size" : 21263967,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "89986_N3"
+          }, {
+            "name" : "Md5",
+            "value" : "348c4492eb719af12c09f23b203e5211"
+          }, {
+            "name" : "Sample Name",
+            "value" : "89986_N3"
+          }, {
+            "name" : "Code",
+            "value" : "do8143"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "dysplastic nodule"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "high"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-09-04 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-03-17 00:00:00.000000"
+          }, {
+            "name" : "Treatment date",
+            "value" : "2013-09-19_00:00:00.000000"
+          }, {
+            "name" : "Treatment agent",
+            "value" : "DEN"
+          }, {
+            "name" : "Treatment dose",
+            "value" : "20"
+          }, {
+            "name" : "Treatment dose unit",
+            "value" : "ug/g body weight"
+          }, {
+            "name" : "Batch",
+            "value" : "HR8235"
+          }, {
+            "name" : "Block",
+            "value" : "BL105249"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR8235-BL105262-90022_N2.svs",
+          "size" : 74502529,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "90022_N2"
+          }, {
+            "name" : "Md5",
+            "value" : "12e5fb5b51170dfd5b85ff61bc6dd177"
+          }, {
+            "name" : "Sample Name",
+            "value" : "90022_N2"
+          }, {
+            "name" : "Code",
+            "value" : "do8144"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "dysplastic nodule"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "high"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-09-05 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-03-17 00:00:00.000000"
+          }, {
+            "name" : "Treatment date",
+            "value" : "2013-09-20_00:00:00.000000"
+          }, {
+            "name" : "Treatment agent",
+            "value" : "DEN"
+          }, {
+            "name" : "Treatment dose",
+            "value" : "20"
+          }, {
+            "name" : "Treatment dose unit",
+            "value" : "ug/g body weight"
+          }, {
+            "name" : "Batch",
+            "value" : "HR8235"
+          }, {
+            "name" : "Block",
+            "value" : "BL105262"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR8267-BL105517-90793_N2.svs",
+          "size" : 49932377,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "90793_N2"
+          }, {
+            "name" : "Md5",
+            "value" : "53dbd5db70c16255976785ea9954b328"
+          }, {
+            "name" : "Sample Name",
+            "value" : "90793_N2"
+          }, {
+            "name" : "Code",
+            "value" : "do8145"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "dysplastic nodule"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "high"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-09-19 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-03-24 00:00:00.000000"
+          }, {
+            "name" : "Treatment date",
+            "value" : "2013-10-04_00:00:00.000000"
+          }, {
+            "name" : "Treatment agent",
+            "value" : "DEN"
+          }, {
+            "name" : "Treatment dose",
+            "value" : "20"
+          }, {
+            "name" : "Treatment dose unit",
+            "value" : "ug/g body weight"
+          }, {
+            "name" : "Batch",
+            "value" : "HR8267"
+          }, {
+            "name" : "Block",
+            "value" : "BL105517"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR8267-BL105519-90796_N2.svs",
+          "size" : 29326149,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "90796_N2"
+          }, {
+            "name" : "Md5",
+            "value" : "020ebcbe8c27066b84580a252ae03f86"
+          }, {
+            "name" : "Sample Name",
+            "value" : "90796_N2"
+          }, {
+            "name" : "Code",
+            "value" : "do8146"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "dysplastic nodule"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "high"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-09-19 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-03-24 00:00:00.000000"
+          }, {
+            "name" : "Treatment date",
+            "value" : "2013-10-04_00:00:00.000000"
+          }, {
+            "name" : "Treatment agent",
+            "value" : "DEN"
+          }, {
+            "name" : "Treatment dose",
+            "value" : "20"
+          }, {
+            "name" : "Treatment dose unit",
+            "value" : "ug/g body weight"
+          }, {
+            "name" : "Batch",
+            "value" : "HR8267"
+          }, {
+            "name" : "Block",
+            "value" : "BL105519"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR8298-BL105661-91099_N1.svs",
+          "size" : 28014019,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "91099_N1"
+          }, {
+            "name" : "Md5",
+            "value" : "5260b23b3b76751705558bd478c98888"
+          }, {
+            "name" : "Sample Name",
+            "value" : "91099_N1"
+          }, {
+            "name" : "Code",
+            "value" : "do8147"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "dysplastic nodule"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "high"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-09-25 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-04-01 00:00:00.000000"
+          }, {
+            "name" : "Treatment date",
+            "value" : "2013-10-10_00:00:00.000000"
+          }, {
+            "name" : "Treatment agent",
+            "value" : "DEN"
+          }, {
+            "name" : "Treatment dose",
+            "value" : "20"
+          }, {
+            "name" : "Treatment dose unit",
+            "value" : "ug/g body weight"
+          }, {
+            "name" : "Batch",
+            "value" : "HR8298"
+          }, {
+            "name" : "Block",
+            "value" : "BL105661"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR8298-BL105665-91100_N3.svs",
+          "size" : 51296795,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "91100_N3"
+          }, {
+            "name" : "Md5",
+            "value" : "3fe9e081e3e294a9ba8dee8504c133ce"
+          }, {
+            "name" : "Sample Name",
+            "value" : "91100_N3"
+          }, {
+            "name" : "Code",
+            "value" : "do8148"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "dysplastic nodule"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "high"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-09-25 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-04-01 00:00:00.000000"
+          }, {
+            "name" : "Treatment date",
+            "value" : "2013-10-10_00:00:00.000000"
+          }, {
+            "name" : "Treatment agent",
+            "value" : "DEN"
+          }, {
+            "name" : "Treatment dose",
+            "value" : "20"
+          }, {
+            "name" : "Treatment dose unit",
+            "value" : "ug/g body weight"
+          }, {
+            "name" : "Batch",
+            "value" : "HR8298"
+          }, {
+            "name" : "Block",
+            "value" : "BL105665"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR8336-BL105923-91415_N3.svs",
+          "size" : 33795121,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "91415_N3"
+          }, {
+            "name" : "Md5",
+            "value" : "76e20268e37f5a77f6fd4006f55c2823"
+          }, {
+            "name" : "Sample Name",
+            "value" : "91415_N3"
+          }, {
+            "name" : "Code",
+            "value" : "do8149"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "dysplastic nodule"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "high"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-10-01 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-04-07 00:00:00.000000"
+          }, {
+            "name" : "Treatment date",
+            "value" : "2013-10-16_00:00:00.000000"
+          }, {
+            "name" : "Treatment agent",
+            "value" : "DEN"
+          }, {
+            "name" : "Treatment dose",
+            "value" : "20"
+          }, {
+            "name" : "Treatment dose unit",
+            "value" : "ug/g body weight"
+          }, {
+            "name" : "Batch",
+            "value" : "HR8336"
+          }, {
+            "name" : "Block",
+            "value" : "BL105923"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR8380-BL106220-91930_N1.svs",
+          "size" : 65071805,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "91930_N1"
+          }, {
+            "name" : "Md5",
+            "value" : "b1d9f5f2f6cf197527c7ff44abd30af7"
+          }, {
+            "name" : "Sample Name",
+            "value" : "91930_N1"
+          }, {
+            "name" : "Code",
+            "value" : "do8150"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "dysplastic nodule"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "low"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-10-09 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-04-14 00:00:00.000000"
+          }, {
+            "name" : "Treatment date",
+            "value" : "2013-10-24_00:00:00.000000"
+          }, {
+            "name" : "Treatment agent",
+            "value" : "DEN"
+          }, {
+            "name" : "Treatment dose",
+            "value" : "20"
+          }, {
+            "name" : "Treatment dose unit",
+            "value" : "ug/g body weight"
+          }, {
+            "name" : "Batch",
+            "value" : "HR8380"
+          }, {
+            "name" : "Block",
+            "value" : "BL106220"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR9204-BL112042-85037_N1.svs",
+          "size" : 69518913,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "85037_N1"
+          }, {
+            "name" : "Md5",
+            "value" : "1ee75c3ad8aa1d0189742f1c675eea0a"
+          }, {
+            "name" : "Sample Name",
+            "value" : "85037_N1"
+          }, {
+            "name" : "Code",
+            "value" : "do9116"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "HCC"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "well"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-06-13 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-11-24 00:00:00.000000"
+          }, {
+            "name" : "Batch",
+            "value" : "HR9204"
+          }, {
+            "name" : "Block",
+            "value" : "BL112042"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR9204-BL112043-85037_N2.svs",
+          "size" : 89949537,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "85037_N2"
+          }, {
+            "name" : "Md5",
+            "value" : "21303f64637cac2e30229a845a78be47"
+          }, {
+            "name" : "Sample Name",
+            "value" : "85037_N2"
+          }, {
+            "name" : "Code",
+            "value" : "do9117"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "dysplastic nodule"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "high"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-06-13 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-11-24 00:00:00.000000"
+          }, {
+            "name" : "Batch",
+            "value" : "HR9204"
+          }, {
+            "name" : "Block",
+            "value" : "BL112043"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR9204-BL112044-85037_N3.svs",
+          "size" : 50108625,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "85037_N3"
+          }, {
+            "name" : "Md5",
+            "value" : "fd7d357a73a7cebd745ec2de1197f754"
+          }, {
+            "name" : "Sample Name",
+            "value" : "85037_N3"
+          }, {
+            "name" : "Code",
+            "value" : "do9118"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "dysplastic nodule"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "high"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-06-13 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-11-24 00:00:00.000000"
+          }, {
+            "name" : "Batch",
+            "value" : "HR9204"
+          }, {
+            "name" : "Block",
+            "value" : "BL112044"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR9204-BL112045-85037_N4.svs",
+          "size" : 125096435,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "85037_N4_slice1"
+          }, {
+            "name" : "Md5",
+            "value" : "8187d3c91983f23bd85a8fc6b5265b41"
+          }, {
+            "name" : "Sample Name",
+            "value" : "85037_N4_slice1"
+          }, {
+            "name" : "Code",
+            "value" : "do9119"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "HCC"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "well"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-06-13 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-11-24 00:00:00.000000"
+          }, {
+            "name" : "Batch",
+            "value" : "HR9204"
+          }, {
+            "name" : "Block",
+            "value" : "BL112045"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR9204-BL112046-85037_N5.svs",
+          "size" : 75151463,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "85037_N5_slice1"
+          }, {
+            "name" : "Md5",
+            "value" : "e5fb22a5220e5727b8b4f29a65e59110"
+          }, {
+            "name" : "Sample Name",
+            "value" : "85037_N5_slice1"
+          }, {
+            "name" : "Code",
+            "value" : "do9120"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "dysplastic nodule"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "high"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-06-13 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-11-24 00:00:00.000000"
+          }, {
+            "name" : "Batch",
+            "value" : "HR9204"
+          }, {
+            "name" : "Block",
+            "value" : "BL112046"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR9204-BL112047-85037_N6.svs",
+          "size" : 182525669,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "85037_N6_slice1"
+          }, {
+            "name" : "Md5",
+            "value" : "9353475afdebfee8d482899f74c89dbd"
+          }, {
+            "name" : "Sample Name",
+            "value" : "85037_N6_slice1"
+          }, {
+            "name" : "Code",
+            "value" : "do9121"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "dysplastic nodule"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "high"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-06-13 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-11-24 00:00:00.000000"
+          }, {
+            "name" : "Batch",
+            "value" : "HR9204"
+          }, {
+            "name" : "Block",
+            "value" : "BL112047"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR9204-BL112048-87918_N1.svs",
+          "size" : 371399803,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "87918_N1_slice1"
+          }, {
+            "name" : "Md5",
+            "value" : "9764e9cba8d7cf0d0e710c4322d3423c"
+          }, {
+            "name" : "Sample Name",
+            "value" : "87918_N1_slice1"
+          }, {
+            "name" : "Code",
+            "value" : "do9123"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "dysplastic nodule"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "high"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-07-25 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-11-24 00:00:00.000000"
+          }, {
+            "name" : "Batch",
+            "value" : "HR9204"
+          }, {
+            "name" : "Block",
+            "value" : "BL112048"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR9204-BL112049-87918_N2.svs",
+          "size" : 140091121,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "87918_N2_slice1"
+          }, {
+            "name" : "Md5",
+            "value" : "a16009491a7eb89372fa4ad632f9873f"
+          }, {
+            "name" : "Sample Name",
+            "value" : "87918_N2_slice1"
+          }, {
+            "name" : "Code",
+            "value" : "do9124"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "dysplastic nodule"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "high"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-07-25 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-11-24 00:00:00.000000"
+          }, {
+            "name" : "Batch",
+            "value" : "HR9204"
+          }, {
+            "name" : "Block",
+            "value" : "BL112049"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR9204-BL112050-87918_N3.svs",
+          "size" : 43002611,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "87918_N3"
+          }, {
+            "name" : "Md5",
+            "value" : "6d1e295a97118823508543b618168deb"
+          }, {
+            "name" : "Sample Name",
+            "value" : "87918_N3"
+          }, {
+            "name" : "Code",
+            "value" : "do9125"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "dysplastic nodule"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "high"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-07-25 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-11-24 00:00:00.000000"
+          }, {
+            "name" : "Batch",
+            "value" : "HR9204"
+          }, {
+            "name" : "Block",
+            "value" : "BL112050"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR9204-BL112051-87919_N1.svs",
+          "size" : 44891045,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "87919_N1"
+          }, {
+            "name" : "Md5",
+            "value" : "d16b0b50fa318d7123a65ba00d09b85d"
+          }, {
+            "name" : "Sample Name",
+            "value" : "87919_N1"
+          }, {
+            "name" : "Code",
+            "value" : "do9126"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "dysplastic nodule"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "high"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-07-25 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-11-24 00:00:00.000000"
+          }, {
+            "name" : "Batch",
+            "value" : "HR9204"
+          }, {
+            "name" : "Block",
+            "value" : "BL112051"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR9204-BL112052-87919_N2.svs",
+          "size" : 89861741,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "87919_N2"
+          }, {
+            "name" : "Md5",
+            "value" : "b8b17587648379d29c6f40d3c9ba6a68"
+          }, {
+            "name" : "Sample Name",
+            "value" : "87919_N2"
+          }, {
+            "name" : "Code",
+            "value" : "do9127"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "dysplastic nodule"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "high"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-07-25 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-11-24 00:00:00.000000"
+          }, {
+            "name" : "Batch",
+            "value" : "HR9204"
+          }, {
+            "name" : "Block",
+            "value" : "BL112052"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR9204-BL112053-87920_N1.svs",
+          "size" : 168191163,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "87920_N1"
+          }, {
+            "name" : "Md5",
+            "value" : "9eae215e603a87bdacd9575f272e64a6"
+          }, {
+            "name" : "Sample Name",
+            "value" : "87920_N1"
+          }, {
+            "name" : "Code",
+            "value" : "do9129"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "dysplastic nodule"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "high"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-07-25 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-11-24 00:00:00.000000"
+          }, {
+            "name" : "Batch",
+            "value" : "HR9204"
+          }, {
+            "name" : "Block",
+            "value" : "BL112053"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR9204-BL112054-87920_N2.svs",
+          "size" : 171375715,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "87920_N2"
+          }, {
+            "name" : "Md5",
+            "value" : "f0d87ac3f6157361fbd553c2141dddf1"
+          }, {
+            "name" : "Sample Name",
+            "value" : "87920_N2"
+          }, {
+            "name" : "Code",
+            "value" : "do9130"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "dysplastic nodule"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "high"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-07-25 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-11-24 00:00:00.000000"
+          }, {
+            "name" : "Batch",
+            "value" : "HR9204"
+          }, {
+            "name" : "Block",
+            "value" : "BL112054"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR9204-BL112055-87920_N3.svs",
+          "size" : 48399947,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "87920_N3"
+          }, {
+            "name" : "Md5",
+            "value" : "895a7199233f1245cc7e359e67d1040c"
+          }, {
+            "name" : "Sample Name",
+            "value" : "87920_N3"
+          }, {
+            "name" : "Code",
+            "value" : "do9131"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "dysplastic nodule"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "high"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-07-25 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-11-24 00:00:00.000000"
+          }, {
+            "name" : "Batch",
+            "value" : "HR9204"
+          }, {
+            "name" : "Block",
+            "value" : "BL112055"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR9204-BL112056-87920_N4.svs",
+          "size" : 53719245,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "87920_N4"
+          }, {
+            "name" : "Md5",
+            "value" : "81d16f8d1f7f692d963f951d21ff4cd1"
+          }, {
+            "name" : "Sample Name",
+            "value" : "87920_N4"
+          }, {
+            "name" : "Code",
+            "value" : "do9132"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "dysplastic nodule"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "high"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-07-25 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-11-24 00:00:00.000000"
+          }, {
+            "name" : "Batch",
+            "value" : "HR9204"
+          }, {
+            "name" : "Block",
+            "value" : "BL112056"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR9204-BL112057-87922_N1.svs",
+          "size" : 70755209,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "87922_N1"
+          }, {
+            "name" : "Md5",
+            "value" : "baea3b2c529a3a5440f56cf8042a3a34"
+          }, {
+            "name" : "Sample Name",
+            "value" : "87922_N1"
+          }, {
+            "name" : "Code",
+            "value" : "do9133"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "dysplastic nodule"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "low"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-07-25 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-11-24 00:00:00.000000"
+          }, {
+            "name" : "Batch",
+            "value" : "HR9204"
+          }, {
+            "name" : "Block",
+            "value" : "BL112057"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR9204-BL112058-87922_N2.svs",
+          "size" : 106969749,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "87922_N2"
+          }, {
+            "name" : "Md5",
+            "value" : "c37ca81cb7c76a51efb561b71e95a7a8"
+          }, {
+            "name" : "Sample Name",
+            "value" : "87922_N2"
+          }, {
+            "name" : "Code",
+            "value" : "do9134"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "dysplastic nodule"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "low"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-07-25 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-11-24 00:00:00.000000"
+          }, {
+            "name" : "Batch",
+            "value" : "HR9204"
+          }, {
+            "name" : "Block",
+            "value" : "BL112058"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR9204-BL112059-87922_N3.svs",
+          "size" : 704253089,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "87922_N3_quadrant"
+          }, {
+            "name" : "Md5",
+            "value" : "f9852aacd7c5552eaab1a496222a7ef3"
+          }, {
+            "name" : "Sample Name",
+            "value" : "87922_N3_quadrant"
+          }, {
+            "name" : "Code",
+            "value" : "do9135"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "HCC"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "moderate"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-07-25 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-11-24 00:00:00.000000"
+          }, {
+            "name" : "Batch",
+            "value" : "HR9204"
+          }, {
+            "name" : "Block",
+            "value" : "BL112059"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR9204-BL112060-92757_N1.svs",
+          "size" : 26701427,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "92757_N1"
+          }, {
+            "name" : "Md5",
+            "value" : "566b34eb8c2977587d8b7015321d4d1d"
+          }, {
+            "name" : "Sample Name",
+            "value" : "92757_N1"
+          }, {
+            "name" : "Code",
+            "value" : "do9136"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "dysplastic nodule"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "low"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-10-22 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-11-24 00:00:00.000000"
+          }, {
+            "name" : "Batch",
+            "value" : "HR9204"
+          }, {
+            "name" : "Block",
+            "value" : "BL112060"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR9247-BL112475-92759_N1.svs",
+          "size" : 38714561,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "92759_N1"
+          }, {
+            "name" : "Md5",
+            "value" : "610c45413684d856058527655f159283"
+          }, {
+            "name" : "Sample Name",
+            "value" : "92759_N1"
+          }, {
+            "name" : "Code",
+            "value" : "do9138"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "dysplastic nodule"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "high"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-10-22 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-12-09 00:00:00.000000"
+          }, {
+            "name" : "Batch",
+            "value" : "HR9247"
+          }, {
+            "name" : "Block",
+            "value" : "BL112475"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR9247-BL112476-96029_N1.svs",
+          "size" : 27230545,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "96029_N1"
+          }, {
+            "name" : "Md5",
+            "value" : "5138fcf97c45b5d04e956f49cd71259d"
+          }, {
+            "name" : "Sample Name",
+            "value" : "96029_N1"
+          }, {
+            "name" : "Code",
+            "value" : "do9139"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "dysplastic nodule"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "high"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2014-01-02 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-12-09 00:00:00.000000"
+          }, {
+            "name" : "Batch",
+            "value" : "HR9247"
+          }, {
+            "name" : "Block",
+            "value" : "BL112476"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR9247-BL112477-96029_N2.svs",
+          "size" : 45496813,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "96029_N2"
+          }, {
+            "name" : "Md5",
+            "value" : "1fbfc0ea8354f4cd44b412622399aa53"
+          }, {
+            "name" : "Sample Name",
+            "value" : "96029_N2"
+          }, {
+            "name" : "Code",
+            "value" : "do9140"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "dysplastic nodule"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "high"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2014-01-02 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-12-09 00:00:00.000000"
+          }, {
+            "name" : "Batch",
+            "value" : "HR9247"
+          }, {
+            "name" : "Block",
+            "value" : "BL112477"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR9247-BL112478-96504_N1.svs",
+          "size" : 24086681,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "96504_N1"
+          }, {
+            "name" : "Md5",
+            "value" : "425425c2beb99b5e02619612b62f618a"
+          }, {
+            "name" : "Sample Name",
+            "value" : "96504_N1"
+          }, {
+            "name" : "Code",
+            "value" : "do9141"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "dysplastic nodule"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "high"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2014-01-24 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-12-09 00:00:00.000000"
+          }, {
+            "name" : "Batch",
+            "value" : "HR9247"
+          }, {
+            "name" : "Block",
+            "value" : "BL112478"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR9288-BL112867-96988_N1.svs",
+          "size" : 75202461,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "96988_N1"
+          }, {
+            "name" : "Md5",
+            "value" : "123727e005de240e45c7db6c441ec2c7"
+          }, {
+            "name" : "Sample Name",
+            "value" : "96988_N1"
+          }, {
+            "name" : "Code",
+            "value" : "do9143"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "dysplastic nodule"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "high"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2014-02-19 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-12-18 00:00:00.000000"
+          }, {
+            "name" : "Batch",
+            "value" : "HR9288"
+          }, {
+            "name" : "Block",
+            "value" : "BL112867"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR9288-BL112868-97732_N1.svs",
+          "size" : 52922653,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "97732_N1"
+          }, {
+            "name" : "Md5",
+            "value" : "023527a93c92943a19ba4534414431f6"
+          }, {
+            "name" : "Sample Name",
+            "value" : "97732_N1"
+          }, {
+            "name" : "Code",
+            "value" : "do9144"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "dysplastic nodule"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "high"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2014-03-29 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-12-18 00:00:00.000000"
+          }, {
+            "name" : "Batch",
+            "value" : "HR9288"
+          }, {
+            "name" : "Block",
+            "value" : "BL112868"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR8267-BL105518-90796_N1.svs",
+          "size" : 50690829,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "90796_N1"
+          }, {
+            "name" : "Md5",
+            "value" : "4b4378c489e0f7928ea3da50a8f0b6b9"
+          }, {
+            "name" : "Sample Name",
+            "value" : "90796_N1"
+          }, {
+            "name" : "Code",
+            "value" : "do9145"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "HCC"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "well"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-09-19 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-03-24 00:00:00.000000"
+          }, {
+            "name" : "Treatment date",
+            "value" : "2013-10-04_00:00:00.000000"
+          }, {
+            "name" : "Treatment agent",
+            "value" : "DEN"
+          }, {
+            "name" : "Treatment dose",
+            "value" : "20"
+          }, {
+            "name" : "Treatment dose unit",
+            "value" : "ug/g body weight"
+          }, {
+            "name" : "Batch",
+            "value" : "HR8267"
+          }, {
+            "name" : "Block",
+            "value" : "BL105518"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR8267-BL105521-90796_N4.svs",
+          "size" : 97462501,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "90796_N4"
+          }, {
+            "name" : "Md5",
+            "value" : "7386440e377b6a1327771c0617464e74"
+          }, {
+            "name" : "Sample Name",
+            "value" : "90796_N4"
+          }, {
+            "name" : "Code",
+            "value" : "do9146"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "HCC"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "moderate"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-09-19 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-03-24 00:00:00.000000"
+          }, {
+            "name" : "Treatment date",
+            "value" : "2013-10-04_00:00:00.000000"
+          }, {
+            "name" : "Treatment agent",
+            "value" : "DEN"
+          }, {
+            "name" : "Treatment dose",
+            "value" : "20"
+          }, {
+            "name" : "Treatment dose unit",
+            "value" : "ug/g body weight"
+          }, {
+            "name" : "Batch",
+            "value" : "HR8267"
+          }, {
+            "name" : "Block",
+            "value" : "BL105521"
+          } ],
+          "type" : "file"
+        }, {
+          "path" : "HR8402-BL106408-92189_N4.svs",
+          "size" : 58186285,
+          "attributes" : [ {
+            "name" : "Type",
+            "value" : "SVS"
+          }, {
+            "name" : "Title",
+            "value" : "92189_N4"
+          }, {
+            "name" : "Md5",
+            "value" : "10574af981d1cae7620d6280dc080c47"
+          }, {
+            "name" : "Sample Name",
+            "value" : "92189_N4"
+          }, {
+            "name" : "Code",
+            "value" : "do9147"
+          }, {
+            "name" : "Organism",
+            "value" : "Mus musculus"
+          }, {
+            "name" : "Strain",
+            "value" : "C3H/HeOuJ"
+          }, {
+            "name" : "Sex",
+            "value" : "male"
+          }, {
+            "name" : "Tissue",
+            "value" : "liver"
+          }, {
+            "name" : "Region",
+            "value" : "nodule"
+          }, {
+            "name" : "Diagnosis",
+            "value" : "HCC"
+          }, {
+            "name" : "TumourGrade",
+            "value" : "well"
+          }, {
+            "name" : "Date of birth",
+            "value" : "2013-10-15 00:00:00.000000"
+          }, {
+            "name" : "Date of death",
+            "value" : "2014-04-22 00:00:00.000000"
+          }, {
+            "name" : "Treatment date",
+            "value" : "2013-10-30_00:00:00.000000"
+          }, {
+            "name" : "Treatment agent",
+            "value" : "DEN"
+          }, {
+            "name" : "Treatment dose",
+            "value" : "20"
+          }, {
+            "name" : "Treatment dose unit",
+            "value" : "ug/g body weight"
+          }, {
+            "name" : "Batch",
+            "value" : "HR8402"
+          }, {
+            "name" : "Block",
+            "value" : "BL106408"
+          } ],
+          "type" : "file"
+        } ] ]
+      } ]
+    },
+    "type" : "submission"
+  }

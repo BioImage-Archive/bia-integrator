@@ -1,0 +1,123 @@
+{
+    "accno" : "S-BIAD1261",
+    "attributes" : [ {
+      "name" : "Template",
+      "value" : "BioImages.v4"
+    }, {
+      "name" : "DOI",
+      "value" : "10.6019/S-BIAD1261"
+    }, {
+      "name" : "ReleaseDate",
+      "value" : "2024-07-05"
+    }, {
+      "name" : "AttachTo",
+      "value" : "BioImages"
+    } ],
+    "section" : {
+      "type" : "Study",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Region-Specific Protective Effects of Monomethyl Fumarate in Cerebellar and Hippocampal Organotypic Slice Cultures Following Oxygen-Glucose Deprivation"
+      }, {
+        "name" : "Description",
+        "value" : "To date, apart from moderate hypothermia, there are almost no adequate interventions available for neuroprotection in cases of brain damage due to cardiac arrest. Affected persons often have severe limitations in their quality of life. The aim of this study was to investigate protective properties of the active compound of dimethyl fumarate, monomethyl fumarate (MMF), on distinct regions of the central nervous system after ischemic events. Dimethyl fumarate is an already established drug in neurology with known anti-inflammatory and antioxidant properties. In this study, we chose organotypic slice cultures of rat cerebellum and hippocampus as an ex vivo model. To simulate cardiac arrest and return of spontaneous circulation we performed oxygen-glucose-deprivation (OGD) followed by treatments with different concentrations of MMF (1-30 µM in cerebellum and 5-30 µM in hippocampus). Immunofluorescence staining with propidium iodide (PI) and 4′,6-diamidine-2-phenylindole (DAPI) was performed to analyze PI/DAPI ratio after imaging with a spinning disc confocal microscope. In the statistical analysis, the relative cell death of the different groups was compared. In both, the cerebellum and hippocampus, the MMF-treated group showed a significantly lower PI/DAPI ratio compared to the non-treated group after OGD. Thus, we showed for the first time that both cerebellar and hippocampal slice cultures treated with MMF after OGD are significantly less affected by cell death."
+      }, {
+        "name" : "Keywords",
+        "value" : "brain damage; cardiac arrest; cell death; hypoxic chamber; ischemia; organotypic slice cultures; post-treatment; resuscitation"
+      }, {
+        "name" : "Acknowledgements",
+        "value" : "The authors gratefully acknowledge A. Lodwig, C. Grzelak, A. Harbecke, and F. Opdenhoevel, for technical assistance, as well as A. Lenz for secretarial work."
+      }, {
+        "name" : "License",
+        "value" : "CC0",
+        "valqual" : [ {
+          "name" : "URL",
+          "value" : "https://creativecommons.org/publicdomain/zero/1.0/legalcode"
+        } ]
+      } ],
+      "subsections" : [ {
+        "type" : "author",
+        "attributes" : [ {
+          "name" : "E-mail",
+          "value" : "cytologie@rub.de"
+        }, {
+          "name" : "affiliation",
+          "value" : "o1",
+          "reference" : true
+        } ]
+      }, {
+        "accno" : "o1",
+        "type" : "organisation",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "Ruhr University Bochum"
+        } ]
+      }, {
+        "accno" : "Biosample-1",
+        "type" : "Biosample",
+        "attributes" : [ {
+          "name" : "Title",
+          "value" : "Biosample"
+        }, {
+          "name" : "Organism",
+          "value" : "Wistar rat"
+        }, {
+          "name" : "Biological entity",
+          "value" : "p9 Wistar rat hippocampal and cerebellar slice cultures"
+        } ]
+      }, {
+        "accno" : "Specimen-2",
+        "type" : "Specimen",
+        "attributes" : [ {
+          "name" : "Title",
+          "value" : "Speciem"
+        }, {
+          "name" : "Sample preparation protocol",
+          "value" : "Six neonatal Wistar rats were decapitated by guillotine on postnatal day 9 (p9) without prior anesthesia. The Cerebellum and hippocampus were carefully dissected under strictly sterile conditions and stored in sterile ice-cooled Hank’s solution (#H8264-500ML; Sigma-Aldrich, Darmstadt, Germany). Using a McIlwain tissue chopper, the cerebellum was sliced along its sagittal axis into 275 µm slices, and the hippocampus was sliced along its long axis into 350 µm slices. The slices were subsequently transferred to cell culture inserts with semi-permeable membranes made of PTFE film (Millicell Cell Culture Inserts, 0.4 µm pore-size, #PICM0RG50, Merck, Darmstadt, Germany). The inserts are placed in six-well plates containing one ml of culture medium and are pre-incubated at 37 °C and 5 % CO2 for at least two h. The culture medium consists of Dulbeccos Modified Eagle Medium (DMEM; #A14430-01, Thermo Fisher Scientific, Waltham, MA, USA) containing 25 % heat-inactivated horse serum (#16050-122; Thermo Fisher Scientific), 25 % Hank's balanced salts solution (NaCl 8 g/L, KCl 0.4 g/L, Na2HPO4 0.048 g/L, KH2PO4 0.06 g/L, CaCl2 0.185 g/L, MgSO4 0.098 g/L, NaHCO3 0.35 g/L, glucose 1 g/L), 6.5 % glucose, 2.5 mg/l NGF (N-0513; Sigma-Aldrich), 1 % GlutaMax (#35050-061; Thermo Fisher Scientific), 1 % PenStrep (10,000 U penicillin, 10 mg streptomycin, #P4333, Sigma-Aldrich), and 10 mg/l phenol red (#P0290; Sigma-Aldrich). The organotypic slice cultures were maintained at 37 °C and 5 % CO2 for seven days. Every other day, half of the cell culture medium was replaced with fresh cell culture medium"
+        } ]
+      }, {
+        "accno" : "Image acquisition-3",
+        "type" : "Image acquisition",
+        "attributes" : [ {
+          "name" : "Title",
+          "value" : "Image acquisition"
+        }, {
+          "name" : "Imaging instrument",
+          "value" : "VisiScope Confocal-Cell Explorer, Visitron Systems GmbH, Puchheim, Germany\nNikon PlanFluor 20×, NA 0.5; Nikon Instruments Europe BV, Amsterdam, Netherlands"
+        }, {
+          "name" : "Image acquisition parameters",
+          "value" : "Imaging was performed on a spinning disk confocal microscope using a 20x objective. The exposure time was set to 900 ms. Multiple z-stacks were first acquired as a matrix, then stitched and stacked into a single image. A 405 nm laser was used for DAPI excitation and a 561 nm laser for PI excitation."
+        }, {
+          "name" : "Imaging method",
+          "value" : "spinning disk confocal microscopy"
+        } ]
+      }, {
+        "accno" : "Study Component-4",
+        "type" : "Study Component",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "Stitched and stacked fluorescence confocal images"
+        }, {
+          "name" : "Description",
+          "value" : "Stitched and stacked fluorescence confocal images"
+        }, {
+          "name" : "File List",
+          "value" : "mmf_ogd.json"
+        } ],
+        "subsections" : [ {
+          "type" : "Associations",
+          "attributes" : [ {
+            "name" : "Biosample",
+            "value" : "Biosample"
+          }, {
+            "name" : "Specimen",
+            "value" : "Speciem"
+          }, {
+            "name" : "Image acquisition",
+            "value" : "Image acquisition"
+          } ]
+        } ]
+      } ]
+    },
+    "type" : "submission"
+  }
