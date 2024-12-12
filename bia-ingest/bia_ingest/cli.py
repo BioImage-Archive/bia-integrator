@@ -1,5 +1,6 @@
 import typer
-from typing import List
+from typing import List, Optional
+from pathlib import Path
 from enum import Enum
 from typing import Annotated
 from bia_ingest.biostudies.api import (
@@ -48,7 +49,8 @@ class ProcessFilelistMode(str, Enum):
 
 @app.command(help="Ingest from biostudies and echo json of bia_data_model.Study")
 def ingest(
-    accession_id_list: Annotated[List[str], typer.Argument()],
+    accession_id_list: Annotated[Optional[List[str]], typer.Argument()] = None,
+    input_file: Annotated[Optional[Path], typer.Option("--input_file", "-f")] = None,
     persistence_mode: Annotated[
         PersistenceMode, typer.Option(case_sensitive=False)
     ] = PersistenceMode.disk,
@@ -64,6 +66,9 @@ def ingest(
         logger.setLevel(logging.DEBUG)
 
     result_summary = {}
+
+    if input_file and not accession_id_list:
+        accession_id_list = read_file_input(input_file)
 
     for accession_id in accession_id_list:
         print(f"[blue]-------- Starting ingest of {accession_id} --------[/blue]")
@@ -136,6 +141,12 @@ def ingest(
         write_table(result_table, write_csv)
 
 
+def read_file_input(input_file: Path):
+    with open(input_file, "r") as f:
+        lines = f.readlines()
+    return [accession_id.strip() for accession_id in lines]
+
+
 def determine_file_processing(
     process_files_mode: ProcessFilelistMode, file_count_limit: int, file_count: int
 ) -> bool:
@@ -158,10 +169,10 @@ def determine_biostudies_processing_version(submission: Submission):
     override_map = {
         "S-BIAD43": BioStudiesProcessingVersion.V4,
         "S-BIAD44": BioStudiesProcessingVersion.V4,
-        #"S-BIAD590": BioStudiesProcessingVersion.V4, TODO: deal with nested associations
-        #"S-BIAD599": BioStudiesProcessingVersion.V4, TODO: deal with nested associations
-        #"S-BIAD628": BioStudiesProcessingVersion.V4, TODO: deal with nested associations
-        #"S-BIAD677": BioStudiesProcessingVersion.V4, TODO: deal with nested associations
+        # "S-BIAD590": BioStudiesProcessingVersion.V4, TODO: deal with nested associations
+        # "S-BIAD599": BioStudiesProcessingVersion.V4, TODO: deal with nested associations
+        # "S-BIAD628": BioStudiesProcessingVersion.V4, TODO: deal with nested associations
+        # "S-BIAD677": BioStudiesProcessingVersion.V4, TODO: deal with nested associations
         "S-BIAD686": BioStudiesProcessingVersion.V4,
         "S-BIAD822": BioStudiesProcessingVersion.V4,
         "S-BIAD843": BioStudiesProcessingVersion.V4,
