@@ -3,7 +3,7 @@ from uuid import UUID
 import pytest
 from bia_assign_image import image, specimen, creation_process
 from bia_ingest import persistence_strategy
-from bia_test_data.mock_objects.utils import accession_id
+from bia_test_data.mock_objects.mock_object_constants import accession_id
 from bia_test_data.mock_objects import (
     mock_dataset,
     mock_file_reference,

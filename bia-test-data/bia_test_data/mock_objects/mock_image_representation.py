@@ -2,14 +2,12 @@ from typing import Dict
 from copy import deepcopy
 from bia_shared_datamodels import bia_data_model, uuid_creation, semantic_models
 from bia_test_data.mock_objects import mock_file_reference
-from bia_test_data.mock_objects.utils import accession_id
+from bia_test_data.mock_objects.mock_object_constants import accession_id
 
 
 file_uri_base = "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data"
 # We are using image im06.png from study component 2
-file_reference = mock_file_reference.get_file_reference(
-    ["biad_v4/file_list_study_component_2.json"]
-)[0]
+file_reference = mock_file_reference.get_file_reference()[0]
 image_uuid = uuid_creation.create_image_uuid(
     [
         file_reference.uuid,

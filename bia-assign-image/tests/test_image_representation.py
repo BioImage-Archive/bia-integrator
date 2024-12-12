@@ -6,7 +6,7 @@ from bia_test_data.mock_objects import (
     mock_image_representation,
     mock_image,
 )
-from bia_test_data.mock_objects.utils import accession_id
+from bia_test_data.mock_objects.mock_object_constants import accession_id
 from bia_assign_image import image_representation
 
 

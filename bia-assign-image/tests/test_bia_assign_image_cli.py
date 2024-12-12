@@ -1,5 +1,5 @@
 from pathlib import Path
-from bia_test_data.mock_objects.utils import accession_id
+from bia_test_data.mock_objects.mock_object_constants import accession_id
 from typer.testing import CliRunner
 from bia_assign_image import cli
 from bia_test_data.mock_objects import (
