@@ -5,7 +5,7 @@ This sub-package assigns file reference(s) to BIA Image objects and creates imag
 
 1. Install the project using poetry.
 2. All artefacts are currently written to a hard coded dir ~/.cache/bia-integrator-data-sm
-3. Only `--persistence-mode disk`) works at the moment 
+3. Only `--persistence-mode disk`) works at the moment
 
 ## Usage
 This package has 2 cli applications:
@@ -57,3 +57,7 @@ An option can be passed into the command to specify representations to create. E
 ```sh
 $ poetry run bia-assign-image representations create --reps-to-create THUMBNAIL --reps-to-create STATIC_DISPLAY S-BIAD1285 92fd093d-c8d2-4d89-ba28-9a9891cec73f
 ```
+
+## Scripts to migrate artefacts from v2 to v3
+
+See [scripts/README.md](scripts/README.md)
