@@ -4,6 +4,7 @@ from bia_export.website_export.studies.models import (
     Dataset,
     Study,
     StudyCLIContext,
+    CacheUse
 )
 from bia_export.website_export.studies.retrieve import (
     retrieve_study,
@@ -35,8 +36,8 @@ def transform_study(context: StudyCLIContext) -> Study:
 
     # Collect file list information prior to creating eid if reading locally to avoid reading them multiple times.
     # TODO: make transform_study api/local independent: only retreive functions should have to worry about this.
-    if context.root_directory:
-        context.dataset_file_aggregate_data = aggregate_file_list_data(context)
+    if context.root_directory or context.cache_use == CacheUse.READ_CACHE:
+        aggregate_file_list_data(context)
 
     study_dict["dataset"] = transform_datasets(context)
 
@@ -127,7 +128,9 @@ def transform_detail_object(
     else:
         detail_dict["default_open"] = False
     if target_type == BioSample and detail_dict["growth_protocol_uuid"]:
-        api_growth_protocol = retrieve_object( detail_dict["growth_protocol_uuid"], api_models.Protocol, context)
+        api_growth_protocol = retrieve_object(
+            detail_dict["growth_protocol_uuid"], api_models.Protocol, context
+        )
         detail_dict["growth_protocol"] = api_growth_protocol
 
     detail = target_type(**detail_dict)

@@ -1,0 +1,4515 @@
+{
+    "a690b1ca-6a02-488a-9173-e37b17ce0bc0": {
+        "file_count": 4,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".mcd",
+            ".xlsx"
+        ]
+    },
+    "96d0722a-d6b9-438f-b93e-b17777dacd83": {
+        "file_count": 1,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "eee3a751-531f-47b3-9513-5a0d33b25f8a": {
+        "file_count": 150,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".svs"
+        ]
+    },
+    "1fea35d7-4147-470c-bfb6-7698ccdd851a": {
+        "file_count": 4,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "3637c506-8a0d-4c1c-b59f-816851d35b5f": {
+        "file_count": 6,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "6f81d19f-e7bc-40ea-b09f-0c57c271ba35": {
+        "file_count": 193,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".csv",
+            ".mat",
+            ".tif"
+        ]
+    },
+    "93cbd129-4d78-4688-9b53-49c0a089c821": {
+        "file_count": 166,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".csv",
+            ".mat",
+            ".tif"
+        ]
+    },
+    "a16d3082-2576-4a9e-bd94-91ab1b2a7762": {
+        "file_count": 120,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".csv",
+            ".mat",
+            ".tif"
+        ]
+    },
+    "c5c0751b-f8a6-482b-92aa-d47628a00507": {
+        "file_count": 20,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "eff7ea68-26ad-47d8-b21e-6fd80ce48f57": {
+        "file_count": 14,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".R",
+            ".lif",
+            ".txt"
+        ]
+    },
+    "40454f0e-aa88-443f-a7bc-775b9552b804": {
+        "file_count": 527,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".czi",
+            ".tif"
+        ]
+    },
+    "187ec509-c05d-4650-845c-70a0760460e9": {
+        "file_count": 187,
+        "image_count": 0,
+        "file_type_aggregation": [
+            "",
+            ".fcs",
+            ".nd2",
+            ".rtf",
+            ".tif",
+            ".xml"
+        ]
+    },
+    "d1c887e1-a82d-4b9c-a5ba-44a9cb69a26d": {
+        "file_count": 4,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".rar"
+        ]
+    },
+    "e03648f6-2ab4-486a-9a33-2264a74e290f": {
+        "file_count": 4,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".rar"
+        ]
+    },
+    "461977eb-ac8f-4bf4-90ac-5bd5d64b016e": {
+        "file_count": 1326,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "cd1622a9-2103-44c9-9adb-7193651f59e7": {
+        "file_count": 16020,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".cpproj",
+            ".csv",
+            ".db",
+            ".docx",
+            ".json",
+            ".png",
+            ".raw",
+            ".tif",
+            ".txt"
+        ]
+    },
+    "675eb0fa-5013-4224-b390-46e5671ae91f": {
+        "file_count": 102,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".lsm",
+            ".tif",
+            ".tiff",
+            ".txt"
+        ]
+    },
+    "4b436a8a-1f7a-4aac-8d99-7604d5d3d152": {
+        "file_count": 67,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".jpg",
+            ".tif",
+            ".tiff"
+        ]
+    },
+    "b821a351-8679-4080-8e15-8208d4f19398": {
+        "file_count": 1,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "6b04a542-64a8-46f0-ad6d-808de8c6e634": {
+        "file_count": 18104,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "00987fb6-f99f-4a80-ac6b-54f2046c6fce": {
+        "file_count": 25,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".lif"
+        ]
+    },
+    "57674368-1182-4658-9b23-10b0ba663d07": {
+        "file_count": 51,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".lif"
+        ]
+    },
+    "5326e2f5-c7bd-40f2-9fe4-bf02b9c3daa3": {
+        "file_count": 372,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".csv",
+            ".mp4",
+            ".nd2",
+            ".tiff"
+        ]
+    },
+    "38aff18f-ff23-4e16-8a2f-57ff915cb65f": {
+        "file_count": 39,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".czi",
+            ".tif",
+            ".txt"
+        ]
+    },
+    "c5ca4ef9-8a26-4538-b5a3-38932365549c": {
+        "file_count": 160,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".czi",
+            ".png",
+            ".tif",
+            ".xlsx"
+        ]
+    },
+    "ed2dcbda-03e6-440b-b306-b38fb1cae562": {
+        "file_count": 2009,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".jpg"
+        ]
+    },
+    "22ae1896-38cb-4841-a720-1993d6522436": {
+        "file_count": 2,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "2bff3e5b-2982-4b70-8ded-1467f9f698c4": {
+        "file_count": 3,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif",
+            ".tiff"
+        ]
+    },
+    "37f3b68f-d36e-45a5-a746-24ab08aaceb6": {
+        "file_count": 1,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".czi"
+        ]
+    },
+    "41377650-3d36-4825-bda6-431a2e857f2a": {
+        "file_count": 2,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tiff"
+        ]
+    },
+    "91236439-7d8e-4688-9061-a9fd12ec1bd8": {
+        "file_count": 2,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "91de939c-c775-4149-b15d-703c45101634": {
+        "file_count": 2,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".czi"
+        ]
+    },
+    "cd003229-b298-4047-b21f-7bdd19e1a49c": {
+        "file_count": 2,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "d6aeb927-5838-46d2-970b-aa2bfbdd8b30": {
+        "file_count": 2,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".czi"
+        ]
+    },
+    "de30a889-12e6-44df-b9b1-a7e55148f9d6": {
+        "file_count": 2,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".czi"
+        ]
+    },
+    "fa8b9855-2824-4128-bf88-f52f39ada3f1": {
+        "file_count": 2,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif",
+            ".tiff"
+        ]
+    },
+    "42cd1f94-9eab-47c7-b715-ec0b405b6838": {
+        "file_count": 43,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".lif"
+        ]
+    },
+    "6e664544-2f0d-4208-b75d-26771c7c4265": {
+        "file_count": 108,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "87f48147-cbc1-4d51-b851-3740fe1913ee": {
+        "file_count": 19,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".lif"
+        ]
+    },
+    "2e79d190-9df4-45d0-89d7-8c2249464eae": {
+        "file_count": 1811,
+        "image_count": 0,
+        "file_type_aggregation": [
+            "",
+            ".czi",
+            ".docx",
+            ".ip1",
+            ".ip4",
+            ".ip5",
+            ".ra1",
+            ".ra4",
+            ".ra5",
+            ".ri1",
+            ".ri4",
+            ".ri5",
+            ".tif",
+            ".zip"
+        ]
+    },
+    "7ca3567e-62bd-443a-a302-37a005c101fc": {
+        "file_count": 58,
+        "image_count": 0,
+        "file_type_aggregation": [
+            "",
+            ".Rmd",
+            ".czi",
+            ".jpg",
+            ".pzfx",
+            ".roi",
+            ".scn",
+            ".tif",
+            ".txt",
+            ".zip"
+        ]
+    },
+    "8ff0c842-b548-446f-a268-420bd41c1788": {
+        "file_count": 45,
+        "image_count": 0,
+        "file_type_aggregation": [
+            "",
+            ".ets",
+            ".oex",
+            ".prism",
+            ".vsi"
+        ]
+    },
+    "a97ed003-3b5a-4f24-a5d9-984fd3025944": {
+        "file_count": 9311,
+        "image_count": 0,
+        "file_type_aggregation": [
+            "",
+            ".nd",
+            ".pzfx",
+            ".tif",
+            ".zip"
+        ]
+    },
+    "ed56a270-c532-4891-8128-e4725d44d3ec": {
+        "file_count": 1471,
+        "image_count": 0,
+        "file_type_aggregation": [
+            "",
+            ".nd",
+            ".pzfx",
+            ".tif",
+            ".zip"
+        ]
+    },
+    "c77b9b46-7d83-4edc-b5fe-3c9878c36cab": {
+        "file_count": 4,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "3aef03a2-acc4-45ff-9ef1-56cd7ff62397": {
+        "file_count": 17179,
+        "image_count": 0,
+        "file_type_aggregation": [
+            "",
+            ".czi",
+            ".db",
+            ".fcs",
+            ".fint",
+            ".lsm",
+            ".mat",
+            ".png",
+            ".raw",
+            ".res",
+            ".txt",
+            ".xml",
+            ".zen",
+            ".zip"
+        ]
+    },
+    "58e7d295-2fd3-4a1d-8776-36658382ce88": {
+        "file_count": 282,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".czi",
+            ".db",
+            ".tif",
+            ".txt",
+            ".yml"
+        ]
+    },
+    "5cb8460c-ffd1-49f8-9f29-88c491750945": {
+        "file_count": 5731,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".czi",
+            ".db",
+            ".tsv",
+            ".txt",
+            ".yml"
+        ]
+    },
+    "c2445a5f-c2a1-4483-b92b-a8eeb87c78f8": {
+        "file_count": 3,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".csv",
+            ".yml"
+        ]
+    },
+    "def9ff3a-610b-4f5e-9b24-cad5bc4e1f50": {
+        "file_count": 686,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".txt"
+        ]
+    },
+    "dff9e2d1-9a8f-4527-812b-075de89e0754": {
+        "file_count": 620,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".db",
+            ".tif",
+            ".tsv",
+            ".yml"
+        ]
+    },
+    "03991688-4289-4ea0-87c6-040c1260a033": {
+        "file_count": 39,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "1b42c652-d147-4cc6-afcd-8724980eed13": {
+        "file_count": 30,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "231e6c9f-7d6a-423f-bd63-b3d1e3c61e4a": {
+        "file_count": 15,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "be9d8767-eb56-444d-bad5-4b3b95188d5c": {
+        "file_count": 15,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "e3a7d2de-e02d-4127-a899-4919232e4477": {
+        "file_count": 39,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "b0ef4e7e-f9ca-4f64-be77-714797e8baa1": {
+        "file_count": 2240,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".csv",
+            ".czi",
+            ".tif",
+            ".tiff",
+            ".xlsx"
+        ]
+    },
+    "e428044f-f3cb-46c3-85e4-89cc59ff1853": {
+        "file_count": 14,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ""
+        ]
+    },
+    "12e7d606-b757-438e-b1cd-6f6f8e2a50eb": {
+        "file_count": 7,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".czi"
+        ]
+    },
+    "2e1a2cea-af0e-4583-a149-667d1e2afc46": {
+        "file_count": 5,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".czi"
+        ]
+    },
+    "7f64423a-f2b2-45d8-81fa-35c8b7c15044": {
+        "file_count": 2,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".czi"
+        ]
+    },
+    "df1f039d-0c1e-4b97-94bb-af058881eb8c": {
+        "file_count": 20,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".czi"
+        ]
+    },
+    "0c5f9451-5f08-45f3-b531-f50410c0a3e2": {
+        "file_count": 269,
+        "image_count": 0,
+        "file_type_aggregation": [
+            "",
+            ".db",
+            ".tif"
+        ]
+    },
+    "3d7eb4b5-a003-428c-8445-de9635e7c837": {
+        "file_count": 212,
+        "image_count": 0,
+        "file_type_aggregation": [
+            "",
+            ".db",
+            ".tif"
+        ]
+    },
+    "92abdaea-1b3e-4508-945e-e84d8bd4a760": {
+        "file_count": 518,
+        "image_count": 0,
+        "file_type_aggregation": [
+            "",
+            ".db",
+            ".tif"
+        ]
+    },
+    "9482d87c-8868-4dc6-8fa0-44a30a0e9882": {
+        "file_count": 25,
+        "image_count": 0,
+        "file_type_aggregation": [
+            "",
+            ".db",
+            ".tif"
+        ]
+    },
+    "4c313188-4a44-4346-871b-4df89eb6c558": {
+        "file_count": 8,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "f5dca663-90fc-4ba3-8575-1b2f8c538852": {
+        "file_count": 109,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "35ed73f1-3553-4c04-bc7e-b268c4cde6ac": {
+        "file_count": 1139,
+        "image_count": 0,
+        "file_type_aggregation": [
+            "",
+            ".bmp",
+            ".csv",
+            ".docx",
+            ".ijm",
+            ".jpg",
+            ".pdf",
+            ".tif",
+            ".tiff",
+            ".txt",
+            ".xlsx",
+            ".zip"
+        ]
+    },
+    "1a774e80-847d-4926-90d1-947e3cd3fbf9": {
+        "file_count": 12,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ""
+        ]
+    },
+    "62a98473-71d4-4bf2-ab31-3ac03c5b4dd1": {
+        "file_count": 78,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".avi"
+        ]
+    },
+    "260390d6-bfb3-4e83-aeed-6dc24123337d": {
+        "file_count": 43,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".JPG",
+            ".nd2"
+        ]
+    },
+    "43af2640-daa5-4007-b430-c06be257062d": {
+        "file_count": 50,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".JPG",
+            ".nd2"
+        ]
+    },
+    "556d5e3a-e9c8-4595-bcf4-3c10c343f920": {
+        "file_count": 35,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".JPG",
+            ".nd2",
+            ".tif"
+        ]
+    },
+    "aa5a0558-484d-4c81-8986-cf9f40458dfc": {
+        "file_count": 11,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".JPG",
+            ".nd2"
+        ]
+    },
+    "ebf4ebde-57d9-40ab-88ff-5c4e43e0d818": {
+        "file_count": 18,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".nd2"
+        ]
+    },
+    "f6325011-d65c-4c71-b10d-6e88ae18d1ba": {
+        "file_count": 24,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".JPG",
+            ".nd2"
+        ]
+    },
+    "7d22c394-7230-4ff0-8c8f-6e0a5adf9dff": {
+        "file_count": 15448,
+        "image_count": 0,
+        "file_type_aggregation": [
+            "",
+            ".aqproj",
+            ".cfg",
+            ".config",
+            ".jxr",
+            ".tif"
+        ]
+    },
+    "84ff68ab-56bd-473d-bcec-2891ba969842": {
+        "file_count": 5,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".czi"
+        ]
+    },
+    "b0f3dcd5-0bed-4a8d-b5ea-66acbdff94f8": {
+        "file_count": 2,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".czi"
+        ]
+    },
+    "99b95c92-a7ab-4bb5-aad6-36523adc3e1f": {
+        "file_count": 77,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif",
+            ".xlsx",
+            ".zip"
+        ]
+    },
+    "5c51652f-3616-4a0f-9f03-704a99330768": {
+        "file_count": 3571,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".db",
+            ".tif"
+        ]
+    },
+    "7a036e77-3b17-40e6-ae70-26583533b87b": {
+        "file_count": 7632,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "c763f219-f668-4338-970a-a3e06a0d2f37": {
+        "file_count": 8438,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".db",
+            ".tif"
+        ]
+    },
+    "e320a7bc-8f8a-4d42-8039-ffbae2442d4c": {
+        "file_count": 7632,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".jpeg"
+        ]
+    },
+    "cb914dc1-808e-479d-9c1c-e112e706373b": {
+        "file_count": 37,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "41634e76-74fb-40c6-b295-9ec168f1f12f": {
+        "file_count": 1,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".rar"
+        ]
+    },
+    "94a2a212-38d4-4667-a92f-018a17955633": {
+        "file_count": 292,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".czi",
+            ".mp4",
+            ".nd2",
+            ".png",
+            ".tif"
+        ]
+    },
+    "368b1ee6-6cc9-48d8-b8e9-b6d7e3f90ab8": {
+        "file_count": 1378,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".CR2",
+            ".JPG"
+        ]
+    },
+    "a3573ea2-2570-49ee-85aa-7d44cdab599d": {
+        "file_count": 57,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "3eebe9c0-65fe-4b4e-8f24-fb91f05be510": {
+        "file_count": 7392,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".jpg",
+            ".png"
+        ]
+    },
+    "93d872b2-37e2-43b7-8020-56dbead076fe": {
+        "file_count": 6,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "3eafdcb8-04db-42e7-8ec6-7cdbf4876c28": {
+        "file_count": 48,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "88bbb185-5667-4047-a59a-014fc89218f2": {
+        "file_count": 7392,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".jpg"
+        ]
+    },
+    "bca6bb54-f138-4d72-984b-a3c769663855": {
+        "file_count": 7,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "13057b09-2f10-4e93-a987-5d45fe25b58b": {
+        "file_count": 226,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".nd2"
+        ]
+    },
+    "cd176e8a-9091-443a-902c-245ebeaecac7": {
+        "file_count": 9,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".nd2"
+        ]
+    },
+    "d9bee15f-2e12-48c7-9f5f-f890a3276eaf": {
+        "file_count": 120,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".nd2"
+        ]
+    },
+    "02c1a640-8923-4501-b224-fc139d2a2654": {
+        "file_count": 40,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".png"
+        ]
+    },
+    "2b0b7ad5-5905-49c7-ab87-cf7392db3da5": {
+        "file_count": 72,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".ims"
+        ]
+    },
+    "3660bf46-5f5f-41aa-a01c-6f78ebe237c0": {
+        "file_count": 48,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".ims"
+        ]
+    },
+    "72088522-d5aa-4011-801b-c644e46edd1d": {
+        "file_count": 96,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".ims"
+        ]
+    },
+    "8d87ad92-3413-42b9-a44e-31142a354b10": {
+        "file_count": 27,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "b4a89660-0312-4d9c-9b50-37ca2073cbf4": {
+        "file_count": 54,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".ims"
+        ]
+    },
+    "7cbd56a0-403f-4d71-83e7-4d59bf83893c": {
+        "file_count": 83,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".lif",
+            ".nd2",
+            ".oib",
+            ".oir"
+        ]
+    },
+    "abdc2e00-3125-447d-b062-f5ec7193ce82": {
+        "file_count": 1434,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif",
+            ".tiff"
+        ]
+    },
+    "573b1224-343c-4056-9de1-70cedb5acfef": {
+        "file_count": 18,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "0cff303a-8630-45ca-8b06-805a9a87bed2": {
+        "file_count": 2982,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif",
+            ".xlsx"
+        ]
+    },
+    "710dab7f-a253-4f49-8264-64db9aa40cb1": {
+        "file_count": 8,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".rar"
+        ]
+    },
+    "a31d968b-58ea-4534-b22c-9200938bb914": {
+        "file_count": 2,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".rar"
+        ]
+    },
+    "1d58086f-2e09-4693-bb61-4f80504e2a41": {
+        "file_count": 259,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ""
+        ]
+    },
+    "24327f61-819c-4359-81e2-2d89bfe86056": {
+        "file_count": 54,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ""
+        ]
+    },
+    "483e537b-2450-4d7a-a196-c07cc36ebd92": {
+        "file_count": 66,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ""
+        ]
+    },
+    "8a42c520-b000-4781-804f-822bf424e054": {
+        "file_count": 24,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ""
+        ]
+    },
+    "8af281c7-4371-45af-9386-6afa47cb619e": {
+        "file_count": 4068,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tiff"
+        ]
+    },
+    "8b1b642b-3c4c-4f7e-ba95-f5d53e048af7": {
+        "file_count": 243,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ""
+        ]
+    },
+    "af34ccd5-f931-4ec4-bcdc-e9ccd7a30f98": {
+        "file_count": 1356,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tiff"
+        ]
+    },
+    "cf2f8177-2c94-4a4e-b07b-598c07ef09d8": {
+        "file_count": 16,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ""
+        ]
+    },
+    "f82c1b87-6e35-4812-931d-98eb89fc24c1": {
+        "file_count": 678,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tiff"
+        ]
+    },
+    "fc3891ed-1ccc-4e9b-b625-1a22e1e6b88d": {
+        "file_count": 16,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ""
+        ]
+    },
+    "718b425b-52dd-40ec-b640-21392c30e0d7": {
+        "file_count": 4,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif",
+            ".xml"
+        ]
+    },
+    "e85763d0-de36-40a8-8f03-debbbaec535b": {
+        "file_count": 4,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "b98103e5-ca95-4199-9386-a9782e96336e": {
+        "file_count": 2524,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".cache",
+            ".ims",
+            ".lif",
+            ".lifext",
+            ".part",
+            ".txt",
+            ".xlsx",
+            ".xml"
+        ]
+    },
+    "bf1d6b19-04f2-4a91-9aaf-85fe4a41f9fa": {
+        "file_count": 49,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "36a68b8d-c401-40cb-b407-101823e1b127": {
+        "file_count": 12667,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".bmp",
+            ".lut",
+            ".oif",
+            ".pty",
+            ".roi",
+            ".tif"
+        ]
+    },
+    "04e20bad-748c-4377-be1f-06977beac38a": {
+        "file_count": 75,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "0affd443-56e4-4214-8fdc-f1312a35f748": {
+        "file_count": 59,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "3d1b8c6a-d703-4980-a4f4-6a8dc0a97e6b": {
+        "file_count": 3,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "a4e7a2e6-3205-4c0b-be51-dd723aa85f81": {
+        "file_count": 59,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "af7ee040-bdc2-44c3-bd69-630d9fdf4df3": {
+        "file_count": 6,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "d58d3174-bbc5-4410-8bb7-1f61316ef901": {
+        "file_count": 172,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "e1fbaa77-70c0-4866-98c6-0cab0c99ea11": {
+        "file_count": 148,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "3726f7d6-6171-43ce-9317-680ca02fcec8": {
+        "file_count": 23,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".rar"
+        ]
+    },
+    "09f5d48e-ed2f-47b1-8e30-9c8b97823daa": {
+        "file_count": 35,
+        "image_count": 0,
+        "file_type_aggregation": [
+            "",
+            ".tif"
+        ]
+    },
+    "13b56ab4-6928-4573-b28a-ce5f2a194a6d": {
+        "file_count": 25,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "22632a84-a73d-402a-ba3b-2f1fbd0b180a": {
+        "file_count": 40,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".jpg",
+            ".tif",
+            ".tiff"
+        ]
+    },
+    "23d0af26-27bb-47d9-b41a-db7c5f1cb4f7": {
+        "file_count": 12,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "2e95cac8-0c93-4964-bd7a-19e6f889943a": {
+        "file_count": 227,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".jpg"
+        ]
+    },
+    "3839ea25-50bd-4df0-ad97-bcc24598f5bd": {
+        "file_count": 193,
+        "image_count": 0,
+        "file_type_aggregation": [
+            "",
+            ".jpg"
+        ]
+    },
+    "7fb26d8a-f87d-48df-bbce-63f3a6403f9c": {
+        "file_count": 10,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "9011803c-93ab-469b-a1af-3087d06f440e": {
+        "file_count": 5,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "9a2dd6ab-886f-423c-b9e5-0eed29f7dfa3": {
+        "file_count": 14,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "a87a692e-6c9e-44f4-ae5e-e2211ccce73d": {
+        "file_count": 85,
+        "image_count": 0,
+        "file_type_aggregation": [
+            "",
+            ".jpg"
+        ]
+    },
+    "ab6bbe07-8a54-4793-9ce2-575f97d9b351": {
+        "file_count": 11,
+        "image_count": 0,
+        "file_type_aggregation": [
+            "",
+            ".jpg",
+            ".tif"
+        ]
+    },
+    "bf3f30fd-a988-4954-961e-644978e8c644": {
+        "file_count": 223,
+        "image_count": 0,
+        "file_type_aggregation": [
+            "",
+            ".jpg"
+        ]
+    },
+    "c3eaee85-6599-4a9b-b46c-f313a603d140": {
+        "file_count": 621,
+        "image_count": 0,
+        "file_type_aggregation": [
+            "",
+            ".db",
+            ".jpg"
+        ]
+    },
+    "cc14c6fb-fb03-4010-a0d5-18d7011b1d0d": {
+        "file_count": 7,
+        "image_count": 0,
+        "file_type_aggregation": [
+            "",
+            ".tif"
+        ]
+    },
+    "e764f5dd-cf8b-4af5-9c52-d15b7a4c2a6c": {
+        "file_count": 10,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".jpg",
+            ".tif"
+        ]
+    },
+    "ee828578-4874-4c0e-b354-065b82941683": {
+        "file_count": 5,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".jpg"
+        ]
+    },
+    "fd77aac0-47b1-4c48-b9a5-4f337ec46473": {
+        "file_count": 96,
+        "image_count": 0,
+        "file_type_aggregation": [
+            "",
+            ".jpg"
+        ]
+    },
+    "52239795-7303-4f62-96ee-7cfba387dac1": {
+        "file_count": 39,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "55d01030-4fdb-4f7c-a531-07cc9205e454": {
+        "file_count": 348,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".png",
+            ".tif",
+            ".tiff"
+        ]
+    },
+    "b09b9114-bafb-4507-9733-1b63b96aed9a": {
+        "file_count": 23,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".czi",
+            ".ims",
+            ".jpg",
+            ".nd2"
+        ]
+    },
+    "20e5bc40-d65f-4e53-a37d-adf0699ae46c": {
+        "file_count": 123,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif",
+            ".txt"
+        ]
+    },
+    "86cc6731-35d1-485b-b681-65f5db2997c8": {
+        "file_count": 748,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif",
+            ".txt"
+        ]
+    },
+    "aa52088f-ae35-4b79-b3d5-bc2e3f56647f": {
+        "file_count": 700,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".json",
+            ".tif",
+            ".txt"
+        ]
+    },
+    "08d35a03-3a09-413b-8948-925b39050dfe": {
+        "file_count": 102431,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".csv",
+            ".ijm",
+            ".tiff"
+        ]
+    },
+    "8a0141ff-5a68-418c-aeb8-ad14a4b54e9c": {
+        "file_count": 2354,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".csv",
+            ".ijm",
+            ".tiff"
+        ]
+    },
+    "4b10efa9-5880-4415-a7ca-10d67255e1b4": {
+        "file_count": 138,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".jpg",
+            ".tif",
+            ".tiff"
+        ]
+    },
+    "b1e1eb2a-391c-4368-b060-0f2ab1c683a1": {
+        "file_count": 84,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "b3afc525-3349-4c79-8dbd-c4044084a510": {
+        "file_count": 8,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tiff"
+        ]
+    },
+    "905599d1-a60d-4c54-b64c-330a4d4c419a": {
+        "file_count": 96,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "311d70c9-5c52-4c5e-a8dc-1d7b12e78c01": {
+        "file_count": 599,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".czi",
+            ".isyntax",
+            ".ndpi",
+            ".svs"
+        ]
+    },
+    "09eb0ee6-6ee0-4748-811c-0c06453b0a71": {
+        "file_count": 51,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "ccf134bb-b997-4e9a-800f-c95142f4e2b4": {
+        "file_count": 64,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "5d420e5f-6800-4882-b845-4432c0f568ef": {
+        "file_count": 62,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tiff"
+        ]
+    },
+    "60a92925-727c-460d-ae4c-2cd5bbc4cc41": {
+        "file_count": 481,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".csv",
+            ".czi",
+            ".xlsx"
+        ]
+    },
+    "d98a393a-5249-46b5-8af3-80c9df94a393": {
+        "file_count": 12,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".czi",
+            ".ibd",
+            ".imzml"
+        ]
+    },
+    "ef22a92e-7953-48c6-80be-27f17971c934": {
+        "file_count": 1181,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".mat",
+            ".tif"
+        ]
+    },
+    "a8aa953e-a084-41c2-a97e-efd0caf0c7dd": {
+        "file_count": 200,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".jpg",
+            ".png",
+            ".tif"
+        ]
+    },
+    "4032b63e-2d55-44e9-ae81-cfda3a69cb8d": {
+        "file_count": 7,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".ets",
+            ".tif",
+            ".txt",
+            ".vsi"
+        ]
+    },
+    "cbbe6fe8-ab08-4e2b-b9f4-18bd30944f43": {
+        "file_count": 2222,
+        "image_count": 5,
+        "file_type_aggregation": [
+            "",
+            ".db",
+            ".json",
+            ".mat",
+            ".pkl",
+            ".png",
+            ".tif",
+            ".txt",
+            ".zip"
+        ]
+    },
+    "edb9aab6-1371-4e9e-863c-66a65d9d5773": {
+        "file_count": 46704,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "75cb6753-95f8-4485-a434-b0fad2194584": {
+        "file_count": 1854,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".czi",
+            ".lsm",
+            ".tif"
+        ]
+    },
+    "f9c3e11f-fb2f-496d-838f-a89fbb98d515": {
+        "file_count": 28,
+        "image_count": 1,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "0cb9b841-9d4f-4d45-96f1-bf660d88aec7": {
+        "file_count": 2448,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".csv",
+            ".czi",
+            ".ini",
+            ".json",
+            ".npy",
+            ".npz",
+            ".tif",
+            ".txt"
+        ]
+    },
+    "1c7907d0-9fd0-45d0-874e-798cc69dda50": {
+        "file_count": 20,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "25c95f4e-d935-45e9-91c9-5804e92535c7": {
+        "file_count": 408,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".avi",
+            ".czi",
+            ".fa",
+            ".fasta",
+            ".mrc",
+            ".st",
+            ".tif",
+            ".xlsx"
+        ]
+    },
+    "5be146c9-3157-4b63-835a-ed81764b2b69": {
+        "file_count": 572,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".jpg",
+            ".lif",
+            ".tif",
+            ".tsv",
+            ".txt"
+        ]
+    },
+    "a9b0961d-bc0d-42aa-86a5-0f543880d9fa": {
+        "file_count": 175,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".TIF",
+            ".docx",
+            ".nd2",
+            ".tif",
+            ".xlsx"
+        ]
+    },
+    "41b30eda-eb30-45aa-9c43-900febfeac0d": {
+        "file_count": 32,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".docx",
+            ".nd2",
+            ".tif"
+        ]
+    },
+    "4aa30f3b-aca3-441a-bd3b-17fac82fee9d": {
+        "file_count": 6,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".ics"
+        ]
+    },
+    "75132a1f-9a43-4582-badb-8dc7eac59b88": {
+        "file_count": 3,
+        "image_count": 1,
+        "file_type_aggregation": [
+            ".tif",
+            ".xlsx"
+        ]
+    },
+    "c88892bd-c854-4086-af88-4d86b700c450": {
+        "file_count": 937,
+        "image_count": 4,
+        "file_type_aggregation": [
+            ".csv",
+            ".jpg",
+            ".mp4",
+            ".nd2",
+            ".tiff",
+            ".txt"
+        ]
+    },
+    "3412fb62-d83f-4726-b599-869528a55494": {
+        "file_count": 1,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "52b3fc88-8dc0-4c04-97ad-f941a72b7db1": {
+        "file_count": 2,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "a5478008-9458-4fb6-9047-d88e3ebc7c52": {
+        "file_count": 1,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "bc56622c-ccdf-4c67-98eb-83743ff0fb28": {
+        "file_count": 1,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "e0155733-7337-4b42-a526-8009886d1856": {
+        "file_count": 1,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "618b4fce-7c3c-4f1d-974f-26686bc53422": {
+        "file_count": 315,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".ets",
+            ".vsi"
+        ]
+    },
+    "688f2ee1-2417-49a5-827d-9c71bb86e777": {
+        "file_count": 684,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".ets",
+            ".vsi"
+        ]
+    },
+    "7f011dbe-fbd2-4b75-8ac3-68033d8d7097": {
+        "file_count": 423,
+        "image_count": 0,
+        "file_type_aggregation": [
+            "",
+            ".json"
+        ]
+    },
+    "c77d6c56-6ee0-4c43-91c8-3ddcc30dadd4": {
+        "file_count": 9261,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".csv",
+            ".geojson",
+            ".history",
+            ".json",
+            ".png",
+            ".rds",
+            ".xls",
+            ".xlsx"
+        ]
+    },
+    "ed01e210-ab85-4a96-b288-2e6e09586110": {
+        "file_count": 311,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".json"
+        ]
+    },
+    "d38746cf-495d-446b-bc94-33f7dfa149d2": {
+        "file_count": 1883,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "2b506b71-3b90-4b07-8fcc-8622c5ef2a85": {
+        "file_count": 1020,
+        "image_count": 3,
+        "file_type_aggregation": [
+            ".czi"
+        ]
+    },
+    "c0553eb2-f6f3-46ba-a1b4-b05595b867cd": {
+        "file_count": 93,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".czi",
+            ".ims",
+            ".nd2",
+            ".pzfx",
+            ".tif",
+            ".xlsx"
+        ]
+    },
+    "a03147b3-6a44-4f76-9267-6a671242e366": {
+        "file_count": 25,
+        "image_count": 0,
+        "file_type_aggregation": [
+            "",
+            ".ets",
+            ".vsi"
+        ]
+    },
+    "a825de58-5cca-4700-a08b-f3b9d848926f": {
+        "file_count": 68,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".lif",
+            ".lifext"
+        ]
+    },
+    "aea84781-ffc0-4a62-ab28-2882f1790d57": {
+        "file_count": 12,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".xlsx",
+            ".zip"
+        ]
+    },
+    "12abf941-9d22-4056-ab56-d5a508440d40": {
+        "file_count": 2,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "2e04df2a-ff69-4a14-9ceb-f67304aff2ca": {
+        "file_count": 55,
+        "image_count": 4,
+        "file_type_aggregation": [
+            ".csv",
+            ".png",
+            ".tif"
+        ]
+    },
+    "d12a9e60-ad30-4ffe-b993-a3f27b72e38b": {
+        "file_count": 105,
+        "image_count": 1,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "0540a833-28e3-4680-8f90-3139e4209bb3": {
+        "file_count": 8,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".csv"
+        ]
+    },
+    "0aea7de1-592a-463d-bca6-4a28bc26ff81": {
+        "file_count": 8,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "0e3122c0-a044-4f4c-b69b-e3f679fb802a": {
+        "file_count": 8,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "307ec4c4-919d-47e8-be38-8c1a94ec9e8b": {
+        "file_count": 13,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tiff"
+        ]
+    },
+    "9f5f1730-c5e0-4744-9736-d0513ab196fb": {
+        "file_count": 8,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "fe116154-2a06-48af-b4d6-643c90b76a7e": {
+        "file_count": 28,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".jpg"
+        ]
+    },
+    "9eb6b99a-af63-4722-b663-48f3c87c852e": {
+        "file_count": 100,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".TIF",
+            ".tif"
+        ]
+    },
+    "93ca86b2-d90d-4c12-99ec-203b21ca45f6": {
+        "file_count": 26,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".tif",
+            ".vsi"
+        ]
+    },
+    "11f00c40-2e61-48a1-b967-4b74b8aeada0": {
+        "file_count": 1,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".czi"
+        ]
+    },
+    "3eda3c05-15e0-4463-a902-545dcb76fbba": {
+        "file_count": 4,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".czi"
+        ]
+    },
+    "5a81205d-dc1a-4599-af8f-9884b1778d46": {
+        "file_count": 6,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".czi"
+        ]
+    },
+    "66ee9a91-e01c-4986-9dea-1d8e93a0008e": {
+        "file_count": 2,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".czi"
+        ]
+    },
+    "bbe78d7e-9e96-4668-bd6e-71b0b8d6cf9c": {
+        "file_count": 24,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".czi"
+        ]
+    },
+    "ce0936e6-54ab-4d83-b9ef-440e1a9f73f2": {
+        "file_count": 23,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".czi"
+        ]
+    },
+    "58f07840-6a56-480f-b6d6-96b79c15e93c": {
+        "file_count": 5,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".txt",
+            ".zip"
+        ]
+    },
+    "5fc8fd6d-f188-4582-b196-dc983bf3eeb2": {
+        "file_count": 46800,
+        "image_count": 2,
+        "file_type_aggregation": [
+            ".tiff"
+        ]
+    },
+    "acc0c25e-db1b-40a7-b857-804c5a27fd4f": {
+        "file_count": 27,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".ims",
+            ".tif"
+        ]
+    },
+    "65dca377-d713-4064-919b-500b736af97c": {
+        "file_count": 1283,
+        "image_count": 4,
+        "file_type_aggregation": [
+            ".classifier",
+            ".jpg",
+            ".nd2",
+            ".tif",
+            ".tsv",
+            ".txt"
+        ]
+    },
+    "86cffaf7-7cf8-440d-93a8-9ce665335ff0": {
+        "file_count": 42,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "35f79c83-ebce-447a-b0b4-f82c51525d57": {
+        "file_count": 1024,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tiff"
+        ]
+    },
+    "7b8cf79c-e1bf-4980-846b-68348963154f": {
+        "file_count": 1023,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tiff"
+        ]
+    },
+    "4eeb390b-fbc7-437c-b5f0-5e459b96ffbc": {
+        "file_count": 93,
+        "image_count": 5,
+        "file_type_aggregation": [
+            "",
+            ".tif",
+            ".xlsx",
+            ".zip"
+        ]
+    },
+    "1101b735-b5cc-414d-88de-dd5eb89f3cb4": {
+        "file_count": 11,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "93a835da-5711-4b8d-aa4b-a5654a9be6b8": {
+        "file_count": 150,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "89174b59-edd3-48e3-bf08-6566e1bc34cf": {
+        "file_count": 148,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".avi",
+            ".ini",
+            ".tif",
+            ".xlsx"
+        ]
+    },
+    "47a5f97a-c03d-473d-bcc2-7fcb57b50786": {
+        "file_count": 3,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".csv"
+        ]
+    },
+    "97fcfd12-8262-4fbb-9afb-7c63ec1c1f26": {
+        "file_count": 5,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "e361737f-d68a-4d87-a2d5-c8b8560b3d19": {
+        "file_count": 6,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".csv",
+            ".tif"
+        ]
+    },
+    "77f99ae0-5daf-4e2c-9266-bfd8d97a875b": {
+        "file_count": 6,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "6c400989-f57d-49da-be89-9877025587b4": {
+        "file_count": 1049,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".asc",
+            ".img",
+            ".png",
+            ".sdt",
+            ".tif"
+        ]
+    },
+    "19b0de4e-2458-431b-a60b-7408f689ad7a": {
+        "file_count": 220,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "d1f6ede5-89e0-45f3-9b27-4e93870b63aa": {
+        "file_count": 221,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif",
+            ".xlsx"
+        ]
+    },
+    "5db8106e-a4a0-4f94-83da-b4ceb674161b": {
+        "file_count": 325,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".annotations",
+            ".czi",
+            ".xlsx"
+        ]
+    },
+    "866f5ff9-89b1-4de7-a3df-971547038ebb": {
+        "file_count": 1,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tiff"
+        ]
+    },
+    "d3a96170-c9e7-45b6-8a22-41b4ce5d703a": {
+        "file_count": 2,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zarr"
+        ]
+    },
+    "9a64e255-f778-43ae-8d8e-6ecce2ba253c": {
+        "file_count": 5216,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".m",
+            ".ome",
+            ".roi",
+            ".tif",
+            ".zip"
+        ]
+    },
+    "f8699dea-2e27-453c-a2ef-5e7be32159c9": {
+        "file_count": 5,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".png"
+        ]
+    },
+    "9e0a4b35-52ad-4e85-a8c0-eb540b62ae82": {
+        "file_count": 3529,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "17375833-fec0-40d7-a6da-327b5174ad3c": {
+        "file_count": 1,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tiff"
+        ]
+    },
+    "12b629b9-1d6a-4bf7-b06b-760a875576be": {
+        "file_count": 29,
+        "image_count": 1,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "54a9c39c-0379-4e57-83af-269b880280dd": {
+        "file_count": 54,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "f66995ee-f71e-4668-9671-5ff95c39cc91": {
+        "file_count": 20,
+        "image_count": 1,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "15b19d5c-bccf-468b-b557-1f7ec3804c7d": {
+        "file_count": 51,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "dd47001b-2a70-4993-9722-4ef78ada8bee": {
+        "file_count": 67,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".tif",
+            ".zip"
+        ]
+    },
+    "74deef7b-9a45-446d-83d2-34facb0a774f": {
+        "file_count": 2826,
+        "image_count": 1,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "b7e62d4e-329f-468f-a516-7b3917bcdc38": {
+        "file_count": 35972,
+        "image_count": 3,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "f96d476e-5a51-420f-808a-1d880945c8f2": {
+        "file_count": 9667,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".csv",
+            ".geojson",
+            ".isyntax",
+            ".png",
+            ".xlsx"
+        ]
+    },
+    "247601e7-034b-4de3-a68a-fa2730b2320b": {
+        "file_count": 48,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".gz"
+        ]
+    },
+    "2537a3bd-0787-4524-a144-535805065c6a": {
+        "file_count": 12,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".gz"
+        ]
+    },
+    "365de358-f450-4928-8fda-f7247d270775": {
+        "file_count": 19,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".gz"
+        ]
+    },
+    "80686045-328f-484e-87a4-b45fb2470b43": {
+        "file_count": 34,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".gz"
+        ]
+    },
+    "8f13003f-b795-47e9-a6c6-37de5bf4cb0a": {
+        "file_count": 24,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".gz"
+        ]
+    },
+    "dc039ede-92a4-42aa-a20f-f4b4953c1743": {
+        "file_count": 19,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".gz"
+        ]
+    },
+    "e15c585a-5539-4b0a-9575-244e4cebf2da": {
+        "file_count": 12,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".gz"
+        ]
+    },
+    "e60306e0-eb0b-4a7f-8f87-6c24bd409bd5": {
+        "file_count": 34,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".gz"
+        ]
+    },
+    "22c7c47e-dc07-4b1c-9abc-e93f062c915e": {
+        "file_count": 164,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".tif",
+            ".txt"
+        ]
+    },
+    "2f250be4-f296-4328-8b7f-2c374b134cfb": {
+        "file_count": 4,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".npy",
+            ".pdf",
+            ".tiff",
+            ".zip"
+        ]
+    },
+    "47a5fd86-0263-4489-8a98-8d28014fd5ab": {
+        "file_count": 92,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".csv",
+            ".gz",
+            ".h5",
+            ".html",
+            ".json",
+            ".parquet",
+            ".tif",
+            ".xenium",
+            ".zip"
+        ]
+    },
+    "5ae1a9b5-645e-4fd9-bbfe-db30c54364c0": {
+        "file_count": 137,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".csv",
+            ".json",
+            ".parquet",
+            ".png",
+            ".tif",
+            ".vzg"
+        ]
+    },
+    "e09c88f5-2164-42a1-bf82-eaae67e69527": {
+        "file_count": 476,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".tif",
+            ".tsv",
+            ".xlsx"
+        ]
+    },
+    "510868bf-fca7-4491-ab26-c50b05795982": {
+        "file_count": 14,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "6c934053-eb8a-430c-8605-1b9ea7fe1b99": {
+        "file_count": 122,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".jpg",
+            ".tif"
+        ]
+    },
+    "3526d91c-e0d6-4d10-86a1-cc0b2f417906": {
+        "file_count": 16,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif",
+            ".xlsx"
+        ]
+    },
+    "ed33254c-e5a8-4fe6-ad97-e9b3f6489ae4": {
+        "file_count": 104,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "938b7990-95f1-46c7-ada1-af8fff48227b": {
+        "file_count": 1,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "06b42570-43e6-4e2b-8b5a-6ad1283a5b3e": {
+        "file_count": 1500,
+        "image_count": 2,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "92a1ad9c-1a89-4da7-962f-73c2bdc0f168": {
+        "file_count": 1485,
+        "image_count": 3,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "90fc9130-0ddd-46b0-b51d-04e7067c1a16": {
+        "file_count": 11,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "a360a3c3-d9eb-4d3d-abe5-61501f2ba8b9": {
+        "file_count": 202,
+        "image_count": 4,
+        "file_type_aggregation": [
+            ".docx",
+            ".tif",
+            ".xlsx"
+        ]
+    },
+    "6596a49c-b219-4f1e-83ee-6bcebc63f3b2": {
+        "file_count": 13,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".pdf",
+            ".tif",
+            ".xlsx"
+        ]
+    },
+    "72fba03e-25e1-4402-9b34-1515082c3d5b": {
+        "file_count": 1,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "0424137d-0ff3-496a-b677-57d48e7952e7": {
+        "file_count": 2,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "7f3f4974-0fb9-4035-b012-d1f23cb94122": {
+        "file_count": 1,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".xlsx"
+        ]
+    },
+    "e671bca8-1a28-4a82-8ea1-18b37f5a5696": {
+        "file_count": 10157,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".csv",
+            ".geojson",
+            ".isyntax",
+            ".png"
+        ]
+    },
+    "a4a8c29c-14b1-4953-81af-5304864b2f3a": {
+        "file_count": 106,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "c9b05c4a-03f9-4a22-9264-3cc1756c7a31": {
+        "file_count": 249,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".pptx",
+            ".tif",
+            ".xlsx"
+        ]
+    },
+    "fae3dfd2-0179-4eb1-b1d2-2c886eae6b34": {
+        "file_count": 843,
+        "image_count": 5,
+        "file_type_aggregation": [
+            "",
+            ".csv",
+            ".mgxm",
+            ".py",
+            ".tif",
+            ".tiff",
+            ".zip"
+        ]
+    },
+    "1da2e984-17c8-483b-a33b-795f0a67aa23": {
+        "file_count": 3,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "f40cc7c8-cad2-4ddb-b456-9dc7248c5f9d": {
+        "file_count": 1718,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".png"
+        ]
+    },
+    "6ed1cac7-f5bb-44a2-80d2-30982f5c39d5": {
+        "file_count": 164,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".tif",
+            ".xlsx"
+        ]
+    },
+    "2f9c7cd0-76fa-4f51-a9f9-c56abdeee471": {
+        "file_count": 11052,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "60ec9f3d-ff4a-466e-aa9e-30216e28b5bc": {
+        "file_count": 4,
+        "image_count": 4,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "be584b4b-036a-47ce-855c-4207313785f5": {
+        "file_count": 13,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".docx",
+            ".nd2"
+        ]
+    },
+    "ec4f7745-d30c-4c06-aee1-8d9ebf52de9a": {
+        "file_count": 110590,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".tiff"
+        ]
+    },
+    "09f9ff2a-9144-45f3-a5fd-7389dfa69c7f": {
+        "file_count": 3535,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".jpg",
+            ".lif"
+        ]
+    },
+    "26000b3b-717e-45bb-a58b-202ab9049932": {
+        "file_count": 145,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".0"
+        ]
+    },
+    "5fb7a80b-9ac1-462e-b248-26329c09529e": {
+        "file_count": 1,
+        "image_count": 1,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "0d39e6e9-f728-4b46-87e4-bfda572df5ce": {
+        "file_count": 201,
+        "image_count": 2,
+        "file_type_aggregation": [
+            ".mp4",
+            ".nd2",
+            ".tif"
+        ]
+    },
+    "9f02eead-c4db-4264-82c2-3a26d9af8c5d": {
+        "file_count": 3,
+        "image_count": 1,
+        "file_type_aggregation": [
+            ".avi",
+            ".nd2"
+        ]
+    },
+    "137c099b-def5-4d8a-93de-6573a42727b9": {
+        "file_count": 1305,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".cdr",
+            ".csv",
+            ".fig",
+            ".json",
+            ".mat",
+            ".pdf",
+            ".png",
+            ".tif",
+            ".txt",
+            ".zip"
+        ]
+    },
+    "c8160068-6e3a-44dc-9239-66b0fbd17709": {
+        "file_count": 594,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".csv",
+            ".jpg",
+            ".tif",
+            ".tsv",
+            ".xlsx"
+        ]
+    },
+    "38063f01-e7f6-4e7e-a31b-33fd6e9f3f74": {
+        "file_count": 47,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "f272ffe8-1ed7-467a-8348-c759540af7c2": {
+        "file_count": 50,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "350a00c9-7d56-4b64-bee5-a1022334687d": {
+        "file_count": 1,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "aa282e0d-f5e7-4b7b-b03c-5254f774b0c5": {
+        "file_count": 1,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "5cd68000-04ed-442a-8618-95401c617cbc": {
+        "file_count": 2,
+        "image_count": 2,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "22784a5a-7655-45ff-859a-e1b88b181bec": {
+        "file_count": 8,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "c7ea542b-2673-46ca-9293-dd187df460cf": {
+        "file_count": 1102,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".jpg",
+            ".tif"
+        ]
+    },
+    "17f23849-cfdc-464e-9e42-402aac9bf583": {
+        "file_count": 14,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".czi",
+            ".mov",
+            ".xlsx"
+        ]
+    },
+    "b176c9f1-18a1-4688-8b14-9b888fffd55f": {
+        "file_count": 168,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".czi",
+            ".ims",
+            ".nd2",
+            ".png",
+            ".tif",
+            ".zip"
+        ]
+    },
+    "3d4e2fe1-9c55-43c3-bfa8-f1a36caf8eaf": {
+        "file_count": 22,
+        "image_count": 4,
+        "file_type_aggregation": [
+            ".pptx",
+            ".tif",
+            ".xlsx"
+        ]
+    },
+    "59255b45-f576-4633-a8df-76df32e5fe75": {
+        "file_count": 9,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "af91e588-364e-40d3-80a4-fee0e4f69426": {
+        "file_count": 74,
+        "image_count": 5,
+        "file_type_aggregation": [
+            "",
+            ".rtf",
+            ".tif",
+            ".txt"
+        ]
+    },
+    "c2932d58-858c-40fa-bfd2-3799fd13a285": {
+        "file_count": 721,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".TIF",
+            ".db",
+            ".nd",
+            ".tif"
+        ]
+    },
+    "a083712f-e3da-48c3-a8fd-4cf4fb0ea087": {
+        "file_count": 252,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".png"
+        ]
+    },
+    "b324ef57-6c02-4ab5-b625-c3a2670fe2c5": {
+        "file_count": 391,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".TIF",
+            ".jpg",
+            ".tif",
+            ".xlsx",
+            ".zip"
+        ]
+    },
+    "37cd4813-fabd-449a-b03b-9335f6b5ff93": {
+        "file_count": 62722,
+        "image_count": 0,
+        "file_type_aggregation": [
+            "",
+            ".tif",
+            ".xml"
+        ]
+    },
+    "73d6d47b-daf1-46fe-8ed0-3002f478a569": {
+        "file_count": 99475,
+        "image_count": 0,
+        "file_type_aggregation": [
+            "",
+            ".png",
+            ".tif",
+            ".xml"
+        ]
+    },
+    "fe12c375-733d-42c3-8991-0abe90b6a52c": {
+        "file_count": 150,
+        "image_count": 4,
+        "file_type_aggregation": [
+            ".czi",
+            ".lsm"
+        ]
+    },
+    "d8f83cef-d831-411c-a483-03d6b3837074": {
+        "file_count": 12,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "cbc5be81-fa8d-4cee-9584-6e0dbd2e3e71": {
+        "file_count": 6,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "442c3707-4b96-4a82-bddc-b7f9fd1c7431": {
+        "file_count": 105,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "36eb9d04-77a5-4bf9-8701-911501efa969": {
+        "file_count": 344,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".czi"
+        ]
+    },
+    "77953087-7f74-4f25-a967-e2a24c96e98d": {
+        "file_count": 35,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "5dc4e181-2e9c-4ec7-9846-8097f1648b83": {
+        "file_count": 98,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".czi",
+            ".jpg"
+        ]
+    },
+    "51f34e00-4bde-4887-bd68-9a2dfaa39bd6": {
+        "file_count": 387,
+        "image_count": 1,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "87e835c8-1e64-4666-a002-7d8e71298ed8": {
+        "file_count": 13206,
+        "image_count": 4,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "cd1b3f29-1463-4470-b965-ae4386a81db9": {
+        "file_count": 62,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "e1a8597a-0d3e-4e74-80fe-6f7a7a7f59cb": {
+        "file_count": 8,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".ndpi"
+        ]
+    },
+    "b4df60c6-28aa-45d5-9898-4522081d64ba": {
+        "file_count": 33,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".ipynb",
+            ".tif"
+        ]
+    },
+    "eb6b700c-c7e6-4424-a0a2-8c9c329e8ea2": {
+        "file_count": 280,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".cache",
+            ".czi",
+            ".gif",
+            ".ics",
+            ".ims",
+            ".join",
+            ".jpg",
+            ".lif",
+            ".lifext",
+            ".mod",
+            ".mrc",
+            ".png",
+            ".rec",
+            ".tif",
+            ".txt",
+            ".xlsx",
+            ".xml",
+            ".zip"
+        ]
+    },
+    "0e999a95-6bc0-43e0-91f5-c58830424b0e": {
+        "file_count": 91856,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "a71f76a6-5eac-4fb9-a01e-2626a06c3bce": {
+        "file_count": 105,
+        "image_count": 1,
+        "file_type_aggregation": [
+            ".czi"
+        ]
+    },
+    "fd89a5c5-1414-49e1-8583-1fbfa33e17f8": {
+        "file_count": 186,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".ics",
+            ".ids"
+        ]
+    },
+    "3246ff20-ffdc-4fc4-801e-eebe860601c8": {
+        "file_count": 1,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".pdf"
+        ]
+    },
+    "096e8242-fc22-4aec-8c3f-2112d3a81e02": {
+        "file_count": 573,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "78000056-39f2-42c5-8dcd-dfee86260eb8": {
+        "file_count": 16208,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "a977a837-be87-45f4-8dcf-a431b5ccc655": {
+        "file_count": 176,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "71af4a71-1f54-4f6f-a25c-74ef20aaeb07": {
+        "file_count": 21,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "797c1100-5560-4148-a357-372bdd131834": {
+        "file_count": 21,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "4af82f8f-5af3-4dd4-bfaa-9d221bee7a6a": {
+        "file_count": 39,
+        "image_count": 3,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "6bd77465-5cfa-4162-9ddc-3a1106a5e443": {
+        "file_count": 2,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "77926fcd-21b7-475b-a01b-351f6653ece1": {
+        "file_count": 3,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "8518ff4d-232e-4af3-ae80-b9d610293a46": {
+        "file_count": 2,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "c2f0dbc6-4d58-48cc-b0c4-bd7b2639aefe": {
+        "file_count": 2,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "ebe59377-db8c-4aa3-8009-21cdafdd6f47": {
+        "file_count": 6,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "db58152d-7fbd-421f-aca1-55157e4f41be": {
+        "file_count": 5515,
+        "image_count": 4,
+        "file_type_aggregation": [
+            ".bin",
+            ".csv",
+            ".dat",
+            ".ijm",
+            ".jpg",
+            ".json",
+            ".log",
+            ".m",
+            ".mat",
+            ".meta",
+            ".mp4",
+            ".npy",
+            ".pkl",
+            ".py",
+            ".tif",
+            ".tsv",
+            ".txt",
+            ".zip"
+        ]
+    },
+    "98a020cb-7e0c-4111-a7a1-7eae01370bd6": {
+        "file_count": 2,
+        "image_count": 2,
+        "file_type_aggregation": [
+            ".ndpi",
+            ".svs"
+        ]
+    },
+    "15db890f-2ff5-49bd-86f6-1b12fa708d39": {
+        "file_count": 6,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "4408968e-79d5-4110-8de8-68ed4c71edd3": {
+        "file_count": 1,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "45d5c9ba-4fa8-4e38-981b-14a66135ec7e": {
+        "file_count": 1,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "85be6aa0-7120-4818-83eb-e31ea8892a85": {
+        "file_count": 25,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "a3a95c29-beae-4703-a54a-9788e11d13d6": {
+        "file_count": 578,
+        "image_count": 2,
+        "file_type_aggregation": [
+            ".mp4",
+            ".pdf",
+            ".png",
+            ".py",
+            ".tif",
+            ".txt"
+        ]
+    },
+    "a9cb2e0c-d1f8-4b78-aa33-d966cd1f814c": {
+        "file_count": 580,
+        "image_count": 2,
+        "file_type_aggregation": [
+            ".csv",
+            ".npy",
+            ".out",
+            ".pdf",
+            ".png",
+            ".pptx",
+            ".py",
+            ".pyc",
+            ".sh",
+            ".tif",
+            ".tiff",
+            ".txt"
+        ]
+    },
+    "8859d89f-3351-4613-9113-9c5afa3f4f9a": {
+        "file_count": 47,
+        "image_count": 3,
+        "file_type_aggregation": [
+            ".czi",
+            ".lsm"
+        ]
+    },
+    "75020b07-bae1-4d4c-a97b-986844f7a5e3": {
+        "file_count": 36,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "0364d55e-6ed7-46d6-aaee-1e104896815f": {
+        "file_count": 1954,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "722f0904-3600-48b4-8f6a-2af52a7f464b": {
+        "file_count": 135,
+        "image_count": 5,
+        "file_type_aggregation": [
+            "",
+            ".czi",
+            ".m",
+            ".scn",
+            ".tif",
+            ".xlsx"
+        ]
+    },
+    "b4b45a92-cc54-45fa-9fd0-a68eef44b0fb": {
+        "file_count": 3,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "749ed217-3cd2-4819-b391-3ab8c0a1c927": {
+        "file_count": 23,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".nd2"
+        ]
+    },
+    "15df6c87-e0a2-498f-94ca-5fffc7ab018b": {
+        "file_count": 4,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "20623cff-46e6-471f-b941-f624c7e8827e": {
+        "file_count": 6,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".clr",
+            ".ply"
+        ]
+    },
+    "4aeb628e-b89b-410d-bc10-8921ff933729": {
+        "file_count": 54,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".mask",
+            ".screen",
+            ".tf",
+            ".tif"
+        ]
+    },
+    "93176d75-5dfb-4e63-8e33-822e1af481b5": {
+        "file_count": 8,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "9c55f7b4-8e8a-4075-933c-b32e4bc0e13b": {
+        "file_count": 27,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "7f93fb5d-f218-45ce-8674-c831a2f0b2fb": {
+        "file_count": 362,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".czi"
+        ]
+    },
+    "aa4071ff-aa50-49fb-8297-27161620515b": {
+        "file_count": 63,
+        "image_count": 0,
+        "file_type_aggregation": [
+            "",
+            ".m",
+            ".par",
+            ".pdf",
+            ".txt",
+            ".xlsx"
+        ]
+    },
+    "8d05bdbc-64d4-4c9d-a0a5-53f5da8543b0": {
+        "file_count": 158,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "1c3b2483-8df9-40d1-9308-ccdf2dbff65d": {
+        "file_count": 949,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".czi",
+            ".db",
+            ".jpg",
+            ".tiff"
+        ]
+    },
+    "b572c92d-a502-4c78-9c87-07123afcc987": {
+        "file_count": 414,
+        "image_count": 3,
+        "file_type_aggregation": [
+            ".ims",
+            ".nd2"
+        ]
+    },
+    "fb469434-a28e-44fe-8ade-c51f26898b76": {
+        "file_count": 52,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".czi",
+            ".lsm"
+        ]
+    },
+    "cef337ba-8ec0-4e3b-aa4b-9e158e80ccc5": {
+        "file_count": 123,
+        "image_count": 4,
+        "file_type_aggregation": [
+            ".TIF",
+            ".Tif",
+            ".docx",
+            ".pptx",
+            ".tif",
+            ".tiff"
+        ]
+    },
+    "4083110a-f3f5-4428-a8b6-735c97cd6536": {
+        "file_count": 1024,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tiff"
+        ]
+    },
+    "9178d9c4-2200-4113-9b4c-f8cea8a48d87": {
+        "file_count": 3,
+        "image_count": 1,
+        "file_type_aggregation": [
+            ".TIF",
+            ".tif"
+        ]
+    },
+    "cc5c5f27-6d2c-4ed6-87d5-a0d646b6ee44": {
+        "file_count": 122,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".mph",
+            ".tif",
+            ".xlsx"
+        ]
+    },
+    "a65bdea6-8a3d-457c-8aab-535027101a27": {
+        "file_count": 994,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "cbce879e-8a04-4101-9893-26665d825bc3": {
+        "file_count": 8,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".jpg"
+        ]
+    },
+    "7f97cd53-c599-4a30-ae0c-5b8c5900a432": {
+        "file_count": 9,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "805934eb-2a34-47bb-b511-bfa92aed0182": {
+        "file_count": 67,
+        "image_count": 1,
+        "file_type_aggregation": [
+            ".czi"
+        ]
+    },
+    "e52bd220-3457-4642-8eef-e81cc83ce5c2": {
+        "file_count": 2799,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".czi",
+            ".jpg",
+            ".ndpi",
+            ".pptx",
+            ".txt"
+        ]
+    },
+    "432d9ff7-4bbe-440d-978f-4f0a72a7b907": {
+        "file_count": 12,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".czi",
+            ".tiff"
+        ]
+    },
+    "5b03afae-8a1b-451c-9c1c-47d0806357b2": {
+        "file_count": 96,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".cloupe",
+            ".h5",
+            ".html",
+            ".png",
+            ".rds",
+            ".tif"
+        ]
+    },
+    "30fe7d8a-6bd2-42a5-9821-2b9b2ef0edbb": {
+        "file_count": 9274,
+        "image_count": 1,
+        "file_type_aggregation": [
+            ".CR2",
+            ".CR3",
+            ".HEIC",
+            ".ORF",
+            ".dng",
+            ".xmp"
+        ]
+    },
+    "585a8d63-f5c0-4965-b55c-aee2dc75fafc": {
+        "file_count": 4180,
+        "image_count": 1,
+        "file_type_aggregation": [
+            ".CR2",
+            ".CR3",
+            ".HEIC",
+            ".ORF",
+            ".xmp"
+        ]
+    },
+    "bbbde08d-2b61-4d11-95c4-6c737b596c97": {
+        "file_count": 7708,
+        "image_count": 2,
+        "file_type_aggregation": [
+            ".CR2",
+            ".CR3",
+            ".HEIC",
+            ".ORF",
+            ".xmp"
+        ]
+    },
+    "d8b9b61a-7f92-4781-9c53-60f3faecc8e2": {
+        "file_count": 5432,
+        "image_count": 1,
+        "file_type_aggregation": [
+            ".CR3",
+            ".HEIC",
+            ".JPG",
+            ".ORF",
+            ".xmp"
+        ]
+    },
+    "656622d5-e561-4a38-92c3-07dbbcbe984e": {
+        "file_count": 41,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif",
+            ".xlsx"
+        ]
+    },
+    "ad824bb2-aadb-429f-8f9c-6f29acab01b8": {
+        "file_count": 274,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif",
+            ".xlsx"
+        ]
+    },
+    "ce442f8d-2f8f-45dc-9cb8-b109f125b81d": {
+        "file_count": 41,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif",
+            ".xlsx"
+        ]
+    },
+    "f7de965f-796c-4287-92e6-04ae6515519b": {
+        "file_count": 13,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif",
+            ".xlsx"
+        ]
+    },
+    "4209a1a2-6a26-446e-9004-9ddc178c297c": {
+        "file_count": 10,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".ims"
+        ]
+    },
+    "5c37eee8-c024-45dc-8493-59b62e157f61": {
+        "file_count": 464,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".ims"
+        ]
+    },
+    "73024641-fdc2-4806-b0dd-57dc6a897578": {
+        "file_count": 13,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".ims"
+        ]
+    },
+    "fcfce22b-92f8-4630-bc36-fbd11b672c6c": {
+        "file_count": 360,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".ims"
+        ]
+    },
+    "09b97532-7066-4d29-b711-b259d25c109b": {
+        "file_count": 67,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".avi",
+            ".txt",
+            ".xlsx"
+        ]
+    },
+    "e09f2dea-6108-442d-82fd-f09787dc713b": {
+        "file_count": 106,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".TIF",
+            ".ims",
+            ".tif",
+            ".xlsx",
+            ".zip"
+        ]
+    },
+    "c111baa9-2924-4a8a-bc5b-5daf16d46a14": {
+        "file_count": 40320,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".tiff"
+        ]
+    },
+    "44fba89a-1548-439e-ae4e-ce079f2daad4": {
+        "file_count": 109,
+        "image_count": 3,
+        "file_type_aggregation": [
+            ".tif",
+            ".zip"
+        ]
+    },
+    "ee30d24f-73b8-4e0f-a6f0-e8a0426c25bb": {
+        "file_count": 237,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".tif",
+            ".xlsx"
+        ]
+    },
+    "22db226e-7de0-48fe-9785-f7b6d64b8741": {
+        "file_count": 76,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "9169c627-c15b-4d59-9a2c-4440ca6ac9d6": {
+        "file_count": 230,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".jpg",
+            ".png",
+            ".tif"
+        ]
+    },
+    "1ed9efa7-cda6-4a41-bac2-fbd235076188": {
+        "file_count": 21,
+        "image_count": 1,
+        "file_type_aggregation": [
+            ".h5",
+            ".tif",
+            ".tiff",
+            ".txt",
+            ".xml"
+        ]
+    },
+    "ba9df347-29b8-4942-bd19-615232bb6cff": {
+        "file_count": 75,
+        "image_count": 2,
+        "file_type_aggregation": [
+            ".png",
+            ".tif",
+            ".txt"
+        ]
+    },
+    "77f8b618-f340-4ae4-9278-1c1748d4db13": {
+        "file_count": 25,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".gz"
+        ]
+    },
+    "83a61976-d263-427a-8ea7-4d126ec23fbe": {
+        "file_count": 2,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".gz"
+        ]
+    },
+    "83a7ec17-1335-4b24-9966-df75d2141a5c": {
+        "file_count": 2,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".gz"
+        ]
+    },
+    "a4ccfa66-1fee-482a-a84b-68ac554d5407": {
+        "file_count": 3,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".gz"
+        ]
+    },
+    "07deb4eb-ea25-45cd-b2a3-b9de02308df5": {
+        "file_count": 1,
+        "image_count": 1,
+        "file_type_aggregation": [
+            ".lif"
+        ]
+    },
+    "85eb9fd5-d857-4f7f-9edb-f29886e0df6e": {
+        "file_count": 402,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".bzcfg",
+            ".json",
+            ".tif",
+            ".txt",
+            ".zip"
+        ]
+    },
+    "8d31b702-d118-4f59-8347-391daaa88cb6": {
+        "file_count": 7503,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif",
+            ".zip"
+        ]
+    },
+    "0044da91-b355-4ed9-8785-a9fb56700937": {
+        "file_count": 8,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".lsm",
+            ".zip"
+        ]
+    },
+    "52830e37-94d0-4b58-95a8-ce6995a25988": {
+        "file_count": 86,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".lsm",
+            ".zip"
+        ]
+    },
+    "87ed8aaf-3ede-456b-9b87-bedd59b9395b": {
+        "file_count": 9,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".lsm",
+            ".zip"
+        ]
+    },
+    "e77e2ac2-bdf2-483a-849a-9a070aa3361d": {
+        "file_count": 30,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".lsm",
+            ".zip"
+        ]
+    },
+    "eacecd9f-88dd-452c-904d-a0ab738ad9fc": {
+        "file_count": 17,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".lsm",
+            ".zip"
+        ]
+    },
+    "30f072ba-dc9f-4ed4-8068-cea553ad28ed": {
+        "file_count": 324,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".pzfx",
+            ".tif",
+            ".xls",
+            ".xlsx",
+            ".zip"
+        ]
+    },
+    "81fcb8ff-1c25-44cd-a54a-0ca45c058773": {
+        "file_count": 11,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".czi",
+            ".mov",
+            ".vsi"
+        ]
+    },
+    "55ab71c0-68b3-4126-8aad-94574317e876": {
+        "file_count": 20,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "4dd3f7cd-8bda-491c-ab0f-75d44689ea5c": {
+        "file_count": 16,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "95de2deb-7015-491f-ba77-92b676fa1c68": {
+        "file_count": 5,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".txt",
+            ".zip"
+        ]
+    },
+    "44f8703f-306a-4b92-beb6-e60b62f18f8d": {
+        "file_count": 1,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "84eecc7e-12e6-43bb-8450-0cc5575d52f8": {
+        "file_count": 31,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".ims"
+        ]
+    },
+    "3ee4ec75-5ef0-49d1-997a-33e334ceac47": {
+        "file_count": 33,
+        "image_count": 3,
+        "file_type_aggregation": [
+            ".pzfx",
+            ".tif",
+            ".zip"
+        ]
+    },
+    "6e2b5a7f-57c7-4737-977c-244df1f8aff8": {
+        "file_count": 438,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "31844d93-f715-4152-9ecb-f7b70e487666": {
+        "file_count": 20,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".csv",
+            ".tif",
+            ".txt",
+            ".zip"
+        ]
+    },
+    "2bb30082-e92c-4a5e-96e0-3beb3e62a816": {
+        "file_count": 83,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".csv",
+            ".tif"
+        ]
+    },
+    "90000fac-4939-412b-9a3b-2417489cd2bd": {
+        "file_count": 22,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "27a41c15-0226-4001-8acd-51155944ac8b": {
+        "file_count": 3,
+        "image_count": 1,
+        "file_type_aggregation": [
+            ".tif",
+            ".txt"
+        ]
+    },
+    "5bac857e-440a-4ca7-b925-b355b3598930": {
+        "file_count": 4,
+        "image_count": 1,
+        "file_type_aggregation": [
+            ".tif",
+            ".txt"
+        ]
+    },
+    "7b6247b5-adee-40c8-a6c1-73a413dea123": {
+        "file_count": 17,
+        "image_count": 3,
+        "file_type_aggregation": [
+            ".tif",
+            ".txt"
+        ]
+    },
+    "a605b5a5-e1a9-4cc7-a237-c11ab7b0b0f6": {
+        "file_count": 127,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".png",
+            ".tif"
+        ]
+    },
+    "5cdee296-72aa-4db7-aa02-be91b2e44ee9": {
+        "file_count": 21,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "2b111d46-4a03-4b53-85b2-32d1f43a2c80": {
+        "file_count": 12,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ""
+        ]
+    },
+    "7767a271-ca16-4453-bd7e-d5aaa60811ca": {
+        "file_count": 4,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "e54b08fa-1ba8-4335-96c4-d0cffb3a63ec": {
+        "file_count": 363,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".TIF",
+            ".ics",
+            ".ids",
+            ".nd2",
+            ".png",
+            ".tif",
+            ".txt"
+        ]
+    },
+    "73f000ba-3989-4b0b-a562-a70f5875a7fc": {
+        "file_count": 24547,
+        "image_count": 0,
+        "file_type_aggregation": [
+            "",
+            ".DS_Store",
+            ".rtf",
+            ".tif",
+            ".tiff"
+        ]
+    },
+    "5fa84c95-d66b-49a4-bf85-c5a25eceb17a": {
+        "file_count": 147,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "79955563-9f61-4f2a-b14d-f0236bbc4666": {
+        "file_count": 163,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".001",
+            ".002",
+            ".003",
+            ".004",
+            ".005",
+            ".006",
+            ".007",
+            ".008",
+            ".009",
+            ".010",
+            ".011",
+            ".012",
+            ".013",
+            ".014",
+            ".015",
+            ".016",
+            ".017",
+            ".018",
+            ".019",
+            ".020"
+        ]
+    },
+    "f30f12fb-06a1-4d3b-ae4f-584122b289ba": {
+        "file_count": 46,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "380f831c-a399-456d-8445-a538a2d4b39c": {
+        "file_count": 196,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".jpeg",
+            ".jpg",
+            ".tif",
+            ".xlsx"
+        ]
+    },
+    "3011efc7-9a74-4114-b61e-c8df2ebc1451": {
+        "file_count": 341,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".tif",
+            ".xlsx"
+        ]
+    },
+    "b585e5fb-6db6-4e97-8fec-1bc8cd961747": {
+        "file_count": 14,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "b480eae4-8f92-443f-9f99-c856a89acbf6": {
+        "file_count": 97,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "ede8068d-baf6-4f49-a548-2fe22e5cec18": {
+        "file_count": 67,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ""
+        ]
+    },
+    "dc473dbd-c4b7-4bed-9d7c-e08d7ffcb2a3": {
+        "file_count": 182,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "a065cdbf-da1f-47ac-9336-d86377724e7a": {
+        "file_count": 538,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "f8c24a10-2938-49e9-9288-02333babf2ad": {
+        "file_count": 3012,
+        "image_count": 4,
+        "file_type_aggregation": [
+            ".tiff"
+        ]
+    },
+    "b1d954a9-a510-431a-b2f2-72d5fb5c2657": {
+        "file_count": 11,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "938f6ae6-c2ab-4296-98f2-8210c55bd9fd": {
+        "file_count": 450,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".jpg",
+            ".tif"
+        ]
+    },
+    "9b95166e-1f47-4940-8b46-60562e58da4d": {
+        "file_count": 12,
+        "image_count": 1,
+        "file_type_aggregation": [
+            "",
+            ".jpg",
+            ".pdf",
+            ".rar",
+            ".xlsx",
+            ".zip"
+        ]
+    },
+    "f4099899-2a64-439b-b9cf-6461b889311d": {
+        "file_count": 84,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "db884fb8-d8a1-4dca-8062-13e5d28fc120": {
+        "file_count": 111,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "f742f6dd-6735-4359-a83d-d71fa766cfd0": {
+        "file_count": 20,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "24b5d29c-3728-4104-8766-d4d541125b94": {
+        "file_count": 342,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "d46aec66-3875-48ae-b378-914181dda2fb": {
+        "file_count": 413,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "c8e9f145-70e2-4ba9-8765-8ed5aef71c32": {
+        "file_count": 5352,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".jpg",
+            ".tiff"
+        ]
+    },
+    "9980c816-5f18-4493-979e-50ed7f93804c": {
+        "file_count": 3,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "75469427-7282-4a38-9fea-06f1dcc376f5": {
+        "file_count": 12,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "e481ed2a-d0e3-4a24-a0cf-ca00860183cc": {
+        "file_count": 68,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "c315e209-909e-4bc3-9d50-f6e2590c4c7f": {
+        "file_count": 55,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "2031663c-ed6f-4d00-b8af-f34ed8d33718": {
+        "file_count": 4,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "7caca73d-a895-4b08-8046-e4cfd2449370": {
+        "file_count": 2,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "e2c6b196-8f03-4e08-ad6a-100e0ab211ef": {
+        "file_count": 2,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "d8b22418-25c5-463c-8384-dfeccbe83871": {
+        "file_count": 17,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".jpg",
+            ".tif"
+        ]
+    },
+    "07262adc-bdf3-4264-99cc-e28423d84f12": {
+        "file_count": 178,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".tif",
+            ".tiff"
+        ]
+    },
+    "e918d462-67cc-4ac4-928a-95c59359afb9": {
+        "file_count": 33410,
+        "image_count": 4,
+        "file_type_aggregation": [
+            ".nd2",
+            ".png"
+        ]
+    },
+    "ccd09427-8583-4f3b-aae7-aeda28a6cf07": {
+        "file_count": 471,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".jpg",
+            ".tif"
+        ]
+    },
+    "92983cf7-d4c7-4692-8075-2279d45542c2": {
+        "file_count": 4006,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".fits",
+            ".tif"
+        ]
+    },
+    "b0cef183-49b0-4911-ad36-b3058e65f272": {
+        "file_count": 11,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "74042f95-b86f-443e-8e6a-99152b352675": {
+        "file_count": 3,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "8f8795ca-d19d-4c0a-b99c-592035f873ab": {
+        "file_count": 6,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".nd2"
+        ]
+    },
+    "0a95e236-69d0-4aac-95ac-21cef07e8220": {
+        "file_count": 5,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "5a7fd4d7-1fe5-4aab-b9f8-63549cf9585c": {
+        "file_count": 4,
+        "image_count": 4,
+        "file_type_aggregation": [
+            ".czi"
+        ]
+    },
+    "061f20e3-6dad-41c3-b693-8b51daf5fcc6": {
+        "file_count": 32,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".czi",
+            ".tif"
+        ]
+    },
+    "e212d24b-f075-4031-9857-5900de9eab6e": {
+        "file_count": 815,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".TIF",
+            ".roi",
+            ".tif",
+            ".zip"
+        ]
+    },
+    "1e083c4f-3f6f-47f8-8651-fc9360545d4f": {
+        "file_count": 3,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "bc9f6090-b28f-4f54-8df3-118692c87d1b": {
+        "file_count": 1626,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".12",
+            ".avi",
+            ".csv",
+            ".czi",
+            ".db",
+            ".ijm",
+            ".lsm",
+            ".roi",
+            ".tif",
+            ".xlsx",
+            ".xml",
+            ".zip"
+        ]
+    },
+    "bd402909-5246-4fdd-96d5-2446b1980937": {
+        "file_count": 226,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".csv",
+            ".tif"
+        ]
+    },
+    "0298ec95-aac0-4ba3-9f03-fbec114ef516": {
+        "file_count": 47,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "acfc3926-d564-4f16-bf9e-9ea172756009": {
+        "file_count": 539,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".JPG",
+            ".tif"
+        ]
+    },
+    "4017d63a-6cfb-4731-bbfc-e113ec3dcefa": {
+        "file_count": 24,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "c803e51e-2caf-49c5-9376-12f403988fe0": {
+        "file_count": 7392,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".png"
+        ]
+    },
+    "32506fa6-5dc8-4b83-a8bb-af72f184b1cc": {
+        "file_count": 35,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".tif",
+            ".xlsx"
+        ]
+    },
+    "36112829-6907-4235-8614-7a62e792e4ab": {
+        "file_count": 18,
+        "image_count": 4,
+        "file_type_aggregation": [
+            ".avi",
+            ".czi",
+            ".mp4",
+            ".zip"
+        ]
+    },
+    "005c4bc5-1d70-4d48-a2fa-02a2d9baa18b": {
+        "file_count": 362,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".czi",
+            ".dv",
+            ".tif",
+            ".txt"
+        ]
+    },
+    "2f9978e9-c6c2-4887-b3bd-708a2d996006": {
+        "file_count": 67,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".czi"
+        ]
+    },
+    "1ee907e1-23ee-49e1-a08b-add6397fedb5": {
+        "file_count": 11,
+        "image_count": 2,
+        "file_type_aggregation": [
+            ".roi",
+            ".tif"
+        ]
+    },
+    "5e6caca6-1d7a-429d-87c6-188b9db7db78": {
+        "file_count": 6,
+        "image_count": 1,
+        "file_type_aggregation": [
+            ".mov",
+            ".roi",
+            ".tif"
+        ]
+    },
+    "a8c65c67-5ebc-49e3-ad00-5efa61aacf42": {
+        "file_count": 14,
+        "image_count": 1,
+        "file_type_aggregation": [
+            ".mov",
+            ".roi",
+            ".tif"
+        ]
+    },
+    "e85779ac-ea58-4683-a702-43d1fffef7c1": {
+        "file_count": 3,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "61d07ba7-d5ef-4d68-96df-176418caa555": {
+        "file_count": 163,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".nd2"
+        ]
+    },
+    "a09f25f1-159f-4738-ae5c-9e46e88fe054": {
+        "file_count": 30,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "a87b2331-f27a-4a1a-9558-d5e2a4fcec09": {
+        "file_count": 45,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "5538dec7-d140-47da-a3ad-c194d864abd8": {
+        "file_count": 1,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "9b5a802f-19bf-4a84-9c56-91109b86838a": {
+        "file_count": 98,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".czi",
+            ".jpg",
+            ".png",
+            ".tif"
+        ]
+    },
+    "9df7c355-d644-43de-bcec-9867f973ada6": {
+        "file_count": 8,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ""
+        ]
+    },
+    "5f7d21ae-2ea5-440d-9a4a-5cdedfb26168": {
+        "file_count": 451,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".nii"
+        ]
+    },
+    "7c61df5d-bd4d-4023-930b-67f29b013244": {
+        "file_count": 242,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".nii"
+        ]
+    },
+    "2d804a20-ab57-435b-803c-0f6904132654": {
+        "file_count": 8,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ""
+        ]
+    },
+    "2267c60b-da84-4bc8-8f10-26564fb0616a": {
+        "file_count": 202745,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".csv",
+            ".czi",
+            ".h5",
+            ".ini",
+            ".json",
+            ".npy",
+            ".npz",
+            ".pdf",
+            ".tif",
+            ".txt"
+        ]
+    },
+    "ef4932a7-6c52-4467-92a8-e55608786710": {
+        "file_count": 75,
+        "image_count": 3,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "29cbc76d-202e-43cc-a1ae-e1d2a8d38e6f": {
+        "file_count": 10468,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "16a57a68-7957-4e9e-9898-60bd082dddd5": {
+        "file_count": 2,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".mat",
+            ".zip"
+        ]
+    },
+    "27396351-f4d6-45f2-a484-369eb78370b1": {
+        "file_count": 5,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".mat",
+            ".zip"
+        ]
+    },
+    "8d749d09-5f32-48cd-9c19-6ed86385fed0": {
+        "file_count": 12,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".mat",
+            ".zip"
+        ]
+    },
+    "aa2a8761-d460-4634-81ac-e8e7273919b3": {
+        "file_count": 13,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".mat",
+            ".zip"
+        ]
+    },
+    "2ce06ec6-9dcc-4faf-9ef3-a2bf76330e5c": {
+        "file_count": 2,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "fd9fdc89-8226-4241-9262-b4ee25e147ec": {
+        "file_count": 4,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "1d5e3294-40fe-4290-a309-323739586fca": {
+        "file_count": 1,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".txt"
+        ]
+    },
+    "97827c20-5997-4598-bf06-f4c928a7a34d": {
+        "file_count": 3,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".arrow"
+        ]
+    },
+    "1276a407-69fc-493e-88b5-a723dd4b2d29": {
+        "file_count": 19159,
+        "image_count": 4,
+        "file_type_aggregation": [
+            ".jpg",
+            ".png"
+        ]
+    },
+    "f95e1b25-13a5-4681-8a2d-0dec5e9af919": {
+        "file_count": 57,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "5b1ef0c5-6f64-4a79-9593-1f8a83ed6904": {
+        "file_count": 2623,
+        "image_count": 3,
+        "file_type_aggregation": [
+            ".tif",
+            ".xml"
+        ]
+    },
+    "d535f3ca-33d7-4157-86f7-3d5f31772e06": {
+        "file_count": 57,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".h5",
+            ".tif",
+            ".xlsx"
+        ]
+    },
+    "1b19eb15-642c-434e-a7e3-b9e103bf238a": {
+        "file_count": 593,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".db",
+            ".docx",
+            ".roi",
+            ".xlsx",
+            ".zip",
+            ".zvi"
+        ]
+    },
+    "df158e84-18cb-4f9e-85ba-5bdd62a1600e": {
+        "file_count": 2,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".sis"
+        ]
+    },
+    "7085ae4a-c622-4bb5-b6ff-97dd44d740b6": {
+        "file_count": 109,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".abf",
+            ".bmp",
+            ".nd2",
+            ".pdb",
+            ".pdf",
+            ".png",
+            ".pzf",
+            ".pzfx",
+            ".tiff",
+            ".xlsx"
+        ]
+    },
+    "58aea626-1d64-4777-a4eb-26c9dd3012c5": {
+        "file_count": 29,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zarr"
+        ]
+    },
+    "be88a785-982a-48fd-9932-d0df124398b6": {
+        "file_count": 37,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".parquet",
+            ".zarr"
+        ]
+    },
+    "7ba91356-574d-4535-8f93-338006cf2966": {
+        "file_count": 114,
+        "image_count": 0,
+        "file_type_aggregation": [
+            "",
+            ".bmp",
+            ".jpg",
+            ".ppt",
+            ".pptx",
+            ".tif",
+            ".xlsx"
+        ]
+    },
+    "39a98dc9-66b0-4229-af49-df6aa1f311bf": {
+        "file_count": 5,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".rar",
+            ".zip"
+        ]
+    },
+    "be729270-7690-4890-9a73-d8c3ce5646ac": {
+        "file_count": 109,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".avi",
+            ".csv",
+            ".mp4",
+            ".pdf",
+            ".png",
+            ".roi",
+            ".tif",
+            ".tiff",
+            ".zip"
+        ]
+    },
+    "ad4078b6-4247-411b-8a59-fe1518b866ad": {
+        "file_count": 247,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".tif",
+            ".tiff"
+        ]
+    },
+    "7f53a125-ea04-4e2c-b74a-cbac6e64b379": {
+        "file_count": 16882,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".jpg",
+            ".png",
+            ".tif",
+            ".xml",
+            ".xsl"
+        ]
+    },
+    "279d0a30-64ce-4cbf-a7c3-2902592c9577": {
+        "file_count": 271,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".bmp",
+            ".jpg",
+            ".tif",
+            ".tiff",
+            ".xlsx"
+        ]
+    },
+    "d989f658-7ae7-4b3b-8604-5cc799a2d72d": {
+        "file_count": 166,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".JPG"
+        ]
+    },
+    "732ef208-8df1-440c-8bdb-912c08a6bd39": {
+        "file_count": 102,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".PNG",
+            ".czi",
+            ".jpg",
+            ".lsm",
+            ".psd",
+            ".tif",
+            ".tiff"
+        ]
+    },
+    "5d27d2d5-9739-4ee5-8de7-adf7c57a3a5d": {
+        "file_count": 32,
+        "image_count": 1,
+        "file_type_aggregation": [
+            ".jpg"
+        ]
+    },
+    "49efae7b-0d01-47f5-8c40-184b3609af36": {
+        "file_count": 388,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".jpg",
+            ".png",
+            ".svg",
+            ".tif"
+        ]
+    },
+    "731306fe-e54a-4e4b-ac34-8819ad8828ee": {
+        "file_count": 80,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif",
+            ".txt"
+        ]
+    },
+    "d3b4af01-2497-4559-93b5-885f86021f97": {
+        "file_count": 185,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".png",
+            ".tif",
+            ".txt"
+        ]
+    },
+    "c3d2661a-40f3-4170-91ed-55ce5ca3c872": {
+        "file_count": 208,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".czi"
+        ]
+    },
+    "ea45ab35-23f2-4a5c-a667-f7899258511f": {
+        "file_count": 1425,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".svs"
+        ]
+    },
+    "f8efbac4-8231-4058-b905-e93190093332": {
+        "file_count": 2,
+        "image_count": 2,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "1688beb5-6aef-4dfb-b921-ebf1ceb0ef05": {
+        "file_count": 26,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".RData",
+            ".csv",
+            ".czi",
+            ".roi",
+            ".tif",
+            ".txt",
+            ".zip"
+        ]
+    },
+    "fdad51d3-55a4-47ae-bcbf-5e62b634822d": {
+        "file_count": 150,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "771a9884-a028-4767-81fa-cd86823dcc00": {
+        "file_count": 10,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".lif"
+        ]
+    },
+    "cc45ae9a-7c8f-49bd-9a98-c87c2dabd97f": {
+        "file_count": 3486,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".mat",
+            ".xcf"
+        ]
+    },
+    "28bca740-ca5f-4c03-9cf5-3d3c9bdc32d5": {
+        "file_count": 14,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "1a159514-1678-42ff-9474-14742268ead6": {
+        "file_count": 84,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".nd2"
+        ]
+    },
+    "d80f66b9-b983-4c9f-9749-374b51f7ec22": {
+        "file_count": 25,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "9bf21bd6-51a2-4e09-965c-9e05e7b19b1c": {
+        "file_count": 24,
+        "image_count": 3,
+        "file_type_aggregation": [
+            ".gsf",
+            ".tif"
+        ]
+    },
+    "78684b8f-b2c3-4830-b38d-b05d9038125c": {
+        "file_count": 9,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".czi",
+            ".jpg"
+        ]
+    },
+    "332fd376-a02b-4ebb-8707-d77adeddcc28": {
+        "file_count": 17537,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".JPG"
+        ]
+    },
+    "6fae7165-38b2-467b-98b6-905642798ff6": {
+        "file_count": 1075,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif",
+            ".tsv"
+        ]
+    },
+    "4e9418dc-cb62-4f58-8f6d-b94a9b57a081": {
+        "file_count": 12,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".csv",
+            ".czi",
+            ".gz"
+        ]
+    },
+    "17a38a8d-88ae-44b5-9804-f964e10aa678": {
+        "file_count": 259,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".zip"
+        ]
+    },
+    "869913c9-c786-4fc0-8229-27fe430e6b04": {
+        "file_count": 29,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".dat",
+            ".ini",
+            ".mrxs"
+        ]
+    },
+    "a5bad6e8-c68a-4084-a838-2dd8a65b7523": {
+        "file_count": 6,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".rtf",
+            ".tif"
+        ]
+    },
+    "8732e307-9251-4ac9-8207-ec3fecd9e726": {
+        "file_count": 163,
+        "image_count": 5,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "8f3fe179-83f7-47a6-81ad-e43f30a00961": {
+        "file_count": 104988,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".png",
+            ".tsv"
+        ]
+    },
+    "b25d1c53-cb50-42dc-bb68-bf399978f46a": {
+        "file_count": 46,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    },
+    "77b93611-49b1-45e4-b9da-3c6e5075049d": {
+        "file_count": 2400,
+        "image_count": 0,
+        "file_type_aggregation": [
+            ".tif"
+        ]
+    }
+}

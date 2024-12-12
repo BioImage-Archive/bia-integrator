@@ -4,8 +4,9 @@ import json
 from rich.logging import RichHandler
 from typing_extensions import Annotated
 from pathlib import Path
+from bia_export.website_export.export_all import get_study_ids
 from .website_export.studies.transform import transform_study
-from .website_export.studies.models import StudyCLIContext
+from .website_export.studies.models import StudyCLIContext, CacheUse
 from .website_export.images.transform import transform_images
 from .website_export.images.models import ImageCLIContext
 from .website_export.datasets_for_images.transform import transform_datasets
@@ -23,14 +24,8 @@ app = typer.Typer()
 
 @app.command()
 def website_study(
-    id_list: Annotated[List[str], typer.Argument(help="IDs of the studies to export")],
-    root_directory: Annotated[
-        Optional[Path],
-        typer.Option(
-            "--root",
-            "-r",
-            help="If root directory specified then use files there, rather than calling API",
-        ),
+    id_list: Annotated[
+        Optional[List[str]], typer.Argument(help="IDs of the studies to export")
     ] = None,
     output_filename: Annotated[
         Path,
@@ -39,17 +34,37 @@ def website_study(
             "-o",
         ),
     ] = Path("bia-images-export.json"),
+    root_directory: Annotated[
+        Optional[Path],
+        typer.Option(
+            "--root",
+            "-r",
+            help="If root directory specified then use files there, rather than calling API",
+        ),
+    ] = None,
+    cache: Annotated[
+        Optional[CacheUse],
+        typer.Option(
+            "--cache",
+            "-c",
+        ),
+    ] = None,
 ):
 
     if root_directory:
         abs_root = root_directory.resolve()
 
+    if not id_list:
+        id_list = get_study_ids(root_directory)
+
     studies_map = {}
     for id in id_list:
         if root_directory:
-            context = StudyCLIContext(root_directory=abs_root, accession_id=id)
+            context = StudyCLIContext(
+                root_directory=abs_root, accession_id=id, cache_use=cache
+            )
         else:
-            context = StudyCLIContext(study_uuid=id)
+            context = StudyCLIContext(study_uuid=id, cache_use=cache)
         study = transform_study(context)
         studies_map[study.accession_id] = study.model_dump(mode="json")
 
@@ -61,8 +76,8 @@ def website_study(
 @app.command()
 def website_image(
     id_list: Annotated[
-        List[str], typer.Argument(help="Accession ID of the study to export")
-    ],
+        Optional[List[str]], typer.Argument(help="Accession ID of the study to export")
+    ] = None,
     root_directory: Annotated[
         Optional[Path],
         typer.Option(
@@ -84,6 +99,9 @@ def website_image(
     if root_directory:
         abs_root = root_directory.resolve()
 
+    if not id_list:
+        id_list = get_study_ids(root_directory)
+
     image_map = {}
     for id in id_list:
         if root_directory:
@@ -101,8 +119,8 @@ def website_image(
 @app.command()
 def datasets_for_website_image(
     id_list: Annotated[
-        List[str], typer.Argument(help="Accession ID of the study to export")
-    ],
+        Optional[List[str]], typer.Argument(help="Accession ID of the study to export")
+    ] = None,
     root_directory: Annotated[
         Optional[Path],
         typer.Option(
@@ -122,6 +140,9 @@ def datasets_for_website_image(
 
     if root_directory:
         abs_root = root_directory.resolve()
+
+    if not id_list:
+        id_list = get_study_ids(root_directory)
 
     dataset_map = {}
     for id in id_list:
