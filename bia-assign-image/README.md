@@ -58,6 +58,6 @@ An option can be passed into the command to specify representations to create. E
 $ poetry run bia-assign-image representations create --reps-to-create THUMBNAIL --reps-to-create STATIC_DISPLAY S-BIAD1285 92fd093d-c8d2-4d89-ba28-9a9891cec73f
 ```
 
-## Scripts to migrate artefacts from v2 to v3
+## Scripts to migrate artefacts from API models used in SAB to API models as of 12/12/2024
 
 See [scripts/README.md](scripts/README.md)
