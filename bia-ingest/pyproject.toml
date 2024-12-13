@@ -10,7 +10,6 @@ packages = [{include = "bia_ingest"}]
 [tool.poetry.dependencies]
 python = "^3.10,<3.12"
 requests = "^2.31.0"
-pytest = "^7.0"
 bia-shared-datamodels = { path = "../bia-shared-datamodels", develop = true }
 bia-integrator-api = { path = "../clients/python", develop = true }
 bia-test-data = { path = "../bia-test-data", develop = true }
@@ -25,7 +24,7 @@ biaingest = "bia_ingest.cli:app"
 
 [tool.poetry.group.dev.dependencies]
 ipython = "^8.22.1"
-pyqt6 = "^6.8.0"
+pytest = "^7.0"
 
 [build-system]
 requires = ["poetry-core"]
