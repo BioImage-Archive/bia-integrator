@@ -8,6 +8,7 @@ import logging
 
 logger = logging.getLogger("__main__." + __name__)
 
+
 def find_local_studies(root_path: Path) -> list[Study]:
     study_search_path = root_path.joinpath("study", "**/*.json")
     file_paths = glob(str(study_search_path), recursive=True)
@@ -18,7 +19,7 @@ def find_local_studies(root_path: Path) -> list[Study]:
 
 
 def fetch_studies_from_api(
-    fetch_size: int, agregator_list: list[Study] = None
+    page_size: int, agregator_list: list[Study] = None
 ) -> list[Study]:
     if not agregator_list:
         agregator_list = []
@@ -27,22 +28,26 @@ def fetch_studies_from_api(
         start_uuid = agregator_list[-1].uuid
 
     fetched_studies = api_client.get_studies(
-        page_size=fetch_size, start_from_uuid=start_uuid
+        page_size=page_size, start_from_uuid=start_uuid
     )
     agregator_list += fetched_studies
 
-    if len(fetched_studies) != fetch_size:
+    if len(fetched_studies) != page_size:
         return agregator_list
     else:
-        return fetch_studies_from_api(fetch_size, agregator_list)
+        return fetch_studies_from_api(page_size, agregator_list)
 
 
 def get_study_ids(root_directory: Optional[Path] = None):
     if root_directory:
         studies_list = find_local_studies(root_directory)
-        sorted_studies = sorted(studies_list, key=lambda study: study.release_date, reverse=True)
-        return [study.accession_id  for study in sorted_studies]
+        sorted_studies = sorted(
+            studies_list, key=lambda study: study.release_date, reverse=True
+        )
+        return [study.accession_id for study in sorted_studies]
     else:
-        studies_list = fetch_studies_from_api(100)
-        sorted_studies = sorted(studies_list, key=lambda study: study.release_date, reverse=True)
-        return [study.uuid  for study in sorted_studies]
+        studies_list = fetch_studies_from_api(page_size=100)
+        sorted_studies = sorted(
+            studies_list, key=lambda study: study.release_date, reverse=True
+        )
+        return [study.uuid for study in sorted_studies]

@@ -28,12 +28,12 @@ def website_study(
         Optional[List[str]], typer.Argument(help="IDs of the studies to export")
     ] = None,
     output_filename: Annotated[
-        Path,
+        Optional[Path],
         typer.Option(
             "--out_file",
             "-o",
         ),
-    ] = Path("bia-images-export.json"),
+    ] = Path("bia-study-metadata.json"),
     root_directory: Annotated[
         Optional[Path],
         typer.Option(
@@ -76,8 +76,15 @@ def website_study(
 @app.command()
 def website_image(
     id_list: Annotated[
-        Optional[List[str]], typer.Argument(help="Accession ID of the study to export")
+        Optional[List[str]], typer.Argument(help="Accession IDs of the study to export")
     ] = None,
+    output_filename: Annotated[
+        Optional[Path],
+        typer.Option(
+            "--out_file",
+            "-o",
+        ),
+    ] = Path("bia-image-export.json"),
     root_directory: Annotated[
         Optional[Path],
         typer.Option(
@@ -86,13 +93,6 @@ def website_image(
             help="If root directory specified then use files there, rather than calling API",
         ),
     ] = None,
-    output_filename: Annotated[
-        Path,
-        typer.Option(
-            "--out_file",
-            "-o",
-        ),
-    ] = Path("bia-image-export.json"),
 ):
     # NB: currently only exports for ExperimentallyCapturedImages
     # TODO: get this working for
@@ -119,8 +119,15 @@ def website_image(
 @app.command()
 def datasets_for_website_image(
     id_list: Annotated[
-        Optional[List[str]], typer.Argument(help="Accession ID of the study to export")
+        Optional[List[str]], typer.Argument(help="Accession IDs of the study to export")
     ] = None,
+    output_filename: Annotated[
+        Optional[Path],
+        typer.Option(
+            "--out_file",
+            "-o",
+        ),
+    ] = Path("bia-image-export.json"),
     root_directory: Annotated[
         Optional[Path],
         typer.Option(
@@ -129,13 +136,6 @@ def datasets_for_website_image(
             help="If root directory specified then use files there, rather than calling API",
         ),
     ] = None,
-    output_filename: Annotated[
-        Path,
-        typer.Option(
-            "--out_file",
-            "-o",
-        ),
-    ] = Path("bia-image-export.json"),
 ):
 
     if root_directory:

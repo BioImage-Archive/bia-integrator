@@ -38,9 +38,9 @@ This will create `bia-study-metadata.json` using the example test data for studi
 
 Note that with -r (root directory) - local files will be used to generate the export. If using ingest to generate the files, this will usually be: ~/.cache/bia-integrator-data-sm. If no root location is passed, and a study UUID (as opposed to accession ID) is used, then the API will be called to create the files.
 
-If no Accession ID or UUID is passed, all studies will be processed (either based on all studies in the <root-folder>/study/ directory, or by querying for studies in the api). The studies a exported in order of release date. 
+If no Accession ID or UUID is passed, all studies will be processed (either based on all studies in the <root-folder>/study/ directory, or by querying for studies in the api). The studies are exported in order of release date. 
 
-The two points above hold for all export commands for the api. For the website-study export only, there is a optional cache in order to avoid processing all file reference every time an export is performed (as this slows down export a lot). E.g. running:
+The two points above hold for all export commands for the api. For the website-study export only, there is a optional cache in order to avoid processing all file references every time an export is performed (as this slows down export a lot). E.g. running:
 
 `poetry run bia-export website-study -o bia-study-metadata.json -c read_cache`
 
