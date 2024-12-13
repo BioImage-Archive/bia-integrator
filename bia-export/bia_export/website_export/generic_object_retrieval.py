@@ -2,6 +2,7 @@ from glob import glob
 from uuid import UUID
 from pydantic import BaseModel
 from pydantic.alias_generators import to_snake
+from bia_shared_datamodels.bia_data_model import DocumentMixin
 from bia_export.bia_client import api_client
 from .website_models import CLIContext
 import json
@@ -90,19 +91,25 @@ def retrieve_object(
 
 
 def get_all_api_results(
-    uuid: UUID, api_method, page_size_setting=20
-) -> List[BaseModel]:
-    object_list = []
-    added_objects = api_method(str(uuid), page_size=page_size_setting)
-    if len(added_objects) > 0:
-        object_list += added_objects
-        start_uuid = added_objects[-1].uuid
-        while page_size_setting == len(added_objects):
-            added_objects = api_method(
-                str(uuid),
-                page_size=page_size_setting,
-                start_from_uuid=start_uuid,
-            )
-            object_list += added_objects
-            start_uuid = added_objects[-1].uuid
-    return object_list
+    uuid: UUID,
+    api_method,
+    page_size_setting=20,
+    aggregator_list: list[DocumentMixin] = None,
+) -> list[DocumentMixin]:
+    if not aggregator_list:
+        aggregator_list: list[DocumentMixin] = []
+        start_uuid = None
+    else:
+        start_uuid = aggregator_list[-1].uuid
+
+    fetched_objects = api_method(
+        str(uuid),
+        page_size=page_size_setting,
+        start_from_uuid=str(start_uuid) if start_uuid else None,
+    )
+    aggregator_list += fetched_objects
+
+    if len(fetched_objects) != page_size_setting:
+        return aggregator_list
+    else:
+        return get_all_api_results(uuid, api_method, page_size_setting, aggregator_list)

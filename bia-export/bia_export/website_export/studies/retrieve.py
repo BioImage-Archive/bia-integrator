@@ -9,7 +9,7 @@ from bia_export.website_export.generic_object_retrieval import (
 )
 from pathlib import Path
 from pydantic.alias_generators import to_snake
-from .models import StudyCLIContext
+from .models import StudyCLIContext, CacheUse
 from bia_shared_datamodels import semantic_models, bia_data_model
 from bia_integrator_api import models as api_models
 import json
@@ -56,15 +56,25 @@ def retrieve_datasets(
 def retrieve_aggregation_fields(
     dataset: bia_data_model.DocumentMixin, context: StudyCLIContext
 ):
-    if context.root_directory:
+
+    # The cache and the export from local files both store information in context.dataset_file_aggregate_data
+    if context.root_directory or (
+        context.cache_use == CacheUse.READ_CACHE
+        and context.dataset_file_aggregate_data
+        and str(dataset.uuid) in context.dataset_file_aggregate_data
+    ):
         try:
             dataset_aggregation_fields = context.dataset_file_aggregate_data[
-                dataset.uuid
+                str(dataset.uuid)
             ]
             dataset_aggregation_fields["file_type_aggregation"] = sorted(
                 list(dataset_aggregation_fields["file_type_aggregation"])
             )
+            if context.cache_use == CacheUse.WRITE_CACHE:
+                write_to_cache(dataset.uuid, dataset_aggregation_fields)
+
         except KeyError:
+            logger.warning(f"Could not find aggregate data for dataset: {dataset.uuid}")
             dataset_aggregation_fields = {
                 "file_count": 0,
                 "image_count": 0,
@@ -72,10 +82,12 @@ def retrieve_aggregation_fields(
             }
     else:
         images: List[bia_data_model.Image] = get_all_api_results(
-            dataset.uuid, api_client.get_image_linking_dataset
+            dataset.uuid, api_client.get_image_linking_dataset, page_size_setting=500
         )
         files: List[bia_data_model.FileReference] = get_all_api_results(
-            dataset.uuid, api_client.get_file_reference_linking_dataset
+            dataset.uuid,
+            api_client.get_file_reference_linking_dataset,
+            page_size_setting=500,
         )
 
         file_type_aggregation = set()
@@ -88,47 +100,91 @@ def retrieve_aggregation_fields(
             "image_count": len(images),
             "file_type_aggregation": sorted(list(file_type_aggregation)),
         }
+        if context.cache_use == CacheUse.WRITE_CACHE:
+            write_to_cache(dataset.uuid, dataset_aggregation_fields)
 
     return dataset_aggregation_fields
 
 
-def aggregate_file_list_data(context: StudyCLIContext) -> dict[UUID, dict]:
-    dataset_counts_map = {}
+def write_to_cache(dataset_uuid, aggregation_fields):
+    logging.info(f"writing to dataset aggregation cache for dataset: {dataset_uuid}")
 
-    file_reference_directory = get_source_directory(api_models.FileReference, context)
-    file_reference_paths = glob(str(file_reference_directory))
-    for file_path in file_reference_paths:
-        with open(file_path, "r") as object_file:
+    cache_file = (
+        Path(__file__)
+        .parent.parent.parent.parent.join(
+            "cached_computed_data", "dataset_aggregate_fields.json"
+        )
+        .absolute()
+    )
+    with open(cache_file, "r") as object_file:
+        try:
             object_dict = json.load(object_file)
-            file_reference = api_models.FileReference(**object_dict)
-        submission_dataset = file_reference.submission_dataset_uuid
-        file_type = Path(file_reference.file_path).suffix
-        if submission_dataset not in dataset_counts_map:
-            dataset_counts_map[submission_dataset] = {
-                "file_count": 0,
-                "image_count": 0,
-                "file_type_aggregation": set(),
-            }
-        dataset_counts_map[submission_dataset]["file_count"] += 1
-        dataset_counts_map[submission_dataset]["file_type_aggregation"].add(file_type)
+        except:
+            object_dict = {}
 
-    images_directory = get_source_directory(api_models.Image, context)
-    image_paths = glob(str(images_directory))
+    object_dict[str(dataset_uuid)] = aggregation_fields
 
-    for image_path in image_paths:
-        with open(image_path, "r") as object_file:
+    with open(cache_file, "w") as object_file:
+        object_file.write(json.dumps(object_dict, indent=4))
+
+
+def aggregate_file_list_data(context: StudyCLIContext) -> None:
+    if context.cache_use == CacheUse.READ_CACHE:
+        cache_file = (
+            Path(__file__)
+            .parent.parent.parent.parent.join(
+                "cached_computed_data", "dataset_aggregate_fields.json"
+            )
+            .absolute()
+        )
+
+        with open(cache_file, "r") as object_file:
             object_dict = json.load(object_file)
-        submission_dataset = object_dict["submission_dataset_uuid"]
-        file_type = Path(file_reference.file_path).suffix
-        if submission_dataset not in dataset_counts_map:
-            dataset_counts_map[submission_dataset] = {
-                "file_count": 0,
-                "image_count": 0,
-                "file_type_aggregation": set(),
-            }
-        dataset_counts_map[submission_dataset]["image_count"] += 1
 
-    return dataset_counts_map
+        context.dataset_file_aggregate_data = object_dict
+        return None
+
+    if context.root_directory:
+        dataset_counts_map = {}
+        file_reference_directory = get_source_directory(
+            api_models.FileReference, context
+        )
+        file_reference_paths = glob(str(file_reference_directory))
+        for file_path in file_reference_paths:
+            with open(file_path, "r") as object_file:
+                object_dict = json.load(object_file)
+                file_reference = api_models.FileReference(**object_dict)
+            submission_dataset = str(file_reference.submission_dataset_uuid)
+            file_type = Path(file_reference.file_path).suffix
+            if submission_dataset not in dataset_counts_map:
+                dataset_counts_map[submission_dataset] = {
+                    "file_count": 0,
+                    "image_count": 0,
+                    "file_type_aggregation": set(),
+                }
+            dataset_counts_map[submission_dataset]["file_count"] += 1
+            dataset_counts_map[submission_dataset]["file_type_aggregation"].add(
+                file_type
+            )
+
+        images_directory = get_source_directory(api_models.Image, context)
+        image_paths = glob(str(images_directory))
+
+        for image_path in image_paths:
+            with open(image_path, "r") as object_file:
+                object_dict = json.load(object_file)
+            submission_dataset = object_dict["submission_dataset_uuid"]
+            file_type = Path(file_reference.file_path).suffix
+            if submission_dataset not in dataset_counts_map:
+                dataset_counts_map[submission_dataset] = {
+                    "file_count": 0,
+                    "image_count": 0,
+                    "file_type_aggregation": set(),
+                }
+            dataset_counts_map[submission_dataset]["image_count"] += 1
+
+        context.dataset_file_aggregate_data = dataset_counts_map
+        return None
 
 
 def retrieve_dataset_images(
@@ -149,7 +205,7 @@ def retrieve_dataset_images(
 
     else:
         api_images = get_all_api_results(
-            dataset_uuid, api_client.get_image_linking_dataset
+            dataset_uuid, api_client.get_image_linking_dataset, page_size_setting=500
         )
 
     return api_images

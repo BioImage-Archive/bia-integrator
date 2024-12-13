@@ -10,8 +10,9 @@ from bia_export.website_export.website_models import (
 )
 from bia_integrator_api import models
 
-from pydantic import BaseModel, Field
+from pydantic import Field
 
+from enum import Enum
 
 from typing import List, Optional, Type
 
@@ -57,6 +58,11 @@ class Study(models.Study):
     )
 
 
+class CacheUse(Enum):
+    READ_CACHE = "read_cache"
+    WRITE_CACHE = "write_cache"
+
+
 class StudyCLIContext(CLIContext):
     dataset_file_aggregate_data: dict = Field(
         default_factory=dict,
@@ -73,3 +79,4 @@ class StudyCLIContext(CLIContext):
         description="""Tracks e.g. which BioSamples have been displayed in previous dataset sections to 
         determine whether details should default to open or closed.""",
     )
+    cache_use: Optional[CacheUse] = None
