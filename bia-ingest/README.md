@@ -15,8 +15,13 @@ $ poetry run biaingest ingest <LIST OF STUDY ACCESSION IDs>
 ```
 E.g:
 ```sh
-$ poetry run biaingest ingest S-BIAD1285
+$ poetry run biaingest ingest S-BIAD1285 S-BIAD1316
 ```
+Or can input a file of newline separated accesssion ids with -f:
+```sh
+$ poetry run biaingest ingest -f input_files/ingested_submissions
+```
+
 By default this will create objects on disk (`--persistence-mode disk`).
 This creates the following structure (using S-BIAD325 as an example):
 ```sh
