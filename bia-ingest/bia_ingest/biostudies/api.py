@@ -201,6 +201,10 @@ def load_submission(accession_id: str) -> Submission:
         "S-BIAD1344": "invalid email: raffaeledefilippis92@gmail.comraffaeledefilippis92@gmail.com changed to: raffaeledefilippis92@gmail.com",
         "S-BSST651": "invalid email: huw.williams@williams@nottingham.ac.uk changed to: huw.williams@nottingham.ac.uk",
         "S-BSST744": "invalid email: ‫britta.engelhardt@tki.unibe.ch (right-to-left embedding) changed to: britta.engelhardt@tki.unibe.ch",
+        "S-BIAD590": "missing study component assosiations subsection",
+        "S-BIAD599": "missing study component assosiations subsection",
+        "S-BIAD628": "missing study component assosiations subsection",
+        #"S-BIAD677": "missing study component assosiations subsection"
     }
     if accession_id in overrides:
         return read_override(accession_id)
