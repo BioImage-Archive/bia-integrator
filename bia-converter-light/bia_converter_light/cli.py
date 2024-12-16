@@ -1,8 +1,8 @@
 import typer
-from typing_extensions import Annotated, List
+from typing_extensions import Annotated
 
 from bia_shared_datamodels.semantic_models import ImageRepresentationUseType
-from .config import api_client, settings
+from .config import settings
 
 from .io import stage_fileref_and_get_fpath, copy_local_to_s3
 from .conversion import cached_convert_to_zarr_and_get_fpath, get_local_path_to_zarr
@@ -12,14 +12,10 @@ from .rendering import generate_padded_thumbnail_from_ngff_uri
 import logging
 from rich.logging import RichHandler
 
-from bia_integrator_api.api.private_api import PrivateApi
+from bia_shared_datamodels import bia_data_model, semantic_models, uuid_creation
 from bia_ingest.persistence_strategy import (
     persistence_strategy_factory,
-    PersistenceMode,
 )
-from bia_ingest.cli_logging import ImageCreationResult
-
-from bia_converter_light.image_representation import create_image_representation
 
 app = typer.Typer()
 
@@ -43,6 +39,7 @@ app.add_typer(
 
 @app.command(help="Convert image for given image representation UUID")
 def convert_image(
+    accession_id: Annotated[str, typer.Argument()],
     image_representation_uuid: Annotated[str, typer.Argument()],
     verbose: Annotated[bool, typer.Option("-v")] = False,
 ) -> None:
@@ -58,22 +55,50 @@ def convert_image(
     if verbose:
         logger.setLevel(logging.DEBUG)
 
-    assert isinstance(
-        api_client, PrivateApi
-    ), f"Expected valid instance of <class 'PrivateApi'>. Got : {type(api_client)} - are your API credentials valid and/or is the API server online?"
-    representation = api_client.get_image_representation(image_representation_uuid)
-    file_reference = api_client.get_file_reference(
-        representation.original_file_reference_uuid[0]
-    )
+    # TODO: Restore using API Client before merging PR
+    # assert isinstance(
+    #    api_client, PrivateApi
+    # ), f"Expected valid instance of <class 'PrivateApi'>. Got : {type(api_client)} - are your API credentials valid and/or is the API server online?"
+    # representation = api_client.get_image_representation(image_representation_uuid)
+    # file_reference = api_client.get_file_reference(
+    #    representation.original_file_reference_uuid[0]
+    # )
 
-    # Need accession ID Could ask for it as a parameter to CLI call, but
-    # will get from API in two calls for now
-    dataset = api_client.get_experimental_imaging_dataset(
-        file_reference.submission_dataset_uuid
-    )
-    study = api_client.get_study(dataset.submitted_in_study_uuid)
-    accession_id = study.accession_id
+    ## Need accession ID Could ask for it as a parameter to CLI call, but
+    ## will get from API in two calls for now
+    # dataset = api_client.get_experimental_imaging_dataset(
+    #    file_reference.submission_dataset_uuid
+    # )
+    # study = api_client.get_study(dataset.submitted_in_study_uuid)
+    # accession_id = study.accession_id
 
+    persister = persistence_strategy_factory(
+        persistence_mode="disk",
+        output_dir_base=settings.bia_data_dir,
+        accession_id=accession_id,
+    )
+    representation = persister.fetch_by_uuid(
+        [
+            image_representation_uuid,
+        ],
+        bia_data_model.ImageRepresentation,
+    )[0]
+    bia_image = persister.fetch_by_uuid(
+        [representation.representation_of_uuid],
+        bia_data_model.Image,
+    )[0]
+    file_reference = persister.fetch_by_uuid(
+        [
+            bia_image.original_file_reference_uuid[0],
+        ],
+        bia_data_model.FileReference,
+    )[0]
+    # dataset = persister.fetch_by_uuid(
+    #    [
+    #        file_reference.submission_dataset_uuid,
+    #    ],
+    #    bia_data_model.Dataset,
+    # )
     if representation.use_type == ImageRepresentationUseType.UPLOADED_BY_SUBMITTER:
         logger.warning(
             f"Cannot create/convert images for image representation of type: {representation.use_type.value} - exiting"
@@ -104,7 +129,14 @@ def convert_image(
         representation.size_c = _format_pixel_metadata("SizeC")
         representation.size_t = _format_pixel_metadata("SizeT")
 
-        representation.attribute |= pixel_metadata
+        attributes_from_ome = {
+            "name": "attributes_from_bioformat2raw_conversion",
+            "provenance": semantic_models.AttributeProvenance.bia_conversion,
+            "value": pixel_metadata,
+        }
+        representation.attribute.append(
+            semantic_models.Attribute.model_validate(attributes_from_ome)
+        )
 
         representation.image_format = ".ome.zarr"
         file_uri = copy_local_to_s3(
@@ -117,7 +149,12 @@ def convert_image(
             file_uri + "/0",
         ]
         representation.version += 1
-        api_client.post_image_representation(representation)
+        # api_client.post_image_representation(representation)
+        persister.persist(
+            [
+                representation,
+            ]
+        )
         message = f"Converted uploaded by submitter to ome.zarr and uploaded to S3: {representation.file_uri}"
         logger.info(message)
 
@@ -126,27 +163,41 @@ def convert_image(
         ImageRepresentationUseType.THUMBNAIL,
         ImageRepresentationUseType.STATIC_DISPLAY,
     ):
-        # Check for interactive display representation (ome.zarr)
-        # This has to exist before we can generate thumbnails/static display
-        eci = api_client.get_experimentally_captured_image(
-            representation.representation_of_uuid
-        )
-        representations_for_eci = (
-            api_client.get_image_representation_in_experimentally_captured_image(
-                eci.uuid,
-                page_size=DEFAULT_PAGE_SIZE,
+        ## Check for interactive display representation (ome.zarr)
+        ## This has to exist before we can generate thumbnails/static display
+        # eci = api_client.get_experimentally_captured_image(
+        #    representation.representation_of_uuid
+        # )
+        # representations_for_eci = (
+        #    api_client.get_image_representation_in_experimentally_captured_image(
+        #        eci.uuid,
+        #        page_size=DEFAULT_PAGE_SIZE,
+        #    )
+        # )
+        # try:
+        #    interactive_image_representation = next(
+        #        im_rep
+        #        for im_rep in representations_for_eci
+        #        if len(im_rep.file_uri) > 0 and "ome.zarr" in im_rep.file_uri[0]
+        #    )
+        # except StopIteration as e:
+        #    message = f"Cannot create thumbnail or static display without a representation with an image of ome zarr. Could not find one for experimentally captured image with UUID: {eci.uuid}"
+        #    logger.error(message)
+        #    raise e
+
+        interactive_image_representation_uuid = (
+            uuid_creation.create_image_representation_uuid(
+                bia_image.uuid,
+                ".ome.zarr",
+                semantic_models.ImageRepresentationUseType.INTERACTIVE_DISPLAY.value,
             )
         )
-        try:
-            interactive_image_representation = next(
-                im_rep
-                for im_rep in representations_for_eci
-                if len(im_rep.file_uri) > 0 and "ome.zarr" in im_rep.file_uri[0]
-            )
-        except StopIteration as e:
-            message = f"Cannot create thumbnail or static display without a representation with an image of ome zarr. Could not find one for experimentally captured image with UUID: {eci.uuid}"
-            logger.error(message)
-            raise e
+        interactive_image_representation = persister.fetch_by_uuid(
+            [
+                interactive_image_representation_uuid,
+            ],
+            bia_data_model.ImageRepresentation,
+        )[0]
 
         # Check for local path to zarr and use if it exists
         local_path_to_zarr = get_local_path_to_zarr(
@@ -189,8 +240,13 @@ def convert_image(
         representation.file_uri = [
             file_uri,
         ]
-        representation.version += 1
-        api_client.post_image_representation(representation)
+        # representation.version += 1
+        # api_client.post_image_representation(representation)
+        persister.persist(
+            [
+                representation,
+            ]
+        )
         message = f"Created {representation.use_type} image and uploaded to S3: {representation.file_uri}"
         logger.info(message)
 
@@ -201,70 +257,9 @@ def convert_image(
         )
 
 
-@representations_app.command(help="Create specified representations")
-def create(
-    accession_id: Annotated[str, typer.Argument()],
-    file_reference_uuid_list: Annotated[List[str], typer.Argument()],
-    persistence_mode: Annotated[
-        PersistenceMode, typer.Option(case_sensitive=False)
-    ] = PersistenceMode.disk,
-    reps_to_create: Annotated[
-        List[ImageRepresentationUseType], typer.Option(case_sensitive=False)
-    ] = [
-        ImageRepresentationUseType.UPLOADED_BY_SUBMITTER,
-        ImageRepresentationUseType.THUMBNAIL,
-        ImageRepresentationUseType.INTERACTIVE_DISPLAY,
-    ],
-    verbose: Annotated[bool, typer.Option("--verbose", "-v")] = False,
-) -> None:
-    """Create representations for specified file reference(s)"""
-
-    if verbose:
-        logger.setLevel(logging.DEBUG)
-
-    result_summary = {}
-
-    persister = persistence_strategy_factory(
-        persistence_mode,
-        output_dir_base=settings.bia_data_dir,
-        accession_id=accession_id,
-        api_client=api_client,
-    )
-
-    result_summary = ImageCreationResult()
-    for file_reference_uuid in file_reference_uuid_list:
-        print(
-            f"[blue]-------- Starting creation of image representations for file reference {file_reference_uuid} of {accession_id} --------[/blue]"
-        )
-
-        for representation_use_type in reps_to_create:
-            logger.debug(
-                f"starting creation of {representation_use_type.value} for file reference {file_reference_uuid}"
-            )
-            image_representation = create_image_representation(
-                [
-                    file_reference_uuid,
-                ],
-                representation_use_type=representation_use_type,
-                result_summary=result_summary,
-                persister=persister,
-            )
-            if image_representation:
-                message = f"COMPLETED: Creation of image representation {representation_use_type.value} for file reference {file_reference_uuid} of {accession_id}"
-            else:
-                message = f"WARNING: Could NOT create image representation {representation_use_type.value} for file reference {file_reference_uuid} of {accession_id}"
-            logger.debug(message)
-
-    successes = ""
-    errors = ""
-    for item_name in result_summary.model_fields:
-        item_value = getattr(result_summary, item_name)
-        if item_name.endswith("CreationCount") and item_value > 0:
-            successes += f"{item_name}: {item_value}\n"
-        elif item_name.endswith("ErrorCount") and item_value > 0:
-            errors += f"{item_name}: {item_value}\n"
-    print(f"\n\n[green]--------- Successes ---------\n{successes}[/green]")
-    print(f"\n\n[red]--------- Errors ---------\n{errors}[/red]")
+@app.command()
+def update_example_image_uri_for_dataset():
+    pass
 
 
 @app.callback()
