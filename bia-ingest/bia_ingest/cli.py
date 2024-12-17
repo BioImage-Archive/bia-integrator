@@ -21,6 +21,9 @@ from bia_ingest.biostudies.biostudies_processing_version import (
 from bia_ingest.biostudies.process_submission_v4 import (
     process_submission_v4,
 )
+from bia_ingest.biostudies.process_submission_default import (
+    process_submission_default,
+)
 from bia_ingest.biostudies.v4.study import get_study
 
 import logging
@@ -115,7 +118,9 @@ def ingest(
                     submission, result_summary, process_files, persister
                 )
             elif processing_version == BioStudiesProcessingVersion.BIOSTUDIES_DEFAULT:
-                get_study(submission, result_summary, persister)
+                process_submission_default(
+                    submission, result_summary, process_files, persister
+                )
             else:
                 get_study(submission, result_summary, persister)
 

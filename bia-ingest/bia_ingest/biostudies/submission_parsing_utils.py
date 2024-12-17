@@ -93,7 +93,7 @@ def find_files_in_submission_file_lists(submission: Submission) -> List[File]:
     return sum(file_lists, [])
 
 
-def find_files_in_submission(submission: Submission) -> List[File]:
+def find_files_and_file_lists_in_submission(submission: Submission) -> List[File]:
     """Find all of the files in a submission, both attached directly to
     the submission and as file lists."""
 
@@ -117,6 +117,24 @@ def find_files_in_submission(submission: Submission) -> List[File]:
 
     descend_and_find_files(submission.section, all_files)
 
+    return all_files
+
+def find_files_in_submission(
+    submission: Submission
+) -> List[File]:
+    """Find files in a submission that are attached directly, 
+    not in file lists."""
+
+    # Asssuming there can be more than one Study in a Submission
+    sections = find_sections_recursive(submission.section, ["Study"])
+    
+    # Assuming "files" can be populated by things other than a File...?
+    all_files = []
+    for section in sections:
+        for file in section.files:
+            if isinstance(file, File):
+                all_files.append(file)
+    
     return all_files
 
 
