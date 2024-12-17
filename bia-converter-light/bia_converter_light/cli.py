@@ -258,8 +258,46 @@ def convert_image(
 
 
 @app.command()
-def update_example_image_uri_for_dataset():
-    pass
+def update_example_image_uri_for_dataset(
+    accession_id: Annotated[str, typer.Argument()],
+    dataset_uuid: Annotated[str, typer.Argument()],
+    representation_uuid: Annotated[str, typer.Argument()],
+    verbose: Annotated[bool, typer.Option("-v")] = False,
+):
+    persister = persistence_strategy_factory(
+        persistence_mode="disk",
+        output_dir_base=settings.bia_data_dir,
+        accession_id=accession_id,
+    )
+    representation = persister.fetch_by_uuid(
+        [
+            representation_uuid,
+        ],
+        bia_data_model.ImageRepresentation,
+    )[0]
+    assert (
+        representation.use_type
+        == semantic_models.ImageRepresentationUseType.STATIC_DISPLAY
+    )
+    bia_image = persister.fetch_by_uuid(
+        [
+            representation.representation_of_uuid,
+        ],
+        bia_data_model.Image,
+    )[0]
+    assert str(bia_image.submission_of_dataset_uuid) == dataset_uuid
+    dataset = persister.fetch_by_uuid(
+        [
+            dataset_uuid,
+        ],
+        bia_data_model.Dataset,
+    )[0]
+    dataset.example_image_uri = [representation.file_uri]
+    persister.persist(
+        [
+            dataset,
+        ]
+    )
 
 
 @app.callback()
