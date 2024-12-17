@@ -204,7 +204,7 @@ def load_submission(accession_id: str) -> Submission:
         "S-BIAD590": "missing study component assosiations subsection",
         "S-BIAD599": "missing study component assosiations subsection",
         "S-BIAD628": "missing study component assosiations subsection",
-        #"S-BIAD677": "missing study component assosiations subsection"
+        "S-BIAD677": "missing study component assosiations subsection"
     }
     if accession_id in overrides:
         return read_override(accession_id)

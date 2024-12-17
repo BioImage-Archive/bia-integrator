@@ -241,7 +241,120 @@
         "value" : "grant ANR-10-INBS-04"
       } ]
     }, {
-      "accno" : "Study Component-1",
+      "accno" : "Biosample-1",
+      "type" : "Biosample",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Biosample"
+        }, {
+        "name" : "Biological entity",
+        "value" : "bronchial epithelia (BE)"
+      }, {
+        "name" : "Description",
+        "value" : "BE culture from patient-derived material, stained with antibodies to discriminate different cell-types and cellular features"
+      }, {
+        "name" : "Intrinsic variable",
+        "value" : "patient ID and patient age"
+      }, {
+        "name" : "Extrinsic variable",
+        "value" : "infection with SARS-CoV-2"
+      }, {
+        "name" : "Experimental variable",
+        "value" : "days after infection"
+      } ],
+      "subsections" : [ {
+        "accno" : "Organism-1-1",
+        "type" : "Organism",
+        "attributes" : [ {
+          "name" : "Scientific name",
+          "value" : "homo sapiens"
+        }, {
+          "name" : "Common name",
+          "value" : "human"
+        }, {
+          "name" : "NCBI taxon ID",
+          "value" : "NCBI:txid9606"
+        } ]
+      } ]
+    }, {
+      "accno" : "Specimen-2",
+      "type" : "Specimen",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Specimen"
+        }, {
+        "name" : "Sample Preparation Protocol",
+        "value" : "For antigen detection, BE were washed repeatedly with PBS to remove mucus then fixed with 4% paraformaldehyde for 30min using complete insert immersion. Epithelia were then washed in PBS and permeabilized with 0.5% TritonX-100 in PBS for 10min at room temperature and washed again before being blocked in IF buffer (PBS containing 10% SVF and 0.05% saponin) for 1h at room temperature. Primary antibody was diluted in IF buffer and applied to inserts for 1h at room temperature. Samples were washed three times under agitation with PBS and incubated with secondary antibody, fluorescently labeled phalloidin to stain the actin cytoskeleton and 2μg/mL of DAPI (4’,6-diamidino-2-phenylindole), diluted in IF buffer and incubated for 2h at room temperature. Insert were then washed extensively in PBS, desalted in H2O miliQ and rinsed in 100% Ethanol and air-dried. Membranes were then removed from inserts and mounted in DAKO Fluorescence Mounting Medium prior to microscopy analysis."
+      }, {
+        "name" : "Growth Protocol",
+        "value" : "The BE cell culture was established from bronchial brushings or lung resection performed between the third and fifth bronchial generation from patients undergoing elective surgery as previously described (38). BE explants were cultured using PneumaCult Ex medium (Stemcell) for expansion of basal epithelial cells at 37 °C in 5% CO2. Then, 105 basal cells were grown on cell culture inserts (Corning) within the air–liquid interface for 21 d using PneumaCult ALI medium (Stemcell). Such a culture allows the differentiation into pseudostratified mucociliary airway epithelia composed of ciliated cells, goblet cells, club cells, and basal cells. The complete differentiation was assessed by the capacity of cilia to beat and mucus production under a light microscope."
+      } ]
+    }, {
+      "accno" : "Image Acquisition-3",
+      "type" : "Image Acquisition",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Image Acquisition"
+      }, {
+        "name" : "Imaging Instrument",
+        "value" : "Leica inverted DMi6000 widefield microscope + Lumencor ligth source + Hamamatsu ORCA-Flash4.0 LT"
+      }, {
+        "name" : "Image Acquisition Parameters",
+        "value" : "between 10 and 200ms exposure time for each channel (647nm: 200ms;  594 nm: 400 ms; 488nm: 100 ms; 405nm: 10 ms)"
+      } ],
+      "subsections" : [ {
+        "accno" : "Imaging Method-3-1",
+        "type" : "Imaging Method",
+        "attributes" : [ {
+          "name" : "Ontology Value",
+          "value" : "fluorescence microscopy"
+        }, {
+          "name" : "Ontology Name",
+          "value" : "FBbi"
+        }, {
+          "name" : "Ontology Term ID",
+          "value" : "FBbi:00000246"
+        } ]
+      } ]
+    }, {
+      "accno" : "Image Acquisition-4",
+      "type" : "Image Acquisition",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Image Acquisition 2"
+      }, {
+        "name" : "Imaging Instrument",
+        "value" : "SP8 confocal microscope (Leica Microsystems at the Bordeaux Imaging Center) 405nm diode laser + white laser 470-670nm"
+      }, {
+        "name" : "Image Acquisition Parameters",
+        "value" : "diverse parameters; to be found inside the metadata of the .lif images"
+      } ],
+      "subsections" : [ {
+        "accno" : "Imaging Method-4-1",
+        "type" : "Imaging Method",
+        "attributes" : [ {
+          "name" : "Ontology Value",
+          "value" : "confocal microscopy"
+        }, {
+          "name" : "Ontology Name",
+          "value" : "FBbi"
+        }, {
+          "name" : "Ontology Term ID",
+          "value" : "FBbi:00000251"
+        } ]
+      } ]
+    }, {
+      "accno" : "Image-Analysis-5",
+      "type" : "Image Analysis",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Image Analysis"
+      }, {
+        "name" : "Image Analysis Overview",
+        "value" : "To quantify colocalisation between N positive cells (infected cells) and either cytokeratin 5 (Cytk5, basal cells), mucin 5A (goblet cells) or acetylated tubulin (multi ciliated cells) 10x magnification images or a 63x magnification images were acquired and processed for image analysis. Z-projections of different focal planes were generated and regions of interest (ROI) were designed to delimit the area of analysis. A threshold was then applied to the projection of both N positive cells and Cytk5 (or tubulin) positive cells in order to obtain respective masks. Masks were analyzed using the “colocalization” function in ImageJ to calculate the number of double positive cells (N and Cytk5). Obtained values were normalized by either total number of N or total number of Cytk5 (or tubulin or mucin) positive cells to calculate the percentage of basal cells (or ciliated/goblet cells) that are infected."
+      } ]
+    }, {
+      "accno" : "Study Component-6",
       "type" : "Study Component",
       "attributes" : [ {
         "name" : "Name",
@@ -254,106 +367,114 @@
         "value" : "file_list_sc1.json"
       } ],
       "subsections" : [ {
-        "accno" : "Biosample-1-1",
-        "type" : "Biosample",
-        "attributes" : [ {
-          "name" : "Biological entity",
-          "value" : "bronchial epithelia (BE)"
+        "type" : "Associations",
+         "attributes" : [ {
+           "name" : "Biosample",
+           "value" : "Biosample"
+         }, {
+           "name" : "Specimen",
+           "value" : "Specimen"
+         }, {
+           "name" : "Image acquisition",
+           "value" : "Image Acquisition"
+         }, {
+           "name" : "Image analysis",
+           "value" : "Image Analysis"
+         } ]
+       }, {
+        "type" : "Associations",
+         "attributes" : [ {
+           "name" : "Biosample",
+           "value" : "Biosample"
+         }, {
+           "name" : "Specimen",
+           "value" : "Specimen"
+         }, {
+           "name" : "Image acquisition",
+           "value" : "Image Acquisition 2"
+         }, {
+           "name" : "Image analysis",
+           "value" : "Image Analysis"
+         } ]
+       } ]
+    }, {
+      "accno" : "Biosample-7",
+      "type" : "Biosample",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Biosample 2"
         }, {
-          "name" : "Description",
-          "value" : "BE culture from patient-derived material, stained with antibodies to discriminate different cell-types and cellular features"
-        }, {
-          "name" : "Intrinsic variable",
-          "value" : "patient ID and patient age"
-        }, {
-          "name" : "Extrinsic variable",
-          "value" : "infection with SARS-CoV-2"
-        }, {
-          "name" : "Experimental variable",
-          "value" : "days after infection"
-        } ],
-        "subsections" : [ {
-          "accno" : "Organism-1-1",
-          "type" : "Organism",
-          "attributes" : [ {
-            "name" : "Scientific name",
-            "value" : "homo sapiens"
-          }, {
-            "name" : "Common name",
-            "value" : "human"
-          }, {
-            "name" : "NCBI taxon ID",
-            "value" : "NCBI:txid9606"
-          } ]
-        } ]
+        "name" : "Biological entity",
+        "value" : "bronchial epithelia (BE)"
       }, {
-        "accno" : "Specimen-1-1",
-        "type" : "Specimen",
-        "attributes" : [ {
-          "name" : "Sample Preparation Protocol",
-          "value" : "For antigen detection, BE were washed repeatedly with PBS to remove mucus then fixed with 4% paraformaldehyde for 30min using complete insert immersion. Epithelia were then washed in PBS and permeabilized with 0.5% TritonX-100 in PBS for 10min at room temperature and washed again before being blocked in IF buffer (PBS containing 10% SVF and 0.05% saponin) for 1h at room temperature. Primary antibody was diluted in IF buffer and applied to inserts for 1h at room temperature. Samples were washed three times under agitation with PBS and incubated with secondary antibody, fluorescently labeled phalloidin to stain the actin cytoskeleton and 2μg/mL of DAPI (4’,6-diamidino-2-phenylindole), diluted in IF buffer and incubated for 2h at room temperature. Insert were then washed extensively in PBS, desalted in H2O miliQ and rinsed in 100% Ethanol and air-dried. Membranes were then removed from inserts and mounted in DAKO Fluorescence Mounting Medium prior to microscopy analysis."
-        }, {
-          "name" : "Growth Protocol",
-          "value" : "The BE cell culture was established from bronchial brushings or lung resection performed between the third and fifth bronchial generation from patients undergoing elective surgery as previously described (38). BE explants were cultured using PneumaCult Ex medium (Stemcell) for expansion of basal epithelial cells at 37 °C in 5% CO2. Then, 105 basal cells were grown on cell culture inserts (Corning) within the air–liquid interface for 21 d using PneumaCult ALI medium (Stemcell). Such a culture allows the differentiation into pseudostratified mucociliary airway epithelia composed of ciliated cells, goblet cells, club cells, and basal cells. The complete differentiation was assessed by the capacity of cilia to beat and mucus production under a light microscope."
-        } ]
+        "name" : "Description",
+        "value" : "BE culture from patient-derived material"
       }, {
-        "accno" : "Image Acquisition-1-1",
-        "type" : "Image Acquisition",
-        "attributes" : [ {
-          "name" : "Imaging Instrument",
-          "value" : "Leica inverted DMi6000 widefield microscope + Lumencor ligth source + Hamamatsu ORCA-Flash4.0 LT"
-        }, {
-          "name" : "Image Acquisition Parameters",
-          "value" : "between 10 and 200ms exposure time for each channel (647nm: 200ms;  594 nm: 400 ms; 488nm: 100 ms; 405nm: 10 ms)"
-        } ],
-        "subsections" : [ {
-          "accno" : "Imaging Method-1-1",
-          "type" : "Imaging Method",
-          "attributes" : [ {
-            "name" : "Ontology Value",
-            "value" : "fluorescence microscopy"
-          }, {
-            "name" : "Ontology Name",
-            "value" : "FBbi"
-          }, {
-            "name" : "Ontology Term ID",
-            "value" : "FBbi:00000246"
-          } ]
-        } ]
+        "name" : "Intrinsic variable",
+        "value" : "patient ID and patient age"
       }, {
-        "accno" : "Image Acquisition-1-2",
-        "type" : "Image Acquisition",
-        "attributes" : [ {
-          "name" : "Imaging Instrument",
-          "value" : "SP8 confocal microscope (Leica Microsystems at the Bordeaux Imaging Center) 405nm diode laser + white laser 470-670nm"
-        }, {
-          "name" : "Image Acquisition Parameters",
-          "value" : "diverse parameters; to be found inside the metadata of the .lif images"
-        } ],
-        "subsections" : [ {
-          "accno" : "Imaging Method-1-2",
-          "type" : "Imaging Method",
-          "attributes" : [ {
-            "name" : "Ontology Value",
-            "value" : "confocal microscopy"
-          }, {
-            "name" : "Ontology Name",
-            "value" : "FBbi"
-          }, {
-            "name" : "Ontology Term ID",
-            "value" : "FBbi:00000251"
-          } ]
-        } ]
+        "name" : "Extrinsic variable",
+        "value" : "infection with SARS-CoV-2"
       }, {
-        "accno" : "Image-Analysis-1-1",
-        "type" : "Image Analysis",
+        "name" : "Experimental variable",
+        "value" : "days after infection"
+      } ],
+      "subsections" : [ {
+        "accno" : "Organism-7-1",
+        "type" : "Organism",
         "attributes" : [ {
-          "name" : "Image Analysis Overview",
-          "value" : "To quantify colocalisation between N positive cells (infected cells) and either cytokeratin 5 (Cytk5, basal cells), mucin 5A (goblet cells) or acetylated tubulin (multi ciliated cells) 10x magnification images or a 63x magnification images were acquired and processed for image analysis. Z-projections of different focal planes were generated and regions of interest (ROI) were designed to delimit the area of analysis. A threshold was then applied to the projection of both N positive cells and Cytk5 (or tubulin) positive cells in order to obtain respective masks. Masks were analyzed using the “colocalization” function in ImageJ to calculate the number of double positive cells (N and Cytk5). Obtained values were normalized by either total number of N or total number of Cytk5 (or tubulin or mucin) positive cells to calculate the percentage of basal cells (or ciliated/goblet cells) that are infected."
+          "name" : "Scientific name",
+          "value" : "homo sapiens"
+        }, {
+          "name" : "Common name",
+          "value" : "human"
+        }, {
+          "name" : "NCBI taxon ID",
+          "value" : "NCBI:txid9606"
         } ]
       } ]
     }, {
-      "accno" : "Study Component-2",
+      "accno" : "Specimen-8",
+      "type" : "Specimen",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Specimen 2"
+      }, {
+        "name" : "Sample Preparation Protocol",
+        "value" : "BE were first washed in physiological serum and then fixed with 2.5% (v/v) glutaraldehyde and 2% (v/v) paraformaldehyde in 0.1M phosphate buffer (pH 7.4) during 2h minimum at room temperature (RT). Then samples were washed in 0.1M phosphate buffer and post-fixed in 1% (v/v) osmium tetroxide in phosphate buffer 0.1 M during 2h, in the dark, at RT, then washing in water and dehydrated through a series of graded ethanol and embedded in a mixture of pure ethanol and epoxy resin (Epon 812; Delta Microscopy, Toulouse, France) 50/50 (v/v) during 2 hours and then in 100% resin overnight at RT. The polymerization of the resin was carried out over a period between 24-48 hours at 60°C. Samples were then sectioned using a diamond knife (Diatome, Biel-Bienne,Switzerland) on an ultramicrotome (EM UCT, Leica Microsystems, Vienna, Austria). Ultrathin sections (70 nm) were picked up on copper grids and then stained with uranyless and lead citrate."
+      }, {
+        "name" : "Growth Protocol",
+        "value" : "The BE cell culture was established from bronchial brushings or lung resection performed between the third and fifth bronchial generation from patients undergoing elective surgery. BE explants were cultured using PneumaCult Ex medium (Stemcell) for expansion of basal epithelial cells at 37 °C in 5% CO2. Then, 105 basal cells were grown on cell culture inserts (Corning) within the air–liquid interface for 21 d using PneumaCult ALI medium (Stemcell). Such a culture allows the differentiation into pseudostratified mucociliary airway epithelia composed of ciliated cells, goblet cells, club cells, and basal cells. The complete differentiation was assessed by the capacity of cilia to beat and mucus production under a light microscope."
+      } ]
+    }, {
+      "accno" : "Image Acquisition-9",
+      "type" : "Image Acquisition",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Image Acquisition 3"
+      }, {
+        "name" : "Imaging Instrument",
+        "value" : "H7650, Hitachi Transmission Electron Microscope"
+      }, {
+        "name" : "Image Acquisition Parameters",
+        "value" : "80 kV"
+      } ],
+      "subsections" : [ {
+        "accno" : "Imaging Method-9-1",
+        "type" : "Imaging Method",
+        "attributes" : [ {
+          "name" : "Ontology Value",
+          "value" : "transmission electron microscopy (TEM)"
+        }, {
+          "name" : "Ontology Name",
+          "value" : "FBbi"
+        }, {
+          "name" : "Ontology Term ID",
+          "value" : "FBbi:00000258"
+        } ]
+      } ] 
+    }, {
+      "accno" : "Study Component-10",
       "type" : "Study Component",
       "attributes" : [ {
         "name" : "Name",
@@ -366,75 +487,133 @@
         "value" : "file_list_sc2.json"
       } ],
       "subsections" : [ {
-        "accno" : "Biosample-2-1",
-        "type" : "Biosample",
-        "attributes" : [ {
-          "name" : "Biological entity",
-          "value" : "bronchial epithelia (BE)"
-        }, {
-          "name" : "Description",
-          "value" : "BE culture from patient-derived material"
-        }, {
-          "name" : "Intrinsic variable",
-          "value" : "patient ID and patient age"
-        }, {
-          "name" : "Extrinsic variable",
-          "value" : "infection with SARS-CoV-2"
-        }, {
-          "name" : "Experimental variable",
-          "value" : "days after infection"
-        } ],
-        "subsections" : [ {
-          "accno" : "Organism-2-1",
-          "type" : "Organism",
-          "attributes" : [ {
-            "name" : "Scientific name",
-            "value" : "homo sapiens"
-          }, {
-            "name" : "Common name",
-            "value" : "human"
-          }, {
-            "name" : "NCBI taxon ID",
-            "value" : "NCBI:txid9606"
-          } ]
-        } ]
+        "type" : "Associations",
+         "attributes" : [ {
+           "name" : "Biosample",
+           "value" : "Biosample 2"
+         }, {
+           "name" : "Specimen",
+           "value" : "Specimen 2"
+         }, {
+           "name" : "Image acquisition",
+           "value" : "Image Acquisition 3"
+         } ]
+       } ]
+    }, {
+      "accno" : "Biosample-11",
+      "type" : "Biosample",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Biosample 3"
       }, {
-        "accno" : "Specimen-2-1",
-        "type" : "Specimen",
-        "attributes" : [ {
-          "name" : "Sample Preparation Protocol",
-          "value" : "BE were first washed in physiological serum and then fixed with 2.5% (v/v) glutaraldehyde and 2% (v/v) paraformaldehyde in 0.1M phosphate buffer (pH 7.4) during 2h minimum at room temperature (RT). Then samples were washed in 0.1M phosphate buffer and post-fixed in 1% (v/v) osmium tetroxide in phosphate buffer 0.1 M during 2h, in the dark, at RT, then washing in water and dehydrated through a series of graded ethanol and embedded in a mixture of pure ethanol and epoxy resin (Epon 812; Delta Microscopy, Toulouse, France) 50/50 (v/v) during 2 hours and then in 100% resin overnight at RT. The polymerization of the resin was carried out over a period between 24-48 hours at 60°C. Samples were then sectioned using a diamond knife (Diatome, Biel-Bienne,Switzerland) on an ultramicrotome (EM UCT, Leica Microsystems, Vienna, Austria). Ultrathin sections (70 nm) were picked up on copper grids and then stained with uranyless and lead citrate."
-        }, {
-          "name" : "Growth Protocol",
-          "value" : "The BE cell culture was established from bronchial brushings or lung resection performed between the third and fifth bronchial generation from patients undergoing elective surgery. BE explants were cultured using PneumaCult Ex medium (Stemcell) for expansion of basal epithelial cells at 37 °C in 5% CO2. Then, 105 basal cells were grown on cell culture inserts (Corning) within the air–liquid interface for 21 d using PneumaCult ALI medium (Stemcell). Such a culture allows the differentiation into pseudostratified mucociliary airway epithelia composed of ciliated cells, goblet cells, club cells, and basal cells. The complete differentiation was assessed by the capacity of cilia to beat and mucus production under a light microscope."
-        } ]
+        "name" : "Biological entity",
+        "value" : "bronchial epithelia (BE)"
       }, {
-        "accno" : "Image Acquisition-2-1",
-        "type" : "Image Acquisition",
+        "name" : "Description",
+        "value" : "BE culture from patient-derived material, stained with antibodies to discriminate different cell-types and cellular features"
+      }, {
+        "name" : "Intrinsic variable",
+        "value" : "patient ID; CRISPR-knockout of interferon-genes"
+      }, {
+        "name" : "Extrinsic variable",
+        "value" : "infection with SARS-CoV-2"
+      }, {
+        "name" : "Experimental variable",
+        "value" : "treatment with interferon (5 ng or 50 ng of IFN-λ)"
+      } ],
+      "subsections" : [ {
+        "accno" : "Organism-11-1",
+        "type" : "Organism",
         "attributes" : [ {
-          "name" : "Imaging Instrument",
-          "value" : "H7650, Hitachi Transmission Electron Microscope"
+          "name" : "Scientific name",
+          "value" : "homo sapiens"
         }, {
-          "name" : "Image Acquisition Parameters",
-          "value" : "80 kV"
-        } ],
-        "subsections" : [ {
-          "accno" : "Imaging Method-2-1",
-          "type" : "Imaging Method",
-          "attributes" : [ {
-            "name" : "Ontology Value",
-            "value" : "transmission electron microscopy (TEM)"
-          }, {
-            "name" : "Ontology Name",
-            "value" : "FBbi"
-          }, {
-            "name" : "Ontology Term ID",
-            "value" : "FBbi:00000258"
-          } ]
+          "name" : "Common name",
+          "value" : "human"
+        }, {
+          "name" : "NCBI taxon ID",
+          "value" : "NCBI:txid9606"
         } ]
       } ]
     }, {
-      "accno" : "Study Component-3",
+      "accno" : "Specimen-12",
+      "type" : "Specimen",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Specimen 3"
+      }, {
+        "name" : "Sample Preparation Protocol",
+        "value" : "For antigen detection, BE were washed repeatedly with PBS to remove mucus then fixed with 4% paraformaldehyde for 30min using complete insert immersion. Epithelia were then washed in PBS and permeabilized with 0.5% TritonX-100 in PBS for 10min at room temperature and washed again before being blocked in IF buffer (PBS containing 10% SVF and 0.05% saponin) for 1h at room temperature. Primary antibody was diluted in IF buffer and applied to inserts for 1h at room temperature. Samples were washed three times under agitation with PBS and incubated with secondary antibody, fluorescently labeled phalloidin to stain the actin cytoskeleton and 2μg/mL of DAPI (4’,6-diamidino-2-phenylindole), diluted in IF buffer and incubated for 2h at room temperature. Insert were then washed extensively in PBS, desalted in H2O miliQ and rinsed in 100% Ethanol and air-dried. Membranes were then removed from inserts and mounted in DAKO Fluorescence Mounting Medium prior to microscopy analysis."
+      }, {
+        "name" : "Growth Protocol",
+        "value" : "The BE cell culture was established from bronchial brushings or lung resection performed between the third and fifth bronchial generation from patients undergoing elective surgery as previously described (38). BE explants were cultured using PneumaCult Ex medium (Stemcell) for expansion of basal epithelial cells at 37 °C in 5% CO2. Then, 105 basal cells were grown on cell culture inserts (Corning) within the air–liquid interface for 21 d using PneumaCult ALI medium (Stemcell). Such a culture allows the differentiation into pseudostratified mucociliary airway epithelia composed of ciliated cells, goblet cells, club cells, and basal cells. The complete differentiation was assessed by the capacity of cilia to beat and mucus production under a light microscope."
+      } ]
+    }, {
+      "accno" : "Image Acquisition-13",
+      "type" : "Image Acquisition",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Image Acquisition 4"
+      }, {
+        "name" : "Imaging Instrument",
+        "value" : "Leica inverted DMi6000 widefield microscope"
+      }, {
+        "name" : "Image Acquisition Parameters",
+        "value" : "between 10 and 200ms exposure time for each channel (647nm: 200ms;  594 nm: 400 ms; 488nm: 100 ms; 405nm: 10 ms)"
+      } ],
+      "subsections" : [ {
+        "accno" : "Imaging Method-13-1",
+        "type" : "Imaging Method",
+        "attributes" : [ {
+          "name" : "Ontology Value",
+          "value" : "fluorescence microscopy"
+        }, {
+          "name" : "Ontology Name",
+          "value" : "FBbi"
+        }, {
+          "name" : "Ontology Term ID",
+          "value" : "FBbi:00000246"
+        } ]
+      } ]
+    }, {
+      "accno" : "Image Acquisition-14",
+      "type" : "Image Acquisition",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Image Acquisition 5"
+      }, {
+        "name" : "Imaging Instrument",
+        "value" : "SP8 confocal microscope (Leica Microsystems at the Bordeaux Imaging Center)"
+      }, {
+        "name" : "Image Acquisition Parameters",
+        "value" : "diverse parameters; to be found inside the metadata of the .lif images"
+      } ],
+      "subsections" : [ {
+        "accno" : "Imaging Method-14-1",
+        "type" : "Imaging Method",
+        "attributes" : [ {
+          "name" : "Ontology Value",
+          "value" : "confocal microscopy"
+        }, {
+          "name" : "Ontology Name",
+          "value" : "FBbi"
+        }, {
+          "name" : "Ontology Term ID",
+          "value" : "FBbi:00000251"
+        } ]
+      } ]
+    }, {
+      "accno" : "Image-Analysis-15",
+      "type" : "Image Analysis",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Image Analysis 2"
+      }, {
+        "name" : "Image Analysis Overview",
+        "value" : "To determine the infected surface in presence or absence of IFN treatment the entire epithelial surface was recorded at 10x magnification for each condition, for each donor and processed for image analysis. Z-projections of the entire epithelium were generated and determined as ROI. The infected area or as normalized value to the non-treated controlinfected area was determined by the N-signal and calculated as percentage of infected area or as normalized value to the non-treated control"
+      } ] 
+    }, {
+      "accno" : "Study Component-16",
       "type" : "Study Component",
       "attributes" : [ {
         "name" : "Name",
@@ -447,104 +626,36 @@
         "value" : "file_list_sc3.json"
       } ],
       "subsections" : [ {
-        "accno" : "Biosample-3-1",
-        "type" : "Biosample",
-        "attributes" : [ {
-          "name" : "Biological entity",
-          "value" : "bronchial epithelia (BE)"
-        }, {
-          "name" : "Description",
-          "value" : "BE culture from patient-derived material, stained with antibodies to discriminate different cell-types and cellular features"
-        }, {
-          "name" : "Intrinsic variable",
-          "value" : "patient ID; CRISPR-knockout of interferon-genes"
-        }, {
-          "name" : "Extrinsic variable",
-          "value" : "infection with SARS-CoV-2"
-        }, {
-          "name" : "Experimental variable",
-          "value" : "treatment with interferon (5 ng or 50 ng of IFN-λ)"
-        } ],
-        "subsections" : [ {
-          "accno" : "Organism-3-1",
-          "type" : "Organism",
-          "attributes" : [ {
-            "name" : "Scientific name",
-            "value" : "homo sapiens"
-          }, {
-            "name" : "Common name",
-            "value" : "human"
-          }, {
-            "name" : "NCBI taxon ID",
-            "value" : "NCBI:txid9606"
-          } ]
-        } ]
-      }, {
-        "accno" : "Specimen-3-1",
-        "type" : "Specimen",
-        "attributes" : [ {
-          "name" : "Sample Preparation Protocol",
-          "value" : "For antigen detection, BE were washed repeatedly with PBS to remove mucus then fixed with 4% paraformaldehyde for 30min using complete insert immersion. Epithelia were then washed in PBS and permeabilized with 0.5% TritonX-100 in PBS for 10min at room temperature and washed again before being blocked in IF buffer (PBS containing 10% SVF and 0.05% saponin) for 1h at room temperature. Primary antibody was diluted in IF buffer and applied to inserts for 1h at room temperature. Samples were washed three times under agitation with PBS and incubated with secondary antibody, fluorescently labeled phalloidin to stain the actin cytoskeleton and 2μg/mL of DAPI (4’,6-diamidino-2-phenylindole), diluted in IF buffer and incubated for 2h at room temperature. Insert were then washed extensively in PBS, desalted in H2O miliQ and rinsed in 100% Ethanol and air-dried. Membranes were then removed from inserts and mounted in DAKO Fluorescence Mounting Medium prior to microscopy analysis."
-        }, {
-          "name" : "Growth Protocol",
-          "value" : "The BE cell culture was established from bronchial brushings or lung resection performed between the third and fifth bronchial generation from patients undergoing elective surgery as previously described (38). BE explants were cultured using PneumaCult Ex medium (Stemcell) for expansion of basal epithelial cells at 37 °C in 5% CO2. Then, 105 basal cells were grown on cell culture inserts (Corning) within the air–liquid interface for 21 d using PneumaCult ALI medium (Stemcell). Such a culture allows the differentiation into pseudostratified mucociliary airway epithelia composed of ciliated cells, goblet cells, club cells, and basal cells. The complete differentiation was assessed by the capacity of cilia to beat and mucus production under a light microscope."
-        } ]
-      }, {
-        "accno" : "Image Acquisition-3-1",
-        "type" : "Image Acquisition",
-        "attributes" : [ {
-          "name" : "Imaging Instrument",
-          "value" : "Leica inverted DMi6000 widefield microscope"
-        }, {
-          "name" : "Image Acquisition Parameters",
-          "value" : "between 10 and 200ms exposure time for each channel (647nm: 200ms;  594 nm: 400 ms; 488nm: 100 ms; 405nm: 10 ms)"
-        } ],
-        "subsections" : [ {
-          "accno" : "Imaging Method-3-1",
-          "type" : "Imaging Method",
-          "attributes" : [ {
-            "name" : "Ontology Value",
-            "value" : "fluorescence microscopy"
-          }, {
-            "name" : "Ontology Name",
-            "value" : "FBbi"
-          }, {
-            "name" : "Ontology Term ID",
-            "value" : "FBbi:00000246"
-          } ]
-        } ]
-      }, {
-        "accno" : "Image Acquisition-3-2",
-        "type" : "Image Acquisition",
-        "attributes" : [ {
-          "name" : "Imaging Instrument",
-          "value" : "SP8 confocal microscope (Leica Microsystems at the Bordeaux Imaging Center)"
-        }, {
-          "name" : "Image Acquisition Parameters",
-          "value" : "diverse parameters; to be found inside the metadata of the .lif images"
-        } ],
-        "subsections" : [ {
-          "accno" : "Imaging Method-3-2",
-          "type" : "Imaging Method",
-          "attributes" : [ {
-            "name" : "Ontology Value",
-            "value" : "confocal microscopy"
-          }, {
-            "name" : "Ontology Name",
-            "value" : "FBbi"
-          }, {
-            "name" : "Ontology Term ID",
-            "value" : "FBbi:00000251"
-          } ]
-        } ]
-      }, {
-        "accno" : "Image-Analysis-3-1",
-        "type" : "Image Analysis",
-        "attributes" : [ {
-          "name" : "Image Analysis Overview",
-          "value" : "To determine the infected surface in presence or absence of IFN treatment the entire epithelial surface was recorded at 10x magnification for each condition, for each donor and processed for image analysis. Z-projections of the entire epithelium were generated and determined as ROI. The infected area or as normalized value to the non-treated controlinfected area was determined by the N-signal and calculated as percentage of infected area or as normalized value to the non-treated control"
-        } ]
-      } ]
+        "type" : "Associations",
+         "attributes" : [ {
+           "name" : "Biosample",
+           "value" : "Biosample 3"
+         }, {
+           "name" : "Specimen",
+           "value" : "Specimen 3"
+         }, {
+           "name" : "Image acquisition",
+           "value" : "Image Acquisition 4"
+         }, {
+           "name" : "Image analysis",
+           "value" : "Image Analysis 2"
+         } ]
+       }, {
+        "type" : "Associations",
+         "attributes" : [ {
+           "name" : "Biosample",
+           "value" : "Biosample 3"
+         }, {
+           "name" : "Specimen",
+           "value" : "Specimen 3"
+         }, {
+           "name" : "Image acquisition",
+           "value" : "Image Acquisition 5"
+         }, {
+           "name" : "Image analysis",
+           "value" : "Image Analysis 2"
+         } ]
+       } ]
     } ]
   },
   "type" : "submission"

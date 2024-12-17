@@ -172,7 +172,7 @@ def determine_biostudies_processing_version(submission: Submission):
         "S-BIAD590": BioStudiesProcessingVersion.V4, 
         "S-BIAD599": BioStudiesProcessingVersion.V4, 
         "S-BIAD628": BioStudiesProcessingVersion.V4, 
-        #"S-BIAD677": BioStudiesProcessingVersion.V4, 
+        "S-BIAD677": BioStudiesProcessingVersion.V4, 
         "S-BIAD686": BioStudiesProcessingVersion.V4,
         "S-BIAD822": BioStudiesProcessingVersion.V4,
         "S-BIAD843": BioStudiesProcessingVersion.V4,
