@@ -1,0 +1,304 @@
+{
+  "accno" : "S-BIAD590",
+  "attributes" : [ {
+    "name" : "Title",
+    "value" : "A deep-learning classifier identifies patients with clinical heart failure using whole-slide images of H&E tissue."
+  }, {
+    "name" : "ReleaseDate",
+    "value" : "2022-11-23"
+  }, {
+    "name" : "RootPath",
+    "value" : "idr0042"
+  }, {
+    "name" : "AttachTo",
+    "value" : "BioImages"
+  } ],
+  "section" : {
+    "type" : "Study",
+    "attributes" : [ {
+      "name" : "Description",
+      "value" : "Over 26 million people worldwide suffer from heart failure annually. When the cause of heart failure cannot be identified, endomyocardial biopsy (EMB) represents the gold-standard for the evaluation of disease. However, manual EMB interpretation has high inter-rater variability. Deep convolutional neural networks (CNNs) have been successfully applied to detect cancer, diabetic retinopathy, and dermatologic lesions from images. In this study, we develop a CNN classifier to detect clinical heart failure from H&E stained whole-slide images from a total of 209 patients, 104 patients were used for training and the remaining 105 patients for independent testing. The CNN was able to identify patients with heart failure or severe pathology with a 99% sensitivity and 94% specificity on the test set, outperforming conventional feature-engineering approaches. Importantly, the CNN outperformed two expert pathologists by nearly 20%. Our results suggest that deep learning analytics of EMB can be used to predict cardiac outcome."
+    }, {
+      "name" : "Keyword",
+      "value" : "heart failure "
+    }, {
+      "name" : "Keyword",
+      "value" : "histopathology"
+    }, {
+      "name" : "Keyword",
+      "value" : "classifier"
+    }, {
+      "name" : "Keyword",
+      "value" : "deep learning"
+    }, {
+      "name" : "Keyword",
+      "value" : "AI"
+    }, {
+      "name" : "License",
+      "value" : "CC BY 4.0",
+      "valqual" : [ {
+        "name" : "URL",
+        "value" : "https://creativecommons.org/licenses/by/4.0/legalcode"
+      } ]
+    }, {
+      "name" : "IDR accession number",
+      "value" : "idr0042"
+    }, {
+      "name" : "Funding statement",
+      "value" : "Research reported in this publication was supported by the National Cancer Institute of the National Institutes of Health under award numbers (R01CA202752-01A1, R01CA208236-01A1, R01 CA216579-01A1, R21CA179327-01, R21CA195152-01 and U24CA199374-01) the National Institute of Diabetes and Digestive and Kidney Diseases under award number R01DK098503-02, The National Center for Advancing Translational Sciences under award number TL1TR001880, the National Heart Lung and Blood Institute under award number R01-HL105993, the DOD Prostate Cancer Synergistic Idea Development Award (PC120857); the National Institute of Diabetes and Digestive and Kidney Diseases (US) under award number 5T32DK007470, the National Center for Research Resources under award number under the award number 1 C06 RR12463-01, the DOD Lung Cancer Idea Development New Investigator Award (LC130463), the DOD Prostate Cancer Synergistic Idea Development Award (PC120857); the DOD Peer Reviewed Cancer Research Program (W81XWH-16-1-0329), the Case Comprehensive Cancer Center Pilot Grant, The Ohio Third Frontier Technology Validation Fund, the VelaSano Grant from the Cleveland Clinic the Wallace H. Coulter Foundation Program in the Department of Biomedical Engineering at Case Western Reserve University, the Wallace H. Coulter Foundation Program in the Department of Biomedical Engineering, the The Clinical and Translational Science Award Program (CTSA) at Case Western Reserve University, and the I-Corps@Ohio Program. JJN was supported by NINDS F30NS092227. The content is solely the responsibility of the authors and does not necessarily represent the official views of the National Institutes of Health. The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript."
+    } ],
+    "links" : [ {
+      "url" : "https://idr.openmicroscopy.org/webclient/?show=project-402",
+      "attributes" : [ {
+        "name" : "Type",
+        "value" : "Image Data Resource (IDR)"
+      } ]
+    } ],
+    "subsections" : [ {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "JJ Nirschl"
+      }, {
+        "name" : "Email"
+      }, {
+        "name" : "role",
+        "value" : "Data curation, Formal analysis, Investigation, Methodology, Software, Writing – original draft, Writing – review & editing"
+      }, {
+        "name" : "ORCID",
+        "value" : "http://orcid.org/0000-0001-6857-341X"
+      }, {
+        "name" : "affiliation",
+        "value" : "o4",
+        "reference" : true
+      } ]
+    }, {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "A Janowczyk"
+      }, {
+        "name" : "Email"
+      }, {
+        "name" : "role",
+        "value" : "Formal analysis, Investigation, Methodology, Software, Supervision, Writing – review & editing"
+      }, {
+        "name" : "ORCID"
+      }, {
+        "name" : "affiliation",
+        "value" : "o2",
+        "reference" : true
+      } ]
+    }, {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "EG Peyster"
+      }, {
+        "name" : "Email"
+      }, {
+        "name" : "role",
+        "value" : "Data curation, Resources, Writing – review & editing"
+      }, {
+        "name" : "ORCID"
+      }, {
+        "name" : "affiliation",
+        "value" : "o3",
+        "reference" : true
+      } ]
+    }, {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "R Frank"
+      }, {
+        "name" : "Email"
+      }, {
+        "name" : "role",
+        "value" : "Data curation, Resources"
+      }, {
+        "name" : "ORCID"
+      }, {
+        "name" : "affiliation",
+        "value" : "o1",
+        "reference" : true
+      } ]
+    }, {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "KB Margulies"
+      }, {
+        "name" : "Email"
+      }, {
+        "name" : "role",
+        "value" : "Conceptualization, Data curation, Resources, Supervision, Writing – review & editing"
+      }, {
+        "name" : "ORCID"
+      }, {
+        "name" : "affiliation",
+        "value" : "o3",
+        "reference" : true
+      } ]
+    }, {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "MD Feldman"
+      }, {
+        "name" : "Email"
+      }, {
+        "name" : "role",
+        "value" : "Conceptualization, Data curation, Resources, Supervision, Writing – review & editing"
+      }, {
+        "name" : "ORCID"
+      }, {
+        "name" : "affiliation",
+        "value" : "o1",
+        "reference" : true
+      } ]
+    }, {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "A Madabhushi"
+      }, {
+        "name" : "Email",
+        "value" : "axm788@case.edu"
+      }, {
+        "name" : "role",
+        "value" : "Conceptualization, Funding acquisition, Methodology, Project administration, Supervision, Writing – review & editing"
+      }, {
+        "name" : "ORCID",
+        "value" : "http://orcid.org/0000-0002-5741-0399"
+      }, {
+        "name" : "affiliation",
+        "value" : "o2",
+        "reference" : true
+      } ]
+    }, {
+      "accno" : "o1",
+      "type" : "organization",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Department of Pathology and Laboratory Medicine, University of Pennsylvania, Philadelphia, PA, United States of America"
+      } ]
+    }, {
+      "accno" : "o2",
+      "type" : "organization",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Department of Biomedical Engineering, Case Western Reserve University, Cleveland, OH, United States of America"
+      } ]
+    }, {
+      "accno" : "o3",
+      "type" : "organization",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Cardiovascular Research Institute, University of Pennsylvania, Philadelphia, PA, United States of America"
+      } ]
+    }, {
+      "accno" : "o4",
+      "type" : "organization",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Department of Physiology, Perelman School of Medicine, University of Pennsylvania, Philadelphia, PA, United States of America"
+      } ]
+    }, {
+      "type" : "Publication",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "A deep-learning classifier identifies patients with clinical heart failure using whole-slide images of H&E tissue."
+      }, {
+        "name" : "Year",
+        "value" : "2018"
+      }, {
+        "name" : "DOI",
+        "value" : "https://doi.org/10.1371/journal.pone.0192726"
+      }, {
+        "name" : "PMC ID",
+        "value" : "PMC5882098"
+      } ]
+    }, {
+      "accno" : "Study Component-1",
+      "type" : "Study Component",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Histopathology images"
+      }, {
+        "name" : "Description",
+        "value" : "Histopathology sub-image from patient whole-slide images from patients with end-stage clinical heart failure or cadaveric donor hearts from patients without heart failure."
+      }, {
+        "name" : "File List",
+        "value" : "bia_file_list_idr0042.json"
+      } ],
+      "subsections" : [ {
+        "accno" : "Image Acquisition-1-1",
+        "type" : "Image Acquisition",
+        "attributes" : [ {
+          "name" : "Imaging Instrument",
+          "value" : "Aperio ScanScope slide scanner with 20x magnification"
+        }, {
+          "name" : "Image Acquisition Parameters",
+          "value" : "Pixel Size (XY) (µm) = 2 x 2"
+        } ],
+        "subsections" : [ {
+          "accno" : "Imaging Method-1-1",
+          "type" : "Imaging Method",
+          "attributes" : [ {
+            "name" : "Ontology Value",
+            "value" : "bright-field microscopy"
+          }, {
+            "name" : "Ontology Name",
+            "value" : "bright-field microscopy"
+          }, {
+            "name" : "Ontology Term ID",
+            "value" : "FBbi:00000243"
+          } ]
+        } ]
+      }, {
+        "accno" : "Specimen-1-1",
+        "type" : "Specimen",
+        "attributes" : [ {
+          "name" : "Sample Preparation Protocol",
+          "value" : "transmural tissue from the left ventricular free wall were fixed in 4% paraformaldehyde and later processed, embedded in paraffin, sectioned and stained with hematoxylin and eosin (H&E) for morphologic analysis."
+        } ]
+      }, {
+        "accno" : "Biosample-1-1",
+        "type" : "Biosample",
+        "attributes" : [ {
+          "name" : "Biological entity",
+          "value" : "ventricular tissue from human patients"
+        }, {
+          "name" : "Description",
+          "value" : "human heart"
+        }, {
+          "name" : "Experimental variable",
+          "value" : "There were two cohorts of patients: those with end-stage heart failure and a comparison group without heart failure."
+        } ],
+        "subsections" : [ {
+          "accno" : "Organism-1-1",
+          "type" : "Organism",
+          "attributes" : [ {
+            "name" : "Scientific name",
+            "value" : "Homo Sapiens"
+          }, {
+            "name" : "Common name",
+            "value" : "Human"
+          }, {
+            "name" : "NCBI taxon ID",
+            "value" : "NCBITaxon_9606"
+          } ]
+        } ]
+      }, {
+        "accno" : "Image-Analysis-1-1",
+        "type" : "Image Analysis",
+        "attributes" : [ {
+          "name" : "Image Analysis Overview",
+          "value" : "The primary neural network used in this study was adapted from Janowczyk and Madabhushi. This fully-convolutional architecture is composed of alternating convolutional, batch normalization, and Rectified Linear Unit (ReLU) activation layers. This network has approximately 13,500 learnable parameters. The network accepts 64x 64 pixel RGB image patches (128x128μm) with a label corresponding to the cohort to which the patient belongs (failing or non-failing). The CNN classifier was trained using 100 patches per ROI, per patient, and the training set was augmented rotating each patch by 90 degrees. The output of the CNN is a pixel-level probability of whether ROIs belong to the failing class. The pixels in a single image were averaged to obtain the image-level probability. Each fold of the three-fold cross validation was trained using NVIDIA DIGITS for 30 epochs on a Titan X GPU with CUDA7.5 and cuDNN optimized by Stochastic Gradient Descent built into Caffe and a fixed batch size of 64. Additional networks used in this study: AlexNet, GoogLeNet, and a 50-layer ResNet with dropout with the full or half the number of kernels at each layer. These networks were trained on 5X magnification (250 x 250) RGB images upsampled 2X to 500 x 500 pixels, which allowed data augmentation by random cropping of regions 227x 227 (AlexNet) or 224 x 224 (GoogLeNet or ResNet-50). Given the limited number of images in the training dataset, all networks used aggressive data augmentation including: random cropping, random rotation (90, 180, 270), image mirroring, and stain color augmentation. Each fold of the three-fold cross-validation was trained using NVIDIA DIGITS for 1000 epochs on a NVIDIA GTX 1080-Ti with CUDA 8.0 and cuDNN optimized by AdaGrad built into Caffe, with a fixed batch size of 512 where gradients were accumulated over multiple minibatches."
+        } ]
+      } ]
+    } ]
+  },
+  "type" : "submission"
+}

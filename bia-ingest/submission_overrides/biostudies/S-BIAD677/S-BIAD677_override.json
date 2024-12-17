@@ -1,0 +1,662 @@
+{
+  "accno" : "S-BIAD677",
+  "attributes" : [ {
+    "name" : "REMBI_PageTab Conversion Script Version",
+    "value" : "1.0.0"
+  }, {
+    "name" : "Title",
+    "value" : "Bronchial epithelia from adults and children: SARS-CoV-2 spread via syncytia formation and type III interferon infectivity restriction"
+  }, {
+    "name" : "ReleaseDate",
+    "value" : "2023-05-02"
+  }, {
+    "name" : "AttachTo",
+    "value" : "BioImages"
+  } ],
+  "section" : {
+    "type" : "Study",
+    "attributes" : [ {
+      "name" : "Description",
+      "value" : "Here, we reconstituted bronchial epithelia from adult and child donors and show that SARS-CoV-2 infections spread fast, resulting in the formation and synchronized release of large clusters of infected cells and syncytia into the apical lumen, contributing to virus dissemination. Some epithelia, for the most part from children, revealed an intrinsic resistance to infection and virus spread. This infection control correlates with faster type III interferon secretion and can be transferred to permissive epithelia through exogenous interferon application. Child epithelia also showed a muted inflammatory response compared with adult, suggesting a specific and age-adapted epithelial response to SARS-CoV-2 infection that may explain why children are less susceptible to severe COVID-19."
+    }, {
+      "name" : "License",
+      "value" : "CC0"
+    }, {
+      "name" : "Keyword",
+      "value" : "SARS-CoV-2"
+    }, {
+      "name" : "Keyword",
+      "value" : "bronchial epithelia"
+    }, {
+      "name" : "Keyword",
+      "value" : "infection"
+    }, {
+      "name" : "Keyword",
+      "value" : "syncytia"
+    }, {
+      "name" : "Keyword",
+      "value" : "children"
+    }, {
+      "name" : "Keyword",
+      "value" : "interferon"
+    }, {
+      "name" : "Acknowledgements",
+      "value" : "Light and electron imaging was performed at the Bordeaux Imaging Center (BIC), member of the FranceBioImaging national infrastructure (grant ANR-10-INBS-04) and of the French BioImaging Node of Euro-BioImaging ERIC (https://ror.org/05d78xc36). We thank the BIC for relentless support during the lockdown"
+    }, {
+      "name" : "Funding statement",
+      "value" : "M.-L.B. was supported by the Région Nouvelle Aquitaine and UBReact, Bordeaux University. I.K. receives funding from EU Horizon 2020 under grant agreement no. 101046203 (BY-COVID)."
+    } ],
+    "subsections" : [ {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Nicolas Landrein"
+      }, {
+        "name" : "Email",
+        "value" : "nicolas.landrein@u-bordeaux.fr"
+      }, {
+        "name" : "Role",
+        "value" : "submitter"
+      }, {
+        "name" : "ORCID",
+        "value" : "0000-0001-8875-4242"
+      }, {
+        "name" : "affiliation",
+        "value" : "o1",
+        "reference" : true
+      } ]
+    }, {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Harald Wodrich"
+      }, {
+        "name" : "Email",
+        "value" : "harald.wodrich@u-bordeaux.fr"
+      }, {
+        "name" : "Role",
+        "value" : "principal investigator"
+      }, {
+        "name" : "ORCID",
+        "value" : "0000-0002-4764-1708"
+      }, {
+        "name" : "affiliation",
+        "value" : "o1",
+        "reference" : true
+      } ]
+    }, {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Guillaume Beucher"
+      }, {
+        "name" : "Email",
+        "value" : "guillaume.beucher@u-bordeaux.fr"
+      }, {
+        "name" : "Role",
+        "value" : "first author"
+      }, {
+        "name" : "affiliation",
+        "value" : "o1",
+        "reference" : true
+      } ]
+    }, {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Thomas Trian"
+      }, {
+        "name" : "Email",
+        "value" : "thomas.trian@u-bordeaux.fr"
+      }, {
+        "name" : "Role",
+        "value" : "contributor"
+      }, {
+        "name" : "ORCID",
+        "value" : "0000-0002-2567-4867"
+      }, {
+        "name" : "affiliation",
+        "value" : "o1",
+        "reference" : true
+      } ]
+    }, {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Marie-Line Andreola"
+      }, {
+        "name" : "Email",
+        "value" : "marie-aline.andreola@u-bordeaux.fr"
+      }, {
+        "name" : "Role",
+        "value" : "contributor"
+      }, {
+        "name" : "ORCID",
+        "value" : "0000-0001-9808-7391"
+      }, {
+        "name" : "affiliation",
+        "value" : "o1",
+        "reference" : true
+      } ]
+    }, {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Isabel Kemmer"
+      }, {
+        "name" : "Email",
+        "value" : "isabel.kemmer@eurobioimaging.eu"
+      }, {
+        "name" : "Role",
+        "value" : "data steward"
+      }, {
+        "name" : "ORCID",
+        "value" : "0000-0002-8799-4671"
+      }, {
+        "name" : "affiliation",
+        "value" : "o2",
+        "reference" : true
+      } ]
+    }, {
+      "accno" : "o1",
+      "type" : "organization",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "University of Bordeaux"
+      }, {
+        "name" : "RORID",
+        "value" : "https://ror.org/057qpr032"
+      } ]
+    }, {
+      "accno" : "o2",
+      "type" : "organization",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Euro-BioImaging ERIC"
+      }, {
+        "name" : "RORID",
+        "value" : "https://ror.org/05d78xc36"
+      } ]
+    }, {
+      "type" : "Publication",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Bronchial epithelia from adults and children: SARS-CoV-2 spread via syncytia formation and type III interferon infectivity restriction"
+      }, {
+        "name" : "Year",
+        "value" : "2022"
+      }, {
+        "name" : "Authors",
+        "value" : "Guillaume Beucher, Marie-Lise Blondot, Alexis Celle, Noémie Pied, Patricia Recordon-Pinson, Pauline Esteves, Muriel Faure, Mathieu Métifiot, Sabrina Lacomme, Denis Dacheux, Derrick R. Robinson, Gernot Längst, Fabien Beaufils, Marie-Edith Lafon, Patrick Berger, Marc Landry, Denis Malvy, Thomas Trian, Marie-Line Andreola, Harald Wodrich"
+      }, {
+        "name" : "DOI",
+        "value" : "10.1073/pnas.2202370119"
+      }, {
+        "name" : "PMC ID",
+        "value" : "PMC9651868"
+      } ]
+    }, {
+      "type" : "Funding",
+      "attributes" : [ {
+        "name" : "Agency",
+        "value" : "laboratoire d'excellence ParaFrap"
+      }, {
+        "name" : "grant_id",
+        "value" : "grant ANR-11-LABX-0024"
+      } ]
+    }, {
+      "type" : "Funding",
+      "attributes" : [ {
+        "name" : "Agency",
+        "value" : "Fondation Recherche Medicale (FRM)"
+      }, {
+        "name" : "grant_id",
+        "value" : "grant DEQ20180339229"
+      } ]
+    }, {
+      "type" : "Funding",
+      "attributes" : [ {
+        "name" : "Agency",
+        "value" : "Agence Nationale de la Recherche"
+      }, {
+        "name" : "grant_id",
+        "value" : "grant ANR-CE14-0015-01, project ROSAE"
+      } ]
+    }, {
+      "type" : "Funding",
+      "attributes" : [ {
+        "name" : "Agency",
+        "value" : "Fondation de France"
+      }, {
+        "name" : "grant_id",
+        "value" : "project ANACONDA"
+      } ]
+    }, {
+      "type" : "Funding",
+      "attributes" : [ {
+        "name" : "Agency",
+        "value" : "France BioImaging"
+      }, {
+        "name" : "grant_id",
+        "value" : "grant ANR-10-INBS-04"
+      } ]
+    }, {
+      "accno" : "Biosample-1",
+      "type" : "Biosample",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Biosample"
+        }, {
+        "name" : "Biological entity",
+        "value" : "bronchial epithelia (BE)"
+      }, {
+        "name" : "Description",
+        "value" : "BE culture from patient-derived material, stained with antibodies to discriminate different cell-types and cellular features"
+      }, {
+        "name" : "Intrinsic variable",
+        "value" : "patient ID and patient age"
+      }, {
+        "name" : "Extrinsic variable",
+        "value" : "infection with SARS-CoV-2"
+      }, {
+        "name" : "Experimental variable",
+        "value" : "days after infection"
+      } ],
+      "subsections" : [ {
+        "accno" : "Organism-1-1",
+        "type" : "Organism",
+        "attributes" : [ {
+          "name" : "Scientific name",
+          "value" : "homo sapiens"
+        }, {
+          "name" : "Common name",
+          "value" : "human"
+        }, {
+          "name" : "NCBI taxon ID",
+          "value" : "NCBI:txid9606"
+        } ]
+      } ]
+    }, {
+      "accno" : "Specimen-2",
+      "type" : "Specimen",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Specimen"
+        }, {
+        "name" : "Sample Preparation Protocol",
+        "value" : "For antigen detection, BE were washed repeatedly with PBS to remove mucus then fixed with 4% paraformaldehyde for 30min using complete insert immersion. Epithelia were then washed in PBS and permeabilized with 0.5% TritonX-100 in PBS for 10min at room temperature and washed again before being blocked in IF buffer (PBS containing 10% SVF and 0.05% saponin) for 1h at room temperature. Primary antibody was diluted in IF buffer and applied to inserts for 1h at room temperature. Samples were washed three times under agitation with PBS and incubated with secondary antibody, fluorescently labeled phalloidin to stain the actin cytoskeleton and 2μg/mL of DAPI (4’,6-diamidino-2-phenylindole), diluted in IF buffer and incubated for 2h at room temperature. Insert were then washed extensively in PBS, desalted in H2O miliQ and rinsed in 100% Ethanol and air-dried. Membranes were then removed from inserts and mounted in DAKO Fluorescence Mounting Medium prior to microscopy analysis."
+      }, {
+        "name" : "Growth Protocol",
+        "value" : "The BE cell culture was established from bronchial brushings or lung resection performed between the third and fifth bronchial generation from patients undergoing elective surgery as previously described (38). BE explants were cultured using PneumaCult Ex medium (Stemcell) for expansion of basal epithelial cells at 37 °C in 5% CO2. Then, 105 basal cells were grown on cell culture inserts (Corning) within the air–liquid interface for 21 d using PneumaCult ALI medium (Stemcell). Such a culture allows the differentiation into pseudostratified mucociliary airway epithelia composed of ciliated cells, goblet cells, club cells, and basal cells. The complete differentiation was assessed by the capacity of cilia to beat and mucus production under a light microscope."
+      } ]
+    }, {
+      "accno" : "Image Acquisition-3",
+      "type" : "Image Acquisition",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Image Acquisition"
+      }, {
+        "name" : "Imaging Instrument",
+        "value" : "Leica inverted DMi6000 widefield microscope + Lumencor ligth source + Hamamatsu ORCA-Flash4.0 LT"
+      }, {
+        "name" : "Image Acquisition Parameters",
+        "value" : "between 10 and 200ms exposure time for each channel (647nm: 200ms;  594 nm: 400 ms; 488nm: 100 ms; 405nm: 10 ms)"
+      } ],
+      "subsections" : [ {
+        "accno" : "Imaging Method-3-1",
+        "type" : "Imaging Method",
+        "attributes" : [ {
+          "name" : "Ontology Value",
+          "value" : "fluorescence microscopy"
+        }, {
+          "name" : "Ontology Name",
+          "value" : "FBbi"
+        }, {
+          "name" : "Ontology Term ID",
+          "value" : "FBbi:00000246"
+        } ]
+      } ]
+    }, {
+      "accno" : "Image Acquisition-4",
+      "type" : "Image Acquisition",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Image Acquisition 2"
+      }, {
+        "name" : "Imaging Instrument",
+        "value" : "SP8 confocal microscope (Leica Microsystems at the Bordeaux Imaging Center) 405nm diode laser + white laser 470-670nm"
+      }, {
+        "name" : "Image Acquisition Parameters",
+        "value" : "diverse parameters; to be found inside the metadata of the .lif images"
+      } ],
+      "subsections" : [ {
+        "accno" : "Imaging Method-4-1",
+        "type" : "Imaging Method",
+        "attributes" : [ {
+          "name" : "Ontology Value",
+          "value" : "confocal microscopy"
+        }, {
+          "name" : "Ontology Name",
+          "value" : "FBbi"
+        }, {
+          "name" : "Ontology Term ID",
+          "value" : "FBbi:00000251"
+        } ]
+      } ]
+    }, {
+      "accno" : "Image-Analysis-5",
+      "type" : "Image Analysis",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Image Analysis"
+      }, {
+        "name" : "Image Analysis Overview",
+        "value" : "To quantify colocalisation between N positive cells (infected cells) and either cytokeratin 5 (Cytk5, basal cells), mucin 5A (goblet cells) or acetylated tubulin (multi ciliated cells) 10x magnification images or a 63x magnification images were acquired and processed for image analysis. Z-projections of different focal planes were generated and regions of interest (ROI) were designed to delimit the area of analysis. A threshold was then applied to the projection of both N positive cells and Cytk5 (or tubulin) positive cells in order to obtain respective masks. Masks were analyzed using the “colocalization” function in ImageJ to calculate the number of double positive cells (N and Cytk5). Obtained values were normalized by either total number of N or total number of Cytk5 (or tubulin or mucin) positive cells to calculate the percentage of basal cells (or ciliated/goblet cells) that are infected."
+      } ]
+    }, {
+      "accno" : "Study Component-6",
+      "type" : "Study Component",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Infected Multiciliated Cells Form Syncytia with Basal Cells at the Apical Side of the BE"
+      }, {
+        "name" : "Description",
+        "value" : "we used human reconstituted bronchial epithelia (BE) to investigate the onset of infection and replication of SARS-CoV-2 with widefield and confocal microscopy. BE are an important tissue because subsequent infection of the bronchial tissue determines whether a SARS-CoV-2 infection results in severe or mild respiratory illness, by controlling the spread into the lower respiratory tract. These features differentiate our approach from similar studies using primary respiratory cells from either upper airway (nasal, tracheal)"
+      }, {
+        "name" : "File List",
+        "value" : "file_list_sc1.json"
+      } ],
+      "subsections" : [ {
+        "type" : "Associations",
+         "attributes" : [ {
+           "name" : "Biosample",
+           "value" : "Biosample"
+         }, {
+           "name" : "Specimen",
+           "value" : "Specimen"
+         }, {
+           "name" : "Image acquisition",
+           "value" : "Image Acquisition"
+         }, {
+           "name" : "Image analysis",
+           "value" : "Image Analysis"
+         } ]
+       }, {
+        "type" : "Associations",
+         "attributes" : [ {
+           "name" : "Biosample",
+           "value" : "Biosample"
+         }, {
+           "name" : "Specimen",
+           "value" : "Specimen"
+         }, {
+           "name" : "Image acquisition",
+           "value" : "Image Acquisition 2"
+         }, {
+           "name" : "Image analysis",
+           "value" : "Image Analysis"
+         } ]
+       } ]
+    }, {
+      "accno" : "Biosample-7",
+      "type" : "Biosample",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Biosample 2"
+        }, {
+        "name" : "Biological entity",
+        "value" : "bronchial epithelia (BE)"
+      }, {
+        "name" : "Description",
+        "value" : "BE culture from patient-derived material"
+      }, {
+        "name" : "Intrinsic variable",
+        "value" : "patient ID and patient age"
+      }, {
+        "name" : "Extrinsic variable",
+        "value" : "infection with SARS-CoV-2"
+      }, {
+        "name" : "Experimental variable",
+        "value" : "days after infection"
+      } ],
+      "subsections" : [ {
+        "accno" : "Organism-7-1",
+        "type" : "Organism",
+        "attributes" : [ {
+          "name" : "Scientific name",
+          "value" : "homo sapiens"
+        }, {
+          "name" : "Common name",
+          "value" : "human"
+        }, {
+          "name" : "NCBI taxon ID",
+          "value" : "NCBI:txid9606"
+        } ]
+      } ]
+    }, {
+      "accno" : "Specimen-8",
+      "type" : "Specimen",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Specimen 2"
+      }, {
+        "name" : "Sample Preparation Protocol",
+        "value" : "BE were first washed in physiological serum and then fixed with 2.5% (v/v) glutaraldehyde and 2% (v/v) paraformaldehyde in 0.1M phosphate buffer (pH 7.4) during 2h minimum at room temperature (RT). Then samples were washed in 0.1M phosphate buffer and post-fixed in 1% (v/v) osmium tetroxide in phosphate buffer 0.1 M during 2h, in the dark, at RT, then washing in water and dehydrated through a series of graded ethanol and embedded in a mixture of pure ethanol and epoxy resin (Epon 812; Delta Microscopy, Toulouse, France) 50/50 (v/v) during 2 hours and then in 100% resin overnight at RT. The polymerization of the resin was carried out over a period between 24-48 hours at 60°C. Samples were then sectioned using a diamond knife (Diatome, Biel-Bienne,Switzerland) on an ultramicrotome (EM UCT, Leica Microsystems, Vienna, Austria). Ultrathin sections (70 nm) were picked up on copper grids and then stained with uranyless and lead citrate."
+      }, {
+        "name" : "Growth Protocol",
+        "value" : "The BE cell culture was established from bronchial brushings or lung resection performed between the third and fifth bronchial generation from patients undergoing elective surgery. BE explants were cultured using PneumaCult Ex medium (Stemcell) for expansion of basal epithelial cells at 37 °C in 5% CO2. Then, 105 basal cells were grown on cell culture inserts (Corning) within the air–liquid interface for 21 d using PneumaCult ALI medium (Stemcell). Such a culture allows the differentiation into pseudostratified mucociliary airway epithelia composed of ciliated cells, goblet cells, club cells, and basal cells. The complete differentiation was assessed by the capacity of cilia to beat and mucus production under a light microscope."
+      } ]
+    }, {
+      "accno" : "Image Acquisition-9",
+      "type" : "Image Acquisition",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Image Acquisition 3"
+      }, {
+        "name" : "Imaging Instrument",
+        "value" : "H7650, Hitachi Transmission Electron Microscope"
+      }, {
+        "name" : "Image Acquisition Parameters",
+        "value" : "80 kV"
+      } ],
+      "subsections" : [ {
+        "accno" : "Imaging Method-9-1",
+        "type" : "Imaging Method",
+        "attributes" : [ {
+          "name" : "Ontology Value",
+          "value" : "transmission electron microscopy (TEM)"
+        }, {
+          "name" : "Ontology Name",
+          "value" : "FBbi"
+        }, {
+          "name" : "Ontology Term ID",
+          "value" : "FBbi:00000258"
+        } ]
+      } ] 
+    }, {
+      "accno" : "Study Component-10",
+      "type" : "Study Component",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Electron microscopy of BE after SARS-CoV-2 infection"
+      }, {
+        "name" : "Description",
+        "value" : "Study of the ultra structure of the BE during an SARS-CoV-2 infection."
+      }, {
+        "name" : "File List",
+        "value" : "file_list_sc2.json"
+      } ],
+      "subsections" : [ {
+        "type" : "Associations",
+         "attributes" : [ {
+           "name" : "Biosample",
+           "value" : "Biosample 2"
+         }, {
+           "name" : "Specimen",
+           "value" : "Specimen 2"
+         }, {
+           "name" : "Image acquisition",
+           "value" : "Image Acquisition 3"
+         } ]
+       } ]
+    }, {
+      "accno" : "Biosample-11",
+      "type" : "Biosample",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Biosample 3"
+      }, {
+        "name" : "Biological entity",
+        "value" : "bronchial epithelia (BE)"
+      }, {
+        "name" : "Description",
+        "value" : "BE culture from patient-derived material, stained with antibodies to discriminate different cell-types and cellular features"
+      }, {
+        "name" : "Intrinsic variable",
+        "value" : "patient ID; CRISPR-knockout of interferon-genes"
+      }, {
+        "name" : "Extrinsic variable",
+        "value" : "infection with SARS-CoV-2"
+      }, {
+        "name" : "Experimental variable",
+        "value" : "treatment with interferon (5 ng or 50 ng of IFN-λ)"
+      } ],
+      "subsections" : [ {
+        "accno" : "Organism-11-1",
+        "type" : "Organism",
+        "attributes" : [ {
+          "name" : "Scientific name",
+          "value" : "homo sapiens"
+        }, {
+          "name" : "Common name",
+          "value" : "human"
+        }, {
+          "name" : "NCBI taxon ID",
+          "value" : "NCBI:txid9606"
+        } ]
+      } ]
+    }, {
+      "accno" : "Specimen-12",
+      "type" : "Specimen",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Specimen 3"
+      }, {
+        "name" : "Sample Preparation Protocol",
+        "value" : "For antigen detection, BE were washed repeatedly with PBS to remove mucus then fixed with 4% paraformaldehyde for 30min using complete insert immersion. Epithelia were then washed in PBS and permeabilized with 0.5% TritonX-100 in PBS for 10min at room temperature and washed again before being blocked in IF buffer (PBS containing 10% SVF and 0.05% saponin) for 1h at room temperature. Primary antibody was diluted in IF buffer and applied to inserts for 1h at room temperature. Samples were washed three times under agitation with PBS and incubated with secondary antibody, fluorescently labeled phalloidin to stain the actin cytoskeleton and 2μg/mL of DAPI (4’,6-diamidino-2-phenylindole), diluted in IF buffer and incubated for 2h at room temperature. Insert were then washed extensively in PBS, desalted in H2O miliQ and rinsed in 100% Ethanol and air-dried. Membranes were then removed from inserts and mounted in DAKO Fluorescence Mounting Medium prior to microscopy analysis."
+      }, {
+        "name" : "Growth Protocol",
+        "value" : "The BE cell culture was established from bronchial brushings or lung resection performed between the third and fifth bronchial generation from patients undergoing elective surgery as previously described (38). BE explants were cultured using PneumaCult Ex medium (Stemcell) for expansion of basal epithelial cells at 37 °C in 5% CO2. Then, 105 basal cells were grown on cell culture inserts (Corning) within the air–liquid interface for 21 d using PneumaCult ALI medium (Stemcell). Such a culture allows the differentiation into pseudostratified mucociliary airway epithelia composed of ciliated cells, goblet cells, club cells, and basal cells. The complete differentiation was assessed by the capacity of cilia to beat and mucus production under a light microscope."
+      } ]
+    }, {
+      "accno" : "Image Acquisition-13",
+      "type" : "Image Acquisition",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Image Acquisition 4"
+      }, {
+        "name" : "Imaging Instrument",
+        "value" : "Leica inverted DMi6000 widefield microscope"
+      }, {
+        "name" : "Image Acquisition Parameters",
+        "value" : "between 10 and 200ms exposure time for each channel (647nm: 200ms;  594 nm: 400 ms; 488nm: 100 ms; 405nm: 10 ms)"
+      } ],
+      "subsections" : [ {
+        "accno" : "Imaging Method-13-1",
+        "type" : "Imaging Method",
+        "attributes" : [ {
+          "name" : "Ontology Value",
+          "value" : "fluorescence microscopy"
+        }, {
+          "name" : "Ontology Name",
+          "value" : "FBbi"
+        }, {
+          "name" : "Ontology Term ID",
+          "value" : "FBbi:00000246"
+        } ]
+      } ]
+    }, {
+      "accno" : "Image Acquisition-14",
+      "type" : "Image Acquisition",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Image Acquisition 5"
+      }, {
+        "name" : "Imaging Instrument",
+        "value" : "SP8 confocal microscope (Leica Microsystems at the Bordeaux Imaging Center)"
+      }, {
+        "name" : "Image Acquisition Parameters",
+        "value" : "diverse parameters; to be found inside the metadata of the .lif images"
+      } ],
+      "subsections" : [ {
+        "accno" : "Imaging Method-14-1",
+        "type" : "Imaging Method",
+        "attributes" : [ {
+          "name" : "Ontology Value",
+          "value" : "confocal microscopy"
+        }, {
+          "name" : "Ontology Name",
+          "value" : "FBbi"
+        }, {
+          "name" : "Ontology Term ID",
+          "value" : "FBbi:00000251"
+        } ]
+      } ]
+    }, {
+      "accno" : "Image-Analysis-15",
+      "type" : "Image Analysis",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Image Analysis 2"
+      }, {
+        "name" : "Image Analysis Overview",
+        "value" : "To determine the infected surface in presence or absence of IFN treatment the entire epithelial surface was recorded at 10x magnification for each condition, for each donor and processed for image analysis. Z-projections of the entire epithelium were generated and determined as ROI. The infected area or as normalized value to the non-treated controlinfected area was determined by the N-signal and calculated as percentage of infected area or as normalized value to the non-treated control"
+      } ] 
+    }, {
+      "accno" : "Study Component-16",
+      "type" : "Study Component",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "An Accelerated Type III IFN Response Protects BE from SARSCoV-2 Infection"
+      }, {
+        "name" : "Description",
+        "value" : "We study the effect of Type III IFN by knocking out the IFN (CRISPR/Cas9) and by treating the BE with Type III IFN"
+      }, {
+        "name" : "File List",
+        "value" : "file_list_sc3.json"
+      } ],
+      "subsections" : [ {
+        "type" : "Associations",
+         "attributes" : [ {
+           "name" : "Biosample",
+           "value" : "Biosample 3"
+         }, {
+           "name" : "Specimen",
+           "value" : "Specimen 3"
+         }, {
+           "name" : "Image acquisition",
+           "value" : "Image Acquisition 4"
+         }, {
+           "name" : "Image analysis",
+           "value" : "Image Analysis 2"
+         } ]
+       }, {
+        "type" : "Associations",
+         "attributes" : [ {
+           "name" : "Biosample",
+           "value" : "Biosample 3"
+         }, {
+           "name" : "Specimen",
+           "value" : "Specimen 3"
+         }, {
+           "name" : "Image acquisition",
+           "value" : "Image Acquisition 5"
+         }, {
+           "name" : "Image analysis",
+           "value" : "Image Analysis 2"
+         } ]
+       } ]
+    } ]
+  },
+  "type" : "submission"
+}
