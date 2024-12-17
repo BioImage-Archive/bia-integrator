@@ -32,9 +32,9 @@ def get_image_acquisition_protocol() -> List[bia_data_model.ImageAcquisitionProt
             "protocol_description": "Test image acquisition parameters 2",
             "imaging_instrument_description": "Test imaging instrument 2",
             "imaging_method_name": [
-                "fluorescence microscopy",
+                "fluorescence microscopy"
             ],
-            "fbbi_id": [],
+            "fbbi_id": ["FBbi:00000246"],
             "version": 0,
         },
     ]

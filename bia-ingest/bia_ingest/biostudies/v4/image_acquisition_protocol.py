@@ -107,7 +107,7 @@ def get_imaging_method_fbbi_from_subsection(
     fbbi_id = []
     for section in sections:
         attr_dict = attributes_to_dict(section.attributes)
-        if attr_dict["Ontology Term ID"] and attr_dict["Ontology Value"]:
+        if attr_dict.get("Ontology Term ID") and attr_dict.get("Ontology Value"):
             imaging_method_name.append(f"{attr_dict['Ontology Value']}")
             fbbi_id.append(f"{attr_dict['Ontology Term ID']}")
         elif attr_dict["Ontology Value"]:
