@@ -74,18 +74,20 @@ def extract_image_acquisition_protocol_dicts(
             k: case_insensitive_get(attr_dict, v, default)
             for k, v, default in key_mapping
         }
+        
+        # TODO: change template / create logic to lookup the fbbi ID
+        model_dict["fbbi_id"] = []
 
         if not model_dict["imaging_method_name"]:
-            model_dict["imaging_method_name"] = (
-                get_imaging_method_names_from_subsection(section)
+            # get imaging method name and fbbi_id from subsection if they exist
+            # NOTE: this doesn't check the format of fbbi_id; it can be uri or id 
+            model_dict["imaging_method_name"], model_dict["fbbi_id"] = (
+                get_imaging_method_fbbi_from_subsection(section)
             )
         elif isinstance(model_dict["imaging_method_name"], str):
             model_dict["imaging_method_name"] = [
                 model_dict["imaging_method_name"],
             ]
-
-        # TODO: change template / create logic to lookup the fbbi ID
-        model_dict["fbbi_id"] = []
 
         model_dict["version"] = 0
         model_dict["uuid"] = create_image_acquisition_protocol_uuid(
@@ -97,17 +99,17 @@ def extract_image_acquisition_protocol_dicts(
     return model_dict_map
 
 
-def get_imaging_method_names_from_subsection(
+def get_imaging_method_fbbi_from_subsection(
     image_acquisition_section: Section,
-) -> list[str]:
+) -> list:
     sections = find_sections_recursive(image_acquisition_section, ["Imaging Method"])
     imaging_method_name = []
+    fbbi_id = []
     for section in sections:
         attr_dict = attributes_to_dict(section.attributes)
-        if attr_dict["Ontology Name"] and attr_dict["Ontology Value"]:
-            imaging_method_name.append(
-                f"{attr_dict['Ontology Name']}:{attr_dict['Ontology Value']}"
-            )
+        if attr_dict.get("Ontology Term ID") and attr_dict.get("Ontology Value"):
+            imaging_method_name.append(f"{attr_dict['Ontology Value']}")
+            fbbi_id.append(f"{attr_dict['Ontology Term ID']}")
         elif attr_dict["Ontology Value"]:
             imaging_method_name.append(f"{attr_dict['Ontology Value']}")
-    return imaging_method_name
+    return [imaging_method_name, fbbi_id]

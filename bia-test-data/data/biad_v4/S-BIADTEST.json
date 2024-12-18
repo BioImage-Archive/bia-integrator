@@ -286,9 +286,20 @@
       }, {
         "name" : "Image acquisition parameters",
         "value" : "Test image acquisition parameters 2"
-      }, {
-        "name" : "Imaging method",
-        "value" : "fluorescence microscopy"
+      } ],
+      "subsections" : [ {
+        "accno" : "Imaging Method-7-1",
+        "type" : "Imaging Method",
+        "attributes" : [ {
+          "name" : "Ontology Value",
+          "value" : "fluorescence microscopy"
+        }, {
+          "name" : "Ontology Name",
+          "value" : "FBbi"
+        }, {
+          "name" : "Ontology Term ID",
+          "value" : "FBbi:00000246"
+        } ]
       } ]
     }, {
       "accno" : "Image analysis-5",

@@ -1,30 +1,25 @@
 [tool.poetry]
-name = "bia-ingest"
+name = "bia-assign-image"
 version = "0.1.0"
-description = "BIA ingest using shared models"
-authors = ["Kola Babalola <kola@ebi.ac.uk>"]
+description = "Assign file references to BIA image objects"
+authors = ["Kola <kola@ebi.ac.uk>"]
 license = "Apache Software License 2.0"
 readme = "README.md"
-packages = [{include = "bia_ingest"}]
+packages = [{include = "bia_assign_image"}]
 
 [tool.poetry.dependencies]
 python = "^3.10,<3.12"
-requests = "^2.31.0"
+bia-ingest = { path = "../bia-ingest", develop = true }
 bia-shared-datamodels = { path = "../bia-shared-datamodels", develop = true }
 bia-integrator-api = { path = "../clients/python", develop = true }
 bia-test-data = { path = "../bia-test-data", develop = true }
-typer = "^0.12.3"
-typing-extensions = "^4.12.2"
-pydantic-settings = "^2.3.4"
-rich-tools = "^0.5.1"
 
 [tool.poetry.scripts]
-biaingest = "bia_ingest.cli:app"
-
+bia-assign-image = "bia_assign_image.cli:app"
 
 [tool.poetry.group.dev.dependencies]
-ipython = "^8.22.1"
-pytest = "^7.0"
+pytest = "^7"
+ipython = "^8.30.0"
 
 [build-system]
 requires = ["poetry-core"]
