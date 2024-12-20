@@ -8,11 +8,6 @@ sys.path.insert(0, f"{Path(__file__).parent.parent / 'scripts'}")
 from scripts.combine_export_files import app
 
 
-#            # Skip writing output for one of each output type
-#            if (accession_id == "S-BIADTEST1" and output_file_base == "bia-images-export") or \
-#                (accession_id == "S-BIADTEST3" and output_file_base == "bia-dataset-metadata") or \
-#                (accession_id == "S-BIADTEST4" and output_file_base == "bia-study-metadata"):
-#                continue
 @pytest.fixture
 def output_dir_base(tmpdir):
     return Path(tmpdir)

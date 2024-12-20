@@ -2,10 +2,6 @@
 
 # For bia-integrator-api
 export BIA_API_BASEPATH="https://wwwdev.ebi.ac.uk/bioimage-archive/api"
-export BIA_API_USERNAME=''
-export BIA_API_PASSWORD=''
-export BIA_USERNAME=''
-export BIA_PASSWORD=''
 
 # Directory where bia model artefacts are stored on disk during ingest (if applicable)
 export bia_data_dir=~/bia-integrator-artefacts/.cache/bia-integrator-data-sm
