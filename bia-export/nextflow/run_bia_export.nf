@@ -4,8 +4,6 @@
 params.dry_run = false //"DRY_RUN: "
 
 process run_export_scripts {
-    // Commenting this block out as retries now implemented within
-    // the bash script
     // errorStrategy {
     //     sleep(Math.pow(2, task.attempt) * 200 as long);
     //     return 'retry'
@@ -21,11 +19,7 @@ process run_export_scripts {
 
     script:
 
-    // ToDo: This is a terrible hack!!!
-    //       Figure out how to iterate over elements in a channel!!!
     rows = study_uuid_chunk[0]
-    //study_uuid_chunk.each { rows += (it[0] + ":" + it[1]) + " " }
-    //study_uuid_chunk.each { rows += it + " " }
 
     """
             #source ${params.bia_export_dir}/nextflow/set_local_env.sh
@@ -49,9 +43,6 @@ process run_export_scripts {
 }
 
 // The manifest file is a text file with no header and rows of study_uuid:accession_id
-n_elements = new File(params.manifest_path).text.readLines().size() - 1
-n_jobs = params.n_jobs as int
-//n_elements_per_job = n_elements / n_jobs as int
 // We want to run export for each study separately as code crashes on error of a single one
 n_elements_per_job = 1
 
@@ -60,10 +51,6 @@ workflow {
         .splitText()
         .map({ it.trim() })
         .collate( n_elements_per_job ) // Ensure even single items are passed as an array
-        //.splitText( by:n_elements_per_job )
-        //.map({it.replaceAll("\n"," ")})
-        //.map({it.strip()})
-        //.collate( 1 ) // Ensure even single items are passed as an array
         | set { study_uuid_chunks }
     run_export_scripts(study_uuid_chunks)
 
