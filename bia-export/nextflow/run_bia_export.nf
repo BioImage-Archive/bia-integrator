@@ -42,8 +42,6 @@ process run_export_scripts {
                 if [ $params.dry_run = true ]; then
                     echo "DRY_RUN: \$command"
                 else
-                    #source ${params.bia_export_dir}/nextflow/run_command_with_retry.sh
-                    #run_command_with_retry "\$command" $params.timeout $params.n_tries $params.pause
                     eval \$command
                 fi
             done
@@ -55,7 +53,7 @@ n_elements = new File(params.manifest_path).text.readLines().size() - 1
 n_jobs = params.n_jobs as int
 //n_elements_per_job = n_elements / n_jobs as int
 // We want to run export for each study separately as code crashes on error of a single one
-n_elements_per_job = 2
+n_elements_per_job = 1
 
 workflow {
     Channel.fromPath(params.manifest_path)

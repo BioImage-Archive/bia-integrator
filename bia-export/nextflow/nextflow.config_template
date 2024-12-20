@@ -1,5 +1,5 @@
 params.n_jobs = "$N_JOBS"
-params.manifest_path = "$BASEDIR/tmp/manifest.tsv"
+params.manifest_path = "$BASEDIR/tmp/manifest.txt"
 params.bia_export_dir = "$BIA_EXPORT_DIR"
 params.output_dir_base = "$BASEDIR/tmp"
 
