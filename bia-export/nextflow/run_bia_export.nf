@@ -4,13 +4,14 @@
 params.dry_run = false //"DRY_RUN: "
 
 process run_export_scripts {
-    // errorStrategy {
-    //     sleep(Math.pow(2, task.attempt) * 200 as long);
-    //     return 'retry'
-    // }
-    // maxRetries 3
-
-    errorStrategy 'ignore'
+    errorStrategy {
+        sleep(Math.pow(2, task.attempt) * 200 as long);
+        if (task.attempt <= 3)
+            return 'retry'
+        else
+            return 'ignore'
+    }
+    maxRetries 3
 
     debug true
 

@@ -20,7 +20,7 @@ def output_file_bases():
 
 @pytest.fixture
 def accession_ids():
-    return [f"S-BIADTEST{i}" for i in range(3)]
+    return [f"S-BIADTEST{i}" for i in [3, 2, 1, 0]]
 
 
 @pytest.fixture
@@ -39,10 +39,12 @@ def all_expected_results(
     expected_results = {key: {} for key in output_file_bases}
     for accession_id in accession_ids:
         for output_file_base in output_file_bases:
+            value = {"release_date": f"{accession_id}:{output_file_base}"}
             output = {
-                accession_id: output_file_base,
+                accession_id: value,
             }
-            expected_results[output_file_base][accession_id] = output_file_base
+            # Write dummy dict with key "release_date" (needed for sorting studies)
+            expected_results[output_file_base][accession_id] = value
 
             output_path = output_dir_base / f"{output_file_base}-{accession_id}.json"
             Path(output_path).write_text(json.dumps(output, indent=2))
@@ -87,16 +89,14 @@ def all_expected_results(
         ),
     ),
 )
-def test_script_to_combine_export_files_handles_missing_study(
+def test_script_to_combine_export_files_handles_missing_metadata(
     output_dir_base,
     output_file_bases,
-    accession_ids,
     all_expected_results,
     manifest_path,
     metadata_keys_to_exclude,
     accession_id_to_exclude,
 ):
-    # Remove study file for S-BIADTEST1
     if metadata_keys_to_exclude and accession_id_to_exclude:
         for metadata_key in metadata_keys_to_exclude:
             all_expected_results[metadata_key].pop(accession_id_to_exclude)
@@ -116,3 +116,49 @@ def test_script_to_combine_export_files_handles_missing_study(
         assert output_path.is_file()
         actual_result = json.loads(output_path.read_text())
         assert all_expected_results[output_file_base] == actual_result
+
+
+def test_script_to_combine_export_sorts_study_metadata(
+    output_dir_base,
+    output_file_bases,
+    all_expected_results,
+    accession_ids,
+):
+    # Create a manifest file in wrong order and test combined results
+    # of study are ordered as expected
+    manifest_reversed_path = output_dir_base / "manifest_reversed.txt"
+    accession_ids_reversed = [a for a in accession_ids]
+    accession_ids_reversed.reverse()
+    manifest_reversed_path.write_text(
+        "\n".join([f":{a}" for a in accession_ids_reversed])
+    )
+
+    runner = CliRunner()
+    result = runner.invoke(
+        app,
+        [
+            "combine-export-files",
+            f"{manifest_reversed_path}",
+        ],
+    )
+    assert result.exit_code == 0
+    for output_file_base in output_file_bases:
+        output_path = output_dir_base / f"{output_file_base}.json"
+        assert output_path.is_file()
+        actual_result = json.loads(output_path.read_text())
+        assert all_expected_results[output_file_base] == actual_result
+        if output_file_base == "bia-study-metadata":
+            assert list(all_expected_results[output_file_base].keys()) == list(
+                actual_result.keys()
+            )
+            assert list(all_expected_results[output_file_base].values()) == list(
+                actual_result.values()
+            )
+        else:
+            # dataset and image metadata should not be sorted
+            assert list(all_expected_results[output_file_base].keys()) != list(
+                actual_result.keys()
+            )
+            assert list(all_expected_results[output_file_base].values()) != list(
+                actual_result.values()
+            )

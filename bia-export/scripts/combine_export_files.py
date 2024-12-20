@@ -60,7 +60,15 @@ def combine_export_files(
 
     for metadata in combined.keys():
         input_path = input_base_path / f"{metadata}.json"
-        input_path.write_text(json.dumps(combined[metadata], indent=2))
+        if metadata == "bia-study-metadata":
+            sorted_metadata = sorted(
+                combined[metadata].items(),
+                key=lambda x: x[1]["release_date"],
+                reverse=True,
+            )
+            input_path.write_text(json.dumps(dict(sorted_metadata), indent=2))
+        else:
+            input_path.write_text(json.dumps(combined[metadata], indent=2))
 
 
 @app.callback()
