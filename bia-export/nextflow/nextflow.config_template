@@ -1,0 +1,12 @@
+params.n_jobs = "$N_JOBS"
+params.manifest_path = "$BASEDIR/tmp/manifest.tsv"
+params.bia_export_dir = "$BIA_EXPORT_DIR"
+params.output_dir_base = "$BASEDIR/tmp"
+
+process {
+    executor = 'slurm'
+    //queue = "$PARTITION"
+    memory = '1 GB'
+    time = '10m'
+    cpus = "$N_CPUS_PER_PROCESS"
+}
