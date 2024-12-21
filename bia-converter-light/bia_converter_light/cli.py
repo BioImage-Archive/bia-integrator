@@ -50,6 +50,9 @@ def convert_image(
     persistence_mode: Annotated[
         PersistenceMode, typer.Option(case_sensitive=False)
     ] = PersistenceMode.disk,
+    update_example_image_uri: Annotated[
+        bool, typer.Option("--update-example-image-uri")
+    ] = False,
     verbose: Annotated[bool, typer.Option("-v")] = False,
 ) -> None:
     """Create image for supplied image rep, upload to s3 and update uri in API
@@ -275,6 +278,34 @@ def convert_image(
         message = f"Created {representation.use_type} image and uploaded to S3: {representation.file_uri}"
         logger.info(message)
 
+        # If STATIC_DISPLAY and update-example-uri flag set update this for dataset
+        if update_example_image_uri:
+            if representation.use_type == ImageRepresentationUseType.STATIC_DISPLAY:
+                image = persister.fetch_by_uuid(
+                    [
+                        image_uuid,
+                    ],
+                    bia_data_model.Image,
+                )[0]
+                dataset = persister.fetch_by_uuid(
+                    [
+                        image.submission_dataset_uuid,
+                    ],
+                    bia_data_model.Dataset,
+                )[0]
+                dataset.example_image_uri.append(file_uri)
+                persister.persist(
+                    [
+                        dataset,
+                    ]
+                )
+                logger.info(
+                    f"Updated example image uri of dataset {dataset.uuid} to {dataset.example_image_uri}"
+                )
+            else:
+                logger.warning(
+                    f"Cannot update dataset example image uri when image representation use type is {representation.use_type.value}"
+                )
         return
     else:
         raise Exception(
