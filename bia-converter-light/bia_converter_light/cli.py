@@ -2,7 +2,7 @@ import typer
 from typing_extensions import Annotated
 
 from bia_shared_datamodels.semantic_models import ImageRepresentationUseType
-from .config import settings
+from .config import settings, api_client
 
 from .io import stage_fileref_and_get_fpath, copy_local_to_s3
 from .conversion import cached_convert_to_zarr_and_get_fpath, get_local_path_to_zarr
@@ -15,6 +15,7 @@ from rich.logging import RichHandler
 from bia_shared_datamodels import bia_data_model, semantic_models, uuid_creation
 from bia_ingest.persistence_strategy import (
     persistence_strategy_factory,
+    PersistenceMode,
 )
 
 app = typer.Typer()
@@ -40,7 +41,15 @@ app.add_typer(
 @app.command(help="Convert image for given image representation UUID")
 def convert_image(
     accession_id: Annotated[str, typer.Argument()],
-    image_representation_uuid: Annotated[str, typer.Argument()],
+    # TODO: Fix this hack. Whole interface needs changing to same as bia-converter
+    file_reference_uuid: Annotated[str, typer.Argument()],
+    # image_representation_uuid: Annotated[str, typer.Argument()],
+    rep_to_convert: Annotated[
+        ImageRepresentationUseType, typer.Option(case_sensitive=False)
+    ],
+    persistence_mode: Annotated[
+        PersistenceMode, typer.Option(case_sensitive=False)
+    ] = PersistenceMode.disk,
     verbose: Annotated[bool, typer.Option("-v")] = False,
 ) -> None:
     """Create image for supplied image rep, upload to s3 and update uri in API
@@ -73,10 +82,26 @@ def convert_image(
     # accession_id = study.accession_id
 
     persister = persistence_strategy_factory(
-        persistence_mode="disk",
+        persistence_mode=persistence_mode,
         output_dir_base=settings.bia_data_dir,
         accession_id=accession_id,
+        api_client=api_client,
     )
+    # TODO: Fix this hack - see TODO above
+    if rep_to_convert == semantic_models.ImageRepresentationUseType.INTERACTIVE_DISPLAY:
+        image_format = ".ome.zarr"
+    else:
+        image_format = ".png"
+    image_uuid = uuid_creation.create_image_uuid(
+        [
+            file_reference_uuid,
+        ]
+    )
+    image_representation_uuid = uuid_creation.create_image_representation_uuid(
+        image_uuid, image_format, rep_to_convert.value
+    )
+    # End of hack
+
     representation = persister.fetch_by_uuid(
         [
             image_representation_uuid,
