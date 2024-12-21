@@ -4,8 +4,9 @@ import typer
 from bia_converter_light.config import api_client
 from bia_converter_light.utils import in_bioformats_single_file_formats_list
 
+PAGE_SIZE_DEFAULT = 10000000
 
-# From https://stackoverflow.com/questions/1094841/get-human-readable-version-of-file-size
+
 def sizeof_fmt(num, suffix="B"):
     for unit in ["", "Ki", "Mi", "Gi", "Ti", "Pi", "Ei", "Zi"]:
         if abs(num) < 1024.0:
@@ -18,13 +19,17 @@ app = typer.Typer()
 
 
 def get_details_of_images_that_can_be_converted(accession_id: str):
-    studies = api_client.get_studies()
+    studies = api_client.get_studies(page_size=PAGE_SIZE_DEFAULT)
     study = next(s for s in studies if s.accession_id == accession_id)
-    eids = api_client.get_experimental_imaging_dataset_in_study(study.uuid)
+    datasets = api_client.get_dataset_linking_study(
+        study.uuid, page_size=PAGE_SIZE_DEFAULT
+    )
     file_references = []
-    for eid in eids:
+    for dataset in datasets:
         file_references.extend(
-            api_client.get_file_reference_in_experimental_imaging_dataset(eid.uuid)
+            api_client.get_file_reference_linking_dataset(
+                dataset.uuid, PAGE_SIZE_DEFAULT
+            )
         )
 
     convertible_file_references = [
