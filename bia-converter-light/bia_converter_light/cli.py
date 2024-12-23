@@ -1,3 +1,5 @@
+from typing import List
+from pathlib import Path
 import typer
 from typing_extensions import Annotated
 
@@ -6,6 +8,9 @@ from .config import settings, api_client
 
 from .io import stage_fileref_and_get_fpath, copy_local_to_s3
 from .conversion import cached_convert_to_zarr_and_get_fpath, get_local_path_to_zarr
+from bia_converter_light.propose_utils import (
+    write_convertible_file_references_for_accession_id,
+)
 from . import utils
 from .rendering import generate_padded_thumbnail_from_ngff_uri
 
@@ -36,6 +41,24 @@ app.add_typer(
     name="representations",
     help="Create specified representations",
 )
+
+
+def validate_propose_inputs(
+    accession_ids: list[str] = None, accession_ids_path: Path = None
+):
+    """Validate that only one of accession_ids or file_path is provided."""
+    if accession_ids and accession_ids_path:
+        typer.echo(
+            "Error: Provide either a list of accession IDs or a file path, not both.",
+            err=True,
+        )
+        raise typer.Exit(code=1)
+    if not accession_ids and not accession_ids_path:
+        typer.echo(
+            "Error: You must provide either a list of accession IDs or a file path.",
+            err=True,
+        )
+        raise typer.Exit(code=1)
 
 
 @app.command(help="Convert image for given image representation UUID")
@@ -354,6 +377,51 @@ def update_example_image_uri_for_dataset(
             dataset,
         ]
     )
+
+
+@app.command()
+def propose(
+    accession_ids: Annotated[
+        List[str], typer.Option("--accession-ids", "-a", help="Accession ID(s).")
+    ] = None,
+    accession_ids_path: Annotated[
+        Path,
+        typer.Option(
+            "--accession-ids-path",
+            "-p",
+            exists=True,
+            help="Path to a file containing accession IDs one per line.",
+        ),
+    ] = None,
+    max_items: Annotated[int, typer.Option()] = 5,
+    output_path: Annotated[Path, typer.Option()] = None,
+):
+    """Propose images to convert"""
+
+    # TODO: Make this output yaml in form of bia-converter
+    # TODO: Write test
+
+    # Get accession IDs
+    validate_propose_inputs(accession_ids, accession_ids_path)
+    if accession_ids_path:
+        accession_ids = [a for a in accession_ids_path.read_text().strip().split("\n")]
+
+    if not output_path:
+        output_path = Path(__file__).parent.parent / "file_references_to_convert.tsv"
+    if output_path.exists():
+        assert output_path.is_file()
+        output_path.unlink()
+
+    for accession_id in accession_ids:
+        n_lines_written = write_convertible_file_references_for_accession_id(
+            accession_id,
+            output_path,
+            max_items,
+            append=True,
+        )
+        logger.info(
+            f"Written {n_lines_written} proposals to {output_path} for {accession_id}"
+        )
 
 
 @app.callback()
