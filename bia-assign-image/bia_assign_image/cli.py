@@ -178,10 +178,7 @@ def assign(
 @representations_app.command(help="Create specified representations")
 def create(
     accession_id: Annotated[str, typer.Argument()],
-    # image_uuid_list: Annotated[List[str], typer.Argument()],
-    # TODO: Uncomment above. Below is hack to get things working
-    # on Slurm quickly
-    file_reference_uuid_list: Annotated[List[str], typer.Argument()],
+    image_uuid_list: Annotated[List[str], typer.Argument()],
     persistence_mode: Annotated[
         PersistenceMode, typer.Option(case_sensitive=False)
     ] = PersistenceMode.disk,
@@ -206,9 +203,7 @@ def create(
         accession_id=accession_id,
         api_client=api_client,
     )
-    image_uuid_list = [
-        uuid_creation.create_image_uuid(file_reference_uuid_list),
-    ]
+
     bia_images = persister.fetch_by_uuid(image_uuid_list, bia_data_model.Image)
     for bia_image in bia_images:
         file_references = persister.fetch_by_uuid(
