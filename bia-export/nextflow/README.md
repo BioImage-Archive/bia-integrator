@@ -3,8 +3,9 @@ This sub-package allows running bia-export for a set of accession ids one access
 
 ## Setup
 
-1. Install nextflow if not present - see [https://www.nextflow.io/docs/latest/install.html](https://www.nextflow.io/docs/latest/install.html) or if on a slurm cluster try `module load nextflow`
-2. Navigate to your working directory and:
+1. Ensure the `bia_export` project has been installed - see [bia-export installation](../README.md)
+2. Install nextflow if not present - see [https://www.nextflow.io/docs/latest/install.html](https://www.nextflow.io/docs/latest/install.html) or if on a slurm cluster try `module load nextflow`
+3. Navigate to your working directory and:
     1. Copy `set_local_env.sh_template` -> `./set_local_env.sh` and modify as necessary.
     2. Copy `nextflow.config_template` -> `./nextflow.config` and comment out the `slurm` block if running locally
     3. Create a tmp directory as a sub directory of your working directory. Results will be saved here
