@@ -1,0 +1,26 @@
+# Configuration for Nextflow running bia-export
+
+# For bia-integrator-api
+export BIA_API_BASEPATH="https://wwwdev.ebi.ac.uk/bioimage-archive/api"
+
+# Directory where bia model artefacts are stored on disk during ingest (if applicable)
+export bia_data_dir=~/bia-integrator-artefacts/.cache/bia-integrator-data-sm
+
+#Enter base dir for storing artefacts (usually dir containing this file) e.g.
+export BASEDIR=bia-integrator/bia-export/nextflow
+
+# The parent directory of the package (containing pyproject.toml)
+export BIA_EXPORT_DIR=bia-integrator/bia-export
+
+# Maximum number of queues to use
+#export N_JOBS=50
+export N_JOBS=1
+
+# Number of cpus per nextflow process
+export N_CPUS_PER_PROCESS=1
+
+# Load version of python to use
+module load python/3.11
+
+# Load nextflow
+module load nextflow/23.04.1

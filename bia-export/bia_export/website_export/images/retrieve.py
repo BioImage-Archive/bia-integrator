@@ -12,11 +12,12 @@ import logging
 
 logger = logging.getLogger("__main__." + __name__)
 
+DEFAULT_PAGE_SIZE = 500
+
 
 def retrieve_images(
     context: ImageCLIContext,
 ) -> list[api_models.Image]:
-
     if context.root_directory:
         api_images: List[api_models.Image] = read_all_json(
             object_type=api_models.Image,
@@ -25,12 +26,14 @@ def retrieve_images(
 
     else:
         dataset_list: List[api_models.Dataset] = api_client.get_dataset_linking_study(
-            str(context.study_uuid)
+            str(context.study_uuid),
+            page_size=DEFAULT_PAGE_SIZE,
         )
         api_images = []
         for dataset in dataset_list:
             api_images += get_all_api_results(
-                dataset.uuid, api_client.get_image_linking_dataset
+                dataset.uuid,
+                api_client.get_image_linking_dataset,
             )
 
     return api_images
