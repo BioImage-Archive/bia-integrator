@@ -1,0 +1,5 @@
+.nextflow*
+nextflow.config
+set_local_env.sh
+work/
+tmp/
