@@ -1,3 +1,4 @@
+from pathlib import Path
 import pytest
 from typer.testing import CliRunner
 from unittest.mock import MagicMock
@@ -8,6 +9,7 @@ from bia_test_data.mock_objects import (
     mock_image_representation,
     mock_image,
     mock_dataset,
+    mock_file_reference,
 )
 from bia_ingest.persistence_strategy import (
     persistence_strategy_factory,
@@ -34,7 +36,43 @@ def persister(output_dir_base) -> PersistenceStrategy:
         accession_id=accession_id,
     )
     return persister
+    
+@pytest.fixture
+def dataset(persister) -> bia_data_model.Dataset:
 
+    ds = mock_dataset.get_dataset()[1]
+    persister.persist(
+        [
+            ds,
+        ]
+    )
+
+    return ds
+
+
+@pytest.fixture
+def conversion_details_path(output_dir_base, dataset) -> Path:
+    """Write tsv files with details of file references to convert
+    
+    """
+
+    path_to_conversion_details = Path(output_dir_base) / "file_references_to_convert.tsv"
+    study_uuid = f"{dataset.submitted_in_study_uuid}"
+    # Get details of file references in study component 2 of mock study
+    file_reference = mock_file_reference.get_file_reference()[0]
+    size_human_readable = f"{file_reference.size_in_bytes}B"
+    conversion_details = "\t".join(
+        [
+            accession_id,
+            study_uuid,
+            file_reference.file_path,
+            f"{file_reference.uuid}",
+            f"{file_reference.size_in_bytes}",
+            size_human_readable,
+        ]
+    )
+    path_to_conversion_details.write_text(conversion_details)
+    return path_to_conversion_details
 
 @pytest.fixture
 def mock_api_client(monkeypatch, persister):
@@ -84,7 +122,7 @@ def mock_api_client(monkeypatch, persister):
     return mock_api_client_object
 
 
-def test_cli_convert_image(runner):
+def test_cli_convert_image(runner,conversion_details_path):
     # image_representation = (
     #    mock_image_representation.get_image_representation_of_interactive_display()
     # )
@@ -92,11 +130,12 @@ def test_cli_convert_image(runner):
     result = runner.invoke(
         cli.app,
         [
+
             "convert-image",
-            # "S-BIADTEST",
-            # str(image_representation.uuid),
-            "S-BIAD1005",
-            "98cd36b1-cd9f-4bd5-83a0-ad89f21808b1",
+            "--accession-ids",
+            accession_id,
+            "--conversion-details-path",
+            conversion_details_path,
         ],
         catch_exceptions=False,
     )
@@ -105,7 +144,7 @@ def test_cli_convert_image(runner):
 
 
 def test_cli_update_example_image_uri_for_dataset(
-    runner, mock_api_client, output_dir_base, persister, monkeypatch
+    runner, mock_api_client, output_dir_base, persister, dataset
 ):
     image_representation = (
         mock_image_representation.get_image_representation_of_static_display()
@@ -123,21 +162,11 @@ def test_cli_update_example_image_uri_for_dataset(
         ]
     )
 
-    dataset = mock_dataset.get_dataset()[1]
-    persister.persist(
-        [
-            dataset,
-        ]
-    )
-
-    monkeypatch.setattr(cli.settings, "bia_data_dir", str(output_dir_base))
-    monkeypatch.setattr(cli, "api_client", mock_api_client)
     result = runner.invoke(
         cli.app,
         [
             "update-example-image-uri-for-dataset",
             str(image_representation.uuid),
-            # "--help"
         ],
     )
 
