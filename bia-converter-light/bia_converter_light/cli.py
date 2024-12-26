@@ -67,7 +67,7 @@ def ensure_assigned(image_uuid):
         assign_image(file_reference_uuid)
 
 
-def convert_image(
+def convert_file_reference_to_image_representation(
     file_reference_uuid: str,
     use_type: ImageRepresentationUseType,
     verbose: bool = False,
@@ -153,6 +153,28 @@ def update_example_image_uri_for_dataset(
     verbose: Annotated[bool, typer.Option("-v")] = False,
 ):
     update_example_image_uri(representation_uuid, verbose)
+
+
+@app.command()
+def convert_image(
+    accession_ids: Annotated[
+        List[str], typer.Option("--accession-ids", "-a", help="Accession ID(s).")
+    ] = ["all"],
+    conversion_details_path: Annotated[
+        Path,
+        typer.Option(
+            "--conversion-details-path",
+            "-c",
+            exists=True,
+            help="Path to tsv file containing details needed for conversion (produced by 'propose' command).",
+        ),
+    ] = None,
+    max_items: Annotated[int, typer.Option()] = 5,
+    output_path: Annotated[Path, typer.Option()] = None,
+):
+    """Convert file references to image representations
+
+    """
 
 
 @app.command()
