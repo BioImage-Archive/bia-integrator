@@ -1,16 +1,16 @@
 # All code in this module originate from bia-converter/bia_converter/io.py
-from typing import Tuple
 import logging
 import subprocess
 from uuid import UUID
 from pathlib import Path
 
 
-from bia_converter_light.config import settings
+from bia_converter_light.config import settings, api_client
 from bia_converter_light.io import stage_fileref_and_get_fpath, copy_local_to_s3
 from bia_converter_light import utils
-from bia_shared_datamodels import bia_data_model, semantic_models
+from bia_shared_datamodels import bia_data_model, semantic_models, uuid_creation
 from bia_assign_image import image_representation
+from bia_converter_light.rendering import generate_padded_thumbnail_from_ngff_uri
 
 logger = logging.getLogger(__name__)
 
@@ -115,46 +115,29 @@ def convert_to_zarr(
 
 
 def convert_to_png(
+    accession_id: str,
     file_reference: bia_data_model.FileReference,
-    size: Tuple[int, int],
+    image: bia_data_model.Image,
+    use_type: semantic_models.ImageRepresentationUseType,
 ) -> bia_data_model.ImageRepresentation:
     """Create png image of file reference"""
 
     ## Check for interactive display representation (ome.zarr)
     ## This has to exist before we can generate thumbnails/static display
-    # eci = api_client.get_experimentally_captured_image(
-    #    representation.representation_of_uuid
-    # )
-    # representations_for_eci = (
-    #    api_client.get_image_representation_in_experimentally_captured_image(
-    #        eci.uuid,
-    #        page_size=DEFAULT_PAGE_SIZE,
-    #    )
-    # )
-    # try:
-    #    interactive_image_representation = next(
-    #        im_rep
-    #        for im_rep in representations_for_eci
-    #        if len(im_rep.file_uri) > 0 and "ome.zarr" in im_rep.file_uri[0]
-    #    )
-    # except StopIteration as e:
     #    message = f"Cannot create thumbnail or static display without a representation with an image of ome zarr. Could not find one for experimentally captured image with UUID: {eci.uuid}"
     #    logger.error(message)
     #    raise e
 
     interactive_image_representation_uuid = (
         uuid_creation.create_image_representation_uuid(
-            bia_image.uuid,
+            image.uuid,
             ".ome.zarr",
             semantic_models.ImageRepresentationUseType.INTERACTIVE_DISPLAY.value,
         )
     )
-    interactive_image_representation = persister.fetch_by_uuid(
-        [
-            interactive_image_representation_uuid,
-        ],
-        bia_data_model.ImageRepresentation,
-    )[0]
+    interactive_image_representation = api_client.get_image_representation(
+        interactive_image_representation_uuid,
+    )
 
     # Check for local path to zarr and use if it exists
     local_path_to_zarr = get_local_path_to_zarr(interactive_image_representation.uuid)
@@ -170,10 +153,19 @@ def convert_to_png(
         )
 
     # create image
-    if representation.use_type == ImageRepresentationUseType.THUMBNAIL:
+    if use_type == semantic_models.ImageRepresentationUseType.THUMBNAIL:
         dims = (256, 256)
     else:
         dims = (512, 512)
+
+    representation = image_representation.get_image_representation(
+        accession_id,
+        [
+            file_reference,
+        ],
+        image,
+        use_type,
+    )
     created_image = generate_padded_thumbnail_from_ngff_uri(source_uri, dims=dims)
     created_image_path = utils.get_local_path_for_representation(
         representation.uuid, ".png"
@@ -195,12 +187,7 @@ def convert_to_png(
     representation.file_uri = [
         file_uri,
     ]
-    # representation.version += 1
-    # api_client.post_image_representation(representation)
-    persister.persist(
-        [
-            representation,
-        ]
-    )
+    representation.version += 1
+    api_client.post_image_representation(representation)
     message = f"Created {representation.use_type} image and uploaded to S3: {representation.file_uri}"
     logger.info(message)
