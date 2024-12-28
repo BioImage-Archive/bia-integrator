@@ -120,18 +120,18 @@ def convert_file_reference_to_image_representation(
     file_reference = api_client.get_file_reference(file_reference_uuid)
 
     bia_image = api_client.get_image(image_uuid)
-    if use_type == ImageRepresentationUseType.UPLOADED_BY_SUBMITTER:
+    if use_type == ImageRepresentationUseType.INTERACTIVE_DISPLAY:
+        return convert_to_zarr(accession_id, file_reference, bia_image)
+    elif use_type in (
+        ImageRepresentationUseType.THUMBNAIL,
+        ImageRepresentationUseType.STATIC_DISPLAY,
+    ):
+        return convert_to_png(accession_id, file_reference, bia_image, use_type)
+    else:
         logger.warning(
             f"Cannot create/convert images for image representation of type: {use_type.value} - exiting"
         )
         return
-    elif use_type == ImageRepresentationUseType.INTERACTIVE_DISPLAY:
-        return convert_to_zarr(accession_id, file_reference, bia_image)
-    elif use_type == ImageRepresentationUseType.THUMBNAIL:
-        return convert_to_png(file_reference, (256, 256))
-    elif use_type == ImageRepresentationUseType.STATIC_DISPLAY:
-        return convert_to_png(file_reference, (512, 512))
-        (ImageRepresentationUseType.STATIC_DISPLAY,)
 
 
 def update_example_image_uri(
@@ -209,17 +209,27 @@ def convert_image(
         ]
         conversion_details = conversion_details_temp
 
-    accession_ids_processed = set()
+    accession_ids_with_static_display = set()
     for conversion_detail in conversion_details:
+        accession_id = conversion_detail["accession_id"]
+        file_reference_uuid = conversion_detail["file_reference_uuid"]
         for use_type in (
             ImageRepresentationUseType.INTERACTIVE_DISPLAY,
             ImageRepresentationUseType.THUMBNAIL,
         ):
-            image_representation = convert_file_reference_to_image_representation(
-                conversion_detail["accession_id"],
-                conversion_detail["file_reference_uuid"],
+            convert_file_reference_to_image_representation(
+                accession_id,
+                file_reference_uuid,
                 use_type,
             )
+        if accession_id not in accession_ids_with_static_display:
+            # Get STATIC_DISPLAY
+            convert_file_reference_to_image_representation(
+                accession_id,
+                file_reference_uuid,
+                ImageRepresentationUseType.STATIC_DISPLAY,
+            )
+            accession_ids_with_static_display.add(accession_id)
 
     logger.info(conversion_details)
     print(conversion_details)

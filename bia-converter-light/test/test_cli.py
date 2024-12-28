@@ -17,6 +17,7 @@ from bia_ingest.persistence_strategy import (
     persistence_strategy_factory,
     PersistenceStrategy,
 )
+from bia_converter_light import conversion
 from bia_converter_light import cli
 from bia_converter_light.config import settings
 
@@ -33,7 +34,7 @@ def output_dir_base(tmpdir, monkeypatch):
     monkeypatch.setattr(
         settings,
         "cache_root_dirpath",
-        odb,
+        odb / ".cache",
     )
 
     # Copy file to be convertered to cache so it does not need to be downloaded
@@ -41,9 +42,9 @@ def output_dir_base(tmpdir, monkeypatch):
     src_path = (
         Path(__file__).parent / "data" / "test_files_for_study_component_2" / "im06.png"
     )
-    dest_dir = odb / "files"
+    dest_dir = odb / ".cache" / "files"
     if not dest_dir.is_dir():
-        dest_dir.mkdir()
+        dest_dir.mkdir(parents=True)
     dest_path = dest_dir / f"{file_reference.uuid}.png"
     shutil.copy(src_path, dest_path)
 
@@ -167,13 +168,36 @@ def mock_api_client(monkeypatch, persister):
     mock_api_client_object.get_file_reference = mock_get_file_reference
     mock_api_client_object.get_image = mock_get_image
     mock_api_client_object.post_dataset = mock_post_object
+    mock_api_client_object.post_image_representation = mock_post_object
     mock_api_client_object.__class__ = PrivateApi
+    monkeypatch.setattr(
+        conversion,
+        "api_client",
+        mock_api_client_object,
+    )
     monkeypatch.setattr(
         cli,
         "api_client",
         mock_api_client_object,
     )
     return mock_api_client_object
+
+
+@pytest.fixture
+def mock_copy_local_to_s3(monkeypatch):
+    """Return s3 url without actual copy to s3"""
+
+    def _mock_copy_local_to_s3(src_fpath, dst_key):
+        endpoint_url = settings.endpoint_url
+        bucket_name = settings.bucket_name
+
+        return f"{endpoint_url}/{bucket_name}/{dst_key}"
+
+    monkeypatch.setattr(
+        conversion,
+        "copy_local_to_s3",
+        _mock_copy_local_to_s3,
+    )
 
 
 def test_cli_convert_image(
@@ -183,11 +207,9 @@ def test_cli_convert_image(
     mock_api_client,
     image,
     file_reference,
+    mock_copy_local_to_s3,
+    persister,
 ):
-    zarr_representation = (
-        mock_image_representation.get_image_representation_of_interactive_display()
-    )
-
     result = runner.invoke(
         cli.app,
         [
@@ -202,13 +224,37 @@ def test_cli_convert_image(
 
     assert result.exit_code == 0
 
-    # Check a zarr was created
+    # Check all zarr and pngs were created
+    # TODO: Compare all output files vs expected?
+    for use_type in (
+        "thumbnail",
+        "static_display",
+        "interactive_display",
+    ):
+        func = f"get_image_representation_of_{use_type}"
+        representation = getattr(mock_image_representation, func)()
 
-    # Compare all output files vs expected?
-    zarr_path = (
-        output_dir_base / ".cache" / "zarr" / f"{zarr_representation.uuid}.ome.zarr"
-    )
-    assert zarr_path.is_dir()
+        if use_type == "interactive_display":
+            expected_path = (
+                output_dir_base / ".cache" / "zarr" / f"{representation.uuid}.ome.zarr"
+            )
+            assert expected_path.is_dir(), f"Did not find expected dir for {use_type}"
+        else:
+            expected_path = (
+                output_dir_base
+                / ".cache"
+                / "other_converted_images"
+                / f"{representation.uuid}.png"
+            )
+            assert expected_path.is_file(), f"Did not find expected file for {use_type}"
+
+        # TODO: Check the file_uris of the created image representations properly
+        created_representation = persister.fetch_by_uuid(
+            [representation.uuid],
+            bia_data_model.ImageRepresentation,
+        )[0]
+        assert created_representation.file_uri[0].startswith("http")
+        assert f"{representation.uuid}" in created_representation.file_uri[0]
 
 
 def test_cli_update_example_image_uri_for_dataset(
