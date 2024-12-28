@@ -1,4 +1,5 @@
 from typing import List
+import csv
 from pathlib import Path
 from uuid import UUID
 import typer
@@ -6,8 +7,13 @@ from typing_extensions import Annotated
 
 from bia_shared_datamodels.semantic_models import ImageRepresentationUseType
 from bia_integrator_api.exceptions import ApiException
+from bia_integrator_api import PrivateApi
 from bia_assign_image.cli import assign as assign_image
-from .config import api_client
+from bia_converter_light.config import api_client
+from bia_converter_light.conversion import (
+    convert_to_zarr,
+    convert_to_png,
+)
 
 from bia_converter_light.propose_utils import (
     write_convertible_file_references_for_accession_id,
@@ -16,7 +22,7 @@ from bia_converter_light.propose_utils import (
 import logging
 from rich.logging import RichHandler
 
-from bia_shared_datamodels import bia_data_model, uuid_creation
+from bia_shared_datamodels import uuid_creation
 
 app = typer.Typer()
 
@@ -67,7 +73,23 @@ def ensure_assigned(image_uuid):
         assign_image(file_reference_uuid)
 
 
+def get_conversion_details(conversion_details_path: Path) -> List[dict]:
+    with conversion_details_path.open("r") as fid:
+        field_names = [
+            "accession_id",
+            "study_uuid",
+            "file_path",
+            "file_reference_uuid",
+            "size_in_bytes",
+            "size_human_readable",
+        ]
+        reader = csv.DictReader(fid, fieldnames=field_names, delimiter="\t")
+        conversion_details = [row for row in reader]
+    return conversion_details
+
+
 def convert_file_reference_to_image_representation(
+    accession_id: str,
     file_reference_uuid: str,
     use_type: ImageRepresentationUseType,
     verbose: bool = False,
@@ -93,24 +115,22 @@ def convert_file_reference_to_image_representation(
             file_reference_uuid,
         ]
     )
+    image_uuid = str(image_uuid)
     ensure_assigned(image_uuid)
     file_reference = api_client.get_file_reference(file_reference_uuid)
 
-    bia_image = persister.fetch_by_uuid(
-        [representation.representation_of_uuid],
-        bia_data_model.Image,
-    )[0]
-    if representation.use_type == ImageRepresentationUseType.UPLOADED_BY_SUBMITTER:
+    bia_image = api_client.get_image(image_uuid)
+    if use_type == ImageRepresentationUseType.UPLOADED_BY_SUBMITTER:
         logger.warning(
-            f"Cannot create/convert images for image representation of type: {representation.use_type.value} - exiting"
+            f"Cannot create/convert images for image representation of type: {use_type.value} - exiting"
         )
         return
-    elif representation.use_type == ImageRepresentationUseType.INTERACTIVE_DISPLAY:
-        return convert_to_zarr(bia_image)
-    elif representation.use_type == ImageRepresentationUseType.THUMBNAIL:
-        return convert_to_png(bia_image, (256, 256))
-    elif representation.use_type == ImageRepresentationUseType.STATIC_DISPLAY:
-        return convert_to_png(bia_image, (512, 512))
+    elif use_type == ImageRepresentationUseType.INTERACTIVE_DISPLAY:
+        return convert_to_zarr(accession_id, file_reference, bia_image)
+    elif use_type == ImageRepresentationUseType.THUMBNAIL:
+        return convert_to_png(file_reference, (256, 256))
+    elif use_type == ImageRepresentationUseType.STATIC_DISPLAY:
+        return convert_to_png(file_reference, (512, 512))
         (ImageRepresentationUseType.STATIC_DISPLAY,)
 
 
@@ -172,9 +192,37 @@ def convert_image(
     max_items: Annotated[int, typer.Option()] = 5,
     output_path: Annotated[Path, typer.Option()] = None,
 ):
-    """Convert file references to image representations
+    """Convert file references to image representations"""
+    # The convention is to create
+    # i) INTERACTIVE_DISPLAY
+    # ii) THUMBNAIL
+    # iii) If first image for accession ID STATIC_DISPLAY
+    conversion_details = get_conversion_details(conversion_details_path)
+    if accession_ids == ["all"]:
+        set_accession_ids = {cd["accession_id"] for cd in conversion_details}
+        accession_ids = list(set_accession_ids)
+        accession_ids.sort()
+    else:
+        # Filter conversion details for accession IDs to process
+        conversion_details_temp = [
+            cd for cd in conversion_details if cd["accession_id"] in accession_ids
+        ]
+        conversion_details = conversion_details_temp
 
-    """
+    accession_ids_processed = set()
+    for conversion_detail in conversion_details:
+        for use_type in (
+            ImageRepresentationUseType.INTERACTIVE_DISPLAY,
+            ImageRepresentationUseType.THUMBNAIL,
+        ):
+            image_representation = convert_file_reference_to_image_representation(
+                conversion_detail["accession_id"],
+                conversion_detail["file_reference_uuid"],
+                use_type,
+            )
+
+    logger.info(conversion_details)
+    print(conversion_details)
 
 
 @app.command()

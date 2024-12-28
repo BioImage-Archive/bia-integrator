@@ -6,8 +6,11 @@ from uuid import UUID
 from pathlib import Path
 
 
-from .config import settings
-from bia_shared_datamodels import bia_data_model
+from bia_converter_light.config import settings
+from bia_converter_light.io import stage_fileref_and_get_fpath, copy_local_to_s3
+from bia_converter_light import utils
+from bia_shared_datamodels import bia_data_model, semantic_models
+from bia_assign_image import image_representation
 
 logger = logging.getLogger(__name__)
 
@@ -28,8 +31,8 @@ def run_zarr_conversion(input_fpath, output_dirpath):
     ), f"Error converting to zarr: {retval.stderr.decode('utf-8')}"
 
 
-def cached_convert_to_zarr_and_get_fpath(image_representation, input_fpath):
-    zarr_fpath = get_local_path_to_zarr(image_representation.uuid)
+def cached_convert_to_zarr_and_get_fpath(representation, input_fpath):
+    zarr_fpath = get_local_path_to_zarr(representation.uuid)
     dst_dir_basepath = zarr_fpath.parent
     dst_dir_basepath.mkdir(exist_ok=True, parents=True)
 
@@ -46,7 +49,9 @@ def get_local_path_to_zarr(image_representation_uuid: [str | UUID]) -> Path:
 
 
 def convert_to_zarr(
+    accession_id: str,
     file_reference: bia_data_model.FileReference,
+    image: bia_data_model.Image,
 ) -> bia_data_model.ImageRepresentation:
     """Create zarr image of file reference"""
 
@@ -54,6 +59,18 @@ def convert_to_zarr(
         file_reference
     )
 
+    representation = image_representation.get_image_representation(
+        accession_id,
+        [
+            file_reference,
+        ],
+        image,
+        semantic_models.ImageRepresentationUseType.INTERACTIVE_DISPLAY,
+    )
+    local_path_to_zarr = cached_convert_to_zarr_and_get_fpath(
+        representation,
+        local_path_to_uploaded_by_submitter_rep,
+    )
     pixel_metadata = utils.get_ome_zarr_pixel_metadata(local_path_to_zarr)
 
     def _format_pixel_metadata(key):
