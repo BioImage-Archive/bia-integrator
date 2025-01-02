@@ -78,3 +78,24 @@ def test_cli_export_dataset_for_website_images(tmp_path: Path):
         json_expected = json.load(f)
 
     assert json_result == json_expected
+
+def test_cli_export_ai_gallery(tmp_path: Path):
+    input_root_path = Path(__file__).parent.joinpath("input_data")
+    expected_output = Path(__file__).parent.joinpath(
+        "output_data/ai_gallery_export.json"
+    )
+    outfile = tmp_path.joinpath("ai_gallery_export.json").resolve()
+
+    result = runner.invoke(
+        app, ["ai-gallery-export", "S-BIADTEST", "-o", outfile, "-r", input_root_path]
+    )
+
+    assert result.exit_code == 0
+
+    with open(outfile, "r") as f:
+        json_result = json.load(f)
+
+    with open(expected_output) as f:
+        json_expected = json.load(f)
+
+    assert json_result == json_expected

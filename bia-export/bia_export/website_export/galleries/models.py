@@ -1,0 +1,82 @@
+from __future__ import annotations
+
+from bia_export.website_export.website_models import (
+    BioSample,
+    ImageAcquisitionProtocol,
+    SpecimenImagingPreparationProtocol,
+    AnnotationMethod,
+    Protocol,
+    CLIContext,
+)
+from bia_integrator_api import models
+
+from pydantic import Field
+
+from enum import Enum
+
+from typing import List, Optional, Type
+
+
+class Gallery_Dataset(models.Dataset):
+    acquisition_process: Optional[List[ImageAcquisitionProtocol]] = Field(
+        description="""Processes involved in the creation of the images and files in this dataset.""",
+        default_factory=list,
+    )
+    specimen_imaging_preparation_protocol: Optional[
+        List[SpecimenImagingPreparationProtocol]
+    ] = Field(
+        description="""Processes involved in the preprapartion of the samples for imaging.""",
+        default_factory=list,
+    )
+    biological_entity: Optional[List[BioSample]] = Field(
+        description="""The biological entity or entities that were imaged.""",
+        default_factory=list,
+    )
+    annotation_process: Optional[List[AnnotationMethod]] = Field(
+        description="""Methods used to create the annotated image.""",
+        default_factory=list,
+    )
+    other_creation_process: Optional[List[Protocol]] = Field(
+        description="""Other protocols followed in order to create the images in this dataset.""",
+        default_factory=list,
+    )
+    image: List[models.Image] = Field(
+        default_factory=list,
+        description="List of image associated with the dataset.",
+    )
+    file_count: int = Field(description="Count of file references in the dataset")
+    image_count: int = Field(description="Count of images in the dataset")
+    file_type_aggregation: list = Field(
+        description="List of different file type extensions in the dataset."
+    )
+
+
+class Gallery_Study(models.Study):
+    dataset: Optional[List[Gallery_Dataset]] = Field(
+        default_factory=list,
+        description="""A dataset that is associated with the study.""",
+    )
+
+
+class CacheUse(Enum):
+    READ_CACHE = "read_cache"
+    WRITE_CACHE = "write_cache"
+
+
+class GalleryCLIContext(CLIContext):
+    dataset_file_aggregate_data: dict = Field(
+        default_factory=dict,
+        description="Image & File Reference counts & types for each Dataset",
+    )
+    displayed_dataset_detail: dict[Type, set] = Field(
+        default={
+            ImageAcquisitionProtocol: set(),
+            BioSample: set(),
+            SpecimenImagingPreparationProtocol: set(),
+            AnnotationMethod: set(),
+            Protocol: set(),
+        },
+        description="""Tracks e.g. which BioSamples have been displayed in previous dataset sections to 
+        determine whether details should default to open or closed.""",
+    )
+    cache_use: Optional[CacheUse] = None
