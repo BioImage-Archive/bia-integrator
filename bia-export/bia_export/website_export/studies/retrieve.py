@@ -110,11 +110,9 @@ def write_to_cache(dataset_uuid, aggregation_fields):
     logging.info(f"writing to dataset aggregation cache for dataset: {dataset_uuid}")
 
     cache_file = (
-        Path(__file__)
-        .parent.parent.parent.parent.join(
-            "cached_computed_data", "dataset_aggregate_fields.json"
-        )
-        .absolute()
+        Path(__file__).parents[3].absolute()
+        / "cached_computed_data"
+        / "dataset_aggregate_fields.json"
     )
     with open(cache_file, "r") as object_file:
         try:
@@ -131,11 +129,9 @@ def write_to_cache(dataset_uuid, aggregation_fields):
 def aggregate_file_list_data(context: StudyCLIContext) -> None:
     if context.cache_use == CacheUse.READ_CACHE:
         cache_file = (
-            Path(__file__)
-            .parent.parent.parent.parent.join(
-                "cached_computed_data", "dataset_aggregate_fields.json"
-            )
-            .absolute()
+            Path(__file__).parents[3].absolute()
+            / "cached_computed_data"
+            / "dataset_aggregate_fields.json"
         )
 
         with open(cache_file, "r") as object_file:
