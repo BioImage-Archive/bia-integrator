@@ -6,7 +6,7 @@ from uuid import UUID
 from bia_ingest.persistence_strategy import PersistenceStrategy
 from bia_ingest.biostudies.submission_parsing_utils import (
     find_datasets_with_file_lists,
-    find_files_in_submission, 
+    find_files_and_file_lists_in_submission, 
     attributes_to_dict,
 )
 from bia_ingest.bia_object_creation_utils import (
@@ -92,16 +92,20 @@ def get_file_reference_for_default_template_datasets(
         submission_dataset: bia_data_model.Dataset, 
         result_summary: dict, 
         persister: Optional[PersistenceStrategy] = None
-):
+) -> Dict[str, List[bia_data_model.FileReference]]:
     """
     Return Dict of list of file references in a default template dataset.
+    Assumed one dataset per submission, currently.
     """
-    # TODO: extend to handle multiple datasets (in a list)
-    # TODO: return dict of file references
     
-    #fileref_to_datasets = {}
+    all_files = find_files_and_file_lists_in_submission(submission)
+    if not all_files:
+        logger.warning("No files were found.")
+        result_summary[submission.accno].__setattr__(
+            "Warning",
+            f"No files were found in deafult template — check submission",
+        )
 
-    all_files = find_files_in_submission(submission)
     file_reference_dicts = get_file_reference_dicts_for_submission_dataset(
         submission.accno, study_uuid, submission_dataset, all_files
     )
@@ -115,9 +119,9 @@ def get_file_reference_for_default_template_datasets(
     if persister:
         persister.persist(file_references)
 
-    #fileref_to_datasets[submission_dataset.title_id] = file_references
+    fileref_to_datasets = {submission_dataset.title_id: file_references}
 
-    #return fileref_to_datasets
+    return fileref_to_datasets
 
 
 def get_file_reference_dicts_for_submission_dataset(
@@ -129,10 +133,6 @@ def get_file_reference_dicts_for_submission_dataset(
     """
     Return list of file references for particular submission dataset
     """
-
-    # TODO: Until template datasets are iterated over in calling function, get dataset out of list
-    if type(submission_dataset) == list:
-        submission_dataset = submission_dataset[0]
 
     file_references = []
     for f in files_in_file_list:

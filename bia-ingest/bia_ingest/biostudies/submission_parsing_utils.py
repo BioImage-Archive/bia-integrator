@@ -93,50 +93,45 @@ def find_files_in_submission_file_lists(submission: Submission) -> List[File]:
     return sum(file_lists, [])
 
 
-def find_files_and_file_lists_in_submission(submission: Submission) -> List[File]:
+def find_files_and_file_lists_in_submission(
+        submission: Submission
+) -> List:
     """Find all of the files in a submission, both attached directly to
     the submission and as file lists."""
 
-    all_files = find_files_in_submission_file_lists(submission)
+    # TODO: deal with file lists. 
 
-    def descend_and_find_files(section, files_list=[]):
-        section_type = type(section)
-        if section_type == Section:
-            for file in section.files:
-                if isinstance(file, List):
-                    files_list += file
-                else:
-                    files_list.append(file)
+    #all_files_and_file_lists = []
+    #all_file_lists = find_files_in_submission_file_lists(submission)
 
-            for subsection in section.subsections:
-                descend_and_find_files(subsection, files_list)
-        else:
-            logger.warning(
-                f"Not processing subsection as type is {section_type}, not 'Section'. Contents={section}"
-            )
-
-    descend_and_find_files(submission.section, all_files)
+    all_files = find_files_in_submission(submission.section, [])
 
     return all_files
 
 def find_files_in_submission(
-    submission: Submission
-) -> List[File]:
+    section: Section, 
+    files_list: List[File]
+) -> List:
     """Find files in a submission that are attached directly, 
     not in file lists."""
 
-    # Asssuming there can be more than one Study in a Submission
-    sections = find_sections_recursive(submission.section, ["Study"])
-    
-    # Assuming "files" can be populated by things other than a File...?
-    all_files = []
-    for section in sections:
+    section_type = type(section)
+    if section_type == Section:
         for file in section.files:
-            if isinstance(file, File):
-                all_files.append(file)
-    
-    return all_files
+            if isinstance(file, List):
+                files_list += file
+            else:
+                files_list.append(file)
 
+        for subsection in section.subsections:
+            find_files_in_submission(subsection, files_list)
+
+    else:
+        logger.warning(
+            f"Not processing subsection as type is {section_type}, not 'Section'. Contents={section}"
+        )
+    
+    return files_list
 
 def mattributes_to_dict(
     attributes: List[Attribute], reference_dict: Dict[str, Any]
