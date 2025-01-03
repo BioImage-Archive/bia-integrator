@@ -4,7 +4,7 @@ from bia_export.website_export.studies.models import (
     Dataset,
     Study,
     StudyCLIContext,
-    CacheUse
+    CacheUse,
 )
 from bia_export.website_export.studies.retrieve import (
     retrieve_study,
@@ -30,8 +30,8 @@ logger = logging.getLogger("__main__." + __name__)
 
 
 def transform_study(context: StudyCLIContext) -> Study:
-
     api_study = retrieve_study(context)
+    logger.info(f"Processing study: {api_study.accession_id}")
     study_dict = api_study.model_dump()
 
     # Collect file list information prior to creating eid if reading locally to avoid reading them multiple times.

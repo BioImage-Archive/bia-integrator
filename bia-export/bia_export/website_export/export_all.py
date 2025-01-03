@@ -5,6 +5,7 @@ from bia_export.bia_client import api_client
 from bia_integrator_api.models import Study
 from .generic_object_retrieval import read_api_json_file
 import logging
+import re
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -39,15 +40,24 @@ def fetch_studies_from_api(
 
 
 def get_study_ids(root_directory: Optional[Path] = None):
+
+    def get_accno(acc_id):
+        match = re.search(r"\d+$", acc_id)
+        return int(match.group()) if match else None
+
     if root_directory:
         studies_list = find_local_studies(root_directory)
         sorted_studies = sorted(
-            studies_list, key=lambda study: study.release_date, reverse=True
+            studies_list,
+            key=lambda study: (study.release_date, get_accno(study.accession_id)),
+            reverse=True,
         )
         return [study.accession_id for study in sorted_studies]
     else:
         studies_list = fetch_studies_from_api(page_size=100)
         sorted_studies = sorted(
-            studies_list, key=lambda study: study.release_date, reverse=True
+            studies_list,
+            key=lambda study: (study.release_date, get_accno(study.accession_id)),
+            reverse=True,
         )
         return [study.uuid for study in sorted_studies]
