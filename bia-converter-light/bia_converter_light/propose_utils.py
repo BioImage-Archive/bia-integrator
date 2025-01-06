@@ -12,9 +12,6 @@ from pathlib import Path
 from bia_converter_light.config import read_only_client
 from bia_converter_light.utils import in_bioformats_single_file_formats_list
 
-# ToDo: Fix this to recursively call using until all data returned
-PAGE_SIZE_DEFAULT = 10000000
-
 
 def select_indicies(n_indicies: int, n_to_select: int = 5) -> list[int]:
     """Select a number of indicies from input list
@@ -68,6 +65,11 @@ def sizeof_fmt(num, suffix="B"):
 
 def get_convertible_file_references(accession_id: str) -> List[Dict]:
     """Get details of convertible images for given accession ID"""
+
+    # ToDo: Fix this to recursively call using until all data returned
+    PAGE_SIZE_DEFAULT = 10000000
+
+    # Check with LA if there is/will be API call to search by accession_id.
     studies = read_only_client.get_studies(page_size=PAGE_SIZE_DEFAULT)
     study = next((s for s in studies if s.accession_id == accession_id), None)
     if not study:
@@ -108,7 +110,7 @@ def write_convertible_file_references_for_accession_id(
     accession_id: str,
     output_path: Path,
     max_items: int = 5,
-    append: bool = False,
+    append: bool = True,
 ) -> int:
     """
     Write details of file references proposed for conversion to file

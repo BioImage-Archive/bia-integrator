@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Union
 import csv
 from pathlib import Path
 from uuid import UUID
@@ -144,7 +144,7 @@ def convert_file_reference_to_image_representation(
 
 
 def update_example_image_uri(
-    representation_uuid: [UUID | str],
+    representation_uuid: Union[UUID, str],
     verbose: bool = False,
 ) -> bool:
     # pdb.set_trace()
@@ -201,8 +201,6 @@ def convert_image(
             help="Path to tsv file containing details needed for conversion (produced by 'propose' command).",
         ),
     ] = None,
-    max_items: Annotated[int, typer.Option()] = 5,
-    output_path: Annotated[Path, typer.Option()] = None,
 ):
     """Convert file references to image representations"""
     # The convention is to create
@@ -242,9 +240,6 @@ def convert_image(
                 ImageRepresentationUseType.STATIC_DISPLAY,
             )
             accession_ids_with_static_display.add(accession_id)
-
-    logger.info(conversion_details)
-    print(conversion_details)
 
 
 @app.command()

@@ -57,7 +57,7 @@ $ poetry run bia-converter-light convert-image --conversion-details-path <PATH_T
 
 ## Updating example image uri for dataset
 ```sh
-$ poetry run bia-converter-light convert-image  <UUID_OF_STATIC_DISPLAY_REPRESENTATION>
+$ poetry run bia-converter-light update-example-image-uri-for-dataset  <UUID_OF_STATIC_DISPLAY_REPRESENTATION>
 ```
 
 
