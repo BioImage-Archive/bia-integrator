@@ -11,6 +11,7 @@ from bia_converter_light import utils
 from bia_shared_datamodels import bia_data_model, semantic_models, uuid_creation
 from bia_assign_image import image_representation
 from bia_converter_light.rendering import generate_padded_thumbnail_from_ngff_uri
+from bia_converter_light.utils import save_to_api
 
 logger = logging.getLogger(__name__)
 
@@ -106,8 +107,11 @@ def convert_to_zarr(
     representation.file_uri = [
         file_uri + "/0",
     ]
-    representation.version += 1
-    api_client.post_image_representation(representation)
+    save_to_api(
+        [
+            representation,
+        ]
+    )
     message = f"Converted uploaded by submitter to ome.zarr and uploaded to S3: {representation.file_uri}"
     logger.info(message)
 
@@ -136,7 +140,7 @@ def convert_to_png(
         )
     )
     interactive_image_representation = api_client.get_image_representation(
-        interactive_image_representation_uuid,
+        f"{interactive_image_representation_uuid}",
     )
 
     # Check for local path to zarr and use if it exists
@@ -187,7 +191,10 @@ def convert_to_png(
     representation.file_uri = [
         file_uri,
     ]
-    representation.version += 1
-    api_client.post_image_representation(representation)
+    save_to_api(
+        [
+            representation,
+        ]
+    )
     message = f"Created {representation.use_type} image and uploaded to S3: {representation.file_uri}"
     logger.info(message)

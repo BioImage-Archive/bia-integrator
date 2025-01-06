@@ -10,6 +10,7 @@ from bia_integrator_api.exceptions import NotFoundException
 from bia_integrator_api import PrivateApi
 from bia_assign_image.cli import assign as assign_image
 from bia_converter_light.config import api_client
+from bia_converter_light.utils import save_to_api
 from bia_converter_light.conversion import (
     convert_to_zarr,
     convert_to_png,
@@ -157,8 +158,11 @@ def update_example_image_uri(
         image = api_client.get_image(representation.representation_of_uuid)
         dataset = api_client.get_dataset(image.submission_dataset_uuid)
         dataset.example_image_uri.append(representation.file_uri[0])
-        dataset.version += 1
-        api_client.post_dataset(dataset)
+        save_to_api(
+            [
+                dataset,
+            ]
+        )
 
         logger.info(
             f"Updated example image uri of dataset {dataset.uuid} to {dataset.example_image_uri}"

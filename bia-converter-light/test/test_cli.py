@@ -18,7 +18,7 @@ from bia_ingest.persistence_strategy import (
     PersistenceStrategy,
 )
 from bia_converter_light import conversion
-from bia_converter_light import cli
+from bia_converter_light import cli, utils
 from bia_converter_light.config import settings
 
 
@@ -177,6 +177,11 @@ def mock_api_client(monkeypatch, persister):
     )
     monkeypatch.setattr(
         cli,
+        "api_client",
+        mock_api_client_object,
+    )
+    monkeypatch.setattr(
+        utils,
         "api_client",
         mock_api_client_object,
     )
