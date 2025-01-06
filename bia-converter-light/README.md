@@ -47,9 +47,9 @@ By default this writes output to `./file_references_to_convert.tsv` which can be
 
 
 ## Converting images associated with representations
-The input is a file containing details of file references for conversion. This is of the format produced by the `propose` format above. Additionally, if conversion is required for a subset of accession ids in the file these can be specified on the command line. INTERACTIVE_DISPLAY and THUMBNAIL representations are created for all file references, and a STATIC_DISPLAY is created for the first file reference processed for each study.
+The input is a file containing details of file references for conversion. This is of the format produced by the `propose` command above. Additionally, if conversion is required for a subset of accession ids in the file, these can be specified on the command line. INTERACTIVE_DISPLAY and THUMBNAIL representations are created for all file references, and a STATIC_DISPLAY is created for the first file reference processed for each study.
 
-The STATIC_DISPLAY representation is not created by default because the BIA website only needs one static display per experimental imaging dataset. All interactive images need a thumbnail for the website, so they are usually created together.
+The STATIC_DISPLAY representation is not created by default because the BIA website only needs one static display per experimental imaging dataset. All interactive images need a thumbnail for the website, so they are created together.
 Example cli use:
 ```sh
 $ poetry run bia-converter-light convert-image --conversion-details-path <PATH_TO_TSV_WITH_DETAILS_NEEDED_FOR_CONVERSION>

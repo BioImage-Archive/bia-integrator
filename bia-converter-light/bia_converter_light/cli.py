@@ -6,7 +6,7 @@ import typer
 from typing_extensions import Annotated
 
 from bia_shared_datamodels.semantic_models import ImageRepresentationUseType
-from bia_integrator_api.exceptions import ApiException
+from bia_integrator_api.exceptions import NotFoundException
 from bia_integrator_api import PrivateApi
 from bia_assign_image.cli import assign as assign_image
 from bia_converter_light.config import api_client
@@ -46,7 +46,7 @@ app.add_typer(
 
 def validate_propose_inputs(
     accession_ids: list[str] = None, accession_ids_path: Path = None
-):
+) -> None:
     """Validate that only one of accession_ids or file_path is provided."""
     if accession_ids and accession_ids_path:
         typer.echo(
@@ -62,15 +62,23 @@ def validate_propose_inputs(
         raise typer.Exit(code=1)
 
 
-def ensure_assigned(image_uuid):
+def ensure_assigned(
+    accession_id: str, image_uuid: str, file_reference_uuid: str
+) -> None:
     """Ensure Image and corresponding UPLOADED_BY_USER representation exist"""
     try:
-        bia_image = api_client.get_image(image_uuid)
-    except ApiException:
+        api_client.get_image(image_uuid)
+    except NotFoundException:
         logger.warning(
             f"Could not find Image with uuid {image_uuid}. Attempting creation"
         )
-        assign_image(file_reference_uuid)
+        assign_image(
+            accession_id,
+            [
+                file_reference_uuid,
+            ],
+            "api",
+        )
 
 
 def get_conversion_details(conversion_details_path: Path) -> List[dict]:
@@ -116,7 +124,7 @@ def convert_file_reference_to_image_representation(
         ]
     )
     image_uuid = str(image_uuid)
-    ensure_assigned(image_uuid)
+    ensure_assigned(accession_id, image_uuid, file_reference_uuid)
     file_reference = api_client.get_file_reference(file_reference_uuid)
 
     bia_image = api_client.get_image(image_uuid)

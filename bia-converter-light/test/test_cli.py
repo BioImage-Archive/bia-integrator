@@ -189,7 +189,8 @@ def mock_copy_local_to_s3(monkeypatch):
 
     def _mock_copy_local_to_s3(src_fpath, dst_key):
         endpoint_url = settings.endpoint_url
-        bucket_name = settings.bucket_name
+        # bucket_name = settings.bucket_name
+        bucket_name = "test-bucket"
 
         return f"{endpoint_url}/{bucket_name}/{dst_key}"
 
