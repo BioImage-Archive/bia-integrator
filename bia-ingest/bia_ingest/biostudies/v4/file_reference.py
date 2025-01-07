@@ -86,43 +86,6 @@ def get_file_reference_by_dataset(
 
     return fileref_to_datasets
 
-def get_file_reference_for_default_template_datasets(
-        submission: Submission, 
-        study_uuid: UUID, 
-        submission_dataset: bia_data_model.Dataset, 
-        result_summary: dict, 
-        persister: Optional[PersistenceStrategy] = None
-) -> Dict[str, List[bia_data_model.FileReference]]:
-    """
-    Return Dict of list of file references in a default template dataset.
-    Assumed one dataset per submission, currently.
-    """
-    
-    all_files = find_files_and_file_lists_in_submission(submission)
-    if not all_files:
-        logger.warning("No files were found.")
-        result_summary[submission.accno].__setattr__(
-            "Warning",
-            f"No files were found in deafult template — check submission",
-        )
-
-    file_reference_dicts = get_file_reference_dicts_for_submission_dataset(
-        submission.accno, study_uuid, submission_dataset, all_files
-    )
-
-    file_references = dicts_to_api_models(
-        file_reference_dicts,
-        bia_data_model.FileReference,
-        result_summary[submission.accno],
-    )
-
-    if persister:
-        persister.persist(file_references)
-
-    fileref_to_datasets = {submission_dataset.title_id: file_references}
-
-    return fileref_to_datasets
-
 
 def get_file_reference_dicts_for_submission_dataset(
     accession_id: str,

@@ -1,9 +1,11 @@
 from typing import Optional
 import logging
 
-from bia_ingest.biostudies.v4.study import get_study
-from bia_ingest.biostudies.v4.dataset import get_dataset_overview
-from bia_ingest.biostudies.v4.file_reference import get_file_reference_for_default_template_datasets
+from bia_ingest.biostudies.common.study import get_study
+from bia_ingest.biostudies.biostudies_default.default_dataset import get_dataset_overview
+from bia_ingest.biostudies.biostudies_default.default_file_reference import (
+    get_file_reference_for_default_template_datasets
+)
 
 from bia_ingest.biostudies.api import Submission
 from bia_ingest.persistence_strategy import PersistenceStrategy
