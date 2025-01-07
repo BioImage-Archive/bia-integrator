@@ -224,7 +224,7 @@ def save_to_api(object_list: List[BaseModel]) -> None:
             logger.warning(message)
             continue
         elif api_copy_of_obj:
-            obj.version = api_copy_of_obj.version + 1
+            api_obj.version = api_copy_of_obj.version + 1
 
         api_creation_method = f"post_{to_snake(obj.model.type_name)}"
         getattr(api_client, api_creation_method)(api_obj)

@@ -69,9 +69,7 @@ def get_convertible_file_references(accession_id: str) -> List[Dict]:
     # ToDo: Fix this to recursively call using until all data returned
     PAGE_SIZE_DEFAULT = 10000000
 
-    # Check with LA if there is/will be API call to search by accession_id.
-    studies = read_only_client.get_studies(page_size=PAGE_SIZE_DEFAULT)
-    study = next((s for s in studies if s.accession_id == accession_id), None)
+    study = read_only_client.search_study_by_accession(accession_id)
     if not study:
         return []
     datasets = read_only_client.get_dataset_linking_study(
@@ -140,6 +138,21 @@ def write_convertible_file_references_for_accession_id(
         for i in indicies_to_select
     ]
     with output_path.open(open_text_mode) as fid:
+        # If we are at start of file write header.
+        if fid.tell() == 0:
+            fid.writelines(
+                "\t".join(
+                    [
+                        "accession_id",
+                        "study_uuid",
+                        "name",
+                        "file_reference_uuid",
+                        "size_in_bytes",
+                        "size_human_readable",
+                    ]
+                )
+            )
+            fid.writelines("\n")
         fid.writelines("\n".join(lines))
         # Write a new line so next append starts on next line
         fid.writelines("\n")

@@ -107,6 +107,17 @@ def conversion_details_path(output_dir_base, dataset, file_reference) -> Path:
     size_human_readable = f"{file_reference.size_in_bytes}B"
     conversion_details = "\t".join(
         [
+            "accession_id",
+            "study_uuid",
+            "name",
+            "file_reference_uuid",
+            "size_in_bytes",
+            "size_human_readable",
+        ]
+    )
+    conversion_details += "\n"
+    conversion_details += "\t".join(
+        [
             accession_id,
             study_uuid,
             file_reference.file_path,
@@ -120,7 +131,7 @@ def conversion_details_path(output_dir_base, dataset, file_reference) -> Path:
 
 
 @pytest.fixture
-def mock_api_client(monkeypatch, persister):
+def mock_api_client(monkeypatch, persister, output_dir_base):
     """Mock api_client functions for getting and saving model objects used in test"""
 
     def mock_get_image(uuid):
@@ -155,6 +166,21 @@ def mock_api_client(monkeypatch, persister):
             bia_data_model.FileReference,
         )[0]
 
+    def mock_get_image_representation_linking_image(image_uuid, page_size):
+        image_representations_path = output_dir_base / "image_representation"
+        representation_uuids = [
+            p.stem for p in image_representations_path.rglob("*/*.json")
+        ]
+        all_image_representations = persister.fetch_by_uuid(
+            representation_uuids, bia_data_model.ImageRepresentation
+        )
+
+        return [
+            r
+            for r in all_image_representations
+            if f"{r.representation_of_uuid}" == f"{image_uuid}"
+        ]
+
     def mock_post_object(obj):
         persister.persist(
             [
@@ -167,6 +193,9 @@ def mock_api_client(monkeypatch, persister):
     mock_api_client_object.get_dataset = mock_get_dataset
     mock_api_client_object.get_file_reference = mock_get_file_reference
     mock_api_client_object.get_image = mock_get_image
+    mock_api_client_object.get_image_representation_linking_image = (
+        mock_get_image_representation_linking_image
+    )
     mock_api_client_object.post_dataset = mock_post_object
     mock_api_client_object.post_image_representation = mock_post_object
     mock_api_client_object.__class__ = PrivateApi
@@ -216,12 +245,21 @@ def test_cli_convert_image(
     mock_copy_local_to_s3,
     persister,
 ):
+    image_representation = (
+        mock_image_representation.get_image_representation_of_interactive_display()
+    )
+    persister.persist(
+        [
+            image_representation,
+        ]
+    )
+
     result = runner.invoke(
         cli.app,
         [
             "convert-image",
-            "--accession-ids",
-            accession_id,
+            # "--accession-ids",
+            # accession_id,
             "--conversion-details-path",
             conversion_details_path,
         ],

@@ -93,7 +93,12 @@ def get_conversion_details(conversion_details_path: Path) -> List[dict]:
             "size_human_readable",
         ]
         reader = csv.DictReader(fid, fieldnames=field_names, delimiter="\t")
+        # Some files may not have header, so check first row
+        first_row = next(reader)
         conversion_details = [row for row in reader]
+        if first_row.get("accession_id") != "accession_id":
+            conversion_details.insert(0, first_row)
+
     return conversion_details
 
 
@@ -119,16 +124,28 @@ def convert_file_reference_to_image_representation(
         api_client, PrivateApi
     ), f"Expected valid instance of <class 'PrivateApi'>. Got : {type(api_client)} - are your API credentials valid and/or is the API server online?"
 
-    image_uuid = uuid_creation.create_image_uuid(
-        [
-            file_reference_uuid,
-        ]
+    bia_images = api_client.get_image_linking_file_reference(
+        file_reference_uuid, page_size=DEFAULT_PAGE_SIZE
     )
-    image_uuid = str(image_uuid)
-    ensure_assigned(accession_id, image_uuid, file_reference_uuid)
+    n_bia_images = len(bia_images)
+    assert (
+        n_bia_images < 2
+    ), f"Expected one image to be associated with file reference uuid {file_reference_uuid}. Got {n_bia_images}: {bia_images}. Not sure what to do!!!"
+    if n_bia_images == 1:
+        bia_image = bia_images[0]
+        image_uuid = f"{bia_image.uuid}"
+        ensure_assigned(accession_id, image_uuid, file_reference_uuid)
+    else:
+        image_uuid = uuid_creation.create_image_uuid(
+            [
+                file_reference_uuid,
+            ]
+        )
+        image_uuid = str(image_uuid)
+        ensure_assigned(accession_id, image_uuid, file_reference_uuid)
+        bia_image = api_client.get_image(image_uuid)
     file_reference = api_client.get_file_reference(file_reference_uuid)
 
-    bia_image = api_client.get_image(image_uuid)
     if use_type == ImageRepresentationUseType.INTERACTIVE_DISPLAY:
         return convert_to_zarr(accession_id, file_reference, bia_image)
     elif use_type in (
@@ -258,6 +275,7 @@ def propose(
     ] = None,
     max_items: Annotated[int, typer.Option()] = 5,
     output_path: Annotated[Path, typer.Option()] = None,
+    append: Annotated[bool, typer.Option("--append/--no-append")] = True,
 ):
     """Propose images to convert"""
 
@@ -273,7 +291,8 @@ def propose(
         output_path = Path(__file__).parent.parent / "file_references_to_convert.tsv"
     if output_path.exists():
         assert output_path.is_file()
-        output_path.unlink()
+        if not append:
+            output_path.unlink()
 
     for accession_id in accession_ids:
         n_lines_written = write_convertible_file_references_for_accession_id(

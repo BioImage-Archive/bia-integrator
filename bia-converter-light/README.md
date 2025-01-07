@@ -25,7 +25,7 @@ The AWS credentails for the endpoint also need to be set. This is done using exc
 ## Usage
 This package has 3 cli applications:
  * **propose**: used to create a tsv file with details of file references that can be converted to images.
- * **convert-image**: used to create actual images associated with the representations.
+ * **convert-image**: used to create actual images associated with the representations (the necessary BIA image object and associated UPLOADED_BY_SUBMITTER representation are created if they do not exist).
  * **update-example-image-uri-for-dataset**: used to update the example image uri for a dataset.
 
 Subsequent instructions assume the project is installed and the environment configured, assuming this is the working directory.
@@ -50,6 +50,13 @@ By default this writes output to `./file_references_to_convert.tsv` which can be
 The input is a file containing details of file references for conversion. This is of the format produced by the `propose` command above. Additionally, if conversion is required for a subset of accession ids in the file, these can be specified on the command line. INTERACTIVE_DISPLAY and THUMBNAIL representations are created for all file references, and a STATIC_DISPLAY is created for the first file reference processed for each study.
 
 The STATIC_DISPLAY representation is not created by default because the BIA website only needs one static display per experimental imaging dataset. All interactive images need a thumbnail for the website, so they are created together.
+
+The convention followed for conversion is:
+1. Ensure a BIA Image object and UPLOADED_BY_SUBMITTER representation exist - the `bia-assign-image` subpackage is called to create these if they do not exist
+2. Create an INTERACTIVE_DISPLAY representation
+3. Create a THUMBNAIL representation - an INTERACTIVE_DISPLAY representation is a prerequisite
+4. Create a STATIC_DISPLAY representation if necessary - an INTERACTIVE_DISPLAY representation is a prerequisite
+
 Example cli use:
 ```sh
 $ poetry run bia-converter-light convert-image --conversion-details-path <PATH_TO_TSV_WITH_DETAILS_NEEDED_FOR_CONVERSION>

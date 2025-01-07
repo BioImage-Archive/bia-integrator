@@ -1,3 +1,4 @@
+accession_id	study_uuid	name	file_reference_uuid	size_in_bytes	size_human_readable
 S-BIAD1444	cfd7d1f1-d215-4311-9d92-ac77b18e73f6	WT/WT-028.tif	b3a888d4-d20c-4ea8-bdee-423a6727c957	522428	510.2KiB
 S-BIAD1444	cfd7d1f1-d215-4311-9d92-ac77b18e73f6	c8-1_set1/c8-1_set1-018.tif	14c72b7e-e05c-4e68-9d30-605e6a62e02d	515312	503.2KiB
 S-BIAD1444	cfd7d1f1-d215-4311-9d92-ac77b18e73f6	c8-1_set1/c8-1_set1-010.tif	c178922c-8525-4922-aa2e-90dfcf84e30a	473364	462.3KiB

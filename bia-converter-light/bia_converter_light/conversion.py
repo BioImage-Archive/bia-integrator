@@ -8,12 +8,13 @@ from pathlib import Path
 from bia_converter_light.config import settings, api_client
 from bia_converter_light.io import stage_fileref_and_get_fpath, copy_local_to_s3
 from bia_converter_light import utils
-from bia_shared_datamodels import bia_data_model, semantic_models, uuid_creation
+from bia_shared_datamodels import bia_data_model, semantic_models
 from bia_assign_image import image_representation
 from bia_converter_light.rendering import generate_padded_thumbnail_from_ngff_uri
 from bia_converter_light.utils import save_to_api
 
 logger = logging.getLogger(__name__)
+DEFAULT_PAGE_SIZE = 10000
 
 
 def run_zarr_conversion(input_fpath, output_dirpath):
@@ -43,7 +44,7 @@ def cached_convert_to_zarr_and_get_fpath(representation, input_fpath):
     return zarr_fpath
 
 
-def get_local_path_to_zarr(image_representation_uuid: [str | UUID]) -> Path:
+def get_local_path_to_zarr(image_representation_uuid: str | UUID) -> Path:
     return (
         settings.cache_root_dirpath / "zarr" / f"{image_representation_uuid}.ome.zarr"
     )
@@ -60,20 +61,37 @@ def convert_to_zarr(
         file_reference
     )
 
-    representation = image_representation.get_image_representation(
-        accession_id,
-        [
-            file_reference,
-        ],
-        image,
-        semantic_models.ImageRepresentationUseType.INTERACTIVE_DISPLAY,
+    # Check if representation already exists -> update. Otherwise, create.
+    all_representations_for_image = api_client.get_image_representation_linking_image(
+        str(image.uuid), page_size=DEFAULT_PAGE_SIZE
     )
+    representations = [
+        r
+        for r in all_representations_for_image
+        if r.use_type == semantic_models.ImageRepresentationUseType.INTERACTIVE_DISPLAY
+    ]
+    n_representations = len(representations)
+    assert (
+        n_representations < 2
+    ), f"Expected one interactive display to be associated with image {image.uuid}. Got {n_representations}: {representations}. Not sure what to do!!!"
+    if n_representations == 1:
+        representation = representations[0]
+    else:
+        representation = image_representation.get_image_representation(
+            accession_id,
+            [
+                file_reference,
+            ],
+            image,
+            semantic_models.ImageRepresentationUseType.INTERACTIVE_DISPLAY,
+        )
     local_path_to_zarr = cached_convert_to_zarr_and_get_fpath(
         representation,
         local_path_to_uploaded_by_submitter_rep,
     )
-    pixel_metadata = utils.get_ome_zarr_pixel_metadata(local_path_to_zarr)
+    pixel_metadata = utils.get_ome_zarr_pixel_metadata(str(local_path_to_zarr))
 
+    # When converting for SAB in August 2024, some images returned tuples in metadata for XYZCT.
     def _format_pixel_metadata(key):
         value = pixel_metadata.pop(key, None)
         if isinstance(value, tuple):
@@ -126,22 +144,21 @@ def convert_to_png(
 ) -> bia_data_model.ImageRepresentation:
     """Create png image of file reference"""
 
-    ## Check for interactive display representation (ome.zarr)
-    ## This has to exist before we can generate thumbnails/static display
-    #    message = f"Cannot create thumbnail or static display without a representation with an image of ome zarr. Could not find one for experimentally captured image with UUID: {eci.uuid}"
-    #    logger.error(message)
-    #    raise e
-
-    interactive_image_representation_uuid = (
-        uuid_creation.create_image_representation_uuid(
-            image.uuid,
-            ".ome.zarr",
-            semantic_models.ImageRepresentationUseType.INTERACTIVE_DISPLAY.value,
-        )
+    # Check for interactive display representation (ome.zarr)
+    # This has to exist before we can generate thumbnails/static display
+    all_representations_for_image = api_client.get_image_representation_linking_image(
+        str(image.uuid), page_size=DEFAULT_PAGE_SIZE
     )
-    interactive_image_representation = api_client.get_image_representation(
-        f"{interactive_image_representation_uuid}",
-    )
+    representations = [
+        r
+        for r in all_representations_for_image
+        if r.use_type == semantic_models.ImageRepresentationUseType.INTERACTIVE_DISPLAY
+    ]
+    n_representations = len(representations)
+    assert (
+        n_representations == 1
+    ), f"Need exactly one interactive display to be associated with image {image.uuid}. For generation of {use_type.value} representation. Got {n_representations}: {representations}."
+    interactive_image_representation = representations[0]
 
     # Check for local path to zarr and use if it exists
     local_path_to_zarr = get_local_path_to_zarr(interactive_image_representation.uuid)
@@ -198,3 +215,5 @@ def convert_to_png(
     )
     message = f"Created {representation.use_type} image and uploaded to S3: {representation.file_uri}"
     logger.info(message)
+
+    return representation
