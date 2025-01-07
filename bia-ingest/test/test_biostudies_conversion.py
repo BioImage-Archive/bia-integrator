@@ -11,7 +11,7 @@ from bia_test_data.mock_objects import (
     mock_image_correlation_method,
     mock_object_constants,
 )
-
+from bia_ingest.biostudies.common import study
 from bia_ingest.biostudies.v4 import (
     bio_sample,
     dataset,
@@ -19,7 +19,6 @@ from bia_ingest.biostudies.v4 import (
     image_acquisition_protocol,
     annotation_method,
     specimen_imaging_preparation_protocol,
-    study,
 )
 
 

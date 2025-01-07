@@ -1,4 +1,4 @@
-from bia_ingest.biostudies.v4.study import get_study
+from bia_ingest.biostudies.common.study import get_study
 from bia_ingest.biostudies.v4.dataset import get_dataset
 from bia_ingest.biostudies.v4.bio_sample import get_bio_sample_as_map
 from bia_ingest.biostudies.v4.growth_protocol import get_growth_protocol_as_map

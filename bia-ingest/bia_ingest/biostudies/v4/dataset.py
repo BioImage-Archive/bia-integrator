@@ -2,7 +2,7 @@ import logging
 from typing import List, Optional
 from uuid import UUID
 
-from bia_ingest.bia_object_creation_utils import dicts_to_api_models
+from bia_ingest.bia_object_creation_utils import dict_to_api_model, dicts_to_api_models
 from bia_ingest.persistence_strategy import PersistenceStrategy
 
 
@@ -48,7 +48,6 @@ def get_dataset(
         persister.persist(datasets)
 
     return datasets
-
 
 def get_dataset_dict_from_study_component(
     submission: Submission,
