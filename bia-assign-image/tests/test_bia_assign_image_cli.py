@@ -67,26 +67,6 @@ def test_bia_create_image_representation_cli(monkeypatch, tmpdir):
             mock_image.get_image_with_one_file_reference(),
         ]
     )
-    # persister.persist(
-    #    [
-    #        mock_image_representation.get_image_representation_of_interactive_display(),
-    #    ]
-    # )
-    # persister.persist(
-    #    [
-    #        mock_image_representation.get_image_representation_of_thumbnail(),
-    #    ]
-    # )
-    # persister.persist(
-    #    [
-    #        mock_image_representation.get_image_representation_of_uploaded_by_submitter(),
-    #    ]
-    # )
-    # persister.persist(
-    #    [
-    #        mock_image_representation.get_image_representation_of_static_display(),
-    #    ]
-    # )
 
     image_uuid = mock_image.get_image_with_one_file_reference().uuid
     monkeypatch.setattr(cli.settings, "bia_data_dir", str(output_dir_base))
