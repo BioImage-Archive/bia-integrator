@@ -91,7 +91,7 @@ Alternatively, if using VS Code, you can open the code that is running in the do
 
 ### Pushing to docker hub image registry
 
-To rebuild the api image and push it to the docker container registry.
+To rebuild the api image and push it to the docker container registry. Assuming this is ran in the bia-integrator/api/ folder.
 
 ```sh
 # Create a github personal access token here: https://github.com/settings/tokens
@@ -100,7 +100,7 @@ To rebuild the api image and push it to the docker container registry.
 # building the api image
 docker login ghcr.io
 
-docker compose build bia-integrator-api
+docker buildx build --platform linux/amd64,linux/arm64 ../ -f Dockerfile -t bia-integrator-api
 docker image tag bia-integrator-api ghcr.io/bioimage-archive/bia-integrator-api:$(make api.version)
 docker image push ghcr.io/bioimage-archive/bia-integrator-api:$(make api.version)
 ```
