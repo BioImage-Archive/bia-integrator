@@ -18,6 +18,7 @@ class APILogFormatter(json_log_formatter.JSONFormatter):
             extra=extra,
         )
 
+
 class VerboseJSONFormatter(json_log_formatter.VerboseJSONFormatter):
     """
     Wrapper to make logs uniform / easy to search
@@ -39,13 +40,16 @@ class VerboseJSONFormatter(json_log_formatter.VerboseJSONFormatter):
 Wrappers to make logger name typo-proof
 """
 
+
 def log_info(msg, *args, **kwargs):
     logger = logging.getLogger("bia.api")
     return logger.info(msg, *args, **kwargs)
 
+
 def log_access(msg, *args, **kwargs):
     logger = logging.getLogger("bia.access")
     return logger.info(msg, *args, **kwargs)
+
 
 def log_error(msg, *args, **kwargs):
     logger = logging.getLogger("bia.api")

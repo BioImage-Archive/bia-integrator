@@ -51,13 +51,18 @@ async def custom_access_log(request: Request, call_next):
 
     end = datetime.datetime.now(datetime.timezone.utc)
 
+    # ! post body not safe to log
     log_access(
         "",
         extra={
             "method": request.method,
             "status": response.status_code,
             "path": request.url.path,
+            # query params ImmutableMultiDict in Starlette - ex for lists
+            "query": request.query_params.multi_items(),
             "response_time_ms": int((end - start).total_seconds() * 1000),
+            "response_size_bytes": response.headers.get("content-length", None),
+            "request_size_bytes": request.headers.get("content-length", None),
         },
     )
     return response
@@ -92,10 +97,12 @@ async def on_start():
 
     log_info("App started")
 
+
 @app.on_event("shutdown")
 async def of_stop():
     event_loop = asyncio.get_event_loop()
     app.extra["extra"]["event_loop_specific"][event_loop]["db"].connection.close()
+
 
 @app.on_event("shutdown")
 def on_shutdown():
