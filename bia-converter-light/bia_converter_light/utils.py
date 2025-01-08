@@ -1,11 +1,16 @@
-from .config import settings
+from pydantic import BaseModel
 from uuid import UUID
 from pathlib import Path
 from typing import Dict, List
 import logging
-
-from bia_shared_datamodels import bia_data_model
 import xml.etree.ElementTree as ET
+
+from pydantic.alias_generators import to_snake
+
+from bia_integrator_api.exceptions import NotFoundException
+import bia_integrator_api.models as api_models
+from bia_shared_datamodels import bia_data_model
+from bia_converter_light.config import settings, api_client
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -198,3 +203,29 @@ def merge_dicts(dict_list: List[Dict[str, str]]) -> Dict:
                 merged_dict[key] = value
 
     return merged_dict
+
+
+def save_to_api(object_list: List[BaseModel]) -> None:
+    """Convert bia_data_model to bia_integrator_api.model and persist to API"""
+
+    for obj in object_list:
+        api_obj = getattr(api_models, obj.model.type_name).model_validate_json(
+            obj.model_dump_json()
+        )
+        # First try to retrieve object
+        try:
+            api_get_method = f"get_{to_snake(obj.model.type_name)}"
+            api_copy_of_obj = getattr(api_client, api_get_method)(api_obj.uuid)
+        except NotFoundException:
+            api_copy_of_obj = None
+
+        if api_obj == api_copy_of_obj:
+            message = f"Not writing object with uuid: {obj.uuid} and type: {obj.model.type_name} to API because an identical copy of object exists in API"
+            logger.warning(message)
+            continue
+        elif api_copy_of_obj:
+            api_obj.version = api_copy_of_obj.version + 1
+
+        api_creation_method = f"post_{to_snake(obj.model.type_name)}"
+        getattr(api_client, api_creation_method)(api_obj)
+        logger.debug(f"persisted {obj.uuid} of type {obj.model.type_name} to API")

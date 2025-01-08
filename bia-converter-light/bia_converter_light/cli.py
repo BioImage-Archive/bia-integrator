@@ -1,25 +1,29 @@
+from typing import List, Union
+import csv
+from pathlib import Path
+from uuid import UUID
 import typer
-from typing_extensions import Annotated, List
+from typing_extensions import Annotated
 
 from bia_shared_datamodels.semantic_models import ImageRepresentationUseType
-from .config import api_client, settings
+from bia_integrator_api.exceptions import NotFoundException
+from bia_integrator_api import PrivateApi
+from bia_assign_image.cli import assign as assign_image
+from bia_converter_light.config import api_client
+from bia_converter_light.utils import save_to_api
+from bia_converter_light.conversion import (
+    convert_to_zarr,
+    convert_to_png,
+)
 
-from .io import stage_fileref_and_get_fpath, copy_local_to_s3
-from .conversion import cached_convert_to_zarr_and_get_fpath, get_local_path_to_zarr
-from . import utils
-from .rendering import generate_padded_thumbnail_from_ngff_uri
+from bia_converter_light.propose_utils import (
+    write_convertible_file_references_for_accession_id,
+)
 
 import logging
 from rich.logging import RichHandler
 
-from bia_integrator_api.api.private_api import PrivateApi
-from bia_ingest.persistence_strategy import (
-    persistence_strategy_factory,
-    PersistenceMode,
-)
-from bia_ingest.cli_logging import ImageCreationResult
-
-from bia_converter_light.image_representation import create_image_representation
+from bia_shared_datamodels import uuid_creation
 
 app = typer.Typer()
 
@@ -41,15 +45,73 @@ app.add_typer(
 )
 
 
-@app.command(help="Convert image for given image representation UUID")
-def convert_image(
-    image_representation_uuid: Annotated[str, typer.Argument()],
-    verbose: Annotated[bool, typer.Option("-v")] = False,
+def validate_propose_inputs(
+    accession_ids: list[str] = None, accession_ids_path: Path = None
 ) -> None:
-    """Create image for supplied image rep, upload to s3 and update uri in API
+    """Validate that only one of accession_ids or file_path is provided."""
+    if accession_ids and accession_ids_path:
+        typer.echo(
+            "Error: Provide either a list of accession IDs or a file path, not both.",
+            err=True,
+        )
+        raise typer.Exit(code=1)
+    if not accession_ids and not accession_ids_path:
+        typer.echo(
+            "Error: You must provide either a list of accession IDs or a file path.",
+            err=True,
+        )
+        raise typer.Exit(code=1)
+
+
+def ensure_assigned(
+    accession_id: str, image_uuid: str, file_reference_uuid: str
+) -> None:
+    """Ensure Image and corresponding UPLOADED_BY_USER representation exist"""
+    try:
+        api_client.get_image(image_uuid)
+    except NotFoundException:
+        logger.warning(
+            f"Could not find Image with uuid {image_uuid}. Attempting creation"
+        )
+        assign_image(
+            accession_id,
+            [
+                file_reference_uuid,
+            ],
+            "api",
+        )
+
+
+def get_conversion_details(conversion_details_path: Path) -> List[dict]:
+    with conversion_details_path.open("r") as fid:
+        field_names = [
+            "accession_id",
+            "study_uuid",
+            "file_path",
+            "file_reference_uuid",
+            "size_in_bytes",
+            "size_human_readable",
+        ]
+        reader = csv.DictReader(fid, fieldnames=field_names, delimiter="\t")
+        # Some files may not have header, so check first row
+        first_row = next(reader)
+        conversion_details = [row for row in reader]
+        if first_row.get("accession_id") != "accession_id":
+            conversion_details.insert(0, first_row)
+
+    return conversion_details
+
+
+def convert_file_reference_to_image_representation(
+    accession_id: str,
+    file_reference_uuid: str,
+    use_type: ImageRepresentationUseType,
+    verbose: bool = False,
+) -> None:
+    """Convert file ref to image rep of use type. Upload to s3
 
     Create the actual image for the image representation and stage to S3,
-    and upload the uri for the image representation in the API.
+    and persist the image representation in the API.
 
     This function is only temporary whilst the API image conversion
     using the API is being developed
@@ -61,210 +123,187 @@ def convert_image(
     assert isinstance(
         api_client, PrivateApi
     ), f"Expected valid instance of <class 'PrivateApi'>. Got : {type(api_client)} - are your API credentials valid and/or is the API server online?"
-    representation = api_client.get_image_representation(image_representation_uuid)
-    file_reference = api_client.get_file_reference(
-        representation.original_file_reference_uuid[0]
+
+    bia_images = api_client.get_image_linking_file_reference(
+        file_reference_uuid, page_size=DEFAULT_PAGE_SIZE
     )
-
-    # Need accession ID Could ask for it as a parameter to CLI call, but
-    # will get from API in two calls for now
-    dataset = api_client.get_experimental_imaging_dataset(
-        file_reference.submission_dataset_uuid
-    )
-    study = api_client.get_study(dataset.submitted_in_study_uuid)
-    accession_id = study.accession_id
-
-    if representation.use_type == ImageRepresentationUseType.UPLOADED_BY_SUBMITTER:
-        logger.warning(
-            f"Cannot create/convert images for image representation of type: {representation.use_type.value} - exiting"
+    n_bia_images = len(bia_images)
+    assert (
+        n_bia_images < 2
+    ), f"Expected one image to be associated with file reference uuid {file_reference_uuid}. Got {n_bia_images}: {bia_images}. Not sure what to do!!!"
+    if n_bia_images == 1:
+        bia_image = bia_images[0]
+        image_uuid = f"{bia_image.uuid}"
+        ensure_assigned(accession_id, image_uuid, file_reference_uuid)
+    else:
+        image_uuid = uuid_creation.create_image_uuid(
+            [
+                file_reference_uuid,
+            ]
         )
-        return
-    elif representation.use_type == ImageRepresentationUseType.INTERACTIVE_DISPLAY:
-        local_path_to_uploaded_by_submitter_rep = stage_fileref_and_get_fpath(
-            file_reference
-        )
+        image_uuid = str(image_uuid)
+        ensure_assigned(accession_id, image_uuid, file_reference_uuid)
+        bia_image = api_client.get_image(image_uuid)
+    file_reference = api_client.get_file_reference(file_reference_uuid)
 
-        # Convert to zarr, get zarr metadata
-        local_path_to_zarr = cached_convert_to_zarr_and_get_fpath(
-            representation, local_path_to_uploaded_by_submitter_rep
-        )
-        pixel_metadata = utils.get_ome_zarr_pixel_metadata(local_path_to_zarr)
-
-        def _format_pixel_metadata(key):
-            value = pixel_metadata.pop(key, None)
-            if isinstance(value, tuple):
-                value = value[0]
-            if isinstance(value, str):
-                value = int(value)
-            return value
-
-        representation.size_x = _format_pixel_metadata("SizeX")
-        representation.size_y = _format_pixel_metadata("SizeY")
-        representation.size_z = _format_pixel_metadata("SizeZ")
-        representation.size_c = _format_pixel_metadata("SizeC")
-        representation.size_t = _format_pixel_metadata("SizeT")
-
-        representation.attribute |= pixel_metadata
-
-        representation.image_format = ".ome.zarr"
-        file_uri = copy_local_to_s3(
-            local_path_to_zarr,
-            utils.create_s3_uri_suffix_for_image_representation(
-                accession_id, representation
-            ),
-        )
-        representation.file_uri = [
-            file_uri + "/0",
-        ]
-        representation.version += 1
-        api_client.post_image_representation(representation)
-        message = f"Converted uploaded by submitter to ome.zarr and uploaded to S3: {representation.file_uri}"
-        logger.info(message)
-
-        return
-    elif representation.use_type in (
+    if use_type == ImageRepresentationUseType.INTERACTIVE_DISPLAY:
+        return convert_to_zarr(accession_id, file_reference, bia_image)
+    elif use_type in (
         ImageRepresentationUseType.THUMBNAIL,
         ImageRepresentationUseType.STATIC_DISPLAY,
     ):
-        # Check for interactive display representation (ome.zarr)
-        # This has to exist before we can generate thumbnails/static display
-        eci = api_client.get_experimentally_captured_image(
-            representation.representation_of_uuid
-        )
-        representations_for_eci = (
-            api_client.get_image_representation_in_experimentally_captured_image(
-                eci.uuid,
-                page_size=DEFAULT_PAGE_SIZE,
-            )
-        )
-        try:
-            interactive_image_representation = next(
-                im_rep
-                for im_rep in representations_for_eci
-                if len(im_rep.file_uri) > 0 and "ome.zarr" in im_rep.file_uri[0]
-            )
-        except StopIteration as e:
-            message = f"Cannot create thumbnail or static display without a representation with an image of ome zarr. Could not find one for experimentally captured image with UUID: {eci.uuid}"
-            logger.error(message)
-            raise e
-
-        # Check for local path to zarr and use if it exists
-        local_path_to_zarr = get_local_path_to_zarr(
-            interactive_image_representation.uuid
-        )
-        if local_path_to_zarr.exists():
-            source_uri = f"{local_path_to_zarr / '0'}"
-            logger.info(
-                f"Cached version of required ome.zarr exists locally at {source_uri}. Using this instead of S3 version"
-            )
-        else:
-            source_uri = interactive_image_representation.file_uri[0]
-            logger.info(
-                f"No cached version of required ome.zarr exists locally. Using {source_uri}"
-            )
-
-        # create image
-        if representation.use_type == ImageRepresentationUseType.THUMBNAIL:
-            dims = (256, 256)
-        else:
-            dims = (512, 512)
-        created_image = generate_padded_thumbnail_from_ngff_uri(source_uri, dims=dims)
-        created_image_path = utils.get_local_path_for_representation(
-            representation.uuid, ".png"
-        )
-        with created_image_path.open("wb") as fh:
-            created_image.save(fh)
-        logger.info(
-            f"Saved {representation.use_type} representation to {created_image_path}"
-        )
-
-        # upload to s3
-        representation.image_format = ".png"
-        s3_uri = utils.create_s3_uri_suffix_for_image_representation(
-            accession_id, representation
-        )
-        file_uri = copy_local_to_s3(created_image_path, s3_uri)
-
-        # update representation
-        representation.file_uri = [
-            file_uri,
-        ]
-        representation.version += 1
-        api_client.post_image_representation(representation)
-        message = f"Created {representation.use_type} image and uploaded to S3: {representation.file_uri}"
-        logger.info(message)
-
-        return
+        return convert_to_png(accession_id, file_reference, bia_image, use_type)
     else:
-        raise Exception(
-            f"Unknown image representation use type: {representation.use_type}"
+        logger.warning(
+            f"Cannot create/convert images for image representation of type: {use_type.value} - exiting"
+        )
+        return
+
+
+def update_example_image_uri(
+    representation_uuid: Union[UUID, str],
+    verbose: bool = False,
+) -> bool:
+    # pdb.set_trace()
+    try:
+        representation = api_client.get_image_representation(representation_uuid)
+    except Exception as e:
+        # raise(e)
+        logger.error(f"Could not retrieve image representation. Error was {e}.")
+        return False
+    if representation.use_type == ImageRepresentationUseType.STATIC_DISPLAY:
+        image = api_client.get_image(representation.representation_of_uuid)
+        dataset = api_client.get_dataset(image.submission_dataset_uuid)
+        dataset.example_image_uri.append(representation.file_uri[0])
+        save_to_api(
+            [
+                dataset,
+            ]
         )
 
+        logger.info(
+            f"Updated example image uri of dataset {dataset.uuid} to {dataset.example_image_uri}"
+        )
+        return True
+    else:
+        logger.warning(
+            f"Cannot update dataset example image uri when image representation use type is {representation.use_type.value}"
+        )
+        return False
 
-@representations_app.command(help="Create specified representations")
-def create(
-    accession_id: Annotated[str, typer.Argument()],
-    file_reference_uuid_list: Annotated[List[str], typer.Argument()],
-    persistence_mode: Annotated[
-        PersistenceMode, typer.Option(case_sensitive=False)
-    ] = PersistenceMode.disk,
-    reps_to_create: Annotated[
-        List[ImageRepresentationUseType], typer.Option(case_sensitive=False)
-    ] = [
-        ImageRepresentationUseType.UPLOADED_BY_SUBMITTER,
-        ImageRepresentationUseType.THUMBNAIL,
-        ImageRepresentationUseType.INTERACTIVE_DISPLAY,
+
+@app.command()
+def update_example_image_uri_for_dataset(
+    representation_uuid: Annotated[
+        str,
+        typer.Argument(help="UUID for a STATIC_DISPLAY representation of the dataset"),
     ],
-    verbose: Annotated[bool, typer.Option("--verbose", "-v")] = False,
-) -> None:
-    """Create representations for specified file reference(s)"""
+    # TODO: Have a 'mode' option to allow replace, prepend or append
+    verbose: Annotated[bool, typer.Option("-v")] = False,
+):
+    update_example_image_uri(representation_uuid, verbose)
 
-    if verbose:
-        logger.setLevel(logging.DEBUG)
 
-    result_summary = {}
+@app.command()
+def convert_image(
+    accession_ids: Annotated[
+        List[str], typer.Option("--accession-ids", "-a", help="Accession ID(s).")
+    ] = ["all"],
+    conversion_details_path: Annotated[
+        Path,
+        typer.Option(
+            "--conversion-details-path",
+            "-c",
+            exists=True,
+            help="Path to tsv file containing details needed for conversion (produced by 'propose' command).",
+        ),
+    ] = None,
+):
+    """Convert file references to image representations"""
+    # The convention is to create
+    # i) INTERACTIVE_DISPLAY
+    # ii) THUMBNAIL
+    # iii) If first image for accession ID STATIC_DISPLAY
+    conversion_details = get_conversion_details(conversion_details_path)
+    if accession_ids == ["all"]:
+        set_accession_ids = {cd["accession_id"] for cd in conversion_details}
+        accession_ids = list(set_accession_ids)
+        accession_ids.sort()
+    else:
+        # Filter conversion details for accession IDs to process
+        conversion_details_temp = [
+            cd for cd in conversion_details if cd["accession_id"] in accession_ids
+        ]
+        conversion_details = conversion_details_temp
 
-    persister = persistence_strategy_factory(
-        persistence_mode,
-        output_dir_base=settings.bia_data_dir,
-        accession_id=accession_id,
-        api_client=api_client,
-    )
+    accession_ids_with_static_display = set()
+    for conversion_detail in conversion_details:
+        accession_id = conversion_detail["accession_id"]
+        file_reference_uuid = conversion_detail["file_reference_uuid"]
+        for use_type in (
+            ImageRepresentationUseType.INTERACTIVE_DISPLAY,
+            ImageRepresentationUseType.THUMBNAIL,
+        ):
+            convert_file_reference_to_image_representation(
+                accession_id,
+                file_reference_uuid,
+                use_type,
+            )
+        if accession_id not in accession_ids_with_static_display:
+            # Get STATIC_DISPLAY
+            convert_file_reference_to_image_representation(
+                accession_id,
+                file_reference_uuid,
+                ImageRepresentationUseType.STATIC_DISPLAY,
+            )
+            accession_ids_with_static_display.add(accession_id)
 
-    result_summary = ImageCreationResult()
-    for file_reference_uuid in file_reference_uuid_list:
-        print(
-            f"[blue]-------- Starting creation of image representations for file reference {file_reference_uuid} of {accession_id} --------[/blue]"
+
+@app.command()
+def propose(
+    accession_ids: Annotated[
+        List[str], typer.Option("--accession-ids", "-a", help="Accession ID(s).")
+    ] = None,
+    accession_ids_path: Annotated[
+        Path,
+        typer.Option(
+            "--accession-ids-path",
+            "-p",
+            exists=True,
+            help="Path to a file containing accession IDs one per line.",
+        ),
+    ] = None,
+    max_items: Annotated[int, typer.Option()] = 5,
+    output_path: Annotated[Path, typer.Option()] = None,
+    append: Annotated[bool, typer.Option("--append/--no-append")] = True,
+):
+    """Propose images to convert"""
+
+    # TODO: Make this output yaml in form of bia-converter
+    # TODO: Write test
+
+    # Get accession IDs
+    validate_propose_inputs(accession_ids, accession_ids_path)
+    if accession_ids_path:
+        accession_ids = [a for a in accession_ids_path.read_text().strip().split("\n")]
+
+    if not output_path:
+        output_path = Path(__file__).parent.parent / "file_references_to_convert.tsv"
+    if output_path.exists():
+        assert output_path.is_file()
+        if not append:
+            output_path.unlink()
+
+    for accession_id in accession_ids:
+        n_lines_written = write_convertible_file_references_for_accession_id(
+            accession_id,
+            output_path,
+            max_items,
+            append=True,
         )
-
-        for representation_use_type in reps_to_create:
-            logger.debug(
-                f"starting creation of {representation_use_type.value} for file reference {file_reference_uuid}"
-            )
-            image_representation = create_image_representation(
-                [
-                    file_reference_uuid,
-                ],
-                representation_use_type=representation_use_type,
-                result_summary=result_summary,
-                persister=persister,
-            )
-            if image_representation:
-                message = f"COMPLETED: Creation of image representation {representation_use_type.value} for file reference {file_reference_uuid} of {accession_id}"
-            else:
-                message = f"WARNING: Could NOT create image representation {representation_use_type.value} for file reference {file_reference_uuid} of {accession_id}"
-            logger.debug(message)
-
-    successes = ""
-    errors = ""
-    for item_name in result_summary.model_fields:
-        item_value = getattr(result_summary, item_name)
-        if item_name.endswith("CreationCount") and item_value > 0:
-            successes += f"{item_name}: {item_value}\n"
-        elif item_name.endswith("ErrorCount") and item_value > 0:
-            errors += f"{item_name}: {item_value}\n"
-    print(f"\n\n[green]--------- Successes ---------\n{successes}[/green]")
-    print(f"\n\n[red]--------- Errors ---------\n{errors}[/red]")
+        logger.info(
+            f"Written {n_lines_written} proposals to {output_path} for {accession_id}"
+        )
 
 
 @app.callback()

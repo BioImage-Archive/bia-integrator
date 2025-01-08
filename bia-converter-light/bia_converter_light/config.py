@@ -5,7 +5,7 @@ import logging
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-from bia_integrator_api.util import get_client_private
+from bia_integrator_api.util import get_client_private, get_client
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -28,19 +28,17 @@ class Settings(BaseSettings):
     cache_root_dirpath: Path = Field(Path.home() / ".cache" / "bia-converter")
     bioformats2raw_java_home: str = Field("")
     bioformats2raw_bin: str = Field("")
-    bia_api_basepath: str = Field("http://localhost:8080", env="BIA_API_BASEPATH")
-    bia_api_username: str = Field("test@example.com", env="BIA_API_USERNAME")
-    bia_api_password: str = Field("test", env="BIA_API_PASSWORD")
-
-
-# class Settings:
-#    def __init__(self):
-#        self.bia_data_dir = default_output_base
+    bia_api_basepath: str = Field(
+        "http://localhost:8080", json_schema_extra={"env": "BIA_API_BASEPATH"}
+    )
+    bia_api_username: str = Field(
+        "test@example.com", json_schema_extra={"env": "BIA_API_USERNAME"}
+    )
+    bia_api_password: str = Field("test", json_schema_extra={"env": "BIA_API_PASSWORD"})
 
 
 settings = Settings()
 
-# TODO: Put client details in .env (and maybe environment variables?)
 try:
     api_client = get_client_private(
         username=settings.bia_api_username,
@@ -48,6 +46,15 @@ try:
         api_base_url=settings.bia_api_basepath,
     )
 except Exception as e:
-    message = f"Could not initialise api_client: {e}"
+    message = f"Could not initialise private api_client: {e}"
+    logger.warning(message)
+    api_client = None
+
+try:
+    read_only_client = get_client(
+        api_base_url=settings.bia_api_basepath,
+    )
+except Exception as e:
+    message = f"Could not initialise public api_client: {e}"
     logger.warning(message)
     api_client = None

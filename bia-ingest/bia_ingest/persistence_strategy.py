@@ -72,6 +72,8 @@ class DiskPersister(PersistenceStrategy):
             input_path = (
                 self.output_dir_base / model_subdir / self.accession_id / f"{uuid}.json"
             )
+            if not input_path.is_file():
+                raise NotFoundException
             object_list.append(model_class.model_validate_json(input_path.read_text()))
         return object_list
 
