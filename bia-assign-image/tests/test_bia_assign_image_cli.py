@@ -40,6 +40,8 @@ def test_bia_assign_cli(monkeypatch, tmpdir):
         cli.app,
         [
             "assign",
+            "--persistence-mode",
+            "disk",
             accession_id,
             file_reference_uuids,
         ],
@@ -65,26 +67,26 @@ def test_bia_create_image_representation_cli(monkeypatch, tmpdir):
             mock_image.get_image_with_one_file_reference(),
         ]
     )
-    persister.persist(
-        [
-            mock_image_representation.get_image_representation_of_interactive_display(),
-        ]
-    )
-    persister.persist(
-        [
-            mock_image_representation.get_image_representation_of_thumbnail(),
-        ]
-    )
-    persister.persist(
-        [
-            mock_image_representation.get_image_representation_of_uploaded_by_submitter(),
-        ]
-    )
-    persister.persist(
-        [
-            mock_image_representation.get_image_representation_of_static_display(),
-        ]
-    )
+    # persister.persist(
+    #    [
+    #        mock_image_representation.get_image_representation_of_interactive_display(),
+    #    ]
+    # )
+    # persister.persist(
+    #    [
+    #        mock_image_representation.get_image_representation_of_thumbnail(),
+    #    ]
+    # )
+    # persister.persist(
+    #    [
+    #        mock_image_representation.get_image_representation_of_uploaded_by_submitter(),
+    #    ]
+    # )
+    # persister.persist(
+    #    [
+    #        mock_image_representation.get_image_representation_of_static_display(),
+    #    ]
+    # )
 
     image_uuid = mock_image.get_image_with_one_file_reference().uuid
     monkeypatch.setattr(cli.settings, "bia_data_dir", str(output_dir_base))
@@ -93,6 +95,8 @@ def test_bia_create_image_representation_cli(monkeypatch, tmpdir):
         [
             "representations",
             "create",
+            "--persistence-mode",
+            "disk",
             accession_id,
             str(image_uuid),
         ],
@@ -101,5 +105,15 @@ def test_bia_create_image_representation_cli(monkeypatch, tmpdir):
     assert result.exit_code == 0
     image_representations_path = Path(output_dir_base) / "image_representation"
     created = [p for p in image_representations_path.rglob("*.json")]
-    assert len(created) == 4
-    # TODO: Check actual results !!!
+    assert len(created) == 1
+
+    expected = (
+        mock_image_representation.get_image_representation_of_uploaded_by_submitter()
+    )
+    created = persister.fetch_by_uuid(
+        [
+            expected.uuid,
+        ],
+        type(expected),
+    )[0]
+    assert created == expected
