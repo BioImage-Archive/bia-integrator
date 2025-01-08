@@ -104,6 +104,7 @@ docker buildx build --platform linux/amd64,linux/arm64 ../ -f Dockerfile -t bia-
 docker image tag bia-integrator-api ghcr.io/bioimage-archive/bia-integrator-api:$(make api.version)
 docker image push ghcr.io/bioimage-archive/bia-integrator-api:$(make api.version)
 ```
+Note that, if using docker desktop, you may need set it to use the containerd image store in order to perform multi-platform builds (https://docs.docker.com/build/building/multi-platform/). This is a setting under General (see: https://docs.docker.com/desktop/features/containerd/)
 
 ### Testing CI changes
 
