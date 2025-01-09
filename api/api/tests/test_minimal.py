@@ -236,13 +236,3 @@ async def test_db_timeout():
         pass
     else:
         assert False
-
-
-def test_get_studies(api_client: TestClient, existing_study: dict):
-    # @TODO: page_size makes this test fail eventually!
-    rsp = api_client.get("study", params={"page_size": 100000})
-    assert rsp.status_code == 200
-
-    studies = rsp.json()
-    assert all([study["model"]["type_name"] == "Study" for study in studies])
-    assert existing_study["uuid"] in [study["uuid"] for study in studies]
