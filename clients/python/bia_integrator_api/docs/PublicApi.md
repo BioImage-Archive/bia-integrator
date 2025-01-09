@@ -33,9 +33,21 @@ Method | HTTP request | Description
 [**get_specimen_imaging_preparation_protocol**](PublicApi.md#get_specimen_imaging_preparation_protocol) | **GET** /v2/specimen_imaging_preparation_protocol/{uuid} | Get SpecimenImagingPreparationProtocol
 [**get_specimen_linking_bio_sample**](PublicApi.md#get_specimen_linking_bio_sample) | **GET** /v2/bio_sample/{uuid}/specimen | Get Specimen Linking BioSample
 [**get_specimen_linking_specimen_imaging_preparation_protocol**](PublicApi.md#get_specimen_linking_specimen_imaging_preparation_protocol) | **GET** /v2/specimen_imaging_preparation_protocol/{uuid}/specimen | Get Specimen Linking SpecimenImagingPreparationProtocol
-[**get_studies**](PublicApi.md#get_studies) | **GET** /v2/study | Getstudies
 [**get_study**](PublicApi.md#get_study) | **GET** /v2/study/{uuid} | Get Study
+[**search_annotation_data**](PublicApi.md#search_annotation_data) | **GET** /v2/search/annotation_data | Search all objects of type AnnotationData
+[**search_annotation_method**](PublicApi.md#search_annotation_method) | **GET** /v2/search/annotation_method | Search all objects of type AnnotationMethod
+[**search_bio_sample**](PublicApi.md#search_bio_sample) | **GET** /v2/search/bio_sample | Search all objects of type BioSample
+[**search_creation_process**](PublicApi.md#search_creation_process) | **GET** /v2/search/creation_process | Search all objects of type CreationProcess
+[**search_dataset**](PublicApi.md#search_dataset) | **GET** /v2/search/dataset | Search all objects of type Dataset
+[**search_file_reference**](PublicApi.md#search_file_reference) | **GET** /v2/search/file_reference | Search all objects of type FileReference
+[**search_image**](PublicApi.md#search_image) | **GET** /v2/search/image | Search all objects of type Image
+[**search_image_acquisition_protocol**](PublicApi.md#search_image_acquisition_protocol) | **GET** /v2/search/image_acquisition_protocol | Search all objects of type ImageAcquisitionProtocol
+[**search_image_representation**](PublicApi.md#search_image_representation) | **GET** /v2/search/image_representation | Search all objects of type ImageRepresentation
 [**search_image_representation_by_file_uri**](PublicApi.md#search_image_representation_by_file_uri) | **GET** /v2/search/image_representation/file_uri_fragment | Searchimagerepresentationbyfileuri
+[**search_protocol**](PublicApi.md#search_protocol) | **GET** /v2/search/protocol | Search all objects of type Protocol
+[**search_specimen**](PublicApi.md#search_specimen) | **GET** /v2/search/specimen | Search all objects of type Specimen
+[**search_specimen_imaging_preparation_protocol**](PublicApi.md#search_specimen_imaging_preparation_protocol) | **GET** /v2/search/specimen_imaging_preparation_protocol | Search all objects of type SpecimenImagingPreparationProtocol
+[**search_study**](PublicApi.md#search_study) | **GET** /v2/search/study | Search all objects of type Study
 [**search_study_by_accession**](PublicApi.md#search_study_by_accession) | **GET** /v2/search/study/accession | Searchstudybyaccession
 
 
@@ -2084,77 +2096,6 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **get_studies**
-> List[Study] get_studies(page_size, start_from_uuid=start_from_uuid)
-
-Getstudies
-
-@TODO: Filters?  @TODO: Not pluralizing clashes with getStudy(study_uuid) - non-pluralised convention?
-
-### Example
-
-
-```python
-import bia_integrator_api
-from bia_integrator_api.models.study import Study
-from bia_integrator_api.rest import ApiException
-from pprint import pprint
-
-# Defining the host is optional and defaults to http://localhost
-# See configuration.py for a list of all supported configuration parameters.
-configuration = bia_integrator_api.Configuration(
-    host = "http://localhost"
-)
-
-
-# Enter a context with an instance of the API client
-with bia_integrator_api.ApiClient(configuration) as api_client:
-    # Create an instance of the API class
-    api_instance = bia_integrator_api.PublicApi(api_client)
-    page_size = 56 # int | 
-    start_from_uuid = 'start_from_uuid_example' # str |  (optional)
-
-    try:
-        # Getstudies
-        api_response = api_instance.get_studies(page_size, start_from_uuid=start_from_uuid)
-        print("The response of PublicApi->get_studies:\n")
-        pprint(api_response)
-    except Exception as e:
-        print("Exception when calling PublicApi->get_studies: %s\n" % e)
-```
-
-
-
-### Parameters
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **page_size** | **int**|  | 
- **start_from_uuid** | **str**|  | [optional] 
-
-### Return type
-
-[**List[Study]**](Study.md)
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: application/json
-
-### HTTP response details
-
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-**200** | Successful Response |  -  |
-**422** | Validation Error |  -  |
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
 # **get_study**
 > Study get_study(uuid)
 
@@ -2203,6 +2144,663 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**Study**](Study.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **search_annotation_data**
+> List[AnnotationData] search_annotation_data(page_size, filter_uuid=filter_uuid, start_from_uuid=start_from_uuid)
+
+Search all objects of type AnnotationData
+
+Get all objects with a certain type
+
+### Example
+
+
+```python
+import bia_integrator_api
+from bia_integrator_api.models.annotation_data import AnnotationData
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PublicApi(api_client)
+    page_size = 56 # int | 
+    filter_uuid = ['filter_uuid_example'] # List[str] |  (optional)
+    start_from_uuid = 'start_from_uuid_example' # str |  (optional)
+
+    try:
+        # Search all objects of type AnnotationData
+        api_response = api_instance.search_annotation_data(page_size, filter_uuid=filter_uuid, start_from_uuid=start_from_uuid)
+        print("The response of PublicApi->search_annotation_data:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PublicApi->search_annotation_data: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **page_size** | **int**|  | 
+ **filter_uuid** | [**List[str]**](str.md)|  | [optional] 
+ **start_from_uuid** | **str**|  | [optional] 
+
+### Return type
+
+[**List[AnnotationData]**](AnnotationData.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **search_annotation_method**
+> List[AnnotationMethod] search_annotation_method(page_size, filter_uuid=filter_uuid, start_from_uuid=start_from_uuid)
+
+Search all objects of type AnnotationMethod
+
+Get all objects with a certain type
+
+### Example
+
+
+```python
+import bia_integrator_api
+from bia_integrator_api.models.annotation_method import AnnotationMethod
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PublicApi(api_client)
+    page_size = 56 # int | 
+    filter_uuid = ['filter_uuid_example'] # List[str] |  (optional)
+    start_from_uuid = 'start_from_uuid_example' # str |  (optional)
+
+    try:
+        # Search all objects of type AnnotationMethod
+        api_response = api_instance.search_annotation_method(page_size, filter_uuid=filter_uuid, start_from_uuid=start_from_uuid)
+        print("The response of PublicApi->search_annotation_method:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PublicApi->search_annotation_method: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **page_size** | **int**|  | 
+ **filter_uuid** | [**List[str]**](str.md)|  | [optional] 
+ **start_from_uuid** | **str**|  | [optional] 
+
+### Return type
+
+[**List[AnnotationMethod]**](AnnotationMethod.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **search_bio_sample**
+> List[BioSample] search_bio_sample(page_size, filter_uuid=filter_uuid, start_from_uuid=start_from_uuid)
+
+Search all objects of type BioSample
+
+Get all objects with a certain type
+
+### Example
+
+
+```python
+import bia_integrator_api
+from bia_integrator_api.models.bio_sample import BioSample
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PublicApi(api_client)
+    page_size = 56 # int | 
+    filter_uuid = ['filter_uuid_example'] # List[str] |  (optional)
+    start_from_uuid = 'start_from_uuid_example' # str |  (optional)
+
+    try:
+        # Search all objects of type BioSample
+        api_response = api_instance.search_bio_sample(page_size, filter_uuid=filter_uuid, start_from_uuid=start_from_uuid)
+        print("The response of PublicApi->search_bio_sample:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PublicApi->search_bio_sample: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **page_size** | **int**|  | 
+ **filter_uuid** | [**List[str]**](str.md)|  | [optional] 
+ **start_from_uuid** | **str**|  | [optional] 
+
+### Return type
+
+[**List[BioSample]**](BioSample.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **search_creation_process**
+> List[CreationProcess] search_creation_process(page_size, filter_uuid=filter_uuid, start_from_uuid=start_from_uuid)
+
+Search all objects of type CreationProcess
+
+Get all objects with a certain type
+
+### Example
+
+
+```python
+import bia_integrator_api
+from bia_integrator_api.models.creation_process import CreationProcess
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PublicApi(api_client)
+    page_size = 56 # int | 
+    filter_uuid = ['filter_uuid_example'] # List[str] |  (optional)
+    start_from_uuid = 'start_from_uuid_example' # str |  (optional)
+
+    try:
+        # Search all objects of type CreationProcess
+        api_response = api_instance.search_creation_process(page_size, filter_uuid=filter_uuid, start_from_uuid=start_from_uuid)
+        print("The response of PublicApi->search_creation_process:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PublicApi->search_creation_process: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **page_size** | **int**|  | 
+ **filter_uuid** | [**List[str]**](str.md)|  | [optional] 
+ **start_from_uuid** | **str**|  | [optional] 
+
+### Return type
+
+[**List[CreationProcess]**](CreationProcess.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **search_dataset**
+> List[Dataset] search_dataset(page_size, filter_uuid=filter_uuid, start_from_uuid=start_from_uuid)
+
+Search all objects of type Dataset
+
+Get all objects with a certain type
+
+### Example
+
+
+```python
+import bia_integrator_api
+from bia_integrator_api.models.dataset import Dataset
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PublicApi(api_client)
+    page_size = 56 # int | 
+    filter_uuid = ['filter_uuid_example'] # List[str] |  (optional)
+    start_from_uuid = 'start_from_uuid_example' # str |  (optional)
+
+    try:
+        # Search all objects of type Dataset
+        api_response = api_instance.search_dataset(page_size, filter_uuid=filter_uuid, start_from_uuid=start_from_uuid)
+        print("The response of PublicApi->search_dataset:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PublicApi->search_dataset: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **page_size** | **int**|  | 
+ **filter_uuid** | [**List[str]**](str.md)|  | [optional] 
+ **start_from_uuid** | **str**|  | [optional] 
+
+### Return type
+
+[**List[Dataset]**](Dataset.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **search_file_reference**
+> List[FileReference] search_file_reference(page_size, filter_uuid=filter_uuid, start_from_uuid=start_from_uuid)
+
+Search all objects of type FileReference
+
+Get all objects with a certain type
+
+### Example
+
+
+```python
+import bia_integrator_api
+from bia_integrator_api.models.file_reference import FileReference
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PublicApi(api_client)
+    page_size = 56 # int | 
+    filter_uuid = ['filter_uuid_example'] # List[str] |  (optional)
+    start_from_uuid = 'start_from_uuid_example' # str |  (optional)
+
+    try:
+        # Search all objects of type FileReference
+        api_response = api_instance.search_file_reference(page_size, filter_uuid=filter_uuid, start_from_uuid=start_from_uuid)
+        print("The response of PublicApi->search_file_reference:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PublicApi->search_file_reference: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **page_size** | **int**|  | 
+ **filter_uuid** | [**List[str]**](str.md)|  | [optional] 
+ **start_from_uuid** | **str**|  | [optional] 
+
+### Return type
+
+[**List[FileReference]**](FileReference.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **search_image**
+> List[Image] search_image(page_size, filter_uuid=filter_uuid, start_from_uuid=start_from_uuid)
+
+Search all objects of type Image
+
+Get all objects with a certain type
+
+### Example
+
+
+```python
+import bia_integrator_api
+from bia_integrator_api.models.image import Image
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PublicApi(api_client)
+    page_size = 56 # int | 
+    filter_uuid = ['filter_uuid_example'] # List[str] |  (optional)
+    start_from_uuid = 'start_from_uuid_example' # str |  (optional)
+
+    try:
+        # Search all objects of type Image
+        api_response = api_instance.search_image(page_size, filter_uuid=filter_uuid, start_from_uuid=start_from_uuid)
+        print("The response of PublicApi->search_image:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PublicApi->search_image: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **page_size** | **int**|  | 
+ **filter_uuid** | [**List[str]**](str.md)|  | [optional] 
+ **start_from_uuid** | **str**|  | [optional] 
+
+### Return type
+
+[**List[Image]**](Image.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **search_image_acquisition_protocol**
+> List[ImageAcquisitionProtocol] search_image_acquisition_protocol(page_size, filter_uuid=filter_uuid, start_from_uuid=start_from_uuid)
+
+Search all objects of type ImageAcquisitionProtocol
+
+Get all objects with a certain type
+
+### Example
+
+
+```python
+import bia_integrator_api
+from bia_integrator_api.models.image_acquisition_protocol import ImageAcquisitionProtocol
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PublicApi(api_client)
+    page_size = 56 # int | 
+    filter_uuid = ['filter_uuid_example'] # List[str] |  (optional)
+    start_from_uuid = 'start_from_uuid_example' # str |  (optional)
+
+    try:
+        # Search all objects of type ImageAcquisitionProtocol
+        api_response = api_instance.search_image_acquisition_protocol(page_size, filter_uuid=filter_uuid, start_from_uuid=start_from_uuid)
+        print("The response of PublicApi->search_image_acquisition_protocol:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PublicApi->search_image_acquisition_protocol: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **page_size** | **int**|  | 
+ **filter_uuid** | [**List[str]**](str.md)|  | [optional] 
+ **start_from_uuid** | **str**|  | [optional] 
+
+### Return type
+
+[**List[ImageAcquisitionProtocol]**](ImageAcquisitionProtocol.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **search_image_representation**
+> List[ImageRepresentation] search_image_representation(page_size, filter_uuid=filter_uuid, start_from_uuid=start_from_uuid)
+
+Search all objects of type ImageRepresentation
+
+Get all objects with a certain type
+
+### Example
+
+
+```python
+import bia_integrator_api
+from bia_integrator_api.models.image_representation import ImageRepresentation
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PublicApi(api_client)
+    page_size = 56 # int | 
+    filter_uuid = ['filter_uuid_example'] # List[str] |  (optional)
+    start_from_uuid = 'start_from_uuid_example' # str |  (optional)
+
+    try:
+        # Search all objects of type ImageRepresentation
+        api_response = api_instance.search_image_representation(page_size, filter_uuid=filter_uuid, start_from_uuid=start_from_uuid)
+        print("The response of PublicApi->search_image_representation:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PublicApi->search_image_representation: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **page_size** | **int**|  | 
+ **filter_uuid** | [**List[str]**](str.md)|  | [optional] 
+ **start_from_uuid** | **str**|  | [optional] 
+
+### Return type
+
+[**List[ImageRepresentation]**](ImageRepresentation.md)
 
 ### Authorization
 
@@ -2274,6 +2872,298 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**List[ImageRepresentation]**](ImageRepresentation.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **search_protocol**
+> List[Protocol] search_protocol(page_size, filter_uuid=filter_uuid, start_from_uuid=start_from_uuid)
+
+Search all objects of type Protocol
+
+Get all objects with a certain type
+
+### Example
+
+
+```python
+import bia_integrator_api
+from bia_integrator_api.models.protocol import Protocol
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PublicApi(api_client)
+    page_size = 56 # int | 
+    filter_uuid = ['filter_uuid_example'] # List[str] |  (optional)
+    start_from_uuid = 'start_from_uuid_example' # str |  (optional)
+
+    try:
+        # Search all objects of type Protocol
+        api_response = api_instance.search_protocol(page_size, filter_uuid=filter_uuid, start_from_uuid=start_from_uuid)
+        print("The response of PublicApi->search_protocol:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PublicApi->search_protocol: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **page_size** | **int**|  | 
+ **filter_uuid** | [**List[str]**](str.md)|  | [optional] 
+ **start_from_uuid** | **str**|  | [optional] 
+
+### Return type
+
+[**List[Protocol]**](Protocol.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **search_specimen**
+> List[Specimen] search_specimen(page_size, filter_uuid=filter_uuid, start_from_uuid=start_from_uuid)
+
+Search all objects of type Specimen
+
+Get all objects with a certain type
+
+### Example
+
+
+```python
+import bia_integrator_api
+from bia_integrator_api.models.specimen import Specimen
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PublicApi(api_client)
+    page_size = 56 # int | 
+    filter_uuid = ['filter_uuid_example'] # List[str] |  (optional)
+    start_from_uuid = 'start_from_uuid_example' # str |  (optional)
+
+    try:
+        # Search all objects of type Specimen
+        api_response = api_instance.search_specimen(page_size, filter_uuid=filter_uuid, start_from_uuid=start_from_uuid)
+        print("The response of PublicApi->search_specimen:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PublicApi->search_specimen: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **page_size** | **int**|  | 
+ **filter_uuid** | [**List[str]**](str.md)|  | [optional] 
+ **start_from_uuid** | **str**|  | [optional] 
+
+### Return type
+
+[**List[Specimen]**](Specimen.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **search_specimen_imaging_preparation_protocol**
+> List[SpecimenImagingPreparationProtocol] search_specimen_imaging_preparation_protocol(page_size, filter_uuid=filter_uuid, start_from_uuid=start_from_uuid)
+
+Search all objects of type SpecimenImagingPreparationProtocol
+
+Get all objects with a certain type
+
+### Example
+
+
+```python
+import bia_integrator_api
+from bia_integrator_api.models.specimen_imaging_preparation_protocol import SpecimenImagingPreparationProtocol
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PublicApi(api_client)
+    page_size = 56 # int | 
+    filter_uuid = ['filter_uuid_example'] # List[str] |  (optional)
+    start_from_uuid = 'start_from_uuid_example' # str |  (optional)
+
+    try:
+        # Search all objects of type SpecimenImagingPreparationProtocol
+        api_response = api_instance.search_specimen_imaging_preparation_protocol(page_size, filter_uuid=filter_uuid, start_from_uuid=start_from_uuid)
+        print("The response of PublicApi->search_specimen_imaging_preparation_protocol:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PublicApi->search_specimen_imaging_preparation_protocol: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **page_size** | **int**|  | 
+ **filter_uuid** | [**List[str]**](str.md)|  | [optional] 
+ **start_from_uuid** | **str**|  | [optional] 
+
+### Return type
+
+[**List[SpecimenImagingPreparationProtocol]**](SpecimenImagingPreparationProtocol.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **search_study**
+> List[Study] search_study(page_size, filter_uuid=filter_uuid, start_from_uuid=start_from_uuid)
+
+Search all objects of type Study
+
+Get all objects with a certain type
+
+### Example
+
+
+```python
+import bia_integrator_api
+from bia_integrator_api.models.study import Study
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PublicApi(api_client)
+    page_size = 56 # int | 
+    filter_uuid = ['filter_uuid_example'] # List[str] |  (optional)
+    start_from_uuid = 'start_from_uuid_example' # str |  (optional)
+
+    try:
+        # Search all objects of type Study
+        api_response = api_instance.search_study(page_size, filter_uuid=filter_uuid, start_from_uuid=start_from_uuid)
+        print("The response of PublicApi->search_study:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PublicApi->search_study: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **page_size** | **int**|  | 
+ **filter_uuid** | [**List[str]**](str.md)|  | [optional] 
+ **start_from_uuid** | **str**|  | [optional] 
+
+### Return type
+
+[**List[Study]**](Study.md)
 
 ### Authorization
 

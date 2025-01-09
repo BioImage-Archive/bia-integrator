@@ -92,7 +92,6 @@ Class | Method | HTTP request | Description
 *PrivateApi* | [**get_specimen_imaging_preparation_protocol**](bia_integrator_api/docs/PrivateApi.md#get_specimen_imaging_preparation_protocol) | **GET** /v2/specimen_imaging_preparation_protocol/{uuid} | Get SpecimenImagingPreparationProtocol
 *PrivateApi* | [**get_specimen_linking_bio_sample**](bia_integrator_api/docs/PrivateApi.md#get_specimen_linking_bio_sample) | **GET** /v2/bio_sample/{uuid}/specimen | Get Specimen Linking BioSample
 *PrivateApi* | [**get_specimen_linking_specimen_imaging_preparation_protocol**](bia_integrator_api/docs/PrivateApi.md#get_specimen_linking_specimen_imaging_preparation_protocol) | **GET** /v2/specimen_imaging_preparation_protocol/{uuid}/specimen | Get Specimen Linking SpecimenImagingPreparationProtocol
-*PrivateApi* | [**get_studies**](bia_integrator_api/docs/PrivateApi.md#get_studies) | **GET** /v2/study | Getstudies
 *PrivateApi* | [**get_study**](bia_integrator_api/docs/PrivateApi.md#get_study) | **GET** /v2/study/{uuid} | Get Study
 *PrivateApi* | [**login_for_access_token**](bia_integrator_api/docs/PrivateApi.md#login_for_access_token) | **POST** /v2/auth/token | Login For Access Token
 *PrivateApi* | [**post_annotation_data**](bia_integrator_api/docs/PrivateApi.md#post_annotation_data) | **POST** /v2/private/annotation_data | Create AnnotationData
@@ -109,7 +108,20 @@ Class | Method | HTTP request | Description
 *PrivateApi* | [**post_specimen_imaging_preparation_protocol**](bia_integrator_api/docs/PrivateApi.md#post_specimen_imaging_preparation_protocol) | **POST** /v2/private/specimen_imaging_preparation_protocol | Create SpecimenImagingPreparationProtocol
 *PrivateApi* | [**post_study**](bia_integrator_api/docs/PrivateApi.md#post_study) | **POST** /v2/private/study | Create Study
 *PrivateApi* | [**register_user**](bia_integrator_api/docs/PrivateApi.md#register_user) | **POST** /v2/auth/user/register | Register User
+*PrivateApi* | [**search_annotation_data**](bia_integrator_api/docs/PrivateApi.md#search_annotation_data) | **GET** /v2/search/annotation_data | Search all objects of type AnnotationData
+*PrivateApi* | [**search_annotation_method**](bia_integrator_api/docs/PrivateApi.md#search_annotation_method) | **GET** /v2/search/annotation_method | Search all objects of type AnnotationMethod
+*PrivateApi* | [**search_bio_sample**](bia_integrator_api/docs/PrivateApi.md#search_bio_sample) | **GET** /v2/search/bio_sample | Search all objects of type BioSample
+*PrivateApi* | [**search_creation_process**](bia_integrator_api/docs/PrivateApi.md#search_creation_process) | **GET** /v2/search/creation_process | Search all objects of type CreationProcess
+*PrivateApi* | [**search_dataset**](bia_integrator_api/docs/PrivateApi.md#search_dataset) | **GET** /v2/search/dataset | Search all objects of type Dataset
+*PrivateApi* | [**search_file_reference**](bia_integrator_api/docs/PrivateApi.md#search_file_reference) | **GET** /v2/search/file_reference | Search all objects of type FileReference
+*PrivateApi* | [**search_image**](bia_integrator_api/docs/PrivateApi.md#search_image) | **GET** /v2/search/image | Search all objects of type Image
+*PrivateApi* | [**search_image_acquisition_protocol**](bia_integrator_api/docs/PrivateApi.md#search_image_acquisition_protocol) | **GET** /v2/search/image_acquisition_protocol | Search all objects of type ImageAcquisitionProtocol
+*PrivateApi* | [**search_image_representation**](bia_integrator_api/docs/PrivateApi.md#search_image_representation) | **GET** /v2/search/image_representation | Search all objects of type ImageRepresentation
 *PrivateApi* | [**search_image_representation_by_file_uri**](bia_integrator_api/docs/PrivateApi.md#search_image_representation_by_file_uri) | **GET** /v2/search/image_representation/file_uri_fragment | Searchimagerepresentationbyfileuri
+*PrivateApi* | [**search_protocol**](bia_integrator_api/docs/PrivateApi.md#search_protocol) | **GET** /v2/search/protocol | Search all objects of type Protocol
+*PrivateApi* | [**search_specimen**](bia_integrator_api/docs/PrivateApi.md#search_specimen) | **GET** /v2/search/specimen | Search all objects of type Specimen
+*PrivateApi* | [**search_specimen_imaging_preparation_protocol**](bia_integrator_api/docs/PrivateApi.md#search_specimen_imaging_preparation_protocol) | **GET** /v2/search/specimen_imaging_preparation_protocol | Search all objects of type SpecimenImagingPreparationProtocol
+*PrivateApi* | [**search_study**](bia_integrator_api/docs/PrivateApi.md#search_study) | **GET** /v2/search/study | Search all objects of type Study
 *PrivateApi* | [**search_study_by_accession**](bia_integrator_api/docs/PrivateApi.md#search_study_by_accession) | **GET** /v2/search/study/accession | Searchstudybyaccession
 *PublicApi* | [**get_annotation_data**](bia_integrator_api/docs/PublicApi.md#get_annotation_data) | **GET** /v2/annotation_data/{uuid} | Get AnnotationData
 *PublicApi* | [**get_annotation_data_linking_creation_process**](bia_integrator_api/docs/PublicApi.md#get_annotation_data_linking_creation_process) | **GET** /v2/creation_process/{uuid}/annotation_data | Get AnnotationData Linking CreationProcess
@@ -140,9 +152,21 @@ Class | Method | HTTP request | Description
 *PublicApi* | [**get_specimen_imaging_preparation_protocol**](bia_integrator_api/docs/PublicApi.md#get_specimen_imaging_preparation_protocol) | **GET** /v2/specimen_imaging_preparation_protocol/{uuid} | Get SpecimenImagingPreparationProtocol
 *PublicApi* | [**get_specimen_linking_bio_sample**](bia_integrator_api/docs/PublicApi.md#get_specimen_linking_bio_sample) | **GET** /v2/bio_sample/{uuid}/specimen | Get Specimen Linking BioSample
 *PublicApi* | [**get_specimen_linking_specimen_imaging_preparation_protocol**](bia_integrator_api/docs/PublicApi.md#get_specimen_linking_specimen_imaging_preparation_protocol) | **GET** /v2/specimen_imaging_preparation_protocol/{uuid}/specimen | Get Specimen Linking SpecimenImagingPreparationProtocol
-*PublicApi* | [**get_studies**](bia_integrator_api/docs/PublicApi.md#get_studies) | **GET** /v2/study | Getstudies
 *PublicApi* | [**get_study**](bia_integrator_api/docs/PublicApi.md#get_study) | **GET** /v2/study/{uuid} | Get Study
+*PublicApi* | [**search_annotation_data**](bia_integrator_api/docs/PublicApi.md#search_annotation_data) | **GET** /v2/search/annotation_data | Search all objects of type AnnotationData
+*PublicApi* | [**search_annotation_method**](bia_integrator_api/docs/PublicApi.md#search_annotation_method) | **GET** /v2/search/annotation_method | Search all objects of type AnnotationMethod
+*PublicApi* | [**search_bio_sample**](bia_integrator_api/docs/PublicApi.md#search_bio_sample) | **GET** /v2/search/bio_sample | Search all objects of type BioSample
+*PublicApi* | [**search_creation_process**](bia_integrator_api/docs/PublicApi.md#search_creation_process) | **GET** /v2/search/creation_process | Search all objects of type CreationProcess
+*PublicApi* | [**search_dataset**](bia_integrator_api/docs/PublicApi.md#search_dataset) | **GET** /v2/search/dataset | Search all objects of type Dataset
+*PublicApi* | [**search_file_reference**](bia_integrator_api/docs/PublicApi.md#search_file_reference) | **GET** /v2/search/file_reference | Search all objects of type FileReference
+*PublicApi* | [**search_image**](bia_integrator_api/docs/PublicApi.md#search_image) | **GET** /v2/search/image | Search all objects of type Image
+*PublicApi* | [**search_image_acquisition_protocol**](bia_integrator_api/docs/PublicApi.md#search_image_acquisition_protocol) | **GET** /v2/search/image_acquisition_protocol | Search all objects of type ImageAcquisitionProtocol
+*PublicApi* | [**search_image_representation**](bia_integrator_api/docs/PublicApi.md#search_image_representation) | **GET** /v2/search/image_representation | Search all objects of type ImageRepresentation
 *PublicApi* | [**search_image_representation_by_file_uri**](bia_integrator_api/docs/PublicApi.md#search_image_representation_by_file_uri) | **GET** /v2/search/image_representation/file_uri_fragment | Searchimagerepresentationbyfileuri
+*PublicApi* | [**search_protocol**](bia_integrator_api/docs/PublicApi.md#search_protocol) | **GET** /v2/search/protocol | Search all objects of type Protocol
+*PublicApi* | [**search_specimen**](bia_integrator_api/docs/PublicApi.md#search_specimen) | **GET** /v2/search/specimen | Search all objects of type Specimen
+*PublicApi* | [**search_specimen_imaging_preparation_protocol**](bia_integrator_api/docs/PublicApi.md#search_specimen_imaging_preparation_protocol) | **GET** /v2/search/specimen_imaging_preparation_protocol | Search all objects of type SpecimenImagingPreparationProtocol
+*PublicApi* | [**search_study**](bia_integrator_api/docs/PublicApi.md#search_study) | **GET** /v2/search/study | Search all objects of type Study
 *PublicApi* | [**search_study_by_accession**](bia_integrator_api/docs/PublicApi.md#search_study_by_accession) | **GET** /v2/search/study/accession | Searchstudybyaccession
 
 
