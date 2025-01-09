@@ -118,3 +118,21 @@ def test_get_multi_mistyped_filter_ignored(
     assert rsp.status_code == 200
     assert len(rsp.json()) == 1
     assert rsp.json() == [datasets_many[0]]
+
+
+def test_get_multi_repeated_filter(api_client: TestClient, datasets_many: List[dict]):
+    rsp = api_client.get(
+        f"search/dataset",
+        params={
+            "filter_uuid": [
+                datasets_many[0]["uuid"],
+                datasets_many[0]["uuid"],
+                datasets_many[0]["uuid"],
+                datasets_many[1]["uuid"],
+            ],
+            "page_size": 100,
+        },
+    )
+    assert rsp.status_code == 200
+    assert len(rsp.json()) == 2
+    assert rsp.json() == datasets_many[:2]
