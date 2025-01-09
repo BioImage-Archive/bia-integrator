@@ -60,7 +60,7 @@ def assign(
     file_reference_uuids: Annotated[List[str], typer.Argument()],
     persistence_mode: Annotated[
         PersistenceMode, typer.Option(case_sensitive=False)
-    ] = PersistenceMode.disk,
+    ] = PersistenceMode.api,
     dryrun: Annotated[bool, typer.Option()] = False,
 ) -> None:
     persister = persistence_strategy_factory(
@@ -181,13 +181,11 @@ def create(
     image_uuid_list: Annotated[List[str], typer.Argument()],
     persistence_mode: Annotated[
         PersistenceMode, typer.Option(case_sensitive=False)
-    ] = PersistenceMode.disk,
+    ] = PersistenceMode.api,
     reps_to_create: Annotated[
         List[ImageRepresentationUseType], typer.Option(case_sensitive=False)
     ] = [
         ImageRepresentationUseType.UPLOADED_BY_SUBMITTER,
-        ImageRepresentationUseType.THUMBNAIL,
-        ImageRepresentationUseType.INTERACTIVE_DISPLAY,
     ],
     dryrun: Annotated[bool, typer.Option()] = False,
     verbose: Annotated[bool, typer.Option("--verbose", "-v")] = False,
