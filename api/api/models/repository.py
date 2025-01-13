@@ -7,7 +7,7 @@ from motor.motor_asyncio import (
 from enum import Enum
 import bia_shared_datamodels.bia_data_model as shared_data_models
 import pymongo
-from typing import Type, List, Any
+from typing import Type, List, Any, Dict
 
 import pymongo.errors
 from api import exceptions
@@ -348,7 +348,7 @@ class Repository:
 
         return docs
 
-    async def aggregate(self, pipeline):
+    async def aggregate(self, pipeline: List[Dict[str, Any]]) -> List[Any]:
         """
         @TODO: tidier interface?
         """
