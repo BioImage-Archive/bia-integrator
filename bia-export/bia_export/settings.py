@@ -8,7 +8,7 @@ class Settings(BaseSettings):
     # Note that Pydantic will prefer current ENV values over those in the file.
     # This is useful & used to override values for testing.
     class Config:
-        env_file = ".env"
+        env_file = ".env_export"
         env_file_encoding = "utf-8"
 
 

@@ -8,7 +8,7 @@ import json
 
 
 def pytest_configure(config: pytest.Config):
-    test_env = str(Path(__file__).parent / "test.env")
+    test_env = str(Path(__file__).parent / "test.env_export")
     load_dotenv(test_env, override=True)
 
 
