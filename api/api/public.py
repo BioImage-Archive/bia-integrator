@@ -31,7 +31,7 @@ models_public: List[shared_data_models.DocumentMixin] = [
 
 
 @router.get("/dataset/{uuid}/stats")
-async def searchStudyByAccession(
+async def getDatasetStats(
     uuid: shared_data_models.UUID, db: Annotated[Repository, Depends(get_db)]
 ) -> DatasetStats:
     # check it exists and is a dataset
