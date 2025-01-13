@@ -5,7 +5,7 @@
   "use_type": "THUMBNAIL",
   "attribute": [],
   "total_size_in_bytes": 0,
-  "version": 1,
+  "version": 0,
   "file_uri": [],
   "physical_size_x": null,
   "physical_size_y": null,
@@ -18,6 +18,6 @@
   "image_viewer_setting": [],
   "model": {
     "type_name": "ImageRepresentation",
-    "version": 1
+    "version": 3
   }
 }

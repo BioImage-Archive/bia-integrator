@@ -6,7 +6,7 @@
     "fbbi_id": [],
     "attribute": [],
     "imaging_method_name": ["confocal microscopy"],
-    "version": 1,
+    "version": 0,
     "model": {
         "type_name": "ImageAcquisitionProtocol",
         "version": 2

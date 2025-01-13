@@ -9,12 +9,12 @@ runner = CliRunner()
 def test_cli_export_website_studies(tmp_path: Path):
     input_root_path = Path(__file__).parent.joinpath("input_data")
     expected_output = Path(__file__).parent.joinpath(
-        "output_data/bia_study_export.json"
+        "output_data/bia-study-metadata.json"
     )
-    outfile = tmp_path.joinpath("bia_study_export.json").resolve()
+    outfile = tmp_path.joinpath("bia-study-metadata.json").resolve()
 
     result = runner.invoke(
-        app, ["website-study", "S-BIADTEST", "-o", outfile, "-r", input_root_path]
+        app, ["website", "study", "S-BIADTEST", "-o", outfile, "-r", input_root_path]
     )
 
     assert result.exit_code == 0
@@ -31,12 +31,12 @@ def test_cli_export_website_studies(tmp_path: Path):
 def test_cli_export_website_images(tmp_path: Path):
     input_root_path = Path(__file__).parent.joinpath("input_data")
     expected_output = Path(__file__).parent.joinpath(
-        "output_data/bia_image_export.json"
+        "output_data/bia-image-export.json"
     )
-    outfile = tmp_path.joinpath("bia_image_export.json").resolve()
+    outfile = tmp_path.joinpath("bia-image-export.json").resolve()
 
     result = runner.invoke(
-        app, ["website-image", "S-BIADTEST", "-o", outfile, "-r", input_root_path]
+        app, ["website", "image", "S-BIADTEST", "-o", outfile, "-r", input_root_path]
     )
 
     assert result.exit_code == 0
@@ -53,14 +53,15 @@ def test_cli_export_website_images(tmp_path: Path):
 def test_cli_export_dataset_for_website_images(tmp_path: Path):
     input_root_path = Path(__file__).parent.joinpath("input_data")
     expected_output = Path(__file__).parent.joinpath(
-        "output_data/bia_dataset_export.json"
+        "output_data/bia-dataset-metadata-for-images.json"
     )
-    outfile = tmp_path.joinpath("bia_dataset_export.json").resolve()
+    outfile = tmp_path.joinpath("bia-dataset-metadata.json").resolve()
 
     result = runner.invoke(
         app,
         [
-            "datasets-for-website-image",
+            "website",
+            "image-dataset",
             "S-BIADTEST",
             "-o",
             outfile,

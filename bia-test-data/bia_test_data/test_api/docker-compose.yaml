@@ -1,0 +1,31 @@
+services:
+  biaint-mongo:
+    image: mongo:6.0
+    restart: no
+    env_file: ../../../api/.env_compose
+    ports:
+      - 27017:27017
+    expose:
+      - 27017
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 1s
+      timeout: 1s
+      retries: 5
+  bia-integrator-api:
+    image: ghcr.io/bioimage-archive/bia-integrator-api:0.2.3
+    env_file: ../../../api/.env_compose
+    container_name: api
+    hostname: api
+    ports:
+      - 8080:8080
+    expose:
+      - 8080
+    depends_on:
+      - biaint-mongo
+    healthcheck:
+      # !! important to sync services
+      test: ["CMD", "wget", "-O", "-", "api:8080/openapi.json"]
+      interval: 1s
+      timeout: 10s
+      retries: 10

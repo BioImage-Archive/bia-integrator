@@ -2,7 +2,7 @@
     "21999a9f-6f16-45d4-91c9-ed46cbfe015c": {
         "title_id": "Annotations and segmentation masks",
         "uuid": "21999a9f-6f16-45d4-91c9-ed46cbfe015c",
-        "version": 1,
+        "version": 0,
         "model": {
             "type_name": "Dataset",
             "version": 1
@@ -19,16 +19,16 @@
             }
         ],
         "description": null,
-        "analysis_method": null,
-        "correlation_method": null,
+        "analysis_method": [],
+        "correlation_method": [],
         "example_image_uri": [],
         "submitted_in_study_uuid": "a2fdbd58-ee11-4cd9-bc6a-f3d3da7fff71",
         "submitted_in_study": {
             "uuid": "a2fdbd58-ee11-4cd9-bc6a-f3d3da7fff71",
-            "version": 1,
+            "version": 0,
             "model": {
                 "type_name": "Study",
-                "version": 1
+                "version": 2
             },
             "attribute": [],
             "accession_id": "S-BIADTEST",
@@ -106,7 +106,7 @@
     "47a4ab60-c76d-4424-bfaa-c2a024de720c": {
         "title_id": "Study Component 1",
         "uuid": "47a4ab60-c76d-4424-bfaa-c2a024de720c",
-        "version": 1,
+        "version": 0,
         "model": {
             "type_name": "Dataset",
             "version": 1
@@ -166,7 +166,7 @@
         "description": "Description of study component 1",
         "analysis_method": [
             {
-                "attribute": null,
+                "attribute": [],
                 "protocol_description": "Test image analysis",
                 "features_analysed": "Test image analysis overview"
             }
@@ -176,10 +176,10 @@
         "submitted_in_study_uuid": "a2fdbd58-ee11-4cd9-bc6a-f3d3da7fff71",
         "submitted_in_study": {
             "uuid": "a2fdbd58-ee11-4cd9-bc6a-f3d3da7fff71",
-            "version": 1,
+            "version": 0,
             "model": {
                 "type_name": "Study",
-                "version": 1
+                "version": 2
             },
             "attribute": [],
             "accession_id": "S-BIADTEST",
@@ -257,7 +257,7 @@
     "850a1ca3-9681-4a8a-b625-477936fcb954": {
         "title_id": "Study Component 2",
         "uuid": "850a1ca3-9681-4a8a-b625-477936fcb954",
-        "version": 1,
+        "version": 0,
         "model": {
             "type_name": "Dataset",
             "version": 1
@@ -305,7 +305,7 @@
         "description": "Description of study component 2",
         "analysis_method": [
             {
-                "attribute": null,
+                "attribute": [],
                 "protocol_description": "Test image analysis",
                 "features_analysed": "Test image analysis overview"
             }
@@ -315,10 +315,10 @@
         "submitted_in_study_uuid": "a2fdbd58-ee11-4cd9-bc6a-f3d3da7fff71",
         "submitted_in_study": {
             "uuid": "a2fdbd58-ee11-4cd9-bc6a-f3d3da7fff71",
-            "version": 1,
+            "version": 0,
             "model": {
                 "type_name": "Study",
-                "version": 1
+                "version": 2
             },
             "attribute": [],
             "accession_id": "S-BIADTEST",

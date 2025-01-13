@@ -47,8 +47,8 @@ class CLIContext(BaseModel):
     # This class is used by the CLI to carry around various pieces of contextual information for the different modes the CLI can be run with.
 
     # Local Processing Fields
-    root_directory: Path = Field(default=None)
-    accession_id: str = Field(default=None)
+    root_directory: Optional[Path] = Field(default=None)
+    accession_id: Optional[str] = Field(default=None)
     # API Processing Fields
-    study_uuid: UUID = Field(default=None)
+    study_uuid: Optional[UUID] = Field(default=None)
     # Fields used in both

@@ -1,9 +1,9 @@
 {
   "uuid": "4bb8c5a4-d39f-4d9e-a112-334e859a5c22",
-  "version": 1,
+  "version": 0,
   "model": {
     "type_name": "FileReference",
-    "version": 1
+    "version": 2
   },
   "file_path": "F3/2E2.tif",
   "format": "file",
