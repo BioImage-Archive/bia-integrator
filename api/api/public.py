@@ -5,7 +5,7 @@ from pydantic.alias_generators import to_snake
 import bia_shared_datamodels.bia_data_model as shared_data_models
 from api.app import get_db
 from api.models.repository import Repository
-from api.models.api import Pagination
+from api.models.api import Pagination, DatasetStats
 from api import constants
 from typing import List, Type, Annotated
 
@@ -28,6 +28,66 @@ models_public: List[shared_data_models.DocumentMixin] = [
     shared_data_models.AnnotationData,
     shared_data_models.AnnotationMethod,
 ]
+
+
+@router.get("/dataset/{uuid}/stats")
+async def getDatasetStats(
+    uuid: shared_data_models.UUID, db: Annotated[Repository, Depends(get_db)]
+) -> DatasetStats:
+    # check it exists and is a dataset
+    dataset = await db.get_doc(uuid, shared_data_models.Dataset)
+
+    n_images = await db.aggregate(
+        [
+            {
+                "$match": {
+                    "submission_dataset_uuid": uuid,
+                    "model": shared_data_models.Image.get_model_metadata().model_dump(),
+                }
+            },
+            {"$count": "n_images"},
+        ]
+    )
+    n_filerefs = await db.aggregate(
+        [
+            {
+                "$match": {
+                    "submission_dataset_uuid": uuid,
+                    "model": shared_data_models.FileReference.get_model_metadata().model_dump(),
+                }
+            },
+            {"$count": "n_filerefs"},
+        ]
+    )
+    fileref_size_bytes = await db.aggregate(
+        [
+            {
+                "$match": {
+                    "submission_dataset_uuid": uuid,
+                    "model": shared_data_models.FileReference.get_model_metadata().model_dump(),
+                }
+            },
+            {"$group": {"_id": None, "size_bytes": {"$sum": "$size_in_bytes"}}},
+        ]
+    )
+    file_type_counts = await db.aggregate(
+        [
+            {
+                "$match": {
+                    "submission_dataset_uuid": uuid,
+                    "model": shared_data_models.FileReference.get_model_metadata().model_dump(),
+                }
+            },
+            {"$group": {"_id": "$format", "count": {"$sum": 1}}},
+        ]
+    )
+
+    return DatasetStats(
+        image_count=n_images[0]["n_images"],
+        file_reference_count=n_filerefs[0]["n_filerefs"],
+        file_reference_size_bytes=fileref_size_bytes[0]["size_bytes"],
+        file_type_counts={agg["_id"]: agg["count"] for agg in file_type_counts},
+    )
 
 
 def make_get_item(t: Type[shared_data_models.DocumentMixin]):

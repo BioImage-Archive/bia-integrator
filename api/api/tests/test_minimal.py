@@ -209,6 +209,20 @@ def test_create_object_nonzero_positive_version(
     assert rsp.status_code == 404
 
 
+def test_dataset_stats(
+    api_client: TestClient, existing_dataset: dict, existing_image: dict
+):
+    rsp = api_client.get(f"dataset/{existing_dataset['uuid']}/stats")
+    assert rsp.status_code == 200
+
+    assert rsp.json() == {
+        "image_count": 1,
+        "file_reference_count": 1,
+        "file_reference_size_bytes": 10,
+        "file_type_counts": {"Dummy format": 1},
+    }
+
+
 @pytest.mark.asyncio
 async def test_db_timeout():
     """
