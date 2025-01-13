@@ -1,5 +1,7 @@
 from fastapi.testclient import TestClient
 from api.tests.conftest import get_uuid
+from api.tests.test_pagination import datasets_many
+from typing import List
 
 
 def test_search_existing_study(api_client: TestClient, existing_study):
@@ -75,3 +77,62 @@ def test_search_image_multiple_results(
     )
     assert rsp.status_code == 200
     assert len(rsp.json()) > 1
+
+
+def test_get_multi(api_client: TestClient, datasets_many: List[dict]):
+    rsp = api_client.get(
+        f"search/dataset",
+        params={
+            "filter_uuid": [datasets_many[0]["uuid"], datasets_many[1]["uuid"]],
+            "page_size": 100,
+        },
+    )
+    assert rsp.status_code == 200
+    assert len(rsp.json()) == 2
+    assert rsp.json() == datasets_many[:2]
+
+
+def test_get_multi_empty_filter(api_client: TestClient, datasets_many: List[dict]):
+    rsp = api_client.get(
+        f"search/dataset",
+        params={"page_size": 3},
+    )
+    assert rsp.status_code == 200
+    assert len(rsp.json()) == 3
+
+
+def test_get_multi_mistyped_filter_ignored(
+    api_client: TestClient, existing_study: dict, datasets_many: List[dict]
+):
+    """
+    uuid is a filter to the result set,
+    so if the result set didn't contain a uuid that was passed (e.g. study uuid as a dataset) it's just not used
+    """
+    rsp = api_client.get(
+        f"search/dataset",
+        params={
+            "filter_uuid": [datasets_many[0]["uuid"], existing_study["uuid"]],
+            "page_size": 100,
+        },
+    )
+    assert rsp.status_code == 200
+    assert len(rsp.json()) == 1
+    assert rsp.json() == [datasets_many[0]]
+
+
+def test_get_multi_repeated_filter(api_client: TestClient, datasets_many: List[dict]):
+    rsp = api_client.get(
+        f"search/dataset",
+        params={
+            "filter_uuid": [
+                datasets_many[0]["uuid"],
+                datasets_many[0]["uuid"],
+                datasets_many[0]["uuid"],
+                datasets_many[1]["uuid"],
+            ],
+            "page_size": 100,
+        },
+    )
+    assert rsp.status_code == 200
+    assert len(rsp.json()) == 2
+    assert rsp.json() == datasets_many[:2]

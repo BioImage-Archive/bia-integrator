@@ -1,6 +1,8 @@
 from fastapi import APIRouter, Depends, Query
 from api import constants
-from typing import List, Annotated, Optional
+from api.public import models_public
+from pydantic.alias_generators import to_snake
+from typing import List, Annotated, Optional, Type
 from api.models.repository import Repository
 from api.app import get_db
 from api.models.api import Pagination
@@ -41,5 +43,38 @@ async def searchImageRepresentationByFileUri(
     )
 
 
+def make_search_items(t: Type[shared_data_models.DocumentMixin]):
+    async def get_items(
+        db: Annotated[Repository, Depends(get_db)],
+        pagination: Annotated[Pagination, Depends()],
+        filter_uuid: Annotated[List[shared_data_models.UUID], Query()] = None,
+    ) -> List[t]:
+        """
+        Get all objects with a certain type
+        """
+
+        doc_filter = {}
+        if filter_uuid:
+            doc_filter["uuid"] = {"$in": filter_uuid}
+
+        return await db.get_docs(
+            doc_filter,
+            t,
+            pagination=pagination,
+        )
+
+    return get_items
+
+
 def make_router() -> APIRouter:
+    for t in models_public:
+        router.add_api_route(
+            f"/{to_snake(t.__name__)}",
+            response_model=List[t],
+            operation_id=f"search{t.__name__}",
+            summary=f"Search all objects of type {t.__name__}",
+            methods=["GET"],
+            endpoint=make_search_items(t),
+        )
+
     return router

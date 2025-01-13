@@ -285,9 +285,6 @@ class Repository:
         doc_type: Type[shared_data_models.DocumentMixin],
         pagination: Pagination,
     ) -> List[Any]:
-        if not len(doc_filter.keys()):
-            raise Exception("Need at least one filter")
-
         # @TODO: Only add additional filter for type(indexed) not version
         doc_filter["model"] = doc_type.get_model_metadata().model_dump()
 
@@ -327,22 +324,18 @@ class Repository:
         """
         Isolates pagination implementation to keep code consistent
         """
-        # @TODO: Any less awkward way to contain pagination gotchas?
-
-        if "uuid" in query:
-            # uuid filter needs to be set for pagination,
-            #   we shouldn't overwrite anything that could possibly be set in the query
-            # at the same time, it doesn't make sense for filters by uuid (unique) needing pagination (result set)
-            #   so instead of adding something like $and: [original_filter, gt_for_pagination] just raise
-            raise exceptions.GenericServerError(
-                "Unsupported uuid filter for function that returns a list"
-            )
-
+        # always keep a consistent order for the first page
+        pagination_start = shared_data_models.UUID(int=0)
         if pagination.start_from_uuid:
-            query["uuid"] = {"$gt": pagination.start_from_uuid}
-        else:
-            # always keep a consistent order for the first page
-            query["uuid"] = {"$gt": shared_data_models.UUID(int=0)}
+            pagination_start = pagination.start_from_uuid
+
+        if "uuid" in query and "$gt" in query["uuid"]:
+            # uuid $gt used for pagination
+            #   merging filters while keeping correctness is hard and we don't have a usecase,
+            #   so just raise
+            raise exceptions.GenericServerError("UUID filter type not supported")
+
+        query["uuid"] = query.get("uuid", {}) | {"$gt": pagination_start}
 
         return collection.find(query).limit(pagination.page_size).sort("uuid")
 
