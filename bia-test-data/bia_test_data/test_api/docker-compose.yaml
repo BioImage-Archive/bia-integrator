@@ -4,7 +4,7 @@ services:
     restart: no
     env_file: ../../../api/.env_compose
     ports:
-      - 27017:27017
+      - 27018:27017
     expose:
       - 27017
     healthcheck:
@@ -15,17 +15,17 @@ services:
   bia-integrator-api:
     image: ghcr.io/bioimage-archive/bia-integrator-api:0.2.3
     env_file: ../../../api/.env_compose
-    container_name: api
-    hostname: api
+    container_name: test_api
+    hostname: test_api
     ports:
-      - 8080:8080
+      - 8081:8080
     expose:
       - 8080
     depends_on:
       - biaint-mongo
     healthcheck:
       # !! important to sync services
-      test: ["CMD", "wget", "-O", "-", "api:8080/openapi.json"]
+      test: ["CMD", "wget", "-O", "-", "test_api:8080/openapi.json"]
       interval: 1s
       timeout: 10s
       retries: 10
