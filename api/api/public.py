@@ -78,12 +78,6 @@ async def getDatasetStats(
                     "model": shared_data_models.FileReference.get_model_metadata().model_dump(),
                 }
             },
-            {
-                "$match": {
-                    "submission_dataset_uuid": uuid,
-                    "model": shared_data_models.FileReference.get_model_metadata().model_dump(),
-                }
-            },
             {"$group": {"_id": "$format", "count": {"$sum": 1}}},
         ]
     )
