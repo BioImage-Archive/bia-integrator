@@ -348,6 +348,12 @@ class Repository:
 
         return docs
 
+    async def aggregate(self, pipeline):
+        """
+        @TODO: tidier interface?
+        """
+        return await self.biaint.aggregate(pipeline).to_list()
+
     async def close(self):
         await self.db.close()
 
