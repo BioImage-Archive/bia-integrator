@@ -10,7 +10,7 @@ packages = [{include = "bia_test_data"}]
 [tool.poetry.dependencies]
 python = "^3.10,<3.12"
 bia-shared-datamodels = { path = "../bia-shared-datamodels", develop = true }
-bia-integrator-api = {git = "https://github.com/BioImage-Archive/bia-integrator.git", subdirectory = "clients/python" }
+bia-integrator-api = { path = "../clients/python", develop = true }
 pydantic-settings = "^2.3.4"
 python-on-whales = "^0.74.0"
 
