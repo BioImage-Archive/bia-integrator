@@ -6,7 +6,7 @@ import json
 runner = CliRunner()
 
 
-def test_cli_export_website_studies_api(tmp_path: Path, docker_api):
+def test_cli_export_website_studies_api(tmp_path: Path, data_in_api):
     expected_output = Path(__file__).parent.joinpath(
         "output_data/bia-study-metadata.json"
     )

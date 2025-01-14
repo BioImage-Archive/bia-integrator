@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 from pathlib import Path
 import pytest
-from bia_test_data.test_api.test_api import TestAPI, create_objects
+from bia_test_data.data_to_api import add_objects_to_api
 from bia_export.settings import Settings
 from pathlib import Path
 import json
@@ -13,10 +13,8 @@ def pytest_configure(config: pytest.Config):
 
 
 @pytest.fixture(scope="session")
-def docker_api():
+def data_in_api():
     setttings = Settings()
-    api = TestAPI()
-    api.start()
 
     input_file_dir = Path(__file__).parent / "input_data"
 
@@ -128,7 +126,4 @@ def docker_api():
                 continue
             object_list.append(json_dict)
 
-    create_objects(setttings.api_base_url, object_list)
-
-    yield api
-    api.stop()
+    add_objects_to_api(setttings.api_base_url, object_list)
