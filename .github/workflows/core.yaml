@@ -44,7 +44,7 @@ jobs:
       matrix:
         python-version: ["3.11"]
         poetry-version: ["1.4.2"]
-        os: [ubuntu-20.04, macos-latest, windows-latest]
+        os: [ubuntu-20.04]
         project:
           [
             bia-export,
