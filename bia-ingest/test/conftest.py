@@ -16,6 +16,12 @@ def test_submission() -> Submission:
     submission = Submission.model_validate(json_data)
     return submission
 
+@pytest.fixture
+def test_submission_default() -> Submission:
+    submission_path = bia_test_data_dir / "default_biostudies" / "S-BSSTTEST.json"
+    json_data = json.loads(submission_path.read_text())
+    submission = Submission.model_validate(json_data)
+    return submission
 
 @pytest.fixture
 def test_submission_table() -> SubmissionTable:
@@ -24,12 +30,10 @@ def test_submission_table() -> SubmissionTable:
     submission = SubmissionTable.model_validate(json_data)
     return submission
 
-
 @pytest.fixture
 def ingestion_result_summary():
     result_summary = {accession_id: IngestionResult()}
     return result_summary
-
 
 @pytest.fixture
 def mock_request_get(monkeypatch):

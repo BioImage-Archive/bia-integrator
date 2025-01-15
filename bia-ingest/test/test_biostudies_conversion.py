@@ -20,6 +20,7 @@ from bia_ingest.biostudies.v4 import (
     annotation_method,
     specimen_imaging_preparation_protocol,
 )
+from bia_ingest.biostudies.biostudies_default import default_dataset
 
 
 def test_create_models_specimen_imaging_preparation_protocol(
@@ -128,6 +129,18 @@ def test_create_models_dataset(
 
     assert expected == created
 
+def test_create_models_default_dataset(
+    test_submission_default, 
+    ingestion_result_summary, 
+):
+    expected = mock_dataset.get_default_dataset()
+    created = default_dataset.get_dataset_overview(
+        test_submission_default,
+        mock_object_constants.study_uuid,
+        ingestion_result_summary,
+    )
+    
+    assert expected == created
 
 def test_create_models_study(test_submission, ingestion_result_summary):
     expected = mock_study.get_study()

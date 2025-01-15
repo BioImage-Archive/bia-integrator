@@ -153,3 +153,23 @@ def get_dataset() -> List[bia_data_model.Dataset]:
         for object_dict in object_dicts
     ]
     return bia_objects
+
+def get_default_dataset() -> bia_data_model.Dataset:
+
+    study_title = "A default test study section with title greater than 25 characters"
+    description = "A study description"
+
+    dataset_dict = {
+        "uuid": create_dataset_uuid(study_title, study_uuid),
+        "title_id": study_title,
+        "description": description,
+        "submitted_in_study_uuid": study_uuid,
+        "analysis_method": [],
+        "correlation_method": [],
+        "example_image_uri": [],
+        "version": 0,
+        "attribute": []
+    }
+
+    dataset = bia_data_model.Dataset.model_validate(dataset_dict)
+    return dataset
