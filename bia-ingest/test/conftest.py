@@ -4,7 +4,7 @@ from pathlib import Path
 import json
 import pytest
 from bia_ingest.biostudies.api import Submission, SubmissionTable, requests
-from bia_test_data.mock_objects.mock_object_constants import accession_id
+from bia_test_data.mock_objects.mock_object_constants import accession_id, accession_id_default
 from bia_ingest.cli_logging import IngestionResult
 from bia_test_data import bia_test_data_dir
 
@@ -33,6 +33,11 @@ def test_submission_table() -> SubmissionTable:
 @pytest.fixture
 def ingestion_result_summary():
     result_summary = {accession_id: IngestionResult()}
+    return result_summary
+
+@pytest.fixture
+def ingestion_result_summary_default():
+    result_summary = {accession_id_default: IngestionResult()}
     return result_summary
 
 @pytest.fixture

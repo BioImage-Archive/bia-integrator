@@ -131,13 +131,13 @@ def test_create_models_dataset(
 
 def test_create_models_default_dataset(
     test_submission_default, 
-    ingestion_result_summary, 
+    ingestion_result_summary_default, 
 ):
     expected = mock_dataset.get_default_dataset()
     created = default_dataset.get_dataset_overview(
         test_submission_default,
-        mock_object_constants.study_uuid,
-        ingestion_result_summary,
+        mock_object_constants.study_uuid_default,
+        ingestion_result_summary_default,
     )
     
     assert expected == created

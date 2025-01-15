@@ -1,7 +1,7 @@
 from typing import List
 from bia_shared_datamodels import bia_data_model, semantic_models
 from bia_shared_datamodels.uuid_creation import create_dataset_uuid
-from .mock_object_constants import study_uuid
+from .mock_object_constants import study_uuid, study_uuid_default
 from .mock_image_analysis_method import get_image_analysis_method
 from .mock_image_correlation_method import get_test_image_correlation_method
 from .mock_image_acquisition_protocol import get_image_acquisition_protocol_as_map
@@ -160,10 +160,10 @@ def get_default_dataset() -> bia_data_model.Dataset:
     description = "A study description"
 
     dataset_dict = {
-        "uuid": create_dataset_uuid(study_title, study_uuid),
+        "uuid": create_dataset_uuid(study_title, study_uuid_default),
         "title_id": study_title,
         "description": description,
-        "submitted_in_study_uuid": study_uuid,
+        "submitted_in_study_uuid": study_uuid_default,
         "analysis_method": [],
         "correlation_method": [],
         "example_image_uri": [],
