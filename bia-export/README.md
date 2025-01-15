@@ -15,15 +15,11 @@ Installation
 2. Run `poetry install`
 
 To test that installation has worked correctly, you can run:
-
-
     poetry run bia-export website all S-BIADTEST -r test/input_data
 
+With docker daemon/desktop running, can run:
 
-Setup
------
-
-None required post installation
+    make bia-export.test
 
 Usage
 -----
@@ -74,4 +70,15 @@ Run:
 
 This will create `bia-dataset-export.json` using the example test data. The root objects of this json are datasets, with links followed to include subject and protocol information etc as well as the original study. 
 
----
+
+Running tests
+-----
+
+Requires a locally running api in a docker container. This can be started by running:
+
+    docker compose up --build --force-recreate --remove-orphans -d
+
+and then running tests, e.g.:
+
+    poetry run pytest
+
