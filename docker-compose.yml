@@ -60,3 +60,16 @@ services:
       - ./clients/python:/mnt/share
     profiles:
       - client_examples
+  export-test:
+    depends_on:
+      bia-integrator-api:
+        condition: service_healthy
+    environment:
+      - DOCKERIZED=true
+      - API_BASE_URL=http://api:8080
+    container_name: export_test
+    image: bia-integrator-api
+    command: bash -c "echo $PWD && poetry install && poetry run pytest -vv"
+    working_dir: /bia-integrator/bia-export
+    profiles:
+      - export_test

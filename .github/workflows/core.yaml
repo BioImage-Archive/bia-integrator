@@ -2,7 +2,7 @@ name: CI
 on: [pull_request, push]
 
 jobs:
-  ci:
+  ci-test:
     strategy:
       fail-fast: false
       matrix:
@@ -11,7 +11,6 @@ jobs:
         os: [ubuntu-20.04, macos-latest, windows-latest]
         project:
           [
-            bia-export,
             bia-ingest,
             bia-shared-datamodels,
             core,
@@ -39,3 +38,34 @@ jobs:
         run: poetry build
       - name: Run pytest
         run: poetry run pytest
+  ci-make:
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11"]
+        poetry-version: ["1.4.2"]
+        os: [ubuntu-20.04, macos-latest, windows-latest]
+        project:
+          [
+            bia-export,
+          ]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: ${{ matrix.project }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Run image
+        uses: abatilo/actions-poetry@v2
+        with:
+          poetry-version: ${{ matrix.poetry-version }}
+      - name: View poetry --help
+        run: poetry --help
+      - name: Poetry env setup
+        run: poetry env use python
+      - name: Poetry install
+        run: make ${{matrix.project}}.test
+

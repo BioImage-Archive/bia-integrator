@@ -5,11 +5,14 @@ from bia_test_data.data_to_api import add_objects_to_api
 from bia_export.settings import Settings
 from pathlib import Path
 import json
+import os
 
 
 def pytest_configure(config: pytest.Config):
-    test_env = str(Path(__file__).parent / "test.env_export")
-    load_dotenv(test_env, override=True)
+    if os.path.exists("/.dockerenv") or os.getenv("DOCKERIZED"):
+        os.environ["API_BASE_URL"] = "http://api:8080"
+    else:
+        os.environ.setdefault("API_BASE_URL", "http://localhost:8080")
 
 
 @pytest.fixture(scope="session")
