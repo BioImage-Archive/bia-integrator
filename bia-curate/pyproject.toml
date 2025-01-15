@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "bia-curate"
+version = "0.1.0"
+description = "BIA curation functionality"
+authors = ["Aybuke Kupcu Yoldas <aybuke@ebi.ac.uk>"]
+license = "Apache Software License 2.0"
+readme = "README.md"
+packages = [{include = "bia_curate"}]
+
+[tool.poetry.dependencies]
+python = "^3.10,<3.12"
+bia-integrator-api = {  git = "https://github.com/BioImage-Archive/bia-integrator.git", subdirectory = "clients/python" }
+pyyaml = "^6.0"
+requests = "^2.28.1"
+pydantic = "^2.9.1"
+pydantic-settings = "^2.6.1"
+python-dotenv = "^1.0.1"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.4"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
