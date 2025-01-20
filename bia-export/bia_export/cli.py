@@ -186,7 +186,7 @@ def create_cli_context(
         )
     else:
         accession_id = None
-        if check_invalid_uuid(id):
+        if not is_uuid(id):
             accession_id = id
             id = get_uuid_from_accession_id(accession_id)
         context = cli_type.model_validate(
@@ -195,12 +195,12 @@ def create_cli_context(
     return context
 
 
-def check_invalid_uuid(id: str) -> bool:
+def is_uuid(id: str) -> bool:
     try:
         UUID(id)
     except:
-        return True
-    return False
+        return False
+    return True
 
 
 def get_uuid_from_accession_id(accession_id: str) -> str:

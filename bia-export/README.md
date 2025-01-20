@@ -17,7 +17,7 @@ Installation
 To test that installation has worked correctly, you can run:
     poetry run bia-export website all S-BIADTEST -r test/input_data
 
-With docker daemon/desktop running, can run:
+With docker daemon/desktop running, in the root of this package (bia-integrator/) run:
 
     make bia-export.test
 
@@ -62,7 +62,7 @@ This will create `bia-image-export.json` using the example test data. The root o
 
 #### Image Dataset Export
 
-Since images have the id of the dataset, st
+Since images have the id of the dataset, we avoid repeating the study and dataset information for each image.
 
 Run:
 

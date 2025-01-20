@@ -12,7 +12,6 @@ python = "^3.10,<3.12"
 bia-shared-datamodels = { path = "../bia-shared-datamodels", develop = true }
 bia-integrator-api = { path = "../clients/python", develop = true }
 pydantic-settings = "^2.3.4"
-python-on-whales = "^0.74.0"
 
 [build-system]
 requires = ["poetry-core"]
