@@ -6,6 +6,8 @@ import json
 runner = CliRunner()
 
 
+# Note that pytest fixture data_in_api is unused in test code,
+# but requested in order to guarentee that data is in the test api before running the test
 def test_cli_export_website_studies(tmp_path: Path, data_in_api):
     expected_output = Path(__file__).parent.joinpath(
         "output_data/bia-study-metadata.json"
@@ -34,7 +36,9 @@ def test_cli_export_website_studies(tmp_path: Path, data_in_api):
     assert json_result == json_expected
 
 
-def test_cli_export_website_images(tmp_path: Path):
+# Note that pytest fixture data_in_api is unused in test code,
+# but requested in order to guarentee that data is in the test api before running the test
+def test_cli_export_website_images(tmp_path: Path, data_in_api):
     expected_output = Path(__file__).parent.joinpath(
         "output_data/bia-image-export.json"
     )
@@ -53,7 +57,9 @@ def test_cli_export_website_images(tmp_path: Path):
     assert json_result == json_expected
 
 
-def test_cli_export_dataset_for_website_images(tmp_path: Path):
+# Note that pytest fixture data_in_api is unused in test code,
+# but requested in order to guarentee that data is in the test api before running the test
+def test_cli_export_dataset_for_website_images(tmp_path: Path, data_in_api):
     expected_output = Path(__file__).parent.joinpath(
         "output_data/bia-dataset-metadata-for-images.json"
     )
