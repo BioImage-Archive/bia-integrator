@@ -50,9 +50,6 @@ jobs:
             bia-export,
           ]
     runs-on: ${{ matrix.os }}
-    defaults:
-      run:
-        working-directory: ${{ matrix.project }}
     steps:
       - uses: actions/checkout@v3
       - name: Set up Docker Buildx
