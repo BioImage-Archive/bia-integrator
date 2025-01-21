@@ -134,7 +134,7 @@ def get_dataset() -> List[bia_data_model.Dataset]:
             "analysis_method": [],
             "correlation_method": [],
             "example_image_uri": [],
-            "description": None,
+            "description": "Test annotation overview 1",
             "version": 0,
             "attribute": [
                 {

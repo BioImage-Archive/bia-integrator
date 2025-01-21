@@ -11,11 +11,12 @@ def get_annotation_method() -> List[bia_data_model.AnnotationMethod]:
         {
             "uuid": create_annotation_method_uuid(title_id, study_uuid),
             "title_id": title_id,
-            "protocol_description": "Test annotation overview 1",
+            "protocol_description": "Test annotation method 1",
             "annotation_criteria": "Test annotation criteria 1",
             "annotation_coverage": None,
             "method_type": [
-                semantic_models.AnnotationMethodType("other"),
+                semantic_models.AnnotationMethodType(annotation_type.strip())
+                for annotation_type in "class_labels, segmentation_mask".split(",")
             ],
             "version": 0,
         },
