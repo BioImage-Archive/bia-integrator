@@ -79,24 +79,19 @@ def extract_annotation_method_dicts(
         # spatial_information
         # transformation_description
 
-        # TODO: Deal with protocol descriptions more consistently.
-        if "Annotation Overview" in attr_dict:
-            if "Annotation Method" in attr_dict:
-                protocol_descrption = (
-                    attr_dict.get("Annotation Overview").rstrip(".:,")
-                    + ". "
-                    + attr_dict.get("Annotation Method")
-                )
-            else:
-                protocol_descrption = attr_dict.get("Annotation Overview")
-        else:
-            protocol_descrption = attr_dict.get("Annotation Method", "")
-        model_dict["protocol_description"] = protocol_descrption
+        model_dict["protocol_description"] = attr_dict.get("Annotation Method", "")
 
-        # TODO: should use "annotation_type" field, but need to update models & deal with more complex mapping logic here.
-        model_dict["method_type"] = [
-            semantic_models.AnnotationMethodType("other"),
-        ]
+        
+        annotation_types = attr_dict.get("Annotation Type", "")
+        if annotation_types:
+            model_dict["method_type"] = [
+                semantic_models.AnnotationMethodType(annotation_type.strip())
+                for annotation_type in annotation_types.split(",")
+            ]
+        else:       
+            model_dict["method_type"] = [
+                semantic_models.AnnotationMethodType("other"),
+            ]
 
         model_dict["uuid"] = create_annotation_method_uuid(
             model_dict["title_id"], study_uuid

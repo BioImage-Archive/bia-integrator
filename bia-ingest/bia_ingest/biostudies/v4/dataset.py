@@ -125,12 +125,10 @@ def get_dataset_dict_from_annotation(
             attr_dict, bsst_title_to_bia_object_map
         )
 
-        # TODO: there is no "Description" field in the biostudies model.
-        # We should probably decide how we want to map the overview between here and the AnotationMethod.
         model_dict = {
             "uuid": create_dataset_uuid(attr_dict["Title"], study_uuid),
             "title_id": attr_dict["Title"],
-            "description": attr_dict.get("Description", None),
+            "description": attr_dict.get("Annotation Overview", None),
             "submitted_in_study_uuid": study_uuid,
             "analysis_method": [],
             "correlation_method": [],

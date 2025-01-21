@@ -321,6 +321,12 @@
         "name" : "Annotation Overview",
         "value" : "Test annotation overview 1"
       }, {
+        "name" : "Annotation Method",
+        "value" : "Test annotation method 1"
+      }, {
+        "name" : "Annotation Type",
+        "value" : "class_labels, segmentation_mask"
+      }, {
         "name" : "Annotation Criteria",
         "value" : "Test annotation criteria 1"
       }, {
