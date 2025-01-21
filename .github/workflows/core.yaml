@@ -44,7 +44,11 @@ jobs:
       matrix:
         python-version: ["3.11"]
         poetry-version: ["1.4.2"]
-        os: [ubuntu-20.04, macos-latest, windows-latest]
+        # NOTE - WE DO NOT TEST ON MAC/WINDOWS!!
+        # The current tests dockerize the test runner, so there is not much point on testing across platforms
+        # TODO: we want to change this to more closely follow how users actually run tests (setting up API first, then running tests)
+        # Ticket: https://app.clickup.com/t/8697kxtgx
+        os: [ubuntu-20.04] 
         project:
           [
             bia-export,

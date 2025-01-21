@@ -65,7 +65,6 @@ services:
       bia-integrator-api:
         condition: service_healthy
     environment:
-      - DOCKERIZED=true
       - API_BASE_URL=http://api:8080
     container_name: export_test
     image: bia-integrator-api

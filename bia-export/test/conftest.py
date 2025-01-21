@@ -9,9 +9,7 @@ import os
 
 
 def pytest_configure(config: pytest.Config):
-    if os.path.exists("/.dockerenv") or os.getenv("DOCKERIZED"):
-        os.environ["API_BASE_URL"] = "http://api:8080"
-    else:
+    if not os.environ.get("API_BASE_URL", None):
         os.environ.setdefault("API_BASE_URL", "http://localhost:8080")
 
 
