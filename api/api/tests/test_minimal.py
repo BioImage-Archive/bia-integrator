@@ -223,6 +223,18 @@ def test_dataset_stats(
     }
 
 
+def test_empty_dataset_stats(api_client: TestClient, existing_dataset: dict):
+    rsp = api_client.get(f"dataset/{existing_dataset['uuid']}/stats")
+    assert rsp.status_code == 200
+
+    assert rsp.json() == {
+        "image_count": 0,
+        "file_reference_count": 0,
+        "file_reference_size_bytes": 0,
+        "file_type_counts": {},
+    }
+
+
 @pytest.mark.asyncio
 async def test_db_timeout():
     """

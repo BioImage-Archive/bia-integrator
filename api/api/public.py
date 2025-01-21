@@ -48,6 +48,11 @@ async def getDatasetStats(
             {"$count": "n_images"},
         ]
     )
+    if len(n_images):
+        n_images = n_images[0]["n_images"]
+    else:
+        n_images = 0
+
     n_filerefs = await db.aggregate(
         [
             {
@@ -59,6 +64,11 @@ async def getDatasetStats(
             {"$count": "n_filerefs"},
         ]
     )
+    if len(n_filerefs):
+        n_filerefs = n_filerefs[0]["n_filerefs"]
+    else:
+        n_filerefs = 0
+
     fileref_size_bytes = await db.aggregate(
         [
             {
@@ -70,6 +80,11 @@ async def getDatasetStats(
             {"$group": {"_id": None, "size_bytes": {"$sum": "$size_in_bytes"}}},
         ]
     )
+    if len(fileref_size_bytes):
+        fileref_size_bytes = fileref_size_bytes[0]["size_bytes"]
+    else:
+        fileref_size_bytes = 0
+
     file_type_counts = await db.aggregate(
         [
             {
@@ -83,9 +98,9 @@ async def getDatasetStats(
     )
 
     return DatasetStats(
-        image_count=n_images[0]["n_images"],
-        file_reference_count=n_filerefs[0]["n_filerefs"],
-        file_reference_size_bytes=fileref_size_bytes[0]["size_bytes"],
+        image_count=n_images,
+        file_reference_count=n_filerefs,
+        file_reference_size_bytes=fileref_size_bytes,
         file_type_counts={agg["_id"]: agg["count"] for agg in file_type_counts},
     )
 
