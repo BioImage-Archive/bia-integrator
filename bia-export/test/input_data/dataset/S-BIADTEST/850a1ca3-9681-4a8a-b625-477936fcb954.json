@@ -1,7 +1,7 @@
 {
     "title_id": "Study Component 2",
     "uuid": "850a1ca3-9681-4a8a-b625-477936fcb954",
-    "version": 1,
+    "version": 0,
     "model": {
         "type_name": "Dataset",
         "version": 1
@@ -44,7 +44,8 @@
     "analysis_method": [
         {
             "protocol_description": "Test image analysis",
-            "features_analysed": "Test image analysis overview"
+            "features_analysed": "Test image analysis overview",
+            "attribute": []
         }
     ],
     "correlation_method": [],

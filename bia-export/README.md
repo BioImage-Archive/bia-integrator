@@ -1,38 +1,36 @@
 BIA Export
 ==========
 
-Export data from the BIA to feed static pages, and other downstream consumers. This:
+Export data from the BIA to feed static pages, and other downstream consumers. 
 
-* Selects attributes for studies stored in local files
-* Transforms to a specific export format
-* Writes the result to a JSON file
+In general export is used to combine documents for consumers that don't/can't yet call the api directly.
 
-The expectation is to use this on the output from the bia-ingest package, that can cache the documents that will be uploaded to the api as local files.
+As such, it tries to export data structures that are similar to the api, mostly adding data by following links between or counting objects.
 
-This does not yet:
 
-* Cover images, or even complete study metadata
-* Pulls data from the BIA Integrator API
-* Derives information from OME-Zarr representations (physical dimensions, axis sizes)
- 
 Installation
 ------------
 
 1. Clone the repository.
 2. Run `poetry install`
 
-Setup
------
+To test that installation has worked correctly, you can run:
+    poetry run bia-export website all S-BIADTEST -r test/input_data
 
-None required post installation
+With docker daemon/desktop running, in the root of this package (bia-integrator/) run:
+
+    make bia-export.test
 
 Usage
 -----
 
-Study export 
+### Study export for website 
+
+Used to create jsons which start at study objects and follow paths to all related objects that we want to display on a single study page of the website.
+
 Run:
 
-    `poetry run bia-export website-study S-BIADTEST -o bia-study-metadata.json -r test/input_data` 
+    poetry run bia-export website study S-BIADTEST -o bia-study-metadata.json -r test/input_data
 
 This will create `bia-study-metadata.json` using the example test data for studies
 
@@ -42,21 +40,45 @@ If no Accession ID or UUID is passed, all studies will be processed (either base
 
 The two points above hold for all export commands for the api. For the website-study export only, there is a optional cache in order to avoid processing all file references every time an export is performed (as this slows down export a lot). E.g. running:
 
-`poetry run bia-export website-study -o bia-study-metadata.json -c read_cache`
+
+    poetry run bia-export website-study -o bia-study-metadata.json -c read_cache
+
 
 Will export all studies using the cached aggregation (when avaliable) as the counts for images, files, and the list of different file types.
 
+----
 
+### Image export for website
 
-Image Export
+Two commands need to be run to generate the json for the image pages (order does not matter)
+
+#### Image Export
+
 Run:
     
-    `poetry run bia-export website-image S-BIADTEST -o bia-image-export.json -r test/input_data `
+    poetry run bia-export website-image S-BIADTEST -o bia-image-export.json -r test/input_data
 
-This will create `bia-image-export.json` using the example test data.
+This will create `bia-image-export.json` using the example test data. The root objects of this json are individual images, used to create the base of the image pages.
 
-Image Dataset Export
+#### Image Dataset Export
+
+Since images have the id of the dataset, we avoid repeating the study and dataset information for each image.
+
 Run:
-    `poetry run bia-export datasets-for-website-image S-BIADTEST -o bia-dataset-export.json -r test/input_data`
-This will create `bia-dataset-export.json` using the example test data.
+
+    poetry run bia-export datasets-for-website-image S-BIADTEST -o bia-dataset-export.json -r test/input_data
+
+This will create `bia-dataset-export.json` using the example test data. The root objects of this json are datasets, with links followed to include subject and protocol information etc as well as the original study. 
+
+
+Running tests
+-----
+
+Requires a locally running api in a docker container. This can be started by running:
+
+    docker compose up --build --force-recreate --remove-orphans -d
+
+and then running tests, e.g.:
+
+    poetry run pytest
 

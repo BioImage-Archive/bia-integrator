@@ -2,7 +2,7 @@ name: CI
 on: [pull_request, push]
 
 jobs:
-  ci:
+  ci-test:
     strategy:
       fail-fast: false
       matrix:
@@ -11,7 +11,6 @@ jobs:
         os: [ubuntu-20.04, macos-latest, windows-latest]
         project:
           [
-            bia-export,
             bia-ingest,
             bia-shared-datamodels,
             core,
@@ -39,3 +38,33 @@ jobs:
         run: poetry build
       - name: Run pytest
         run: poetry run pytest
+  ci-make:
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11"]
+        poetry-version: ["1.4.2"]
+        # NOTE - WE DO NOT TEST ON MAC/WINDOWS!!
+        # The current tests dockerize the test runner, so there is not much point on testing across platforms
+        # TODO: we want to change this to more closely follow how users actually run tests (setting up API first, then running tests)
+        # Ticket: https://app.clickup.com/t/8697kxtgx
+        os: [ubuntu-20.04] 
+        project:
+          [
+            bia-export,
+          ]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1 # Set up Docker Buildx for building and pushing Docker images
+      - name: Cache Docker layers
+        uses: actions/cache@v2 # Cache Docker layers to speed up subsequent builds
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+      - name: run makefile
+        run: make ${{matrix.project}}.test
+

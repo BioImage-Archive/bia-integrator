@@ -5,9 +5,9 @@
   "image_format": "Template image format",
   "attribute": [],
   "total_size_in_bytes": 0,
-  "version": 1,
+  "version": 0,
   "file_uri": [
-      "https://dummy.uri.org"
+    "https://dummy.uri.org"
   ],
   "physical_size_x": 1,
   "physical_size_y": 1,
@@ -17,7 +17,9 @@
   "size_z": 1,
   "size_c": 1,
   "size_t": 1,
-  "image_viewer_setting": [
-  ],
-  "model": {"type_name": "ImageRepresentation", "version": 1}
+  "image_viewer_setting": [],
+  "model": {
+    "type_name": "ImageRepresentation",
+    "version": 3
+  }
 }

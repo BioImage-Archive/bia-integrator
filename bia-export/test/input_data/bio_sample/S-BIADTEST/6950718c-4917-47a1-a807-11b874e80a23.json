@@ -5,7 +5,8 @@
         {
             "common_name": "mouse",
             "scientific_name": "Mus musculus",
-            "ncbi_id": null
+            "ncbi_id": null,
+            "attribute": []
         }
     ],
     "model": {
@@ -24,5 +25,5 @@
     ],
     "growth_protocol_uuid": "a2ce3950-3b28-40b3-a6a5-23c4f7864912",
     "attribute": [],
-    "version": 1
+    "version": 0
 }

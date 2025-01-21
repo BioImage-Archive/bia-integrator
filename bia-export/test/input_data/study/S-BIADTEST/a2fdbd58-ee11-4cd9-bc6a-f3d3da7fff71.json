@@ -1,9 +1,9 @@
 {
     "uuid": "a2fdbd58-ee11-4cd9-bc6a-f3d3da7fff71",
-    "version": 1,
+    "version": 0,
     "model": {
         "type_name": "Study",
-        "version": 1
+        "version": 2
     },
     "accession_id": "S-BIADTEST",
     "licence": "CC0",

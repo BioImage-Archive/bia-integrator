@@ -1,9 +1,9 @@
 {
   "uuid": "dcc18482-fa1a-468f-878f-c00f9cd46376",
-  "version": 1,
+  "version": 0,
   "model": {
     "type_name": "Specimen",
-    "version": 1
+    "version": 2
   },
   "imaging_preparation_protocol_uuid": [
     "7199d730-29f1-4ad8-b599-e9089cbb2d7b"

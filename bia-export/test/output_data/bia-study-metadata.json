@@ -1,10 +1,10 @@
 {
     "S-BIADTEST": {
         "uuid": "a2fdbd58-ee11-4cd9-bc6a-f3d3da7fff71",
-        "version": 1,
+        "version": 0,
         "model": {
             "type_name": "Study",
-            "version": 1
+            "version": 2
         },
         "attribute": [],
         "accession_id": "S-BIADTEST",
@@ -81,7 +81,7 @@
             {
                 "title_id": "Annotations and segmentation masks",
                 "uuid": "21999a9f-6f16-45d4-91c9-ed46cbfe015c",
-                "version": 1,
+                "version": 0,
                 "model": {
                     "type_name": "Dataset",
                     "version": 1
@@ -98,8 +98,8 @@
                     }
                 ],
                 "description": null,
-                "analysis_method": null,
-                "correlation_method": null,
+                "analysis_method": [],
+                "correlation_method": [],
                 "example_image_uri": [],
                 "submitted_in_study_uuid": "a2fdbd58-ee11-4cd9-bc6a-f3d3da7fff71",
                 "acquisition_process": [],
@@ -110,10 +110,10 @@
                         "default_open": true,
                         "title_id": "Annotations and segmentation masks",
                         "uuid": "ef019f5d-d3e0-4122-89ae-1d1d07d2830f",
-                        "version": 1,
+                        "version": 0,
                         "model": {
                             "type_name": "AnnotationMethod",
-                            "version": 1
+                            "version": 3
                         },
                         "attribute": [],
                         "protocol_description": "Test protocol description",
@@ -131,7 +131,7 @@
                 "image": [
                     {
                         "uuid": "7966aa52-e3db-4ce3-801e-44c524b73ee3",
-                        "version": 1,
+                        "version": 0,
                         "model": {
                             "type_name": "Image",
                             "version": 1
@@ -152,7 +152,7 @@
             {
                 "title_id": "Study Component 1",
                 "uuid": "47a4ab60-c76d-4424-bfaa-c2a024de720c",
-                "version": 1,
+                "version": 0,
                 "model": {
                     "type_name": "Dataset",
                     "version": 1
@@ -212,7 +212,7 @@
                 "description": "Description of study component 1",
                 "analysis_method": [
                     {
-                        "attribute": null,
+                        "attribute": [],
                         "protocol_description": "Test image analysis",
                         "features_analysed": "Test image analysis overview"
                     }
@@ -225,7 +225,7 @@
                         "default_open": true,
                         "title_id": "Test Primary Screen Image Acquisition",
                         "uuid": "c2e44a1b-a43c-476e-8ddf-8587f4c955b3",
-                        "version": 1,
+                        "version": 0,
                         "model": {
                             "type_name": "ImageAcquisitionProtocol",
                             "version": 2
@@ -244,7 +244,7 @@
                         "default_open": true,
                         "title_id": "Test specimen 1",
                         "uuid": "7199d730-29f1-4ad8-b599-e9089cbb2d7b",
-                        "version": 1,
+                        "version": 0,
                         "model": {
                             "type_name": "SpecimenImagingPreparationProtocol",
                             "version": 2
@@ -259,7 +259,7 @@
                         "default_open": true,
                         "title_id": "Test Biosample 1",
                         "uuid": "64a67727-4e7c-469a-91c4-6219ae072e99",
-                        "version": 1,
+                        "version": 0,
                         "model": {
                             "type_name": "BioSample",
                             "version": 3
@@ -267,7 +267,7 @@
                         "attribute": [],
                         "organism_classification": [
                             {
-                                "attribute": null,
+                                "attribute": [],
                                 "common_name": "human",
                                 "scientific_name": "Homo sapiens",
                                 "ncbi_id": null
@@ -287,10 +287,10 @@
                         "growth_protocol": {
                             "title_id": "Test specimen 1",
                             "uuid": "a2ce3950-3b28-40b3-a6a5-23c4f7864912",
-                            "version": 2,
+                            "version": 0,
                             "model": {
                                 "type_name": "Protocol",
-                                "version": 1
+                                "version": 2
                             },
                             "attribute": [],
                             "protocol_description": "Test sample growth protocol 1"
@@ -300,7 +300,7 @@
                         "default_open": true,
                         "title_id": "Test Biosample 2",
                         "uuid": "6950718c-4917-47a1-a807-11b874e80a23",
-                        "version": 1,
+                        "version": 0,
                         "model": {
                             "type_name": "BioSample",
                             "version": 3
@@ -308,7 +308,7 @@
                         "attribute": [],
                         "organism_classification": [
                             {
-                                "attribute": null,
+                                "attribute": [],
                                 "common_name": "mouse",
                                 "scientific_name": "Mus musculus",
                                 "ncbi_id": null
@@ -328,10 +328,10 @@
                         "growth_protocol": {
                             "title_id": "Test specimen 1",
                             "uuid": "a2ce3950-3b28-40b3-a6a5-23c4f7864912",
-                            "version": 2,
+                            "version": 0,
                             "model": {
                                 "type_name": "Protocol",
-                                "version": 1
+                                "version": 2
                             },
                             "attribute": [],
                             "protocol_description": "Test sample growth protocol 1"
@@ -343,7 +343,7 @@
                 "image": [
                     {
                         "uuid": "e7322131-8e27-455d-b9fc-8add0719af70",
-                        "version": 1,
+                        "version": 0,
                         "model": {
                             "type_name": "Image",
                             "version": 1
@@ -364,7 +364,7 @@
             {
                 "title_id": "Study Component 2",
                 "uuid": "850a1ca3-9681-4a8a-b625-477936fcb954",
-                "version": 1,
+                "version": 0,
                 "model": {
                     "type_name": "Dataset",
                     "version": 1
@@ -412,7 +412,7 @@
                 "description": "Description of study component 2",
                 "analysis_method": [
                     {
-                        "attribute": null,
+                        "attribute": [],
                         "protocol_description": "Test image analysis",
                         "features_analysed": "Test image analysis overview"
                     }
@@ -425,7 +425,7 @@
                         "default_open": false,
                         "title_id": "Test Primary Screen Image Acquisition",
                         "uuid": "c2e44a1b-a43c-476e-8ddf-8587f4c955b3",
-                        "version": 1,
+                        "version": 0,
                         "model": {
                             "type_name": "ImageAcquisitionProtocol",
                             "version": 2
@@ -444,7 +444,7 @@
                         "default_open": false,
                         "title_id": "Test specimen 1",
                         "uuid": "7199d730-29f1-4ad8-b599-e9089cbb2d7b",
-                        "version": 1,
+                        "version": 0,
                         "model": {
                             "type_name": "SpecimenImagingPreparationProtocol",
                             "version": 2
@@ -459,7 +459,7 @@
                         "default_open": false,
                         "title_id": "Test Biosample 1",
                         "uuid": "64a67727-4e7c-469a-91c4-6219ae072e99",
-                        "version": 1,
+                        "version": 0,
                         "model": {
                             "type_name": "BioSample",
                             "version": 3
@@ -467,7 +467,7 @@
                         "attribute": [],
                         "organism_classification": [
                             {
-                                "attribute": null,
+                                "attribute": [],
                                 "common_name": "human",
                                 "scientific_name": "Homo sapiens",
                                 "ncbi_id": null
@@ -487,10 +487,10 @@
                         "growth_protocol": {
                             "title_id": "Test specimen 1",
                             "uuid": "a2ce3950-3b28-40b3-a6a5-23c4f7864912",
-                            "version": 2,
+                            "version": 0,
                             "model": {
                                 "type_name": "Protocol",
-                                "version": 1
+                                "version": 2
                             },
                             "attribute": [],
                             "protocol_description": "Test sample growth protocol 1"

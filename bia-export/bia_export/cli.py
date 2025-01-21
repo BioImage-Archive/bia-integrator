@@ -11,8 +11,11 @@ from .website_export.images.transform import transform_images
 from .website_export.images.models import ImageCLIContext
 from .website_export.datasets_for_images.transform import transform_datasets
 from .website_export.website_models import CLIContext
-from typing import List, Optional
+from typing import List, Optional, Type
+from uuid import UUID
+from .bia_client import api_client
 import json
+from .settings import Settings
 
 logging.basicConfig(
     level="NOTSET", format="%(message)s", datefmt="[%X]", handlers=[RichHandler()]
@@ -20,9 +23,42 @@ logging.basicConfig(
 logger = logging.getLogger()
 
 app = typer.Typer()
+website = typer.Typer()
+app.add_typer(website, name="website")
 
 
-@app.command()
+@website.command("all")
+def generate_all(
+    id_list: Annotated[
+        Optional[List[str]], typer.Argument(help="IDs of the studies to export")
+    ] = None,
+    root_directory: Annotated[
+        Optional[Path],
+        typer.Option(
+            "--root",
+            "-r",
+            help="If root directory specified then use files there, rather than calling API",
+        ),
+    ] = None,
+    cache: Annotated[
+        Optional[CacheUse],
+        typer.Option(
+            "--cache",
+            "-c",
+        ),
+    ] = None,
+):
+    settings = Settings()
+
+    if not id_list:
+        id_list = get_study_ids(root_directory)
+
+    website_study(id_list=id_list, root_directory=root_directory, cache=cache)
+    website_image(id_list=id_list, root_directory=root_directory)
+    datasets_for_website_image(id_list=id_list, root_directory=root_directory)
+
+
+@website.command("study")
 def website_study(
     id_list: Annotated[
         Optional[List[str]], typer.Argument(help="IDs of the studies to export")
@@ -50,21 +86,15 @@ def website_study(
         ),
     ] = None,
 ):
+    settings = Settings()
 
-    if root_directory:
-        abs_root = root_directory.resolve()
 
     if not id_list:
         id_list = get_study_ids(root_directory)
 
     studies_map = {}
     for id in id_list:
-        if root_directory:
-            context = StudyCLIContext(
-                root_directory=abs_root, accession_id=id, cache_use=cache
-            )
-        else:
-            context = StudyCLIContext(study_uuid=id, cache_use=cache)
+        context = create_cli_context(StudyCLIContext, id, root_directory, cache)
         study = transform_study(context)
         studies_map[study.accession_id] = study.model_dump(mode="json")
 
@@ -73,7 +103,7 @@ def website_study(
         output.write(json.dumps(studies_map, indent=4))
 
 
-@app.command()
+@website.command("image")
 def website_image(
     id_list: Annotated[
         Optional[List[str]], typer.Argument(help="Accession IDs of the study to export")
@@ -94,21 +124,12 @@ def website_image(
         ),
     ] = None,
 ):
-    # NB: currently only exports for ExperimentallyCapturedImages
-    # TODO: get this working for
-    if root_directory:
-        abs_root = root_directory.resolve()
-
     if not id_list:
         id_list = get_study_ids(root_directory)
 
     image_map = {}
     for id in id_list:
-        if root_directory:
-            context = ImageCLIContext(root_directory=abs_root, accession_id=id)
-        else:
-            context = ImageCLIContext(study_uuid=id)
-
+        context = create_cli_context(ImageCLIContext, id, root_directory)
         image_map = image_map | transform_images(context)
 
     logging.info(f"Writing website images to {output_filename.absolute()}")
@@ -116,7 +137,7 @@ def website_image(
         output.write(json.dumps(image_map, indent=4))
 
 
-@app.command()
+@website.command("image-dataset")
 def datasets_for_website_image(
     id_list: Annotated[
         Optional[List[str]], typer.Argument(help="Accession IDs of the study to export")
@@ -127,7 +148,7 @@ def datasets_for_website_image(
             "--out_file",
             "-o",
         ),
-    ] = Path("bia-image-export.json"),
+    ] = Path("bia-dataset-metadata-for-images.json"),
     root_directory: Annotated[
         Optional[Path],
         typer.Option(
@@ -137,25 +158,60 @@ def datasets_for_website_image(
         ),
     ] = None,
 ):
-
-    if root_directory:
-        abs_root = root_directory.resolve()
+    settings = Settings()
 
     if not id_list:
         id_list = get_study_ids(root_directory)
 
     dataset_map = {}
     for id in id_list:
-        if root_directory:
-            context = CLIContext(root_directory=abs_root, accession_id=id)
-        else:
-            context = CLIContext(study_uuid=id)
-
+        context = create_cli_context(CLIContext, id, root_directory)
         dataset_map = dataset_map | transform_datasets(context)
 
     logging.info(f"Writing datasets for images to {output_filename.absolute()}")
     with open(output_filename, "w") as output:
         output.write(json.dumps(dataset_map, indent=4))
+
+
+def create_cli_context(
+    cli_type: Type[CLIContext],
+    id: str,
+    root_directory: Optional[Path],
+    cache_use: Optional[CacheUse] = None,
+):
+    if root_directory:
+        abs_root = root_directory.resolve()
+        context = cli_type.model_validate(
+            {"root_directory": abs_root, "accession_id": id, "cache_use": cache_use}
+        )
+    else:
+        accession_id = None
+        if not is_uuid(id):
+            accession_id = id
+            id = get_uuid_from_accession_id(accession_id)
+        context = cli_type.model_validate(
+            {"study_uuid": id, "accession_id": accession_id, "cache_use": cache_use}
+        )
+    return context
+
+
+def is_uuid(id: str) -> bool:
+    try:
+        UUID(id)
+    except:
+        return False
+    return True
+
+
+def get_uuid_from_accession_id(accession_id: str) -> str:
+    study = api_client.search_study_by_accession(accession_id=accession_id)
+    if study:
+        return study.uuid
+    else:
+        logger.error(f"Could not find Study: {accession_id} in API")
+        raise RuntimeError(
+            "Could not find Study with accession id: {accession_id} in API"
+        )
 
 
 if __name__ == "__main__":
