@@ -17,8 +17,8 @@ def test_submission() -> Submission:
     return submission
 
 @pytest.fixture
-def test_submission_default() -> Submission:
-    submission_path = bia_test_data_dir / "default_biostudies" / "S-BSSTTEST.json"
+def test_default_submission_direct_files() -> Submission:
+    submission_path = bia_test_data_dir / "default_biostudies" / "S-BSSTTEST_files_direct.json"
     json_data = json.loads(submission_path.read_text())
     submission = Submission.model_validate(json_data)
     return submission

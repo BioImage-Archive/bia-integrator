@@ -46,8 +46,6 @@ def get_dataset_overview(
     study_attr_dict = attributes_to_dict(study_section.attributes)
     submission_attr_dict = attributes_to_dict(submission.attributes)
 
-    # if there is more than one study or if there is not study title, 
-    # take title from submission
     if (num_studies == 1) & ("Title" in study_attr_dict):
         study_title = study_attr_dict["Title"]
     elif "Title" in submission_attr_dict:

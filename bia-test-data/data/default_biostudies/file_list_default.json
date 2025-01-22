@@ -1,0 +1,63 @@
+[ 
+    {
+        "path": "path4.tif",
+        "size": 8453126,
+        "attributes": [
+        {
+            "name": "metadata1_key",
+            "value": "metadata1_value"
+        }, {
+            "name": "metadata2_key",
+            "value": "metadata2_value"
+        } ],
+        "type": "file"
+    }, {
+        "path": "path5.tif",
+        "size": 8453208,
+        "attributes": [
+        {
+            "name": "metadata1_key",
+            "value": "metadata1_value"
+        }, {
+            "name": "metadata2_key",
+            "value": "metadata2_value"
+        } ],
+        "type": "file"
+    }, {
+        "path": "path6.tif",
+        "size": 8453174,
+        "attributes": [
+        {
+            "name": "metadata1_key",
+            "value": "metadata1_value"
+        }, {
+            "name": "metadata2_key",
+            "value": "metadata2_value"
+        } ],
+        "type": "file"
+    }, {
+        "path": "path7.tif",
+        "size": 8453134,
+        "attributes": [
+        {
+            "name": "metadata1_key",
+            "value": "metadata1_value"
+        }, {
+            "name": "metadata2_key",
+            "value": "metadata2_value"
+        } ],
+        "type": "file"
+    }, {
+        "path": "path8.tif",
+        "size": 8453092,
+        "attributes": [
+        {
+            "name": "metadata1_key",
+            "value": "metadata1_value"
+        }, {
+            "name": "metadata2_key",
+            "value": "metadata2_value"
+        } ],
+        "type": "file"
+    } 
+]

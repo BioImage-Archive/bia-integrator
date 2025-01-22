@@ -42,9 +42,6 @@
     }, {
       "name" : "Technology platform",
       "value" : "A platform"
-    }, {
-      "name" : "File List",
-      "value" : "testFileList.json"
     } ],
     "links" : [ [ {
       "url" : "https://www.testLink.com",
