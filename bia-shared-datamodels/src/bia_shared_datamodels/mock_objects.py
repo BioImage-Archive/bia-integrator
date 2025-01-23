@@ -492,7 +492,7 @@ def get_taxon_dict(completeness=Completeness.COMPLETE) -> dict:
 
 def get_attribute_dict(completeness=Completeness.COMPLETE) -> dict:
     attribute = {
-        "provenance": semantic_models.AttributeProvenance.submittor,
+        "provenance": semantic_models.AttributeProvenance.bia_ingest,
         "name": "file_list_columns",
         "value": {},
     }
