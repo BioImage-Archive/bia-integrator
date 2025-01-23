@@ -18,10 +18,13 @@ class ConfiguredBaseModel(BaseModel):
 
 
 class AttributeProvenance(str, Enum):
-    submittor = "submittor"
+    # Additional information the user provided, though some submission system, that does not directly map to a field in our data models
+    submitter = "submitter"
 
+    # Information that was added by logic in the bia_ingest package, usually for use in downsteam submission processing code
     bia_ingest = "bia_ingest"
 
+    # Information that was added by logic in the bia_conversion code package
     bia_conversion = "bia_conversion"
 
 
