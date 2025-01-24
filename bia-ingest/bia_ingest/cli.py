@@ -26,6 +26,7 @@ from bia_ingest.biostudies.process_submission_v4 import (
 from bia_ingest.biostudies.process_submission_default import (
     process_submission_default,
 )
+from bia_ingest.biostudies.find_bia_studies import (find_unprocessed_studies)
 
 import logging
 from rich import print
@@ -33,6 +34,8 @@ from rich.logging import RichHandler
 from .cli_logging import tabulate_ingestion_errors, write_table, IngestionResult
 
 app = typer.Typer()
+find = typer.Typer()
+app.add_typer(find, name="find")
 
 
 logging.basicConfig(
@@ -48,6 +51,13 @@ class ProcessFilelistMode(str, Enum):
     always = "always"
     ask = "ask"
     skip = "skip"
+
+
+@find.command("new-biostudies-studies")
+def find_new_studies(
+    output_file: Annotated[Optional[Path], typer.Option("--output_file", "-o")] = None
+):
+    find_unprocessed_studies(output_file)
 
 
 @app.command(help="Ingest from biostudies and echo json of bia_data_model.Study")

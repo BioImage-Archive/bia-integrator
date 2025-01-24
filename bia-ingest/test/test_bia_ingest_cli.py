@@ -109,3 +109,24 @@ def test_cli_writes_expected_files(
                 created_object_path.read_text()
             )
             assert created_object == expected_object
+
+
+def test_cli_writes_expected_files(
+    monkeypatch,
+    tmp_path: Path,
+    mock_search_result,
+    expected_objects,
+):
+
+    outfile = tmp_path.absolute() / "find_output"
+
+    result = runner.invoke(
+        cli.app,
+        ["find", "new-biostudies-studies", "-o", outfile],
+    )
+    assert result.exit_code == 0
+
+    with open(outfile, "r") as f:
+        lines = f.readlines()
+
+    assert lines == ["S-BIADTEST\n"]
