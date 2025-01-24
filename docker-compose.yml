@@ -54,7 +54,7 @@ services:
     container_name: client_examples
     # reusing integrator package for consistent python version & preinstalled poetry 
     image: bia-integrator-api
-    command: bash -c "poetry lock && poetry install && poetry run python private_api.py && poetry run python public.py"
+    command: bash -c "poetry --version && poetry lock && poetry install && poetry run python private_api.py && poetry run python public.py"
     working_dir: /mnt/share/example
     volumes:
       - ./clients/python:/mnt/share
