@@ -69,6 +69,7 @@ def studies_by_source(
 
 
 def get_processed_studies() -> list[str]:
+    # TODO: use BIA API to get all studies & update settings class to use env values for testing
     with open(
         pathlib.Path(__file__).parents[2] / "input_files" / "ingested_submissions", "r"
     ) as f:
