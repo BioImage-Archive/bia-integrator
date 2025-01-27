@@ -24,6 +24,15 @@ With docker daemon/desktop running, in the root of this package (bia-integrator/
 Usage
 -----
 
+### Export for website 
+
+Run:
+
+    poetry run bia-export website all
+
+
+This will create 3 files (bia-study-metadata.json, bia-image-metadata.json, bia-dataset-metadata-for-images.json), which can replace the files of the same name in the data directory of the astro package to genereate new study pages.
+
 ### Study export for website 
 
 Used to create jsons which start at study objects and follow paths to all related objects that we want to display on a single study page of the website.

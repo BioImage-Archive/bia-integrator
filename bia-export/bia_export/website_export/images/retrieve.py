@@ -12,8 +12,6 @@ import logging
 
 logger = logging.getLogger("__main__." + __name__)
 
-DEFAULT_PAGE_SIZE = 500
-
 
 def retrieve_images(
     context: ImageCLIContext,
@@ -25,9 +23,8 @@ def retrieve_images(
         )
 
     else:
-        dataset_list: List[api_models.Dataset] = api_client.get_dataset_linking_study(
-            str(context.study_uuid),
-            page_size=DEFAULT_PAGE_SIZE,
+        dataset_list = get_all_api_results(
+            context.study_uuid, api_client.get_dataset_linking_study
         )
         api_images = []
         for dataset in dataset_list:

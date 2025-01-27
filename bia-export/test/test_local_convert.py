@@ -31,9 +31,9 @@ def test_cli_export_website_studies(tmp_path: Path):
 def test_cli_export_website_images(tmp_path: Path):
     input_root_path = Path(__file__).parent.joinpath("input_data")
     expected_output = Path(__file__).parent.joinpath(
-        "output_data/bia-image-export.json"
+        "output_data/bia-image-metadata.json"
     )
-    outfile = tmp_path.joinpath("bia-image-export.json").resolve()
+    outfile = tmp_path.joinpath("bia-image-metadata.json").resolve()
 
     result = runner.invoke(
         app, ["website", "image", "S-BIADTEST", "-o", outfile, "-r", input_root_path]

@@ -114,7 +114,7 @@ def website_image(
             "--out_file",
             "-o",
         ),
-    ] = Path("bia-image-export.json"),
+    ] = Path("bia-image-metadata.json"),
     root_directory: Annotated[
         Optional[Path],
         typer.Option(
