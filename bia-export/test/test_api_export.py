@@ -40,9 +40,9 @@ def test_cli_export_website_studies(tmp_path: Path, data_in_api):
 # but requested in order to guarentee that data is in the test api before running the test
 def test_cli_export_website_images(tmp_path: Path, data_in_api):
     expected_output = Path(__file__).parent.joinpath(
-        "output_data/bia-image-export.json"
+        "output_data/bia-image-metadata.json"
     )
-    outfile = tmp_path.joinpath("bia-image-export.json").resolve()
+    outfile = tmp_path.joinpath("bia-image-metadata.json").resolve()
 
     result = runner.invoke(app, ["website", "image", "S-BIADTEST", "-o", outfile])
 
