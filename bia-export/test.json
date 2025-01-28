@@ -1,0 +1,448 @@
+{
+    "S-BIAD1388": {
+        "uuid": "bc04a972-696b-4829-92e5-be9041ff2e0f",
+        "version": 0,
+        "model": {
+            "type_name": "Study",
+            "version": 2
+        },
+        "attribute": [
+            {
+                "provenance": "bia_ingest",
+                "name": "biostudies json/pagetab entry",
+                "value": {
+                    "json": "https://www.ebi.ac.uk/biostudies/files/S-BIAD1388/S-BIAD1388.json",
+                    "pagetab": "https://www.ebi.ac.uk/biostudies/files/S-BIAD1388/S-BIAD1388.tsv"
+                }
+            }
+        ],
+        "accession_id": "S-BIAD1388",
+        "licence": "CC_BY_4.0",
+        "author": [
+            {
+                "rorid": null,
+                "address": null,
+                "website": null,
+                "orcid": "0000-0001-7755-6283",
+                "display_name": "Aziza Elmesmari",
+                "affiliation": [
+                    {
+                        "rorid": null,
+                        "address": null,
+                        "website": null,
+                        "display_name": "University of Glasgow"
+                    }
+                ],
+                "contact_email": "aziza.elmesmari@glasgow.ac.uk",
+                "role": null
+            }
+        ],
+        "title": "Distinct tissue-niche localization and function of synovial tissue myeloid DC subsets in health, and in active and remission Rheumatoid Arthritis \n\n",
+        "release_date": "2024-12-02",
+        "description": "immunofluorescent staining in Synovial tissue  of  Healthy, active  Rheumatoid arthritis and and Rheumatoid arthritis in remission. \n",
+        "keyword": [
+            "CD68",
+            "CLEC10A",
+            "AXL",
+            "CD1c",
+            "LAMP3",
+            "Synovial tissue ",
+            "Human"
+        ],
+        "acknowledgement": "",
+        "see_also": [],
+        "related_publication": [],
+        "grant": [],
+        "funding_statement": "",
+        "dataset": [
+            {
+                "title_id": "Synovium Tissues ",
+                "uuid": "c5c0751b-f8a6-482b-92aa-d47628a00507",
+                "version": 1,
+                "model": {
+                    "type_name": "Dataset",
+                    "version": 1
+                },
+                "attribute": [
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "associations",
+                        "value": {
+                            "associations": [
+                                {
+                                    "image_analysis": null,
+                                    "image_correlation": null,
+                                    "biosample": "Healthy synovial tissue",
+                                    "image_acquisition": "Confocal Microscopy ",
+                                    "specimen": "CD68 & CLEC10A"
+                                },
+                                {
+                                    "image_analysis": null,
+                                    "image_correlation": null,
+                                    "biosample": "Synovial tissue of Active rheumatoid arthritis",
+                                    "image_acquisition": "Confocal Microscopy ",
+                                    "specimen": "CD68 & CLEC10A"
+                                },
+                                {
+                                    "image_analysis": null,
+                                    "image_correlation": null,
+                                    "biosample": "Synovial tissue of rheumatoid arthritis in remission",
+                                    "image_acquisition": "Confocal Microscopy ",
+                                    "specimen": "CD68 & CLEC10A"
+                                },
+                                {
+                                    "image_analysis": null,
+                                    "image_correlation": null,
+                                    "biosample": "Healthy synovial tissue",
+                                    "image_acquisition": "Confocal Microscopy ",
+                                    "specimen": "CD1c & AXL"
+                                },
+                                {
+                                    "image_analysis": null,
+                                    "image_correlation": null,
+                                    "biosample": "Synovial tissue of Active rheumatoid arthritis",
+                                    "image_acquisition": "Confocal Microscopy ",
+                                    "specimen": "CD1c & LAMP3"
+                                },
+                                {
+                                    "image_analysis": null,
+                                    "image_correlation": null,
+                                    "biosample": "Synovial tissue of Active rheumatoid arthritis",
+                                    "image_acquisition": "CosMx",
+                                    "specimen": "CosMx staining"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "image_acquisition_protocol_uuid",
+                        "value": {
+                            "image_acquisition_protocol_uuid": [
+                                "3adb7c29-4c3f-4475-9731-5a79a993c398",
+                                "3d4b245e-a629-42e0-a101-853663511f82"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "specimen_imaging_preparation_protocol_uuid",
+                        "value": {
+                            "specimen_imaging_preparation_protocol_uuid": [
+                                "ebc9e74f-241d-4e0d-9a1d-43d9b485d3d0",
+                                "e1bd3be7-4bde-464d-abdf-f4081d65e1af",
+                                "be32ebed-8815-4005-9c60-0ae210adfc66",
+                                "493173e7-c584-49ae-a223-a0ff801f2089"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "bio_sample_uuid",
+                        "value": {
+                            "bio_sample_uuid": [
+                                "65c35fed-f997-4e6d-8724-d2d5180a1e96",
+                                "557ef897-1036-4884-8bfb-081be2096a6e",
+                                "190a45ce-3932-4fdf-803d-a8a1e21986aa"
+                            ]
+                        }
+                    }
+                ],
+                "description": "immunofluorescent staining in Synovial tissue  of  Healthy, active  Rheumatoid arthritis and and Rheumatoid arthritis in remission. ",
+                "analysis_method": [],
+                "correlation_method": [],
+                "example_image_uri": [
+                    "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1388/2563e244-377d-4d80-b833-868a59dfb903/8a3e9dfb-9406-48df-90e9-2d0872050352.png"
+                ],
+                "submitted_in_study_uuid": "bc04a972-696b-4829-92e5-be9041ff2e0f",
+                "acquisition_process": [
+                    {
+                        "default_open": true,
+                        "title_id": "Confocal Microscopy ",
+                        "uuid": "3adb7c29-4c3f-4475-9731-5a79a993c398",
+                        "version": 0,
+                        "model": {
+                            "type_name": "ImageAcquisitionProtocol",
+                            "version": 2
+                        },
+                        "attribute": [],
+                        "protocol_description": "CD68 (red) & CLEC10A ( Green)\nCD1c (Green) & LAMP3 (Red)\nCD1c (Green ) & AXL (Red)\n",
+                        "imaging_instrument_description": "Zeiss LSM 880 confocal microscope, using either a water immersion LD C-Apochromat \u00d740/aperture1aperture1.3, or an oil immersion Plan-Apochromat \u00d763/1.4 objectives, and images acquired using Zen Black software (Zeiss). ",
+                        "fbbi_id": [],
+                        "imaging_method_name": [
+                            "confocal microscopy"
+                        ]
+                    },
+                    {
+                        "default_open": true,
+                        "title_id": "CosMx",
+                        "uuid": "3d4b245e-a629-42e0-a101-853663511f82",
+                        "version": 0,
+                        "model": {
+                            "type_name": "ImageAcquisitionProtocol",
+                            "version": 2
+                        },
+                        "attribute": [],
+                        "protocol_description": "membrane 488nm\npanCK 532nm\nCD45 594nm \nCD3 647nm \nDAPI UV",
+                        "imaging_instrument_description": "CosMx Spatial Molecular Imager",
+                        "fbbi_id": [],
+                        "imaging_method_name": [
+                            "single cell",
+                            "spatial transcriptomic"
+                        ]
+                    }
+                ],
+                "specimen_imaging_preparation_protocol": [
+                    {
+                        "default_open": true,
+                        "title_id": "CD68 & CLEC10A",
+                        "uuid": "ebc9e74f-241d-4e0d-9a1d-43d9b485d3d0",
+                        "version": 0,
+                        "model": {
+                            "type_name": "SpecimenImagingPreparationProtocol",
+                            "version": 2
+                        },
+                        "attribute": [],
+                        "protocol_description": "Formalin-fixed paraffin-embedded 5\u03bcm-thick synovial tissue sections were stained with antibodies directed against markers  CD68 (Red) or CLEC10A (Green) or in combination, or with appropriate isotope control antibodies following previously published protocol.",
+                        "signal_channel_information": []
+                    },
+                    {
+                        "default_open": true,
+                        "title_id": "CD1c & AXL",
+                        "uuid": "e1bd3be7-4bde-464d-abdf-f4081d65e1af",
+                        "version": 0,
+                        "model": {
+                            "type_name": "SpecimenImagingPreparationProtocol",
+                            "version": 2
+                        },
+                        "attribute": [],
+                        "protocol_description": "Formalin-fixed paraffin-embedded 5\u03bcm-thick synovial tissue sections were stained with antibodies directed against markers  AXL (Red) or CD1c (Green) or in combination, or with appropriate isotope control antibodies following previously published protocol.",
+                        "signal_channel_information": []
+                    },
+                    {
+                        "default_open": true,
+                        "title_id": "CD1c & LAMP3",
+                        "uuid": "be32ebed-8815-4005-9c60-0ae210adfc66",
+                        "version": 0,
+                        "model": {
+                            "type_name": "SpecimenImagingPreparationProtocol",
+                            "version": 2
+                        },
+                        "attribute": [],
+                        "protocol_description": "Formalin-fixed paraffin-embedded 5\u03bcm-thick synovial tissue sections were stained with antibodies directed against markers  LAMP3 (Red) or CD1c (Green) or in combination, or with appropriate isotope control antibodies following previously published protocol.",
+                        "signal_channel_information": []
+                    },
+                    {
+                        "default_open": true,
+                        "title_id": "CosMx staining",
+                        "uuid": "493173e7-c584-49ae-a223-a0ff801f2089",
+                        "version": 0,
+                        "model": {
+                            "type_name": "SpecimenImagingPreparationProtocol",
+                            "version": 2
+                        },
+                        "attribute": [],
+                        "protocol_description": "We used the Nanostring CosMx Spatial Molecular Imaging platform to measure expression of 960 genes discriminating transcriptional profiles and spatial localization of 127,199 cells (69 fields-of-view (FOV)) in paraffin-embedded synovial biopsies from 3 active naive to treatment and 3 RA patients in sustained clinical and imaging remission (~11 FOV per donor). Slides were stained with DAPI, CD45, CD3, PanCK, CD298/b2m (membrane)",
+                        "signal_channel_information": []
+                    }
+                ],
+                "biological_entity": [
+                    {
+                        "default_open": true,
+                        "title_id": "Healthy synovial tissue",
+                        "uuid": "65c35fed-f997-4e6d-8724-d2d5180a1e96",
+                        "version": 0,
+                        "model": {
+                            "type_name": "BioSample",
+                            "version": 3
+                        },
+                        "attribute": [],
+                        "organism_classification": [
+                            {
+                                "attribute": [],
+                                "common_name": "human",
+                                "scientific_name": "Homo sapiens",
+                                "ncbi_id": null
+                            }
+                        ],
+                        "biological_entity_description": "Synovial tissue of Healthy donor",
+                        "experimental_variable_description": [],
+                        "extrinsic_variable_description": [],
+                        "intrinsic_variable_description": [],
+                        "growth_protocol_uuid": null,
+                        "growth_protocol": null
+                    },
+                    {
+                        "default_open": true,
+                        "title_id": "Synovial tissue of Active rheumatoid arthritis",
+                        "uuid": "557ef897-1036-4884-8bfb-081be2096a6e",
+                        "version": 0,
+                        "model": {
+                            "type_name": "BioSample",
+                            "version": 3
+                        },
+                        "attribute": [],
+                        "organism_classification": [
+                            {
+                                "attribute": [],
+                                "common_name": "human",
+                                "scientific_name": "Homo sapiens",
+                                "ncbi_id": null
+                            }
+                        ],
+                        "biological_entity_description": "Synovial tissue of Active rheumatoid arthritis",
+                        "experimental_variable_description": [],
+                        "extrinsic_variable_description": [],
+                        "intrinsic_variable_description": [],
+                        "growth_protocol_uuid": null,
+                        "growth_protocol": null
+                    },
+                    {
+                        "default_open": true,
+                        "title_id": "Synovial tissue of rheumatoid arthritis in remission",
+                        "uuid": "190a45ce-3932-4fdf-803d-a8a1e21986aa",
+                        "version": 0,
+                        "model": {
+                            "type_name": "BioSample",
+                            "version": 3
+                        },
+                        "attribute": [],
+                        "organism_classification": [
+                            {
+                                "attribute": [],
+                                "common_name": "human",
+                                "scientific_name": "Homo sapiens",
+                                "ncbi_id": null
+                            }
+                        ],
+                        "biological_entity_description": "Synovial tissue of rheumatoid arthritis in remission",
+                        "experimental_variable_description": [],
+                        "extrinsic_variable_description": [],
+                        "intrinsic_variable_description": [],
+                        "growth_protocol_uuid": null,
+                        "growth_protocol": null
+                    }
+                ],
+                "annotation_process": [],
+                "other_creation_process": [],
+                "image": [
+                    {
+                        "uuid": "2563e244-377d-4d80-b833-868a59dfb903",
+                        "version": 0,
+                        "model": {
+                            "type_name": "Image",
+                            "version": 1
+                        },
+                        "attribute": [
+                            {
+                                "provenance": "bia_conversion",
+                                "name": "attributes_from_file_reference_0ebb55bf-47d6-40f8-9b63-52cd78efadf5",
+                                "value": {
+                                    "attributes": {}
+                                }
+                            }
+                        ],
+                        "submission_dataset_uuid": "c5c0751b-f8a6-482b-92aa-d47628a00507",
+                        "creation_process_uuid": "3cd04676-5070-4f2e-a9c1-744ad201eae3",
+                        "original_file_reference_uuid": [
+                            "0ebb55bf-47d6-40f8-9b63-52cd78efadf5"
+                        ]
+                    },
+                    {
+                        "uuid": "4371de21-efa4-4ae8-b050-a41c8d2e4348",
+                        "version": 0,
+                        "model": {
+                            "type_name": "Image",
+                            "version": 1
+                        },
+                        "attribute": [
+                            {
+                                "provenance": "bia_conversion",
+                                "name": "attributes_from_file_reference_69fa8889-8e08-429a-bebc-1ddf5ca14145",
+                                "value": {
+                                    "attributes": {}
+                                }
+                            }
+                        ],
+                        "submission_dataset_uuid": "c5c0751b-f8a6-482b-92aa-d47628a00507",
+                        "creation_process_uuid": "d2b21a24-f1e6-4d47-9f30-0d230bc0e9fe",
+                        "original_file_reference_uuid": [
+                            "69fa8889-8e08-429a-bebc-1ddf5ca14145"
+                        ]
+                    },
+                    {
+                        "uuid": "83fa4235-6e69-45d6-990e-6e640940d577",
+                        "version": 0,
+                        "model": {
+                            "type_name": "Image",
+                            "version": 1
+                        },
+                        "attribute": [
+                            {
+                                "provenance": "bia_conversion",
+                                "name": "attributes_from_file_reference_66b555b6-4e90-4b0e-a8c4-099668aead3d",
+                                "value": {
+                                    "attributes": {}
+                                }
+                            }
+                        ],
+                        "submission_dataset_uuid": "c5c0751b-f8a6-482b-92aa-d47628a00507",
+                        "creation_process_uuid": "0e87e3bd-e674-4792-93c6-baae3d155533",
+                        "original_file_reference_uuid": [
+                            "66b555b6-4e90-4b0e-a8c4-099668aead3d"
+                        ]
+                    },
+                    {
+                        "uuid": "a7fd5a9d-3e7d-4362-95b2-72936756e033",
+                        "version": 0,
+                        "model": {
+                            "type_name": "Image",
+                            "version": 1
+                        },
+                        "attribute": [
+                            {
+                                "provenance": "bia_conversion",
+                                "name": "attributes_from_file_reference_2cd0c70d-b8fc-4766-acb5-254e3060456b",
+                                "value": {
+                                    "attributes": {}
+                                }
+                            }
+                        ],
+                        "submission_dataset_uuid": "c5c0751b-f8a6-482b-92aa-d47628a00507",
+                        "creation_process_uuid": "f29f2e0e-9cc7-45f9-98dd-a80cf733c6b6",
+                        "original_file_reference_uuid": [
+                            "2cd0c70d-b8fc-4766-acb5-254e3060456b"
+                        ]
+                    },
+                    {
+                        "uuid": "b2a60947-9989-409f-80b5-35badbee6900",
+                        "version": 0,
+                        "model": {
+                            "type_name": "Image",
+                            "version": 1
+                        },
+                        "attribute": [
+                            {
+                                "provenance": "bia_conversion",
+                                "name": "attributes_from_file_reference_2ef5eab0-b745-47bd-8257-83cf23c54487",
+                                "value": {
+                                    "attributes": {}
+                                }
+                            }
+                        ],
+                        "submission_dataset_uuid": "c5c0751b-f8a6-482b-92aa-d47628a00507",
+                        "creation_process_uuid": "2c4a3f34-0229-49f4-b707-020550dc86b0",
+                        "original_file_reference_uuid": [
+                            "2ef5eab0-b745-47bd-8257-83cf23c54487"
+                        ]
+                    }
+                ],
+                "file_count": 20,
+                "image_count": 5,
+                "file_type_aggregation": [
+                    ".tif"
+                ]
+            }
+        ]
+    }
+}

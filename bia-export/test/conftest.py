@@ -26,10 +26,6 @@ def data_in_api():
         if os.path.isfile(path):
             with open(path, "r") as object_file:
                 json_dict = json.load(object_file)
-                try:
-                    json_dict["model"]["type_name"]
-                except KeyError:
-                    continue
                 object_list.append(json_dict)
 
     add_objects_to_api(setttings.api_base_url, object_list)

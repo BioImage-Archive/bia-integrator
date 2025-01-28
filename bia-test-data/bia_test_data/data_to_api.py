@@ -44,11 +44,13 @@ def get_object_creation_client(
 def calculate_dependency_chain_length(
     object_by_type: dict[str, dict[str, dict]]
 ) -> dict[str, int]:
-    # Images need their creation process to be added to the api before they can be added
-    # Some creation processes need images to be added to the api before they can be added
-    # dependecy_chain_length is the maximum number of times a change in type of object being added to the api has to occur before this object can be added to the api.
-    # E.g. with the chain:  IMG2 -> CP2, CP2 -> [IMG1], IMG1 -> CP1
-    # dependecy_chain_length = { CP1.uuid: 0, IMG1.uuid: 1, CP2.uuid: 2, IMG2.uuid: 3} (note images are always odd, creation processes are even inc. 0 )
+    """
+    Images need their creation process to be added to the api before they can be added
+    Some creation processes need images to be added to the api before they can be added
+    dependecy_chain_length is the maximum number of times a change in type of object being added to the api has to occur before this object can be added to the api.
+    E.g. with the chain:  IMG2 -> CP2, CP2 -> [IMG1], IMG1 -> CP1
+    dependecy_chain_length = { CP1.uuid: 0, IMG1.uuid: 1, CP2.uuid: 2, IMG2.uuid: 3} (note images are always odd, creation processes are even inc. 0 )
+    """
     dependecy_chain_length = {}
 
     for uuid, creation_process in object_by_type["CreationProcess"].items():
