@@ -18,7 +18,7 @@ def pytest_configure(config: pytest.Config):
 def data_in_api():
     setttings = Settings()
 
-    input_file_dir = Path(__file__).parent / "input_data"
+    input_file_dir = Path(__file__).parent / "input_data" / "**" / "*.json"
     file_path_list = glob(str(input_file_dir), recursive=True)
 
     object_list = []
