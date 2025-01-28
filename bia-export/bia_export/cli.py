@@ -210,7 +210,7 @@ def get_uuid_from_accession_id(accession_id: str) -> str:
     else:
         logger.error(f"Could not find Study: {accession_id} in API")
         raise RuntimeError(
-            "Could not find Study with accession id: {accession_id} in API"
+            f"Could not find Study with accession id: {accession_id} in API"
         )
 
 
