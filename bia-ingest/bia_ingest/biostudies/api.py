@@ -172,6 +172,32 @@ class SubmissionTable(BaseModel):
     sections: Optional[List[str]] = None
 
 
+# Search data structures
+
+class SearchResult(BaseModel):
+    accession: str
+    type: str
+    title: str
+    author: str
+    links: int
+    files: int
+    release_date: str
+    views: int
+    isPublic: bool
+
+
+class SearchPage(BaseModel):
+    page: int
+    pageSize: int
+    totalHits: int
+    isTotalHitsExact: bool
+    sortBy: str
+    sortOrder: str
+    hits: List[SearchResult]
+    query: Optional[str]
+    facets: Optional[str]
+
+
 # API functions
 
 

@@ -7,6 +7,7 @@ from bia_ingest.biostudies.api import Submission, SubmissionTable, requests
 from bia_test_data.mock_objects.mock_object_constants import accession_id
 from bia_ingest.cli_logging import IngestionResult
 from bia_test_data import bia_test_data_dir
+from bia_ingest.biostudies.api import SearchResult, SearchPage
 
 
 @pytest.fixture
@@ -43,3 +44,42 @@ def mock_request_get(monkeypatch):
         return return_value
 
     monkeypatch.setattr(requests, "get", _mock_request_get)
+
+
+@pytest.fixture
+def mock_search_result(monkeypatch):
+    """Requests.get mocked to read file from disk"""
+
+    mock_result = {
+        "page": 1,
+        "pageSize": 1,
+        "totalHits": 1,
+        "isTotalHitsExact": True,
+        "sortBy": "release_date",
+        "sortOrder": "descending",
+        "hits": [
+            {
+                "accession": "S-BIADTEST",
+                "type": "study",
+                "title": "Test Title",
+                "author": "Test Authors",
+                "links": 0,
+                "files": 0,
+                "release_date": "2025-01-01",
+                "views": 0,
+                "isPublic": True,
+            }
+        ],
+        "query": None,
+        "facets": None,
+    }
+    search_result = SearchPage(**mock_result)
+
+    def _mock_search_result(url, headers) -> Dict[str, str]:
+
+        return_value = Mock()
+        return_value.status_code = 200
+        return_value.content = search_result.model_dump_json()
+        return return_value
+
+    monkeypatch.setattr(requests, "get", _mock_search_result)

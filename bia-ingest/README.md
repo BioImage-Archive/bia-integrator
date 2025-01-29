@@ -65,3 +65,13 @@ When ingest finishes a table of results is printed out. To also get this table w
 ```sh
 $ poetry run biaingest ingest S-BIAD1285 S-BIAD1385 -c --write-csv output_table.csv
 ```
+
+
+## Getting new Biostudies Studies
+
+run:
+```
+poetry run biaingest find new-biostudies-studies
+```
+
+which will create a file in the input_files/ directory of studies that are relevant to the current ingest process but are not yet ingested.
