@@ -1,6 +1,6 @@
 {
-    "S-BIAD1388": {
-        "uuid": "bc04a972-696b-4829-92e5-be9041ff2e0f",
+    "S-BIAD1269": {
+        "uuid": "0476bac0-b2fb-4816-90fb-5e09f622a4df",
         "version": 0,
         "model": {
             "type_name": "Study",
@@ -11,54 +11,750 @@
                 "provenance": "bia_ingest",
                 "name": "biostudies json/pagetab entry",
                 "value": {
-                    "json": "https://www.ebi.ac.uk/biostudies/files/S-BIAD1388/S-BIAD1388.json",
-                    "pagetab": "https://www.ebi.ac.uk/biostudies/files/S-BIAD1388/S-BIAD1388.tsv"
+                    "json": "https://www.ebi.ac.uk/biostudies/files/S-BIAD1269/S-BIAD1269.json",
+                    "pagetab": "https://www.ebi.ac.uk/biostudies/files/S-BIAD1269/S-BIAD1269.tsv"
                 }
             }
         ],
-        "accession_id": "S-BIAD1388",
+        "accession_id": "S-BIAD1269",
         "licence": "CC_BY_4.0",
         "author": [
             {
                 "rorid": null,
                 "address": null,
                 "website": null,
-                "orcid": "0000-0001-7755-6283",
-                "display_name": "Aziza Elmesmari",
+                "orcid": "0000-0002-0430-1463",
+                "display_name": "Mario Del Rosario",
                 "affiliation": [
                     {
                         "rorid": null,
                         "address": null,
                         "website": null,
-                        "display_name": "University of Glasgow"
+                        "display_name": "Instituto Gulbenkian de Ci\u00eancia"
                     }
                 ],
-                "contact_email": "aziza.elmesmari@glasgow.ac.uk",
+                "contact_email": "mrosario@igc.gulbenkian.pt",
+                "role": null
+            },
+            {
+                "rorid": null,
+                "address": null,
+                "website": null,
+                "orcid": "0000-0003-2082-3277",
+                "display_name": "Estibaliz G\u00f3mez de Mariscal",
+                "affiliation": [
+                    {
+                        "rorid": null,
+                        "address": null,
+                        "website": null,
+                        "display_name": "Instituto Gulbenkian de Ci\u00eancia"
+                    }
+                ],
+                "contact_email": "egomez@igc.gulbenkian.pt",
+                "role": null
+            },
+            {
+                "rorid": null,
+                "address": null,
+                "website": null,
+                "orcid": "0000-0003-4510-8456",
+                "display_name": "Leonor Morgado",
+                "affiliation": [
+                    {
+                        "rorid": null,
+                        "address": null,
+                        "website": null,
+                        "display_name": "abbelight"
+                    }
+                ],
+                "contact_email": "lmorgado@igc.gulbenkian.pt",
+                "role": null
+            },
+            {
+                "rorid": null,
+                "address": null,
+                "website": null,
+                "orcid": "0000-0002-5559-9554",
+                "display_name": "Raquel Portela",
+                "affiliation": [
+                    {
+                        "rorid": null,
+                        "address": null,
+                        "website": null,
+                        "display_name": "Universidade Nova de Lisboa"
+                    }
+                ],
+                "contact_email": "raquel.portela@itqb.unl.pt",
+                "role": null
+            },
+            {
+                "rorid": null,
+                "address": null,
+                "website": null,
+                "orcid": "0000-0002-9286-920X",
+                "display_name": "Guillaume Jacquemet",
+                "affiliation": [
+                    {
+                        "rorid": null,
+                        "address": null,
+                        "website": null,
+                        "display_name": "University of Turku"
+                    }
+                ],
+                "contact_email": "guillaume.jacquemet@abo.fi",
+                "role": null
+            },
+            {
+                "rorid": null,
+                "address": null,
+                "website": null,
+                "orcid": "0000-0002-1426-9540",
+                "display_name": "Pedro M. Pereira",
+                "affiliation": [
+                    {
+                        "rorid": null,
+                        "address": null,
+                        "website": null,
+                        "display_name": "Universidade Nova de Lisboa"
+                    }
+                ],
+                "contact_email": "pmatos@itqb.unl.pt",
+                "role": null
+            },
+            {
+                "rorid": null,
+                "address": null,
+                "website": null,
+                "orcid": "0000-0002-2043-5234",
+                "display_name": "Ricardo Henriques",
+                "affiliation": [
+                    {
+                        "rorid": null,
+                        "address": null,
+                        "website": null,
+                        "display_name": "MRC Laboratory for Molecular Cell Biology"
+                    }
+                ],
+                "contact_email": "rjhenriques@igc.gulbenkian.p",
                 "role": null
             }
         ],
-        "title": "Distinct tissue-niche localization and function of synovial tissue myeloid DC subsets in health, and in active and remission Rheumatoid Arthritis \n\n",
-        "release_date": "2024-12-02",
-        "description": "immunofluorescent staining in Synovial tissue  of  Healthy, active  Rheumatoid arthritis and and Rheumatoid arthritis in remission. \n",
+        "title": "PhotoFiTT:  A Quantitative Framework for Assessing Phototoxicity in Live-Cell Microscopy Experiments",
+        "release_date": "2024-07-12",
+        "description": "This repository contains all the data related to the study PhotoFiTT (Phototoxicity Fitness Time Trial) as well as example data for PhotoFiTT computational framework (https://github.com/HenriquesLab/PhotoFiTT).",
         "keyword": [
-            "CD68",
-            "CLEC10A",
-            "AXL",
-            "CD1c",
-            "LAMP3",
-            "Synovial tissue ",
-            "Human"
+            "phototoxicity",
+            "deep learning",
+            "training data",
+            "live cell imaging",
+            "microscopy ",
+            "2D",
+            "mitosis"
         ],
-        "acknowledgement": "",
+        "acknowledgement": "Optical Cell Biology Group (Henriques lab) at Instituto Gulbenkian de Ci\u00eancia, the Intracellular Microbial Infection Biology (IMIB) (Pedro Matos Pereira Lab) at ITQB Nova, and the Cell Migration Lab at \u00c5bo Akademi University (Guillaume Jacquemet's lab)",
         "see_also": [],
         "related_publication": [],
-        "grant": [],
-        "funding_statement": "",
+        "grant": [
+            {
+                "id": "101057970-AI4LIFE",
+                "funder": [
+                    {
+                        "display_name": "European Union HORIZON-INFRA-2021-SERV-01",
+                        "id": null
+                    }
+                ]
+            },
+            {
+                "id": "EMBO-2020-IG-4734",
+                "funder": [
+                    {
+                        "display_name": "EMBO",
+                        "id": null
+                    }
+                ]
+            },
+            {
+                "id": "EMBO ALTF 174-2022",
+                "funder": [
+                    {
+                        "display_name": "EMBO",
+                        "id": null
+                    }
+                ]
+            },
+            {
+                "id": "101099654-RTSuperES",
+                "funder": [
+                    {
+                        "display_name": " European Union - European Innovation Council (EIC)- A Pathfinder-Open project",
+                        "id": null
+                    }
+                ]
+            },
+            {
+                "id": "101001332",
+                "funder": [
+                    {
+                        "display_name": "European Research Council (ERC) under the European Union\u2019s Horizon 2020 research and innovation programme",
+                        "id": null
+                    }
+                ]
+            },
+            {
+                "id": "vpi-0000000044",
+                "funder": [
+                    {
+                        "display_name": "Chan Zuckerberg Initiative Visual Proteomics Grant",
+                        "id": null
+                    }
+                ]
+            },
+            {
+                "id": "EOSS6-0000000260",
+                "funder": [
+                    {
+                        "display_name": "Chan Zuckerberg Initiative Essential Open Source Software for Science",
+                        "id": null
+                    }
+                ]
+            },
+            {
+                "id": "ID 100010434",
+                "funder": [
+                    {
+                        "display_name": "La Caixa Junior Leader Fellowship (LCF/BQ/PI20/11760012)",
+                        "id": null
+                    }
+                ]
+            },
+            {
+                "id": "No 847648",
+                "funder": [
+                    {
+                        "display_name": "European Union\u2019s Horizon 2020 research and innovation programme - Marie Sk\u0142odowska-Curie",
+                        "id": null
+                    }
+                ]
+            },
+            {
+                "id": "LA/P/0087/2020, DOI 10.54499/LA/P/0087/2020",
+                "funder": [
+                    {
+                        "display_name": "LS4FUTURE",
+                        "id": null
+                    }
+                ]
+            }
+        ],
+        "funding_statement": "M.DR., E.G.M., and R.H. express their gratitude for the support provided by the Gulbenkian Foundation (Funda\u00e7\u00e3o Calouste Gulbenkian), the European Research Council (ERC) under the European Union\u2019s Horizon 2020 research and innovation programme (grant agreement No. 101001332 to R.H.), and funding from the European Union through the Horizon Europe program (AI4LIFE project with grant agreement 101057970-AI4LIFE and RT-SuperES project with grant agreement 101099654-RTSuperES to R.H.). This project received funding from the European Union. However, the views and opinions expressed are solely those of the authors and do not necessarily reflect those of the European Union. Neither the European Union nor the granting authority can be held responsible for them. Additionally, this work was supported by a European Molecular Biology Organization (EMBO) installation grant (EMBO-2020-IG-4734 to R.H.), an EMBO postdoctoral fellowship (EMBO ALTF 174-2022 to E.G.M.), a Chan Zuckerberg Initiative Visual Proteomics Grant (vpi-0000000044 with https://doi.org/10.37921/743590vtudfp to R.H.), and a Chan Zuckerberg Initiative Essential Open Source Software for Science (EOSS6-0000000260). The collaboration between Abbelight and the Instituto Gulbenkian de Ci\u00eancia generously supports L.M. R.H. and P.M.P acknowledge funding by Funda\u00e7\u00e3o para a Ci\u00eancia e Tecnologia (FCT, Portugal) through national funds to the Associate Laboratory LS4FUTURE (LA/P/0087/2020, DOI 10.54499/LA/P/0087/2020). P.M.P. is grateful for support from Funda\u00e7\u00e3o para a Ci\u00eancia e Tecnologia (Portugal) project grant (PTDC/BIA-MIC/2422/2020), the R&D unit Mostmicro (UIDB/04612/2020, UIDP/04612/2020), La Caixa Junior Leader Fellowship (LCF/BQ/PI20/11760012) financed by \"la Caixa\" Foundation (ID 100010434) and by the European Union\u2019s Horizon 2020 research and innovation programme under the Marie Sk\u0142odowska-Curie grant agreement No 847648, as well as a Maratona da Sa\u00fade award.",
         "dataset": [
             {
-                "title_id": "Synovium Tissues ",
-                "uuid": "c5c0751b-f8a6-482b-92aa-d47628a00507",
-                "version": 1,
+                "title_id": "PhotoFiTT video processing results examples",
+                "uuid": "2e04df2a-ff69-4a14-9ceb-f67304aff2ca",
+                "version": 0,
+                "model": {
+                    "type_name": "Dataset",
+                    "version": 1
+                },
+                "attribute": [
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "associations",
+                        "value": {
+                            "associations": [
+                                {
+                                    "image_analysis": "PhotoFiTT: Phototoxicity Fitness Time Trial",
+                                    "image_correlation": null,
+                                    "biosample": "Live cell imaging of CHO cells",
+                                    "image_acquisition": "Chinese Hamster Ovary (CHO) cells image data (synchronised and unsynchronised populations)",
+                                    "specimen": "CHO cells "
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "image_acquisition_protocol_uuid",
+                        "value": {
+                            "image_acquisition_protocol_uuid": [
+                                "c1fbc0c9-118a-45cf-904e-bee3352583b9"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "specimen_imaging_preparation_protocol_uuid",
+                        "value": {
+                            "specimen_imaging_preparation_protocol_uuid": [
+                                "f72798f9-35a2-49ba-a8d4-7d56b8cca922"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "bio_sample_uuid",
+                        "value": {
+                            "bio_sample_uuid": [
+                                "d9721f9c-4b5b-4147-b10c-d8e5a6b11c6c"
+                            ]
+                        }
+                    }
+                ],
+                "description": "Example results of the image processing for videos of different wavelenghts and light dose.",
+                "analysis_method": [
+                    {
+                        "attribute": [],
+                        "protocol_description": "PhotoFiTT: Phototoxicity Fitness Time Trial",
+                        "features_analysed": "PhotoFiTT is an integrated framework combining a standardised experimental protocol with advanced image analysis to quantify light-induced cellular stress in label-free settings. It leverages machine learning and cell cycle dynamics to analyse mitotic timing, cell size changes, and overall cellular activity in response to controlled light exposure."
+                    }
+                ],
+                "correlation_method": [],
+                "example_image_uri": [],
+                "submitted_in_study_uuid": "0476bac0-b2fb-4816-90fb-5e09f622a4df",
+                "acquisition_process": [
+                    {
+                        "default_open": true,
+                        "title_id": "Chinese Hamster Ovary (CHO) cells image data (synchronised and unsynchronised populations)",
+                        "uuid": "c1fbc0c9-118a-45cf-904e-bee3352583b9",
+                        "version": 0,
+                        "model": {
+                            "type_name": "ImageAcquisitionProtocol",
+                            "version": 2
+                        },
+                        "attribute": [],
+                        "protocol_description": "The images were captured using a x20 objective lens. Exposure times were adjusted based on the experimental conditions for different fields of view within the same well (100 ms for 0.6 J/cm^2, 1 s for 6 J/cm^2, and 10 s for 60 J/cm^2). The power used for each wavelength line was as follows: 84.9 \u00b1 2.8 mW for 385 nm, 85.2 \u00b1 0.8 mW for 475 nm, and 70.6 \u00b1 0.4 mW for 630 nm (mean \u00b1 standard deviation).\n\nImages were taken every 4 minutes for a duration of 8 hours, with a pixel size of 0.55 \u00b5m x 0.55 \u00b5m. Temperature and CO2 levels were consistently maintained at 37\u00baC and 5%, respectively, throughout the exposure to excitation light and imaging periods. For fixed samples, cells were imaged using the same objective lens in multichannel acquisition mode. Brightfield images were captured alongside fluorescent images using the 385 nm filter to obtain paired brightfield and Hoechst-stained images.",
+                        "imaging_instrument_description": "Widefield microscope Axio Observer 7 (Zeiss) equipped with a Colibri 7 LED illumination (Zeiss), a 20x/0.8 Plan Apochromat objective (Zeiss) and a Prime 95B sCMOS camera (Teledyne Photometrics).",
+                        "fbbi_id": [],
+                        "imaging_method_name": [
+                            "bright-field microscopy",
+                            "fluorescence microscopy"
+                        ]
+                    }
+                ],
+                "specimen_imaging_preparation_protocol": [
+                    {
+                        "default_open": true,
+                        "title_id": "CHO cells ",
+                        "uuid": "f72798f9-35a2-49ba-a8d4-7d56b8cca922",
+                        "version": 0,
+                        "model": {
+                            "type_name": "SpecimenImagingPreparationProtocol",
+                            "version": 2
+                        },
+                        "attribute": [],
+                        "protocol_description": "Cell cultures and synchronization:\nCells were seeded on an 8-well chambered cover glass (Cellvis) at a density of 6 x 10^4 cells per well. For cell synchronisation, cells were incubated with 10 nM RO-3306 (Sigma-Aldrich) to inhibit CDK1 activity for 16-18 hours. Unsynchronised cells were seeded using the same protocol and allowed to grow for the same duration.\n\nCell culture for paired fluorescent and brightfield images:\nCells were cultured on an 8-well chambered cover glass (Cellvis) until they reached 60% confluency. They were then fixed with a 4% paraformaldehyde solution (Electron Microscopy Sciences) for 10 minutes and washed three times with PBS. Following this, the samples were incubated with a 0.1 \u00b5g/ml Hoechst 33342 solution for 10 minutes in the dark.",
+                        "signal_channel_information": []
+                    }
+                ],
+                "biological_entity": [
+                    {
+                        "default_open": true,
+                        "title_id": "Live cell imaging of CHO cells",
+                        "uuid": "d9721f9c-4b5b-4147-b10c-d8e5a6b11c6c",
+                        "version": 0,
+                        "model": {
+                            "type_name": "BioSample",
+                            "version": 3
+                        },
+                        "attribute": [],
+                        "organism_classification": [
+                            {
+                                "attribute": [],
+                                "common_name": "Chinese Hamster",
+                                "scientific_name": "Cricetulus griseus",
+                                "ncbi_id": null
+                            }
+                        ],
+                        "biological_entity_description": "Chinese Hamster Ovary (CHO) cells ",
+                        "experimental_variable_description": [
+                            "Light exposure"
+                        ],
+                        "extrinsic_variable_description": [
+                            "Cell cultures were synchronised using RO-3306"
+                        ],
+                        "intrinsic_variable_description": [],
+                        "growth_protocol_uuid": "ce94cc5b-1702-429f-b4a3-ae74c9bd9992",
+                        "growth_protocol": {
+                            "title_id": "CHO cells ",
+                            "uuid": "ce94cc5b-1702-429f-b4a3-ae74c9bd9992",
+                            "version": 0,
+                            "model": {
+                                "type_name": "Protocol",
+                                "version": 2
+                            },
+                            "attribute": [],
+                            "protocol_description": "CHO (ATCC CCL-61) cells were cultured in DMEM (Gibco) supplemented with either 42 uM gentamicin (Gibco) or 1% penicillin/streptomycin (Gibco) and 10% foetal bovine serum (FBS; Gibco). All cells were grown at 37 \u00baC in a 5% CO2 humidified incubator."
+                        }
+                    }
+                ],
+                "annotation_process": [],
+                "other_creation_process": [],
+                "image": [],
+                "file_count": 55,
+                "image_count": 0,
+                "file_type_aggregation": [
+                    ".csv",
+                    ".png",
+                    ".tif"
+                ]
+            },
+            {
+                "title_id": "PhotoFiTT published results data - detected mitotic events and cell activity",
+                "uuid": "9728f1af-fd0e-43f9-b55a-5753a41b2e99",
+                "version": 0,
+                "model": {
+                    "type_name": "Dataset",
+                    "version": 1
+                },
+                "attribute": [
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "associations",
+                        "value": {
+                            "associations": [
+                                {
+                                    "image_analysis": "PhotoFiTT: Phototoxicity Fitness Time Trial",
+                                    "image_correlation": null,
+                                    "biosample": "Live cell imaging of CHO cells",
+                                    "image_acquisition": "Chinese Hamster Ovary (CHO) cells image data (synchronised and unsynchronised populations)",
+                                    "specimen": "CHO cells "
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "image_acquisition_protocol_uuid",
+                        "value": {
+                            "image_acquisition_protocol_uuid": [
+                                "c1fbc0c9-118a-45cf-904e-bee3352583b9"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "specimen_imaging_preparation_protocol_uuid",
+                        "value": {
+                            "specimen_imaging_preparation_protocol_uuid": [
+                                "f72798f9-35a2-49ba-a8d4-7d56b8cca922"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "bio_sample_uuid",
+                        "value": {
+                            "bio_sample_uuid": [
+                                "d9721f9c-4b5b-4147-b10c-d8e5a6b11c6c"
+                            ]
+                        }
+                    }
+                ],
+                "description": "These csv files contain exactly the same data used to generate the published results. This data can be used in the example notebooks of https://github.com/HenriquesLab/PhotoFiTT",
+                "analysis_method": [
+                    {
+                        "attribute": [],
+                        "protocol_description": "PhotoFiTT: Phototoxicity Fitness Time Trial",
+                        "features_analysed": "PhotoFiTT is an integrated framework combining a standardised experimental protocol with advanced image analysis to quantify light-induced cellular stress in label-free settings. It leverages machine learning and cell cycle dynamics to analyse mitotic timing, cell size changes, and overall cellular activity in response to controlled light exposure."
+                    }
+                ],
+                "correlation_method": [],
+                "example_image_uri": [],
+                "submitted_in_study_uuid": "0476bac0-b2fb-4816-90fb-5e09f622a4df",
+                "acquisition_process": [
+                    {
+                        "default_open": false,
+                        "title_id": "Chinese Hamster Ovary (CHO) cells image data (synchronised and unsynchronised populations)",
+                        "uuid": "c1fbc0c9-118a-45cf-904e-bee3352583b9",
+                        "version": 0,
+                        "model": {
+                            "type_name": "ImageAcquisitionProtocol",
+                            "version": 2
+                        },
+                        "attribute": [],
+                        "protocol_description": "The images were captured using a x20 objective lens. Exposure times were adjusted based on the experimental conditions for different fields of view within the same well (100 ms for 0.6 J/cm^2, 1 s for 6 J/cm^2, and 10 s for 60 J/cm^2). The power used for each wavelength line was as follows: 84.9 \u00b1 2.8 mW for 385 nm, 85.2 \u00b1 0.8 mW for 475 nm, and 70.6 \u00b1 0.4 mW for 630 nm (mean \u00b1 standard deviation).\n\nImages were taken every 4 minutes for a duration of 8 hours, with a pixel size of 0.55 \u00b5m x 0.55 \u00b5m. Temperature and CO2 levels were consistently maintained at 37\u00baC and 5%, respectively, throughout the exposure to excitation light and imaging periods. For fixed samples, cells were imaged using the same objective lens in multichannel acquisition mode. Brightfield images were captured alongside fluorescent images using the 385 nm filter to obtain paired brightfield and Hoechst-stained images.",
+                        "imaging_instrument_description": "Widefield microscope Axio Observer 7 (Zeiss) equipped with a Colibri 7 LED illumination (Zeiss), a 20x/0.8 Plan Apochromat objective (Zeiss) and a Prime 95B sCMOS camera (Teledyne Photometrics).",
+                        "fbbi_id": [],
+                        "imaging_method_name": [
+                            "bright-field microscopy",
+                            "fluorescence microscopy"
+                        ]
+                    }
+                ],
+                "specimen_imaging_preparation_protocol": [
+                    {
+                        "default_open": false,
+                        "title_id": "CHO cells ",
+                        "uuid": "f72798f9-35a2-49ba-a8d4-7d56b8cca922",
+                        "version": 0,
+                        "model": {
+                            "type_name": "SpecimenImagingPreparationProtocol",
+                            "version": 2
+                        },
+                        "attribute": [],
+                        "protocol_description": "Cell cultures and synchronization:\nCells were seeded on an 8-well chambered cover glass (Cellvis) at a density of 6 x 10^4 cells per well. For cell synchronisation, cells were incubated with 10 nM RO-3306 (Sigma-Aldrich) to inhibit CDK1 activity for 16-18 hours. Unsynchronised cells were seeded using the same protocol and allowed to grow for the same duration.\n\nCell culture for paired fluorescent and brightfield images:\nCells were cultured on an 8-well chambered cover glass (Cellvis) until they reached 60% confluency. They were then fixed with a 4% paraformaldehyde solution (Electron Microscopy Sciences) for 10 minutes and washed three times with PBS. Following this, the samples were incubated with a 0.1 \u00b5g/ml Hoechst 33342 solution for 10 minutes in the dark.",
+                        "signal_channel_information": []
+                    }
+                ],
+                "biological_entity": [
+                    {
+                        "default_open": false,
+                        "title_id": "Live cell imaging of CHO cells",
+                        "uuid": "d9721f9c-4b5b-4147-b10c-d8e5a6b11c6c",
+                        "version": 0,
+                        "model": {
+                            "type_name": "BioSample",
+                            "version": 3
+                        },
+                        "attribute": [],
+                        "organism_classification": [
+                            {
+                                "attribute": [],
+                                "common_name": "Chinese Hamster",
+                                "scientific_name": "Cricetulus griseus",
+                                "ncbi_id": null
+                            }
+                        ],
+                        "biological_entity_description": "Chinese Hamster Ovary (CHO) cells ",
+                        "experimental_variable_description": [
+                            "Light exposure"
+                        ],
+                        "extrinsic_variable_description": [
+                            "Cell cultures were synchronised using RO-3306"
+                        ],
+                        "intrinsic_variable_description": [],
+                        "growth_protocol_uuid": "ce94cc5b-1702-429f-b4a3-ae74c9bd9992",
+                        "growth_protocol": {
+                            "title_id": "CHO cells ",
+                            "uuid": "ce94cc5b-1702-429f-b4a3-ae74c9bd9992",
+                            "version": 0,
+                            "model": {
+                                "type_name": "Protocol",
+                                "version": 2
+                            },
+                            "attribute": [],
+                            "protocol_description": "CHO (ATCC CCL-61) cells were cultured in DMEM (Gibco) supplemented with either 42 uM gentamicin (Gibco) or 1% penicillin/streptomycin (Gibco) and 10% foetal bovine serum (FBS; Gibco). All cells were grown at 37 \u00baC in a 5% CO2 humidified incubator."
+                        }
+                    }
+                ],
+                "annotation_process": [],
+                "other_creation_process": [],
+                "image": [],
+                "file_count": 2,
+                "image_count": 0,
+                "file_type_aggregation": [
+                    ".csv"
+                ]
+            },
+            {
+                "title_id": "PhotoFiTT CHO cell mitotic rounding annotation - brightfield",
+                "uuid": "9b592df8-d98f-47e8-91c1-72d800da5c00",
+                "version": 0,
+                "model": {
+                    "type_name": "Dataset",
+                    "version": 1
+                },
+                "attribute": [
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "annotation_method_uuid",
+                        "value": {
+                            "annotation_method_uuid": [
+                                "91b7a625-2b17-4b72-ae59-6d30b48010f9"
+                            ]
+                        }
+                    }
+                ],
+                "description": "Manual annotation of cell mitotic rounding of synchronised Chinese Hamster Ovary (CHO) cells image data at the G2/M boundary using R0-3306. The data is already divided into training and test and paired with the raw images in the Study Components",
+                "analysis_method": [],
+                "correlation_method": [],
+                "example_image_uri": [],
+                "submitted_in_study_uuid": "0476bac0-b2fb-4816-90fb-5e09f622a4df",
+                "acquisition_process": [],
+                "specimen_imaging_preparation_protocol": [],
+                "biological_entity": [],
+                "annotation_process": [
+                    {
+                        "default_open": true,
+                        "title_id": "PhotoFiTT CHO cell mitotic rounding annotation - brightfield",
+                        "uuid": "91b7a625-2b17-4b72-ae59-6d30b48010f9",
+                        "version": 0,
+                        "model": {
+                            "type_name": "AnnotationMethod",
+                            "version": 3
+                        },
+                        "attribute": [],
+                        "protocol_description": "expertly annotated",
+                        "annotation_criteria": "Cells that went into mitotic rounding were annotated. This included both mother and daughter cells. Cells in the middle of cell division that were not rounded were not annotated.",
+                        "annotation_coverage": "All data that satisfied the Annotation Criteria were annotated.",
+                        "transformation_description": null,
+                        "spatial_information": null,
+                        "method_type": [
+                            "segmentation_mask"
+                        ],
+                        "annotation_source_indicator": null
+                    }
+                ],
+                "other_creation_process": [],
+                "image": [],
+                "file_count": 105,
+                "image_count": 0,
+                "file_type_aggregation": [
+                    ".tif"
+                ]
+            },
+            {
+                "title_id": "Colocalised CHO cell imaging for virtual staining",
+                "uuid": "c29d9f76-73fa-4db8-867d-89be26be8d48",
+                "version": 0,
+                "model": {
+                    "type_name": "Dataset",
+                    "version": 1
+                },
+                "attribute": [
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "associations",
+                        "value": {
+                            "associations": [
+                                {
+                                    "image_analysis": "PhotoFiTT: Phototoxicity Fitness Time Trial",
+                                    "image_correlation": null,
+                                    "biosample": "Live cell imaging of CHO cells",
+                                    "image_acquisition": "Chinese Hamster Ovary (CHO) cells image data (synchronised and unsynchronised populations)",
+                                    "specimen": "CHO cells "
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "image_acquisition_protocol_uuid",
+                        "value": {
+                            "image_acquisition_protocol_uuid": [
+                                "c1fbc0c9-118a-45cf-904e-bee3352583b9"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "specimen_imaging_preparation_protocol_uuid",
+                        "value": {
+                            "specimen_imaging_preparation_protocol_uuid": [
+                                "f72798f9-35a2-49ba-a8d4-7d56b8cca922"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "bio_sample_uuid",
+                        "value": {
+                            "bio_sample_uuid": [
+                                "d9721f9c-4b5b-4147-b10c-d8e5a6b11c6c"
+                            ]
+                        }
+                    }
+                ],
+                "description": "Colocalised microscopy images for annotations: Fixed Chinese Hamster Ovary (CHO) cells image data colocalising brightfield and fluorescence widefield microscopy with nuclear (Hoechst) and cell membrane (WGA) staining imaged at x20. It includes control (healthy) cells and cells that were previously illuminated with 385 nm (UV), 475 nm and 630 nm wavelengths. The data was originally acquired in 3D and only the focused planes were chosen to be part of the dataset. Therefore, there are some fields of view repeated with different planes of focus. This can be identified in the naming of the files. The data is already divided into training and test considering independent fields of view. It includes the raw images and preprocessed brightfield images. The data was acquired using the widefield microscope Axio Observer 7 (Zeiss) equipped with a Colibri 7 LED illumination (Zeiss), a 20x/0.8 Plan Apochromat objective (Zeiss) and a Prime 95B sCMOS camera (Teledyne Photometrics).",
+                "analysis_method": [
+                    {
+                        "attribute": [],
+                        "protocol_description": "PhotoFiTT: Phototoxicity Fitness Time Trial",
+                        "features_analysed": "PhotoFiTT is an integrated framework combining a standardised experimental protocol with advanced image analysis to quantify light-induced cellular stress in label-free settings. It leverages machine learning and cell cycle dynamics to analyse mitotic timing, cell size changes, and overall cellular activity in response to controlled light exposure."
+                    }
+                ],
+                "correlation_method": [],
+                "example_image_uri": [],
+                "submitted_in_study_uuid": "0476bac0-b2fb-4816-90fb-5e09f622a4df",
+                "acquisition_process": [
+                    {
+                        "default_open": false,
+                        "title_id": "Chinese Hamster Ovary (CHO) cells image data (synchronised and unsynchronised populations)",
+                        "uuid": "c1fbc0c9-118a-45cf-904e-bee3352583b9",
+                        "version": 0,
+                        "model": {
+                            "type_name": "ImageAcquisitionProtocol",
+                            "version": 2
+                        },
+                        "attribute": [],
+                        "protocol_description": "The images were captured using a x20 objective lens. Exposure times were adjusted based on the experimental conditions for different fields of view within the same well (100 ms for 0.6 J/cm^2, 1 s for 6 J/cm^2, and 10 s for 60 J/cm^2). The power used for each wavelength line was as follows: 84.9 \u00b1 2.8 mW for 385 nm, 85.2 \u00b1 0.8 mW for 475 nm, and 70.6 \u00b1 0.4 mW for 630 nm (mean \u00b1 standard deviation).\n\nImages were taken every 4 minutes for a duration of 8 hours, with a pixel size of 0.55 \u00b5m x 0.55 \u00b5m. Temperature and CO2 levels were consistently maintained at 37\u00baC and 5%, respectively, throughout the exposure to excitation light and imaging periods. For fixed samples, cells were imaged using the same objective lens in multichannel acquisition mode. Brightfield images were captured alongside fluorescent images using the 385 nm filter to obtain paired brightfield and Hoechst-stained images.",
+                        "imaging_instrument_description": "Widefield microscope Axio Observer 7 (Zeiss) equipped with a Colibri 7 LED illumination (Zeiss), a 20x/0.8 Plan Apochromat objective (Zeiss) and a Prime 95B sCMOS camera (Teledyne Photometrics).",
+                        "fbbi_id": [],
+                        "imaging_method_name": [
+                            "bright-field microscopy",
+                            "fluorescence microscopy"
+                        ]
+                    }
+                ],
+                "specimen_imaging_preparation_protocol": [
+                    {
+                        "default_open": false,
+                        "title_id": "CHO cells ",
+                        "uuid": "f72798f9-35a2-49ba-a8d4-7d56b8cca922",
+                        "version": 0,
+                        "model": {
+                            "type_name": "SpecimenImagingPreparationProtocol",
+                            "version": 2
+                        },
+                        "attribute": [],
+                        "protocol_description": "Cell cultures and synchronization:\nCells were seeded on an 8-well chambered cover glass (Cellvis) at a density of 6 x 10^4 cells per well. For cell synchronisation, cells were incubated with 10 nM RO-3306 (Sigma-Aldrich) to inhibit CDK1 activity for 16-18 hours. Unsynchronised cells were seeded using the same protocol and allowed to grow for the same duration.\n\nCell culture for paired fluorescent and brightfield images:\nCells were cultured on an 8-well chambered cover glass (Cellvis) until they reached 60% confluency. They were then fixed with a 4% paraformaldehyde solution (Electron Microscopy Sciences) for 10 minutes and washed three times with PBS. Following this, the samples were incubated with a 0.1 \u00b5g/ml Hoechst 33342 solution for 10 minutes in the dark.",
+                        "signal_channel_information": []
+                    }
+                ],
+                "biological_entity": [
+                    {
+                        "default_open": false,
+                        "title_id": "Live cell imaging of CHO cells",
+                        "uuid": "d9721f9c-4b5b-4147-b10c-d8e5a6b11c6c",
+                        "version": 0,
+                        "model": {
+                            "type_name": "BioSample",
+                            "version": 3
+                        },
+                        "attribute": [],
+                        "organism_classification": [
+                            {
+                                "attribute": [],
+                                "common_name": "Chinese Hamster",
+                                "scientific_name": "Cricetulus griseus",
+                                "ncbi_id": null
+                            }
+                        ],
+                        "biological_entity_description": "Chinese Hamster Ovary (CHO) cells ",
+                        "experimental_variable_description": [
+                            "Light exposure"
+                        ],
+                        "extrinsic_variable_description": [
+                            "Cell cultures were synchronised using RO-3306"
+                        ],
+                        "intrinsic_variable_description": [],
+                        "growth_protocol_uuid": "ce94cc5b-1702-429f-b4a3-ae74c9bd9992",
+                        "growth_protocol": {
+                            "title_id": "CHO cells ",
+                            "uuid": "ce94cc5b-1702-429f-b4a3-ae74c9bd9992",
+                            "version": 0,
+                            "model": {
+                                "type_name": "Protocol",
+                                "version": 2
+                            },
+                            "attribute": [],
+                            "protocol_description": "CHO (ATCC CCL-61) cells were cultured in DMEM (Gibco) supplemented with either 42 uM gentamicin (Gibco) or 1% penicillin/streptomycin (Gibco) and 10% foetal bovine serum (FBS; Gibco). All cells were grown at 37 \u00baC in a 5% CO2 humidified incubator."
+                        }
+                    }
+                ],
+                "annotation_process": [],
+                "other_creation_process": [],
+                "image": [],
+                "file_count": 8,
+                "image_count": 0,
+                "file_type_aggregation": [
+                    ".zip"
+                ]
+            },
+            {
+                "title_id": "CHO cell mitotic rounding raw brightfield microscopy images (for annotations)",
+                "uuid": "d12a9e60-ad30-4ffe-b993-a3f27b72e38b",
+                "version": 0,
                 "model": {
                     "type_name": "Dataset",
                     "version": 1
@@ -72,44 +768,9 @@
                                 {
                                     "image_analysis": null,
                                     "image_correlation": null,
-                                    "biosample": "Healthy synovial tissue",
-                                    "image_acquisition": "Confocal Microscopy ",
-                                    "specimen": "CD68 & CLEC10A"
-                                },
-                                {
-                                    "image_analysis": null,
-                                    "image_correlation": null,
-                                    "biosample": "Synovial tissue of Active rheumatoid arthritis",
-                                    "image_acquisition": "Confocal Microscopy ",
-                                    "specimen": "CD68 & CLEC10A"
-                                },
-                                {
-                                    "image_analysis": null,
-                                    "image_correlation": null,
-                                    "biosample": "Synovial tissue of rheumatoid arthritis in remission",
-                                    "image_acquisition": "Confocal Microscopy ",
-                                    "specimen": "CD68 & CLEC10A"
-                                },
-                                {
-                                    "image_analysis": null,
-                                    "image_correlation": null,
-                                    "biosample": "Healthy synovial tissue",
-                                    "image_acquisition": "Confocal Microscopy ",
-                                    "specimen": "CD1c & AXL"
-                                },
-                                {
-                                    "image_analysis": null,
-                                    "image_correlation": null,
-                                    "biosample": "Synovial tissue of Active rheumatoid arthritis",
-                                    "image_acquisition": "Confocal Microscopy ",
-                                    "specimen": "CD1c & LAMP3"
-                                },
-                                {
-                                    "image_analysis": null,
-                                    "image_correlation": null,
-                                    "biosample": "Synovial tissue of Active rheumatoid arthritis",
-                                    "image_acquisition": "CosMx",
-                                    "specimen": "CosMx staining"
+                                    "biosample": "Live cell imaging of CHO cells",
+                                    "image_acquisition": "Chinese Hamster Ovary (CHO) cells image data (synchronised and unsynchronised populations)",
+                                    "specimen": "CHO cells "
                                 }
                             ]
                         }
@@ -119,8 +780,7 @@
                         "name": "image_acquisition_protocol_uuid",
                         "value": {
                             "image_acquisition_protocol_uuid": [
-                                "3adb7c29-4c3f-4475-9731-5a79a993c398",
-                                "3d4b245e-a629-42e0-a101-853663511f82"
+                                "c1fbc0c9-118a-45cf-904e-bee3352583b9"
                             ]
                         }
                     },
@@ -129,10 +789,7 @@
                         "name": "specimen_imaging_preparation_protocol_uuid",
                         "value": {
                             "specimen_imaging_preparation_protocol_uuid": [
-                                "ebc9e74f-241d-4e0d-9a1d-43d9b485d3d0",
-                                "e1bd3be7-4bde-464d-abdf-f4081d65e1af",
-                                "be32ebed-8815-4005-9c60-0ae210adfc66",
-                                "493173e7-c584-49ae-a223-a0ff801f2089"
+                                "f72798f9-35a2-49ba-a8d4-7d56b8cca922"
                             ]
                         }
                     },
@@ -141,116 +798,56 @@
                         "name": "bio_sample_uuid",
                         "value": {
                             "bio_sample_uuid": [
-                                "65c35fed-f997-4e6d-8724-d2d5180a1e96",
-                                "557ef897-1036-4884-8bfb-081be2096a6e",
-                                "190a45ce-3932-4fdf-803d-a8a1e21986aa"
+                                "d9721f9c-4b5b-4147-b10c-d8e5a6b11c6c"
                             ]
                         }
                     }
                 ],
-                "description": "immunofluorescent staining in Synovial tissue  of  Healthy, active  Rheumatoid arthritis and and Rheumatoid arthritis in remission. ",
+                "description": "Raw images of synchronised Chinese Hamster Ovary (CHO) cells image data at the G2/M boundary using R0-3306 for the annotations. The data is already divided into training and test. The data was acquired using the widefield microscope Axio Observer 7 (Zeiss) equipped with a Colibri 7 LED illumination (Zeiss), a 20x/0.8 Plan Apochromat objective (Zeiss) and a Prime 95B sCMOS camera (Teledyne Photometrics).",
                 "analysis_method": [],
                 "correlation_method": [],
-                "example_image_uri": [
-                    "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1388/2563e244-377d-4d80-b833-868a59dfb903/8a3e9dfb-9406-48df-90e9-2d0872050352.png"
-                ],
-                "submitted_in_study_uuid": "bc04a972-696b-4829-92e5-be9041ff2e0f",
+                "example_image_uri": [],
+                "submitted_in_study_uuid": "0476bac0-b2fb-4816-90fb-5e09f622a4df",
                 "acquisition_process": [
                     {
-                        "default_open": true,
-                        "title_id": "Confocal Microscopy ",
-                        "uuid": "3adb7c29-4c3f-4475-9731-5a79a993c398",
+                        "default_open": false,
+                        "title_id": "Chinese Hamster Ovary (CHO) cells image data (synchronised and unsynchronised populations)",
+                        "uuid": "c1fbc0c9-118a-45cf-904e-bee3352583b9",
                         "version": 0,
                         "model": {
                             "type_name": "ImageAcquisitionProtocol",
                             "version": 2
                         },
                         "attribute": [],
-                        "protocol_description": "CD68 (red) & CLEC10A ( Green)\nCD1c (Green) & LAMP3 (Red)\nCD1c (Green ) & AXL (Red)\n",
-                        "imaging_instrument_description": "Zeiss LSM 880 confocal microscope, using either a water immersion LD C-Apochromat \u00d740/aperture1aperture1.3, or an oil immersion Plan-Apochromat \u00d763/1.4 objectives, and images acquired using Zen Black software (Zeiss). ",
+                        "protocol_description": "The images were captured using a x20 objective lens. Exposure times were adjusted based on the experimental conditions for different fields of view within the same well (100 ms for 0.6 J/cm^2, 1 s for 6 J/cm^2, and 10 s for 60 J/cm^2). The power used for each wavelength line was as follows: 84.9 \u00b1 2.8 mW for 385 nm, 85.2 \u00b1 0.8 mW for 475 nm, and 70.6 \u00b1 0.4 mW for 630 nm (mean \u00b1 standard deviation).\n\nImages were taken every 4 minutes for a duration of 8 hours, with a pixel size of 0.55 \u00b5m x 0.55 \u00b5m. Temperature and CO2 levels were consistently maintained at 37\u00baC and 5%, respectively, throughout the exposure to excitation light and imaging periods. For fixed samples, cells were imaged using the same objective lens in multichannel acquisition mode. Brightfield images were captured alongside fluorescent images using the 385 nm filter to obtain paired brightfield and Hoechst-stained images.",
+                        "imaging_instrument_description": "Widefield microscope Axio Observer 7 (Zeiss) equipped with a Colibri 7 LED illumination (Zeiss), a 20x/0.8 Plan Apochromat objective (Zeiss) and a Prime 95B sCMOS camera (Teledyne Photometrics).",
                         "fbbi_id": [],
                         "imaging_method_name": [
-                            "confocal microscopy"
-                        ]
-                    },
-                    {
-                        "default_open": true,
-                        "title_id": "CosMx",
-                        "uuid": "3d4b245e-a629-42e0-a101-853663511f82",
-                        "version": 0,
-                        "model": {
-                            "type_name": "ImageAcquisitionProtocol",
-                            "version": 2
-                        },
-                        "attribute": [],
-                        "protocol_description": "membrane 488nm\npanCK 532nm\nCD45 594nm \nCD3 647nm \nDAPI UV",
-                        "imaging_instrument_description": "CosMx Spatial Molecular Imager",
-                        "fbbi_id": [],
-                        "imaging_method_name": [
-                            "single cell",
-                            "spatial transcriptomic"
+                            "bright-field microscopy",
+                            "fluorescence microscopy"
                         ]
                     }
                 ],
                 "specimen_imaging_preparation_protocol": [
                     {
-                        "default_open": true,
-                        "title_id": "CD68 & CLEC10A",
-                        "uuid": "ebc9e74f-241d-4e0d-9a1d-43d9b485d3d0",
+                        "default_open": false,
+                        "title_id": "CHO cells ",
+                        "uuid": "f72798f9-35a2-49ba-a8d4-7d56b8cca922",
                         "version": 0,
                         "model": {
                             "type_name": "SpecimenImagingPreparationProtocol",
                             "version": 2
                         },
                         "attribute": [],
-                        "protocol_description": "Formalin-fixed paraffin-embedded 5\u03bcm-thick synovial tissue sections were stained with antibodies directed against markers  CD68 (Red) or CLEC10A (Green) or in combination, or with appropriate isotope control antibodies following previously published protocol.",
-                        "signal_channel_information": []
-                    },
-                    {
-                        "default_open": true,
-                        "title_id": "CD1c & AXL",
-                        "uuid": "e1bd3be7-4bde-464d-abdf-f4081d65e1af",
-                        "version": 0,
-                        "model": {
-                            "type_name": "SpecimenImagingPreparationProtocol",
-                            "version": 2
-                        },
-                        "attribute": [],
-                        "protocol_description": "Formalin-fixed paraffin-embedded 5\u03bcm-thick synovial tissue sections were stained with antibodies directed against markers  AXL (Red) or CD1c (Green) or in combination, or with appropriate isotope control antibodies following previously published protocol.",
-                        "signal_channel_information": []
-                    },
-                    {
-                        "default_open": true,
-                        "title_id": "CD1c & LAMP3",
-                        "uuid": "be32ebed-8815-4005-9c60-0ae210adfc66",
-                        "version": 0,
-                        "model": {
-                            "type_name": "SpecimenImagingPreparationProtocol",
-                            "version": 2
-                        },
-                        "attribute": [],
-                        "protocol_description": "Formalin-fixed paraffin-embedded 5\u03bcm-thick synovial tissue sections were stained with antibodies directed against markers  LAMP3 (Red) or CD1c (Green) or in combination, or with appropriate isotope control antibodies following previously published protocol.",
-                        "signal_channel_information": []
-                    },
-                    {
-                        "default_open": true,
-                        "title_id": "CosMx staining",
-                        "uuid": "493173e7-c584-49ae-a223-a0ff801f2089",
-                        "version": 0,
-                        "model": {
-                            "type_name": "SpecimenImagingPreparationProtocol",
-                            "version": 2
-                        },
-                        "attribute": [],
-                        "protocol_description": "We used the Nanostring CosMx Spatial Molecular Imaging platform to measure expression of 960 genes discriminating transcriptional profiles and spatial localization of 127,199 cells (69 fields-of-view (FOV)) in paraffin-embedded synovial biopsies from 3 active naive to treatment and 3 RA patients in sustained clinical and imaging remission (~11 FOV per donor). Slides were stained with DAPI, CD45, CD3, PanCK, CD298/b2m (membrane)",
+                        "protocol_description": "Cell cultures and synchronization:\nCells were seeded on an 8-well chambered cover glass (Cellvis) at a density of 6 x 10^4 cells per well. For cell synchronisation, cells were incubated with 10 nM RO-3306 (Sigma-Aldrich) to inhibit CDK1 activity for 16-18 hours. Unsynchronised cells were seeded using the same protocol and allowed to grow for the same duration.\n\nCell culture for paired fluorescent and brightfield images:\nCells were cultured on an 8-well chambered cover glass (Cellvis) until they reached 60% confluency. They were then fixed with a 4% paraformaldehyde solution (Electron Microscopy Sciences) for 10 minutes and washed three times with PBS. Following this, the samples were incubated with a 0.1 \u00b5g/ml Hoechst 33342 solution for 10 minutes in the dark.",
                         "signal_channel_information": []
                     }
                 ],
                 "biological_entity": [
                     {
-                        "default_open": true,
-                        "title_id": "Healthy synovial tissue",
-                        "uuid": "65c35fed-f997-4e6d-8724-d2d5180a1e96",
+                        "default_open": false,
+                        "title_id": "Live cell imaging of CHO cells",
+                        "uuid": "d9721f9c-4b5b-4147-b10c-d8e5a6b11c6c",
                         "version": 0,
                         "model": {
                             "type_name": "BioSample",
@@ -260,187 +857,239 @@
                         "organism_classification": [
                             {
                                 "attribute": [],
-                                "common_name": "human",
-                                "scientific_name": "Homo sapiens",
+                                "common_name": "Chinese Hamster",
+                                "scientific_name": "Cricetulus griseus",
                                 "ncbi_id": null
                             }
                         ],
-                        "biological_entity_description": "Synovial tissue of Healthy donor",
-                        "experimental_variable_description": [],
-                        "extrinsic_variable_description": [],
-                        "intrinsic_variable_description": [],
-                        "growth_protocol_uuid": null,
-                        "growth_protocol": null
-                    },
-                    {
-                        "default_open": true,
-                        "title_id": "Synovial tissue of Active rheumatoid arthritis",
-                        "uuid": "557ef897-1036-4884-8bfb-081be2096a6e",
-                        "version": 0,
-                        "model": {
-                            "type_name": "BioSample",
-                            "version": 3
-                        },
-                        "attribute": [],
-                        "organism_classification": [
-                            {
-                                "attribute": [],
-                                "common_name": "human",
-                                "scientific_name": "Homo sapiens",
-                                "ncbi_id": null
-                            }
+                        "biological_entity_description": "Chinese Hamster Ovary (CHO) cells ",
+                        "experimental_variable_description": [
+                            "Light exposure"
                         ],
-                        "biological_entity_description": "Synovial tissue of Active rheumatoid arthritis",
-                        "experimental_variable_description": [],
-                        "extrinsic_variable_description": [],
-                        "intrinsic_variable_description": [],
-                        "growth_protocol_uuid": null,
-                        "growth_protocol": null
-                    },
-                    {
-                        "default_open": true,
-                        "title_id": "Synovial tissue of rheumatoid arthritis in remission",
-                        "uuid": "190a45ce-3932-4fdf-803d-a8a1e21986aa",
-                        "version": 0,
-                        "model": {
-                            "type_name": "BioSample",
-                            "version": 3
-                        },
-                        "attribute": [],
-                        "organism_classification": [
-                            {
-                                "attribute": [],
-                                "common_name": "human",
-                                "scientific_name": "Homo sapiens",
-                                "ncbi_id": null
-                            }
+                        "extrinsic_variable_description": [
+                            "Cell cultures were synchronised using RO-3306"
                         ],
-                        "biological_entity_description": "Synovial tissue of rheumatoid arthritis in remission",
-                        "experimental_variable_description": [],
-                        "extrinsic_variable_description": [],
                         "intrinsic_variable_description": [],
-                        "growth_protocol_uuid": null,
-                        "growth_protocol": null
+                        "growth_protocol_uuid": "ce94cc5b-1702-429f-b4a3-ae74c9bd9992",
+                        "growth_protocol": {
+                            "title_id": "CHO cells ",
+                            "uuid": "ce94cc5b-1702-429f-b4a3-ae74c9bd9992",
+                            "version": 0,
+                            "model": {
+                                "type_name": "Protocol",
+                                "version": 2
+                            },
+                            "attribute": [],
+                            "protocol_description": "CHO (ATCC CCL-61) cells were cultured in DMEM (Gibco) supplemented with either 42 uM gentamicin (Gibco) or 1% penicillin/streptomycin (Gibco) and 10% foetal bovine serum (FBS; Gibco). All cells were grown at 37 \u00baC in a 5% CO2 humidified incubator."
+                        }
                     }
                 ],
                 "annotation_process": [],
                 "other_creation_process": [],
-                "image": [
+                "image": [],
+                "file_count": 105,
+                "image_count": 0,
+                "file_type_aggregation": [
+                    ".tif"
+                ]
+            },
+            {
+                "title_id": "Manual tracking annotation of mitotic rounding in CHO unsynchronised cells - brightfield",
+                "uuid": "d178421f-6827-424c-bde5-f63b8323717f",
+                "version": 0,
+                "model": {
+                    "type_name": "Dataset",
+                    "version": 1
+                },
+                "attribute": [
                     {
-                        "uuid": "2563e244-377d-4d80-b833-868a59dfb903",
+                        "provenance": "bia_ingest",
+                        "name": "annotation_method_uuid",
+                        "value": {
+                            "annotation_method_uuid": [
+                                "5a3b8933-54ec-4cae-9476-347daed39e15"
+                            ]
+                        }
+                    }
+                ],
+                "description": "Manually annotated unsynchronised Chinese Hamster Ovary (CHO) cells image data. Images were obtained using a x20 objective and paired with manual tracking masks. It includes control (healthy) cells and cells that were previously illuminated with 385 nm (UV), 475 nm and 630 nm wavelengths. The data is divided into the source files and the manual annotations. It includes the raw images in .czi format.",
+                "analysis_method": [],
+                "correlation_method": [],
+                "example_image_uri": [],
+                "submitted_in_study_uuid": "0476bac0-b2fb-4816-90fb-5e09f622a4df",
+                "acquisition_process": [],
+                "specimen_imaging_preparation_protocol": [],
+                "biological_entity": [],
+                "annotation_process": [
+                    {
+                        "default_open": true,
+                        "title_id": "Manual tracking annotation of mitotic rounding in CHO unsynchronised cells - brightfield",
+                        "uuid": "5a3b8933-54ec-4cae-9476-347daed39e15",
                         "version": 0,
                         "model": {
-                            "type_name": "Image",
-                            "version": 1
+                            "type_name": "AnnotationMethod",
+                            "version": 3
                         },
-                        "attribute": [
-                            {
-                                "provenance": "bia_conversion",
-                                "name": "attributes_from_file_reference_0ebb55bf-47d6-40f8-9b63-52cd78efadf5",
-                                "value": {
-                                    "attributes": {}
-                                }
-                            }
+                        "attribute": [],
+                        "protocol_description": "expertly annotated",
+                        "annotation_criteria": "only cells that went into mitotic rounding were annotated. If cell division was achieved, two annotations with the same label were done",
+                        "annotation_coverage": "All data that satisfied the Annotation Criteria were annotated.",
+                        "transformation_description": null,
+                        "spatial_information": null,
+                        "method_type": [
+                            "tracks"
                         ],
-                        "submission_dataset_uuid": "c5c0751b-f8a6-482b-92aa-d47628a00507",
-                        "creation_process_uuid": "3cd04676-5070-4f2e-a9c1-744ad201eae3",
-                        "original_file_reference_uuid": [
-                            "0ebb55bf-47d6-40f8-9b63-52cd78efadf5"
-                        ]
+                        "annotation_source_indicator": null
+                    }
+                ],
+                "other_creation_process": [],
+                "image": [],
+                "file_count": 37,
+                "image_count": 0,
+                "file_type_aggregation": [
+                    ".tif"
+                ]
+            },
+            {
+                "title_id": "CHO unsynchronised cells - raw brightfield images (for annotation)",
+                "uuid": "e5baaf93-ccae-48b8-8dfd-97a043217390",
+                "version": 0,
+                "model": {
+                    "type_name": "Dataset",
+                    "version": 1
+                },
+                "attribute": [
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "associations",
+                        "value": {
+                            "associations": [
+                                {
+                                    "image_analysis": null,
+                                    "image_correlation": null,
+                                    "biosample": "Live cell imaging of CHO cells",
+                                    "image_acquisition": "Chinese Hamster Ovary (CHO) cells image data (synchronised and unsynchronised populations)",
+                                    "specimen": "CHO cells "
+                                }
+                            ]
+                        }
                     },
                     {
-                        "uuid": "4371de21-efa4-4ae8-b050-a41c8d2e4348",
-                        "version": 0,
-                        "model": {
-                            "type_name": "Image",
-                            "version": 1
-                        },
-                        "attribute": [
-                            {
-                                "provenance": "bia_conversion",
-                                "name": "attributes_from_file_reference_69fa8889-8e08-429a-bebc-1ddf5ca14145",
-                                "value": {
-                                    "attributes": {}
-                                }
-                            }
-                        ],
-                        "submission_dataset_uuid": "c5c0751b-f8a6-482b-92aa-d47628a00507",
-                        "creation_process_uuid": "d2b21a24-f1e6-4d47-9f30-0d230bc0e9fe",
-                        "original_file_reference_uuid": [
-                            "69fa8889-8e08-429a-bebc-1ddf5ca14145"
-                        ]
+                        "provenance": "bia_ingest",
+                        "name": "image_acquisition_protocol_uuid",
+                        "value": {
+                            "image_acquisition_protocol_uuid": [
+                                "c1fbc0c9-118a-45cf-904e-bee3352583b9"
+                            ]
+                        }
                     },
                     {
-                        "uuid": "83fa4235-6e69-45d6-990e-6e640940d577",
-                        "version": 0,
-                        "model": {
-                            "type_name": "Image",
-                            "version": 1
-                        },
-                        "attribute": [
-                            {
-                                "provenance": "bia_conversion",
-                                "name": "attributes_from_file_reference_66b555b6-4e90-4b0e-a8c4-099668aead3d",
-                                "value": {
-                                    "attributes": {}
-                                }
-                            }
-                        ],
-                        "submission_dataset_uuid": "c5c0751b-f8a6-482b-92aa-d47628a00507",
-                        "creation_process_uuid": "0e87e3bd-e674-4792-93c6-baae3d155533",
-                        "original_file_reference_uuid": [
-                            "66b555b6-4e90-4b0e-a8c4-099668aead3d"
-                        ]
+                        "provenance": "bia_ingest",
+                        "name": "specimen_imaging_preparation_protocol_uuid",
+                        "value": {
+                            "specimen_imaging_preparation_protocol_uuid": [
+                                "f72798f9-35a2-49ba-a8d4-7d56b8cca922"
+                            ]
+                        }
                     },
                     {
-                        "uuid": "a7fd5a9d-3e7d-4362-95b2-72936756e033",
-                        "version": 0,
-                        "model": {
-                            "type_name": "Image",
-                            "version": 1
-                        },
-                        "attribute": [
-                            {
-                                "provenance": "bia_conversion",
-                                "name": "attributes_from_file_reference_2cd0c70d-b8fc-4766-acb5-254e3060456b",
-                                "value": {
-                                    "attributes": {}
-                                }
-                            }
-                        ],
-                        "submission_dataset_uuid": "c5c0751b-f8a6-482b-92aa-d47628a00507",
-                        "creation_process_uuid": "f29f2e0e-9cc7-45f9-98dd-a80cf733c6b6",
-                        "original_file_reference_uuid": [
-                            "2cd0c70d-b8fc-4766-acb5-254e3060456b"
-                        ]
-                    },
+                        "provenance": "bia_ingest",
+                        "name": "bio_sample_uuid",
+                        "value": {
+                            "bio_sample_uuid": [
+                                "d9721f9c-4b5b-4147-b10c-d8e5a6b11c6c"
+                            ]
+                        }
+                    }
+                ],
+                "description": "Raw brightfield microscopy videos of unsynchronised Chinese Hamster Ovary (CHO) cells. Images are paired with the manual tracking masks in the annotations. It includes control (healthy) cells and cells that were previously illuminated with 385 nm (UV), 475 nm and 630 nm wavelengths. The data was acquired using the widefield microscope Axio Observer 7 (Zeiss) equipped with a Colibri 7 LED illumination (Zeiss), a 20x/0.8 Plan Apochromat objective (Zeiss) and a Prime 95B sCMOS camera (Teledyne Photometrics).",
+                "analysis_method": [],
+                "correlation_method": [],
+                "example_image_uri": [],
+                "submitted_in_study_uuid": "0476bac0-b2fb-4816-90fb-5e09f622a4df",
+                "acquisition_process": [
                     {
-                        "uuid": "b2a60947-9989-409f-80b5-35badbee6900",
+                        "default_open": false,
+                        "title_id": "Chinese Hamster Ovary (CHO) cells image data (synchronised and unsynchronised populations)",
+                        "uuid": "c1fbc0c9-118a-45cf-904e-bee3352583b9",
                         "version": 0,
                         "model": {
-                            "type_name": "Image",
-                            "version": 1
+                            "type_name": "ImageAcquisitionProtocol",
+                            "version": 2
                         },
-                        "attribute": [
-                            {
-                                "provenance": "bia_conversion",
-                                "name": "attributes_from_file_reference_2ef5eab0-b745-47bd-8257-83cf23c54487",
-                                "value": {
-                                    "attributes": {}
-                                }
-                            }
-                        ],
-                        "submission_dataset_uuid": "c5c0751b-f8a6-482b-92aa-d47628a00507",
-                        "creation_process_uuid": "2c4a3f34-0229-49f4-b707-020550dc86b0",
-                        "original_file_reference_uuid": [
-                            "2ef5eab0-b745-47bd-8257-83cf23c54487"
+                        "attribute": [],
+                        "protocol_description": "The images were captured using a x20 objective lens. Exposure times were adjusted based on the experimental conditions for different fields of view within the same well (100 ms for 0.6 J/cm^2, 1 s for 6 J/cm^2, and 10 s for 60 J/cm^2). The power used for each wavelength line was as follows: 84.9 \u00b1 2.8 mW for 385 nm, 85.2 \u00b1 0.8 mW for 475 nm, and 70.6 \u00b1 0.4 mW for 630 nm (mean \u00b1 standard deviation).\n\nImages were taken every 4 minutes for a duration of 8 hours, with a pixel size of 0.55 \u00b5m x 0.55 \u00b5m. Temperature and CO2 levels were consistently maintained at 37\u00baC and 5%, respectively, throughout the exposure to excitation light and imaging periods. For fixed samples, cells were imaged using the same objective lens in multichannel acquisition mode. Brightfield images were captured alongside fluorescent images using the 385 nm filter to obtain paired brightfield and Hoechst-stained images.",
+                        "imaging_instrument_description": "Widefield microscope Axio Observer 7 (Zeiss) equipped with a Colibri 7 LED illumination (Zeiss), a 20x/0.8 Plan Apochromat objective (Zeiss) and a Prime 95B sCMOS camera (Teledyne Photometrics).",
+                        "fbbi_id": [],
+                        "imaging_method_name": [
+                            "bright-field microscopy",
+                            "fluorescence microscopy"
                         ]
                     }
                 ],
-                "file_count": 20,
-                "image_count": 5,
+                "specimen_imaging_preparation_protocol": [
+                    {
+                        "default_open": false,
+                        "title_id": "CHO cells ",
+                        "uuid": "f72798f9-35a2-49ba-a8d4-7d56b8cca922",
+                        "version": 0,
+                        "model": {
+                            "type_name": "SpecimenImagingPreparationProtocol",
+                            "version": 2
+                        },
+                        "attribute": [],
+                        "protocol_description": "Cell cultures and synchronization:\nCells were seeded on an 8-well chambered cover glass (Cellvis) at a density of 6 x 10^4 cells per well. For cell synchronisation, cells were incubated with 10 nM RO-3306 (Sigma-Aldrich) to inhibit CDK1 activity for 16-18 hours. Unsynchronised cells were seeded using the same protocol and allowed to grow for the same duration.\n\nCell culture for paired fluorescent and brightfield images:\nCells were cultured on an 8-well chambered cover glass (Cellvis) until they reached 60% confluency. They were then fixed with a 4% paraformaldehyde solution (Electron Microscopy Sciences) for 10 minutes and washed three times with PBS. Following this, the samples were incubated with a 0.1 \u00b5g/ml Hoechst 33342 solution for 10 minutes in the dark.",
+                        "signal_channel_information": []
+                    }
+                ],
+                "biological_entity": [
+                    {
+                        "default_open": false,
+                        "title_id": "Live cell imaging of CHO cells",
+                        "uuid": "d9721f9c-4b5b-4147-b10c-d8e5a6b11c6c",
+                        "version": 0,
+                        "model": {
+                            "type_name": "BioSample",
+                            "version": 3
+                        },
+                        "attribute": [],
+                        "organism_classification": [
+                            {
+                                "attribute": [],
+                                "common_name": "Chinese Hamster",
+                                "scientific_name": "Cricetulus griseus",
+                                "ncbi_id": null
+                            }
+                        ],
+                        "biological_entity_description": "Chinese Hamster Ovary (CHO) cells ",
+                        "experimental_variable_description": [
+                            "Light exposure"
+                        ],
+                        "extrinsic_variable_description": [
+                            "Cell cultures were synchronised using RO-3306"
+                        ],
+                        "intrinsic_variable_description": [],
+                        "growth_protocol_uuid": "ce94cc5b-1702-429f-b4a3-ae74c9bd9992",
+                        "growth_protocol": {
+                            "title_id": "CHO cells ",
+                            "uuid": "ce94cc5b-1702-429f-b4a3-ae74c9bd9992",
+                            "version": 0,
+                            "model": {
+                                "type_name": "Protocol",
+                                "version": 2
+                            },
+                            "attribute": [],
+                            "protocol_description": "CHO (ATCC CCL-61) cells were cultured in DMEM (Gibco) supplemented with either 42 uM gentamicin (Gibco) or 1% penicillin/streptomycin (Gibco) and 10% foetal bovine serum (FBS; Gibco). All cells were grown at 37 \u00baC in a 5% CO2 humidified incubator."
+                        }
+                    }
+                ],
+                "annotation_process": [],
+                "other_creation_process": [],
+                "image": [],
+                "file_count": 37,
+                "image_count": 0,
                 "file_type_aggregation": [
-                    ".tif"
+                    ".czi"
                 ]
             }
         ]

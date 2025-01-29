@@ -28,7 +28,7 @@ def fetch_studies_from_api(
     else:
         start_uuid = agregator_list[-1].uuid
 
-    fetched_studies = api_client.get_studies(
+    fetched_studies = api_client.search_study(
         page_size=page_size, start_from_uuid=start_uuid
     )
     agregator_list += fetched_studies
@@ -40,7 +40,6 @@ def fetch_studies_from_api(
 
 
 def get_study_ids(root_directory: Optional[Path] = None):
-
     def get_accno(acc_id):
         match = re.search(r"\d+$", acc_id)
         return int(match.group()) if match else None
