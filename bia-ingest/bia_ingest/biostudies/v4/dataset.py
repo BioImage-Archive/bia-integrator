@@ -2,7 +2,7 @@ import logging
 from typing import List, Optional
 from uuid import UUID
 
-from bia_ingest.bia_object_creation_utils import dict_to_api_model, dicts_to_api_models
+from bia_ingest.bia_object_creation_utils import dicts_to_api_models
 from bia_ingest.persistence_strategy import PersistenceStrategy
 
 
@@ -16,7 +16,7 @@ from bia_ingest.biostudies.submission_parsing_utils import (
     find_sections_recursive,
 )
 
-from bia_shared_datamodels import bia_data_model, semantic_models
+from bia_shared_datamodels import bia_data_model, semantic_models, attribute_models
 from bia_shared_datamodels.uuid_creation import create_dataset_uuid
 
 logger = logging.getLogger("__main__." + __name__)
@@ -49,6 +49,7 @@ def get_dataset(
 
     return datasets
 
+
 def get_dataset_dict_from_study_component(
     submission: Submission,
     study_uuid: UUID,
@@ -73,7 +74,7 @@ def get_dataset_dict_from_study_component(
         attribute_list = []
         if len(associations) > 0:
             attribute_list.append(
-                semantic_models.Attribute.model_validate(
+                attribute_models.DatasetAssociationAttribute.model_validate(
                     {
                         "provenance": semantic_models.AttributeProvenance("bia_ingest"),
                         "name": "associations",
@@ -99,7 +100,7 @@ def get_dataset_dict_from_study_component(
             "correlation_method": correlation_method_list,
             "example_image_uri": [],
             "version": 0,
-            "attribute": attribute_list,
+            "attribute": attribute_list
         }
 
         model_dicts.append(model_dict)
@@ -230,7 +231,10 @@ def get_uuid_attribute_from_associations(
             }
         )
 
-    return [semantic_models.Attribute.model_validate(x) for x in attribute_dicts]
+    return [
+        attribute_models.DatasetAssociatedUUIDAttribute.model_validate(x)
+        for x in attribute_dicts
+    ]
 
 
 def store_annotation_method_in_attribute(
@@ -254,7 +258,10 @@ def store_annotation_method_in_attribute(
         raise RuntimeError(
             "Dataset cannot find Annotation Method that should have been created"
         )
-    return attribute_dicts
+    return [
+        attribute_models.DatasetAssociatedUUIDAttribute.model_validate(x)
+        for x in attribute_dicts
+    ]
 
 
 def get_image_analysis_method_from_associations(

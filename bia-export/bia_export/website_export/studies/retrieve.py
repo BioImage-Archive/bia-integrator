@@ -8,9 +8,10 @@ from bia_export.website_export.generic_object_retrieval import (
     retrieve_object,
 )
 from pathlib import Path
-from pydantic.alias_generators import to_snake
+from pydantic import ValidationError
+from pydantic.alias_generators import to_snake, to_pascal
 from .models import StudyCLIContext, CacheUse
-from bia_shared_datamodels import semantic_models, bia_data_model
+from bia_shared_datamodels import bia_data_model, attribute_models
 from bia_integrator_api import models as api_models
 import json
 from typing import List, Type
@@ -253,14 +254,17 @@ def retrieve_detail_objects(
     }
 
     for attribute in dataset.attribute:
-        if attribute.name in attribute_name_type_map:
-            for uuid in attribute.value[attribute.name]:
-                # retrieve_object handles whether to retrieve from file or from api
-                api_object = retrieve_object(
-                    uuid, attribute_name_type_map[attribute.name], context
-                )
-                detail_fields[attribute_name_type_map[attribute.name]].append(
-                    api_object
-                )
+        try:
+            attribute_models.DatasetAssociatedUUIDAttribute.model_validate(attribute.model_dump())
+        except ValidationError:
+            continue
+        for uuid in attribute.value[attribute.name]:
+            # retrieve_object handles whether to retrieve from file or from api
+            api_object = retrieve_object(
+                uuid, attribute_name_type_map[attribute.name], context
+            )
+            detail_fields[attribute_name_type_map[attribute.name]].append(
+                api_object
+            )
 
     return detail_fields
