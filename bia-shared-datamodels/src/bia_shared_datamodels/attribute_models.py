@@ -13,15 +13,6 @@ from uuid import UUID
 # Model here are for use by BIA internal code packages that require a shared source of truth.
 
 
-class DatasetAssociationValue(BaseModel):
-    # Allows None, but requires fields to be present
-    image_analysis: Optional[str] = Field()
-    image_correlation: Optional[str] = Field()
-    biosample: Optional[str] = Field()
-    image_acquisition: Optional[str] = Field()
-    specimen: Optional[str] = Field()
-
-
 class SubAttributeMixin(BaseModel):
     def __eq__(self, other):
         if other.__class__ == Attribute:
@@ -29,6 +20,15 @@ class SubAttributeMixin(BaseModel):
             return attribute_self.__eq__(other)
         else:
             return BaseModel.__eq__(self, other)
+
+
+class DatasetAssociationValue(BaseModel):
+    # Allows None, but requires fields to be present
+    image_analysis: Optional[str] = Field()
+    image_correlation: Optional[str] = Field()
+    biosample: Optional[str] = Field()
+    image_acquisition: Optional[str] = Field()
+    specimen: Optional[str] = Field()
 
 
 class DatasetAssociationAttribute(Attribute, SubAttributeMixin):

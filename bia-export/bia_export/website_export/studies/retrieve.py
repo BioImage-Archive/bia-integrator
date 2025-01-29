@@ -9,7 +9,7 @@ from bia_export.website_export.generic_object_retrieval import (
 )
 from pathlib import Path
 from pydantic import ValidationError
-from pydantic.alias_generators import to_snake, to_pascal
+from pydantic.alias_generators import to_snake
 from .models import StudyCLIContext, CacheUse
 from bia_shared_datamodels import bia_data_model, attribute_models
 from bia_integrator_api import models as api_models
