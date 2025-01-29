@@ -111,7 +111,7 @@ def test_cli_writes_expected_files(
             assert created_object == expected_object
 
 
-def test_cli_writes_expected_files(
+def test_cli_find_test_study(
     monkeypatch,
     tmp_path: Path,
     mock_search_result,
