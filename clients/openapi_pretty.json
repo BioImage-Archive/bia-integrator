@@ -85,6 +85,50 @@
         }
       }
     },
+    "/v2/dataset/{uuid}/stats": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Getdatasetstats",
+        "operationId": "getDatasetStats",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatasetStats"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v2/study/{uuid}": {
       "get": {
         "tags": [
@@ -4586,6 +4630,37 @@
           "submitted_in_study_uuid"
         ],
         "title": "Dataset"
+      },
+      "DatasetStats": {
+        "properties": {
+          "image_count": {
+            "type": "integer",
+            "title": "Image Count"
+          },
+          "file_reference_count": {
+            "type": "integer",
+            "title": "File Reference Count"
+          },
+          "file_reference_size_bytes": {
+            "type": "integer",
+            "title": "File Reference Size Bytes"
+          },
+          "file_type_counts": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "type": "object",
+            "title": "File Type Counts"
+          }
+        },
+        "type": "object",
+        "required": [
+          "image_count",
+          "file_reference_count",
+          "file_reference_size_bytes",
+          "file_type_counts"
+        ],
+        "title": "DatasetStats"
       },
       "ExternalReference": {
         "properties": {

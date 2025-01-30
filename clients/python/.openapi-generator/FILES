@@ -19,6 +19,7 @@ bia_integrator_api/docs/Channel.md
 bia_integrator_api/docs/Contributor.md
 bia_integrator_api/docs/CreationProcess.md
 bia_integrator_api/docs/Dataset.md
+bia_integrator_api/docs/DatasetStats.md
 bia_integrator_api/docs/ExternalReference.md
 bia_integrator_api/docs/FileReference.md
 bia_integrator_api/docs/FundingBody.md
@@ -60,6 +61,7 @@ bia_integrator_api/models/channel.py
 bia_integrator_api/models/contributor.py
 bia_integrator_api/models/creation_process.py
 bia_integrator_api/models/dataset.py
+bia_integrator_api/models/dataset_stats.py
 bia_integrator_api/models/external_reference.py
 bia_integrator_api/models/file_reference.py
 bia_integrator_api/models/funding_body.py
