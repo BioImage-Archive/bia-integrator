@@ -28,6 +28,7 @@ from bia_integrator_api.models.channel import Channel
 from bia_integrator_api.models.contributor import Contributor
 from bia_integrator_api.models.creation_process import CreationProcess
 from bia_integrator_api.models.dataset import Dataset
+from bia_integrator_api.models.dataset_stats import DatasetStats
 from bia_integrator_api.models.external_reference import ExternalReference
 from bia_integrator_api.models.file_reference import FileReference
 from bia_integrator_api.models.funding_body import FundingBody

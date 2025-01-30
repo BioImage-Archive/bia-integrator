@@ -78,6 +78,7 @@ Class | Method | HTTP request | Description
 *PrivateApi* | [**get_creation_process_linking_specimen**](bia_integrator_api/docs/PrivateApi.md#get_creation_process_linking_specimen) | **GET** /v2/specimen/{uuid}/creation_process | Get CreationProcess Linking Specimen
 *PrivateApi* | [**get_dataset**](bia_integrator_api/docs/PrivateApi.md#get_dataset) | **GET** /v2/dataset/{uuid} | Get Dataset
 *PrivateApi* | [**get_dataset_linking_study**](bia_integrator_api/docs/PrivateApi.md#get_dataset_linking_study) | **GET** /v2/study/{uuid}/dataset | Get Dataset Linking Study
+*PrivateApi* | [**get_dataset_stats**](bia_integrator_api/docs/PrivateApi.md#get_dataset_stats) | **GET** /v2/dataset/{uuid}/stats | Getdatasetstats
 *PrivateApi* | [**get_file_reference**](bia_integrator_api/docs/PrivateApi.md#get_file_reference) | **GET** /v2/file_reference/{uuid} | Get FileReference
 *PrivateApi* | [**get_file_reference_linking_dataset**](bia_integrator_api/docs/PrivateApi.md#get_file_reference_linking_dataset) | **GET** /v2/dataset/{uuid}/file_reference | Get FileReference Linking Dataset
 *PrivateApi* | [**get_image**](bia_integrator_api/docs/PrivateApi.md#get_image) | **GET** /v2/image/{uuid} | Get Image
@@ -138,6 +139,7 @@ Class | Method | HTTP request | Description
 *PublicApi* | [**get_creation_process_linking_specimen**](bia_integrator_api/docs/PublicApi.md#get_creation_process_linking_specimen) | **GET** /v2/specimen/{uuid}/creation_process | Get CreationProcess Linking Specimen
 *PublicApi* | [**get_dataset**](bia_integrator_api/docs/PublicApi.md#get_dataset) | **GET** /v2/dataset/{uuid} | Get Dataset
 *PublicApi* | [**get_dataset_linking_study**](bia_integrator_api/docs/PublicApi.md#get_dataset_linking_study) | **GET** /v2/study/{uuid}/dataset | Get Dataset Linking Study
+*PublicApi* | [**get_dataset_stats**](bia_integrator_api/docs/PublicApi.md#get_dataset_stats) | **GET** /v2/dataset/{uuid}/stats | Getdatasetstats
 *PublicApi* | [**get_file_reference**](bia_integrator_api/docs/PublicApi.md#get_file_reference) | **GET** /v2/file_reference/{uuid} | Get FileReference
 *PublicApi* | [**get_file_reference_linking_dataset**](bia_integrator_api/docs/PublicApi.md#get_file_reference_linking_dataset) | **GET** /v2/dataset/{uuid}/file_reference | Get FileReference Linking Dataset
 *PublicApi* | [**get_image**](bia_integrator_api/docs/PublicApi.md#get_image) | **GET** /v2/image/{uuid} | Get Image
@@ -186,6 +188,7 @@ Class | Method | HTTP request | Description
  - [Contributor](bia_integrator_api/docs/Contributor.md)
  - [CreationProcess](bia_integrator_api/docs/CreationProcess.md)
  - [Dataset](bia_integrator_api/docs/Dataset.md)
+ - [DatasetStats](bia_integrator_api/docs/DatasetStats.md)
  - [ExternalReference](bia_integrator_api/docs/ExternalReference.md)
  - [FileReference](bia_integrator_api/docs/FileReference.md)
  - [FundingBody](bia_integrator_api/docs/FundingBody.md)

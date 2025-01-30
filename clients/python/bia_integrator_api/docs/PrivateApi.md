@@ -19,6 +19,7 @@ Method | HTTP request | Description
 [**get_creation_process_linking_specimen**](PrivateApi.md#get_creation_process_linking_specimen) | **GET** /v2/specimen/{uuid}/creation_process | Get CreationProcess Linking Specimen
 [**get_dataset**](PrivateApi.md#get_dataset) | **GET** /v2/dataset/{uuid} | Get Dataset
 [**get_dataset_linking_study**](PrivateApi.md#get_dataset_linking_study) | **GET** /v2/study/{uuid}/dataset | Get Dataset Linking Study
+[**get_dataset_stats**](PrivateApi.md#get_dataset_stats) | **GET** /v2/dataset/{uuid}/stats | Getdatasetstats
 [**get_file_reference**](PrivateApi.md#get_file_reference) | **GET** /v2/file_reference/{uuid} | Get FileReference
 [**get_file_reference_linking_dataset**](PrivateApi.md#get_file_reference_linking_dataset) | **GET** /v2/dataset/{uuid}/file_reference | Get FileReference Linking Dataset
 [**get_image**](PrivateApi.md#get_image) | **GET** /v2/image/{uuid} | Get Image
@@ -1112,6 +1113,73 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**List[Dataset]**](Dataset.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **get_dataset_stats**
+> DatasetStats get_dataset_stats(uuid)
+
+Getdatasetstats
+
+### Example
+
+
+```python
+import bia_integrator_api
+from bia_integrator_api.models.dataset_stats import DatasetStats
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PrivateApi(api_client)
+    uuid = 'uuid_example' # str | 
+
+    try:
+        # Getdatasetstats
+        api_response = api_instance.get_dataset_stats(uuid)
+        print("The response of PrivateApi->get_dataset_stats:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PrivateApi->get_dataset_stats: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **uuid** | **str**|  | 
+
+### Return type
+
+[**DatasetStats**](DatasetStats.md)
 
 ### Authorization
 
