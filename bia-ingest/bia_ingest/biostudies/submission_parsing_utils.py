@@ -5,6 +5,9 @@ from bia_ingest.biostudies.api import (
     Submission,
     flist_from_flist_fname,
 )
+from bia_ingest.biostudies.biostudies_processing_version import (
+    BioStudiesProcessingVersion,
+)
 
 from typing import Any, Dict, List, Optional, Union
 import logging
@@ -72,7 +75,14 @@ def find_file_lists_in_submission(
     return find_file_lists_in_section(submission.section, [])
 
 
-def find_files_in_submission_file_lists(submission: Submission) -> List[File]:
+def find_files_in_submission_file_lists(
+    submission: Submission, 
+    result_summary: dict,    
+) -> List[File]:
+    
+    accno = submission.accno
+    submission_type = result_summary[accno].ProcessingVersion
+
     file_list_dicts = find_file_lists_in_submission(submission)
     file_lists = []
     for file_list_dict in file_list_dicts:
@@ -82,7 +92,13 @@ def find_files_in_submission_file_lists(submission: Submission) -> List[File]:
             extra_attribute.append(
                 Attribute(name="Title", value=file_list_dict["Title"])
             )
-        if "associations" in file_list_dict:
+        if file_list_dict.get("associations") != []:
+            if submission_type == BioStudiesProcessingVersion.BIOSTUDIES_DEFAULT:
+                logger.warning("Associations found in default template submission file list processing.")
+                result_summary[accno].__setattr__(
+                    "Warning",
+                    f"Associations found in default template submission file list processing.",
+                )
             extra_attribute.append(
                 Attribute(
                     name="associations", value=f"{file_list_dict['associations']}"
@@ -100,8 +116,6 @@ def find_files_in_submission(
 ) -> List[File]:
     """Find files in a submission that are attached directly, 
     not in file lists."""
-
-    # ASSOCIATIONS IN DIRECT FILES?
 
     section_type = type(section)
     if section_type == Section:
@@ -123,13 +137,14 @@ def find_files_in_submission(
 
 
 def find_files_and_file_lists_in_default_submission(
-        submission: Submission
+        submission: Submission, 
+        result_summary: dict,
 ) -> List[File]:
     """Find all of the files in a submission, both attached directly to
     the submission and as file lists."""
 
-    all_files_and_file_lists = find_files_in_submission_file_lists(submission)
-    all_files_and_file_lists = (find_files_in_submission(submission.section, all_files_and_file_lists))
+    all_files_and_file_lists = find_files_in_submission_file_lists(submission, result_summary)
+    all_files_and_file_lists = find_files_in_submission(submission.section, all_files_and_file_lists)
 
     return all_files_and_file_lists
 

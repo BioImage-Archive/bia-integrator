@@ -10,6 +10,9 @@ from bia_ingest.biostudies.v4 import (
     file_reference,
 )
 from bia_ingest.biostudies.api import File
+from bia_ingest.biostudies.biostudies_processing_version import (
+    BioStudiesProcessingVersion,
+)
 from bia_shared_datamodels.bia_data_model import Dataset
 from bia_test_data.mock_objects.mock_object_constants import (
     study_uuid, 
@@ -17,6 +20,7 @@ from bia_test_data.mock_objects.mock_object_constants import (
     accession_id, 
     accession_id_default, 
 )
+from bia_ingest.cli_logging import IngestionResult
 
 
 @pytest.fixture
@@ -46,6 +50,14 @@ def default_biostudies_api_files_listed():
     files_in_filelist = [File.model_validate(f) for f in file_list_data]
     return files_in_filelist
 
+
+@pytest.fixture
+def default_ingestion_result_summary():
+
+    result_summary = {}
+    result_summary[accession_id_default] = IngestionResult()
+    result_summary[accession_id_default].ProcessingVersion = BioStudiesProcessingVersion.BIOSTUDIES_DEFAULT
+    return result_summary
 
 def test_get_file_reference_for_submission_dataset(
     dataset_in_submission, biostudies_api_files
@@ -122,12 +134,14 @@ def test_create_file_reference_for_study_component_when_no_matching_sc_in_file_l
 def test_get_direct_file_list_for_default_submission_dataset(
         test_default_submission_direct_files, 
         dataset_in_default_submission, 
+        default_ingestion_result_summary
 ):
     file_path = "default_biostudies/files_direct_default.json"
     expected = mock_file_reference.get_default_file_reference_data(file_path)
     
     file_list = submission_parsing_utils.find_files_and_file_lists_in_default_submission(
-        test_default_submission_direct_files
+        test_default_submission_direct_files, 
+        default_ingestion_result_summary
     )
     created = default_file_reference.get_file_reference_dicts_for_submission_dataset(
         accession_id_default, 
