@@ -19,8 +19,8 @@ app = typer.Typer()
 
 
 def get_details_of_images_that_can_be_converted(accession_id: str):
-    studies = api_client.get_studies(page_size=PAGE_SIZE_DEFAULT)
-    study = next(s for s in studies if s.accession_id == accession_id)
+    study = api_client.search_study_by_accession(accession_id)
+    assert study
     datasets = api_client.get_dataset_linking_study(
         study.uuid, page_size=PAGE_SIZE_DEFAULT
     )
