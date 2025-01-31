@@ -6,7 +6,6 @@ from uuid import UUID
 from bia_ingest.persistence_strategy import PersistenceStrategy
 from bia_ingest.biostudies.submission_parsing_utils import (
     find_datasets_with_file_lists,
-    find_files_and_file_lists_in_submission, 
     attributes_to_dict,
 )
 from bia_ingest.bia_object_creation_utils import (

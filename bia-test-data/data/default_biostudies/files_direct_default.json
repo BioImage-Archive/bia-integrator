@@ -1,0 +1,36 @@
+[ 
+    {
+        "path" : "path1.czi",
+        "size" : 1222831936,
+        "attributes" : [ {
+            "name" : "Description",
+            "value" : "Description 1"
+        }, {
+            "name" : "Type",
+            "value" : "Some file type"
+        } ],
+        "type" : "file"
+    }, {
+        "path" : "path2.csv",
+        "size" : 1222831936,
+        "attributes" : [ {
+            "name" : "Description",
+            "value" : "Description 2"
+        }, {
+            "name" : "Type",
+            "value" : "Some file type"
+        } ],
+        "type" : "file"
+    }, {
+        "path" : "path3.czi",
+        "size" : 1222831936,
+        "attributes" : [ {
+            "name" : "Description",
+            "value" : "Description 3"
+        }, {
+            "name" : "Type",
+            "value" : "Some file type"
+        } ],
+        "type" : "file"
+    } 
+]

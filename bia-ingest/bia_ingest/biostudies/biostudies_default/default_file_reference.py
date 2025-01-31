@@ -4,7 +4,7 @@ from uuid import UUID
 
 from bia_ingest.persistence_strategy import PersistenceStrategy
 from bia_ingest.biostudies.submission_parsing_utils import (
-    find_files_and_file_lists_in_submission, 
+    find_files_and_file_lists_in_default_submission, 
     attributes_to_dict,
 )
 from bia_ingest.bia_object_creation_utils import (
@@ -34,7 +34,7 @@ def get_file_reference_for_default_template_datasets(
     Assumed one dataset per submission, currently.
     """
     
-    all_files = find_files_and_file_lists_in_submission(submission)
+    all_files = find_files_and_file_lists_in_default_submission(submission, result_summary)
     if not all_files:
         logger.warning("No files were found.")
         result_summary[submission.accno].__setattr__(

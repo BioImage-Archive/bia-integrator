@@ -2,9 +2,14 @@ import json
 from typing import Dict, List
 from bia_shared_datamodels import bia_data_model, semantic_models
 from bia_test_data import bia_test_data_dir
-from .mock_object_constants import accession_id, study_uuid
+from .mock_object_constants import (
+    accession_id, 
+    study_uuid, 
+    accession_id_biostudies_default, 
+    study_uuid_biostudies_default, 
+)
 from bia_shared_datamodels.uuid_creation import create_file_reference_uuid
-from .mock_dataset import get_dataset
+from .mock_dataset import get_dataset, get_dataset_biostudies_default
 
 
 def get_file_list_data(file_list_name) -> List[Dict]:
@@ -71,3 +76,41 @@ def get_file_reference(
 
     return file_references
 
+
+def get_file_reference_data_biostudies_default(
+    file_list: str, 
+    dataset_uuid = get_dataset_biostudies_default().uuid, 
+) -> List[Dict]:
+    
+    uri_template = "https://www.ebi.ac.uk/biostudies/files/{accession_id}/{file_path}"
+    file_list_data = get_file_list_data(file_list)
+
+    file_reference_data = []
+
+    for fl_data in file_list_data:
+        attributes = {a["name"]: a.get("value", None) for a in fl_data["attributes"]}
+        attributes_as_attr_dict = {
+            "provenance": semantic_models.AttributeProvenance("bia_ingest"),
+            "name": "attributes_from_biostudies.File",
+            "value": {
+                "attributes": attributes,
+            },
+        }
+        file_reference_data.append(
+            {
+                "uuid": create_file_reference_uuid(fl_data["path"], study_uuid_biostudies_default),
+                "file_path": fl_data["path"],
+                "format": fl_data["type"],
+                "size_in_bytes": int(fl_data["size"]),
+                "uri": uri_template.format(
+                    accession_id=accession_id_biostudies_default, file_path=fl_data["path"]
+                ),
+                "submission_dataset_uuid": dataset_uuid,
+                "version": 0,
+                "attribute": [
+                    attributes_as_attr_dict,
+                ],
+            }
+        )
+
+    return file_reference_data

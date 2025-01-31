@@ -1,0 +1,131 @@
+{
+  "accno" : "S-BSSTTEST",
+  "attributes" : [ {
+    "name" : "Template",
+    "value" : "Default"
+  }, {
+    "name" : "Title",
+    "value" : "A default test submission with title greater than 25 characters"
+  }, {
+    "name" : "ReleaseDate",
+    "value" : "2025-01-15"
+  }, {
+    "name" : "AttachTo",
+    "value" : "BioImages"
+  } ],
+  "section" : {
+    "type" : "Study",
+    "attributes" : [ {
+      "name" : "Title",
+      "value" : "A default test study section with title greater than 25 characters"
+    }, {
+      "name" : "Abstract",
+      "value" : "Study abstract"
+    }, {
+      "name" : "Description",
+      "value" : "A study description"
+    }, {
+      "name" : "Study variable",
+      "value" : "Study variable 1"
+    }, {
+      "name" : "Study variable",
+      "value" : "Study variable 2"
+    }, {
+      "name" : "Organism",
+      "value" : "Some sort of organism"
+    }, {
+      "name" : "Measurement type",
+      "value" : "A measuring device"
+    }, {
+      "name" : "Technology type",
+      "value" : "A techonology"
+    }, {
+      "name" : "Technology platform",
+      "value" : "A platform"
+    } ],
+    "links" : [ [ {
+      "url" : "https://www.testLink.com",
+      "attributes" : [ {
+        "name" : "Type",
+        "value" : "DOI"
+      }, {
+        "name" : "Title",
+        "value" : "Test link"
+      } ]
+    } ] ],
+    "files" : [ {
+      "path" : "path1.czi",
+      "size" : 1222831936,
+      "attributes" : [ {
+          "name" : "Description",
+          "value" : "Description 1"
+      }, {
+          "name" : "Type",
+          "value" : "Some file type"
+      } ],
+      "type" : "file"
+      }, {
+      "path" : "path2.csv",
+      "size" : 1222831936,
+      "attributes" : [ {
+          "name" : "Description",
+          "value" : "Description 2"
+      }, {
+          "name" : "Type",
+          "value" : "Some file type"
+      } ],
+      "type" : "file"
+      }, {
+      "path" : "path3.czi",
+      "size" : 1222831936,
+      "attributes" : [ {
+          "name" : "Description",
+          "value" : "Description 3"
+      }, {
+          "name" : "Type",
+          "value" : "Some file type"
+      } ],
+      "type" : "file"
+      } ],
+    "subsections" : [ {
+      "type" : "Author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Test author 1"
+      }, {
+        "name" : "affiliation",
+        "value" : "o1",
+        "reference" : true
+      }, {
+        "name" : "affiliation",
+        "value" : "o2",
+        "reference" : true
+      } ]
+    }, {
+      "type" : "Author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Test author 2"
+      }, {
+        "name" : "affiliation",
+        "value" : "o1",
+        "reference" : true
+      } ]
+    }, {
+      "accno" : "o1",
+      "type" : "Organization",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Test organisation 1"
+      } ]
+    }, {
+      "accno" : "o2",
+      "type" : "Organization",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Test organisation 2"
+      } ]
+    } ]
+  },
+  "type" : "submission"
+}
