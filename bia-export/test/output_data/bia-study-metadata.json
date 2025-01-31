@@ -79,6 +79,12 @@
         "funding_statement": "This work was funded by the EBI",
         "dataset": [
             {
+                "image_count": 1,
+                "file_reference_count": 2,
+                "file_reference_size_bytes": 206055985,
+                "file_type_counts": {
+                    "file": 2
+                },
                 "title_id": "Annotations and segmentation masks",
                 "uuid": "21999a9f-6f16-45d4-91c9-ed46cbfe015c",
                 "version": 0,
@@ -141,15 +147,15 @@
                         "creation_process_uuid": "8444ff28-e32b-4c6f-9677-d9ff597b0c29",
                         "original_file_reference_uuid": []
                     }
-                ],
-                "file_count": 2,
-                "image_count": 1,
-                "file_type_aggregation": [
-                    ".tif",
-                    ".zip"
                 ]
             },
             {
+                "image_count": 1,
+                "file_reference_count": 2,
+                "file_reference_size_bytes": 206055985,
+                "file_type_counts": {
+                    "file": 2
+                },
                 "title_id": "Study Component 1",
                 "uuid": "47a4ab60-c76d-4424-bfaa-c2a024de720c",
                 "version": 0,
@@ -353,15 +359,13 @@
                         "creation_process_uuid": "2447db96-dd23-44eb-ad47-1086c9be1cba",
                         "original_file_reference_uuid": []
                     }
-                ],
-                "file_count": 2,
-                "image_count": 1,
-                "file_type_aggregation": [
-                    ".tif",
-                    ".zip"
                 ]
             },
             {
+                "image_count": 0,
+                "file_reference_count": 0,
+                "file_reference_size_bytes": 0,
+                "file_type_counts": {},
                 "title_id": "Study Component 2",
                 "uuid": "850a1ca3-9681-4a8a-b625-477936fcb954",
                 "version": 0,
@@ -499,10 +503,7 @@
                 ],
                 "annotation_process": [],
                 "other_creation_process": [],
-                "image": [],
-                "file_count": 0,
-                "image_count": 0,
-                "file_type_aggregation": []
+                "image": []
             }
         ]
     }
