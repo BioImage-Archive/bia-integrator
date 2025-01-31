@@ -130,15 +130,15 @@ def test_create_models_dataset(
     assert expected == created
 
 
-def test_create_models_default_dataset(
-    test_default_submission_direct_files, 
-    ingestion_result_summary_default, 
+def test_create_models_dataset_biostudies_default(
+    test_submission_biostudies_default_direct_files, 
+    ingestion_result_summary_biostudies_default, 
 ):
-    expected = mock_dataset.get_default_dataset()
+    expected = mock_dataset.get_dataset_biostudies_default()
     created = default_dataset.get_dataset_overview(
-        test_default_submission_direct_files,
-        mock_object_constants.study_uuid_default,
-        ingestion_result_summary_default,
+        test_submission_biostudies_default_direct_files,
+        mock_object_constants.study_uuid_biostudies_default,
+        ingestion_result_summary_biostudies_default,
     )
     
     assert expected == created

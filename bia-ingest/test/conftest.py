@@ -4,9 +4,12 @@ from pathlib import Path
 import json
 import pytest
 from bia_ingest.biostudies.api import Submission, SubmissionTable, requests
-from bia_test_data.mock_objects.mock_object_constants import accession_id, accession_id_default
+from bia_test_data.mock_objects.mock_object_constants import accession_id, accession_id_biostudies_default
 from bia_ingest.cli_logging import IngestionResult
 from bia_test_data import bia_test_data_dir
+from bia_ingest.biostudies.biostudies_processing_version import (
+    BioStudiesProcessingVersion,
+)
 
 
 @pytest.fixture
@@ -17,7 +20,7 @@ def test_submission() -> Submission:
     return submission
 
 @pytest.fixture
-def test_default_submission_direct_files() -> Submission:
+def test_submission_biostudies_default_direct_files() -> Submission:
     submission_path = bia_test_data_dir / "default_biostudies" / "S-BSSTTEST_files_direct.json"
     json_data = json.loads(submission_path.read_text())
     submission = Submission.model_validate(json_data)
@@ -36,8 +39,11 @@ def ingestion_result_summary():
     return result_summary
 
 @pytest.fixture
-def ingestion_result_summary_default():
-    result_summary = {accession_id_default: IngestionResult()}
+def ingestion_result_summary_biostudies_default():
+
+    result_summary = {}
+    result_summary[accession_id_biostudies_default] = IngestionResult()
+    result_summary[accession_id_biostudies_default].ProcessingVersion = BioStudiesProcessingVersion.BIOSTUDIES_DEFAULT
     return result_summary
 
 @pytest.fixture

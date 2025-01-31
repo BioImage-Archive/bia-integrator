@@ -10,15 +10,12 @@ from bia_ingest.biostudies.v4 import (
     file_reference,
 )
 from bia_ingest.biostudies.api import File
-from bia_ingest.biostudies.biostudies_processing_version import (
-    BioStudiesProcessingVersion,
-)
 from bia_shared_datamodels.bia_data_model import Dataset
 from bia_test_data.mock_objects.mock_object_constants import (
     study_uuid, 
-    study_uuid_default, 
+    study_uuid_biostudies_default, 
     accession_id, 
-    accession_id_default, 
+    accession_id_biostudies_default, 
 )
 from bia_ingest.cli_logging import IngestionResult
 
@@ -31,8 +28,8 @@ def dataset_in_submission() -> Dataset:
     return mock_dataset.get_dataset()[1]
 
 @pytest.fixture
-def dataset_in_default_submission() -> Dataset:
-    return mock_dataset.get_default_dataset()
+def dataset_in_submission_biostudies_default() -> Dataset:
+    return mock_dataset.get_dataset_biostudies_default()
 
 @pytest.fixture
 def biostudies_api_files():
@@ -43,21 +40,13 @@ def biostudies_api_files():
     return files_in_filelist
 
 @pytest.fixture
-def default_biostudies_api_files_listed():
+def biostudies_default_api_files_listed():
     file_list_data = mock_file_reference.get_file_list_data(
         "default_biostudies/file_list_default.json"
     )
     files_in_filelist = [File.model_validate(f) for f in file_list_data]
     return files_in_filelist
 
-
-@pytest.fixture
-def default_ingestion_result_summary():
-
-    result_summary = {}
-    result_summary[accession_id_default] = IngestionResult()
-    result_summary[accession_id_default].ProcessingVersion = BioStudiesProcessingVersion.BIOSTUDIES_DEFAULT
-    return result_summary
 
 def test_get_file_reference_for_submission_dataset(
     dataset_in_submission, biostudies_api_files
@@ -131,40 +120,40 @@ def test_create_file_reference_for_study_component_when_no_matching_sc_in_file_l
         assert expected in caplog.text
 
 
-def test_get_direct_file_list_for_default_submission_dataset(
-        test_default_submission_direct_files, 
-        dataset_in_default_submission, 
-        default_ingestion_result_summary
+def test_get_direct_file_list_for_biostudies_default_submission_dataset(
+        test_submission_biostudies_default_direct_files, 
+        dataset_in_submission_biostudies_default, 
+        ingestion_result_summary_biostudies_default, 
 ):
     file_path = "default_biostudies/files_direct_default.json"
-    expected = mock_file_reference.get_default_file_reference_data(file_path)
+    expected = mock_file_reference.get_file_reference_data_biostudies_default(file_path)
     
     file_list = submission_parsing_utils.find_files_and_file_lists_in_default_submission(
-        test_default_submission_direct_files, 
-        default_ingestion_result_summary
+        test_submission_biostudies_default_direct_files, 
+        ingestion_result_summary_biostudies_default
     )
     created = default_file_reference.get_file_reference_dicts_for_submission_dataset(
-        accession_id_default, 
-        study_uuid_default, 
-        dataset_in_default_submission,
+        accession_id_biostudies_default, 
+        study_uuid_biostudies_default, 
+        dataset_in_submission_biostudies_default,
         file_list, 
     )
 
     assert created == expected
 
 
-def test_get_listed_file_list_for_default_submission_dataset(
-        default_biostudies_api_files_listed, 
-        dataset_in_default_submission, 
+def test_get_listed_file_list_for_biostudies_default_submission_dataset(
+        biostudies_default_api_files_listed, 
+        dataset_in_submission_biostudies_default, 
 ):
     file_path = "default_biostudies/file_list_default.json"
-    expected = mock_file_reference.get_default_file_reference_data(file_path)
+    expected = mock_file_reference.get_file_reference_data_biostudies_default(file_path)
     
     created = default_file_reference.get_file_reference_dicts_for_submission_dataset(
-        accession_id_default, 
-        study_uuid_default, 
-        dataset_in_default_submission,
-        default_biostudies_api_files_listed, 
+        accession_id_biostudies_default, 
+        study_uuid_biostudies_default, 
+        dataset_in_submission_biostudies_default,
+        biostudies_default_api_files_listed, 
     )
 
     assert created == expected
