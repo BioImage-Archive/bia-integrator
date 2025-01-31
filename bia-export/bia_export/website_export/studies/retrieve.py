@@ -79,14 +79,28 @@ def retrieve_aggregation_fields(
                 "file_type_counts": {},
             }
     else:
-        dataset_stats = api_client.get_dataset_stats(dataset.uuid)
+        retry_count = 0
+        max_retry_count = 5
+        dataset_stats = None
+        while not dataset_stats and retry_count < max_retry_count:
+            try:
+                dataset_stats = api_client.get_dataset_stats(dataset.uuid)
+            except:
+                retry_count += 1
+                if retry_count == max_retry_count:
+                    logger.warning(
+                        f"Failed to fetch dataset stats for {dataset.uuid} after {max_retry_count} attemps"
+                    )
 
-        dataset_aggregation_fields = {
-            "file_reference_count": dataset_stats.file_reference_count,
-            "image_count": dataset_stats.image_count,
-            "file_reference_size_bytes": dataset_stats.file_reference_size_bytes,
-            "file_type_counts": dataset_stats.file_type_counts,
-        }
+        if dataset_stats:
+            dataset_aggregation_fields = dataset_stats.model_dump()
+        else:
+            dataset_aggregation_fields = {
+                "file_reference_count": 0,
+                "image_count": 0,
+                "file_reference_size_bytes": 0,
+                "file_type_counts": {},
+            }
         if context.cache_use == CacheUse.WRITE_CACHE:
             write_to_cache(dataset.uuid, dataset_aggregation_fields)
 
@@ -156,7 +170,9 @@ def aggregate_file_list_data(context: StudyCLIContext) -> None:
                 file_type
                 not in dataset_counts_map[submission_dataset]["file_type_counts"]
             ):
-                dataset_counts_map[submission_dataset]["file_type_counts"][file_type] = 0
+                dataset_counts_map[submission_dataset]["file_type_counts"][
+                    file_type
+                ] = 0
             dataset_counts_map[submission_dataset]["file_type_counts"][file_type] += 1
 
         images_directory = get_source_directory(api_models.Image, context)

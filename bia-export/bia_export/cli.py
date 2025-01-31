@@ -53,8 +53,11 @@ def generate_all(
     if not id_list:
         id_list = get_study_ids(root_directory)
 
+    logger.info("Exporting study pages")
     website_study(id_list=id_list, root_directory=root_directory, cache=cache)
+    logger.info("Exporting image pages")
     website_image(id_list=id_list, root_directory=root_directory)
+    logger.info("Exporting datasets for study pages")
     datasets_for_website_image(id_list=id_list, root_directory=root_directory)
 
 

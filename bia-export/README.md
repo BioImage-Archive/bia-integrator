@@ -50,7 +50,7 @@ If no Accession ID or UUID is passed, all studies will be processed (either base
 The two points above hold for all export commands for the api. For the website-study export only, there is a optional cache in order to avoid processing all file references every time an export is performed (as this slows down export a lot). E.g. running:
 
 
-    poetry run bia-export website-study -o bia-study-metadata.json -c read_cache
+    poetry run bia-export website study -o bia-study-metadata.json -c read_cache
 
 
 Will export all studies using the cached aggregation (when avaliable) as the counts for images, files, and the list of different file types.
@@ -65,7 +65,7 @@ Two commands need to be run to generate the json for the image pages (order does
 
 Run:
     
-    poetry run bia-export website-image S-BIADTEST -o bia-image-export.json -r test/input_data
+    poetry run bia-export website image S-BIADTEST -o bia-image-export.json -r test/input_data
 
 This will create `bia-image-export.json` using the example test data. The root objects of this json are individual images, used to create the base of the image pages.
 
@@ -75,7 +75,7 @@ Since images have the id of the dataset, we avoid repeating the study and datase
 
 Run:
 
-    poetry run bia-export datasets-for-website-image S-BIADTEST -o bia-dataset-export.json -r test/input_data
+    poetry run bia-export website image-dataset S-BIADTEST -o bia-dataset-export.json -r test/input_data
 
 This will create `bia-dataset-export.json` using the example test data. The root objects of this json are datasets, with links followed to include subject and protocol information etc as well as the original study. 
 
