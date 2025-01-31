@@ -198,6 +198,8 @@ def determine_biostudies_processing_version(submission: Submission):
         "S-BIAD1070": BioStudiesProcessingVersion.V4,
         "S-BIAD1076": BioStudiesProcessingVersion.V4,
         "S-BIAD1244": BioStudiesProcessingVersion.V4,
+        "S-BIAD1492": BioStudiesProcessingVersion.V4,
+        "S-BIAD1518": BioStudiesProcessingVersion.V4,
         "S-BIAD650": BioStudiesProcessingVersion.FALLBACK,  # Uses v4 template but doesn't actually have rembi components
     }
     accession_id = submission.accno
