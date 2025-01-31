@@ -7,20 +7,11 @@ from bia_ingest.biostudies.api import Submission, SubmissionTable, requests
 from bia_test_data.mock_objects.mock_object_constants import accession_id, accession_id_biostudies_default
 from bia_ingest.cli_logging import IngestionResult
 from bia_test_data import bia_test_data_dir
+
 from bia_ingest.biostudies.biostudies_processing_version import (
     BioStudiesProcessingVersion,
 )
 
-from unittest.mock import Mock
-from typing import Dict
-from pathlib import Path
-import json
-import pytest
-from bia_ingest.biostudies.api import Submission, SubmissionTable, requests
-from bia_test_data.mock_objects.mock_object_constants import accession_id
-from bia_ingest.cli_logging import IngestionResult
-from bia_test_data import bia_test_data_dir
-from bia_ingest.biostudies.api import SearchResult, SearchPage
 
 @pytest.fixture
 def test_submission() -> Submission:
