@@ -20,7 +20,7 @@ runner = CliRunner()
 
 
 @pytest.fixture
-def expected_objects() -> tuple[dict, dict]:
+def expected_objects() -> tuple[dict, int]:
     datasets = mock_dataset.get_dataset()
     expected_objects_dict = {
         "study": [mock_study.get_study()],
@@ -117,7 +117,6 @@ def test_cli_find_test_study(
     mock_search_result,
     expected_objects,
 ):
-
     outfile = tmp_path.absolute() / "find_output"
 
     result = runner.invoke(

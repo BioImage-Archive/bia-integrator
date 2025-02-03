@@ -8,7 +8,6 @@ from bia_test_data.mock_objects import (
     mock_image_acquisition_protocol,
     mock_annotation_method,
     mock_image_analysis_method,
-    mock_image_correlation_method,
     mock_object_constants,
 )
 from bia_ingest.biostudies.common import study
@@ -27,9 +26,7 @@ def test_create_models_specimen_imaging_preparation_protocol(
     test_submission,
     ingestion_result_summary,
 ):
-    expected = (
-        mock_specimen_imaging_preparation_protocol.get_specimen_imaging_preparation_protocol_as_map()
-    )
+    expected = mock_specimen_imaging_preparation_protocol.get_specimen_imaging_preparation_protocol_as_map()
     created = specimen_imaging_preparation_protocol.get_specimen_imaging_preparation_protocol_as_map(
         test_submission, mock_object_constants.study_uuid, ingestion_result_summary
     )
@@ -120,19 +117,22 @@ def test_create_models_dataset(
     ingestion_result_summary,
 ):
     expected = mock_dataset.get_dataset()
-    created = dataset.get_dataset(
+    created_dict = dataset.get_dataset(
         test_submission,
         mock_object_constants.study_uuid,
         association_dict,
         ingestion_result_summary,
     )
+    created = []
+    for created_dataset in created_dict.values():
+        created.extend(created_dataset)
 
     assert expected == created
 
 
 def test_create_models_dataset_biostudies_default(
-    test_submission_biostudies_default_direct_files, 
-    ingestion_result_summary_biostudies_default, 
+    test_submission_biostudies_default_direct_files,
+    ingestion_result_summary_biostudies_default,
 ):
     expected = mock_dataset.get_dataset_biostudies_default()
     created = default_dataset.get_dataset_overview(
@@ -140,7 +140,7 @@ def test_create_models_dataset_biostudies_default(
         mock_object_constants.study_uuid_biostudies_default,
         ingestion_result_summary_biostudies_default,
     )
-    
+
     assert expected == created
 
 

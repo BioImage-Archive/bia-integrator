@@ -57,19 +57,40 @@ def process_submission_v4(submission, result_summary, process_files, persister):
 
     datasets = get_dataset(
         submission,
-        study_uuid, 
+        study_uuid,
         association_object_dict,
         result_summary,
         persister=persister,
     )
-
+    logger.info(f"{datasets}")
     if process_files:
-        get_file_reference_by_dataset(
-            submission,
-            study_uuid, 
-            datasets,
-            result_summary,
-            persister=persister,
-        )
+        # As of 03/02/2025 we currently allow a FileReference to link back
+        # to only one Dataset using the submission_dataset_uuid field. For
+        # the purposes of image conversion only study component datasets
+        # are currently used.
+        #
+        # The submission_dataset_uuid value is overwritten in process_files.
+        # Therefore, to ensure study component datasets are preferred over
+        # non study component datasets (e.g. annotation) when both refer to
+        # the same file, we process non study component datasets first.
+        for datasets_key, datasets_value in datasets.items():
+            if datasets_key != "from_study_component" and datasets.get(datasets_key):
+                get_file_reference_by_dataset(
+                    submission,
+                    study_uuid,
+                    datasets[datasets_key],
+                    result_summary,
+                    persister=persister,
+                )
+
+        if datasets.get("from_study_component"):
+            get_file_reference_by_dataset(
+                submission,
+                study_uuid,
+                datasets["from_study_component"],
+                result_summary,
+                persister=persister,
+            )
+
     else:
         logger.info("Skipping file reference creation.")
