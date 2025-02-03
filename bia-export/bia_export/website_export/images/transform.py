@@ -64,7 +64,10 @@ def transform_creation_process(
 ) -> CreationProcess:
     website_fields = {}
 
-    if len(api_creation_process.image_acquisition_protocol_uuid) > 0:
+    if (
+        api_creation_process.image_acquisition_protocol_uuid
+        and len(api_creation_process.image_acquisition_protocol_uuid) > 0
+    ):
         api_image_acquisitions = retrieve_object_list(
             api_creation_process.image_acquisition_protocol_uuid,
             api_models.ImageAcquisitionProtocol,
@@ -80,7 +83,10 @@ def transform_creation_process(
         )
         website_fields["subject"] = transform_specimen(api_specimen, context)
 
-    if len(api_creation_process.annotation_method_uuid) > 0:
+    if (
+        api_creation_process.annotation_method_uuid
+        and len(api_creation_process.annotation_method_uuid) > 0
+    ):
         api_annotation_method = retrieve_object_list(
             api_creation_process.annotation_method_uuid,
             api_models.AnnotationMethod,
@@ -90,7 +96,10 @@ def transform_creation_process(
             api_annotation_method, AnnotationMethod
         )
 
-    if len(api_creation_process.protocol_uuid) > 0:
+    if (
+        api_creation_process.protocol_uuid
+        and len(api_creation_process.protocol_uuid) > 0
+    ):
         api_protocol = retrieve_object_list(
             api_creation_process.protocol_uuid, api_models.Protocol, context
         )

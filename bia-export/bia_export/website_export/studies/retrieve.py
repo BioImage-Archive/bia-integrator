@@ -67,39 +67,40 @@ def retrieve_aggregation_fields(
             dataset_aggregation_fields = context.dataset_file_aggregate_data[
                 str(dataset.uuid)
             ]
-            dataset_aggregation_fields["file_type_aggregation"] = sorted(
-                list(dataset_aggregation_fields["file_type_aggregation"])
-            )
             if context.cache_use == CacheUse.WRITE_CACHE:
                 write_to_cache(dataset.uuid, dataset_aggregation_fields)
 
         except KeyError:
             logger.warning(f"Could not find aggregate data for dataset: {dataset.uuid}")
             dataset_aggregation_fields = {
-                "file_count": 0,
+                "file_reference_count": 0,
                 "image_count": 0,
-                "file_type_aggregation": [],
+                "file_reference_size_bytes": 0,
+                "file_type_counts": {},
             }
     else:
-        images: List[bia_data_model.Image] = get_all_api_results(
-            dataset.uuid, api_client.get_image_linking_dataset, page_size_setting=500
-        )
-        files: List[bia_data_model.FileReference] = get_all_api_results(
-            dataset.uuid,
-            api_client.get_file_reference_linking_dataset,
-            page_size_setting=500,
-        )
+        retry_count = 0
+        max_retry_count = 5
+        dataset_stats = None
+        while not dataset_stats and retry_count < max_retry_count:
+            try:
+                dataset_stats = api_client.get_dataset_stats(dataset.uuid)
+            except:
+                retry_count += 1
+                if retry_count == max_retry_count:
+                    logger.warning(
+                        f"Failed to fetch dataset stats for {dataset.uuid} after {max_retry_count} attemps"
+                    )
 
-        file_type_aggregation = set()
-        for file_reference in files:
-            file_type = Path(file_reference.file_path).suffix
-            file_type_aggregation.add(file_type)
-
-        dataset_aggregation_fields = {
-            "file_count": len(files),
-            "image_count": len(images),
-            "file_type_aggregation": sorted(list(file_type_aggregation)),
-        }
+        if dataset_stats:
+            dataset_aggregation_fields = dataset_stats.model_dump()
+        else:
+            dataset_aggregation_fields = {
+                "file_reference_count": 0,
+                "image_count": 0,
+                "file_reference_size_bytes": 0,
+                "file_type_counts": {},
+            }
         if context.cache_use == CacheUse.WRITE_CACHE:
             write_to_cache(dataset.uuid, dataset_aggregation_fields)
 
@@ -151,17 +152,28 @@ def aggregate_file_list_data(context: StudyCLIContext) -> None:
                 object_dict = json.load(object_file)
                 file_reference = api_models.FileReference(**object_dict)
             submission_dataset = str(file_reference.submission_dataset_uuid)
-            file_type = Path(file_reference.file_path).suffix
+            file_type = file_reference.format
+            file_size = file_reference.size_in_bytes
             if submission_dataset not in dataset_counts_map:
                 dataset_counts_map[submission_dataset] = {
-                    "file_count": 0,
+                    "file_reference_count": 0,
                     "image_count": 0,
-                    "file_type_aggregation": set(),
+                    "file_reference_size_bytes": 0,
+                    "file_type_counts": {},
                 }
-            dataset_counts_map[submission_dataset]["file_count"] += 1
-            dataset_counts_map[submission_dataset]["file_type_aggregation"].add(
+            dataset_counts_map[submission_dataset][
+                "file_reference_size_bytes"
+            ] += file_size
+            dataset_counts_map[submission_dataset]["file_reference_count"] += 1
+
+            if (
                 file_type
-            )
+                not in dataset_counts_map[submission_dataset]["file_type_counts"]
+            ):
+                dataset_counts_map[submission_dataset]["file_type_counts"][
+                    file_type
+                ] = 0
+            dataset_counts_map[submission_dataset]["file_type_counts"][file_type] += 1
 
         images_directory = get_source_directory(api_models.Image, context)
         image_paths = glob(str(images_directory))
@@ -173,9 +185,10 @@ def aggregate_file_list_data(context: StudyCLIContext) -> None:
             file_type = Path(file_reference.file_path).suffix
             if submission_dataset not in dataset_counts_map:
                 dataset_counts_map[submission_dataset] = {
-                    "file_count": 0,
+                    "file_reference_count": 0,
                     "image_count": 0,
-                    "file_type_aggregation": set(),
+                    "file_reference_size_bytes": 0,
+                    "file_type_counts": {},
                 }
             dataset_counts_map[submission_dataset]["image_count"] += 1
 

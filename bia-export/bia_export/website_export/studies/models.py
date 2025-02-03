@@ -17,7 +17,7 @@ from enum import Enum
 from typing import List, Optional, Type
 
 
-class Dataset(models.Dataset):
+class Dataset(models.Dataset, models.DatasetStats):
     acquisition_process: Optional[List[ImageAcquisitionProtocol]] = Field(
         description="""Processes involved in the creation of the images and files in this dataset.""",
         default_factory=list,
@@ -43,11 +43,6 @@ class Dataset(models.Dataset):
     image: List[models.Image] = Field(
         default_factory=list,
         description="List of image associated with the dataset.",
-    )
-    file_count: int = Field(description="Count of file references in the dataset")
-    image_count: int = Field(description="Count of images in the dataset")
-    file_type_aggregation: list = Field(
-        description="List of different file type extensions in the dataset."
     )
 
 
