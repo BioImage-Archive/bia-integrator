@@ -62,7 +62,7 @@ def process_submission_v4(submission, result_summary, process_files, persister):
         result_summary,
         persister=persister,
     )
-    logger.info(f"{datasets}")
+
     if process_files:
         # As of 03/02/2025 we currently allow a FileReference to link back
         # to only one Dataset using the submission_dataset_uuid field. For

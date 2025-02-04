@@ -1,5 +1,5 @@
 import logging
-from typing import List, Optional, Dict
+from typing import List, Optional
 from uuid import UUID
 
 from bia_ingest.bia_object_creation_utils import dicts_to_api_models
@@ -28,7 +28,7 @@ def get_dataset(
     bsst_title_to_bia_object_map: dict,
     result_summary: dict,
     persister: Optional[PersistenceStrategy] = None,
-) -> Dict[str, List[bia_data_model.Dataset]]:
+) -> dict:
     dataset = {
         "from_study_component": [],
         "from_annotation": [],
