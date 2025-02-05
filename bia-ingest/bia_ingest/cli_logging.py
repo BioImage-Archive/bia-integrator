@@ -21,7 +21,7 @@ class IngestionResult(CLIResult):
     ProcessingVersion: BioStudiesProcessingVersion = (
         BioStudiesProcessingVersion.FALLBACK
     )
-    
+
     Study_CreationCount: int = Field(default=0)
     Study_ValidationErrorCount: int = Field(default=0)
     Contributor_CreationCount: int = Field(default=0)
@@ -63,6 +63,12 @@ class IngestionResult(CLIResult):
 
     AnnotationMethod_CreationCount: int = Field(default=0)
     AnnotationMethod_ValidationErrorCount: int = Field(default=0)
+
+    DatasetAssociationAttribute_CreationCount: int = Field(default=0)
+    DatasetAssociationAttribute_ValidationErrorCount: int = Field(default=0)
+
+    DatasetAssociatedUUIDAttribute_CreationCount: int = Field(default=0)
+    DatasetAssociatedUUIDAttribute_ValidationErrorCount: int = Field(default=0)
 
     ImageAnalysisMethod_CreationCount: int = Field(default=0)
     ImageAnalysisMethod_ValidationErrorCount: int = Field(default=0)
@@ -119,11 +125,11 @@ def tabulate_ingestion_errors(
 
         if result.Uncaught_Exception:
             error_message += f"Uncaught exception: {result.Uncaught_Exception}"
-        
+
         warning_message = ""
         if result.Warning:
             warning_message = result.Warning
-        
+
         if (error_message == "") & (warning_message == ""):
             status = Text("Success")
             status.stylize("green")
@@ -145,7 +151,13 @@ def tabulate_ingestion_errors(
             error_message = Text(error_message)
             error_message.stylize("red")
 
-        row_info = [accession_id_key, result.ProcessingVersion, status, error_message, warning_message]
+        row_info = [
+            accession_id_key,
+            result.ProcessingVersion,
+            status,
+            error_message,
+            warning_message,
+        ]
 
         if include_object_count:
             for header in headers[5:]:

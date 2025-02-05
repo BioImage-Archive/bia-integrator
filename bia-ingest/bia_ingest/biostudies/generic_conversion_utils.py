@@ -16,6 +16,7 @@ from .api import (
 from ..config import settings, api_client
 from ..cli_logging import IngestionResult, log_failed_model_creation
 import bia_integrator_api.models as api_models
+from bia_shared_datamodels import attribute_models
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -64,9 +65,9 @@ def get_generic_section_as_dict(
     key_mapping: List[Tuple[str, str, Union[str, None, List]]],
     mapped_object: Optional[BaseModel] = None,
     valdiation_error_tracking: Optional[IngestionResult] = None,
-) -> Dict[str, Dict[str, str|List[str]] | BaseModel]:
+) -> Dict[str, Dict[str, str | List[str]] | BaseModel]:
     """
-    Map biostudies.Submission objects to dict or an object 
+    Map biostudies.Submission objects to dict or an object
     """
     if type(root) is Submission:
         sections = find_sections_recursive(root.section, section_name, [])

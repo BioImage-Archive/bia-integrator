@@ -497,3 +497,35 @@ def get_attribute_dict(completeness=Completeness.COMPLETE) -> dict:
         "value": {},
     }
     return attribute
+
+
+def get_dataset_associated_uuid_attribute(completeness=Completeness.COMPLETE) -> dict:
+    attribute = {
+        "provenance": semantic_models.AttributeProvenance.bia_ingest,
+        "name": "protocol_uuid",
+        "value": {"protocol_uuid": [str(get_protocol_dict()["uuid"])]},
+    }
+    return attribute
+
+
+def get_dataset_associatation_attribute(completeness=Completeness.COMPLETE) -> dict:
+    attribute = {
+        "provenance": semantic_models.AttributeProvenance.bia_ingest,
+        "name": "associations",
+        "value": {"associations": []},
+    }
+    if completeness == Completeness.COMPLETE:
+        attribute |= {
+            "value": {
+                "associations": [
+                    {
+                        "image_analysis": "image_analysis_title",
+                        "image_correlation": "image_correlation_title",
+                        "biosample": "biosample_title",
+                        "image_acquisition": "biosample_title",
+                        "specimen": "specimen_title",
+                    }
+                ]
+            }
+        }
+    return attribute
