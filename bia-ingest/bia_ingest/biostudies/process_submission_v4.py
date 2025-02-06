@@ -64,15 +64,12 @@ def process_submission_v4(submission, result_summary, process_files, persister):
     )
 
     if process_files:
-        # As of 03/02/2025 we currently allow a FileReference to link back
-        # to only one Dataset using the submission_dataset_uuid field. For
-        # the purposes of image conversion only study component datasets
-        # are currently used.
-        #
-        # The submission_dataset_uuid value is overwritten in process_files.
-        # Therefore, to ensure study component datasets are preferred over
-        # non study component datasets (e.g. annotation) when both refer to
-        # the same file, we process non study component datasets first.
+        # Currently (03/02/2025) Image conversion does not create images for annotation datasets
+        # In cases where a user has provided confusing connections between their files and datasets
+        # i.e. through multiple datasets having file lists which reference the same file (often re-using the same file list)
+        # we would prefer the created file reference to link to non-annotation dataset, since we can then use them for image conversion.
+        # By processing file lists from Study Component sections last, we overwrite the submission_dataset_uuid of any duplicate created file reference.
+        # We do not have a particular preference order between datasets that were all created from Study Components.
         for datasets_key, datasets_value in datasets.items():
             if datasets_key != "from_study_component" and datasets.get(datasets_key):
                 get_file_reference_by_dataset(
