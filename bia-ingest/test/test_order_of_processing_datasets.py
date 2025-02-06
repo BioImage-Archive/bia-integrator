@@ -59,7 +59,7 @@ def submission_where_same_file_is_referred_to_in_annotation_fl_and_a_study_compo
 
 
 @pytest.fixture
-def expected_file_references_where_same_file_list_is_used_in_annotation_and_a_study_component(
+def only_study_component_file_references(
     test_submission,
     mock_request_get,
 ) -> dict:
@@ -89,7 +89,7 @@ def expected_file_references_where_same_file_list_is_used_in_annotation_and_a_st
 def expected_file_references_where_same_file_is_referred_to_in_annotation_fl_and_a_study_component_fl(
     test_submission,
     mock_request_get,
-    expected_file_references_where_same_file_list_is_used_in_annotation_and_a_study_component,
+    only_study_component_file_references,
 ) -> dict:
     datasets = mock_dataset.get_dataset()
 
@@ -101,7 +101,7 @@ def expected_file_references_where_same_file_is_referred_to_in_annotation_fl_and
         },
     )
 
-    file_references = expected_file_references_where_same_file_list_is_used_in_annotation_and_a_study_component.copy()
+    file_references = only_study_component_file_references.copy()
     file_references.update({f.uuid: f for f in file_references_annotation})
 
     return file_references
@@ -109,7 +109,7 @@ def expected_file_references_where_same_file_is_referred_to_in_annotation_fl_and
 
 def test_order_of_processing_datasets_where_same_file_list_is_used_in_annotation_and_a_study_component(
     submission_where_same_file_list_is_used_in_annotation_and_a_study_component,
-    expected_file_references_where_same_file_list_is_used_in_annotation_and_a_study_component,
+    only_study_component_file_references,
     ingestion_result_summary,
     persister,
     tmp_path,
@@ -123,7 +123,7 @@ def test_order_of_processing_datasets_where_same_file_list_is_used_in_annotation
     submission = (
         submission_where_same_file_list_is_used_in_annotation_and_a_study_component
     )
-    expected_file_references = expected_file_references_where_same_file_list_is_used_in_annotation_and_a_study_component
+    expected_file_references = only_study_component_file_references
     process_submission_v4(
         submission=submission,
         result_summary=ingestion_result_summary,
@@ -142,10 +142,7 @@ def test_order_of_processing_datasets_where_same_file_list_is_used_in_annotation
     assert len(created_file_references) == len(expected_file_references)
     for created_file_reference in created_file_references:
         expected_file_reference = expected_file_references[created_file_reference.uuid]
-        assert (
-            expected_file_reference.submission_dataset_uuid
-            == created_file_reference.submission_dataset_uuid
-        )
+        assert expected_file_reference == created_file_reference
 
 
 def test_order_of_processing_datasets_where_same_file_is_referred_to_in_annotation_fl_and_a_study_component_fl(
@@ -181,7 +178,4 @@ def test_order_of_processing_datasets_where_same_file_is_referred_to_in_annotati
     assert len(created_file_references) == len(expected_file_references)
     for created_file_reference in created_file_references:
         expected_file_reference = expected_file_references[created_file_reference.uuid]
-        assert (
-            expected_file_reference.submission_dataset_uuid
-            == created_file_reference.submission_dataset_uuid
-        )
+        assert expected_file_reference == created_file_reference
