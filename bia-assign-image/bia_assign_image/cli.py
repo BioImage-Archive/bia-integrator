@@ -1,4 +1,5 @@
 from typing import List, Any
+from pathlib import Path
 from typing import Annotated
 import typer
 from bia_shared_datamodels import bia_data_model, uuid_creation, semantic_models
@@ -11,6 +12,7 @@ from bia_assign_image import (
     image,
     specimen,
     creation_process,
+    propose,
 )
 from bia_assign_image.image_representation import get_image_representation
 from bia_assign_image.config import settings, api_client
@@ -62,7 +64,7 @@ def assign(
         PersistenceMode, typer.Option(case_sensitive=False)
     ] = PersistenceMode.api,
     dryrun: Annotated[bool, typer.Option()] = False,
-) -> None:
+) -> str:
     persister = persistence_strategy_factory(
         persistence_mode,
         output_dir_base=settings.bia_data_dir,
@@ -173,6 +175,7 @@ def assign(
         logger.info(
             f"Generated bia_data_model.Image object {bia_image.uuid} and persisted to {persistence_mode}"
         )
+    return str(bia_image.uuid)
 
 
 @representations_app.command(help="Create specified representations")
@@ -237,6 +240,55 @@ def create(
             else:
                 message = f"WARNING: Could NOT create image representation of use type {representation_use_type.value} for bia_data_model.Image {bia_image.uuid} of {accession_id}"
                 logger.warning(message)
+
+
+@app.command(help="Assign images from a proposal file")
+def assign_from_proposal(
+    proposal_path: Annotated[Path, typer.Argument(help="Path to the proposal file")],
+    persistence_mode: Annotated[
+        PersistenceMode, typer.Option(case_sensitive=False)
+    ] = PersistenceMode.api,
+    dryrun: Annotated[bool, typer.Option()] = False,
+) -> None:
+    """Process a proposal file and assign the file references to images"""
+    proposals = propose.read_proposals(proposal_path)
+
+
+    for p in proposals:
+        image_uuid = assign(
+            accession_id=p['accession_id'],
+            file_reference_uuids=[p['uuid']],
+            persistence_mode=persistence_mode,
+            dryrun=dryrun
+        )
+        
+        if not dryrun:
+            # Create default representation
+            create(
+                accession_id=p['accession_id'],
+                image_uuid_list=[image_uuid],
+                persistence_mode=persistence_mode
+            )
+
+
+@app.command(help="Propose file references to convert for an accession")
+def propose_images(
+    accession_ids: Annotated[
+        List[str], typer.Argument(help="Accession IDs to process")
+    ],
+    output_path: Annotated[Path, typer.Argument(help="Path to write the proposals")],
+    max_items: Annotated[int, typer.Option(help="Maximum number of items to propose")] = 5,
+    append: Annotated[bool, typer.Option(help="Append to existing file instead of overwriting")] = True,
+) -> None:
+    """Propose file references to convert for the given accession IDs"""
+    for accession_id in accession_ids:
+        count = propose.write_convertible_file_references_for_accession_id(
+            accession_id,
+            output_path,
+            max_items=max_items,
+            append=append
+        )
+        logger.info(f"Wrote {count} proposals for {accession_id} to {output_path}")
 
 
 @app.callback()

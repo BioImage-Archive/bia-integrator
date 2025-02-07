@@ -24,6 +24,8 @@ class AttributeProvenance(str, Enum):
 
     bia_conversion = "bia_conversion"
 
+    bia_curation = "bia_curation"
+
 
 class Attribute(ConfiguredBaseModel):
     provenance: AttributeProvenance = Field(
