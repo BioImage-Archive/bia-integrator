@@ -28,24 +28,29 @@ def get_dataset(
     bsst_title_to_bia_object_map: dict,
     result_summary: dict,
     persister: Optional[PersistenceStrategy] = None,
-) -> List[bia_data_model.Dataset]:
-
-    dataset = []
-    dataset += get_dataset_dict_from_study_component(
+) -> dict:
+    dataset = {
+        "from_study_component": [],
+        "from_annotation": [],
+        "from_other": [],
+    }
+    dataset["from_study_component"] = get_dataset_dict_from_study_component(
         submission, study_uuid, bsst_title_to_bia_object_map
     )
-    dataset += get_dataset_dict_from_annotation(
+    dataset["from_annotation"] = get_dataset_dict_from_annotation(
         submission, study_uuid, bsst_title_to_bia_object_map
     )
 
-    datasets = dicts_to_api_models(
-        dataset,
-        bia_data_model.Dataset,
-        result_summary[submission.accno],
-    )
+    datasets = {}
+    for dataset_type, dataset_value in dataset.items():
+        datasets[dataset_type] = dicts_to_api_models(
+            dataset_value,
+            bia_data_model.Dataset,
+            result_summary[submission.accno],
+        )
 
-    if persister and datasets:
-        persister.persist(datasets)
+        if persister and datasets.get(dataset_type):
+            persister.persist(datasets[dataset_type])
 
     return datasets
 
@@ -55,7 +60,6 @@ def get_dataset_dict_from_study_component(
     study_uuid: UUID,
     bsst_title_to_bia_object_map: dict,
 ) -> list[dict]:
-
     study_components = find_sections_recursive(submission.section, ["Study Component"])
 
     model_dicts = []
@@ -146,12 +150,10 @@ def get_uuid_attribute_from_associations(
     associations: List[Association],
     object_map: dict[str, dict[str, bia_data_model.DocumentMixin]],
 ):
-
     bio_sample_uuids = []
     specimen_prepartion_protocol_uuids = []
     image_acquisition_uuids = []
     for association in associations:
-
         if association.biosample:
             biosample_with_gp_key = association.biosample + "." + association.specimen
             if biosample_with_gp_key in object_map["bio_sample"]:
@@ -267,7 +269,6 @@ def store_annotation_method_in_attribute(
 def get_image_analysis_method_from_associations(
     associations: List[Association], object_map: dict[str, dict]
 ):
-
     image_analysis = []
     for association_key, method_object in object_map["image_analysis_method"].items():
         add_object = False
