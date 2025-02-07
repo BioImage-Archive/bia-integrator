@@ -6,20 +6,40 @@ This sub-package assigns file reference(s) to BIA Image objects and creates imag
 Install the project using poetry.
 
 ## Usage
-This package has 2 cli applications:
+This package has the following CLI commands:
+ * **propose-images**: generate proposals for convertible images from accessions
+ * **assign-from-proposal**: process a proposal file to create images and representations
  * **assign**: used to assign file reference(s) to BIA Image objects
- * **representations**: used to create image representation objects (without conversion of images) from BIA Image objects.
+ * **representations**: used to create image representation objects (without conversion of images) from BIA Image objects
 
 The artefacts created are saved to the API by default. The current version of the cli allows saving
-to disk using the option `--persistence-mode disk` on either command. However, this will be deprecated in
+to disk using the option `--persistence-mode disk` on any command. However, this will be deprecated in
 a future revision.
-## Assigning file reference(s) to BIA Image objects (in other words, create a BIA Image object for those file reference(s))
-To create a BIA Image of a set of file references run:
-``` sh
+
+## Proposing and Processing Images
+The recommended workflow is to first generate proposals for which images to convert:
+
+```sh
+poetry run bia-assign-image propose-images S-BIAD1 proposals.txt --max-items 5
+```
+
+This will analyze the accession and suggest up to 5 file references to convert, writing them to proposals.txt.
+You can specify multiple accession IDs and use --append to add to an existing proposal file.
+
+Then process the proposals to create images and representations:
+
+```sh
+poetry run bia-assign-image assign-from-proposal proposals.txt
+```
+
+This will create BIA Image objects and default representations for each proposed file reference.
+## Manual Assignment
+To directly create a BIA Image from file references without using proposals, run:
+```sh
 poetry run bia-assign-image assign <STUDY ACCESSION ID> <LIST OF FILE REFERENCE UUIDS>
 ```
 E.g. Assuming the study S-BIAD1285 has been ingested:
-```
+```sh
 poetry run bia-assign-image assign S-BIAD1285 b768fb72-7ea2-4b80-b54d-bdf5ca280bfd
 ```
 
