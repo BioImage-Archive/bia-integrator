@@ -64,7 +64,7 @@ def assign(
         PersistenceMode, typer.Option(case_sensitive=False)
     ] = PersistenceMode.api,
     dryrun: Annotated[bool, typer.Option()] = False,
-) -> None:
+) -> str:
     persister = persistence_strategy_factory(
         persistence_mode,
         output_dir_base=settings.bia_data_dir,
@@ -175,6 +175,7 @@ def assign(
         logger.info(
             f"Generated bia_data_model.Image object {bia_image.uuid} and persisted to {persistence_mode}"
         )
+    return str(bia_image.uuid)
 
 
 @representations_app.command(help="Create specified representations")
@@ -259,12 +260,21 @@ def assign_from_proposal(
         
     for accession_id, file_refs in by_accession.items():
         logger.info(f"Processing {len(file_refs)} file references for {accession_id}")
-        assign(
+        image_uuid = assign(
             accession_id=accession_id,
             file_reference_uuids=[" ".join(file_refs)],
             persistence_mode=persistence_mode,
             dryrun=dryrun
         )
+        
+        if not dryrun:
+            # Create default representation
+            create(
+                accession_id=accession_id,
+                image_uuid_list=[image_uuid],
+                persistence_mode=persistence_mode,
+                dryrun=dryrun
+            )
 
 
 @app.command(help="Propose file references to convert for an accession")
