@@ -158,3 +158,27 @@ def write_convertible_file_references_for_accession_id(
         fid.writelines("\n")
 
     return len(indicies_to_select)
+
+
+def read_proposals(proposal_path: Path) -> List[Dict]:
+    """Read proposals from a tab-separated file
+    
+    Returns a list of dicts containing file reference info
+    """
+    proposals = []
+    with proposal_path.open('r') as f:
+        # Skip header
+        next(f)
+        for line in f:
+            if not line.strip():
+                continue
+            accession_id, study_uuid, name, file_ref_uuid, size, human_size = line.strip().split('\t')
+            proposals.append({
+                'accession_id': accession_id,
+                'study_uuid': study_uuid,
+                'name': name, 
+                'uuid': file_ref_uuid,
+                'size_in_bytes': int(size),
+                'size_human_readable': human_size
+            })
+    return proposals

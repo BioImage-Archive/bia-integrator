@@ -241,6 +241,32 @@ def create(
                 logger.warning(message)
 
 
+@app.command(help="Assign images from a proposal file")
+def assign_from_proposal(
+    proposal_path: Annotated[Path, typer.Argument(help="Path to the proposal file")],
+    persistence_mode: Annotated[
+        PersistenceMode, typer.Option(case_sensitive=False)
+    ] = PersistenceMode.api,
+    dryrun: Annotated[bool, typer.Option()] = False,
+) -> None:
+    """Process a proposal file and assign the file references to images"""
+    proposals = propose.read_proposals(proposal_path)
+    
+    # Group by accession ID since assign needs to work on one accession at a time
+    by_accession = {}
+    for p in proposals:
+        by_accession.setdefault(p['accession_id'], []).append(p['uuid'])
+        
+    for accession_id, file_refs in by_accession.items():
+        logger.info(f"Processing {len(file_refs)} file references for {accession_id}")
+        assign(
+            accession_id=accession_id,
+            file_reference_uuids=[" ".join(file_refs)],
+            persistence_mode=persistence_mode,
+            dryrun=dryrun
+        )
+
+
 @app.command(help="Propose file references to convert for an accession")
 def propose_files(
     accession_id: Annotated[str, typer.Argument(help="The accession ID to process")],
