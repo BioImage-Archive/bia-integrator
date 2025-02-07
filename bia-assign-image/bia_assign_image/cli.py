@@ -1,4 +1,5 @@
 from typing import List, Any
+from pathlib import Path
 from typing import Annotated
 import typer
 from bia_shared_datamodels import bia_data_model, uuid_creation, semantic_models
@@ -11,6 +12,7 @@ from bia_assign_image import (
     image,
     specimen,
     creation_process,
+    propose,
 )
 from bia_assign_image.image_representation import get_image_representation
 from bia_assign_image.config import settings, api_client
@@ -237,6 +239,23 @@ def create(
             else:
                 message = f"WARNING: Could NOT create image representation of use type {representation_use_type.value} for bia_data_model.Image {bia_image.uuid} of {accession_id}"
                 logger.warning(message)
+
+
+@app.command(help="Propose file references to convert for an accession")
+def propose_files(
+    accession_id: Annotated[str, typer.Argument(help="The accession ID to process")],
+    output_path: Annotated[Path, typer.Argument(help="Path to write the proposals")],
+    max_items: Annotated[int, typer.Option(help="Maximum number of items to propose")] = 5,
+    append: Annotated[bool, typer.Option(help="Append to existing file instead of overwriting")] = True,
+) -> None:
+    """Propose file references to convert for the given accession ID"""
+    count = propose.write_convertible_file_references_for_accession_id(
+        accession_id,
+        output_path,
+        max_items=max_items,
+        append=append
+    )
+    logger.info(f"Wrote {count} proposals to {output_path}")
 
 
 @app.callback()
