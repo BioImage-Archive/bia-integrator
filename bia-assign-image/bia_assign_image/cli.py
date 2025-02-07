@@ -272,20 +272,23 @@ def assign_from_proposal(
 
 
 @app.command(help="Propose file references to convert for an accession")
-def propose_files(
-    accession_id: Annotated[str, typer.Argument(help="The accession ID to process")],
+def propose_images(
+    accession_ids: Annotated[
+        List[str], typer.Argument(help="Accession IDs to process")
+    ],
     output_path: Annotated[Path, typer.Argument(help="Path to write the proposals")],
     max_items: Annotated[int, typer.Option(help="Maximum number of items to propose")] = 5,
     append: Annotated[bool, typer.Option(help="Append to existing file instead of overwriting")] = True,
 ) -> None:
-    """Propose file references to convert for the given accession ID"""
-    count = propose.write_convertible_file_references_for_accession_id(
-        accession_id,
-        output_path,
-        max_items=max_items,
-        append=append
-    )
-    logger.info(f"Wrote {count} proposals to {output_path}")
+    """Propose file references to convert for the given accession IDs"""
+    for accession_id in accession_ids:
+        count = propose.write_convertible_file_references_for_accession_id(
+            accession_id,
+            output_path,
+            max_items=max_items,
+            append=append
+        )
+        logger.info(f"Wrote {count} proposals for {accession_id} to {output_path}")
 
 
 @app.callback()
