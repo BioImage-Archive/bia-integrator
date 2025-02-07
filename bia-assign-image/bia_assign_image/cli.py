@@ -252,17 +252,12 @@ def assign_from_proposal(
 ) -> None:
     """Process a proposal file and assign the file references to images"""
     proposals = propose.read_proposals(proposal_path)
-    
-    # Group by accession ID since assign needs to work on one accession at a time
-    by_accession = {}
+
+
     for p in proposals:
-        by_accession.setdefault(p['accession_id'], []).append(p['uuid'])
-        
-    for accession_id, file_refs in by_accession.items():
-        logger.info(f"Processing {len(file_refs)} file references for {accession_id}")
         image_uuid = assign(
-            accession_id=accession_id,
-            file_reference_uuids=[" ".join(file_refs)],
+            accession_id=p['accession_id'],
+            file_reference_uuids=[p['uuid']],
             persistence_mode=persistence_mode,
             dryrun=dryrun
         )
@@ -270,10 +265,9 @@ def assign_from_proposal(
         if not dryrun:
             # Create default representation
             create(
-                accession_id=accession_id,
+                accession_id=p['accession_id'],
                 image_uuid_list=[image_uuid],
-                persistence_mode=persistence_mode,
-                dryrun=dryrun
+                persistence_mode=persistence_mode
             )
 
 
