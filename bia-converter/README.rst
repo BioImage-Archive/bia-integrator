@@ -25,7 +25,24 @@ INTERACTIVE_DISPLAY -> THUMBNAIL
 Setup
 -----
 
-TBC
+1. Install the project using poetry.
+2. Configure your environment. Either create a .env file from .env_template in this directory or set environment variables for the items in .env_template
+    * For getting objects from the API set:
+        - api_base_url
+        - bia_api_username
+        - bia_api_password
+    * For caching downloaded/converted images locally the default location is `~/.cache/bia-converter/` which can be changed by setting `cache_root_dirpath`
+    * For conversion to zarr format [bioformats2raw](https://github.com/glencoesoftware/bioformats2raw) is used. Set:
+        - bioformats2raw_java_home
+        - bioformats2raw_bin
+    * For upload to S3 set:
+        - endpoint_url
+        - bucket_name
+
+The AWS credentails for the endpoint also need to be set. This is done using exclusively by environment variables. Either:
+* AWS_ACCESS_KEY_ID *and* AWS_SECRET_ACCESS_KEY
+<br>OR
+* AWS_SHARED_CREDENTIALS_FILE with optional AWS_PROFILE and/or AWS_CONFIG_FILE
 
 TODO:
 
