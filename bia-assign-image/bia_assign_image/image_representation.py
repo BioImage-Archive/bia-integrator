@@ -36,6 +36,7 @@ def get_image_representation(
     #   - thumbnail and static display are png
     #   - interactive display is ome.zarr
     if use_type == semantic_models.ImageRepresentationUseType.UPLOADED_BY_SUBMITTER:
+        # TODO: Revisit this block of code when we start many file_refs->one_image
         assert len(file_references) == 1
         image_format = get_image_extension(file_references[0].file_path)
         total_size_in_bytes = file_references[0].size_in_bytes
@@ -71,7 +72,9 @@ def get_image_representation(
         "image_format": image_format,
     }
 
-    return bia_data_model.ImageRepresentation.model_validate(model_dict)
+    model = bia_data_model.ImageRepresentation.model_validate(model_dict)
+    model.attribute = image.attribute
+    return model
 
 
 # Copied from bia_converter_light.utils

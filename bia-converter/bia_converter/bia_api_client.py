@@ -43,5 +43,5 @@ def store_object_in_api_idempotent(model_object):
     try:
         get_func(model_object.uuid)
     except api_exceptions.NotFoundException:
-        logger.info(f"Storing {model_name} in API")
+        logger.info(f"Storing {model_name} with UUID {model_object.uuid} in API")
         post_func(model_object)

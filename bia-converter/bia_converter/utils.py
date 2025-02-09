@@ -1,4 +1,5 @@
 import os
+import json
 import logging
 from uuid import UUID
 from typing import Union
@@ -83,3 +84,27 @@ def get_dir_size(path: Union[str, Path]) -> int:
                 continue
 
     return total_size
+
+
+def append_slash_zero_to_zarr_path(zarr_path: Path) -> bool:
+    """Check if directory contains '/0' dir for a bioformats2raw converted multiscales image
+
+    When bioformats2raw converts a multiscales image, its root for visualisation purposes should
+    be .zarr/0.
+
+    This function checks if a '/0' should be appended to the current zarr path (on disk).
+    """
+
+    base_zattrs_path = zarr_path / ".zattrs"
+    base_zattrs = json.loads(base_zattrs_path.read_text())
+    # For multiscales converted by bioformats2raw, we expect zattrs to be the dictionary below
+    if base_zattrs != {"bioformats2raw.layout": 3}:
+        return False
+    level_zero_zattrs_path = zarr_path / "0" / ".zattrs"
+    if not level_zero_zattrs_path.is_file():
+        return False
+    level_zero_zattrs = json.loads(level_zero_zattrs_path.read_text())
+    if "multiscales" in level_zero_zattrs:
+        return True
+
+    return False
