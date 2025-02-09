@@ -37,7 +37,7 @@ def get_image_representation(
     #   - interactive display is ome.zarr
     if use_type == semantic_models.ImageRepresentationUseType.UPLOADED_BY_SUBMITTER:
         # TODO: Revisit this block of code when we start many file_refs->one_image
-        assert len(file_references) == 1
+        # assert len(file_references) == 1
         image_format = get_image_extension(file_references[0].file_path)
         total_size_in_bytes = file_references[0].size_in_bytes
     else:
