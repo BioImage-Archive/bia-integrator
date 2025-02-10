@@ -59,8 +59,16 @@ jobs:
         uses: abatilo/actions-poetry@v2
         with:
           poetry-version: ${{ matrix.poetry-version }}
-      - name: run api compose makefile
-        run: docker compose --profile bia-integrator-api up --build --force-recreate --remove-orphans --abort-on-container-exit
+      - name: Set up Docker on macOS
+        if: runner.os == 'macOS'
+        run: |
+          brew install docker colima
+          colima start
+      - name: Verify Docker installation
+        run: docker --version
+      - name: Docker Compose Up
+        run: |
+          docker compose up -d --build     
       - name: set up poetry in root of project
         working-directory: ${{ matrix.project }}
         run: poetry env use python
@@ -70,4 +78,9 @@ jobs:
         run: poetry build
       - name: Run pytest
         run: poetry run pytest
+      # Always cleanup - even for cancelled jobs
+      - name: Docker Compose Down
+        run: |
+          docker compose down
+        if: ${{ always() }}
 
