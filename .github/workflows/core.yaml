@@ -52,17 +52,15 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1 # Set up Docker Buildx for building and pushing Docker images
-      - name: Cache Docker layers
-        uses: actions/cache@v4
+      - uses: actions/setup-python@v4
         with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
-      - name: run makefile
-        run: make api-for-testing
+          python-version: ${{ matrix.python-version }}
+      - name: Run poetry image
+        uses: abatilo/actions-poetry@v2
+        with:
+          poetry-version: ${{ matrix.poetry-version }}
+      - name: run api compose makefile
+        run: docker compose --profile bia-integrator-api up --build --force-recreate --remove-orphans --abort-on-container-exit
       - name: set up poetry in root of project
         working-directory: ${{ matrix.project }}
         run: poetry env use python
