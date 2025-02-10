@@ -50,6 +50,9 @@ jobs:
             bia-export,
           ]
     runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: ${{ matrix.project }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
@@ -62,18 +65,16 @@ jobs:
       - name: Set up Docker on macOS
         if: runner.os == 'macOS'
         run: |
-          brew install docker colima
-          colima start
-      - name: Verify Docker installation
+          brew install docker 
+          brew services start docker
+      - name: Verify Docker is installed
         run: docker --version
       - name: Docker Compose Up
+        run: docker compose up -d --build    
+      - name: set up poetry
         run: |
-          docker compose up -d --build     
-      - name: set up poetry in root of project
-        working-directory: ${{ matrix.project }}
-        run: poetry env use python
-      - name: install poetry
-        run: poetry install
+          poetry env use python
+          poetry install
       - name: Check to see if poetry can build
         run: poetry build
       - name: Run pytest
