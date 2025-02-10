@@ -1,4 +1,4 @@
-.PHONY: api.version client.generate bia-export.test
+.PHONY: api.version client.generate api-for-testing
 
 api.version:
 	@echo $(shell grep '^version =' api/pyproject.toml | awk -F\" '{print $$2}')
@@ -13,6 +13,5 @@ client.examples:
 	docker compose --profile client_examples up --build --force-recreate --remove-orphans --abort-on-container-exit
 
 
-# Note that the github CI is set up to expect Make commands for testing of the form: make ${{matrix.project}}.test
-bia-export.test:
-	docker compose --profile export_test up --build --force-recreate --remove-orphans --abort-on-container-exit
+api-for-testing:
+	docker compose --profile bia-integrator-api up --build --force-recreate --remove-orphans --abort-on-container-exit

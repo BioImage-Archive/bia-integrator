@@ -44,11 +44,7 @@ jobs:
       matrix:
         python-version: ["3.11"]
         poetry-version: ["1.4.2"]
-        # NOTE - WE DO NOT TEST ON MAC/WINDOWS!!
-        # The current tests dockerize the test runner, so there is not much point on testing across platforms
-        # TODO: we want to change this to more closely follow how users actually run tests (setting up API first, then running tests)
-        # Ticket: https://app.clickup.com/t/8697kxtgx
-        os: [ubuntu-20.04] 
+        os: [ubuntu-20.04, macos-latest, windows-latest] 
         project:
           [
             bia-export,
@@ -66,5 +62,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-buildx-
       - name: run makefile
-        run: make ${{matrix.project}}.test
+        run: make api-for-testing
+      - name: set up poetry in root of project
+        working-directory: ${{ matrix.project }}
+        run: poetry env use python
+      - name: install poetry
+        run: poetry install
+      - name: Check to see if poetry can build
+        run: poetry build
+      - name: Run pytest
+        run: poetry run pytest
 

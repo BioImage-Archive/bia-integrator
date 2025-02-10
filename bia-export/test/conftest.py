@@ -1,7 +1,6 @@
-from dotenv import load_dotenv
 from pathlib import Path
 import pytest
-from bia_test_data.data_to_api import add_objects_to_api
+from bia_test_data.data_to_api import add_objects_to_api, get_client_with_retries
 from bia_export.settings import Settings
 from pathlib import Path
 import json
@@ -28,4 +27,7 @@ def data_in_api():
                 json_dict = json.load(object_file)
                 object_list.append(json_dict)
 
-    add_objects_to_api(setttings.api_base_url, object_list)
+
+    private_client = get_client_with_retries(setttings.api_base_url)
+
+    add_objects_to_api(private_client, object_list)

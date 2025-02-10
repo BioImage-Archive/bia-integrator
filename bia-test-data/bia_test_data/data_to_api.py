@@ -1,4 +1,6 @@
 from pathlib import Path
+from time import sleep
+from urllib3.exceptions import MaxRetryError
 from dotenv import dotenv_values
 from bia_integrator_api.api import PrivateApi
 from bia_integrator_api import Configuration, ApiClient, exceptions
@@ -39,6 +41,26 @@ def get_object_creation_client(
     api_config.access_token = access_token.access_token
 
     return private_api
+
+
+def get_client_with_retries(
+    api_base_url: str, wait_seconds: int = 5, max_retries: int = 5
+) -> PrivateApi:
+    private_client_retry_count = 0
+    private_client = None
+    while not private_client and private_client_retry_count < max_retries:
+        try:
+            private_client = get_object_creation_client(api_base_url)
+        except MaxRetryError:
+            private_client_retry_count += 1
+            sleep(wait_seconds)
+
+    if private_client_retry_count == max_retries:
+        raise MaxRetryError(
+            "Attempted to create private client, but could not connect to API."
+        )
+
+    return private_client
 
 
 def calculate_dependency_chain_length(
@@ -207,9 +229,7 @@ def order_object_for_api(object_list: list[dict]):
     return ordered_object_list
 
 
-def add_objects_to_api(api_base_url, object_list: list[dict]):
-    private_client = get_object_creation_client(api_base_url)
-
+def add_objects_to_api(private_client, object_list: list[dict]):
     ordered_object_list = order_object_for_api(object_list)
 
     for bia_object_dict in ordered_object_list:
