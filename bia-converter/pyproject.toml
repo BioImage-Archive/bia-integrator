@@ -28,6 +28,9 @@ tensorstore = "^0.1.71"
 bia-converter = "bia_converter.cli:app"
 zarr2zarr = "bia_converter.zarr2zarr:app"
 
+[tool.poetry.group.dev.dependencies]
+ipython = "^8.32.0"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
