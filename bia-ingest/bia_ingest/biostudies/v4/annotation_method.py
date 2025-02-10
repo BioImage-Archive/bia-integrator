@@ -63,6 +63,7 @@ def extract_annotation_method_dicts(
         ("title_id", "Title", ""),
         ("annotation_criteria", "Annotation Criteria", None),
         ("annotation_coverage", "Annotation Coverage", None),
+        ("protocol_description", "Annotation Method", "")
     ]
 
     model_dict_map = {}
@@ -78,9 +79,6 @@ def extract_annotation_method_dicts(
         # annotation_source_indicator
         # spatial_information
         # transformation_description
-
-        model_dict["protocol_description"] = attr_dict.get("Annotation Method", "")
-
         
         annotation_types = attr_dict.get("Annotation Type", "")
         if annotation_types:
