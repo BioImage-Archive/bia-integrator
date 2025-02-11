@@ -76,6 +76,9 @@ def convert_interactive_display_to_thumbnail(
     base_image_rep = create_image_representation_object(
         input_image, ".png", "THUMBNAIL"
     )
+    logger.info(
+        f"Created THUMBNAIL image representation with uuid: {base_image_rep.uuid}"
+    )
     w, h = dims
     base_image_rep.size_x = w
     base_image_rep.size_y = h
@@ -108,6 +111,9 @@ def convert_interactive_display_to_static_display(
 
     base_image_rep = create_image_representation_object(
         input_image, ".png", "STATIC_DISPLAY"
+    )
+    logger.info(
+        f"Created STATIC_DISPLAY image representation with uuid: {base_image_rep.uuid}"
     )
     w, h = dims
     base_image_rep.size_x = w
@@ -360,6 +366,9 @@ def convert_uploaded_by_submitter_to_interactive_display(
     image = api_client.get_image(input_image_rep.representation_of_uuid)
     base_image_rep = create_image_representation_object(
         image, ".ome.zarr", "INTERACTIVE_DISPLAY"
+    )
+    logger.info(
+        f"Created INTERACTIVE_DISPLAY image representation with uuid: {base_image_rep.uuid}"
     )
 
     # Get the file references we'll need
