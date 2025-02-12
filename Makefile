@@ -11,7 +11,3 @@ client.generate:
 
 client.examples:
 	docker compose --profile client_examples up --build --force-recreate --remove-orphans --abort-on-container-exit
-
-
-api-for-testing:
-	docker compose --profile bia-integrator-api up --build --force-recreate --remove-orphans --abort-on-container-exit
