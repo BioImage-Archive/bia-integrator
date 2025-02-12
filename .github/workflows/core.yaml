@@ -69,7 +69,7 @@ jobs:
           brew install docker
           python -m pip install --upgrade pip
           pip install python-on-whales
-          python -c "from python_on_whales import docker; docker.compose.up(build=True, force_recreate=True, remove_orphans=True, detatch=True, profiles=['bia-integrator-api'])"
+          python -c "from python_on_whales import docker; docker.compose.up(build=True, force_recreate=True, remove_orphans=True, detach=True, profiles=['bia-integrator-api'])"
       - name: Run docker normally if on linux
         if: runner.os == 'Linux'
         run:  docker compose up -d --build   
