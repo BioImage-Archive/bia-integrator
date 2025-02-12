@@ -8,7 +8,7 @@ jobs:
       matrix:
         python-version: ["3.11"]
         poetry-version: ["1.4.2"]
-        os: [ubuntu-20.04, macos-latest, windows-latest]
+        os: [ubuntu-20.04, macos-13, windows-latest]
         project:
           [
             bia-ingest,
