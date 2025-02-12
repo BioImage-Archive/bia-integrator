@@ -9,8 +9,7 @@ from glob import glob
 
 
 def pytest_configure(config: pytest.Config):
-    if not os.environ.get("API_BASE_URL", None):
-        os.environ.setdefault("API_BASE_URL", "http://localhost:8080")
+    os.environ.setdefault("API_BASE_URL", "http://localhost:8080")
 
 
 @pytest.fixture(scope="session")

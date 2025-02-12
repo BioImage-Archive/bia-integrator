@@ -27,6 +27,11 @@ website = typer.Typer()
 app.add_typer(website, name="website")
 
 
+DEFAULT_WEBSITE_STUDY_FILE_NAME = "bia-study-metadata.json"
+DEFAULT_WEBSITE_IMAGE_FILE_NAME = "bia-image-metadata.json"
+DEFAULT_WEBSITE_DATASET_FOR_IMAGE_FILE_NAME = "bia-dataset-metadata-for-images.json"
+
+
 @website.command("all")
 def generate_all(
     id_list: Annotated[
@@ -47,6 +52,13 @@ def generate_all(
             "-c",
         ),
     ] = None,
+    output_directory: Annotated[
+        Optional[Path],
+        typer.Option(
+            "--out_dir",
+            "-o",
+        ),
+    ] = None,
 ):
     settings = Settings()
 
@@ -54,11 +66,11 @@ def generate_all(
         id_list = get_study_ids(root_directory)
 
     logger.info("Exporting study pages")
-    website_study(id_list=id_list, root_directory=root_directory, cache=cache)
+    website_study(id_list=id_list, root_directory=root_directory, cache=cache, output_filename=(output_directory / DEFAULT_WEBSITE_STUDY_FILE_NAME if output_directory else None))
     logger.info("Exporting image pages")
-    website_image(id_list=id_list, root_directory=root_directory)
+    website_image(id_list=id_list, root_directory=root_directory, output_filename=(output_directory / DEFAULT_WEBSITE_IMAGE_FILE_NAME if output_directory else None))
     logger.info("Exporting datasets for study pages")
-    datasets_for_website_image(id_list=id_list, root_directory=root_directory)
+    datasets_for_website_image(id_list=id_list, root_directory=root_directory, output_filename=(output_directory / DEFAULT_WEBSITE_DATASET_FOR_IMAGE_FILE_NAME if output_directory else None))
 
 
 @website.command("study")
@@ -72,7 +84,7 @@ def website_study(
             "--out_file",
             "-o",
         ),
-    ] = Path("bia-study-metadata.json"),
+    ] = Path(DEFAULT_WEBSITE_STUDY_FILE_NAME),
     root_directory: Annotated[
         Optional[Path],
         typer.Option(
@@ -117,7 +129,7 @@ def website_image(
             "--out_file",
             "-o",
         ),
-    ] = Path("bia-image-metadata.json"),
+    ] = Path(DEFAULT_WEBSITE_IMAGE_FILE_NAME),
     root_directory: Annotated[
         Optional[Path],
         typer.Option(
@@ -151,7 +163,7 @@ def datasets_for_website_image(
             "--out_file",
             "-o",
         ),
-    ] = Path("bia-dataset-metadata-for-images.json"),
+    ] = Path(DEFAULT_WEBSITE_DATASET_FOR_IMAGE_FILE_NAME),
     root_directory: Annotated[
         Optional[Path],
         typer.Option(
