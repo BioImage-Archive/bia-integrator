@@ -1,5 +1,6 @@
 #!/bin/bash
 # Given an accession ID, propose images, assign and convert
+# Assumes the script is being run in this directory
 accession_id=$1
 n_images_to_convert=5
 artefact_dir_base=~/temp/assign_and_convert
@@ -50,7 +51,7 @@ do
             eval $command
 
             static_display_uuid=$(grep -oP 'Created STATIC_DISPLAY image representation with uuid: \K[0-9a-fA-F-]+' $convert_to_static_display_output)
-            command="poetry --directory $bia_converter_light_dir run bia-converter-light update-example-image-uri-for-dataset $static_display_uuid"
+            command="poetry --directory $bia_converter_dir run python update_example_image_uri_for_dataset.py --update-mode replace $static_display_uuid"
             echo $command
             eval $command
         fi
