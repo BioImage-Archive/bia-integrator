@@ -66,13 +66,10 @@ jobs:
       - name: Use python-on-whales to start api in docker container on mac
         if: runner.os == 'macOS'
         run: |
-          brew install docker docker-compose
+          brew install docker colima
           echo "$(brew --prefix)/bin" >> $GITHUB_PATH
-          python -m pip install --upgrade pip
-          pip3 install python-on-whales
-          python3 -c "from python_on_whales import docker; docker.compose.up(detach=True, build=True)"
+          colima start
       - name: Run docker normally if on linux
-        if: runner.os == 'Linux'
         run:  docker compose up -d --build   
       - name: set up poetry
         run: |
