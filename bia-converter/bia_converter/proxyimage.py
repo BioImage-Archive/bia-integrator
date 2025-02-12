@@ -220,8 +220,9 @@ def validate_scale_ratios_and_extract_xyz(
             )
         xy_scaling = x_ratios[0] if x_ratios else 1.0
 
-    # Get z scaling (default to 1.0 if not present)
-    z_scaling = scale_ratios.get("z", [1.0])[0] if "z" in scale_ratios else 1.0
+    # Get z scaling (default to 1.0 if not present or empty list)
+    z_ratios = scale_ratios.get("z", [1.0])
+    z_scaling = z_ratios[0] if z_ratios else 1.0
 
     return {"xy_scaling": xy_scaling, "z_scaling": z_scaling}
 

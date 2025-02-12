@@ -15,7 +15,7 @@ bia_converter_dir=../
 
 # Create proposals
 propose_images_output="$artefact_dir_base/propose_$accession_id.tsv"
-command="poetry --directory $bia_assign_image_dir run bia-assign-image propose-images --max-items $n_images_to_convert $accession_id $propose_images_output"
+command="poetry --directory $bia_assign_image_dir run bia-assign-image propose-images --no-append --max-items $n_images_to_convert $accession_id $propose_images_output"
 
 echo $command
 eval $command
@@ -33,29 +33,32 @@ for image_uuid in $image_uuids
 do
     # Create interactive display representation
     convert_to_interactive_display_output="$artefact_dir_base/convert_to_interactive_display_output.txt"
-    command="poetry --directory $bia_converter_dir run bia-converter convert $image_uuid INTERACTIVE_DISPLAY 2>&1 | tee $convert_to_interactive_display_output"
+    command='poetry --directory '"$bia_converter_dir"' run bia-converter convert '"$image_uuid"' INTERACTIVE_DISPLAY 2>&1 | tee '"$convert_to_interactive_display_output"'; echo exit_status=${PIPESTATUS[0]}'
     echo $command;
-    eval $command;
-    interactive_display_uuid=$(grep -oP 'Created INTERACTIVE_DISPLAY image representation with uuid: \K[0-9a-fA-F-]+' $convert_to_interactive_display_output)
+    eval_output=$(eval "$command")
+    echo $eval_output
+    exit_status=$(echo $eval_output | grep -oP 'exit_status=\K[0-9]+')
 
-    ((n_images_converted++))
+    if [ "$exit_status" = "0" ]; then
+        ((n_images_converted++))
+        interactive_display_uuid=$(grep -oP 'Created INTERACTIVE_DISPLAY image representation with uuid: \K[0-9a-fA-F-]+' $convert_to_interactive_display_output)
+        # Create static display representatino and update example image uri if this is first image converted
+        if [ "$n_images_converted" -eq 1 ]; then
+            convert_to_static_display_output="$artefact_dir_base/convert_to_static_display_output.txt"
+            command="poetry --directory $bia_converter_dir run bia-converter convert $interactive_display_uuid STATIC_DISPLAY 2>&1 | tee $convert_to_static_display_output"
+            echo $command
+            eval $command
 
-    # Create statid display representatino and update example image uri if this is first image converted
-    if [ "$n_images_converted" -eq 1 ]; then
-        convert_to_static_display_output="$artefact_dir_base/convert_to_static_display_output.txt"
-        command="poetry --directory $bia_converter_dir run bia-converter convert $interactive_display_uuid STATIC_DISPLAY 2>&1 | tee $convert_to_static_display_output"
-        echo $command
-        eval $command
+            static_display_uuid=$(grep -oP 'Created STATIC_DISPLAY image representation with uuid: \K[0-9a-fA-F-]+' $convert_to_static_display_output)
+            command="poetry --directory $bia_converter_light_dir run bia-converter-light update-example-image-uri-for-dataset $static_display_uuid"
+            echo $command
+            eval $command
+        fi
 
-        static_display_uuid=$(grep -oP 'Created STATIC_DISPLAY image representation with uuid: \K[0-9a-fA-F-]+' $convert_to_static_display_output)
-        command="poetry --directory $bia_converter_light_dir run bia-converter-light update-example-image-uri-for-dataset $static_display_uuid"
+        # Create thumbnail representation
+        convert_to_thumbnail_output="$artefact_dir_base/convert_to_thumbnail.txt"
+        command="poetry --directory $bia_converter_dir run bia-converter convert $interactive_display_uuid THUMBNAIL 2>&1 | tee $convert_to_interactive_display_output"
         echo $command
         eval $command
     fi
-
-    # Create thumbnail representation
-    convert_to_thumbnail_output="$artefact_dir_base/convert_to_thumbnail.txt"
-    command="poetry --directory $bia_converter_dir run bia-converter convert $interactive_display_uuid THUMBNAIL 2>&1 | tee $convert_to_interactive_display_output"
-    echo $command
-    eval $command
 done

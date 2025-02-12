@@ -23,7 +23,6 @@ from .utils import (
     create_s3_uri_suffix_for_image_representation,
     attributes_by_name,
     get_dir_size,
-    append_slash_zero_to_zarr_path,
 )
 
 
@@ -387,13 +386,10 @@ def convert_uploaded_by_submitter_to_interactive_display(
     # Upload to S3
     dst_suffix = create_s3_uri_suffix_for_image_representation(base_image_rep)
     zarr_group_uri = sync_dirpath_to_s3(output_zarr_fpath, dst_suffix)
-    # ome_zarr_uri = zarr_group_uri + '/0'
-    ome_zarr_uri = zarr_group_uri
     # TODO: Discuss how to handle whether to append '/0'
-    # For now written function that uses a heuristic to determine this
-    # for zarrs converted by bioformats2raw
-    if append_slash_zero_to_zarr_path(output_zarr_fpath):
-        ome_zarr_uri = zarr_group_uri + "/0"
+    # After discussion with MH on 11/02/2025 agreed to default to '/0' (which currently won't work for plate-well)
+    ome_zarr_uri = zarr_group_uri + "/0"
+    # ome_zarr_uri = zarr_group_uri
 
     # rich.print(zarr_group_uri)
     # import sys; sys.exit(0)

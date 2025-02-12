@@ -118,3 +118,4 @@ tiff
 .zfp
 .zfr
 .zvi
+.ome.zarr.zip

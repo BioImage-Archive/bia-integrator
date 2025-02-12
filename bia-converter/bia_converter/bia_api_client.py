@@ -4,6 +4,7 @@ import logging
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic.alias_generators import to_snake
 
+import bia_integrator_api.models as api_models
 from bia_integrator_api import exceptions as api_exceptions
 from bia_integrator_api.util import get_client_private
 
@@ -46,4 +47,37 @@ def store_object_in_api_idempotent(model_object):
         get_func(model_object.uuid)
     except api_exceptions.NotFoundException:
         logger.info(f"Storing {model_name} with UUID {model_object.uuid} in API")
+        post_func(model_object)
+
+
+def update_object_in_api_idempotent(model_object):
+    model_name = model_object.__class__.__name__
+    # converts, e.g. "BioSample" into "bio_sample"
+    model_name_snake = to_snake(model_name)
+
+    get_func_name = "get_" + model_name_snake
+    get_func = getattr(api_client, get_func_name)
+
+    try:
+        api_copy_of_object = get_func(model_object.uuid)
+    except api_exceptions.NotFoundException as e:
+        logger.error(
+            f"Cannot retrieve {model_name} with UUID {model_object.uuid} from API for update"
+        )
+        raise (e)
+
+    # Convert the bia_data_model object to its API equivalent
+    equivalent_api_class = getattr(api_models, model_object.model.type_name)
+    equivalent_api_object = equivalent_api_class.model_validate_json(
+        model_object.model_dump_json()
+    )
+
+    if equivalent_api_object == api_copy_of_object:
+        return
+    else:
+        model_object.version += 1
+        post_func_name = "post_" + model_name_snake
+        post_func = getattr(api_client, post_func_name)
+
+        logger.info(f"Updating {model_name} with UUID {model_object.uuid} in API")
         post_func(model_object)
