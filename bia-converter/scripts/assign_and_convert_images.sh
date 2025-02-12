@@ -51,7 +51,7 @@ do
             eval $command
 
             static_display_uuid=$(grep -oP 'Created STATIC_DISPLAY image representation with uuid: \K[0-9a-fA-F-]+' $convert_to_static_display_output)
-            command="poetry --directory $bia_converter_dir run python update_example_image_uri_for_dataset.py --update-mode replace $static_display_uuid"
+            command="poetry --directory $bia_converter_dir run python scripts/update_example_image_uri_for_dataset.py --update-mode replace $static_display_uuid"
             echo $command
             eval $command
         fi
