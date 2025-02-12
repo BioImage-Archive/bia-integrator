@@ -66,6 +66,7 @@ jobs:
       - name: Use python-on-whales to start api in docker container on mac
         if: runner.os == 'macOS'
         run: |
+          brew install docker
           python -m pip install --upgrade pip
           pip install python-on-whales
           python -c "from python_on_whales import docker; print(docker.context.inspect())"
