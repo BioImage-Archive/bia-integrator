@@ -66,8 +66,9 @@ jobs:
       - name: Set up Docker on macOS
         if: runner.os == 'macOS'
         run: |
-          brew install docker 
-          brew services start docker
+          brew install docker colima
+          colima start --cpu 2 --memory 4 --disk 10
+          docker context use colima
       - name: Verify Docker is installed
         run: docker --version
       - name: Docker Compose Up
