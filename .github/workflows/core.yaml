@@ -63,16 +63,16 @@ jobs:
         uses: abatilo/actions-poetry@v2
         with:
           poetry-version: ${{ matrix.poetry-version }}
-      - name: Set up Docker on macOS
+      - name: Use python-on-whales to start api in docker container on mac
         if: runner.os == 'macOS'
         run: |
-          brew install docker colima
-          colima start --cpu 2 --memory 4 --disk 10
-          docker context use colima
-      - name: Verify Docker is installed
-        run: docker --version
-      - name: Docker Compose Up
-        run: docker compose up -d --build    
+          python -m pip install --upgrade pip
+          pip install python-on-whales
+          python -c "from python_on_whales import docker; print(docker.context.inspect())"
+           ython -c "from python_on_whales import docker_compose; docker_compose.up(build=True, force_recreate=True, remove_orphans=True, abort_on_container_exit=True, profiles=['bia-integrator-api'])"
+      - name: Run docker normally if on linux
+        if: runner.os == 'Linux'
+        run:  docker compose up -d --build   
       - name: set up poetry
         run: |
           poetry env use python
