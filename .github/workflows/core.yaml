@@ -46,7 +46,7 @@ jobs:
         poetry-version: ["1.4.2"]
         # Note we do not test on windows or mac. Currently, github mac runners do not support nested virtualization, so we cannot run docker on them (since mac docker virtualises linux)
         # See https://docs.github.com/en/actions/using-github-hosted-runners/using-github-hosted-runners/about-github-hosted-runners#limitations-for-arm64-macos-runners
-        os: [ubuntu-20.04] 
+        os: [ubuntu-20.04, mac-os-13] 
         project:
           [
             bia-export,
@@ -64,6 +64,12 @@ jobs:
         uses: abatilo/actions-poetry@v2
         with:
           poetry-version: ${{ matrix.poetry-version }}
+      - name: mac needs colima
+        if: runner.os == 'macOS'
+        run: |
+          brew install docker colima
+          echo "$(brew --prefix)/bin" >> $GITHUB_PATH
+          colima start
       - name: Run docker
         run:  docker compose up -d --build   
       - name: set up poetry
