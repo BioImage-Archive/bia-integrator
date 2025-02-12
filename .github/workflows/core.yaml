@@ -67,6 +67,7 @@ jobs:
         if: runner.os == 'macOS'
         run: |
           brew install docker
+          echo "$(brew --prefix)/bin" >> $GITHUB_PATH
           python -m pip install --upgrade pip
           pip install python-on-whales
           python -c "from python_on_whales import docker; docker.compose.up(build=True, detach=True)"
