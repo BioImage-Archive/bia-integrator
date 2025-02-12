@@ -46,7 +46,7 @@ jobs:
         poetry-version: ["1.4.2"]
         # Note we do not test on windows or mac. Currently, github mac runners do not support nested virtualization, so we cannot run docker on them (since mac docker virtualises linux)
         # See https://docs.github.com/en/actions/using-github-hosted-runners/using-github-hosted-runners/about-github-hosted-runners#limitations-for-arm64-macos-runners
-        os: [ubuntu-20.04, mac-os-13] 
+        os: [ubuntu-20.04, macos-13] 
         project:
           [
             bia-export,
