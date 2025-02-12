@@ -1,5 +1,6 @@
 from typer.testing import CliRunner
 from pathlib import Path
+import pytest
 from bia_export.cli import (
     app,
     DEFAULT_WEBSITE_STUDY_FILE_NAME,
@@ -133,3 +134,28 @@ def test_cli_export_dataset_for_website_images(tmp_path: Path, data_in_api):
         json_expected = json.load(f)
 
     assert json_result == json_expected
+
+
+
+def test_cli_export_study_ordering(tmp_path: Path, api_studies_in_expected_order: list[dict]):
+    outfile = tmp_path.joinpath("bia-dataset-metadata.json").resolve()
+
+    result = runner.invoke(
+        app,
+        [
+            "website",
+            "study",
+            "-o",
+            outfile,
+        ],
+    )
+
+    assert result.exit_code == 0
+
+    expected_study_acc_id_order = [study["accession_id"] for study in api_studies_in_expected_order]
+
+    with open(outfile, "r") as f:
+        json_result: dict = json.load(f)
+
+    it = iter(json_result.keys()) 
+    assert all(acc_id in it for acc_id in expected_study_acc_id_order)
