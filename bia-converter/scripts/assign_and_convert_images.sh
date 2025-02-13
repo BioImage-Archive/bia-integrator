@@ -1,7 +1,16 @@
 #!/bin/bash
 # Given an accession ID, propose images, assign and convert
-# Assumes the script is being run in this directory
+#   e.g. source assign_and_convert_images.sh S-BIAD686
+# Optionally, to skip propose images step also give path to proposal file
+#   e.g. source assign_and_convert_images.sh S-BIAD686 /home/bia_svc/temp/propose_images_S-BIAD686.tsv
+# Assumes the script is being run in this directory and env variables in ./set_local_env_template.sh are set
+
 accession_id=$1
+propose_images_output=""
+if [ $# -gt 1 ]; then
+    propose_images_output=$2
+fi
+
 n_images_to_convert=5
 artefact_dir_base=~/temp/assign_and_convert
 
@@ -14,12 +23,14 @@ bia_assign_image_dir=../../bia-assign-image
 bia_converter_light_dir=../../bia-converter-light
 bia_converter_dir=../
 
-# Create proposals
-propose_images_output="$artefact_dir_base/propose_$accession_id.tsv"
-command="poetry --directory $bia_assign_image_dir run bia-assign-image propose-images --no-append --max-items $n_images_to_convert $accession_id $propose_images_output"
+# Create proposals if the location of a proposals file was not specified
+if [ -z "$propose_images_output" ]; then
+    propose_images_output="$artefact_dir_base/propose_$accession_id.tsv"
+    command="poetry --directory $bia_assign_image_dir run bia-assign-image propose-images --no-append --max-items $n_images_to_convert $accession_id $propose_images_output"
 
-echo $command
-eval $command
+    echo $command
+    eval $command
+fi
 
 # Assign Images from proposals
 assign_from_proposals_output="$artefact_dir_base/assign_from_proposal_output_$accession_id.txt"
