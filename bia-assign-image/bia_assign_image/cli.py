@@ -256,7 +256,7 @@ def assign_from_proposal(
     for p in proposals:
         accession_id = p["accession_id"]
         file_reference_uuids = [
-            p["uuid"],
+            p["file_reference_uuid"],
         ]
         try:
             image_uuid = assign(
@@ -292,11 +292,21 @@ def propose_images(
     append: Annotated[
         bool, typer.Option(help="Append to existing file instead of overwriting")
     ] = True,
+    check_image_creation_prerequisites: Annotated[
+        bool,
+        typer.Option(
+            help="Check whether dataset linked to file reference contains requirements needed to create a bia_data_model Image object."
+        ),
+    ] = True,
 ) -> None:
     """Propose file references to convert for the given accession IDs"""
     for accession_id in accession_ids:
         count = propose.write_convertible_file_references_for_accession_id(
-            accession_id, output_path, max_items=max_items, append=append
+            accession_id,
+            output_path,
+            max_items=max_items,
+            check_image_creation_prerequisites=check_image_creation_prerequisites,
+            append=append,
         )
         logger.info(f"Wrote {count} proposals for {accession_id} to {output_path}")
 

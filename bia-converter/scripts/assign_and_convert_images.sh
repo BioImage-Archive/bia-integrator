@@ -20,9 +20,8 @@ fi
 
 # Put these in a set_environment.sh file and source
 bia_assign_image_dir=../../bia-assign-image
-bia_converter_light_dir=../../bia-converter-light
 bia_converter_dir=../
-
+update_example_image_uri_script_path=$(realpath update_example_image_uri_for_dataset.py)
 # Create proposals if the location of a proposals file was not specified
 if [ -z "$propose_images_output" ]; then
     propose_images_output="$artefact_dir_base/propose_$accession_id.tsv"
@@ -62,7 +61,7 @@ do
             eval $command
 
             static_display_uuid=$(grep -oP 'Created STATIC_DISPLAY image representation with uuid: \K[0-9a-fA-F-]+' $convert_to_static_display_output)
-            command="poetry --directory $bia_converter_dir run python scripts/update_example_image_uri_for_dataset.py --update-mode replace $static_display_uuid"
+            command="poetry --directory $bia_converter_dir run python $update_example_image_uri_script_path --update-mode replace $static_display_uuid"
             echo $command
             eval $command
         fi
