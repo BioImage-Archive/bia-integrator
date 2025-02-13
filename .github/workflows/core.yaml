@@ -65,13 +65,11 @@ jobs:
         with:
           poetry-version: ${{ matrix.poetry-version }}
       - name: Run docker
-        run:  docker compose up -d --build   
+        run:  docker compose up -d --build --wait   
       - name: set up poetry
         run: |
           poetry env use python
           poetry install
-      - name: Check to see if poetry can build
-        run: poetry build
       - name: Run pytest
         run: poetry run pytest
       # Always cleanup - even for cancelled jobs

@@ -43,26 +43,6 @@ def get_object_creation_client(
     return private_api
 
 
-def get_client_with_retries(
-    api_base_url: str, wait_seconds: int = 5, max_retries: int = 5
-) -> PrivateApi:
-    private_client_retry_count = 0
-    private_client = None
-    while not private_client and private_client_retry_count < max_retries:
-        try:
-            private_client = get_object_creation_client(api_base_url)
-        except MaxRetryError:
-            private_client_retry_count += 1
-            sleep(wait_seconds)
-
-    if private_client_retry_count == max_retries:
-        raise MaxRetryError(
-            "Attempted to create private client, but could not connect to API."
-        )
-
-    return private_client
-
-
 def calculate_dependency_chain_length(
     object_by_type: dict[str, dict[str, dict]]
 ) -> dict[str, int]:

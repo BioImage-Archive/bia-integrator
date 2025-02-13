@@ -1,6 +1,6 @@
 from pathlib import Path
 import pytest
-from bia_test_data.data_to_api import add_objects_to_api, get_client_with_retries
+from bia_test_data.data_to_api import add_objects_to_api, get_object_creation_client
 from bia_export.settings import Settings
 from bia_shared_datamodels.uuid_creation import create_study_uuid
 from pathlib import Path
@@ -28,7 +28,7 @@ def data_in_api():
                 object_list.append(json_dict)
 
 
-    private_client = get_client_with_retries(setttings.api_base_url)
+    private_client = get_object_creation_client(setttings.api_base_url)
 
     add_objects_to_api(private_client, object_list)
 
@@ -75,7 +75,7 @@ def api_studies_in_expected_order():
     }
     object_list.append(study_4)
 
-    private_client = get_client_with_retries(setttings.api_base_url)
+    private_client = get_object_creation_client(setttings.api_base_url)
 
     add_objects_to_api(private_client, object_list)
 
