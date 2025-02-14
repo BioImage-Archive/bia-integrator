@@ -4,7 +4,7 @@ import json
 from rich.logging import RichHandler
 from typing_extensions import Annotated
 from pathlib import Path
-from bia_export.website_export.export_all import get_study_ids
+from bia_export.website_export.export_all import get_study_ids, study_sort_key
 from .website_export.studies.transform import transform_study
 from .website_export.studies.models import StudyCLIContext, CacheUse
 from .website_export.images.transform import transform_images
@@ -62,7 +62,6 @@ def generate_all(
         ),
     ] = None,
 ):
-    
     validate_cli_inputs(id_list=id_list, update_path=update_path)
 
     settings = Settings()
@@ -71,11 +70,50 @@ def generate_all(
         id_list = get_study_ids(root_directory)
 
     logger.info("Exporting study pages")
-    website_study(id_list=id_list, root_directory=root_directory, output_filename=(output_directory / DEFAULT_WEBSITE_STUDY_FILE_NAME if output_directory else None))
+    website_study(
+        id_list=id_list,
+        root_directory=root_directory,
+        output_filename=(
+            output_directory / DEFAULT_WEBSITE_STUDY_FILE_NAME
+            if output_directory
+            else None
+        ),
+        update_file=(
+            update_path / DEFAULT_WEBSITE_STUDY_FILE_NAME
+            if update_path
+            else None
+        )
+    )
     logger.info("Exporting image pages")
-    website_image(id_list=id_list, root_directory=root_directory, output_filename=(output_directory / DEFAULT_WEBSITE_IMAGE_FILE_NAME if output_directory else None))
+    website_image(
+        id_list=id_list,
+        root_directory=root_directory,
+        output_filename=(
+            output_directory / DEFAULT_WEBSITE_IMAGE_FILE_NAME
+            if output_directory
+            else None
+        ),
+        update_file=(
+            update_path / DEFAULT_WEBSITE_IMAGE_FILE_NAME
+            if update_path
+            else None
+        )
+    )
     logger.info("Exporting datasets for study pages")
-    datasets_for_website_image(id_list=id_list, root_directory=root_directory, output_filename=(output_directory / DEFAULT_WEBSITE_DATASET_FOR_IMAGE_FILE_NAME if output_directory else None))
+    datasets_for_website_image(
+        id_list=id_list,
+        root_directory=root_directory,
+        output_filename=(
+            output_directory / DEFAULT_WEBSITE_DATASET_FOR_IMAGE_FILE_NAME
+            if output_directory
+            else None
+        ),
+        update_file=(
+            update_path / DEFAULT_WEBSITE_DATASET_FOR_IMAGE_FILE_NAME
+            if update_path
+            else None
+        )
+    )
 
 
 @website.command("study")
@@ -116,14 +154,23 @@ def website_study(
         id_list = get_study_ids(root_directory)
 
     studies_map = {}
+
+    if update_file:
+        studies_map |= file_data_to_update(update_file)    
+
     for id in id_list:
         context = create_cli_context(StudyCLIContext, id, root_directory)
         study = transform_study(context)
         studies_map[study.accession_id] = study.model_dump(mode="json")
 
+    if id_list:
+        sorted_map = dict(sorted(studies_map.items(), key=lambda item_tuple: study_sort_key(item_tuple[1]), reverse=True))
+    else:
+        sorted_map = studies_map
+
     logging.info(f"Writing study info to {output_filename.absolute()}")
     with open(output_filename, "w") as output:
-        output.write(json.dumps(studies_map, indent=4))
+        output.write(json.dumps(sorted_map, indent=4))
 
 
 @website.command("image")
@@ -163,9 +210,12 @@ def website_image(
         id_list = get_study_ids(root_directory)
 
     image_map = {}
+    if update_file:
+        image_map |= file_data_to_update(update_file)
+
     for id in id_list:
         context = create_cli_context(ImageCLIContext, id, root_directory)
-        image_map = image_map | transform_images(context)
+        image_map |= transform_images(context)
 
     logging.info(f"Writing website images to {output_filename.absolute()}")
     with open(output_filename, "w") as output:
@@ -210,11 +260,15 @@ def datasets_for_website_image(
         id_list = get_study_ids(root_directory)
 
     dataset_map = {}
+    if update_file:
+        dataset_map |= file_data_to_update(update_file)
+
     for id in id_list:
         context = create_cli_context(CLIContext, id, root_directory)
-        dataset_map = dataset_map | transform_datasets(context)
+        dataset_map |= transform_datasets(context)
 
     logging.info(f"Writing datasets for images to {output_filename.absolute()}")
+
     with open(output_filename, "w") as output:
         output.write(json.dumps(dataset_map, indent=4))
 
@@ -261,9 +315,11 @@ def get_uuid_from_accession_id(accession_id: str) -> str:
 
 
 def validate_cli_inputs(
-    id_list: Optional[List[str]],
-    update_file: Optional[Path],
-    update_path: Optional[Path],
+    id_list: Optional[List[str]] = None,
+    update_file: Optional[Path] = None,
+    update_path: Optional[Path] = None,
+    output_file: Optional[Path] = None,
+    output_path: Optional[Path] = None,
 ):
 
     if (update_path or update_file) and not id_list:
@@ -282,6 +338,18 @@ def validate_cli_inputs(
             f"Update path: {update_path}, needs to be the file to update."
         )
 
+    if output_file and update_file and (output_file.resolve() == update_file.resolve()):
+        logger.warning("this is weird")
+
+    if output_path and update_path and (output_path.resolve() == update_path.resolve()):
+        logger.warning("this is weird")
+
+
+def file_data_to_update(file_path: Path) -> Optional[dict]:
+    data = None
+    with open(file_path, 'r') as f:
+        data: dict = json.load(f)
+    return data
 
 if __name__ == "__main__":
     app()

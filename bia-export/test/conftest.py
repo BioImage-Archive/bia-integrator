@@ -14,7 +14,14 @@ def pytest_configure(config: pytest.Config):
 
 
 @pytest.fixture(scope="session")
-def data_in_api():
+def private_client():
+    setttings = Settings()
+    return get_object_creation_client(setttings.api_base_url)
+
+
+
+@pytest.fixture(scope="session")
+def data_in_api(private_client):
     setttings = Settings()
 
     input_file_dir = Path(__file__).parent / "input_data" / "**" / "*.json"
@@ -28,7 +35,6 @@ def data_in_api():
                 object_list.append(json_dict)
 
 
-    private_client = get_object_creation_client(setttings.api_base_url)
 
     add_objects_to_api(private_client, object_list)
 
@@ -36,7 +42,7 @@ def data_in_api():
 
 
 @pytest.fixture(scope="session")
-def api_studies_in_expected_order():
+def api_studies_in_expected_order(private_client):
     setttings = Settings()
 
     base_study = Path(__file__).parent / "input_data" / "study" / "S-BIADTEST" / "a2fdbd58-ee11-4cd9-bc6a-f3d3da7fff71.json"
@@ -75,9 +81,7 @@ def api_studies_in_expected_order():
     }
     object_list.append(study_4)
 
-    private_client = get_object_creation_client(setttings.api_base_url)
-
-    add_objects_to_api(private_client, object_list)
+    add_objects_to_api(private_client, object_list, auto_update_version=True)
 
     expected_order_of_studies = [study_3, study_4, study_2, study_1]
 
