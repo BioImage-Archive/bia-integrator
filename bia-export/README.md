@@ -34,6 +34,16 @@ Run:
 
 This will create 3 files (bia-study-metadata.json, bia-image-metadata.json, bia-dataset-metadata-for-images.json), which can replace the files of the same name in the data directory of the astro package to genereate new study pages.
 
+
+For all website commands, there is the option to produce updated jsons using the -u otion to point to either a directory with all 3 jsons (for the website all option) or the specific file for the more specific commands below. E.g.
+
+    poetry run bia-export website all S-BIAD830 -u ./path/to/existing/astro/jsons
+
+will created updated jsons from all the jsons stored in that folder using the information for S-BIAD830 in the API (adding or replacing existing information about that study)
+
+Note that setting -o (output) and -u (files to update) paths to be different is recommend to avoid directly writing over files, though overwrite behaviour does work.
+
+-----
 ### Study export for website 
 
 Used to create jsons which start at study objects and follow paths to all related objects that we want to display on a single study page of the website.
@@ -47,14 +57,6 @@ This will create `bia-study-metadata.json` using the example test data for studi
 Note that with -r (root directory) - local files will be used to generate the export. If using ingest to generate the files, this will usually be: ~/.cache/bia-integrator-data-sm. If no root location is passed, and a study UUID (as opposed to accession ID) is used, then the API will be called to create the files.
 
 If no Accession ID or UUID is passed, all studies will be processed (either based on all studies in the <root-folder>/study/ directory, or by querying for studies in the api). The studies are exported in order of release date. 
-
-The two points above hold for all export commands for the api. For the website-study export only, there is a optional cache in order to avoid processing all file references every time an export is performed (as this slows down export a lot). E.g. running:
-
-
-    poetry run bia-export website study -o bia-study-metadata.json -c read_cache
-
-
-Will export all studies using the cached aggregation (when avaliable) as the counts for images, files, and the list of different file types.
 
 ----
 
