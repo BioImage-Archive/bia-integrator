@@ -230,7 +230,7 @@ def test_cli_export_study_ordering(
     assert check_order(expected_study_acc_id_order, outfile_new_study_update)
 
     # Test 5. export with the update_file flag for an existing study with new data results in a new order
-    # Changing release date of most recently released study to be released before all others
+    # Changing release date of most recently released study to be released before all others, so it now appears last
     study_to_move = api_studies_in_expected_order.pop(0)
     study_to_move |= {
         "release_date": "2000-02-01",
@@ -240,9 +240,7 @@ def test_cli_export_study_ordering(
     reoreded_acc_id_order = [
         study["accession_id"] for study in api_studies_in_expected_order
     ]
-    outfile_reordered = tmp_path.joinpath(
-        "update-after-data-change.json"
-    ).resolve()
+    outfile_reordered = tmp_path.joinpath("update-after-data-change.json").resolve()
     result = runner.invoke(
         app,
         [
