@@ -18,6 +18,8 @@ To test that installation has worked correctly, you can run:
 
     poetry run bia-export website all S-BIADTEST -r test/input_data
 
+To run all the tests, docker needs to be installed.
+
 
 Usage
 -----
@@ -85,7 +87,7 @@ Running tests
 
 Requires a locally running api in a docker container. This can be started by running:
 
-    docker compose up --build --force-recreate --remove-orphans -d
+    docker compose up --build --force-recreate --remove-orphans -d --wait
 
 and then running tests, e.g.:
 
