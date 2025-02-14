@@ -6,8 +6,6 @@ export BIA_CONVERTER_DIR=PATH_TO/bia-integrator/bia-converter
 export BIA_API_BASEPATH="https://wwwdev.ebi.ac.uk/bioimage-archive/api"
 export BIA_API_USERNAME='test@example.com'
 export BIA_API_PASSWORD='test'
-export BIA_USERNAME='test@example.com'
-export BIA_PASSWORD='test'
 export api_base_url=$BIA_API_BASEPATH
 
 # For storing downloaded files and intermediate conversions
