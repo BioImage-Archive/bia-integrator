@@ -139,19 +139,18 @@ def test_cli_export_dataset_for_website_images(tmp_path: Path, data_in_api):
     assert json_result == json_expected
 
 
-def check_order(ordered_acc_id_list: list[str], result_file: Path):
-    with open(result_file, "r") as f:
-        json_result: dict = json.load(f)
-
-    it = iter(json_result.keys())
-    return all(acc_id in it for acc_id in ordered_acc_id_list)
-
-
 def test_cli_export_study_ordering(
     tmp_path: Path, api_studies_in_expected_order: list[dict], private_client
 ):
     # Note these tests are grouped so as to use the output of one as the input of the next
     # This adds data to the api during tests, so is not as neat as bundling all pre-test set up prior to running tests.
+
+    def check_order(ordered_acc_id_list: list[str], result_file: Path):
+        with open(result_file, "r") as f:
+            json_result: dict = json.load(f)
+
+        it = iter(json_result.keys())
+        return all(acc_id in it for acc_id in ordered_acc_id_list)
 
     # Test 1. studies are ordered correctly when they're all exported (i.e. no accession ids provided)
     expected_study_acc_id_order = [
