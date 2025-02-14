@@ -13,7 +13,7 @@ client.examples:
 	docker compose --profile client_examples up --build --force-recreate --remove-orphans --abort-on-container-exit
 
 api.up:
- 	docker compose up -d --build --wait
+	docker compose up -d --build --wait
 
 api.down:
 	docker compose down
