@@ -36,7 +36,7 @@ jobs:
             ${{ runner.os }}-buildx-
       - name: Docker Compose Up
         run: |
-          docker compose up -d --build 
+          make api.up
       - name: Run tests
         # api moved to api/ , src left in as a reference as we transition. All tests there are failing and that directory will be deleted anyway
         run: |
@@ -47,5 +47,5 @@ jobs:
       # Always cleanup - even for cancelled jobs
       - name: Docker Compose Down
         run: |
-          docker compose down
+          make api.down
         if: ${{ always() }}

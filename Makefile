@@ -1,4 +1,4 @@
-.PHONY: api.version client.generate
+.PHONY: api.version client.generate api.up api.down
 
 api.version:
 	@echo $(shell grep '^version =' api/pyproject.toml | awk -F\" '{print $$2}')
@@ -11,3 +11,9 @@ client.generate:
 
 client.examples:
 	docker compose --profile client_examples up --build --force-recreate --remove-orphans --abort-on-container-exit
+
+api.up:
+ 	docker compose up -d --build --wait   
+
+api.down:
+	docker compose down
