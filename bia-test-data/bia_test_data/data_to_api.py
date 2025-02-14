@@ -1,4 +1,6 @@
 from pathlib import Path
+from time import sleep
+from urllib3.exceptions import MaxRetryError
 from dotenv import dotenv_values
 from bia_integrator_api.api import PrivateApi
 from bia_integrator_api import Configuration, ApiClient, exceptions
@@ -207,9 +209,7 @@ def order_object_for_api(object_list: list[dict]):
     return ordered_object_list
 
 
-def add_objects_to_api(api_base_url, object_list: list[dict]):
-    private_client = get_object_creation_client(api_base_url)
-
+def add_objects_to_api(private_client, object_list: list[dict]):
     ordered_object_list = order_object_for_api(object_list)
 
     for bia_object_dict in ordered_object_list:
