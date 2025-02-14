@@ -36,6 +36,7 @@ def test_cli_export_export_all_data_contains_at_least_expected_objects(
     assert len(os.listdir(tmp_path)) == 3
 
     def check_file_contains_expected_object(outfile: Path, expected_output: Path):
+        # Intentionally doesn't check exact equality of files in order to allow other objects in test api.
         with open(outfile, "r") as f:
             json_result = json.load(f)
 
