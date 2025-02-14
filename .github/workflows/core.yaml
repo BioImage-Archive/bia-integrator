@@ -65,7 +65,7 @@ jobs:
         with:
           poetry-version: ${{ matrix.poetry-version }}
       - name: Run docker
-        run:  make api.up
+        run:  make -C ../ api.up
       - name: set up poetry
         run: |
           poetry env use python
@@ -74,6 +74,6 @@ jobs:
         run: poetry run pytest
       # Always cleanup - even for cancelled jobs
       - name: Docker Compose Down
-        run:  make api.down
+        run:  make -C ../ api.down
         if: ${{ always() }}
 
