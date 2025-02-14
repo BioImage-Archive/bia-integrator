@@ -16,6 +16,7 @@ from uuid import UUID
 from .bia_client import api_client
 import json
 from .settings import Settings
+import os
 
 logging.basicConfig(
     level="NOTSET", format="%(message)s", datefmt="[%X]", handlers=[RichHandler()]
@@ -52,7 +53,18 @@ def generate_all(
             "-o",
         ),
     ] = None,
+    update_path: Annotated[
+        Optional[Path],
+        typer.Option(
+            "--update_path",
+            "-u",
+            help="If update path specified then update the files there (assuming files have the default naming)",
+        ),
+    ] = None,
 ):
+    
+    validate_cli_inputs(id_list=id_list, update_path=update_path)
+
     settings = Settings()
 
     if not id_list:
@@ -86,9 +98,19 @@ def website_study(
             help="If root directory specified then use files there, rather than calling API",
         ),
     ] = None,
+    update_file: Annotated[
+        Optional[Path],
+        typer.Option(
+            "--update_file",
+            "-u",
+            help="If update file specified then update the file with studies provided.",
+        ),
+    ] = None,
 ):
-    settings = Settings()
 
+    validate_cli_inputs(id_list=id_list, update_file=update_file)
+
+    settings = Settings()
 
     if not id_list:
         id_list = get_study_ids(root_directory)
@@ -124,7 +146,19 @@ def website_image(
             help="If root directory specified then use files there, rather than calling API",
         ),
     ] = None,
+    update_file: Annotated[
+        Optional[Path],
+        typer.Option(
+            "--update_file",
+            "-u",
+            help="If update file specified then update the file with studies provided.",
+        ),
+    ] = None,
 ):
+    validate_cli_inputs(id_list=id_list, update_file=update_file)
+
+    settings = Settings()
+
     if not id_list:
         id_list = get_study_ids(root_directory)
 
@@ -158,7 +192,18 @@ def datasets_for_website_image(
             help="If root directory specified then use files there, rather than calling API",
         ),
     ] = None,
+    update_file: Annotated[
+        Optional[Path],
+        typer.Option(
+            "--update_file",
+            "-u",
+            help="If update file specified then update the file with studies provided.",
+        ),
+    ] = None,
 ):
+
+    validate_cli_inputs(id_list=id_list, update_file=update_file)
+
     settings = Settings()
 
     if not id_list:
@@ -212,6 +257,29 @@ def get_uuid_from_accession_id(accession_id: str) -> str:
         logger.error(f"Could not find Study: {accession_id} in API")
         raise RuntimeError(
             f"Could not find Study with accession id: {accession_id} in API"
+        )
+
+
+def validate_cli_inputs(
+    id_list: Optional[List[str]],
+    update_file: Optional[Path],
+    update_path: Optional[Path],
+):
+
+    if (update_path or update_file) and not id_list:
+        raise ValueError(
+            "Study IDs must be specified if export website commands are being used in update mode"
+        )
+
+    if update_path:
+        if not os.path.isdir(update_path):
+            raise NotADirectoryError(
+                f"Update path: {update_path}, needs to be the directory containing expected files to update."
+            )
+
+    if update_file and not os.path.isfile(update_file):
+        raise FileNotFoundError(
+            f"Update path: {update_path}, needs to be the file to update."
         )
 
 
