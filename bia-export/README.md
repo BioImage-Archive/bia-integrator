@@ -18,9 +18,6 @@ To test that installation has worked correctly, you can run:
 
     poetry run bia-export website all S-BIADTEST -r test/input_data
 
-With docker daemon/desktop running, in the root of this package (bia-integrator/) run:
-
-    make bia-export.test
 
 Usage
 -----
