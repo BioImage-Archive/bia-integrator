@@ -4003,7 +4003,8 @@
         "enum": [
           "submittor",
           "bia_ingest",
-          "bia_conversion"
+          "bia_conversion",
+          "bia_curation"
         ],
         "title": "AttributeProvenance"
       },
