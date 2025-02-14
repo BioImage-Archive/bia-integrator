@@ -379,9 +379,20 @@ def convert_uploaded_by_submitter_to_interactive_display(
             file_references[0], base_image_rep
         )
     else:
-        output_zarr_fpath = convert_with_bioformats2raw_pattern(
-            input_image_rep, file_references, base_image_rep
-        )
+        try:
+            output_zarr_fpath = convert_with_bioformats2raw_pattern(
+                input_image_rep, file_references, base_image_rep
+            )
+        except AssertionError as e:
+            if len(file_references) == 1:
+                logger.info(
+                    f"Failed to convert using pattern. As image has 1 file reference will attempt to convert from this file reference with file path: {file_references[0].file_path}."
+                )
+                input_file_path = stage_fileref_and_get_fpath(file_references[0])
+                output_zarr_fpath = get_conversion_output_path(f"{base_image_rep.uuid}")
+                run_zarr_conversion(input_file_path, output_zarr_fpath)
+            else:
+                raise e
 
     # Upload to S3
     dst_suffix = create_s3_uri_suffix_for_image_representation(base_image_rep)
