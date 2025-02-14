@@ -45,13 +45,6 @@ def generate_all(
             help="If root directory specified then use files there, rather than calling API",
         ),
     ] = None,
-    cache: Annotated[
-        Optional[CacheUse],
-        typer.Option(
-            "--cache",
-            "-c",
-        ),
-    ] = None,
     output_directory: Annotated[
         Optional[Path],
         typer.Option(
@@ -66,7 +59,7 @@ def generate_all(
         id_list = get_study_ids(root_directory)
 
     logger.info("Exporting study pages")
-    website_study(id_list=id_list, root_directory=root_directory, cache=cache, output_filename=(output_directory / DEFAULT_WEBSITE_STUDY_FILE_NAME if output_directory else None))
+    website_study(id_list=id_list, root_directory=root_directory, output_filename=(output_directory / DEFAULT_WEBSITE_STUDY_FILE_NAME if output_directory else None))
     logger.info("Exporting image pages")
     website_image(id_list=id_list, root_directory=root_directory, output_filename=(output_directory / DEFAULT_WEBSITE_IMAGE_FILE_NAME if output_directory else None))
     logger.info("Exporting datasets for study pages")
@@ -93,13 +86,6 @@ def website_study(
             help="If root directory specified then use files there, rather than calling API",
         ),
     ] = None,
-    cache: Annotated[
-        Optional[CacheUse],
-        typer.Option(
-            "--cache",
-            "-c",
-        ),
-    ] = None,
 ):
     settings = Settings()
 
@@ -109,7 +95,7 @@ def website_study(
 
     studies_map = {}
     for id in id_list:
-        context = create_cli_context(StudyCLIContext, id, root_directory, cache)
+        context = create_cli_context(StudyCLIContext, id, root_directory)
         study = transform_study(context)
         studies_map[study.accession_id] = study.model_dump(mode="json")
 

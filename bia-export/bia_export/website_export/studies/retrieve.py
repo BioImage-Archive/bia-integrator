@@ -58,19 +58,11 @@ def retrieve_aggregation_fields(
     dataset: bia_data_model.DocumentMixin, context: StudyCLIContext
 ):
 
-    # The cache and the export from local files both store information in context.dataset_file_aggregate_data
-    if context.root_directory or (
-        context.cache_use == CacheUse.READ_CACHE
-        and context.dataset_file_aggregate_data
-        and str(dataset.uuid) in context.dataset_file_aggregate_data
-    ):
+    if context.root_directory:
         try:
             dataset_aggregation_fields = context.dataset_file_aggregate_data[
                 str(dataset.uuid)
             ]
-            if context.cache_use == CacheUse.WRITE_CACHE:
-                write_to_cache(dataset.uuid, dataset_aggregation_fields)
-
         except KeyError:
             logger.warning(f"Could not find aggregate data for dataset: {dataset.uuid}")
             dataset_aggregation_fields = {
@@ -102,46 +94,11 @@ def retrieve_aggregation_fields(
                 "file_reference_size_bytes": 0,
                 "file_type_counts": {},
             }
-        if context.cache_use == CacheUse.WRITE_CACHE:
-            write_to_cache(dataset.uuid, dataset_aggregation_fields)
-
     return dataset_aggregation_fields
 
 
-def write_to_cache(dataset_uuid, aggregation_fields):
-    logging.info(f"writing to dataset aggregation cache for dataset: {dataset_uuid}")
-
-    cache_file = (
-        Path(__file__).parents[3].absolute()
-        / "cached_computed_data"
-        / "dataset_aggregate_fields.json"
-    )
-    with open(cache_file, "r") as object_file:
-        try:
-            object_dict = json.load(object_file)
-        except:
-            object_dict = {}
-
-    object_dict[str(dataset_uuid)] = aggregation_fields
-
-    with open(cache_file, "w") as object_file:
-        object_file.write(json.dumps(object_dict, indent=4))
-
 
 def aggregate_file_list_data(context: StudyCLIContext) -> None:
-    if context.cache_use == CacheUse.READ_CACHE:
-        cache_file = (
-            Path(__file__).parents[3].absolute()
-            / "cached_computed_data"
-            / "dataset_aggregate_fields.json"
-        )
-
-        with open(cache_file, "r") as object_file:
-            object_dict = json.load(object_file)
-
-        context.dataset_file_aggregate_data = object_dict
-        return None
-
     if context.root_directory:
         dataset_counts_map = {}
         file_reference_directory = get_source_directory(
