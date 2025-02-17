@@ -76,7 +76,7 @@ def generate_all(
         output_filename=(
             output_directory / DEFAULT_WEBSITE_STUDY_FILE_NAME
             if output_directory
-            else None
+            else Path(DEFAULT_WEBSITE_STUDY_FILE_NAME)
         ),
         update_file=(
             update_path / DEFAULT_WEBSITE_STUDY_FILE_NAME
@@ -91,7 +91,7 @@ def generate_all(
         output_filename=(
             output_directory / DEFAULT_WEBSITE_IMAGE_FILE_NAME
             if output_directory
-            else None
+            else Path(DEFAULT_WEBSITE_IMAGE_FILE_NAME)
         ),
         update_file=(
             update_path / DEFAULT_WEBSITE_IMAGE_FILE_NAME
@@ -106,7 +106,7 @@ def generate_all(
         output_filename=(
             output_directory / DEFAULT_WEBSITE_DATASET_FOR_IMAGE_FILE_NAME
             if output_directory
-            else None
+            else Path(DEFAULT_WEBSITE_DATASET_FOR_IMAGE_FILE_NAME)
         ),
         update_file=(
             update_path / DEFAULT_WEBSITE_DATASET_FOR_IMAGE_FILE_NAME
