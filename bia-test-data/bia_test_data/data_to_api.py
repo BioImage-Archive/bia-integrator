@@ -209,13 +209,11 @@ def order_object_for_api(object_list: list[dict]):
     return ordered_object_list
 
 
-def add_objects_to_api(private_client, object_list: list[dict]):
+def add_objects_to_api(private_client, object_list: list[dict], auto_update_version = False):
     ordered_object_list = order_object_for_api(object_list)
 
     for bia_object_dict in ordered_object_list:
         bia_object_type = bia_object_dict["model"]["type_name"]
-        post_method_name = "post_" + to_snake(bia_object_type)
-        post_function = private_client.__getattribute__(post_method_name)
         get_method_name = "get_" + to_snake(bia_object_type)
         get_function = private_client.__getattribute__(get_method_name)
         api_obj = getattr(api_models, bia_object_type).model_validate(bia_object_dict)
@@ -226,6 +224,15 @@ def add_objects_to_api(private_client, object_list: list[dict]):
             object_from_api = None
 
         if object_from_api:
-            assert object_from_api == api_obj
+            if object_from_api == api_obj:
+                pass
+            else:
+                if auto_update_version:
+                    api_obj.version = object_from_api.version + 1 
+                post_method_name = "post_" + to_snake(bia_object_type)
+                post_function = private_client.__getattribute__(post_method_name)
+                post_function(api_obj)
         else:
+            post_method_name = "post_" + to_snake(bia_object_type)
+            post_function = private_client.__getattribute__(post_method_name)
             post_function(api_obj)

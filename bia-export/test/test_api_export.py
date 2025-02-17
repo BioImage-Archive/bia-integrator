@@ -1,6 +1,6 @@
 from typer.testing import CliRunner
+from bia_shared_datamodels.uuid_creation import create_study_uuid
 from pathlib import Path
-import pytest
 from bia_export.cli import (
     app,
     DEFAULT_WEBSITE_STUDY_FILE_NAME,
@@ -9,6 +9,7 @@ from bia_export.cli import (
 )
 import json
 import os
+from bia_test_data.data_to_api import add_objects_to_api
 
 runner = CliRunner()
 
@@ -35,6 +36,7 @@ def test_cli_export_export_all_data_contains_at_least_expected_objects(
     assert len(os.listdir(tmp_path)) == 3
 
     def check_file_contains_expected_object(outfile: Path, expected_output: Path):
+        # Intentionally doesn't check exact equality of files in order to allow other objects in test api.
         with open(outfile, "r") as f:
             json_result = json.load(f)
 
@@ -57,7 +59,9 @@ def test_cli_export_export_all_data_contains_at_least_expected_objects(
 
     check_file_contains_expected_object(
         outpath.joinpath(DEFAULT_WEBSITE_DATASET_FOR_IMAGE_FILE_NAME),
-        Path(__file__).parent.joinpath("output_data/bia-dataset-metadata-for-images.json"),
+        Path(__file__).parent.joinpath(
+            "output_data/bia-dataset-metadata-for-images.json"
+        ),
     )
 
 
@@ -136,26 +140,119 @@ def test_cli_export_dataset_for_website_images(tmp_path: Path, data_in_api):
     assert json_result == json_expected
 
 
+def test_cli_export_study_ordering(
+    tmp_path: Path, api_studies_in_expected_order: list[dict], private_client
+):
+    # Note these tests are grouped so as to use the output of one as the input of the next
+    # This adds data to the api during tests, so is not as neat as bundling all pre-test set up prior to running tests.
 
-def test_cli_export_study_ordering(tmp_path: Path, api_studies_in_expected_order: list[dict]):
-    outfile = tmp_path.joinpath("bia-dataset-metadata.json").resolve()
+    def check_order(ordered_acc_id_list: list[str], result_file: Path):
+        with open(result_file, "r") as f:
+            json_result: dict = json.load(f)
 
+        it = iter(json_result.keys())
+        return all(acc_id in it for acc_id in ordered_acc_id_list)
+
+    # Test 1. studies are ordered correctly when they're all exported (i.e. no accession ids provided)
+    expected_study_acc_id_order = [
+        study["accession_id"] for study in api_studies_in_expected_order
+    ]
+
+    outfile_all = tmp_path.joinpath("all.json").resolve()
     result = runner.invoke(
         app,
         [
             "website",
             "study",
             "-o",
-            outfile,
+            outfile_all,
         ],
     )
 
     assert result.exit_code == 0
+    assert check_order(expected_study_acc_id_order, outfile_all)
 
-    expected_study_acc_id_order = [study["accession_id"] for study in api_studies_in_expected_order]
+    # Test 2. studies are ordered correctly when specific ones are exported
+    # Skipping expected_study_acc_id_order[2] to set up starting point for test3.
+    specific_study_acc_id_order = (
+        expected_study_acc_id_order[0:2] + expected_study_acc_id_order[3:]
+    )
 
-    with open(outfile, "r") as f:
-        json_result: dict = json.load(f)
+    outfile_specific = tmp_path.joinpath("specific.json").resolve()
+    result = runner.invoke(
+        app,
+        [
+            "website",
+            "study",
+            *specific_study_acc_id_order,
+            "-o",
+            outfile_specific,
+        ],
+    )
 
-    it = iter(json_result.keys()) 
-    assert all(acc_id in it for acc_id in expected_study_acc_id_order)
+    assert result.exit_code == 0
+    assert check_order(specific_study_acc_id_order, outfile_specific)
+
+    # Test 3. export with the update_file flag results in the same order of studies
+    outfile_specific_update = tmp_path.joinpath("specific-update.json").resolve()
+    result = runner.invoke(
+        app,
+        [
+            "website",
+            "study",
+            *specific_study_acc_id_order,
+            "-o",
+            outfile_specific_update,
+            "-u",
+            outfile_specific,
+        ],
+    )
+    assert result.exit_code == 0
+    assert check_order(specific_study_acc_id_order, outfile_specific_update)
+
+    # Test 4. export with the update_file flag of a new study results in the correct order of studies
+    # Uses results of test 2 to check expected_study_acc_id_order[2] is inserted in the right place
+    outfile_new_study_update = tmp_path.joinpath("new-study-update.json").resolve()
+    result = runner.invoke(
+        app,
+        [
+            "website",
+            "study",
+            expected_study_acc_id_order[2],
+            "-o",
+            outfile_new_study_update,
+            "-u",
+            outfile_specific,
+        ],
+    )
+
+    assert result.exit_code == 0
+    assert check_order(expected_study_acc_id_order, outfile_new_study_update)
+
+    # Test 5. export with the update_file flag for an existing study with new data results in a new order
+    # Changing release date of most recently released study to be released before all others, so it now appears last
+    study_to_move = api_studies_in_expected_order.pop(0)
+    study_to_move |= {
+        "release_date": "2000-02-01",
+    }
+    api_studies_in_expected_order.append(study_to_move)
+    add_objects_to_api(private_client, [study_to_move], auto_update_version=True)
+    reoreded_acc_id_order = [
+        study["accession_id"] for study in api_studies_in_expected_order
+    ]
+    outfile_reordered = tmp_path.joinpath("update-after-data-change.json").resolve()
+    result = runner.invoke(
+        app,
+        [
+            "website",
+            "study",
+            study_to_move["accession_id"],
+            "-o",
+            outfile_reordered,
+            "-u",
+            outfile_all,
+        ],
+    )
+
+    assert result.exit_code == 0
+    assert check_order(reoreded_acc_id_order, outfile_reordered)
