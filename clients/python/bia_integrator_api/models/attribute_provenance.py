@@ -29,6 +29,7 @@ class AttributeProvenance(str, Enum):
     SUBMITTOR = 'submittor'
     BIA_INGEST = 'bia_ingest'
     BIA_CONVERSION = 'bia_conversion'
+    BIA_CURATION = 'bia_curation'
 
     @classmethod
     def from_json(cls, json_str: str) -> Self:
