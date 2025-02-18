@@ -1,10 +1,11 @@
 from typer.testing import CliRunner
 from pathlib import Path
 from bia_ingest import cli
-from bia_ingest.biostudies.generic_conversion_utils import settings
+from bia_ingest import persistence_strategy
 from bia_ingest.biostudies import api
 from bia_shared_datamodels import bia_data_model
 import pytest
+from bia_ingest.settings import Settings
 from bia_test_data.mock_objects import (
     mock_growth_protocol,
     mock_study,
@@ -53,7 +54,6 @@ def test_cli_writes_expected_files(
     mock_request_get,
     expected_objects,
 ):
-    monkeypatch.setattr(settings, "bia_data_dir", str(tmp_path))
 
     expected_objects_dict, n_expected_objects = expected_objects
 
@@ -62,9 +62,15 @@ def test_cli_writes_expected_files(
 
     def _load_submission_table_info(accession_id: str):
         return test_submission_table
+    
+    def _disk_persistance_settings(path):
+        return Settings(
+            bia_data_dir=str(path)
+        ) 
 
     monkeypatch.setattr(cli, "load_submission", _load_submission)
     monkeypatch.setattr(cli, "load_submission_table_info", _load_submission_table_info)
+    monkeypatch.setattr(persistence_strategy, "settings", _disk_persistance_settings(tmp_path))
 
     result = runner.invoke(
         cli.app,

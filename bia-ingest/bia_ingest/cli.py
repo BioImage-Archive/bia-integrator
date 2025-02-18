@@ -10,7 +10,7 @@ from bia_ingest.biostudies.api import (
 )
 from bia_ingest.biostudies.generic_conversion_utils import attributes_to_dict
 #from bia_ingest.config import settings, api_client
-from bia_ingest.settings import settings
+#from bia_ingest.settings import settings
 
 from bia_ingest.persistence_strategy import (
     PersistenceMode,
@@ -67,7 +67,7 @@ def ingest(
     accession_id_list: Annotated[Optional[List[str]], typer.Argument()] = None,
     input_file: Annotated[Optional[Path], typer.Option("--input-file", "-f")] = None,
     persistence_mode: Annotated[
-        PersistenceMode, typer.Option("--persistance-mode", "-pm", case_sensitive=False)
+        PersistenceMode, typer.Option("--persistence-mode", "-pm", case_sensitive=False)
     ] = PersistenceMode.disk,
     verbose: Annotated[bool, typer.Option("--verbose", "-v")] = False,
     process_filelist: Annotated[
