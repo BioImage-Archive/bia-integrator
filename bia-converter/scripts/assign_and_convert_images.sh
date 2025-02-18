@@ -45,13 +45,13 @@ echo $command
 eval $command
 
 # Convert images
-image_uuids=$(grep "Persisted image_representation" $assign_from_proposals_output | cut -d' ' -f3)
+uploaded_by_submitter_uuids=$(grep "Persisted image_representation" $assign_from_proposals_output | cut -d' ' -f3)
 n_images_converted=0
-for image_uuid in $image_uuids
+for uploaded_by_submitter_uuid in $uploaded_by_submitter_uuids
 do
     # Create interactive display representation
-    convert_to_interactive_display_output="$logs_dir_base/convert_to_interactive_display_output.txt"
-    command='poetry --directory '"$bia_converter_dir"' run bia-converter convert '"$image_uuid"' INTERACTIVE_DISPLAY 2>&1 | tee '"$convert_to_interactive_display_output"'; echo exit_status=${PIPESTATUS[0]}'
+    convert_to_interactive_display_output="$logs_dir_base/convert_to_interactive_display_output_$uploaded_by_submitter_uuid.txt"
+    command='poetry --directory '"$bia_converter_dir"' run bia-converter convert '"$uploaded_by_submitter_uuid"' INTERACTIVE_DISPLAY 2>&1 | tee '"$convert_to_interactive_display_output"'; echo exit_status=${PIPESTATUS[0]}'
     echo $command;
     eval_output=$(eval "$command")
     echo $eval_output
@@ -62,7 +62,7 @@ do
         interactive_display_uuid=$(grep -oP 'Created INTERACTIVE_DISPLAY image representation with uuid: \K[0-9a-fA-F-]+' $convert_to_interactive_display_output)
         # Create static display representatino and update example image uri if this is first image converted
         if [ "$n_images_converted" -eq 1 ]; then
-            convert_to_static_display_output="$logs_dir_base/convert_to_static_display_output.txt"
+            convert_to_static_display_output="$logs_dir_base/convert_to_static_display_output_$interactive_display_uuid.txt"
             command="poetry --directory $bia_converter_dir run bia-converter convert $interactive_display_uuid STATIC_DISPLAY 2>&1 | tee $convert_to_static_display_output"
             echo $command
             eval $command
@@ -74,7 +74,7 @@ do
         fi
 
         # Create thumbnail representation
-        convert_to_thumbnail_output="$logs_dir_base/convert_to_thumbnail.txt"
+        convert_to_thumbnail_output="$logs_dir_base/convert_to_thumbnail_output_$interactive_display_uuid.txt"
         command="poetry --directory $bia_converter_dir run bia-converter convert $interactive_display_uuid THUMBNAIL 2>&1 | tee $convert_to_thumbnail_output"
         echo $command
         eval $command

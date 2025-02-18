@@ -12,7 +12,10 @@ from pathlib import Path
 import csv
 from bia_shared_datamodels import semantic_models, bia_data_model
 from bia_assign_image.config import api_client
-from bia_assign_image.utils import in_bioformats_single_file_formats_list
+from bia_assign_image.utils import (
+    in_bioformats_single_file_formats_list,
+    get_all_api_results,
+)
 
 
 # TODO: This function was copied from cli.py - should it be in a common place? Do other subpackages of bia_integrator need it?
@@ -109,14 +112,13 @@ def get_convertible_file_references(
 ) -> List[Dict]:
     """Get details of convertible images for given accession ID"""
 
-    # TODO: Fix this to recursively call using until all data returned
-    PAGE_SIZE_DEFAULT = 10000000
-
     study = api_client.search_study_by_accession(accession_id)
     if not study:
         return []
-    datasets = api_client.get_dataset_linking_study(
-        study.uuid, page_size=PAGE_SIZE_DEFAULT
+    datasets = get_all_api_results(
+        uuid=study.uuid,
+        api_method=api_client.get_dataset_linking_study,
+        page_size_setting=20,
     )
 
     file_references = []
@@ -128,8 +130,10 @@ def get_convertible_file_references(
                 continue
 
         file_references.extend(
-            api_client.get_file_reference_linking_dataset(
-                dataset.uuid, PAGE_SIZE_DEFAULT
+            get_all_api_results(
+                uuid=dataset.uuid,
+                api_method=api_client.get_file_reference_linking_dataset,
+                page_size_setting=100,
             )
         )
 

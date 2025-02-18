@@ -40,8 +40,6 @@
 .ome.btf
 .ome.tf2
 .ome.tf8
-.ome.tif
-.ome.tiff
 .ome.xml
 .omp2info
 .par

@@ -119,3 +119,5 @@ tiff
 .zfr
 .zvi
 .ome.zarr.zip
+.ome.tif
+.ome.tiff
