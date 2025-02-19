@@ -11,6 +11,8 @@ from bia_integrator_api.api.private_api import PrivateApi
 from bia_integrator_api.api.public_api import PublicApi
 from bia_integrator_api.exceptions import NotFoundException
 import bia_integrator_api.models as api_models
+from bia_ingest.api_client import get_bia_api_client, get_local_bia_api_client
+from bia_ingest.settings import settings
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -19,6 +21,7 @@ class PersistenceMode(str, Enum):
     """Destinations for persistence"""
 
     api = "api"
+    local_api = "local_api"
     disk = "disk"
 
 
@@ -137,10 +140,12 @@ def persistence_strategy_factory(persistence_mode: PersistenceMode, **kwargs):
     persistence_mode = PersistenceMode(persistence_mode)
 
     if persistence_mode == PersistenceMode.api:
-        return ApiPersister(api_client=kwargs["api_client"])
+        return ApiPersister(api_client=get_bia_api_client())
+    elif persistence_mode == PersistenceMode.local_api:
+        return ApiPersister(api_client=get_local_bia_api_client())
     elif persistence_mode == PersistenceMode.disk:
         return DiskPersister(
-            output_dir_base=kwargs["output_dir_base"],
+            output_dir_base=settings.bia_data_dir,
             accession_id=kwargs["accession_id"],
         )
     else:

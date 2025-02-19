@@ -1,8 +1,6 @@
 import logging
-from pathlib import Path
 from typing import List, Any, Dict, Optional, Tuple, Union
 from pydantic import BaseModel, ValidationError
-from pydantic.alias_generators import to_snake
 from bia_ingest.biostudies.submission_parsing_utils import (
     find_sections_recursive,
     mattributes_to_dict,
@@ -13,10 +11,8 @@ from .api import (
     Submission,
     Section,
 )
-from ..config import settings, api_client
 from ..cli_logging import IngestionResult, log_failed_model_creation
-import bia_integrator_api.models as api_models
-from bia_shared_datamodels import attribute_models
+
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -87,25 +83,6 @@ def get_generic_section_as_dict(
                 log_failed_model_creation(mapped_object, valdiation_error_tracking)
     return return_dict
 
-
-def persist(object_list: List[BaseModel], object_path: str, sumbission_accno: str):
-    if object_path == "api":
-        for obj in object_list:
-            api_creation_method = f"post_{to_snake(obj.model.type_name)}"
-            api_obj = getattr(api_models, obj.model.type_name).model_validate_json(
-                obj.model_dump_json()
-            )
-            getattr(api_client, api_creation_method)(api_obj)
-            logger.info(f"persisted {obj.uuid} to API")
-    else:
-        output_dir = Path(settings.bia_data_dir) / object_path / sumbission_accno
-        if not output_dir.is_dir():
-            output_dir.mkdir(parents=True)
-            logger.debug(f"Created {output_dir}")
-        for obj in object_list:
-            output_path = output_dir / f"{obj.uuid}.json"
-            output_path.write_text(obj.model_dump_json(indent=2))
-            logger.debug(f"Written {output_path}")
 
 
 def object_value_pair_to_dict(
