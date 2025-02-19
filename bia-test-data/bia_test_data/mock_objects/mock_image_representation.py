@@ -54,7 +54,20 @@ def get_image_representation_of_uploaded_by_submitter() -> (
         # Note that using the Enum ImageRepresentation gives a different UUID than using its value
         representation_dict["use_type"].value,
     )
-    return bia_data_model.ImageRepresentation.model_validate(representation_dict)
+    model = bia_data_model.ImageRepresentation.model_validate(representation_dict)
+
+    file_pattern_attribute_dict = {
+        "name": "file_pattern",
+        "provenance": semantic_models.AttributeProvenance.bia_conversion,
+        "value": {
+            "file_pattern": file_reference.file_path,
+        },
+    }
+    model.attribute = [
+        semantic_models.Attribute.model_validate(file_pattern_attribute_dict),
+    ]
+
+    return model
 
 
 def get_image_representation_of_thumbnail() -> bia_data_model.ImageRepresentation:

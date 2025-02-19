@@ -7,10 +7,54 @@ file reference from each group
 
 import math
 import random
-from typing import List, Dict
+from typing import List, Dict, Any
 from pathlib import Path
+import csv
+from bia_shared_datamodels import semantic_models, bia_data_model
 from bia_assign_image.config import api_client
-from bia_assign_image.utils import in_bioformats_single_file_formats_list
+from bia_assign_image.utils import (
+    in_bioformats_single_file_formats_list,
+    get_all_api_results,
+)
+
+
+# TODO: This function was copied from cli.py - should it be in a common place? Do other subpackages of bia_integrator need it?
+def get_value_from_attribute_list(
+    attribute_list: List[semantic_models.Attribute],
+    attribute_name: str,
+    default: Any = [],
+) -> Any:
+    """Get the value of named attribute from a list of attributes"""
+
+    # Assumes attribute.value is a Dict
+    return next(
+        (
+            attribute.value[attribute_name]
+            for attribute in attribute_list
+            if attribute.name == attribute_name
+        ),
+        default,
+    )
+
+
+def dataset_has_image_creation_prerequisites(dataset: bia_data_model.Dataset) -> bool:
+    """Assume we need biosample, image acquisition and specimen preparation protocols"""
+
+    image_acquisition_protocol_uuid = get_value_from_attribute_list(
+        dataset.attribute, "image_acquisition_protocol_uuid"
+    )
+    image_preparation_protocol_uuid = get_value_from_attribute_list(
+        dataset.attribute, "specimen_imaging_preparation_protocol_uuid"
+    )
+    bio_sample_uuid = get_value_from_attribute_list(
+        dataset.attribute, "bio_sample_uuid"
+    )
+    image_pre_requisites = [
+        len(image_acquisition_protocol_uuid),
+        len(image_preparation_protocol_uuid),
+        len(bio_sample_uuid),
+    ]
+    return all(image_pre_requisites)
 
 
 def select_indicies(n_indicies: int, n_to_select: int = 5) -> list[int]:
@@ -63,38 +107,51 @@ def sizeof_fmt(num, suffix="B"):
     return f"{num:.1f}Yi{suffix}"
 
 
-def get_convertible_file_references(accession_id: str) -> List[Dict]:
+def get_convertible_file_references(
+    accession_id: str, check_image_creation_prerequisites: bool = True
+) -> List[Dict]:
     """Get details of convertible images for given accession ID"""
-
-    # ToDo: Fix this to recursively call using until all data returned
-    PAGE_SIZE_DEFAULT = 10000000
 
     study = api_client.search_study_by_accession(accession_id)
     if not study:
         return []
-    datasets = api_client.get_dataset_linking_study(
-        study.uuid, page_size=PAGE_SIZE_DEFAULT
+    datasets = get_all_api_results(
+        uuid=study.uuid,
+        api_method=api_client.get_dataset_linking_study,
+        page_size_setting=20,
     )
+
     file_references = []
+    convertible_file_references = []
+
     for dataset in datasets:
+        if check_image_creation_prerequisites:
+            if not dataset_has_image_creation_prerequisites(dataset):
+                continue
+
         file_references.extend(
-            api_client.get_file_reference_linking_dataset(
-                dataset.uuid, PAGE_SIZE_DEFAULT
+            get_all_api_results(
+                uuid=dataset.uuid,
+                api_method=api_client.get_file_reference_linking_dataset,
+                page_size_setting=100,
             )
         )
 
-    convertible_file_references = [
-        {
-            "accession_id": accession_id,
-            "study_uuid": study.uuid,
-            "name": fr.file_path,
-            "uuid": fr.uuid,
-            "size_in_bytes": fr.size_in_bytes,
-            "size_human_readable": sizeof_fmt(fr.size_in_bytes),
-        }
-        for fr in file_references
-        if in_bioformats_single_file_formats_list(fr.file_path)
-    ]
+        convertible_file_references.extend(
+            [
+                {
+                    "accession_id": accession_id,
+                    "study_uuid": study.uuid,
+                    "dataset_uuid": dataset.uuid,
+                    "name": fr.file_path,
+                    "uuid": fr.uuid,
+                    "size_in_bytes": fr.size_in_bytes,
+                    "size_human_readable": sizeof_fmt(fr.size_in_bytes),
+                }
+                for fr in file_references
+                if in_bioformats_single_file_formats_list(fr.file_path)
+            ]
+        )
 
     convertible_file_references = sorted(
         convertible_file_references,
@@ -109,12 +166,15 @@ def write_convertible_file_references_for_accession_id(
     output_path: Path,
     max_items: int = 5,
     append: bool = True,
+    check_image_creation_prerequisites: bool = True,
 ) -> int:
     """
     Write details of file references proposed for conversion to file
     """
 
-    convertible_file_references = get_convertible_file_references(accession_id)
+    convertible_file_references = get_convertible_file_references(
+        accession_id, check_image_creation_prerequisites
+    )
 
     n_proposal_candidates = len(convertible_file_references)
     indicies_to_select = select_indicies(n_proposal_candidates, max_items)
@@ -129,6 +189,7 @@ def write_convertible_file_references_for_accession_id(
             [
                 convertible_file_references[i]["accession_id"],
                 f"{convertible_file_references[i]['study_uuid']}",
+                f"{convertible_file_references[i]['dataset_uuid']}",
                 convertible_file_references[i]["name"],
                 f"{convertible_file_references[i]['uuid']}",
                 f"{convertible_file_references[i]['size_in_bytes']}",
@@ -145,6 +206,7 @@ def write_convertible_file_references_for_accession_id(
                     [
                         "accession_id",
                         "study_uuid",
+                        "dataset_uuid",
                         "name",
                         "file_reference_uuid",
                         "size_in_bytes",
@@ -162,23 +224,17 @@ def write_convertible_file_references_for_accession_id(
 
 def read_proposals(proposal_path: Path) -> List[Dict]:
     """Read proposals from a tab-separated file
-    
+
     Returns a list of dicts containing file reference info
     """
+
     proposals = []
-    with proposal_path.open('r') as f:
-        # Skip header
-        next(f)
-        for line in f:
-            if not line.strip():
+    with proposal_path.open("r", newline="") as f:
+        reader = csv.DictReader(f, delimiter="\t")  # Uses first line as field names
+        for row in reader:
+            if not row["accession_id"]:  # Skip empty lines
                 continue
-            accession_id, study_uuid, name, file_ref_uuid, size, human_size = line.strip().split('\t')
-            proposals.append({
-                'accession_id': accession_id,
-                'study_uuid': study_uuid,
-                'name': name, 
-                'uuid': file_ref_uuid,
-                'size_in_bytes': int(size),
-                'size_human_readable': human_size
-            })
+            row["size_in_bytes"] = int(row["size_in_bytes"])  # Convert size to int
+            proposals.append(row)
+
     return proposals

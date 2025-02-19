@@ -1,4 +1,7 @@
 from pathlib import Path
+from uuid import UUID
+from typing import Callable
+from bia_shared_datamodels.bia_data_model import DocumentMixin
 
 single_file_formats_path = (
     Path(__file__).parent / "resources" / "bioformats_curated_single_file_formats.txt"
@@ -14,7 +17,7 @@ def extension_in_bioformats_single_file_formats_list(ext: str) -> bool:
     return ext in single_file_formats
 
 
-def in_bioformats_single_file_formats_list(file_location: [Path | str]) -> bool: # type: ignore
+def in_bioformats_single_file_formats_list(file_location: [Path | str]) -> bool:  # type: ignore
     """Check if ext of path/uri/name of file in bioformats single file formats list"""
     ext = get_image_extension(f"{file_location}")
     return extension_in_bioformats_single_file_formats_list(ext)
@@ -48,3 +51,29 @@ def get_image_extension(file_path: str) -> str:
         return ext_map[ext]
     else:
         return ext
+
+
+# Originally from bia-export
+def get_all_api_results(
+    uuid: UUID,
+    api_method: Callable,
+    page_size_setting: int = 20,
+    aggregator_list: list[DocumentMixin] = None,
+) -> list[DocumentMixin]:
+    if not aggregator_list:
+        aggregator_list = []
+        start_uuid = None
+    else:
+        start_uuid = aggregator_list[-1].uuid
+
+    fetched_objects = api_method(
+        str(uuid),
+        page_size=page_size_setting,
+        start_from_uuid=str(start_uuid) if start_uuid else None,
+    )
+    aggregator_list += fetched_objects
+
+    if len(fetched_objects) != page_size_setting:
+        return aggregator_list
+    else:
+        return get_all_api_results(uuid, api_method, page_size_setting, aggregator_list)

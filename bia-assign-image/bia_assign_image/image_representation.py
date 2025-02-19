@@ -31,14 +31,24 @@ def get_image_representation(
         use_type = semantic_models.ImageRepresentationUseType(use_type.upper())
 
     total_size_in_bytes = 0
+    attribute = []
     # Get image format. ATM convention is:
     #   - uploaded_by_submitter is decided by suffix
     #   - thumbnail and static display are png
     #   - interactive display is ome.zarr
     if use_type == semantic_models.ImageRepresentationUseType.UPLOADED_BY_SUBMITTER:
-        assert len(file_references) == 1
+        # TODO: Revisit this block of code when we start many file_refs->one_image
+        # assert len(file_references) == 1
         image_format = get_image_extension(file_references[0].file_path)
         total_size_in_bytes = file_references[0].size_in_bytes
+
+        # Copy file_pattern from image if it exists (only for UPLOADED_BY_SUBMITTER rep)
+        file_pattern = next(
+            (attr for attr in image.attribute if attr.name == "file_pattern"), None
+        )
+        if file_pattern:
+            attribute.append(file_pattern)
+
     else:
         image_format_map = {
             semantic_models.ImageRepresentationUseType.THUMBNAIL: ".png",
@@ -71,7 +81,9 @@ def get_image_representation(
         "image_format": image_format,
     }
 
-    return bia_data_model.ImageRepresentation.model_validate(model_dict)
+    model = bia_data_model.ImageRepresentation.model_validate(model_dict)
+    model.attribute = attribute
+    return model
 
 
 # Copied from bia_converter_light.utils

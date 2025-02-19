@@ -253,21 +253,30 @@ def assign_from_proposal(
     """Process a proposal file and assign the file references to images"""
     proposals = propose.read_proposals(proposal_path)
 
-
     for p in proposals:
-        image_uuid = assign(
-            accession_id=p['accession_id'],
-            file_reference_uuids=[p['uuid']],
-            persistence_mode=persistence_mode,
-            dryrun=dryrun
-        )
-        
+        accession_id = p["accession_id"]
+        file_reference_uuids = [
+            p["file_reference_uuid"],
+        ]
+        try:
+            image_uuid = assign(
+                accession_id=accession_id,
+                file_reference_uuids=file_reference_uuids,
+                persistence_mode=persistence_mode,
+                dryrun=dryrun,
+            )
+        except AssertionError as e:
+            logger.error(
+                f"Could not assign image for {accession_id} with file reference(s) {file_reference_uuids}. Error was {e}"
+            )
+            continue
+
         if not dryrun:
             # Create default representation
             create(
-                accession_id=p['accession_id'],
+                accession_id=p["accession_id"],
                 image_uuid_list=[image_uuid],
-                persistence_mode=persistence_mode
+                persistence_mode=persistence_mode,
             )
 
 
@@ -277,8 +286,18 @@ def propose_images(
         List[str], typer.Argument(help="Accession IDs to process")
     ],
     output_path: Annotated[Path, typer.Argument(help="Path to write the proposals")],
-    max_items: Annotated[int, typer.Option(help="Maximum number of items to propose")] = 5,
-    append: Annotated[bool, typer.Option(help="Append to existing file instead of overwriting")] = True,
+    max_items: Annotated[
+        int, typer.Option(help="Maximum number of items to propose")
+    ] = 5,
+    append: Annotated[
+        bool, typer.Option(help="Append to existing file instead of overwriting")
+    ] = True,
+    check_image_creation_prerequisites: Annotated[
+        bool,
+        typer.Option(
+            help="Check whether dataset linked to file reference contains requirements needed to create a bia_data_model Image object."
+        ),
+    ] = True,
 ) -> None:
     """Propose file references to convert for the given accession IDs"""
     for accession_id in accession_ids:
@@ -286,7 +305,8 @@ def propose_images(
             accession_id,
             output_path,
             max_items=max_items,
-            append=append
+            check_image_creation_prerequisites=check_image_creation_prerequisites,
+            append=append,
         )
         logger.info(f"Wrote {count} proposals for {accession_id} to {output_path}")
 

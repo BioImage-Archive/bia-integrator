@@ -12,6 +12,7 @@ jobs:
         project:
           [
             bia-ingest,
+            bia-assign-image,
             bia-shared-datamodels,
             core,
           ]

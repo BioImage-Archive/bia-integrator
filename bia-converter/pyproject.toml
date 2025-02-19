@@ -1,0 +1,36 @@
+[tool.poetry]
+name = "bia-converter"
+version = "0.1.0"
+description = "BioImage Archive internal conversion package"
+authors = ["Matthew Hartley <matthewh@ebi.ac.uk>"]
+license = "Apache 2.0"
+readme = "README.rst"
+packages = [{include = "bia_converter"}]
+
+[tool.poetry.dependencies]
+python = ">=3.11,<3.12"
+rich = "^13.8.1"
+bia-integrator-api = { git = "https://github.com/BioImage-Archive/bia-integrator.git", subdirectory = "clients/python", branch = "main" }
+bia-shared-datamodels = { git = "https://github.com/BioImage-Archive/bia-integrator.git", subdirectory = "bia-shared-datamodels", branch = "main" }
+typer = "^0.12.5"
+requests = "^2.32.3"
+pydantic = "^2.9.2"
+pydantic-settings = "^2.5.2"
+parse = "^1.20.2"
+zarr = "^2.18.4"
+dask = "^2024.12.1"
+pillow = "^11.1.0"
+microfilm = "^0.3.0"
+aiohttp = "^3.11.11"
+tensorstore = "^0.1.71"
+
+[tool.poetry.scripts]
+bia-converter = "bia_converter.cli:app"
+zarr2zarr = "bia_converter.zarr2zarr:app"
+
+[tool.poetry.group.dev.dependencies]
+ipython = "^8.32.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

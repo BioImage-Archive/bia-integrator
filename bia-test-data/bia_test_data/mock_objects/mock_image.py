@@ -29,6 +29,18 @@ def get_image_with_one_file_reference() -> bia_data_model.Image:
     attributes = file_references[0].attribute
     attributes[0].name = f"attributes_from_file_reference_{file_reference_uuids[0]}"
     attributes[0].provenance = semantic_models.AttributeProvenance.bia_conversion
+
+    file_pattern_attribute_dict = {
+        "name": "file_pattern",
+        "provenance": semantic_models.AttributeProvenance.bia_conversion,
+        "value": {
+            "file_pattern": file_references[0].file_path,
+        },
+    }
+    file_pattern_attribute = semantic_models.Attribute.model_validate(
+        file_pattern_attribute_dict
+    )
+    attributes.append(file_pattern_attribute)
     image_dict["attribute"] = attributes
 
     return bia_data_model.Image.model_validate(image_dict)
