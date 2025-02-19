@@ -11,7 +11,6 @@ jobs:
         os: [ubuntu-20.04, macos-latest, windows-latest]
         project:
           [
-            bia-ingest,
             bia-assign-image,
             bia-shared-datamodels,
             core,
@@ -50,7 +49,8 @@ jobs:
         os: [ubuntu-20.04] 
         project:
           [
-            bia-export,
+            bia-export,           
+            bia-ingest,
           ]
     runs-on: ${{ matrix.os }}
     defaults:
