@@ -10,12 +10,13 @@ from bia_test_data.mock_objects.mock_object_constants import (
 )
 from bia_ingest.cli_logging import IngestionResult
 from bia_test_data import bia_test_data_dir
-from bia_ingest.biostudies.api import SearchResult, SearchPage
+from bia_ingest.biostudies.api import SearchPage
 
 from bia_ingest.biostudies.biostudies_processing_version import (
     BioStudiesProcessingVersion,
 )
-
+from bia_integrator_api.util import get_client
+from bia_ingest.settings import settings
 
 @pytest.fixture
 def test_submission() -> Submission:
@@ -87,7 +88,7 @@ def mock_search_result(monkeypatch):
         "sortOrder": "descending",
         "hits": [
             {
-                "accession": "S-BIADTEST",
+                "accession": "S-BIADNotYetInAPI",
                 "type": "study",
                 "title": "Test Title",
                 "author": "Test Authors",
@@ -111,3 +112,8 @@ def mock_search_result(monkeypatch):
         return return_value
 
     monkeypatch.setattr(requests, "get", _mock_search_result)
+
+
+@pytest.fixture()
+def get_bia_api_client():
+    return get_client(settings.local_bia_api_basepath)
