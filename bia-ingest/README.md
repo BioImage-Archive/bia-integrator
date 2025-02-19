@@ -42,7 +42,16 @@ This creates the following structure (using S-BIAD325 as an example):
     ...
 ```
 
-To ingest into the api, set the persistence-mode to `api`:
+To ingest into your local api, first set up the local api with
+```sh
+$ docker compose up --wait --build -d
+```
+and run ingest with the persistence-mode to `local-api`:
+```sh
+$ poetry run biaingest ingest --persistence-mode local-api S-BIAD1285
+```
+
+To ingest to the wwwdev api (the main one currently in use), you need to have a user account on the dev API. You can then copy the .env_template file to .env, and fill in the details (email and password) of your user account. Then, to ingest, you can run:
 ```sh
 $ poetry run biaingest ingest --persistence-mode api S-BIAD1285
 ```
