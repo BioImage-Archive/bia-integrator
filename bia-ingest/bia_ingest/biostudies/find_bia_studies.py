@@ -4,6 +4,10 @@ import pathlib
 from datetime import date
 import logging
 from typing import Optional
+from bia_integrator_api.util import get_client
+from bia_integrator_api.models import Study
+from bia_ingest.settings import settings
+import re
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -77,17 +81,44 @@ def get_processed_studies() -> list[str]:
     return [acc_id.strip("\n") for acc_id in acc_ids]
 
 
+def fetch_studies_from_api(
+    api_client, page_size: int, agregator_list: list[Study] = None
+) -> list[Study]:
+    if not agregator_list:
+        agregator_list = []
+        start_uuid = None
+    else:
+        start_uuid = agregator_list[-1].uuid
+
+    fetched_studies = api_client.search_study(
+        page_size=page_size, start_from_uuid=start_uuid
+    )
+    agregator_list += fetched_studies
+
+    if len(fetched_studies) != page_size:
+        return agregator_list
+    else:
+        return fetch_studies_from_api(api_client, page_size, agregator_list)
+
+
 def find_unprocessed_studies(output_file: Optional[pathlib.Path]):
+    def get_accno(acc_id):
+        match = re.search(r"\d+$", acc_id)
+        return int(match.group()) if match else None
 
     page_size = 100
+    logging.info("Fetching all studies from biostudies")
     imaging_studies = get_all_bia_studies(page_size)
     grouped_studies = studies_by_source(imaging_studies)
     studies_of_interest = (
         grouped_studies["BIAD"] + grouped_studies["BSST"] + grouped_studies["other"]
     )
     acc_id_of_interest = [result.accession for result in studies_of_interest]
-    processed_acc_ids = get_processed_studies()
-    unprocessed_acc_ids = set(acc_id_of_interest) - set(processed_acc_ids)
+    logging.info("Fetching all studies from bia api")
+    api_client = get_client(settings.bia_api_basepath)
+    bia_existing_studies = fetch_studies_from_api(api_client, page_size)
+    processed_acc_ids = [str(study.accession_id) for study in bia_existing_studies]
+    unprocessed_acc_ids = sorted(list(set(acc_id_of_interest) - set(processed_acc_ids)), key=lambda acc_id : get_accno(acc_id))
 
     if not output_file:
         output_file = (
@@ -96,6 +127,7 @@ def find_unprocessed_studies(output_file: Optional[pathlib.Path]):
             / f"uningested_studies_of_interest_{str(date.today())}"
         )
 
+    logging.info(f"Writing uningested studies to: {output_file}")
     with open(output_file, "w") as f:
         for id in unprocessed_acc_ids:
             f.write(f"{id}\n")

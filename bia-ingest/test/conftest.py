@@ -4,15 +4,19 @@ from pathlib import Path
 import json
 import pytest
 from bia_ingest.biostudies.api import Submission, SubmissionTable, requests
-from bia_test_data.mock_objects.mock_object_constants import accession_id, accession_id_biostudies_default
+from bia_test_data.mock_objects.mock_object_constants import (
+    accession_id,
+    accession_id_biostudies_default,
+)
 from bia_ingest.cli_logging import IngestionResult
 from bia_test_data import bia_test_data_dir
-from bia_ingest.biostudies.api import SearchResult, SearchPage
+from bia_ingest.biostudies.api import SearchPage
 
 from bia_ingest.biostudies.biostudies_processing_version import (
     BioStudiesProcessingVersion,
 )
-
+from bia_integrator_api.util import get_client
+from bia_ingest.settings import settings
 
 @pytest.fixture
 def test_submission() -> Submission:
@@ -21,12 +25,16 @@ def test_submission() -> Submission:
     submission = Submission.model_validate(json_data)
     return submission
 
+
 @pytest.fixture
 def test_submission_biostudies_default_direct_files() -> Submission:
-    submission_path = bia_test_data_dir / "default_biostudies" / "S-BSSTTEST_files_direct.json"
+    submission_path = (
+        bia_test_data_dir / "default_biostudies" / "S-BSSTTEST_files_direct.json"
+    )
     json_data = json.loads(submission_path.read_text())
     submission = Submission.model_validate(json_data)
     return submission
+
 
 @pytest.fixture
 def test_submission_table() -> SubmissionTable:
@@ -35,18 +43,23 @@ def test_submission_table() -> SubmissionTable:
     submission = SubmissionTable.model_validate(json_data)
     return submission
 
+
 @pytest.fixture
 def ingestion_result_summary():
     result_summary = {accession_id: IngestionResult()}
     return result_summary
+
 
 @pytest.fixture
 def ingestion_result_summary_biostudies_default():
 
     result_summary = {}
     result_summary[accession_id_biostudies_default] = IngestionResult()
-    result_summary[accession_id_biostudies_default].ProcessingVersion = BioStudiesProcessingVersion.BIOSTUDIES_DEFAULT
+    result_summary[accession_id_biostudies_default].ProcessingVersion = (
+        BioStudiesProcessingVersion.BIOSTUDIES_DEFAULT
+    )
     return result_summary
+
 
 @pytest.fixture
 def mock_request_get(monkeypatch):
@@ -75,7 +88,7 @@ def mock_search_result(monkeypatch):
         "sortOrder": "descending",
         "hits": [
             {
-                "accession": "S-BIADTEST",
+                "accession": "S-BIADNotYetInAPI",
                 "type": "study",
                 "title": "Test Title",
                 "author": "Test Authors",
@@ -99,3 +112,8 @@ def mock_search_result(monkeypatch):
         return return_value
 
     monkeypatch.setattr(requests, "get", _mock_search_result)
+
+
+@pytest.fixture()
+def get_bia_api_client():
+    return get_client(settings.local_bia_api_basepath)

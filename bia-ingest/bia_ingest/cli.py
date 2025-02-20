@@ -9,7 +9,7 @@ from bia_ingest.biostudies.api import (
     Submission,
 )
 from bia_ingest.biostudies.generic_conversion_utils import attributes_to_dict
-from bia_ingest.config import settings, api_client
+
 from bia_ingest.persistence_strategy import (
     PersistenceMode,
     persistence_strategy_factory,
@@ -63,13 +63,13 @@ def find_new_studies(
 @app.command(help="Ingest from biostudies and echo json of bia_data_model.Study")
 def ingest(
     accession_id_list: Annotated[Optional[List[str]], typer.Argument()] = None,
-    input_file: Annotated[Optional[Path], typer.Option("--input_file", "-f")] = None,
+    input_file: Annotated[Optional[Path], typer.Option("--input-file", "-f")] = None,
     persistence_mode: Annotated[
-        PersistenceMode, typer.Option(case_sensitive=False)
+        PersistenceMode, typer.Option("--persistence-mode", "-pm", case_sensitive=False)
     ] = PersistenceMode.disk,
     verbose: Annotated[bool, typer.Option("--verbose", "-v")] = False,
     process_filelist: Annotated[
-        ProcessFilelistMode, typer.Option(case_sensitive=False)
+        ProcessFilelistMode, typer.Option("--process-filelist", "-pf", case_sensitive=False)
     ] = ProcessFilelistMode.ask,
     dryrun: Annotated[bool, typer.Option()] = False,
     write_csv: Annotated[str, typer.Option()] = None,
@@ -91,12 +91,7 @@ def ingest(
 
         persister = None
         if not dryrun:
-            persister = persistence_strategy_factory(
-                persistence_mode,
-                output_dir_base=settings.bia_data_dir,
-                accession_id=accession_id,
-                api_client=api_client,
-            )
+            persister = persistence_strategy_factory(persistence_mode, accession_id=accession_id)
 
         try:
             # Get information from biostudies

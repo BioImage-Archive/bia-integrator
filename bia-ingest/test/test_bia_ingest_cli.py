@@ -1,10 +1,11 @@
 from typer.testing import CliRunner
 from pathlib import Path
 from bia_ingest import cli
-from bia_ingest.biostudies.generic_conversion_utils import settings
+from bia_ingest import persistence_strategy
 from bia_ingest.biostudies import api
 from bia_shared_datamodels import bia_data_model
 import pytest
+from bia_ingest.settings import Settings
 from bia_test_data.mock_objects import (
     mock_growth_protocol,
     mock_study,
@@ -53,7 +54,6 @@ def test_cli_writes_expected_files(
     mock_request_get,
     expected_objects,
 ):
-    monkeypatch.setattr(settings, "bia_data_dir", str(tmp_path))
 
     expected_objects_dict, n_expected_objects = expected_objects
 
@@ -63,8 +63,14 @@ def test_cli_writes_expected_files(
     def _load_submission_table_info(accession_id: str):
         return test_submission_table
 
+    def _disk_persistance_settings(path):
+        return Settings(bia_data_dir=str(path))
+
     monkeypatch.setattr(cli, "load_submission", _load_submission)
     monkeypatch.setattr(cli, "load_submission_table_info", _load_submission_table_info)
+    monkeypatch.setattr(
+        persistence_strategy, "settings", _disk_persistance_settings(tmp_path)
+    )
 
     result = runner.invoke(
         cli.app,
@@ -111,11 +117,58 @@ def test_cli_writes_expected_files(
             assert created_object == expected_object
 
 
+def test_cli_persists_expected_documents(
+    monkeypatch,
+    test_submission,
+    test_submission_table,
+    mock_request_get,
+    expected_objects,
+    get_bia_api_client,
+):
+
+    expected_objects_dict, n_expected_objects = expected_objects
+
+    def _load_submission(accession_id: str) -> api.Submission:
+        return test_submission
+
+    def _load_submission_table_info(accession_id: str):
+        return test_submission_table
+
+    monkeypatch.setattr(cli, "load_submission", _load_submission)
+    monkeypatch.setattr(cli, "load_submission_table_info", _load_submission_table_info)
+
+    result = runner.invoke(
+        cli.app,
+        [
+            "ingest",
+            test_submission.accno,
+            "--persistence-mode",
+            "local_api",
+            "--process-filelist",
+            "always",
+        ],
+    )
+    assert result.exit_code == 0
+
+    for class_name, expected_objects in expected_objects_dict.items():
+        if not isinstance(expected_objects, list):
+            expected_objects = [
+                expected_objects,
+            ]
+        get_func = get_bia_api_client.__getattribute__(f"get_{class_name}")
+        for expected_object in expected_objects:
+            persisted_object = get_func(str(expected_object.uuid))
+            # Using the model_dump_json instead of direct comparison because the expected objects 
+            # are instances of the bia_shared_models and not api client models
+            assert (
+                persisted_object.model_dump_json() == expected_object.model_dump_json()
+            )
+
+
 def test_cli_find_test_study(
     monkeypatch,
     tmp_path: Path,
     mock_search_result,
-    expected_objects,
 ):
     outfile = tmp_path.absolute() / "find_output"
 
@@ -128,4 +181,4 @@ def test_cli_find_test_study(
     with open(outfile, "r") as f:
         lines = f.readlines()
 
-    assert lines == ["S-BIADTEST\n"]
+    assert lines == ["S-BIADNotYetInAPI\n"]
