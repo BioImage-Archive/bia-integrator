@@ -158,7 +158,8 @@ def test_cli_persists_expected_documents(
         get_func = get_bia_api_client.__getattribute__(f"get_{class_name}")
         for expected_object in expected_objects:
             persisted_object = get_func(str(expected_object.uuid))
-            # Using the model_dump_json instead of
+            # Using the model_dump_json instead of direct comparison because the expected objects 
+            # are instances of the bia_shared_models and not api client models
             assert (
                 persisted_object.model_dump_json() == expected_object.model_dump_json()
             )

@@ -1,11 +1,9 @@
-from bia_ingest.settings import Settings
 from bia_integrator_api.util import get_client_private
 from bia_integrator_api import Configuration, ApiClient, exceptions
 from bia_integrator_api.api import PrivateApi
 import bia_integrator_api.models as api_models
 import logging
-
-settings = Settings()
+from bia_ingest.settings import settings
 
 logger = logging.getLogger("__main__." + __name__)
 

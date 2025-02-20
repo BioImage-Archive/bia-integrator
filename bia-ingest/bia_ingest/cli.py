@@ -9,8 +9,6 @@ from bia_ingest.biostudies.api import (
     Submission,
 )
 from bia_ingest.biostudies.generic_conversion_utils import attributes_to_dict
-#from bia_ingest.config import settings, api_client
-#from bia_ingest.settings import settings
 
 from bia_ingest.persistence_strategy import (
     PersistenceMode,

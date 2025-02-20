@@ -127,7 +127,7 @@ def find_unprocessed_studies(output_file: Optional[pathlib.Path]):
             / f"uningested_studies_of_interest_{str(date.today())}"
         )
 
-    logging.info(f"Writing uninstest studies to: {output_file}")
+    logging.info(f"Writing uningested studies to: {output_file}")
     with open(output_file, "w") as f:
         for id in unprocessed_acc_ids:
             f.write(f"{id}\n")
