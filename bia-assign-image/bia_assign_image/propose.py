@@ -11,7 +11,7 @@ from typing import List, Dict, Any
 from pathlib import Path
 import csv
 from bia_shared_datamodels import semantic_models, bia_data_model
-from bia_assign_image.config import api_client
+from bia_assign_image.api_client import get_api_client, ApiTarget
 from bia_assign_image.utils import (
     in_bioformats_single_file_formats_list,
     get_all_api_results,
@@ -108,10 +108,13 @@ def sizeof_fmt(num, suffix="B"):
 
 
 def get_convertible_file_references(
-    accession_id: str, check_image_creation_prerequisites: bool = True
+    accession_id: str,
+    api_target: ApiTarget,
+    check_image_creation_prerequisites: bool = True,
 ) -> List[Dict]:
     """Get details of convertible images for given accession ID"""
 
+    api_client = get_api_client(api_target)
     study = api_client.search_study_by_accession(accession_id)
     if not study:
         return []
@@ -164,6 +167,7 @@ def get_convertible_file_references(
 def write_convertible_file_references_for_accession_id(
     accession_id: str,
     output_path: Path,
+    api_target: ApiTarget,
     max_items: int = 5,
     append: bool = True,
     check_image_creation_prerequisites: bool = True,
@@ -173,7 +177,7 @@ def write_convertible_file_references_for_accession_id(
     """
 
     convertible_file_references = get_convertible_file_references(
-        accession_id, check_image_creation_prerequisites
+        accession_id, api_target, check_image_creation_prerequisites
     )
 
     n_proposal_candidates = len(convertible_file_references)

@@ -2,12 +2,8 @@ from typing import List, Any
 from pathlib import Path
 from typing import Annotated
 import typer
-from bia_shared_datamodels import bia_data_model, uuid_creation, semantic_models
+from bia_shared_datamodels import uuid_creation, semantic_models
 from bia_shared_datamodels.semantic_models import ImageRepresentationUseType
-from bia_ingest.persistence_strategy import (
-    PersistenceMode,
-    persistence_strategy_factory,
-)
 from bia_assign_image import (
     image,
     specimen,
@@ -15,7 +11,11 @@ from bia_assign_image import (
     propose,
 )
 from bia_assign_image.image_representation import get_image_representation
-from bia_assign_image.config import settings, api_client
+from bia_assign_image.api_client import (
+    ApiTarget,
+    get_api_client,
+    store_object_in_api_idempotent,
+)
 
 # For read only client
 
@@ -60,31 +60,21 @@ def _get_value_from_attribute_list(
 def assign(
     accession_id: Annotated[str, typer.Argument()],
     file_reference_uuids: Annotated[List[str], typer.Argument()],
-    persistence_mode: Annotated[
-        PersistenceMode, typer.Option(case_sensitive=False)
-    ] = PersistenceMode.api,
+    api_target: Annotated[
+        ApiTarget, typer.Option("--api", "-a", case_sensitive=False)
+    ] = ApiTarget.prod,
     dryrun: Annotated[bool, typer.Option()] = False,
 ) -> str:
-    persister = persistence_strategy_factory(
-        persistence_mode,
-        output_dir_base=settings.bia_data_dir,
-        accession_id=accession_id,
-        api_client=api_client,
-    )
+    api_client = get_api_client(api_target)
 
     file_reference_uuid_list = file_reference_uuids[0].split(" ")
-    file_references = persister.fetch_by_uuid(
-        file_reference_uuid_list, bia_data_model.FileReference
-    )
+    file_references = [
+        api_client.get_file_reference(f) for f in file_reference_uuid_list
+    ]
     dataset_uuids = [f.submission_dataset_uuid for f in file_references]
     assert len(set(dataset_uuids)) == 1
     submission_dataset_uuid = dataset_uuids[0]
-    dataset = persister.fetch_by_uuid(
-        [
-            submission_dataset_uuid,
-        ],
-        bia_data_model.Dataset,
-    )[0]
+    dataset = api_client.get_dataset(submission_dataset_uuid)
 
     image_uuid = uuid_creation.create_image_uuid(file_reference_uuid_list)
 
@@ -127,14 +117,7 @@ def assign(
                 f"Dryrun: Created specimen(s) {bia_specimen}, but not persisting."
             )
         else:
-            persister.persist(
-                [
-                    bia_specimen,
-                ]
-            )
-            logger.info(
-                f"Generated bia_data_model.Specimen object {bia_specimen.uuid} and persisted to {persistence_mode}"
-            )
+            store_object_in_api_idempotent(api_client, bia_specimen)
 
     if not bia_specimen:
         logger.warning("Creating CreationProcess with no Specimen")
@@ -150,14 +133,7 @@ def assign(
             f"Dryrun: Created creation process(es) {bia_creation_process}, but not persisting."
         )
     else:
-        persister.persist(
-            [
-                bia_creation_process,
-            ]
-        )
-        logger.info(
-            f"Generated bia_data_model.CreationProcess object {bia_creation_process.uuid} and persisted to {persistence_mode}"
-        )
+        store_object_in_api_idempotent(api_client, bia_creation_process)
 
     bia_image = image.get_image(
         submission_dataset_uuid,
@@ -167,13 +143,9 @@ def assign(
     if dryrun:
         logger.info(f"Dryrun: Created Image(s) {bia_image}, but not persisting.")
     else:
-        persister.persist(
-            [
-                bia_image,
-            ]
-        )
+        store_object_in_api_idempotent(api_client, bia_image)
         logger.info(
-            f"Generated bia_data_model.Image object {bia_image.uuid} and persisted to {persistence_mode}"
+            f"Generated bia_data_model.Image object {bia_image.uuid} and persisted to {api_target} API"
         )
     return str(bia_image.uuid)
 
@@ -182,9 +154,9 @@ def assign(
 def create(
     accession_id: Annotated[str, typer.Argument()],
     image_uuid_list: Annotated[List[str], typer.Argument()],
-    persistence_mode: Annotated[
-        PersistenceMode, typer.Option(case_sensitive=False)
-    ] = PersistenceMode.api,
+    api_target: Annotated[
+        ApiTarget, typer.Option("--api", "-a", case_sensitive=False)
+    ] = ApiTarget.prod,
     reps_to_create: Annotated[
         List[ImageRepresentationUseType], typer.Option(case_sensitive=False)
     ] = [
@@ -198,18 +170,13 @@ def create(
     if verbose:
         logger.setLevel(logging.DEBUG)
 
-    persister = persistence_strategy_factory(
-        persistence_mode,
-        output_dir_base=settings.bia_data_dir,
-        accession_id=accession_id,
-        api_client=api_client,
-    )
-
-    bia_images = persister.fetch_by_uuid(image_uuid_list, bia_data_model.Image)
+    api_client = get_api_client(api_target)
+    bia_images = [api_client.get_image(image_uuid) for image_uuid in image_uuid_list]
     for bia_image in bia_images:
-        file_references = persister.fetch_by_uuid(
-            bia_image.original_file_reference_uuid, bia_data_model.FileReference
-        )
+        file_references = [
+            api_client.get_file_reference(file_reference_uuid)
+            for file_reference_uuid in bia_image.original_file_reference_uuid
+        ]
         for representation_use_type in reps_to_create:
             logger.debug(
                 f"starting creation of image representation of use type {representation_use_type.value} for Image {bia_image.uuid}"
@@ -228,15 +195,10 @@ def create(
                         f"Not persisting image representation:{image_representation}."
                     )
                 else:
-                    persister.persist(
-                        [
-                            image_representation,
-                        ]
-                    )
+                    store_object_in_api_idempotent(image_representation)
                     logger.info(
                         f"Persisted image_representation {image_representation.uuid}"
                     )
-
             else:
                 message = f"WARNING: Could NOT create image representation of use type {representation_use_type.value} for bia_data_model.Image {bia_image.uuid} of {accession_id}"
                 logger.warning(message)
@@ -245,9 +207,9 @@ def create(
 @app.command(help="Assign images from a proposal file")
 def assign_from_proposal(
     proposal_path: Annotated[Path, typer.Argument(help="Path to the proposal file")],
-    persistence_mode: Annotated[
-        PersistenceMode, typer.Option(case_sensitive=False)
-    ] = PersistenceMode.api,
+    api_target: Annotated[
+        ApiTarget, typer.Option("--api", "-a", case_sensitive=False)
+    ] = ApiTarget.prod,
     dryrun: Annotated[bool, typer.Option()] = False,
 ) -> None:
     """Process a proposal file and assign the file references to images"""
@@ -262,7 +224,7 @@ def assign_from_proposal(
             image_uuid = assign(
                 accession_id=accession_id,
                 file_reference_uuids=file_reference_uuids,
-                persistence_mode=persistence_mode,
+                api_target=api_target,
                 dryrun=dryrun,
             )
         except AssertionError as e:
@@ -276,7 +238,7 @@ def assign_from_proposal(
             create(
                 accession_id=p["accession_id"],
                 image_uuid_list=[image_uuid],
-                persistence_mode=persistence_mode,
+                api_target=api_target,
             )
 
 
@@ -286,6 +248,9 @@ def propose_images(
         List[str], typer.Argument(help="Accession IDs to process")
     ],
     output_path: Annotated[Path, typer.Argument(help="Path to write the proposals")],
+    api_target: Annotated[
+        ApiTarget, typer.Option("--api", "-a", case_sensitive=False)
+    ] = ApiTarget.prod,
     max_items: Annotated[
         int, typer.Option(help="Maximum number of items to propose")
     ] = 5,
@@ -304,6 +269,7 @@ def propose_images(
         count = propose.write_convertible_file_references_for_accession_id(
             accession_id,
             output_path,
+            api_target=api_target,
             max_items=max_items,
             check_image_creation_prerequisites=check_image_creation_prerequisites,
             append=append,
