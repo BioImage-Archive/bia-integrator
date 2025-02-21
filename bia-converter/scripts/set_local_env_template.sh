@@ -7,6 +7,9 @@ export BIA_API_BASEPATH="https://wwwdev.ebi.ac.uk/bioimage-archive/api"
 export BIA_API_USERNAME='test@example.com'
 export BIA_API_PASSWORD='test'
 export api_base_url=$BIA_API_BASEPATH
+# bia-assign-image uses the settings class to determine whether to use the prod or local API
+# API_PROFILE below sets this when calling its cli. Possible values are 'prod' or 'local'
+export API_PROFILE=prod
 
 # For storing downloaded files and intermediate conversions
 export cache_root_dirpath=/home/test/.cache/bia-converter
