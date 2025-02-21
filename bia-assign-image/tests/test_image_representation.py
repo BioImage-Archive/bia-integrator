@@ -35,7 +35,10 @@ def test_create_representation_of_single_image(
     image_representation_use_type,
     mock_creation_function,
 ):
-    expected = mock_creation_function()
+    if image_representation_use_type == "uploaded_by_submitter":
+        expected = mock_creation_function(with_file_uri_set=True)
+    else:
+        expected = mock_creation_function(with_file_uri_set=False)
 
     file_references = mock_file_reference.get_file_reference()
     created = image_representation.get_image_representation(

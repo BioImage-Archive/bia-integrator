@@ -1,18 +1,15 @@
 from pathlib import Path
 from typing import List
-from bia_assign_image.config import settings
 from bia_shared_datamodels import bia_data_model, semantic_models, uuid_creation
 
 
 def get_image_representation(
     accession_id: str,
-    file_references: List[bia_data_model.FileReference,],
+    file_references: List[bia_data_model.FileReference],
     image: bia_data_model.Image,
     use_type: semantic_models.ImageRepresentationUseType,
+    file_uri: str = "",
 ) -> bia_data_model.ImageRepresentation:
-    # TODO: Put this is settings
-    file_uri_base = f"{settings.endpoint_url.strip('/')}/{settings.bucket_name}"
-
     # Note: we assume image_uuid is correct. I.e file references in image_uuid
     # match those passed into this function. We are only checking same
     # UUIDs are present, and not order or numbers
@@ -64,19 +61,21 @@ def get_image_representation(
         use_type.value,
     )
 
-    if use_type == semantic_models.ImageRepresentationUseType.UPLOADED_BY_SUBMITTER:
-        file_uri = file_references[0].uri
+    file_uri_list = []
+    if file_uri == "":
+        if use_type == semantic_models.ImageRepresentationUseType.UPLOADED_BY_SUBMITTER:
+            file_uri_list.append(
+                file_references[0].uri,
+            )
     else:
-        file_uri = f"{file_uri_base}/{accession_id}/{image.uuid}/{image_representation_uuid}{image_format}"
+        file_uri_list.append(file_uri)
 
     model_dict = {
         "uuid": image_representation_uuid,
         "version": 0,
         "use_type": use_type,
         "representation_of_uuid": image.uuid,
-        "file_uri": [
-            file_uri,
-        ],
+        "file_uri": file_uri_list,
         "total_size_in_bytes": total_size_in_bytes,
         "image_format": image_format,
     }

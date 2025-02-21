@@ -2,8 +2,6 @@ from typing import List
 from uuid import UUID
 import pytest
 from bia_assign_image import image, specimen, creation_process
-from bia_ingest import persistence_strategy
-from bia_test_data.mock_objects.mock_object_constants import accession_id
 from bia_test_data.mock_objects import (
     mock_dataset,
     mock_file_reference,
@@ -12,20 +10,6 @@ from bia_test_data.mock_objects import (
     mock_creation_process,
 )
 from bia_shared_datamodels import bia_data_model
-
-
-@pytest.fixture
-def persister(tmpdir):
-    """
-    Create disk persister to a temporary directory and dump
-    the mock dataset objects needed for test in these. Return
-    the persister
-    """
-    persister = persistence_strategy.persistence_strategy_factory(
-        "disk", accession_id=accession_id, output_dir_base=str(tmpdir)
-    )
-    persister.persist(mock_dataset.get_dataset())
-    return persister
 
 
 @pytest.fixture
