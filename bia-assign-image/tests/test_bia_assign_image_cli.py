@@ -61,7 +61,7 @@ def test_api_client():
     return get_api_client("local")
 
 
-def test_cli_propose_images_command(tmpdir):
+def test_cli_propose_images_command(data_in_api, tmpdir):
     max_items = 2
     propose_output_path = Path(tmpdir) / "propose_S-BIAD1522.tsv"
 
@@ -86,6 +86,7 @@ def test_cli_propose_images_command(tmpdir):
 
 
 def test_cli_assign_from_proposal_command(
+    data_in_api,
     test_api_client,
     assign_from_proposal_input_path,
     expected_bia_image,

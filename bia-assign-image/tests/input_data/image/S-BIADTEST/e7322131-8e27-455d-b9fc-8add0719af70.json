@@ -1,0 +1,12 @@
+{
+  "uuid": "e7322131-8e27-455d-b9fc-8add0719af70",
+  "version": 0,
+  "model": {
+    "type_name": "Image",
+    "version": 1
+  },
+  "attribute": [],
+  "original_file_reference_uuid": [],
+  "creation_process_uuid": "2447db96-dd23-44eb-ad47-1086c9be1cba",
+  "submission_dataset_uuid": "47a4ab60-c76d-4424-bfaa-c2a024de720c"
+}
