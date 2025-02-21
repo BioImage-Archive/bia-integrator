@@ -192,10 +192,10 @@ def create(
                 logger.info(message)
                 if dryrun:
                     logger.info(
-                        f"Not persisting image representation:{image_representation}."
+                        f"Dryrun: Not persisting image representation:{image_representation}."
                     )
                 else:
-                    store_object_in_api_idempotent(image_representation)
+                    store_object_in_api_idempotent(api_client, image_representation)
                     logger.info(
                         f"Persisted image_representation {image_representation.uuid}"
                     )
