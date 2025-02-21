@@ -11,7 +11,7 @@ from bia_test_data.mock_objects import (
 from bia_assign_image.api_client import get_api_client
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture()
 def expected_bia_image() -> bia_data_model.Image:
     return mock_image.get_image_with_one_file_reference()
 

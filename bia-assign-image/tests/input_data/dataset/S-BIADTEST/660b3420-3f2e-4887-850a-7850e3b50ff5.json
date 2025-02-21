@@ -1,1 +1,64 @@
-{"title_id":"Study Component 2","uuid":"660b3420-3f2e-4887-850a-7850e3b50ff5","version":0,"model":{"type_name":"Dataset","version":1},"attribute":[{"provenance":"bia_ingest","name":"associations","value":{"associations":[{"image_analysis":"Test image analysis","image_correlation":null,"biosample":"Test Biosample 2 ","image_acquisition":"Test Primary Screen Image Acquisition","specimen":"Test specimen 2"}]}},{"provenance":"bia_ingest","name":"image_acquisition_protocol_uuid","value":{"image_acquisition_protocol_uuid":["8bc3e30f-9f02-436e-b242-ad62e71b2b85"]}},{"provenance":"bia_ingest","name":"specimen_imaging_preparation_protocol_uuid","value":{"specimen_imaging_preparation_protocol_uuid":["d934dcd1-ef3b-4a36-b222-a865d5e19e93"]}},{"provenance":"bia_ingest","name":"bio_sample_uuid","value":{"bio_sample_uuid":["5181c02c-40d9-49ae-b592-0abb77ae7a06"]}}],"description":"Description of study component 2","analysis_method":[{"attribute":[],"protocol_description":"Test image analysis","features_analysed":"Test image analysis overview"}],"correlation_method":[],"example_image_uri":[],"submitted_in_study_uuid":"a2fdbd58-ee11-4cd9-bc6a-f3d3da7fff71"}
+{
+  "title_id": "Study Component 2",
+  "uuid": "660b3420-3f2e-4887-850a-7850e3b50ff5",
+  "version": 0,
+  "model": {
+    "type_name": "Dataset",
+    "version": 1
+  },
+  "attribute": [
+    {
+      "provenance": "bia_ingest",
+      "name": "associations",
+      "value": {
+        "associations": [
+          {
+            "image_analysis": "Test image analysis",
+            "image_correlation": null,
+            "biosample": "Test Biosample 2 ",
+            "image_acquisition": "Test Primary Screen Image Acquisition",
+            "specimen": "Test specimen 2"
+          }
+        ]
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "image_acquisition_protocol_uuid",
+      "value": {
+        "image_acquisition_protocol_uuid": [
+          "8bc3e30f-9f02-436e-b242-ad62e71b2b85"
+        ]
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "specimen_imaging_preparation_protocol_uuid",
+      "value": {
+        "specimen_imaging_preparation_protocol_uuid": [
+          "d934dcd1-ef3b-4a36-b222-a865d5e19e93"
+        ]
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "bio_sample_uuid",
+      "value": {
+        "bio_sample_uuid": [
+          "5181c02c-40d9-49ae-b592-0abb77ae7a06"
+        ]
+      }
+    }
+  ],
+  "description": "Description of study component 2",
+  "analysis_method": [
+    {
+      "attribute": [],
+      "protocol_description": "Test image analysis",
+      "features_analysed": "Test image analysis overview"
+    }
+  ],
+  "correlation_method": [],
+  "example_image_uri": [],
+  "submitted_in_study_uuid": "a2fdbd58-ee11-4cd9-bc6a-f3d3da7fff71"
+}
