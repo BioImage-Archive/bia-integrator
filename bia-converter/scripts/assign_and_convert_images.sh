@@ -32,7 +32,7 @@ update_example_image_uri_script_path=$(realpath update_example_image_uri_for_dat
 # Create proposals if the location of a proposals file was not specified
 if [ -z "$propose_images_output" ]; then
     propose_images_output="$artefact_dir_base/propose_$accession_id.tsv"
-    command="poetry --directory $bia_assign_image_dir run bia-assign-image propose-images --no-append --max-items $n_images_to_convert $accession_id $propose_images_output"
+    command="poetry --directory $bia_assign_image_dir run bia-assign-image propose-images --api $API_PROFILE --no-append --max-items $n_images_to_convert $accession_id $propose_images_output"
 
     echo $command
     eval $command
@@ -40,7 +40,7 @@ fi
 
 # Assign Images from proposals
 assign_from_proposals_output="$logs_dir_base/assign_from_proposal_output.txt"
-command="poetry --directory $bia_assign_image_dir run bia-assign-image assign-from-proposal $propose_images_output 2>&1 | tee $assign_from_proposals_output"
+command="poetry --directory $bia_assign_image_dir run bia-assign-image assign-from-proposal --api $API_PROFILE $propose_images_output 2>&1 | tee $assign_from_proposals_output"
 echo $command
 eval $command
 

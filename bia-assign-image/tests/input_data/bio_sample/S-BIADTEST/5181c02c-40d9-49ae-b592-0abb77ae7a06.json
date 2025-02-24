@@ -1,0 +1,29 @@
+{
+  "title_id": "Test Biosample 2 ",
+  "uuid": "5181c02c-40d9-49ae-b592-0abb77ae7a06",
+  "version": 0,
+  "model": {
+    "type_name": "BioSample",
+    "version": 3
+  },
+  "attribute": [],
+  "organism_classification": [
+    {
+      "attribute": [],
+      "common_name": "mouse",
+      "scientific_name": "Mus musculus",
+      "ncbi_id": null
+    }
+  ],
+  "biological_entity_description": "Test biological entity 2",
+  "experimental_variable_description": [
+    "Test experimental entity 2"
+  ],
+  "extrinsic_variable_description": [
+    "Test extrinsic variable 2"
+  ],
+  "intrinsic_variable_description": [
+    "Test intrinsic variable 2"
+  ],
+  "growth_protocol_uuid": "a6ab0feb-607f-4944-aede-8f40541d51c7"
+}

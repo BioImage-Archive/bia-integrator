@@ -1,0 +1,25 @@
+{
+  "uuid": "570a177d-de5d-4bee-bbd1-fd2dcbec9e2a",
+  "representation_of_uuid": "e7322131-8e27-455d-b9fc-8add0719af70",
+  "use_type": "INTERACTIVE_DISPLAY",
+  "image_format": "Template image format",
+  "attribute": [],
+  "total_size_in_bytes": 0,
+  "version": 0,
+  "file_uri": [
+    "https://dummy.uri.org"
+  ],
+  "physical_size_x": 1,
+  "physical_size_y": 1,
+  "physical_size_z": 1,
+  "size_x": 1,
+  "size_y": 1,
+  "size_z": 1,
+  "size_c": 1,
+  "size_t": 1,
+  "image_viewer_setting": [],
+  "model": {
+    "type_name": "ImageRepresentation",
+    "version": 3
+  }
+}

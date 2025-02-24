@@ -26,7 +26,7 @@ def get_image_with_one_file_reference() -> bia_data_model.Image:
         image_uuid=image_dict["uuid"]
     )
     image_dict["creation_process_uuid"] = creation_process_uuid
-    attributes = file_references[0].attribute
+    attributes = deepcopy(file_references[0].attribute)
     attributes[0].name = f"attributes_from_file_reference_{file_reference_uuids[0]}"
     attributes[0].provenance = semantic_models.AttributeProvenance.bia_conversion
 
