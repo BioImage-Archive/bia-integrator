@@ -69,14 +69,9 @@ def test_cli_writes_expected_files(
     def _load_submission_table_info(accession_id: str):
         return test_submission_table
 
-    # def _disk_persistance_settings(path):
-    #     return Settings(bia_data_dir=str(path))
-
     monkeypatch.setattr(cli, "load_submission", _load_submission)
     monkeypatch.setattr(cli, "load_submission_table_info", _load_submission_table_info)
-    # monkeypatch.setattr(
-    #     persistence_strategy, "settings", _disk_persistance_settings(tmp_path)
-    # )
+
     monkeypatch.setattr(requests, "get", _mock_filelist_get)
 
     runner = CliRunner()
