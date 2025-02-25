@@ -3,12 +3,13 @@ from bia_integrator_api import Configuration, ApiClient, exceptions
 from bia_integrator_api.api import PrivateApi
 import bia_integrator_api.models as api_models
 import logging
-from bia_ingest.settings import settings
+from bia_ingest.settings import get_settings
 
 logger = logging.getLogger("__main__." + __name__)
 
 
 def get_bia_api_client():
+    settings = get_settings()
     private_api_client = get_client_private(
         username=settings.bia_api_username,
         password=settings.bia_api_password,
@@ -18,6 +19,7 @@ def get_bia_api_client():
 
 
 def get_local_bia_api_client():
+    settings = get_settings()
     api_config = Configuration(host=settings.local_bia_api_basepath)
     private_api = PrivateApi(ApiClient(configuration=api_config))
     try:

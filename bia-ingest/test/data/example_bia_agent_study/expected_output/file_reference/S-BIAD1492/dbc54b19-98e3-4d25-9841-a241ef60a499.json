@@ -1,0 +1,25 @@
+{
+  "uuid": "dbc54b19-98e3-4d25-9841-a241ef60a499",
+  "version": 0,
+  "model": {
+    "type_name": "FileReference",
+    "version": 2
+  },
+  "attribute": [
+    {
+      "provenance": "bia_ingest",
+      "name": "attributes_from_biostudies.File",
+      "value": {
+        "attributes": {
+          "clustering probability": "75%",
+          "SNR": "high"
+        }
+      }
+    }
+  ],
+  "file_path": "BBBC024/BBBC024_v1_c75_highSNR_images_TIFF/image-final_0012.tif",
+  "format": "file",
+  "size_in_bytes": 61715488,
+  "uri": "https://www.ebi.ac.uk/biostudies/files/S-BIAD1492/BBBC024/BBBC024_v1_c75_highSNR_images_TIFF/image-final_0012.tif",
+  "submission_dataset_uuid": "44500cd8-1ad9-4340-ba55-3427a2782486"
+}
