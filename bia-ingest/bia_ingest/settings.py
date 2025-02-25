@@ -38,4 +38,6 @@ class Settings(BaseSettings):
     bia_api_password: str = Field("")
 
 
-settings = Settings()
+
+def get_settings():
+    return Settings()

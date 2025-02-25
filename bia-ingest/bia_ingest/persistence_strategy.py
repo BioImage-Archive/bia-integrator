@@ -12,7 +12,7 @@ from bia_integrator_api.api.public_api import PublicApi
 from bia_integrator_api.exceptions import NotFoundException
 import bia_integrator_api.models as api_models
 from bia_ingest.api_client import get_bia_api_client, get_local_bia_api_client
-from bia_ingest.settings import settings
+from bia_ingest.settings import get_settings
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -84,8 +84,8 @@ class DiskPersister(PersistenceStrategy):
 # Persist using API
 class ApiPersister(PersistenceStrategy):
     def __init__(self, api_client: PrivateApi) -> None:
-        assert (
-            isinstance(api_client, PrivateApi) or isinstance(api_client, PublicApi)
+        assert isinstance(api_client, PrivateApi) or isinstance(
+            api_client, PublicApi
         ), f"ApiPersister cannot be created. Expected valid instance of <class 'PrivateApi'> or <class 'PublicApi'>. Got : {type(api_client)} - are your API credentials valid and/or is the API server online?"
         self.api_client = api_client
 
@@ -145,7 +145,7 @@ def persistence_strategy_factory(persistence_mode: PersistenceMode, **kwargs):
         return ApiPersister(api_client=get_local_bia_api_client())
     elif persistence_mode == PersistenceMode.disk:
         return DiskPersister(
-            output_dir_base=settings.bia_data_dir,
+            output_dir_base=get_settings().bia_data_dir,
             accession_id=kwargs["accession_id"],
         )
     else:

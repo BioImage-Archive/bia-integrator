@@ -7,7 +7,6 @@ from bia_test_data.mock_objects import (
     mock_file_reference,
 )
 from bia_ingest import persistence_strategy
-from bia_ingest.settings import Settings
 
 
 def _modify_annotation_file_list(
@@ -26,15 +25,10 @@ def _modify_annotation_file_list(
 
 
 @pytest.fixture(scope="function")
-def persister(test_submission, tmp_path, monkeypatch) -> persistence_strategy.PersistenceStrategy:
-        
-    def _disk_persistance_settings(path):
-        return Settings(
-            bia_data_dir=str(path)
-        ) 
-
-    monkeypatch.setattr(persistence_strategy, "settings", _disk_persistance_settings(tmp_path))
-
+def persister(
+    test_submission, 
+    tmp_bia_data_dir, # Note this fixture is requested explicity to ensure correct ordering of fixtures (i.e. after settings are configured for tests.)
+) -> persistence_strategy.PersistenceStrategy:
     persister = persistence_strategy.persistence_strategy_factory(
         persistence_mode="disk",
         accession_id=test_submission.accno,
@@ -62,10 +56,7 @@ def submission_with_file_lists_with_some_identical_file_paths(
 
 
 @pytest.fixture
-def study_component_file_references_only(
-    test_submission,
-    mock_request_get,
-) -> dict:
+def study_component_file_references_only() -> dict:
     datasets = mock_dataset.get_dataset()
 
     ds_study_component_1 = datasets[0]
@@ -90,8 +81,6 @@ def study_component_file_references_only(
 
 @pytest.fixture
 def study_component_and_unique_annotation_file_references(
-    test_submission,
-    mock_request_get,
     study_component_file_references_only,
 ) -> dict:
     datasets = mock_dataset.get_dataset()
@@ -109,17 +98,26 @@ def study_component_and_unique_annotation_file_references(
 
     return file_references
 
-@pytest.mark.parametrize("submission_fixture, expected_file_references_fixture", [
-    (submission_with_reused_file_list, study_component_file_references_only),
-    (submission_with_file_lists_with_some_identical_file_paths, study_component_and_unique_annotation_file_references)
-])
+
+@pytest.mark.usefixtures("mock_request_get")
+@pytest.mark.parametrize(
+    "submission_fixture, expected_file_references_fixture",
+    [
+        (submission_with_reused_file_list, study_component_file_references_only),
+        (
+            submission_with_file_lists_with_some_identical_file_paths,
+            study_component_and_unique_annotation_file_references,
+        ),
+    ],
+)
 def test_process_submission_v4_prefers_study_component_dataset_when_creating_file_references(
     submission_fixture,
     expected_file_references_fixture,
     request,
     ingestion_result_summary,
+    tmp_bia_data_dir,
     persister,
-    tmp_path,
+
 ):
     """
     Tests that when file references with the same file path (i.e. with the same uuid) are created
@@ -130,7 +128,9 @@ def test_process_submission_v4_prefers_study_component_dataset_when_creating_fil
     """
 
     submission = request.getfixturevalue(submission_fixture.__name__)
-    expected_file_references = request.getfixturevalue(expected_file_references_fixture.__name__)
+    expected_file_references = request.getfixturevalue(
+        expected_file_references_fixture.__name__
+    )
 
     process_submission_v4(
         submission=submission,
@@ -140,7 +140,7 @@ def test_process_submission_v4_prefers_study_component_dataset_when_creating_fil
     )
 
     # Check expected number of file references written
-    file_reference_base_path = tmp_path / "file_reference" / submission.accno
+    file_reference_base_path = tmp_bia_data_dir / "file_reference" / submission.accno
     created_file_references = [
         bia_data_model.FileReference.model_validate_json(f.read_text())
         for f in file_reference_base_path.glob("*.json")

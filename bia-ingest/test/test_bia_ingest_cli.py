@@ -1,11 +1,10 @@
 from typer.testing import CliRunner
 from pathlib import Path
 from bia_ingest import cli
-from bia_ingest import persistence_strategy
-from bia_ingest.biostudies import api
 from bia_shared_datamodels import bia_data_model
 import pytest
-from bia_ingest.settings import Settings
+from unittest.mock import Mock
+from bia_ingest.biostudies import api
 from bia_test_data.mock_objects import (
     mock_growth_protocol,
     mock_study,
@@ -46,13 +45,13 @@ def expected_objects() -> tuple[dict, int]:
     return expected_objects_dict, n_expected_objects
 
 
+@pytest.mark.usefixtures("mock_request_get")
 def test_cli_writes_expected_files(
     monkeypatch,
-    tmp_path,
     test_submission,
     test_submission_table,
-    mock_request_get,
     expected_objects,
+    tmp_bia_data_dir,
 ):
 
     expected_objects_dict, n_expected_objects = expected_objects
@@ -63,14 +62,8 @@ def test_cli_writes_expected_files(
     def _load_submission_table_info(accession_id: str):
         return test_submission_table
 
-    def _disk_persistance_settings(path):
-        return Settings(bia_data_dir=str(path))
-
     monkeypatch.setattr(cli, "load_submission", _load_submission)
     monkeypatch.setattr(cli, "load_submission_table_info", _load_submission_table_info)
-    monkeypatch.setattr(
-        persistence_strategy, "settings", _disk_persistance_settings(tmp_path)
-    )
 
     result = runner.invoke(
         cli.app,
@@ -85,7 +78,7 @@ def test_cli_writes_expected_files(
     )
     assert result.exit_code == 0
 
-    files_written = [f for f in tmp_path.rglob("*.json")]
+    files_written = [f for f in tmp_bia_data_dir.rglob("*.json")]
     assert len(files_written) == n_expected_objects
 
     files_written_by_type = {k: [] for k in expected_objects_dict.keys()}
@@ -100,7 +93,7 @@ def test_cli_writes_expected_files(
         assert len(expected_objects_dict[key]) == len(files_written_by_type[key])
 
     for dir_name, expected_objects in expected_objects_dict.items():
-        dir_path = tmp_path / dir_name / test_submission.accno
+        dir_path = tmp_bia_data_dir / dir_name / test_submission.accno
 
         if not isinstance(expected_objects, list):
             expected_objects = [
@@ -117,11 +110,11 @@ def test_cli_writes_expected_files(
             assert created_object == expected_object
 
 
+@pytest.mark.usefixtures("mock_request_get")
 def test_cli_persists_expected_documents(
     monkeypatch,
     test_submission,
     test_submission_table,
-    mock_request_get,
     expected_objects,
     get_bia_api_client,
 ):
@@ -158,8 +151,8 @@ def test_cli_persists_expected_documents(
         get_func = get_bia_api_client.__getattribute__(f"get_{class_name}")
         for expected_object in expected_objects:
             persisted_object = get_func(str(expected_object.uuid))
-            # Using the model_dump_json instead of direct comparison because the expected objects 
-            # are instances of the bia_shared_models and not api client models
+            # Using the model_dump_json instead of direct comparison because the expected objects
+            # are instances of the bia_shared_models and not api client models
             assert (
                 persisted_object.model_dump_json() == expected_object.model_dump_json()
             )
@@ -171,6 +164,14 @@ def test_cli_find_test_study(
     mock_search_result,
 ):
     outfile = tmp_path.absolute() / "find_output"
+
+    def _mock_search_result(url, headers) -> dict[str, str]:
+        return_value = Mock()
+        return_value.status_code = 200
+        return_value.content = mock_search_result.model_dump_json()
+        return return_value
+
+    monkeypatch.setattr(api.requests, "get", _mock_search_result)
 
     result = runner.invoke(
         cli.app,

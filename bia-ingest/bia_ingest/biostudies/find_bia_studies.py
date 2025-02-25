@@ -6,7 +6,7 @@ import logging
 from typing import Optional
 from bia_integrator_api.util import get_client
 from bia_integrator_api.models import Study
-from bia_ingest.settings import settings
+from bia_ingest.settings import get_settings
 import re
 
 logger = logging.getLogger("__main__." + __name__)
@@ -115,7 +115,7 @@ def find_unprocessed_studies(output_file: Optional[pathlib.Path]):
     )
     acc_id_of_interest = [result.accession for result in studies_of_interest]
     logging.info("Fetching all studies from bia api")
-    api_client = get_client(settings.bia_api_basepath)
+    api_client = get_client(get_settings().bia_api_basepath)
     bia_existing_studies = fetch_studies_from_api(api_client, page_size)
     processed_acc_ids = [str(study.accession_id) for study in bia_existing_studies]
     unprocessed_acc_ids = sorted(list(set(acc_id_of_interest) - set(processed_acc_ids)), key=lambda acc_id : get_accno(acc_id))
