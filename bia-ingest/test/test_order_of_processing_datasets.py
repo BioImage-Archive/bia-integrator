@@ -7,7 +7,7 @@ from bia_test_data.mock_objects import (
     mock_file_reference,
 )
 from bia_ingest import persistence_strategy
-
+from .conftest import mock_request_get
 
 def _modify_annotation_file_list(
     submission: api.Submission, file_list_path: str
@@ -99,7 +99,7 @@ def study_component_and_unique_annotation_file_references(
     return file_references
 
 
-@pytest.mark.usefixtures("mock_request_get")
+@pytest.mark.usefixtures(mock_request_get.__name__)
 @pytest.mark.parametrize(
     "submission_fixture, expected_file_references_fixture",
     [

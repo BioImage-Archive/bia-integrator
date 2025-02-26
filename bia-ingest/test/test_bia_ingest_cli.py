@@ -15,6 +15,7 @@ from bia_test_data.mock_objects import (
     mock_annotation_method,
     mock_file_reference,
 )
+from .conftest import mock_request_get
 
 runner = CliRunner()
 
@@ -45,7 +46,7 @@ def expected_objects() -> tuple[dict, int]:
     return expected_objects_dict, n_expected_objects
 
 
-@pytest.mark.usefixtures("mock_request_get")
+@pytest.mark.usefixtures(mock_request_get.__name__)
 def test_cli_writes_expected_files(
     monkeypatch,
     test_submission,
