@@ -1,0 +1,92 @@
+[
+    {
+        "path": "BBBC024/BBBC024_v1_c75_lowSNR_images_TIFF/image-labels_0012.tif",
+        "size": 3217536,
+        "attributes": [
+            {
+                "name": "Annotation type",
+                "value": "Segmentation masks"
+            },
+            {
+                "name": "Source image",
+                "value": "BBBC024/BBBC024_v1_c75_lowSNR_images_TIFF/image-final_0012.tif"
+            }
+        ],
+        "type": "file"
+    },
+    {
+        "path": "BBBC024/BBBC024_v1_c50_lowSNR_images_TIFF/image-labels_0012.tif",
+        "size": 3195094,
+        "attributes": [
+            {
+                "name": "Annotation type",
+                "value": "Segmentation masks"
+            },
+            {
+                "name": "Source image",
+                "value": "BBBC024/BBBC024_v1_c50_lowSNR_images_TIFF/image-final_0012.tif"
+            }
+        ],
+        "type": "file"
+    },
+    {
+        "path": "BBBC024/BBBC024_v1_c25_highSNR_images_TIFF/image-labels_0012.tif",
+        "size": 3207776,
+        "attributes": [
+            {
+                "name": "Annotation type",
+                "value": "Segmentation masks"
+            },
+            {
+                "name": "Source image",
+                "value": "BBBC024/BBBC024_v1_c25_highSNR_images_TIFF/image-final_0012.tif"
+            }
+        ],
+        "type": "file"
+    },
+    {
+        "path": "BBBC024/BBBC024_v1_c00_lowSNR_images_TIFF/image-labels_0012.tif",
+        "size": 3178098,
+        "attributes": [
+            {
+                "name": "Annotation type",
+                "value": "Segmentation masks"
+            },
+            {
+                "name": "Source image",
+                "value": "BBBC024/BBBC024_v1_c00_lowSNR_images_TIFF/image-final_0012.tif"
+            }
+        ],
+        "type": "file"
+    },
+    {
+        "path": "BBBC024/BBBC024_v1_c50_highSNR_images_TIFF/image-labels_0012.tif",
+        "size": 3177868,
+        "attributes": [
+            {
+                "name": "Annotation type",
+                "value": "Segmentation masks"
+            },
+            {
+                "name": "Source image",
+                "value": "BBBC024/BBBC024_v1_c50_highSNR_images_TIFF/image-final_0012.tif"
+            }
+        ],
+        "type": "file"
+    },
+    {
+        "path": "BBBC024/BBBC024_v1_c00_highSNR_images_TIFF/image-labels_0012.tif",
+        "size": 3182548,
+        "attributes": [
+            {
+                "name": "Annotation type",
+                "value": "Segmentation masks"
+            },
+            {
+                "name": "Source image",
+                "value": "BBBC024/BBBC024_v1_c00_highSNR_images_TIFF/image-final_0012.tif"
+            }
+        ],
+        "type": "file"
+    }
+]

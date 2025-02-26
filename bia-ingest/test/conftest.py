@@ -16,7 +16,16 @@ from bia_ingest.biostudies.biostudies_processing_version import (
     BioStudiesProcessingVersion,
 )
 from bia_integrator_api.util import get_client
-from bia_ingest.settings import settings
+import os
+from dotenv.main import dotenv_values
+
+
+def pytest_configure(config: pytest.Config):
+    env_settings = dotenv_values(str(Path(__file__).parents[1] / ".env_template"))
+    os.environ["bia_api_basepath"] = env_settings["local_bia_api_basepath"]
+    os.environ["bia_api_username"] = env_settings["local_bia_api_username"]
+    os.environ["bia_api_password"] = env_settings["local_bia_api_password"]
+
 
 @pytest.fixture
 def test_submission() -> Submission:
@@ -76,7 +85,7 @@ def mock_request_get(monkeypatch):
 
 
 @pytest.fixture
-def mock_search_result(monkeypatch):
+def mock_search_result():
     """Requests.get mocked to read file from disk"""
 
     mock_result = {
@@ -104,16 +113,15 @@ def mock_search_result(monkeypatch):
     }
     search_result = SearchPage(**mock_result)
 
-    def _mock_search_result(url, headers) -> Dict[str, str]:
-
-        return_value = Mock()
-        return_value.status_code = 200
-        return_value.content = search_result.model_dump_json()
-        return return_value
-
-    monkeypatch.setattr(requests, "get", _mock_search_result)
+    return search_result
 
 
 @pytest.fixture()
 def get_bia_api_client():
-    return get_client(settings.local_bia_api_basepath)
+    return get_client(os.environ.get("bia_api_basepath"))
+
+
+@pytest.fixture()
+def tmp_bia_data_dir(tmp_path):
+    os.environ["bia_data_dir"] = str(tmp_path)
+    return tmp_path

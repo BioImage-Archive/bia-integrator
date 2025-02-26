@@ -1,0 +1,127 @@
+{
+  "uuid": "869ff676-bf68-4e2d-869e-7e644cbbec42",
+  "version": 0,
+  "model": {
+    "type_name": "Study",
+    "version": 2
+  },
+  "attribute": [
+    {
+      "provenance": "bia_ingest",
+      "name": "Extras from biostudies.Submission.attributes",
+      "value": {
+        "Keyword": [
+          "segmentation",
+          "synthetic data",
+          "nucleus"
+        ]
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "biostudies json/pagetab entry",
+      "value": {
+        "json": "https://www.ebi.ac.uk/biostudies/files/S-BIAD1492/S-BIAD1492.json",
+        "pagetab": "https://www.ebi.ac.uk/biostudies/files/S-BIAD1492/S-BIAD1492.tsv"
+      }
+    }
+  ],
+  "accession_id": "S-BIAD1492",
+  "licence": "CC_BY_3.0",
+  "author": [
+    {
+      "rorid": null,
+      "address": null,
+      "website": null,
+      "orcid": null,
+      "display_name": "David Svoboda",
+      "affiliation": [
+        {
+          "rorid": null,
+          "address": "Botanická 68a, Faculty of Informatics, Masaryk University, 602 00 Brno, Czech Republic",
+          "website": null,
+          "display_name": "Centre for Biomedical Image Analysis"
+        }
+      ],
+      "contact_email": null,
+      "role": "dataset creator"
+    },
+    {
+      "rorid": null,
+      "address": null,
+      "website": null,
+      "orcid": null,
+      "display_name": "Michal Kozubek",
+      "affiliation": [
+        {
+          "rorid": null,
+          "address": "Botanická 68a, Faculty of Informatics, Masaryk University, 602 00 Brno, Czech Republic",
+          "website": null,
+          "display_name": "Centre for Biomedical Image Analysis"
+        }
+      ],
+      "contact_email": null,
+      "role": "dataset creator"
+    },
+    {
+      "rorid": null,
+      "address": null,
+      "website": null,
+      "orcid": null,
+      "display_name": "Stanislav Stejskal",
+      "affiliation": [
+        {
+          "rorid": null,
+          "address": "Botanická 68a, Faculty of Informatics, Masaryk University, 602 00 Brno, Czech Republic",
+          "website": null,
+          "display_name": "Centre for Biomedical Image Analysis"
+        }
+      ],
+      "contact_email": null,
+      "role": "dataset creator"
+    },
+    {
+      "rorid": null,
+      "address": null,
+      "website": null,
+      "orcid": null,
+      "display_name": "Broad Institute's Imaging Platform",
+      "affiliation": [
+        {
+          "rorid": null,
+          "address": null,
+          "website": null,
+          "display_name": "Broad Institute of Massachusetts Institute of Technology and Harvard, Cambridge, Massachusetts, USA"
+        }
+      ],
+      "contact_email": null,
+      "role": "data curation"
+    },
+    {
+      "rorid": null,
+      "address": null,
+      "website": null,
+      "orcid": "0000-0002-0456-6912",
+      "display_name": "Teresa Zulueta-Coarasa",
+      "affiliation": [
+        {
+          "rorid": null,
+          "address": null,
+          "website": null,
+          "display_name": "European Bioinformatics Institute"
+        }
+      ],
+      "contact_email": null,
+      "role": "data curation, submitter"
+    }
+  ],
+  "title": "Synthetic images and segmentation masks simulating HL-60 cell nucleus in 3D",
+  "release_date": "2024-11-26",
+  "description": "One of the principal challenges in counting or segmenting nuclei is dealing with clustered nuclei. To help assess algorithms' performance in this regard, this synthetic image set consists of four subsets with increasing degree of clustering. Each subset is also provided in two different levels of quality: high SNR and low SNR.",
+  "keyword": [],
+  "acknowledgement": "",
+  "see_also": [],
+  "related_publication": [],
+  "grant": [],
+  "funding_statement": ""
+}

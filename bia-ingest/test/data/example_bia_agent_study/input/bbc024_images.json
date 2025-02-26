@@ -1,0 +1,107 @@
+[
+    {
+        "path": "BBBC024/BBBC024_v1_c75_lowSNR_images_TIFF/image-final_0012.tif",
+        "size": 50872008,
+        "attributes": [
+            {
+                "name": "clustering probability",
+                "value": "75%"
+            },
+            {
+                "name": "SNR",
+                "value": "low"
+            }
+        ],
+        "type": "file"
+    },
+    {
+        "path": "BBBC024/BBBC024_v1_c50_lowSNR_images_TIFF/image-final_0012.tif",
+        "size": 50845142,
+        "attributes": [
+            {
+                "name": "clustering probability",
+                "value": "50%"
+            },
+            {
+                "name": "SNR",
+                "value": "low"
+            }
+        ],
+        "type": "file"
+    },
+    {
+        "path": "BBBC024/BBBC024_v1_c25_highSNR_images_TIFF/image-final_0012.tif",
+        "size": 61405626,
+        "attributes": [
+            {
+                "name": "clustering probability",
+                "value": "25%"
+            },
+            {
+                "name": "SNR",
+                "value": "high"
+            }
+        ],
+        "type": "file"
+    },
+    {
+        "path": "BBBC024/BBBC024_v1_c75_highSNR_images_TIFF/image-final_0012.tif",
+        "size": 61715488,
+        "attributes": [
+            {
+                "name": "clustering probability",
+                "value": "75%"
+            },
+            {
+                "name": "SNR",
+                "value": "high"
+            }
+        ],
+        "type": "file"
+    },
+    {
+        "path": "BBBC024/BBBC024_v1_c00_lowSNR_images_TIFF/image-final_0012.tif",
+        "size": 50966860,
+        "attributes": [
+            {
+                "name": "clustering probability",
+                "value": "0%"
+            },
+            {
+                "name": "SNR",
+                "value": "low"
+            }
+        ],
+        "type": "file"
+    },
+    {
+        "path": "BBBC024/BBBC024_v1_c50_highSNR_images_TIFF/image-final_0012.tif",
+        "size": 61303490,
+        "attributes": [
+            {
+                "name": "clustering probability",
+                "value": "50%"
+            },
+            {
+                "name": "SNR",
+                "value": "high"
+            }
+        ],
+        "type": "file"
+    },
+    {
+        "path": "BBBC024/BBBC024_v1_c00_highSNR_images_TIFF/image-final_0012.tif",
+        "size": 61795818,
+        "attributes": [
+            {
+                "name": "clustering probability",
+                "value": "0%"
+            },
+            {
+                "name": "SNR",
+                "value": "high"
+            }
+        ],
+        "type": "file"
+    }
+]
