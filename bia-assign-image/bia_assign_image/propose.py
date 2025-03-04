@@ -124,7 +124,6 @@ def get_convertible_file_references(
         page_size_setting=20,
     )
 
-    file_references = []
     convertible_file_references = []
 
     for dataset in datasets:
@@ -132,12 +131,10 @@ def get_convertible_file_references(
             if not dataset_has_image_creation_prerequisites(dataset):
                 continue
 
-        file_references.extend(
-            get_all_api_results(
-                uuid=dataset.uuid,
-                api_method=api_client.get_file_reference_linking_dataset,
-                page_size_setting=100,
-            )
+        file_references = get_all_api_results(
+            uuid=dataset.uuid,
+            api_method=api_client.get_file_reference_linking_dataset,
+            page_size_setting=100,
         )
 
         convertible_file_references.extend(
