@@ -13,6 +13,7 @@ bia-shared-datamodels = { path = "../bia-shared-datamodels", develop = true }
 bia-integrator-api = { path = "../clients/python", develop = true }
 bia-test-data = { path = "../bia-test-data", develop = true }
 typer = "^0.15.1"
+ruamel-yaml = "^0.18.10"
 
 [tool.poetry.scripts]
 bia-assign-image = "bia_assign_image.cli:app"
