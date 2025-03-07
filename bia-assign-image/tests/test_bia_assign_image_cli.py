@@ -1,5 +1,8 @@
 from pathlib import Path
+from typing import Dict
 from typer.testing import CliRunner
+from ruamel.yaml import YAML
+
 import pytest
 from bia_shared_datamodels import bia_data_model
 from bia_assign_image import cli
@@ -24,34 +27,43 @@ def expected_uploaded_by_submitter_representation() -> (
 
 
 @pytest.fixture
-def assign_from_proposal_input_path(tmpdir, expected_bia_image) -> Path:
+def proposal_details_for_input(expected_bia_image) -> Dict:
+    return {
+        "accession_id": accession_id,
+        "study_uuid": "dummy_study_uuid",
+        "dataset_uuid": "dummy_dataset_uuid",
+        "name": "dummy_name",
+        "file_reference_uuid": f"{expected_bia_image.original_file_reference_uuid[0]}",
+        "size_in_bytes": "0",
+        "size_human_readable": "dummy_size_human_readable",
+    }
+
+
+@pytest.fixture
+def assign_from_proposal_input_path_tsv(tmpdir, proposal_details_for_input) -> Path:
     """Return path to a tsv file with proposal details to create mock image"""
 
-    header_row = "\t".join(
-        [
-            "accession_id",
-            "study_uuid",
-            "dataset_uuid",
-            "name",
-            "file_reference_uuid",
-            "size_in_bytes",
-            "size_human_readable",
-        ]
-    )
-    values = "\t".join(
-        [
-            accession_id,
-            "dummy_study_uuid",
-            "dummy_dataset_uuid",
-            "dummy_name",
-            f"{expected_bia_image.original_file_reference_uuid[0]}",
-            "0",
-            "dummy_size_human_readable",
-        ]
-    )
+    header_row = "\t".join(list(proposal_details_for_input.keys()))
+    values = "\t".join(list(proposal_details_for_input.values()))
 
     proposal_path = Path(tmpdir) / "proposal_details.tsv"
     proposal_path.write_text(f"{header_row}\n{values}")
+
+    return proposal_path
+
+
+@pytest.fixture
+def assign_from_proposal_input_path_yaml(tmpdir, proposal_details_for_input) -> Path:
+    """Return path to a yaml file with proposal details to create mock image"""
+
+    yaml = YAML(typ="safe")
+    proposal_path = Path(tmpdir) / "proposal_details.yaml"
+    yaml.dump(
+        [
+            proposal_details_for_input,
+        ],
+        proposal_path,
+    )
 
     return proposal_path
 
@@ -61,9 +73,10 @@ def test_api_client():
     return get_api_client("local")
 
 
-def test_cli_propose_images_command(data_in_api, tmpdir):
+@pytest.mark.parametrize("format", ("tsv", "yaml"))
+def test_cli_propose_images_command(format, data_in_api, tmpdir):
     max_items = 2
-    propose_output_path = Path(tmpdir) / "propose_S-BIAD1522.tsv"
+    propose_output_path = Path(tmpdir) / f"propose_S-BIADTEST.{format}"
 
     runner = CliRunner()
     result = runner.invoke(
@@ -81,29 +94,49 @@ def test_cli_propose_images_command(data_in_api, tmpdir):
         ],
     )
     assert result.exit_code == 0
-    proposed_output = propose_output_path.read_text().strip("\n").split("\n")
-    assert len(proposed_output) == max_items + 1
+    if format == "tsv":
+        proposed_output = propose_output_path.read_text().strip("\n").split("\n")
+        assert len(proposed_output) == max_items + 1
+    elif format == "yaml":
+        yaml = YAML(typ="safe")
+        proposed_output = yaml.load(propose_output_path)
+        assert len(proposed_output) == max_items
 
 
+@pytest.mark.parametrize(
+    "format",
+    (
+        "tsv",
+        "yaml",
+    ),
+)
 def test_cli_assign_from_proposal_command(
     data_in_api,
     test_api_client,
-    assign_from_proposal_input_path,
+    format,
+    assign_from_proposal_input_path_tsv,
+    assign_from_proposal_input_path_yaml,
     expected_bia_image,
     expected_uploaded_by_submitter_representation,
 ):
     # This implicitly tests the 'assign' and 'create' commands
     runner = CliRunner(mix_stderr=False)
 
+    if format == "tsv":
+        assign_from_proposal_input_path = f"{assign_from_proposal_input_path_tsv}"
+    elif format == "yaml":
+        assign_from_proposal_input_path = f"{assign_from_proposal_input_path_yaml}"
+
     # result = cli.assign_from_proposal(
-    #        assign_from_proposal_input_path,
-    #        "local",
+    #       Path(assign_from_proposal_input_path),
+    #       "local",
     # )
+
     result = runner.invoke(
         cli.app,
         [
             "assign-from-proposal",
-            f"{assign_from_proposal_input_path}",
+            assign_from_proposal_input_path,
             "--api",
             "local",
         ],

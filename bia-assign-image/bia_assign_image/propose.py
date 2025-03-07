@@ -10,6 +10,7 @@ import random
 from typing import List, Dict, Any
 from pathlib import Path
 import csv
+from ruamel.yaml import YAML
 from bia_shared_datamodels import semantic_models, bia_data_model
 from bia_assign_image.api_client import get_api_client, ApiTarget
 from bia_assign_image.utils import (
@@ -144,7 +145,7 @@ def get_convertible_file_references(
                     "study_uuid": study.uuid,
                     "dataset_uuid": dataset.uuid,
                     "name": fr.file_path,
-                    "uuid": fr.uuid,
+                    "file_reference_uuid": fr.uuid,
                     "size_in_bytes": fr.size_in_bytes,
                     "size_human_readable": sizeof_fmt(fr.size_in_bytes),
                 }
@@ -173,14 +174,40 @@ def write_convertible_file_references_for_accession_id(
     Write details of file references proposed for conversion to file
     """
 
+    # Ensure we can write out the results before going through file references
+    output_path_suffix = output_path.suffix.lower()
+    if output_path_suffix == ".tsv":
+        write_file_reference_details_func = write_file_reference_details_to_tsv
+    elif output_path_suffix == ".yaml" or output_path_suffix == ".yml":
+        write_file_reference_details_func = write_file_reference_details_to_yaml
+    else:
+        raise Exception(
+            f"Proposals writer not implemented for suffix {output_path_suffix}"
+        )
+
     convertible_file_references = get_convertible_file_references(
         accession_id, api_target, check_image_creation_prerequisites
     )
 
     n_proposal_candidates = len(convertible_file_references)
     indicies_to_select = select_indicies(n_proposal_candidates, max_items)
+    file_reference_details = [
+        convertible_file_references[i] for i in indicies_to_select
+    ]
 
-    if append:
+    write_file_reference_details_func(
+        file_reference_details,
+        output_path,
+        append,
+    )
+
+    return len(indicies_to_select)
+
+
+def write_file_reference_details_to_tsv(
+    file_reference_details: List[Dict], output_path: Path, append_flag: bool = False
+):
+    if append_flag:
         open_text_mode = "a"
     else:
         open_text_mode = "w"
@@ -188,16 +215,16 @@ def write_convertible_file_references_for_accession_id(
     lines = [
         "\t".join(
             [
-                convertible_file_references[i]["accession_id"],
-                f"{convertible_file_references[i]['study_uuid']}",
-                f"{convertible_file_references[i]['dataset_uuid']}",
-                convertible_file_references[i]["name"],
-                f"{convertible_file_references[i]['uuid']}",
-                f"{convertible_file_references[i]['size_in_bytes']}",
-                convertible_file_references[i]["size_human_readable"],
+                f["accession_id"],
+                f"{f['study_uuid']}",
+                f"{f['dataset_uuid']}",
+                f["name"],
+                f"{f['file_reference_uuid']}",
+                f"{f['size_in_bytes']}",
+                f["size_human_readable"],
             ]
         )
-        for i in indicies_to_select
+        for f in file_reference_details
     ]
     with output_path.open(open_text_mode) as fid:
         # If we are at start of file write header.
@@ -219,8 +246,21 @@ def write_convertible_file_references_for_accession_id(
         fid.writelines("\n".join(lines))
         # Write a new line so next append starts on next line
         fid.writelines("\n")
+    return
 
-    return len(indicies_to_select)
+
+def write_file_reference_details_to_yaml(
+    file_reference_details: List[Dict], output_path: Path, append_flag: bool = False
+):
+    yaml = YAML()
+    yaml.default_flow_style = False
+    if append_flag and output_path.is_file():
+        file_reference_details_from_file = read_proposals_from_yaml(output_path)
+        file_reference_details_from_file.extend(file_reference_details)
+        yaml.dump(file_reference_details_from_file, output_path)
+    else:
+        yaml.dump(file_reference_details, output_path)
+    return
 
 
 def read_proposals(proposal_path: Path) -> List[Dict]:
@@ -228,7 +268,20 @@ def read_proposals(proposal_path: Path) -> List[Dict]:
 
     Returns a list of dicts containing file reference info
     """
+    proposal_path_suffix = proposal_path.suffix.lower()
+    if proposal_path_suffix == ".tsv":
+        proposals = read_proposals_from_tsv(proposal_path)
+    elif proposal_path_suffix == ".yaml" or proposal_path_suffix == ".yml":
+        proposals = read_proposals_from_yaml(proposal_path)
+    else:
+        raise Exception(
+            f"Proposals reader not implemented for suffix {proposal_path_suffix}"
+        )
 
+    return proposals
+
+
+def read_proposals_from_tsv(proposal_path: Path) -> List[Dict]:
     proposals = []
     with proposal_path.open("r", newline="") as f:
         reader = csv.DictReader(f, delimiter="\t")  # Uses first line as field names
@@ -238,4 +291,10 @@ def read_proposals(proposal_path: Path) -> List[Dict]:
             row["size_in_bytes"] = int(row["size_in_bytes"])  # Convert size to int
             proposals.append(row)
 
+    return proposals
+
+
+def read_proposals_from_yaml(proposal_path: Path) -> List[Dict]:
+    yaml = YAML(typ="safe")
+    proposals = yaml.load(proposal_path)
     return proposals
