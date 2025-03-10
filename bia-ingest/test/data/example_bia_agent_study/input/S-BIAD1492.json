@@ -1,0 +1,255 @@
+{
+  "accno" : "S-BIAD1492",
+  "attributes" : [ {
+    "name" : "REMBI_PageTab Conversion Script Version",
+    "value" : "1.0.0"
+  }, {
+    "name" : "Title",
+    "value" : "Synthetic images and segmentation masks simulating HL-60 cell nucleus in 3D"
+  }, {
+    "name" : "ReleaseDate",
+    "value" : "2024-11-26"
+  }, {
+    "name" : "AttachTo",
+    "value" : "BioImages"
+  } ],
+  "section" : {
+    "type" : "Study",
+    "attributes" : [ {
+      "name" : "Description",
+      "value" : "One of the principal challenges in counting or segmenting nuclei is dealing with clustered nuclei. To help assess algorithms' performance in this regard, this synthetic image set consists of four subsets with increasing degree of clustering. Each subset is also provided in two different levels of quality: high SNR and low SNR."
+    }, {
+      "name" : "License",
+      "value" : "CC BY 3.0"
+    }, {
+      "name" : "Keyword",
+      "value" : "segmentation"
+    }, {
+      "name" : "Keyword",
+      "value" : "synthetic data"
+    }, {
+      "name" : "Keyword",
+      "value" : "nucleus"
+    } ],
+    "links" : [ {
+      "url" : "https://bbbc.broadinstitute.org/BBBC024",
+      "attributes" : [ {
+        "name" : "Description",
+        "value" : "Original submission on the Broad Bioimage Benchmark Collection"
+      } ]
+    } ],
+    "subsections" : [ {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "David Svoboda"
+      }, {
+        "name" : "Role",
+        "value" : "dataset creator"
+      }, {
+        "name" : "affiliation",
+        "value" : "o2",
+        "reference" : true
+      } ]
+    }, {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Michal Kozubek"
+      }, {
+        "name" : "Role",
+        "value" : "dataset creator"
+      }, {
+        "name" : "affiliation",
+        "value" : "o2",
+        "reference" : true
+      } ]
+    }, {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Stanislav Stejskal"
+      }, {
+        "name" : "Role",
+        "value" : "dataset creator"
+      }, {
+        "name" : "affiliation",
+        "value" : "o2",
+        "reference" : true
+      } ]
+    }, {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Broad Institute's Imaging Platform"
+      }, {
+        "name" : "Role",
+        "value" : "data curation"
+      }, {
+        "name" : "affiliation",
+        "value" : "o1",
+        "reference" : true
+      } ]
+    }, {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Teresa Zulueta-Coarasa"
+      }, {
+        "name" : "Email",
+        "value" : "teresaz@ebi.ac.uk"
+      }, {
+        "name" : "Role",
+        "value" : "data curation, submitter"
+      }, {
+        "name" : "ORCID",
+        "value" : "0000-0002-0456-6912"
+      }, {
+        "name" : "affiliation",
+        "value" : "o3",
+        "reference" : true
+      } ]
+    }, {
+      "accno" : "o1",
+      "type" : "organization",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Broad Institute of Massachusetts Institute of Technology and Harvard, Cambridge, Massachusetts, USA"
+      }, {
+        "name" : "Address"
+      } ]
+    }, {
+      "accno" : "o2",
+      "type" : "organization",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Centre for Biomedical Image Analysis"
+      }, {
+        "name" : "Address",
+        "value" : "Botanická 68a, Faculty of Informatics, Masaryk University, 602 00 Brno, Czech Republic"
+      } ]
+    }, {
+      "accno" : "o3",
+      "type" : "organization",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "European Bioinformatics Institute"
+      }, {
+        "name" : "Address"
+      } ]
+    }, {
+      "type" : "Publication",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Generation of digital phantoms of cell nuclei and simulation of image formation in 3D image cytometry"
+      }, {
+        "name" : "Year",
+        "value" : "2009"
+      }, {
+        "name" : "Authors",
+        "value" : "Svoboda David, Kozubkek Michal, Stejskal Stanislav."
+      }, {
+        "name" : "DOI",
+        "value" : "https://doi.org/10.1002/cyto.a.20714"
+      } ]
+    }, {
+      "accno" : "Biosample-1",
+      "type" : "Biosample",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Simulated HL-60 cells"
+      }, {
+        "name" : "Biological entity",
+        "value" : "simulated human promyelocytic leukemia cells (HL-60) stained with DAPI"
+      } ],
+      "subsections" : [ {
+        "accno" : "Organism-1",
+        "type" : "Organism",
+        "attributes" : [ {
+          "name" : "Scientific name",
+          "value" : "simulated data"
+        } ]
+      } ]
+    }, {
+      "accno" : "Specimen-1",
+      "type" : "Specimen",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Digital Phantom Generation"
+      }, {
+        "name" : "Sample Preparation Protocol",
+        "value" : "In the experiments using the HL-60 cell line, investigators are usually interested in studying the cell nucleus that occupies most of the cell volume. Therefore, the following text will focus on modeling nucleus shape and texture. When simulating the appearance of the HL-60 standard cell line, we can presume the shape of the initial object to be spherical, as this object type is topologically equivalent to a sphere. However, the basic objects like spheres or ellipsoids are too simple and regular. Because the aim is to simulate real objects, a certain amount of irregularity is required. For this purpose, we used the PDE-based method to distort the object shape. The idea is based on viewing the object boundary as a deformable surface. The deformation is realized with fast level set methods using artificial noise as a speed function. Besides the shape, the texture of the nucleus image profile reveals important information about the cell activity. In each stage of the cell cycle, chromatin has different properties, and hence when stained, it looks different. For these purposes, the study and the measurement of heterogeneity of chromatin is an important task. Essentially, there are two ways to generate synthetic texture: algorithms for texture synthesis and methods for procedural texture modeling. Here, we decided to use the latter one. The texture function is defined as a sum of several Perlin's noise function. However, certain nucleus parts may not contain chromatin and hence may remain unstained. These locations are either left blank (without any texture) or defined as very dark. The latter case corresponds to an unwanted staining effect. The nucleoli might be an example of such an object type that typically appears as a dark (not stained) place in the image of a nucleus. It was discovered empirically that there is only one nucleolus per healthy nucleus in human cells. As for cancerous cells, there might be more than one nucleolus. The shape of such a nucleolus is mostly spherical or slightly deformed. Because of this property, its generation follows the same idea as the generation of the whole HL-60 nucleus."
+      } ]
+    }, {
+      "accno" : "Image Acquisition-1",
+      "type" : "Image Acquisition",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Simulated fluorescence microscopy"
+      }, {
+        "name" : "Imaging Instrument",
+        "value" : "Virtual microscope imitating the microscope Zeiss S100 (objective Zeiss 63x/1.40 Oil DIC) attached to confocal unit Atto CARV and CCD camera Micromax 1300-YHS."
+      }, {
+        "name" : "Image Acquisition Parameters",
+        "value" : "N/A"
+      } ],
+      "subsections" : [ {
+        "accno" : "Imaging Method-1",
+        "type" : "Imaging Method",
+        "attributes" : [ {
+          "name" : "Ontology Value",
+          "value" : "simulated fluorescence microscopy"
+        } ]
+      } ]
+    }, {
+      "accno" : "Annotations-1",
+      "type" : "Annotations",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Ground truth segmentation masks"
+      }, {
+        "name" : "Annotation overview",
+        "value" : "Perfect segmentation masks were computer-generated for the simulated images."
+      }, {
+        "name" : "Annotation method",
+        "value" : "Each image contains exactly 20 masks; this is the ground truth for counting. Ground truth for foreground/background segmentation are available as labeled 16bit grayscale images"
+      }, {
+        "name" : "Annotation confidence level",
+        "value" : "High confidence masks were created from synthetic images ."
+      }, {
+        "name" : "Annotation coverage",
+        "value" : "All data has been annotated."
+      }, {
+        "name" : "File List",
+        "value" : "bbc024_masks.json"
+      } ]
+    }, {
+      "accno" : "Study Component-1",
+      "type" : "Study Component",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Simulated fluorescence images"
+      }, {
+        "name" : "Description",
+        "value" : "Four subsets (each in high and low signal-to-noise ratio variant) of 30 images each are provided. Each image contains 20 HL-60 cell nuclei, but the nuclei cluster with different probabilities (0%, 25%, 50%, and 75%) in the four subsets."
+      }, {
+        "name" : "File List",
+        "value" : "bbc024_images.json"
+      } ],
+      "subsections" : [ {
+        "type" : "Associations",
+        "attributes" : [ {
+          "name" : "Biosample",
+          "value" : "Simulated HL-60 cells"
+        }, {
+          "name" : "Specimen",
+          "value" : "Digital Phantom Generation"
+        }, {
+          "name" : "Image acquisition",
+          "value" : "Simulated fluorescence microscopy"
+        } ]
+      } ]
+    } ]
+  },
+  "type" : "submission"
+}

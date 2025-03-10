@@ -1,0 +1,58 @@
+{
+  "title_id": "Simulated fluorescence images",
+  "uuid": "44500cd8-1ad9-4340-ba55-3427a2782486",
+  "version": 0,
+  "model": {
+    "type_name": "Dataset",
+    "version": 1
+  },
+  "attribute": [
+    {
+      "provenance": "bia_ingest",
+      "name": "associations",
+      "value": {
+        "associations": [
+          {
+            "image_analysis": null,
+            "image_correlation": null,
+            "biosample": "Simulated HL-60 cells",
+            "image_acquisition": "Simulated fluorescence microscopy",
+            "specimen": "Digital Phantom Generation"
+          }
+        ]
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "image_acquisition_protocol_uuid",
+      "value": {
+        "image_acquisition_protocol_uuid": [
+          "5f4095ba-8bd3-4efa-9c7e-18bc35ddf416"
+        ]
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "specimen_imaging_preparation_protocol_uuid",
+      "value": {
+        "specimen_imaging_preparation_protocol_uuid": [
+          "c27b92d9-1340-455f-9278-c8663326214e"
+        ]
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "bio_sample_uuid",
+      "value": {
+        "bio_sample_uuid": [
+          "2dbf5050-5704-484c-94ca-98e8e1d08e11"
+        ]
+      }
+    }
+  ],
+  "description": "Four subsets (each in high and low signal-to-noise ratio variant) of 30 images each are provided. Each image contains 20 HL-60 cell nuclei, but the nuclei cluster with different probabilities (0%, 25%, 50%, and 75%) in the four subsets.",
+  "analysis_method": [],
+  "correlation_method": [],
+  "example_image_uri": [],
+  "submitted_in_study_uuid": "869ff676-bf68-4e2d-869e-7e644cbbec42"
+}
