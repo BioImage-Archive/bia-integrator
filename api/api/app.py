@@ -1,6 +1,7 @@
 from api.settings import Settings
 
 from api.models.repository import repository_create, Repository
+from api.models.elastic import Elastic, elastic_create
 import asyncio
 
 
@@ -10,6 +11,11 @@ settings = Settings()
 async def get_db() -> Repository:
     event_loop = asyncio.get_event_loop()
     return app.extra["extra"]["event_loop_specific"][event_loop]["db"]
+
+
+async def get_elastic() -> Elastic:
+    event_loop = asyncio.get_event_loop()
+    return app.extra["extra"]["event_loop_specific"][event_loop]["elastic"]
 
 
 from fastapi import FastAPI, Depends, Request
@@ -92,14 +98,15 @@ async def on_start():
         log_info("App updating indexes")
 
     app.extra["extra"]["event_loop_specific"][event_loop] = {
-        "db": await repository_create(settings)
+        "db": await repository_create(settings),
+        "elastic": await elastic_create(settings),
     }
 
     log_info("App started")
 
 
 @app.on_event("shutdown")
-async def of_stop():
+async def on_stop():
     event_loop = asyncio.get_event_loop()
     app.extra["extra"]["event_loop_specific"][event_loop]["db"].connection.close()
 

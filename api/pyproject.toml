@@ -32,6 +32,8 @@ pydantic-settings = "^2.3"
 #   so pin to the latest previous version
 #   to check if issue still occurs, comment line below & poetry lock; if it doesn't, delete this
 gevent = "24.10.2"
+elasticsearch = "^8.17.2"
+aiohttp = "^3.11.13"
 
 [tool.poetry.group.dev.dependencies]
 locust = "^2.16.1"
