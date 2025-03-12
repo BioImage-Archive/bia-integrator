@@ -49,7 +49,12 @@ async def elastic():
     from api.models.elastic import elastic_create
 
     el = await elastic_create(test_settings)
-    await el.configure(test_settings, cleanup=True)
+    try:
+        await el.client.indices.delete(index="test-index")
+    except:
+        pass
+
+    await el.configure(test_settings)
 
     test_data = (
         pathlib.Path(__file__).parent / "test_data" / "bia-study-metadata.json.bulk"

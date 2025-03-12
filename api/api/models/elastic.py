@@ -8,15 +8,9 @@ class Elastic:
     def __init__(self):
         pass
 
-    async def configure(self, settings: Settings, cleanup=False):
+    async def configure(self, settings: Settings):
         index_name = "test-index"
         self.client = AsyncElasticsearch(settings.elastic_connstring)
-
-        if cleanup:
-            try:
-                await self.client.indices.delete(index=index_name)
-            except NotFoundError:
-                pass
 
         if not await self.client.indices.exists(index=index_name):
             await self.client.indices.create(
