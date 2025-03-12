@@ -59,7 +59,9 @@ async def elastic():
 
     await el.client.indices.refresh(index="test-index")
 
-    return el
+    yield el
+
+    await el.close()
 
 
 def get_client():
