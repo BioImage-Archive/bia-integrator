@@ -29,7 +29,7 @@ curl -X PUT "http://localhost:9200/test-index" \
 (cd ../../../../bia-export && poetry run bia-export website study --out_file=../api/api/tests/test_data/bia-study-metadata.json S-BIAD1078 S-BIAD1556)
 
 jq -c 'to_entries | map(.value)[:10000][] | ({"index": {"_index": "test-index"}}, .)' bia-study-metadata.json \
-    | sed 's/"\./\"A./g' > bia-study-metadata.json.bulk
+    > bia-study-metadata.json.bulk
 
 curl -H "Content-Type: application/x-ndjson" -XPOST 'localhost:9200/_bulk?pretty&error_trace=true' --data-binary @bia-study-metadata.json.bulk | jq '.items.[] | select(.index.status != 201)'
 ```
