@@ -140,10 +140,9 @@ async def register_user(
     secret_token: Annotated[str, Body()],
     db: Annotated[Repository, Depends(get_db)],
 ) -> None:
-    user_create_token = settings.user_create_secret_token
-    validate_secret_token(user_create_token)
+    validate_secret_token(settings.user_create_secret_token)
 
-    if not consteq(secret_token, user_create_token):
+    if not consteq(secret_token, settings.user_create_secret_token):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
 
     await create_user(db, email, password_plain)

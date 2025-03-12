@@ -33,6 +33,9 @@ class Elastic:
                 },
             )
 
+    async def close(self):
+        await self.client.close()
+
 
 async def elastic_create(settings: Settings) -> Elastic:
     elastic = Elastic()
