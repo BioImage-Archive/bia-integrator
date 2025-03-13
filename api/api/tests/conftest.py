@@ -6,6 +6,7 @@ import pytest_asyncio
 import json
 from api.settings import Settings
 import asyncio
+import pathlib
 
 test_settings = Settings(mongo_index_push=True)
 
@@ -41,6 +42,31 @@ def event_loop():
     yield asyncio.get_event_loop()
 
     asyncio.get_event_loop().close()
+
+
+@pytest_asyncio.fixture(scope="session", autouse=True)
+async def elastic():
+    from api.models.elastic import elastic_create
+
+    el = await elastic_create(test_settings)
+    try:
+        await el.client.indices.delete(index="test-index")
+    except:
+        pass
+
+    await el.configure(test_settings)
+
+    test_data = (
+        pathlib.Path(__file__).parent / "test_data" / "bia-study-metadata.json.bulk"
+    ).read_text()
+    response = await el.client.bulk(body=test_data)
+    assert not response.body["errors"]
+
+    await el.client.indices.refresh(index="test-index")
+
+    yield el
+
+    await el.close()
 
 
 def get_client():

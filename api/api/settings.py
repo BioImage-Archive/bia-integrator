@@ -18,6 +18,8 @@ class Settings(BaseSettings):
     user_create_secret_token: str
     fastapi_root_path: str = ""
 
+    elastic_connstring: str = ""
+
     # Only pushes indices set in the code (generated from the models/explicit)
     #   to make sure one-off manually added indices are not deleted
     # Run db.bia_integrator.dropIndexes() to delete all indices (then restart app for a refresh)

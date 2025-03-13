@@ -65,3 +65,6 @@ env
 .venv
 
 helm-chart/charts
+
+
+**/bia-study-metadata.json

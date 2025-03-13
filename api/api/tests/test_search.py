@@ -136,3 +136,13 @@ def test_get_multi_repeated_filter(api_client: TestClient, datasets_many: List[d
     assert rsp.status_code == 200
     assert len(rsp.json()) == 2
     assert rsp.json() == datasets_many[:2]
+
+
+def test_fts(api_client: TestClient):
+    rsp = api_client.get(
+        f"search/fts", params={"query": "ZFTA_RELA HEK293T Puncta Studies"}
+    )
+    assert rsp.status_code == 200
+
+    body = rsp.json()
+    assert body["total"]["value"] == 1

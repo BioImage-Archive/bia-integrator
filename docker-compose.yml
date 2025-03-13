@@ -12,6 +12,30 @@ services:
       interval: 1s
       timeout: 1s
       retries: 5
+  biaint-elastic:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.12.0
+    environment:
+      - discovery.type=single-node
+      - ELASTIC_PASSWORD=elastic123
+      - xpack.security.enabled=false
+    ports:
+      - 9200:9200
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9200/_cluster/health?wait_for_status=yellow&timeout=30s"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  biaint-kibana:
+    image: docker.elastic.co/kibana/kibana:8.12.0
+    environment:
+      - ELASTICSEARCH_HOSTS=http://biaint-elastic:9200
+    ports:
+      - 5601:5601
+    depends_on:
+      biaint-elastic:
+        condition: service_healthy
   bia-integrator-api:
     build:
       context: .
@@ -25,7 +49,10 @@ services:
     expose:
       - 8080
     depends_on:
-      - biaint-mongo
+      biaint-mongo:
+        condition: service_healthy
+      biaint-elastic:
+        condition: service_healthy
     healthcheck:
       # !! important to sync services
       test: ["CMD", "wget", "-O", "-", "api:8080/openapi.json"]

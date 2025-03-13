@@ -1,10 +1,11 @@
 from fastapi import APIRouter, Depends, Query
 from api import constants
+from api.models.elastic import Elastic
 from api.public import models_public
 from pydantic.alias_generators import to_snake
 from typing import List, Annotated, Optional, Type
 from api.models.repository import Repository
-from api.app import get_db
+from api.app import get_db, get_elastic
 from api.models.api import Pagination
 import bia_shared_datamodels.bia_data_model as shared_data_models
 import re
@@ -64,6 +65,20 @@ def make_search_items(t: Type[shared_data_models.DocumentMixin]):
         )
 
     return get_items
+
+
+@router.get("/fts")
+async def fts(
+    elastic: Annotated[Elastic, Depends(get_elastic)],
+    query: Annotated[str, Query(min_length=1, max_length=500)],
+) -> dict:
+    rsp = await elastic.client.search(
+        index="test-index",
+        query={"multi_match": {"query": query, "fields": ["*"], "fuzziness": "AUTO"}},
+        size=5,
+    )
+
+    return rsp.body["hits"]
 
 
 def make_router() -> APIRouter:
