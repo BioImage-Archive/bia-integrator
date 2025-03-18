@@ -74,7 +74,13 @@ async def fts(
 ) -> dict:
     rsp = await elastic.client.search(
         index="test-index",
-        query={"multi_match": {"query": query, "fields": ["*"], "fuzziness": "AUTO"}},
+        query={
+            "multi_match": {
+                "query": query,
+                "fields": ["*"],
+                "type": "phrase",
+            }
+        },
         size=5,
     )
 
