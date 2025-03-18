@@ -22,6 +22,8 @@ class Elastic:
                             "accession_id": {"type": "keyword"},
                             "author": {"type": "flattened"},
                             "title": {"type": "text"},
+                            "dataset": {"type": "flattened"},
+                            "description": {"type": "text"},
                         },
                     }
                 },

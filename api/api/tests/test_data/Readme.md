@@ -18,7 +18,7 @@ curl -X PUT "http://localhost:9200/test-index" \
 			},
 			"dataset": {
 				"type": "flattened"
-			}
+			},
             "title": {
                 "type": "text"
             },
