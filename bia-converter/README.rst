@@ -30,22 +30,27 @@ Setup
 2. Configure your environment. Either create a ``.env`` file from ``.env_template`` in this directory or set environment variables as follows:
 
    - **For retrieving objects from the API**, set:
+
      - ``api_base_url``
      - ``bia_api_username``
      - ``bia_api_password``
 
    - **For caching downloaded/converted images locally**, the default location is ``~/.cache/bia-converter/``. Change this by setting:
+
      - ``cache_root_dirpath``
 
-   - **For conversion to Zarr format**, ``bioformats2raw`` is used. Set:
+   - **For conversion to Zarr format**, The official docker image of `bioformats2raw`_ via singularity is preferred (you only need to have singularity and/or docker installed on your machine). If singularity or docker is not available, the bioformats2raw cli can be installed via a package manager or built from the `github repo`_ and the following set in the ``.env`` file:
+
      - ``bioformats2raw_java_home``
      - ``bioformats2raw_bin``
 
    - **For uploading to S3**, set:
+
      - ``endpoint_url``
      - ``bucket_name``
 
    - The AWS credentials for the endpoint also need to be set. This can be done exclusively via environment variables. Either:
+
      - ``AWS_ACCESS_KEY_ID`` *and* ``AWS_SECRET_ACCESS_KEY``
      - OR use ``AWS_SHARED_CREDENTIALS_FILE`` with optional ``AWS_PROFILE`` and/or ``AWS_CONFIG_FILE``
 
@@ -83,3 +88,5 @@ Scripts
 The `scripts`_ directory contains a bash script for a sample workflow to produce converted images for a BIA study.
 
 .. _scripts: ./scripts
+.. _bioformats2raw: https://hub.docker.com/r/openmicroscopy/bioformats2raw/tags
+.. _github repo: https://github.com/glencoesoftware/bioformats2raw/tree/master
