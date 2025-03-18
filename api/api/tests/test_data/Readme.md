@@ -16,9 +16,15 @@ curl -X PUT "http://localhost:9200/test-index" \
 			"author": {
 				"type": "flattened"
 			},
+			"dataset": {
+				"type": "flattened"
+			}
             "title": {
                 "type": "text"
-            }
+            },
+			"description": {
+				"type": "text"
+			}
 		}
 	}
 }'
