@@ -3,6 +3,7 @@ import logging
 import zipfile
 import tempfile
 from pathlib import Path
+from typing import Dict, Tuple
 
 import parse  # type: ignore
 from bia_integrator_api.models import (  # type: ignore
@@ -236,18 +237,30 @@ def stage_and_link_filerefs(
     return pattern_fpath
 
 
-def get_conversion_output_path(output_rep_uuid):
+def get_conversion_output_path(output_rep):
+
+    input_image = api_client.get_image(output_rep.representation_of_uuid)
+    dataset = api_client.get_dataset(input_image.submission_dataset_uuid)
+    study = api_client.get_study(dataset.submitted_in_study_uuid)
+    zarr_dir = f"{study.accession_id}/{output_rep.representation_of_uuid}/{output_rep.uuid}{output_rep.image_format}"
     dst_dir_basepath = settings.cache_root_dirpath / "zarr"
     dst_dir_basepath.mkdir(exist_ok=True, parents=True)
-    zarr_fpath = dst_dir_basepath / f"{output_rep_uuid}.zarr"
+    zarr_fpath = dst_dir_basepath / zarr_dir
+
+    """
+    dst_dir_basepath = settings.cache_root_dirpath / "zarr"
+    dst_dir_basepath.mkdir(exist_ok=True, parents=True)
+    zarr_fpath = dst_dir_basepath / f"{output_rep.uuid}.zarr"
+    """
 
     return zarr_fpath
 
 
-def get_dimensions_dict_from_zarr(ome_zarr_image_uri):
+def process_zarr_metadata(ome_zarr_path, ome_zarr_uri) -> Tuple[Dict, Dict]:
     from .proxyimage import ome_zarr_image_from_ome_zarr_uri
+    from .utils import generate_ng_link_for_zarr
 
-    im = ome_zarr_image_from_ome_zarr_uri(ome_zarr_image_uri)
+    im = ome_zarr_image_from_ome_zarr_uri(ome_zarr_path)
     attr_map = {
         "sizeX": "size_x",
         "sizeY": "size_y",
@@ -261,7 +274,20 @@ def get_dimensions_dict_from_zarr(ome_zarr_image_uri):
 
     update_dict = {v: im.__dict__[k] for k, v in attr_map.items()}
 
-    return update_dict
+    contrast_bounds = tuple([im.ngff_metadata.omero.channels[0].window.min, im.ngff_metadata.omero.channels[0].window.max])
+
+    attribute_list = []
+    ng_link_dict = {}
+    ng_link_value = {}
+    ng_link_dict["provenance"] = "bia_conversion"
+    ng_link_dict["name"] = "neuroglancer_view_link"
+    ng_link_value["neuroglancer_view_link"] = generate_ng_link_for_zarr(ome_zarr_uri, contrast_bounds)
+    ng_link_dict["value"] = ng_link_value
+    attribute_list.append(ng_link_dict)
+
+    #update_dict["attribute"] = attribute_list
+
+    return update_dict, attribute_list
 
 
 def check_if_path_contains_zarr_group(dirpath: Path) -> bool:
@@ -290,7 +316,7 @@ def fetch_ome_zarr_zip_fileref_and_unzip(
         zipfile.BadZipFile: If the file is not a valid zip file
     """
 
-    unpacked_zarr_dirpath = get_conversion_output_path(output_image_rep.uuid)
+    unpacked_zarr_dirpath = get_conversion_output_path(output_image_rep)
 
     # If the target directory exists, don't try to overwrite.
     # TODO - some validation that the target directory correctly corresponds to the zip file
@@ -347,7 +373,7 @@ def convert_with_bioformats2raw_pattern(
         )
 
         # Run the conversion if we need to
-        output_zarr_fpath = get_conversion_output_path(base_image_rep.uuid)
+        output_zarr_fpath = get_conversion_output_path(base_image_rep)
         logger.info(f"Converting from {conversion_input_fpath} to {output_zarr_fpath}")
         if not output_zarr_fpath.exists():
             run_zarr_conversion(conversion_input_fpath, output_zarr_fpath)
@@ -389,17 +415,14 @@ def convert_uploaded_by_submitter_to_interactive_display(
                     f"Failed to convert using pattern. As image has 1 file reference will attempt to convert from this file reference with file path: {file_references[0].file_path}."
                 )
                 input_file_path = stage_fileref_and_get_fpath(file_references[0])
-                output_zarr_fpath = get_conversion_output_path(f"{base_image_rep.uuid}")
+                output_zarr_fpath = get_conversion_output_path(base_image_rep)
                 run_zarr_conversion(input_file_path, output_zarr_fpath)
             else:
                 raise e
 
-    # Upload to S3
-    dst_suffix = create_s3_uri_suffix_for_image_representation(base_image_rep)
-    zarr_group_uri = sync_dirpath_to_s3(output_zarr_fpath, dst_suffix)
     # TODO: Discuss how to handle whether to append '/0'
     # After discussion with MH on 11/02/2025 agreed to default to '/0' (which currently won't work for plate-well)
-    ome_zarr_uri = zarr_group_uri + "/0"
+    
     # ome_zarr_uri = zarr_group_uri
 
     # rich.print(zarr_group_uri)
@@ -407,12 +430,38 @@ def convert_uploaded_by_submitter_to_interactive_display(
 
     # Set image_rep properties that we now know
     # base_image_rep.file_uri =
-    base_image_rep.total_size_in_bytes = get_dir_size(output_zarr_fpath)
-    base_image_rep.file_uri = [ome_zarr_uri]
-    update_dict = get_dimensions_dict_from_zarr(ome_zarr_uri)
-    base_image_rep.__dict__.update(update_dict)
+
+    if settings.local:
+        ome_zarr_path = str(output_zarr_fpath) + "/0"
+        ome_zarr_uri = f"http://localhost:8081/images/{base_image_rep.uuid}{base_image_rep.image_format}/0"
+    else:
+        dst_suffix = create_s3_uri_suffix_for_image_representation(base_image_rep)
+        zarr_group_uri = sync_dirpath_to_s3(output_zarr_fpath, dst_suffix)
+        ome_zarr_path = zarr_group_uri + "/0"
+        ome_zarr_uri = ome_zarr_path
+
+    base_image_rep = update_ome_zarr_image_rep(
+        base_image_rep, output_zarr_fpath, ome_zarr_uri, ome_zarr_path
+    )
 
     # Write back to API
     store_object_in_api_idempotent(base_image_rep)
 
     return base_image_rep
+
+
+def update_ome_zarr_image_rep(
+    base_image_rep: ImageRepresentation, 
+    output_zarr_fpath: Path, 
+    ome_zarr_uri: str, 
+    ome_zarr_path: str, 
+) -> ImageRepresentation:
+    
+    base_image_rep.total_size_in_bytes = get_dir_size(output_zarr_fpath)
+    base_image_rep.file_uri = [ome_zarr_uri]
+    update_dict, attributes = process_zarr_metadata(ome_zarr_path, ome_zarr_uri)
+    base_image_rep.__dict__.update(update_dict)
+    base_image_rep.attribute = attributes
+
+    return base_image_rep
+

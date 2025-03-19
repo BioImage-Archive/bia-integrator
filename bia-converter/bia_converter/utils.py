@@ -1,8 +1,10 @@
 import os
 import logging
 from uuid import UUID
-from typing import Union
+from typing import Union, Tuple
 from pathlib import Path
+
+from .neuroglancer import Layer, ViewerState, state_to_ng_uri, InvlerpParameters
 
 
 from bia_integrator_api.models import (  # type: ignore
@@ -83,3 +85,53 @@ def get_dir_size(path: Union[str, Path]) -> int:
                 continue
 
     return total_size
+
+
+def generate_ng_link_for_zarr(
+        ome_zarr_uri: str, 
+        contrast_bounds: Tuple[float, float]
+) -> str:
+    
+    """Given the URI to an OME-Zarr file, a label for that image,
+    generate a Neuroglancer link at which the image+annotations 
+    can be visualised.
+    
+    """
+
+    lower_bound, upper_bound = contrast_bounds
+
+    shader_controls = {
+        "normalized" : InvlerpParameters(
+            range = (lower_bound, upper_bound),
+            window = None,
+            channel = None
+        )
+    }
+
+    base_layer = Layer(
+        type="image",
+        source=f"{ome_zarr_uri}/|zarr2:",
+        name="image",
+        volumeRendering=False,
+        shaderControls=shader_controls
+    )
+
+    # TODO: find dimensions in image metadata and supply it
+    v = ViewerState(
+        dimensions={
+            "t": (1, ""),
+            "c": (1, ""),
+            "z": (1.3e-5, "m"),
+            "y": (1.3e-5, "m"),
+            "x": (1.3e-5, "m"),
+        },
+        displayDimensions=["x", "y", "z"],
+        position=[0, 0, 250, 720, 511], #TODO: pull out positions from image metadata
+        crossSectionScale=5, #TODO: work out best way to calculate this
+        layers=[base_layer],
+        layout="4panel"
+    )
+
+    state_uri = state_to_ng_uri(v, "https://neuroglancer-demo.appspot.com/#!")
+
+    return state_uri
