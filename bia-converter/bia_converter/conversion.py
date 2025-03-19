@@ -2,6 +2,8 @@ import os
 import logging
 import shutil
 import subprocess
+import platform
+
 from pathlib import Path
 
 from bia_converter.config import settings
@@ -75,9 +77,14 @@ def run_zarr_conversion(input_fpath: Path, output_dirpath: Path):
     output_dirpath"""
 
     # Prefer to run with singularity, then docker and lastly with bioformats2raw cli
-    if shutil.which("singularity"):
+
+    # As of 19/03/2025 bioformats2raw docker image only built for linux/amd64.
+    # Some of our macs are running arm64 -> run with cli for arm64.
+    platform_type = platform.machine().lower()
+    arm64_platform = "arm64" in platform_type
+    if not arm64_platform and shutil.which("singularity"):
         run_bioformats2raw_with_singularity(input_fpath, output_dirpath)
-    elif shutil.which("docker"):
+    elif not arm64_platform and shutil.which("docker"):
         run_bioformats2raw_with_docker(input_fpath, output_dirpath)
     else:
         run_bioformats2raw_java_cli(input_fpath, output_dirpath)
