@@ -14,6 +14,8 @@ class Settings(BaseSettings):
     bioformats2raw_java_home: str = ""
     bioformats2raw_bin: str = ""
     bioformats2raw_docker_tag: str = "0.9.1"
+    local: bool = False
+
 
 
 settings = Settings()
