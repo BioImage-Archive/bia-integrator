@@ -21,9 +21,12 @@ def run_bioformats2raw_with_docker(input_fpath: Path, output_dirpath: Path):
     output_dir_map = f"{output_dirpath.parent}:/tmp/{output_dirpath.parent.name}"
     docker_output_dirpath = f"/tmp/{output_dirpath.parent.name}/{output_dirpath.name}"
 
+    docker_image = (
+        f"openmicroscopy/bioformats2raw:{settings.bioformats2raw_docker_tag} "
+    )
     zarr_cmd = (
         f"docker run --rm -u {user_id}:{group_id} -v  {input_dir_map} -v {output_dir_map} "
-        + f'openmicroscopy/bioformats2raw:latest "{docker_input_fpath}" "{docker_output_dirpath}"'
+        + f'{docker_image} "{docker_input_fpath}" "{docker_output_dirpath}"'
     )
 
     logger.info(f"Converting with {zarr_cmd}")
@@ -37,7 +40,12 @@ def run_bioformats2raw_with_docker(input_fpath: Path, output_dirpath: Path):
 
 
 def run_bioformats2raw_with_singularity(input_fpath: Path, output_dirpath: Path):
-    zarr_cmd = f'singularity run docker://openmicroscopy/bioformats2raw:latest "{input_fpath}" "{output_dirpath}"'
+    docker_image = (
+        f"openmicroscopy/bioformats2raw:{settings.bioformats2raw_docker_tag} "
+    )
+    zarr_cmd = (
+        f'singularity run docker://{docker_image} "{input_fpath}" "{output_dirpath}"'
+    )
 
     logger.info(f"Converting with {zarr_cmd}")
 
