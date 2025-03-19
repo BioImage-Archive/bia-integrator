@@ -51,6 +51,7 @@ jobs:
             bia-export,
             bia-ingest,
             bia-assign-image,
+            bia-converter,
           ]
     runs-on: ${{ matrix.os }}
     defaults:
