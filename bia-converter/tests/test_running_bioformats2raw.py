@@ -2,12 +2,15 @@
 
 from pathlib import Path
 import filecmp
+import shutil
 import pytest
 
 from bia_converter.conversion import (
     run_bioformats2raw_with_singularity,
     run_bioformats2raw_with_docker,
 )
+
+singularity_not_available = shutil.which("singularity") is None
 
 
 @pytest.fixture
@@ -27,14 +30,22 @@ def output_dirpath(tmp_path) -> Path:
     return tmp_path / "converted.zarr"
 
 
-@pytest.mark.parametrize(
-    "bioformats2raw_function",
-    (run_bioformats2raw_with_docker, run_bioformats2raw_with_singularity),
-)
 def test_run_bioformats2raw_with_docker(
-    bioformats2raw_function, file_to_convert, output_dirpath, path_to_expected_output
+    file_to_convert, output_dirpath, path_to_expected_output
 ):
-    bioformats2raw_function(file_to_convert, output_dirpath)
+    run_bioformats2raw_with_docker(file_to_convert, output_dirpath)
+
+    comparison = filecmp.dircmp(output_dirpath, path_to_expected_output)
+    assert not comparison.left_only
+    assert not comparison.right_only
+    assert not comparison.diff_files
+
+
+@pytest.mark.skipif(singularity_not_available, reason="Singularity is not installed")
+def test_run_bioformats2raw_with_singularity(
+    file_to_convert, output_dirpath, path_to_expected_output
+):
+    run_bioformats2raw_with_singularity(file_to_convert, output_dirpath)
 
     comparison = filecmp.dircmp(output_dirpath, path_to_expected_output)
     assert not comparison.left_only
