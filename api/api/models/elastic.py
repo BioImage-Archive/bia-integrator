@@ -10,7 +10,9 @@ class Elastic:
 
     async def configure(self, settings: Settings):
         index_name = "test-index"
-        self.client = AsyncElasticsearch(settings.elastic_connstring)
+        self.client = AsyncElasticsearch(
+            settings.elastic_connstring, verify_certs=False
+        )
 
         if not await self.client.indices.exists(index=index_name):
             await self.client.indices.create(
