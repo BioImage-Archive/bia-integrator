@@ -89,7 +89,9 @@ def get_dir_size(path: Union[str, Path]) -> int:
 
 def generate_ng_link_for_zarr(
         ome_zarr_uri: str, 
-        contrast_bounds: Tuple[float, float]
+        contrast_bounds: Tuple[float, float],
+        position: Tuple[int, int, int],
+        physical_sizes: Tuple[float, float, float] 
 ) -> str:
     
     """Given the URI to an OME-Zarr file, a label for that image,
@@ -116,17 +118,16 @@ def generate_ng_link_for_zarr(
         shaderControls=shader_controls
     )
 
-    # TODO: find dimensions in image metadata and supply it
     v = ViewerState(
         dimensions={
             "t": (1, ""),
             "c": (1, ""),
-            "z": (1.3e-5, "m"),
-            "y": (1.3e-5, "m"),
-            "x": (1.3e-5, "m"),
+            "z": (physical_sizes[0], "m"),
+            "y": (physical_sizes[1], "m"),
+            "x": (physical_sizes[2], "m"),
         },
         displayDimensions=["x", "y", "z"],
-        position=[0, 0, 250, 720, 511], #TODO: pull out positions from image metadata
+        position=[0, 0, position[0], position[1], position[2]], # position is stil tczyx regardless of displayDimensions
         crossSectionScale=5, #TODO: work out best way to calculate this
         layers=[base_layer],
         layout="4panel"
