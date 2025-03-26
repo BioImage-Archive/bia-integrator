@@ -274,14 +274,23 @@ def process_zarr_metadata(ome_zarr_path, ome_zarr_uri) -> Tuple[Dict, Dict]:
 
     update_dict = {v: im.__dict__[k] for k, v in attr_map.items()}
 
-    contrast_bounds = tuple([im.ngff_metadata.omero.channels[0].window.min, im.ngff_metadata.omero.channels[0].window.max])
+    contrast_bounds = (im.ngff_metadata.omero.channels[0].window.min, im.ngff_metadata.omero.channels[0].window.max)
+    view_position = (im.sizeZ // 2, im.sizeY // 2, im.sizeX // 2)
+
+    physical_sizes = [1, 1, 1]
+    if im.PhysicalSizeX is not None:
+        physical_sizes[2] = im.PhysicalSizeX
+    if im.PhysicalSizeY is not None:
+        physical_sizes[1] = im.PhysicalSizeY
+    if im.PhysicalSizeZ is not None:    
+        physical_sizes[0] = im.PhysicalSizeZ
 
     attribute_list = []
     ng_link_dict = {}
     ng_link_value = {}
     ng_link_dict["provenance"] = "bia_conversion"
     ng_link_dict["name"] = "neuroglancer_view_link"
-    ng_link_value["neuroglancer_view_link"] = generate_ng_link_for_zarr(ome_zarr_uri, contrast_bounds)
+    ng_link_value["neuroglancer_view_link"] = generate_ng_link_for_zarr(ome_zarr_uri, contrast_bounds, view_position, physical_sizes)
     ng_link_dict["value"] = ng_link_value
     attribute_list.append(ng_link_dict)
 
