@@ -42,6 +42,13 @@ curl -H "Content-Type: application/json" \
 
 The response should be just `null` and there should be no errors in the api container.
 
+### Local services
+
+Dejavu (Elastic viewer):
+* Url: http://localhost:1358/
+* Connection string: http://elastic:test@localhost:9200
+* Index: test-index
+
 ## Development
 
 ### Testing with VS CODE
