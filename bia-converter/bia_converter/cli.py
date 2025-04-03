@@ -7,8 +7,8 @@ from typing_extensions import Annotated
 
 from bia_integrator_api.models import ImageRepresentationUseType  # type: ignore
 
-from .bia_api_client import api_client
-from .convert import (
+from bia_converter.bia_api_client import api_client
+from bia_converter.convert import (
     convert_interactive_display_to_thumbnail,
     convert_interactive_display_to_static_display,
     convert_uploaded_by_submitter_to_interactive_display,
