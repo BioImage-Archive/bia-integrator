@@ -73,14 +73,14 @@ def ingestion_result_summary_biostudies_default():
 def mock_request_get(monkeypatch):
     """Requests.get mocked to read file from disk"""
 
-    def _mock_request_get(flist_url: str, stream: bool = True) -> Dict[str, str]:
+    def _mock_request_get(flist_url: str) -> Dict[str, str]:
         path_to_load = bia_test_data_dir / "biad_v4" / Path(flist_url).name
         return_value = Mock()
         return_value.status_code = 200
         return_value.content = path_to_load.read_text()
         return return_value
 
-    monkeypatch.setattr(requests.Session, "get", _mock_request_get)
+    monkeypatch.setattr(requests, "get", _mock_request_get)
 
 
 @pytest.fixture
