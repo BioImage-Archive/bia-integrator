@@ -2,9 +2,11 @@ from pathlib import Path
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+env_file = Path(__file__).parent / ".env"
+
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file=".env", extra="allow")
+    model_config = SettingsConfigDict(env_file=env_file, extra="allow")
 
     endpoint_url: str = "https://uk1s3.embassy.ebi.ac.uk"
     bucket_name: str = "bia-integrator-data"

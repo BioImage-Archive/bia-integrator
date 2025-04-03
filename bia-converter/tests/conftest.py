@@ -21,13 +21,16 @@ def data_in_api():
     add_objects_to_api(private_client, object_list)
 
 
+def pytest_sessionstart(session):
+    """Set up environment variables before any test modules are loaded."""
+
+    base_temp = session.config._tmp_path_factory.getbasetemp()
+    cache_root_dirpath = base_temp / "temp_cache"
+    cache_root_dirpath.mkdir(exist_ok=True)
+    os.environ["cache_root_dirpath"] = f"{cache_root_dirpath}"
+
+
 @pytest.hookimpl(tryfirst=True)
 def pytest_configure(config):
     """Runs before test modules are imported."""
     data_in_api()
-
-
-@pytest.fixture(scope="session", autouse=True)
-def set_cache_root_dir_path(tmp_path_factory):
-    cache_root_dirpath = tmp_path_factory.mktemp("temp_cache")
-    os.environ["cache_root_dirpath"] = f"{cache_root_dirpath}"

@@ -1,4 +1,3 @@
-import os
 from pathlib import Path
 import shutil
 import pytest
@@ -6,11 +5,6 @@ from bia_converter import io
 from bia_converter import convert
 from typer.testing import CliRunner
 from bia_converter import cli
-
-
-@pytest.fixture(scope="function", autouse=True)
-def set_cache_root_dir_path(tmpdir):
-    os.environ["cache_root_dirpath"] = f"{tmpdir}"
 
 
 @pytest.fixture

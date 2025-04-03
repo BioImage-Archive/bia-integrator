@@ -18,7 +18,8 @@ class APIClientSettings(BaseSettings):
     model_config = SettingsConfigDict(env_file=env_file_path, extra="allow")
 
     # TODO: Discuss standardising env variables across all bia-integrator subpackages
-    api_base_url: str = "https://wwwdev.ebi.ac.uk/bioimage-archive/api"
+    # api_base_url: str = "https://wwwdev.ebi.ac.uk/bioimage-archive/api"
+    api_base_url: str = "http://localhost:8080"
     bia_api_username: str = "test@example.com"
     bia_api_password: str = "test"
 
