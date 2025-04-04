@@ -1,0 +1,25 @@
+{
+  "uuid": "253005d3-795f-4ab3-b37b-6d4fcdd39a4a",
+  "version": 0,
+  "model": {
+    "type_name": "ImageRepresentation",
+    "version": 3
+  },
+  "attribute": [],
+  "image_format": ".png",
+  "use_type": "STATIC_DISPLAY",
+  "file_uri": [
+    "https://uk1s3.embassy.ebi.ac.uk/testbucket-bia/S-BIAD-BIACONVERTER-TEST/26959638-a790-4b0f-8ee5-20a986411e5c/253005d3-795f-4ab3-b37b-6d4fcdd39a4a.png"
+  ],
+  "total_size_in_bytes": 842,
+  "physical_size_x": null,
+  "physical_size_y": null,
+  "physical_size_z": null,
+  "size_x": 512,
+  "size_y": 512,
+  "size_z": null,
+  "size_c": null,
+  "size_t": null,
+  "image_viewer_setting": [],
+  "representation_of_uuid": "26959638-a790-4b0f-8ee5-20a986411e5c"
+}

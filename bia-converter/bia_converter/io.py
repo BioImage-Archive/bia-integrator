@@ -99,8 +99,12 @@ def copy_local_to_s3(src_fpath: Path, dst_key: str) -> str:
 
     cmd = f"aws --region us-east-1 --endpoint-url {settings.endpoint_url} s3 cp {src_fpath} s3://{bucket_name}/{dst_key} --acl public-read"
     logger.info(f"Uploading {src_fpath} to {dst_key}")
-    subprocess.run(cmd, shell=True)
-
+    retval = subprocess.run(
+        cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+    )
+    assert (
+        retval.returncode == 0
+    ), f"Error uploading to s3: {retval.stderr.decode('utf-8')}"
     return f"{endpoint_url}/{bucket_name}/{dst_key}"
 
 

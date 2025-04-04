@@ -61,12 +61,11 @@ def ingestion_result_summary():
 
 @pytest.fixture
 def ingestion_result_summary_biostudies_default():
-
     result_summary = {}
     result_summary[accession_id_biostudies_default] = IngestionResult()
-    result_summary[accession_id_biostudies_default].ProcessingVersion = (
-        BioStudiesProcessingVersion.BIOSTUDIES_DEFAULT
-    )
+    result_summary[
+        accession_id_biostudies_default
+    ].ProcessingVersion = BioStudiesProcessingVersion.BIOSTUDIES_DEFAULT
     return result_summary
 
 
