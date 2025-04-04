@@ -9,7 +9,7 @@ ELASTIC_USERNAME=${ELASTIC_USERNAME:-"elastic"}
 ELASTIC_PASSWORD=${ELASTIC_PASSWORD:-"test"}
 ELASTIC_INDEX=${ELASTIC_INDEX:-"test_index"}
 
-#poetry --directory ${SCRIPT_DIR}/../../bia-export run bia-export website study --out_file=$EXPORT_JSON_OUT_FILE
+poetry --directory ${SCRIPT_DIR}/../../bia-export run bia-export website study --out_file=$EXPORT_JSON_OUT_FILE
   
 jq -c 'to_entries | map(.value)[:1000000][] | ({"index": {"_index": "'"${ELASTIC_INDEX}"'"}}, .)' $EXPORT_JSON_OUT_FILE | sed 's/"\./\"A./g' > ${EXPORT_JSON_OUT_FILE}.bulk
 
