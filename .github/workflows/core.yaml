@@ -36,7 +36,7 @@ jobs:
       - name: Check to see if poetry can build
         run: poetry build
       - name: Run pytest
-        run: poetry run pytest -vvv
+        run: poetry run pytest
   ci-test-with-api:
     strategy:
       fail-fast: false
@@ -73,7 +73,7 @@ jobs:
           poetry env use python
           poetry install
       - name: Run pytest
-        run: poetry run pytest
+        run: poetry run pytest -vvv
       # Always cleanup - even for cancelled jobs
       - name: Docker Compose Down
         run:  make -C ../ api.down
