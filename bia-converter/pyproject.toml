@@ -10,9 +10,6 @@ packages = [{include = "bia_converter"}]
 [tool.poetry.dependencies]
 python = ">=3.11,<3.12"
 rich = "^13.8.1"
-#bia-integrator-api = { git = "https://github.com/BioImage-Archive/bia-integrator.git", subdirectory = "clients/python", branch = "main" }
-#bia-shared-datamodels = { git = "https://github.com/BioImage-Archive/bia-integrator.git", subdirectory = "bia-shared-datamodels", branch = "main" }
-#bia-test-data = { git = "https://github.com/BioImage-Archive/bia-integrator.git", subdirectory = "bia-test-data", branch = "main" }
 bia-shared-datamodels = { path = "../bia-shared-datamodels", develop = true }
 bia-integrator-api = { path = "../clients/python", develop = true }
 bia-test-data = { path = "../bia-test-data", develop = true }
