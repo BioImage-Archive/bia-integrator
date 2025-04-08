@@ -43,10 +43,29 @@ def store_object_in_api_idempotent(model_object):
     post_func_name = "post_" + model_name_snake
     post_func = getattr(api_client, post_func_name)
 
+    # Convert uuid to string to prevent validation issues with API get methods
+    model_object_uuid = f"{model_object.uuid}"
+
+    # Convert the bia_data_model object to its API equivalent as there are slight differences
+    # in same models defined in bia_shared_models and api subpackages (e.g. Specimen)
+    equivalent_api_class = getattr(api_models, model_name)
+    equivalent_api_object = equivalent_api_class.model_validate_json(
+        model_object.model_dump_json()
+    )
+
     try:
-        get_func(model_object.uuid)
+        api_copy_of_object = get_func(model_object_uuid)
     except api_exceptions.NotFoundException:
-        logger.info(f"Storing {model_name} with UUID {model_object.uuid} in API")
+        logger.info(f"Storing {model_name} with UUID {model_object_uuid} in API")
+        post_func(equivalent_api_object)
+        return
+
+    if equivalent_api_object == api_copy_of_object:
+        return
+    else:
+        model_object.version = api_copy_of_object.version + 1
+
+        logger.info(f"Updating {model_name} with UUID {model_object_uuid} in API")
         post_func(model_object)
 
 

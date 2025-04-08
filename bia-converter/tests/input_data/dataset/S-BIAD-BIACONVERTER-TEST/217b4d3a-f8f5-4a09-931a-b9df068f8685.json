@@ -1,0 +1,65 @@
+{
+    "title_id": "Study Component 1",
+    "uuid": "217b4d3a-f8f5-4a09-931a-b9df068f8685",
+    "description": "Description of study component 1",
+    "attribute": [
+        {
+            "provenance": "bia_ingest",
+            "name": "image_acquisition_protocol_uuid",
+            "value": {
+                "image_acquisition_protocol_uuid": ["0adb0404-bab0-4bc2-9c46-7f7ca9dc0012"]
+            }
+        },
+        {
+            "provenance": "bia_ingest",
+            "name": "specimen_imaging_preparation_protocol_uuid",
+            "value": {
+                "specimen_imaging_preparation_protocol_uuid": ["263f642d-0ed4-4a91-945b-57016abf23c8"]
+            }
+        },
+        {
+            "provenance": "bia_ingest",
+            "name": "bio_sample_uuid",
+            "value": {
+                "bio_sample_uuid": ["2eae1015-02d9-4f82-ae15-fbd3255ff2eb"]
+            }
+        },
+        {
+            "value": {
+                "image_analysis": "Test image analysis",
+                "image_correlation": null,
+                "biosample": "Test Biosample 1",
+                "image_acquisition": "Test Primary Screen Image Acquisition",
+                "specimen": "Test specimen 1"
+            },
+            "name": "associations",
+            "provenance": "bia_ingest"
+        },
+        {
+            "value": {
+                "image_analysis": "Test image analysis",
+                "image_correlation": null,
+                "biosample": "Test Biosample 1",
+                "image_acquisition": "Test Primary Screen Image Acquisition",
+                "specimen": "Test specimen 1"
+            },
+            "name": "associations",
+            "provenance": "bia_ingest"
+        }
+    ],
+    "model": {
+        "type_name": "Dataset",
+        "version": 1
+    },
+    "analysis_method": [
+        {
+            "protocol_description": "Test image analysis",
+            "features_analysed": "Test image analysis overview",
+            "attribute": []
+        }
+    ],
+    "submitted_in_study_uuid": "2cf71073-ecc4-4bac-89d2-e57a5dc219fd",
+    "correlation_method": [],
+    "example_image_uri": [],
+    "version": 0
+}
