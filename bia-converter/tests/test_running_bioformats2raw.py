@@ -23,6 +23,7 @@ arm64_platform_message = (
 )
 
 singularity_not_available = shutil.which("singularity") is None
+
 bioformats2raw_java_cli_not_available = (
     settings.bioformats2raw_bin == "" or settings.bioformats2raw_java_home == ""
 )

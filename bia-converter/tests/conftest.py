@@ -22,11 +22,13 @@ def data_in_api():
 
 
 def pytest_sessionstart(session):
-    """Set up environment variables before any test modules are loaded."""
+    """Set up environment variables before any test modules are loaded.
 
-    # Using sessionstart instead of fixtures to ensure the env vars are
-    # set before any modules are loaded, so the values for the settings
-    # are picked up from environment variables using pydantic settings wirirng
+    Use sessionstart instead of fixtures to ensure the env vars are
+    set before any modules are loaded, so the values for config.settings
+    are picked up from environment variables using pydantic settings wiring
+    """
+
     base_temp = session.config._tmp_path_factory.getbasetemp()
     cache_root_dirpath = base_temp / "temp_cache"
     cache_root_dirpath.mkdir(exist_ok=True)

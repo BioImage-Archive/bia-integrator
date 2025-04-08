@@ -2,7 +2,7 @@ from pathlib import Path
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-env_file = Path(__file__).parent / ".env"
+env_file = Path(__file__).parents[1] / ".env"
 
 
 class Settings(BaseSettings):
