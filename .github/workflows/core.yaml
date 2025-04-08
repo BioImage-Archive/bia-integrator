@@ -72,7 +72,6 @@ jobs:
         run: |
           poetry env use python
           poetry install
-          poetry show numcodecs
       - name: Run pytest
         run: poetry run pytest
       # Always cleanup - even for cancelled jobs
