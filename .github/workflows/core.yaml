@@ -71,7 +71,6 @@ jobs:
       - name: set up poetry
         run: |
           poetry env use python
-          poetry run pip cache purge
           poetry install
       - name: Run pytest
         run: poetry run pytest
