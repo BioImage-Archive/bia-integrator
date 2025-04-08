@@ -75,7 +75,7 @@ jobs:
           # Having issue in CI/CD with numcodecs - lines below attempt
           # to install it without using cache.
           poetry run pip uninstall numcodecs -y
-          poetry cache remove pypi numcodecs
+          poetry cache clear pypi --all
           poetry add numcodecs
           poetry install
       - name: Run pytest
