@@ -101,7 +101,7 @@ def store_object_in_api_idempotent(api_client, model_object):
     if equivalent_api_object == api_copy_of_object:
         return
     else:
-        model_object.version += 1
+        model_object.version = api_copy_of_object + 1
 
         logger.info(f"Updating {model_name} with UUID {model_object_uuid} in API")
         post_func(model_object)
