@@ -22,7 +22,7 @@ from typing import Callable
             bia_data_model.Protocol,
             mock_objects.get_protocol_dict,
         ),
-        (bia_data_model.BioSample, mock_objects.get_biosample_dict),
+        (bia_data_model.BioSample, mock_objects.get_bio_sample_dict),
         (bia_data_model.Specimen, mock_objects.get_specimen_dict),
         (bia_data_model.AnnotationMethod, mock_objects.get_annotation_method_dict),
         (
