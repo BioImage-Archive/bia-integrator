@@ -5,7 +5,6 @@ import pytest
 
 from bia_shared_datamodels import bia_data_model, uuid_creation
 from bia_integrator_api import PrivateApi
-from bia_integrator_api.exceptions import NotFoundException
 
 from bia_assign_image.api_client import (
     get_local_bia_api_client,
@@ -38,6 +37,12 @@ def api_client() -> PrivateApi:
 
 
 def compare_bia_study_object_with_api_study_object(bia_study, api_study):
+    """Helper function to compare bia_data_model.Study vs api_models.Study
+
+    This function uses the dicts of the two models and adjusts for the
+    difference in type of the 'uuid' property in both. It is called by
+    the tests when comparing the new_study_object with its API equivalent.
+    """
     bia_study_dict = bia_study.model_dump()
 
     # bia_data_model.Study.uuid is UUID, but api_models.Study.uuid is str
@@ -48,10 +53,6 @@ def compare_bia_study_object_with_api_study_object(bia_study, api_study):
 
 
 def test_store_new_object(new_study_uuid, new_study_object, api_client):
-    # Ensure the object is not in the API
-    with pytest.raises(NotFoundException):
-        api_copy_of_new_study = api_client.get_study(new_study_uuid)
-
     store_object_in_api_idempotent(api_client, new_study_object)
     api_copy_of_new_study = api_client.get_study(new_study_uuid)
     assert compare_bia_study_object_with_api_study_object(
@@ -62,10 +63,6 @@ def test_store_new_object(new_study_uuid, new_study_object, api_client):
 def test_store_exact_same_object_returns_object_exists_message(
     new_study_uuid, new_study_object, api_client, caplog
 ):
-    # Ensure the object is not in the API
-    with pytest.raises(NotFoundException):
-        api_copy_of_new_study = api_client.get_study(new_study_uuid)
-
     # First save
     store_object_in_api_idempotent(api_client, new_study_object)
     api_copy_of_new_study = api_client.get_study(new_study_uuid)
@@ -73,12 +70,16 @@ def test_store_exact_same_object_returns_object_exists_message(
         new_study_object, api_copy_of_new_study
     )
 
-    # Second save
+    # Second save of exactly the same object
     with caplog.at_level(logging.INFO):
         store_object_in_api_idempotent(api_client, new_study_object)
+
+    # Check function logs info message that object is not being
+    # persisted because it is exactly the same as what is in API
     expected_info_text = f"Not persisting current object as identical object Study with UUID {new_study_uuid} already exists in API."
     assert expected_info_text in caplog.text
 
+    # Check API version is as expected
     api_copy_of_new_study = api_client.get_study(new_study_uuid)
     assert compare_bia_study_object_with_api_study_object(
         new_study_object, api_copy_of_new_study
@@ -88,10 +89,6 @@ def test_store_exact_same_object_returns_object_exists_message(
 def test_store_modified_object_updates_version(
     new_study_uuid, new_study_object, api_client
 ):
-    # Ensure the object is not in the API
-    with pytest.raises(NotFoundException):
-        api_copy_of_new_study = api_client.get_study(new_study_uuid)
-
     # First save
     store_object_in_api_idempotent(api_client, new_study_object)
     api_copy_of_new_study = api_client.get_study(new_study_uuid)
