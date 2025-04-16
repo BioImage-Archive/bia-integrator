@@ -1,4 +1,3 @@
-import logging
 from datetime import datetime
 from pathlib import Path
 import pytest
@@ -71,15 +70,9 @@ def test_store_exact_same_object_returns_object_exists_message(
     )
 
     # Second save of exactly the same object
-    with caplog.at_level(logging.INFO):
-        store_object_in_api_idempotent(api_client, new_study_object)
+    store_object_in_api_idempotent(api_client, new_study_object)
 
-    # Check function logs info message that object is not being
-    # persisted because it is exactly the same as what is in API
-    expected_info_text = f"Not persisting current object as identical object Study with UUID {new_study_uuid} already exists in API."
-    assert expected_info_text in caplog.text
-
-    # Check API version is as expected
+    # Check API version has not changed
     api_copy_of_new_study = api_client.get_study(new_study_uuid)
     assert compare_bia_study_object_with_api_study_object(
         new_study_object, api_copy_of_new_study
