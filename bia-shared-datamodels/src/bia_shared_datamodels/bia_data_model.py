@@ -32,6 +32,10 @@ class DocumentMixin(BaseModel):
     uuid: UUID = Field(
         description="""Unique ID (across the BIA database) used to refer to and identify a document."""
     )
+    object_creator: semantic_models.ProvenanceType = Field(
+        default=semantic_models.ProvenanceType.submitter,
+        description="""BIA internal type to track the creator/source of the object.""",
+    )
 
     # !!!!
     # EXTREMELY important that this field is validated
@@ -140,12 +144,6 @@ class DocumentMixin(BaseModel):
         return fields_filtered
 
 
-class UserIdentifiedObject(BaseModel):
-    title_id: str = Field(
-        description="""User provided title, which is unqiue within a submission, used to identify a part of a submission."""
-    )
-
-
 #######################################################################################################
 # Subgraph 1: Studies and links to external information (publications, grants etc)
 #######################################################################################################
@@ -168,7 +166,6 @@ class Study(
 class Dataset(
     semantic_models.Dataset,
     DocumentMixin,
-    UserIdentifiedObject,
 ):
     submitted_in_study_uuid: Annotated[UUID, ObjectReference(Study)] = Field()
 
@@ -279,14 +276,13 @@ class CreationProcess(semantic_models.CreationProcess, DocumentMixin):
     model_config = ConfigDict(model_version_latest=2)
 
 
-class Protocol(semantic_models.Protocol, DocumentMixin, UserIdentifiedObject):
+class Protocol(semantic_models.Protocol, DocumentMixin):
     model_config = ConfigDict(model_version_latest=2)
 
 
 class ImageAcquisitionProtocol(
     semantic_models.ImageAcquisitionProtocol,
     DocumentMixin,
-    UserIdentifiedObject,
 ):
     model_config = ConfigDict(model_version_latest=2)
 
@@ -294,7 +290,6 @@ class ImageAcquisitionProtocol(
 class SpecimenImagingPreparationProtocol(
     semantic_models.SpecimenImagingPreparationProtocol,
     DocumentMixin,
-    UserIdentifiedObject,
 ):
     model_config = ConfigDict(model_version_latest=2)
 
@@ -302,7 +297,6 @@ class SpecimenImagingPreparationProtocol(
 class BioSample(
     semantic_models.BioSample,
     DocumentMixin,
-    UserIdentifiedObject,
 ):
     model_config = ConfigDict(model_version_latest=3)
     growth_protocol_uuid: Annotated[Optional[UUID], ObjectReference(Protocol)] = Field(
@@ -314,7 +308,6 @@ class BioSample(
 class AnnotationMethod(
     semantic_models.AnnotationMethod,
     DocumentMixin,
-    UserIdentifiedObject,
 ):
     model_config = ConfigDict(model_version_latest=3)
 

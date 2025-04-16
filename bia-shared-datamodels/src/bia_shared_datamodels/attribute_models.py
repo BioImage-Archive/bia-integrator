@@ -4,7 +4,7 @@ from typing import List, Optional, Any
 from typing_extensions import Self
 
 from pydantic import BaseModel, Field, model_validator, field_validator, ValidationError
-from .semantic_models import Attribute, AttributeProvenance
+from .semantic_models import Attribute, ProvenanceType
 from uuid import UUID
 
 # For shared models that are placed inside Attribute objects
@@ -38,10 +38,10 @@ class DatasetAssociationAttribute(Attribute, SubAttributeMixin):
 
     @field_validator("provenance", mode="after")
     @classmethod
-    def attribute_provenance(cls, value: AttributeProvenance) -> AttributeProvenance:
-        if value != AttributeProvenance.bia_ingest:
+    def attribute_provenance(cls, value: ProvenanceType) -> ProvenanceType:
+        if value != ProvenanceType.bia_ingest:
             raise ValueError(
-                f"Provenance for this type of attribute must be {AttributeProvenance.bia_ingest}"
+                f"Provenance for this type of attribute must be {ProvenanceType.bia_ingest}"
             )
 
         return value
@@ -74,10 +74,10 @@ class DatasetAssociatedUUIDAttribute(Attribute, SubAttributeMixin):
 
     @field_validator("provenance", mode="after")
     @classmethod
-    def attribute_provenance(cls, value: AttributeProvenance) -> AttributeProvenance:
-        if value != AttributeProvenance.bia_ingest:
+    def attribute_provenance(cls, value: ProvenanceType) -> ProvenanceType:
+        if value != ProvenanceType.bia_ingest:
             raise ValueError(
-                f"Provenance for this type of attribute must be {AttributeProvenance.bia_ingest}"
+                f"Provenance for this type of attribute must be {ProvenanceType.bia_ingest}"
             )
         return value
 
