@@ -269,6 +269,7 @@ class Dataset(ConfiguredBaseModel, AttributeMixin):
     A logical collection of images that were created by the same acquisition and preparation procols being applied to a biosample.
     """
 
+    title: str = Field(description="""The title of a dataset.""")
     description: Optional[str] = Field(
         None, description="""Brief description of the dataset."""
     )
@@ -420,6 +421,7 @@ class Protocol(ConfiguredBaseModel, AttributeMixin):
     The description of a sequence of actions that were perfomed.
     """
 
+    title: str = Field(description="""The title of a protocol.""")
     protocol_description: str = Field(
         description="""Description of actions involved in the process."""
     )
@@ -580,6 +582,7 @@ class BioSample(ConfiguredBaseModel, AttributeMixin):
     The biological entity that has undergone preparation (as a Sample) in order to be imaged.
     """
 
+    title: str = Field(description="""The title of a bio-sample.""")
     organism_classification: List[Taxon] = Field(
         description="""The classification of th ebiological matter."""
     )
