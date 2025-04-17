@@ -22,7 +22,9 @@ class Provenance(str, Enum):
 
     bia_ingest = "bia_ingest"
 
-    bia_conversion = "bia_conversion"
+    bia_image_assignment = "bia_image_assignment"
+
+    bia_image_conversion = "bia_image_conversion"
 
     bia_curation = "bia_curation"
 

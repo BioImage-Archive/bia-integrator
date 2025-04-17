@@ -31,7 +31,7 @@ def get_study_dict(completeness=Completeness.COMPLETE) -> dict:
         "release_date": "2024-06-23",
         "version": 1,
         "description": "Template description",
-        "object_creator": semantic_models.Provenance.submitter,
+        "object_creator": semantic_models.Provenance.bia_ingest,
     }
 
     if completeness == Completeness.COMPLETE:
@@ -163,7 +163,7 @@ def get_image_dict(completeness=Completeness.COMPLETE) -> dict:
         "submission_dataset_uuid": get_dataset_dict()["uuid"],
         "original_file_reference_uuid": [],
         "version": 1,
-        "object_creator": semantic_models.Provenance.submitter,
+        "object_creator": semantic_models.Provenance.bia_image_assignment,
     }
     if completeness == Completeness.COMPLETE:
         image |= {
@@ -186,7 +186,7 @@ def get_image_representation_dict(completeness=Completeness.COMPLETE) -> dict:
         "total_size_in_bytes": 0,
         "file_uri": [],
         "version": 1,
-        "object_creator": semantic_models.Provenance.submitter,
+        "object_creator": semantic_models.Provenance.bia_image_conversion,
     }
     if completeness == Completeness.COMPLETE:
         image_representation |= {
@@ -246,7 +246,7 @@ def get_annotation_data_dict(completeness=Completeness.COMPLETE) -> dict:
         "submission_dataset_uuid": get_dataset_dict()["uuid"],
         "original_file_reference_uuid": [],
         "version": 1,
-        "object_creator": semantic_models.Provenance.submitter,
+        "object_creator": semantic_models.Provenance.bia_curation,
     }
     if completeness == Completeness.COMPLETE:
         annotation_data |= {
@@ -269,7 +269,7 @@ def get_creation_process_dict(completeness=Completeness.COMPLETE) -> dict:
     process = {
         "uuid": uuid4(),
         "version": 1,
-        "object_creator": semantic_models.Provenance.submitter,
+        "object_creator": semantic_models.Provenance.bia_image_assignment,
     }
     if completeness == Completeness.COMPLETE:
         process |= {
@@ -298,7 +298,7 @@ def get_protocol_dict(completeness=Completeness.COMPLETE) -> dict:
         "title_id": title_id,
         "protocol_description": "Template method description",
         "version": 1,
-        "object_creator": semantic_models.Provenance.submitter,
+        "object_creator": semantic_models.Provenance.bia_ingest,
     }
     if completeness == Completeness.COMPLETE:
         protocol |= {
@@ -321,7 +321,7 @@ def get_image_acquisition_protocol_dict(completeness=Completeness.COMPLETE) -> d
         "protocol_description": "Template method description",
         "imaging_instrument_description": "Template imaging instrument",
         "version": 1,
-        "object_creator": semantic_models.Provenance.submitter,
+        "object_creator": semantic_models.Provenance.bia_ingest,
     }
     if completeness == Completeness.COMPLETE:
         image_acquisition_protocol |= {
@@ -347,7 +347,7 @@ def get_annotation_method_dict(completeness=Completeness.COMPLETE) -> dict:
         "protocol_description": "Template annotation method description",
         "method_type": [],
         "version": 1,
-        "object_creator": semantic_models.Provenance.submitter,
+        "object_creator": semantic_models.Provenance.bia_ingest,
     }
     if completeness == Completeness.COMPLETE:
         annotation_method |= {
@@ -404,7 +404,7 @@ def get_specimen_dict(completeness=Completeness.COMPLETE) -> dict:
             get_biosample_dict()["uuid"],
         ],
         "version": 1,
-        "object_creator": semantic_models.Provenance.submitter,
+        "object_creator": semantic_models.Provenance.bia_image_assignment,
     }
     if completeness == Completeness.COMPLETE:
         specimen |= {
@@ -426,7 +426,7 @@ def get_specimen_imaging_preparation_protocol_dict(
         "title_id": title_id,
         "protocol_description": "Test description",
         "version": 1,
-        "object_creator": semantic_models.Provenance.submitter,
+        "object_creator": semantic_models.Provenance.bia_ingest,
     }
     if completeness == Completeness.COMPLETE:
         specimen_imaging_preparation_protocol |= {
@@ -463,7 +463,7 @@ def get_biosample_dict(completeness=Completeness.COMPLETE) -> dict:
         "biological_entity_description": "Test biological entity description",
         "version": 1,
         "organism_classification": [],
-        "object_creator": semantic_models.Provenance.submitter,
+        "object_creator": semantic_models.Provenance.bia_ingest,
     }
     if completeness == Completeness.COMPLETE:
         biosample |= {

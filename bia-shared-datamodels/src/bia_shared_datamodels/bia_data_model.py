@@ -33,7 +33,7 @@ class DocumentMixin(BaseModel):
         description="""Unique ID (across the BIA database) used to refer to and identify a document."""
     )
     object_creator: semantic_models.Provenance = Field(
-        description="""BIA internal type to track the creator/source of the object.""",
+        description="""BIA internal type to track the source of the object.""",
     )
 
     # !!!!
