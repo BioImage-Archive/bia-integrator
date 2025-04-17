@@ -168,6 +168,7 @@ def get_image_dict(completeness=Completeness.COMPLETE) -> dict:
             "original_file_reference_uuid": [
                 get_file_reference_dict()["uuid"],
             ],
+            "label": "Template image label",
         }
     return image
 
@@ -188,9 +189,9 @@ def get_image_representation_dict(completeness=Completeness.COMPLETE) -> dict:
             "file_uri": [
                 "https://dummy.uri.org",
             ],
-            "physical_size_x": 1,
-            "physical_size_y": 1,
-            "physical_size_z": 1,
+            "single_voxel_physical_size_x": 1,
+            "single_voxel_physical_size_y": 1,
+            "single_voxel_physical_size_z": 1,
             "size_x": 1,
             "size_y": 1,
             "size_z": 1,

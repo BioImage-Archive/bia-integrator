@@ -307,7 +307,10 @@ class Image(ConfiguredBaseModel, AttributeMixin):
     The abstract notion of an image that can have many representions in different image formats. A BIA image has been created from a unique set of File References.
     """
 
-    pass
+    label: Optional[str] = Field(
+        None,
+        description="""Optional human readable label describing or titling the image.""",
+    )
 
 
 class ImageRepresentation(ConfiguredBaseModel, AttributeMixin):
@@ -326,17 +329,17 @@ class ImageRepresentation(ConfiguredBaseModel, AttributeMixin):
     total_size_in_bytes: int = Field(
         description="""Combined disc size in bytes of all the files."""
     )
-    physical_size_x: Optional[float] = Field(
+    single_voxel_physical_size_x: Optional[float] = Field(
         None,
-        description="""Size of the physical space (in meters) captured in the field of view of the image.""",
+        description="""Size of the physical space (in meters) captured by a single pixel or voxel of the image.""",
     )
-    physical_size_y: Optional[float] = Field(
+    single_voxel_physical_size_y: Optional[float] = Field(
         None,
-        description="""Size of the physical space (in meters) captured in the field of view of the image.""",
+        description="""Size of the physical space (in meters) captured by a single pixel or voxel of the image.""",
     )
-    physical_size_z: Optional[float] = Field(
+    single_voxel_physical_size_z: Optional[float] = Field(
         None,
-        description="""Size of the physical space (in meters) captured in the field of view of the image.""",
+        description="""Size of the physical space (in meters) captured by a single pixel or voxel of the image.""",
     )
     size_x: Optional[int] = Field(
         None,
@@ -356,7 +359,7 @@ class ImageRepresentation(ConfiguredBaseModel, AttributeMixin):
     )
     size_t: Optional[int] = Field(
         None,
-        description="""Size of temporal dimension of the data array of the image.""",
+        description="""Number of timesteps in the temporal dimension of the data array of the image.""",
     )
     image_viewer_setting: Optional[List[RenderedView]] = Field(
         default_factory=list,
