@@ -329,15 +329,15 @@ class ImageRepresentation(ConfiguredBaseModel, AttributeMixin):
     total_size_in_bytes: int = Field(
         description="""Combined disc size in bytes of all the files."""
     )
-    single_voxel_physical_size_x: Optional[float] = Field(
+    voxel_physical_size_x: Optional[float] = Field(
         None,
         description="""Size of the physical space (in meters) captured by a single pixel or voxel of the image.""",
     )
-    single_voxel_physical_size_y: Optional[float] = Field(
+    voxel_physical_size_y: Optional[float] = Field(
         None,
         description="""Size of the physical space (in meters) captured by a single pixel or voxel of the image.""",
     )
-    single_voxel_physical_size_z: Optional[float] = Field(
+    voxel_physical_size_z: Optional[float] = Field(
         None,
         description="""Size of the physical space (in meters) captured by a single pixel or voxel of the image.""",
     )

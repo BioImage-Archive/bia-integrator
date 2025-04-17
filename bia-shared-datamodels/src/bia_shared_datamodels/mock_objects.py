@@ -189,9 +189,9 @@ def get_image_representation_dict(completeness=Completeness.COMPLETE) -> dict:
             "file_uri": [
                 "https://dummy.uri.org",
             ],
-            "single_voxel_physical_size_x": 1,
-            "single_voxel_physical_size_y": 1,
-            "single_voxel_physical_size_z": 1,
+            "voxel_physical_size_x": 1,
+            "voxel_physical_size_y": 1,
+            "voxel_physical_size_z": 1,
             "size_x": 1,
             "size_y": 1,
             "size_z": 1,
