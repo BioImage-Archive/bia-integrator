@@ -469,6 +469,10 @@ class SignalChannelInformation(ConfiguredBaseModel, AttributeMixin):
     channel_biological_entity: Optional[str] = Field(
         None, description="""What molecule is stained."""
     )
+    channel_label: Optional[str] = Field(
+        default=None,
+        description="""Label in the image for the channel. Often this is some integer e.g. 1 or Channel 1""",
+    )
 
 
 class AnnotationMethod(Protocol):

@@ -437,6 +437,7 @@ def get_signal_channel_information_dict(completeness=Completeness.COMPLETE) -> d
             "signal_contrast_mechanism_description": "Test description",
             "channel_content_description": "Test description",
             "channel_biological_entity": "Test Entity",
+            "channel_label": "Test label",
             "attribute": [get_attribute_dict()],
         }
     return signal_channel_information
