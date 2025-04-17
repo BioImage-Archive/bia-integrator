@@ -17,8 +17,8 @@ class ConfiguredBaseModel(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
 
-class AttributeProvenance(str, Enum):
-    submittor = "submittor"
+class Provenance(str, Enum):
+    submitter = "submitter"
 
     bia_ingest = "bia_ingest"
 
@@ -28,7 +28,7 @@ class AttributeProvenance(str, Enum):
 
 
 class Attribute(ConfiguredBaseModel):
-    provenance: AttributeProvenance = Field(
+    provenance: Provenance = Field(
         description="The category of the source of the annotaton"
     )
     name: str = Field(
@@ -44,9 +44,9 @@ class AttributeMixin(BaseModel):
     Mixin for just the attribute field
     """
 
-    attribute: Optional[list[Attribute]] = Field(
+    additional_metadata: Optional[list[Attribute]] = Field(
         default_factory=list,
-        description="""Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields.""",
+        description="""Freeform key-value pairs that don't otherwise fit our data model, potentially from user provided metadata, BIA curation, and experimental fields.""",
     )
 
 
