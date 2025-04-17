@@ -61,7 +61,7 @@ class Study(ConfiguredBaseModel, AttributeMixin):
     """
 
     accession_id: str = Field(description="""Unique ID provided by BioStudies.""")
-    licence: LicenceType = Field(
+    licence: Licence = Field(
         description="""The license under which the data associated with the study is made avaliable."""
     )
     author: List[Contributor] = Field(description="""The creators of the document.""")
@@ -153,39 +153,39 @@ class FundingBody(ConfiguredBaseModel):
     )
 
 
-class LicenceType(str, Enum):
+class Licence(str, Enum):
     # No Copyright. You can copy, modify, distribute and perform the work, even for commercial purposes, all without asking permission.
-    CC0 = "CC0"
+    CC0 = "https://creativecommons.org/publicdomain/zero/1.0/"
     # You are free to: Share — copy and redistribute the material in any medium or format. Adapt — remix, transform, and build upon the material  for any purpose, even commercially. You must give appropriate credit, provide a link to the license, and indicate if changes were made.  You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
-    CC_BY_40 = "CC_BY_4.0"
-    CC_BY_30 = "CC_BY_3.0"
-    CC_BY_25 = "CC_BY_2.5"
-    CC_BY_20 = "CC_BY_2.0"
-    CC_BY_10 = "CC_BY_1.0"
+    CC_BY_40 = "https://creativecommons.org/licenses/by/4.0/"
+    CC_BY_30 = "https://creativecommons.org/licenses/by/3.0/"
+    CC_BY_25 = "https://creativecommons.org/licenses/by/2.5/"
+    CC_BY_20 = "https://creativecommons.org/licenses/by/2.0/"
+    CC_BY_10 = "https://creativecommons.org/licenses/by/1.0/"
 
-    CC_BY_SA_40 = "CC_BY-SA_4.0"
-    CC_BY_SA_30 = "CC_BY-SA_3.0"
-    CC_BY_SA_25 = "CC_BY-SA_2.5"
-    CC_BY_SA_20 = "CC_BY-SA_2.0"
-    CC_BY_SA_10 = "CC_BY-SA_1.0"
+    CC_BY_SA_40 = "https://creativecommons.org/licenses/by-sa/4.0/"
+    CC_BY_SA_30 = "https://creativecommons.org/licenses/by-sa/3.0/"
+    CC_BY_SA_25 = "https://creativecommons.org/licenses/by-sa/2.5/"
+    CC_BY_SA_20 = "https://creativecommons.org/licenses/by-sa/2.0/"
+    CC_BY_SA_10 = "https://creativecommons.org/licenses/by-sa/1.0/"
 
-    CC_BY_SA_21_JP = "CC_BY-SA_2.1_JP"
+    CC_BY_SA_21_JP = "https://creativecommons.org/licenses/by-sa/2.1/jp/"
 
-    CC_BY_NC_40 = "CC_BY-NC_4.0"
-    CC_BY_NC_30 = "CC_BY-NC_3.0"
-    CC_BY_NC_25 = "CC_BY-NC_2.5"
-    CC_BY_NC_20 = "CC_BY-NC_2.0"
-    CC_BY_NC_10 = "CC_BY-NC_1.0"
+    CC_BY_NC_40 = "https://creativecommons.org/licenses/by-nc/4.0/"
+    CC_BY_NC_30 = "https://creativecommons.org/licenses/by-nc/3.0/"
+    CC_BY_NC_25 = "https://creativecommons.org/licenses/by-nc/2.5/"
+    CC_BY_NC_20 = "https://creativecommons.org/licenses/by-nc/2.0/"
+    CC_BY_NC_10 = "https://creativecommons.org/licenses/by-nc/1.0/"
 
-    CC_BY_NC_SA_40 = "CC_BY-NC-SA_4.0"
-    CC_BY_NC_SA_30 = "CC_BY-NC-SA_3.0"
-    CC_BY_NC_SA_25 = "CC_BY-NC-SA_2.5"
-    CC_BY_NC_SA_20 = "CC_BY-NC-SA_2.0"
-    CC_BY_NC_SA_10 = "CC_BY-NC-SA_1.0"
+    CC_BY_NC_SA_40 = "https://creativecommons.org/licenses/by-nc-sa/4.0/"
+    CC_BY_NC_SA_30 = "https://creativecommons.org/licenses/by-nc-sa/3.0/"
+    CC_BY_NC_SA_25 = "https://creativecommons.org/licenses/by-nc-sa/2.5/"
+    CC_BY_NC_SA_20 = "https://creativecommons.org/licenses/by-nc-sa/2.0/"
+    CC_BY_NC_SA_10 = "https://creativecommons.org/licenses/by-nc-sa/1.0/"
 
     # Note ND is 'No derivatives'
-    CC_BY_NC_ND_40 = "CC_BY-NC-ND_4.0"
 
+    CC_BY_NC_ND_40 = "https://creativecommons.org/licenses/by-nc-nd/4.0/"
 
 class ImageRepresentationUseType(str, Enum):
     """Enumerate use types of ImageRepresentations"""
