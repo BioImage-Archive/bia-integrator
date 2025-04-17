@@ -255,22 +255,22 @@ class CreationProcess(semantic_models.CreationProcess, DocumentMixin):
         description="The biological specimen that is the subject of the image.",
     )
     image_acquisition_protocol_uuid: Annotated[
-        Optional[List[UUID]], ObjectReference(ImageAcquisitionProtocol)
+        List[UUID], ObjectReference(ImageAcquisitionProtocol)
     ] = Field(
         default_factory=lambda: [],
         description="The imaging protocol, describing the technique that was used to create the image.",
     )
 
-    input_image_uuid: Annotated[Optional[List[UUID]], ObjectReference(Image)] = Field(
+    input_image_uuid: Annotated[List[UUID], ObjectReference(Image)] = Field(
         default_factory=lambda: [],
         description="The images used as input data for the creation of a new image.",
     )
-    protocol_uuid: Annotated[Optional[List[UUID]], ObjectReference(Protocol)] = Field(
+    protocol_uuid: Annotated[List[UUID], ObjectReference(Protocol)] = Field(
         default_factory=lambda: [],
         description="A protocol which was followed that resulted in the creation of this new image from existing image data.",
     )
     annotation_method_uuid: Annotated[
-        Optional[List[UUID]], ObjectReference(AnnotationMethod)
+        List[UUID], ObjectReference(AnnotationMethod)
     ] = Field(
         default_factory=lambda: [],
         description="The annotation method describing the process followed to create a new image from exsiting image data.",
