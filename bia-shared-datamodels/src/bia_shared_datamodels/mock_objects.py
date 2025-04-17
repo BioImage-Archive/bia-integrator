@@ -25,7 +25,7 @@ def get_study_dict(completeness=Completeness.COMPLETE) -> dict:
     study_dict = {
         "uuid": uuid_creation.create_study_uuid(accession_id),
         "accession_id": accession_id,
-        "licence": semantic_models.LicenceType.CC0,
+        "licence": semantic_models.Licence.CC0,
         "author": [get_contributor_dict(Completeness.MINIMAL)],
         "title": "Test publication",
         "release_date": "2024-06-23",
