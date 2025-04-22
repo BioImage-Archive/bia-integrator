@@ -2,6 +2,8 @@ from fastapi.testclient import TestClient
 from api.tests.conftest import get_uuid
 from api.tests.test_pagination import datasets_many
 from typing import List
+from api.tests.conftest import test_settings
+import pytest
 
 
 def test_search_existing_study(api_client: TestClient, existing_study):
@@ -138,6 +140,9 @@ def test_get_multi_repeated_filter(api_client: TestClient, datasets_many: List[d
     assert rsp.json() == datasets_many[:2]
 
 
+@pytest.mark.skipif(
+    not test_settings.elastic_connstring, reason="Elasticsearch URL not configured"
+)
 def test_fts(api_client: TestClient):
     rsp = api_client.get(
         f"search/fts", params={"query": "ZFTA_RELA HEK293T Puncta Studies"}

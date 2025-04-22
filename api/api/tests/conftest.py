@@ -49,6 +49,10 @@ async def elastic():
     from api.models.elastic import elastic_create
 
     el = await elastic_create(test_settings)
+    if not el.client:
+        yield
+        return
+
     try:
         await el.client.indices.delete(index="test-index")
     except:
