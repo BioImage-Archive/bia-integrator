@@ -4,10 +4,6 @@ on:
   push:
     branches:
       - main
-  # DELETEME
-  pull_request:
-    branches:
-      - main
   workflow_run:
     workflows: ["Publish Docker"]
     branches: [main]
