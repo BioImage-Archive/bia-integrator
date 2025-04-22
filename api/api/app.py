@@ -109,9 +109,7 @@ async def on_start():
 async def on_stop():
     event_loop = asyncio.get_event_loop()
     app.extra["extra"]["event_loop_specific"][event_loop]["db"].connection.close()
-    await app.extra["extra"]["event_loop_specific"][event_loop][
-        "elastic"
-    ].client.close()
+    await app.extra["extra"]["event_loop_specific"][event_loop]["elastic"].close()
 
 
 @app.on_event("shutdown")

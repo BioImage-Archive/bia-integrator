@@ -1,4 +1,4 @@
-from elasticsearch import AsyncElasticsearch, NotFoundError
+from elasticsearch import AsyncElasticsearch
 from api.settings import Settings
 
 
@@ -9,11 +9,17 @@ class Elastic:
         pass
 
     async def configure(self, settings: Settings):
+        #! if Elastic is used without being configured, exception raised.
+        # If never used and not configured, no exception
+        #   -> can disable it like a feature flag, and also catch misconfigurations
+        if not settings.elastic_connstring:
+            self.client = None
+            return
+
         index_name = "test-index"
         self.client = AsyncElasticsearch(
             settings.elastic_connstring, verify_certs=False
         )
-
         if not await self.client.indices.exists(index=index_name):
             await self.client.indices.create(
                 index="test-index",
@@ -32,7 +38,8 @@ class Elastic:
             )
 
     async def close(self):
-        await self.client.close()
+        if self.client:
+            await self.client.close()
 
 
 async def elastic_create(settings: Settings) -> Elastic:
