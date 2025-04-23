@@ -100,13 +100,13 @@ def get_affiliation_dict(
 def get_dataset_dict(
     completeness=Completeness.COMPLETE,
 ) -> dict:
-    title_id = "Template experimental image dataset"
+    title = "Template experimental image dataset"
     study_uuid = get_study_dict()["uuid"]
 
     dataset = {
-        "uuid": uuid_creation.create_dataset_uuid(title_id, study_uuid),
+        "uuid": uuid_creation.create_dataset_uuid(title, study_uuid),
         "submitted_in_study_uuid": study_uuid,
-        "title_id": title_id,
+        "title": title,
         "example_image_uri": [],
         "version": 1,
     }
@@ -284,11 +284,11 @@ def get_creation_process_dict(completeness=Completeness.COMPLETE) -> dict:
 
 def get_protocol_dict(completeness=Completeness.COMPLETE) -> dict:
     study_uuid = get_study_dict()["uuid"]
-    title_id = "Template image acquisition"
+    title = "Template image acquisition"
 
     protocol = {
-        "uuid": uuid_creation.create_protocol_uuid(title_id, study_uuid),
-        "title_id": title_id,
+        "uuid": uuid_creation.create_protocol_uuid(title, study_uuid),
+        "title": title,
         "protocol_description": "Template method description",
         "version": 1,
     }
@@ -303,13 +303,11 @@ def get_protocol_dict(completeness=Completeness.COMPLETE) -> dict:
 
 def get_image_acquisition_protocol_dict(completeness=Completeness.COMPLETE) -> dict:
     study_uuid = get_study_dict()["uuid"]
-    title_id = "Template image acquisition"
+    title = "Template image acquisition"
 
     image_acquisition_protocol = {
-        "uuid": uuid_creation.create_image_acquisition_protocol_uuid(
-            title_id, study_uuid
-        ),
-        "title_id": title_id,
+        "uuid": uuid_creation.create_image_acquisition_protocol_uuid(title, study_uuid),
+        "title": title,
         "protocol_description": "Template method description",
         "imaging_instrument_description": "Template imaging instrument",
         "version": 1,
@@ -330,11 +328,11 @@ def get_image_acquisition_protocol_dict(completeness=Completeness.COMPLETE) -> d
 
 def get_annotation_method_dict(completeness=Completeness.COMPLETE) -> dict:
     study_uuid = get_study_dict()["uuid"]
-    title_id = "Template annotation method"
+    title = "Template annotation method"
 
     annotation_method = {
-        "uuid": uuid_creation.create_annotation_method_uuid(title_id, study_uuid),
-        "title_id": title_id,
+        "uuid": uuid_creation.create_annotation_method_uuid(title, study_uuid),
+        "title": title,
         "protocol_description": "Template annotation method description",
         "method_type": [],
         "version": 1,
@@ -356,6 +354,7 @@ def get_annotation_method_dict(completeness=Completeness.COMPLETE) -> dict:
 def get_image_analysis_method_dict(completeness=Completeness.COMPLETE) -> dict:
     image_analysis_method = {
         "protocol_description": "Template Analysis method",
+        "title": "Template analysis method title",
     }
     if completeness == Completeness.COMPLETE:
         image_analysis_method |= {
@@ -368,6 +367,7 @@ def get_image_analysis_method_dict(completeness=Completeness.COMPLETE) -> dict:
 def get_image_correlation_method_dict(completeness=Completeness.COMPLETE) -> dict:
     image_correlation_method = {
         "protocol_description": "Template Analysis method",
+        "title": "Template correlation method title",
     }
     if completeness == Completeness.COMPLETE:
         image_correlation_method |= {
@@ -407,12 +407,12 @@ def get_specimen_imaging_preparation_protocol_dict(
     completeness=Completeness.COMPLETE,
 ) -> dict:
     study_uuid = get_study_dict()["uuid"]
-    title_id = "Test specimen preparation protocol"
+    title = "Test specimen preparation protocol"
     specimen_imaging_preparation_protocol = {
         "uuid": uuid_creation.create_specimen_imaging_preparation_protocol_uuid(
-            title_id, study_uuid
+            title, study_uuid
         ),
-        "title_id": title_id,
+        "title": title,
         "protocol_description": "Test description",
         "version": 1,
     }
@@ -445,10 +445,10 @@ def get_signal_channel_information_dict(completeness=Completeness.COMPLETE) -> d
 
 def get_biosample_dict(completeness=Completeness.COMPLETE) -> dict:
     study_uuid = get_study_dict()["uuid"]
-    title_id = "Template BioSample"
+    title = "Template BioSample"
     biosample = {
-        "uuid": uuid_creation.create_bio_sample_uuid(title_id, study_uuid),
-        "title_id": title_id,
+        "uuid": uuid_creation.create_bio_sample_uuid(title, study_uuid),
+        "title": title,
         "biological_entity_description": "Test biological entity description",
         "version": 1,
         "organism_classification": [],
