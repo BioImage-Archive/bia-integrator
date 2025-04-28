@@ -60,6 +60,11 @@ spec:
                 secretKeyRef:
                   name: {{ include "api.fullname" . }}
                   key: mongoConnstring
+            - name: ELASTIC_CONNSTRING
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "api.fullname" . }}
+                  key: elasticConnstring
             - name: DB_NAME
               value: "{{ .Values.api_env.dbName }}"
             - name: MONGO_TIMEOUT_MS

@@ -34,7 +34,10 @@ api_env:
   jwtSecretKey: ""
   userCreateSecretToken: ""
   fastapiRootPath: ""
-  elasticConnstring: ""
+  elasticHostname: ""
+  elasticUsername: ""
+  elasticPassword: ""
+  elasticIndex: ""
 
 mongodb:
   enabled: false
