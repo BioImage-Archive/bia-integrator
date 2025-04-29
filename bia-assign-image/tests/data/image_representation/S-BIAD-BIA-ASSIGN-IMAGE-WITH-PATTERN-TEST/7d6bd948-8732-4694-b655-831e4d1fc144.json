@@ -10,7 +10,7 @@
       "provenance": "bia_conversion",
       "name": "file_pattern",
       "value": {
-        "file_pattern": "image_01_channel{%d}_slice{%d}_time{%d}"
+        "file_pattern": "image_01_channel_{%d}_slice_{%d}_time{%d}"
       }
     }
   ],

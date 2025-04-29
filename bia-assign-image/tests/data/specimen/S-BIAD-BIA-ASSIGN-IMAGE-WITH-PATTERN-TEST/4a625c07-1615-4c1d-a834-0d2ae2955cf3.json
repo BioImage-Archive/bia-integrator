@@ -1,0 +1,15 @@
+{
+  "uuid": "4a625c07-1615-4c1d-a834-0d2ae2955cf3",
+  "version": 0,
+  "model": {
+    "type_name": "Specimen",
+    "version": 2
+  },
+  "imaging_preparation_protocol_uuid": [
+    "a9dcc027-4afc-46e6-9ec0-42308c7b84c7"
+  ],
+  "sample_of_uuid": [
+    "6e882215-590f-473a-8ae5-1bf5d3a3f8f9"
+  ],
+  "attribute": []
+}

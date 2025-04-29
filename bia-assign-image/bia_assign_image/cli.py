@@ -151,6 +151,16 @@ def assign(
         logger.info(
             f"Generated bia_data_model.Image object {bia_image.uuid} and persisted to {api_target} API"
         )
+
+    if not dryrun:
+        # Create default representation
+        create(
+            accession_id=accession_id,
+            image_uuid_list=[
+                f"{bia_image.uuid}",
+            ],
+            api_target=api_target,
+        )
     return str(bia_image.uuid)
 
 
@@ -226,7 +236,7 @@ def assign_from_proposal(
         ]
         pattern = p.get("pattern", None)
         try:
-            image_uuid = assign(
+            assign(
                 accession_id=accession_id,
                 file_reference_uuids=file_reference_uuids,
                 api_target=api_target,
@@ -238,14 +248,6 @@ def assign_from_proposal(
                 f"Could not assign image for {accession_id} with file reference(s) {file_reference_uuids}. Error was {e}"
             )
             continue
-
-        if not dryrun:
-            # Create default representation
-            create(
-                accession_id=p["accession_id"],
-                image_uuid_list=[image_uuid],
-                api_target=api_target,
-            )
 
 
 @app.command(help="Propose file references to convert for an accession")

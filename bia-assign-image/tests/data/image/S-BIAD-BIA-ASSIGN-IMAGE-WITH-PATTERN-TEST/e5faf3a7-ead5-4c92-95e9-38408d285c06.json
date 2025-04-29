@@ -1,5 +1,5 @@
 {
-  "uuid": "5c429763-a56e-4650-ad91-291cdfe6d153",
+  "uuid": "e5faf3a7-ead5-4c92-95e9-38408d285c06",
   "version": 0,
   "model": {
     "type_name": "Image",
@@ -13,33 +13,6 @@
       "value": {
         "attributes": [
           "3d_multichannel_time_series/image_01_channel_00_slice_001_time0000.tiff"
-        ]
-      }
-    },
-    {
-      "provenance": "bia_conversion",
-      "name": "attributes_from_file_reference_30c35145-fb29-4be6-b438-d44158e02ce1",
-      "value": {
-        "attributes": [
-          "3d_multichannel_time_series/image_01_channel_01_slice_000_time0001.tiff"
-        ]
-      }
-    },
-    {
-      "provenance": "bia_conversion",
-      "name": "attributes_from_file_reference_480ca5fc-abd1-419b-b7f1-0cb2f66ff308",
-      "value": {
-        "attributes": [
-          "3d_multichannel_time_series/image_01_channel_01_slice_002_time0000.tiff"
-        ]
-      }
-    },
-    {
-      "provenance": "bia_conversion",
-      "name": "attributes_from_file_reference_78d5dabb-c948-4233-aca1-e446876b8050",
-      "value": {
-        "attributes": [
-          "3d_multichannel_time_series/image_01_channel_01_slice_002_time0001.tiff"
         ]
       }
     },
@@ -81,24 +54,6 @@
     },
     {
       "provenance": "bia_conversion",
-      "name": "attributes_from_file_reference_df5f6399-71f8-42ec-a124-d22a8d35719d",
-      "value": {
-        "attributes": [
-          "3d_multichannel_time_series/image_01_channel_01_slice_001_time0000.tiff"
-        ]
-      }
-    },
-    {
-      "provenance": "bia_conversion",
-      "name": "attributes_from_file_reference_e2632976-ec5d-4ab1-83c6-aa8692211a50",
-      "value": {
-        "attributes": [
-          "3d_multichannel_time_series/image_01_channel_01_slice_000_time0000.tiff"
-        ]
-      }
-    },
-    {
-      "provenance": "bia_conversion",
       "name": "attributes_from_file_reference_e88cefb7-7c5f-4f4f-8dd3-85229f72d68a",
       "value": {
         "attributes": [
@@ -108,35 +63,20 @@
     },
     {
       "provenance": "bia_conversion",
-      "name": "attributes_from_file_reference_fde8d9bc-0bef-47e9-8416-b5f0533d2956",
-      "value": {
-        "attributes": [
-          "3d_multichannel_time_series/image_01_channel_01_slice_001_time0001.tiff"
-        ]
-      }
-    },
-    {
-      "provenance": "bia_conversion",
       "name": "file_pattern",
       "value": {
-        "file_pattern": "image_01_channel_{%d}_slice_{%d}_time{%d}"
+        "file_pattern": "image_01_channel_00_slice_{%d}_time{%d}"
       }
     }
   ],
   "original_file_reference_uuid": [
     "0797dc78-5993-4add-b0fc-235c52055b97",
-    "30c35145-fb29-4be6-b438-d44158e02ce1",
-    "480ca5fc-abd1-419b-b7f1-0cb2f66ff308",
-    "78d5dabb-c948-4233-aca1-e446876b8050",
     "8743d16e-b639-4574-86c4-b248458e4fb5",
     "90fd9721-66ed-47f2-9b52-47c7d35df197",
     "b9e8e936-d87f-4aa5-9a20-c83c68c3b051",
     "c325bf71-2fcc-4149-be89-9ce80f94c667",
-    "df5f6399-71f8-42ec-a124-d22a8d35719d",
-    "e2632976-ec5d-4ab1-83c6-aa8692211a50",
-    "e88cefb7-7c5f-4f4f-8dd3-85229f72d68a",
-    "fde8d9bc-0bef-47e9-8416-b5f0533d2956"
+    "e88cefb7-7c5f-4f4f-8dd3-85229f72d68a"
   ],
-  "creation_process_uuid": "dc585a20-b308-44af-a49f-a563a1cee1ab",
+  "creation_process_uuid": "b5d98aa9-79ce-4106-90b2-d3687eac67f0",
   "submission_dataset_uuid": "ae32e92d-84f9-4119-82d1-70cb36477bc0"
 }
