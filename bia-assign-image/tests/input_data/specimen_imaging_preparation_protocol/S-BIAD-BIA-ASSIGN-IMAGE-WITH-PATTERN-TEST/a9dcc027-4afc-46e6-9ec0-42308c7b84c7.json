@@ -1,0 +1,12 @@
+{
+    "title_id": "Test specimen 1",
+    "uuid": "a9dcc027-4afc-46e6-9ec0-42308c7b84c7",
+    "protocol_description": "Test sample preparation protocol 1",
+    "signal_channel_information": [],
+    "version": 0,
+    "model": {
+        "type_name": "SpecimenImagingPreparationProtocol",
+        "version": 2
+    },
+    "attribute": []
+}

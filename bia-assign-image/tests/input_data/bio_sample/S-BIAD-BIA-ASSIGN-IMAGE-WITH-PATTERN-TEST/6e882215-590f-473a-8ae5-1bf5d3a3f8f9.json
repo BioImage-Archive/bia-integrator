@@ -1,0 +1,29 @@
+{
+    "title_id": "Test Biosample 1",
+    "uuid": "6e882215-590f-473a-8ae5-1bf5d3a3f8f9",
+    "organism_classification": [
+        {
+            "common_name": "human",
+            "scientific_name": "Homo sapiens",
+            "ncbi_id": null,
+            "attribute": []
+        }
+    ],
+    "model": {
+        "type_name": "BioSample",
+        "version": 3
+    },
+    "biological_entity_description": "Test biological entity 1",
+    "experimental_variable_description": [
+        "Test experimental entity 1"
+    ],
+    "extrinsic_variable_description": [
+        "Test extrinsic variable 1"
+    ],
+    "intrinsic_variable_description": [
+        "Test intrinsic variable 1\\nwith escaped character"
+    ],
+    "growth_protocol_uuid": "71371fc5-1ce0-4612-a912-9436fc5f7237",
+    "attribute": [],
+    "version": 0
+}

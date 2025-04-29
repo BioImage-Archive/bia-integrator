@@ -1,0 +1,44 @@
+{
+  "uuid": "7d6bd948-8732-4694-b655-831e4d1fc144",
+  "version": 0,
+  "model": {
+    "type_name": "ImageRepresentation",
+    "version": 3
+  },
+  "attribute": [
+    {
+      "provenance": "bia_conversion",
+      "name": "file_pattern",
+      "value": {
+        "file_pattern": "image_01_channel{%d}_slice{%d}_time{%d}"
+      }
+    }
+  ],
+  "image_format": ".tiff",
+  "use_type": "UPLOADED_BY_SUBMITTER",
+  "file_uri": [
+    "https://www.ebi.ac.uk/biostudies/files/S-BIAD-BIA-ASSIGN-IMAGE-WITH-PATTERN-TEST/3d_multichannel_time_series/image_01_channel_00_slice_001_time0000.tiff",
+    "https://www.ebi.ac.uk/biostudies/files/S-BIAD-BIA-ASSIGN-IMAGE-WITH-PATTERN-TEST/3d_multichannel_time_series/image_01_channel_01_slice_000_time0001.tiff",
+    "https://www.ebi.ac.uk/biostudies/files/S-BIAD-BIA-ASSIGN-IMAGE-WITH-PATTERN-TEST/3d_multichannel_time_series/image_01_channel_01_slice_002_time0000.tiff",
+    "https://www.ebi.ac.uk/biostudies/files/S-BIAD-BIA-ASSIGN-IMAGE-WITH-PATTERN-TEST/3d_multichannel_time_series/image_01_channel_01_slice_002_time0001.tiff",
+    "https://www.ebi.ac.uk/biostudies/files/S-BIAD-BIA-ASSIGN-IMAGE-WITH-PATTERN-TEST/3d_multichannel_time_series/image_01_channel_00_slice_000_time0000.tiff",
+    "https://www.ebi.ac.uk/biostudies/files/S-BIAD-BIA-ASSIGN-IMAGE-WITH-PATTERN-TEST/3d_multichannel_time_series/image_01_channel_00_slice_000_time0001.tiff",
+    "https://www.ebi.ac.uk/biostudies/files/S-BIAD-BIA-ASSIGN-IMAGE-WITH-PATTERN-TEST/3d_multichannel_time_series/image_01_channel_00_slice_002_time0000.tiff",
+    "https://www.ebi.ac.uk/biostudies/files/S-BIAD-BIA-ASSIGN-IMAGE-WITH-PATTERN-TEST/3d_multichannel_time_series/image_01_channel_00_slice_002_time0001.tiff",
+    "https://www.ebi.ac.uk/biostudies/files/S-BIAD-BIA-ASSIGN-IMAGE-WITH-PATTERN-TEST/3d_multichannel_time_series/image_01_channel_01_slice_001_time0000.tiff",
+    "https://www.ebi.ac.uk/biostudies/files/S-BIAD-BIA-ASSIGN-IMAGE-WITH-PATTERN-TEST/3d_multichannel_time_series/image_01_channel_01_slice_000_time0000.tiff",
+    "https://www.ebi.ac.uk/biostudies/files/S-BIAD-BIA-ASSIGN-IMAGE-WITH-PATTERN-TEST/3d_multichannel_time_series/image_01_channel_00_slice_001_time0001.tiff",
+    "https://www.ebi.ac.uk/biostudies/files/S-BIAD-BIA-ASSIGN-IMAGE-WITH-PATTERN-TEST/3d_multichannel_time_series/image_01_channel_01_slice_001_time0001.tiff"
+  ],
+  "total_size_in_bytes": 70848,
+  "physical_size_x": null,
+  "physical_size_y": null,
+  "physical_size_z": null,
+  "size_x": null,
+  "size_y": null,
+  "size_z": null,
+  "size_c": null,
+  "size_t": null,
+  "image_viewer_setting": [],
+  "representation_of_uuid": "5c429763-a56e-4650-ad91-291cdfe6d153"
+}

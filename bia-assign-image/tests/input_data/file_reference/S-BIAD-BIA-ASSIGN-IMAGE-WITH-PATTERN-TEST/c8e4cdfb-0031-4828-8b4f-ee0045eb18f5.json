@@ -1,0 +1,24 @@
+{
+  "uuid": "c8e4cdfb-0031-4828-8b4f-ee0045eb18f5",
+  "version": 0,
+  "model": {
+    "type_name": "FileReference",
+    "version": 2
+  },
+  "file_path": "3d_multichannel_time_series/image_02_channel_00_slice_002_time0001.tiff",
+  "format": "file",
+  "size_in_bytes": 5904,
+  "uri": "https://www.ebi.ac.uk/biostudies/files/S-BIAD-BIA-ASSIGN-IMAGE-WITH-PATTERN-TEST/3d_multichannel_time_series/image_02_channel_00_slice_002_time0001.tiff",
+  "attribute": [
+    {
+      "provenance": "bia_ingest",
+      "name": "attributes_from_biostudies.File",
+      "value": {
+        "attributes": [
+          "3d_multichannel_time_series/image_02_channel_00_slice_002_time0001.tiff"
+        ]
+      }
+    }
+  ],
+  "submission_dataset_uuid": "ae32e92d-84f9-4119-82d1-70cb36477bc0"
+}
