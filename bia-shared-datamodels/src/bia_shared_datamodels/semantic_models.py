@@ -44,7 +44,7 @@ class AttributeMixin(BaseModel):
     Mixin for just the attribute field
     """
 
-    attribute: Optional[list[Attribute]] = Field(
+    attribute: List[Attribute] = Field(
         default_factory=list,
         description="""Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields.""",
     )
@@ -70,7 +70,7 @@ class Study(ConfiguredBaseModel, AttributeMixin):
     )
     release_date: date = Field(description="""Date of first publication""")
     description: str = Field(description="""Brief description of the study.""")
-    keyword: Optional[List[str]] = Field(
+    keyword: List[str] = Field(
         default_factory=list,
         description="""Keywords or tags used to describe the subject or context of the study.""",
     )
@@ -79,15 +79,15 @@ class Study(ConfiguredBaseModel, AttributeMixin):
         description="""Any person or group that should be acknowledged outside of the authors/main contributors to the study.""",
     )
 
-    see_also: Optional[List[ExternalReference]] = Field(
+    see_also: List[ExternalReference] = Field(
         default_factory=list,
         description="""Links to publications, github repositories, and other pages related to this Study.""",
     )
-    related_publication: Optional[List[Publication]] = Field(
+    related_publication: List[Publication] = Field(
         default_factory=list,
         description="""The publications that the work involved in the study contributed to.""",
     )
-    grant: Optional[List[Grant]] = Field(
+    grant: List[Grant] = Field(
         default_factory=list, description="""The grants that funded the study."""
     )
     funding_statement: Optional[str] = Field(
@@ -135,7 +135,7 @@ class Grant(ConfiguredBaseModel):
         description="""A unique identifier for the grant, such as an Open Funder Registry ID.""",
     )
 
-    funder: Optional[List[FundingBody]] = Field(
+    funder: List[FundingBody] = Field(
         default_factory=list,
         description="""The name of the funding body providing support for the grant.""",
     )
@@ -273,11 +273,11 @@ class Dataset(ConfiguredBaseModel, AttributeMixin):
     description: Optional[str] = Field(
         None, description="""Brief description of the dataset."""
     )
-    analysis_method: Optional[list[ImageAnalysisMethod]] = Field(
+    analysis_method: List[ImageAnalysisMethod] = Field(
         default_factory=list,
         description="""Data analysis processes performed on the images.""",
     )
-    correlation_method: Optional[list[ImageCorrelationMethod]] = Field(
+    correlation_method: List[ImageCorrelationMethod] = Field(
         default_factory=list,
         description="""Processes performed to correlate image data.""",
     )
@@ -362,7 +362,7 @@ class ImageRepresentation(ConfiguredBaseModel, AttributeMixin):
         None,
         description="""Number of timesteps in the temporal dimension of the data array of the image.""",
     )
-    image_viewer_setting: Optional[List[RenderedView]] = Field(
+    image_viewer_setting: List[RenderedView] = Field(
         default_factory=list,
         description="""Settings of a particular view of an image, such as a specific timestamp of a timeseries, or camera placement in a 3D model.""",
     )
@@ -379,7 +379,7 @@ class RenderedView(ConfiguredBaseModel, AttributeMixin):
     t: Optional[str] = Field(
         None, description="""A t-value for the timestamp of the image view"""
     )
-    channel_information: Optional[List[Channel]] = Field(
+    channel_information: List[Channel] = Field(
         default_factory=list,
         description="""Information about the channels involved in displaying this view of the image.""",
     )
@@ -438,11 +438,11 @@ class ImageAcquisitionProtocol(Protocol):
     imaging_instrument_description: str = Field(
         description="""Names, types, or description of how the instruments used to create the image."""
     )
-    fbbi_id: Optional[List[str]] = Field(
+    fbbi_id: List[str] = Field(
         default_factory=list,
         description="""Biological Imaging Methods Ontology id indicating the kind of imaging that was perfomed.""",
     )
-    imaging_method_name: Optional[List[str]] = Field(
+    imaging_method_name: List[str] = Field(
         default_factory=list,
         description="""Name of the kind of imaging method that was performed.""",
     )
@@ -453,7 +453,7 @@ class SpecimenImagingPreparationProtocol(Protocol):
     The process to prepare biological entity for imaging.
     """
 
-    signal_channel_information: Optional[List[SignalChannelInformation]] = Field(
+    signal_channel_information: List[SignalChannelInformation] = Field(
         default_factory=list,
         description="""Information about how channels in the image relate to image signal generation.""",
     )
@@ -596,14 +596,14 @@ class BioSample(ConfiguredBaseModel, AttributeMixin):
     biological_entity_description: str = Field(
         description="""A short description of the biological entity."""
     )
-    experimental_variable_description: Optional[List[str]] = Field(
+    experimental_variable_description: List[str] = Field(
         default_factory=list,
         description="""What is intentionally varied (e.g. time) between multiple entries in this study component""",
     )
-    extrinsic_variable_description: Optional[List[str]] = Field(
+    extrinsic_variable_description: List[str] = Field(
         default_factory=list, description="External treatment (e.g. reagent)."
     )
-    intrinsic_variable_description: Optional[List[str]] = Field(
+    intrinsic_variable_description: List[str] = Field(
         default_factory=list, description="Intrinsic (e.g. genetic) alteration."
     )
 
