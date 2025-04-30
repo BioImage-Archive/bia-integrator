@@ -13,6 +13,7 @@ jobs:
           [
             bia-shared-datamodels,
             core,
+            ro-crate-ingest,
           ]
     runs-on: ${{ matrix.os }}
     defaults:
