@@ -63,7 +63,7 @@ def expected_uploaded_by_submitter_representation_1channel() -> (
 
 
 @pytest.fixture
-def file_reference_uuid_2channels(expected_bia_image_2channels) -> str:
+def file_reference_uuids_2channels(expected_bia_image_2channels) -> str:
     return " ".join(
         [
             str(f_uuid)
@@ -73,7 +73,7 @@ def file_reference_uuid_2channels(expected_bia_image_2channels) -> str:
 
 
 @pytest.fixture
-def file_reference_uuid_1channel(expected_bia_image_1channel) -> str:
+def file_reference_uuids_1channel(expected_bia_image_1channel) -> str:
     return " ".join(
         [
             str(f_uuid)
@@ -83,7 +83,9 @@ def file_reference_uuid_1channel(expected_bia_image_1channel) -> str:
 
 
 @pytest.fixture
-def assign_from_proposal_input_path_yaml(tmpdir, file_reference_uuid_2channels) -> Path:
+def assign_from_proposal_input_path_yaml(
+    tmpdir, file_reference_uuids_2channels
+) -> Path:
     """Return path to a yaml file with proposal details to create mock image"""
 
     proposal_details_for_input = {
@@ -91,7 +93,7 @@ def assign_from_proposal_input_path_yaml(tmpdir, file_reference_uuid_2channels) 
         "study_uuid": "dummy_study_uuid",
         "dataset_uuid": "dummy_dataset_uuid",
         "name": "dummy_name",
-        "file_reference_uuid": file_reference_uuid_2channels,
+        "file_reference_uuid": file_reference_uuids_2channels,
         "pattern": pattern_2channels,
     }
     yaml = YAML(typ="safe")
@@ -111,6 +113,7 @@ def test_api_client():
     return get_api_client("local")
 
 
+# TODO: When use of RO crate complete also check CreationProcess and Specimen in all tests below
 def test_cli_assign_from_proposal_command(
     data_in_api,
     test_api_client,
@@ -120,11 +123,6 @@ def test_cli_assign_from_proposal_command(
 ):
     # This implicitly tests the 'assign' and 'create' commands
     runner = CliRunner(mix_stderr=False)
-
-    # result = cli.assign_from_proposal(
-    #       Path(assign_from_proposal_input_path),
-    #       "local",
-    # )
 
     result = runner.invoke(
         cli.app,
@@ -172,42 +170,24 @@ def test_cli_assign_from_proposal_command(
 def test_cli_assign_command_with_pattern(
     data_in_api,
     test_api_client,
-    file_reference_uuid_1channel,
+    file_reference_uuids_1channel,
     expected_bia_image_1channel,
     expected_uploaded_by_submitter_representation_1channel,
 ):
     # This implicitly tests the 'assign' and 'create' commands
     runner = CliRunner(mix_stderr=False)
 
-    # result = cli.assign(
-    #       accession_id=accession_id,
-    #       file_reference_uuids=file_reference_uuids.split(" "),
-    #       api_target="local",
-    #       pattern=pattern,
-    # )
-
-    for_cli = [
-        "assign",
-        "--api",
-        "local",
-        "--pattern",
-        pattern_1channel,
-        accession_id,
-    ]
-    for_cli.append(file_reference_uuid_1channel)
     result = runner.invoke(
         cli.app,
-        for_cli,
-        # [
-        #    "assign",
-        #    "--api",
-        #    "local",
-        #    "--dryrun",
-        #    "--pattern",
-        #    pattern,
-        #    accession_id,
-        #    file_reference_uuids,
-        # ],
+        [
+            "assign",
+            "--api",
+            "local",
+            "--pattern",
+            pattern_1channel,
+            accession_id,
+            file_reference_uuids_1channel,
+        ],
     )
 
     assert result.exit_code == 0
