@@ -7,7 +7,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **id** | **str** |  | [optional] 
-**funder** | [**List[FundingBody]**](FundingBody.md) |  | [optional] 
+**funder** | [**List[FundingBody]**](FundingBody.md) | The name of the funding body providing support for the grant. | [optional] 
 
 ## Example
 

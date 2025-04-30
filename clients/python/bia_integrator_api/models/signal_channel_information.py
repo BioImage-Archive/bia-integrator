@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from bia_integrator_api.models.attribute import Attribute
 from typing import Optional, Set
@@ -27,11 +27,12 @@ class SignalChannelInformation(BaseModel):
     """
     Information about how signals were generated, staining compounds and their targets.
     """ # noqa: E501
-    attribute: Optional[List[Attribute]] = None
+    additional_metadata: Optional[List[Attribute]] = Field(default=None, description="Freeform key-value pairs that don't otherwise fit our data model, potentially from user provided metadata, BIA curation, and experimental fields.")
     signal_contrast_mechanism_description: Optional[StrictStr] = None
     channel_content_description: Optional[StrictStr] = None
     channel_biological_entity: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["attribute", "signal_contrast_mechanism_description", "channel_content_description", "channel_biological_entity"]
+    channel_label: Optional[StrictStr] = None
+    __properties: ClassVar[List[str]] = ["additional_metadata", "signal_contrast_mechanism_description", "channel_content_description", "channel_biological_entity", "channel_label"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -72,18 +73,13 @@ class SignalChannelInformation(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of each item in attribute (list)
+        # override the default output from pydantic by calling `to_dict()` of each item in additional_metadata (list)
         _items = []
-        if self.attribute:
-            for _item_attribute in self.attribute:
-                if _item_attribute:
-                    _items.append(_item_attribute.to_dict())
-            _dict['attribute'] = _items
-        # set to None if attribute (nullable) is None
-        # and model_fields_set contains the field
-        if self.attribute is None and "attribute" in self.model_fields_set:
-            _dict['attribute'] = None
-
+        if self.additional_metadata:
+            for _item_additional_metadata in self.additional_metadata:
+                if _item_additional_metadata:
+                    _items.append(_item_additional_metadata.to_dict())
+            _dict['additional_metadata'] = _items
         # set to None if signal_contrast_mechanism_description (nullable) is None
         # and model_fields_set contains the field
         if self.signal_contrast_mechanism_description is None and "signal_contrast_mechanism_description" in self.model_fields_set:
@@ -99,6 +95,11 @@ class SignalChannelInformation(BaseModel):
         if self.channel_biological_entity is None and "channel_biological_entity" in self.model_fields_set:
             _dict['channel_biological_entity'] = None
 
+        # set to None if channel_label (nullable) is None
+        # and model_fields_set contains the field
+        if self.channel_label is None and "channel_label" in self.model_fields_set:
+            _dict['channel_label'] = None
+
         return _dict
 
     @classmethod
@@ -111,10 +112,11 @@ class SignalChannelInformation(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "attribute": [Attribute.from_dict(_item) for _item in obj["attribute"]] if obj.get("attribute") is not None else None,
+            "additional_metadata": [Attribute.from_dict(_item) for _item in obj["additional_metadata"]] if obj.get("additional_metadata") is not None else None,
             "signal_contrast_mechanism_description": obj.get("signal_contrast_mechanism_description"),
             "channel_content_description": obj.get("channel_content_description"),
-            "channel_biological_entity": obj.get("channel_biological_entity")
+            "channel_biological_entity": obj.get("channel_biological_entity"),
+            "channel_label": obj.get("channel_label")
         })
         return _obj
 

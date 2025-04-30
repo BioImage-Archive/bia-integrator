@@ -6,9 +6,10 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **uuid** | **str** | Unique ID (across the BIA database) used to refer to and identify a document. | 
+**object_creator** | [**Provenance**](Provenance.md) |  | 
 **version** | **int** | Document version. This can&#39;t be optional to make sure we never persist objects without it | 
 **model** | [**ModelMetadata**](ModelMetadata.md) |  | [optional] 
-**attribute** | [**List[Attribute]**](Attribute.md) |  | [optional] 
+**additional_metadata** | [**List[Attribute]**](Attribute.md) | Freeform key-value pairs that don&#39;t otherwise fit our data model, potentially from user provided metadata, BIA curation, and experimental fields. | [optional] 
 **imaging_preparation_protocol_uuid** | **List[str]** | The protocol that was followed in order to perpare a biosample for imaging. | 
 **sample_of_uuid** | **List[str]** | The biosample from which this specimen was created. | 
 

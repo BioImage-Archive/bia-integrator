@@ -6,10 +6,10 @@ A particular view of an image, such as as a specific timestamp of a time series,
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**attribute** | [**List[Attribute]**](Attribute.md) |  | [optional] 
+**additional_metadata** | [**List[Attribute]**](Attribute.md) | Freeform key-value pairs that don&#39;t otherwise fit our data model, potentially from user provided metadata, BIA curation, and experimental fields. | [optional] 
 **z** | **str** |  | [optional] 
 **t** | **str** |  | [optional] 
-**channel_information** | [**List[Channel]**](Channel.md) |  | [optional] 
+**channel_information** | [**List[Channel]**](Channel.md) | Information about the channels involved in displaying this view of the image. | [optional] 
 
 ## Example
 

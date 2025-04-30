@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from bia_integrator_api.models.attribute import Attribute
 from bia_integrator_api.models.channel import Channel
@@ -28,11 +28,11 @@ class RenderedView(BaseModel):
     """
     A particular view of an image, such as as a specific timestamp of a time series, or a view direction of a 3D model.
     """ # noqa: E501
-    attribute: Optional[List[Attribute]] = None
+    additional_metadata: Optional[List[Attribute]] = Field(default=None, description="Freeform key-value pairs that don't otherwise fit our data model, potentially from user provided metadata, BIA curation, and experimental fields.")
     z: Optional[StrictStr] = None
     t: Optional[StrictStr] = None
-    channel_information: Optional[List[Channel]] = None
-    __properties: ClassVar[List[str]] = ["attribute", "z", "t", "channel_information"]
+    channel_information: Optional[List[Channel]] = Field(default=None, description="Information about the channels involved in displaying this view of the image.")
+    __properties: ClassVar[List[str]] = ["additional_metadata", "z", "t", "channel_information"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -73,13 +73,13 @@ class RenderedView(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of each item in attribute (list)
+        # override the default output from pydantic by calling `to_dict()` of each item in additional_metadata (list)
         _items = []
-        if self.attribute:
-            for _item_attribute in self.attribute:
-                if _item_attribute:
-                    _items.append(_item_attribute.to_dict())
-            _dict['attribute'] = _items
+        if self.additional_metadata:
+            for _item_additional_metadata in self.additional_metadata:
+                if _item_additional_metadata:
+                    _items.append(_item_additional_metadata.to_dict())
+            _dict['additional_metadata'] = _items
         # override the default output from pydantic by calling `to_dict()` of each item in channel_information (list)
         _items = []
         if self.channel_information:
@@ -87,11 +87,6 @@ class RenderedView(BaseModel):
                 if _item_channel_information:
                     _items.append(_item_channel_information.to_dict())
             _dict['channel_information'] = _items
-        # set to None if attribute (nullable) is None
-        # and model_fields_set contains the field
-        if self.attribute is None and "attribute" in self.model_fields_set:
-            _dict['attribute'] = None
-
         # set to None if z (nullable) is None
         # and model_fields_set contains the field
         if self.z is None and "z" in self.model_fields_set:
@@ -101,11 +96,6 @@ class RenderedView(BaseModel):
         # and model_fields_set contains the field
         if self.t is None and "t" in self.model_fields_set:
             _dict['t'] = None
-
-        # set to None if channel_information (nullable) is None
-        # and model_fields_set contains the field
-        if self.channel_information is None and "channel_information" in self.model_fields_set:
-            _dict['channel_information'] = None
 
         return _dict
 
@@ -119,7 +109,7 @@ class RenderedView(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "attribute": [Attribute.from_dict(_item) for _item in obj["attribute"]] if obj.get("attribute") is not None else None,
+            "additional_metadata": [Attribute.from_dict(_item) for _item in obj["additional_metadata"]] if obj.get("additional_metadata") is not None else None,
             "z": obj.get("z"),
             "t": obj.get("t"),
             "channel_information": [Channel.from_dict(_item) for _item in obj["channel_information"]] if obj.get("channel_information") is not None else None

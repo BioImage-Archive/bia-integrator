@@ -4,6 +4,7 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**fts**](PrivateApi.md#fts) | **GET** /v2/search/fts | Fts
 [**get_annotation_data**](PrivateApi.md#get_annotation_data) | **GET** /v2/annotation_data/{uuid} | Get AnnotationData
 [**get_annotation_data_linking_creation_process**](PrivateApi.md#get_annotation_data_linking_creation_process) | **GET** /v2/creation_process/{uuid}/annotation_data | Get AnnotationData Linking CreationProcess
 [**get_annotation_data_linking_dataset**](PrivateApi.md#get_annotation_data_linking_dataset) | **GET** /v2/dataset/{uuid}/annotation_data | Get AnnotationData Linking Dataset
@@ -66,6 +67,72 @@ Method | HTTP request | Description
 [**search_study**](PrivateApi.md#search_study) | **GET** /v2/search/study | Search all objects of type Study
 [**search_study_by_accession**](PrivateApi.md#search_study_by_accession) | **GET** /v2/search/study/accession | Searchstudybyaccession
 
+
+# **fts**
+> object fts(query)
+
+Fts
+
+### Example
+
+
+```python
+import bia_integrator_api
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PrivateApi(api_client)
+    query = 'query_example' # str | 
+
+    try:
+        # Fts
+        api_response = api_instance.fts(query)
+        print("The response of PrivateApi->fts:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PrivateApi->fts: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **query** | **str**|  | 
+
+### Return type
+
+**object**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_annotation_data**
 > AnnotationData get_annotation_data(uuid)
