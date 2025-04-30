@@ -3,11 +3,15 @@ import logging
 import shutil
 import subprocess
 import platform
-
+import rich
+import starfile
 from pathlib import Path
+from neuroglancer import CoordinateSpace, write_annotations
+from pandas import DataFrame
 
 from bia_converter.config import settings
 from bia_shared_datamodels import bia_data_model
+from bia_integrator_api.models import ImageRepresentation 
 
 logger = logging.getLogger(__name__)
 
@@ -101,3 +105,50 @@ def cached_convert_to_zarr_and_get_fpath(
         run_zarr_conversion(input_fpath, zarr_fpath)
 
     return zarr_fpath
+
+
+def convert_starfile_df_to_json(
+        input_fpath: Path, 
+        image_pattern: str = None,  
+):
+    """Convert a STAR file to JSON format, 
+    using the image pattern, if given,
+    to pull out coordinates for a specific image."""
+
+    star_data = starfile.read(input_fpath)
+    rich.print(star_data)
+
+
+def convert_starfile_df_to_ng_precomp(
+        starfile_df: DataFrame, 
+        ng_output_dirpath: str, 
+        image_rep: ImageRepresentation, 
+):
+
+    scales = [
+        image_rep.physical_size_z,
+        image_rep.physical_size_y,
+        image_rep.physical_size_x, 
+    ]
+
+    coordinate_space = CoordinateSpace(
+        names=['z', 'y', 'x'],
+        units=['m', 'm', 'm'],
+        scales=scales, 
+    )
+
+    writer = write_annotations.AnnotationWriter(
+        coordinate_space=coordinate_space,
+        annotation_type='point'
+    )
+
+    for n, row in starfile_df.iterrows():
+        x = int(row.rlnCoordinateX)
+        y = int(row.rlnCoordinateY)
+        z = int(row.rlnCoordinateZ)
+
+        writer.add_point([z, y, x])
+
+    writer.write(ng_output_dirpath)
+
+

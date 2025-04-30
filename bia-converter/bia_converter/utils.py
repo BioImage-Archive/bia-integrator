@@ -3,12 +3,15 @@ import logging
 from uuid import UUID
 from typing import Union, Tuple
 from pathlib import Path
+from pandas import DataFrame
+import rich
 
 from .neuroglancer import Layer, ViewerState, state_to_ng_uri, InvlerpParameters
 
 
 from bia_integrator_api.models import (  # type: ignore
-    ImageRepresentation,
+    ImageRepresentation, 
+    AnnotationData, 
 )
 
 from .bia_api_client import api_client
@@ -87,6 +90,29 @@ def get_dir_size(path: Union[str, Path]) -> int:
     return total_size
 
 
+def filter_starfile_df(
+    star_df: DataFrame, 
+    annotation: AnnotationData, 
+    image_uuid: str, 
+) -> DataFrame:
+    """Filter a starfile (as a dataframe) for a pattern specified in annoation data, if applicable, 
+    and resturn the X, Y, and Z coordinates of that filtered part."""
+
+    attrs = attributes_by_name(annotation)
+    pattern_list = attrs['annotated_image_patterns']['annotated_image_patterns']
+    image_pattern = [pattern[image_uuid] for pattern in pattern_list if image_uuid in pattern][0] # assume one pattern per image
+    rich.print(f"Image pattern: {image_pattern}")
+    if image_pattern is None:
+        filtered_df = star_df
+    else:
+        filtered_df = star_df[star_df["rlnMicrographName"] == image_pattern]
+
+    columns_to_save = ["rlnCoordinateX", "rlnCoordinateY", "rlnCoordinateZ"]
+    filtered_df = filtered_df[columns_to_save]
+
+    return filtered_df
+
+
 def generate_ng_link_for_zarr(
         ome_zarr_uri: str, 
         contrast_bounds: Tuple[float, float],
@@ -130,6 +156,66 @@ def generate_ng_link_for_zarr(
         position=[0, 0, position[0], position[1], position[2]], # position is stil tczyx regardless of displayDimensions
         crossSectionScale=5, #TODO: work out best way to calculate this
         layers=[base_layer],
+        layout="4panel"
+    )
+
+    state_uri = state_to_ng_uri(v, "https://neuroglancer-demo.appspot.com/#!")
+
+    return state_uri
+
+
+def generate_ng_link_for_zarr_and_precomp_annotation(
+        ome_zarr_uri: str, 
+        precomp_annotation_uri: str, 
+        contrast_bounds: Tuple[float, float],
+        position: Tuple[int, int, int],
+        physical_sizes: Tuple[float, float, float] 
+) -> str:
+    
+    """Given the URI to an OME-Zarr file, a label for that image,
+    generate a Neuroglancer link at which the image+annotations 
+    can be visualised.
+    
+    """
+
+    lower_bound, upper_bound = contrast_bounds
+
+    shader_controls = {
+        "normalized" : InvlerpParameters(
+            range = (lower_bound, upper_bound),
+            window = None,
+            channel = None
+        )
+    }
+
+    base_layer = Layer(
+        type="image",
+        source=f"{ome_zarr_uri}/|zarr2:",
+        name="image",
+        volumeRendering=False,
+        shaderControls=shader_controls
+    )
+
+    annotations_layer = Layer(
+        type="annotation",
+        source=f"precomputed://{precomp_annotation_uri}",
+        tab="annotations",
+        name="particles",
+        annotationColor="#FFFF00"
+    )
+
+    v = ViewerState(
+        dimensions={
+            "t": (1, ""),
+            "c": (1, ""),
+            "z": (physical_sizes[0], "m"),
+            "y": (physical_sizes[1], "m"),
+            "x": (physical_sizes[2], "m"),
+        },
+        displayDimensions=["x", "y", "z"],
+        position=[0, 0, position[0], position[1], position[2]], # position is stil tczyx regardless of displayDimensions
+        crossSectionScale=5, #TODO: work out best way to calculate this
+        layers=[base_layer, annotations_layer],
         layout="4panel"
     )
 
