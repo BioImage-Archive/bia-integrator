@@ -1,5 +1,6 @@
 #!/bin/bash
 set -ex
+set -o pipefail
 
 SCRIPT_DIR="$(dirname "$0")"
 API_BASE_URL=${API_BASE_URL:-"http://localhost/api/v2"}
@@ -13,13 +14,13 @@ poetry --directory ${SCRIPT_DIR}/../../bia-export run bia-export website study -
   
 jq -c 'to_entries | map(.value)[:1000000][] | ({"index": {"_index": "'"${ELASTIC_INDEX}"'"}}, .)' $EXPORT_JSON_OUT_FILE | sed 's/"\./\"A./g' > ${EXPORT_JSON_OUT_FILE}.bulk
 
-curl -u "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -X DELETE "${ELASTIC_URL}/${ELASTIC_INDEX}"
+curl -k -u "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -X DELETE "${ELASTIC_URL}/${ELASTIC_INDEX}"
 
 # https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-types.html
 # Limit of total fields [1000] in index [test_index] has been exceeded
 # also https://www.elastic.co/guide/en/elasticsearch/reference/current/nested.html for indexing nested objects
 #   either explicitly indexed or flattened?
-curl -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX}" \
+curl -k -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX}" \
 	-u "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" \
 	-H "Content-Type: application/json" \
 	-d '{
@@ -36,13 +37,13 @@ curl -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX}" \
 	}
 }'
 
-curl -u "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" \
+curl -k -u "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" \
 	-H  "Content-Type: application/x-ndjson" \
 	-XPOST "${ELASTIC_URL}/_bulk?pretty&error_trace=true" \
 	--data-binary @${EXPORT_JSON_OUT_FILE}.bulk | jq '.items.[] | select(.index.status != 201)'
-curl -u "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -X POST "${ELASTIC_URL}/${ELASTIC_INDEX}/_refresh"
+curl -k -u "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -X POST "${ELASTIC_URL}/${ELASTIC_INDEX}/_refresh"
 
 echo -e "\n\n==============================================\nIndex Status: ${ELASTIC_INDEX}\n"
 
-curl -u "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -X GET "${ELASTIC_URL}/${ELASTIC_INDEX}/_count" -H "Content-Type: application/json"
+curl -k -u "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -X GET "${ELASTIC_URL}/${ELASTIC_INDEX}/_count" -H "Content-Type: application/json"
 echo ""

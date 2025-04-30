@@ -26,5 +26,13 @@ RUN poetry install --no-root
 
 ADD . ..
 
+###
+# Also install other integrator tools
+#   as a workaround for a single BIA image
+###
+RUN poetry --directory ../bia-export install
+# jq needed for the elastic refresh script
+RUN apt-get update && apt-get install -y jq
+
 CMD ["poetry", "run", "uvicorn", "--workers", "1", "--port", "8080", "--log-config", "api/log_config.yml", "--host", "0.0.0.0", "--no-access-log", "api.app:app"]
 
