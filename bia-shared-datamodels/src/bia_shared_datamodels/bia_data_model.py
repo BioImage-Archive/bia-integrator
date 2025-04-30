@@ -32,6 +32,9 @@ class DocumentMixin(BaseModel):
     uuid: UUID = Field(
         description="""Unique ID (across the BIA database) used to refer to and identify a document."""
     )
+    object_creator: semantic_models.Provenance = Field(
+        description="""BIA internal type to track the source of the object.""",
+    )
 
     # !!!!
     # EXTREMELY important that this field is validated
