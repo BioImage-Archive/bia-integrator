@@ -46,7 +46,7 @@ class AttributeMixin(BaseModel):
     Mixin for just the attribute field
     """
 
-    additional_metadata: List[Attribute]] = Field(
+    additional_metadata: List[Attribute] = Field(
         breaking_model_changes_2025_04
         default_factory=list,
         description="""Freeform key-value pairs that don't otherwise fit our data model, potentially from user provided metadata, BIA curation, and experimental fields.""",
