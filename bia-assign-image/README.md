@@ -63,7 +63,7 @@ In the yaml file, the entry for the image should contain a key called `pattern` 
   dataset_uuid: dummy_dataset_uuid
   file_reference_uuid: "12345678-abcd-ef12-3456-012345678900 12345678-abcd-ef12-3456-012345678901 12345678-abcd-ef12-3456-012345678902 12345678-abcd-ef12-3456-012345678903"
   name: dummy_name
-  pattern: 'image_01_channel_{%d}_slice_{%d}_time{%d}'
+  pattern: 'image_01_channel_{%d}_slice_{%d}.tiff'
   study_uuid: dummy_study_uuid
 ```
 then run:
@@ -74,7 +74,7 @@ poetry run bia-assign-image assign-from-proposal example.yaml
 #### Using a pattern directly in the cli
 To directly create a BIA Image from the above file references and pattern, run:
 ```sh
-poetry run bia-assign-image assign --pattern 'image_01_channel_{%d}_slice_{%d}_time{%d}' S-BIADTEST 12345678-abcd-ef12-3456-012345678900 12345678-abcd-ef12-3456-012345678901 12345678-abcd-ef12-3456-012345678902 12345678-abcd-ef12-3456-012345678903
+poetry run bia-assign-image assign --pattern 'image_01_channel_{%d}_slice_{%d}.tiff' S-BIADTEST 12345678-abcd-ef12-3456-012345678900 12345678-abcd-ef12-3456-012345678901 12345678-abcd-ef12-3456-012345678902 12345678-abcd-ef12-3456-012345678903
 ```
 
 ### Creating representations (without conversion of images)
