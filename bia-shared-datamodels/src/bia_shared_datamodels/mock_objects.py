@@ -550,7 +550,7 @@ def get_document_uuid_uinque_input_attribute(
     completeness=Completeness.COMPLETE,
 ) -> dict:
     attribute = {
-        "provenance": semantic_models.AttributeProvenance.bia_ingest,
+        "provenance": semantic_models.Provenance.bia_ingest,
         "name": "uuid_unique_input",
         "value": {"uuid_unique_input": "Biosample-1"},
     }
