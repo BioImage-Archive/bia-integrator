@@ -18,29 +18,23 @@ from enum import Enum
 from typing_extensions import Self
 
 
-class AnnotationType(str, Enum):
+class Provenance(str, Enum):
     """
-    AnnotationType
+    Provenance
     """
 
     """
     allowed enum values
     """
-    CLASS_LABELS = 'class_labels'
-    BOUNDING_BOXES = 'bounding_boxes'
-    COUNTS = 'counts'
-    DERIVED_ANNOTATIONS = 'derived_annotations'
-    GEOMETRICAL_ANNOTATIONS = 'geometrical_annotations'
-    GRAPHS = 'graphs'
-    POINT_ANNOTATIONS = 'point_annotations'
-    SEGMENTATION_MASK = 'segmentation_mask'
-    TRACKS = 'tracks'
-    WEAK_ANNOTATIONS = 'weak_annotations'
-    OTHER = 'other'
+    SUBMITTER = 'submitter'
+    BIA_INGEST = 'bia_ingest'
+    BIA_IMAGE_ASSIGNMENT = 'bia_image_assignment'
+    BIA_IMAGE_CONVERSION = 'bia_image_conversion'
+    BIA_CURATION = 'bia_curation'
 
     @classmethod
     def from_json(cls, json_str: str) -> Self:
-        """Create an instance of AnnotationType from a JSON string"""
+        """Create an instance of Provenance from a JSON string"""
         return cls(json.loads(json_str))
 
 

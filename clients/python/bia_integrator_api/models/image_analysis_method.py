@@ -27,10 +27,11 @@ class ImageAnalysisMethod(BaseModel):
     """
     Information about image analysis methods.
     """ # noqa: E501
-    attribute: Optional[List[Attribute]] = None
+    additional_metadata: Optional[List[Attribute]] = Field(default=None, description="Freeform key-value pairs that don't otherwise fit our data model, potentially from user provided metadata, BIA curation, and experimental fields.")
+    title: StrictStr = Field(description="The title of a protocol.")
     protocol_description: StrictStr = Field(description="Description of actions involved in the process.")
     features_analysed: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["attribute", "protocol_description", "features_analysed"]
+    __properties: ClassVar[List[str]] = ["additional_metadata", "title", "protocol_description", "features_analysed"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -71,18 +72,13 @@ class ImageAnalysisMethod(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of each item in attribute (list)
+        # override the default output from pydantic by calling `to_dict()` of each item in additional_metadata (list)
         _items = []
-        if self.attribute:
-            for _item_attribute in self.attribute:
-                if _item_attribute:
-                    _items.append(_item_attribute.to_dict())
-            _dict['attribute'] = _items
-        # set to None if attribute (nullable) is None
-        # and model_fields_set contains the field
-        if self.attribute is None and "attribute" in self.model_fields_set:
-            _dict['attribute'] = None
-
+        if self.additional_metadata:
+            for _item_additional_metadata in self.additional_metadata:
+                if _item_additional_metadata:
+                    _items.append(_item_additional_metadata.to_dict())
+            _dict['additional_metadata'] = _items
         # set to None if features_analysed (nullable) is None
         # and model_fields_set contains the field
         if self.features_analysed is None and "features_analysed" in self.model_fields_set:
@@ -100,7 +96,8 @@ class ImageAnalysisMethod(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "attribute": [Attribute.from_dict(_item) for _item in obj["attribute"]] if obj.get("attribute") is not None else None,
+            "additional_metadata": [Attribute.from_dict(_item) for _item in obj["additional_metadata"]] if obj.get("additional_metadata") is not None else None,
+            "title": obj.get("title"),
             "protocol_description": obj.get("protocol_description"),
             "features_analysed": obj.get("features_analysed")
         })

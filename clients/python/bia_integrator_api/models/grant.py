@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from bia_integrator_api.models.funding_body import FundingBody
 from typing import Optional, Set
@@ -28,7 +28,7 @@ class Grant(BaseModel):
     
     """ # noqa: E501
     id: Optional[StrictStr] = None
-    funder: Optional[List[FundingBody]] = None
+    funder: Optional[List[FundingBody]] = Field(default=None, description="The name of the funding body providing support for the grant.")
     __properties: ClassVar[List[str]] = ["id", "funder"]
 
     model_config = ConfigDict(
@@ -81,11 +81,6 @@ class Grant(BaseModel):
         # and model_fields_set contains the field
         if self.id is None and "id" in self.model_fields_set:
             _dict['id'] = None
-
-        # set to None if funder (nullable) is None
-        # and model_fields_set contains the field
-        if self.funder is None and "funder" in self.model_fields_set:
-            _dict['funder'] = None
 
         return _dict
 

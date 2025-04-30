@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from bia_integrator_api.models.attribute import Attribute
 from typing import Optional, Set
@@ -27,11 +27,11 @@ class Taxon(BaseModel):
     """
     The classification of a biological entity.
     """ # noqa: E501
-    attribute: Optional[List[Attribute]] = None
+    additional_metadata: Optional[List[Attribute]] = Field(default=None, description="Freeform key-value pairs that don't otherwise fit our data model, potentially from user provided metadata, BIA curation, and experimental fields.")
     common_name: Optional[StrictStr] = None
     scientific_name: Optional[StrictStr] = None
     ncbi_id: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["attribute", "common_name", "scientific_name", "ncbi_id"]
+    __properties: ClassVar[List[str]] = ["additional_metadata", "common_name", "scientific_name", "ncbi_id"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -72,18 +72,13 @@ class Taxon(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of each item in attribute (list)
+        # override the default output from pydantic by calling `to_dict()` of each item in additional_metadata (list)
         _items = []
-        if self.attribute:
-            for _item_attribute in self.attribute:
-                if _item_attribute:
-                    _items.append(_item_attribute.to_dict())
-            _dict['attribute'] = _items
-        # set to None if attribute (nullable) is None
-        # and model_fields_set contains the field
-        if self.attribute is None and "attribute" in self.model_fields_set:
-            _dict['attribute'] = None
-
+        if self.additional_metadata:
+            for _item_additional_metadata in self.additional_metadata:
+                if _item_additional_metadata:
+                    _items.append(_item_additional_metadata.to_dict())
+            _dict['additional_metadata'] = _items
         # set to None if common_name (nullable) is None
         # and model_fields_set contains the field
         if self.common_name is None and "common_name" in self.model_fields_set:
@@ -111,7 +106,7 @@ class Taxon(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "attribute": [Attribute.from_dict(_item) for _item in obj["attribute"]] if obj.get("attribute") is not None else None,
+            "additional_metadata": [Attribute.from_dict(_item) for _item in obj["additional_metadata"]] if obj.get("additional_metadata") is not None else None,
             "common_name": obj.get("common_name"),
             "scientific_name": obj.get("scientific_name"),
             "ncbi_id": obj.get("ncbi_id")

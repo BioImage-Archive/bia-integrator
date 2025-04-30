@@ -38,7 +38,6 @@ from bia_integrator_api.models.annotation_method import AnnotationMethod
 from bia_integrator_api.models.annotation_method_type import AnnotationMethodType
 from bia_integrator_api.models.annotation_source_indicator import AnnotationSourceIndicator
 from bia_integrator_api.models.attribute import Attribute
-from bia_integrator_api.models.attribute_provenance import AttributeProvenance
 from bia_integrator_api.models.authentication_token import AuthenticationToken
 from bia_integrator_api.models.bio_sample import BioSample
 from bia_integrator_api.models.body_register_user import BodyRegisterUser
@@ -58,10 +57,11 @@ from bia_integrator_api.models.image_analysis_method import ImageAnalysisMethod
 from bia_integrator_api.models.image_correlation_method import ImageCorrelationMethod
 from bia_integrator_api.models.image_representation import ImageRepresentation
 from bia_integrator_api.models.image_representation_use_type import ImageRepresentationUseType
-from bia_integrator_api.models.licence_type import LicenceType
+from bia_integrator_api.models.licence import Licence
 from bia_integrator_api.models.location_inner import LocationInner
 from bia_integrator_api.models.model_metadata import ModelMetadata
 from bia_integrator_api.models.protocol import Protocol
+from bia_integrator_api.models.provenance import Provenance
 from bia_integrator_api.models.publication import Publication
 from bia_integrator_api.models.rendered_view import RenderedView
 from bia_integrator_api.models.signal_channel_information import SignalChannelInformation

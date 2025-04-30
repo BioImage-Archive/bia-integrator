@@ -6,7 +6,8 @@ Information about the process of correlating the positions of multiple images.
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**attribute** | [**List[Attribute]**](Attribute.md) |  | [optional] 
+**additional_metadata** | [**List[Attribute]**](Attribute.md) | Freeform key-value pairs that don&#39;t otherwise fit our data model, potentially from user provided metadata, BIA curation, and experimental fields. | [optional] 
+**title** | **str** | The title of a protocol. | 
 **protocol_description** | **str** | Description of actions involved in the process. | 
 **fiducials_used** | **str** |  | [optional] 
 **transformation_matrix** | **str** |  | [optional] 
