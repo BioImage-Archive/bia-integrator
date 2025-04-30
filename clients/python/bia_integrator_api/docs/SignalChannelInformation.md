@@ -6,10 +6,11 @@ Information about how signals were generated, staining compounds and their targe
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**attribute** | [**List[Attribute]**](Attribute.md) |  | [optional] 
+**additional_metadata** | [**List[Attribute]**](Attribute.md) | Freeform key-value pairs that don&#39;t otherwise fit our data model, potentially from user provided metadata, BIA curation, and experimental fields. | [optional] 
 **signal_contrast_mechanism_description** | **str** |  | [optional] 
 **channel_content_description** | **str** |  | [optional] 
 **channel_biological_entity** | **str** |  | [optional] 
+**channel_label** | **str** |  | [optional] 
 
 ## Example
 

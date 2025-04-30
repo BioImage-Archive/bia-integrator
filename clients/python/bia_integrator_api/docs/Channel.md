@@ -6,7 +6,7 @@ An image channel.
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**attribute** | [**List[Attribute]**](Attribute.md) |  | [optional] 
+**additional_metadata** | [**List[Attribute]**](Attribute.md) | Freeform key-value pairs that don&#39;t otherwise fit our data model, potentially from user provided metadata, BIA curation, and experimental fields. | [optional] 
 **colormap_start** | **float** | Start value of colormap | 
 **colormap_end** | **float** | End value of colormap | 
 **scale_factor** | **float** |  | [optional] 
