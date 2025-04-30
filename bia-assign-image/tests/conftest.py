@@ -7,13 +7,8 @@ import os
 from glob import glob
 
 
-@pytest.fixture(scope="session")
-def private_client():
-    return get_object_creation_client(settings.local_bia_api_basepath)
-
-
-@pytest.fixture(scope="session")
-def data_in_api(private_client):
+def data_in_api():
+    private_client = get_object_creation_client(settings.local_bia_api_basepath)
     input_file_dir = Path(__file__).parent / "input_data" / "**" / "*.json"
     file_path_list = glob(str(input_file_dir), recursive=True)
 
@@ -25,3 +20,9 @@ def data_in_api(private_client):
                 object_list.append(json_dict)
 
     add_objects_to_api(private_client, object_list)
+
+
+@pytest.hookimpl(tryfirst=True)
+def pytest_configure(config):
+    """Runs before test modules are imported."""
+    data_in_api()
