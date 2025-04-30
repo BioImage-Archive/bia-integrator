@@ -2,14 +2,20 @@ import shutil
 import logging
 import zipfile
 import tempfile
+import rich
+import starfile
+import json
 from pathlib import Path
 from typing import Dict, Tuple
-
 import parse  # type: ignore
+
 from bia_integrator_api.models import (  # type: ignore
+    Image, 
     ImageRepresentation,
     ImageRepresentationUseType,
     FileReference,
+    AnnotationData, 
+    Attribute,
 )
 from bia_shared_datamodels.uuid_creation import (  # type: ignore
     create_image_representation_uuid,
@@ -17,18 +23,24 @@ from bia_shared_datamodels.uuid_creation import (  # type: ignore
 
 from .config import settings
 from .io import copy_local_to_s3, stage_fileref_and_get_fpath, sync_dirpath_to_s3
-from .conversion import run_zarr_conversion
-from .bia_api_client import api_client, store_object_in_api_idempotent
+from .conversion import (
+    run_zarr_conversion, 
+    convert_starfile_df_to_json, 
+    convert_starfile_df_to_ng_precomp, 
+)
+from .bia_api_client import api_client, store_object_in_api_idempotent, update_object_in_api_idempotent
 from .rendering import generate_padded_thumbnail_from_ngff_uri
 from .utils import (
     create_s3_uri_suffix_for_image_representation,
     attributes_by_name,
     get_dir_size,
+    generate_ng_link_for_zarr_and_precomp_annotation, 
+    filter_starfile_df, 
 )
 
 
 logger = logging.getLogger(__file__)
-
+logger.setLevel("INFO")
 
 def create_image_representation_object(image, image_format, use_type):
     # Create the base image representation object. Cannot by itself create the file_uri or
@@ -256,11 +268,42 @@ def get_conversion_output_path(output_rep):
     return zarr_fpath
 
 
+def get_annotation_conversion_output_path(
+        annotation: AnnotationData, 
+        image_uuid: str, 
+) -> Path:
+    
+    image = api_client.get_image(image_uuid)
+    dataset = api_client.get_dataset(image.submission_dataset_uuid)
+    study = api_client.get_study(dataset.submitted_in_study_uuid)
+    ann_dir = f"{study.accession_id}/{image_uuid}/{annotation.uuid}"
+    dst_dir_basepath = settings.cache_root_dirpath / "star"
+    dst_dir_basepath.mkdir(exist_ok=True, parents=True)
+    ann_path = dst_dir_basepath / ann_dir
+
+    return ann_path
+
+
+def get_annotation_ng_precomp_output_path(
+        annotation: AnnotationData, 
+        image_uuid: str, 
+) -> Path:
+    
+    image = api_client.get_image(image_uuid)
+    dataset = api_client.get_dataset(image.submission_dataset_uuid)
+    study = api_client.get_study(dataset.submitted_in_study_uuid)
+    ann_dir = f"{study.accession_id}/{image_uuid}/{annotation.uuid}"
+    dst_dir_basepath = settings.cache_root_dirpath / "ng_precomp"
+    dst_dir_basepath.mkdir(exist_ok=True, parents=True)
+    ann_path = dst_dir_basepath / ann_dir
+
+    return ann_path
+
+
 def process_zarr_metadata(ome_zarr_path, ome_zarr_uri) -> Tuple[Dict, Dict]:
     from .proxyimage import ome_zarr_image_from_ome_zarr_uri
     from .utils import generate_ng_link_for_zarr
 
-    im = ome_zarr_image_from_ome_zarr_uri(ome_zarr_path)
     attr_map = {
         "sizeX": "size_x",
         "sizeY": "size_y",
@@ -272,18 +315,10 @@ def process_zarr_metadata(ome_zarr_path, ome_zarr_uri) -> Tuple[Dict, Dict]:
         "PhysicalSizeZ": "physical_size_z",
     }
 
+    contrast_bounds, physical_sizes, view_position = calculate_zarr_metadata(ome_zarr_path)
+
+    im = ome_zarr_image_from_ome_zarr_uri(ome_zarr_path)
     update_dict = {v: im.__dict__[k] for k, v in attr_map.items()}
-
-    contrast_bounds = (im.ngff_metadata.omero.channels[0].window.min, im.ngff_metadata.omero.channels[0].window.max)
-    view_position = (im.sizeZ // 2, im.sizeY // 2, im.sizeX // 2)
-
-    physical_sizes = [1, 1, 1]
-    if im.PhysicalSizeX is not None:
-        physical_sizes[2] = im.PhysicalSizeX
-    if im.PhysicalSizeY is not None:
-        physical_sizes[1] = im.PhysicalSizeY
-    if im.PhysicalSizeZ is not None:    
-        physical_sizes[0] = im.PhysicalSizeZ
 
     attribute_list = []
     ng_link_dict = {}
@@ -297,6 +332,24 @@ def process_zarr_metadata(ome_zarr_path, ome_zarr_uri) -> Tuple[Dict, Dict]:
     #update_dict["attribute"] = attribute_list
 
     return update_dict, attribute_list
+
+
+def calculate_zarr_metadata(ome_zarr_path) -> Tuple[Dict, Dict, Tuple]:
+    from .proxyimage import ome_zarr_image_from_ome_zarr_uri
+    
+    im = ome_zarr_image_from_ome_zarr_uri(ome_zarr_path)
+    contrast_bounds = (im.ngff_metadata.omero.channels[0].window.min, im.ngff_metadata.omero.channels[0].window.max)
+    view_position = (im.sizeZ // 2, im.sizeY // 2, im.sizeX // 2)
+
+    physical_sizes = [1, 1, 1]
+    if im.PhysicalSizeX is not None:
+        physical_sizes[2] = im.PhysicalSizeX
+    if im.PhysicalSizeY is not None:
+        physical_sizes[1] = im.PhysicalSizeY
+    if im.PhysicalSizeZ is not None:    
+        physical_sizes[0] = im.PhysicalSizeZ
+
+    return contrast_bounds, physical_sizes, view_position
 
 
 def check_if_path_contains_zarr_group(dirpath: Path) -> bool:
@@ -474,3 +527,103 @@ def update_ome_zarr_image_rep(
 
     return base_image_rep
 
+
+def convert_star_annotation_to_json(
+        annotation: AnnotationData, 
+        image_rep: ImageRepresentation, 
+        image_uuid: str,  
+        fpath: Path, 
+):
+    
+    # TODO: assumption of use type of image rep? Certainly interactive display, but uploaded by submitter could also be OME-Zarr.
+    # (though the latter would not currently be linked in any way to annotation data...)
+
+    star_df = starfile.read(fpath)
+    filtered_df = filter_starfile_df(star_df, annotation, image_uuid)
+
+    data_list = filtered_df.to_dict(orient='records')
+    output_path = get_annotation_conversion_output_path(annotation, image_uuid)
+    output_path.mkdir(exist_ok=True, parents=True)
+    output_file = output_path / "annotation_data.json"
+    with open(output_file, 'w') as f:
+        json.dump(data_list, f, indent=2)
+    
+    if "annotation_file_paths" in attrs:
+        annotation_file_paths = attrs["annotation_file_paths"]["annotation_file_paths"]
+    else:
+        annotation_file_paths = []
+    annotation_file_paths.append({image_uuid: str(output_file)})
+
+    current_attributes = annotation.attribute
+    new_attributes = Attribute(
+        name="annotation_file_paths", 
+        value={"annotation_file_paths": annotation_file_paths}, 
+        provenance="bia_conversion"
+    )
+    annotation.attribute = current_attributes + [new_attributes]
+
+    ng_output_path = get_annotation_ng_precomp_output_path(annotation, image_uuid)
+    convert_starfile_df_to_ng_precomp(selected_df, ng_output_path, image_rep)
+    
+    if "ng_precomp_file_paths" in attrs:
+        ng_precomp_file_paths = attrs["ng_precomp_file_paths"]["ng_precomp_file_paths"]
+    else:
+        ng_precomp_file_paths = []
+    ng_precomp_file_paths.append({image_uuid: str(ng_output_path)})
+
+    current_attributes = annotation.attribute
+    new_attributes = Attribute(
+        name="ng_precomp_file_paths", 
+        value={"ng_precomp_file_paths": ng_precomp_file_paths}, 
+        provenance="bia_conversion"
+    )
+    annotation.attribute = current_attributes + [new_attributes]
+    
+    starfile_uri = f"http://localhost:8081/annotations/{annotation.uuid}"
+    contrast_bounds, physical_sizes, position = calculate_zarr_metadata(f"{image_rep.file_uri[0]}")
+
+    state_uri = generate_ng_link_for_zarr_and_precomp_annotation(
+        image_rep.file_uri[0],  
+        starfile_uri, 
+        contrast_bounds,
+        position,
+        physical_sizes,  
+    )
+
+    rich.print(f"state uri: {state_uri}")
+    
+    image, image_rep = update_annotated_image_and_image_rep(
+        image_uuid, 
+        image_rep, 
+        state_uri
+    )
+
+    update_object_in_api_idempotent(image)
+    update_object_in_api_idempotent(image_rep)
+    update_object_in_api_idempotent(annotation)
+
+
+def update_annotated_image_and_image_rep(
+    image_uuid: str, 
+    image_rep: ImageRepresentation, 
+    ng_uri_link: str, 
+) -> tuple[Image, ImageRepresentation]:
+    
+    current_rep_attributes = image_rep.attribute
+    new_attributes = Attribute(
+        name="neuroglancer_view_link", 
+        value={"neuroglancer_view_link": ng_uri_link}, 
+        provenance="bia_conversion"
+    )
+    image_rep.attribute = current_rep_attributes + [new_attributes]
+
+    image = api_client.get_image(image_uuid)
+    current_img_attributes = image.attribute
+    new_attributes = Attribute(
+        name="preferred_neuroglancer_image_representation_uuid", 
+        value={"preferred_neuroglancer_image_representation_uuid": image_rep.uuid}, 
+        provenance="bia_conversion"
+    )
+    image.attribute = current_img_attributes + [new_attributes]
+
+    return image, image_rep
