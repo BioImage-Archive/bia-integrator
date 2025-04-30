@@ -544,3 +544,14 @@ def get_dataset_associatation_attribute(completeness=Completeness.COMPLETE) -> d
             }
         }
     return attribute
+
+
+def get_document_uuid_uinque_input_attribute(
+    completeness=Completeness.COMPLETE,
+) -> dict:
+    attribute = {
+        "provenance": semantic_models.Provenance.bia_ingest,
+        "name": "uuid_unique_input",
+        "value": {"uuid_unique_input": "Biosample-1"},
+    }
+    return attribute

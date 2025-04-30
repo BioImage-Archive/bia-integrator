@@ -19,6 +19,10 @@ from typing import Callable
             attribute_models.DatasetAssociationAttribute,
             mock_objects.get_dataset_associatation_attribute,
         ),
+        (
+            attribute_models.DocumentUUIDUinqueInputAttribute,
+            mock_objects.get_document_uuid_uinque_input_attribute,
+        ),
     ),
 )
 def test_sub_attribute_models(
@@ -49,11 +53,8 @@ def test_sub_attribute_models(
             sub_attribute_model
         )
 
-        # Check basic attribute doesn't pass validation 
-        try:
+        # Check basic attribute doesn't pass validation
+        with pytest.raises(ValidationError):
             expected_model_type.model_validate(
                 mock_objects.get_attribute_dict(model_completion)
             )
-            assert False
-        except ValidationError:
-            assert True
