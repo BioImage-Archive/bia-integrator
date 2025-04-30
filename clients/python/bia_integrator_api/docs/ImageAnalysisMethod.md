@@ -6,7 +6,8 @@ Information about image analysis methods.
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**attribute** | [**List[Attribute]**](Attribute.md) |  | [optional] 
+**additional_metadata** | [**List[Attribute]**](Attribute.md) | Freeform key-value pairs that don&#39;t otherwise fit our data model, potentially from user provided metadata, BIA curation, and experimental fields. | [optional] 
+**title** | **str** | The title of a protocol. | 
 **protocol_description** | **str** | Description of actions involved in the process. | 
 **features_analysed** | **str** |  | [optional] 
 

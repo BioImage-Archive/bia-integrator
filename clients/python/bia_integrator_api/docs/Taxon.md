@@ -6,7 +6,7 @@ The classification of a biological entity.
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**attribute** | [**List[Attribute]**](Attribute.md) |  | [optional] 
+**additional_metadata** | [**List[Attribute]**](Attribute.md) | Freeform key-value pairs that don&#39;t otherwise fit our data model, potentially from user provided metadata, BIA curation, and experimental fields. | [optional] 
 **common_name** | **str** |  | [optional] 
 **scientific_name** | **str** |  | [optional] 
 **ncbi_id** | **str** |  | [optional] 
