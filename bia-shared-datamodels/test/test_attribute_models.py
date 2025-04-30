@@ -54,10 +54,7 @@ def test_sub_attribute_models(
         )
 
         # Check basic attribute doesn't pass validation
-        try:
+        with pytest.raises(ValidationError):
             expected_model_type.model_validate(
                 mock_objects.get_attribute_dict(model_completion)
             )
-            assert False
-        except ValidationError:
-            assert True
