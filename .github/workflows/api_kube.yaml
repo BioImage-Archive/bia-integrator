@@ -1,13 +1,9 @@
 name: Lint and Test Charts
 
 on:
-  pull_request:
+  push:
     branches:
       - main
-
-  #push:
-  #  branches:
-  #    - main
   workflow_run:
     workflows: ["Publish Docker"]
     branches: [main]
