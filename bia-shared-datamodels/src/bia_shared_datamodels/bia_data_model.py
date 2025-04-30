@@ -143,12 +143,6 @@ class DocumentMixin(BaseModel):
         return fields_filtered
 
 
-class UserIdentifiedObject(BaseModel):
-    title_id: str = Field(
-        description="""User provided title, which is unqiue within a submission, used to identify a part of a submission."""
-    )
-
-
 #######################################################################################################
 # Subgraph 1: Studies and links to external information (publications, grants etc)
 #######################################################################################################
@@ -171,7 +165,6 @@ class Study(
 class Dataset(
     semantic_models.Dataset,
     DocumentMixin,
-    UserIdentifiedObject,
 ):
     submitted_in_study_uuid: Annotated[UUID, ObjectReference(Study)] = Field()
 
@@ -258,22 +251,22 @@ class CreationProcess(semantic_models.CreationProcess, DocumentMixin):
         description="The biological specimen that is the subject of the image.",
     )
     image_acquisition_protocol_uuid: Annotated[
-        Optional[List[UUID]], ObjectReference(ImageAcquisitionProtocol)
+        List[UUID], ObjectReference(ImageAcquisitionProtocol)
     ] = Field(
         default_factory=lambda: [],
         description="The imaging protocol, describing the technique that was used to create the image.",
     )
 
-    input_image_uuid: Annotated[Optional[List[UUID]], ObjectReference(Image)] = Field(
+    input_image_uuid: Annotated[List[UUID], ObjectReference(Image)] = Field(
         default_factory=lambda: [],
         description="The images used as input data for the creation of a new image.",
     )
-    protocol_uuid: Annotated[Optional[List[UUID]], ObjectReference(Protocol)] = Field(
+    protocol_uuid: Annotated[List[UUID], ObjectReference(Protocol)] = Field(
         default_factory=lambda: [],
         description="A protocol which was followed that resulted in the creation of this new image from existing image data.",
     )
     annotation_method_uuid: Annotated[
-        Optional[List[UUID]], ObjectReference(AnnotationMethod)
+        List[UUID], ObjectReference(AnnotationMethod)
     ] = Field(
         default_factory=lambda: [],
         description="The annotation method describing the process followed to create a new image from exsiting image data.",
@@ -282,14 +275,13 @@ class CreationProcess(semantic_models.CreationProcess, DocumentMixin):
     model_config = ConfigDict(model_version_latest=2)
 
 
-class Protocol(semantic_models.Protocol, DocumentMixin, UserIdentifiedObject):
+class Protocol(semantic_models.Protocol, DocumentMixin):
     model_config = ConfigDict(model_version_latest=2)
 
 
 class ImageAcquisitionProtocol(
     semantic_models.ImageAcquisitionProtocol,
     DocumentMixin,
-    UserIdentifiedObject,
 ):
     model_config = ConfigDict(model_version_latest=2)
 
@@ -297,7 +289,6 @@ class ImageAcquisitionProtocol(
 class SpecimenImagingPreparationProtocol(
     semantic_models.SpecimenImagingPreparationProtocol,
     DocumentMixin,
-    UserIdentifiedObject,
 ):
     model_config = ConfigDict(model_version_latest=2)
 
@@ -305,7 +296,6 @@ class SpecimenImagingPreparationProtocol(
 class BioSample(
     semantic_models.BioSample,
     DocumentMixin,
-    UserIdentifiedObject,
 ):
     model_config = ConfigDict(model_version_latest=3)
     growth_protocol_uuid: Annotated[Optional[UUID], ObjectReference(Protocol)] = Field(
@@ -317,7 +307,6 @@ class BioSample(
 class AnnotationMethod(
     semantic_models.AnnotationMethod,
     DocumentMixin,
-    UserIdentifiedObject,
 ):
     model_config = ConfigDict(model_version_latest=3)
 

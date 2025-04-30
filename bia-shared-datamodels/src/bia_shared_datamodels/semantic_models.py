@@ -46,7 +46,8 @@ class AttributeMixin(BaseModel):
     Mixin for just the attribute field
     """
 
-    additional_metadata: Optional[list[Attribute]] = Field(
+    additional_metadata: List[Attribute]] = Field(
+        breaking_model_changes_2025_04
         default_factory=list,
         description="""Freeform key-value pairs that don't otherwise fit our data model, potentially from user provided metadata, BIA curation, and experimental fields.""",
     )
@@ -63,7 +64,7 @@ class Study(ConfiguredBaseModel, AttributeMixin):
     """
 
     accession_id: str = Field(description="""Unique ID provided by BioStudies.""")
-    licence: LicenceType = Field(
+    licence: Licence = Field(
         description="""The license under which the data associated with the study is made avaliable."""
     )
     author: List[Contributor] = Field(description="""The creators of the document.""")
@@ -72,7 +73,7 @@ class Study(ConfiguredBaseModel, AttributeMixin):
     )
     release_date: date = Field(description="""Date of first publication""")
     description: str = Field(description="""Brief description of the study.""")
-    keyword: Optional[List[str]] = Field(
+    keyword: List[str] = Field(
         default_factory=list,
         description="""Keywords or tags used to describe the subject or context of the study.""",
     )
@@ -81,15 +82,15 @@ class Study(ConfiguredBaseModel, AttributeMixin):
         description="""Any person or group that should be acknowledged outside of the authors/main contributors to the study.""",
     )
 
-    see_also: Optional[List[ExternalReference]] = Field(
+    see_also: List[ExternalReference] = Field(
         default_factory=list,
         description="""Links to publications, github repositories, and other pages related to this Study.""",
     )
-    related_publication: Optional[List[Publication]] = Field(
+    related_publication: List[Publication] = Field(
         default_factory=list,
         description="""The publications that the work involved in the study contributed to.""",
     )
-    grant: Optional[List[Grant]] = Field(
+    grant: List[Grant] = Field(
         default_factory=list, description="""The grants that funded the study."""
     )
     funding_statement: Optional[str] = Field(
@@ -137,7 +138,7 @@ class Grant(ConfiguredBaseModel):
         description="""A unique identifier for the grant, such as an Open Funder Registry ID.""",
     )
 
-    funder: Optional[List[FundingBody]] = Field(
+    funder: List[FundingBody] = Field(
         default_factory=list,
         description="""The name of the funding body providing support for the grant.""",
     )
@@ -155,39 +156,39 @@ class FundingBody(ConfiguredBaseModel):
     )
 
 
-class LicenceType(str, Enum):
+class Licence(str, Enum):
     # No Copyright. You can copy, modify, distribute and perform the work, even for commercial purposes, all without asking permission.
-    CC0 = "CC0"
+    CC0 = "https://creativecommons.org/publicdomain/zero/1.0/"
     # You are free to: Share — copy and redistribute the material in any medium or format. Adapt — remix, transform, and build upon the material  for any purpose, even commercially. You must give appropriate credit, provide a link to the license, and indicate if changes were made.  You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
-    CC_BY_40 = "CC_BY_4.0"
-    CC_BY_30 = "CC_BY_3.0"
-    CC_BY_25 = "CC_BY_2.5"
-    CC_BY_20 = "CC_BY_2.0"
-    CC_BY_10 = "CC_BY_1.0"
+    CC_BY_40 = "https://creativecommons.org/licenses/by/4.0/"
+    CC_BY_30 = "https://creativecommons.org/licenses/by/3.0/"
+    CC_BY_25 = "https://creativecommons.org/licenses/by/2.5/"
+    CC_BY_20 = "https://creativecommons.org/licenses/by/2.0/"
+    CC_BY_10 = "https://creativecommons.org/licenses/by/1.0/"
 
-    CC_BY_SA_40 = "CC_BY-SA_4.0"
-    CC_BY_SA_30 = "CC_BY-SA_3.0"
-    CC_BY_SA_25 = "CC_BY-SA_2.5"
-    CC_BY_SA_20 = "CC_BY-SA_2.0"
-    CC_BY_SA_10 = "CC_BY-SA_1.0"
+    CC_BY_SA_40 = "https://creativecommons.org/licenses/by-sa/4.0/"
+    CC_BY_SA_30 = "https://creativecommons.org/licenses/by-sa/3.0/"
+    CC_BY_SA_25 = "https://creativecommons.org/licenses/by-sa/2.5/"
+    CC_BY_SA_20 = "https://creativecommons.org/licenses/by-sa/2.0/"
+    CC_BY_SA_10 = "https://creativecommons.org/licenses/by-sa/1.0/"
 
-    CC_BY_SA_21_JP = "CC_BY-SA_2.1_JP"
+    CC_BY_SA_21_JP = "https://creativecommons.org/licenses/by-sa/2.1/jp/"
 
-    CC_BY_NC_40 = "CC_BY-NC_4.0"
-    CC_BY_NC_30 = "CC_BY-NC_3.0"
-    CC_BY_NC_25 = "CC_BY-NC_2.5"
-    CC_BY_NC_20 = "CC_BY-NC_2.0"
-    CC_BY_NC_10 = "CC_BY-NC_1.0"
+    CC_BY_NC_40 = "https://creativecommons.org/licenses/by-nc/4.0/"
+    CC_BY_NC_30 = "https://creativecommons.org/licenses/by-nc/3.0/"
+    CC_BY_NC_25 = "https://creativecommons.org/licenses/by-nc/2.5/"
+    CC_BY_NC_20 = "https://creativecommons.org/licenses/by-nc/2.0/"
+    CC_BY_NC_10 = "https://creativecommons.org/licenses/by-nc/1.0/"
 
-    CC_BY_NC_SA_40 = "CC_BY-NC-SA_4.0"
-    CC_BY_NC_SA_30 = "CC_BY-NC-SA_3.0"
-    CC_BY_NC_SA_25 = "CC_BY-NC-SA_2.5"
-    CC_BY_NC_SA_20 = "CC_BY-NC-SA_2.0"
-    CC_BY_NC_SA_10 = "CC_BY-NC-SA_1.0"
+    CC_BY_NC_SA_40 = "https://creativecommons.org/licenses/by-nc-sa/4.0/"
+    CC_BY_NC_SA_30 = "https://creativecommons.org/licenses/by-nc-sa/3.0/"
+    CC_BY_NC_SA_25 = "https://creativecommons.org/licenses/by-nc-sa/2.5/"
+    CC_BY_NC_SA_20 = "https://creativecommons.org/licenses/by-nc-sa/2.0/"
+    CC_BY_NC_SA_10 = "https://creativecommons.org/licenses/by-nc-sa/1.0/"
 
     # Note ND is 'No derivatives'
-    CC_BY_NC_ND_40 = "CC_BY-NC-ND_4.0"
 
+    CC_BY_NC_ND_40 = "https://creativecommons.org/licenses/by-nc-nd/4.0/"
 
 class ImageRepresentationUseType(str, Enum):
     """Enumerate use types of ImageRepresentations"""
@@ -271,14 +272,15 @@ class Dataset(ConfiguredBaseModel, AttributeMixin):
     A logical collection of images that were created by the same acquisition and preparation procols being applied to a biosample.
     """
 
+    title: str = Field(description="""The title of a dataset.""")
     description: Optional[str] = Field(
         None, description="""Brief description of the dataset."""
     )
-    analysis_method: Optional[list[ImageAnalysisMethod]] = Field(
+    analysis_method: List[ImageAnalysisMethod] = Field(
         default_factory=list,
         description="""Data analysis processes performed on the images.""",
     )
-    correlation_method: Optional[list[ImageCorrelationMethod]] = Field(
+    correlation_method: List[ImageCorrelationMethod] = Field(
         default_factory=list,
         description="""Processes performed to correlate image data.""",
     )
@@ -309,7 +311,10 @@ class Image(ConfiguredBaseModel, AttributeMixin):
     The abstract notion of an image that can have many representions in different image formats. A BIA image has been created from a unique set of File References.
     """
 
-    pass
+    label: Optional[str] = Field(
+        None,
+        description="""Optional human readable label describing or titling the image.""",
+    )
 
 
 class ImageRepresentation(ConfiguredBaseModel, AttributeMixin):
@@ -328,17 +333,17 @@ class ImageRepresentation(ConfiguredBaseModel, AttributeMixin):
     total_size_in_bytes: int = Field(
         description="""Combined disc size in bytes of all the files."""
     )
-    physical_size_x: Optional[float] = Field(
+    voxel_physical_size_x: Optional[float] = Field(
         None,
-        description="""Size of the physical space (in meters) captured in the field of view of the image.""",
+        description="""Size of the physical space (in meters) captured by a single pixel or voxel of the image.""",
     )
-    physical_size_y: Optional[float] = Field(
+    voxel_physical_size_y: Optional[float] = Field(
         None,
-        description="""Size of the physical space (in meters) captured in the field of view of the image.""",
+        description="""Size of the physical space (in meters) captured by a single pixel or voxel of the image.""",
     )
-    physical_size_z: Optional[float] = Field(
+    voxel_physical_size_z: Optional[float] = Field(
         None,
-        description="""Size of the physical space (in meters) captured in the field of view of the image.""",
+        description="""Size of the physical space (in meters) captured by a single pixel or voxel of the image.""",
     )
     size_x: Optional[int] = Field(
         None,
@@ -358,9 +363,9 @@ class ImageRepresentation(ConfiguredBaseModel, AttributeMixin):
     )
     size_t: Optional[int] = Field(
         None,
-        description="""Size of temporal dimension of the data array of the image.""",
+        description="""Number of timesteps in the temporal dimension of the data array of the image.""",
     )
-    image_viewer_setting: Optional[List[RenderedView]] = Field(
+    image_viewer_setting: List[RenderedView] = Field(
         default_factory=list,
         description="""Settings of a particular view of an image, such as a specific timestamp of a timeseries, or camera placement in a 3D model.""",
     )
@@ -377,7 +382,7 @@ class RenderedView(ConfiguredBaseModel, AttributeMixin):
     t: Optional[str] = Field(
         None, description="""A t-value for the timestamp of the image view"""
     )
-    channel_information: Optional[List[Channel]] = Field(
+    channel_information: List[Channel] = Field(
         default_factory=list,
         description="""Information about the channels involved in displaying this view of the image.""",
     )
@@ -422,6 +427,7 @@ class Protocol(ConfiguredBaseModel, AttributeMixin):
     The description of a sequence of actions that were perfomed.
     """
 
+    title: str = Field(description="""The title of a protocol.""")
     protocol_description: str = Field(
         description="""Description of actions involved in the process."""
     )
@@ -435,11 +441,11 @@ class ImageAcquisitionProtocol(Protocol):
     imaging_instrument_description: str = Field(
         description="""Names, types, or description of how the instruments used to create the image."""
     )
-    fbbi_id: Optional[List[str]] = Field(
+    fbbi_id: List[str] = Field(
         default_factory=list,
         description="""Biological Imaging Methods Ontology id indicating the kind of imaging that was perfomed.""",
     )
-    imaging_method_name: Optional[List[str]] = Field(
+    imaging_method_name: List[str] = Field(
         default_factory=list,
         description="""Name of the kind of imaging method that was performed.""",
     )
@@ -450,7 +456,7 @@ class SpecimenImagingPreparationProtocol(Protocol):
     The process to prepare biological entity for imaging.
     """
 
-    signal_channel_information: Optional[List[SignalChannelInformation]] = Field(
+    signal_channel_information: List[SignalChannelInformation] = Field(
         default_factory=list,
         description="""Information about how channels in the image relate to image signal generation.""",
     )
@@ -470,6 +476,10 @@ class SignalChannelInformation(ConfiguredBaseModel, AttributeMixin):
     )
     channel_biological_entity: Optional[str] = Field(
         None, description="""What molecule is stained."""
+    )
+    channel_label: Optional[str] = Field(
+        default=None,
+        description="""Label in the image for the channel. Often this is some integer e.g. 1 or Channel 1""",
     )
 
 
@@ -582,20 +592,21 @@ class BioSample(ConfiguredBaseModel, AttributeMixin):
     The biological entity that has undergone preparation (as a Sample) in order to be imaged.
     """
 
+    title: str = Field(description="""The title of a bio-sample.""")
     organism_classification: List[Taxon] = Field(
         description="""The classification of th ebiological matter."""
     )
     biological_entity_description: str = Field(
         description="""A short description of the biological entity."""
     )
-    experimental_variable_description: Optional[List[str]] = Field(
+    experimental_variable_description: List[str] = Field(
         default_factory=list,
         description="""What is intentionally varied (e.g. time) between multiple entries in this study component""",
     )
-    extrinsic_variable_description: Optional[List[str]] = Field(
+    extrinsic_variable_description: List[str] = Field(
         default_factory=list, description="External treatment (e.g. reagent)."
     )
-    intrinsic_variable_description: Optional[List[str]] = Field(
+    intrinsic_variable_description: List[str] = Field(
         default_factory=list, description="Intrinsic (e.g. genetic) alteration."
     )
 
