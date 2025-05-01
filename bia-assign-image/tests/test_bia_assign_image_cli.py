@@ -74,7 +74,7 @@ def test_api_client():
 
 
 @pytest.mark.parametrize("format", ("tsv", "yaml"))
-def test_cli_propose_images_command(format, data_in_api, tmpdir):
+def test_cli_propose_images_command(format, tmpdir):
     max_items = 2
     propose_output_path = Path(tmpdir) / f"propose_S-BIADTEST.{format}"
 
@@ -111,7 +111,6 @@ def test_cli_propose_images_command(format, data_in_api, tmpdir):
     ),
 )
 def test_cli_assign_from_proposal_command(
-    data_in_api,
     test_api_client,
     format,
     assign_from_proposal_input_path_tsv,
@@ -126,11 +125,6 @@ def test_cli_assign_from_proposal_command(
         assign_from_proposal_input_path = f"{assign_from_proposal_input_path_tsv}"
     elif format == "yaml":
         assign_from_proposal_input_path = f"{assign_from_proposal_input_path_yaml}"
-
-    # result = cli.assign_from_proposal(
-    #       Path(assign_from_proposal_input_path),
-    #       "local",
-    # )
 
     result = runner.invoke(
         cli.app,

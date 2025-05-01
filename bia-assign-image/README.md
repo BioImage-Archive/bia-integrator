@@ -50,6 +50,35 @@ E.g. Assuming the study S-BIAD1285 has been ingested:
 ```sh
 poetry run bia-assign-image assign S-BIAD1285 b768fb72-7ea2-4b80-b54d-bdf5ca280bfd
 ```
+### Using patterns during assignment
+The python [parse](https://github.com/r1chardj0n3s/parse) library is used for pattern matching. Multiple files (e.g. multichannel images or time series stored individually) can be assigned into one image if their filenames follow a predictable structure allowing the creation of a *file pattern*. E.g. the file pattern `image_01_channel_{c:d}_slice_{z:d}.tiff` can be used to combine the following four files into one 3D multichannel image:<br>
+ image_01_channel_00_slice_00.tiff with uuid: 12345678-abcd-ef12-3456-012345678900<br>
+ image_01_channel_01_slice_00.tiff with uuid: 12345678-abcd-ef12-3456-012345678901<br>
+ image_01_channel_00_slice_01.tiff with uuid: 12345678-abcd-ef12-3456-012345678902<br>
+ image_01_channel_01_slice_01.tiff with uuid: 12345678-abcd-ef12-3456-012345678903<br>
+
+ In some cases the filenames required may not follow the ideal structure above e.g. `image_01_channel_00_slice_00.tiff` and `image_01_channel_00_slice1.tiff`. In such cases empty braces can be used to capture more general parts of the filenames - in the present case `image_01_channel_{c:d}_slice{}.tiff` will suffice.
+#### Using patterns in a yaml file
+In the yaml file, the entry for the image should contain a key called `pattern` with value of the pattern. The `file_reference_uuid` key should contain all the file references separated by spaces. The `assign_from_proposal` command can then be used. E.g. the yaml for the above example will be:
+```
+---
+- accession_id: S-BIADTEST
+  dataset_uuid: dummy_dataset_uuid
+  file_reference_uuid: "12345678-abcd-ef12-3456-012345678900 12345678-abcd-ef12-3456-012345678901 12345678-abcd-ef12-3456-012345678902 12345678-abcd-ef12-3456-012345678903"
+  name: dummy_name
+  pattern: 'image_01_channel_{c:d}_slice_{z:d}.tiff'
+  study_uuid: dummy_study_uuid
+```
+then run:
+```sh
+poetry run bia-assign-image assign-from-proposal example.yaml
+```
+
+#### Using a pattern directly in the cli
+To directly create a BIA Image from the above file references and pattern, run:
+```sh
+poetry run bia-assign-image assign --pattern 'image_01_channel_{c:d}_slice_{z:d}.tiff' S-BIADTEST 12345678-abcd-ef12-3456-012345678900 12345678-abcd-ef12-3456-012345678901 12345678-abcd-ef12-3456-012345678902 12345678-abcd-ef12-3456-012345678903
+```
 
 ### Creating representations (without conversion of images)
 To create an image representation from an image (without image conversion also occuring), run:

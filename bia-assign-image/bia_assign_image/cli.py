@@ -63,6 +63,9 @@ def assign(
     api_target: Annotated[
         ApiTarget, typer.Option("--api", "-a", case_sensitive=False)
     ] = ApiTarget.prod,
+    pattern: Annotated[
+        str | None, typer.Option("--pattern", "-p", case_sensitive=False)
+    ] = None,
     dryrun: Annotated[bool, typer.Option()] = False,
 ) -> str:
     api_client = get_api_client(api_target)
@@ -139,6 +142,7 @@ def assign(
         submission_dataset_uuid,
         bia_creation_process.uuid,
         file_references=file_references,
+        file_pattern=pattern,
     )
     if dryrun:
         logger.info(f"Dryrun: Created Image(s) {bia_image}, but not persisting.")
@@ -146,6 +150,16 @@ def assign(
         store_object_in_api_idempotent(api_client, bia_image)
         logger.info(
             f"Generated bia_data_model.Image object {bia_image.uuid} and persisted to {api_target} API"
+        )
+
+    if not dryrun:
+        # Create default representation
+        create(
+            accession_id=accession_id,
+            image_uuid_list=[
+                f"{bia_image.uuid}",
+            ],
+            api_target=api_target,
         )
     return str(bia_image.uuid)
 
@@ -220,11 +234,13 @@ def assign_from_proposal(
         file_reference_uuids = [
             p["file_reference_uuid"],
         ]
+        pattern = p.get("pattern", None)
         try:
-            image_uuid = assign(
+            assign(
                 accession_id=accession_id,
                 file_reference_uuids=file_reference_uuids,
                 api_target=api_target,
+                pattern=pattern,
                 dryrun=dryrun,
             )
         except AssertionError as e:
@@ -232,14 +248,6 @@ def assign_from_proposal(
                 f"Could not assign image for {accession_id} with file reference(s) {file_reference_uuids}. Error was {e}"
             )
             continue
-
-        if not dryrun:
-            # Create default representation
-            create(
-                accession_id=p["accession_id"],
-                image_uuid_list=[image_uuid],
-                api_target=api_target,
-            )
 
 
 @app.command(help="Propose file references to convert for an accession")

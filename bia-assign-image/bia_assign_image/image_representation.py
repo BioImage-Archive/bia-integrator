@@ -34,10 +34,15 @@ def get_image_representation(
     #   - thumbnail and static display are png
     #   - interactive display is ome.zarr
     if use_type == semantic_models.ImageRepresentationUseType.UPLOADED_BY_SUBMITTER:
-        # TODO: Revisit this block of code when we start many file_refs->one_image
-        # assert len(file_references) == 1
-        image_format = get_image_extension(file_references[0].file_path)
-        total_size_in_bytes = file_references[0].size_in_bytes
+        # TODO: Confirm convention below with BIA team i.e. csv of sorted unique image formats
+        image_format_list = [get_image_extension(f.file_path) for f in file_references]
+        image_format_set = set(image_format_list)
+        image_format_list = list(image_format_set)
+        image_format_list.sort()
+        image_format = ",".join(image_format_list)
+
+        # Sum size of all file references
+        total_size_in_bytes = sum([f.size_in_bytes for f in file_references])
 
         # Copy file_pattern from image if it exists (only for UPLOADED_BY_SUBMITTER rep)
         file_pattern = next(
@@ -64,9 +69,7 @@ def get_image_representation(
     file_uri_list = []
     if file_uri == "":
         if use_type == semantic_models.ImageRepresentationUseType.UPLOADED_BY_SUBMITTER:
-            file_uri_list.append(
-                file_references[0].uri,
-            )
+            file_uri_list.extend([f.uri for f in file_references])
     else:
         file_uri_list.append(file_uri)
 

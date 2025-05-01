@@ -49,3 +49,8 @@ def test_create_representation_of_single_image(
     )
 
     assert created == expected
+
+
+# TODO: Write test for creation of image representation where
+# Image has original_file_references with more than one format
+# e.g. file1.hdr and file1.img

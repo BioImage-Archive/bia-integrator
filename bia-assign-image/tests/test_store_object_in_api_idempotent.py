@@ -15,13 +15,15 @@ from bia_assign_image.api_client import (
 def new_study_object() -> bia_data_model.Study:
     # Create unique uuid based on current timestamp
     timestamp = datetime.strftime(datetime.now(), "%d-%m-%Y-%H:%M:%S:%f")
-    study_uuid = uuid_creation.create_study_uuid(timestamp)
+    accession_id = f"S-BIAD-TEST-STORE-OBJECT-IN-API-IDEMPOTENT-{timestamp}"
+    study_uuid = uuid_creation.create_study_uuid(accession_id)
 
-    # Load study from test data
+    # Load a random study from test data
     study_path = Path(__file__).parent / "input_data" / "study"
     study_json = next(p for p in study_path.rglob("./*/*.json"))
     study = bia_data_model.Study.model_validate_json(study_json.read_text())
     study.uuid = study_uuid
+    study.accession_id = accession_id
     return study
 
 
