@@ -30,7 +30,6 @@ def create_api_study(crate_objects_by_id: dict[str, ROCrateModel]) -> APIModels.
 def convert_study(
     ro_crate_study: ROCrateModels.Study, crate_objects_by_id: dict[str, ROCrateModel]
 ) -> APIModels.Study:
-    accession_id = "S-BIADTEST01"
 
     contributors = []
     for contributor_id in ro_crate_study.contributor:
@@ -44,8 +43,8 @@ def convert_study(
     # TODO add logic and to models to handle external links
 
     study = {
-        "accession_id": accession_id,
-        "uuid": str(uuid_creation.create_study_uuid(accession_id)),
+        "accession_id": ro_crate_study.accession_id,
+        "uuid": str(uuid_creation.create_study_uuid(ro_crate_study.accession_id)),
         "version": 0,
         "title": ro_crate_study.title,
         "description": ro_crate_study.description,

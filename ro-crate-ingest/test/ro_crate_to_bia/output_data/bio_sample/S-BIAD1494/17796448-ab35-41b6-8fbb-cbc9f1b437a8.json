@@ -1,0 +1,20 @@
+{
+  "title_id": "Wild type mouse stem cells",
+  "uuid": "17796448-ab35-41b6-8fbb-cbc9f1b437a8",
+  "version": 0,
+  "model": null,
+  "attribute": null,
+  "organism_classification": [
+    {
+      "attribute": null,
+      "common_name": "mouse",
+      "scientific_name": "mus musculus",
+      "ncbi_id": null
+    }
+  ],
+  "biological_entity_description": "mouse embryonic stem cells and differentiated neuronal precursors from wild-type HM1 line.",
+  "experimental_variable_description": null,
+  "extrinsic_variable_description": null,
+  "intrinsic_variable_description": null,
+  "growth_protocol_uuid": null
+}

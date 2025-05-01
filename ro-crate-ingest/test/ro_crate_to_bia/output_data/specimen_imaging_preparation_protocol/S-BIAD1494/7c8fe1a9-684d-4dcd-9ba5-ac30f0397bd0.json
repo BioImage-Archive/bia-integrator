@@ -1,0 +1,28 @@
+{
+  "title_id": "Mouse embryonic stem cell prepration",
+  "uuid": "7c8fe1a9-684d-4dcd-9ba5-ac30f0397bd0",
+  "version": 0,
+  "model": null,
+  "attribute": null,
+  "protocol_description": "For mES cell culture, the wild-type HM1 line and the HM1-derived Nup133-/- clone (#14) described previously were used. Mouse embryonic stem cell medium was prepared by supplementing EmbryoMax® DMEM (Millipore, SLM-220-B) with 15% FBS (Gibco, 10270-106), 2 mM L-Glutamine (Gibco, 25030-024), 1 × non-essential amino acids (Gibco, 11140-035 or 11140-050), 1 × EmbryoMax® nucleosides (Millipore, ES-008-D), 110 μM β-mercaptoethanol (Gibco, 21985-023) and 1 × penicillin/streptomycin (Gibco, 15070-063). mES cells were cultured on mitomycin-treated mouse embryonic fibroblasts (feeder cells) plated on 0.1% gelatin (Sigma-Aldrich) in mouse embryonic stem cell medium supplemented with leukemia inhibitory factor (LIF, ESGRO, Millipore, final 1000 U/ml), and kept at 37°C with 5% CO2. Cells were used within eight passages after thawing frozen vials to ensure the quality of the stem cell culture.\nThe neural progenitor differentiation was performed following the previously published protocol. Briefly, after two passages on feeder cells, mES cells were transferred to gelatin-coated plates without feeder cells, and cultured for two to four passages in the presence of LIF. Subsequently, cells were trypsinized and 4 × 106 cells were transferred to non-coated 10-cm Petri dishes (Greiner, 633102) and cultured for eight days within DMEM supplemented with 10% FBS (Gibco, 10270-106), 2 mM L-glutamine (Gibco, 25030-024), 1 × MEM non-essential amino acids (Gibco, 11140-035) and 100 μM β-mercaptoethanol (Gibco, 31350-010) without LIF. The culture medium was changed every two days, and after four days, 5 μM retinoic acid (Sigma, R2625) was added to the medium. After eight days of culture, the aggregates of neural progenitors were dissociated by trypsinization at 37°C for 5 min in the water bath, and the dissociated cells were either immediately used for cryo-EM grid preparation as described below, frozen within the medium supplemented with 10% DMSO and stored until use, or directly used for subsequent neuronal differentiation. For the neuronal differentiation, dissociated cells were seeded on glass bottom plates (ibidi, 80827) coated with poly-DL-ornithine (Sigma, P8638) and laminin (Roche, 11243217001) at approximately 1–2 × 105 cells/cm2, and cultured in N2 medium (1:1 mixture of DMEM (Gibco, 21969-035) and Ham’s F-12 nutrient mix (Gibco, 21765-029), supplemented with 2 mM L-glutamine, 25 μg/ml insulin (Sigma, I6634), 50 μg/ml transferrin (Sigma, T1147), 20 nM progesterone (Sigma, P8783), 100 nM putrescine (Sigma, P5780), 30 nM sodium-selenite (Sigma, 214485), 50 μg/ml BSA (Sigma, A9418), and 1 × penicillin/streptomycin (Gibco, 15140-122)) for two days. The medium was changed to fresh N2 medium 2 h and one day after plating.\nFor mES samples, feeder cells were first seeded on 8-well polymer bottom chambered slides (ibidi, 80826) coated with 0.1% gelatin at a seeding density of 2 × 104 cells/cm2. mES cells were seeded on feeder cells at a density of 4 × 104 cells/cm2, and cultured for 24h before fixation with 4% paraformaldehyde for 15 min. For neuronal precursor samples, cells were seeded on 8-well glass bottom chambered slides (ibidi, 80827) coated with poly-LD-ornithine and laminin as described above, and fixed at the indicated time point after seeding in 4% paraformaldehyde for 15 min. For staining, cells were permeabilized in 0.1% Triton in PBS for 10 min, washed three times with PBS for 5 min each, and blocked for 30 min using 3% BSA-containing PBS (PBS/BSA). After blocking, primary antibodies diluted in PBS/BSA were applied, and samples were incubated overnight at 4°C. After washing the samples with PBS, samples were incubated with secondary antibodies diluted in PBS for 2 h at room temperature. DNA was stained with 1 μM of Hoechst 33342 (Thermo Fisher Scientific, 62249).",
+  "signal_channel_information": [
+    {
+      "attribute": null,
+      "signal_contrast_mechanism_description": "fluorescent dye",
+      "channel_content_description": "Hoechst33342",
+      "channel_biological_entity": "DNA"
+    },
+    {
+      "attribute": null,
+      "signal_contrast_mechanism_description": "antibody",
+      "channel_content_description": "anti-53BP1 from Novus-Biologicals (NB100-304SS) with Alexa-Fluor-594",
+      "channel_biological_entity": null
+    },
+    {
+      "attribute": null,
+      "signal_contrast_mechanism_description": "antibody",
+      "channel_content_description": "nti-yH2AX from merck (05-636) with Alexa-Fluor-Plus-488",
+      "channel_biological_entity": null
+    }
+  ]
+}

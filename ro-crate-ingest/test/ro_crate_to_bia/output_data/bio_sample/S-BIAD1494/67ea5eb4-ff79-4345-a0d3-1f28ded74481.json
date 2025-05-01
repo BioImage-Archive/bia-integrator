@@ -1,0 +1,20 @@
+{
+  "title_id": "Nup133 mouse stem cells",
+  "uuid": "67ea5eb4-ff79-4345-a0d3-1f28ded74481",
+  "version": 0,
+  "model": null,
+  "attribute": null,
+  "organism_classification": [
+    {
+      "attribute": null,
+      "common_name": "mouse",
+      "scientific_name": "mus musculus",
+      "ncbi_id": null
+    }
+  ],
+  "biological_entity_description": "mouse embryonic stem cells and differentiated neuronal precursors from HM1-derived Nup133-/- clone.",
+  "experimental_variable_description": null,
+  "extrinsic_variable_description": null,
+  "intrinsic_variable_description": null,
+  "growth_protocol_uuid": null
+}

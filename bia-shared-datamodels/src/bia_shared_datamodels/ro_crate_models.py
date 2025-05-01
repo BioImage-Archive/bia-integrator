@@ -25,6 +25,7 @@ class Study(ROCrateModel):
     has_part: Annotated[
         list[str], FieldContext("http://schema.org/hasPart", isIdField=True)
     ] = Field()
+    accession_id: Annotated[str, FieldContext("http://schema.org/identifier")] = Field()
 
     model_config = ConfigDict(model_type="http://bia/Study")
 
