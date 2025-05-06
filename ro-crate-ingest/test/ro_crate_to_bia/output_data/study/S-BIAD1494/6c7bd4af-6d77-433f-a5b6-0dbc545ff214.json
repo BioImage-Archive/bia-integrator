@@ -1,0 +1,56 @@
+{
+  "uuid": "6c7bd4af-6d77-433f-a5b6-0dbc545ff214",
+  "version": 0,
+  "model": {
+    "type_name": "Study",
+    "version": 2
+  },
+  "attribute": null,
+  "accession_id": "S-BIAD1494",
+  "licence": "CC_BY_4.0",
+  "author": [
+    {
+      "rorid": null,
+      "address": null,
+      "website": null,
+      "orcid": "https://orcid.org/0000-0003-3862-8349",
+      "display_name": "Reiya Taniguchi",
+      "affiliation": [
+        {
+          "rorid": "https://ror.org/0243gzr89",
+          "address": null,
+          "website": null,
+          "display_name": "Max Planck Institute of Biophysics"
+        }
+      ],
+      "contact_email": null,
+      "role": null
+    },
+    {
+      "rorid": null,
+      "address": null,
+      "website": null,
+      "orcid": "https://orcid.org/0000-0002-7397-1321",
+      "display_name": "Martin Beck",
+      "affiliation": [
+        {
+          "rorid": "https://ror.org/0243gzr89",
+          "address": null,
+          "website": null,
+          "display_name": "Max Planck Institute of Biophysics"
+        }
+      ],
+      "contact_email": null,
+      "role": null
+    }
+  ],
+  "title": "Immunofluorescence staining images of mouse embryonic stem cells and neuronal precursors with y-H2AX and 53BP1 foci",
+  "release_date": "2024-01-23",
+  "description": "Wild-type and Nup133-deficient cells were fixed with 4% PFA and subjected to immunofluorescence staining experiments to assess the accumulation of DNA damage. mouse embryonic stem cells and differentiating neuronal precursors at two different time points in the neuronal differentiation (2h and 24h) were used for the experiments.",
+  "keyword": [],
+  "acknowledgement": null,
+  "see_also": [],
+  "related_publication": null,
+  "grant": null,
+  "funding_statement": null
+}

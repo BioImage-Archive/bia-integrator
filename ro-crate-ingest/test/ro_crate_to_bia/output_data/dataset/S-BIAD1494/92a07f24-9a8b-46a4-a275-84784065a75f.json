@@ -1,0 +1,15 @@
+{
+  "title_id": "Wild Type mES replicate-2",
+  "uuid": "92a07f24-9a8b-46a4-a275-84784065a75f",
+  "version": 0,
+  "model": {
+    "type_name": "Dataset",
+    "version": 1
+  },
+  "attribute": null,
+  "description": null,
+  "analysis_method": null,
+  "correlation_method": null,
+  "example_image_uri": [],
+  "submitted_in_study_uuid": "6c7bd4af-6d77-433f-a5b6-0dbc545ff214"
+}

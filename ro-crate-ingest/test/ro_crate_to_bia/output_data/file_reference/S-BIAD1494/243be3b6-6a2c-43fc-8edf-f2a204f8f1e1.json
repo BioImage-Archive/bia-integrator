@@ -1,0 +1,14 @@
+{
+  "uuid": "243be3b6-6a2c-43fc-8edf-f2a204f8f1e1",
+  "version": 0,
+  "model": {
+    "type_name": "FileReference",
+    "version": 2
+  },
+  "attribute": null,
+  "file_path": "DNA_damage/Nup133KO/mES/Rep3/mESKO133_b25_H2AX-488_53BP1-594_002.tif",
+  "format": ".tif",
+  "size_in_bytes": 41,
+  "uri": "None?",
+  "submission_dataset_uuid": "9282cd99-c624-48ec-b386-3acd4c78cd17"
+}

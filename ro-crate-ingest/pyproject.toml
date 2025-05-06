@@ -6,7 +6,7 @@ authors = []
 readme = "Readme.md"
 
 [tool.poetry.scripts]
-ro-crate-ingest = "ro-crate-ingest.cli:ro_crate_ingest"
+ro-crate-ingest = "ro_crate_ingest.cli:ro_crate_ingest"
 
 [tool.poetry.dependencies]
 python = "^3.10,<3.12"
@@ -19,6 +19,7 @@ linkml = "^1.8.7"
 roc-validator = "^0.6.1"
 deepdiff = "^8.3.0"
 pyld = "^2.0.4"
+pydantic-settings = "^2.9.1"
 
 
 [tool.poetry.group.dev.dependencies]

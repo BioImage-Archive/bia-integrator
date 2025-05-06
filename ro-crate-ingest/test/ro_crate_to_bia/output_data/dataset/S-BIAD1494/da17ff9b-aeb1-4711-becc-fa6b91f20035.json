@@ -1,0 +1,15 @@
+{
+  "title_id": "Nup133K0 2h replicate-1",
+  "uuid": "da17ff9b-aeb1-4711-becc-fa6b91f20035",
+  "version": 0,
+  "model": {
+    "type_name": "Dataset",
+    "version": 1
+  },
+  "attribute": null,
+  "description": null,
+  "analysis_method": null,
+  "correlation_method": null,
+  "example_image_uri": [],
+  "submitted_in_study_uuid": "6c7bd4af-6d77-433f-a5b6-0dbc545ff214"
+}

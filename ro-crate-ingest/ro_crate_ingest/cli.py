@@ -1,7 +1,6 @@
 import typer
 import logging
 from typing import Annotated, Optional
-from pydantic import RootModel
 from ro_crate_ingest.crate_reader import process_ro_crate
 from ro_crate_ingest.entity_conversion import (
     AnnotationMethod,
@@ -15,8 +14,10 @@ from ro_crate_ingest.entity_conversion import (
 )
 from pathlib import Path
 from rich.logging import RichHandler
+from .save_utils import PersistenceMode, persist
+from bia_integrator_api import models
 
-bia_ro_crate = typer.Typer()
+ro_crate_ingest = typer.Typer()
 
 logging.basicConfig(
     level="NOTSET", format="%(message)s", datefmt="[%X]", handlers=[RichHandler()]
@@ -24,7 +25,7 @@ logging.basicConfig(
 logger = logging.getLogger()
 
 
-@bia_ro_crate.command("ingest")
+@ro_crate_ingest.command("ingest")
 def convert(
     crate_path: Annotated[
         Optional[Path],
@@ -35,14 +36,15 @@ def convert(
             help="Path to the ro-crate root (or ro-crate-metadata.json)",
         ),
     ] = None,
-    output_dir: Annotated[
-        Optional[Path],
+    persistence_mode: Annotated[
+        Optional[PersistenceMode],
         typer.Option(
-            "--output-dir",
-            "-o",
+            "--persistance-mode",
+            "-p",
             case_sensitive=False,
+            help="Mode to persist the data. Options: local_file, local_api, bia_api",
         ),
-    ] = Path(__file__).parents[1],
+    ] = PersistenceMode.LOCAL_FILE,
 ):
 
     entities = process_ro_crate(crate_path)
@@ -50,28 +52,55 @@ def convert(
     api_objects = []
 
     study = Study.create_api_study(entities)
+    accession_id = study.accession_id
+    persist(accession_id, models.Study, [study], persistence_mode)
     api_objects.append(study)
-
     study_uuid = study.uuid
 
     datasets = Dataset.create_api_dataset(entities, study_uuid)
+    persist(accession_id, models.Dataset, datasets, persistence_mode)
     api_objects += datasets
-    api_objects += AnnotationMethod.create_api_image_acquisition_protocol(
+
+    annotation_methods = AnnotationMethod.create_api_image_acquisition_protocol(
         entities, study_uuid
     )
-    api_objects += Protocol.create_api_protocol(entities, study_uuid)
-    api_objects += BioSample.create_api_bio_sample(entities, study_uuid)
-    api_objects += ImageAcquisitionProtocol.create_api_image_acquisition_protocol(
+    persist(accession_id, models.AnnotationMethod, annotation_methods, persistence_mode)
+    api_objects += annotation_methods
+
+    protocols = Protocol.create_api_protocol(entities, study_uuid)
+    persist(accession_id, models.Protocol, protocols, persistence_mode)
+    api_objects += protocols
+
+    bio_samples = BioSample.create_api_bio_sample(entities, study_uuid)
+    persist(accession_id, models.BioSample, bio_samples, persistence_mode)
+    api_objects += bio_samples
+
+    image_acquisition_protocols = (
+        ImageAcquisitionProtocol.create_api_image_acquisition_protocol(
+            entities, study_uuid
+        )
+    )
+    persist(
+        accession_id,
+        models.ImageAcquisitionProtocol,
+        image_acquisition_protocols,
+        persistence_mode,
+    )
+    api_objects += image_acquisition_protocols
+
+    specimen_imaging_preparation_protocols = SpecimenImagingPreparationProtocol.create_api_specimen_imaging_preparation_protocol(
         entities, study_uuid
     )
-    api_objects += SpecimenImagingPreparationProtocol.create_api_specimen_imaging_preparation_protocol(
-        entities, study_uuid
+    persist(
+        accession_id,
+        models.SpecimenImagingPreparationProtocol,
+        specimen_imaging_preparation_protocols,
+        persistence_mode,
     )
+    api_objects += specimen_imaging_preparation_protocols
 
-    api_objects += FileReference.create_file_reference(entities, study_uuid, crate_path)
-
-    ApiModels = RootModel[list]
-    write_out = ApiModels(api_objects)
-
-    with open(output_dir / "combined_metadata.json", "w") as f:
-        f.write(write_out.model_dump_json(indent=2))
+    file_references = FileReference.create_file_reference(
+        entities, study_uuid, crate_path
+    )
+    persist(accession_id, models.FileReference, file_references, persistence_mode)
+    api_objects += file_references
