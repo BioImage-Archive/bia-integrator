@@ -14,7 +14,7 @@ import logging
 logger = logging.getLogger("__main__." + __name__)
 
 
-class PersistanceMode(str, Enum):
+class PersistenceMode(str, Enum):
     """
     Enum for the different persistance modes.
     """
@@ -117,18 +117,19 @@ def persist(
     accession_id: str,
     object_type: Type[bia_data_model.DocumentMixin],
     objects_to_save: list[bia_data_model.DocumentMixin],
-    persistance_mode: PersistanceMode,
+    persistence_mode: PersistenceMode,
 ):
 
-    if persistance_mode == PersistanceMode.LOCAL_FILE:
+    if persistence_mode == PersistenceMode.LOCAL_FILE:
+    if persistence_mode == PersistenceMode.LOCAL_FILE:
         save_local_file(accession_id, object_type, objects_to_save)
-    elif persistance_mode == PersistanceMode.LOCAL_API:
+    elif persistence_mode == PersistenceMode.LOCAL_API:
         save_local_api(object_type, objects_to_save)
-    elif persistance_mode == PersistanceMode.BIA_API:
+    elif persistence_mode == PersistenceMode.BIA_API:
         save_bia_api(object_type, objects_to_save)
     else:
         raise ValueError(
-            f"Something went wrong with the persistance mode: {persistance_mode}"
+            f"Something went wrong with the persistance mode: {persistence_mode}"
         )
 
 
