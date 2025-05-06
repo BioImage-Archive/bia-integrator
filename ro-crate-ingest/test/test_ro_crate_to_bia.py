@@ -90,7 +90,4 @@ def test_ingest_ro_crate_metadata_with_api(get_bia_api_client):
         api_obj_type = api_obj.__class__
         expected_object = api_obj_type.model_validate(expected_out)
 
-        # The object we create don't necessary have a value for model, as it is optional, and gets set in the API.
-        api_obj.model = None
-
         assert api_obj == expected_object

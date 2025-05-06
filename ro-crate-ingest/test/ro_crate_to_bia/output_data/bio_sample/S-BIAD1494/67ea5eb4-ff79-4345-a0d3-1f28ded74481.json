@@ -2,7 +2,10 @@
   "title_id": "Nup133 mouse stem cells",
   "uuid": "67ea5eb4-ff79-4345-a0d3-1f28ded74481",
   "version": 0,
-  "model": null,
+  "model": {
+    "type_name": "BioSample",
+    "version": 3
+  },
   "attribute": null,
   "organism_classification": [
     {

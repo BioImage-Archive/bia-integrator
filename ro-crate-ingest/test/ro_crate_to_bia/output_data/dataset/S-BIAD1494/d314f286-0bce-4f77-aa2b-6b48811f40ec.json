@@ -2,7 +2,10 @@
   "title_id": "Wild Type mES replicate-3",
   "uuid": "d314f286-0bce-4f77-aa2b-6b48811f40ec",
   "version": 0,
-  "model": null,
+  "model": {
+    "type_name": "Dataset",
+    "version": 1
+  },
   "attribute": null,
   "description": null,
   "analysis_method": null,

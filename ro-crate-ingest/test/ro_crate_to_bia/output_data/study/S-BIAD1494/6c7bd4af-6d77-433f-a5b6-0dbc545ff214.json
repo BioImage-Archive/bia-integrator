@@ -1,7 +1,10 @@
 {
   "uuid": "6c7bd4af-6d77-433f-a5b6-0dbc545ff214",
   "version": 0,
-  "model": null,
+  "model": {
+    "type_name": "Study",
+    "version": 2
+  },
   "attribute": null,
   "accession_id": "S-BIAD1494",
   "licence": "CC_BY_4.0",

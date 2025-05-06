@@ -1,7 +1,10 @@
 {
   "uuid": "8df977c9-6835-4c72-bb66-4962b0212b48",
   "version": 0,
-  "model": null,
+  "model": {
+    "type_name": "FileReference",
+    "version": 2
+  },
   "attribute": null,
   "file_path": "DNA_damage/Nup133KO/mES/Rep3/mESKO133_b25_H2AX-488_53BP1-594_001.tif",
   "format": ".tif",

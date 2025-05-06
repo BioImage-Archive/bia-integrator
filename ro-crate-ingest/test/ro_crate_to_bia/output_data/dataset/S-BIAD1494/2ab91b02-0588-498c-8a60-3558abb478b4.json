@@ -2,7 +2,10 @@
   "title_id": "Nup133K0 mES replicate-1",
   "uuid": "2ab91b02-0588-498c-8a60-3558abb478b4",
   "version": 0,
-  "model": null,
+  "model": {
+    "type_name": "Dataset",
+    "version": 1
+  },
   "attribute": null,
   "description": null,
   "analysis_method": null,

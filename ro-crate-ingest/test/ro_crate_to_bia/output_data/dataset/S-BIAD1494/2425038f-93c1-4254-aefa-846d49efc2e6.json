@@ -2,7 +2,10 @@
   "title_id": "Wild Type 24h replicate-1",
   "uuid": "2425038f-93c1-4254-aefa-846d49efc2e6",
   "version": 0,
-  "model": null,
+  "model": {
+    "type_name": "Dataset",
+    "version": 1
+  },
   "attribute": null,
   "description": null,
   "analysis_method": null,

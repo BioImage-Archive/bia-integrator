@@ -2,7 +2,10 @@
   "title_id": "Confocal stack acquisition",
   "uuid": "b306065a-849f-40db-b60e-216bec43ce3b",
   "version": 0,
-  "model": null,
+  "model": {
+    "type_name": "ImageAcquisitionProtocol",
+    "version": 2
+  },
   "attribute": null,
   "protocol_description": "Images were acquired using a 63×/1.40 oil objective. 25 Z stacks were acquired with 0.6 um intervals. Bidirectional image acquisition with scan speed of 400 was used for the data acquisition. Line average was set to 4.",
   "imaging_instrument_description": "Stellaris 5 confocal microscope",

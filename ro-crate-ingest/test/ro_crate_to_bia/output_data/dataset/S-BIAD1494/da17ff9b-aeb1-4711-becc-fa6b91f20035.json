@@ -2,7 +2,10 @@
   "title_id": "Nup133K0 2h replicate-1",
   "uuid": "da17ff9b-aeb1-4711-becc-fa6b91f20035",
   "version": 0,
-  "model": null,
+  "model": {
+    "type_name": "Dataset",
+    "version": 1
+  },
   "attribute": null,
   "description": null,
   "analysis_method": null,

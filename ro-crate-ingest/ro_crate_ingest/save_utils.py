@@ -1,7 +1,7 @@
 from .settings import get_settings
 from pathlib import Path
 import os
-from bia_shared_datamodels.bia_data_model import DocumentMixin
+from bia_shared_datamodels import bia_data_model
 from typing import Type
 from enum import Enum
 from pydantic.alias_generators import to_snake
@@ -24,7 +24,9 @@ class PersistanceMode(str, Enum):
     BIA_API = "bia_api"
 
 
-def save_local_individual_file(object_dir: Path, object_to_save: DocumentMixin):
+def save_local_individual_file(object_dir: Path, object_to_save):
+
+    object_to_save = round_trip_object_class_from_client_to_datamodel(object_to_save)
 
     with open(object_dir / f"{object_to_save.uuid}.json", "w") as file:
         file.write(object_to_save.model_dump_json(indent=2))
@@ -32,8 +34,8 @@ def save_local_individual_file(object_dir: Path, object_to_save: DocumentMixin):
 
 def save_local_file(
     accession_id: str,
-    object_type: Type[DocumentMixin],
-    objects_to_save: list[DocumentMixin],
+    object_type: Type[bia_data_model.DocumentMixin],
+    objects_to_save: list[bia_data_model.DocumentMixin],
 ):
 
     local_cache_dir = Path(get_settings().bia_data_dir)
@@ -56,7 +58,9 @@ def save_local_file(
 
 
 def fetch_document(
-    object_type: Type[DocumentMixin], document: DocumentMixin, api_client
+    object_type: Type[bia_data_model.DocumentMixin],
+    document: bia_data_model.DocumentMixin,
+    api_client,
 ):
     try:
         api_get_method = f"get_{to_snake(object_type.__name__)}"
@@ -68,23 +72,29 @@ def fetch_document(
 
 
 def save_local_api(
-    object_type: Type[DocumentMixin], objects_to_save: list[DocumentMixin]
+    object_type: Type[bia_data_model.DocumentMixin],
+    objects_to_save: list[bia_data_model.DocumentMixin],
 ):
     client = get_local_bia_api_client()
     save_api(client, object_type, objects_to_save)
 
 
 def save_bia_api(
-    object_type: Type[DocumentMixin], objects_to_save: list[DocumentMixin]
+    object_type: Type[bia_data_model.DocumentMixin],
+    objects_to_save: list[bia_data_model.DocumentMixin],
 ):
     client = get_bia_api_client()
     save_api(client, object_type, objects_to_save)
 
 
 def save_api(
-    client, object_type: Type[DocumentMixin], objects_to_save: list[DocumentMixin]
+    client,
+    object_type: Type[bia_data_model.DocumentMixin],
+    objects_to_save: list[bia_data_model.DocumentMixin],
 ):
     for obj in objects_to_save:
+
+        obj = round_trip_object_class_from_client_to_datamodel(obj)
 
         api_copy_of_obj = fetch_document(object_type, obj, client)
         if api_copy_of_obj:
@@ -105,8 +115,8 @@ def save_api(
 
 def persist(
     accession_id: str,
-    object_type: Type[DocumentMixin],
-    objects_to_save: list[DocumentMixin],
+    object_type: Type[bia_data_model.DocumentMixin],
+    objects_to_save: list[bia_data_model.DocumentMixin],
     persistance_mode: PersistanceMode,
 ):
 
@@ -120,3 +130,23 @@ def persist(
         raise ValueError(
             f"Something went wrong with the persistance mode: {persistance_mode}"
         )
+
+
+def round_trip_object_class_from_client_to_datamodel(api_object):
+    """
+    This function is used to add in the information that the API would automatically add to the object.
+    This is to deal enable the ingest to check if the object has been changed and only bump the object version if it has.
+    Otherwise, the comparison would always fail because the API is adding e.g. model information to the object.
+    """
+    obj_class_api = api_object.__class__
+    bia_data_model_class = getattr(bia_data_model, obj_class_api.__name__)
+
+    obj_bia_data_model = bia_data_model_class.model_validate_json(
+        api_object.model_dump_json()
+    )
+
+    original_object = obj_class_api.model_validate_json(
+        obj_bia_data_model.model_dump_json()
+    )
+
+    return original_object

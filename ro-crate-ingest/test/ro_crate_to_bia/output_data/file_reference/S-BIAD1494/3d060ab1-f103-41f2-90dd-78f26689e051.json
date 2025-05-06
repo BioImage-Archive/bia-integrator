@@ -1,7 +1,10 @@
 {
   "uuid": "3d060ab1-f103-41f2-90dd-78f26689e051",
   "version": 0,
-  "model": null,
+  "model": {
+    "type_name": "FileReference",
+    "version": 2
+  },
   "attribute": null,
   "file_path": "DNA_damage/WT/mES/Rep3/mESWT_b25_H2AX-488_53BP1-594_001.tif",
   "format": ".tif",

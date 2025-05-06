@@ -1,7 +1,10 @@
 {
   "uuid": "a756e336-f7c4-400e-b16e-c89b53138521",
   "version": 0,
-  "model": null,
+  "model": {
+    "type_name": "FileReference",
+    "version": 2
+  },
   "attribute": null,
   "file_path": "DNA_damage/Nup133KO/NP_2h/Rep3/NPKO133_B3_2h_H2AX-488_53BP1-594_001.tif",
   "format": ".tif",

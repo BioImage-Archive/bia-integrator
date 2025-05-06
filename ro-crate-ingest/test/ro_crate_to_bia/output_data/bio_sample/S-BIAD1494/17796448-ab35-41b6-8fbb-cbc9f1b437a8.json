@@ -2,7 +2,10 @@
   "title_id": "Wild type mouse stem cells",
   "uuid": "17796448-ab35-41b6-8fbb-cbc9f1b437a8",
   "version": 0,
-  "model": null,
+  "model": {
+    "type_name": "BioSample",
+    "version": 3
+  },
   "attribute": null,
   "organism_classification": [
     {
