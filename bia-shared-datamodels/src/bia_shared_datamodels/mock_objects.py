@@ -47,7 +47,7 @@ def get_study_dict(completeness=Completeness.COMPLETE) -> dict:
                 "Template keyword1",
                 "Template keyword2",
             ],
-            "model": {"type_name": "Study", "version": 2},
+            "model": {"type_name": "Study", "version": 3},
             "additional_metadata": [get_attribute_dict()],
         }
 
@@ -122,7 +122,7 @@ def get_dataset_dict(
                 get_image_correlation_method_dict(),
             ],
             "example_image_uri": ["https://dummy.url.org"],
-            "model": {"type_name": "Dataset", "version": 1},
+            "model": {"type_name": "Dataset", "version": 2},
             "additional_metadata": [get_attribute_dict()],
         }
     return dataset
@@ -144,7 +144,7 @@ def get_file_reference_dict(completeness=Completeness.COMPLETE) -> dict:
     }
     if completeness == Completeness.COMPLETE:
         file_reference |= {
-            "model": {"type_name": "FileReference", "version": 2},
+            "model": {"type_name": "FileReference", "version": 3},
             "additional_metadata": [get_attribute_dict()],
         }
     return file_reference
@@ -167,7 +167,7 @@ def get_image_dict(completeness=Completeness.COMPLETE) -> dict:
     }
     if completeness == Completeness.COMPLETE:
         image |= {
-            "model": {"type_name": "Image", "version": 1},
+            "model": {"type_name": "Image", "version": 2},
             "additional_metadata": [get_attribute_dict()],
             "original_file_reference_uuid": [
                 get_file_reference_dict()["uuid"],
@@ -182,7 +182,6 @@ def get_image_representation_dict(completeness=Completeness.COMPLETE) -> dict:
     image_representation = {
         "uuid": uuid4(),
         "representation_of_uuid": get_image_dict()["uuid"],
-        "use_type": "UPLOADED_BY_SUBMITTER",
         "image_format": "Template image format",
         "total_size_in_bytes": 0,
         "file_uri": [],
@@ -205,7 +204,7 @@ def get_image_representation_dict(completeness=Completeness.COMPLETE) -> dict:
             "image_viewer_setting": [
                 get_rendered_view_dict(),
             ],
-            "model": {"type_name": "ImageRepresentation", "version": 3},
+            "model": {"type_name": "ImageRepresentation", "version": 4},
             "additional_metadata": [get_attribute_dict()],
         }
     return image_representation
@@ -251,7 +250,7 @@ def get_annotation_data_dict(completeness=Completeness.COMPLETE) -> dict:
     }
     if completeness == Completeness.COMPLETE:
         annotation_data |= {
-            "model": {"type_name": "AnnotationData", "version": 1},
+            "model": {"type_name": "AnnotationData", "version": 2},
             "additional_metadata": [get_attribute_dict()],
             "original_file_reference_uuid": [
                 get_file_reference_dict()["uuid"],
@@ -274,7 +273,7 @@ def get_creation_process_dict(completeness=Completeness.COMPLETE) -> dict:
     }
     if completeness == Completeness.COMPLETE:
         process |= {
-            "model": {"type_name": "CreationProcess", "version": 2},
+            "model": {"type_name": "CreationProcess", "version": 3},
             "subject_specimen_uuid": get_specimen_dict()["uuid"],
             "image_acquisition_protocol_uuid": [
                 get_image_acquisition_protocol_dict()["uuid"]
@@ -303,7 +302,7 @@ def get_protocol_dict(completeness=Completeness.COMPLETE) -> dict:
     }
     if completeness == Completeness.COMPLETE:
         protocol |= {
-            "model": {"type_name": "Protocol", "version": 2},
+            "model": {"type_name": "Protocol", "version": 3},
             "additional_metadata": [get_attribute_dict()],
         }
 
@@ -331,7 +330,7 @@ def get_image_acquisition_protocol_dict(completeness=Completeness.COMPLETE) -> d
                 "Template imaging method name",
             ],
             "additional_metadata": [get_attribute_dict()],
-            "model": {"type_name": "ImageAcquisitionProtocol", "version": 2},
+            "model": {"type_name": "ImageAcquisitionProtocol", "version": 3},
         }
     return image_acquisition_protocol
 
@@ -357,7 +356,7 @@ def get_annotation_method_dict(completeness=Completeness.COMPLETE) -> dict:
             "method_type": [semantic_models.AnnotationMethodType.class_labels],
             "annotation_source_indicator": semantic_models.AnnotationSourceIndicator.metadata_file,
             "additional_metadata": [get_attribute_dict()],
-            "model": {"type_name": "AnnotationMethod", "version": 3},
+            "model": {"type_name": "AnnotationMethod", "version": 4},
         }
     return annotation_method
 
@@ -409,7 +408,7 @@ def get_specimen_dict(completeness=Completeness.COMPLETE) -> dict:
     }
     if completeness == Completeness.COMPLETE:
         specimen |= {
-            "model": {"type_name": "Specimen", "version": 2},
+            "model": {"type_name": "Specimen", "version": 3},
             "additional_metadata": [get_attribute_dict()],
         }
     return specimen
@@ -437,7 +436,7 @@ def get_specimen_imaging_preparation_protocol_dict(
             "additional_metadata": [get_attribute_dict()],
             "model": {
                 "type_name": "SpecimenImagingPreparationProtocol",
-                "version": 2,
+                "version": 3,
             },
         }
     return specimen_imaging_preparation_protocol
@@ -483,7 +482,7 @@ def get_biosample_dict(completeness=Completeness.COMPLETE) -> dict:
             ],
             "growth_protocol_uuid": get_protocol_dict()["uuid"],
             "additional_metadata": [get_attribute_dict()],
-            "model": {"type_name": "BioSample", "version": 3},
+            "model": {"type_name": "BioSample", "version": 4},
         }
     return biosample
 

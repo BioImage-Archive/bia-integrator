@@ -189,18 +189,6 @@ class Licence(str, Enum):
 
     CC_BY_NC_ND_40 = "https://creativecommons.org/licenses/by-nc-nd/4.0/"
 
-class ImageRepresentationUseType(str, Enum):
-    """Enumerate use types of ImageRepresentations"""
-
-    # Original format uploaded with the study
-    UPLOADED_BY_SUBMITTER = "UPLOADED_BY_SUBMITTER"
-    # Usually used as representative image for study
-    STATIC_DISPLAY = "STATIC_DISPLAY"
-    # To be used as thumbnail
-    THUMBNAIL = "THUMBNAIL"
-    # Allows remote interactive exploration - usually ome zarr format
-    INTERACTIVE_DISPLAY = "INTERACTIVE_DISPLAY"
-
 
 #######################################################################################################
 # Subgraph 2: Contributors & their affiliations
@@ -323,9 +311,6 @@ class ImageRepresentation(ConfiguredBaseModel, AttributeMixin):
     """
 
     image_format: str = Field(description="""Image format of the combined files.""")
-    use_type: ImageRepresentationUseType = Field(
-        description="""The use case of this particular image representation i.e. thumbnail, interactive display etc."""
-    )
     file_uri: List[str] = Field(
         description="""URI(s) of the file(s) which together make up this image representation."""
     )
