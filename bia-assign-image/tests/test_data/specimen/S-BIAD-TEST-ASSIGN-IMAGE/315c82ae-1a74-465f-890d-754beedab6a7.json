@@ -1,0 +1,16 @@
+{
+  "object_creator": "bia_image_assignment",
+  "uuid": "315c82ae-1a74-465f-890d-754beedab6a7",
+  "version": 0,
+  "model": {
+    "type_name": "Specimen",
+    "version": 3
+  },
+  "additional_metadata": [],
+  "imaging_preparation_protocol_uuid": [
+    "7c516081-fd9c-4919-bc88-6b92580a59a0"
+  ],
+  "sample_of_uuid": [
+    "52a37650-ea4c-479d-9aa2-3ba106ac6285"
+  ]
+}

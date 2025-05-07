@@ -1,0 +1,72 @@
+{
+  "object_creator": "submitter",
+  "uuid": "618a79d1-696b-462d-a678-d0dc021a302c",
+  "version": 0,
+  "model": {
+    "type_name": "Dataset",
+    "version": 1
+  },
+  "additional_metadata": [
+    {
+      "provenance": "submitter",
+      "name": "file_list_columns",
+      "value": {}
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "image_acquisition_protocol_uuid",
+      "value": {
+        "image_acquisition_protocol_uuid": "beaf6bca-b65f-402e-a9d0-e31ec2af28ad"
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "specimen_imaging_preparation_protocol_uuid",
+      "value": {
+        "specimen_imaging_preparation_protocol_uuid": "7c516081-fd9c-4919-bc88-6b92580a59a0"
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "bio_sample_uuid",
+      "value": {
+        "bio_sample_uuid": "52a37650-ea4c-479d-9aa2-3ba106ac6285"
+      }
+    }
+  ],
+  "title": "Template experimental image dataset",
+  "description": "Template description",
+  "analysis_method": [
+    {
+      "additional_metadata": [
+        {
+          "provenance": "submitter",
+          "name": "file_list_columns",
+          "value": {}
+        }
+      ],
+      "title": "Template analysis method title",
+      "protocol_description": "Template Analysis method",
+      "features_analysed": "Template features analysed"
+    }
+  ],
+  "correlation_method": [
+    {
+      "additional_metadata": [
+        {
+          "provenance": "submitter",
+          "name": "file_list_columns",
+          "value": {}
+        }
+      ],
+      "title": "Template correlation method title",
+      "protocol_description": "Template Analysis method",
+      "fiducials_used": "Template fiducials used",
+      "transformation_matrix": "Template transformation matrix"
+    }
+  ],
+  "example_image_uri": [
+    "https://dummy.url.org"
+  ],
+  "submitted_in_study_uuid": "7b1daf68-3ba3-4501-8166-6a05de7c975f"
+}

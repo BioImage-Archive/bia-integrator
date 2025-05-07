@@ -1,0 +1,19 @@
+{
+  "object_creator": "bia_image_assignment",
+  "uuid": "a289db7f-5034-43ef-a2ac-4d74ed3d0dcc",
+  "version": 0,
+  "model": {
+    "type_name": "CreationProcess",
+    "version": 3
+  },
+  "additional_metadata": [
+  ],
+  "subject_specimen_uuid": "315c82ae-1a74-465f-890d-754beedab6a7",
+  "image_acquisition_protocol_uuid": [
+    "beaf6bca-b65f-402e-a9d0-e31ec2af28ad"
+  ],
+  "input_image_uuid": [],
+  "protocol_uuid": [
+  ],
+  "annotation_method_uuid": []
+}

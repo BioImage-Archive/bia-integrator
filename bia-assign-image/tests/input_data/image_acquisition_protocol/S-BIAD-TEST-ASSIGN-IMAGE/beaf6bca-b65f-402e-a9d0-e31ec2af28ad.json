@@ -1,0 +1,25 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "beaf6bca-b65f-402e-a9d0-e31ec2af28ad",
+  "version": 0,
+  "model": {
+    "type_name": "ImageAcquisitionProtocol",
+    "version": 2
+  },
+  "additional_metadata": [
+    {
+      "provenance": "submitter",
+      "name": "file_list_columns",
+      "value": {}
+    }
+  ],
+  "title": "Template image acquisition",
+  "protocol_description": "Template method description",
+  "imaging_instrument_description": "Template imaging instrument",
+  "fbbi_id": [
+    "Test FBBI ID"
+  ],
+  "imaging_method_name": [
+    "Template imaging method name"
+  ]
+}
