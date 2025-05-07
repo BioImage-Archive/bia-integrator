@@ -1,0 +1,7 @@
+env:
+  api_base_url: ""
+  export_json_out_file: "/tmp/api_elastic_refresh.json"
+  elastic_url: ""
+  elastic_username: ""
+  elastic_password: ""
+  elastic_index: ""
