@@ -4,7 +4,7 @@
   "version": 0,
   "model": {
     "type_name": "BioSample",
-    "version": 3
+    "version": 4
   },
   "additional_metadata": [
     {

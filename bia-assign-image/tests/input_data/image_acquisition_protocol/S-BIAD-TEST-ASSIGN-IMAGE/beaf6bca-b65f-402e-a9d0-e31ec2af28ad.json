@@ -4,7 +4,7 @@
   "version": 0,
   "model": {
     "type_name": "ImageAcquisitionProtocol",
-    "version": 2
+    "version": 3
   },
   "additional_metadata": [
     {
