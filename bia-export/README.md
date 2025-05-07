@@ -82,6 +82,14 @@ Run:
 This will create `bia-dataset-export.json` using the example test data. The root objects of this json are datasets, with links followed to include subject and protocol information etc as well as the original study. 
 
 
+### Export for image uuid updates
+
+Run:
+    poetry run bia-export image-uuid-mapping export  <Optional study ids>
+
+Note this export is not set up to deal with local files - only api. 
+
+
 Running tests
 -----
 
