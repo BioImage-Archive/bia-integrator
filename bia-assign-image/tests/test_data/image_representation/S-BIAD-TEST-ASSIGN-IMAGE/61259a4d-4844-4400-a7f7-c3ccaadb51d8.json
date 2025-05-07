@@ -1,0 +1,17 @@
+{
+  "object_creator": "bia_image_conversion",
+  "uuid": "61259a4d-4844-4400-a7f7-c3ccaadb51d8",
+  "version": 0,
+  "model": {
+    "type_name": "ImageRepresentation",
+    "version": 4
+  },
+  "additional_metadata": [],
+  "image_format": ".tiff",
+  "file_uri": [
+    "https://www.ebi.ac.uk/biostudies/files/S-BIAD-TEST-ASSIGN-IMAGE/file_reference1.tif"
+  ],
+  "total_size_in_bytes": 1000,
+  "image_viewer_setting": [],
+  "representation_of_uuid": "aca07c38-9575-4f4e-b2cc-018b2a3e50b1"
+}
