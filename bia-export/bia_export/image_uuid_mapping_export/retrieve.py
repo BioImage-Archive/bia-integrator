@@ -33,3 +33,10 @@ def retrieve_file_references(
         file_references.append(api_client.get_file_reference(uuid))
 
     return file_references
+
+
+def retrieve_image_representations(image_uuid):
+    api_img_reps = get_all_api_results(
+        image_uuid, api_client.get_image_representation_linking_image
+    )
+    return api_img_reps

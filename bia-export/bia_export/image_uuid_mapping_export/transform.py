@@ -6,6 +6,7 @@ from bia_export.image_uuid_mapping_export.models import (
 from bia_export.image_uuid_mapping_export.retrieve import (
     retrieve_images,
     retrieve_file_references,
+    retrieve_image_representations
 )
 import logging
 
@@ -30,8 +31,11 @@ def transform_image(api_image: api_models.Image) -> Image:
 
     file_references = retrieve_file_references(api_image)
 
+    image_representations = retrieve_image_representations(api_image.uuid)
+
     image_dict = api_image.model_dump() | {
         "file_reference": file_references,
+        "image_representation": image_representations,
     }
 
     return Image(**image_dict)
