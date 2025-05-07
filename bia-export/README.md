@@ -93,3 +93,16 @@ and then running tests, e.g.:
 
     poetry run pytest
 
+## Update the Docker image
+
+```sh
+# Create a github personal access token here: https://github.com/settings/tokens
+#   with write:packages scope
+
+# building the api image
+docker login ghcr.io
+
+docker build ./ -f Dockerfile -t bia-integrator-export
+docker image tag bia-integrator-export ghcr.io/bioimage-archive/bia-integrator-export:0.1.0
+docker image push ghcr.io/bioimage-archive/bia-integrator-export:0.1.0
+```
