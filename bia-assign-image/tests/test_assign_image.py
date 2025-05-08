@@ -106,7 +106,7 @@ def test_bia_specimen(
         ],
     )
 
-    assert expected_specimen != created_specimen
+    assert expected_specimen == created_specimen
 
 
 def test_bia_creation_process(dataset, expected_creation_process, expected_image):

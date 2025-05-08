@@ -34,7 +34,7 @@ def get_image(
         "object_creator": semantic_models.Provenance.bia_image_assignment,
     }
 
-    unique_string = " ".join([str(u) for u in original_file_reference_uuid])
+    unique_string = create_image_uuid_unique_string(original_file_reference_uuid)
     model_dict["uuid"] = uuid_creation.create_image_uuid(study_uuid, unique_string)
     model = bia_data_model.Image.model_validate(model_dict)
 
@@ -88,3 +88,10 @@ def get_image(
     )
 
     return model
+
+
+def create_image_uuid_unique_string(
+    file_reference_uuids: List[UUID] | List[str],
+) -> str:
+    """Create the unique string used in generating uuids for bia_data_model.Image objects"""
+    return " ".join([str(f) for f in file_reference_uuids])
