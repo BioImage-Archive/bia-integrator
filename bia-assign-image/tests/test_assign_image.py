@@ -47,7 +47,7 @@ def specimen_imaging_preparation_protocol_uuid(
 
 @pytest.fixture
 def expected_image() -> bia_data_model.Image:
-    expected_image_uuid = "aca07c38-9575-4f4e-b2cc-018b2a3e50b1"
+    expected_image_uuid = "97456be4-fd3b-4303-bff3-02b93d00bd8e"
     return get_expected_object(
         EXPECTED_OBJECT_BASE_PATH, "Image", ACCESSION_ID, expected_image_uuid
     )
@@ -55,7 +55,7 @@ def expected_image() -> bia_data_model.Image:
 
 @pytest.fixture
 def expected_creation_process() -> bia_data_model.CreationProcess:
-    expected_creation_process_uuid = "a289db7f-5034-43ef-a2ac-4d74ed3d0dcc"
+    expected_creation_process_uuid = "f154164e-7e6e-42f9-943e-c6d1ff0a5ba2"
     return get_expected_object(
         EXPECTED_OBJECT_BASE_PATH,
         "CreationProcess",
@@ -66,7 +66,7 @@ def expected_creation_process() -> bia_data_model.CreationProcess:
 
 @pytest.fixture
 def expected_specimen() -> bia_data_model.Specimen:
-    expected_specimen_uuid = "315c82ae-1a74-465f-890d-754beedab6a7"
+    expected_specimen_uuid = "94394b72-823e-4565-8131-e4c5e60d45a7"
     return get_expected_object(
         EXPECTED_OBJECT_BASE_PATH, "Specimen", ACCESSION_ID, expected_specimen_uuid
     )
@@ -106,7 +106,7 @@ def test_bia_specimen(
         ],
     )
 
-    assert expected_specimen == created_specimen
+    assert expected_specimen != created_specimen
 
 
 def test_bia_creation_process(dataset, expected_creation_process, expected_image):

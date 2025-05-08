@@ -193,6 +193,7 @@ def create(
             study.uuid,
             file_references,
             bia_image,
+            object_creator=semantic_models.Provenance.bia_image_assignment,
         )
         if image_representation:
             message = f"COMPLETED: Creation of image representation {image_representation.uuid} for bia_data_model.Image {bia_image.uuid} of {accession_id}"

@@ -2,7 +2,12 @@ import logging
 
 from uuid import UUID
 from typing import List
-from bia_shared_datamodels import bia_data_model, semantic_models, uuid_creation
+from bia_shared_datamodels import (
+    bia_data_model,
+    semantic_models,
+    uuid_creation,
+    attribute_models,
+)
 
 
 logger = logging.getLogger()
@@ -29,7 +34,7 @@ def get_image(
         "object_creator": semantic_models.Provenance.bia_image_assignment,
     }
 
-    unique_string = "".join([str(u) for u in original_file_reference_uuid])
+    unique_string = " ".join([str(u) for u in original_file_reference_uuid])
     model_dict["uuid"] = uuid_creation.create_image_uuid(study_uuid, unique_string)
     model = bia_data_model.Image.model_validate(model_dict)
 
@@ -67,6 +72,19 @@ def get_image(
     }
     model.additional_metadata.append(
         semantic_models.Attribute.model_validate(file_pattern_attr_dict)
+    )
+
+    unique_string_dict = {
+        "provenance": semantic_models.Provenance.bia_image_assignment,
+        "name": "uuid_unique_input",
+        "value": {
+            "uuid_unique_input": unique_string,
+        },
+    }
+    model.additional_metadata.append(
+        attribute_models.DocumentUUIDUinqueInputAttribute.model_validate(
+            unique_string_dict
+        )
     )
 
     return model

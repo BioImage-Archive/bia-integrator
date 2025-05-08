@@ -24,7 +24,7 @@ EXPECTED_OBJECT_BASE_PATH = Path(__file__).parent / "test_data"
 
 @pytest.fixture
 def expected_bia_image() -> bia_data_model.Image:
-    expected_image_uuid = "aca07c38-9575-4f4e-b2cc-018b2a3e50b1"
+    expected_image_uuid = "97456be4-fd3b-4303-bff3-02b93d00bd8e"
     return get_expected_object(
         EXPECTED_OBJECT_BASE_PATH, "Image", ACCESSION_ID, expected_image_uuid
     )
@@ -34,7 +34,7 @@ def expected_bia_image() -> bia_data_model.Image:
 def expected_uploaded_by_submitter_representation() -> (
     bia_data_model.ImageRepresentation
 ):
-    uuid = "61259a4d-4844-4400-a7f7-c3ccaadb51d8"
+    uuid = "a0fbc4fd-2e52-424f-b8e7-6f9fd5109513"
     return get_expected_object(
         EXPECTED_OBJECT_BASE_PATH, "ImageRepresentation", ACCESSION_ID, uuid
     )

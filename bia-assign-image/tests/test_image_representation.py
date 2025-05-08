@@ -3,7 +3,7 @@
 from uuid import UUID
 from pathlib import Path
 import pytest
-from bia_shared_datamodels import bia_data_model, uuid_creation
+from bia_shared_datamodels import bia_data_model, uuid_creation, semantic_models
 from bia_assign_image import image_representation
 from .conftest import get_expected_object
 
@@ -20,7 +20,7 @@ def study_uuid() -> UUID:
 
 @pytest.fixture
 def file_reference():
-    uuid = "13fd33bf-89b1-4080-9ab1-b8d804e7850b"
+    uuid = "278ffc50-3924-4b8a-bad6-d017c503e5dd"
     return get_expected_object(
         # TODO: resolve issue with version then use INPUT_DATA_BASE_PATH
         # INPUT_DATA_BASE_PATH, "FileReference", ACCESSION_ID, uuid
@@ -33,7 +33,7 @@ def file_reference():
 
 @pytest.fixture
 def expected_image_representation() -> bia_data_model.ImageRepresentation:
-    uuid = "61259a4d-4844-4400-a7f7-c3ccaadb51d8"
+    uuid = "a0fbc4fd-2e52-424f-b8e7-6f9fd5109513"
     return get_expected_object(
         EXPECTED_OBJECT_BASE_PATH, "ImageRepresentation", ACCESSION_ID, uuid
     )
@@ -41,7 +41,7 @@ def expected_image_representation() -> bia_data_model.ImageRepresentation:
 
 @pytest.fixture
 def image() -> bia_data_model.Image:
-    image_uuid = "aca07c38-9575-4f4e-b2cc-018b2a3e50b1"
+    image_uuid = "97456be4-fd3b-4303-bff3-02b93d00bd8e"
     return get_expected_object(
         EXPECTED_OBJECT_BASE_PATH, "Image", ACCESSION_ID, image_uuid
     )
@@ -59,6 +59,7 @@ def test_create_representation_of_single_image(
             file_reference,
         ],
         image=image,
+        object_creator=semantic_models.Provenance.bia_image_assignment,
     )
 
     assert created == expected_image_representation

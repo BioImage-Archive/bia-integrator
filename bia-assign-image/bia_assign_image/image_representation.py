@@ -1,7 +1,12 @@
 from uuid import UUID
 from pathlib import Path
 from typing import List
-from bia_shared_datamodels import bia_data_model, semantic_models, uuid_creation
+from bia_shared_datamodels import (
+    bia_data_model,
+    semantic_models,
+    uuid_creation,
+    attribute_models,
+)
 
 
 def get_image_representation(
@@ -44,7 +49,15 @@ def get_image_representation(
     # if file_pattern:
     #    attribute.append(file_pattern)
 
-    unique_string = f"{image.uuid} {image_format}"
+    if object_creator == semantic_models.Provenance.bia_image_assignment:
+        unique_string = f"{image.uuid}"
+    elif object_creator == semantic_models.Provenance.bia_image_conversion:
+        raise Exception("ImageRepresentations for conversion not yet implemented")
+    else:
+        raise Exception(
+            "object_creator must be either bia_image_assignment or bia_image_conversion"
+        )
+
     image_representation_uuid = uuid_creation.create_image_representation_uuid(
         study_uuid,
         unique_string,
@@ -66,7 +79,21 @@ def get_image_representation(
         "total_size_in_bytes": total_size_in_bytes,
         "image_format": image_format,
         "object_creator": object_creator,
+        "additional_metadata": [],
     }
+
+    unique_string_dict = {
+        "provenance": object_creator,
+        "name": "uuid_unique_input",
+        "value": {
+            "uuid_unique_input": unique_string,
+        },
+    }
+    model_dict["additional_metadata"].append(
+        attribute_models.DocumentUUIDUinqueInputAttribute.model_validate(
+            unique_string_dict
+        )
+    )
 
     model = bia_data_model.ImageRepresentation.model_validate(model_dict)
     # model.attribute = attribute

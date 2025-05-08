@@ -1,6 +1,6 @@
 {
   "object_creator": "submitter",
-  "uuid": "13fd33bf-89b1-4080-9ab1-b8d804e7850b",
+  "uuid": "278ffc50-3924-4b8a-bad6-d017c503e5dd",
   "version": 0,
   "model": {
     "type_name": "FileReference",
@@ -14,6 +14,11 @@
         "file_list_col1": "col1value",
         "file_list_col2": "col2value"
       }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {"uuid_unique_input": "S-BIAD-TEST-ASSIGN-IMAGE/file_reference1.tif1000"}
     }
   ],
   "file_path": "S-BIAD-TEST-ASSIGN-IMAGE/file_reference1.tif",
