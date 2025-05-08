@@ -76,7 +76,9 @@ def assign(
     dataset = api_client.get_dataset(submission_dataset_uuid)
     study_uuid = dataset.submitted_in_study_uuid
 
-    image_uuid_unique_string = "".join([str(f) for f in file_reference_uuid_list])
+    image_uuid_unique_string = image.create_image_uuid_unique_string(
+        file_reference_uuids
+    )
     image_uuid = uuid_creation.create_image_uuid(study_uuid, image_uuid_unique_string)
 
     image_acquisition_protocol_uuid = _get_value_from_attribute_list(
