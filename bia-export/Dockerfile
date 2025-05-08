@@ -1,8 +1,6 @@
 # Define base image
 FROM python:3.10.0
 
-EXPOSE 8080
-
 RUN curl -sSL https://install.python-poetry.org | python3 -
 ENV PATH=/root/.local/bin:$PATH
 
@@ -10,20 +8,25 @@ ENV PATH=/root/.local/bin:$PATH
 WORKDIR /bia-integrator
 
 #   only add poetry.lock if it exists (building on local)
-ADD api/poetry.lock* api/poetry.lock
-ADD api/pyproject.toml api/pyproject.toml
+ADD bia-export/poetry.lock* bia-export/poetry.lock
+ADD bia-export/pyproject.toml bia-export/pyproject.toml
 
 # This needed to be added because it's a poetry dep 
 ADD bia-shared-datamodels bia-shared-datamodels
+ADD bia-test-data bia-test-data
+ADD clients clients
 
-WORKDIR /bia-integrator/api
+WORKDIR /bia-integrator/bia-export
 
 # This will now cache unless theres changes to the lock file, or the pyproject.toml, or bia-shared-datamodels
 RUN poetry install --no-root
+
+# jq needed for the elastic refresh script
+RUN apt-get update && apt-get install -y jq
 
 # Add the rest of the files
 # The previous layers will cache fully and only this layer will be rebuilt if there are changes to the files.
 
 ADD . ..
 
-CMD ["poetry", "run", "uvicorn", "--workers", "1", "--port", "8080", "--log-config", "api/log_config.yml", "--host", "0.0.0.0", "--no-access-log", "api.app:app"]
+RUN poetry --directory ../bia-export install

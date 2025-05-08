@@ -1,0 +1,28 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "export.fullname" . }}
+spec:
+  ttlSecondsAfterFinished: 100
+  template:
+    spec:
+      containers:
+      - name: refresh-elastic-index
+        image: ghcr.io/bioimage-archive/bia-integrator-export:0.1.0
+        imagePullPolicy: Always
+        workingDir: /bia-integrator/bia-export/scripts
+        command: ["bash", "elastic_refresh.sh"]
+        env:
+        - name: API_BASE_URL
+          value: "{{ .Values.env.api_base_url }}"
+        - name: EXPORT_JSON_OUT_FILE
+          value: "{{ .Values.env.export_json_out_file }}"
+        - name: ELASTIC_URL
+          value: "{{ .Values.env.elastic_url }}"
+        - name: ELASTIC_USERNAME
+          value: "{{ .Values.env.elastic_username }}"
+        - name: ELASTIC_PASSWORD
+          value: "{{ .Values.env.elastic_password }}"
+        - name: ELASTIC_INDEX
+          value: "{{ .Values.env.elastic_index }}"
+      restartPolicy: Never
