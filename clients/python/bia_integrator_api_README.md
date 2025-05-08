@@ -45,7 +45,7 @@ configuration = bia_integrator_api.Configuration(
 with bia_integrator_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = bia_integrator_api.PrivateApi(api_client)
-    query = 'query_example' # str | 
+    query = 'query_example' # str |
 
     try:
         # Fts
@@ -200,7 +200,6 @@ Class | Method | HTTP request | Description
  - [ImageAnalysisMethod](bia_integrator_api/docs/ImageAnalysisMethod.md)
  - [ImageCorrelationMethod](bia_integrator_api/docs/ImageCorrelationMethod.md)
  - [ImageRepresentation](bia_integrator_api/docs/ImageRepresentation.md)
- - [ImageRepresentationUseType](bia_integrator_api/docs/ImageRepresentationUseType.md)
  - [Licence](bia_integrator_api/docs/Licence.md)
  - [LocationInner](bia_integrator_api/docs/LocationInner.md)
  - [ModelMetadata](bia_integrator_api/docs/ModelMetadata.md)
@@ -226,12 +225,8 @@ Authentication schemes defined for the API:
 
 - **Type**: OAuth
 - **Flow**: password
-- **Authorization URL**: 
+- **Authorization URL**:
 - **Scopes**: N/A
 
 
 ## Author
-
-
-
-

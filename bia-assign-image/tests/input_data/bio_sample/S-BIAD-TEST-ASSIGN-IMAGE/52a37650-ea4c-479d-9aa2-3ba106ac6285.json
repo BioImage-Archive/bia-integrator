@@ -1,0 +1,42 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "52a37650-ea4c-479d-9aa2-3ba106ac6285",
+  "version": 0,
+  "model": {
+    "type_name": "BioSample",
+    "version": 4
+  },
+  "additional_metadata": [
+    {
+      "provenance": "submitter",
+      "name": "file_list_columns",
+      "value": {}
+    }
+  ],
+  "title": "Template BioSample",
+  "organism_classification": [
+    {
+      "additional_metadata": [
+        {
+          "provenance": "submitter",
+          "name": "file_list_columns",
+          "value": {}
+        }
+      ],
+      "common_name": "Test Common Name",
+      "scientific_name": "Test Scientific Name",
+      "ncbi_id": "Test_NCBI_ID"
+    }
+  ],
+  "biological_entity_description": "Test biological entity description",
+  "experimental_variable_description": [
+    "Description of experimental variable"
+  ],
+  "extrinsic_variable_description": [
+    "Description of external treatment"
+  ],
+  "intrinsic_variable_description": [
+    "Description of internal treatment"
+  ],
+  "growth_protocol_uuid": "3aa4836b-598c-4875-9bd6-ff5d9fb7487c"
+}

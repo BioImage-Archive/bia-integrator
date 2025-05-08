@@ -3793,19 +3793,19 @@
       },
       "AnnotationData": {
         "properties": {
+          "object_creator": {
+            "$ref": "#/components/schemas/Provenance",
+            "description": "BIA internal type to track the source of the object."
+          },
           "uuid": {
             "type": "string",
             "format": "uuid",
             "title": "Uuid",
             "description": "Unique ID (across the BIA database) used to refer to and identify a document."
           },
-          "object_creator": {
-            "$ref": "#/components/schemas/Provenance",
-            "description": "BIA internal type to track the source of the object."
-          },
           "version": {
             "type": "integer",
-            "minimum": 0.0,
+            "minimum": 0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -3850,8 +3850,8 @@
         "additionalProperties": false,
         "type": "object",
         "required": [
-          "uuid",
           "object_creator",
+          "uuid",
           "version",
           "submission_dataset_uuid",
           "creation_process_uuid",
@@ -3861,19 +3861,19 @@
       },
       "AnnotationMethod": {
         "properties": {
+          "object_creator": {
+            "$ref": "#/components/schemas/Provenance",
+            "description": "BIA internal type to track the source of the object."
+          },
           "uuid": {
             "type": "string",
             "format": "uuid",
             "title": "Uuid",
             "description": "Unique ID (across the BIA database) used to refer to and identify a document."
           },
-          "object_creator": {
-            "$ref": "#/components/schemas/Provenance",
-            "description": "BIA internal type to track the source of the object."
-          },
           "version": {
             "type": "integer",
-            "minimum": 0.0,
+            "minimum": 0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -3977,8 +3977,8 @@
         "additionalProperties": false,
         "type": "object",
         "required": [
-          "uuid",
           "object_creator",
+          "uuid",
           "version",
           "title",
           "protocol_description",
@@ -4060,19 +4060,19 @@
       },
       "BioSample": {
         "properties": {
+          "object_creator": {
+            "$ref": "#/components/schemas/Provenance",
+            "description": "BIA internal type to track the source of the object."
+          },
           "uuid": {
             "type": "string",
             "format": "uuid",
             "title": "Uuid",
             "description": "Unique ID (across the BIA database) used to refer to and identify a document."
           },
-          "object_creator": {
-            "$ref": "#/components/schemas/Provenance",
-            "description": "BIA internal type to track the source of the object."
-          },
           "version": {
             "type": "integer",
-            "minimum": 0.0,
+            "minimum": 0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -4154,8 +4154,8 @@
         "additionalProperties": false,
         "type": "object",
         "required": [
-          "uuid",
           "object_creator",
+          "uuid",
           "version",
           "title",
           "organism_classification",
@@ -4398,19 +4398,19 @@
       },
       "CreationProcess": {
         "properties": {
+          "object_creator": {
+            "$ref": "#/components/schemas/Provenance",
+            "description": "BIA internal type to track the source of the object."
+          },
           "uuid": {
             "type": "string",
             "format": "uuid",
             "title": "Uuid",
             "description": "Unique ID (across the BIA database) used to refer to and identify a document."
           },
-          "object_creator": {
-            "$ref": "#/components/schemas/Provenance",
-            "description": "BIA internal type to track the source of the object."
-          },
           "version": {
             "type": "integer",
-            "minimum": 0.0,
+            "minimum": 0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -4486,27 +4486,27 @@
         "additionalProperties": false,
         "type": "object",
         "required": [
-          "uuid",
           "object_creator",
+          "uuid",
           "version"
         ],
         "title": "CreationProcess"
       },
       "Dataset": {
         "properties": {
+          "object_creator": {
+            "$ref": "#/components/schemas/Provenance",
+            "description": "BIA internal type to track the source of the object."
+          },
           "uuid": {
             "type": "string",
             "format": "uuid",
             "title": "Uuid",
             "description": "Unique ID (across the BIA database) used to refer to and identify a document."
           },
-          "object_creator": {
-            "$ref": "#/components/schemas/Provenance",
-            "description": "BIA internal type to track the source of the object."
-          },
           "version": {
             "type": "integer",
-            "minimum": 0.0,
+            "minimum": 0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -4579,8 +4579,8 @@
         "additionalProperties": false,
         "type": "object",
         "required": [
-          "uuid",
           "object_creator",
+          "uuid",
           "version",
           "title",
           "example_image_uri",
@@ -4663,19 +4663,19 @@
       },
       "FileReference": {
         "properties": {
+          "object_creator": {
+            "$ref": "#/components/schemas/Provenance",
+            "description": "BIA internal type to track the source of the object."
+          },
           "uuid": {
             "type": "string",
             "format": "uuid",
             "title": "Uuid",
             "description": "Unique ID (across the BIA database) used to refer to and identify a document."
           },
-          "object_creator": {
-            "$ref": "#/components/schemas/Provenance",
-            "description": "BIA internal type to track the source of the object."
-          },
           "version": {
             "type": "integer",
-            "minimum": 0.0,
+            "minimum": 0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -4727,8 +4727,8 @@
         "additionalProperties": false,
         "type": "object",
         "required": [
-          "uuid",
           "object_creator",
+          "uuid",
           "version",
           "file_path",
           "format",
@@ -4809,19 +4809,19 @@
       },
       "Image": {
         "properties": {
+          "object_creator": {
+            "$ref": "#/components/schemas/Provenance",
+            "description": "BIA internal type to track the source of the object."
+          },
           "uuid": {
             "type": "string",
             "format": "uuid",
             "title": "Uuid",
             "description": "Unique ID (across the BIA database) used to refer to and identify a document."
           },
-          "object_creator": {
-            "$ref": "#/components/schemas/Provenance",
-            "description": "BIA internal type to track the source of the object."
-          },
           "version": {
             "type": "integer",
-            "minimum": 0.0,
+            "minimum": 0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -4878,8 +4878,8 @@
         "additionalProperties": false,
         "type": "object",
         "required": [
-          "uuid",
           "object_creator",
+          "uuid",
           "version",
           "submission_dataset_uuid",
           "creation_process_uuid",
@@ -4889,19 +4889,19 @@
       },
       "ImageAcquisitionProtocol": {
         "properties": {
+          "object_creator": {
+            "$ref": "#/components/schemas/Provenance",
+            "description": "BIA internal type to track the source of the object."
+          },
           "uuid": {
             "type": "string",
             "format": "uuid",
             "title": "Uuid",
             "description": "Unique ID (across the BIA database) used to refer to and identify a document."
           },
-          "object_creator": {
-            "$ref": "#/components/schemas/Provenance",
-            "description": "BIA internal type to track the source of the object."
-          },
           "version": {
             "type": "integer",
-            "minimum": 0.0,
+            "minimum": 0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -4959,8 +4959,8 @@
         "additionalProperties": false,
         "type": "object",
         "required": [
-          "uuid",
           "object_creator",
+          "uuid",
           "version",
           "title",
           "protocol_description",
@@ -5066,19 +5066,19 @@
       },
       "ImageRepresentation": {
         "properties": {
+          "object_creator": {
+            "$ref": "#/components/schemas/Provenance",
+            "description": "BIA internal type to track the source of the object."
+          },
           "uuid": {
             "type": "string",
             "format": "uuid",
             "title": "Uuid",
             "description": "Unique ID (across the BIA database) used to refer to and identify a document."
           },
-          "object_creator": {
-            "$ref": "#/components/schemas/Provenance",
-            "description": "BIA internal type to track the source of the object."
-          },
           "version": {
             "type": "integer",
-            "minimum": 0.0,
+            "minimum": 0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -5105,10 +5105,6 @@
             "type": "string",
             "title": "Image Format",
             "description": "Image format of the combined files."
-          },
-          "use_type": {
-            "$ref": "#/components/schemas/ImageRepresentationUseType",
-            "description": "The use case of this particular image representation i.e. thumbnail, interactive display etc."
           },
           "file_uri": {
             "items": {
@@ -5236,27 +5232,15 @@
         "additionalProperties": false,
         "type": "object",
         "required": [
-          "uuid",
           "object_creator",
+          "uuid",
           "version",
           "image_format",
-          "use_type",
           "file_uri",
           "total_size_in_bytes",
           "representation_of_uuid"
         ],
         "title": "ImageRepresentation"
-      },
-      "ImageRepresentationUseType": {
-        "type": "string",
-        "enum": [
-          "UPLOADED_BY_SUBMITTER",
-          "STATIC_DISPLAY",
-          "THUMBNAIL",
-          "INTERACTIVE_DISPLAY"
-        ],
-        "title": "ImageRepresentationUseType",
-        "description": "Enumerate use types of ImageRepresentations"
       },
       "Licence": {
         "type": "string",
@@ -5307,19 +5291,19 @@
       },
       "Protocol": {
         "properties": {
+          "object_creator": {
+            "$ref": "#/components/schemas/Provenance",
+            "description": "BIA internal type to track the source of the object."
+          },
           "uuid": {
             "type": "string",
             "format": "uuid",
             "title": "Uuid",
             "description": "Unique ID (across the BIA database) used to refer to and identify a document."
           },
-          "object_creator": {
-            "$ref": "#/components/schemas/Provenance",
-            "description": "BIA internal type to track the source of the object."
-          },
           "version": {
             "type": "integer",
-            "minimum": 0.0,
+            "minimum": 0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -5356,8 +5340,8 @@
         "additionalProperties": false,
         "type": "object",
         "required": [
-          "uuid",
           "object_creator",
+          "uuid",
           "version",
           "title",
           "protocol_description"
@@ -5541,19 +5525,19 @@
       },
       "Specimen": {
         "properties": {
+          "object_creator": {
+            "$ref": "#/components/schemas/Provenance",
+            "description": "BIA internal type to track the source of the object."
+          },
           "uuid": {
             "type": "string",
             "format": "uuid",
             "title": "Uuid",
             "description": "Unique ID (across the BIA database) used to refer to and identify a document."
           },
-          "object_creator": {
-            "$ref": "#/components/schemas/Provenance",
-            "description": "BIA internal type to track the source of the object."
-          },
           "version": {
             "type": "integer",
-            "minimum": 0.0,
+            "minimum": 0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -5600,8 +5584,8 @@
         "additionalProperties": false,
         "type": "object",
         "required": [
-          "uuid",
           "object_creator",
+          "uuid",
           "version",
           "imaging_preparation_protocol_uuid",
           "sample_of_uuid"
@@ -5610,19 +5594,19 @@
       },
       "SpecimenImagingPreparationProtocol": {
         "properties": {
+          "object_creator": {
+            "$ref": "#/components/schemas/Provenance",
+            "description": "BIA internal type to track the source of the object."
+          },
           "uuid": {
             "type": "string",
             "format": "uuid",
             "title": "Uuid",
             "description": "Unique ID (across the BIA database) used to refer to and identify a document."
           },
-          "object_creator": {
-            "$ref": "#/components/schemas/Provenance",
-            "description": "BIA internal type to track the source of the object."
-          },
           "version": {
             "type": "integer",
-            "minimum": 0.0,
+            "minimum": 0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -5667,8 +5651,8 @@
         "additionalProperties": false,
         "type": "object",
         "required": [
-          "uuid",
           "object_creator",
+          "uuid",
           "version",
           "title",
           "protocol_description"
@@ -5677,19 +5661,19 @@
       },
       "Study": {
         "properties": {
+          "object_creator": {
+            "$ref": "#/components/schemas/Provenance",
+            "description": "BIA internal type to track the source of the object."
+          },
           "uuid": {
             "type": "string",
             "format": "uuid",
             "title": "Uuid",
             "description": "Unique ID (across the BIA database) used to refer to and identify a document."
           },
-          "object_creator": {
-            "$ref": "#/components/schemas/Provenance",
-            "description": "BIA internal type to track the source of the object."
-          },
           "version": {
             "type": "integer",
-            "minimum": 0.0,
+            "minimum": 0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -5805,8 +5789,8 @@
         "additionalProperties": false,
         "type": "object",
         "required": [
-          "uuid",
           "object_creator",
+          "uuid",
           "version",
           "accession_id",
           "licence",
