@@ -6,30 +6,44 @@ from ruamel.yaml import YAML
 import pytest
 from bia_shared_datamodels import bia_data_model
 from bia_assign_image import cli
-from bia_test_data.mock_objects.mock_object_constants import accession_id
-from bia_test_data.mock_objects import (
-    mock_image,
-    mock_image_representation,
-)
+from .conftest import get_expected_object
+
+# from bia_test_data.mock_objects.mock_object_constants import accession_id
+# from bia_test_data.mock_objects import (
+#    mock_image,
+#    mock_image_representation,
+# )
 from bia_assign_image.api_client import get_api_client
 
 
-@pytest.fixture()
+# TODO: Create separate study with separate accession ID for this test
+# ACCESSION_ID = "S-BIAD-TEST-ASSIGN-IMAGE-CLI"
+ACCESSION_ID = "S-BIAD-TEST-ASSIGN-IMAGE"
+EXPECTED_OBJECT_BASE_PATH = Path(__file__).parent / "test_data"
+
+
+@pytest.fixture
 def expected_bia_image() -> bia_data_model.Image:
-    return mock_image.get_image_with_one_file_reference()
+    expected_image_uuid = "97456be4-fd3b-4303-bff3-02b93d00bd8e"
+    return get_expected_object(
+        EXPECTED_OBJECT_BASE_PATH, "Image", ACCESSION_ID, expected_image_uuid
+    )
 
 
 @pytest.fixture
 def expected_uploaded_by_submitter_representation() -> (
     bia_data_model.ImageRepresentation
 ):
-    return mock_image_representation.get_image_representation_of_uploaded_by_submitter()
+    uuid = "a0fbc4fd-2e52-424f-b8e7-6f9fd5109513"
+    return get_expected_object(
+        EXPECTED_OBJECT_BASE_PATH, "ImageRepresentation", ACCESSION_ID, uuid
+    )
 
 
 @pytest.fixture
 def proposal_details_for_input(expected_bia_image) -> Dict:
     return {
-        "accession_id": accession_id,
+        "accession_id": ACCESSION_ID,
         "study_uuid": "dummy_study_uuid",
         "dataset_uuid": "dummy_dataset_uuid",
         "name": "dummy_name",
@@ -74,7 +88,7 @@ def test_api_client():
 
 
 @pytest.mark.parametrize("format", ("tsv", "yaml"))
-def test_cli_propose_images_command(format, data_in_api, tmpdir):
+def test_cli_propose_images_command(format, tmpdir):
     max_items = 2
     propose_output_path = Path(tmpdir) / f"propose_S-BIADTEST.{format}"
 
@@ -83,7 +97,7 @@ def test_cli_propose_images_command(format, data_in_api, tmpdir):
         cli.app,
         [
             "propose-images",
-            accession_id,
+            ACCESSION_ID,
             "--api",
             "local",
             "--check-image-creation-prerequisites",
@@ -111,7 +125,6 @@ def test_cli_propose_images_command(format, data_in_api, tmpdir):
     ),
 )
 def test_cli_assign_from_proposal_command(
-    data_in_api,
     test_api_client,
     format,
     assign_from_proposal_input_path_tsv,
@@ -128,8 +141,8 @@ def test_cli_assign_from_proposal_command(
         assign_from_proposal_input_path = f"{assign_from_proposal_input_path_yaml}"
 
     # result = cli.assign_from_proposal(
-    #       Path(assign_from_proposal_input_path),
-    #       "local",
+    #     Path(assign_from_proposal_input_path),
+    #     "local",
     # )
 
     result = runner.invoke(

@@ -1,0 +1,25 @@
+{
+  "object_creator": "bia_image_assignment",
+  "uuid": "a0fbc4fd-2e52-424f-b8e7-6f9fd5109513",
+  "version": 0,
+  "model": {
+    "type_name": "ImageRepresentation",
+    "version": 4
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_image_assignment",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "97456be4-fd3b-4303-bff3-02b93d00bd8e"
+      }
+    }
+  ],
+  "image_format": ".tiff",
+  "file_uri": [
+    "https://www.ebi.ac.uk/biostudies/files/S-BIAD-TEST-ASSIGN-IMAGE/file_reference1.tif"
+  ],
+  "total_size_in_bytes": 1000,
+  "image_viewer_setting": [],
+  "representation_of_uuid": "97456be4-fd3b-4303-bff3-02b93d00bd8e"
+}

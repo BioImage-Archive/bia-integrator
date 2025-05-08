@@ -1,0 +1,25 @@
+{
+  "object_creator": "bia_image_assignment",
+  "uuid": "94394b72-823e-4565-8131-e4c5e60d45a7",
+  "version": 0,
+  "model": {
+    "type_name": "Specimen",
+    "version": 3
+  },
+  "additional_metadata": [],
+  "imaging_preparation_protocol_uuid": [
+    "7c516081-fd9c-4919-bc88-6b92580a59a0"
+  ],
+  "sample_of_uuid": [
+    "52a37650-ea4c-479d-9aa2-3ba106ac6285"
+  ],
+  "additional_metadata": [
+    {
+      "provenance": "bia_image_assignment",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "97456be4-fd3b-4303-bff3-02b93d00bd8e"
+      }
+    }
+  ]
+}

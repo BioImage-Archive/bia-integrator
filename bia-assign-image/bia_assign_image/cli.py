@@ -3,7 +3,6 @@ from pathlib import Path
 from typing import Annotated
 import typer
 from bia_shared_datamodels import uuid_creation, semantic_models
-from bia_shared_datamodels.semantic_models import ImageRepresentationUseType
 from bia_assign_image import (
     image,
     specimen,
@@ -75,17 +74,21 @@ def assign(
     assert len(set(dataset_uuids)) == 1
     submission_dataset_uuid = dataset_uuids[0]
     dataset = api_client.get_dataset(submission_dataset_uuid)
+    study_uuid = dataset.submitted_in_study_uuid
 
-    image_uuid = uuid_creation.create_image_uuid(file_reference_uuid_list)
+    image_uuid_unique_string = image.create_image_uuid_unique_string(
+        file_reference_uuids
+    )
+    image_uuid = uuid_creation.create_image_uuid(study_uuid, image_uuid_unique_string)
 
     image_acquisition_protocol_uuid = _get_value_from_attribute_list(
-        dataset.attribute, "image_acquisition_protocol_uuid"
+        dataset.additional_metadata, "image_acquisition_protocol_uuid"
     )
     image_preparation_protocol_uuid = _get_value_from_attribute_list(
-        dataset.attribute, "specimen_imaging_preparation_protocol_uuid"
+        dataset.additional_metadata, "specimen_imaging_preparation_protocol_uuid"
     )
     bio_sample_uuid = _get_value_from_attribute_list(
-        dataset.attribute, "bio_sample_uuid"
+        dataset.additional_metadata, "bio_sample_uuid"
     )
     image_pre_requisites = [
         len(image_acquisition_protocol_uuid),
@@ -110,7 +113,15 @@ def assign(
         bia_specimen = None
     else:
         bia_specimen = specimen.get_specimen(
-            image_uuid, image_preparation_protocol_uuid, bio_sample_uuid
+            study_uuid,
+            image_uuid,
+            # TODO: Discuss if these should be saved to dataset additional_metadata as lists
+            [
+                image_preparation_protocol_uuid,
+            ],
+            [
+                bio_sample_uuid,
+            ],
         )
         if dryrun:
             logger.info(
@@ -124,9 +135,12 @@ def assign(
     if not image_acquisition_protocol_uuid:
         logger.warning("Creating CreationProcess with no ImageAcquisitionProtocol")
     bia_creation_process = creation_process.get_creation_process(
+        study_uuid,
         image_uuid,
         bia_specimen.uuid,
-        image_acquisition_protocol_uuid,
+        [
+            image_acquisition_protocol_uuid,
+        ],
     )
     if dryrun:
         logger.info(
@@ -136,6 +150,7 @@ def assign(
         store_object_in_api_idempotent(api_client, bia_creation_process)
 
     bia_image = image.get_image(
+        study_uuid,
         submission_dataset_uuid,
         bia_creation_process.uuid,
         file_references=file_references,
@@ -157,11 +172,6 @@ def create(
     api_target: Annotated[
         ApiTarget, typer.Option("--api", "-a", case_sensitive=False)
     ] = ApiTarget.prod,
-    reps_to_create: Annotated[
-        List[ImageRepresentationUseType], typer.Option(case_sensitive=False)
-    ] = [
-        ImageRepresentationUseType.UPLOADED_BY_SUBMITTER,
-    ],
     dryrun: Annotated[bool, typer.Option()] = False,
     verbose: Annotated[bool, typer.Option("--verbose", "-v")] = False,
 ) -> None:
@@ -171,37 +181,37 @@ def create(
         logger.setLevel(logging.DEBUG)
 
     api_client = get_api_client(api_target)
+    study = api_client.search_study_by_accession(accession_id)
     bia_images = [api_client.get_image(image_uuid) for image_uuid in image_uuid_list]
     for bia_image in bia_images:
         file_references = [
             api_client.get_file_reference(file_reference_uuid)
             for file_reference_uuid in bia_image.original_file_reference_uuid
         ]
-        for representation_use_type in reps_to_create:
-            logger.debug(
-                f"starting creation of image representation of use type {representation_use_type.value} for Image {bia_image.uuid}"
-            )
-            image_representation = get_image_representation(
-                accession_id,
-                file_references,
-                bia_image,
-                use_type=representation_use_type,
-            )
-            if image_representation:
-                message = f"COMPLETED: Creation of image representation {image_representation.uuid} of use type {representation_use_type.value} for bia_data_model.Image {bia_image.uuid} of {accession_id}"
-                logger.info(message)
-                if dryrun:
-                    logger.info(
-                        f"Dryrun: Not persisting image representation:{image_representation}."
-                    )
-                else:
-                    store_object_in_api_idempotent(api_client, image_representation)
-                    logger.info(
-                        f"Persisted image_representation {image_representation.uuid}"
-                    )
+        logger.debug(
+            f"starting creation of image representation for Image {bia_image.uuid}"
+        )
+        image_representation = get_image_representation(
+            study.uuid,
+            file_references,
+            bia_image,
+            object_creator=semantic_models.Provenance.bia_image_assignment,
+        )
+        if image_representation:
+            message = f"COMPLETED: Creation of image representation {image_representation.uuid} for bia_data_model.Image {bia_image.uuid} of {accession_id}"
+            logger.info(message)
+            if dryrun:
+                logger.info(
+                    f"Dryrun: Not persisting image representation:{image_representation}."
+                )
             else:
-                message = f"WARNING: Could NOT create image representation of use type {representation_use_type.value} for bia_data_model.Image {bia_image.uuid} of {accession_id}"
-                logger.warning(message)
+                store_object_in_api_idempotent(api_client, image_representation)
+                logger.info(
+                    f"Persisted image_representation {image_representation.uuid}"
+                )
+        else:
+            message = f"WARNING: Could NOT create image representation for bia_data_model.Image {bia_image.uuid} of {accession_id}"
+            logger.warning(message)
 
 
 @app.command(help="Assign images from a proposal file")
