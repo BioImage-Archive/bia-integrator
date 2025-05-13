@@ -123,34 +123,6 @@ def pre_2025_04_image_dict() -> dict:
 
 @pytest.fixture
 def expected_2025_04_image() -> bia_data_model.Image:
-    # image_dict = {
-    #    "uuid": "b3f9004c-8c9a-4344-bffc-cab4bcf52a10",
-    #    "version": 0,
-    #    "model": {"type_name": "Image", "version": 2},
-    #    "additional_metadata": [
-    #        {
-    #            "provenance": semantic_models.Provenance.bia_image_assignment,
-    #            "name": "attributes_from_file_reference_0797dc78-5993-4add-b0fc-235c52055b97",
-    #            "value": {
-    #                "attributes": [
-    #                    "3d_multichannel_time_series/image_01_channel_00_slice_001_time0000.tiff"
-    #                ]
-    #            },
-    #        },
-    #        {
-    #            "provenance": semantic_models.Provenance.bia_ingest,
-    #            "name": "uuid_unique_input",
-    #            # using "".join(original_file_reference_uuid) as unique string
-    #            "value": {"uuid_unique_input": "0797dc78-5993-4add-b0fc-235c52055b97"},
-    #        },
-    #    ],
-    #    "original_file_reference_uuid": [
-    #        "80ef897d-571f-401e-aeab-73c5da842c3b",
-    #    ],
-    #    "creation_process_uuid": "",
-    #    "submission_dataset_uuid": "df381b39-0768-493e-90ed-7c653f012f1f",
-    #    "object_creator": semantic_models.Provenance.bia_image_assignment,
-    # }
     image_dict = {
         "object_creator": "bia_image_assignment",
         "uuid": "93de26f0-6d84-42a5-b6fc-fcd67a94f18e",
@@ -195,11 +167,6 @@ def test_map_image_representation(
     assert mapped_image_representation == expected_2025_04_image_representation
 
 
-# Test mapping UPLOADED_BY_SUBMITTER
-
-# Test mapping THUMBNAIL AND STATIC_DISPLAY
-
-
 def test_map_image(
     pre_2025_04_image_dict,
     expected_2025_04_image,
@@ -212,7 +179,3 @@ def test_map_image(
         api_target="local",
     )
     assert mapped_image == expected_2025_04_image
-
-
-def test_update_mapped_image_from_pre_2025_04_representations_linking_image():
-    pass

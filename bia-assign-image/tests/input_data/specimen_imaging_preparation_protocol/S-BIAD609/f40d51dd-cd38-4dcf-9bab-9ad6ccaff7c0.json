@@ -1,0 +1,21 @@
+{
+  "object_creator": "bia_ingest",
+  "title": "Specimen",
+  "uuid": "f40d51dd-cd38-4dcf-9bab-9ad6ccaff7c0",
+  "version": 0,
+  "model": {
+    "type_name": "SpecimenImagingPreparationProtocol",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Specimen-2"
+      }
+    }
+  ],
+  "protocol_description": "Primary mouse choroid plexus epithelial cells were isolated from P2-P7 pups as previously described (Balusu, Van Wonterghem et al., 2016). Choroid plexus tissue was isolated from the lateral and fourth ventricles, pooled and digested with pronase (Sigma-Aldrich) for 7 min. For monolayer cultures, cells were plated on 24-well plate or Transwell polyester inserts (pore size, 0.4 μm; surface area, 33.6 mm2; Corning) coated with laminin (Sigma-Aldrich). Cells were grown in DMEM/F12 medium supplemented with 10% FBS, 2 mM L-Glutamine (Gibco), 1% penicillin/streptomycin at 37°C and 5% CO2 for 1 to 2 weeks until their trans-epithelial electrical resistance (TEER) values reached a plateau.\n\nFor immunostainings on brain sections, mice were transcardially perfused with ice-cold 4% PFA in PBS. Subsequently, brains were carefully separated from the skull and split into two halves (mid-sagittal). The right hemispheres were embedded in Frozen Section Medium (Thermo Scientific) immediately in cryomolds (Sakura) that were frozen on dry ice and stored at -80°C until further use. The left hemispheres were post-fixed overnight with 4% PFA in PBS at 4°C. After dehydration, samples were embedded in paraffin in cryomolds and stored at RT until further use. The brains were cut into 5 μm slices paraffin sections (HM 340 E, Thermo Scientific) or 20 μm cryosections (CryoStar NX70, Thermo Scientific). These brain samples were cut from the sagittal superior sinus towards the border of the cerebral hemisphere. Sections were collected serially for TJ staining when the choroid plexus was initially present and and for other staining when the entire hippocampus was initially present (Fig S13). One section per mouse was analyzed. For immunofluorescence staining, sections were permeabilized in PBS containing 0.3-0.5% Triton X-100. Following being blocked with goat immunomix (GIM) (5% goat serum, 0.1% BSA, 0.3-0.5% Triton X-100 in PBS) at RT for 1 h, sections were incubated with primary Abs in GIM at 4°C overnight. After washing with PBS, sections were stained with fluorophore-conjugated secondary Abs in PBS or PBS containing 0.1% Triton X-100 at RT for 1-1.5 h. Counterstaining was done with Hoechst reagent (Sigma-Aldrich, 1:1000 in PBS). Primary antibody Occludin (cat. no. 33-1500, Thermo Scientific); E-cadherin (cat. no. 610181, BD Biosciences); IBA1 (cat. no. 019-19741, Wako); GFAP (cat. no. ab53554, Abcam); Synaptophysin (cat. no. ab32127); PSD-95 (cat. no. MA1-045, Thermo Scientific) and 6E10 (cat. no. 803001, Biolegend) were used on paraffin sections; ZO-1 (cat. no. 61-7300, Thermo Scientific) and Claudin-1 (cat. no. 51-9000, Thermo Scientific) were used on cryosections; CD31 (cat. no. DIA-310, Dianova) was used on both paraffin sections and cryosections. For immunostainings on primary cells, cells were fixed with 2% PFA for 20 min on ice. Next, cells were washed three times with PBS and permeabilized with 0.1% Triton X-100 for 10 min on ice. Samples were washed with blocking buffer (1% BSA in PBS) and incubated with primary Abs (diluted in blocking buffer) for 2 h at RT/overnight at 4°C. After washing with PBS, cells were stained with fluorophore-conjugated secondary Abs in PBS for 1 h at RT. Next, samples were counterstained with Hoechst and the sections were mounted.",
+  "signal_channel_information": []
+}

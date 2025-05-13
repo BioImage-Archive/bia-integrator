@@ -75,10 +75,15 @@ def map_image_representation_to_2025_04_model(
         "physical_size_z"
     )
 
-    # TODO: Map attributes and add DocumentUUIDUinqueInputAttribute
-    image_representation_dict["additional_metadata"] = image_representation_dict.pop(
-        "attribute"
-    )
+    # Map attributes modifying provenance from 'bia_conversion' if necessary
+    attributes = image_representation_dict.pop("attribute")
+    image_representation_dict["additional_metadata"] = []
+    for attribute in attributes:
+        if attribute["provenance"] == "bia_conversion":
+            attribute["provenance"] = "bia_image_conversion"
+        image_representation_dict["additional_metadata"].append(attribute)
+
+    # Add DocumentUUIDUinqueInputAttribute which is new in 2025_04 models
     image_representation_dict["additional_metadata"].append(
         {
             "provenance": object_creator,
@@ -90,3 +95,83 @@ def map_image_representation_to_2025_04_model(
     )
 
     return bia_data_model.ImageRepresentation.model_validate(image_representation_dict)
+
+
+def map_image_related_artefacts_to_2025_04_models(
+    file_reference_mapping: dict,
+    accession_id: str,
+    api_target,
+) -> dict:
+    file_references_old = file_reference_mapping["file_reference"]
+    study_uuid_2025_04 = uuid_creation.create_study_uuid(accession_id)
+    file_reference_uuids_2025_04 = []
+    for file_reference in file_references_old:
+        file_reference_unique_string = (
+            f"{file_reference['file_path']}{file_reference['size_in_bytes']}"
+        )
+        file_reference_uuid = uuid_creation.create_file_reference_uuid(
+            study_uuid_2025_04, file_reference_unique_string
+        )
+        file_reference_uuids_2025_04.append(file_reference_uuid)
+
+    image_dict_old = copy.deepcopy(file_reference_mapping)
+    image_dict_old.pop("file_reference")
+    image_dict_old.pop("image_representation")
+    image_2025_04 = map_image_to_2025_04_model(
+        image_dict_old,
+        accession_id,
+        file_reference_uuids_2025_04,
+        "",
+        api_target=api_target,
+    )
+    image_2025_04_uuid = f"{image_2025_04.uuid}"
+
+    representations_old = file_reference_mapping["image_representation"]
+
+    uploaded_by_submitter_rep = _get_im_rep_from_im_rep_list(
+        representations_old,
+        "UPLOADED_BY_SUBMITTER",
+    )
+    if uploaded_by_submitter_rep:
+        rep_of_image_uploaded_by_submitter_2025_04 = (
+            map_image_representation_to_2025_04_model(
+                uploaded_by_submitter_rep,
+                image_2025_04_uuid,
+                accession_id,
+            )
+        )
+    else:
+        rep_of_image_uploaded_by_submitter_2025_04 = {}
+
+    interactive_display_rep = _get_im_rep_from_im_rep_list(
+        representations_old,
+        "INTERACTIVE_DISPLAY",
+    )
+    if interactive_display_rep:
+        rep_of_image_converted_to_ome_zarr_2025_04 = (
+            map_image_representation_to_2025_04_model(
+                interactive_display_rep,
+                image_2025_04_uuid,
+                accession_id,
+            )
+        )
+    else:
+        rep_of_image_converted_to_ome_zarr_2025_04 = {}
+
+    return {
+        "image": image_2025_04,
+        "representation_of_image_uploaded_by_submitter": rep_of_image_uploaded_by_submitter_2025_04,
+        "representation_of_image_converted_to_ome_zarr": rep_of_image_converted_to_ome_zarr_2025_04,
+    }
+
+
+def _get_im_rep_from_im_rep_list(
+    im_rep_list: list,
+    use_type: str,
+) -> dict:
+    """Get image representation with specified use type from list of reps"""
+
+    return next(
+        (rep for rep in im_rep_list if rep["use_type"] == use_type),
+        {},
+    )

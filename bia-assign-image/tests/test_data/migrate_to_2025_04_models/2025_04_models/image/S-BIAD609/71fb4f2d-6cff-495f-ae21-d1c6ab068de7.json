@@ -1,0 +1,34 @@
+{
+    "object_creator": "bia_image_assignment",
+    "uuid": "71fb4f2d-6cff-495f-ae21-d1c6ab068de7",
+    "version": 0,
+    "model": {"type_name": "Image", "version": 2},
+    "additional_metadata": [
+        {
+            "provenance": "bia_image_assignment",
+            "name": "attributes_from_file_reference_6be24196-7921-4e4d-801e-df06878ee56c",
+            "value": {
+                 "attributes": {
+                     "Type": "Raw image",
+                     "Tissue": "Striatum",
+                     "Genotype": "wildtype"
+                 }
+             }
+        },
+        {
+            "provenance": "bia_image_assignment",
+            "name": "file_pattern",
+            "value": {
+                "file_pattern": "EMBOJ-2022-111515R-Q _ IF images/Appendix Figure S10/Striatum/Butyrate.tif"
+            }
+        },
+        {
+            "provenance": "bia_image_assignment",
+            "name": "uuid_unique_input",
+            "value": {"uuid_unique_input": "6be24196-7921-4e4d-801e-df06878ee56c"}
+        }
+    ],
+    "submission_dataset_uuid": "abf9ca35-01ce-4b46-83cb-071e2967ce07",
+    "creation_process_uuid": "59b5759e-fc74-4228-8576-b5b71ff6bda8",
+    "original_file_reference_uuid": ["6be24196-7921-4e4d-801e-df06878ee56c"]
+}
