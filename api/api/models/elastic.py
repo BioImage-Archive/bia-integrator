@@ -16,13 +16,12 @@ class Elastic:
             self.client = None
             return
 
-        index_name = "test-index"
         self.client = AsyncElasticsearch(
             settings.elastic_connstring, verify_certs=False
         )
-        if not await self.client.indices.exists(index=index_name):
+        if not await self.client.indices.exists(index=settings.elastic_index):
             await self.client.indices.create(
-                index="test-index",
+                index=settings.elastic_index,
                 body={
                     "mappings": {
                         "dynamic": False,
