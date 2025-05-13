@@ -4,6 +4,7 @@ from api.settings import Settings
 
 class Elastic:
     client: AsyncElasticsearch
+    index: str
 
     def __init__(self):
         pass
@@ -19,9 +20,11 @@ class Elastic:
         self.client = AsyncElasticsearch(
             settings.elastic_connstring, verify_certs=False
         )
-        if not await self.client.indices.exists(index=settings.elastic_index):
+        self.index = settings.elastic_index
+
+        if not await self.client.indices.exists(index=self.index):
             await self.client.indices.create(
-                index=settings.elastic_index,
+                index=self.index,
                 body={
                     "mappings": {
                         "dynamic": False,
