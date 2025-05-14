@@ -74,6 +74,9 @@ def test_map_image_related_artefacts_to_2025_04_models(
         accession_id,
         api_target="local",
     )
+    # The versions may be different depending on no. of
+    # times the test has been run - so don't compare version
+    mapped_artefacts["image"].version = expected_2025_04_image.version
     assert mapped_artefacts["image"] == expected_2025_04_image
     assert (
         mapped_artefacts["representation_of_image_uploaded_by_submitter"]

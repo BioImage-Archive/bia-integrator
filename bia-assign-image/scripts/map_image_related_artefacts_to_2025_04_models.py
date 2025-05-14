@@ -1,14 +1,13 @@
-from bia_shared_datamodels import bia_data_model, uuid_creation
+from bia_shared_datamodels import bia_data_model, uuid_creation, attribute_models
 import copy
 from bia_assign_image.cli import assign
-from bia_assign_image.api_client import get_api_client
+from bia_assign_image.api_client import get_api_client, store_object_in_api_idempotent
 
 
 def map_image_to_2025_04_model(
     old_image_dict: dict,
     accession_id: str,
     file_reference_uuids_2025_04: list,
-    dataset_uuid_2025_04: str,
     api_target,
 ) -> bia_data_model.Image:
     image_dict = copy.deepcopy(old_image_dict)
@@ -121,7 +120,6 @@ def map_image_related_artefacts_to_2025_04_models(
         image_dict_old,
         accession_id,
         file_reference_uuids_2025_04,
-        "",
         api_target=api_target,
     )
     image_2025_04_uuid = f"{image_2025_04.uuid}"
@@ -157,6 +155,45 @@ def map_image_related_artefacts_to_2025_04_models(
         )
     else:
         rep_of_image_converted_to_ome_zarr_2025_04 = {}
+
+    thumbnail_rep = _get_im_rep_from_im_rep_list(
+        representations_old,
+        "THUMBNAIL",
+    )
+    if thumbnail_rep:
+        thumbnail_uri = attribute_models.Attribute.model_validate(
+            {
+                "provenance": "bia_image_assignment",
+                "name": "thumbnail_uri",
+                "value": {"thumbnail_uri": thumbnail_rep["file_uri"]},
+            }
+        )
+        image_2025_04.additional_metadata.append(thumbnail_uri)
+
+    static_display_rep = _get_im_rep_from_im_rep_list(
+        representations_old,
+        "STATIC_DISPLAY",
+    )
+    if static_display_rep:
+        static_display_uri = attribute_models.Attribute.model_validate(
+            {
+                "provenance": "bia_image_assignment",
+                "name": "static_display_uri",
+                "value": {"static_display_uri": static_display_rep["file_uri"]},
+            }
+        )
+        image_2025_04.additional_metadata.append(static_display_uri)
+
+    if thumbnail_rep or static_display_rep:
+        # image_2025_04.version += 1
+        api_client = get_api_client(api_target)
+        store_object_in_api_idempotent(
+            api_client,
+            image_2025_04,
+        )
+        image_2025_04 = bia_data_model.Image.model_validate(
+            api_client.get_image(image_2025_04_uuid).model_dump()
+        )
 
     return {
         "image": image_2025_04,

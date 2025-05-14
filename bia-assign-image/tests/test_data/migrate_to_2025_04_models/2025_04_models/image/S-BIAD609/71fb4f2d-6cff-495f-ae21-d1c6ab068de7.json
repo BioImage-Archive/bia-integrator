@@ -1,7 +1,7 @@
 {
     "object_creator": "bia_image_assignment",
     "uuid": "71fb4f2d-6cff-495f-ae21-d1c6ab068de7",
-    "version": 0,
+    "version": 1,
     "model": {"type_name": "Image", "version": 2},
     "additional_metadata": [
         {
@@ -26,7 +26,25 @@
             "provenance": "bia_image_assignment",
             "name": "uuid_unique_input",
             "value": {"uuid_unique_input": "6be24196-7921-4e4d-801e-df06878ee56c"}
-        }
+        },
+        {
+      "provenance": "bia_image_assignment",
+      "name": "thumbnail_uri",
+      "value": {
+        "thumbnail_uri": [
+          "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD609/b0ecfe5d-b32d-4ab6-9c3c-a5afeba0a575/826f0fe5-ee2d-4d43-a612-4ce659b5426d.png"
+        ]
+      }
+    },
+    {
+      "provenance": "bia_image_assignment",
+      "name": "static_display_uri",
+      "value": {
+        "static_display_uri": [
+          "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD609/b0ecfe5d-b32d-4ab6-9c3c-a5afeba0a575/8a93bb61-6fef-4336-94d8-b82d106c9e63.png"
+        ]
+      }
+    }
     ],
     "submission_dataset_uuid": "abf9ca35-01ce-4b46-83cb-071e2967ce07",
     "creation_process_uuid": "59b5759e-fc74-4228-8576-b5b71ff6bda8",
