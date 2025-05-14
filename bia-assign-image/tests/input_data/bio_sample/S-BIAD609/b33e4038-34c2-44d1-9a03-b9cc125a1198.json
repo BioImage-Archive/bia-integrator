@@ -16,7 +16,7 @@
   ],
   "organism_classification": [
     {
-      "attribute": [],
+      "additional_metadata": [],
       "common_name": "mouse",
       "scientific_name": "Mus musculus",
       "ncbi_id": null
