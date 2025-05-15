@@ -103,6 +103,9 @@ def store_object_in_api_idempotent(api_client, model_object):
     # different versions of exactly the same object)
     equivalent_api_object.version = api_copy_of_object.version
     if equivalent_api_object == api_copy_of_object:
+        logger.info(
+            f"Exact copy of {model_name} with UUID {model_object_uuid} already in API. Nothing to do."
+        )
         return
     else:
         equivalent_api_object.version = api_copy_of_object.version + 1

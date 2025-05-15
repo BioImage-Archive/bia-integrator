@@ -175,7 +175,6 @@ def test_map_image(
         pre_2025_04_image_dict,
         accession_id,
         file_reference_uuids_2025_04=expected_2025_04_image.original_file_reference_uuid,
-        dataset_uuid_2025_04=expected_2025_04_image.submission_dataset_uuid,
         api_target="local",
     )
     assert mapped_image == expected_2025_04_image

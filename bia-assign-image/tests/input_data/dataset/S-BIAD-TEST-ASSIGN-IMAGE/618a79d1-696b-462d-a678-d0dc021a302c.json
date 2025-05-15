@@ -16,21 +16,21 @@
       "provenance": "bia_ingest",
       "name": "image_acquisition_protocol_uuid",
       "value": {
-        "image_acquisition_protocol_uuid": "beaf6bca-b65f-402e-a9d0-e31ec2af28ad"
+        "image_acquisition_protocol_uuid": ["beaf6bca-b65f-402e-a9d0-e31ec2af28ad"]
       }
     },
     {
       "provenance": "bia_ingest",
       "name": "specimen_imaging_preparation_protocol_uuid",
       "value": {
-        "specimen_imaging_preparation_protocol_uuid": "7c516081-fd9c-4919-bc88-6b92580a59a0"
+        "specimen_imaging_preparation_protocol_uuid": ["7c516081-fd9c-4919-bc88-6b92580a59a0"]
       }
     },
     {
       "provenance": "bia_ingest",
       "name": "bio_sample_uuid",
       "value": {
-        "bio_sample_uuid": "52a37650-ea4c-479d-9aa2-3ba106ac6285"
+        "bio_sample_uuid": ["52a37650-ea4c-479d-9aa2-3ba106ac6285"]
       }
     }
   ],

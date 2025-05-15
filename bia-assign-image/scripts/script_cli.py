@@ -5,6 +5,8 @@ from typing import Annotated
 import typer
 from bia_assign_image.api_client import (
     ApiTarget,
+    get_api_client,
+    store_object_in_api_idempotent,
 )
 from scripts.map_image_related_artefacts_to_2025_04_models import (
     map_image_related_artefacts_to_2025_04_models,
@@ -15,12 +17,6 @@ from scripts.map_image_related_artefacts_to_2025_04_models import (
 import logging
 
 app = typer.Typer()
-map_app = typer.Typer()
-app.add_typer(
-    map_app,
-    name="map",
-    help="Map image related artefacts to 2025/04 models",
-)
 
 logging.basicConfig(
     #    level=logging.INFO, format="%(message)s", handlers=[RichHandler(show_time=False)]
@@ -54,42 +50,50 @@ def _get_accession_id(file_reference_mapping: dict) -> str | None:
 
 
 @app.command(help="Map image related artefacts to 2025/04 models")
-def map2(
+def map_to_2025_04_models(
     file_reference_mapping_path: Annotated[Path, typer.Argument()],
     api_target: Annotated[
         ApiTarget, typer.Option("--api", "-a", case_sensitive=False)
     ] = ApiTarget.local,
     dryrun: Annotated[bool, typer.Option()] = False,
-) -> str:
-    file_reference_mappings = json.loads(file_reference_mapping_path.read_text())
+    verbose: Annotated[bool, typer.Option("--verbose", "-v")] = False,
+):
+    if verbose:
+        logger.setLevel(logging.DEBUG)
 
-    for file_reference_mapping in file_reference_mappings.values():
+    file_reference_mappings = json.loads(file_reference_mapping_path.read_text())
+    api_client = get_api_client(api_target)
+
+    n_file_reference_mappings = len(file_reference_mappings.keys())
+    for counter, file_reference_mapping in enumerate(
+        file_reference_mappings.values(), start=1
+    ):
         # file_references = image_to_process.pop("file_references", {})
         # image_representations = image_to_process.pop("image_representation", {})
         accession_id = _get_accession_id(file_reference_mapping)
-
+        logger.info(
+            f"Processing mapping {counter} of {n_file_reference_mappings} with accession ID: {accession_id}"
+        )
         if accession_id:
-            # mapped_artefacts = map_image_related_artefacts_to_2025_04_models(
-            map_image_related_artefacts_to_2025_04_models(
+            mapped_artefacts = map_image_related_artefacts_to_2025_04_models(
                 file_reference_mapping,
                 accession_id,
                 api_target,
             )
-
-
-@map_app.command(help="Map image related artefacts to 2025/04 models")
-def map(
-    file_reference_mapping_path: Annotated[Path, typer.Argument()],
-    api_target: Annotated[
-        ApiTarget, typer.Option("--api", "-a", case_sensitive=False)
-    ] = ApiTarget.prod,
-    dryrun: Annotated[bool, typer.Option()] = False,
-    verbose: Annotated[bool, typer.Option("--verbose", "-v")] = False,
-) -> None:
-    """Map image related artefacts to 2025/04 models"""
-
-    if verbose:
-        logger.setLevel(logging.DEBUG)
+            if mapped_artefacts.get("representation_of_image_uploaded_by_submitter"):
+                store_object_in_api_idempotent(
+                    api_client,
+                    mapped_artefacts.get(
+                        "representation_of_image_uploaded_by_submitter"
+                    ),
+                )
+            if mapped_artefacts.get("representation_of_image_converted_to_ome_zarr"):
+                store_object_in_api_idempotent(
+                    api_client,
+                    mapped_artefacts.get(
+                        "representation_of_image_converted_to_ome_zarr"
+                    ),
+                )
 
 
 @app.callback()
