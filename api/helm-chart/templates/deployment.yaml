@@ -65,6 +65,8 @@ spec:
                 secretKeyRef:
                   name: {{ include "api.fullname" . }}
                   key: elasticConnstring
+            - name: ELASTIC_INDEX
+              value: "{{ .Values.api_env.elasticIndex }}"
             - name: DB_NAME
               value: "{{ .Values.api_env.dbName }}"
             - name: MONGO_TIMEOUT_MS

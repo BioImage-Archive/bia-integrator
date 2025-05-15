@@ -54,7 +54,7 @@ async def elastic():
         return
 
     try:
-        await el.client.indices.delete(index="test-index")
+        await el.client.indices.delete(index="test_index")
     except:
         pass
 
@@ -66,7 +66,7 @@ async def elastic():
     response = await el.client.bulk(body=test_data)
     assert not response.body["errors"]
 
-    await el.client.indices.refresh(index="test-index")
+    await el.client.indices.refresh(index="test_index")
 
     yield el
 

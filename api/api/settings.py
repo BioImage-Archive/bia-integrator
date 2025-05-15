@@ -19,6 +19,7 @@ class Settings(BaseSettings):
     fastapi_root_path: str = ""
 
     elastic_connstring: str = ""
+    elastic_index: str = "fts_index"
 
     # Only pushes indices set in the code (generated from the models/explicit)
     #   to make sure one-off manually added indices are not deleted

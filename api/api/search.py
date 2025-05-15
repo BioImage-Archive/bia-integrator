@@ -73,7 +73,7 @@ async def fts(
     query: Annotated[str, Query(min_length=1, max_length=500)],
 ) -> dict:
     rsp = await elastic.client.search(
-        index="test-index",
+        index=elastic.index,
         query={
             "multi_match": {
                 "query": query,

@@ -47,7 +47,7 @@ The response should be just `null` and there should be no errors in the api cont
 Dejavu (Elastic viewer):
 * Url: http://localhost:1358/
 * Connection string: http://elastic:test@localhost:9200
-* Index: test-index
+* Index: test_index
 
 ## Development
 
