@@ -1,0 +1,173 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "88d36abc-c77f-4127-9551-b8409cb5d4a6",
+  "version": 0,
+  "model": {
+    "type_name": "Study",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "biostudies json/pagetab entry",
+      "value": {
+        "json": "https://www.ebi.ac.uk/biostudies/files/S-BIAD609/S-BIAD609.json",
+        "pagetab": "https://www.ebi.ac.uk/biostudies/files/S-BIAD609/S-BIAD609.tsv"
+      }
+    }
+  ],
+  "accession_id": "S-BIAD609",
+  "licence": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "author": [
+    {
+      "rorid": null,
+      "address": null,
+      "website": null,
+      "orcid": null,
+      "display_name": "Junhua Xie",
+      "affiliation": [
+        {
+          "rorid": null,
+          "address": null,
+          "website": null,
+          "display_name": "VIB-UGent Center for Inflammation Research"
+        }
+      ],
+      "contact_email": "junhuax@irc.vib-ugent.be",
+      "role": "first author"
+    },
+    {
+      "rorid": null,
+      "address": null,
+      "website": null,
+      "orcid": null,
+      "display_name": "Arnout Bruggeman",
+      "affiliation": [
+        {
+          "rorid": null,
+          "address": null,
+          "website": null,
+          "display_name": "VIB-UGent Center for Inflammation Research"
+        }
+      ],
+      "contact_email": "Arnout.Bruggeman@irc.vib-ugent.be",
+      "role": null
+    },
+    {
+      "rorid": null,
+      "address": null,
+      "website": null,
+      "orcid": null,
+      "display_name": "Clint De Nolf",
+      "affiliation": [
+        {
+          "rorid": null,
+          "address": null,
+          "website": null,
+          "display_name": "VIB-UGent Center for Inflammation Research"
+        }
+      ],
+      "contact_email": "clint.denolf@irc.vib-ugent.be",
+      "role": null
+    },
+    {
+      "rorid": null,
+      "address": null,
+      "website": null,
+      "orcid": null,
+      "display_name": "Charysse Vandendriessche",
+      "affiliation": [
+        {
+          "rorid": null,
+          "address": null,
+          "website": null,
+          "display_name": "VIB-UGent Center for Inflammation Research"
+        }
+      ],
+      "contact_email": "charyssevdd@irc.vib-ugent.be",
+      "role": null
+    },
+    {
+      "rorid": null,
+      "address": null,
+      "website": null,
+      "orcid": null,
+      "display_name": "Griet Van Imschoot",
+      "affiliation": [
+        {
+          "rorid": null,
+          "address": null,
+          "website": null,
+          "display_name": "VIB-UGent Center for Inflammation Research"
+        }
+      ],
+      "contact_email": "grietv@irc.vib-ugent.be",
+      "role": null
+    },
+    {
+      "rorid": null,
+      "address": null,
+      "website": null,
+      "orcid": null,
+      "display_name": "Elien Van Wonterghem",
+      "affiliation": [
+        {
+          "rorid": null,
+          "address": null,
+          "website": null,
+          "display_name": "VIB-UGent Center for Inflammation Research"
+        }
+      ],
+      "contact_email": "elienvw@irc.ugent.be",
+      "role": null
+    },
+    {
+      "rorid": null,
+      "address": null,
+      "website": null,
+      "orcid": null,
+      "display_name": "Lars Vereecke",
+      "affiliation": [
+        {
+          "rorid": null,
+          "address": null,
+          "website": null,
+          "display_name": "VIB-UGent Center for Inflammation Research"
+        }
+      ],
+      "contact_email": "lars.vereecke@irc.vib-ugent.be",
+      "role": null
+    },
+    {
+      "rorid": null,
+      "address": null,
+      "website": null,
+      "orcid": null,
+      "display_name": "Roosmarijn E. Vandenbroucke",
+      "affiliation": [
+        {
+          "rorid": null,
+          "address": null,
+          "website": null,
+          "display_name": "VIB-UGent Center for Inflammation Research"
+        }
+      ],
+      "contact_email": "Roosmarijn.Vandenbroucke@irc.vib-ugent.be",
+      "role": "corresponding author"
+    }
+  ],
+  "title": "The importance of the blood-cerebrospinal fluid interface in the gut-brain axis and Aβ pathology",
+  "release_date": "2022-12-14",
+  "description": "In this study, we found that mice lacking gut microbiota displayed increased blood-cerebrospinal fluid (CSF) barrier permeability associated with disorganized tight junctions (TJs), which can be rescued by recolonization with gut microbiota or supplementation with short-chain fatty acids (SCFAs). We further confirmed that the vagus nerve plays an important role in this process but SCFAs can also bypass the vagus nerve and affect blood-CSF barrier functionality. Strikingly, the administration of SCFAs in AppNL-G-F AD mice also improved the localization of TJs in the blood-CSF barrier. This was accompanied by a pronounced reduction in β-amyloid (Aβ) burden, which could be achieved by regulating microglial phenotype. Altogether, our results suggest that modulating the microbiota or administering SCFAs might have therapeutic potential in AD via tightening blood-CSF barrier and maintaining microglial activity.",
+  "keyword": [
+    "Gut microbiota",
+    "short-chain fatty acids",
+    "blood-cerebrospinal fluid barrier",
+    "Alzheimer’s disease"
+  ],
+  "acknowledgement": "We thank the VIB BioImaging Core for training, support and access to the instrument park. This work was supported by the Research Foundation-Flanders (FWO), Chinese Scholarship Council (CSC), the Foundation for Alzheimer’s Research Belgium (SAO-FRA) and the Baillet Latour Fund.",
+  "see_also": [],
+  "related_publication": [],
+  "grant": [],
+  "funding_statement": ""
+}

@@ -1,6 +1,6 @@
 {
   "object_creator": "submitter",
-  "uuid": "618a79d1-696b-462d-a678-d0dc021a302c",
+  "uuid": "df381b39-0768-493e-90ed-7c653f012f1f",
   "version": 0,
   "model": {
     "type_name": "Dataset",
@@ -8,42 +8,39 @@
   },
   "additional_metadata": [
     {
-      "provenance": "submitter",
-      "name": "file_list_columns",
-      "value": {}
-    },
-    {
       "provenance": "bia_ingest",
       "name": "image_acquisition_protocol_uuid",
       "value": {
-        "image_acquisition_protocol_uuid": ["beaf6bca-b65f-402e-a9d0-e31ec2af28ad"]
+        "image_acquisition_protocol_uuid": ["caeee34b-eb73-4e39-a071-f0d3a7845bf5"]
       }
     },
     {
       "provenance": "bia_ingest",
       "name": "specimen_imaging_preparation_protocol_uuid",
       "value": {
-        "specimen_imaging_preparation_protocol_uuid": ["7c516081-fd9c-4919-bc88-6b92580a59a0"]
+        "specimen_imaging_preparation_protocol_uuid": ["114e708b-7ee2-434a-9bc0-73c44610cc55"]
       }
     },
     {
       "provenance": "bia_ingest",
       "name": "bio_sample_uuid",
       "value": {
-        "bio_sample_uuid": ["52a37650-ea4c-479d-9aa2-3ba106ac6285"]
+        "bio_sample_uuid": ["231efe62-9369-4009-adc6-3dadb3497105"]
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Study Component-1"
       }
     }
   ],
-  "title": "Template experimental image dataset",
+  "title": "Dataset to test mapping of Image to 2025/04 models",
   "description": "Template description",
   "analysis_method": [
     {
       "additional_metadata": [
-        {
-          "provenance": "submitter",
-          "name": "file_list_columns",
-          "value": {}
-        }
       ],
       "title": "Template analysis method title",
       "protocol_description": "Template Analysis method",
@@ -53,11 +50,6 @@
   "correlation_method": [
     {
       "additional_metadata": [
-        {
-          "provenance": "submitter",
-          "name": "file_list_columns",
-          "value": {}
-        }
       ],
       "title": "Template correlation method title",
       "protocol_description": "Template Analysis method",
@@ -68,5 +60,5 @@
   "example_image_uri": [
     "https://dummy.url.org"
   ],
-  "submitted_in_study_uuid": "7b1daf68-3ba3-4501-8166-6a05de7c975f"
+  "submitted_in_study_uuid": "8cdee837-8a13-44b7-82a1-cf26509095d0"
 }

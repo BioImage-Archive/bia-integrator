@@ -1,0 +1,35 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "114e708b-7ee2-434a-9bc0-73c44610cc55",
+  "version": 0,
+  "model": {
+    "type_name": "SpecimenImagingPreparationProtocol",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Specimen-1"
+      }
+    }
+  ],
+  "title": "Test specimen preparation protocol",
+  "protocol_description": "Test description",
+  "signal_channel_information": [
+    {
+      "additional_metadata": [
+        {
+          "provenance": "submitter",
+          "name": "file_list_columns",
+          "value": {}
+        }
+      ],
+      "signal_contrast_mechanism_description": "Test description",
+      "channel_content_description": "Test description",
+      "channel_biological_entity": "Test Entity",
+      "channel_label": "Test label"
+    }
+  ]
+}

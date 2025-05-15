@@ -98,10 +98,17 @@ def store_object_in_api_idempotent(api_client, model_object):
         post_func(equivalent_api_object)
         return
 
+    # Negate the difference in value of the version field.
+    # We want to compare differences in actual values (we can have
+    # different versions of exactly the same object)
+    equivalent_api_object.version = api_copy_of_object.version
     if equivalent_api_object == api_copy_of_object:
+        logger.info(
+            f"Exact copy of {model_name} with UUID {model_object_uuid} already in API. Nothing to do."
+        )
         return
     else:
-        model_object.version += 1
+        equivalent_api_object.version = api_copy_of_object.version + 1
 
         logger.info(f"Updating {model_name} with UUID {model_object_uuid} in API")
-        post_func(model_object)
+        post_func(equivalent_api_object)

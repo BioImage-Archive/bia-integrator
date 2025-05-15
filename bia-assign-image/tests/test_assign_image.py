@@ -98,12 +98,8 @@ def test_bia_specimen(
     created_specimen = specimen.get_specimen(
         dataset.submitted_in_study_uuid,
         expected_image.uuid,
-        [
-            specimen_imaging_preparation_protocol_uuid,
-        ],
-        [
-            bio_sample_uuid,
-        ],
+        specimen_imaging_preparation_protocol_uuid,
+        bio_sample_uuid,
     )
 
     assert expected_specimen == created_specimen

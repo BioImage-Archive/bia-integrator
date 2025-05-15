@@ -1,0 +1,30 @@
+{
+  "object_creator": "bia_ingest",
+  "title": "Biosamples",
+  "uuid": "b33e4038-34c2-44d1-9a03-b9cc125a1198",
+  "version": 0,
+  "model": {
+    "type_name": "BioSample",
+    "version": 4
+  },
+  "additional_metadata": [
+    {
+        "provenance": "bia_ingest",
+        "name": "uuid_unique_input",
+        "value": {"uuid_unique_input": "Biosample-1"}
+    }
+  ],
+  "organism_classification": [
+    {
+      "additional_metadata": [],
+      "common_name": "mouse",
+      "scientific_name": "Mus musculus",
+      "ncbi_id": null
+    }
+  ],
+  "biological_entity_description": "Adult mice choroid plexus, Cerebellum, Cortex, Hippocampus, Olfactory bulb, Striatum, Brainstem and primary choroid plexus epithelial cells.",
+  "experimental_variable_description": [],
+  "extrinsic_variable_description": [],
+  "intrinsic_variable_description": [],
+  "growth_protocol_uuid": null
+}
