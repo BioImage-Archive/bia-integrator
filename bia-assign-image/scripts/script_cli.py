@@ -12,8 +12,6 @@ from scripts.map_image_related_artefacts_to_2025_04_models import (
     map_image_related_artefacts_to_2025_04_models,
 )
 
-# For read only client
-
 import logging
 
 app = typer.Typer()
