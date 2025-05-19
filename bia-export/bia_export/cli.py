@@ -11,6 +11,9 @@ from .website_export.images.transform import transform_images
 from .website_export.images.models import ImageCLIContext
 from .website_export.datasets_for_images.transform import transform_datasets
 from .website_export.website_models import CLIContext
+from .image_uuid_mapping_export.transform import (
+    transform_images as transform_images_for_uuid_mapping,
+)
 from typing import List, Optional, Type
 from uuid import UUID
 from .bia_client import api_client
@@ -26,11 +29,13 @@ logger = logging.getLogger()
 app = typer.Typer()
 website = typer.Typer()
 app.add_typer(website, name="website")
-
+image_uuid_mapping = typer.Typer()
+app.add_typer(image_uuid_mapping, name="image-uuid-mapping")
 
 DEFAULT_WEBSITE_STUDY_FILE_NAME = "bia-study-metadata.json"
 DEFAULT_WEBSITE_IMAGE_FILE_NAME = "bia-image-metadata.json"
 DEFAULT_WEBSITE_DATASET_FOR_IMAGE_FILE_NAME = "bia-dataset-metadata-for-images.json"
+DEFAULT_IMAGE_UUID_MAPPING_FILE_NAME = "bia-image-file-reference-mapping.json"
 
 
 @website.command("all")
@@ -79,10 +84,8 @@ def generate_all(
             else Path(DEFAULT_WEBSITE_STUDY_FILE_NAME)
         ),
         update_file=(
-            update_path / DEFAULT_WEBSITE_STUDY_FILE_NAME
-            if update_path
-            else None
-        )
+            update_path / DEFAULT_WEBSITE_STUDY_FILE_NAME if update_path else None
+        ),
     )
     logger.info("Exporting image pages")
     website_image(
@@ -94,10 +97,8 @@ def generate_all(
             else Path(DEFAULT_WEBSITE_IMAGE_FILE_NAME)
         ),
         update_file=(
-            update_path / DEFAULT_WEBSITE_IMAGE_FILE_NAME
-            if update_path
-            else None
-        )
+            update_path / DEFAULT_WEBSITE_IMAGE_FILE_NAME if update_path else None
+        ),
     )
     logger.info("Exporting datasets for study pages")
     datasets_for_website_image(
@@ -112,7 +113,7 @@ def generate_all(
             update_path / DEFAULT_WEBSITE_DATASET_FOR_IMAGE_FILE_NAME
             if update_path
             else None
-        )
+        ),
     )
 
 
@@ -156,7 +157,7 @@ def website_study(
     studies_map = {}
 
     if update_file:
-        studies_map |= file_data_to_update(update_file)    
+        studies_map |= file_data_to_update(update_file)
 
     for id in id_list:
         context = create_cli_context(StudyCLIContext, id, root_directory)
@@ -164,7 +165,13 @@ def website_study(
         studies_map[study.accession_id] = study.model_dump(mode="json")
 
     if id_list:
-        sorted_map = dict(sorted(studies_map.items(), key=lambda item_tuple: study_sort_key(item_tuple[1]), reverse=True))
+        sorted_map = dict(
+            sorted(
+                studies_map.items(),
+                key=lambda item_tuple: study_sort_key(item_tuple[1]),
+                reverse=True,
+            )
+        )
     else:
         sorted_map = studies_map
 
@@ -273,6 +280,48 @@ def datasets_for_website_image(
         output.write(json.dumps(dataset_map, indent=4))
 
 
+@image_uuid_mapping.command("export")
+def export_image_uuid_mapping(
+    id_list: Annotated[
+        Optional[List[str]], typer.Argument(help="Accession IDs of the study to export")
+    ] = None,
+    output_filename: Annotated[
+        Optional[Path],
+        typer.Option(
+            "--out_file",
+            "-o",
+        ),
+    ] = Path(DEFAULT_IMAGE_UUID_MAPPING_FILE_NAME),
+    update_file: Annotated[
+        Optional[Path],
+        typer.Option(
+            "--update_file",
+            "-u",
+            help="If update file specified then update the file with studies provided.",
+        ),
+    ] = None,
+):
+
+    validate_cli_inputs(id_list=id_list, update_file=update_file)
+
+    if not id_list:
+        id_list = get_study_ids(root_directory=None)
+    else:
+        if not is_uuid(id_list[0]):
+            id_list = [get_uuid_from_accession_id(id) for id in id_list]
+
+    image_map = {}
+    if update_file:
+        image_map |= file_data_to_update(update_file)
+
+    for id in id_list:
+        image_map |= transform_images_for_uuid_mapping(id)
+
+    logging.info(f"Writing website images to {output_filename.absolute()}")
+    with open(output_filename, "w") as output:
+        output.write(json.dumps(image_map, indent=4))
+
+
 def create_cli_context(
     cli_type: Type[CLIContext],
     id: str,
@@ -347,9 +396,10 @@ def validate_cli_inputs(
 
 def file_data_to_update(file_path: Path) -> Optional[dict]:
     data = None
-    with open(file_path, 'r') as f:
+    with open(file_path, "r") as f:
         data: dict = json.load(f)
     return data
+
 
 if __name__ == "__main__":
     app()
