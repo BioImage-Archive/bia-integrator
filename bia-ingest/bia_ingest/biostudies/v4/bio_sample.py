@@ -76,7 +76,7 @@ def extract_biosample_dicts(
     biosample_sections = find_sections_recursive(submission.section, ["Biosample"])
 
     key_mapping = [
-        ("title_id", "Title", ""),
+        ("title", "Title", ""),
         ("biological_entity_description", "Biological entity", ""),
     ]
 
@@ -114,22 +114,38 @@ def extract_biosample_dicts(
             attr_dict["Title"], submission, growth_protocol_map
         )
         model_dict["version"] = 0
+        model_dict["object_creator"] = "bia_ingest"
 
-        for gp_uuid in growth_protocol_uuids:
+        for specimen, gp_uuid in growth_protocol_uuids:
             model_dict_with_gp = deepcopy(model_dict)
-            model_dict_with_gp["growth_protocol_uuid"] = gp_uuid[1]
+            model_dict_with_gp["growth_protocol_uuid"] = gp_uuid
+
+            uuid_unique_input = f"{section.accno}{gp_uuid}"
             model_dict_with_gp["uuid"] = create_bio_sample_uuid(
-                model_dict_with_gp["title_id"],
                 study_uuid,
-                model_dict_with_gp["growth_protocol_uuid"],
+                uuid_unique_input,
             )
-            model_dicts_map[attr_dict["Title"] + "." + gp_uuid[0]] = model_dict_with_gp
+            model_dict["additional_metadata"] = {
+                "provenance": "bia_ingest",
+                "name": "uuid_unique_input",
+                "value": {"uuid_unique_input": uuid_unique_input},
+            }
+            model_dicts_map[attr_dict["Title"] + "." + specimen] = model_dict_with_gp
 
         if bs_without_gp:
             model_dict["growth_protocol_uuid"] = None
+            uuid_unique_input = f"{section.accno}"
             model_dict["uuid"] = create_bio_sample_uuid(
-                model_dict["title_id"], study_uuid
+                study_uuid,
+                uuid_unique_input,
             )
+            model_dict["additional_metadata"] = [
+                {
+                    "provenance": "bia_ingest",
+                    "name": "uuid_unique_input",
+                    "value": {"uuid_unique_input": uuid_unique_input},
+                },
+            ]
             model_dicts_map[attr_dict["Title"]] = model_dict
     return model_dicts_map
 
@@ -185,7 +201,6 @@ def check_for_growth_protocol_uuids(
     submission: Submission,
     growth_protocol_map: dict[str, bia_data_model.Protocol],
 ) -> tuple[bool, list[tuple[str, UUID]]]:
-
     # Get associations to allow mapping to biosample
     associations: List[Association] = [
         get_associations_for_section(section)[0]

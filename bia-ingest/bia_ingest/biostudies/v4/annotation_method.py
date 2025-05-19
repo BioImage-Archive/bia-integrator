@@ -1,5 +1,5 @@
 import logging
-from typing import Any, Dict, Optional
+from typing import Any, Optional
 from uuid import UUID
 
 from bia_ingest.bia_object_creation_utils import dict_map_to_api_models
@@ -29,7 +29,7 @@ def get_annotation_method_as_map(
     Returns a dictionary of the form:
 
     {
-      "Annotation Component Title": bia_data_model.AnnotationMethod:(title_id: "Annotation Component Title", uuid:... )
+      "Annotation Component Title": bia_data_model.AnnotationMethod:(title: "Annotation Component Title", uuid:... )
     }
 
     Where the Key will be the user provided title of the Annotation Component provided by the user.
@@ -60,10 +60,10 @@ def extract_annotation_method_dicts(
     annotation_sections = find_sections_recursive(submission.section, ["Annotations"])
 
     key_mapping = [
-        ("title_id", "Title", ""),
+        ("title", "Title", ""),
         ("annotation_criteria", "Annotation Criteria", None),
         ("annotation_coverage", "Annotation Coverage", None),
-        ("protocol_description", "Annotation Method", "")
+        ("protocol_description", "Annotation Method", ""),
     ]
 
     model_dict_map = {}
@@ -79,23 +79,33 @@ def extract_annotation_method_dicts(
         # annotation_source_indicator
         # spatial_information
         # transformation_description
-        
+
         annotation_types = attr_dict.get("Annotation Type", "")
         if annotation_types:
             model_dict["method_type"] = [
                 semantic_models.AnnotationMethodType(annotation_type.strip())
                 for annotation_type in annotation_types.split(",")
             ]
-        else:       
+        else:
             model_dict["method_type"] = [
                 semantic_models.AnnotationMethodType("other"),
             ]
 
+        uuid_unique_input = section.accno if section.accno else ""
         model_dict["uuid"] = create_annotation_method_uuid(
-            model_dict["title_id"], study_uuid
+            study_uuid,
+            uuid_unique_input,
         )
         model_dict["version"] = 0
+        model_dict["object_creator"] = "bia_ingest"
 
         model_dict_map[attr_dict["Title"]] = model_dict
 
+        model_dict["additional_metadata"] = [
+            {
+                "provenance": "bia_ingest",
+                "name": "uuid_unique_input",
+                "value": {"uuid_unique_input": uuid_unique_input},
+            },
+        ]
     return model_dict_map

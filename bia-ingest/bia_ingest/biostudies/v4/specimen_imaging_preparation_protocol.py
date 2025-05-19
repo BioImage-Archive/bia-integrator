@@ -59,7 +59,7 @@ def extract_specimen_preparation_protocol_dicts(
     specimen_sections = find_sections_recursive(submission.section, ["Specimen"])
 
     key_mapping = [
-        ("title_id", "Title", ""),
+        ("title", "Title", ""),
         ("protocol_description", "Sample preparation protocol", ""),
     ]
 
@@ -75,11 +75,20 @@ def extract_specimen_preparation_protocol_dicts(
         # Currently generates empty list as we need to change the submission template
         model_dict["signal_channel_information"] = []
 
+        uuid_unique_input = section.accno if section.accno else ""
         model_dict["uuid"] = create_specimen_imaging_preparation_protocol_uuid(
-            model_dict["title_id"], study_uuid
+            study_uuid, uuid_unique_input
         )
         model_dict["version"] = 0
+        model_dict["object_creator"] = "bia_ingest"
 
+        model_dict["additional_metadata"] = [
+            {
+                "provenance": "bia_ingest",
+                "name": "uuid_unique_input",
+                "value": {"uuid_unique_input": uuid_unique_input},
+            },
+        ]
         model_dict_map[attr_dict["Title"]] = model_dict
 
     return model_dict_map

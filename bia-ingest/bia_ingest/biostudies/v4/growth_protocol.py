@@ -56,25 +56,31 @@ def extract_growth_protocol_dicts(
     specimen_sections = find_sections_recursive(submission.section, ["Specimen"])
 
     key_mapping = [
-        ("title_id", "Title", ""),
+        ("title", "Title", ""),
         ("protocol_description", "Growth protocol", ""),
     ]
 
     model_dict_map = {}
     for section in specimen_sections:
         attr_dict = attributes_to_dict(section.attributes)
+        uuid_unique_input = section.accno if section.accno else ""
 
         if "Growth protocol" in attr_dict:
-
             model_dict = {
                 k: case_insensitive_get(attr_dict, v, default)
                 for k, v, default in key_mapping
             }
 
             model_dict["version"] = 0
-            model_dict["uuid"] = create_protocol_uuid(
-                model_dict["title_id"], study_uuid
-            )
+            model_dict["uuid"] = create_protocol_uuid(study_uuid, uuid_unique_input)
+            model_dict["object_creator"] = "bia_ingest"
+            model_dict["additional_metadata"] = [
+                {
+                    "provenance": "bia_ingest",
+                    "name": "uuid_unique_input",
+                    "value": {"uuid_unique_input": uuid_unique_input},
+                },
+            ]
 
             model_dict_map[attr_dict["Title"] + ".growth_protocol"] = model_dict
 

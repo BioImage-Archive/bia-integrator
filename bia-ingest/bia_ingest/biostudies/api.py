@@ -12,7 +12,8 @@ from pydantic import BaseModel, TypeAdapter, ConfigDict
 logger = logging.getLogger("__main__." + __name__)
 
 
-STUDY_URL_TEMPLATE = "https://www.ebi.ac.uk/biostudies/api/v1/studies/{accession}"
+# STUDY_URL_TEMPLATE = "https://www.ebi.ac.uk/biostudies/api/v1/studies/{accession}"
+STUDY_URL_TEMPLATE = "https://ftp.ebi.ac.uk/biostudies/fire/S-BIAD/{accession_postfix}/{accession}/{accession}.json"
 STUDY_TABLE_INFO_URL_TEMPLATE = (
     "https://www.ebi.ac.uk/biostudies/api/v1/studies/{accession}/info"
 )
@@ -174,6 +175,7 @@ class SubmissionTable(BaseModel):
 
 # Search data structures
 
+
 class SearchResult(BaseModel):
     accession: str
     type: str
@@ -230,7 +232,7 @@ def load_submission(accession_id: str) -> Submission:
         "S-BIAD590": "missing study component assosiations subsection",
         "S-BIAD599": "missing study component assosiations subsection",
         "S-BIAD628": "missing study component assosiations subsection",
-        "S-BIAD677": "missing study component assosiations subsection"
+        "S-BIAD677": "missing study component assosiations subsection",
     }
     if accession_id in overrides:
         return read_override(accession_id)
@@ -251,7 +253,9 @@ def read_override(accession_id: str) -> Submission:
 
 
 def submission_from_biostudies_api(accession_id) -> Submission:
-    url = STUDY_URL_TEMPLATE.format(accession=accession_id)
+    url = STUDY_URL_TEMPLATE.format(
+        accession_postfix=accession_id[-3:], accession=accession_id
+    )
     logger.info(f"Fetching submission from {url}")
     headers = {
         "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36"
@@ -260,6 +264,9 @@ def submission_from_biostudies_api(accession_id) -> Submission:
 
     assert r.status_code == 200
 
+    import pdb
+
+    pdb.set_trace()
     submission = Submission.model_validate_json(r.content)
 
     return submission

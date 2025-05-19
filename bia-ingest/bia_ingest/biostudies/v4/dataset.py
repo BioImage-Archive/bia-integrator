@@ -80,7 +80,7 @@ def get_dataset_dict_from_study_component(
             attribute_list.append(
                 attribute_models.DatasetAssociationAttribute.model_validate(
                     {
-                        "provenance": semantic_models.AttributeProvenance("bia_ingest"),
+                        "provenance": semantic_models.Provenance("bia_ingest"),
                         "name": "associations",
                         "value": {
                             "associations": [
@@ -94,18 +94,27 @@ def get_dataset_dict_from_study_component(
                 associations, bsst_title_to_bia_object_map
             )
 
+        uuid_unique_input = section.accno if section.accno else ""
         # TODO: Actually use correlation methods?
         model_dict = {
-            "uuid": create_dataset_uuid(attr_dict["Name"], study_uuid),
-            "title_id": attr_dict["Name"],
+            "object_creator": "bia_ingest",
+            "uuid": create_dataset_uuid(study_uuid, uuid_unique_input),
+            "title": attr_dict["Name"],
             "description": attr_dict["Description"],
             "submitted_in_study_uuid": study_uuid,
             "analysis_method": analysis_method_list,
             "correlation_method": correlation_method_list,
             "example_image_uri": [],
             "version": 0,
-            "attribute": attribute_list
+            "additional_metadata": attribute_list,
         }
+        model_dict["additional_metadata"].append(
+            {
+                "provenance": "bia_ingest",
+                "name": "uuid_unique_input",
+                "value": {"uuid_unique_input": uuid_unique_input},
+            }
+        )
 
         model_dicts.append(model_dict)
 
@@ -130,17 +139,27 @@ def get_dataset_dict_from_annotation(
             attr_dict, bsst_title_to_bia_object_map
         )
 
+        uuid_unique_input = section.accno if section.accno else ""
+
         model_dict = {
-            "uuid": create_dataset_uuid(attr_dict["Title"], study_uuid),
-            "title_id": attr_dict["Title"],
+            "object_creator": "bia_ingest",
+            "uuid": create_dataset_uuid(study_uuid, uuid_unique_input),
+            "title": attr_dict["Title"],
             "description": attr_dict.get("Annotation Overview", None),
             "submitted_in_study_uuid": study_uuid,
             "analysis_method": [],
             "correlation_method": [],
             "example_image_uri": [],
             "version": 0,
-            "attribute": attribute_list,
+            "additional_metadata": attribute_list,
         }
+        model_dict["additional_metadata"].append(
+            {
+                "provenance": "bia_ingest",
+                "name": "uuid_unique_input",
+                "value": {"uuid_unique_input": uuid_unique_input},
+            }
+        )
         model_dicts.append(model_dict)
 
     return model_dicts
@@ -203,7 +222,7 @@ def get_uuid_attribute_from_associations(
     if image_acquisition_uuids:
         attribute_dicts.append(
             {
-                "provenance": semantic_models.AttributeProvenance("bia_ingest"),
+                "provenance": semantic_models.Provenance("bia_ingest"),
                 "name": "image_acquisition_protocol_uuid",
                 "value": {
                     "image_acquisition_protocol_uuid": unique_string_list_uuid(
@@ -215,7 +234,7 @@ def get_uuid_attribute_from_associations(
     if specimen_prepartion_protocol_uuids:
         attribute_dicts.append(
             {
-                "provenance": semantic_models.AttributeProvenance("bia_ingest"),
+                "provenance": semantic_models.Provenance("bia_ingest"),
                 "name": "specimen_imaging_preparation_protocol_uuid",
                 "value": {
                     "specimen_imaging_preparation_protocol_uuid": unique_string_list_uuid(
@@ -227,7 +246,7 @@ def get_uuid_attribute_from_associations(
     if bio_sample_uuids:
         attribute_dicts.append(
             {
-                "provenance": semantic_models.AttributeProvenance("bia_ingest"),
+                "provenance": semantic_models.Provenance("bia_ingest"),
                 "name": "bio_sample_uuid",
                 "value": {"bio_sample_uuid": unique_string_list_uuid(bio_sample_uuids)},
             }
@@ -247,7 +266,7 @@ def store_annotation_method_in_attribute(
     if attr_dict["Title"] in object_map["annotation_method"]:
         attribute_dicts.append(
             {
-                "provenance": semantic_models.AttributeProvenance("bia_ingest"),
+                "provenance": semantic_models.Provenance("bia_ingest"),
                 "name": "annotation_method_uuid",
                 "value": {
                     "annotation_method_uuid": [

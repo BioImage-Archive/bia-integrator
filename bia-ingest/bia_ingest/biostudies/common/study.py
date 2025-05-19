@@ -21,10 +21,6 @@ from bia_ingest.biostudies.submission_parsing_utils import (
     case_insensitive_get,
 )
 from bia_ingest.biostudies.api import Attribute, Submission
-from bia_ingest.biostudies.generic_conversion_utils import (
-    get_generic_section_as_dict,
-    get_generic_section_as_list,
-)
 
 from bia_shared_datamodels import bia_data_model, semantic_models
 from bia_shared_datamodels.uuid_creation import create_study_uuid
@@ -68,17 +64,17 @@ def get_study(
     acknowledgement = study_attributes.pop("Acknowledgements", "")
     funding_statement = study_attributes.pop("Funding statement", "")
     # Put remaining attributes in bia_data_model.study.attribute
-    attribute = [
+    additional_metadata = [
         {
-            "provenance": semantic_models.AttributeProvenance("bia_ingest"),
+            "provenance": semantic_models.Provenance("bia_ingest"),
             "name": "Extras from biostudies.Submission.attributes",
             "value": {key: value},
         }
         for key, value in study_attributes.items()
     ]
-    attribute.append(
+    additional_metadata.append(
         {
-            "provenance": semantic_models.AttributeProvenance("bia_ingest"),
+            "provenance": semantic_models.Provenance("bia_ingest"),
             "name": "biostudies json/pagetab entry",
             "value": {
                 "json": f"https://www.ebi.ac.uk/biostudies/files/{submission.accno}/{submission.accno}.json",
@@ -93,6 +89,7 @@ def get_study(
         # TODO: Do more robust search for title - sometimes it is in
         #       actual submission - see old ingest code
         "title": study_title,
+        "object_creator": "bia_ingest",
         "description": description,
         "release_date": submission_attributes.pop("ReleaseDate"),
         "licence": licence,
@@ -101,7 +98,7 @@ def get_study(
         "keyword": keywords,
         "author": [c.model_dump() for c in contributors],
         "grant": [g.model_dump() for g in grants],
-        "attribute": attribute,
+        "additional_metadata": additional_metadata,
         "version": 0,
     }
 
@@ -129,12 +126,13 @@ def study_title_from_submission(submission: Submission) -> str:
     return study_title
 
 
-def get_licence(study_attributes: Dict[str, Any]) -> semantic_models.LicenceType:
+def get_licence(study_attributes: Dict[str, Any]) -> semantic_models.Licence:
     """
     Return enum version of licence of study
     """
-    licence = re.sub(r"\s", "_", study_attributes.get("License", "CC0"))
-    return semantic_models.LicenceType(licence)
+    temp = re.sub(r"\s", "_", study_attributes.get("License", "CC0"))
+    licence = re.sub(r"\.", "", temp)
+    return semantic_models.Licence[licence]
 
 
 def get_external_reference(
@@ -300,7 +298,6 @@ def get_contributor(
     contributor_dicts = []
     email_warnings = []
     for section in author_sections:
-
         attributes = sanitise_affiliation_attribute(
             section.attributes, affiliation_dict, result_summary, submission.accno
         )
@@ -318,7 +315,7 @@ def get_contributor(
             model_dict["affiliation"] = [
                 model_dict["affiliation"],
             ]
-        
+
         sanitised_email, email_warnings = sanitise_contributor_email(
             model_dict["contact_email"], email_warnings
         )
@@ -333,6 +330,7 @@ def get_contributor(
     )
 
     return contributors
+
 
 def sanitise_affiliation_attribute(
     attribute_list: List[Attribute],
@@ -359,10 +357,8 @@ def sanitise_affiliation_attribute(
             sanitised_attribute_list.append(attribute)
     return sanitised_attribute_list
 
-def sanitise_contributor_email(
-        email: str | None, 
-        email_warnings: list
-):
+
+def sanitise_contributor_email(email: str | None, email_warnings: list):
     if email is not None:
         try:
             email_info = validate_email(email, check_deliverability=False)
@@ -370,19 +366,17 @@ def sanitise_contributor_email(
         except EmailNotValidError as e:
             email_warnings.append(str(e))
             email = None
-    
+
     return [email, email_warnings]
 
+
 def get_unique_email_warnings(
-        email_warnings: list,
-        result_summary: dict[str, IngestionResult],
-        accno: str
+    email_warnings: list, result_summary: dict[str, IngestionResult], accno: str
 ):
     if email_warnings != []:
         unique_warnings = list(set(email_warnings))
         for warning in unique_warnings:
             result_summary[accno].__setattr__(
-                "Warning",
-                "Skipped invalid author email: " + str(warning) + "\n"
+                "Warning", "Skipped invalid author email: " + str(warning) + "\n"
             )
             logger.warning(f"Skipped invalid author email: {warning}")
