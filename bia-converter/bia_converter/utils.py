@@ -5,13 +5,15 @@ from typing import Union, Tuple
 from pathlib import Path
 from pandas import DataFrame
 import rich
+import json
 
 from .neuroglancer import Layer, ViewerState, state_to_ng_uri, InvlerpParameters
 
-
 from bia_integrator_api.models import (  # type: ignore
-    ImageRepresentation, 
     AnnotationData, 
+    Attribute, 
+    Image, 
+    ImageRepresentation, 
 )
 
 from .bia_api_client import api_client
@@ -91,12 +93,12 @@ def get_dir_size(path: Union[str, Path]) -> int:
 
 
 def filter_starfile_df(
-    star_df: DataFrame, 
-    annotation: AnnotationData, 
-    image_uuid: str, 
+        star_df: DataFrame, 
+        annotation: AnnotationData, 
+        image_uuid: str, 
 ) -> DataFrame:
     """Filter a starfile (as a dataframe) for a pattern specified in annoation data, if applicable, 
-    and resturn the X, Y, and Z coordinates of that filtered part."""
+    and return the X, Y, and Z coordinates of that filtered part."""
 
     attrs = attributes_by_name(annotation)
     pattern_list = attrs['annotated_image_patterns']['annotated_image_patterns']
@@ -111,6 +113,125 @@ def filter_starfile_df(
     filtered_df = filtered_df[columns_to_save]
 
     return filtered_df
+
+
+def write_starfile_df_to_json(
+        star_df: DataFrame, 
+        output_json_path: Path, 
+) -> str:
+    
+    star_df_dict = star_df.to_dict(orient='records')
+    
+    output_json_path.mkdir(exist_ok=True, parents=True)
+    output_file = output_json_path / "annotation_data.json"
+    with open(output_file, 'w') as f:
+        json.dump(star_df_dict, f, indent=2)
+
+
+def add_json_file_path_to_annotation(
+        annotation: AnnotationData, 
+        image_uuid: str, 
+        json_file_path: str, 
+) -> AnnotationData:
+    
+    new_json_path = {image_uuid: json_file_path}
+    
+    annotation_file_paths_attr = None
+    for attr in annotation.attribute:
+        if attr.name == "annotation_file_paths":
+            annotation_file_paths_attr = attr
+            break
+    
+    if annotation_file_paths_attr:
+        annotation_file_paths_attr.value["annotation_file_paths"].append(new_json_path)
+    else:
+        file_path_attr = Attribute(
+            provenance="bia_conversion",
+            name="annotation_file_paths",
+            value={
+                "annotation_file_paths": [new_json_path]
+            }
+        )
+        annotation.attribute.append(file_path_attr)
+    
+    return annotation
+
+
+def add_ng_precomp_file_path_to_annotation(
+        annotation: AnnotationData, 
+        image_uuid: str, 
+        ng_precomp_file_path: str, 
+) -> AnnotationData:
+    
+    new_ng_precomp_path = {image_uuid: ng_precomp_file_path}
+    
+    annotation_file_paths_attr = None
+    for attr in annotation.attribute:
+        if attr.name == "ng_precomp_file_paths":
+            annotation_file_paths_attr = attr
+            break
+    
+    if annotation_file_paths_attr:
+        annotation_file_paths_attr.value["ng_precomp_file_paths"].append(new_ng_precomp_path)
+    else:
+        file_path_attr = Attribute(
+            provenance="bia_conversion",
+            name="ng_precomp_file_paths",
+            value={
+                "ng_precomp_file_paths": [new_ng_precomp_path]
+            }
+        )
+        annotation.attribute.append(file_path_attr)
+    
+    return annotation
+
+
+def update_annotated_image_and_image_rep(
+        image_uuid: str, 
+        image_rep: ImageRepresentation, 
+        ng_uri_link: str, 
+) -> tuple[Image, ImageRepresentation]:
+    
+    ng_view_link_attr = None
+    for attr in image_rep.attribute:
+        if attr.name == "neuroglancer_view_link":
+            ng_view_link_attr = attr
+            break
+    
+    if ng_view_link_attr:
+        ng_view_link_attr.value["neuroglancer_view_link"] = ng_uri_link
+        ng_view_link_attr.provenance = "bia_conversion"
+    else:
+        ng_view_link_attr = Attribute(
+            provenance="bia_conversion",
+            name="neuroglancer_view_link",
+            value={
+                "neuroglancer_view_link": ng_uri_link
+            }
+        )
+        image_rep.attribute.append(ng_view_link_attr)
+
+    image = api_client.get_image(image_uuid)
+    pref_ng_link_attr = None
+    for attr in image_rep.attribute:
+        if attr.name == "preferred_neuroglancer_image_representation_uuid":
+            pref_ng_link_attr = attr
+            break
+    
+    if pref_ng_link_attr:
+        pref_ng_link_attr.value["preferred_neuroglancer_image_representation_uuid"] = image_rep.uuid
+        pref_ng_link_attr.provenance = "bia_conversion"
+    else:
+        pref_ng_link_attr = Attribute(
+            provenance="bia_conversion",
+            name="preferred_neuroglancer_image_representation_uuid",
+            value={
+                "preferred_neuroglancer_image_representation_uuid": image_rep.uuid
+            }
+        )
+        image.attribute.append(pref_ng_link_attr)
+    
+    return image, image_rep
 
 
 def generate_ng_link_for_zarr(

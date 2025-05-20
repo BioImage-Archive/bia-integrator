@@ -36,6 +36,10 @@ from .utils import (
     get_dir_size,
     generate_ng_link_for_zarr_and_precomp_annotation, 
     filter_starfile_df, 
+    write_starfile_df_to_json, 
+    add_json_file_path_to_annotation, 
+    add_ng_precomp_file_path_to_annotation, 
+    update_annotated_image_and_image_rep, 
 )
 
 
@@ -541,47 +545,16 @@ def convert_star_annotation_to_json(
     star_df = starfile.read(fpath)
     filtered_df = filter_starfile_df(star_df, annotation, image_uuid)
 
-    data_list = filtered_df.to_dict(orient='records')
-    output_path = get_annotation_conversion_output_path(annotation, image_uuid)
-    output_path.mkdir(exist_ok=True, parents=True)
-    output_file = output_path / "annotation_data.json"
-    with open(output_file, 'w') as f:
-        json.dump(data_list, f, indent=2)
+    output_json_path = get_annotation_conversion_output_path(annotation, image_uuid)
+    annotation = add_json_file_path_to_annotation(annotation, image_uuid, str(output_json_path))
+    write_starfile_df_to_json(filtered_df, output_json_path)
     
-    if "annotation_file_paths" in attrs:
-        annotation_file_paths = attrs["annotation_file_paths"]["annotation_file_paths"]
-    else:
-        annotation_file_paths = []
-    annotation_file_paths.append({image_uuid: str(output_file)})
-
-    current_attributes = annotation.attribute
-    new_attributes = Attribute(
-        name="annotation_file_paths", 
-        value={"annotation_file_paths": annotation_file_paths}, 
-        provenance="bia_conversion"
-    )
-    annotation.attribute = current_attributes + [new_attributes]
-
     ng_output_path = get_annotation_ng_precomp_output_path(annotation, image_uuid)
-    convert_starfile_df_to_ng_precomp(selected_df, ng_output_path, image_rep)
-    
-    if "ng_precomp_file_paths" in attrs:
-        ng_precomp_file_paths = attrs["ng_precomp_file_paths"]["ng_precomp_file_paths"]
-    else:
-        ng_precomp_file_paths = []
-    ng_precomp_file_paths.append({image_uuid: str(ng_output_path)})
-
-    current_attributes = annotation.attribute
-    new_attributes = Attribute(
-        name="ng_precomp_file_paths", 
-        value={"ng_precomp_file_paths": ng_precomp_file_paths}, 
-        provenance="bia_conversion"
-    )
-    annotation.attribute = current_attributes + [new_attributes]
+    annotation = add_ng_precomp_file_path_to_annotation(annotation, image_uuid, str(ng_output_path))
+    convert_starfile_df_to_ng_precomp(filtered_df, ng_output_path, image_rep)
     
     starfile_uri = f"http://localhost:8081/annotations/{annotation.uuid}"
     contrast_bounds, physical_sizes, position = calculate_zarr_metadata(f"{image_rep.file_uri[0]}")
-
     state_uri = generate_ng_link_for_zarr_and_precomp_annotation(
         image_rep.file_uri[0],  
         starfile_uri, 
@@ -589,41 +562,10 @@ def convert_star_annotation_to_json(
         position,
         physical_sizes,  
     )
-
     rich.print(f"state uri: {state_uri}")
     
-    image, image_rep = update_annotated_image_and_image_rep(
-        image_uuid, 
-        image_rep, 
-        state_uri
-    )
+    image, image_rep = update_annotated_image_and_image_rep(image_uuid, image_rep, state_uri)
 
     update_object_in_api_idempotent(image)
     update_object_in_api_idempotent(image_rep)
     update_object_in_api_idempotent(annotation)
-
-
-def update_annotated_image_and_image_rep(
-    image_uuid: str, 
-    image_rep: ImageRepresentation, 
-    ng_uri_link: str, 
-) -> tuple[Image, ImageRepresentation]:
-    
-    current_rep_attributes = image_rep.attribute
-    new_attributes = Attribute(
-        name="neuroglancer_view_link", 
-        value={"neuroglancer_view_link": ng_uri_link}, 
-        provenance="bia_conversion"
-    )
-    image_rep.attribute = current_rep_attributes + [new_attributes]
-
-    image = api_client.get_image(image_uuid)
-    current_img_attributes = image.attribute
-    new_attributes = Attribute(
-        name="preferred_neuroglancer_image_representation_uuid", 
-        value={"preferred_neuroglancer_image_representation_uuid": image_rep.uuid}, 
-        provenance="bia_conversion"
-    )
-    image.attribute = current_img_attributes + [new_attributes]
-
-    return image, image_rep
