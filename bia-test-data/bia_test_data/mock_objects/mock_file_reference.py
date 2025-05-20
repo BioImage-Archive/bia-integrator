@@ -36,15 +36,23 @@ def get_file_reference_data(dataset_uuid = get_dataset()[1].uuid, filelist: str 
     for fl_data in file_list_data:
         attributes = {a["name"]: a.get("value", None) for a in fl_data["attributes"]}
         attributes_as_attr_dict = {
-            "provenance": semantic_models.AttributeProvenance("bia_ingest"),
+            "provenance": semantic_models.Provenance("bia_ingest"),
             "name": "attributes_from_biostudies.File",
             "value": {
                 "attributes": attributes,
             },
         }
+        unique_string = f'{fl_data["path"]}{fl_data["size"]}'
+        unique_uuid_input_dict = {
+            "provenance": "bia_ingest",
+            "name": "uuid_unique_input",
+            "value": {
+                "uuid_unique_input": unique_string,
+            }
+        }
         file_reference_data.append(
             {
-                "uuid": create_file_reference_uuid(fl_data["path"], study_uuid),
+                "uuid": create_file_reference_uuid(study_uuid, unique_string),
                 "file_path": fl_data["path"],
                 "format": fl_data["type"],
                 "size_in_bytes": int(fl_data["size"]),
@@ -53,8 +61,10 @@ def get_file_reference_data(dataset_uuid = get_dataset()[1].uuid, filelist: str 
                 ),
                 "submission_dataset_uuid": dataset_uuid,
                 "version": 0,
-                "attribute": [
+                "object_creator": "bia_ingest",
+                "additional_metadata": [
                     attributes_as_attr_dict,
+                    unique_uuid_input_dict,
                 ],
             }
         )
@@ -90,7 +100,7 @@ def get_file_reference_data_biostudies_default(
     for fl_data in file_list_data:
         attributes = {a["name"]: a.get("value", None) for a in fl_data["attributes"]}
         attributes_as_attr_dict = {
-            "provenance": semantic_models.AttributeProvenance("bia_ingest"),
+            "provenance": semantic_models.Provenance("bia_ingest"),
             "name": "attributes_from_biostudies.File",
             "value": {
                 "attributes": attributes,

@@ -7,10 +7,11 @@ from .mock_object_constants import study_uuid
 def get_annotation_method() -> List[bia_data_model.AnnotationMethod]:
 
     title_id = "Segmentation masks"
+    unique_string = "Annotations-29"
     object_dicts = [
         {
-            "uuid": create_annotation_method_uuid(title_id, study_uuid),
-            "title_id": title_id,
+            "uuid": create_annotation_method_uuid(study_uuid, unique_string),
+            "title": title_id,
             "protocol_description": "Test annotation method 1",
             "annotation_criteria": "Test annotation criteria 1",
             "annotation_coverage": None,
@@ -19,6 +20,16 @@ def get_annotation_method() -> List[bia_data_model.AnnotationMethod]:
                 for annotation_type in "class_labels, segmentation_mask".split(",")
             ],
             "version": 0,
+            "object_creator": "bia_ingest",
+            "additional_metadata": [
+              {
+                "provenance": "bia_ingest",
+                "name": "uuid_unique_input",
+                "value": {
+                  "uuid_unique_input": unique_string,
+                }
+              }
+            ],
         },
     ]
 
@@ -30,4 +41,4 @@ def get_annotation_method() -> List[bia_data_model.AnnotationMethod]:
 
 
 def get_annotation_method_as_map():
-    return {obj.title_id: obj for obj in get_annotation_method()}
+    return {obj.title: obj for obj in get_annotation_method()}

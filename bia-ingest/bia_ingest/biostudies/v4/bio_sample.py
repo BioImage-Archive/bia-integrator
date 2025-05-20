@@ -120,16 +120,16 @@ def extract_biosample_dicts(
             model_dict_with_gp = deepcopy(model_dict)
             model_dict_with_gp["growth_protocol_uuid"] = gp_uuid
 
-            uuid_unique_input = f"{section.accno}{gp_uuid}"
+            uuid_unique_input = f"{section.accno} {gp_uuid}"
             model_dict_with_gp["uuid"] = create_bio_sample_uuid(
                 study_uuid,
                 uuid_unique_input,
             )
-            model_dict["additional_metadata"] = {
+            model_dict_with_gp["additional_metadata"] = [{
                 "provenance": "bia_ingest",
                 "name": "uuid_unique_input",
                 "value": {"uuid_unique_input": uuid_unique_input},
-            }
+            },]
             model_dicts_map[attr_dict["Title"] + "." + specimen] = model_dict_with_gp
 
         if bs_without_gp:
@@ -147,6 +147,7 @@ def extract_biosample_dicts(
                 },
             ]
             model_dicts_map[attr_dict["Title"]] = model_dict
+    import pdb;  pdb.set_trace()
     return model_dicts_map
 
 

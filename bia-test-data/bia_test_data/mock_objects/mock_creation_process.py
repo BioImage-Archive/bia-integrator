@@ -2,6 +2,7 @@ from bia_shared_datamodels import uuid_creation
 from copy import deepcopy
 from bia_shared_datamodels import bia_data_model
 from bia_test_data.mock_objects import mock_dataset
+from .mock_object_constants import study_uuid
 
 # Importing mock image and mock_specimen to use uuids generated there.
 # Care is needed if importing this module to others to avoid circular
@@ -10,6 +11,7 @@ from . import mock_image, mock_specimen
 
 basic_creation_process_dict = {
     "version": 0,
+    "object_creator": "bia_ingest",
 }
 
 
@@ -18,7 +20,8 @@ def get_creation_process_with_one_file_reference() -> bia_data_model.CreationPro
 
     output_image_uuid = mock_image.get_image_with_one_file_reference().uuid
     creation_process_dict["uuid"] = uuid_creation.create_creation_process_uuid(
-        output_image_uuid
+        study_uuid,
+        output_image_uuid,
     )
 
     specimen = mock_specimen.get_specimen_for_image_with_one_file_reference()
@@ -35,12 +38,21 @@ def get_creation_process_with_one_file_reference() -> bia_data_model.CreationPro
         creation_process_dict[mapped_name] = next(
             (
                 attribute.value[attribute_name]
-                for attribute in dataset.attribute
+                for attribute in dataset.additional_metadata
                 if attribute.name == attribute_name
             ),
             [],
         )
 
+    "additional_metadata": [
+      {
+        "provenance": "bia_ingest",
+        "name": "uuid_unique_input",
+        "value": {
+          "uuid_unique_input": output_image_uuid,
+        }
+      }
+    ],
     # TODO: Do we want tests to include a test protocol?
     # TODO: Do we want tests to include a test annotation method?
 

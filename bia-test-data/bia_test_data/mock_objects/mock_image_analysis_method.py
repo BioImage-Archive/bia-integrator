@@ -5,6 +5,8 @@ def get_image_analysis_method() -> semantic_models.ImageAnalysisMethod:
     return semantic_models.ImageAnalysisMethod.model_validate(
         {
             "protocol_description": "Test image analysis",
+            # TODO: clarify with FR/pagetab where title comes from.
+            "title": "",
             "features_analysed": "Test image analysis overview",
         }
     )
