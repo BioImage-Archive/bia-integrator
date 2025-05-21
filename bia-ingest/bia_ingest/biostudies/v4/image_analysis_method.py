@@ -22,6 +22,9 @@ def get_image_analysis_method_as_map(
     )
 
     key_mapping = [
+        # TODO: Confirm with FS what to map to 'title' in 2025/04 models
+        # ImageAnalysisMethod inherits 'title' from Protocol
+        ("title", "Title", None),
         ("protocol_description", "Title", None),
         ("features_analysed", "Image analysis overview", None),
     ]

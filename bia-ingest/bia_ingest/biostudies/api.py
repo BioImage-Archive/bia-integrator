@@ -12,8 +12,7 @@ from pydantic import BaseModel, TypeAdapter, ConfigDict
 logger = logging.getLogger("__main__." + __name__)
 
 
-# STUDY_URL_TEMPLATE = "https://www.ebi.ac.uk/biostudies/api/v1/studies/{accession}"
-STUDY_URL_TEMPLATE = "https://ftp.ebi.ac.uk/biostudies/fire/S-BIAD/{accession_postfix}/{accession}/{accession}.json"
+STUDY_URL_TEMPLATE = "https://www.ebi.ac.uk/biostudies/api/v1/studies/{accession}"
 STUDY_TABLE_INFO_URL_TEMPLATE = (
     "https://www.ebi.ac.uk/biostudies/api/v1/studies/{accession}/info"
 )
@@ -251,11 +250,8 @@ def read_override(accession_id: str) -> Submission:
     assert submission.accno == accession_id
     return submission
 
-
 def submission_from_biostudies_api(accession_id) -> Submission:
-    url = STUDY_URL_TEMPLATE.format(
-        accession_postfix=accession_id[-3:], accession=accession_id
-    )
+    url = STUDY_URL_TEMPLATE.format(accession=accession_id)
     logger.info(f"Fetching submission from {url}")
     headers = {
         "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36"
@@ -264,9 +260,14 @@ def submission_from_biostudies_api(accession_id) -> Submission:
 
     assert r.status_code == 200
 
-    import pdb
+    # As of 21/05/2025, biostudies UI may return either pagetab json or a forwarding url
+    # see: https://biostudies.slack.com/archives/CH32H9SSK/p1747738324948869?thread_ts=1747736444.671019&cid=CH32H9SSK
+    if "ftpHttp_link" in r.json():
+        forward_to_url = f"{r.json().get('ftpHttp_link')}{accession_id}.json"
+        r = requests.get(forward_to_url, headers=headers)
+        assert r.status_code == 200
 
-    pdb.set_trace()
+
     submission = Submission.model_validate_json(r.content)
 
     return submission

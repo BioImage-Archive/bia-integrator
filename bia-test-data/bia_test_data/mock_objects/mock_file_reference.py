@@ -106,9 +106,18 @@ def get_file_reference_data_biostudies_default(
                 "attributes": attributes,
             },
         }
+        unique_string = f"{fl_data['path']}{fl_data['size']}"
+        unique_string_dict = {
+            "provenance": "bia_ingest",
+            "name": "uuid_unique_input",
+            "value": {
+                "uuid_unique_input": unique_string,
+            }
+        }
         file_reference_data.append(
             {
-                "uuid": create_file_reference_uuid(fl_data["path"], study_uuid_biostudies_default),
+                "uuid": create_file_reference_uuid(study_uuid_biostudies_default, unique_string),
+                "object_creator": "bia_ingest",
                 "file_path": fl_data["path"],
                 "format": fl_data["type"],
                 "size_in_bytes": int(fl_data["size"]),
@@ -117,8 +126,9 @@ def get_file_reference_data_biostudies_default(
                 ),
                 "submission_dataset_uuid": dataset_uuid,
                 "version": 0,
-                "attribute": [
+                "additional_metadata": [
                     attributes_as_attr_dict,
+                    unique_string_dict,
                 ],
             }
         )

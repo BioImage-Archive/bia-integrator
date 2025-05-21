@@ -147,7 +147,6 @@ def extract_biosample_dicts(
                 },
             ]
             model_dicts_map[attr_dict["Title"]] = model_dict
-    import pdb;  pdb.set_trace()
     return model_dicts_map
 
 

@@ -3,7 +3,7 @@ from bia_shared_datamodels import bia_data_model, semantic_models
 from bia_shared_datamodels.uuid_creation import create_dataset_uuid
 from .mock_object_constants import study_uuid, study_uuid_biostudies_default
 from .mock_image_analysis_method import get_image_analysis_method
-from .mock_image_correlation_method import get_test_image_correlation_method
+from .mock_image_correlation_method import get_image_correlation_method
 from .mock_image_acquisition_protocol import get_image_acquisition_protocol_as_map
 from .mock_association import get_association_dicts
 from .mock_biosample import get_bio_sample_as_map
@@ -45,7 +45,7 @@ def get_dataset() -> List[bia_data_model.Dataset]:
                 get_image_analysis_method().model_dump(),
             ],
             "correlation_method": [
-                # get_template_image_correlation_method().model_dump(),
+                get_image_correlation_method().model_dump(),
             ],
             "example_image_uri": [],
             "description": "Description of study component 1",
@@ -185,7 +185,7 @@ def get_dataset_biostudies_default() -> bia_data_model.Dataset:
 
     study_title = "A default test study section with title greater than 25 characters"
     description = "A study description" 
-    unique_string = "Study Component 1"
+    unique_string = "Default template. No Study Components"
 
     dataset_dict = {
         "uuid": create_dataset_uuid(study_uuid_biostudies_default, unique_string),

@@ -312,6 +312,22 @@
         "value" : "Test image analysis overview"
       } ]
     }, {
+      "accno" : "Image correlation-6",
+      "type" : "Image correlation",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Template correlation method"
+      }, {
+        "name" : "Spatial and temporal alignment",
+        "value" : "Template correlation method description"
+      }, {
+        "name" : "Fiducials used",
+        "value" : "Template fiducials used"
+      } , {
+        "name" : "Transformation matrix",
+        "value" : "Template transformation matrix"
+      }]
+    }, {
       "accno" : "Annotations-29",
       "type" : "Annotations",
       "attributes" : [ {
@@ -360,6 +376,9 @@
         }, {
           "name" : "Image analysis",
           "value" : "Test image analysis"
+        }, {
+          "name" : "Image correlation",
+          "value" : "Template correlation method"
         } ]
       }, {
         "type" : "Associations",

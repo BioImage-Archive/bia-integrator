@@ -22,9 +22,11 @@ def get_image_correlation_method_as_map(
     )
 
     # TODO: review image correlation model, as we shouldn't be setting strings to "" to get around non-optional fields.
+    # TODO: Review this with FS in context of fields of 2025/04 models
     key_mapping = [
-        ("protocol_description", "Title", ""),
-        ("fiducials_used", "Spatial and temporal alignment", None),
+        ("title", "Title", ""),
+        ("protocol_description", "Spatial and temporal alignment", ""),
+        ("fiducials_used", "Fiducials used", None),
         ("transformation_matrix", "Transformation matrix", None),
     ]
 
