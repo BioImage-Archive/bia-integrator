@@ -96,3 +96,6 @@ value for the `--reps-to-create` option. E.g. to create THUMBNAIL and STATIC_DIS
 ```sh
 $ poetry run bia-assign-image representations create --reps-to-create THUMBNAIL --reps-to-create STATIC_DISPLAY S-BIAD1285 92fd093d-c8d2-4d89-ba28-9a9891cec73f
 ```
+
+### Migrating images and image representations to 2025/04 models
+In April 2025 the BIA models were updated. The [scripts](./scripts) directory contains functions and a cli script to enable migration of Image and ImageRepresentation models to the 2025/04 versions.

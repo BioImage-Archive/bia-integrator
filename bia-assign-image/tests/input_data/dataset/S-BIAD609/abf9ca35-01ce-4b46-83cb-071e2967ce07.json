@@ -1,0 +1,66 @@
+{
+  "object_creator": "submitter",
+  "title": "Fluorescent images",
+  "uuid": "abf9ca35-01ce-4b46-83cb-071e2967ce07",
+  "version": 0,
+  "model": {
+    "type_name": "Dataset",
+    "version": 2
+  },
+  "additional_metadata": [
+    {
+        "provenance": "bia_ingest",
+        "name": "uuid_unique_input",
+        "value": {"uuid_unique_input": "Study Component-6"}
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "associations",
+      "value": {
+        "associations": [
+          {
+            "image_analysis": null,
+            "image_correlation": null,
+            "biosample": "Biosamples",
+            "image_acquisition": "Image acquisition",
+            "specimen": "Specimen"
+          }
+        ]
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "image_acquisition_protocol_uuid",
+      "value": {
+        "image_acquisition_protocol_uuid": [
+          "34d47349-b111-4218-abc8-467a38e74ce3"
+        ]
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "specimen_imaging_preparation_protocol_uuid",
+      "value": {
+        "specimen_imaging_preparation_protocol_uuid": [
+          "f40d51dd-cd38-4dcf-9bab-9ad6ccaff7c0"
+        ]
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "bio_sample_uuid",
+      "value": {
+        "bio_sample_uuid": [
+          "b33e4038-34c2-44d1-9a03-b9cc125a1198"
+        ]
+      }
+    }
+  ],
+  "description": "In this study, we investigated the impact of gut microbiota and SCFAs on brain barrier integrity and Alzheimer's disease pathology via different immunostainings.",
+  "analysis_method": [],
+  "correlation_method": [],
+  "example_image_uri": [
+    "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD609/6ff7b0a8-6cc4-4131-bd1b-b78fb8e276f0/ed9f6d05-23ca-4d95-9b8d-6db70e499402.png"
+  ],
+  "submitted_in_study_uuid": "88d36abc-c77f-4127-9551-b8409cb5d4a6"
+}
