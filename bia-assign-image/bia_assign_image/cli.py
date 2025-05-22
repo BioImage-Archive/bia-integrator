@@ -115,13 +115,8 @@ def assign(
         bia_specimen = specimen.get_specimen(
             study_uuid,
             image_uuid,
-            # TODO: Discuss if these should be saved to dataset additional_metadata as lists
-            [
-                image_preparation_protocol_uuid,
-            ],
-            [
-                bio_sample_uuid,
-            ],
+            image_preparation_protocol_uuid,
+            bio_sample_uuid,
         )
         if dryrun:
             logger.info(
@@ -138,9 +133,7 @@ def assign(
         study_uuid,
         image_uuid,
         bia_specimen.uuid,
-        [
-            image_acquisition_protocol_uuid,
-        ],
+        image_acquisition_protocol_uuid,
     )
     if dryrun:
         logger.info(

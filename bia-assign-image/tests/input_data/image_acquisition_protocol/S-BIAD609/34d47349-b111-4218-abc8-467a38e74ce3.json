@@ -1,0 +1,25 @@
+{
+  "object_creator": "bia_ingest",
+  "title": "Image acquisition",
+  "uuid": "34d47349-b111-4218-abc8-467a38e74ce3",
+  "version": 0,
+  "model": {
+    "type_name": "ImageAcquisitionProtocol",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Image acquisition-3"
+      }
+    }
+  ],
+  "protocol_description": "For tight junction (TJ) stainings, the imaging was done with the  Plan-Apochromat 40×/1.4 Oil DIC M27 objective using confocal microscopy.\nFor the Aβ plaques staining, imaging of whole brain sections was conducted with Plan-Apochromat 20×/0.8 M27 objective using Axioscan Z.1.\nFor synaptic staining, imaging was done with the Plan-Apochromat 63×/1.4 Oil DIC M27 objective with the 3× zoom using confocal microscopy.",
+  "imaging_instrument_description": "Zeiss LSM780 confocal microscope and Zeiss Axioscan Z.1 ",
+  "fbbi_id": [],
+  "imaging_method_name": [
+    "fluorescence microscopy"
+  ]
+}

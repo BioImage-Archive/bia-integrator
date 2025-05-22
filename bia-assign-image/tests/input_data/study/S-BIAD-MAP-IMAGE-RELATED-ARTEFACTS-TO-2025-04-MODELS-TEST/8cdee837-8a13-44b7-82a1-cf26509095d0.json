@@ -1,0 +1,44 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "8cdee837-8a13-44b7-82a1-cf26509095d0",
+  "version": 0,
+  "model": {
+    "type_name": "Study",
+    "version": 3
+  },
+  "additional_metadata": [
+  ],
+  "accession_id": "S-BIAD-MAP-IMAGE-RELATED-ARTEFACTS-TO-2025-04-MODELS-TEST",
+  "licence": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "author": [
+    {
+      "rorid": "None",
+      "address": "None",
+      "website": "https://www.none.com/",
+      "orcid": "None",
+      "display_name": "Contributor1",
+      "affiliation": [
+        {
+          "rorid": "None",
+          "address": "None",
+          "website": "https://www.none.com/",
+          "display_name": "Template Affiliation Organisation"
+        }
+      ],
+      "contact_email": "contributor1@org1.ac.uk",
+      "role": "contributing author"
+    }
+  ],
+  "title": "Test study to test mapping of assigned images to 2025/04 models",
+  "release_date": "2024-06-23",
+  "description": "Template description",
+  "keyword": [
+    "Template keyword1",
+    "Template keyword2"
+  ],
+  "acknowledgement": "Template acknowledgement",
+  "see_also": [],
+  "related_publication": [],
+  "grant": [],
+  "funding_statement": "Template funding statement"
+}
