@@ -174,6 +174,7 @@ class SubmissionTable(BaseModel):
 
 # Search data structures
 
+
 class SearchResult(BaseModel):
     accession: str
     type: str
@@ -230,7 +231,7 @@ def load_submission(accession_id: str) -> Submission:
         "S-BIAD590": "missing study component assosiations subsection",
         "S-BIAD599": "missing study component assosiations subsection",
         "S-BIAD628": "missing study component assosiations subsection",
-        "S-BIAD677": "missing study component assosiations subsection"
+        "S-BIAD677": "missing study component assosiations subsection",
     }
     if accession_id in overrides:
         return read_override(accession_id)
@@ -249,7 +250,6 @@ def read_override(accession_id: str) -> Submission:
     assert submission.accno == accession_id
     return submission
 
-
 def submission_from_biostudies_api(accession_id) -> Submission:
     url = STUDY_URL_TEMPLATE.format(accession=accession_id)
     logger.info(f"Fetching submission from {url}")
@@ -259,6 +259,14 @@ def submission_from_biostudies_api(accession_id) -> Submission:
     r = requests.get(url, headers=headers)
 
     assert r.status_code == 200
+
+    # As of 21/05/2025, biostudies UI may return either pagetab json or a forwarding url
+    # see: https://biostudies.slack.com/archives/CH32H9SSK/p1747738324948869?thread_ts=1747736444.671019&cid=CH32H9SSK
+    if "ftpHttp_link" in r.json():
+        forward_to_url = f"{r.json().get('ftpHttp_link')}{accession_id}.json"
+        r = requests.get(forward_to_url, headers=headers)
+        assert r.status_code == 200
+
 
     submission = Submission.model_validate_json(r.content)
 

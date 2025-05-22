@@ -7,19 +7,37 @@ from .mock_object_constants import study_uuid
 def get_growth_protocol() -> List[bia_data_model.Protocol]:
 
     title_id_1 = "Test specimen 1"
+    unique_string_1 = "Specimen-1"
     title_id_2 = "Test specimen 2"
+    unique_string_2 = "Specimen-2"
     object_dicts = [
         {
-            "uuid": create_protocol_uuid(title_id_1, study_uuid),
-            "title_id": title_id_1,
+            "object_creator": "bia_ingest",
+            "uuid": create_protocol_uuid(study_uuid, unique_string_1),
+            "title": title_id_1,
             "protocol_description": "Test growth protocol 1",
             "version": 0,
+            "additional_metadata": [{
+                "provenance": "bia_ingest",
+                "name": "uuid_unique_input",
+                "value": {
+                    "uuid_unique_input": unique_string_1,
+                },
+            },],
         },
         {
-            "uuid": create_protocol_uuid(title_id_2, study_uuid),
-            "title_id": title_id_2,
+            "object_creator": "bia_ingest",
+            "uuid": create_protocol_uuid(study_uuid, unique_string_2),
+            "title": title_id_2,
             "protocol_description": "Test growth protocol 2",
             "version": 0,
+            "additional_metadata": [{
+                "provenance": "bia_ingest",
+                "name": "uuid_unique_input",
+                "value": {
+                    "uuid_unique_input": unique_string_2,
+                },
+            },]
         },
     ]
 
@@ -31,4 +49,4 @@ def get_growth_protocol() -> List[bia_data_model.Protocol]:
 
 
 def get_growth_protocol_as_map():
-    return {obj.title_id + ".growth_protocol": obj for obj in get_growth_protocol()}
+    return {obj.title + ".growth_protocol": obj for obj in get_growth_protocol()}

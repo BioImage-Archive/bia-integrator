@@ -72,7 +72,7 @@ def test_create_file_reference_for_study_component(
     mock_request_get,
 ):
     expected = {
-        dataset_in_submission.title_id: mock_file_reference.get_file_reference()
+        dataset_in_submission.title: mock_file_reference.get_file_reference()
     }
     created = file_reference.get_file_reference_by_dataset(
         test_submission,
@@ -94,7 +94,7 @@ def test_create_file_reference_for_study_component_when_no_matching_sc_in_file_l
     """
 
     dataset = mock_dataset.get_dataset()[0]
-    dataset.title_id = "Test name not in file list"
+    dataset.title = "Test name not in file list"
     created = file_reference.get_file_reference_by_dataset(
         test_submission,
         study_uuid,

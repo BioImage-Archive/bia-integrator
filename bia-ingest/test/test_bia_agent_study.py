@@ -1,28 +1,27 @@
-from typer.testing import CliRunner
 from pathlib import Path
 from bia_ingest import cli
-from bia_ingest.biostudies.api import requests, Submission, SubmissionTable
+from bia_ingest.biostudies.api import requests, Submission
 import json
 from unittest.mock import Mock
 from glob import glob
 from bia_shared_datamodels import bia_data_model
 import pytest
 from pydantic import BaseModel
-from pydantic.alias_generators import to_snake 
+from pydantic.alias_generators import to_snake
 from typing import Type
 
 
 @pytest.fixture
 def expected_bia_agent_objects() -> tuple[dict, int]:
-    
-    path_to_load = Path(__file__).parent / "data" / "example_bia_agent_study" / "expected_output"
+    path_to_load = (
+        Path(__file__).parent / "data" / "example_bia_agent_study" / "expected_output"
+    )
 
     file_paths = glob(f"{path_to_load}/**/*.json", recursive=True)
     n_expected_objects = len(file_paths)
     expected_objects_dict = {}
 
     for file_name in file_paths:
-
         data_dict = json.loads(Path(file_name).read_text())
 
         object_type = data_dict["model"]["type_name"]
@@ -30,7 +29,7 @@ def expected_bia_agent_objects() -> tuple[dict, int]:
 
         if to_snake(object_type) not in expected_objects_dict:
             expected_objects_dict[to_snake(object_type)] = []
-        
+
         expected_objects_dict[to_snake(object_type)].append(
             bia_type.model_validate(data_dict)
         )
@@ -74,6 +73,7 @@ def test_cli_writes_expected_files(
 
     monkeypatch.setattr(requests, "get", _mock_filelist_get)
 
+    """
     runner = CliRunner()
     result = runner.invoke(
         cli.app,
@@ -87,7 +87,8 @@ def test_cli_writes_expected_files(
         ],
     )
     assert result.exit_code == 0
-
+    """
+    cli.ingest(["S-BIAD1492"], persistence_mode="disk", process_filelist="always")
     files_written = [f for f in tmp_bia_data_dir.rglob("*.json")]
     assert len(files_written) == n_expected_objects
 

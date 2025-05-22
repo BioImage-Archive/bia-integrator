@@ -150,30 +150,31 @@ def get_study() -> bia_data_model.Study:
     grant = get_grant()
     study_dict = {
         "uuid": create_study_uuid(accession_id),
+        "object_creator": "bia_ingest",
         "accession_id": accession_id,
         "title": "A test submission with title greater than 25 characters",
         "description": "A test submission to allow testing without retrieving from bia server",
         "release_date": "2024-02-13",
-        "licence": semantic_models.LicenceType.CC0,
+        "licence": semantic_models.Licence.CC0,
         "acknowledgement": "We thank you",
         "funding_statement": "This work was funded by the EBI",
-        "attribute": [
+        "additional_metadata": [
             {
-                "provenance": semantic_models.AttributeProvenance("bia_ingest"),
+                "provenance": semantic_models.Provenance("bia_ingest"),
                 "name": "Extras from biostudies.Submission.attributes",
                 "value": {
                     "Extra attribute 1": "Extra attribute 1 to test semantic_model.study.attribute",
                 },
             },
             {
-                "provenance": semantic_models.AttributeProvenance("bia_ingest"),
+                "provenance": semantic_models.Provenance("bia_ingest"),
                 "name": "Extras from biostudies.Submission.attributes",
                 "value": {
                     "Extra attribute 2": "Extra attribute 2 to test semantic_model.study.attribute",
                 },
             },
             {
-                "provenance": semantic_models.AttributeProvenance("bia_ingest"),
+                "provenance": semantic_models.Provenance("bia_ingest"),
                 "name": "biostudies json/pagetab entry",
                 "value": {
                     "json": f"https://www.ebi.ac.uk/biostudies/files/{accession_id}/{accession_id}.json",

@@ -74,6 +74,9 @@ def map_image_representation_to_2025_04_model(
         "physical_size_z"
     )
 
+    # Always make the version of the newly created image representation 0
+    image_representation_dict["version"] = 0
+
     # Map attributes modifying provenance from 'bia_conversion' if necessary
     attributes = image_representation_dict.pop("attribute")
     image_representation_dict["additional_metadata"] = []

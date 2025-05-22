@@ -11,7 +11,7 @@ from bia_ingest.biostudies.submission_parsing_utils import (
     find_sections_recursive,
 )
 
-from bia_shared_datamodels import bia_data_model
+from bia_shared_datamodels import bia_data_model, semantic_models
 from bia_shared_datamodels.uuid_creation import create_dataset_uuid
 
 logger = logging.getLogger("__main__." + __name__)
@@ -42,7 +42,7 @@ def get_dataset_overview(
     
     # Regardless, study_section is returned as a list
     study_section = study_section[0]
-    
+
     study_attr_dict = attributes_to_dict(study_section.attributes)
     submission_attr_dict = attributes_to_dict(submission.attributes)
 
@@ -62,17 +62,26 @@ def get_dataset_overview(
         description = study_attr_dict["Description"]
     else:
         description = "No description"
-    
+
+    # This should normally be the unique ID of the corresponding Study Component
+    # in the pagetab.json file, which the default template does not have.
+    dataset_uuid_unique_input = "Default template. No Study Components"
+    dataset_uuid_unique_input_dict = {
+        "provenance": semantic_models.Provenance.bia_ingest,
+        "name": "uuid_unique_input",
+        "value": {"uuid_unique_input": dataset_uuid_unique_input},
+    }
     model_dict = {
-        "uuid": create_dataset_uuid(study_title, study_uuid),
-        "title_id": study_title,
+        "uuid": create_dataset_uuid(study_uuid, dataset_uuid_unique_input),
+        "object_creator": semantic_models.Provenance.bia_ingest,
+        "title": study_title,
         "description": description,
         "submitted_in_study_uuid": study_uuid,
         "analysis_method": [],
         "correlation_method": [],
         "example_image_uri": [],
         "version": 0,
-        "attribute": []
+        "additional_metadata": [dataset_uuid_unique_input_dict,]
     }
 
     dataset = dict_to_api_model(

@@ -16,7 +16,7 @@ def get_association_dicts() -> Dict[str, List[Dict]]:
         "Study Component 1": [
             {
                 "image_analysis": "Test image analysis",
-                "image_correlation": None,
+                "image_correlation": "Template correlation method",
                 "biosample": "Test Biosample 1",
                 "image_acquisition": "Test Primary Screen Image Acquisition",
                 "specimen": "Test specimen 1",

@@ -1,12 +1,13 @@
 {
-  "title_id": "Simulated fluorescence images",
-  "uuid": "44500cd8-1ad9-4340-ba55-3427a2782486",
+  "title": "Simulated fluorescence images",
+  "uuid": "05153ce9-8fd0-4e41-a805-32cc3a39dd68",
   "version": 0,
+  "object_creator": "bia_ingest",
   "model": {
     "type_name": "Dataset",
-    "version": 1
+    "version": 2
   },
-  "attribute": [
+  "additional_metadata": [
     {
       "provenance": "bia_ingest",
       "name": "associations",
@@ -27,7 +28,7 @@
       "name": "image_acquisition_protocol_uuid",
       "value": {
         "image_acquisition_protocol_uuid": [
-          "5f4095ba-8bd3-4efa-9c7e-18bc35ddf416"
+          "244e1bee-01cc-4886-8d0a-25f9a2e27c34"
         ]
       }
     },
@@ -36,7 +37,7 @@
       "name": "specimen_imaging_preparation_protocol_uuid",
       "value": {
         "specimen_imaging_preparation_protocol_uuid": [
-          "c27b92d9-1340-455f-9278-c8663326214e"
+          "d514d5bd-93bb-44da-b187-7d4264044308"
         ]
       }
     },
@@ -45,8 +46,15 @@
       "name": "bio_sample_uuid",
       "value": {
         "bio_sample_uuid": [
-          "2dbf5050-5704-484c-94ca-98e8e1d08e11"
+          "aecff242-e5eb-4b92-9718-992abffe38af"
         ]
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Study Component-1"
       }
     }
   ],
