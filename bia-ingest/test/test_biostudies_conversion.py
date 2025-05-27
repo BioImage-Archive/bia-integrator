@@ -8,6 +8,7 @@ from bia_test_data.mock_objects import (
     mock_image_acquisition_protocol,
     mock_annotation_method,
     mock_image_analysis_method,
+    mock_image_correlation_method,
     mock_object_constants,
 )
 from bia_ingest.biostudies.common import study
@@ -106,7 +107,9 @@ def association_dict():
     association_object_dict["image_analysis_method"] = (
         mock_image_analysis_method.get_image_analysis_method_as_map()
     )
-    association_object_dict["image_correlation_method"] = {}
+    association_object_dict["image_correlation_method"] = (
+        mock_image_correlation_method.get_image_correlation_method_as_map()
+    )
 
     return association_object_dict
 
