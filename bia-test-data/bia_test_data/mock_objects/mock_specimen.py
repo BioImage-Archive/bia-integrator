@@ -18,10 +18,10 @@ def get_specimen_for_image_with_one_file_reference() -> bia_data_model.Specimen:
     specimen_dict = {
         "uuid": uuid_creation.create_specimen_uuid(study_uuid, unique_string),
         "version": 0,
-        "object_creator": semantic_models.Provenance("bia_ingest"),
+        "object_creator": semantic_models.Provenance.bia_ingest,
         "additional_metadata": [
             {
-                "provenance": semantic_models.Provenance("bia_ingest"),
+                "provenance": semantic_models.Provenance.bia_ingest,
                 "name": "uuid_unique_input",
                 "value": {
                     "uuid_unique_input": unique_string,

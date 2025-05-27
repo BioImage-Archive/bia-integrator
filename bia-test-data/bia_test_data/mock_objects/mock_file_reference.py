@@ -39,7 +39,7 @@ def get_file_reference_data(
     for fl_data in file_list_data:
         attributes = {a["name"]: a.get("value", None) for a in fl_data["attributes"]}
         attributes_as_attr_dict = {
-            "provenance": semantic_models.Provenance("bia_ingest"),
+            "provenance": semantic_models.Provenance.bia_ingest,
             "name": "attributes_from_biostudies.File",
             "value": {
                 "attributes": attributes,
@@ -47,7 +47,7 @@ def get_file_reference_data(
         }
         unique_string = f'{fl_data["path"]}{fl_data["size"]}'
         unique_uuid_input_dict = {
-            "provenance": semantic_models.Provenance("bia_ingest"),
+            "provenance": semantic_models.Provenance.bia_ingest,
             "name": "uuid_unique_input",
             "value": {
                 "uuid_unique_input": unique_string,
@@ -64,7 +64,7 @@ def get_file_reference_data(
                 ),
                 "submission_dataset_uuid": dataset_uuid,
                 "version": 0,
-                "object_creator": semantic_models.Provenance("bia_ingest"),
+                "object_creator": semantic_models.Provenance.bia_ingest,
                 "additional_metadata": [
                     attributes_as_attr_dict,
                     unique_uuid_input_dict,
@@ -104,7 +104,7 @@ def get_file_reference_data_biostudies_default(
     for fl_data in file_list_data:
         attributes = {a["name"]: a.get("value", None) for a in fl_data["attributes"]}
         attributes_as_attr_dict = {
-            "provenance": semantic_models.Provenance("bia_ingest"),
+            "provenance": semantic_models.Provenance.bia_ingest,
             "name": "attributes_from_biostudies.File",
             "value": {
                 "attributes": attributes,
@@ -112,7 +112,7 @@ def get_file_reference_data_biostudies_default(
         }
         unique_string = f"{fl_data['path']}{fl_data['size']}"
         unique_string_dict = {
-            "provenance": semantic_models.Provenance("bia_ingest"),
+            "provenance": semantic_models.Provenance.bia_ingest,
             "name": "uuid_unique_input",
             "value": {
                 "uuid_unique_input": unique_string,
@@ -123,7 +123,7 @@ def get_file_reference_data_biostudies_default(
                 "uuid": create_file_reference_uuid(
                     study_uuid_biostudies_default, unique_string
                 ),
-                "object_creator": semantic_models.Provenance("bia_ingest"),
+                "object_creator": semantic_models.Provenance.bia_ingest,
                 "file_path": fl_data["path"],
                 "format": fl_data["type"],
                 "size_in_bytes": int(fl_data["size"]),

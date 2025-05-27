@@ -11,7 +11,7 @@ from . import mock_image, mock_specimen
 
 basic_creation_process_dict = {
     "version": 0,
-    "object_creator": semantic_models.Provenance("bia_ingest"),
+    "object_creator": semantic_models.Provenance.bia_ingest,
 }
 
 
@@ -46,7 +46,7 @@ def get_creation_process_with_one_file_reference() -> bia_data_model.CreationPro
 
     creation_process_dict["additional_metadata"] = [
         {
-            "provenance": semantic_models.Provenance("bia_ingest"),
+            "provenance": semantic_models.Provenance.bia_ingest,
             "name": "uuid_unique_input",
             "value": {
                 "uuid_unique_input": output_image_uuid,

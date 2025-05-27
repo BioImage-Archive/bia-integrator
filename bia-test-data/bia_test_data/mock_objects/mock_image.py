@@ -17,7 +17,7 @@ file_reference_uuids = [f.uuid for f in file_references]
 
 basic_image_dict = {
     "version": 0,
-    "object_creator": semantic_models.Provenance("bia_ingest"),
+    "object_creator": semantic_models.Provenance.bia_ingest,
     "submission_dataset_uuid": dataset.uuid,
 }
 
@@ -50,7 +50,7 @@ def get_image_with_one_file_reference() -> bia_data_model.Image:
     image_dict["additional_metadata"] = attributes
 
     uuid_unique_input_dict = {
-        "provenance": semantic_models.Provenance("bia_ingest"),
+        "provenance": semantic_models.Provenance.bia_ingest,
         "name": "uuid_unique_input",
         "value": {
             "uuid_unique_input": unique_string,

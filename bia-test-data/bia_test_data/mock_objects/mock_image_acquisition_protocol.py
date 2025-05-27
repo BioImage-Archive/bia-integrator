@@ -25,10 +25,10 @@ def get_image_acquisition_protocol() -> List[bia_data_model.ImageAcquisitionProt
             ],
             "fbbi_id": [],
             "version": 0,
-            "object_creator": semantic_models.Provenance("bia_ingest"),
+            "object_creator": semantic_models.Provenance.bia_ingest,
             "additional_metadata": [
                 {
-                    "provenance": semantic_models.Provenance("bia_ingest"),
+                    "provenance": semantic_models.Provenance.bia_ingest,
                     "name": "uuid_unique_input",
                     "value": {
                         "uuid_unique_input": unique_string_1,
@@ -47,10 +47,10 @@ def get_image_acquisition_protocol() -> List[bia_data_model.ImageAcquisitionProt
             "imaging_method_name": ["fluorescence microscopy"],
             "fbbi_id": ["FBbi:00000246"],
             "version": 0,
-            "object_creator": semantic_models.Provenance("bia_ingest"),
+            "object_creator": semantic_models.Provenance.bia_ingest,
             "additional_metadata": [
                 {
-                    "provenance": semantic_models.Provenance("bia_ingest"),
+                    "provenance": semantic_models.Provenance.bia_ingest,
                     "name": "uuid_unique_input",
                     "value": {
                         "uuid_unique_input": unique_string_2,

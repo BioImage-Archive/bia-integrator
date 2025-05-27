@@ -11,14 +11,14 @@ def get_growth_protocol() -> List[bia_data_model.Protocol]:
     unique_string_2 = "Specimen-2"
     object_dicts = [
         {
-            "object_creator": semantic_models.Provenance("bia_ingest"),
+            "object_creator": semantic_models.Provenance.bia_ingest,
             "uuid": create_protocol_uuid(study_uuid, unique_string_1),
             "title": title_id_1,
             "protocol_description": "Test growth protocol 1",
             "version": 0,
             "additional_metadata": [
                 {
-                    "provenance": semantic_models.Provenance("bia_ingest"),
+                    "provenance": semantic_models.Provenance.bia_ingest,
                     "name": "uuid_unique_input",
                     "value": {
                         "uuid_unique_input": unique_string_1,
@@ -27,14 +27,14 @@ def get_growth_protocol() -> List[bia_data_model.Protocol]:
             ],
         },
         {
-            "object_creator": semantic_models.Provenance("bia_ingest"),
+            "object_creator": semantic_models.Provenance.bia_ingest,
             "uuid": create_protocol_uuid(study_uuid, unique_string_2),
             "title": title_id_2,
             "protocol_description": "Test growth protocol 2",
             "version": 0,
             "additional_metadata": [
                 {
-                    "provenance": semantic_models.Provenance("bia_ingest"),
+                    "provenance": semantic_models.Provenance.bia_ingest,
                     "name": "uuid_unique_input",
                     "value": {
                         "uuid_unique_input": unique_string_2,

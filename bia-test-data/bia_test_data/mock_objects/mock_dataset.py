@@ -38,7 +38,7 @@ def get_dataset() -> List[bia_data_model.Dataset]:
     object_dicts = [
         {
             "uuid": create_dataset_uuid(study_uuid, unique_string_1),
-            "object_creator": semantic_models.Provenance("bia_ingest"),
+            "object_creator": semantic_models.Provenance.bia_ingest,
             "title": title_id_1,
             "submitted_in_study_uuid": study_uuid,
             "analysis_method": [
@@ -52,21 +52,21 @@ def get_dataset() -> List[bia_data_model.Dataset]:
             "version": 0,
             "additional_metadata": [
                 {
-                    "provenance": semantic_models.Provenance("bia_ingest"),
+                    "provenance": semantic_models.Provenance.bia_ingest,
                     "name": "associations",
                     "value": {
                         "associations": associations[0],
                     },
                 },
                 {
-                    "provenance": semantic_models.Provenance("bia_ingest"),
+                    "provenance": semantic_models.Provenance.bia_ingest,
                     "name": "image_acquisition_protocol_uuid",
                     "value": {
                         "image_acquisition_protocol_uuid": image_acquisition_protocol_uuids,
                     },
                 },
                 {
-                    "provenance": semantic_models.Provenance("bia_ingest"),
+                    "provenance": semantic_models.Provenance.bia_ingest,
                     "name": "specimen_imaging_preparation_protocol_uuid",
                     "value": {
                         "specimen_imaging_preparation_protocol_uuid": [
@@ -75,14 +75,14 @@ def get_dataset() -> List[bia_data_model.Dataset]:
                     },
                 },
                 {
-                    "provenance": semantic_models.Provenance("bia_ingest"),
+                    "provenance": semantic_models.Provenance.bia_ingest,
                     "name": "bio_sample_uuid",
                     "value": {
                         "bio_sample_uuid": bio_sample_uuids[0:2],
                     },
                 },
                 {
-                    "provenance": semantic_models.Provenance("bia_ingest"),
+                    "provenance": semantic_models.Provenance.bia_ingest,
                     "name": "uuid_unique_input",
                     "value": {
                         "uuid_unique_input": unique_string_1,
@@ -92,7 +92,7 @@ def get_dataset() -> List[bia_data_model.Dataset]:
         },
         {
             "uuid": create_dataset_uuid(study_uuid, unique_string_2),
-            "object_creator": semantic_models.Provenance("bia_ingest"),
+            "object_creator": semantic_models.Provenance.bia_ingest,
             "title": title_id_2,
             "submitted_in_study_uuid": study_uuid,
             "analysis_method": [
@@ -106,14 +106,14 @@ def get_dataset() -> List[bia_data_model.Dataset]:
             "version": 0,
             "additional_metadata": [
                 {
-                    "provenance": semantic_models.Provenance("bia_ingest"),
+                    "provenance": semantic_models.Provenance.bia_ingest,
                     "name": "associations",
                     "value": {
                         "associations": associations[1],
                     },
                 },
                 {
-                    "provenance": semantic_models.Provenance("bia_ingest"),
+                    "provenance": semantic_models.Provenance.bia_ingest,
                     "name": "image_acquisition_protocol_uuid",
                     "value": {
                         "image_acquisition_protocol_uuid": [
@@ -122,7 +122,7 @@ def get_dataset() -> List[bia_data_model.Dataset]:
                     },
                 },
                 {
-                    "provenance": semantic_models.Provenance("bia_ingest"),
+                    "provenance": semantic_models.Provenance.bia_ingest,
                     "name": "specimen_imaging_preparation_protocol_uuid",
                     "value": {
                         "specimen_imaging_preparation_protocol_uuid": [
@@ -131,14 +131,14 @@ def get_dataset() -> List[bia_data_model.Dataset]:
                     },
                 },
                 {
-                    "provenance": semantic_models.Provenance("bia_ingest"),
+                    "provenance": semantic_models.Provenance.bia_ingest,
                     "name": "bio_sample_uuid",
                     "value": {
                         "bio_sample_uuid": [bio_sample_uuids[2]],
                     },
                 },
                 {
-                    "provenance": semantic_models.Provenance("bia_ingest"),
+                    "provenance": semantic_models.Provenance.bia_ingest,
                     "name": "uuid_unique_input",
                     "value": {
                         "uuid_unique_input": unique_string_2,
@@ -148,7 +148,7 @@ def get_dataset() -> List[bia_data_model.Dataset]:
         },
         {
             "uuid": create_dataset_uuid(study_uuid, unique_string_3),
-            "object_creator": semantic_models.Provenance("bia_ingest"),
+            "object_creator": semantic_models.Provenance.bia_ingest,
             "title": title_id_3,
             "submitted_in_study_uuid": study_uuid,
             "analysis_method": [],
@@ -158,14 +158,14 @@ def get_dataset() -> List[bia_data_model.Dataset]:
             "version": 0,
             "additional_metadata": [
                 {
-                    "provenance": semantic_models.Provenance("bia_ingest"),
+                    "provenance": semantic_models.Provenance.bia_ingest,
                     "name": "annotation_method_uuid",
                     "value": {
                         "annotation_method_uuid": annotation_method_uuids,
                     },
                 },
                 {
-                    "provenance": semantic_models.Provenance("bia_ingest"),
+                    "provenance": semantic_models.Provenance.bia_ingest,
                     "name": "uuid_unique_input",
                     "value": {
                         "uuid_unique_input": unique_string_3,
@@ -196,10 +196,10 @@ def get_dataset_biostudies_default() -> bia_data_model.Dataset:
         "correlation_method": [],
         "example_image_uri": [],
         "version": 0,
-        "object_creator": semantic_models.Provenance("bia_ingest"),
+        "object_creator": semantic_models.Provenance.bia_ingest,
         "additional_metadata": [
             {
-                "provenance": semantic_models.Provenance("bia_ingest"),
+                "provenance": semantic_models.Provenance.bia_ingest,
                 "name": "uuid_unique_input",
                 "value": {
                     "uuid_unique_input": unique_string,

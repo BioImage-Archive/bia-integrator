@@ -66,10 +66,10 @@ def get_bio_sample_as_map() -> dict[str, bia_data_model.BioSample]:
             ],
             "version": 0,
             "growth_protocol_uuid": growth_protocol_specimen_1_uuid,
-            "object_creator": semantic_models.Provenance("bia_ingest"),
+            "object_creator": semantic_models.Provenance.bia_ingest,
             "additional_metadata": [
                 {
-                    "provenance": semantic_models.Provenance("bia_ingest"),
+                    "provenance": semantic_models.Provenance.bia_ingest,
                     "name": "uuid_unique_input",
                     "value": {
                         "uuid_unique_input": unique_string_biosample1_specimen1,
@@ -97,10 +97,10 @@ def get_bio_sample_as_map() -> dict[str, bia_data_model.BioSample]:
             ],
             "version": 0,
             "growth_protocol_uuid": growth_protocol_specimen_1_uuid,
-            "object_creator": semantic_models.Provenance("bia_ingest"),
+            "object_creator": semantic_models.Provenance.bia_ingest,
             "additional_metadata": [
                 {
-                    "provenance": semantic_models.Provenance("bia_ingest"),
+                    "provenance": semantic_models.Provenance.bia_ingest,
                     "name": "uuid_unique_input",
                     "value": {
                         "uuid_unique_input": unique_string_biosample2_specimen1,
@@ -128,10 +128,10 @@ def get_bio_sample_as_map() -> dict[str, bia_data_model.BioSample]:
             ],
             "version": 0,
             "growth_protocol_uuid": growth_protocol_specimen_2_uuid,
-            "object_creator": semantic_models.Provenance("bia_ingest"),
+            "object_creator": semantic_models.Provenance.bia_ingest,
             "additional_metadata": [
                 {
-                    "provenance": semantic_models.Provenance("bia_ingest"),
+                    "provenance": semantic_models.Provenance.bia_ingest,
                     "name": "uuid_unique_input",
                     "value": {
                         "uuid_unique_input": unique_string_biosample2_specimen2,

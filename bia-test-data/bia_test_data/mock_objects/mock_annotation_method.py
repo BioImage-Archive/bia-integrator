@@ -19,10 +19,10 @@ def get_annotation_method() -> List[bia_data_model.AnnotationMethod]:
                 for annotation_type in "class_labels, segmentation_mask".split(",")
             ],
             "version": 0,
-            "object_creator": semantic_models.Provenance("bia_ingest"),
+            "object_creator": semantic_models.Provenance.bia_ingest,
             "additional_metadata": [
                 {
-                    "provenance": semantic_models.Provenance("bia_ingest"),
+                    "provenance": semantic_models.Provenance.bia_ingest,
                     "name": "uuid_unique_input",
                     "value": {
                         "uuid_unique_input": unique_string,

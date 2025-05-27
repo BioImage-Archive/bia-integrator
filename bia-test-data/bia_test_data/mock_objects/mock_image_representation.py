@@ -35,7 +35,7 @@ def representation_dict_template() -> Dict:
         "size_c": None,  # overwrite by template user if necessary
         "size_t": None,  # overwrite by template user if necessary
         "version": 0,
-        "object_creator": semantic_models.Provenance("bia_ingest"),
+        "object_creator": semantic_models.Provenance.bia_ingest,
     }
 
     return deepcopy(dict_template)
@@ -66,7 +66,7 @@ def get_image_representation_of_uploaded_by_submitter(
         },
     }
     uuid_unique_input_dict = {
-        "provenance": semantic_models.Provenance("bia_ingest"),
+        "provenance": semantic_models.Provenance.bia_ingest,
         "name": "uuid_unique_input",
         "value": {
             "uuid_unique_input": unique_string,
@@ -107,7 +107,7 @@ def get_image_representation_of_interactive_display(
     representation_dict["uuid"] = image_representation_uuid
 
     uuid_unique_input_dict = {
-        "provenance": semantic_models.Provenance("bia_ingest"),
+        "provenance": semantic_models.Provenance.bia_ingest,
         "name": "uuid_unique_input",
         "value": {
             "uuid_unique_input": unique_string,

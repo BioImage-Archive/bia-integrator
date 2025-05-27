@@ -20,13 +20,13 @@ def get_specimen_imaging_preparation_protocol() -> (
                 unique_string_1,
             ),
             "title": title_id_1,
-            "object_creator": semantic_models.Provenance("bia_ingest"),
+            "object_creator": semantic_models.Provenance.bia_ingest,
             "protocol_description": "Test sample preparation protocol 1",
             "signal_channel_information": [],
             "version": 0,
             "additional_metadata": [
                 {
-                    "provenance": semantic_models.Provenance("bia_ingest"),
+                    "provenance": semantic_models.Provenance.bia_ingest,
                     "name": "uuid_unique_input",
                     "value": {
                         "uuid_unique_input": unique_string_1,
@@ -40,13 +40,13 @@ def get_specimen_imaging_preparation_protocol() -> (
                 unique_string_2,
             ),
             "title": title_id_2,
-            "object_creator": semantic_models.Provenance("bia_ingest"),
+            "object_creator": semantic_models.Provenance.bia_ingest,
             "protocol_description": "Test sample preparation protocol 2",
             "signal_channel_information": [],
             "version": 0,
             "additional_metadata": [
                 {
-                    "provenance": semantic_models.Provenance("bia_ingest"),
+                    "provenance": semantic_models.Provenance.bia_ingest,
                     "name": "uuid_unique_input",
                     "value": {
                         "uuid_unique_input": unique_string_2,
