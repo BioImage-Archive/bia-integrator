@@ -108,7 +108,7 @@ def get_file_reference_dicts_for_submission_dataset(
             "uri": file_uri(accession_id, f),
             "submission_dataset_uuid": submission_dataset.uuid,
             "version": 0,
-            "object_creator": "bia_ingest",
+            "object_creator": semantic_models.Provenance("bia_ingest"),
         }
 
         attributes = attributes_to_dict(f.attributes)
@@ -125,7 +125,7 @@ def get_file_reference_dicts_for_submission_dataset(
         ]
         file_dict["additional_metadata"].append(
             {
-                "provenance": "bia_ingest",
+                "provenance": semantic_models.Provenance("bia_ingest"),
                 "name": "uuid_unique_input",
                 "value": {"uuid_unique_input": uuid_unique_input},
             }

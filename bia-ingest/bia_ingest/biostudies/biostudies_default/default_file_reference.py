@@ -4,7 +4,7 @@ from uuid import UUID
 
 from bia_ingest.persistence_strategy import PersistenceStrategy
 from bia_ingest.biostudies.submission_parsing_utils import (
-    find_files_and_file_lists_in_default_submission, 
+    find_files_and_file_lists_in_default_submission,
     attributes_to_dict,
 )
 from bia_ingest.bia_object_creation_utils import (
@@ -13,7 +13,7 @@ from bia_ingest.bia_object_creation_utils import (
 
 from bia_ingest.biostudies.api import (
     Submission,
-    file_uri, 
+    file_uri,
     File as BioStudiesAPIFile,
 )
 from bia_shared_datamodels import bia_data_model, semantic_models
@@ -23,23 +23,25 @@ logger = logging.getLogger("__main__." + __name__)
 
 
 def get_file_reference_for_default_template_datasets(
-        submission: Submission, 
-        study_uuid: UUID, 
-        submission_dataset: bia_data_model.Dataset, 
-        result_summary: dict, 
-        persister: Optional[PersistenceStrategy] = None
+    submission: Submission,
+    study_uuid: UUID,
+    submission_dataset: bia_data_model.Dataset,
+    result_summary: dict,
+    persister: Optional[PersistenceStrategy] = None,
 ) -> Dict[str, List[bia_data_model.FileReference]]:
     """
     Return Dict of list of file references in a default template dataset.
     Assumed one dataset per submission, currently.
     """
-    
-    all_files = find_files_and_file_lists_in_default_submission(submission, result_summary)
+
+    all_files = find_files_and_file_lists_in_default_submission(
+        submission, result_summary
+    )
     if not all_files:
         logger.warning("No files were found.")
         result_summary[submission.accno].__setattr__(
             "Warning",
-            f"No files were found in deafult template — check submission",
+            "No files were found in deafult template — check submission",
         )
 
     file_reference_dicts = get_file_reference_dicts_for_submission_dataset(
@@ -55,9 +57,10 @@ def get_file_reference_for_default_template_datasets(
     if persister:
         persister.persist(file_references)
 
-    fileref_to_datasets = {submission_dataset.title_id: file_references}
+    fileref_to_datasets = {submission_dataset.title: file_references}
 
     return fileref_to_datasets
+
 
 def get_file_reference_dicts_for_submission_dataset(
     accession_id: str,
@@ -74,15 +77,15 @@ def get_file_reference_dicts_for_submission_dataset(
         file_path = str(f.path.as_posix())
         unique_string = f"{file_path}{f.size}"
         unique_string_dict = {
-            "provenance": "bia_ingest",
+            "provenance": semantic_models.Provenance("bia_ingest"),
             "name": "uuid_unique_input",
             "value": {
                 "uuid_unique_input": unique_string,
-            }
+            },
         }
         file_dict = {
             "uuid": create_file_reference_uuid(study_uuid, unique_string),
-            "object_creator": "bia_ingest",
+            "object_creator": semantic_models.Provenance("bia_ingest"),
             "file_path": file_path,
             "format": f.type,
             "size_in_bytes": int(f.size),

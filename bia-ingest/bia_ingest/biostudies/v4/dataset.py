@@ -94,10 +94,10 @@ def get_dataset_dict_from_study_component(
                 associations, bsst_title_to_bia_object_map
             )
 
-        uuid_unique_input = section.accno if section.accno else ""
+        uuid_unique_input = section.accno
         # TODO: Actually use correlation methods?
         model_dict = {
-            "object_creator": "bia_ingest",
+            "object_creator": semantic_models.Provenance("bia_ingest"),
             "uuid": create_dataset_uuid(study_uuid, uuid_unique_input),
             "title": attr_dict["Name"],
             "description": attr_dict["Description"],
@@ -110,7 +110,7 @@ def get_dataset_dict_from_study_component(
         }
         model_dict["additional_metadata"].append(
             {
-                "provenance": "bia_ingest",
+                "provenance": semantic_models.Provenance("bia_ingest"),
                 "name": "uuid_unique_input",
                 "value": {"uuid_unique_input": uuid_unique_input},
             }
@@ -139,10 +139,10 @@ def get_dataset_dict_from_annotation(
             attr_dict, bsst_title_to_bia_object_map
         )
 
-        uuid_unique_input = section.accno if section.accno else ""
+        uuid_unique_input = section.accno
 
         model_dict = {
-            "object_creator": "bia_ingest",
+            "object_creator": semantic_models.Provenance("bia_ingest"),
             "uuid": create_dataset_uuid(study_uuid, uuid_unique_input),
             "title": attr_dict["Title"],
             "description": attr_dict.get("Annotation Overview", None),
@@ -155,7 +155,7 @@ def get_dataset_dict_from_annotation(
         }
         model_dict["additional_metadata"].append(
             {
-                "provenance": "bia_ingest",
+                "provenance": semantic_models.Provenance("bia_ingest"),
                 "name": "uuid_unique_input",
                 "value": {"uuid_unique_input": uuid_unique_input},
             }

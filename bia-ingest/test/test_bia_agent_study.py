@@ -9,6 +9,7 @@ import pytest
 from pydantic import BaseModel
 from pydantic.alias_generators import to_snake
 from typing import Type
+from typer.testing import CliRunner
 
 
 @pytest.fixture
@@ -73,7 +74,6 @@ def test_cli_writes_expected_files(
 
     monkeypatch.setattr(requests, "get", _mock_filelist_get)
 
-    """
     runner = CliRunner()
     result = runner.invoke(
         cli.app,
@@ -87,8 +87,7 @@ def test_cli_writes_expected_files(
         ],
     )
     assert result.exit_code == 0
-    """
-    cli.ingest(["S-BIAD1492"], persistence_mode="disk", process_filelist="always")
+
     files_written = [f for f in tmp_bia_data_dir.rglob("*.json")]
     assert len(files_written) == n_expected_objects
 

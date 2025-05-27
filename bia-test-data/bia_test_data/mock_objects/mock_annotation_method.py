@@ -5,7 +5,6 @@ from .mock_object_constants import study_uuid
 
 
 def get_annotation_method() -> List[bia_data_model.AnnotationMethod]:
-
     title_id = "Segmentation masks"
     unique_string = "Annotations-29"
     object_dicts = [
@@ -20,15 +19,15 @@ def get_annotation_method() -> List[bia_data_model.AnnotationMethod]:
                 for annotation_type in "class_labels, segmentation_mask".split(",")
             ],
             "version": 0,
-            "object_creator": "bia_ingest",
+            "object_creator": semantic_models.Provenance("bia_ingest"),
             "additional_metadata": [
-              {
-                "provenance": "bia_ingest",
-                "name": "uuid_unique_input",
-                "value": {
-                  "uuid_unique_input": unique_string,
+                {
+                    "provenance": semantic_models.Provenance("bia_ingest"),
+                    "name": "uuid_unique_input",
+                    "value": {
+                        "uuid_unique_input": unique_string,
+                    },
                 }
-              }
             ],
         },
     ]

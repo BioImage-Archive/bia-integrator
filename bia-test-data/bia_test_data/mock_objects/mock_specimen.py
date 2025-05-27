@@ -1,5 +1,5 @@
 from bia_shared_datamodels import uuid_creation
-from bia_shared_datamodels import bia_data_model
+from bia_shared_datamodels import bia_data_model, semantic_models
 from bia_test_data.mock_objects import mock_dataset
 from bia_test_data.mock_objects.mock_object_constants import study_uuid
 
@@ -18,14 +18,16 @@ def get_specimen_for_image_with_one_file_reference() -> bia_data_model.Specimen:
     specimen_dict = {
         "uuid": uuid_creation.create_specimen_uuid(study_uuid, unique_string),
         "version": 0,
-        "object_creator": "bia_ingest",
-        "additional_metadata": [{
-            "provenance": "bia_ingest",
-            "name": "uuid_unique_input",
-            "value": {
-                "uuid_unique_input": unique_string,
+        "object_creator": semantic_models.Provenance("bia_ingest"),
+        "additional_metadata": [
+            {
+                "provenance": semantic_models.Provenance("bia_ingest"),
+                "name": "uuid_unique_input",
+                "value": {
+                    "uuid_unique_input": unique_string,
+                },
             },
-        },],
+        ],
     }
 
     attribute_names = (

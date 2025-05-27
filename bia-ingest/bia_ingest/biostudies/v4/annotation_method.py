@@ -91,19 +91,19 @@ def extract_annotation_method_dicts(
                 semantic_models.AnnotationMethodType("other"),
             ]
 
-        uuid_unique_input = section.accno if section.accno else ""
+        uuid_unique_input = section.accno
         model_dict["uuid"] = create_annotation_method_uuid(
             study_uuid,
             uuid_unique_input,
         )
         model_dict["version"] = 0
-        model_dict["object_creator"] = "bia_ingest"
+        model_dict["object_creator"] = semantic_models.Provenance("bia_ingest")
 
         model_dict_map[attr_dict["Title"]] = model_dict
 
         model_dict["additional_metadata"] = [
             {
-                "provenance": "bia_ingest",
+                "provenance": semantic_models.Provenance("bia_ingest"),
                 "name": "uuid_unique_input",
                 "value": {"uuid_unique_input": uuid_unique_input},
             },

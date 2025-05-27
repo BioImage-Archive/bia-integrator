@@ -89,7 +89,7 @@ def get_study(
         # TODO: Do more robust search for title - sometimes it is in
         #       actual submission - see old ingest code
         "title": study_title,
-        "object_creator": "bia_ingest",
+        "object_creator": semantic_models.Provenance("bia_ingest"),
         "description": description,
         "release_date": submission_attributes.pop("ReleaseDate"),
         "licence": licence,

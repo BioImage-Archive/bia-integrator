@@ -16,13 +16,11 @@ from typing import Dict
 def get_image_correlation_method_as_map(
     submission: Submission, result_summary: dict
 ) -> Dict[str, semantic_models.ImageCorrelationMethod]:
-
     image_correlation_sections = find_sections_recursive(
         submission.section, ["Image correlation"]
     )
 
     # TODO: review image correlation model, as we shouldn't be setting strings to "" to get around non-optional fields.
-    # TODO: Review this with FS in context of fields of 2025/04 models
     key_mapping = [
         ("title", "Title", ""),
         ("protocol_description", "Spatial and temporal alignment", ""),

@@ -1,6 +1,11 @@
 from typing import Dict
 from copy import deepcopy
-from bia_shared_datamodels import bia_data_model, uuid_creation, semantic_models, attribute_models
+from bia_shared_datamodels import (
+    bia_data_model,
+    uuid_creation,
+    semantic_models,
+    attribute_models,
+)
 from bia_test_data.mock_objects import mock_file_reference
 from bia_test_data.mock_objects.mock_object_constants import accession_id, study_uuid
 
@@ -30,7 +35,7 @@ def representation_dict_template() -> Dict:
         "size_c": None,  # overwrite by template user if necessary
         "size_t": None,  # overwrite by template user if necessary
         "version": 0,
-        "object_creator": "bia_ingest",
+        "object_creator": semantic_models.Provenance("bia_ingest"),
     }
 
     return deepcopy(dict_template)
@@ -61,15 +66,17 @@ def get_image_representation_of_uploaded_by_submitter(
         },
     }
     uuid_unique_input_dict = {
-        "provenance": "bia_ingest",
+        "provenance": semantic_models.Provenance("bia_ingest"),
         "name": "uuid_unique_input",
         "value": {
             "uuid_unique_input": unique_string,
-        }
+        },
     }
     model.additional_metadata = [
         attribute_models.Attribute.model_validate(file_pattern_attribute_dict),
-        attribute_models.DatasetAssociatedUUIDAttribute.model_validate(uuid_unique_input_dict),
+        attribute_models.DatasetAssociatedUUIDAttribute.model_validate(
+            uuid_unique_input_dict
+        ),
     ]
 
     return model
@@ -100,11 +107,13 @@ def get_image_representation_of_interactive_display(
     representation_dict["uuid"] = image_representation_uuid
 
     uuid_unique_input_dict = {
-        "provenance": "bia_ingest",
+        "provenance": semantic_models.Provenance("bia_ingest"),
         "name": "uuid_unique_input",
         "value": {
             "uuid_unique_input": unique_string,
-        }
+        },
     }
-    representation_dict["additional_metadata"] = [uuid_creation,]
+    representation_dict["additional_metadata"] = [
+        uuid_unique_input_dict,
+    ]
     return bia_data_model.ImageRepresentation.model_validate(representation_dict)

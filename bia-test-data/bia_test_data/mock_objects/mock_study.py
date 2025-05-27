@@ -150,7 +150,7 @@ def get_study() -> bia_data_model.Study:
     grant = get_grant()
     study_dict = {
         "uuid": create_study_uuid(accession_id),
-        "object_creator": "bia_ingest",
+        "object_creator": semantic_models.Provenance("bia_ingest"),
         "accession_id": accession_id,
         "title": "A test submission with title greater than 25 characters",
         "description": "A test submission to allow testing without retrieving from bia server",

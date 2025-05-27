@@ -38,7 +38,7 @@ def get_dataset() -> List[bia_data_model.Dataset]:
     object_dicts = [
         {
             "uuid": create_dataset_uuid(study_uuid, unique_string_1),
-            "object_creator": "bia_ingest",
+            "object_creator": semantic_models.Provenance("bia_ingest"),
             "title": title_id_1,
             "submitted_in_study_uuid": study_uuid,
             "analysis_method": [
@@ -85,14 +85,14 @@ def get_dataset() -> List[bia_data_model.Dataset]:
                     "provenance": semantic_models.Provenance("bia_ingest"),
                     "name": "uuid_unique_input",
                     "value": {
-                      "uuid_unique_input": unique_string_1,
-                    }
+                        "uuid_unique_input": unique_string_1,
+                    },
                 },
             ],
         },
         {
             "uuid": create_dataset_uuid(study_uuid, unique_string_2),
-            "object_creator": "bia_ingest",
+            "object_creator": semantic_models.Provenance("bia_ingest"),
             "title": title_id_2,
             "submitted_in_study_uuid": study_uuid,
             "analysis_method": [
@@ -141,14 +141,14 @@ def get_dataset() -> List[bia_data_model.Dataset]:
                     "provenance": semantic_models.Provenance("bia_ingest"),
                     "name": "uuid_unique_input",
                     "value": {
-                      "uuid_unique_input": unique_string_2,
-                    }
+                        "uuid_unique_input": unique_string_2,
+                    },
                 },
             ],
         },
         {
             "uuid": create_dataset_uuid(study_uuid, unique_string_3),
-            "object_creator": "bia_ingest",
+            "object_creator": semantic_models.Provenance("bia_ingest"),
             "title": title_id_3,
             "submitted_in_study_uuid": study_uuid,
             "analysis_method": [],
@@ -168,8 +168,8 @@ def get_dataset() -> List[bia_data_model.Dataset]:
                     "provenance": semantic_models.Provenance("bia_ingest"),
                     "name": "uuid_unique_input",
                     "value": {
-                      "uuid_unique_input": unique_string_3,
-                    }
+                        "uuid_unique_input": unique_string_3,
+                    },
                 },
             ],
         },
@@ -181,10 +181,10 @@ def get_dataset() -> List[bia_data_model.Dataset]:
     ]
     return bia_objects
 
-def get_dataset_biostudies_default() -> bia_data_model.Dataset:
 
+def get_dataset_biostudies_default() -> bia_data_model.Dataset:
     study_title = "A default test study section with title greater than 25 characters"
-    description = "A study description" 
+    description = "A study description"
     unique_string = "Default template. No Study Components"
 
     dataset_dict = {
@@ -196,15 +196,15 @@ def get_dataset_biostudies_default() -> bia_data_model.Dataset:
         "correlation_method": [],
         "example_image_uri": [],
         "version": 0,
-        "object_creator": "bia_ingest",
+        "object_creator": semantic_models.Provenance("bia_ingest"),
         "additional_metadata": [
-          {
-            "provenance": semantic_models.Provenance("bia_ingest"),
-            "name": "uuid_unique_input",
-            "value": {
-              "uuid_unique_input": unique_string,
+            {
+                "provenance": semantic_models.Provenance("bia_ingest"),
+                "name": "uuid_unique_input",
+                "value": {
+                    "uuid_unique_input": unique_string,
+                },
             }
-          }
         ],
     }
 

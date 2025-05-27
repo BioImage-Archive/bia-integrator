@@ -5,8 +5,8 @@ from bia_shared_datamodels import bia_data_model, semantic_models
 from bia_shared_datamodels.uuid_creation import create_bio_sample_uuid
 from .mock_object_constants import study_uuid
 
-def get_bio_sample_as_map() -> dict[str, bia_data_model.BioSample]:
 
+def get_bio_sample_as_map() -> dict[str, bia_data_model.BioSample]:
     growth_protocol_map = get_growth_protocol_as_map()
 
     taxon1 = semantic_models.Taxon.model_validate(
@@ -23,7 +23,7 @@ def get_bio_sample_as_map() -> dict[str, bia_data_model.BioSample]:
             "ncbi_id": None,
         }
     )
-    # A biosample incorporates growth protocols which come from 
+    # A biosample incorporates growth protocols which come from
     # Biostudies 'Specimen' sections (NOT bia_data_model.Specimen)
     # To account for the possible combinations, the growth protocol
     # uuids are incorporated into the BioSample uuid_unique_inputs
@@ -35,13 +35,21 @@ def get_bio_sample_as_map() -> dict[str, bia_data_model.BioSample]:
     ].uuid
 
     title_id_1 = "Test Biosample 1"
-    unique_string_biosample1_specimen1 = f"Biosample-1 {growth_protocol_specimen_1_uuid}"
+    unique_string_biosample1_specimen1 = (
+        f"Biosample-1 {growth_protocol_specimen_1_uuid}"
+    )
     title_id_2 = "Test Biosample 2 "
-    unique_string_biosample2_specimen1 = f"Biosample-2 {growth_protocol_specimen_1_uuid}"
-    unique_string_biosample2_specimen2 = f"Biosample-2 {growth_protocol_specimen_2_uuid}"
+    unique_string_biosample2_specimen1 = (
+        f"Biosample-2 {growth_protocol_specimen_1_uuid}"
+    )
+    unique_string_biosample2_specimen2 = (
+        f"Biosample-2 {growth_protocol_specimen_2_uuid}"
+    )
     biosample_info = {
         "Test Biosample 1.Test specimen 1": {
-            "uuid": create_bio_sample_uuid(study_uuid, unique_string_biosample1_specimen1),
+            "uuid": create_bio_sample_uuid(
+                study_uuid, unique_string_biosample1_specimen1
+            ),
             "title": title_id_1,
             "organism_classification": [
                 taxon1.model_dump(),
@@ -58,19 +66,21 @@ def get_bio_sample_as_map() -> dict[str, bia_data_model.BioSample]:
             ],
             "version": 0,
             "growth_protocol_uuid": growth_protocol_specimen_1_uuid,
-            "object_creator": "bia_ingest",
+            "object_creator": semantic_models.Provenance("bia_ingest"),
             "additional_metadata": [
-              {
-                "provenance": "bia_ingest",
-                "name": "uuid_unique_input",
-                "value": {
-                  "uuid_unique_input": unique_string_biosample1_specimen1,
+                {
+                    "provenance": semantic_models.Provenance("bia_ingest"),
+                    "name": "uuid_unique_input",
+                    "value": {
+                        "uuid_unique_input": unique_string_biosample1_specimen1,
+                    },
                 }
-              }
             ],
         },
         "Test Biosample 2 .Test specimen 1": {
-            "uuid": create_bio_sample_uuid(study_uuid, unique_string_biosample2_specimen1),
+            "uuid": create_bio_sample_uuid(
+                study_uuid, unique_string_biosample2_specimen1
+            ),
             "title": title_id_2,
             "organism_classification": [
                 taxon2.model_dump(),
@@ -87,19 +97,21 @@ def get_bio_sample_as_map() -> dict[str, bia_data_model.BioSample]:
             ],
             "version": 0,
             "growth_protocol_uuid": growth_protocol_specimen_1_uuid,
-            "object_creator": "bia_ingest",
+            "object_creator": semantic_models.Provenance("bia_ingest"),
             "additional_metadata": [
-              {
-                "provenance": "bia_ingest",
-                "name": "uuid_unique_input",
-                "value": {
-                  "uuid_unique_input": unique_string_biosample2_specimen1,
+                {
+                    "provenance": semantic_models.Provenance("bia_ingest"),
+                    "name": "uuid_unique_input",
+                    "value": {
+                        "uuid_unique_input": unique_string_biosample2_specimen1,
+                    },
                 }
-              }
             ],
         },
         "Test Biosample 2 .Test specimen 2": {
-            "uuid": create_bio_sample_uuid(study_uuid, unique_string_biosample2_specimen2),
+            "uuid": create_bio_sample_uuid(
+                study_uuid, unique_string_biosample2_specimen2
+            ),
             "title": title_id_2,
             "organism_classification": [
                 taxon2.model_dump(),
@@ -116,15 +128,15 @@ def get_bio_sample_as_map() -> dict[str, bia_data_model.BioSample]:
             ],
             "version": 0,
             "growth_protocol_uuid": growth_protocol_specimen_2_uuid,
-            "object_creator": "bia_ingest",
+            "object_creator": semantic_models.Provenance("bia_ingest"),
             "additional_metadata": [
-              {
-                "provenance": "bia_ingest",
-                "name": "uuid_unique_input",
-                "value": {
-                  "uuid_unique_input": unique_string_biosample2_specimen2,
+                {
+                    "provenance": semantic_models.Provenance("bia_ingest"),
+                    "name": "uuid_unique_input",
+                    "value": {
+                        "uuid_unique_input": unique_string_biosample2_specimen2,
+                    },
                 }
-              }
             ],
         },
     }
