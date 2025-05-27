@@ -77,7 +77,7 @@ def get_file_reference_dicts_for_submission_dataset(
         file_path = str(f.path.as_posix())
         unique_string = f"{file_path}{f.size}"
         unique_string_dict = {
-            "provenance": semantic_models.Provenance("bia_ingest"),
+            "provenance": semantic_models.Provenance.bia_ingest,
             "name": "uuid_unique_input",
             "value": {
                 "uuid_unique_input": unique_string,
@@ -85,7 +85,7 @@ def get_file_reference_dicts_for_submission_dataset(
         }
         file_dict = {
             "uuid": create_file_reference_uuid(study_uuid, unique_string),
-            "object_creator": semantic_models.Provenance("bia_ingest"),
+            "object_creator": semantic_models.Provenance.bia_ingest,
             "file_path": file_path,
             "format": f.type,
             "size_in_bytes": int(f.size),
@@ -97,7 +97,7 @@ def get_file_reference_dicts_for_submission_dataset(
         attributes = attributes_to_dict(f.attributes)
 
         attributes_as_attr_dict = {
-            "provenance": semantic_models.Provenance("bia_ingest"),
+            "provenance": semantic_models.Provenance.bia_ingest,
             "name": "attributes_from_biostudies.File",
             "value": {
                 "attributes": attributes,

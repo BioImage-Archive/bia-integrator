@@ -73,10 +73,10 @@ def extract_growth_protocol_dicts(
 
             model_dict["version"] = 0
             model_dict["uuid"] = create_protocol_uuid(study_uuid, uuid_unique_input)
-            model_dict["object_creator"] = semantic_models.Provenance("bia_ingest")
+            model_dict["object_creator"] = semantic_models.Provenance.bia_ingest
             model_dict["additional_metadata"] = [
                 {
-                    "provenance": semantic_models.Provenance("bia_ingest"),
+                    "provenance": semantic_models.Provenance.bia_ingest,
                     "name": "uuid_unique_input",
                     "value": {"uuid_unique_input": uuid_unique_input},
                 },

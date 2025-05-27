@@ -114,7 +114,7 @@ def extract_biosample_dicts(
             attr_dict["Title"], submission, growth_protocol_map
         )
         model_dict["version"] = 0
-        model_dict["object_creator"] = semantic_models.Provenance("bia_ingest")
+        model_dict["object_creator"] = semantic_models.Provenance.bia_ingest
 
         for specimen, gp_uuid in growth_protocol_uuids:
             model_dict_with_gp = deepcopy(model_dict)
@@ -127,7 +127,7 @@ def extract_biosample_dicts(
             )
             model_dict_with_gp["additional_metadata"] = [
                 {
-                    "provenance": semantic_models.Provenance("bia_ingest"),
+                    "provenance": semantic_models.Provenance.bia_ingest,
                     "name": "uuid_unique_input",
                     "value": {"uuid_unique_input": uuid_unique_input},
                 },
@@ -143,7 +143,7 @@ def extract_biosample_dicts(
             )
             model_dict["additional_metadata"] = [
                 {
-                    "provenance": semantic_models.Provenance("bia_ingest"),
+                    "provenance": semantic_models.Provenance.bia_ingest,
                     "name": "uuid_unique_input",
                     "value": {"uuid_unique_input": uuid_unique_input},
                 },

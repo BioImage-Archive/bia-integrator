@@ -66,7 +66,7 @@ def get_study(
     # Put remaining attributes in bia_data_model.study.attribute
     additional_metadata = [
         {
-            "provenance": semantic_models.Provenance("bia_ingest"),
+            "provenance": semantic_models.Provenance.bia_ingest,
             "name": "Extras from biostudies.Submission.attributes",
             "value": {key: value},
         }
@@ -74,7 +74,7 @@ def get_study(
     ]
     additional_metadata.append(
         {
-            "provenance": semantic_models.Provenance("bia_ingest"),
+            "provenance": semantic_models.Provenance.bia_ingest,
             "name": "biostudies json/pagetab entry",
             "value": {
                 "json": f"https://www.ebi.ac.uk/biostudies/files/{submission.accno}/{submission.accno}.json",
@@ -89,7 +89,7 @@ def get_study(
         # TODO: Do more robust search for title - sometimes it is in
         #       actual submission - see old ingest code
         "title": study_title,
-        "object_creator": semantic_models.Provenance("bia_ingest"),
+        "object_creator": semantic_models.Provenance.bia_ingest,
         "description": description,
         "release_date": submission_attributes.pop("ReleaseDate"),
         "licence": licence,
