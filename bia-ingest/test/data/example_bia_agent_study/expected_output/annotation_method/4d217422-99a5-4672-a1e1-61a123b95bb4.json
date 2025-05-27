@@ -1,12 +1,21 @@
 {
-  "title_id": "Ground truth segmentation masks",
-  "uuid": "10259a72-db54-4277-928b-6f291d1b9ca1",
+  "title": "Ground truth segmentation masks",
+  "uuid": "4d217422-99a5-4672-a1e1-61a123b95bb4",
   "version": 0,
+  "object_creator": "bia_ingest",
   "model": {
     "type_name": "AnnotationMethod",
-    "version": 3
+    "version": 4
   },
-  "attribute": [],
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Annotations-1"
+      }
+    }
+  ],
   "protocol_description": "Each image contains exactly 20 masks; this is the ground truth for counting. Ground truth for foreground/background segmentation are available as labeled 16bit grayscale images",
   "annotation_criteria": null,
   "annotation_coverage": "All data has been annotated.",

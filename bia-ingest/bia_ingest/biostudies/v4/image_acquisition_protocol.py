@@ -12,7 +12,7 @@ from bia_ingest.biostudies.submission_parsing_utils import (
 )
 from bia_ingest.biostudies.api import Submission, Section
 
-from bia_shared_datamodels import bia_data_model
+from bia_shared_datamodels import bia_data_model, semantic_models
 from bia_shared_datamodels.uuid_creation import create_image_acquisition_protocol_uuid
 
 logger = logging.getLogger("__main__." + __name__)
@@ -60,7 +60,7 @@ def extract_image_acquisition_protocol_dicts(
     )
 
     key_mapping = [
-        ("title_id", "Title", ""),
+        ("title", "Title", ""),
         ("protocol_description", "Image acquisition parameters", ""),
         ("imaging_instrument_description", "Imaging instrument", ""),
         ("imaging_method_name", "Imaging method", None),
@@ -74,13 +74,13 @@ def extract_image_acquisition_protocol_dicts(
             k: case_insensitive_get(attr_dict, v, default)
             for k, v, default in key_mapping
         }
-        
+
         # TODO: change template / create logic to lookup the fbbi ID
         model_dict["fbbi_id"] = []
 
         if not model_dict["imaging_method_name"]:
             # get imaging method name and fbbi_id from subsection if they exist
-            # NOTE: this doesn't check the format of fbbi_id; it can be uri or id 
+            # NOTE: this doesn't check the format of fbbi_id; it can be uri or id
             model_dict["imaging_method_name"], model_dict["fbbi_id"] = (
                 get_imaging_method_fbbi_from_subsection(section)
             )
@@ -90,12 +90,22 @@ def extract_image_acquisition_protocol_dicts(
             ]
 
         model_dict["version"] = 0
+        uuid_unique_input = section.accno
         model_dict["uuid"] = create_image_acquisition_protocol_uuid(
-            model_dict["title_id"], study_uuid
+            study_uuid,
+            uuid_unique_input,
         )
 
         model_dict_map[attr_dict["Title"]] = model_dict
 
+        model_dict["object_creator"] = semantic_models.Provenance.bia_ingest
+        model_dict["additional_metadata"] = [
+            {
+                "provenance": semantic_models.Provenance.bia_ingest,
+                "name": "uuid_unique_input",
+                "value": {"uuid_unique_input": uuid_unique_input},
+            },
+        ]
     return model_dict_map
 
 

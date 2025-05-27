@@ -1,15 +1,24 @@
 {
-  "title_id": "Simulated HL-60 cells",
-  "uuid": "2dbf5050-5704-484c-94ca-98e8e1d08e11",
+  "title": "Simulated HL-60 cells",
+  "uuid": "aecff242-e5eb-4b92-9718-992abffe38af",
   "version": 0,
+  "object_creator": "bia_ingest",
   "model": {
     "type_name": "BioSample",
-    "version": 3
+    "version": 4
   },
-  "attribute": [],
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Biosample-1"
+      }
+    }
+  ],
   "organism_classification": [
     {
-      "attribute": [],
+      "additional_metadata": [],
       "common_name": null,
       "scientific_name": "simulated data",
       "ncbi_id": null
