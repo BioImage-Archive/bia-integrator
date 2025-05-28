@@ -3,7 +3,7 @@ Example script that creates and gets some objects. Please see the api client rea
 """
 
 from bia_integrator_api.util import get_client_private
-from bia_integrator_api.models import Study, LicenceType, Contributor, Dataset
+from bia_integrator_api.models import Study, Licence, Contributor, Dataset, Provenance
 from datetime import date
 from bia_integrator_api import exceptions as api_exceptions
 from pydantic import ValidationError
@@ -28,9 +28,10 @@ client = get_client_private(
 # Example create/get - equivalent for every object
 study = Study(
     uuid=get_uuid(),
+    object_creator=Provenance.BIA_INGEST,
     version=0,
     accession_id="test",
-    licence=LicenceType.CC0,
+    licence=Licence.CC0,
     author=[Contributor(
         display_name="test",
         affiliation=[]
@@ -38,7 +39,7 @@ study = Study(
     title = "test",
     release_date = date.today(),
     description = "test",
-    attribute = []
+    additional_metadata = []
 )
 client.post_study(study)
 
