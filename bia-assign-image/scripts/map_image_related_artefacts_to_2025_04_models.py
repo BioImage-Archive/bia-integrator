@@ -186,8 +186,21 @@ def map_image_related_artefacts_to_2025_04_models(
             }
         )
         image_2025_04.additional_metadata.append(static_display_uri)
+        
+    if rep_of_image_converted_to_ome_zarr_2025_04:
+        recommended_vizarr_representation = attribute_models.Attribute.model_validate(
+            {
+                "provenance": "bia_image_assignment",
+                "name": "recommended_vizarr_representation",
+                "value": {
+                    "recommended_vizarr_representation": rep_of_image_converted_to_ome_zarr_2025_04.uuid,
+                },
+            }
+        )
+        image_2025_04.additional_metadata.append(recommended_vizarr_representation)
 
-    if thumbnail_rep or static_display_rep:
+
+    if thumbnail_rep or static_display_rep or rep_of_image_converted_to_ome_zarr_2025_04:
         # image_2025_04.version += 1
         api_client = get_api_client(api_target)
         store_object_in_api_idempotent(

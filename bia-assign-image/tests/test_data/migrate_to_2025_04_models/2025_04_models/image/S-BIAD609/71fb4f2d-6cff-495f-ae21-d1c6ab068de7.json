@@ -44,6 +44,13 @@
           "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD609/b0ecfe5d-b32d-4ab6-9c3c-a5afeba0a575/8a93bb61-6fef-4336-94d8-b82d106c9e63.png"
         ]
       }
+    },
+    {
+      "provenance": "bia_image_assignment",
+      "name": "recommended_vizarr_representation",
+      "value": {
+        "recommended_vizarr_representation": "2a8ecffd-6690-494f-acbb-81fb94f2df30"
+      }
     }
     ],
     "submission_dataset_uuid": "abf9ca35-01ce-4b46-83cb-071e2967ce07",
