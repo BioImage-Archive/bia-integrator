@@ -31,8 +31,8 @@ def convert_bio_sample(
 ) -> APIModels.BioSample:
 
     taxons = []
-    for taxon_id in ro_crate_bio_sample.organism_classification:
-        taxons.append(convert_taxon(crate_objects_by_id[taxon_id]))
+    for taxon_reference in ro_crate_bio_sample.organismClassification:
+        taxons.append(convert_taxon(crate_objects_by_id[taxon_reference.id]))
 
     bio_sample = {
         "uuid": str(
@@ -41,10 +41,10 @@ def convert_bio_sample(
         "title_id": ro_crate_bio_sample.id,
         "version": 0,
         "organism_classification": taxons,
-        "biological_entity_description": ro_crate_bio_sample.biological_entity_description,
-        "intrinsic_variable_description": ro_crate_bio_sample.intrinsic_variable_description,
-        "extrinsic_variable_description": ro_crate_bio_sample.extrinsic_variable_description,
-        "experimental_variable_description": ro_crate_bio_sample.experimental_variable_description,
+        "biological_entity_description": ro_crate_bio_sample.biologicalEntityDescription,
+        "intrinsic_variable_description": ro_crate_bio_sample.intrinsicVariableDescription,
+        "extrinsic_variable_description": ro_crate_bio_sample.extrinsicVariableDescription,
+        "experimental_variable_description": ro_crate_bio_sample.experimentalVariableDescription,
     }
 
     return APIModels.BioSample(**bio_sample)
@@ -52,8 +52,8 @@ def convert_bio_sample(
 
 def convert_taxon(ro_crate_taxon: ROCrateModels.Taxon) -> APIModels.Taxon:
     taxon = {
-        "common_name": ro_crate_taxon.common_name,
-        "scientific_name": ro_crate_taxon.scientific_name,
+        "common_name": ro_crate_taxon.commonName,
+        "scientific_name": ro_crate_taxon.scientificName,
     }
 
     if ro_crate_taxon.id.startswith("NCBITaxon:"):

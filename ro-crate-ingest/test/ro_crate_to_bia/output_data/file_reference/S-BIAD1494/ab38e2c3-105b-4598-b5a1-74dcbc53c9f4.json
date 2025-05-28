@@ -1,0 +1,14 @@
+{
+  "uuid": "ab38e2c3-105b-4598-b5a1-74dcbc53c9f4",
+  "version": 0,
+  "model": {
+    "type_name": "FileReference",
+    "version": 2
+  },
+  "attribute": null,
+  "file_path": "DNA_damage/Nup133KO/NP_24h/Rep1/NPKO133_B1_24h_H2AX-488_53BP1-594_002.tif",
+  "format": ".tif",
+  "size_in_bytes": 41,
+  "uri": "None?",
+  "submission_dataset_uuid": "6ac6caf3-34e3-448c-958d-17082b0d79c8"
+}

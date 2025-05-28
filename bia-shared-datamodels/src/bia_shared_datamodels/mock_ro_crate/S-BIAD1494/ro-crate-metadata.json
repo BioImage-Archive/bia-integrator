@@ -1,198 +1,187 @@
 {
-    "@context": {
-        "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-        "schema": "http://schema.org/",
-        "dc": "http://purl.org/dc/terms/",
-        "bia": "http://bia/",
-        "display_name": {
-            "@id": "schema:name"
-        },
-        "address": {
-            "@id": "schema:address"
-        },
-        "website": {
-            "@id": "bia:website"
-        },
-        "affiliation": {
-            "@id": "schema:memberOf"
-        },
-        "title": {
-            "@id": "schema:name"
-        },
-        "protocol_description": {
-            "@id": "schema:description"
-        },
-        "annotation_criteria": {
-            "@id": "bia:annotationCriteria"
-        },
-        "annotation_coverage": {
-            "@id": "bia:annotationCoverage"
-        },
-        "transformation_description": {
-            "@id": "bia:transformationDescription"
-        },
-        "spatial_information": {
-            "@id": "bia:spatialInformation"
-        },
-        "method_type": {
-            "@id": "bia:annotationMethodType"
-        },
-        "annotation_source_indicator": {
-            "@id": "bia:annotationSourceIndicator"
-        },
-        "biological_entity_description": {
-            "@id": "bia:biologicalEntityDescription"
-        },
-        "experimental_variable_description": {
-            "@id": "bia:experimentalVariableDescription"
-        },
-        "extrinsic_variable_description": {
-            "@id": "bia:extrinsicVariableDescription"
-        },
-        "intrinsic_variable_description": {
-            "@id": "bia:intrinsicVariableDescription"
-        },
-        "organism_classification": {
-            "@id": "bia:organismClassification"
-        },
-        "role": {
-            "@id": "bia:role"
-        },
-        "image_acqusition_protocol": {
-            "@id": "bia:imageAcquisitionProtocol",
-            "@type": "@id"
-        },
-        "specimen": {
-            "@id": "bia:subject",
-            "@type": "@id"
-        },
-        "protocol": {
-            "@id": "bia:protocol",
-            "@type": "@id"
-        },
-        "annotation_method": {
-            "@id": "bia:annotationMethod",
-            "@type": "@id"
-        },
-        "input_image": {
-            "@id": "bia:inputImage",
-            "@type": "@id"
-        },
-        "description": {
-            "@id": "schema:description"
-        },
-        "associated_bio_sample": {
-            "@id": "bia:associatedBiologicalEntity",
-            "@type": "@id"
-        },
-        "associated_specimen_imaging_preparation_protocol": {
-            "@id": "bia:associatedImagingPreparationProtocol",
-            "@type": "@id"
-        },
-        "associated_specimen": {
-            "@id": "bia:associatedSubject",
-            "@type": "@id"
-        },
-        "associated_specimen_image_acquisition_protocol": {
-            "@id": "bia:associatedImageAcquisitionProtocol",
-            "@type": "@id"
-        },
-        "associated_annotation_method": {
-            "@id": "bia:associatedAnnotationMethod",
-            "@type": "@id"
-        },
-        "associated_image_analysis_method": {
-            "@id": "bia:associatedAnalysisMethod",
-            "@type": "@id"
-        },
-        "associated_image_correlation_method": {
-            "@id": "bia:associatedProtocol",
-            "@type": "@id"
-        },
-        "link": {
-            "@id": "schema:url"
-        },
-        "linkDescription": {
-            "@id": "schema:description"
-        },
-        "imaging_instrument_description": {
-            "@id": "bia:imagingInstrumentDescription"
-        },
-        "imaging_method_name": {
-            "@id": "bia:imagingMethodName"
-        },
-        "fbbi_id": {
-            "@id": "bia:fbbiId"
-        },
-        "features_analysed": {
-            "@id": "bia:featuresAnalysed"
-        },
-        "fiducials_used": {
-            "@id": "bia:fiducialsUsed"
-        },
-        "transformation_matrix": {
-            "@id": "bia:transformationMatrix"
-        },
-        "author_names": {
-            "@id": "bia:authorNames"
-        },
-        "signal_contrast_mechanism_description": {
-            "@id": "bia:signalContrastMechanismDescription"
-        },
-        "channel_content_description": {
-            "@id": "bia:channelContentDescription"
-        },
-        "channel_biological_entity": {
-            "@id": "bia:channelBiologicalEntity"
-        },
-        "channel_label": {
-            "@id": "dc:identifier"
-        },
-        "biological_entity": {
-            "@id": "bia:sampleOf",
-            "@type": "@id"
-        },
-        "imaging_preparation_protocol": {
-            "@id": "bia:imagingPreparationProtocol",
-            "@type": "@id"
-        },
-        "signal_channel_information": {
-            "@id": "bia:signalChannelInformation",
-            "@type": "@id"
-        },
-        "contributor": {
-            "@id": "schema:author",
-            "@type": "@id"
-        },
-        "licence": {
-            "@id": "schema:license"
-        },
-        "date_published": {
-            "@id": "schema:datePublished"
-        },
-        "keyword": {
-            "@id": "schema:keywords"
-        },
-        "acknowledgement": {
-            "@id": "bia:acknowledgement"
-        },
-        "has_part": {
-            "@id": "schema:hasPart",
-            "@type": "@id"
-        },
-        "common_name": {
-            "@id": "bia:commonName"
-        },
-        "scientific_name": {
-            "@id": "bia:scientificName"
-        },
-        "replicate": {
-            "@id": "_:replicate"
-        },
-        "timepoint": {
-            "@id": "_:timepoint"
+    "@context": [
+        "https://w3id.org/ro/crate/1.1/context",
+        {
+            "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+            "schema": "http://schema.org/",
+            "dc": "http://purl.org/dc/terms/",
+            "bia": "http://bia/",
+            "displayName": {
+                "@id": "schema:name"
+            },
+            "address": {
+                "@id": "schema:address"
+            },
+            "website": {
+                "@id": "bia:website"
+            },
+            "affiliation": {
+                "@id": "schema:memberOf"
+            },
+            "title": {
+                "@id": "schema:name"
+            },
+            "protocolDescription": {
+                "@id": "schema:description"
+            },
+            "annotationCriteria": {
+                "@id": "bia:annotationCriteria"
+            },
+            "annotationCoverage": {
+                "@id": "bia:annotationCoverage"
+            },
+            "transformationDescription": {
+                "@id": "bia:transformationDescription"
+            },
+            "spatialInformation": {
+                "@id": "bia:spatialInformation"
+            },
+            "methodType": {
+                "@id": "bia:annotationMethodType"
+            },
+            "annotationSourceIndicator": {
+                "@id": "bia:annotationSourceIndicator"
+            },
+            "biologicalEntityDescription": {
+                "@id": "bia:biologicalEntityDescription"
+            },
+            "experimentalVariableDescription": {
+                "@id": "bia:experimentalVariableDescription"
+            },
+            "extrinsicVariableDescription": {
+                "@id": "bia:extrinsicVariableDescription"
+            },
+            "intrinsicVariableDescription": {
+                "@id": "bia:intrinsicVariableDescription"
+            },
+            "organismClassification": {
+                "@id": "bia:organismClassification"
+            },
+            "role": {
+                "@id": "bia:role"
+            },
+            "imageAcqusitionProtocol": {
+                "@id": "bia:imageAcquisitionProtocol"
+            },
+            "specimen": {
+                "@id": "bia:subject"
+            },
+            "protocol": {
+                "@id": "bia:protocol"
+            },
+            "annotationMethod": {
+                "@id": "bia:annotationMethod"
+            },
+            "inputImage": {
+                "@id": "bia:inputImage"
+            },
+            "description": {
+                "@id": "schema:description"
+            },
+            "associatedBioSample": {
+                "@id": "bia:associatedBiologicalEntity"
+            },
+            "associatedSpecimenImagingPreparationProtocol": {
+                "@id": "bia:associatedImagingPreparationProtocol"
+            },
+            "associatedSpecimen": {
+                "@id": "bia:associatedSubject"
+            },
+            "associatedSpecimenImageAcquisitionProtocol": {
+                "@id": "bia:associatedImageAcquisitionProtocol"
+            },
+            "associatedAnnotationMethod": {
+                "@id": "bia:associatedAnnotationMethod"
+            },
+            "associatedImageAnalysisMethod": {
+                "@id": "bia:associatedAnalysisMethod"
+            },
+            "associatedImageCorrelationMethod": {
+                "@id": "bia:associatedImageCorrelationMethod"
+            },
+            "link": {
+                "@id": "schema:url"
+            },
+            "linkDescription": {
+                "@id": "schema:description"
+            },
+            "imagingInstrumentDescription": {
+                "@id": "bia:imagingInstrumentDescription"
+            },
+            "imagingMethodName": {
+                "@id": "bia:imagingMethodName"
+            },
+            "fbbiId": {
+                "@id": "bia:fbbiId"
+            },
+            "featuresAnalysed": {
+                "@id": "bia:featuresAnalysed"
+            },
+            "fiducialsUsed": {
+                "@id": "bia:fiducialsUsed"
+            },
+            "transformationMatrix": {
+                "@id": "bia:transformationMatrix"
+            },
+            "authorNames": {
+                "@id": "bia:authorNames"
+            },
+            "signalContrastMechanismDescription": {
+                "@id": "bia:signalContrastMechanismDescription"
+            },
+            "channelContentDescription": {
+                "@id": "bia:channelContentDescription"
+            },
+            "channelBiologicalEntity": {
+                "@id": "bia:channelBiologicalEntity"
+            },
+            "channelLabel": {
+                "@id": "dc:identifier"
+            },
+            "biologicalEntity": {
+                "@id": "bia:sampleOf"
+            },
+            "imagingPreparationProtocol": {
+                "@id": "bia:imagingPreparationProtocol"
+            },
+            "signalChannelInformation": {
+                "@id": "bia:signalChannelInformation"
+            },
+            "contributor": {
+                "@id": "schema:author"
+            },
+            "licence": {
+                "@id": "schema:license"
+            },
+            "datePublished": {
+                "@id": "schema:datePublished"
+            },
+            "keyword": {
+                "@id": "schema:keywords"
+            },
+            "acknowledgement": {
+                "@id": "bia:acknowledgement"
+            },
+            "hasPart": {
+                "@id": "schema:hasPart"
+            },
+            "commonName": {
+                "@id": "bia:commonName"
+            },
+            "scientificName": {
+                "@id": "bia:scientificName"
+            },
+            "accessionId": {
+                "@id": "schema:identifier"
+            },
+            "replicate": {
+                "@id": "_:replicate"
+            },
+            "timepoint": {
+                "@id": "_:timepoint"
+            }
         }
-    },
+    ],
     "@graph": [
         {
             "@type": "CreativeWork",
@@ -211,202 +200,247 @@
                 "Dataset"
             ],
             "title": "Immunofluorescence staining images of mouse embryonic stem cells and neuronal precursors with y-H2AX and 53BP1 foci",
-            "date_published": "2024-01-23",
+            "datePublished": "2024-01-23",
             "licence": "https://creativecommons.org/licenses/by/4.0/",
             "description": "Wild-type and Nup133-deficient cells were fixed with 4% PFA and subjected to immunofluorescence staining experiments to assess the accumulation of DNA damage. mouse embryonic stem cells and differentiating neuronal precursors at two different time points in the neuronal differentiation (2h and 24h) were used for the experiments.",
-            "accession_id": "S-BIAD1494",
+            "accessionId": "S-BIAD1494",
             "contributor": [
-                "https://orcid.org/0000-0003-3862-8349",
-                "https://orcid.org/0000-0002-7397-1321"
+                {
+                    "@id": "https://orcid.org/0000-0003-3862-8349"
+                },
+                {
+                    "@id": "https://orcid.org/0000-0002-7397-1321"
+                }
             ],
-            "has_part": [
-                "DNA_damage/Nup133KO/Np_24h/Rep1/",
-                "DNA_damage/Nup133KO/Np_24h/Rep2/",
-                "DNA_damage/Nup133KO/Np_24h/Rep3/",
-                "DNA_damage/Nup133KO/NP_2h/Rep1/",
-                "DNA_damage/Nup133KO/NP_2h/Rep2/",
-                "DNA_damage/Nup133KO/NP_2h/Rep3/",
-                "DNA_damage/Nup133KO/mES/Rep1/",
-                "DNA_damage/Nup133KO/mES/Rep2/",
-                "DNA_damage/Nup133KO/mES/Rep3/",
-                "DNA_damage/WT/NP_24h/Rep1/",
-                "DNA_damage/WT/NP_24h/Rep2/",
-                "DNA_damage/WT/NP_24h/Rep3/",
-                "DNA_damage/WT/NP_2h/Rep1/",
-                "DNA_damage/WT/NP_2h/Rep2/",
-                "DNA_damage/WT/NP_2h/Rep3/",
-                "DNA_damage/WT/mES/Rep1/",
-                "DNA_damage/WT/mES/Rep2/",
-                "DNA_damage/WT/mES/Rep3/"
-            ],
-            "sample_image": [
-                "DNA_damage/Sample_Image_NPKO133_B1_24h_H2AX-488_53BP1-594_001.tif"
+            "hasPart": [
+                {
+                    "@id": "DNA_damage/Nup133KO/NP_24h/Rep1/"
+                },
+                {
+                    "@id": "DNA_damage/Nup133KO/NP_24h/Rep2/"
+                },
+                {
+                    "@id": "DNA_damage/Nup133KO/NP_24h/Rep3/"
+                },
+                {
+                    "@id": "DNA_damage/Nup133KO/NP_2h/Rep1/"
+                },
+                {
+                    "@id": "DNA_damage/Nup133KO/NP_2h/Rep2/"
+                },
+                {
+                    "@id": "DNA_damage/Nup133KO/NP_2h/Rep3/"
+                },
+                {
+                    "@id": "DNA_damage/Nup133KO/mES/Rep1/"
+                },
+                {
+                    "@id": "DNA_damage/Nup133KO/mES/Rep2/"
+                },
+                {
+                    "@id": "DNA_damage/Nup133KO/mES/Rep3/"
+                },
+                {
+                    "@id": "DNA_damage/WT/NP_24h/Rep1/"
+                },
+                {
+                    "@id": "DNA_damage/WT/NP_24h/Rep2/"
+                },
+                {
+                    "@id": "DNA_damage/WT/NP_24h/Rep3/"
+                },
+                {
+                    "@id": "DNA_damage/WT/NP_2h/Rep1/"
+                },
+                {
+                    "@id": "DNA_damage/WT/NP_2h/Rep2/"
+                },
+                {
+                    "@id": "DNA_damage/WT/NP_2h/Rep3/"
+                },
+                {
+                    "@id": "DNA_damage/WT/mES/Rep1/"
+                },
+                {
+                    "@id": "DNA_damage/WT/mES/Rep2/"
+                },
+                {
+                    "@id": "DNA_damage/WT/mES/Rep3/"
+                }
             ]
         },
         {
             "@type": "bia:Contributor",
-            "display_name": "Reiya Taniguchi",
+            "displayName": "Reiya Taniguchi",
             "@id": "https://orcid.org/0000-0003-3862-8349",
             "affiliation": [
-                "https://ror.org/0243gzr89"
+                {
+                    "@id": "https://ror.org/0243gzr89"
+                }
             ]
         },
         {
             "@type": "bia:Contributor",
-            "display_name": "Martin Beck",
+            "displayName": "Martin Beck",
             "@id": "https://orcid.org/0000-0002-7397-1321",
             "affiliation": [
-                "https://ror.org/0243gzr89"
+                {
+                    "@id": "https://ror.org/0243gzr89"
+                }
             ]
         },
         {
             "@id": "https://ror.org/0243gzr89",
             "@type": "bia:Affiliation",
-            "display_name": "Max Planck Institute of Biophysics"
+            "displayName": "Max Planck Institute of Biophysics"
         },
         {
             "@id": "Nup133 mouse stem cells",
             "@type": "bia:BioSample",
-            "biological_entity_description": "mouse embryonic stem cells and differentiated neuronal precursors from HM1-derived Nup133-/- clone.",
-            "organism_classification": [
-                "NCBI:txid10090"
+            "biologicalEntityDescription": "mouse embryonic stem cells and differentiated neuronal precursors from HM1-derived Nup133-/- clone.",
+            "organismClassification": [
+                {
+                    "@id": "NCBI:txid10090"
+                }
             ]
         },
         {
             "@id": "Wild type mouse stem cells",
             "@type": "bia:BioSample",
-            "biological_entity_description": "mouse embryonic stem cells and differentiated neuronal precursors from wild-type HM1 line.",
-            "organism_classification": [
-                "NCBI:txid10090"
+            "biologicalEntityDescription": "mouse embryonic stem cells and differentiated neuronal precursors from wild-type HM1 line.",
+            "organismClassification": [
+                {
+                    "@id": "NCBI:txid10090"
+                }
             ]
         },
         {
             "@id": "NCBI:txid10090",
             "@type": "bia:Taxon",
-            "scientific_name": "mus musculus",
-            "common_name": "mouse"
+            "scientificName": "mus musculus",
+            "commonName": "mouse"
         },
         {
             "@id": "Mouse embryonic stem cell prepration",
             "@type": "bia:SpecimenImagingPreparationProtocol",
-            "protocol_description": "For mES cell culture, the wild-type HM1 line and the HM1-derived Nup133-/- clone (#14) described previously were used. Mouse embryonic stem cell medium was prepared by supplementing EmbryoMax® DMEM (Millipore, SLM-220-B) with 15% FBS (Gibco, 10270-106), 2 mM L-Glutamine (Gibco, 25030-024), 1 × non-essential amino acids (Gibco, 11140-035 or 11140-050), 1 × EmbryoMax® nucleosides (Millipore, ES-008-D), 110 μM β-mercaptoethanol (Gibco, 21985-023) and 1 × penicillin/streptomycin (Gibco, 15070-063). mES cells were cultured on mitomycin-treated mouse embryonic fibroblasts (feeder cells) plated on 0.1% gelatin (Sigma-Aldrich) in mouse embryonic stem cell medium supplemented with leukemia inhibitory factor (LIF, ESGRO, Millipore, final 1000 U/ml), and kept at 37°C with 5% CO2. Cells were used within eight passages after thawing frozen vials to ensure the quality of the stem cell culture.\nThe neural progenitor differentiation was performed following the previously published protocol. Briefly, after two passages on feeder cells, mES cells were transferred to gelatin-coated plates without feeder cells, and cultured for two to four passages in the presence of LIF. Subsequently, cells were trypsinized and 4 × 106 cells were transferred to non-coated 10-cm Petri dishes (Greiner, 633102) and cultured for eight days within DMEM supplemented with 10% FBS (Gibco, 10270-106), 2 mM L-glutamine (Gibco, 25030-024), 1 × MEM non-essential amino acids (Gibco, 11140-035) and 100 μM β-mercaptoethanol (Gibco, 31350-010) without LIF. The culture medium was changed every two days, and after four days, 5 μM retinoic acid (Sigma, R2625) was added to the medium. After eight days of culture, the aggregates of neural progenitors were dissociated by trypsinization at 37°C for 5 min in the water bath, and the dissociated cells were either immediately used for cryo-EM grid preparation as described below, frozen within the medium supplemented with 10% DMSO and stored until use, or directly used for subsequent neuronal differentiation. For the neuronal differentiation, dissociated cells were seeded on glass bottom plates (ibidi, 80827) coated with poly-DL-ornithine (Sigma, P8638) and laminin (Roche, 11243217001) at approximately 1–2 × 105 cells/cm2, and cultured in N2 medium (1:1 mixture of DMEM (Gibco, 21969-035) and Ham’s F-12 nutrient mix (Gibco, 21765-029), supplemented with 2 mM L-glutamine, 25 μg/ml insulin (Sigma, I6634), 50 μg/ml transferrin (Sigma, T1147), 20 nM progesterone (Sigma, P8783), 100 nM putrescine (Sigma, P5780), 30 nM sodium-selenite (Sigma, 214485), 50 μg/ml BSA (Sigma, A9418), and 1 × penicillin/streptomycin (Gibco, 15140-122)) for two days. The medium was changed to fresh N2 medium 2 h and one day after plating.\nFor mES samples, feeder cells were first seeded on 8-well polymer bottom chambered slides (ibidi, 80826) coated with 0.1% gelatin at a seeding density of 2 × 104 cells/cm2. mES cells were seeded on feeder cells at a density of 4 × 104 cells/cm2, and cultured for 24h before fixation with 4% paraformaldehyde for 15 min. For neuronal precursor samples, cells were seeded on 8-well glass bottom chambered slides (ibidi, 80827) coated with poly-LD-ornithine and laminin as described above, and fixed at the indicated time point after seeding in 4% paraformaldehyde for 15 min. For staining, cells were permeabilized in 0.1% Triton in PBS for 10 min, washed three times with PBS for 5 min each, and blocked for 30 min using 3% BSA-containing PBS (PBS/BSA). After blocking, primary antibodies diluted in PBS/BSA were applied, and samples were incubated overnight at 4°C. After washing the samples with PBS, samples were incubated with secondary antibodies diluted in PBS for 2 h at room temperature. DNA was stained with 1 μM of Hoechst 33342 (Thermo Fisher Scientific, 62249).",
-            "signal_channel_information": [
-                "Hoechst33342",
-                "anti-53BP1",
-                "nti-yH2AX"
+            "protocolDescription": "For mES cell culture, the wild-type HM1 line and the HM1-derived Nup133-/- clone (#14) described previously were used. Mouse embryonic stem cell medium was prepared by supplementing EmbryoMax® DMEM (Millipore, SLM-220-B) with 15% FBS (Gibco, 10270-106), 2 mM L-Glutamine (Gibco, 25030-024), 1 × non-essential amino acids (Gibco, 11140-035 or 11140-050), 1 × EmbryoMax® nucleosides (Millipore, ES-008-D), 110 μM β-mercaptoethanol (Gibco, 21985-023) and 1 × penicillin/streptomycin (Gibco, 15070-063). mES cells were cultured on mitomycin-treated mouse embryonic fibroblasts (feeder cells) plated on 0.1% gelatin (Sigma-Aldrich) in mouse embryonic stem cell medium supplemented with leukemia inhibitory factor (LIF, ESGRO, Millipore, final 1000 U/ml), and kept at 37°C with 5% CO2. Cells were used within eight passages after thawing frozen vials to ensure the quality of the stem cell culture.\nThe neural progenitor differentiation was performed following the previously published protocol. Briefly, after two passages on feeder cells, mES cells were transferred to gelatin-coated plates without feeder cells, and cultured for two to four passages in the presence of LIF. Subsequently, cells were trypsinized and 4 × 106 cells were transferred to non-coated 10-cm Petri dishes (Greiner, 633102) and cultured for eight days within DMEM supplemented with 10% FBS (Gibco, 10270-106), 2 mM L-glutamine (Gibco, 25030-024), 1 × MEM non-essential amino acids (Gibco, 11140-035) and 100 μM β-mercaptoethanol (Gibco, 31350-010) without LIF. The culture medium was changed every two days, and after four days, 5 μM retinoic acid (Sigma, R2625) was added to the medium. After eight days of culture, the aggregates of neural progenitors were dissociated by trypsinization at 37°C for 5 min in the water bath, and the dissociated cells were either immediately used for cryo-EM grid preparation as described below, frozen within the medium supplemented with 10% DMSO and stored until use, or directly used for subsequent neuronal differentiation. For the neuronal differentiation, dissociated cells were seeded on glass bottom plates (ibidi, 80827) coated with poly-DL-ornithine (Sigma, P8638) and laminin (Roche, 11243217001) at approximately 1–2 × 105 cells/cm2, and cultured in N2 medium (1:1 mixture of DMEM (Gibco, 21969-035) and Ham’s F-12 nutrient mix (Gibco, 21765-029), supplemented with 2 mM L-glutamine, 25 μg/ml insulin (Sigma, I6634), 50 μg/ml transferrin (Sigma, T1147), 20 nM progesterone (Sigma, P8783), 100 nM putrescine (Sigma, P5780), 30 nM sodium-selenite (Sigma, 214485), 50 μg/ml BSA (Sigma, A9418), and 1 × penicillin/streptomycin (Gibco, 15140-122)) for two days. The medium was changed to fresh N2 medium 2 h and one day after plating.\nFor mES samples, feeder cells were first seeded on 8-well polymer bottom chambered slides (ibidi, 80826) coated with 0.1% gelatin at a seeding density of 2 × 104 cells/cm2. mES cells were seeded on feeder cells at a density of 4 × 104 cells/cm2, and cultured for 24h before fixation with 4% paraformaldehyde for 15 min. For neuronal precursor samples, cells were seeded on 8-well glass bottom chambered slides (ibidi, 80827) coated with poly-LD-ornithine and laminin as described above, and fixed at the indicated time point after seeding in 4% paraformaldehyde for 15 min. For staining, cells were permeabilized in 0.1% Triton in PBS for 10 min, washed three times with PBS for 5 min each, and blocked for 30 min using 3% BSA-containing PBS (PBS/BSA). After blocking, primary antibodies diluted in PBS/BSA were applied, and samples were incubated overnight at 4°C. After washing the samples with PBS, samples were incubated with secondary antibodies diluted in PBS for 2 h at room temperature. DNA was stained with 1 μM of Hoechst 33342 (Thermo Fisher Scientific, 62249).",
+            "signalChannelInformation": [
+                {
+                    "@id": "Hoechst33342"
+                },
+                {
+                    "@id": "anti-53BP1"
+                },
+                {
+                    "@id": "nti-yH2AX"
+                }
             ]
         },
         {
             "@id": "Hoechst33342",
             "@type": "bia:SignalChannel",
-            "channel_number": "1",
-            "signal_contrast_mechanism_description": "fluorescent dye",
-            "channel_content_description": "Hoechst33342",
-            "channel_biological_entity": "DNA"
+            "channelLabel": "1",
+            "signalContrastMechanismDescription": "fluorescent dye",
+            "channelContentDescription": "Hoechst33342",
+            "channelBiologicalEntity": "DNA"
         },
         {
             "@id": "anti-53BP1",
             "@type": "bia:SignalChannel",
-            "channel_number": "2",
-            "signal_contrast_mechanism_description": "antibody",
-            "channel_content_description": "anti-53BP1 from Novus-Biologicals (NB100-304SS) with Alexa-Fluor-594"
+            "channelLabel": "2",
+            "signalContrastMechanismDescription": "antibody",
+            "channelContentDescription": "anti-53BP1 from Novus-Biologicals (NB100-304SS) with Alexa-Fluor-594"
         },
         {
             "@id": "nti-yH2AX",
             "@type": "bia:SignalChannel",
-            "channel_number": "3",
-            "signal_contrast_mechanism_description": "antibody",
-            "channel_content_description": "nti-yH2AX from merck (05-636) with Alexa-Fluor-Plus-488"
+            "channelLabel": "3",
+            "signalContrastMechanismDescription": "antibody",
+            "channelContentDescription": "nti-yH2AX from merck (05-636) with Alexa-Fluor-Plus-488"
         },
         {
             "@id": "Confocal stack acquisition",
             "@type": "bia:ImageAcquisitionProtocol",
-            "protocol_description": "Images were acquired using a 63×/1.40 oil objective. 25 Z stacks were acquired with 0.6 um intervals. Bidirectional image acquisition with scan speed of 400 was used for the data acquisition. Line average was set to 4.",
-            "imaging_instrument_description": "Stellaris 5 confocal microscope",
-            "imaging_method_name": [
+            "protocolDescription": "Images were acquired using a 63×/1.40 oil objective. 25 Z stacks were acquired with 0.6 um intervals. Bidirectional image acquisition with scan speed of 400 was used for the data acquisition. Line average was set to 4.",
+            "imagingInstrumentDescription": "Stellaris 5 confocal microscope",
+            "imagingMethodName": [
                 "confocal microscopy"
             ],
-            "fbbi_id": [
+            "fbbiId": [
                 "fbbi_00000251"
             ]
         },
         {
-            "@id": "DNA_damage/Sample_Image_NPKO133_B1_24h_H2AX-488_53BP1-594_001.tif",
-            "@type": [
-                "File",
-                "bia:Image"
-            ],
-            "creation_process": "_:cp0"
-        },
-        {
-            "@id": "_:cp0",
-            "@type": "bia:CreationProcess",
-            "image_acquisition_protocol": "Confocal stack acquisition",
-            "specimen": "_:sp0"
-        },
-        {
-            "@id": "_:sp0",
-            "@type": "bia:Specimen",
-            "biological_entity": [
-                "Nup133 mouse stem cells"
-            ],
-            "imaging_preparation_protocol": [
-                "Mouse embryonic stem cell prepration"
-            ]
-        },
-        {
-            "@id": "DNA_damage/Nup133K0/Np_24h/Rep1/",
+            "@id": "DNA_damage/Nup133KO/NP_24h/Rep1/",
             "@type": [
                 "bia:Dataset",
                 "Dataset"
             ],
-            "title": "Nup133K0 24h replicate-1",
-            "associated_bio_sample": [
-                "Nup133 mouse stem cells"
+            "title": "Nup133KO 24h replicate-1",
+            "associatedBioSample": [
+                {
+                    "@id": "Nup133 mouse stem cells"
+                }
             ],
-            "associated_specimen_imaging_preparation_protocol": [
-                "Mouse embryonic stem cell prepration"
+            "associatedSpecimenImagingPreparationProtocol": [
+                {
+                    "@id": "Mouse embryonic stem cell prepration"
+                }
             ],
-            "associated_specimen_image_acquisition_protocol": [
-                "Confocal stack acquisition"
+            "associatedSpecimenImageAcquisitionProtocol": [
+                {
+                    "@id": "Confocal stack acquisition"
+                }
             ],
             "replicate": "replicate-1",
             "timepoint": "24h"
         },
         {
-            "@id": "DNA_damage/Nup133K0/Np_24h/Rep2/",
+            "@id": "DNA_damage/Nup133KO/NP_24h/Rep2/",
             "@type": [
                 "bia:Dataset",
                 "Dataset"
             ],
-            "title": "Nup133K0 24h replicate-2",
-            "associated_bio_sample": [
-                "Nup133 mouse stem cells"
+            "title": "Nup133KO 24h replicate-2",
+            "associatedBioSample": [
+                {
+                    "@id": "Nup133 mouse stem cells"
+                }
             ],
-            "associated_specimen_imaging_preparation_protocol": [
-                "Mouse embryonic stem cell prepration"
+            "associatedSpecimenImagingPreparationProtocol": [
+                {
+                    "@id": "Mouse embryonic stem cell prepration"
+                }
             ],
-            "associated_specimen_image_acquisition_protocol": [
-                "Confocal stack acquisition"
+            "associatedSpecimenImageAcquisitionProtocol": [
+                {
+                    "@id": "Confocal stack acquisition"
+                }
             ],
             "replicate": "replicate-2",
             "timepoint": "24h"
         },
         {
-            "@id": "DNA_damage/Nup133K0/Np_24h/Rep3/",
+            "@id": "DNA_damage/Nup133KO/NP_24h/Rep3/",
             "@type": [
                 "bia:Dataset",
                 "Dataset"
             ],
-            "title": "Nup133K0 24h replicate-3",
-            "associated_bio_sample": [
-                "Nup133 mouse stem cells"
+            "title": "Nup133KO 24h replicate-3",
+            "associatedBioSample": [
+                {
+                    "@id": "Nup133 mouse stem cells"
+                }
             ],
-            "associated_specimen_imaging_preparation_protocol": [
-                "Mouse embryonic stem cell prepration"
+            "associatedSpecimenImagingPreparationProtocol": [
+                {
+                    "@id": "Mouse embryonic stem cell prepration"
+                }
             ],
-            "associated_specimen_image_acquisition_protocol": [
-                "Confocal stack acquisition"
+            "associatedSpecimenImageAcquisitionProtocol": [
+                {
+                    "@id": "Confocal stack acquisition"
+                }
             ],
             "replicate": "replicate-3",
             "timepoint": "24h"
@@ -417,15 +451,21 @@
                 "bia:Dataset",
                 "Dataset"
             ],
-            "title": "Nup133K0 2h replicate-1",
-            "associated_bio_sample": [
-                "Nup133 mouse stem cells"
+            "title": "Nup133KO 2h replicate-1",
+            "associatedBioSample": [
+                {
+                    "@id": "Nup133 mouse stem cells"
+                }
             ],
-            "associated_specimen_imaging_preparation_protocol": [
-                "Mouse embryonic stem cell prepration"
+            "associatedSpecimenImagingPreparationProtocol": [
+                {
+                    "@id": "Mouse embryonic stem cell prepration"
+                }
             ],
-            "associated_specimen_image_acquisition_protocol": [
-                "Confocal stack acquisition"
+            "associatedSpecimenImageAcquisitionProtocol": [
+                {
+                    "@id": "Confocal stack acquisition"
+                }
             ],
             "replicate": "replicate-1",
             "timepoint": "2h"
@@ -436,15 +476,21 @@
                 "bia:Dataset",
                 "Dataset"
             ],
-            "title": "Nup133K0 2h replicate-2",
-            "associated_bio_sample": [
-                "Nup133 mouse stem cells"
+            "title": "Nup133KO 2h replicate-2",
+            "associatedBioSample": [
+                {
+                    "@id": "Nup133 mouse stem cells"
+                }
             ],
-            "associated_specimen_imaging_preparation_protocol": [
-                "Mouse embryonic stem cell prepration"
+            "associatedSpecimenImagingPreparationProtocol": [
+                {
+                    "@id": "Mouse embryonic stem cell prepration"
+                }
             ],
-            "associated_specimen_image_acquisition_protocol": [
-                "Confocal stack acquisition"
+            "associatedSpecimenImageAcquisitionProtocol": [
+                {
+                    "@id": "Confocal stack acquisition"
+                }
             ],
             "replicate": "replicate-2",
             "timepoint": "2h"
@@ -455,15 +501,21 @@
                 "bia:Dataset",
                 "Dataset"
             ],
-            "title": "Nup133K0 2h replicate-3",
-            "associated_bio_sample": [
-                "Nup133 mouse stem cells"
+            "title": "Nup133KO 2h replicate-3",
+            "associatedBioSample": [
+                {
+                    "@id": "Nup133 mouse stem cells"
+                }
             ],
-            "associated_specimen_imaging_preparation_protocol": [
-                "Mouse embryonic stem cell prepration"
+            "associatedSpecimenImagingPreparationProtocol": [
+                {
+                    "@id": "Mouse embryonic stem cell prepration"
+                }
             ],
-            "associated_specimen_image_acquisition_protocol": [
-                "Confocal stack acquisition"
+            "associatedSpecimenImageAcquisitionProtocol": [
+                {
+                    "@id": "Confocal stack acquisition"
+                }
             ],
             "replicate": "replicate-3",
             "timepoint": "2h"
@@ -474,15 +526,21 @@
                 "bia:Dataset",
                 "Dataset"
             ],
-            "title": "Nup133K0 mES replicate-1",
-            "associated_bio_sample": [
-                "Nup133 mouse stem cells"
+            "title": "Nup133KO mES replicate-1",
+            "associatedBioSample": [
+                {
+                    "@id": "Nup133 mouse stem cells"
+                }
             ],
-            "associated_specimen_imaging_preparation_protocol": [
-                "Mouse embryonic stem cell prepration"
+            "associatedSpecimenImagingPreparationProtocol": [
+                {
+                    "@id": "Mouse embryonic stem cell prepration"
+                }
             ],
-            "associated_specimen_image_acquisition_protocol": [
-                "Confocal stack acquisition"
+            "associatedSpecimenImageAcquisitionProtocol": [
+                {
+                    "@id": "Confocal stack acquisition"
+                }
             ],
             "replicate": "replicate-1",
             "timepoint": "mES"
@@ -493,15 +551,21 @@
                 "bia:Dataset",
                 "Dataset"
             ],
-            "title": "Nup133K0 mES replicate-2",
-            "associated_bio_sample": [
-                "Nup133 mouse stem cells"
+            "title": "Nup133KO mES replicate-2",
+            "associatedBioSample": [
+                {
+                    "@id": "Nup133 mouse stem cells"
+                }
             ],
-            "associated_specimen_imaging_preparation_protocol": [
-                "Mouse embryonic stem cell prepration"
+            "associatedSpecimenImagingPreparationProtocol": [
+                {
+                    "@id": "Mouse embryonic stem cell prepration"
+                }
             ],
-            "associated_specimen_image_acquisition_protocol": [
-                "Confocal stack acquisition"
+            "associatedSpecimenImageAcquisitionProtocol": [
+                {
+                    "@id": "Confocal stack acquisition"
+                }
             ],
             "replicate": "replicate-2",
             "timepoint": "mES"
@@ -512,15 +576,21 @@
                 "bia:Dataset",
                 "Dataset"
             ],
-            "title": "Nup133K0 mES replicate-3",
-            "associated_bio_sample": [
-                "Nup133 mouse stem cells"
+            "title": "Nup133KO mES replicate-3",
+            "associatedBioSample": [
+                {
+                    "@id": "Nup133 mouse stem cells"
+                }
             ],
-            "associated_specimen_imaging_preparation_protocol": [
-                "Mouse embryonic stem cell prepration"
+            "associatedSpecimenImagingPreparationProtocol": [
+                {
+                    "@id": "Mouse embryonic stem cell prepration"
+                }
             ],
-            "associated_specimen_image_acquisition_protocol": [
-                "Confocal stack acquisition"
+            "associatedSpecimenImageAcquisitionProtocol": [
+                {
+                    "@id": "Confocal stack acquisition"
+                }
             ],
             "replicate": "replicate-3",
             "timepoint": "mES"
@@ -532,14 +602,20 @@
                 "Dataset"
             ],
             "title": "Wild Type 24h replicate-1",
-            "associated_bio_sample": [
-                "Wild type mouse stem cells"
+            "associatedBioSample": [
+                {
+                    "@id": "Wild type mouse stem cells"
+                }
             ],
-            "associated_specimen_imaging_preparation_protocol": [
-                "Mouse embryonic stem cell prepration"
+            "associatedSpecimenImagingPreparationProtocol": [
+                {
+                    "@id": "Mouse embryonic stem cell prepration"
+                }
             ],
-            "associated_specimen_image_acquisition_protocol": [
-                "Confocal stack acquisition"
+            "associatedSpecimenImageAcquisitionProtocol": [
+                {
+                    "@id": "Confocal stack acquisition"
+                }
             ],
             "replicate": "replicate-1",
             "timepoint": "24h"
@@ -551,14 +627,20 @@
                 "Dataset"
             ],
             "title": "Wild Type 24h replicate-2",
-            "associated_bio_sample": [
-                "Wild type mouse stem cells"
+            "associatedBioSample": [
+                {
+                    "@id": "Wild type mouse stem cells"
+                }
             ],
-            "associated_specimen_imaging_preparation_protocol": [
-                "Mouse embryonic stem cell prepration"
+            "associatedSpecimenImagingPreparationProtocol": [
+                {
+                    "@id": "Mouse embryonic stem cell prepration"
+                }
             ],
-            "associated_specimen_image_acquisition_protocol": [
-                "Confocal stack acquisition"
+            "associatedSpecimenImageAcquisitionProtocol": [
+                {
+                    "@id": "Confocal stack acquisition"
+                }
             ],
             "replicate": "replicate-2",
             "timepoint": "24h"
@@ -570,14 +652,20 @@
                 "Dataset"
             ],
             "title": "Wild Type 24h replicate-3",
-            "associated_bio_sample": [
-                "Wild type mouse stem cells"
+            "associatedBioSample": [
+                {
+                    "@id": "Wild type mouse stem cells"
+                }
             ],
-            "associated_specimen_imaging_preparation_protocol": [
-                "Mouse embryonic stem cell prepration"
+            "associatedSpecimenImagingPreparationProtocol": [
+                {
+                    "@id": "Mouse embryonic stem cell prepration"
+                }
             ],
-            "associated_specimen_image_acquisition_protocol": [
-                "Confocal stack acquisition"
+            "associatedSpecimenImageAcquisitionProtocol": [
+                {
+                    "@id": "Confocal stack acquisition"
+                }
             ],
             "replicate": "replicate-3",
             "timepoint": "24h"
@@ -589,14 +677,20 @@
                 "Dataset"
             ],
             "title": "Wild Type 2h replicate-1",
-            "associated_bio_sample": [
-                "Wild type mouse stem cells"
+            "associatedBioSample": [
+                {
+                    "@id": "Wild type mouse stem cells"
+                }
             ],
-            "associated_specimen_imaging_preparation_protocol": [
-                "Mouse embryonic stem cell prepration"
+            "associatedSpecimenImagingPreparationProtocol": [
+                {
+                    "@id": "Mouse embryonic stem cell prepration"
+                }
             ],
-            "associated_specimen_image_acquisition_protocol": [
-                "Confocal stack acquisition"
+            "associatedSpecimenImageAcquisitionProtocol": [
+                {
+                    "@id": "Confocal stack acquisition"
+                }
             ],
             "replicate": "replicate-1",
             "timepoint": "2h"
@@ -608,14 +702,20 @@
                 "Dataset"
             ],
             "title": "Wild Type 2h replicate-2",
-            "associated_bio_sample": [
-                "Wild type mouse stem cells"
+            "associatedBioSample": [
+                {
+                    "@id": "Wild type mouse stem cells"
+                }
             ],
-            "associated_specimen_imaging_preparation_protocol": [
-                "Mouse embryonic stem cell prepration"
+            "associatedSpecimenImagingPreparationProtocol": [
+                {
+                    "@id": "Mouse embryonic stem cell prepration"
+                }
             ],
-            "associated_specimen_image_acquisition_protocol": [
-                "Confocal stack acquisition"
+            "associatedSpecimenImageAcquisitionProtocol": [
+                {
+                    "@id": "Confocal stack acquisition"
+                }
             ],
             "replicate": "replicate-2",
             "timepoint": "2h"
@@ -627,14 +727,20 @@
                 "Dataset"
             ],
             "title": "Wild Type 2h replicate-3",
-            "associated_bio_sample": [
-                "Wild type mouse stem cells"
+            "associatedBioSample": [
+                {
+                    "@id": "Wild type mouse stem cells"
+                }
             ],
-            "associated_specimen_imaging_preparation_protocol": [
-                "Mouse embryonic stem cell prepration"
+            "associatedSpecimenImagingPreparationProtocol": [
+                {
+                    "@id": "Mouse embryonic stem cell prepration"
+                }
             ],
-            "associated_specimen_image_acquisition_protocol": [
-                "Confocal stack acquisition"
+            "associatedSpecimenImageAcquisitionProtocol": [
+                {
+                    "@id": "Confocal stack acquisition"
+                }
             ],
             "replicate": "replicate-3",
             "timepoint": "2h"
@@ -646,14 +752,20 @@
                 "Dataset"
             ],
             "title": "Wild Type mES replicate-1",
-            "associated_bio_sample": [
-                "Wild type mouse stem cells"
+            "associatedBioSample": [
+                {
+                    "@id": "Wild type mouse stem cells"
+                }
             ],
-            "associated_specimen_imaging_preparation_protocol": [
-                "Mouse embryonic stem cell prepration"
+            "associatedSpecimenImagingPreparationProtocol": [
+                {
+                    "@id": "Mouse embryonic stem cell prepration"
+                }
             ],
-            "associated_specimen_image_acquisition_protocol": [
-                "Confocal stack acquisition"
+            "associatedSpecimenImageAcquisitionProtocol": [
+                {
+                    "@id": "Confocal stack acquisition"
+                }
             ],
             "replicate": "replicate-1",
             "timepoint": "mES"
@@ -665,14 +777,20 @@
                 "Dataset"
             ],
             "title": "Wild Type mES replicate-2",
-            "associated_bio_sample": [
-                "Wild type mouse stem cells"
+            "associatedBioSample": [
+                {
+                    "@id": "Wild type mouse stem cells"
+                }
             ],
-            "associated_specimen_imaging_preparation_protocol": [
-                "Mouse embryonic stem cell prepration"
+            "associatedSpecimenImagingPreparationProtocol": [
+                {
+                    "@id": "Mouse embryonic stem cell prepration"
+                }
             ],
-            "associated_specimen_image_acquisition_protocol": [
-                "Confocal stack acquisition"
+            "associatedSpecimenImageAcquisitionProtocol": [
+                {
+                    "@id": "Confocal stack acquisition"
+                }
             ],
             "replicate": "replicate-2",
             "timepoint": "mES"
@@ -684,14 +802,20 @@
                 "Dataset"
             ],
             "title": "Wild Type mES replicate-3",
-            "associated_bio_sample": [
-                "Wild type mouse stem cells"
+            "associatedBioSample": [
+                {
+                    "@id": "Wild type mouse stem cells"
+                }
             ],
-            "associated_specimen_imaging_preparation_protocol": [
-                "Mouse embryonic stem cell prepration"
+            "associatedSpecimenImagingPreparationProtocol": [
+                {
+                    "@id": "Mouse embryonic stem cell prepration"
+                }
             ],
-            "associated_specimen_image_acquisition_protocol": [
-                "Confocal stack acquisition"
+            "associatedSpecimenImageAcquisitionProtocol": [
+                {
+                    "@id": "Confocal stack acquisition"
+                }
             ],
             "replicate": "replicate-3",
             "timepoint": "mES"

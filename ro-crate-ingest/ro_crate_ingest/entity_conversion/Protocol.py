@@ -39,7 +39,7 @@ def convert_protocol(
             uuid_creation.create_protocol_uuid(ro_crate_protocol.id, study_uuid)
         ),
         "title_id": title,
-        "protocol_description": ro_crate_protocol.protocol_description,
+        "protocol_description": ro_crate_protocol.protocolDescription,
         "version": 0,
     }
 

@@ -41,10 +41,10 @@ def convert_image_acquisition_protocol(
             )
         ),
         "title_id": title,
-        "protocol_description": ro_crate_iap.protocol_description,
-        "imaging_instrument_description": ro_crate_iap.imaging_instrument_description,
-        "imaging_method_name": ro_crate_iap.imaging_method_name,
-        "fbbi_id": ro_crate_iap.fbbi_id,
+        "protocol_description": ro_crate_iap.protocolDescription,
+        "imaging_instrument_description": ro_crate_iap.imagingInstrumentDescription,
+        "imaging_method_name": ro_crate_iap.imagingMethodName,
+        "fbbi_id": ro_crate_iap.fbbiId,
         "version": 0,
     }
 

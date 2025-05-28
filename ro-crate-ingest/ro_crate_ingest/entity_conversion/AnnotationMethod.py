@@ -34,11 +34,11 @@ def convert_annotation_method(
             ro_crate_annotation_method.id, study_uuid
         ),
         "title_id": ro_crate_annotation_method.title,
-        "protocol_description": ro_crate_annotation_method.protocol_description,
-        "annotation_criteria": ro_crate_annotation_method.annotation_criteria,
-        "annotation_coverage": ro_crate_annotation_method.annotation_coverage,
-        "method_type": ro_crate_annotation_method.method_type,
-        "annotation_source_indicator": ro_crate_annotation_method.annotation_source_indicator,
+        "protocol_description": ro_crate_annotation_method.protocolDescription,
+        "annotation_criteria": ro_crate_annotation_method.annotationCriteria,
+        "annotation_coverage": ro_crate_annotation_method.annotationCoverage,
+        "method_type": ro_crate_annotation_method.methodType,
+        "annotation_source_indicator": ro_crate_annotation_method.annotationSourceIndicator,
         "version": 0,
     }
 
