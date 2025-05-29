@@ -3805,7 +3805,7 @@
           },
           "version": {
             "type": "integer",
-            "minimum": 0,
+            "minimum": 0.0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -3873,7 +3873,7 @@
           },
           "version": {
             "type": "integer",
-            "minimum": 0,
+            "minimum": 0.0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -4072,7 +4072,7 @@
           },
           "version": {
             "type": "integer",
-            "minimum": 0,
+            "minimum": 0.0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -4410,7 +4410,7 @@
           },
           "version": {
             "type": "integer",
-            "minimum": 0,
+            "minimum": 0.0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -4506,7 +4506,7 @@
           },
           "version": {
             "type": "integer",
-            "minimum": 0,
+            "minimum": 0.0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -4675,7 +4675,7 @@
           },
           "version": {
             "type": "integer",
-            "minimum": 0,
+            "minimum": 0.0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -4821,7 +4821,7 @@
           },
           "version": {
             "type": "integer",
-            "minimum": 0,
+            "minimum": 0.0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -4901,7 +4901,7 @@
           },
           "version": {
             "type": "integer",
-            "minimum": 0,
+            "minimum": 0.0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -5078,7 +5078,7 @@
           },
           "version": {
             "type": "integer",
-            "minimum": 0,
+            "minimum": 0.0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -5303,7 +5303,7 @@
           },
           "version": {
             "type": "integer",
-            "minimum": 0,
+            "minimum": 0.0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -5537,7 +5537,7 @@
           },
           "version": {
             "type": "integer",
-            "minimum": 0,
+            "minimum": 0.0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -5606,7 +5606,7 @@
           },
           "version": {
             "type": "integer",
-            "minimum": 0,
+            "minimum": 0.0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },
@@ -5673,7 +5673,7 @@
           },
           "version": {
             "type": "integer",
-            "minimum": 0,
+            "minimum": 0.0,
             "title": "Version",
             "description": "Document version. This can't be optional to make sure we never persist objects without it"
           },

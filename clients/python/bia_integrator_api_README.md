@@ -45,7 +45,7 @@ configuration = bia_integrator_api.Configuration(
 with bia_integrator_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = bia_integrator_api.PrivateApi(api_client)
-    query = 'query_example' # str |
+    query = 'query_example' # str | 
 
     try:
         # Fts
@@ -225,8 +225,12 @@ Authentication schemes defined for the API:
 
 - **Type**: OAuth
 - **Flow**: password
-- **Authorization URL**:
+- **Authorization URL**: 
 - **Scopes**: N/A
 
 
 ## Author
+
+
+
+
