@@ -1,0 +1,177 @@
+{
+  "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+  "schema": "http://schema.org/",
+  "dc": "http://purl.org/dc/terms/",
+  "bia": "http://bia/",
+  "displayName": {
+    "@id": "schema:name"
+  },
+  "address": {
+    "@id": "schema:address"
+  },
+  "website": {
+    "@id": "bia:website"
+  },
+  "affiliation": {
+    "@id": "schema:memberOf"
+  },
+  "title": {
+    "@id": "schema:name"
+  },
+  "protocolDescription": {
+    "@id": "schema:description"
+  },
+  "annotationCriteria": {
+    "@id": "bia:annotationCriteria"
+  },
+  "annotationCoverage": {
+    "@id": "bia:annotationCoverage"
+  },
+  "transformationDescription": {
+    "@id": "bia:transformationDescription"
+  },
+  "spatialInformation": {
+    "@id": "bia:spatialInformation"
+  },
+  "methodType": {
+    "@id": "bia:annotationMethodType"
+  },
+  "annotationSourceIndicator": {
+    "@id": "bia:annotationSourceIndicator"
+  },
+  "biologicalEntityDescription": {
+    "@id": "bia:biologicalEntityDescription"
+  },
+  "experimentalVariableDescription": {
+    "@id": "bia:experimentalVariableDescription"
+  },
+  "extrinsicVariableDescription": {
+    "@id": "bia:extrinsicVariableDescription"
+  },
+  "intrinsicVariableDescription": {
+    "@id": "bia:intrinsicVariableDescription"
+  },
+  "organismClassification": {
+    "@id": "bia:organismClassification"
+  },
+  "growthProtocol": {
+    "@id": "bia:growthProtocol"
+  },
+  "role": {
+    "@id": "bia:role"
+  },
+  "imageAcqusitionProtocol": {
+    "@id": "bia:imageAcquisitionProtocol"
+  },
+  "specimen": {
+    "@id": "bia:subject"
+  },
+  "protocol": {
+    "@id": "bia:protocol"
+  },
+  "annotationMethod": {
+    "@id": "bia:annotationMethod"
+  },
+  "inputImage": {
+    "@id": "bia:inputImage"
+  },
+  "description": {
+    "@id": "schema:description"
+  },
+  "associatedBioSample": {
+    "@id": "bia:associatedBiologicalEntity"
+  },
+  "associatedSpecimenImagingPreparationProtocol": {
+    "@id": "bia:associatedImagingPreparationProtocol"
+  },
+  "associatedSpecimen": {
+    "@id": "bia:associatedSubject"
+  },
+  "associatedSpecimenImageAcquisitionProtocol": {
+    "@id": "bia:associatedImageAcquisitionProtocol"
+  },
+  "associatedAnnotationMethod": {
+    "@id": "bia:associatedAnnotationMethod"
+  },
+  "associatedImageAnalysisMethod": {
+    "@id": "bia:associatedAnalysisMethod"
+  },
+  "associatedImageCorrelationMethod": {
+    "@id": "bia:associatedProtocol"
+  },
+  "link": {
+    "@id": "schema:url"
+  },
+  "linkDescription": {
+    "@id": "schema:description"
+  },
+  "imagingInstrumentDescription": {
+    "@id": "bia:imagingInstrumentDescription"
+  },
+  "imagingMethodName": {
+    "@id": "bia:imagingMethodName"
+  },
+  "fbbiId": {
+    "@id": "bia:fbbiId"
+  },
+  "featuresAnalysed": {
+    "@id": "bia:featuresAnalysed"
+  },
+  "fiducialsUsed": {
+    "@id": "bia:fiducialsUsed"
+  },
+  "transformationMatrix": {
+    "@id": "bia:transformationMatrix"
+  },
+  "authorNames": {
+    "@id": "bia:authorNames"
+  },
+  "signalContrastMechanismDescription": {
+    "@id": "bia:signalContrastMechanismDescription"
+  },
+  "channelContentDescription": {
+    "@id": "bia:channelContentDescription"
+  },
+  "channelBiologicalEntity": {
+    "@id": "bia:channelBiologicalEntity"
+  },
+  "channelLabel": {
+    "@id": "dc:identifier"
+  },
+  "biologicalEntity": {
+    "@id": "bia:sampleOf"
+  },
+  "imagingPreparationProtocol": {
+    "@id": "bia:imagingPreparationProtocol"
+  },
+  "signalChannelInformation": {
+    "@id": "bia:signalChannelInformation"
+  },
+  "contributor": {
+    "@id": "schema:author"
+  },
+  "licence": {
+    "@id": "schema:license"
+  },
+  "datePublished": {
+    "@id": "schema:datePublished"
+  },
+  "keyword": {
+    "@id": "schema:keywords"
+  },
+  "acknowledgement": {
+    "@id": "bia:acknowledgement"
+  },
+  "hasPart": {
+    "@id": "schema:hasPart"
+  },
+  "accessionId": {
+    "@id": "schema:identifier"
+  },
+  "commonName": {
+    "@id": "bia:commonName"
+  },
+  "scientificName": {
+    "@id": "bia:scientificName"
+  }
+}
