@@ -1,0 +1,12 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "8da4e31f-f03b-4d56-a407-1b12ce752b7c",
+  "version": 0,
+  "model": {
+    "type_name": "Protocol",
+    "version": 3
+  },
+  "additional_metadata": [],
+  "title": "Confocal stack acquisition",
+  "protocol_description": "Images were acquired using a 63×/1.40 oil objective. 25 Z stacks were acquired with 0.6 um intervals. Bidirectional image acquisition with scan speed of 400 was used for the data acquisition. Line average was set to 4."
+}

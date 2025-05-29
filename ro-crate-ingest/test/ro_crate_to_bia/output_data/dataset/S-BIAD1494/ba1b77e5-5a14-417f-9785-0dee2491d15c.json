@@ -1,0 +1,16 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "ba1b77e5-5a14-417f-9785-0dee2491d15c",
+  "version": 0,
+  "model": {
+    "type_name": "Dataset",
+    "version": 2
+  },
+  "additional_metadata": [],
+  "title": "Wild Type mES replicate-2",
+  "description": null,
+  "analysis_method": [],
+  "correlation_method": [],
+  "example_image_uri": [],
+  "submitted_in_study_uuid": "6c7bd4af-6d77-433f-a5b6-0dbc545ff214"
+}

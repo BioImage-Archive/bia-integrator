@@ -1,0 +1,16 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "02b378c9-eb63-4fea-8ec8-85b131c03e7b",
+  "version": 0,
+  "model": {
+    "type_name": "Dataset",
+    "version": 2
+  },
+  "additional_metadata": [],
+  "title": "Wild Type 2h replicate-3",
+  "description": null,
+  "analysis_method": [],
+  "correlation_method": [],
+  "example_image_uri": [],
+  "submitted_in_study_uuid": "6c7bd4af-6d77-433f-a5b6-0dbc545ff214"
+}

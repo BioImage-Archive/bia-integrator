@@ -1,0 +1,24 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "c980a7ae-6e9a-404b-b495-db84a8a52ffc",
+  "version": 0,
+  "model": {
+    "type_name": "BioSample",
+    "version": 4
+  },
+  "additional_metadata": [],
+  "title": "Wild type mouse stem cells",
+  "organism_classification": [
+    {
+      "additional_metadata": [],
+      "common_name": "mouse",
+      "scientific_name": "mus musculus",
+      "ncbi_id": null
+    }
+  ],
+  "biological_entity_description": "mouse embryonic stem cells and differentiated neuronal precursors from wild-type HM1 line.",
+  "experimental_variable_description": [],
+  "extrinsic_variable_description": [],
+  "intrinsic_variable_description": [],
+  "growth_protocol_uuid": null
+}
