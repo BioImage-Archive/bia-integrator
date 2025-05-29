@@ -1,0 +1,33 @@
+{
+  "title": "Ground truth segmentation masks",
+  "uuid": "1d0b45f8-374c-4444-8fa3-c7189f58438d",
+  "version": 0,
+  "object_creator": "bia_ingest",
+  "model": {
+    "type_name": "Dataset",
+    "version": 2
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "annotation_method_uuid",
+      "value": {
+        "annotation_method_uuid": [
+          "4d217422-99a5-4672-a1e1-61a123b95bb4"
+        ]
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Annotations-1"
+      }
+    }
+  ],
+  "description": null,
+  "analysis_method": [],
+  "correlation_method": [],
+  "example_image_uri": [],
+  "submitted_in_study_uuid": "869ff676-bf68-4e2d-869e-7e644cbbec42"
+}

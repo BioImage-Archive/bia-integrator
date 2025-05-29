@@ -5,23 +5,23 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**object_creator** | [**Provenance**](Provenance.md) |  | 
 **uuid** | **str** | Unique ID (across the BIA database) used to refer to and identify a document. | 
 **version** | **int** | Document version. This can&#39;t be optional to make sure we never persist objects without it | 
 **model** | [**ModelMetadata**](ModelMetadata.md) |  | [optional] 
-**attribute** | [**List[Attribute]**](Attribute.md) |  | [optional] 
+**additional_metadata** | [**List[Attribute]**](Attribute.md) | Freeform key-value pairs that don&#39;t otherwise fit our data model, potentially from user provided metadata, BIA curation, and experimental fields. | [optional] 
 **image_format** | **str** | Image format of the combined files. | 
-**use_type** | [**ImageRepresentationUseType**](ImageRepresentationUseType.md) |  | 
 **file_uri** | **List[str]** | URI(s) of the file(s) which together make up this image representation. | 
 **total_size_in_bytes** | **int** | Combined disc size in bytes of all the files. | 
-**physical_size_x** | **float** |  | [optional] 
-**physical_size_y** | **float** |  | [optional] 
-**physical_size_z** | **float** |  | [optional] 
+**voxel_physical_size_x** | **float** |  | [optional] 
+**voxel_physical_size_y** | **float** |  | [optional] 
+**voxel_physical_size_z** | **float** |  | [optional] 
 **size_x** | **int** |  | [optional] 
 **size_y** | **int** |  | [optional] 
 **size_z** | **int** |  | [optional] 
 **size_c** | **int** |  | [optional] 
 **size_t** | **int** |  | [optional] 
-**image_viewer_setting** | [**List[RenderedView]**](RenderedView.md) |  | [optional] 
+**image_viewer_setting** | [**List[RenderedView]**](RenderedView.md) | Settings of a particular view of an image, such as a specific timestamp of a timeseries, or camera placement in a 3D model. | [optional] 
 **representation_of_uuid** | **str** |  | 
 
 ## Example

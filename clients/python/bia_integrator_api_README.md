@@ -45,15 +45,15 @@ configuration = bia_integrator_api.Configuration(
 with bia_integrator_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = bia_integrator_api.PrivateApi(api_client)
-    uuid = 'uuid_example' # str | 
+    query = 'query_example' # str | 
 
     try:
-        # Get AnnotationData
-        api_response = api_instance.get_annotation_data(uuid)
-        print("The response of PrivateApi->get_annotation_data:\n")
+        # Fts
+        api_response = api_instance.fts(query)
+        print("The response of PrivateApi->fts:\n")
         pprint(api_response)
     except ApiException as e:
-        print("Exception when calling PrivateApi->get_annotation_data: %s\n" % e)
+        print("Exception when calling PrivateApi->fts: %s\n" % e)
 
 ```
 
@@ -63,6 +63,7 @@ All URIs are relative to *http://localhost*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
+*PrivateApi* | [**fts**](bia_integrator_api/docs/PrivateApi.md#fts) | **GET** /v2/search/fts | Fts
 *PrivateApi* | [**get_annotation_data**](bia_integrator_api/docs/PrivateApi.md#get_annotation_data) | **GET** /v2/annotation_data/{uuid} | Get AnnotationData
 *PrivateApi* | [**get_annotation_data_linking_creation_process**](bia_integrator_api/docs/PrivateApi.md#get_annotation_data_linking_creation_process) | **GET** /v2/creation_process/{uuid}/annotation_data | Get AnnotationData Linking CreationProcess
 *PrivateApi* | [**get_annotation_data_linking_dataset**](bia_integrator_api/docs/PrivateApi.md#get_annotation_data_linking_dataset) | **GET** /v2/dataset/{uuid}/annotation_data | Get AnnotationData Linking Dataset
@@ -124,6 +125,7 @@ Class | Method | HTTP request | Description
 *PrivateApi* | [**search_specimen_imaging_preparation_protocol**](bia_integrator_api/docs/PrivateApi.md#search_specimen_imaging_preparation_protocol) | **GET** /v2/search/specimen_imaging_preparation_protocol | Search all objects of type SpecimenImagingPreparationProtocol
 *PrivateApi* | [**search_study**](bia_integrator_api/docs/PrivateApi.md#search_study) | **GET** /v2/search/study | Search all objects of type Study
 *PrivateApi* | [**search_study_by_accession**](bia_integrator_api/docs/PrivateApi.md#search_study_by_accession) | **GET** /v2/search/study/accession | Searchstudybyaccession
+*PublicApi* | [**fts**](bia_integrator_api/docs/PublicApi.md#fts) | **GET** /v2/search/fts | Fts
 *PublicApi* | [**get_annotation_data**](bia_integrator_api/docs/PublicApi.md#get_annotation_data) | **GET** /v2/annotation_data/{uuid} | Get AnnotationData
 *PublicApi* | [**get_annotation_data_linking_creation_process**](bia_integrator_api/docs/PublicApi.md#get_annotation_data_linking_creation_process) | **GET** /v2/creation_process/{uuid}/annotation_data | Get AnnotationData Linking CreationProcess
 *PublicApi* | [**get_annotation_data_linking_dataset**](bia_integrator_api/docs/PublicApi.md#get_annotation_data_linking_dataset) | **GET** /v2/dataset/{uuid}/annotation_data | Get AnnotationData Linking Dataset
@@ -180,7 +182,6 @@ Class | Method | HTTP request | Description
  - [AnnotationMethodType](bia_integrator_api/docs/AnnotationMethodType.md)
  - [AnnotationSourceIndicator](bia_integrator_api/docs/AnnotationSourceIndicator.md)
  - [Attribute](bia_integrator_api/docs/Attribute.md)
- - [AttributeProvenance](bia_integrator_api/docs/AttributeProvenance.md)
  - [AuthenticationToken](bia_integrator_api/docs/AuthenticationToken.md)
  - [BioSample](bia_integrator_api/docs/BioSample.md)
  - [BodyRegisterUser](bia_integrator_api/docs/BodyRegisterUser.md)
@@ -199,11 +200,11 @@ Class | Method | HTTP request | Description
  - [ImageAnalysisMethod](bia_integrator_api/docs/ImageAnalysisMethod.md)
  - [ImageCorrelationMethod](bia_integrator_api/docs/ImageCorrelationMethod.md)
  - [ImageRepresentation](bia_integrator_api/docs/ImageRepresentation.md)
- - [ImageRepresentationUseType](bia_integrator_api/docs/ImageRepresentationUseType.md)
- - [LicenceType](bia_integrator_api/docs/LicenceType.md)
+ - [Licence](bia_integrator_api/docs/Licence.md)
  - [LocationInner](bia_integrator_api/docs/LocationInner.md)
  - [ModelMetadata](bia_integrator_api/docs/ModelMetadata.md)
  - [Protocol](bia_integrator_api/docs/Protocol.md)
+ - [Provenance](bia_integrator_api/docs/Provenance.md)
  - [Publication](bia_integrator_api/docs/Publication.md)
  - [RenderedView](bia_integrator_api/docs/RenderedView.md)
  - [SignalChannelInformation](bia_integrator_api/docs/SignalChannelInformation.md)

@@ -1,10 +1,10 @@
 from __future__ import annotations
 
-from typing import List, Optional, Any
+from typing import Optional, Any
 from typing_extensions import Self
 
-from pydantic import BaseModel, Field, model_validator, field_validator, ValidationError
-from .semantic_models import Attribute, AttributeProvenance
+from pydantic import BaseModel, Field, model_validator, field_validator
+from .semantic_models import Attribute, Provenance
 from uuid import UUID
 
 # For shared models that are placed inside Attribute objects
@@ -38,10 +38,10 @@ class DatasetAssociationAttribute(Attribute, SubAttributeMixin):
 
     @field_validator("provenance", mode="after")
     @classmethod
-    def attribute_provenance(cls, value: AttributeProvenance) -> AttributeProvenance:
-        if value != AttributeProvenance.bia_ingest:
+    def attribute_provenance(cls, value: Provenance) -> Provenance:
+        if value != Provenance.bia_ingest:
             raise ValueError(
-                f"Provenance for this type of attribute must be {AttributeProvenance.bia_ingest}"
+                f"Provenance for this type of attribute must be {Provenance.bia_ingest}"
             )
 
         return value
@@ -74,10 +74,10 @@ class DatasetAssociatedUUIDAttribute(Attribute, SubAttributeMixin):
 
     @field_validator("provenance", mode="after")
     @classmethod
-    def attribute_provenance(cls, value: AttributeProvenance) -> AttributeProvenance:
-        if value != AttributeProvenance.bia_ingest:
+    def attribute_provenance(cls, value: Provenance) -> Provenance:
+        if value != Provenance.bia_ingest:
             raise ValueError(
-                f"Provenance for this type of attribute must be {AttributeProvenance.bia_ingest}"
+                f"Provenance for this type of attribute must be {Provenance.bia_ingest}"
             )
         return value
 
@@ -107,3 +107,30 @@ class DatasetAssociatedUUIDAttribute(Attribute, SubAttributeMixin):
         return self
 
     value: dict[str, list[str]] = Field()
+
+
+class DocumentUUIDUinqueInputAttribute(Attribute, SubAttributeMixin):
+    """
+    Model for storing the string that was used to generate the uuid of the object.
+    Note this does not need to contain the type nor the study uuid, since those should be findable in the rest of the document / through object links.
+    """
+
+    @field_validator("name", mode="after")
+    @classmethod
+    def validate_attribute_name(cls, value) -> Self:
+        if value != "uuid_unique_input":
+            raise ValueError(
+                f"Name for this type of attribute must be 'uuid_unique_input'"
+            )
+        return value
+
+    @field_validator("value", mode="after")
+    @classmethod
+    def attribute_value(cls, value: dict) -> dict:
+        if len(value.keys()) != 1:
+            raise ValueError("Value dictionary should have exactly one 1 key")
+        elif "uuid_unique_input" not in value.keys():
+            raise ValueError(f'The value dictionary key must be "uuid_unique_input"')
+        return value
+
+    value: dict[str, str] = Field()

@@ -1,0 +1,55 @@
+{
+    "uuid": "4d73dd9d-2885-4f92-97a6-69e44be4a7d8",
+    "representation_of_uuid": "71fb4f2d-6cff-495f-ae21-d1c6ab068de7",
+    "image_format": ".ome.zarr",
+    "total_size_in_bytes": 0,
+    "size_x": 1125,
+    "size_y": 1125,
+    "size_z": 1,
+    "size_c": 2,
+    "size_t": 1,
+    "version": 0,
+    "file_uri": [
+        "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD609/b0ecfe5d-b32d-4ab6-9c3c-a5afeba0a575/7e0044da-f64a-472a-924e-0395084ba26f.ome.zarr/0"
+    ],
+    "object_creator": "bia_image_conversion",
+    "model": {"type_name": "ImageRepresentation", "version": 4},
+    "additional_metadata": [
+        {
+            "provenance": "bia_image_conversion",
+            "name": "attributes_from_ome.zarr",
+            "value": {
+                "BigEndian": "true",
+                "DimensionOrder": "XYZCT",
+                "ID": "Pixels:0",
+                "Interleaved": "false",
+                "PhysicalSizeX": "0.266517985166675",
+                "PhysicalSizeXUnit": "\u00b5m",
+                "PhysicalSizeY": "0.266517985166675",
+                "PhysicalSizeYUnit": "\u00b5m",
+                "SignificantBits": "16",
+                "Type": "uint16",
+                "{http://www.openmicroscopy.org/Schemas/OME/2016-06}Channel": [
+                    {
+                        "ID": "Channel:0:0",
+                        "SamplesPerPixel": "1",
+                        "{http://www.openmicroscopy.org/Schemas/OME/2016-06}LightPath": null
+                    },
+                    {
+                        "ID": "Channel:0:1",
+                        "SamplesPerPixel": "1",
+                        "{http://www.openmicroscopy.org/Schemas/OME/2016-06}LightPath": null
+                    }
+                ],
+                "{http://www.openmicroscopy.org/Schemas/OME/2016-06}MetadataOnly": null
+            }
+        },
+        {
+            "provenance": "bia_image_conversion",
+            "name": "uuid_unique_input",
+            "value": {
+                "uuid_unique_input": "{'conversion_function': 'bioformats2raw';'parameters': 'default'}"
+            }
+        }
+    ]
+}

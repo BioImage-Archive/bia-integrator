@@ -1,0 +1,66 @@
+{
+  "title": "Simulated fluorescence images",
+  "uuid": "05153ce9-8fd0-4e41-a805-32cc3a39dd68",
+  "version": 0,
+  "object_creator": "bia_ingest",
+  "model": {
+    "type_name": "Dataset",
+    "version": 2
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "associations",
+      "value": {
+        "associations": [
+          {
+            "image_analysis": null,
+            "image_correlation": null,
+            "biosample": "Simulated HL-60 cells",
+            "image_acquisition": "Simulated fluorescence microscopy",
+            "specimen": "Digital Phantom Generation"
+          }
+        ]
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "image_acquisition_protocol_uuid",
+      "value": {
+        "image_acquisition_protocol_uuid": [
+          "244e1bee-01cc-4886-8d0a-25f9a2e27c34"
+        ]
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "specimen_imaging_preparation_protocol_uuid",
+      "value": {
+        "specimen_imaging_preparation_protocol_uuid": [
+          "d514d5bd-93bb-44da-b187-7d4264044308"
+        ]
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "bio_sample_uuid",
+      "value": {
+        "bio_sample_uuid": [
+          "aecff242-e5eb-4b92-9718-992abffe38af"
+        ]
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Study Component-1"
+      }
+    }
+  ],
+  "description": "Four subsets (each in high and low signal-to-noise ratio variant) of 30 images each are provided. Each image contains 20 HL-60 cell nuclei, but the nuclei cluster with different probabilities (0%, 25%, 50%, and 75%) in the four subsets.",
+  "analysis_method": [],
+  "correlation_method": [],
+  "example_image_uri": [],
+  "submitted_in_study_uuid": "869ff676-bf68-4e2d-869e-7e644cbbec42"
+}

@@ -2102,6 +2102,52 @@
         }
       }
     },
+    "/v2/search/fts": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Fts",
+        "operationId": "fts",
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 500,
+              "title": "Query"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Response Fts"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v2/search/study": {
       "get": {
         "tags": [
@@ -3747,6 +3793,10 @@
       },
       "AnnotationData": {
         "properties": {
+          "object_creator": {
+            "$ref": "#/components/schemas/Provenance",
+            "description": "BIA internal type to track the source of the object."
+          },
           "uuid": {
             "type": "string",
             "format": "uuid",
@@ -3770,20 +3820,13 @@
             ],
             "description": "Model type and version. Used to map arbitrary objects to a known (possibly previously-used) type.\n        Optional because for some usecases (e.g. api) we want to accept objects without it because we have the info we need to set it."
           },
-          "attribute": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/Attribute"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Attribute",
-            "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
+          "additional_metadata": {
+            "items": {
+              "$ref": "#/components/schemas/Attribute"
+            },
+            "type": "array",
+            "title": "Additional Metadata",
+            "description": "Freeform key-value pairs that don't otherwise fit our data model, potentially from user provided metadata, BIA curation, and experimental fields."
           },
           "submission_dataset_uuid": {
             "type": "string",
@@ -3807,6 +3850,7 @@
         "additionalProperties": false,
         "type": "object",
         "required": [
+          "object_creator",
           "uuid",
           "version",
           "submission_dataset_uuid",
@@ -3817,10 +3861,9 @@
       },
       "AnnotationMethod": {
         "properties": {
-          "title_id": {
-            "type": "string",
-            "title": "Title Id",
-            "description": "User provided title, which is unqiue within a submission, used to identify a part of a submission."
+          "object_creator": {
+            "$ref": "#/components/schemas/Provenance",
+            "description": "BIA internal type to track the source of the object."
           },
           "uuid": {
             "type": "string",
@@ -3845,20 +3888,18 @@
             ],
             "description": "Model type and version. Used to map arbitrary objects to a known (possibly previously-used) type.\n        Optional because for some usecases (e.g. api) we want to accept objects without it because we have the info we need to set it."
           },
-          "attribute": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/Attribute"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Attribute",
-            "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
+          "additional_metadata": {
+            "items": {
+              "$ref": "#/components/schemas/Attribute"
+            },
+            "type": "array",
+            "title": "Additional Metadata",
+            "description": "Freeform key-value pairs that don't otherwise fit our data model, potentially from user provided metadata, BIA curation, and experimental fields."
+          },
+          "title": {
+            "type": "string",
+            "title": "Title",
+            "description": "The title of a protocol."
           },
           "protocol_description": {
             "type": "string",
@@ -3936,9 +3977,10 @@
         "additionalProperties": false,
         "type": "object",
         "required": [
-          "title_id",
+          "object_creator",
           "uuid",
           "version",
+          "title",
           "protocol_description",
           "method_type"
         ],
@@ -3975,7 +4017,7 @@
       "Attribute": {
         "properties": {
           "provenance": {
-            "$ref": "#/components/schemas/AttributeProvenance",
+            "$ref": "#/components/schemas/Provenance",
             "description": "The category of the source of the annotaton"
           },
           "name": {
@@ -3998,16 +4040,6 @@
         ],
         "title": "Attribute"
       },
-      "AttributeProvenance": {
-        "type": "string",
-        "enum": [
-          "submittor",
-          "bia_ingest",
-          "bia_conversion",
-          "bia_curation"
-        ],
-        "title": "AttributeProvenance"
-      },
       "AuthenticationToken": {
         "properties": {
           "access_token": {
@@ -4028,10 +4060,9 @@
       },
       "BioSample": {
         "properties": {
-          "title_id": {
-            "type": "string",
-            "title": "Title Id",
-            "description": "User provided title, which is unqiue within a submission, used to identify a part of a submission."
+          "object_creator": {
+            "$ref": "#/components/schemas/Provenance",
+            "description": "BIA internal type to track the source of the object."
           },
           "uuid": {
             "type": "string",
@@ -4056,20 +4087,18 @@
             ],
             "description": "Model type and version. Used to map arbitrary objects to a known (possibly previously-used) type.\n        Optional because for some usecases (e.g. api) we want to accept objects without it because we have the info we need to set it."
           },
-          "attribute": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/Attribute"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Attribute",
-            "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
+          "additional_metadata": {
+            "items": {
+              "$ref": "#/components/schemas/Attribute"
+            },
+            "type": "array",
+            "title": "Additional Metadata",
+            "description": "Freeform key-value pairs that don't otherwise fit our data model, potentially from user provided metadata, BIA curation, and experimental fields."
+          },
+          "title": {
+            "type": "string",
+            "title": "Title",
+            "description": "The title of a bio-sample."
           },
           "organism_classification": {
             "items": {
@@ -4085,47 +4114,26 @@
             "description": "A short description of the biological entity."
           },
           "experimental_variable_description": {
-            "anyOf": [
-              {
-                "items": {
-                  "type": "string"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
             "title": "Experimental Variable Description",
             "description": "What is intentionally varied (e.g. time) between multiple entries in this study component"
           },
           "extrinsic_variable_description": {
-            "anyOf": [
-              {
-                "items": {
-                  "type": "string"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
             "title": "Extrinsic Variable Description",
             "description": "External treatment (e.g. reagent)."
           },
           "intrinsic_variable_description": {
-            "anyOf": [
-              {
-                "items": {
-                  "type": "string"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
             "title": "Intrinsic Variable Description",
             "description": "Intrinsic (e.g. genetic) alteration."
           },
@@ -4146,9 +4154,10 @@
         "additionalProperties": false,
         "type": "object",
         "required": [
-          "title_id",
+          "object_creator",
           "uuid",
           "version",
+          "title",
           "organism_classification",
           "biological_entity_description"
         ],
@@ -4236,20 +4245,13 @@
       },
       "Channel": {
         "properties": {
-          "attribute": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/Attribute"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Attribute",
-            "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
+          "additional_metadata": {
+            "items": {
+              "$ref": "#/components/schemas/Attribute"
+            },
+            "type": "array",
+            "title": "Additional Metadata",
+            "description": "Freeform key-value pairs that don't otherwise fit our data model, potentially from user provided metadata, BIA curation, and experimental fields."
           },
           "colormap_start": {
             "type": "number",
@@ -4396,6 +4398,10 @@
       },
       "CreationProcess": {
         "properties": {
+          "object_creator": {
+            "$ref": "#/components/schemas/Provenance",
+            "description": "BIA internal type to track the source of the object."
+          },
           "uuid": {
             "type": "string",
             "format": "uuid",
@@ -4419,20 +4425,13 @@
             ],
             "description": "Model type and version. Used to map arbitrary objects to a known (possibly previously-used) type.\n        Optional because for some usecases (e.g. api) we want to accept objects without it because we have the info we need to set it."
           },
-          "attribute": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/Attribute"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Attribute",
-            "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
+          "additional_metadata": {
+            "items": {
+              "$ref": "#/components/schemas/Attribute"
+            },
+            "type": "array",
+            "title": "Additional Metadata",
+            "description": "Freeform key-value pairs that don't otherwise fit our data model, potentially from user provided metadata, BIA curation, and experimental fields."
           },
           "subject_specimen_uuid": {
             "anyOf": [
@@ -4448,66 +4447,38 @@
             "description": "The biological specimen that is the subject of the image."
           },
           "image_acquisition_protocol_uuid": {
-            "anyOf": [
-              {
-                "items": {
-                  "type": "string",
-                  "format": "uuid"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
             "title": "Image Acquisition Protocol Uuid",
             "description": "The imaging protocol, describing the technique that was used to create the image."
           },
           "input_image_uuid": {
-            "anyOf": [
-              {
-                "items": {
-                  "type": "string",
-                  "format": "uuid"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
             "title": "Input Image Uuid",
             "description": "The images used as input data for the creation of a new image."
           },
           "protocol_uuid": {
-            "anyOf": [
-              {
-                "items": {
-                  "type": "string",
-                  "format": "uuid"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
             "title": "Protocol Uuid",
             "description": "A protocol which was followed that resulted in the creation of this new image from existing image data."
           },
           "annotation_method_uuid": {
-            "anyOf": [
-              {
-                "items": {
-                  "type": "string",
-                  "format": "uuid"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
             "title": "Annotation Method Uuid",
             "description": "The annotation method describing the process followed to create a new image from exsiting image data."
           }
@@ -4515,6 +4486,7 @@
         "additionalProperties": false,
         "type": "object",
         "required": [
+          "object_creator",
           "uuid",
           "version"
         ],
@@ -4522,10 +4494,9 @@
       },
       "Dataset": {
         "properties": {
-          "title_id": {
-            "type": "string",
-            "title": "Title Id",
-            "description": "User provided title, which is unqiue within a submission, used to identify a part of a submission."
+          "object_creator": {
+            "$ref": "#/components/schemas/Provenance",
+            "description": "BIA internal type to track the source of the object."
           },
           "uuid": {
             "type": "string",
@@ -4550,20 +4521,18 @@
             ],
             "description": "Model type and version. Used to map arbitrary objects to a known (possibly previously-used) type.\n        Optional because for some usecases (e.g. api) we want to accept objects without it because we have the info we need to set it."
           },
-          "attribute": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/Attribute"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Attribute",
-            "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
+          "additional_metadata": {
+            "items": {
+              "$ref": "#/components/schemas/Attribute"
+            },
+            "type": "array",
+            "title": "Additional Metadata",
+            "description": "Freeform key-value pairs that don't otherwise fit our data model, potentially from user provided metadata, BIA curation, and experimental fields."
+          },
+          "title": {
+            "type": "string",
+            "title": "Title",
+            "description": "The title of a dataset."
           },
           "description": {
             "anyOf": [
@@ -4578,32 +4547,18 @@
             "description": "Brief description of the dataset."
           },
           "analysis_method": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/ImageAnalysisMethod"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/ImageAnalysisMethod"
+            },
+            "type": "array",
             "title": "Analysis Method",
             "description": "Data analysis processes performed on the images."
           },
           "correlation_method": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/ImageCorrelationMethod"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/ImageCorrelationMethod"
+            },
+            "type": "array",
             "title": "Correlation Method",
             "description": "Processes performed to correlate image data."
           },
@@ -4624,9 +4579,10 @@
         "additionalProperties": false,
         "type": "object",
         "required": [
-          "title_id",
+          "object_creator",
           "uuid",
           "version",
+          "title",
           "example_image_uri",
           "submitted_in_study_uuid"
         ],
@@ -4707,6 +4663,10 @@
       },
       "FileReference": {
         "properties": {
+          "object_creator": {
+            "$ref": "#/components/schemas/Provenance",
+            "description": "BIA internal type to track the source of the object."
+          },
           "uuid": {
             "type": "string",
             "format": "uuid",
@@ -4730,20 +4690,13 @@
             ],
             "description": "Model type and version. Used to map arbitrary objects to a known (possibly previously-used) type.\n        Optional because for some usecases (e.g. api) we want to accept objects without it because we have the info we need to set it."
           },
-          "attribute": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/Attribute"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Attribute",
-            "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
+          "additional_metadata": {
+            "items": {
+              "$ref": "#/components/schemas/Attribute"
+            },
+            "type": "array",
+            "title": "Additional Metadata",
+            "description": "Freeform key-value pairs that don't otherwise fit our data model, potentially from user provided metadata, BIA curation, and experimental fields."
           },
           "file_path": {
             "type": "string",
@@ -4774,6 +4727,7 @@
         "additionalProperties": false,
         "type": "object",
         "required": [
+          "object_creator",
           "uuid",
           "version",
           "file_path",
@@ -4827,17 +4781,10 @@
             "description": "A unique identifier for the grant, such as an Open Funder Registry ID."
           },
           "funder": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/FundingBody"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/FundingBody"
+            },
+            "type": "array",
             "title": "Funder",
             "description": "The name of the funding body providing support for the grant."
           }
@@ -4862,6 +4809,10 @@
       },
       "Image": {
         "properties": {
+          "object_creator": {
+            "$ref": "#/components/schemas/Provenance",
+            "description": "BIA internal type to track the source of the object."
+          },
           "uuid": {
             "type": "string",
             "format": "uuid",
@@ -4885,20 +4836,25 @@
             ],
             "description": "Model type and version. Used to map arbitrary objects to a known (possibly previously-used) type.\n        Optional because for some usecases (e.g. api) we want to accept objects without it because we have the info we need to set it."
           },
-          "attribute": {
+          "additional_metadata": {
+            "items": {
+              "$ref": "#/components/schemas/Attribute"
+            },
+            "type": "array",
+            "title": "Additional Metadata",
+            "description": "Freeform key-value pairs that don't otherwise fit our data model, potentially from user provided metadata, BIA curation, and experimental fields."
+          },
+          "label": {
             "anyOf": [
               {
-                "items": {
-                  "$ref": "#/components/schemas/Attribute"
-                },
-                "type": "array"
+                "type": "string"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Attribute",
-            "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
+            "title": "Label",
+            "description": "Optional human readable label describing or titling the image."
           },
           "submission_dataset_uuid": {
             "type": "string",
@@ -4922,6 +4878,7 @@
         "additionalProperties": false,
         "type": "object",
         "required": [
+          "object_creator",
           "uuid",
           "version",
           "submission_dataset_uuid",
@@ -4932,10 +4889,9 @@
       },
       "ImageAcquisitionProtocol": {
         "properties": {
-          "title_id": {
-            "type": "string",
-            "title": "Title Id",
-            "description": "User provided title, which is unqiue within a submission, used to identify a part of a submission."
+          "object_creator": {
+            "$ref": "#/components/schemas/Provenance",
+            "description": "BIA internal type to track the source of the object."
           },
           "uuid": {
             "type": "string",
@@ -4960,20 +4916,18 @@
             ],
             "description": "Model type and version. Used to map arbitrary objects to a known (possibly previously-used) type.\n        Optional because for some usecases (e.g. api) we want to accept objects without it because we have the info we need to set it."
           },
-          "attribute": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/Attribute"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Attribute",
-            "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
+          "additional_metadata": {
+            "items": {
+              "$ref": "#/components/schemas/Attribute"
+            },
+            "type": "array",
+            "title": "Additional Metadata",
+            "description": "Freeform key-value pairs that don't otherwise fit our data model, potentially from user provided metadata, BIA curation, and experimental fields."
+          },
+          "title": {
+            "type": "string",
+            "title": "Title",
+            "description": "The title of a protocol."
           },
           "protocol_description": {
             "type": "string",
@@ -4986,32 +4940,18 @@
             "description": "Names, types, or description of how the instruments used to create the image."
           },
           "fbbi_id": {
-            "anyOf": [
-              {
-                "items": {
-                  "type": "string"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
             "title": "Fbbi Id",
             "description": "Biological Imaging Methods Ontology id indicating the kind of imaging that was perfomed."
           },
           "imaging_method_name": {
-            "anyOf": [
-              {
-                "items": {
-                  "type": "string"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
             "title": "Imaging Method Name",
             "description": "Name of the kind of imaging method that was performed."
           }
@@ -5019,9 +4959,10 @@
         "additionalProperties": false,
         "type": "object",
         "required": [
-          "title_id",
+          "object_creator",
           "uuid",
           "version",
+          "title",
           "protocol_description",
           "imaging_instrument_description"
         ],
@@ -5029,20 +4970,18 @@
       },
       "ImageAnalysisMethod": {
         "properties": {
-          "attribute": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/Attribute"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Attribute",
-            "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
+          "additional_metadata": {
+            "items": {
+              "$ref": "#/components/schemas/Attribute"
+            },
+            "type": "array",
+            "title": "Additional Metadata",
+            "description": "Freeform key-value pairs that don't otherwise fit our data model, potentially from user provided metadata, BIA curation, and experimental fields."
+          },
+          "title": {
+            "type": "string",
+            "title": "Title",
+            "description": "The title of a protocol."
           },
           "protocol_description": {
             "type": "string",
@@ -5065,6 +5004,7 @@
         "additionalProperties": false,
         "type": "object",
         "required": [
+          "title",
           "protocol_description"
         ],
         "title": "ImageAnalysisMethod",
@@ -5072,20 +5012,18 @@
       },
       "ImageCorrelationMethod": {
         "properties": {
-          "attribute": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/Attribute"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Attribute",
-            "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
+          "additional_metadata": {
+            "items": {
+              "$ref": "#/components/schemas/Attribute"
+            },
+            "type": "array",
+            "title": "Additional Metadata",
+            "description": "Freeform key-value pairs that don't otherwise fit our data model, potentially from user provided metadata, BIA curation, and experimental fields."
+          },
+          "title": {
+            "type": "string",
+            "title": "Title",
+            "description": "The title of a protocol."
           },
           "protocol_description": {
             "type": "string",
@@ -5120,6 +5058,7 @@
         "additionalProperties": false,
         "type": "object",
         "required": [
+          "title",
           "protocol_description"
         ],
         "title": "ImageCorrelationMethod",
@@ -5127,6 +5066,10 @@
       },
       "ImageRepresentation": {
         "properties": {
+          "object_creator": {
+            "$ref": "#/components/schemas/Provenance",
+            "description": "BIA internal type to track the source of the object."
+          },
           "uuid": {
             "type": "string",
             "format": "uuid",
@@ -5150,29 +5093,18 @@
             ],
             "description": "Model type and version. Used to map arbitrary objects to a known (possibly previously-used) type.\n        Optional because for some usecases (e.g. api) we want to accept objects without it because we have the info we need to set it."
           },
-          "attribute": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/Attribute"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Attribute",
-            "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
+          "additional_metadata": {
+            "items": {
+              "$ref": "#/components/schemas/Attribute"
+            },
+            "type": "array",
+            "title": "Additional Metadata",
+            "description": "Freeform key-value pairs that don't otherwise fit our data model, potentially from user provided metadata, BIA curation, and experimental fields."
           },
           "image_format": {
             "type": "string",
             "title": "Image Format",
             "description": "Image format of the combined files."
-          },
-          "use_type": {
-            "$ref": "#/components/schemas/ImageRepresentationUseType",
-            "description": "The use case of this particular image representation i.e. thumbnail, interactive display etc."
           },
           "file_uri": {
             "items": {
@@ -5187,7 +5119,7 @@
             "title": "Total Size In Bytes",
             "description": "Combined disc size in bytes of all the files."
           },
-          "physical_size_x": {
+          "voxel_physical_size_x": {
             "anyOf": [
               {
                 "type": "number"
@@ -5196,10 +5128,10 @@
                 "type": "null"
               }
             ],
-            "title": "Physical Size X",
-            "description": "Size of the physical space (in meters) captured in the field of view of the image."
+            "title": "Voxel Physical Size X",
+            "description": "Size of the physical space (in meters) captured by a single pixel or voxel of the image."
           },
-          "physical_size_y": {
+          "voxel_physical_size_y": {
             "anyOf": [
               {
                 "type": "number"
@@ -5208,10 +5140,10 @@
                 "type": "null"
               }
             ],
-            "title": "Physical Size Y",
-            "description": "Size of the physical space (in meters) captured in the field of view of the image."
+            "title": "Voxel Physical Size Y",
+            "description": "Size of the physical space (in meters) captured by a single pixel or voxel of the image."
           },
-          "physical_size_z": {
+          "voxel_physical_size_z": {
             "anyOf": [
               {
                 "type": "number"
@@ -5220,8 +5152,8 @@
                 "type": "null"
               }
             ],
-            "title": "Physical Size Z",
-            "description": "Size of the physical space (in meters) captured in the field of view of the image."
+            "title": "Voxel Physical Size Z",
+            "description": "Size of the physical space (in meters) captured by a single pixel or voxel of the image."
           },
           "size_x": {
             "anyOf": [
@@ -5281,20 +5213,13 @@
               }
             ],
             "title": "Size T",
-            "description": "Size of temporal dimension of the data array of the image."
+            "description": "Number of timesteps in the temporal dimension of the data array of the image."
           },
           "image_viewer_setting": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/RenderedView"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/RenderedView"
+            },
+            "type": "array",
             "title": "Image Viewer Setting",
             "description": "Settings of a particular view of an image, such as a specific timestamp of a timeseries, or camera placement in a 3D model."
           },
@@ -5307,55 +5232,44 @@
         "additionalProperties": false,
         "type": "object",
         "required": [
+          "object_creator",
           "uuid",
           "version",
           "image_format",
-          "use_type",
           "file_uri",
           "total_size_in_bytes",
           "representation_of_uuid"
         ],
         "title": "ImageRepresentation"
       },
-      "ImageRepresentationUseType": {
+      "Licence": {
         "type": "string",
         "enum": [
-          "UPLOADED_BY_SUBMITTER",
-          "STATIC_DISPLAY",
-          "THUMBNAIL",
-          "INTERACTIVE_DISPLAY"
+          "https://creativecommons.org/publicdomain/zero/1.0/",
+          "https://creativecommons.org/licenses/by/4.0/",
+          "https://creativecommons.org/licenses/by/3.0/",
+          "https://creativecommons.org/licenses/by/2.5/",
+          "https://creativecommons.org/licenses/by/2.0/",
+          "https://creativecommons.org/licenses/by/1.0/",
+          "https://creativecommons.org/licenses/by-sa/4.0/",
+          "https://creativecommons.org/licenses/by-sa/3.0/",
+          "https://creativecommons.org/licenses/by-sa/2.5/",
+          "https://creativecommons.org/licenses/by-sa/2.0/",
+          "https://creativecommons.org/licenses/by-sa/1.0/",
+          "https://creativecommons.org/licenses/by-sa/2.1/jp/",
+          "https://creativecommons.org/licenses/by-nc/4.0/",
+          "https://creativecommons.org/licenses/by-nc/3.0/",
+          "https://creativecommons.org/licenses/by-nc/2.5/",
+          "https://creativecommons.org/licenses/by-nc/2.0/",
+          "https://creativecommons.org/licenses/by-nc/1.0/",
+          "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+          "https://creativecommons.org/licenses/by-nc-sa/3.0/",
+          "https://creativecommons.org/licenses/by-nc-sa/2.5/",
+          "https://creativecommons.org/licenses/by-nc-sa/2.0/",
+          "https://creativecommons.org/licenses/by-nc-sa/1.0/",
+          "https://creativecommons.org/licenses/by-nc-nd/4.0/"
         ],
-        "title": "ImageRepresentationUseType",
-        "description": "Enumerate use types of ImageRepresentations"
-      },
-      "LicenceType": {
-        "type": "string",
-        "enum": [
-          "CC0",
-          "CC_BY_4.0",
-          "CC_BY_3.0",
-          "CC_BY_2.5",
-          "CC_BY_2.0",
-          "CC_BY_1.0",
-          "CC_BY-SA_4.0",
-          "CC_BY-SA_3.0",
-          "CC_BY-SA_2.5",
-          "CC_BY-SA_2.0",
-          "CC_BY-SA_1.0",
-          "CC_BY-SA_2.1_JP",
-          "CC_BY-NC_4.0",
-          "CC_BY-NC_3.0",
-          "CC_BY-NC_2.5",
-          "CC_BY-NC_2.0",
-          "CC_BY-NC_1.0",
-          "CC_BY-NC-SA_4.0",
-          "CC_BY-NC-SA_3.0",
-          "CC_BY-NC-SA_2.5",
-          "CC_BY-NC-SA_2.0",
-          "CC_BY-NC-SA_1.0",
-          "CC_BY-NC-ND_4.0"
-        ],
-        "title": "LicenceType"
+        "title": "Licence"
       },
       "ModelMetadata": {
         "properties": {
@@ -5377,10 +5291,9 @@
       },
       "Protocol": {
         "properties": {
-          "title_id": {
-            "type": "string",
-            "title": "Title Id",
-            "description": "User provided title, which is unqiue within a submission, used to identify a part of a submission."
+          "object_creator": {
+            "$ref": "#/components/schemas/Provenance",
+            "description": "BIA internal type to track the source of the object."
           },
           "uuid": {
             "type": "string",
@@ -5405,20 +5318,18 @@
             ],
             "description": "Model type and version. Used to map arbitrary objects to a known (possibly previously-used) type.\n        Optional because for some usecases (e.g. api) we want to accept objects without it because we have the info we need to set it."
           },
-          "attribute": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/Attribute"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Attribute",
-            "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
+          "additional_metadata": {
+            "items": {
+              "$ref": "#/components/schemas/Attribute"
+            },
+            "type": "array",
+            "title": "Additional Metadata",
+            "description": "Freeform key-value pairs that don't otherwise fit our data model, potentially from user provided metadata, BIA curation, and experimental fields."
+          },
+          "title": {
+            "type": "string",
+            "title": "Title",
+            "description": "The title of a protocol."
           },
           "protocol_description": {
             "type": "string",
@@ -5429,12 +5340,24 @@
         "additionalProperties": false,
         "type": "object",
         "required": [
-          "title_id",
+          "object_creator",
           "uuid",
           "version",
+          "title",
           "protocol_description"
         ],
         "title": "Protocol"
+      },
+      "Provenance": {
+        "type": "string",
+        "enum": [
+          "submitter",
+          "bia_ingest",
+          "bia_image_assignment",
+          "bia_image_conversion",
+          "bia_curation"
+        ],
+        "title": "Provenance"
       },
       "Publication": {
         "properties": {
@@ -5490,20 +5413,13 @@
       },
       "RenderedView": {
         "properties": {
-          "attribute": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/Attribute"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Attribute",
-            "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
+          "additional_metadata": {
+            "items": {
+              "$ref": "#/components/schemas/Attribute"
+            },
+            "type": "array",
+            "title": "Additional Metadata",
+            "description": "Freeform key-value pairs that don't otherwise fit our data model, potentially from user provided metadata, BIA curation, and experimental fields."
           },
           "z": {
             "anyOf": [
@@ -5530,17 +5446,10 @@
             "description": "A t-value for the timestamp of the image view"
           },
           "channel_information": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/Channel"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/Channel"
+            },
+            "type": "array",
             "title": "Channel Information",
             "description": "Information about the channels involved in displaying this view of the image."
           }
@@ -5552,20 +5461,13 @@
       },
       "SignalChannelInformation": {
         "properties": {
-          "attribute": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/Attribute"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Attribute",
-            "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
+          "additional_metadata": {
+            "items": {
+              "$ref": "#/components/schemas/Attribute"
+            },
+            "type": "array",
+            "title": "Additional Metadata",
+            "description": "Freeform key-value pairs that don't otherwise fit our data model, potentially from user provided metadata, BIA curation, and experimental fields."
           },
           "signal_contrast_mechanism_description": {
             "anyOf": [
@@ -5602,6 +5504,18 @@
             ],
             "title": "Channel Biological Entity",
             "description": "What molecule is stained."
+          },
+          "channel_label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Channel Label",
+            "description": "Label in the image for the channel. Often this is some integer e.g. 1 or Channel 1"
           }
         },
         "additionalProperties": false,
@@ -5611,6 +5525,10 @@
       },
       "Specimen": {
         "properties": {
+          "object_creator": {
+            "$ref": "#/components/schemas/Provenance",
+            "description": "BIA internal type to track the source of the object."
+          },
           "uuid": {
             "type": "string",
             "format": "uuid",
@@ -5634,20 +5552,13 @@
             ],
             "description": "Model type and version. Used to map arbitrary objects to a known (possibly previously-used) type.\n        Optional because for some usecases (e.g. api) we want to accept objects without it because we have the info we need to set it."
           },
-          "attribute": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/Attribute"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Attribute",
-            "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
+          "additional_metadata": {
+            "items": {
+              "$ref": "#/components/schemas/Attribute"
+            },
+            "type": "array",
+            "title": "Additional Metadata",
+            "description": "Freeform key-value pairs that don't otherwise fit our data model, potentially from user provided metadata, BIA curation, and experimental fields."
           },
           "imaging_preparation_protocol_uuid": {
             "items": {
@@ -5673,6 +5584,7 @@
         "additionalProperties": false,
         "type": "object",
         "required": [
+          "object_creator",
           "uuid",
           "version",
           "imaging_preparation_protocol_uuid",
@@ -5682,10 +5594,9 @@
       },
       "SpecimenImagingPreparationProtocol": {
         "properties": {
-          "title_id": {
-            "type": "string",
-            "title": "Title Id",
-            "description": "User provided title, which is unqiue within a submission, used to identify a part of a submission."
+          "object_creator": {
+            "$ref": "#/components/schemas/Provenance",
+            "description": "BIA internal type to track the source of the object."
           },
           "uuid": {
             "type": "string",
@@ -5710,20 +5621,18 @@
             ],
             "description": "Model type and version. Used to map arbitrary objects to a known (possibly previously-used) type.\n        Optional because for some usecases (e.g. api) we want to accept objects without it because we have the info we need to set it."
           },
-          "attribute": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/Attribute"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Attribute",
-            "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
+          "additional_metadata": {
+            "items": {
+              "$ref": "#/components/schemas/Attribute"
+            },
+            "type": "array",
+            "title": "Additional Metadata",
+            "description": "Freeform key-value pairs that don't otherwise fit our data model, potentially from user provided metadata, BIA curation, and experimental fields."
+          },
+          "title": {
+            "type": "string",
+            "title": "Title",
+            "description": "The title of a protocol."
           },
           "protocol_description": {
             "type": "string",
@@ -5731,17 +5640,10 @@
             "description": "Description of actions involved in the process."
           },
           "signal_channel_information": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/SignalChannelInformation"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/SignalChannelInformation"
+            },
+            "type": "array",
             "title": "Signal Channel Information",
             "description": "Information about how channels in the image relate to image signal generation."
           }
@@ -5749,15 +5651,20 @@
         "additionalProperties": false,
         "type": "object",
         "required": [
-          "title_id",
+          "object_creator",
           "uuid",
           "version",
+          "title",
           "protocol_description"
         ],
         "title": "SpecimenImagingPreparationProtocol"
       },
       "Study": {
         "properties": {
+          "object_creator": {
+            "$ref": "#/components/schemas/Provenance",
+            "description": "BIA internal type to track the source of the object."
+          },
           "uuid": {
             "type": "string",
             "format": "uuid",
@@ -5781,20 +5688,13 @@
             ],
             "description": "Model type and version. Used to map arbitrary objects to a known (possibly previously-used) type.\n        Optional because for some usecases (e.g. api) we want to accept objects without it because we have the info we need to set it."
           },
-          "attribute": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/Attribute"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Attribute",
-            "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
+          "additional_metadata": {
+            "items": {
+              "$ref": "#/components/schemas/Attribute"
+            },
+            "type": "array",
+            "title": "Additional Metadata",
+            "description": "Freeform key-value pairs that don't otherwise fit our data model, potentially from user provided metadata, BIA curation, and experimental fields."
           },
           "accession_id": {
             "type": "string",
@@ -5802,7 +5702,7 @@
             "description": "Unique ID provided by BioStudies."
           },
           "licence": {
-            "$ref": "#/components/schemas/LicenceType",
+            "$ref": "#/components/schemas/Licence",
             "description": "The license under which the data associated with the study is made avaliable."
           },
           "author": {
@@ -5830,17 +5730,10 @@
             "description": "Brief description of the study."
           },
           "keyword": {
-            "anyOf": [
-              {
-                "items": {
-                  "type": "string"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
             "title": "Keyword",
             "description": "Keywords or tags used to describe the subject or context of the study."
           },
@@ -5857,47 +5750,26 @@
             "description": "Any person or group that should be acknowledged outside of the authors/main contributors to the study."
           },
           "see_also": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/ExternalReference"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/ExternalReference"
+            },
+            "type": "array",
             "title": "See Also",
             "description": "Links to publications, github repositories, and other pages related to this Study."
           },
           "related_publication": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/Publication"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/Publication"
+            },
+            "type": "array",
             "title": "Related Publication",
             "description": "The publications that the work involved in the study contributed to."
           },
           "grant": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/Grant"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "$ref": "#/components/schemas/Grant"
+            },
+            "type": "array",
             "title": "Grant",
             "description": "The grants that funded the study."
           },
@@ -5917,6 +5789,7 @@
         "additionalProperties": false,
         "type": "object",
         "required": [
+          "object_creator",
           "uuid",
           "version",
           "accession_id",
@@ -5930,20 +5803,13 @@
       },
       "Taxon": {
         "properties": {
-          "attribute": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/Attribute"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Attribute",
-            "description": "Freeform key-value pairs from user provided metadata (e.g. filelist data) and experimental fields."
+          "additional_metadata": {
+            "items": {
+              "$ref": "#/components/schemas/Attribute"
+            },
+            "type": "array",
+            "title": "Additional Metadata",
+            "description": "Freeform key-value pairs that don't otherwise fit our data model, potentially from user provided metadata, BIA curation, and experimental fields."
           },
           "common_name": {
             "anyOf": [

@@ -140,9 +140,9 @@ class DocumentMixin(BaseModel):
         return fields_filtered
 
 
-class UserIdentifiedObject(BaseModel):
-    title_id: str = Field(
-        description="""User provided title, which is unqiue within a submission, used to identify a part of a submission."""
+class ObjectCreatorMixin(BaseModel):
+    object_creator: semantic_models.Provenance = Field(
+        description="""BIA internal type to track the source of the object.""",
     )
 
 
@@ -151,13 +151,10 @@ class UserIdentifiedObject(BaseModel):
 #######################################################################################################
 
 
-class Study(
-    semantic_models.Study,
-    DocumentMixin,
-):
+class Study(semantic_models.Study, DocumentMixin, ObjectCreatorMixin):
     author: List[semantic_models.Contributor] = Field(min_length=1)
 
-    model_config = ConfigDict(model_version_latest=2)
+    model_config = ConfigDict(model_version_latest=3)
 
 
 #######################################################################################################
@@ -165,26 +162,19 @@ class Study(
 #######################################################################################################
 
 
-class Dataset(
-    semantic_models.Dataset,
-    DocumentMixin,
-    UserIdentifiedObject,
-):
+class Dataset(semantic_models.Dataset, DocumentMixin, ObjectCreatorMixin):
     submitted_in_study_uuid: Annotated[UUID, ObjectReference(Study)] = Field()
 
-    model_config = ConfigDict(model_version_latest=1)
+    model_config = ConfigDict(model_version_latest=2)
 
 
-class FileReference(
-    semantic_models.FileReference,
-    DocumentMixin,
-):
+class FileReference(semantic_models.FileReference, DocumentMixin, ObjectCreatorMixin):
     submission_dataset_uuid: Annotated[
         UUID,
         ObjectReference(Dataset),
     ] = Field()
 
-    model_config = ConfigDict(model_version_latest=2)
+    model_config = ConfigDict(model_version_latest=3)
 
 
 #######################################################################################################
@@ -192,10 +182,7 @@ class FileReference(
 #######################################################################################################
 
 
-class Image(
-    semantic_models.Image,
-    DocumentMixin,
-):
+class Image(semantic_models.Image, DocumentMixin, ObjectCreatorMixin):
 
     submission_dataset_uuid: Annotated[UUID, ObjectReference(Dataset)] = Field()
     creation_process_uuid: Annotated[UUID, ObjectReference(CreationProcess)] = Field()
@@ -203,12 +190,11 @@ class Image(
         List[UUID], ObjectReference(FileReference)
     ] = Field()
 
-    model_config = ConfigDict(model_version_latest=1)
+    model_config = ConfigDict(model_version_latest=2)
 
 
 class ImageRepresentation(
-    semantic_models.ImageRepresentation,
-    DocumentMixin,
+    semantic_models.ImageRepresentation, DocumentMixin, ObjectCreatorMixin
 ):
 
     representation_of_uuid: Annotated[
@@ -216,17 +202,17 @@ class ImageRepresentation(
         ObjectReference(Image),
     ] = Field()
 
-    model_config = ConfigDict(model_version_latest=3)
+    model_config = ConfigDict(model_version_latest=4)
 
 
-class AnnotationData(semantic_models.AnnotationData, DocumentMixin):
+class AnnotationData(semantic_models.AnnotationData, DocumentMixin, ObjectCreatorMixin):
     submission_dataset_uuid: Annotated[UUID, ObjectReference(Dataset)] = Field()
     creation_process_uuid: Annotated[UUID, ObjectReference(CreationProcess)] = Field()
     original_file_reference_uuid: Annotated[
         List[UUID], ObjectReference(FileReference)
     ] = Field()
 
-    model_config = ConfigDict(model_version_latest=1)
+    model_config = ConfigDict(model_version_latest=2)
 
 
 #######################################################################################################
@@ -234,7 +220,7 @@ class AnnotationData(semantic_models.AnnotationData, DocumentMixin):
 #######################################################################################################
 
 
-class Specimen(semantic_models.Specimen, DocumentMixin):
+class Specimen(semantic_models.Specimen, DocumentMixin, ObjectCreatorMixin):
     imaging_preparation_protocol_uuid: Annotated[
         List[UUID], ObjectReference(SpecimenImagingPreparationProtocol)
     ] = Field(
@@ -246,77 +232,72 @@ class Specimen(semantic_models.Specimen, DocumentMixin):
         description="The biosample from which this specimen was created.",
     )
 
-    model_config = ConfigDict(model_version_latest=2)
+    model_config = ConfigDict(model_version_latest=3)
 
 
-class CreationProcess(semantic_models.CreationProcess, DocumentMixin):
+class CreationProcess(
+    semantic_models.CreationProcess, DocumentMixin, ObjectCreatorMixin
+):
     subject_specimen_uuid: Annotated[Optional[UUID], ObjectReference(Specimen)] = Field(
         default=None,
         description="The biological specimen that is the subject of the image.",
     )
     image_acquisition_protocol_uuid: Annotated[
-        Optional[List[UUID]], ObjectReference(ImageAcquisitionProtocol)
+        List[UUID], ObjectReference(ImageAcquisitionProtocol)
     ] = Field(
         default_factory=lambda: [],
         description="The imaging protocol, describing the technique that was used to create the image.",
     )
 
-    input_image_uuid: Annotated[Optional[List[UUID]], ObjectReference(Image)] = Field(
+    input_image_uuid: Annotated[List[UUID], ObjectReference(Image)] = Field(
         default_factory=lambda: [],
         description="The images used as input data for the creation of a new image.",
     )
-    protocol_uuid: Annotated[Optional[List[UUID]], ObjectReference(Protocol)] = Field(
+    protocol_uuid: Annotated[List[UUID], ObjectReference(Protocol)] = Field(
         default_factory=lambda: [],
         description="A protocol which was followed that resulted in the creation of this new image from existing image data.",
     )
-    annotation_method_uuid: Annotated[
-        Optional[List[UUID]], ObjectReference(AnnotationMethod)
-    ] = Field(
-        default_factory=lambda: [],
-        description="The annotation method describing the process followed to create a new image from exsiting image data.",
+    annotation_method_uuid: Annotated[List[UUID], ObjectReference(AnnotationMethod)] = (
+        Field(
+            default_factory=lambda: [],
+            description="The annotation method describing the process followed to create a new image from exsiting image data.",
+        )
     )
 
-    model_config = ConfigDict(model_version_latest=2)
+    model_config = ConfigDict(model_version_latest=3)
 
 
-class Protocol(semantic_models.Protocol, DocumentMixin, UserIdentifiedObject):
-    model_config = ConfigDict(model_version_latest=2)
+class Protocol(semantic_models.Protocol, DocumentMixin, ObjectCreatorMixin):
+    model_config = ConfigDict(model_version_latest=3)
 
 
 class ImageAcquisitionProtocol(
-    semantic_models.ImageAcquisitionProtocol,
-    DocumentMixin,
-    UserIdentifiedObject,
+    semantic_models.ImageAcquisitionProtocol, DocumentMixin, ObjectCreatorMixin
 ):
-    model_config = ConfigDict(model_version_latest=2)
+    model_config = ConfigDict(model_version_latest=3)
 
 
 class SpecimenImagingPreparationProtocol(
     semantic_models.SpecimenImagingPreparationProtocol,
     DocumentMixin,
-    UserIdentifiedObject,
-):
-    model_config = ConfigDict(model_version_latest=2)
-
-
-class BioSample(
-    semantic_models.BioSample,
-    DocumentMixin,
-    UserIdentifiedObject,
+    ObjectCreatorMixin,
 ):
     model_config = ConfigDict(model_version_latest=3)
+
+
+class BioSample(semantic_models.BioSample, DocumentMixin, ObjectCreatorMixin):
     growth_protocol_uuid: Annotated[Optional[UUID], ObjectReference(Protocol)] = Field(
         None,
         description="The protocol that was followed in order to create this biosample.",
     )
 
+    model_config = ConfigDict(model_version_latest=4)
+
 
 class AnnotationMethod(
-    semantic_models.AnnotationMethod,
-    DocumentMixin,
-    UserIdentifiedObject,
+    semantic_models.AnnotationMethod, DocumentMixin, ObjectCreatorMixin
 ):
-    model_config = ConfigDict(model_version_latest=3)
+    model_config = ConfigDict(model_version_latest=4)
 
 
 Specimen.model_rebuild()

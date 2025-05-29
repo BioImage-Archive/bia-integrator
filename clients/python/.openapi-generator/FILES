@@ -11,7 +11,6 @@ bia_integrator_api/docs/AnnotationMethod.md
 bia_integrator_api/docs/AnnotationMethodType.md
 bia_integrator_api/docs/AnnotationSourceIndicator.md
 bia_integrator_api/docs/Attribute.md
-bia_integrator_api/docs/AttributeProvenance.md
 bia_integrator_api/docs/AuthenticationToken.md
 bia_integrator_api/docs/BioSample.md
 bia_integrator_api/docs/BodyRegisterUser.md
@@ -30,12 +29,12 @@ bia_integrator_api/docs/ImageAcquisitionProtocol.md
 bia_integrator_api/docs/ImageAnalysisMethod.md
 bia_integrator_api/docs/ImageCorrelationMethod.md
 bia_integrator_api/docs/ImageRepresentation.md
-bia_integrator_api/docs/ImageRepresentationUseType.md
-bia_integrator_api/docs/LicenceType.md
+bia_integrator_api/docs/Licence.md
 bia_integrator_api/docs/LocationInner.md
 bia_integrator_api/docs/ModelMetadata.md
 bia_integrator_api/docs/PrivateApi.md
 bia_integrator_api/docs/Protocol.md
+bia_integrator_api/docs/Provenance.md
 bia_integrator_api/docs/PublicApi.md
 bia_integrator_api/docs/Publication.md
 bia_integrator_api/docs/RenderedView.md
@@ -53,7 +52,6 @@ bia_integrator_api/models/annotation_method.py
 bia_integrator_api/models/annotation_method_type.py
 bia_integrator_api/models/annotation_source_indicator.py
 bia_integrator_api/models/attribute.py
-bia_integrator_api/models/attribute_provenance.py
 bia_integrator_api/models/authentication_token.py
 bia_integrator_api/models/bio_sample.py
 bia_integrator_api/models/body_register_user.py
@@ -72,11 +70,11 @@ bia_integrator_api/models/image_acquisition_protocol.py
 bia_integrator_api/models/image_analysis_method.py
 bia_integrator_api/models/image_correlation_method.py
 bia_integrator_api/models/image_representation.py
-bia_integrator_api/models/image_representation_use_type.py
-bia_integrator_api/models/licence_type.py
+bia_integrator_api/models/licence.py
 bia_integrator_api/models/location_inner.py
 bia_integrator_api/models/model_metadata.py
 bia_integrator_api/models/protocol.py
+bia_integrator_api/models/provenance.py
 bia_integrator_api/models/publication.py
 bia_integrator_api/models/rendered_view.py
 bia_integrator_api/models/signal_channel_information.py

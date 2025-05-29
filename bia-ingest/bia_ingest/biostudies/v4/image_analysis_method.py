@@ -16,14 +16,15 @@ from typing import Dict
 def get_image_analysis_method_as_map(
     submission: Submission, result_summary: dict
 ) -> Dict[str, semantic_models.ImageAnalysisMethod]:
-
     image_analysis_sections = find_sections_recursive(
         submission.section, ["Image analysis"]
     )
 
     key_mapping = [
-        ("protocol_description", "Title", None),
-        ("features_analysed", "Image analysis overview", None),
+        # TODO: Confirm mapping with FS, AK and TZ
+        ("title", "Title", None),
+        ("protocol_description", "Image analysis overview", None),
+        # ("features_analysed", "Image analysis overview", None),
     ]
 
     model_dicts_map = {}

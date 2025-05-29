@@ -5,15 +5,16 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**object_creator** | [**Provenance**](Provenance.md) |  | 
 **uuid** | **str** | Unique ID (across the BIA database) used to refer to and identify a document. | 
 **version** | **int** | Document version. This can&#39;t be optional to make sure we never persist objects without it | 
 **model** | [**ModelMetadata**](ModelMetadata.md) |  | [optional] 
-**attribute** | [**List[Attribute]**](Attribute.md) |  | [optional] 
+**additional_metadata** | [**List[Attribute]**](Attribute.md) | Freeform key-value pairs that don&#39;t otherwise fit our data model, potentially from user provided metadata, BIA curation, and experimental fields. | [optional] 
 **subject_specimen_uuid** | **str** |  | [optional] 
-**image_acquisition_protocol_uuid** | **List[str]** |  | [optional] 
-**input_image_uuid** | **List[str]** |  | [optional] 
-**protocol_uuid** | **List[str]** |  | [optional] 
-**annotation_method_uuid** | **List[str]** |  | [optional] 
+**image_acquisition_protocol_uuid** | **List[str]** | The imaging protocol, describing the technique that was used to create the image. | [optional] 
+**input_image_uuid** | **List[str]** | The images used as input data for the creation of a new image. | [optional] 
+**protocol_uuid** | **List[str]** | A protocol which was followed that resulted in the creation of this new image from existing image data. | [optional] 
+**annotation_method_uuid** | **List[str]** | The annotation method describing the process followed to create a new image from exsiting image data. | [optional] 
 
 ## Example
 

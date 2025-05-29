@@ -1,5 +1,4 @@
 import logging
-from pydantic import ValidationError
 from typing import List, Dict, Optional
 from uuid import UUID
 
@@ -36,14 +35,14 @@ def get_file_reference_by_dataset(
     """
 
     titles_from_datasets_in_submission = {
-        dataset.title_id for dataset in datasets_in_submission
+        dataset.title for dataset in datasets_in_submission
     }
     dataset_file_list_map = find_datasets_with_file_lists(submission)
 
     datasets_to_process = {
-        ds.title_id: ds
+        ds.title: ds
         for ds in datasets_in_submission
-        if ds.title_id in dataset_file_list_map.keys()
+        if ds.title in dataset_file_list_map.keys()
     }
 
     if not datasets_to_process:
@@ -99,28 +98,38 @@ def get_file_reference_dicts_for_submission_dataset(
     file_references = []
     for f in files_in_file_list:
         file_path = str(f.path.as_posix())
+        size_in_bytes = int(f.size)
+        uuid_unique_input = f"{file_path}{size_in_bytes}"
         file_dict = {
-            "uuid": create_file_reference_uuid(file_path, study_uuid),
+            "uuid": create_file_reference_uuid(study_uuid, uuid_unique_input),
             "file_path": file_path,
             "format": f.type,
-            "size_in_bytes": int(f.size),
+            "size_in_bytes": size_in_bytes,
             "uri": file_uri(accession_id, f),
             "submission_dataset_uuid": submission_dataset.uuid,
             "version": 0,
+            "object_creator": semantic_models.Provenance.bia_ingest,
         }
 
         attributes = attributes_to_dict(f.attributes)
 
         attributes_as_attr_dict = {
-            "provenance": semantic_models.AttributeProvenance("bia_ingest"),
+            "provenance": semantic_models.Provenance.bia_ingest,
             "name": "attributes_from_biostudies.File",
             "value": {
                 "attributes": attributes,
             },
         }
-        file_dict["attribute"] = [
+        file_dict["additional_metadata"] = [
             attributes_as_attr_dict,
         ]
+        file_dict["additional_metadata"].append(
+            {
+                "provenance": semantic_models.Provenance.bia_ingest,
+                "name": "uuid_unique_input",
+                "value": {"uuid_unique_input": uuid_unique_input},
+            }
+        )
         file_references.append(file_dict)
 
     return file_references

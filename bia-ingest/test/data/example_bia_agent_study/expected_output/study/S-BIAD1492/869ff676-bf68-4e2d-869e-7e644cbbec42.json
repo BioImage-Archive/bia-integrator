@@ -1,11 +1,12 @@
 {
   "uuid": "869ff676-bf68-4e2d-869e-7e644cbbec42",
   "version": 0,
+  "object_creator": "bia_ingest",
   "model": {
     "type_name": "Study",
-    "version": 2
+    "version": 3
   },
-  "attribute": [
+  "additional_metadata": [
     {
       "provenance": "bia_ingest",
       "name": "Extras from biostudies.Submission.attributes",
@@ -27,7 +28,7 @@
     }
   ],
   "accession_id": "S-BIAD1492",
-  "licence": "CC_BY_3.0",
+  "licence": "https://creativecommons.org/licenses/by/3.0/",
   "author": [
     {
       "rorid": null,

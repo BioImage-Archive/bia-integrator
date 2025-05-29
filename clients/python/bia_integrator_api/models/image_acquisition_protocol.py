@@ -22,6 +22,7 @@ from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from bia_integrator_api.models.attribute import Attribute
 from bia_integrator_api.models.model_metadata import ModelMetadata
+from bia_integrator_api.models.provenance import Provenance
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -29,16 +30,17 @@ class ImageAcquisitionProtocol(BaseModel):
     """
     ImageAcquisitionProtocol
     """ # noqa: E501
-    title_id: StrictStr = Field(description="User provided title, which is unqiue within a submission, used to identify a part of a submission.")
+    object_creator: Provenance
     uuid: StrictStr = Field(description="Unique ID (across the BIA database) used to refer to and identify a document.")
     version: Annotated[int, Field(strict=True, ge=0)] = Field(description="Document version. This can't be optional to make sure we never persist objects without it")
     model: Optional[ModelMetadata] = None
-    attribute: Optional[List[Attribute]] = None
+    additional_metadata: Optional[List[Attribute]] = Field(default=None, description="Freeform key-value pairs that don't otherwise fit our data model, potentially from user provided metadata, BIA curation, and experimental fields.")
+    title: StrictStr = Field(description="The title of a protocol.")
     protocol_description: StrictStr = Field(description="Description of actions involved in the process.")
     imaging_instrument_description: StrictStr = Field(description="Names, types, or description of how the instruments used to create the image.")
-    fbbi_id: Optional[List[StrictStr]] = None
-    imaging_method_name: Optional[List[StrictStr]] = None
-    __properties: ClassVar[List[str]] = ["title_id", "uuid", "version", "model", "attribute", "protocol_description", "imaging_instrument_description", "fbbi_id", "imaging_method_name"]
+    fbbi_id: Optional[List[StrictStr]] = Field(default=None, description="Biological Imaging Methods Ontology id indicating the kind of imaging that was perfomed.")
+    imaging_method_name: Optional[List[StrictStr]] = Field(default=None, description="Name of the kind of imaging method that was performed.")
+    __properties: ClassVar[List[str]] = ["object_creator", "uuid", "version", "model", "additional_metadata", "title", "protocol_description", "imaging_instrument_description", "fbbi_id", "imaging_method_name"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -82,32 +84,17 @@ class ImageAcquisitionProtocol(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of model
         if self.model:
             _dict['model'] = self.model.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of each item in attribute (list)
+        # override the default output from pydantic by calling `to_dict()` of each item in additional_metadata (list)
         _items = []
-        if self.attribute:
-            for _item_attribute in self.attribute:
-                if _item_attribute:
-                    _items.append(_item_attribute.to_dict())
-            _dict['attribute'] = _items
+        if self.additional_metadata:
+            for _item_additional_metadata in self.additional_metadata:
+                if _item_additional_metadata:
+                    _items.append(_item_additional_metadata.to_dict())
+            _dict['additional_metadata'] = _items
         # set to None if model (nullable) is None
         # and model_fields_set contains the field
         if self.model is None and "model" in self.model_fields_set:
             _dict['model'] = None
-
-        # set to None if attribute (nullable) is None
-        # and model_fields_set contains the field
-        if self.attribute is None and "attribute" in self.model_fields_set:
-            _dict['attribute'] = None
-
-        # set to None if fbbi_id (nullable) is None
-        # and model_fields_set contains the field
-        if self.fbbi_id is None and "fbbi_id" in self.model_fields_set:
-            _dict['fbbi_id'] = None
-
-        # set to None if imaging_method_name (nullable) is None
-        # and model_fields_set contains the field
-        if self.imaging_method_name is None and "imaging_method_name" in self.model_fields_set:
-            _dict['imaging_method_name'] = None
 
         return _dict
 
@@ -121,11 +108,12 @@ class ImageAcquisitionProtocol(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "title_id": obj.get("title_id"),
+            "object_creator": obj.get("object_creator"),
             "uuid": obj.get("uuid"),
             "version": obj.get("version"),
             "model": ModelMetadata.from_dict(obj["model"]) if obj.get("model") is not None else None,
-            "attribute": [Attribute.from_dict(_item) for _item in obj["attribute"]] if obj.get("attribute") is not None else None,
+            "additional_metadata": [Attribute.from_dict(_item) for _item in obj["additional_metadata"]] if obj.get("additional_metadata") is not None else None,
+            "title": obj.get("title"),
             "protocol_description": obj.get("protocol_description"),
             "imaging_instrument_description": obj.get("imaging_instrument_description"),
             "fbbi_id": obj.get("fbbi_id"),

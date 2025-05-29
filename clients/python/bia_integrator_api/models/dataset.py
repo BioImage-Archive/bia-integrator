@@ -24,6 +24,7 @@ from bia_integrator_api.models.attribute import Attribute
 from bia_integrator_api.models.image_analysis_method import ImageAnalysisMethod
 from bia_integrator_api.models.image_correlation_method import ImageCorrelationMethod
 from bia_integrator_api.models.model_metadata import ModelMetadata
+from bia_integrator_api.models.provenance import Provenance
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -31,17 +32,18 @@ class Dataset(BaseModel):
     """
     Dataset
     """ # noqa: E501
-    title_id: StrictStr = Field(description="User provided title, which is unqiue within a submission, used to identify a part of a submission.")
+    object_creator: Provenance
     uuid: StrictStr = Field(description="Unique ID (across the BIA database) used to refer to and identify a document.")
     version: Annotated[int, Field(strict=True, ge=0)] = Field(description="Document version. This can't be optional to make sure we never persist objects without it")
     model: Optional[ModelMetadata] = None
-    attribute: Optional[List[Attribute]] = None
+    additional_metadata: Optional[List[Attribute]] = Field(default=None, description="Freeform key-value pairs that don't otherwise fit our data model, potentially from user provided metadata, BIA curation, and experimental fields.")
+    title: StrictStr = Field(description="The title of a dataset.")
     description: Optional[StrictStr] = None
-    analysis_method: Optional[List[ImageAnalysisMethod]] = None
-    correlation_method: Optional[List[ImageCorrelationMethod]] = None
+    analysis_method: Optional[List[ImageAnalysisMethod]] = Field(default=None, description="Data analysis processes performed on the images.")
+    correlation_method: Optional[List[ImageCorrelationMethod]] = Field(default=None, description="Processes performed to correlate image data.")
     example_image_uri: List[StrictStr] = Field(description="A viewable image that is typical of the dataset.")
     submitted_in_study_uuid: StrictStr
-    __properties: ClassVar[List[str]] = ["title_id", "uuid", "version", "model", "attribute", "description", "analysis_method", "correlation_method", "example_image_uri", "submitted_in_study_uuid"]
+    __properties: ClassVar[List[str]] = ["object_creator", "uuid", "version", "model", "additional_metadata", "title", "description", "analysis_method", "correlation_method", "example_image_uri", "submitted_in_study_uuid"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -85,13 +87,13 @@ class Dataset(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of model
         if self.model:
             _dict['model'] = self.model.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of each item in attribute (list)
+        # override the default output from pydantic by calling `to_dict()` of each item in additional_metadata (list)
         _items = []
-        if self.attribute:
-            for _item_attribute in self.attribute:
-                if _item_attribute:
-                    _items.append(_item_attribute.to_dict())
-            _dict['attribute'] = _items
+        if self.additional_metadata:
+            for _item_additional_metadata in self.additional_metadata:
+                if _item_additional_metadata:
+                    _items.append(_item_additional_metadata.to_dict())
+            _dict['additional_metadata'] = _items
         # override the default output from pydantic by calling `to_dict()` of each item in analysis_method (list)
         _items = []
         if self.analysis_method:
@@ -111,25 +113,10 @@ class Dataset(BaseModel):
         if self.model is None and "model" in self.model_fields_set:
             _dict['model'] = None
 
-        # set to None if attribute (nullable) is None
-        # and model_fields_set contains the field
-        if self.attribute is None and "attribute" in self.model_fields_set:
-            _dict['attribute'] = None
-
         # set to None if description (nullable) is None
         # and model_fields_set contains the field
         if self.description is None and "description" in self.model_fields_set:
             _dict['description'] = None
-
-        # set to None if analysis_method (nullable) is None
-        # and model_fields_set contains the field
-        if self.analysis_method is None and "analysis_method" in self.model_fields_set:
-            _dict['analysis_method'] = None
-
-        # set to None if correlation_method (nullable) is None
-        # and model_fields_set contains the field
-        if self.correlation_method is None and "correlation_method" in self.model_fields_set:
-            _dict['correlation_method'] = None
 
         return _dict
 
@@ -143,11 +130,12 @@ class Dataset(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "title_id": obj.get("title_id"),
+            "object_creator": obj.get("object_creator"),
             "uuid": obj.get("uuid"),
             "version": obj.get("version"),
             "model": ModelMetadata.from_dict(obj["model"]) if obj.get("model") is not None else None,
-            "attribute": [Attribute.from_dict(_item) for _item in obj["attribute"]] if obj.get("attribute") is not None else None,
+            "additional_metadata": [Attribute.from_dict(_item) for _item in obj["additional_metadata"]] if obj.get("additional_metadata") is not None else None,
+            "title": obj.get("title"),
             "description": obj.get("description"),
             "analysis_method": [ImageAnalysisMethod.from_dict(_item) for _item in obj["analysis_method"]] if obj.get("analysis_method") is not None else None,
             "correlation_method": [ImageCorrelationMethod.from_dict(_item) for _item in obj["correlation_method"]] if obj.get("correlation_method") is not None else None,

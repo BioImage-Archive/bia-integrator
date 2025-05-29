@@ -24,6 +24,7 @@ from bia_integrator_api.models.annotation_method_type import AnnotationMethodTyp
 from bia_integrator_api.models.annotation_source_indicator import AnnotationSourceIndicator
 from bia_integrator_api.models.attribute import Attribute
 from bia_integrator_api.models.model_metadata import ModelMetadata
+from bia_integrator_api.models.provenance import Provenance
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -31,11 +32,12 @@ class AnnotationMethod(BaseModel):
     """
     AnnotationMethod
     """ # noqa: E501
-    title_id: StrictStr = Field(description="User provided title, which is unqiue within a submission, used to identify a part of a submission.")
+    object_creator: Provenance
     uuid: StrictStr = Field(description="Unique ID (across the BIA database) used to refer to and identify a document.")
     version: Annotated[int, Field(strict=True, ge=0)] = Field(description="Document version. This can't be optional to make sure we never persist objects without it")
     model: Optional[ModelMetadata] = None
-    attribute: Optional[List[Attribute]] = None
+    additional_metadata: Optional[List[Attribute]] = Field(default=None, description="Freeform key-value pairs that don't otherwise fit our data model, potentially from user provided metadata, BIA curation, and experimental fields.")
+    title: StrictStr = Field(description="The title of a protocol.")
     protocol_description: StrictStr = Field(description="Description of actions involved in the process.")
     annotation_criteria: Optional[StrictStr] = None
     annotation_coverage: Optional[StrictStr] = None
@@ -43,7 +45,7 @@ class AnnotationMethod(BaseModel):
     spatial_information: Optional[StrictStr] = None
     method_type: List[AnnotationMethodType] = Field(description="Classification of the kind of annotation that was performed.")
     annotation_source_indicator: Optional[AnnotationSourceIndicator] = None
-    __properties: ClassVar[List[str]] = ["title_id", "uuid", "version", "model", "attribute", "protocol_description", "annotation_criteria", "annotation_coverage", "transformation_description", "spatial_information", "method_type", "annotation_source_indicator"]
+    __properties: ClassVar[List[str]] = ["object_creator", "uuid", "version", "model", "additional_metadata", "title", "protocol_description", "annotation_criteria", "annotation_coverage", "transformation_description", "spatial_information", "method_type", "annotation_source_indicator"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -87,22 +89,17 @@ class AnnotationMethod(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of model
         if self.model:
             _dict['model'] = self.model.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of each item in attribute (list)
+        # override the default output from pydantic by calling `to_dict()` of each item in additional_metadata (list)
         _items = []
-        if self.attribute:
-            for _item_attribute in self.attribute:
-                if _item_attribute:
-                    _items.append(_item_attribute.to_dict())
-            _dict['attribute'] = _items
+        if self.additional_metadata:
+            for _item_additional_metadata in self.additional_metadata:
+                if _item_additional_metadata:
+                    _items.append(_item_additional_metadata.to_dict())
+            _dict['additional_metadata'] = _items
         # set to None if model (nullable) is None
         # and model_fields_set contains the field
         if self.model is None and "model" in self.model_fields_set:
             _dict['model'] = None
-
-        # set to None if attribute (nullable) is None
-        # and model_fields_set contains the field
-        if self.attribute is None and "attribute" in self.model_fields_set:
-            _dict['attribute'] = None
 
         # set to None if annotation_criteria (nullable) is None
         # and model_fields_set contains the field
@@ -141,11 +138,12 @@ class AnnotationMethod(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "title_id": obj.get("title_id"),
+            "object_creator": obj.get("object_creator"),
             "uuid": obj.get("uuid"),
             "version": obj.get("version"),
             "model": ModelMetadata.from_dict(obj["model"]) if obj.get("model") is not None else None,
-            "attribute": [Attribute.from_dict(_item) for _item in obj["attribute"]] if obj.get("attribute") is not None else None,
+            "additional_metadata": [Attribute.from_dict(_item) for _item in obj["additional_metadata"]] if obj.get("additional_metadata") is not None else None,
+            "title": obj.get("title"),
             "protocol_description": obj.get("protocol_description"),
             "annotation_criteria": obj.get("annotation_criteria"),
             "annotation_coverage": obj.get("annotation_coverage"),

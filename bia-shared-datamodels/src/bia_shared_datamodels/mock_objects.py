@@ -25,12 +25,13 @@ def get_study_dict(completeness=Completeness.COMPLETE) -> dict:
     study_dict = {
         "uuid": uuid_creation.create_study_uuid(accession_id),
         "accession_id": accession_id,
-        "licence": semantic_models.LicenceType.CC0,
+        "licence": semantic_models.Licence.CC0,
         "author": [get_contributor_dict(Completeness.MINIMAL)],
         "title": "Test publication",
         "release_date": "2024-06-23",
         "version": 1,
         "description": "Template description",
+        "object_creator": semantic_models.Provenance.bia_ingest,
     }
 
     if completeness == Completeness.COMPLETE:
@@ -46,8 +47,8 @@ def get_study_dict(completeness=Completeness.COMPLETE) -> dict:
                 "Template keyword1",
                 "Template keyword2",
             ],
-            "model": {"type_name": "Study", "version": 2},
-            "attribute": [get_attribute_dict()],
+            "model": {"type_name": "Study", "version": 3},
+            "additional_metadata": [get_attribute_dict()],
         }
 
     return study_dict
@@ -100,15 +101,16 @@ def get_affiliation_dict(
 def get_dataset_dict(
     completeness=Completeness.COMPLETE,
 ) -> dict:
-    title_id = "Template experimental image dataset"
+    title = "Template experimental image dataset"
     study_uuid = get_study_dict()["uuid"]
 
     dataset = {
-        "uuid": uuid_creation.create_dataset_uuid(title_id, study_uuid),
+        "uuid": uuid_creation.create_dataset_uuid(title, study_uuid),
         "submitted_in_study_uuid": study_uuid,
-        "title_id": title_id,
+        "title": title,
         "example_image_uri": [],
         "version": 1,
+        "object_creator": semantic_models.Provenance.submitter,
     }
     if completeness == Completeness.COMPLETE:
         dataset |= {
@@ -120,8 +122,8 @@ def get_dataset_dict(
                 get_image_correlation_method_dict(),
             ],
             "example_image_uri": ["https://dummy.url.org"],
-            "model": {"type_name": "Dataset", "version": 1},
-            "attribute": [get_attribute_dict()],
+            "model": {"type_name": "Dataset", "version": 2},
+            "additional_metadata": [get_attribute_dict()],
         }
     return dataset
 
@@ -138,11 +140,12 @@ def get_file_reference_dict(completeness=Completeness.COMPLETE) -> dict:
         "uri": "https://dummy.uri.co",
         "submission_dataset_uuid": get_dataset_dict()["uuid"],
         "version": 1,
+        "object_creator": semantic_models.Provenance.submitter,
     }
     if completeness == Completeness.COMPLETE:
         file_reference |= {
-            "model": {"type_name": "FileReference", "version": 2},
-            "attribute": [get_attribute_dict()],
+            "model": {"type_name": "FileReference", "version": 3},
+            "additional_metadata": [get_attribute_dict()],
         }
     return file_reference
 
@@ -160,14 +163,16 @@ def get_image_dict(completeness=Completeness.COMPLETE) -> dict:
         "submission_dataset_uuid": get_dataset_dict()["uuid"],
         "original_file_reference_uuid": [],
         "version": 1,
+        "object_creator": semantic_models.Provenance.bia_image_assignment,
     }
     if completeness == Completeness.COMPLETE:
         image |= {
-            "model": {"type_name": "Image", "version": 1},
-            "attribute": [get_attribute_dict()],
+            "model": {"type_name": "Image", "version": 2},
+            "additional_metadata": [get_attribute_dict()],
             "original_file_reference_uuid": [
                 get_file_reference_dict()["uuid"],
             ],
+            "label": "Template image label",
         }
     return image
 
@@ -177,20 +182,20 @@ def get_image_representation_dict(completeness=Completeness.COMPLETE) -> dict:
     image_representation = {
         "uuid": uuid4(),
         "representation_of_uuid": get_image_dict()["uuid"],
-        "use_type": "UPLOADED_BY_SUBMITTER",
         "image_format": "Template image format",
         "total_size_in_bytes": 0,
         "file_uri": [],
         "version": 1,
+        "object_creator": semantic_models.Provenance.bia_image_conversion,
     }
     if completeness == Completeness.COMPLETE:
         image_representation |= {
             "file_uri": [
                 "https://dummy.uri.org",
             ],
-            "physical_size_x": 1,
-            "physical_size_y": 1,
-            "physical_size_z": 1,
+            "voxel_physical_size_x": 1,
+            "voxel_physical_size_y": 1,
+            "voxel_physical_size_z": 1,
             "size_x": 1,
             "size_y": 1,
             "size_z": 1,
@@ -199,8 +204,8 @@ def get_image_representation_dict(completeness=Completeness.COMPLETE) -> dict:
             "image_viewer_setting": [
                 get_rendered_view_dict(),
             ],
-            "model": {"type_name": "ImageRepresentation", "version": 3},
-            "attribute": [get_attribute_dict()],
+            "model": {"type_name": "ImageRepresentation", "version": 4},
+            "additional_metadata": [get_attribute_dict()],
         }
     return image_representation
 
@@ -214,7 +219,7 @@ def get_rendered_view_dict(completeness=Completeness.COMPLETE) -> dict:
             "channel_information": [
                 get_channel_dict(Completeness.COMPLETE),
             ],
-            "attribute": [get_attribute_dict()],
+            "additional_metadata": [get_attribute_dict()],
         }
     return rendered_view
 
@@ -228,7 +233,7 @@ def get_channel_dict(completeness=Completeness.COMPLETE) -> dict:
         channel |= {
             "scale_factor": 1.0,
             "label": "Template label",
-            "attribute": [get_attribute_dict()],
+            "additional_metadata": [get_attribute_dict()],
         }
     return channel
 
@@ -241,11 +246,12 @@ def get_annotation_data_dict(completeness=Completeness.COMPLETE) -> dict:
         "submission_dataset_uuid": get_dataset_dict()["uuid"],
         "original_file_reference_uuid": [],
         "version": 1,
+        "object_creator": semantic_models.Provenance.bia_curation,
     }
     if completeness == Completeness.COMPLETE:
         annotation_data |= {
-            "model": {"type_name": "AnnotationData", "version": 1},
-            "attribute": [get_attribute_dict()],
+            "model": {"type_name": "AnnotationData", "version": 2},
+            "additional_metadata": [get_attribute_dict()],
             "original_file_reference_uuid": [
                 get_file_reference_dict()["uuid"],
             ],
@@ -263,10 +269,11 @@ def get_creation_process_dict(completeness=Completeness.COMPLETE) -> dict:
     process = {
         "uuid": uuid4(),
         "version": 1,
+        "object_creator": semantic_models.Provenance.bia_image_assignment,
     }
     if completeness == Completeness.COMPLETE:
         process |= {
-            "model": {"type_name": "CreationProcess", "version": 2},
+            "model": {"type_name": "CreationProcess", "version": 3},
             "subject_specimen_uuid": get_specimen_dict()["uuid"],
             "image_acquisition_protocol_uuid": [
                 get_image_acquisition_protocol_dict()["uuid"]
@@ -276,7 +283,7 @@ def get_creation_process_dict(completeness=Completeness.COMPLETE) -> dict:
             ],
             "protocol_uuid": [get_protocol_dict()["uuid"]],
             "annotation_method_uuid": [get_annotation_method_dict()["uuid"]],
-            "attribute": [get_attribute_dict()],
+            "additional_metadata": [get_attribute_dict()],
         }
 
     return process
@@ -284,18 +291,19 @@ def get_creation_process_dict(completeness=Completeness.COMPLETE) -> dict:
 
 def get_protocol_dict(completeness=Completeness.COMPLETE) -> dict:
     study_uuid = get_study_dict()["uuid"]
-    title_id = "Template image acquisition"
+    title = "Template image acquisition"
 
     protocol = {
-        "uuid": uuid_creation.create_protocol_uuid(title_id, study_uuid),
-        "title_id": title_id,
+        "uuid": uuid_creation.create_protocol_uuid(title, study_uuid),
+        "title": title,
         "protocol_description": "Template method description",
         "version": 1,
+        "object_creator": semantic_models.Provenance.bia_ingest,
     }
     if completeness == Completeness.COMPLETE:
         protocol |= {
-            "model": {"type_name": "Protocol", "version": 2},
-            "attribute": [get_attribute_dict()],
+            "model": {"type_name": "Protocol", "version": 3},
+            "additional_metadata": [get_attribute_dict()],
         }
 
     return protocol
@@ -303,16 +311,15 @@ def get_protocol_dict(completeness=Completeness.COMPLETE) -> dict:
 
 def get_image_acquisition_protocol_dict(completeness=Completeness.COMPLETE) -> dict:
     study_uuid = get_study_dict()["uuid"]
-    title_id = "Template image acquisition"
+    title = "Template image acquisition"
 
     image_acquisition_protocol = {
-        "uuid": uuid_creation.create_image_acquisition_protocol_uuid(
-            title_id, study_uuid
-        ),
-        "title_id": title_id,
+        "uuid": uuid_creation.create_image_acquisition_protocol_uuid(title, study_uuid),
+        "title": title,
         "protocol_description": "Template method description",
         "imaging_instrument_description": "Template imaging instrument",
         "version": 1,
+        "object_creator": semantic_models.Provenance.bia_ingest,
     }
     if completeness == Completeness.COMPLETE:
         image_acquisition_protocol |= {
@@ -322,22 +329,23 @@ def get_image_acquisition_protocol_dict(completeness=Completeness.COMPLETE) -> d
             "imaging_method_name": [
                 "Template imaging method name",
             ],
-            "attribute": [get_attribute_dict()],
-            "model": {"type_name": "ImageAcquisitionProtocol", "version": 2},
+            "additional_metadata": [get_attribute_dict()],
+            "model": {"type_name": "ImageAcquisitionProtocol", "version": 3},
         }
     return image_acquisition_protocol
 
 
 def get_annotation_method_dict(completeness=Completeness.COMPLETE) -> dict:
     study_uuid = get_study_dict()["uuid"]
-    title_id = "Template annotation method"
+    title = "Template annotation method"
 
     annotation_method = {
-        "uuid": uuid_creation.create_annotation_method_uuid(title_id, study_uuid),
-        "title_id": title_id,
+        "uuid": uuid_creation.create_annotation_method_uuid(title, study_uuid),
+        "title": title,
         "protocol_description": "Template annotation method description",
         "method_type": [],
         "version": 1,
+        "object_creator": semantic_models.Provenance.bia_ingest,
     }
     if completeness == Completeness.COMPLETE:
         annotation_method |= {
@@ -347,8 +355,8 @@ def get_annotation_method_dict(completeness=Completeness.COMPLETE) -> dict:
             "spatial_information": "Template spatial information",
             "method_type": [semantic_models.AnnotationMethodType.class_labels],
             "annotation_source_indicator": semantic_models.AnnotationSourceIndicator.metadata_file,
-            "attribute": [get_attribute_dict()],
-            "model": {"type_name": "AnnotationMethod", "version": 3},
+            "additional_metadata": [get_attribute_dict()],
+            "model": {"type_name": "AnnotationMethod", "version": 4},
         }
     return annotation_method
 
@@ -356,10 +364,11 @@ def get_annotation_method_dict(completeness=Completeness.COMPLETE) -> dict:
 def get_image_analysis_method_dict(completeness=Completeness.COMPLETE) -> dict:
     image_analysis_method = {
         "protocol_description": "Template Analysis method",
+        "title": "Template analysis method title",
     }
     if completeness == Completeness.COMPLETE:
         image_analysis_method |= {
-            "attribute": [get_attribute_dict()],
+            "additional_metadata": [get_attribute_dict()],
             "features_analysed": "Template features analysed",
         }
     return image_analysis_method
@@ -368,10 +377,11 @@ def get_image_analysis_method_dict(completeness=Completeness.COMPLETE) -> dict:
 def get_image_correlation_method_dict(completeness=Completeness.COMPLETE) -> dict:
     image_correlation_method = {
         "protocol_description": "Template Analysis method",
+        "title": "Template correlation method title",
     }
     if completeness == Completeness.COMPLETE:
         image_correlation_method |= {
-            "attribute": [get_attribute_dict()],
+            "additional_metadata": [get_attribute_dict()],
             "fiducials_used": "Template fiducials used",
             "transformation_matrix": "Template transformation matrix",
         }
@@ -394,11 +404,12 @@ def get_specimen_dict(completeness=Completeness.COMPLETE) -> dict:
             get_biosample_dict()["uuid"],
         ],
         "version": 1,
+        "object_creator": semantic_models.Provenance.bia_image_assignment,
     }
     if completeness == Completeness.COMPLETE:
         specimen |= {
-            "model": {"type_name": "Specimen", "version": 2},
-            "attribute": [get_attribute_dict()],
+            "model": {"type_name": "Specimen", "version": 3},
+            "additional_metadata": [get_attribute_dict()],
         }
     return specimen
 
@@ -407,24 +418,25 @@ def get_specimen_imaging_preparation_protocol_dict(
     completeness=Completeness.COMPLETE,
 ) -> dict:
     study_uuid = get_study_dict()["uuid"]
-    title_id = "Test specimen preparation protocol"
+    title = "Test specimen preparation protocol"
     specimen_imaging_preparation_protocol = {
         "uuid": uuid_creation.create_specimen_imaging_preparation_protocol_uuid(
-            title_id, study_uuid
+            title, study_uuid
         ),
-        "title_id": title_id,
+        "title": title,
         "protocol_description": "Test description",
         "version": 1,
+        "object_creator": semantic_models.Provenance.bia_ingest,
     }
     if completeness == Completeness.COMPLETE:
         specimen_imaging_preparation_protocol |= {
             "signal_channel_information": [
                 get_signal_channel_information_dict(Completeness.COMPLETE)
             ],
-            "attribute": [get_attribute_dict()],
+            "additional_metadata": [get_attribute_dict()],
             "model": {
                 "type_name": "SpecimenImagingPreparationProtocol",
-                "version": 2,
+                "version": 3,
             },
         }
     return specimen_imaging_preparation_protocol
@@ -437,20 +449,22 @@ def get_signal_channel_information_dict(completeness=Completeness.COMPLETE) -> d
             "signal_contrast_mechanism_description": "Test description",
             "channel_content_description": "Test description",
             "channel_biological_entity": "Test Entity",
-            "attribute": [get_attribute_dict()],
+            "additional_metadata": [get_attribute_dict()],
+            "channel_label": "Test label",
         }
     return signal_channel_information
 
 
 def get_biosample_dict(completeness=Completeness.COMPLETE) -> dict:
     study_uuid = get_study_dict()["uuid"]
-    title_id = "Template BioSample"
+    title = "Template BioSample"
     biosample = {
-        "uuid": uuid_creation.create_bio_sample_uuid(title_id, study_uuid),
-        "title_id": title_id,
+        "uuid": uuid_creation.create_bio_sample_uuid(title, study_uuid),
+        "title": title,
         "biological_entity_description": "Test biological entity description",
         "version": 1,
         "organism_classification": [],
+        "object_creator": semantic_models.Provenance.bia_ingest,
     }
     if completeness == Completeness.COMPLETE:
         biosample |= {
@@ -467,8 +481,8 @@ def get_biosample_dict(completeness=Completeness.COMPLETE) -> dict:
                 "Description of internal treatment",
             ],
             "growth_protocol_uuid": get_protocol_dict()["uuid"],
-            "attribute": [get_attribute_dict()],
-            "model": {"type_name": "BioSample", "version": 3},
+            "additional_metadata": [get_attribute_dict()],
+            "model": {"type_name": "BioSample", "version": 4},
         }
     return biosample
 
@@ -480,7 +494,7 @@ def get_taxon_dict(completeness=Completeness.COMPLETE) -> dict:
             "common_name": "Test Common Name",
             "scientific_name": "Test Scientific Name",
             "ncbi_id": "Test_NCBI_ID",
-            "attribute": [get_attribute_dict()],
+            "additional_metadata": [get_attribute_dict()],
         }
     return taxon
 
@@ -492,7 +506,7 @@ def get_taxon_dict(completeness=Completeness.COMPLETE) -> dict:
 
 def get_attribute_dict(completeness=Completeness.COMPLETE) -> dict:
     attribute = {
-        "provenance": semantic_models.AttributeProvenance.submittor,
+        "provenance": semantic_models.Provenance.submitter,
         "name": "file_list_columns",
         "value": {},
     }
@@ -501,7 +515,7 @@ def get_attribute_dict(completeness=Completeness.COMPLETE) -> dict:
 
 def get_dataset_associated_uuid_attribute(completeness=Completeness.COMPLETE) -> dict:
     attribute = {
-        "provenance": semantic_models.AttributeProvenance.bia_ingest,
+        "provenance": semantic_models.Provenance.bia_ingest,
         "name": "protocol_uuid",
         "value": {"protocol_uuid": [str(get_protocol_dict()["uuid"])]},
     }
@@ -510,7 +524,7 @@ def get_dataset_associated_uuid_attribute(completeness=Completeness.COMPLETE) ->
 
 def get_dataset_associatation_attribute(completeness=Completeness.COMPLETE) -> dict:
     attribute = {
-        "provenance": semantic_models.AttributeProvenance.bia_ingest,
+        "provenance": semantic_models.Provenance.bia_ingest,
         "name": "associations",
         "value": {"associations": []},
     }
@@ -528,4 +542,15 @@ def get_dataset_associatation_attribute(completeness=Completeness.COMPLETE) -> d
                 ]
             }
         }
+    return attribute
+
+
+def get_document_uuid_uinque_input_attribute(
+    completeness=Completeness.COMPLETE,
+) -> dict:
+    attribute = {
+        "provenance": semantic_models.Provenance.bia_ingest,
+        "name": "uuid_unique_input",
+        "value": {"uuid_unique_input": "Biosample-1"},
+    }
     return attribute

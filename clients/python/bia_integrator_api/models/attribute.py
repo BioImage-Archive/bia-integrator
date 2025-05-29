@@ -19,7 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List
-from bia_integrator_api.models.attribute_provenance import AttributeProvenance
+from bia_integrator_api.models.provenance import Provenance
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -27,7 +27,7 @@ class Attribute(BaseModel):
     """
     Attribute
     """ # noqa: E501
-    provenance: AttributeProvenance
+    provenance: Provenance
     name: StrictStr = Field(description="A descriptive name or identifier for the annotation.")
     value: Dict[str, Any] = Field(description="The value of an annotation, which is a stored in a freeform dicitionary")
     __properties: ClassVar[List[str]] = ["provenance", "name", "value"]

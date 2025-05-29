@@ -3,11 +3,12 @@ Example script that creates and gets some objects. Please see the api client rea
 """
 
 from bia_integrator_api.util import get_client_private
-from bia_integrator_api.models import Study, LicenceType, Contributor, Dataset
+from bia_integrator_api.models import Study, Licence, Contributor, Dataset, Provenance
 from datetime import date
 from bia_integrator_api import exceptions as api_exceptions
 from pydantic import ValidationError
 from uuid import uuid4
+
 
 def get_uuid() -> str:
     """
@@ -20,25 +21,23 @@ def get_uuid() -> str:
 
 api_base_url = "http://api:8080"
 client = get_client_private(
-    username="test@example.com",
-    password="test",
-    api_base_url=api_base_url
+    username="test@example.com", password="test", api_base_url=api_base_url
 )
 
 # Example create/get - equivalent for every object
 study = Study(
     uuid=get_uuid(),
+    object_creator=Provenance.BIA_INGEST,
     version=0,
+    # None default generated for lists but not supported in the models
+    #   converted into [] in the api
+    additional_metadata=None,
     accession_id="test",
-    licence=LicenceType.CC0,
-    author=[Contributor(
-        display_name="test",
-        affiliation=[]
-    )],
-    title = "test",
-    release_date = date.today(),
-    description = "test",
-    attribute = []
+    licence=Licence.HTTPS_COLON_SLASH_SLASH_CREATIVECOMMONS_DOT_ORG_SLASH_LICENSES_SLASH_BY_MINUS_NC_MINUS_SA_SLASH_2_DOT_0_SLASH,
+    author=[Contributor(display_name="test", affiliation=[])],
+    title="test",
+    release_date=date.today(),
+    description="test",
 )
 client.post_study(study)
 
@@ -47,12 +46,12 @@ assert study_fetched.uuid == study.uuid
 
 # attach a dataset to a study, and get all datasets for the study
 dataset = Dataset(
-    uuid = get_uuid(),
-    title_id = "test",
-    version = 0,
-    attribute = [],
-    example_image_uri = [],
-    submitted_in_study_uuid = study.uuid
+    uuid=get_uuid(),
+    title="test",
+    object_creator=Provenance.BIA_INGEST,
+    version=0,
+    example_image_uri=[],
+    submitted_in_study_uuid=study.uuid,
 )
 client.post_dataset(dataset)
 
@@ -66,9 +65,7 @@ Example errors
 try:
     # create a client instance, remove the authentication token and try to make a request to a private endpoint
     client_unauthenticated = get_client_private(
-        username="test@example.com",
-        password="test",
-        api_base_url=api_base_url
+        username="test@example.com", password="test", api_base_url=api_base_url
     )
 
     client_unauthenticated.api_client.configuration.access_token = ""
@@ -83,7 +80,7 @@ try:
     get_client_private(
         username="does_not_exist_user_test@example.com",
         password="test",
-        api_base_url=api_base_url
+        api_base_url=api_base_url,
     )
 except api_exceptions.UnauthorizedException:
     pass

@@ -1,14 +1,20 @@
+from uuid import UUID
 from pathlib import Path
 from typing import List
-from bia_shared_datamodels import bia_data_model, semantic_models, uuid_creation
+from bia_shared_datamodels import (
+    bia_data_model,
+    semantic_models,
+    uuid_creation,
+    attribute_models,
+)
 
 
 def get_image_representation(
-    accession_id: str,
+    study_uuid: UUID,
     file_references: List[bia_data_model.FileReference],
     image: bia_data_model.Image,
-    use_type: semantic_models.ImageRepresentationUseType,
     file_uri: str = "",
+    object_creator: semantic_models.Provenance = semantic_models.Provenance.bia_image_conversion,
 ) -> bia_data_model.ImageRepresentation:
     # Note: we assume image_uuid is correct. I.e file references in image_uuid
     # match those passed into this function. We are only checking same
@@ -24,67 +30,73 @@ def get_image_representation(
         file_reference_uuids_from_image == file_reference_uuids_passed_to_func
     ), assertion_error_msg
 
-    if not isinstance(use_type, semantic_models.ImageRepresentationUseType):
-        use_type = semantic_models.ImageRepresentationUseType(use_type.upper())
-
     total_size_in_bytes = 0
-    attribute = []
-    # Get image format. ATM convention is:
-    #   - uploaded_by_submitter is decided by suffix
-    #   - thumbnail and static display are png
-    #   - interactive display is ome.zarr
-    if use_type == semantic_models.ImageRepresentationUseType.UPLOADED_BY_SUBMITTER:
-        # TODO: Confirm convention below with BIA team i.e. csv of sorted unique image formats
-        image_format_list = [get_image_extension(f.file_path) for f in file_references]
-        image_format_set = set(image_format_list)
-        image_format_list = list(image_format_set)
-        image_format_list.sort()
-        image_format = ",".join(image_format_list)
-
-        # Sum size of all file references
-        total_size_in_bytes = sum([f.size_in_bytes for f in file_references])
-
-        # Copy file_pattern from image if it exists (only for UPLOADED_BY_SUBMITTER rep)
-        file_pattern = next(
-            (attr for attr in image.attribute if attr.name == "file_pattern"), None
-        )
-        if file_pattern:
-            attribute.append(file_pattern)
+    # Get image format. Assume this is determined by the file_uri. If not present use file reference
+    if file_uri == "":
+        # TODO: Revisit this block of code when we start many file_refs->one_image
+        # assert len(file_references) == 1
+        image_format = get_image_extension(file_references[0].file_path)
 
     else:
-        image_format_map = {
-            semantic_models.ImageRepresentationUseType.THUMBNAIL: ".png",
-            semantic_models.ImageRepresentationUseType.STATIC_DISPLAY: ".png",
-            semantic_models.ImageRepresentationUseType.INTERACTIVE_DISPLAY: ".ome.zarr",
-        }
-        image_format = image_format_map[use_type]
+        image_format = get_image_extension(file_uri)
+
+    total_size_in_bytes = file_references[0].size_in_bytes
+    # TODO: Discuss if we still want to do this after 2025_04 model change
+    ## Copy file_pattern from image if it exists (only for UPLOADED_BY_SUBMITTER rep)
+    # file_pattern = next(
+    #    (attr for attr in image.attribute if attr.name == "file_pattern"), None
+    # )
+    # if file_pattern:
+    #    attribute.append(file_pattern)
+
+    if object_creator == semantic_models.Provenance.bia_image_assignment:
+        unique_string = f"{image.uuid}"
+    elif object_creator == semantic_models.Provenance.bia_image_conversion:
+        raise Exception("ImageRepresentations for conversion not yet implemented")
+    else:
+        raise Exception(
+            "object_creator must be either bia_image_assignment or bia_image_conversion"
+        )
 
     image_representation_uuid = uuid_creation.create_image_representation_uuid(
-        image.uuid,
-        image_format,
-        # Note that using the Enum ImageRepresentation gives a different UUID than using its value
-        use_type.value,
+        study_uuid,
+        unique_string,
     )
 
     file_uri_list = []
     if file_uri == "":
-        if use_type == semantic_models.ImageRepresentationUseType.UPLOADED_BY_SUBMITTER:
-            file_uri_list.extend([f.uri for f in file_references])
+        file_uri_list.append(
+            file_references[0].uri,
+        )
     else:
         file_uri_list.append(file_uri)
 
     model_dict = {
         "uuid": image_representation_uuid,
         "version": 0,
-        "use_type": use_type,
         "representation_of_uuid": image.uuid,
         "file_uri": file_uri_list,
         "total_size_in_bytes": total_size_in_bytes,
         "image_format": image_format,
+        "object_creator": object_creator,
+        "additional_metadata": [],
     }
 
+    unique_string_dict = {
+        "provenance": object_creator,
+        "name": "uuid_unique_input",
+        "value": {
+            "uuid_unique_input": unique_string,
+        },
+    }
+    model_dict["additional_metadata"].append(
+        attribute_models.DocumentUUIDUinqueInputAttribute.model_validate(
+            unique_string_dict
+        )
+    )
+
     model = bia_data_model.ImageRepresentation.model_validate(model_dict)
-    model.attribute = attribute
+    # model.attribute = attribute
     return model
 
 
