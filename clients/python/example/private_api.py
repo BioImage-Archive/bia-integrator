@@ -49,9 +49,9 @@ assert study_fetched.uuid == study.uuid
 # attach a dataset to a study, and get all datasets for the study
 dataset = Dataset(
     uuid = get_uuid(),
-    title_id = "test",
+    title="test",
+    object_creator=Provenance.BIA_INGEST,
     version = 0,
-    attribute = [],
     example_image_uri = [],
     submitted_in_study_uuid = study.uuid
 )
