@@ -24,6 +24,7 @@ def create_api_bio_sample(
 
     return bio_sample_list
 
+
 def convert_bio_sample(
     ro_crate_bio_sample: ROCrateModels.BioSample,
     crate_objects_by_id: dict[str, ROCrateModel],
@@ -38,13 +39,15 @@ def convert_bio_sample(
         "uuid": str(
             uuid_creation.create_bio_sample_uuid(ro_crate_bio_sample.id, study_uuid)
         ),
-        "title_id": ro_crate_bio_sample.id,
+        "title": ro_crate_bio_sample.id,
         "version": 0,
         "organism_classification": taxons,
         "biological_entity_description": ro_crate_bio_sample.biologicalEntityDescription,
         "intrinsic_variable_description": ro_crate_bio_sample.intrinsicVariableDescription,
         "extrinsic_variable_description": ro_crate_bio_sample.extrinsicVariableDescription,
         "experimental_variable_description": ro_crate_bio_sample.experimentalVariableDescription,
+        "object_creator": APIModels.Provenance.BIA_INGEST,
+        "additional_metadata": [],
     }
 
     return APIModels.BioSample(**bio_sample)
@@ -54,6 +57,7 @@ def convert_taxon(ro_crate_taxon: ROCrateModels.Taxon) -> APIModels.Taxon:
     taxon = {
         "common_name": ro_crate_taxon.commonName,
         "scientific_name": ro_crate_taxon.scientificName,
+        "additional_metadata": [],
     }
 
     if ro_crate_taxon.id.startswith("NCBITaxon:"):

@@ -37,10 +37,14 @@ def convert_dataset(
     dataset = {
         "uuid": str(uuid_creation.create_dataset_uuid(ro_crate_dataset.id, study_uuid)),
         "submitted_in_study_uuid": study_uuid,
-        "title_id": title,
+        "title": title,
         "description": ro_crate_dataset.description,
         "version": 0,
         "example_image_uri": [],
+        "object_creator": APIModels.Provenance.BIA_INGEST,
+        "additional_metadata": [],
+        "analysis_method": [],
+        "correlation_method": [],
     }
 
     return APIModels.Dataset(**dataset)

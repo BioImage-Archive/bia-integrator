@@ -1,6 +1,6 @@
 from bia_shared_datamodels.linked_data.pydantic_ld.ROCrateModel import ROCrateModel
 from bia_shared_datamodels import uuid_creation
-from bia_integrator_api.models import AnnotationMethod as APIAnnotationMethod
+import bia_integrator_api.models as APIModels
 import bia_shared_datamodels.ro_crate_models as ROCrateModels
 import logging
 
@@ -9,7 +9,7 @@ logger = logging.getLogger("__main__." + __name__)
 
 def create_api_image_acquisition_protocol(
     crate_objects_by_id: dict[str, ROCrateModel], study_uuid: str
-) -> list[APIAnnotationMethod]:
+) -> list[APIModels.AnnotationMethod]:
     ro_crate_annotation_method = (
         obj
         for obj in crate_objects_by_id.values()
@@ -28,18 +28,20 @@ def create_api_image_acquisition_protocol(
 def convert_annotation_method(
     ro_crate_annotation_method: ROCrateModels.AnnotationMethod,
     study_uuid: str,
-) -> APIAnnotationMethod:
+) -> APIModels.AnnotationMethod:
     iap = {
         "uuid": uuid_creation.create_annotation_method_uuid(
             ro_crate_annotation_method.id, study_uuid
         ),
-        "title_id": ro_crate_annotation_method.title,
+        "title": ro_crate_annotation_method.title,
         "protocol_description": ro_crate_annotation_method.protocolDescription,
         "annotation_criteria": ro_crate_annotation_method.annotationCriteria,
         "annotation_coverage": ro_crate_annotation_method.annotationCoverage,
         "method_type": ro_crate_annotation_method.methodType,
         "annotation_source_indicator": ro_crate_annotation_method.annotationSourceIndicator,
         "version": 0,
+        "object_creator": APIModels.Provenance.BIA_INGEST,
+        "additional_metadata": [],
     }
 
-    return APIAnnotationMethod(**iap)
+    return APIModels.AnnotationMethod(**iap)

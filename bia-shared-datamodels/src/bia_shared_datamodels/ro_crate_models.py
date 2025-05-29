@@ -107,7 +107,8 @@ class Dataset(ROCrateModel):
         Optional[str], FieldContext("http://schema.org/description")
     ] = Field(default=None)
     associatedBioSample: Annotated[
-        list[ObjectReference], FieldContext("http://bia/associatedBiologicalEntity", isIdField=True)
+        list[ObjectReference],
+        FieldContext("http://bia/associatedBiologicalEntity", isIdField=True),
     ] = Field(default_factory=list)
     associatedSpecimenImagingPreparationProtocol: Annotated[
         list[ObjectReference],
@@ -156,7 +157,8 @@ class Specimen(ROCrateModel):
         list[ObjectReference], FieldContext("http://bia/sampleOf", isIdField=True)
     ] = Field(default_factory=list)
     imagingPreparationProtocol: Annotated[
-        list[ObjectReference], FieldContext("http://bia/imagingPreparationProtocol", isIdField=True)
+        list[ObjectReference],
+        FieldContext("http://bia/imagingPreparationProtocol", isIdField=True),
     ] = Field(default_factory=list)
 
     model_config = ConfigDict(model_type="http://bia/Specimen")
@@ -164,7 +166,8 @@ class Specimen(ROCrateModel):
 
 class CreationProcess(ROCrateModel):
     imageAcqusitionProtocol: Annotated[
-        list[ObjectReference], FieldContext("http://bia/imageAcquisitionProtocol", isIdField=True)
+        list[ObjectReference],
+        FieldContext("http://bia/imageAcquisitionProtocol", isIdField=True),
     ] = Field(default_factory=list)
     specimen: Annotated[
         Optional[ObjectReference], FieldContext("http://bia/subject", isIdField=True)
@@ -173,7 +176,8 @@ class CreationProcess(ROCrateModel):
         list[ObjectReference], FieldContext("http://bia/protocol", isIdField=True)
     ] = Field(default_factory=list)
     annotationMethod: Annotated[
-        list[ObjectReference], FieldContext("http://bia/annotationMethod", isIdField=True)
+        list[ObjectReference],
+        FieldContext("http://bia/annotationMethod", isIdField=True),
     ] = Field(default_factory=list)
     inputImage: Annotated[
         list[ObjectReference], FieldContext("http://bia/inputImage", isIdField=True)
@@ -190,17 +194,17 @@ class BioSample(ROCrateModel):
         str, FieldContext("http://bia/biologicalEntityDescription")
     ] = Field()
     experimentalVariableDescription: Annotated[
-        Optional[str], FieldContext("http://bia/experimentalVariableDescription")
-    ] = Field(default=None)
+        list[str], FieldContext("http://bia/experimentalVariableDescription")
+    ] = Field(default_factory=list)
     extrinsicVariableDescription: Annotated[
-        Optional[str], FieldContext("http://bia/extrinsicVariableDescription")
-    ] = Field(default=None)
+        list[str], FieldContext("http://bia/extrinsicVariableDescription")
+    ] = Field(default_factory=list)
     intrinsicVariableDescription: Annotated[
-        Optional[str], FieldContext("http://bia/intrinsicVariableDescription")
-    ] = Field(default=None)
+        list[str], FieldContext("http://bia/intrinsicVariableDescription")
+    ] = Field(default_factory=list)
     organismClassification: Annotated[
         list[ObjectReference], FieldContext("http://bia/organismClassification")
-    ] = Field(default=list)
+    ] = Field(default_factory=list)
     growthProtocol: Annotated[
         list[ObjectReference], FieldContext("http://bia/growthProtocol", isIdField=True)
     ] = Field(default_factory=list)
@@ -235,7 +239,8 @@ class Protocol(ROCrateModel):
 
 class SpecimenImagingPreparationProtocol(Protocol):
     signalChannelInformation: Annotated[
-        list[ObjectReference], FieldContext("http://bia/signalChannelInformation", isIdField=True)
+        list[ObjectReference],
+        FieldContext("http://bia/signalChannelInformation", isIdField=True),
     ] = Field(default_factory=list)
 
     model_config = ConfigDict(

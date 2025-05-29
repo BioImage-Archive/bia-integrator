@@ -2,7 +2,6 @@ from bia_shared_datamodels import uuid_creation
 import bia_integrator_api.models as APIModels
 import bia_shared_datamodels.ro_crate_models as ROCrateModels
 from bia_shared_datamodels.linked_data.pydantic_ld.ROCrateModel import ROCrateModel
-from ro_crate_ingest.licences import to_code
 import logging
 
 logger = logging.getLogger("__main__." + __name__)
@@ -49,11 +48,16 @@ def convert_study(
         "title": ro_crate_study.title,
         "description": ro_crate_study.description,
         "release_date": ro_crate_study.datePublished,
-        "licence": to_code(str(ro_crate_study.licence)),
+        "licence": str(ro_crate_study.licence),
         "acknowledgement": ro_crate_study.acknowledgement,
         "keyword": ro_crate_study.keyword,
         "author": contributors,
         "see_also": external_references,
+        "object_creator": APIModels.Provenance.BIA_INGEST,
+        "additional_metadata": [],
+        "related_publication": [],
+        "grant": [],
+        "funding_statement": None,
     }
 
     return APIModels.Study(**study)
@@ -65,7 +69,9 @@ def convert_contributor(
 
     affiliations = []
     for affiliation_reference in contributor.affiliation:
-        affiliations.append(convert_affiliation(crate_objects_by_id[affiliation_reference.id]))
+        affiliations.append(
+            convert_affiliation(crate_objects_by_id[affiliation_reference.id])
+        )
 
     contributor_dictionary = {
         "display_name": contributor.displayName,
