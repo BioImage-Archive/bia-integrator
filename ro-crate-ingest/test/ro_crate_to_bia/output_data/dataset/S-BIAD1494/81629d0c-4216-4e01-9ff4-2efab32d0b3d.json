@@ -1,0 +1,16 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "81629d0c-4216-4e01-9ff4-2efab32d0b3d",
+  "version": 0,
+  "model": {
+    "type_name": "Dataset",
+    "version": 2
+  },
+  "additional_metadata": [],
+  "title": "Nup133KO 2h replicate-2",
+  "description": null,
+  "analysis_method": [],
+  "correlation_method": [],
+  "example_image_uri": [],
+  "submitted_in_study_uuid": "6c7bd4af-6d77-433f-a5b6-0dbc545ff214"
+}

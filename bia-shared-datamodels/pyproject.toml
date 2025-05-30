@@ -12,7 +12,10 @@ python = "^3.10,<3.12"
 pydantic = {version = "^2", extras = ["email"]}
 pydantic-2-mermaid = "^0.7"
 pytest = "^7"
-rdflib = "^7.1.4"
+rdflib = "^7"
+rocrate = "^0"
+roc-validator = "^0"
+pyld = "^2"
 
 [tool.poetry.group.dev.dependencies]
 ipython = "^8.25.0"

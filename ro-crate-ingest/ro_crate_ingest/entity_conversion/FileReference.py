@@ -67,6 +67,8 @@ def create_api_file_reference(
         "size_in_bytes": pathlib.Path(file_path).stat().st_size,
         "format": get_suffix(file_path),
         "uri": "None?",
+        "object_creator": APIModels.Provenance.BIA_INGEST,
+        "additional_metadata": [],
     }
 
     return APIModels.FileReference(**file_reference)

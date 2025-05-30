@@ -2,7 +2,6 @@ from bia_shared_datamodels import uuid_creation
 import bia_integrator_api.models as APIModels
 import bia_shared_datamodels.ro_crate_models as ROCrateModels
 from bia_shared_datamodels.linked_data.pydantic_ld.ROCrateModel import ROCrateModel
-from ro_crate_ingest.licences import to_code
 import logging
 
 logger = logging.getLogger("__main__." + __name__)
@@ -32,10 +31,10 @@ def convert_study(
 ) -> APIModels.Study:
 
     contributors = []
-    for contributor_id in ro_crate_study.contributor:
+    for contributor_reference in ro_crate_study.contributor:
         contributors.append(
             convert_contributor(
-                crate_objects_by_id[contributor_id], crate_objects_by_id
+                crate_objects_by_id[contributor_reference.id], crate_objects_by_id
             )
         )
 
@@ -43,17 +42,22 @@ def convert_study(
     # TODO add logic and to models to handle external links
 
     study = {
-        "accession_id": ro_crate_study.accession_id,
-        "uuid": str(uuid_creation.create_study_uuid(ro_crate_study.accession_id)),
+        "accession_id": ro_crate_study.accessionId,
+        "uuid": str(uuid_creation.create_study_uuid(ro_crate_study.accessionId)),
         "version": 0,
         "title": ro_crate_study.title,
         "description": ro_crate_study.description,
-        "release_date": ro_crate_study.date_published,
-        "licence": to_code(str(ro_crate_study.licence)),
+        "release_date": ro_crate_study.datePublished,
+        "licence": str(ro_crate_study.licence),
         "acknowledgement": ro_crate_study.acknowledgement,
         "keyword": ro_crate_study.keyword,
         "author": contributors,
         "see_also": external_references,
+        "object_creator": APIModels.Provenance.BIA_INGEST,
+        "additional_metadata": [],
+        "related_publication": [],
+        "grant": [],
+        "funding_statement": None,
     }
 
     return APIModels.Study(**study)
@@ -64,11 +68,13 @@ def convert_contributor(
 ) -> APIModels.Contributor:
 
     affiliations = []
-    for affiliation_id in contributor.affiliation:
-        affiliations.append(convert_affiliation(crate_objects_by_id[affiliation_id]))
+    for affiliation_reference in contributor.affiliation:
+        affiliations.append(
+            convert_affiliation(crate_objects_by_id[affiliation_reference.id])
+        )
 
     contributor_dictionary = {
-        "display_name": contributor.display_name,
+        "display_name": contributor.displayName,
         "address": contributor.address,
         "website": contributor.website,
         "role": contributor.role,
@@ -87,7 +93,7 @@ def convert_affiliation(
     affiliation: ROCrateModels.Affiliaiton,
 ) -> APIModels.Affiliation:
     affiliation_dictionary = {
-        "display_name": affiliation.display_name,
+        "display_name": affiliation.displayName,
         "address": affiliation.address,
         "website": affiliation.website,
     }

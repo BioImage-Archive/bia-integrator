@@ -14,11 +14,11 @@ bia-shared-datamodels = { path = "../bia-shared-datamodels", develop = true }
 bia-integrator-api = { path = "../clients/python", develop = true }
 
 typer = "^0.12.5"
-rocrate = "^0.13"
+rocrate = "^0"
 linkml = "^1.8.7"
-roc-validator = "^0.6.1"
+roc-validator = "^0"
 deepdiff = "^8.3.0"
-pyld = "^2.0.4"
+pyld = "^2"
 pydantic-settings = "^2.9.1"
 
 

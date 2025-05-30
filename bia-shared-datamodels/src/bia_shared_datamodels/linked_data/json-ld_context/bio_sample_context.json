@@ -1,0 +1,43 @@
+{
+    "@context": {
+        "biological_entity_description": {
+            "@id": "http://bia/biologicalEntityDescription"
+        },
+        "experimental_variable_description": {
+            "@id": "http://bia/experimentalVariableDescription",
+            "@container": "@set"
+
+        },
+        "intrinsic_variable_description": {
+            "@id": "http://bia/intrinsicVariableDescription",
+            "@container": "@set"
+        },
+        "extrinsic_variable_description": {
+            "@id": "http://bia/extrinsicVariableDescription",
+            "@container": "@set"
+        },
+        "organism_classification": {
+            "@id": "http://bia/organismClassification",
+            "@container": "@set"
+        },
+        "growth_protocol_uuid": {
+            "@id": "https://bia/growthProtocol",
+            "@type": "@id",
+            "@container": "@set"
+        },
+        "version": {
+            "@id": "http://bia/version"
+        },
+        "model_type": {
+            "@id": "http://bia/modelType"
+        },
+        "additional_metadata": {
+            "@id": "http://bia/additionalMetadata",
+            "@container": "@set",
+            "@type": "@json"
+        },
+        "uuid": {
+            "@id": "@id"
+        }
+    }
+}

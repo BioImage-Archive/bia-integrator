@@ -1,0 +1,15 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "795eb39e-f234-4a5d-a94f-b5d2b796afe8",
+  "version": 0,
+  "model": {
+    "type_name": "FileReference",
+    "version": 3
+  },
+  "additional_metadata": [],
+  "file_path": "DNA_damage/Nup133KO/NP_24h/Rep2/NPKO133_B2_24h_H2AX-488_53BP1-594_001.tif",
+  "format": ".tif",
+  "size_in_bytes": 41,
+  "uri": "None?",
+  "submission_dataset_uuid": "e1b7c9bb-e9ac-4eac-b060-4298a840b953"
+}

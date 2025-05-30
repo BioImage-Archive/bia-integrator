@@ -1,13 +1,14 @@
 {
+  "object_creator": "bia_ingest",
   "uuid": "6c7bd4af-6d77-433f-a5b6-0dbc545ff214",
   "version": 0,
   "model": {
     "type_name": "Study",
-    "version": 2
+    "version": 3
   },
-  "attribute": null,
+  "additional_metadata": [],
   "accession_id": "S-BIAD1494",
-  "licence": "CC_BY_4.0",
+  "licence": "https://creativecommons.org/licenses/by/4.0/",
   "author": [
     {
       "rorid": null,
@@ -50,7 +51,7 @@
   "keyword": [],
   "acknowledgement": null,
   "see_also": [],
-  "related_publication": null,
-  "grant": null,
+  "related_publication": [],
+  "grant": [],
   "funding_statement": null
 }

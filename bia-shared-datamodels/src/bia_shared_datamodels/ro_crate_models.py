@@ -2,6 +2,8 @@ from pydantic import Field, AnyUrl, ConfigDict
 from typing_extensions import Annotated, Optional
 from bia_shared_datamodels.linked_data.pydantic_ld.ROCrateModel import ROCrateModel
 from bia_shared_datamodels.linked_data.pydantic_ld.FieldContext import FieldContext
+from bia_shared_datamodels.linked_data.pydantic_ld.LDModel import ObjectReference
+
 
 # Studies and Publications
 
@@ -9,11 +11,11 @@ from bia_shared_datamodels.linked_data.pydantic_ld.FieldContext import FieldCont
 class Study(ROCrateModel):
     title: Annotated[str, FieldContext("http://schema.org/name")] = Field()
     contributor: Annotated[
-        list[str], FieldContext("http://schema.org/author", isIdField=True)
+        list[ObjectReference], FieldContext("http://schema.org/author", isIdField=True)
     ] = Field(min_length=1)
     description: Annotated[str, FieldContext("http://schema.org/description")] = Field()
     licence: Annotated[AnyUrl, FieldContext("http://schema.org/license")] = Field()
-    date_published: Annotated[str, FieldContext("http://schema.org/datePublished")] = (
+    datePublished: Annotated[str, FieldContext("http://schema.org/datePublished")] = (
         Field()
     )
     keyword: Annotated[list[str], FieldContext("http://schema.org/keywords")] = Field(
@@ -22,17 +24,17 @@ class Study(ROCrateModel):
     acknowledgement: Annotated[
         Optional[str], FieldContext("http://bia/acknowledgement")
     ] = Field(default=None)
-    has_part: Annotated[
-        list[str], FieldContext("http://schema.org/hasPart", isIdField=True)
+    hasPart: Annotated[
+        list[ObjectReference], FieldContext("http://schema.org/hasPart", isIdField=True)
     ] = Field()
-    accession_id: Annotated[str, FieldContext("http://schema.org/identifier")] = Field()
+    accessionId: Annotated[str, FieldContext("http://schema.org/identifier")] = Field()
 
     model_config = ConfigDict(model_type="http://bia/Study")
 
 
 class Publication(ROCrateModel):
     title: Annotated[str, FieldContext("http://schema.org/name")] = Field()
-    author_names: Annotated[str, FieldContext("http://bia/authorNames")] = Field()
+    authorNames: Annotated[str, FieldContext("http://bia/authorNames")] = Field()
 
     model_config = ConfigDict(model_type="http://bia/Publication")
 
@@ -41,13 +43,13 @@ class Publication(ROCrateModel):
 
 
 class Contributor(ROCrateModel):
-    display_name: Annotated[str, FieldContext("http://schema.org/name")] = Field()
+    displayName: Annotated[str, FieldContext("http://schema.org/name")] = Field()
     address: Annotated[str, FieldContext("http://schema.org/address")] = Field(
         default=None
     )
     website: Annotated[AnyUrl, FieldContext("http://bia/website")] = Field(default=None)
     affiliation: Annotated[
-        list[str],
+        list[ObjectReference],
         FieldContext("http://schema.org/memberOf"),
     ] = Field(default_factory=list)
     role: Annotated[str, FieldContext("http://bia/role")] = Field(default=None)
@@ -56,7 +58,7 @@ class Contributor(ROCrateModel):
 
 
 class Affiliaiton(ROCrateModel):
-    display_name: Annotated[str, FieldContext("http://schema.org/name")] = Field()
+    displayName: Annotated[str, FieldContext("http://schema.org/name")] = Field()
     address: Annotated[str, FieldContext("http://schema.org/address")] = Field(
         default=None
     )
@@ -104,34 +106,35 @@ class Dataset(ROCrateModel):
     description: Annotated[
         Optional[str], FieldContext("http://schema.org/description")
     ] = Field(default=None)
-    associated_bio_sample: Annotated[
-        list, FieldContext("http://bia/associatedBiologicalEntity", isIdField=True)
+    associatedBiologicalEntity: Annotated[
+        list[ObjectReference],
+        FieldContext("http://bia/associatedBiologicalEntity", isIdField=True),
     ] = Field(default_factory=list)
-    associated_specimen_imaging_preparation_protocol: Annotated[
-        list,
+    associatedSpecimenImagingPreparationProtocol: Annotated[
+        list[ObjectReference],
         FieldContext("http://bia/associatedImagingPreparationProtocol", isIdField=True),
     ] = Field(default_factory=list)
-    associated_specimen: Annotated[
-        list, FieldContext("http://bia/associatedSubject", isIdField=True)
-    ] = Field(default_factory=list)
-    associated_specimen_image_acquisition_protocol: Annotated[
-        list,
+    associatedSpecimen: Annotated[
+        ObjectReference, FieldContext("http://bia/associatedSubject", isIdField=True)
+    ] = Field(default=None)
+    associatedSpecimenImageAcquisitionProtocol: Annotated[
+        list[ObjectReference],
         FieldContext("http://bia/associatedImageAcquisitionProtocol", isIdField=True),
     ] = Field(default_factory=list)
-    associated_annotation_method: Annotated[
-        list,
+    associatedAnnotationMethod: Annotated[
+        list[ObjectReference],
         FieldContext("http://bia/associatedAnnotationMethod", isIdField=True),
     ] = Field(default_factory=list)
-    associated_image_analysis_method: Annotated[
-        list,
+    associatedImageAnalysisMethod: Annotated[
+        list[ObjectReference],
         FieldContext("http://bia/associatedAnalysisMethod", isIdField=True),
     ] = Field(default_factory=list)
-    associated_image_correlation_method: Annotated[
-        list,
+    associatedImageCorrelationMethod: Annotated[
+        list[ObjectReference],
         FieldContext("http://bia/associatedImageCorrelationMethod", isIdField=True),
     ] = Field(default_factory=list)
-    associated_image_correlation_method: Annotated[
-        list,
+    associatedImageCorrelationMethod: Annotated[
+        list[ObjectReference],
         FieldContext("http://bia/associatedProtocol", isIdField=True),
     ] = Field(default_factory=list)
 
@@ -150,31 +153,34 @@ class Image(ROCrateModel):
 
 
 class Specimen(ROCrateModel):
-    biological_entity: Annotated[
-        list[str], FieldContext("http://bia/sampleOf", isIdField=True)
+    biologicalEntity: Annotated[
+        list[ObjectReference], FieldContext("http://bia/sampleOf", isIdField=True)
     ] = Field(default_factory=list)
-    imaging_preparation_protocol: Annotated[
-        list[str], FieldContext("http://bia/imagingPreparationProtocol", isIdField=True)
+    imagingPreparationProtocol: Annotated[
+        list[ObjectReference],
+        FieldContext("http://bia/imagingPreparationProtocol", isIdField=True),
     ] = Field(default_factory=list)
 
     model_config = ConfigDict(model_type="http://bia/Specimen")
 
 
 class CreationProcess(ROCrateModel):
-    image_acqusition_protocol: Annotated[
-        list[str], FieldContext("http://bia/imageAcquisitionProtocol", isIdField=True)
+    imageAcqusitionProtocol: Annotated[
+        list[ObjectReference],
+        FieldContext("http://bia/imageAcquisitionProtocol", isIdField=True),
     ] = Field(default_factory=list)
     specimen: Annotated[
-        Optional[str], FieldContext("http://bia/subject", isIdField=True)
+        Optional[ObjectReference], FieldContext("http://bia/subject", isIdField=True)
     ] = Field(default=None)
     protocol: Annotated[
-        list[str], FieldContext("http://bia/protocol", isIdField=True)
+        list[ObjectReference], FieldContext("http://bia/protocol", isIdField=True)
     ] = Field(default_factory=list)
-    annotation_method: Annotated[
-        list[str], FieldContext("http://bia/annotationMethod", isIdField=True)
+    annotationMethod: Annotated[
+        list[ObjectReference],
+        FieldContext("http://bia/annotationMethod", isIdField=True),
     ] = Field(default_factory=list)
-    input_image: Annotated[
-        list[str], FieldContext("http://bia/inputImage", isIdField=True)
+    inputImage: Annotated[
+        list[ObjectReference], FieldContext("http://bia/inputImage", isIdField=True)
     ] = Field(default_factory=list)
 
     model_config = ConfigDict(model_type="http://bia/CreationProcess")
@@ -184,30 +190,33 @@ class CreationProcess(ROCrateModel):
 
 
 class BioSample(ROCrateModel):
-    biological_entity_description: Annotated[
+    biologicalEntityDescription: Annotated[
         str, FieldContext("http://bia/biologicalEntityDescription")
     ] = Field()
-    experimental_variable_description: Annotated[
-        Optional[str], FieldContext("http://bia/experimentalVariableDescription")
-    ] = Field(default=None)
-    extrinsic_variable_description: Annotated[
-        Optional[str], FieldContext("http://bia/extrinsicVariableDescription")
-    ] = Field(default=None)
-    intrinsic_variable_description: Annotated[
-        Optional[str], FieldContext("http://bia/intrinsicVariableDescription")
-    ] = Field(default=None)
-    organism_classification: Annotated[
-        list[str], FieldContext("http://bia/organismClassification")
-    ] = Field(default=list)
+    experimentalVariableDescription: Annotated[
+        list[str], FieldContext("http://bia/experimentalVariableDescription")
+    ] = Field(default_factory=list)
+    extrinsicVariableDescription: Annotated[
+        list[str], FieldContext("http://bia/extrinsicVariableDescription")
+    ] = Field(default_factory=list)
+    intrinsicVariableDescription: Annotated[
+        list[str], FieldContext("http://bia/intrinsicVariableDescription")
+    ] = Field(default_factory=list)
+    organismClassification: Annotated[
+        list[ObjectReference], FieldContext("http://bia/organismClassification")
+    ] = Field(default_factory=list)
+    growthProtocol: Annotated[
+        list[ObjectReference], FieldContext("http://bia/growthProtocol", isIdField=True)
+    ] = Field(default_factory=list)
 
     model_config = ConfigDict(model_type="http://bia/BioSample")
 
 
 class Taxon(ROCrateModel):
-    common_name: Annotated[Optional[str], FieldContext("http://bia/commonName")] = (
-        Field(default=None)
+    commonName: Annotated[Optional[str], FieldContext("http://bia/commonName")] = Field(
+        default=None
     )
-    scientific_name: Annotated[
+    scientificName: Annotated[
         Optional[str], FieldContext("http://bia/scientificName")
     ] = Field(default=None)
 
@@ -221,7 +230,7 @@ class Protocol(ROCrateModel):
     title: Annotated[Optional[str], FieldContext("http://schema.org/name")] = Field(
         default=None
     )
-    protocol_description: Annotated[
+    protocolDescription: Annotated[
         str, FieldContext("http://schema.org/description")
     ] = Field()
 
@@ -229,8 +238,9 @@ class Protocol(ROCrateModel):
 
 
 class SpecimenImagingPreparationProtocol(Protocol):
-    signal_channel_information: Annotated[
-        list[str], FieldContext("http://bia/signalChannelInformation", isIdField=True)
+    signalChannelInformation: Annotated[
+        list[ObjectReference],
+        FieldContext("http://bia/signalChannelInformation", isIdField=True),
     ] = Field(default_factory=list)
 
     model_config = ConfigDict(
@@ -239,16 +249,16 @@ class SpecimenImagingPreparationProtocol(Protocol):
 
 
 class SignalChannelInformation(ROCrateModel):
-    signal_contrast_mechanism_description: Annotated[
+    signalContrastMechanismDescription: Annotated[
         Optional[str], FieldContext("http://bia/signalContrastMechanismDescription")
     ] = Field(default=None)
-    channel_content_description: Annotated[
+    channelContentDescription: Annotated[
         Optional[str], FieldContext("http://bia/channelContentDescription")
     ] = Field(default=None)
-    channel_biological_entity: Annotated[
+    channelBiologicalEntity: Annotated[
         Optional[str], FieldContext("http://bia/channelBiologicalEntity")
     ] = Field(default=None)
-    channel_label: Annotated[
+    channelLabel: Annotated[
         Optional[str], FieldContext("http://purl.org/dc/terms/identifier")
     ] = Field(default=None)
 
@@ -256,13 +266,13 @@ class SignalChannelInformation(ROCrateModel):
 
 
 class ImageAcquisitionProtocol(Protocol):
-    imaging_instrument_description: Annotated[
+    imagingInstrumentDescription: Annotated[
         str, FieldContext("http://bia/imagingInstrumentDescription")
     ] = Field()
-    imaging_method_name: Annotated[
+    imagingMethodName: Annotated[
         list[str], FieldContext("http://bia/imagingMethodName")
     ] = Field(default_factory=list)
-    fbbi_id: Annotated[list[str], FieldContext("http://bia/fbbiId")] = Field(
+    fbbiId: Annotated[list[str], FieldContext("http://bia/fbbiId")] = Field(
         default=list
     )
 
@@ -270,22 +280,22 @@ class ImageAcquisitionProtocol(Protocol):
 
 
 class AnnotationMethod(Protocol):
-    annotation_criteria: Annotated[
+    annotationCriteria: Annotated[
         Optional[str], FieldContext("http://bia/annotationCriteria")
     ] = Field(default=None)
-    annotation_coverage: Annotated[
+    annotationCoverage: Annotated[
         Optional[str], FieldContext("http://bia/annotationCoverage")
     ] = Field(default=None)
-    transformation_description: Annotated[
+    transformationDescription: Annotated[
         Optional[str], FieldContext("http://bia/transformationDescription")
     ] = Field(default=None)
-    spatial_information: Annotated[
+    spatialInformation: Annotated[
         Optional[str], FieldContext("http://bia/spatialInformation")
     ] = Field(default=None)
-    method_type: Annotated[
+    methodType: Annotated[
         Optional[str], FieldContext("http://bia/annotationMethodType")
     ] = Field(default=None)
-    annotation_source_indicator: Annotated[
+    annotationSourceIndicator: Annotated[
         Optional[str], FieldContext("http://bia/annotationSourceIndicator")
     ] = Field(default=None)
 
@@ -293,7 +303,7 @@ class AnnotationMethod(Protocol):
 
 
 class ImageAnyalysisMethod(Protocol):
-    features_analysed: Annotated[
+    featuresAnalysed: Annotated[
         Optional[str], FieldContext("http://bia/featuresAnalysed")
     ] = Field(default=None)
 
@@ -301,10 +311,10 @@ class ImageAnyalysisMethod(Protocol):
 
 
 class ImageCorrelationMethod(Protocol):
-    fiducials_used: Annotated[
+    fiducialsUsed: Annotated[
         Optional[str], FieldContext("http://bia/fiducialsUsed")
     ] = Field(default=None)
-    transformation_matrix: Annotated[
+    transformationMatrix: Annotated[
         Optional[str], FieldContext("http://bia/transformationMatrix")
     ] = Field(default=None)
 

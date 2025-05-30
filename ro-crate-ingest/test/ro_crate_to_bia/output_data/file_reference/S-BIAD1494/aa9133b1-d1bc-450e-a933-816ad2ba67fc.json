@@ -1,0 +1,15 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "aa9133b1-d1bc-450e-a933-816ad2ba67fc",
+  "version": 0,
+  "model": {
+    "type_name": "FileReference",
+    "version": 3
+  },
+  "additional_metadata": [],
+  "file_path": "DNA_damage/WT/mES/Rep2/mESWT_b24_H2AX-488_53BP1-594_002.tif",
+  "format": ".tif",
+  "size_in_bytes": 41,
+  "uri": "None?",
+  "submission_dataset_uuid": "ba1b77e5-5a14-417f-9785-0dee2491d15c"
+}
