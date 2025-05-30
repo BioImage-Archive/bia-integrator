@@ -1,0 +1,24 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "1b15eb7c-f014-47ff-a1f2-17aa3c5d26cb",
+  "version": 0,
+  "model": {
+    "type_name": "Dataset",
+    "version": 2
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "DNA_damage/Nup133KO/NP_24h/Rep3/"
+      }
+    }
+  ],
+  "title": "Nup133KO 24h replicate-3",
+  "description": null,
+  "analysis_method": [],
+  "correlation_method": [],
+  "example_image_uri": [],
+  "submitted_in_study_uuid": "6c7bd4af-6d77-433f-a5b6-0dbc545ff214"
+}

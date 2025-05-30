@@ -2,6 +2,7 @@ from bia_shared_datamodels.linked_data.pydantic_ld.ROCrateModel import ROCrateMo
 from bia_shared_datamodels import uuid_creation
 import bia_integrator_api.models as APIModels
 import bia_shared_datamodels.ro_crate_models as ROCrateModels
+import bia_shared_datamodels.attribute_models as AttributeModels
 import pathlib
 import glob
 import logging
@@ -57,18 +58,26 @@ def create_api_file_reference(
 
     # TODO: Work out how file URI would be generated.
 
+    file_size = pathlib.Path(file_path).stat().st_size
+
+    uuid_string = f"{str(relative_path)} {file_size}"
+
     file_reference = {
-        "uuid": str(
-            uuid_creation.create_file_reference_uuid(relative_path, study_uuid)
-        ),
+        "uuid": str(uuid_creation.create_file_reference_uuid(study_uuid, uuid_string)),
         "submission_dataset_uuid": dataset_uuid,
         "file_path": str(relative_path),
         "version": 0,
-        "size_in_bytes": pathlib.Path(file_path).stat().st_size,
+        "size_in_bytes": file_size,
         "format": get_suffix(file_path),
         "uri": "None?",
         "object_creator": APIModels.Provenance.BIA_INGEST,
-        "additional_metadata": [],
+        "additional_metadata": [
+            AttributeModels.DocumentUUIDUinqueInputAttribute(
+                provenance=APIModels.Provenance.BIA_INGEST,
+                name="uuid_unique_input",
+                value={"uuid_unique_input": uuid_string},
+            ).model_dump()
+        ],
     }
 
     return APIModels.FileReference(**file_reference)

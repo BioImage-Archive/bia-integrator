@@ -2,6 +2,7 @@ from bia_shared_datamodels.linked_data.pydantic_ld.ROCrateModel import ROCrateMo
 from bia_shared_datamodels import uuid_creation
 import bia_integrator_api.models as APIModels
 import bia_shared_datamodels.ro_crate_models as ROCrateModels
+import bia_shared_datamodels.attribute_models as AttributeModels
 import logging
 
 logger = logging.getLogger("__main__." + __name__)
@@ -50,7 +51,7 @@ def convert_specimen_imaging_preparation_protocol(
     sipp = {
         "uuid": str(
             uuid_creation.create_specimen_imaging_preparation_protocol_uuid(
-                ro_crate_sipp.id, study_uuid
+                study_uuid, ro_crate_sipp.id
             )
         ),
         "title": title,
@@ -58,7 +59,13 @@ def convert_specimen_imaging_preparation_protocol(
         "version": 0,
         "signal_channel_information": signal_channel_info_list,
         "object_creator": APIModels.Provenance.BIA_INGEST,
-        "additional_metadata": [],
+        "additional_metadata": [
+            AttributeModels.DocumentUUIDUinqueInputAttribute(
+                provenance=APIModels.Provenance.BIA_INGEST,
+                name="uuid_unique_input",
+                value={"uuid_unique_input": ro_crate_sipp.id},
+            ).model_dump()
+        ],
     }
 
     return APIModels.SpecimenImagingPreparationProtocol(**sipp)

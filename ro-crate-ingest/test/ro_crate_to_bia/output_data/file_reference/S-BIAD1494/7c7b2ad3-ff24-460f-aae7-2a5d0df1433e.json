@@ -1,0 +1,23 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "7c7b2ad3-ff24-460f-aae7-2a5d0df1433e",
+  "version": 0,
+  "model": {
+    "type_name": "FileReference",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "DNA_damage/WT/mES/Rep2/mESWT_b24_H2AX-488_53BP1-594_002.tif 41"
+      }
+    }
+  ],
+  "file_path": "DNA_damage/WT/mES/Rep2/mESWT_b24_H2AX-488_53BP1-594_002.tif",
+  "format": ".tif",
+  "size_in_bytes": 41,
+  "uri": "None?",
+  "submission_dataset_uuid": "ba1b77e5-5a14-417f-9785-0dee2491d15c"
+}

@@ -1,0 +1,24 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "cf5e7974-3e2c-4a52-9dc5-532b0eb38ee3",
+  "version": 0,
+  "model": {
+    "type_name": "Dataset",
+    "version": 2
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "DNA_damage/WT/mES/Rep1/"
+      }
+    }
+  ],
+  "title": "Wild Type mES replicate-1",
+  "description": null,
+  "analysis_method": [],
+  "correlation_method": [],
+  "example_image_uri": [],
+  "submitted_in_study_uuid": "6c7bd4af-6d77-433f-a5b6-0dbc545ff214"
+}

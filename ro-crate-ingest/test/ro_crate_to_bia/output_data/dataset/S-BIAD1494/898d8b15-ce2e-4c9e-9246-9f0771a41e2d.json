@@ -1,0 +1,24 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "898d8b15-ce2e-4c9e-9246-9f0771a41e2d",
+  "version": 0,
+  "model": {
+    "type_name": "Dataset",
+    "version": 2
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "DNA_damage/WT/NP_2h/Rep3/"
+      }
+    }
+  ],
+  "title": "Wild Type 2h replicate-3",
+  "description": null,
+  "analysis_method": [],
+  "correlation_method": [],
+  "example_image_uri": [],
+  "submitted_in_study_uuid": "6c7bd4af-6d77-433f-a5b6-0dbc545ff214"
+}

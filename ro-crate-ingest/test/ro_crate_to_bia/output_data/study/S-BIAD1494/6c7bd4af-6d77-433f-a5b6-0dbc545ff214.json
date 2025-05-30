@@ -6,7 +6,15 @@
     "type_name": "Study",
     "version": 3
   },
-  "additional_metadata": [],
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "S-BIAD1494"
+      }
+    }
+  ],
   "accession_id": "S-BIAD1494",
   "licence": "https://creativecommons.org/licenses/by/4.0/",
   "author": [
