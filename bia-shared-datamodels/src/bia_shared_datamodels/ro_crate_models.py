@@ -117,7 +117,7 @@ class Dataset(ROCrateModel):
     associatedSpecimen: Annotated[
         ObjectReference, FieldContext("http://bia/associatedSubject", isIdField=True)
     ] = Field(default=None)
-    associatedSpecimenImageAcquisitionProtocol: Annotated[
+    associatedImageAcquisitionProtocol: Annotated[
         list[ObjectReference],
         FieldContext("http://bia/associatedImageAcquisitionProtocol", isIdField=True),
     ] = Field(default_factory=list)
@@ -131,9 +131,9 @@ class Dataset(ROCrateModel):
     ] = Field(default_factory=list)
     associatedImageCorrelationMethod: Annotated[
         list[ObjectReference],
-        FieldContext("http://bia/associatedImageCorrelationMethod", isIdField=True),
+        FieldContext("http://bia/associatedCorrelationMethod", isIdField=True),
     ] = Field(default_factory=list)
-    associatedImageCorrelationMethod: Annotated[
+    associatedProtocol: Annotated[
         list[ObjectReference],
         FieldContext("http://bia/associatedProtocol", isIdField=True),
     ] = Field(default_factory=list)

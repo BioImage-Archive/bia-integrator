@@ -35,6 +35,17 @@ def convert_dataset(
     elif ro_crate_dataset.id:
         title = ro_crate_dataset.id
 
+    additional_metadata = dataset_attribute_links_with_uuids(
+        ro_crate_dataset, study_uuid
+    )
+    additional_metadata.append(
+        AttributeModels.DocumentUUIDUinqueInputAttribute(
+            provenance=APIModels.Provenance.BIA_INGEST,
+            name="uuid_unique_input",
+            value={"uuid_unique_input": ro_crate_dataset.id},
+        ).model_dump()
+    )
+
     dataset = {
         "uuid": str(uuid_creation.create_dataset_uuid(study_uuid, ro_crate_dataset.id)),
         "submitted_in_study_uuid": study_uuid,
@@ -43,15 +54,43 @@ def convert_dataset(
         "version": 0,
         "example_image_uri": [],
         "object_creator": APIModels.Provenance.BIA_INGEST,
-        "additional_metadata": [
-            AttributeModels.DocumentUUIDUinqueInputAttribute(
-                provenance=APIModels.Provenance.BIA_INGEST,
-                name="uuid_unique_input",
-                value={"uuid_unique_input": ro_crate_dataset.id},
-            ).model_dump()
-        ],
+        "additional_metadata": additional_metadata,
         "analysis_method": [],
         "correlation_method": [],
     }
 
     return APIModels.Dataset(**dataset)
+
+
+def dataset_attribute_links_with_uuids(
+    ro_crate_dataset: ROCrateModels.Dataset, study_uuid: str
+) -> list[dict]:
+    additional_metadata = []
+
+    field_attribute_pairs = [
+        ("associatedAnnotationMethod", "associated_annotation_method_uuid"),
+        ("associatedImageAcquisitionProtocol", "image_acquisition_protocol_uuid"),
+        (
+            "associatedSpecimenImagingPreparationProtocol",
+            "specimen_imaging_preparation_protocol_uuid",
+        ),
+        ("associatedBiologicalEntity", "bio_sample_uuid"),
+        ("associatedAnnotationMethod", "annotation_method_uuid"),
+        ("associatedProtocol", "protocol_uuid"),
+    ]
+
+    for field, attribute_name in field_attribute_pairs:
+        if len(getattr(ro_crate_dataset, field)) > 0:
+            uuids = [
+                str(uuid_creation.create_annotation_method_uuid(study_uuid, x.id))
+                for x in getattr(ro_crate_dataset, field)
+            ]
+            additional_metadata.append(
+                AttributeModels.DatasetAssociatedUUIDAttribute(
+                    provenance=APIModels.Provenance.BIA_INGEST,
+                    name=attribute_name,
+                    value={attribute_name: uuids},
+                ).model_dump()
+            )
+
+    return additional_metadata
