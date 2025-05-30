@@ -106,7 +106,7 @@ class Dataset(ROCrateModel):
     description: Annotated[
         Optional[str], FieldContext("http://schema.org/description")
     ] = Field(default=None)
-    associatedBioSample: Annotated[
+    associatedBiologicalEntity: Annotated[
         list[ObjectReference],
         FieldContext("http://bia/associatedBiologicalEntity", isIdField=True),
     ] = Field(default_factory=list)

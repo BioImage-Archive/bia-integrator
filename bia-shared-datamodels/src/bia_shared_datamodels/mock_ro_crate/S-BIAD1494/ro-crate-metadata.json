@@ -78,7 +78,7 @@
             "description": {
                 "@id": "schema:description"
             },
-            "associatedBioSample": {
+            "associatedBiologicalEntity": {
                 "@id": "bia:associatedBiologicalEntity"
             },
             "associatedSpecimenImagingPreparationProtocol": {
@@ -377,7 +377,7 @@
                 "Dataset"
             ],
             "title": "Nup133KO 24h replicate-1",
-            "associatedBioSample": [
+            "associatedBiologicalEntity": [
                 {
                     "@id": "Nup133 mouse stem cells"
                 }
@@ -402,7 +402,7 @@
                 "Dataset"
             ],
             "title": "Nup133KO 24h replicate-2",
-            "associatedBioSample": [
+            "associatedBiologicalEntity": [
                 {
                     "@id": "Nup133 mouse stem cells"
                 }
@@ -427,7 +427,7 @@
                 "Dataset"
             ],
             "title": "Nup133KO 24h replicate-3",
-            "associatedBioSample": [
+            "associatedBiologicalEntity": [
                 {
                     "@id": "Nup133 mouse stem cells"
                 }
@@ -452,7 +452,7 @@
                 "Dataset"
             ],
             "title": "Nup133KO 2h replicate-1",
-            "associatedBioSample": [
+            "associatedBiologicalEntity": [
                 {
                     "@id": "Nup133 mouse stem cells"
                 }
@@ -477,7 +477,7 @@
                 "Dataset"
             ],
             "title": "Nup133KO 2h replicate-2",
-            "associatedBioSample": [
+            "associatedBiologicalEntity": [
                 {
                     "@id": "Nup133 mouse stem cells"
                 }
@@ -502,7 +502,7 @@
                 "Dataset"
             ],
             "title": "Nup133KO 2h replicate-3",
-            "associatedBioSample": [
+            "associatedBiologicalEntity": [
                 {
                     "@id": "Nup133 mouse stem cells"
                 }
@@ -527,7 +527,7 @@
                 "Dataset"
             ],
             "title": "Nup133KO mES replicate-1",
-            "associatedBioSample": [
+            "associatedBiologicalEntity": [
                 {
                     "@id": "Nup133 mouse stem cells"
                 }
@@ -552,7 +552,7 @@
                 "Dataset"
             ],
             "title": "Nup133KO mES replicate-2",
-            "associatedBioSample": [
+            "associatedBiologicalEntity": [
                 {
                     "@id": "Nup133 mouse stem cells"
                 }
@@ -577,7 +577,7 @@
                 "Dataset"
             ],
             "title": "Nup133KO mES replicate-3",
-            "associatedBioSample": [
+            "associatedBiologicalEntity": [
                 {
                     "@id": "Nup133 mouse stem cells"
                 }
@@ -602,7 +602,7 @@
                 "Dataset"
             ],
             "title": "Wild Type 24h replicate-1",
-            "associatedBioSample": [
+            "associatedBiologicalEntity": [
                 {
                     "@id": "Wild type mouse stem cells"
                 }
@@ -627,7 +627,7 @@
                 "Dataset"
             ],
             "title": "Wild Type 24h replicate-2",
-            "associatedBioSample": [
+            "associatedBiologicalEntity": [
                 {
                     "@id": "Wild type mouse stem cells"
                 }
@@ -652,7 +652,7 @@
                 "Dataset"
             ],
             "title": "Wild Type 24h replicate-3",
-            "associatedBioSample": [
+            "associatedBiologicalEntity": [
                 {
                     "@id": "Wild type mouse stem cells"
                 }
@@ -677,7 +677,7 @@
                 "Dataset"
             ],
             "title": "Wild Type 2h replicate-1",
-            "associatedBioSample": [
+            "associatedBiologicalEntity": [
                 {
                     "@id": "Wild type mouse stem cells"
                 }
@@ -702,7 +702,7 @@
                 "Dataset"
             ],
             "title": "Wild Type 2h replicate-2",
-            "associatedBioSample": [
+            "associatedBiologicalEntity": [
                 {
                     "@id": "Wild type mouse stem cells"
                 }
@@ -727,7 +727,7 @@
                 "Dataset"
             ],
             "title": "Wild Type 2h replicate-3",
-            "associatedBioSample": [
+            "associatedBiologicalEntity": [
                 {
                     "@id": "Wild type mouse stem cells"
                 }
@@ -752,7 +752,7 @@
                 "Dataset"
             ],
             "title": "Wild Type mES replicate-1",
-            "associatedBioSample": [
+            "associatedBiologicalEntity": [
                 {
                     "@id": "Wild type mouse stem cells"
                 }
@@ -777,7 +777,7 @@
                 "Dataset"
             ],
             "title": "Wild Type mES replicate-2",
-            "associatedBioSample": [
+            "associatedBiologicalEntity": [
                 {
                     "@id": "Wild type mouse stem cells"
                 }
@@ -802,7 +802,7 @@
                 "Dataset"
             ],
             "title": "Wild Type mES replicate-3",
-            "associatedBioSample": [
+            "associatedBiologicalEntity": [
                 {
                     "@id": "Wild type mouse stem cells"
                 }

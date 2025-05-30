@@ -1,5 +1,5 @@
 ### First time setup
-poetry init
+poetry install
 
 ### Description
 

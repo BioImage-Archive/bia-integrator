@@ -78,7 +78,7 @@
   "description": {
     "@id": "schema:description"
   },
-  "associatedBioSample": {
+  "associatedBiologicalEntity": {
     "@id": "bia:associatedBiologicalEntity"
   },
   "associatedSpecimenImagingPreparationProtocol": {

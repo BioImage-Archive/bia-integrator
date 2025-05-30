@@ -79,7 +79,7 @@ bia:acknowledgement a owl:DatatypeProperty;
 
 
 bia:exemplarImage a owl:ObjectProperty;
-    rdfs:label "exmplar image"@en ;
+    rdfs:label "exemplar image"@en ;
     rdfs:comment "An image that typical of the study or dataset that can be used to represent "@en ;
     rdfs:range bia:Image .
 
