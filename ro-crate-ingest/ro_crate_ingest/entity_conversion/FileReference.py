@@ -27,7 +27,7 @@ def create_file_reference(
 
         # TODO: deal with files not in datasets, and possibly edge cases like unzipped omezarrs.
 
-        dataset_uuid = str(uuid_creation.create_dataset_uuid(dataset.id, study_uuid))
+        dataset_uuid = str(uuid_creation.create_dataset_uuid(study_uuid, dataset.id))
 
         for file_path in file_paths:
             file_reference_list.append(
