@@ -87,7 +87,7 @@
   "associatedSpecimen": {
     "@id": "bia:associatedSubject"
   },
-  "associatedSpecimenImageAcquisitionProtocol": {
+  "associatedImageAcquisitionProtocol": {
     "@id": "bia:associatedImageAcquisitionProtocol"
   },
   "associatedAnnotationMethod": {
@@ -97,6 +97,9 @@
     "@id": "bia:associatedAnalysisMethod"
   },
   "associatedImageCorrelationMethod": {
+    "@id": "bia:associatedCorrelationMethod"
+  },
+  "associatedProtocol": {
     "@id": "bia:associatedProtocol"
   },
   "link": {

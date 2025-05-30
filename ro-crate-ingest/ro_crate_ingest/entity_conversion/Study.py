@@ -1,6 +1,7 @@
 from bia_shared_datamodels import uuid_creation
 import bia_integrator_api.models as APIModels
 import bia_shared_datamodels.ro_crate_models as ROCrateModels
+import bia_shared_datamodels.attribute_models as AttributeModels
 from bia_shared_datamodels.linked_data.pydantic_ld.ROCrateModel import ROCrateModel
 import logging
 
@@ -54,7 +55,13 @@ def convert_study(
         "author": contributors,
         "see_also": external_references,
         "object_creator": APIModels.Provenance.BIA_INGEST,
-        "additional_metadata": [],
+        "additional_metadata": [
+            AttributeModels.DocumentUUIDUinqueInputAttribute(
+                provenance=APIModels.Provenance.BIA_INGEST,
+                name="uuid_unique_input",
+                value={"uuid_unique_input": ro_crate_study.accessionId},
+            ).model_dump()
+        ],
         "related_publication": [],
         "grant": [],
         "funding_statement": None,

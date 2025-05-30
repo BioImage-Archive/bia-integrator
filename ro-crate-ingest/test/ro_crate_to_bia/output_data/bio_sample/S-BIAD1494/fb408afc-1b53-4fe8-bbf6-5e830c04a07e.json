@@ -1,0 +1,32 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "fb408afc-1b53-4fe8-bbf6-5e830c04a07e",
+  "version": 0,
+  "model": {
+    "type_name": "BioSample",
+    "version": 4
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Nup133 mouse stem cells"
+      }
+    }
+  ],
+  "title": "Nup133 mouse stem cells",
+  "organism_classification": [
+    {
+      "additional_metadata": [],
+      "common_name": "mouse",
+      "scientific_name": "mus musculus",
+      "ncbi_id": null
+    }
+  ],
+  "biological_entity_description": "mouse embryonic stem cells and differentiated neuronal precursors from HM1-derived Nup133-/- clone.",
+  "experimental_variable_description": [],
+  "extrinsic_variable_description": [],
+  "intrinsic_variable_description": [],
+  "growth_protocol_uuid": null
+}

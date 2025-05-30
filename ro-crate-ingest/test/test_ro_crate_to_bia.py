@@ -39,7 +39,7 @@ def test_ingest_ro_crate_metadata(tmp_bia_data_dir: Path):
 
     for file in expected_files:
         relative_file_path = Path(file).parts[-3:]
-        expected_path_of_written_file = expected_out_dir / Path(*relative_file_path)
+        expected_path_of_written_file = tmp_bia_data_dir / Path(*relative_file_path)
 
         assert expected_path_of_written_file.exists()
 

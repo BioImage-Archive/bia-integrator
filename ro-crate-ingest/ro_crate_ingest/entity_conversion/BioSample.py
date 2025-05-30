@@ -2,6 +2,7 @@ from bia_shared_datamodels.linked_data.pydantic_ld.ROCrateModel import ROCrateMo
 from bia_shared_datamodels import uuid_creation
 import bia_integrator_api.models as APIModels
 import bia_shared_datamodels.ro_crate_models as ROCrateModels
+import bia_shared_datamodels.attribute_models as AttributeModels
 import logging
 
 logger = logging.getLogger("__main__." + __name__)
@@ -37,7 +38,7 @@ def convert_bio_sample(
 
     bio_sample = {
         "uuid": str(
-            uuid_creation.create_bio_sample_uuid(ro_crate_bio_sample.id, study_uuid)
+            uuid_creation.create_bio_sample_uuid(study_uuid, ro_crate_bio_sample.id)
         ),
         "title": ro_crate_bio_sample.id,
         "version": 0,
@@ -47,7 +48,13 @@ def convert_bio_sample(
         "extrinsic_variable_description": ro_crate_bio_sample.extrinsicVariableDescription,
         "experimental_variable_description": ro_crate_bio_sample.experimentalVariableDescription,
         "object_creator": APIModels.Provenance.BIA_INGEST,
-        "additional_metadata": [],
+        "additional_metadata": [
+            AttributeModels.DocumentUUIDUinqueInputAttribute(
+                provenance=APIModels.Provenance.BIA_INGEST,
+                name="uuid_unique_input",
+                value={"uuid_unique_input": ro_crate_bio_sample.id},
+            ).model_dump()
+        ],
     }
 
     return APIModels.BioSample(**bio_sample)
