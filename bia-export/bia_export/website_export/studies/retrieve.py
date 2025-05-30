@@ -180,16 +180,16 @@ def retrieve_dataset_images(
 
 def find_associated_objects(
     typed_associations: set,
-    object_type: Type[bia_data_model.UserIdentifiedObject],
+    object_type: Type[bia_data_model.BaseModel],
     context: StudyCLIContext,
-) -> List[bia_data_model.UserIdentifiedObject]:
+) -> List[bia_data_model.BaseModel]:
     linked_object = []
 
     if len(typed_associations) == 0:
         return linked_object
 
     # We read all the e.g. Biosamples multiple times per study because there aren't that many and their json is small
-    typed_object_in_study: List[bia_data_model.UserIdentifiedObject] = read_all_json(
+    typed_object_in_study: List[bia_data_model.BaseModel] = read_all_json(
         object_type=object_type, context=context
     )
     for object in typed_object_in_study:
@@ -223,7 +223,7 @@ def retrieve_detail_objects(
         f"{to_snake(cls.__name__)}_uuid": cls for cls in detail_classes
     }
 
-    for attribute in dataset.attribute:
+    for attribute in dataset.additional_metadata:
         try:
             attribute_models.DatasetAssociatedUUIDAttribute.model_validate(attribute.model_dump())
         except ValidationError:
