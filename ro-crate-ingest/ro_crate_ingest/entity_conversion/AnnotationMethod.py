@@ -30,15 +30,20 @@ def convert_annotation_method(
     ro_crate_annotation_method: ROCrateModels.AnnotationMethod,
     study_uuid: str,
 ) -> APIModels.AnnotationMethod:
+    
+    method_type = []
+    for mt in ro_crate_annotation_method.methodType:
+        method_type.append(mt.replace(" ", "_").lower())
+
     iap = {
-        "uuid": uuid_creation.create_annotation_method_uuid(
+        "uuid": str(uuid_creation.create_annotation_method_uuid(
             study_uuid, ro_crate_annotation_method.id
-        ),
+        )),
         "title": ro_crate_annotation_method.title,
         "protocol_description": ro_crate_annotation_method.protocolDescription,
         "annotation_criteria": ro_crate_annotation_method.annotationCriteria,
         "annotation_coverage": ro_crate_annotation_method.annotationCoverage,
-        "method_type": ro_crate_annotation_method.methodType,
+        "method_type": method_type,
         "annotation_source_indicator": ro_crate_annotation_method.annotationSourceIndicator,
         "version": 0,
         "object_creator": APIModels.Provenance.BIA_INGEST,

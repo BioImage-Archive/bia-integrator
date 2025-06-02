@@ -63,6 +63,9 @@
             "role": {
                 "@id": "bia:role"
             },
+            "contactEmail": {
+                "@id": "schema:email"
+            },
             "imageAcqusitionProtocol": {
                 "@id": "bia:imageAcquisitionProtocol"
             },
@@ -110,6 +113,9 @@
             },
             "linkDescription": {
                 "@id": "schema:description"
+            },
+            "resultOf": {
+                "@id": "bia:resultOf"
             },
             "imagingInstrumentDescription": {
                 "@id": "bia:imagingInstrumentDescription"

@@ -1,0 +1,28 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "f902a0a0-106f-45d8-bc1d-07641257d9d0",
+  "version": 0,
+  "model": {
+    "type_name": "AnnotationMethod",
+    "version": 4
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Cellpose segmentation masks"
+      }
+    }
+  ],
+  "title": "Segmentation label of individual cells of Drosophila wing disc curated by experts from a model prediction",
+  "protocol_description": "Cellpose (a generalist algorithm for cell segmentation) was used to predict the annotations. Then, using napari, images were corrected.",
+  "annotation_criteria": "Individual cells were labelled in 3D",
+  "annotation_coverage": "100% of available data was annotated",
+  "transformation_description": null,
+  "spatial_information": null,
+  "method_type": [
+    "segmentation_mask"
+  ],
+  "annotation_source_indicator": null
+}

@@ -86,6 +86,7 @@ def convert_contributor(
         "website": contributor.website,
         "role": contributor.role,
         "affiliation": affiliations,
+        "contact_email": contributor.contactEmail,
     }
 
     if contributor.id.startswith("https://orcid.org/"):

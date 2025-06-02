@@ -2,38 +2,44 @@ from pathlib import Path
 from typer.testing import CliRunner
 from ro_crate_ingest.cli import ro_crate_ingest
 import json
-from bia_integrator_api import models
-from pydantic.alias_generators import to_pascal
+import pytest
 
 runner = CliRunner()
 
+accession_ids = ["S-BIAD1494", "S-BIAD843"]
 
-def test_ingest_ro_crate_metadata(tmp_bia_data_dir: Path):
 
-    test_study_accession_id = "S-BIAD1494"
-
-    crate_path = (
+def get_ro_crate_path(accession_id) -> Path:
+    return (
         Path(__file__).parents[2]
         / "bia-shared-datamodels"
         / "src"
         / "bia_shared_datamodels"
         / "mock_ro_crate"
-        / test_study_accession_id
+        / accession_id
     )
+
+
+def get_expected_files(accession_id) -> list[Path]:
+    expected_out_dir = Path(__file__).parent / "ro_crate_to_bia" / "output_data"
+
+    expected_files = [f for f in expected_out_dir.rglob(f"*/{accession_id}/*.json")]
+
+    return expected_files
+
+
+@pytest.mark.parametrize("accession_id", ["S-BIAD1494", "S-BIAD843"])
+def test_ingest_ro_crate_metadata(accession_id: str, tmp_bia_data_dir: Path):
+
+    crate_path = get_ro_crate_path(accession_id)
 
     result = runner.invoke(ro_crate_ingest, ["-c", crate_path])
 
     assert result.exit_code == 0
 
-    files_written = [
-        f for f in tmp_bia_data_dir.rglob(f"*/{test_study_accession_id}/*.json")
-    ]
+    files_written = [f for f in tmp_bia_data_dir.rglob(f"*/{accession_id}/*.json")]
 
-    expected_out_dir = Path(__file__).parent / "ro_crate_to_bia" / "output_data"
-
-    expected_files = [
-        f for f in expected_out_dir.rglob(f"*/{test_study_accession_id}/*.json")
-    ]
+    expected_files = get_expected_files(accession_id)
 
     assert len(files_written) == len(expected_files)
 
@@ -52,9 +58,8 @@ def test_ingest_ro_crate_metadata(tmp_bia_data_dir: Path):
         assert cli_out == expected_out
 
 
-def test_ingest_ro_crate_metadata_with_api(get_bia_api_client):
-
-    test_study_accession_id = "S-BIAD1494"
+@pytest.mark.parametrize("accession_id", ["S-BIAD1494", "S-BIAD843"])
+def test_ingest_ro_crate_metadata_with_api(accession_id: str, get_bia_api_client):
 
     crate_path = (
         Path(__file__).parents[2]
@@ -62,18 +67,14 @@ def test_ingest_ro_crate_metadata_with_api(get_bia_api_client):
         / "src"
         / "bia_shared_datamodels"
         / "mock_ro_crate"
-        / "S-BIAD1494"
+        / accession_id
     )
 
     result = runner.invoke(ro_crate_ingest, ["-c", crate_path, "-p", "local_api"])
 
     assert result.exit_code == 0
 
-    expected_out_dir = Path(__file__).parent / "ro_crate_to_bia" / "output_data"
-
-    expected_files = [
-        f for f in expected_out_dir.rglob(f"*/{test_study_accession_id}/*.json")
-    ]
+    expected_files = get_expected_files(accession_id)
 
     for file in expected_files:
         relative_file_path = Path(file).parts[-3:]

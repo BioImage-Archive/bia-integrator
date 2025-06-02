@@ -1,0 +1,27 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "04c217ef-0db2-4208-a5c5-266bdd0fea1d",
+  "version": 0,
+  "model": {
+    "type_name": "ImageAcquisitionProtocol",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Multi-photon imaging"
+      }
+    }
+  ],
+  "title": "Multi-photon imaging",
+  "protocol_description": "Voxel size 0.0430x0.0430x0.2985 micron^3",
+  "imaging_instrument_description": "Leica Microsystems Stellaris 8 DIVE (Deep In-Vivo Explorer)",
+  "fbbi_id": [
+    "fbbi_00000254"
+  ],
+  "imaging_method_name": [
+    "Multi-photon microscopy"
+  ]
+}

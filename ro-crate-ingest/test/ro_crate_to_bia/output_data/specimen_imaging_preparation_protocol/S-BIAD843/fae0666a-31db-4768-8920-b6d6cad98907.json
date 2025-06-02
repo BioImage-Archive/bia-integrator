@@ -1,0 +1,29 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "fae0666a-31db-4768-8920-b6d6cad98907",
+  "version": 0,
+  "model": {
+    "type_name": "SpecimenImagingPreparationProtocol",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Wing disk culture"
+      }
+    }
+  ],
+  "title": "Wing disk culture",
+  "protocol_description": "Late third instar wing imaginal discs were cultured in Shields and Sang M3 media (Sigma) supplemented with 2% FBS (Sigma), 1% pen/strep (Gibco), 3ng/ml ecdysone (Sigma) and 2ng/ml insulin (Sigma). Wing discs were cultured in 35mm fluorodishes (WPI) under 12mm filters (Millicell), as described in https://doi.org/10.1038%2Fs41567-019-0618-1",
+  "signal_channel_information": [
+    {
+      "additional_metadata": [],
+      "signal_contrast_mechanism_description": "transgenic fluorescence reporter",
+      "channel_content_description": "ubiCAAX-GFP",
+      "channel_biological_entity": "ubiquitous expression of membrane-bound GFP",
+      "channel_label": null
+    }
+  ]
+}

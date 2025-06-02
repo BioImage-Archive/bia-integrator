@@ -35,12 +35,12 @@ def related_ontologies():
     return schema + dc + rdf
 
 
-@pytest.fixture(scope="session")
-def path_to_example_ro_crate() -> Path:
+@pytest.fixture()
+def path_to_example_ro_crate(request: pytest.FixtureRequest) -> Path:
     return (
         Path(__file__).parents[1]
         / "src"
         / "bia_shared_datamodels"
         / "mock_ro_crate"
-        / "S-BIAD1494"
+        / request.param
     )

@@ -1,0 +1,111 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "619c866f-5ff8-4de1-a6b2-6bd679c7b268",
+  "version": 0,
+  "model": {
+    "type_name": "Study",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "S-BIAD843"
+      }
+    }
+  ],
+  "accession_id": "S-BIAD843",
+  "licence": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "author": [
+    {
+      "rorid": null,
+      "address": null,
+      "website": null,
+      "orcid": "https://orcid.org/0000-0003-0565-4356",
+      "display_name": "Giulia Paci",
+      "affiliation": [
+        {
+          "rorid": "https://ror.org/00fv61j67",
+          "address": null,
+          "website": null,
+          "display_name": "MRC Laboratory for Molecular Cell Biology"
+        }
+      ],
+      "contact_email": "g.paci@ucl.ac.uk",
+      "role": [
+        "data acquisition",
+        "data curator"
+      ]
+    },
+    {
+      "rorid": null,
+      "address": null,
+      "website": null,
+      "orcid": null,
+      "display_name": "Ines Fernandez Mosquera",
+      "affiliation": [
+        {
+          "rorid": "https://ror.org/00fv61j67",
+          "address": null,
+          "website": null,
+          "display_name": "MRC Laboratory for Molecular Cell Biology"
+        }
+      ],
+      "contact_email": null,
+      "role": [
+        "data acquisition",
+        "data annotator",
+        "data curator"
+      ]
+    },
+    {
+      "rorid": null,
+      "address": null,
+      "website": null,
+      "orcid": "https://orcid.org/0000-0001-5402-7637",
+      "display_name": "Pablo Vicente Munuera",
+      "affiliation": [
+        {
+          "rorid": "https://ror.org/00fv61j67",
+          "address": null,
+          "website": null,
+          "display_name": "MRC Laboratory for Molecular Cell Biology"
+        }
+      ],
+      "contact_email": "p.munuera@ucl.ac.uk",
+      "role": [
+        "submitter"
+      ]
+    },
+    {
+      "rorid": null,
+      "address": null,
+      "website": null,
+      "orcid": "https://orcid.org/0000-0002-8722-4992",
+      "display_name": "Yanlan Mao",
+      "affiliation": [
+        {
+          "rorid": "https://ror.org/00fv61j67",
+          "address": null,
+          "website": null,
+          "display_name": "MRC Laboratory for Molecular Cell Biology"
+        }
+      ],
+      "contact_email": "y.mao@ucl.ac.uk",
+      "role": [
+        "conceptualisation",
+        "corresponding author"
+      ]
+    }
+  ],
+  "title": "3D cell shape of Drosophila Wing Disc",
+  "release_date": "2023-08-14",
+  "description": "Individual 3D cell shapes of Drosophila Wing Disc",
+  "keyword": [],
+  "acknowledgement": null,
+  "see_also": [],
+  "related_publication": [],
+  "grant": [],
+  "funding_statement": null
+}
