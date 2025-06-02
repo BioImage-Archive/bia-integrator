@@ -14,6 +14,7 @@ bia-integrator-api = { path = "../clients/python", develop = true }
 bia-test-data = { path = "../bia-test-data", develop = true }
 typer = "^0.15.1"
 ruamel-yaml = "^0.18.10"
+parse = "^1.20.2"
 
 [tool.poetry.scripts]
 bia-assign-image = "bia_assign_image.cli:app"

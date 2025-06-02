@@ -1,0 +1,38 @@
+{
+    "object_creator": "bia_ingest",
+    "uuid": "ddeda6c9-8d3b-4ce6-b180-aedcb53067ef",
+    "version": 0,
+    "model": {
+        "type_name": "BioSample",
+        "version": 4
+    },
+    "additional_metadata": [
+        {
+            "provenance": "bia_ingest",
+            "name": "uuid_unique_input",
+            "value": {
+                "uuid_unique_input": "Biosample-1 2d56ce75-92d2-409d-8c42-9bf89f062638"
+            }
+        }
+    ],
+    "title": "Test Biosample 1",
+    "organism_classification": [
+        {
+            "common_name": "human",
+            "scientific_name": "Homo sapiens",
+            "ncbi_id": null,
+            "additional_metadata": []
+        }
+    ],
+    "biological_entity_description": "Test biological entity 1",
+    "experimental_variable_description": [
+        "Test experimental entity 1"
+    ],
+    "extrinsic_variable_description": [
+        "Test extrinsic variable 1"
+    ],
+    "intrinsic_variable_description": [
+        "Test intrinsic variable 1\\nwith escaped character"
+    ],
+    "growth_protocol_uuid": "2d56ce75-92d2-409d-8c42-9bf89f062638"
+}

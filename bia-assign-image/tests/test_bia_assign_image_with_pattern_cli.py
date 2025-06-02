@@ -17,15 +17,15 @@ from bia_shared_datamodels import bia_data_model
 from bia_assign_image import cli
 from bia_assign_image.api_client import get_api_client
 
-accession_id = "S-BIAD-BIA-ASSIGN-IMAGE-WITH-PATTERN-TEST"
-pattern_2channels = "image_01_channel_{%d}_slice_{%d}_time{%d}"
-pattern_1channel = "image_01_channel_00_slice_{%d}_time{%d}"
+accession_id = "S-BIAD-TEST-ASSIGN-IMAGE-WITH-PATTERN"
+pattern_2channels = "image_01_channel_{c:d}_slice_{z:d}_time{t:d}.tiff"
+pattern_1channel = "image_01_channel_00_slice_{z:d}_time{t:d}.tiff"
 
 
 def get_expected_object(object_type: str, uuid: str) -> Type[BaseModel]:
     object_path = (
         Path(__file__).parent
-        / "data"
+        / "test_data"
         / to_snake(object_type)
         / accession_id
         / f"{uuid}.json"
@@ -36,12 +36,12 @@ def get_expected_object(object_type: str, uuid: str) -> Type[BaseModel]:
 
 @pytest.fixture()
 def expected_bia_image_2channels() -> bia_data_model.Image:
-    return get_expected_object("Image", "5c429763-a56e-4650-ad91-291cdfe6d153")
+    return get_expected_object("Image", "1fa56584-27be-45a6-8aed-96387f171024")
 
 
 @pytest.fixture()
 def expected_bia_image_1channel() -> bia_data_model.Image:
-    return get_expected_object("Image", "e5faf3a7-ead5-4c92-95e9-38408d285c06")
+    return get_expected_object("Image", "451e042f-a4f1-4eb7-8d85-285a75bd9aa9")
 
 
 @pytest.fixture()
@@ -49,7 +49,7 @@ def expected_uploaded_by_submitter_representation_2channels() -> (
     bia_data_model.ImageRepresentation
 ):
     return get_expected_object(
-        "ImageRepresentation", "7d6bd948-8732-4694-b655-831e4d1fc144"
+        "ImageRepresentation", "7def833e-0640-4251-84c5-ed759d78d9d2"
     )
 
 
@@ -58,7 +58,7 @@ def expected_uploaded_by_submitter_representation_1channel() -> (
     bia_data_model.ImageRepresentation
 ):
     return get_expected_object(
-        "ImageRepresentation", "f9d6f935-37ad-4015-b3f1-be21d361e1ab"
+        "ImageRepresentation", "2dba82c4-db6d-4649-8a70-5d839b6356c2"
     )
 
 

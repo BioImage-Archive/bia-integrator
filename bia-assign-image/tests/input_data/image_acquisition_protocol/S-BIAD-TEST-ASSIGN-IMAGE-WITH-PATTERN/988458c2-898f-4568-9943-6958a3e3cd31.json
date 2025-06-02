@@ -1,0 +1,24 @@
+{
+    "object_creator": "bia_ingest",
+    "title": "Test Primary Screen Image Acquisition",
+    "uuid": "988458c2-898f-4568-9943-6958a3e3cd31",
+    "protocol_description": "Test image acquisition parameters 1",
+    "imaging_instrument_description": "Test imaging instrument 1",
+    "fbbi_id": [],
+    "additional_metadata": [
+        {
+            "provenance": "bia_ingest",
+            "name": "uuid_unique_input",
+            "value": {
+                "uuid_unique_input": "Image Acquisition-1"
+            }
+
+        }
+    ],
+    "imaging_method_name": ["confocal microscopy"],
+    "version": 0,
+    "model": {
+        "type_name": "ImageAcquisitionProtocol",
+        "version": 3
+    }
+}

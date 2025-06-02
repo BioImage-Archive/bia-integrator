@@ -6,9 +6,9 @@ from bia_assign_image import image
 from bia_shared_datamodels import bia_data_model
 
 input_data_base_path = Path(__file__).parent / "input_data"
-accession_id = "S-BIAD-BIA-ASSIGN-IMAGE-WITH-PATTERN-TEST"
+accession_id = "S-BIAD-TEST-ASSIGN-IMAGE-WITH-PATTERN"
 
-expected_data_base_path = Path(__file__).parent / "data"
+expected_data_base_path = Path(__file__).parent / "test_data"
 
 
 @pytest.fixture
@@ -43,7 +43,7 @@ def bio_sample_uuid(dataset) -> List[UUID]:
 @pytest.fixture
 def expected_image() -> bia_data_model.Image:
     # This is uuid of image with 2 channels
-    image_uuid = "5c429763-a56e-4650-ad91-291cdfe6d153"
+    image_uuid = "1fa56584-27be-45a6-8aed-96387f171024"
     image_path = expected_data_base_path / "image" / accession_id / f"{image_uuid}.json"
     return bia_data_model.Image.model_validate_json(image_path.read_text())
 
@@ -63,8 +63,9 @@ def file_references() -> List[bia_data_model.FileReference]:
 
 
 def test_bia_image_with_pattern(dataset, file_references, expected_image):
-    file_pattern = "image_01_channel_{%d}_slice_{%d}_time{%d}"
+    file_pattern = "image_01_channel_{c:d}_slice_{z:d}_time{t:d}.tiff"
     created_image = image.get_image(
+        study_uuid=dataset.submitted_in_study_uuid,
         submission_dataset_uuid=dataset.uuid,
         creation_process_uuid=expected_image.creation_process_uuid,
         file_references=file_references,

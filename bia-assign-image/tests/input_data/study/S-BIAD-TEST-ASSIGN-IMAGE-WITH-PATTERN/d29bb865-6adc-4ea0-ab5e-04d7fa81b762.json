@@ -1,0 +1,49 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "d29bb865-6adc-4ea0-ab5e-04d7fa81b762",
+  "version": 0,
+  "model": {
+    "type_name": "Study",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "submitter",
+      "name": "file_list_columns",
+      "value": {}
+    }
+  ],
+  "accession_id": "S-BIAD-TEST-ASSIGN-IMAGE-WITH-PATTERN",
+  "licence": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "author": [
+    {
+      "rorid": "None",
+      "address": "None",
+      "website": "https://www.none.com/",
+      "orcid": "None",
+      "display_name": "Contributor1",
+      "affiliation": [
+        {
+          "rorid": "None",
+          "address": "None",
+          "website": "https://www.none.com/",
+          "display_name": "Template Affiliation Organisation"
+        }
+      ],
+      "contact_email": "contributor1@org1.ac.uk",
+      "role": "contributing author"
+    }
+  ],
+  "title": "A test submission with images of the form image_{%d}_channel{%d}_slice{%d}_time{%d} to test assigning and converting images with patterns",
+  "release_date": "2024-06-23",
+  "description": "Template description",
+  "keyword": [
+    "Template keyword1",
+    "Template keyword2"
+  ],
+  "acknowledgement": "Template acknowledgement",
+  "see_also": [],
+  "related_publication": [],
+  "grant": [],
+  "funding_statement": "Template funding statement"
+}
