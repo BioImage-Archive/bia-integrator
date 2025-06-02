@@ -33,7 +33,7 @@ def get_contributor() -> List[semantic_models.Contributor]:
         {
             "display_name": "Test Author1",
             "contact_email": "test_author1@ebi.ac.uk",
-            "role": "corresponding author",
+            "role": ["corresponding author"],
             "affiliation": [
                 affiliations["o1"],
             ],
@@ -47,7 +47,7 @@ def get_contributor() -> List[semantic_models.Contributor]:
         {
             "display_name": "Test Author2",
             "contact_email": "test_author2@ebi.ac.uk",
-            "role": "first author",
+            "role": ["first author"],
             "affiliation": [
                 affiliations["o2"],
             ],

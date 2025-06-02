@@ -289,7 +289,6 @@ def get_contributor(
     key_mapping = [
         ("display_name", "Name", None),
         ("contact_email", "E-mail", None),
-        ("role", "Role", None),
         ("orcid", "ORCID", None),
         ("affiliation", "affiliation", []),
     ]
@@ -320,6 +319,10 @@ def get_contributor(
             model_dict["contact_email"], email_warnings
         )
         model_dict["contact_email"] = sanitised_email
+
+        model_dict["role"] = [
+            role.strip(" ") for role in attr_dict.get("Role", "").split(",")
+        ]
 
         contributor_dicts.append(model_dict)
 
