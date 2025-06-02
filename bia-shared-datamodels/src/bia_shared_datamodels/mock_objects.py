@@ -66,7 +66,7 @@ def get_contributor_dict(
     if completeness == Completeness.COMPLETE:
         contributor_dict |= {
             "contact_email": "contributor1@org1.ac.uk",
-            "role": "contributing author",
+            "role": [ "contributing author" ],
             "affiliation": [
                 get_affiliation_dict(Completeness.COMPLETE),
             ],

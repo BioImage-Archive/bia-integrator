@@ -235,7 +235,7 @@ class Contributor(PersonMixin, OrganisationMixin):
     contact_email: Optional[EmailStr] = Field(
         None, description="""An email address to contact the Contributor."""
     )
-    role: Optional[str] = Field(None, description="""The role of the contributor.""")
+    role: List[str] = Field(default_factory=list, description="""The role of the contributor.""")
 
 
 class Affiliation(OrganisationMixin):

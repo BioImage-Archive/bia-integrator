@@ -45,7 +45,9 @@
         }
       ],
       "contact_email": null,
-      "role": "dataset creator"
+      "role": [
+        "dataset creator"
+      ]
     },
     {
       "rorid": null,
@@ -62,7 +64,9 @@
         }
       ],
       "contact_email": null,
-      "role": "dataset creator"
+      "role": [
+        "dataset creator"
+      ]
     },
     {
       "rorid": null,
@@ -79,7 +83,9 @@
         }
       ],
       "contact_email": null,
-      "role": "dataset creator"
+      "role": [
+        "dataset creator"
+      ]
     },
     {
       "rorid": null,
@@ -96,7 +102,9 @@
         }
       ],
       "contact_email": null,
-      "role": "data curation"
+      "role": [
+        "data curation"
+      ]
     },
     {
       "rorid": null,
@@ -113,7 +121,10 @@
         }
       ],
       "contact_email": null,
-      "role": "data curation, submitter"
+      "role": [
+        "data curation",
+        "submitter"
+      ]
     }
   ],
   "title": "Synthetic images and segmentation masks simulating HL-60 cell nucleus in 3D",

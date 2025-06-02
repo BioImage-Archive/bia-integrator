@@ -4375,14 +4375,10 @@
             "description": "An email address to contact the Contributor."
           },
           "role": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
             "title": "Role",
             "description": "The role of the contributor."
           }

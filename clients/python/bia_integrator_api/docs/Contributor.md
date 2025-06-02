@@ -13,7 +13,7 @@ Name | Type | Description | Notes
 **display_name** | **str** | Name as it should be displayed on the BioImage Archive. | 
 **affiliation** | [**List[Affiliation]**](Affiliation.md) | The organisation(s) a contributor is afiliated with. | 
 **contact_email** | **str** |  | [optional] 
-**role** | **str** |  | [optional] 
+**role** | **List[str]** | The role of the contributor. | [optional] 
 
 ## Example
 

@@ -35,7 +35,7 @@ class Contributor(BaseModel):
     display_name: StrictStr = Field(description="Name as it should be displayed on the BioImage Archive.")
     affiliation: List[Affiliation] = Field(description="The organisation(s) a contributor is afiliated with.")
     contact_email: Optional[StrictStr] = None
-    role: Optional[StrictStr] = None
+    role: Optional[List[StrictStr]] = Field(default=None, description="The role of the contributor.")
     __properties: ClassVar[List[str]] = ["rorid", "address", "website", "orcid", "display_name", "affiliation", "contact_email", "role"]
 
     model_config = ConfigDict(
@@ -108,11 +108,6 @@ class Contributor(BaseModel):
         # and model_fields_set contains the field
         if self.contact_email is None and "contact_email" in self.model_fields_set:
             _dict['contact_email'] = None
-
-        # set to None if role (nullable) is None
-        # and model_fields_set contains the field
-        if self.role is None and "role" in self.model_fields_set:
-            _dict['role'] = None
 
         return _dict
 
