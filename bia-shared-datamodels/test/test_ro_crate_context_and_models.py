@@ -51,7 +51,7 @@ def test_ro_crate_context_is_used_in_example(path_to_example_ro_crate):
     ro_crate_pydantic_models = inspect.getmembers(
         ro_crate_models,
         lambda member: inspect.isclass(member)
-        and member.__module__ == "bia_ro_crate.ro_crate_to_bia.ingest_models",
+        and member.__module__ == "bia_shared_datamodels.ro_crate_models",
     )
 
     for name, ldclass in ro_crate_pydantic_models:
@@ -63,17 +63,17 @@ def test_ro_crate_context_is_used_in_example(path_to_example_ro_crate):
 
     ro_crate_context = json.loads(json_data)["@context"]
 
-    embedded_context = {}
+    embedded_ro_crate_document_context = {}
     if isinstance(ro_crate_context, list):
         for context_item in ro_crate_context:
             if isinstance(context_item, dict):
-                embedded_context |= context_item
+                embedded_ro_crate_document_context |= context_item
 
     # NB: testing if all the terms we expect have the context we expect
     # Users are free to add their own additional terms, which we aim to process into attribute values eventually
     # Therefore not checking for exact equality
     for key, value in context.to_dict().items():
-        assert embedded_context[key] == value
+        assert embedded_ro_crate_document_context[key] == value
 
 
 def test_example_ro_crate_is_valid_ro_crate(path_to_example_ro_crate):

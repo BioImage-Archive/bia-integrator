@@ -57,6 +57,9 @@
             "organismClassification": {
                 "@id": "bia:organismClassification"
             },
+            "growthProtocol": {
+                "@id": "bia:growthProtocol"
+            },
             "role": {
                 "@id": "bia:role"
             },
@@ -87,7 +90,7 @@
             "associatedSpecimen": {
                 "@id": "bia:associatedSubject"
             },
-            "associatedSpecimenImageAcquisitionProtocol": {
+            "associatedImageAcquisitionProtocol": {
                 "@id": "bia:associatedImageAcquisitionProtocol"
             },
             "associatedAnnotationMethod": {
@@ -97,7 +100,10 @@
                 "@id": "bia:associatedAnalysisMethod"
             },
             "associatedImageCorrelationMethod": {
-                "@id": "bia:associatedImageCorrelationMethod"
+                "@id": "bia:associatedCorrelationMethod"
+            },
+            "associatedProtocol": {
+                "@id": "bia:associatedProtocol"
             },
             "link": {
                 "@id": "schema:url"
@@ -165,14 +171,14 @@
             "hasPart": {
                 "@id": "schema:hasPart"
             },
+            "accessionId": {
+                "@id": "schema:identifier"
+            },
             "commonName": {
                 "@id": "bia:commonName"
             },
             "scientificName": {
                 "@id": "bia:scientificName"
-            },
-            "accessionId": {
-                "@id": "schema:identifier"
             },
             "replicate": {
                 "@id": "_:replicate"
@@ -387,7 +393,7 @@
                     "@id": "Mouse embryonic stem cell prepration"
                 }
             ],
-            "associatedSpecimenImageAcquisitionProtocol": [
+            "associatedImageAcquisitionProtocol": [
                 {
                     "@id": "Confocal stack acquisition"
                 }
@@ -412,7 +418,7 @@
                     "@id": "Mouse embryonic stem cell prepration"
                 }
             ],
-            "associatedSpecimenImageAcquisitionProtocol": [
+            "associatedImageAcquisitionProtocol": [
                 {
                     "@id": "Confocal stack acquisition"
                 }
@@ -437,7 +443,7 @@
                     "@id": "Mouse embryonic stem cell prepration"
                 }
             ],
-            "associatedSpecimenImageAcquisitionProtocol": [
+            "associatedImageAcquisitionProtocol": [
                 {
                     "@id": "Confocal stack acquisition"
                 }
@@ -462,7 +468,7 @@
                     "@id": "Mouse embryonic stem cell prepration"
                 }
             ],
-            "associatedSpecimenImageAcquisitionProtocol": [
+            "associatedImageAcquisitionProtocol": [
                 {
                     "@id": "Confocal stack acquisition"
                 }
@@ -487,7 +493,7 @@
                     "@id": "Mouse embryonic stem cell prepration"
                 }
             ],
-            "associatedSpecimenImageAcquisitionProtocol": [
+            "associatedImageAcquisitionProtocol": [
                 {
                     "@id": "Confocal stack acquisition"
                 }
@@ -512,7 +518,7 @@
                     "@id": "Mouse embryonic stem cell prepration"
                 }
             ],
-            "associatedSpecimenImageAcquisitionProtocol": [
+            "associatedImageAcquisitionProtocol": [
                 {
                     "@id": "Confocal stack acquisition"
                 }
@@ -537,7 +543,7 @@
                     "@id": "Mouse embryonic stem cell prepration"
                 }
             ],
-            "associatedSpecimenImageAcquisitionProtocol": [
+            "associatedImageAcquisitionProtocol": [
                 {
                     "@id": "Confocal stack acquisition"
                 }
@@ -562,7 +568,7 @@
                     "@id": "Mouse embryonic stem cell prepration"
                 }
             ],
-            "associatedSpecimenImageAcquisitionProtocol": [
+            "associatedImageAcquisitionProtocol": [
                 {
                     "@id": "Confocal stack acquisition"
                 }
@@ -587,7 +593,7 @@
                     "@id": "Mouse embryonic stem cell prepration"
                 }
             ],
-            "associatedSpecimenImageAcquisitionProtocol": [
+            "associatedImageAcquisitionProtocol": [
                 {
                     "@id": "Confocal stack acquisition"
                 }
@@ -612,7 +618,7 @@
                     "@id": "Mouse embryonic stem cell prepration"
                 }
             ],
-            "associatedSpecimenImageAcquisitionProtocol": [
+            "associatedImageAcquisitionProtocol": [
                 {
                     "@id": "Confocal stack acquisition"
                 }
@@ -637,7 +643,7 @@
                     "@id": "Mouse embryonic stem cell prepration"
                 }
             ],
-            "associatedSpecimenImageAcquisitionProtocol": [
+            "associatedImageAcquisitionProtocol": [
                 {
                     "@id": "Confocal stack acquisition"
                 }
@@ -662,7 +668,7 @@
                     "@id": "Mouse embryonic stem cell prepration"
                 }
             ],
-            "associatedSpecimenImageAcquisitionProtocol": [
+            "associatedImageAcquisitionProtocol": [
                 {
                     "@id": "Confocal stack acquisition"
                 }
@@ -687,7 +693,7 @@
                     "@id": "Mouse embryonic stem cell prepration"
                 }
             ],
-            "associatedSpecimenImageAcquisitionProtocol": [
+            "associatedImageAcquisitionProtocol": [
                 {
                     "@id": "Confocal stack acquisition"
                 }
@@ -712,7 +718,7 @@
                     "@id": "Mouse embryonic stem cell prepration"
                 }
             ],
-            "associatedSpecimenImageAcquisitionProtocol": [
+            "associatedImageAcquisitionProtocol": [
                 {
                     "@id": "Confocal stack acquisition"
                 }
@@ -737,7 +743,7 @@
                     "@id": "Mouse embryonic stem cell prepration"
                 }
             ],
-            "associatedSpecimenImageAcquisitionProtocol": [
+            "associatedImageAcquisitionProtocol": [
                 {
                     "@id": "Confocal stack acquisition"
                 }
@@ -762,7 +768,7 @@
                     "@id": "Mouse embryonic stem cell prepration"
                 }
             ],
-            "associatedSpecimenImageAcquisitionProtocol": [
+            "associatedImageAcquisitionProtocol": [
                 {
                     "@id": "Confocal stack acquisition"
                 }
@@ -787,7 +793,7 @@
                     "@id": "Mouse embryonic stem cell prepration"
                 }
             ],
-            "associatedSpecimenImageAcquisitionProtocol": [
+            "associatedImageAcquisitionProtocol": [
                 {
                     "@id": "Confocal stack acquisition"
                 }
@@ -812,7 +818,7 @@
                     "@id": "Mouse embryonic stem cell prepration"
                 }
             ],
-            "associatedSpecimenImageAcquisitionProtocol": [
+            "associatedImageAcquisitionProtocol": [
                 {
                     "@id": "Confocal stack acquisition"
                 }

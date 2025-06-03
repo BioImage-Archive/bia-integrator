@@ -265,7 +265,7 @@ bia:associatedImagingPreparationProtocol a owl:ObjectProperty, bia:AssociationPr
     rdfs:range bia:Specimen .
 
 bia:associatedImageAcquisitionProtocol a owl:ObjectProperty, bia:AssociationProperty ;
-    rdfs:label "associated imaging preparation protocol"@en ;
+    rdfs:label "associated image acquisition protocol"@en ;
     rdfs:comment 
         """Used to associate a ImageAcquistionProtocol with all images in a dataset.
         Assuming `dataset bia:associatedImagingPreparationProtocol specimen_imaging_preparation_protcol`,

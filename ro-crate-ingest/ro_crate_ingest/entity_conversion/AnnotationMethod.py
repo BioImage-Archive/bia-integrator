@@ -1,6 +1,7 @@
 from bia_shared_datamodels.linked_data.pydantic_ld.ROCrateModel import ROCrateModel
 from bia_shared_datamodels import uuid_creation
 import bia_integrator_api.models as APIModels
+import bia_shared_datamodels.attribute_models as AttributeModels
 import bia_shared_datamodels.ro_crate_models as ROCrateModels
 import logging
 
@@ -31,7 +32,7 @@ def convert_annotation_method(
 ) -> APIModels.AnnotationMethod:
     iap = {
         "uuid": uuid_creation.create_annotation_method_uuid(
-            ro_crate_annotation_method.id, study_uuid
+            study_uuid, ro_crate_annotation_method.id
         ),
         "title": ro_crate_annotation_method.title,
         "protocol_description": ro_crate_annotation_method.protocolDescription,
@@ -41,7 +42,13 @@ def convert_annotation_method(
         "annotation_source_indicator": ro_crate_annotation_method.annotationSourceIndicator,
         "version": 0,
         "object_creator": APIModels.Provenance.BIA_INGEST,
-        "additional_metadata": [],
+        "additional_metadata": [
+            AttributeModels.DocumentUUIDUinqueInputAttribute(
+                provenance=APIModels.Provenance.BIA_INGEST,
+                name="uuid_unique_input",
+                value={"uuid_unique_input": ro_crate_annotation_method.id},
+            ).model_dump()
+        ],
     }
 
     return APIModels.AnnotationMethod(**iap)
