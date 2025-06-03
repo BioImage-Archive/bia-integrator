@@ -31,7 +31,7 @@
         }
       ],
       "contact_email": "contributor1@org1.ac.uk",
-      "role": "contributing author"
+      "role": ["contributing author"]
     }
   ],
   "title": "A test submission with images of the form image_{%d}_channel{%d}_slice{%d}_time{%d} to test assigning and converting images with patterns",

@@ -26,7 +26,7 @@
         }
       ],
       "contact_email": "contributor1@org1.ac.uk",
-      "role": "contributing author"
+      "role": ["contributing author"]
     }
   ],
   "title": "Test study to test mapping of assigned images to 2025/04 models",
