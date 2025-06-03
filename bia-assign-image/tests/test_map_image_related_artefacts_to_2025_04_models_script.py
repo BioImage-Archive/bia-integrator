@@ -59,7 +59,7 @@ def expected_2025_04_representation_of_image_converted_to_ome_zarr(
     base_path,
 ) -> bia_data_model.ImageRepresentation:
     obj_path = base_path / "2025_04_models"
-    uuid = "2a8ecffd-6690-494f-acbb-81fb94f2df30"
+    uuid = "cca7f5db-2c46-4234-8d48-eb431a733007"
     return get_expected_object(obj_path, "ImageRepresentation", accession_id, uuid)
 
 

@@ -50,10 +50,11 @@ def map_image_representation_to_2025_04_model(
         unique_string = f"{image_2025_04_uuid}"
         object_creator = "bia_image_assignment"
     elif use_type == "INTERACTIVE_DISPLAY":
-        conversion_function = {
-            "conversion_function": "map_image_representation_to_2025_04_model"
-        }
-        unique_string = f"{conversion_function}"
+        uploaded_by_submitter_rep_uuid = uuid_creation.create_image_representation_uuid(
+            study_uuid, unique_string=f"{image_2025_04_uuid}"
+        )
+        conversion_function = "{'conversion_function': 'map_image_representation_to_2025_04_model'}"
+        unique_string = f"{uploaded_by_submitter_rep_uuid} {conversion_function}"
         object_creator = "bia_image_conversion"
     else:
         raise Exception(f"Use type{use_type} is not mapped to 2025/04 models")
