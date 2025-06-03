@@ -1,6 +1,7 @@
 import json
 import os
 from pathlib import Path
+import urllib.parse
 from bia_shared_datamodels.linked_data.pydantic_ld.ROCrateModel import ROCrateModel
 from rocrate.rocrate import ROCrate
 import bia_shared_datamodels.ro_crate_models as ro_crate_models
@@ -8,6 +9,8 @@ import inspect
 import pyld
 import rdflib
 import logging
+import urllib
+import requests
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -37,17 +40,26 @@ def validate_json(data):
 def load_entities(data: dict) -> dict[str, ROCrateModel]:
     # TODO: maybe loading using ro-crate libaries would be better
     context = data.get("@context", {})
+
+    loaded_context = {}
+    for item in context:
+        if isinstance(item, str) and urllib.parse.urlparse(item):
+            loaded_context |= load_external_context(item).get("@context", {})
+        elif isinstance(item, dict):
+            loaded_context |= item
+
     entities = data.get("@graph", [])
     crate_objects_by_id = {}
     classes = inspect.getmembers(
         ro_crate_models,
         lambda member: inspect.isclass(member)
-        and member.__module__ == "bia_shared_datamodels.ro_crate_models",
+        and member.__module__ == "bia_shared_datamodels.ro_crate_models"
+        and issubclass(member, ROCrateModel),
     )
 
     for entity in entities:
         start_len = len(crate_objects_by_id)
-        entity_type = expand_entity(entity, context).get("@type")
+        entity_type = expand_entity(entity, loaded_context).get("@type")
         for name, model in classes:
             if model.model_config["model_type"] in entity_type:
                 object: ROCrateModel = model(**entity)
@@ -107,3 +119,15 @@ def expand_entity(entity: dict, context: dict) -> str:
     expanded = pyld.jsonld.expand(document)
     assert len(expanded) == 1
     return expanded[0]
+
+
+def load_external_context(url) -> dict:
+    """
+    Load an external context from a URL.
+    """
+    try:
+        context = requests.get(url).json()
+        return context
+    except Exception as e:
+        logger.error(f"Failed to load context from {url}: {e}")
+        return {}

@@ -12,6 +12,9 @@ import json
 from rocrate.rocrate import read_metadata
 from rocrate_validator import services, models
 import pyld
+import pytest
+import urllib
+import requests
 
 
 def test_ro_crate_used_terms_are_defined(
@@ -24,7 +27,8 @@ def test_ro_crate_used_terms_are_defined(
     ro_crate_pydantic_models = inspect.getmembers(
         ro_crate_models,
         lambda member: inspect.isclass(member)
-        and member.__module__ == "bia_shared_datamodels.ro_crate_models",
+        and member.__module__ == "bia_shared_datamodels.ro_crate_models"
+        and issubclass(member, ROCrateModel.ROCrateModel),
     )
 
     for class_name, ldclass in ro_crate_pydantic_models:
@@ -35,6 +39,9 @@ def test_ro_crate_used_terms_are_defined(
         assert ldclass.model_config["model_type"] in ontology_classes
 
 
+@pytest.mark.parametrize(
+    "path_to_example_ro_crate", ["S-BIAD1494", "S-BIAD843"], indirect=True
+)
 def test_ro_crate_context_is_used_in_example(path_to_example_ro_crate):
 
     metadata_json = path_to_example_ro_crate / "ro-crate-metadata.json"
@@ -51,7 +58,8 @@ def test_ro_crate_context_is_used_in_example(path_to_example_ro_crate):
     ro_crate_pydantic_models = inspect.getmembers(
         ro_crate_models,
         lambda member: inspect.isclass(member)
-        and member.__module__ == "bia_shared_datamodels.ro_crate_models",
+        and member.__module__ == "bia_shared_datamodels.ro_crate_models"
+        and issubclass(member, ROCrateModel.ROCrateModel),
     )
 
     for name, ldclass in ro_crate_pydantic_models:
@@ -76,6 +84,9 @@ def test_ro_crate_context_is_used_in_example(path_to_example_ro_crate):
         assert embedded_ro_crate_document_context[key] == value
 
 
+@pytest.mark.parametrize(
+    "path_to_example_ro_crate", ["S-BIAD1494", "S-BIAD843"], indirect=True
+)
 def test_example_ro_crate_is_valid_ro_crate(path_to_example_ro_crate):
 
     settings = services.ValidationSettings(
@@ -91,6 +102,9 @@ def test_example_ro_crate_is_valid_ro_crate(path_to_example_ro_crate):
     read_metadata(path_to_example_ro_crate / "ro-crate-metadata.json")
 
 
+@pytest.mark.parametrize(
+    "path_to_example_ro_crate", ["S-BIAD1494", "S-BIAD843"], indirect=True
+)
 def test_objects_in_example_ro_crate_match_pydantic_models(
     path_to_example_ro_crate: Path,
 ):
@@ -103,10 +117,19 @@ def test_objects_in_example_ro_crate_match_pydantic_models(
     entities = metadata.get("@graph", [])
     context = metadata.get("@context", {})
 
+    # Loading context from url once, to avoid multiple requests
+    loaded_context = {}
+    for item in context:
+        if isinstance(item, str) and urllib.parse.urlparse(item):
+            loaded_context |= requests.get(item).json().get("@context", {})
+        elif isinstance(item, dict):
+            loaded_context |= item
+
     classes = inspect.getmembers(
         ro_crate_models,
         lambda member: inspect.isclass(member)
-        and member.__module__ == "bia_shared_datamodels.ro_crate_models",
+        and member.__module__ == "bia_shared_datamodels.ro_crate_models"
+        and issubclass(member, ROCrateModel.ROCrateModel),
     )
 
     def expand_entity(entity: dict, context: dict) -> str:
@@ -116,7 +139,7 @@ def test_objects_in_example_ro_crate_match_pydantic_models(
 
     for entity in entities:
         type_to_process = None
-        entity_types = expand_entity(entity, context).get("@type")
+        entity_types = expand_entity(entity, loaded_context).get("@type")
 
         for name, model in classes:
             if model.model_config["model_type"] in entity_types:

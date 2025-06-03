@@ -1,4 +1,4 @@
-from pydantic import Field, AnyUrl, ConfigDict
+from pydantic import Field, AnyUrl, ConfigDict, BaseModel
 from typing_extensions import Annotated, Optional
 from bia_shared_datamodels.linked_data.pydantic_ld.ROCrateModel import ROCrateModel
 from bia_shared_datamodels.linked_data.pydantic_ld.FieldContext import FieldContext
@@ -52,7 +52,12 @@ class Contributor(ROCrateModel):
         list[ObjectReference],
         FieldContext("http://schema.org/memberOf"),
     ] = Field(default_factory=list)
-    role: Annotated[str, FieldContext("http://bia/role")] = Field(default=None)
+    role: Annotated[list[str], FieldContext("http://bia/role")] = Field(
+        default_factory=list
+    )
+    contactEmail: Annotated[Optional[str], FieldContext("http://schema.org/email")] = (
+        Field(default=None)
+    )
 
     model_config = ConfigDict(model_type="http://bia/Contributor")
 
@@ -146,6 +151,10 @@ class Dataset(ROCrateModel):
 
 class Image(ROCrateModel):
 
+    resultOf: Annotated[
+        ObjectReference, FieldContext("http://bia/resultOf", isIdField=True)
+    ] = Field(default=None)
+
     model_config = ConfigDict(model_type="http://bia/Image")
 
 
@@ -226,7 +235,7 @@ class Taxon(ROCrateModel):
 # Protocols, Signal-channel information for specimen preparation
 
 
-class Protocol(ROCrateModel):
+class ProtocolMixin(BaseModel):
     title: Annotated[Optional[str], FieldContext("http://schema.org/name")] = Field(
         default=None
     )
@@ -234,10 +243,13 @@ class Protocol(ROCrateModel):
         str, FieldContext("http://schema.org/description")
     ] = Field()
 
+
+class Protocol(ProtocolMixin, ROCrateModel):
+
     model_config = ConfigDict(model_type="http://bia/Protocol")
 
 
-class SpecimenImagingPreparationProtocol(Protocol):
+class SpecimenImagingPreparationProtocol(ProtocolMixin, ROCrateModel):
     signalChannelInformation: Annotated[
         list[ObjectReference],
         FieldContext("http://bia/signalChannelInformation", isIdField=True),
@@ -265,7 +277,7 @@ class SignalChannelInformation(ROCrateModel):
     model_config = ConfigDict(model_type="http://bia/SignalChannel")
 
 
-class ImageAcquisitionProtocol(Protocol):
+class ImageAcquisitionProtocol(ProtocolMixin, ROCrateModel):
     imagingInstrumentDescription: Annotated[
         str, FieldContext("http://bia/imagingInstrumentDescription")
     ] = Field()
@@ -279,7 +291,7 @@ class ImageAcquisitionProtocol(Protocol):
     model_config = ConfigDict(model_type="http://bia/ImageAcquisitionProtocol")
 
 
-class AnnotationMethod(Protocol):
+class AnnotationMethod(ProtocolMixin, ROCrateModel):
     annotationCriteria: Annotated[
         Optional[str], FieldContext("http://bia/annotationCriteria")
     ] = Field(default=None)
@@ -293,8 +305,8 @@ class AnnotationMethod(Protocol):
         Optional[str], FieldContext("http://bia/spatialInformation")
     ] = Field(default=None)
     methodType: Annotated[
-        Optional[str], FieldContext("http://bia/annotationMethodType")
-    ] = Field(default=None)
+        list[str], FieldContext("http://bia/annotationMethodType")
+    ] = Field(default_factory=list)
     annotationSourceIndicator: Annotated[
         Optional[str], FieldContext("http://bia/annotationSourceIndicator")
     ] = Field(default=None)
@@ -302,7 +314,7 @@ class AnnotationMethod(Protocol):
     model_config = ConfigDict(model_type="http://bia/AnnotationMethod")
 
 
-class ImageAnyalysisMethod(Protocol):
+class ImageAnyalysisMethod(ProtocolMixin, ROCrateModel):
     featuresAnalysed: Annotated[
         Optional[str], FieldContext("http://bia/featuresAnalysed")
     ] = Field(default=None)
@@ -310,7 +322,7 @@ class ImageAnyalysisMethod(Protocol):
     model_config = ConfigDict(model_type="http://bia/ImageAnalysisMethod")
 
 
-class ImageCorrelationMethod(Protocol):
+class ImageCorrelationMethod(ProtocolMixin, ROCrateModel):
     fiducialsUsed: Annotated[
         Optional[str], FieldContext("http://bia/fiducialsUsed")
     ] = Field(default=None)

@@ -68,7 +68,6 @@ def dataset_attribute_links_with_uuids(
     additional_metadata = []
 
     field_attribute_pairs = [
-        ("associatedAnnotationMethod", "associated_annotation_method_uuid"),
         ("associatedImageAcquisitionProtocol", "image_acquisition_protocol_uuid"),
         (
             "associatedSpecimenImagingPreparationProtocol",

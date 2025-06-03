@@ -1,0 +1,23 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "0fd14666-8d57-4529-aa90-8c069f0e87de",
+  "version": 0,
+  "model": {
+    "type_name": "FileReference",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "data/images/confocal/WD2.1_21-02_WT_confocalonly.ome.zarr.zip 8770186"
+      }
+    }
+  ],
+  "file_path": "data/images/confocal/WD2.1_21-02_WT_confocalonly.ome.zarr.zip",
+  "format": ".zip",
+  "size_in_bytes": 8770186,
+  "uri": "None?",
+  "submission_dataset_uuid": "69c30a4d-7481-4e5f-b63b-d0d6b1fc01a1"
+}

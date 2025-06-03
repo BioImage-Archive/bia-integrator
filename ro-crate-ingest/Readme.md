@@ -15,7 +15,7 @@ Creates json BIA api objects for the objects in an ro-crate json.
 Example use:
 
 ```
-poetry run bia-ro-crate -c bia_ro_crate/model/example/S-BIAD1494/ro-crate-version
+poetry run ro-crate-ingest -c ../bia-shared-datamodels/src/bia_shared_datamodels/mock_ro_crate/S-BIAD1494
 ```
 
 This will create files for objects in the default cache location: ~/.cache/ro-crate-ingest

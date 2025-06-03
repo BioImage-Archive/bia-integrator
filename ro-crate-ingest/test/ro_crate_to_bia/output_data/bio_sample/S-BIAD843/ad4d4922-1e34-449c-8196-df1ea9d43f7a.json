@@ -1,0 +1,32 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "ad4d4922-1e34-449c-8196-df1ea9d43f7a",
+  "version": 0,
+  "model": {
+    "type_name": "BioSample",
+    "version": 4
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Wing disk"
+      }
+    }
+  ],
+  "title": "Wing disk",
+  "organism_classification": [
+    {
+      "additional_metadata": [],
+      "common_name": "fruit fly",
+      "scientific_name": "Drosophila melanogaster",
+      "ncbi_id": null
+    }
+  ],
+  "biological_entity_description": "Drosophila wing disc 3rd instar larvae",
+  "experimental_variable_description": [],
+  "extrinsic_variable_description": [],
+  "intrinsic_variable_description": [],
+  "growth_protocol_uuid": null
+}

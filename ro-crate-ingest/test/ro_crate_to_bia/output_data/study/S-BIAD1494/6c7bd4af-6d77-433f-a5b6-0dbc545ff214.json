@@ -33,7 +33,7 @@
         }
       ],
       "contact_email": null,
-      "role": null
+      "role": []
     },
     {
       "rorid": null,
@@ -50,7 +50,7 @@
         }
       ],
       "contact_email": null,
-      "role": null
+      "role": []
     }
   ],
   "title": "Immunofluorescence staining images of mouse embryonic stem cells and neuronal precursors with y-H2AX and 53BP1 foci",
