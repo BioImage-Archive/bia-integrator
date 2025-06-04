@@ -186,6 +186,14 @@
             "scientificName": {
                 "@id": "bia:scientificName"
             }
+        },
+        {
+            "timepoint": {
+                "@id": "_:timepoint"
+            },
+            "replicate": {
+                "@id": "_:replicate"
+            }
         }
     ],
     "@graph": [
