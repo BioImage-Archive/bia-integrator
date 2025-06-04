@@ -5,6 +5,7 @@ import bia_shared_datamodels.ro_crate_models as ro_crate_models
 import json
 import inspect
 from pathlib import Path
+import bia_shared_datamodels.linked_data.pydantic_ld.ROCrateModel as ROCrateModel
 
 
 def generate_bia_ro_crate_context(file_path: Path):
@@ -21,7 +22,8 @@ def generate_bia_ro_crate_context(file_path: Path):
     ro_crate_pydantic_models = inspect.getmembers(
         ro_crate_models,
         lambda member: inspect.isclass(member)
-        and member.__module__ == "bia_shared_datamodels.ro_crate_models",
+        and member.__module__ == "bia_shared_datamodels.ro_crate_models"
+        and issubclass(member, ROCrateModel.ROCrateModel),
     )
 
     for name, ldclass in ro_crate_pydantic_models:
