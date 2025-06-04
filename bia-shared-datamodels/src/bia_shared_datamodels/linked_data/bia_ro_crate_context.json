@@ -63,10 +63,10 @@
   "contactEmail": {
     "@id": "schema:email"
   },
-  "imageAcqusitionProtocol": {
+  "imageAcquisitionProtocol": {
     "@id": "bia:imageAcquisitionProtocol"
   },
-  "specimen": {
+  "subject": {
     "@id": "bia:subject"
   },
   "protocol": {
@@ -104,6 +104,9 @@
   },
   "associatedProtocol": {
     "@id": "bia:associatedProtocol"
+  },
+  "hasPart": {
+    "@id": "schema:hasPart"
   },
   "link": {
     "@id": "schema:url"
@@ -170,9 +173,6 @@
   },
   "acknowledgement": {
     "@id": "bia:acknowledgement"
-  },
-  "hasPart": {
-    "@id": "schema:hasPart"
   },
   "accessionId": {
     "@id": "schema:identifier"

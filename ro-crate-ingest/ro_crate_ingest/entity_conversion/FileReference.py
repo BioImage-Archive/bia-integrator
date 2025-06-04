@@ -21,11 +21,15 @@ def create_file_reference(
         if isinstance(obj, ROCrateModels.Dataset)
     )
 
+    logger.warning(
+        f"Creating file references but do not have a way to set the file URI yet. See TODO in {pathlib.Path(__file__)}."
+    )
+
     file_reference_list = []
     for dataset in ro_crate_datasets:
         file_paths = find_files(dataset, crate_path)
 
-        # TODO: deal with files not in datasets, and possibly edge cases like unzipped omezarrs.
+        # TODO: deal with files not in datasets, and possibly edge cases like unzipped omezarrs, or nested datasets paths.
 
         dataset_uuid = str(uuid_creation.create_dataset_uuid(study_uuid, dataset.id))
 
@@ -54,6 +58,7 @@ def create_api_file_reference(
     file_path: str, study_uuid: str, dataset_uuid: str, crate_path: pathlib.Path
 ) -> list[APIModels.FileReference]:
 
+    relative_path = pathlib.Path(file_path).relative_to(crate_path).as_posix()
     relative_path = pathlib.Path(file_path).relative_to(crate_path).as_posix()
 
     # TODO: Work out how file URI would be generated.
