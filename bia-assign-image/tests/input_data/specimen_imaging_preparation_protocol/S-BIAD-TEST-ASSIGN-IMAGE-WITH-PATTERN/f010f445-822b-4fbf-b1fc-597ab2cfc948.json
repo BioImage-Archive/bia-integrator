@@ -1,0 +1,21 @@
+{
+    "object_creator": "bia_ingest",
+    "title": "Test specimen imaging preparation protocol",
+    "uuid": "f010f445-822b-4fbf-b1fc-597ab2cfc948",
+    "protocol_description": "Test sample preparation protocol 1",
+    "signal_channel_information": [],
+    "version": 0,
+    "model": {
+        "type_name": "SpecimenImagingPreparationProtocol",
+        "version": 3
+    },
+    "additional_metadata": [
+        {
+            "provenance": "bia_ingest",
+            "name": "uuid_unique_input",
+            "value": {
+                "uuid_unique_input": "Specimen-1"
+            }
+        }
+    ]
+}

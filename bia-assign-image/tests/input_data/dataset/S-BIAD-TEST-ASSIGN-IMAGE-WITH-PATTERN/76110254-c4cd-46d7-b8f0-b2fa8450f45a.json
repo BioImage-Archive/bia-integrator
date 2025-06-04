@@ -1,0 +1,63 @@
+{
+    "object_creator": "submitter",
+    "uuid": "76110254-c4cd-46d7-b8f0-b2fa8450f45a",
+    "version": 0,
+    "model": {
+        "type_name": "Dataset",
+        "version": 2
+    },
+    "additional_metadata": [
+        {
+            "provenance": "bia_ingest",
+            "name": "image_acquisition_protocol_uuid",
+            "value": {
+                "image_acquisition_protocol_uuid": ["988458c2-898f-4568-9943-6958a3e3cd31"]
+            }
+        },
+        {
+            "provenance": "bia_ingest",
+            "name": "specimen_imaging_preparation_protocol_uuid",
+            "value": {
+                "specimen_imaging_preparation_protocol_uuid": ["f010f445-822b-4fbf-b1fc-597ab2cfc948"]
+            }
+        },
+        {
+            "provenance": "bia_ingest",
+            "name": "bio_sample_uuid",
+            "value": {
+                "bio_sample_uuid": ["ddeda6c9-8d3b-4ce6-b180-aedcb53067ef"]
+            }
+        },
+        {
+            "provenance": "bia_ingest",
+            "name": "associations",
+            "value": {
+                "image_analysis": "Test image analysis",
+                "image_correlation": null,
+                "biosample": "Test Biosample 1",
+                "image_acquisition": "Test Primary Screen Image Acquisition",
+                "specimen": "Test specimen 1"
+            }
+        },
+        {
+            "provenance": "bia_ingest",
+            "name": "uuid_unique_input",
+            "value": {
+                "uuid_unique_input": "Study Component-1"
+            }
+        }
+    ],
+    "analysis_method": [
+        {
+            "title": "Test image analysis",
+            "protocol_description": "Test image analysis overview",
+            "features_analysed": "Test features analysed",
+            "additional_metadata": []
+        }
+    ],
+    "title": "3D multichannel time series in separate files",
+    "description": "Study component with files of the form image_{%d}_channel{%d}_slice{%d}_time{%d} to test assigning and converting images with patterns",
+    "submitted_in_study_uuid": "d29bb865-6adc-4ea0-ab5e-04d7fa81b762",
+    "correlation_method": [],
+    "example_image_uri": []
+}

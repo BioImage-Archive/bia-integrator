@@ -30,17 +30,36 @@ def get_image_representation(
         file_reference_uuids_from_image == file_reference_uuids_passed_to_func
     ), assertion_error_msg
 
-    total_size_in_bytes = 0
-    # Get image format. Assume this is determined by the file_uri. If not present use file reference
-    if file_uri == "":
-        # TODO: Revisit this block of code when we start many file_refs->one_image
-        # assert len(file_references) == 1
-        image_format = get_image_extension(file_references[0].file_path)
-
-    else:
-        image_format = get_image_extension(file_uri)
-
     total_size_in_bytes = file_references[0].size_in_bytes
+    additional_metadata = []
+    file_uri_list = [
+        file_references[0].uri,
+    ]
+
+    # Get image format. Assume this is determined by the file_uri. Except when dealing with uploaded by submitter representation
+    # Assumption that if creator is bia_assign_image we are dealing with uploaded by submitter rep.
+    image_format = get_image_extension(file_uri)
+    if (
+        file_uri == ""
+        and object_creator == semantic_models.Provenance.bia_image_assignment
+    ):
+        # TODO: Confirm convention below with BIA team i.e. csv of sorted unique image formats
+        image_format_list = [get_image_extension(f.file_path) for f in file_references]
+        image_format_set = set(image_format_list)
+        image_format_list = list(image_format_set)
+        image_format_list.sort()
+        image_format = ",".join(image_format_list)
+
+        # Sum size of all file references
+        total_size_in_bytes = sum([f.size_in_bytes for f in file_references])
+
+        # Set file uri as list of uris of all file references
+        file_uri_list = [f.uri for f in file_references]
+    else:
+        file_uri_list = [
+            file_uri,
+        ]
+
     # TODO: Discuss if we still want to do this after 2025_04 model change
     ## Copy file_pattern from image if it exists (only for UPLOADED_BY_SUBMITTER rep)
     # file_pattern = next(
@@ -63,14 +82,6 @@ def get_image_representation(
         unique_string,
     )
 
-    file_uri_list = []
-    if file_uri == "":
-        file_uri_list.append(
-            file_references[0].uri,
-        )
-    else:
-        file_uri_list.append(file_uri)
-
     model_dict = {
         "uuid": image_representation_uuid,
         "version": 0,
@@ -79,7 +90,7 @@ def get_image_representation(
         "total_size_in_bytes": total_size_in_bytes,
         "image_format": image_format,
         "object_creator": object_creator,
-        "additional_metadata": [],
+        "additional_metadata": additional_metadata,
     }
 
     unique_string_dict = {

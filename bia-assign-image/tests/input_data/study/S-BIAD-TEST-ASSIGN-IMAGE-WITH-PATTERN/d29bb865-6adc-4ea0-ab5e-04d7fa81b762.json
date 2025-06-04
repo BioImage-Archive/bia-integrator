@@ -1,14 +1,19 @@
 {
   "object_creator": "bia_ingest",
-  "uuid": "8cdee837-8a13-44b7-82a1-cf26509095d0",
+  "uuid": "d29bb865-6adc-4ea0-ab5e-04d7fa81b762",
   "version": 0,
   "model": {
     "type_name": "Study",
     "version": 3
   },
   "additional_metadata": [
+    {
+      "provenance": "submitter",
+      "name": "file_list_columns",
+      "value": {}
+    }
   ],
-  "accession_id": "S-BIAD-MAP-IMAGE-RELATED-ARTEFACTS-TO-2025-04-MODELS-TEST",
+  "accession_id": "S-BIAD-TEST-ASSIGN-IMAGE-WITH-PATTERN",
   "licence": "https://creativecommons.org/publicdomain/zero/1.0/",
   "author": [
     {
@@ -29,7 +34,7 @@
       "role": ["contributing author"]
     }
   ],
-  "title": "Test study to test mapping of assigned images to 2025/04 models",
+  "title": "A test submission with images of the form image_{%d}_channel{%d}_slice{%d}_time{%d} to test assigning and converting images with patterns",
   "release_date": "2024-06-23",
   "description": "Template description",
   "keyword": [

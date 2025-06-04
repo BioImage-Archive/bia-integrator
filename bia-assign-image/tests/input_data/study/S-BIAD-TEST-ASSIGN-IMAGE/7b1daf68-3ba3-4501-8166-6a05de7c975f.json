@@ -31,7 +31,7 @@
         }
       ],
       "contact_email": "contributor1@org1.ac.uk",
-      "role": "contributing author"
+      "role": ["contributing author"]
     }
   ],
   "title": "Test study to test basic operation of bia_assign_image module",
