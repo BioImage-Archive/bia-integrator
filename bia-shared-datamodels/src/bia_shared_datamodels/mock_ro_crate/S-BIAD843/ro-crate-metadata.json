@@ -186,6 +186,11 @@
             "scientificName": {
                 "@id": "bia:scientificName"
             }
+        },
+        {
+            "genotype": {
+                "@id": "_:genotype"
+            }
         }
     ],
     "@graph": [
