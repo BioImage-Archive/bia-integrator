@@ -142,6 +142,9 @@ class Dataset(ROCrateModel):
         list[ObjectReference],
         FieldContext("http://bia/associatedProtocol", isIdField=True),
     ] = Field(default_factory=list)
+    hasPart: Annotated[
+        list[ObjectReference], FieldContext("http://schema.org/hasPart", isIdField=True)
+    ] = Field(default_factory=list)
 
     model_config = ConfigDict(model_type="http://bia/Dataset")
 
@@ -174,11 +177,11 @@ class Specimen(ROCrateModel):
 
 
 class CreationProcess(ROCrateModel):
-    imageAcqusitionProtocol: Annotated[
+    imageAcquisitionProtocol: Annotated[
         list[ObjectReference],
         FieldContext("http://bia/imageAcquisitionProtocol", isIdField=True),
     ] = Field(default_factory=list)
-    specimen: Annotated[
+    subject: Annotated[
         Optional[ObjectReference], FieldContext("http://bia/subject", isIdField=True)
     ] = Field(default=None)
     protocol: Annotated[

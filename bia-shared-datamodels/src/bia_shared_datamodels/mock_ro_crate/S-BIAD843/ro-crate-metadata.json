@@ -66,10 +66,10 @@
             "contactEmail": {
                 "@id": "schema:email"
             },
-            "imageAcqusitionProtocol": {
+            "imageAcquisitionProtocol": {
                 "@id": "bia:imageAcquisitionProtocol"
             },
-            "specimen": {
+            "subject": {
                 "@id": "bia:subject"
             },
             "protocol": {
@@ -107,6 +107,9 @@
             },
             "associatedProtocol": {
                 "@id": "bia:associatedProtocol"
+            },
+            "hasPart": {
+                "@id": "schema:hasPart"
             },
             "link": {
                 "@id": "schema:url"
@@ -174,9 +177,6 @@
             "acknowledgement": {
                 "@id": "bia:acknowledgement"
             },
-            "hasPart": {
-                "@id": "schema:hasPart"
-            },
             "accessionId": {
                 "@id": "schema:identifier"
             },
@@ -185,9 +185,6 @@
             },
             "scientificName": {
                 "@id": "bia:scientificName"
-            },
-            "genotype": {
-                "@id": "_:genotype"
             }
         }
     ],
@@ -236,30 +233,6 @@
                 },
                 {
                     "@id": "data/images/MP/"
-                },
-                {
-                    "@id": "data/images/confocal/WD1_15-02_WT_confocalonly.ome.zarr.zip"
-                },
-                {
-                    "@id": "data/images/confocal/WD2.1_21-02_WT_confocalonly.ome.zarr.zip"
-                },
-                {
-                    "@id": "data/images/MP/WD1.1_17-03_WT_MP.ome.zarr.zip"
-                },
-                {
-                    "@id": "data/images/MP/WD3.2_21-03_WT_MP.ome.zarr.zip"
-                },
-                {
-                    "@id": "data/annotations/WD1_15-02_WT_confocalonly_segmented.ome.zarr.zip"
-                },
-                {
-                    "@id": "data/annotations/WD2.1_21-02_WT_confocalonly_segmented.ome.zarr.zip"
-                },
-                {
-                    "@id": "data/annotations/WD1.1_17-03_WT_MP_segmented.ome.zarr.zip"
-                },
-                {
-                    "@id": "data/annotations/WD3.2_21-03_WT_MP_segmented.ome.zarr.zip"
                 }
             ]
         },
@@ -412,7 +385,9 @@
             "protocolDescription": "Cellpose (a generalist algorithm for cell segmentation) was used to predict the annotations. Then, using napari, images were corrected.",
             "annotationCriteria": "Individual cells were labelled in 3D",
             "annotationCoverage": "100% of available data was annotated",
-            "methodType": ["segmentation mask"]
+            "methodType": [
+                "segmentation mask"
+            ]
         },
         {
             "@id": "data/annotations/WD1_15-02_WT_confocalonly_segmented.ome.zarr.zip",
@@ -532,7 +507,15 @@
                     "@id": "Confocal imaging"
                 }
             ],
-            "genotype": "; ubiCAAX-GFP/+ ; neuPH-RFP/+"
+            "genotype": "; ubiCAAX-GFP/+ ; neuPH-RFP/+",
+            "hasPart": [
+                {
+                    "@id": "data/images/confocal/WD1_15-02_WT_confocalonly.ome.zarr.zip"
+                },
+                {
+                    "@id": "data/images/confocal/WD2.1_21-02_WT_confocalonly.ome.zarr.zip"
+                }
+            ]
         },
         {
             "@id": "data/images/MP/",
@@ -556,7 +539,15 @@
                     "@id": "Multi-photon imaging"
                 }
             ],
-            "genotype": "; ubiCAAX-GFP/+ ; neuPH-RFP/+"
+            "genotype": "; ubiCAAX-GFP/+ ; neuPH-RFP/+",
+            "hasPart": [
+                {
+                    "@id": "data/images/MP/WD1.1_17-03_WT_MP.ome.zarr.zip"
+                },
+                {
+                    "@id": "data/images/MP/WD3.2_21-03_WT_MP.ome.zarr.zip"
+                }
+            ]
         },
         {
             "@id": "data/annotations/",
@@ -568,6 +559,20 @@
             "associatedAnnotationMethod": [
                 {
                     "@id": "Cellpose segmentation masks"
+                }
+            ],
+            "hasPart": [
+                {
+                    "@id": "data/annotations/WD1_15-02_WT_confocalonly_segmented.ome.zarr.zip"
+                },
+                {
+                    "@id": "data/annotations/WD2.1_21-02_WT_confocalonly_segmented.ome.zarr.zip"
+                },
+                {
+                    "@id": "data/annotations/WD1.1_17-03_WT_MP_segmented.ome.zarr.zip"
+                },
+                {
+                    "@id": "data/annotations/WD3.2_21-03_WT_MP_segmented.ome.zarr.zip"
                 }
             ]
         },

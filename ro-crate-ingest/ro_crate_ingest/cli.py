@@ -11,6 +11,7 @@ from ro_crate_ingest.entity_conversion import (
     SpecimenImagingPreparationProtocol,
     Study,
     FileReference,
+    Image,
 )
 from pathlib import Path
 from rich.logging import RichHandler
@@ -98,6 +99,11 @@ def convert(
         persistence_mode,
     )
     api_objects += specimen_imaging_preparation_protocols
+
+    # TODO: Handle dependency tree for images and creation processes, expecially when annotation images are explicitly included, but original images are not.
+    image_file_refs, creation_processes, images = Image.create_image_and_dependencies(
+        entities, study_uuid, crate_path
+    )
 
     file_references = FileReference.create_file_reference(
         entities, study_uuid, crate_path
