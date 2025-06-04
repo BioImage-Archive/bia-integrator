@@ -36,29 +36,26 @@ def get_image_representation(
         file_references[0].uri,
     ]
 
-    # Get image format. Assume this is determined by the file_uri. If not present use file reference
-    if file_uri == "":
-        if object_creator == semantic_models.Provenance.bia_image_assignment:
-            # TODO: Confirm convention below with BIA team i.e. csv of sorted unique image formats
-            image_format_list = [
-                get_image_extension(f.file_path) for f in file_references
-            ]
-            image_format_set = set(image_format_list)
-            image_format_list = list(image_format_set)
-            image_format_list.sort()
-            image_format = ",".join(image_format_list)
+    # Get image format. Assume this is determined by the file_uri. Except when dealing with uploaded by submitter representation
+    # Assumption that if creator is bia_assign_image we are dealing with uploaded by submitter rep.
+    image_format = get_image_extension(file_uri)
+    if (
+        file_uri == ""
+        and object_creator == semantic_models.Provenance.bia_image_assignment
+    ):
+        # TODO: Confirm convention below with BIA team i.e. csv of sorted unique image formats
+        image_format_list = [get_image_extension(f.file_path) for f in file_references]
+        image_format_set = set(image_format_list)
+        image_format_list = list(image_format_set)
+        image_format_list.sort()
+        image_format = ",".join(image_format_list)
 
-            # Sum size of all file references
-            total_size_in_bytes = sum([f.size_in_bytes for f in file_references])
+        # Sum size of all file references
+        total_size_in_bytes = sum([f.size_in_bytes for f in file_references])
 
-            # Set file uri as list of uris of all file references
-            file_uri_list = [f.uri for f in file_references]
-
-        else:
-            # We do not set image_format
-            pass
+        # Set file uri as list of uris of all file references
+        file_uri_list = [f.uri for f in file_references]
     else:
-        image_format = get_image_extension(file_uri)
         file_uri_list = [
             file_uri,
         ]

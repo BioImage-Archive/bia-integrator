@@ -121,7 +121,7 @@ def test_cli_assign_from_proposal_command(
     expected_uploaded_by_submitter_representation_2channels,
 ):
     # This implicitly tests the 'assign' and 'create' commands
-    runner = CliRunner(mix_stderr=False)
+    runner = CliRunner()
 
     result = runner.invoke(
         cli.app,
@@ -173,7 +173,7 @@ def test_cli_assign_command_with_pattern(
     expected_uploaded_by_submitter_representation_1channel,
 ):
     # This implicitly tests the 'assign' and 'create' commands
-    runner = CliRunner(mix_stderr=False)
+    runner = CliRunner()
 
     result = runner.invoke(
         cli.app,

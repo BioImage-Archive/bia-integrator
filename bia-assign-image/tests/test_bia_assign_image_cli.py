@@ -133,7 +133,7 @@ def test_cli_assign_from_proposal_command(
     expected_uploaded_by_submitter_representation,
 ):
     # This implicitly tests the 'assign' and 'create' commands
-    runner = CliRunner(mix_stderr=False)
+    runner = CliRunner()
 
     if format == "tsv":
         assign_from_proposal_input_path = f"{assign_from_proposal_input_path_tsv}"
