@@ -4,6 +4,19 @@ from bia_assign_image.cli import assign
 from bia_assign_image.api_client import get_api_client, store_object_in_api_idempotent
 
 
+def contains_displayable_image_representation(file_reference_mapping: dict) -> bool:
+    displayable_image_representations = [
+        "THUMBNAIL",
+        "STATIC_DISPLAY",
+        "INTERACTIVE_DISPLAY",
+    ]
+    assert "image_representation" in file_reference_mapping
+    for image_representation in file_reference_mapping["image_representation"]:
+        if image_representation["use_type"] in displayable_image_representations:
+            return True
+    return False
+
+
 def map_image_to_2025_04_model(
     old_image_dict: dict,
     accession_id: str,
@@ -53,7 +66,9 @@ def map_image_representation_to_2025_04_model(
         uploaded_by_submitter_rep_uuid = uuid_creation.create_image_representation_uuid(
             study_uuid, unique_string=f"{image_2025_04_uuid}"
         )
-        conversion_function = "{'conversion_function': 'map_image_representation_to_2025_04_model'}"
+        conversion_function = (
+            "{'conversion_function': 'map_image_representation_to_2025_04_model'}"
+        )
         unique_string = f"{uploaded_by_submitter_rep_uuid} {conversion_function}"
         object_creator = "bia_image_conversion"
     else:
@@ -187,7 +202,7 @@ def map_image_related_artefacts_to_2025_04_models(
             }
         )
         image_2025_04.additional_metadata.append(static_display_uri)
-        
+
     if rep_of_image_converted_to_ome_zarr_2025_04:
         recommended_vizarr_representation = attribute_models.Attribute.model_validate(
             {
@@ -200,8 +215,11 @@ def map_image_related_artefacts_to_2025_04_models(
         )
         image_2025_04.additional_metadata.append(recommended_vizarr_representation)
 
-
-    if thumbnail_rep or static_display_rep or rep_of_image_converted_to_ome_zarr_2025_04:
+    if (
+        thumbnail_rep
+        or static_display_rep
+        or rep_of_image_converted_to_ome_zarr_2025_04
+    ):
         # image_2025_04.version += 1
         api_client = get_api_client(api_target)
         store_object_in_api_idempotent(

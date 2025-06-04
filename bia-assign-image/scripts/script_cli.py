@@ -10,6 +10,7 @@ from bia_assign_image.api_client import (
 )
 from scripts.map_image_related_artefacts_to_2025_04_models import (
     map_image_related_artefacts_to_2025_04_models,
+    contains_displayable_image_representation,
 )
 
 import logging
@@ -66,6 +67,13 @@ def map_to_2025_04_models(
     for counter, file_reference_mapping in enumerate(
         file_reference_mappings.values(), start=1
     ):
+        # Only process if mapping contains displayable image representations
+        if not contains_displayable_image_representation(file_reference_mapping):
+            image_uuid = file_reference_mapping["uuid"]
+            logger.info(
+                f"Skipping mapping {counter} of {n_file_reference_mappings} with image_uuid {image_uuid} as it does not contain displayable image representations"
+            )
+            continue
         # file_references = image_to_process.pop("file_references", {})
         # image_representations = image_to_process.pop("image_representation", {})
         accession_id = _get_accession_id(file_reference_mapping)
