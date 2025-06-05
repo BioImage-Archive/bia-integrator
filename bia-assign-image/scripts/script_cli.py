@@ -81,11 +81,16 @@ def map_to_2025_04_models(
             f"Processing mapping {counter} of {n_file_reference_mappings} with accession ID: {accession_id}"
         )
         if accession_id:
-            mapped_artefacts = map_image_related_artefacts_to_2025_04_models(
-                file_reference_mapping,
-                accession_id,
-                api_target,
-            )
+            try:
+                mapped_artefacts = map_image_related_artefacts_to_2025_04_models(
+                    file_reference_mapping,
+                    accession_id,
+                    api_target,
+                )
+            except AssertionError as e:
+                logger.error(f"Error while processing {accession_id}: {e}")
+                mapped_artefacts = None
+                continue
             if mapped_artefacts.get("representation_of_image_uploaded_by_submitter"):
                 store_object_in_api_idempotent(
                     api_client,

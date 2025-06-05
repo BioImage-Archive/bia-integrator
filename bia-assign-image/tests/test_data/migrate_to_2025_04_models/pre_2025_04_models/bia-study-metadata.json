@@ -1,0 +1,486 @@
+{
+    "S-BIAD-MAP-IMAGE-RELATED-ARTEFACTS-TO-2025-04-MODELS-TEST": {
+        "uuid": "87089e93-1775-45b9-8695-190630681c3b",
+        "version": 0,
+        "model": {
+            "type_name": "Study",
+            "version": 2
+        },
+        "attribute": [
+            {
+                "provenance": "bia_ingest",
+                "name": "biostudies json/pagetab entry",
+                "value": {
+                    "json": "https://www.ebi.ac.uk/biostudies/files/S-BIAD-MAP-IMAGE-RELATED-ARTEFACTS-TO-2025-04-MODELS-TEST/S-BIAD-MAP-IMAGE-RELATED-ARTEFACTS-TO-2025-04-MODELS-TEST.json",
+                    "pagetab": "https://www.ebi.ac.uk/biostudies/files/S-BIAD-MAP-IMAGE-RELATED-ARTEFACTS-TO-2025-04-MODELS-TEST/S-BIAD-MAP-IMAGE-RELATED-ARTEFACTS-TO-2025-04-MODELS-TEST.tsv"
+                }
+            }
+        ],
+        "accession_id": "S-BIAD-MAP-IMAGE-RELATED-ARTEFACTS-TO-2025-04-MODELS-TEST",
+        "licence": "CC0",
+        "author": [
+            {
+                "rorid": null,
+                "address": null,
+                "website": null,
+                "orcid": null,
+                "display_name": "Amir Arabzade",
+                "affiliation": [
+                    {
+                        "rorid": null,
+                        "address": null,
+                        "website": null,
+                        "display_name": "St. Jude Children's Research Hospital"
+                    }
+                ],
+                "contact_email": "aarabzad@stjude.org",
+                "role": "first author"
+            },
+            {
+                "rorid": null,
+                "address": null,
+                "website": null,
+                "orcid": null,
+                "display_name": "David Baggett",
+                "affiliation": [
+                    {
+                        "rorid": null,
+                        "address": null,
+                        "website": null,
+                        "display_name": "St. Jude Children's Research Hospital"
+                    }
+                ],
+                "contact_email": "dbaggett@stjude.org",
+                "role": "data analyst"
+            },
+            {
+                "rorid": null,
+                "address": null,
+                "website": null,
+                "orcid": null,
+                "display_name": "Hazheen Shirnekhi",
+                "affiliation": [
+                    {
+                        "rorid": null,
+                        "address": null,
+                        "website": null,
+                        "display_name": "St. Jude Children's Research Hospital"
+                    }
+                ],
+                "contact_email": "h.shirnekhi@gmail.com",
+                "role": "data acquisition"
+            },
+            {
+                "rorid": null,
+                "address": null,
+                "website": null,
+                "orcid": null,
+                "display_name": "Minjeong Jo",
+                "affiliation": [
+                    {
+                        "rorid": null,
+                        "address": null,
+                        "website": null,
+                        "display_name": "St. Jude Children's Research Hospital"
+                    }
+                ],
+                "contact_email": "mjo@stjude.org",
+                "role": "data acquisition"
+            },
+            {
+                "rorid": null,
+                "address": null,
+                "website": null,
+                "orcid": null,
+                "display_name": "Stephen Mack",
+                "affiliation": [
+                    {
+                        "rorid": null,
+                        "address": null,
+                        "website": null,
+                        "display_name": "St. Jude Children's Research Hospital"
+                    }
+                ],
+                "contact_email": "smack@stjude.org",
+                "role": "principal investigator"
+            },
+            {
+                "rorid": null,
+                "address": null,
+                "website": null,
+                "orcid": null,
+                "display_name": "Richard Kriwacki",
+                "affiliation": [
+                    {
+                        "rorid": null,
+                        "address": null,
+                        "website": null,
+                        "display_name": "St. Jude Children's Research Hospital"
+                    }
+                ],
+                "contact_email": "rkriwack@stjude.org",
+                "role": "principal investigator"
+            }
+        ],
+        "title": "ZFTA_RELA HEK293T Puncta Studies",
+        "release_date": "2025-01-27",
+        "description": "Studies examining the puncta formation ability of ZFTA_RELA, and mutants with altered IDR3 domains.",
+        "keyword": [
+            "Condensate",
+            "Oncogene"
+        ],
+        "acknowledgement": "We would like to acknowledge the NBTS, CERN foundation, and Robert Connor Dawes Foundation for their ongoing support of brain tumor research, including ependymoma.",
+        "see_also": [],
+        "related_publication": [],
+        "grant": [
+            {
+                "id": "U54CA243124",
+                "funder": []
+            },
+            {
+                "id": "U01CA294103",
+                "funder": []
+            },
+            {
+                "id": "R01CA246125",
+                "funder": []
+            },
+            {
+                "id": "P30CA021765",
+                "funder": []
+            }
+        ],
+        "funding_statement": "We acknowledge support from NIH, including U54CA243124 (to R.W.K), U01CA294103 (to S.M. and R.W.K.), R01CA246125 (to R.W.K.), and P30CA021765 (C. Roberts, PI), and ALSAC.",
+        "dataset": [
+            {
+                "image_count": 6,
+                "file_reference_count": 1963,
+                "file_reference_size_bytes": 530175344194,
+                "file_type_counts": {
+                    "file": 1963
+                },
+                "title_id": "Image analysis of HEK293T Cells with GFP-ZFTA::RELA constructs",
+                "uuid": "b923cb0b-663c-4e5a-801d-0332b5bf3740",
+                "version": 1,
+                "model": {
+                    "type_name": "Dataset",
+                    "version": 1
+                },
+                "attribute": [
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "associations",
+                        "value": {
+                            "associations": [
+                                {
+                                    "image_analysis": "Quantification of distinct fluorescent puncta within individual nuclei.",
+                                    "image_correlation": null,
+                                    "biosample": "ZFTA_RELA HEK293T Puncta Studies",
+                                    "image_acquisition": "ZFTA_RELA HEK293T Puncta Studies",
+                                    "specimen": "HEK293T Cells"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "image_acquisition_protocol_uuid",
+                        "value": {
+                            "image_acquisition_protocol_uuid": [
+                                "29fa6be5-c80c-43e0-836e-08799b1bed70"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "specimen_imaging_preparation_protocol_uuid",
+                        "value": {
+                            "specimen_imaging_preparation_protocol_uuid": [
+                                "b58852a2-ccfc-4e2d-8414-d0ab20209614"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "bio_sample_uuid",
+                        "value": {
+                            "bio_sample_uuid": [
+                                "6462dc52-8406-4e10-a195-4b3431afc42d"
+                            ]
+                        }
+                    }
+                ],
+                "description": "Image analysis done using the punctatools pipeline to establish puncta density in experiments probing the effects of various mutations on the ability of ZFTA_RELA to form cellular puncta.",
+                "analysis_method": [
+                    {
+                        "attribute": [],
+                        "protocol_description": "Quantification of distinct fluorescent puncta within individual nuclei.",
+                        "features_analysed": "Images were exported as tiff files and background corrected with a flat subtraction of 100 intensity.  Following background correction, Cellpose was used to segment individual nuclei using the Hoechst channel for each Z-slice.  Cellpose labels were consolidated by unifying masks with the greatest overlap, provided that any overlapping mask was more than 50% of each stack's area.  After Segmentation, out-of focus z-stacks were removed by calculating normalized variance across all images in the z-stack using code from https://sites.google.com/site/qingzongtseng/find-focus#h.plx6cfnctssk, then removing those z-stacks with less than 80% of the maximal normalized variance value in that z-stack, and returning the largest contiguous section of remaining z-slices.  After trimming out-of focus z-slices, each nuclei was segmented for puncta.   For each nucleus: voxels in the bottom 95% of intensity values were removed, as well as all voxels with less than twice the median intensity value. Of the remaining pixels, those not adjacent to any other pixel were also removed.   The resulting image was blurred using a gaussian filter, then segmented using cellpose.  Puncta within a nucleus were combined across z-stacks using the same algorithm that evaluated overlap across z-stacks.  Nuclei properties such as # of puncta per nuclei were then calculated using the analysis code published in Baggett et. al.."
+                    }
+                ],
+                "correlation_method": [],
+                "example_image_uri": [
+                    "https://updated_example_image_uri"
+                ],
+                "submitted_in_study_uuid": "87089e93-1775-45b9-8695-190630681c3b",
+                "acquisition_process": [
+                    {
+                        "default_open": true,
+                        "title_id": "ZFTA_RELA HEK293T Puncta Studies",
+                        "uuid": "29fa6be5-c80c-43e0-836e-08799b1bed70",
+                        "version": 0,
+                        "model": {
+                            "type_name": "ImageAcquisitionProtocol",
+                            "version": 2
+                        },
+                        "attribute": [],
+                        "protocol_description": "3D images of cells were captured as z stacks with 0.2\u2009mm spacing between planes, spanning 12.2\u2009mm in total. Live cells were imaged at 37\u2009\u00b0C in phenol red-free DMEM with high glucose (Gibco) supplemented with 1\u00d7 penicillin/streptomycin, 10% fetal bovine serum, 4 mM l-Glutamine, and 25\u2009mM HEPES",
+                        "imaging_instrument_description": "3i Marianas system configured with a Yokogawa CSU-W spinning disk confocal microscope utilizing a 100x Zeiss objective, 405\u2009nm (Hoechst) and 488\u2009nm (mEGFP) laser lines, and Slidebook (RRID:SCR_014300) 6.0 (3i). ",
+                        "fbbi_id": [],
+                        "imaging_method_name": [
+                            "confocal microscopy"
+                        ]
+                    }
+                ],
+                "specimen_imaging_preparation_protocol": [
+                    {
+                        "default_open": true,
+                        "title_id": "HEK293T Cells",
+                        "uuid": "b58852a2-ccfc-4e2d-8414-d0ab20209614",
+                        "version": 0,
+                        "model": {
+                            "type_name": "SpecimenImagingPreparationProtocol",
+                            "version": 2
+                        },
+                        "attribute": [],
+                        "protocol_description": "Transfections were done using FuGENE HD transfection reagent (Promega, E2311) according to the manufacturer\u2019s instructions. Briefly, for fixed cell experiments, cells were seeded to a density of 60-70% in a 6-well plate on the day before transfection. For each transfection, 3 ug of endotoxin-free plasmid was mixed with 97 uL of Opti-mem (Gibco 11058021), mixed and incubated at room temperature for 5 minutes. For live cell confocal microscopy, cells were transfected in a 96 well plate with 100 ng of plasmid DNA in the CL20 vector backbone using FuGENE HD per the manufacturer\u2019s instructions. All FOs were transfected under identical conditions (e.g., same amount of plasmid, same protocol, same incubation period).",
+                        "signal_channel_information": []
+                    }
+                ],
+                "biological_entity": [
+                    {
+                        "default_open": true,
+                        "title_id": "ZFTA_RELA HEK293T Puncta Studies",
+                        "uuid": "6462dc52-8406-4e10-a195-4b3431afc42d",
+                        "version": 0,
+                        "model": {
+                            "type_name": "BioSample",
+                            "version": 3
+                        },
+                        "attribute": [],
+                        "organism_classification": [
+                            {
+                                "attribute": [],
+                                "common_name": "human",
+                                "scientific_name": "Homo sapiens",
+                                "ncbi_id": null
+                            }
+                        ],
+                        "biological_entity_description": "HEK293T cells",
+                        "experimental_variable_description": [
+                            "GFP-tagged construct"
+                        ],
+                        "extrinsic_variable_description": [],
+                        "intrinsic_variable_description": [],
+                        "growth_protocol_uuid": "e7b50e8c-9e63-4ae5-9f8c-5d8476ff4e52",
+                        "growth_protocol": {
+                            "title_id": "HEK293T Cells",
+                            "uuid": "e7b50e8c-9e63-4ae5-9f8c-5d8476ff4e52",
+                            "version": 0,
+                            "model": {
+                                "type_name": "Protocol",
+                                "version": 2
+                            },
+                            "attribute": [],
+                            "protocol_description": "HEK293T lines were grown on tissue culture treated plates using DMEM media supplemented with FBS, Sodium pyruvate, glutamine and Primocin. All lines tested negative for Mycoplasma contamination, as assessed using a PCR based approach. Cell lines were confirmed to be authentic and unique by short tandem repeat fingerprinting."
+                        }
+                    }
+                ],
+                "annotation_process": [],
+                "other_creation_process": [],
+                "image": [
+                    {
+                        "uuid": "48df6267-4dbe-4c59-a078-4e8ec47632f6",
+                        "version": 0,
+                        "model": {
+                            "type_name": "Image",
+                            "version": 1
+                        },
+                        "attribute": [
+                            {
+                                "provenance": "bia_conversion",
+                                "name": "attributes_from_file_reference_f15cfaa2-1dc1-47b7-b6b3-053f7be65f3e",
+                                "value": {
+                                    "attributes": {
+                                        "Description": "Analysis results of the punctatools pipeline of the corresponding RAW_Tiff image: The first two channels show hoechst stain and GFP signal, then Cellpose masks of nuclei, finally  masks of individual puncta"
+                                    }
+                                }
+                            }
+                        ],
+                        "submission_dataset_uuid": "b923cb0b-663c-4e5a-801d-0332b5bf3740",
+                        "creation_process_uuid": "c2d1d25f-ec85-4f6e-97f0-3ce1a34cb660",
+                        "original_file_reference_uuid": [
+                            "f15cfaa2-1dc1-47b7-b6b3-053f7be65f3e"
+                        ]
+                    },
+                    {
+                        "uuid": "505d6c05-06e4-4364-b018-d313e7ffdd05",
+                        "version": 0,
+                        "model": {
+                            "type_name": "Image",
+                            "version": 1
+                        },
+                        "attribute": [
+                            {
+                                "provenance": "bia_conversion",
+                                "name": "attributes_from_file_reference_2003dd6e-ca69-4605-b603-646a43227bb3",
+                                "value": {
+                                    "attributes": {
+                                        "Description": "Raw acquisition data for experiments probing the deletion of IDRs of ZFTA::RELA"
+                                    }
+                                }
+                            }
+                        ],
+                        "submission_dataset_uuid": "b923cb0b-663c-4e5a-801d-0332b5bf3740",
+                        "creation_process_uuid": "72252391-8617-48ff-8fc2-00174a4edf94",
+                        "original_file_reference_uuid": [
+                            "2003dd6e-ca69-4605-b603-646a43227bb3"
+                        ]
+                    },
+                    {
+                        "uuid": "71131196-9535-4749-b2c7-ffd58a8e03f5",
+                        "version": 0,
+                        "model": {
+                            "type_name": "Image",
+                            "version": 1
+                        },
+                        "attribute": [
+                            {
+                                "provenance": "bia_conversion",
+                                "name": "attributes_from_file_reference_b74b5d6b-7a29-4646-a1b7-b5de8d89eb52",
+                                "value": {
+                                    "attributes": {
+                                        "Description": "Raw acquisition data for experiments probing the mutation of residues in ZFTA::RELA to GS on the formation of nuclear puncta"
+                                    }
+                                }
+                            }
+                        ],
+                        "submission_dataset_uuid": "b923cb0b-663c-4e5a-801d-0332b5bf3740",
+                        "creation_process_uuid": "e7704b39-6a09-4d0d-8628-8597b4e23d9c",
+                        "original_file_reference_uuid": [
+                            "b74b5d6b-7a29-4646-a1b7-b5de8d89eb52"
+                        ]
+                    },
+                    {
+                        "uuid": "b7b2ad01-3d44-4add-a81b-3a989a187cc6",
+                        "version": 1,
+                        "model": {
+                            "type_name": "Image",
+                            "version": 1
+                        },
+                        "attribute": [
+                            {
+                                "provenance": "bia_conversion",
+                                "name": "attributes_from_file_reference_d39e3de5-3ebe-47a1-a734-c5270ccc4410",
+                                "value": {
+                                    "attributes": {
+                                        "Description": "Segmentation results of the punctatools pipeline of the corresponding RAW_Tiff image: The first two channels show hoechst stain and GFP signal, then Cellpose masks of nuclei, finally  masks of individual puncta"
+                                    }
+                                }
+                            },
+                            {
+                                "provenance": "bia_conversion",
+                                "name": "attributes_from_file_reference_6f9c3abc-497d-48ff-8e62-c85e338c3802",
+                                "value": {
+                                    "attributes": {
+                                        "Description": "Segmentation results of the punctatools pipeline of the corresponding RAW_Tiff image: The first two channels show hoechst stain and GFP signal, then Cellpose masks of nuclei, finally  masks of individual puncta"
+                                    }
+                                }
+                            },
+                            {
+                                "provenance": "bia_conversion",
+                                "name": "attributes_from_file_reference_b74b5d6b-7a29-4646-a1b7-b5de8d89eb52",
+                                "value": {
+                                    "attributes": {
+                                        "Description": "Raw acquisition data for experiments probing the mutation of residues in ZFTA::RELA to GS on the formation of nuclear puncta"
+                                    }
+                                }
+                            },
+                            {
+                                "provenance": "bia_conversion",
+                                "name": "attributes_from_file_reference_f15cfaa2-1dc1-47b7-b6b3-053f7be65f3e",
+                                "value": {
+                                    "attributes": {
+                                        "Description": "Analysis results of the punctatools pipeline of the corresponding RAW_Tiff image: The first two channels show hoechst stain and GFP signal, then Cellpose masks of nuclei, finally  masks of individual puncta"
+                                    }
+                                }
+                            },
+                            {
+                                "provenance": "bia_conversion",
+                                "name": "attributes_from_file_reference_2003dd6e-ca69-4605-b603-646a43227bb3",
+                                "value": {
+                                    "attributes": {
+                                        "Description": "Raw acquisition data for experiments probing the deletion of IDRs of ZFTA::RELA"
+                                    }
+                                }
+                            }
+                        ],
+                        "submission_dataset_uuid": "b923cb0b-663c-4e5a-801d-0332b5bf3740",
+                        "creation_process_uuid": "589e33c6-b8d5-474c-9521-450836e0b341",
+                        "original_file_reference_uuid": [
+                            "d39e3de5-3ebe-47a1-a734-c5270ccc4410"
+                        ]
+                    },
+                    {
+                        "uuid": "e55da012-c5c3-467a-9aef-d0c814d84d02",
+                        "version": 0,
+                        "model": {
+                            "type_name": "Image",
+                            "version": 1
+                        },
+                        "attribute": [
+                            {
+                                "provenance": "bia_conversion",
+                                "name": "attributes_from_file_reference_d39e3de5-3ebe-47a1-a734-c5270ccc4410",
+                                "value": {
+                                    "attributes": {
+                                        "Description": "Segmentation results of the punctatools pipeline of the corresponding RAW_Tiff image: The first two channels show hoechst stain and GFP signal, then Cellpose masks of nuclei, finally  masks of individual puncta"
+                                    }
+                                }
+                            }
+                        ],
+                        "submission_dataset_uuid": "b923cb0b-663c-4e5a-801d-0332b5bf3740",
+                        "creation_process_uuid": "32aed719-57b3-479a-9a62-2e7dda21d5b7",
+                        "original_file_reference_uuid": [
+                            "d39e3de5-3ebe-47a1-a734-c5270ccc4410"
+                        ]
+                    },
+                    {
+                        "uuid": "e83fc8cc-589c-4df9-bd71-aa062747496a",
+                        "version": 0,
+                        "model": {
+                            "type_name": "Image",
+                            "version": 1
+                        },
+                        "attribute": [
+                            {
+                                "provenance": "bia_conversion",
+                                "name": "attributes_from_file_reference_6f9c3abc-497d-48ff-8e62-c85e338c3802",
+                                "value": {
+                                    "attributes": {
+                                        "Description": "Segmentation results of the punctatools pipeline of the corresponding RAW_Tiff image: The first two channels show hoechst stain and GFP signal, then Cellpose masks of nuclei, finally  masks of individual puncta"
+                                    }
+                                }
+                            }
+                        ],
+                        "submission_dataset_uuid": "b923cb0b-663c-4e5a-801d-0332b5bf3740",
+                        "creation_process_uuid": "64449038-8b80-438e-a4bd-c7e85290868d",
+                        "original_file_reference_uuid": [
+                            "6f9c3abc-497d-48ff-8e62-c85e338c3802"
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

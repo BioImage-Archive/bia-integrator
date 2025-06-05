@@ -247,3 +247,12 @@ def _get_im_rep_from_im_rep_list(
         (rep for rep in im_rep_list if rep["use_type"] == use_type),
         {},
     )
+
+
+def update_dataset_example_image_uri(
+    accession_ids: list[str],
+    old_bia_study_metadata: dict,
+    api_target,
+) -> list:
+    
+    return []
