@@ -1,0 +1,27 @@
+{
+    "uuid": "10628322-8051-4e6a-a569-c5dbaf7a4cec",
+    "version": 0,
+    "model": {
+        "type_name": "FileReference",
+        "version": 3
+    },
+    "additional_metadata": [
+        {
+            "provenance": "bia_ingest",
+            "name": "attributes_from_biostudies.File",
+            "value": {
+                "attributes": {
+                    "AnnotationsIn": "ann06-10.json",
+                    "metadata1_key": "metadata1_value",
+                    "metadata2_key": "metadata2_value"
+                }
+            }
+        }
+    ],
+    "file_path": "study_component2/im06.png",
+    "format": "file",
+    "size_in_bytes": 24649,
+    "uri": "https://www.ebi.ac.uk/biostudies/files/S-BIADTEST/study_component2/im06.png",
+    "submission_dataset_uuid": "63e33342-2390-49e1-af69-2652f7c97296",
+    "object_creator": "bia_ingest"
+}

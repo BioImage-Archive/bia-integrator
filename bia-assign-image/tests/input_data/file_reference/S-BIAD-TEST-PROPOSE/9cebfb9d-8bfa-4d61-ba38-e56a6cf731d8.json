@@ -1,0 +1,15 @@
+{
+    "uuid": "9cebfb9d-8bfa-4d61-ba38-e56a6cf731d8",
+    "version": 0,
+    "model": {
+        "type_name": "FileReference",
+        "version": 3
+    },
+    "file_path": "F3/2E2.tif",
+    "format": "file",
+    "size_in_bytes": 206050081,
+    "uri": "https://www.ebi.ac.uk/biostudies/files/S-BIAD915/F3/2E2.tif",
+    "additional_metadata": [],
+    "submission_dataset_uuid": "63e33342-2390-49e1-af69-2652f7c97296",
+    "object_creator": "bia_ingest"
+}
