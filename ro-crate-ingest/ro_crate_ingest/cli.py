@@ -17,6 +17,7 @@ from pathlib import Path
 from rich.logging import RichHandler
 from .save_utils import PersistenceMode, persist
 from bia_integrator_api import models
+from ro_crate_ingest.persistance_object_ordering import persist_in_order
 
 ro_crate_ingest = typer.Typer()
 
@@ -104,7 +105,11 @@ def convert(
     image_file_refs, creation_processes, images = Image.create_image_and_dependencies(
         entities, study_uuid, crate_path
     )
+    persist(accession_id, models.FileReference, image_file_refs, persistence_mode)
+    api_objects += image_file_refs
+    persist_in_order(creation_processes, images, persistence_mode, accession_id)
 
+    # TODO: don't create file references again for files that are already created with images
     file_references = FileReference.create_file_reference(
         entities, study_uuid, crate_path
     )

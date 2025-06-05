@@ -22,8 +22,8 @@ def create_image_and_dependencies(
     crate_path: pathlib.Path,
 ) -> tuple[
     list[APIModels.FileReference],
-    list[APIModels.CreationProcess],
-    list[APIModels.Image],
+    dict[str, APIModels.CreationProcess],
+    dict[str, APIModels.Image],
 ]:
     ro_crate_images = (
         obj
@@ -34,8 +34,8 @@ def create_image_and_dependencies(
     crate_graph = load_ro_crate_metadata_to_graph(crate_path)
 
     file_reference_list = []
-    image_list = []
-    creation_process_list = []
+    image_by_id = {}
+    creation_process_by_id = {}
 
     for image in ro_crate_images:
 
@@ -53,15 +53,15 @@ def create_image_and_dependencies(
             ro_crate_creaiton_process, study_uuid
         )
 
-        creation_process_list.append(creation_process)
+        creation_process_by_id[creation_process.uuid] = creation_process
 
-        image_list.append(
-            convert_image(
-                image, study_uuid, file_references, creation_process.uuid, image_dataset
-            )
+        image = convert_image(
+            image, study_uuid, file_references, creation_process.uuid, image_dataset
         )
 
-    return (file_reference_list, creation_process_list, image_list)
+        image_by_id[image.uuid] = image
+
+    return (file_reference_list, creation_process_by_id, image_by_id)
 
 
 def get_image_dataset_id(image_id: str, graph: rdflib.Graph, crate_path: str) -> str:
@@ -94,6 +94,8 @@ def convert_file_reference(
     crate_path: pathlib.Path,
 ) -> list[APIModels.FileReference]:
 
+    dataset_uuid = str(uuid_creation.create_dataset_uuid(study_uuid, dataset.id))
+
     files = []
 
     # TODO: Handle types better, in case of different context useage - probably requires minor refactor of crate_reader to extract context once.
@@ -102,7 +104,7 @@ def convert_file_reference(
         for file_path in file_paths:
             files.append(
                 create_api_file_reference(
-                    str(file_path), study_uuid, dataset.id, crate_path
+                    str(file_path), study_uuid, dataset_uuid, crate_path
                 )
             )
     elif "File" in image.type:
@@ -110,7 +112,7 @@ def convert_file_reference(
             create_api_file_reference(
                 str(pathlib.Path(crate_path) / image.id),
                 study_uuid,
-                dataset.id,
+                dataset_uuid,
                 crate_path,
             )
         )
