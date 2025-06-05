@@ -87,36 +87,6 @@ def test_api_client():
     return get_api_client("local")
 
 
-@pytest.mark.parametrize("format", ("tsv", "yaml"))
-def test_cli_propose_images_command(format, tmpdir):
-    max_items = 2
-    propose_output_path = Path(tmpdir) / f"propose_S-BIADTEST.{format}"
-
-    runner = CliRunner()
-    result = runner.invoke(
-        cli.app,
-        [
-            "propose-images",
-            ACCESSION_ID,
-            "--api",
-            "local",
-            "--check-image-creation-prerequisites",
-            "--max-items",
-            f"{max_items}",
-            "--no-append",
-            f"{propose_output_path}",
-        ],
-    )
-    assert result.exit_code == 0
-    if format == "tsv":
-        proposed_output = propose_output_path.read_text().strip("\n").split("\n")
-        assert len(proposed_output) == max_items + 1
-    elif format == "yaml":
-        yaml = YAML(typ="safe")
-        proposed_output = yaml.load(propose_output_path)
-        assert len(proposed_output) == max_items
-
-
 @pytest.mark.parametrize(
     "format",
     (

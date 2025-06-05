@@ -42,13 +42,13 @@ def dataset_has_image_creation_prerequisites(dataset: bia_data_model.Dataset) ->
     """Assume we need biosample, image acquisition and specimen preparation protocols"""
 
     image_acquisition_protocol_uuid = get_value_from_attribute_list(
-        dataset.attribute, "image_acquisition_protocol_uuid"
+        dataset.additional_metadata, "image_acquisition_protocol_uuid"
     )
     image_preparation_protocol_uuid = get_value_from_attribute_list(
-        dataset.attribute, "specimen_imaging_preparation_protocol_uuid"
+        dataset.additional_metadata, "specimen_imaging_preparation_protocol_uuid"
     )
     bio_sample_uuid = get_value_from_attribute_list(
-        dataset.attribute, "bio_sample_uuid"
+        dataset.additional_metadata, "bio_sample_uuid"
     )
     image_pre_requisites = [
         len(image_acquisition_protocol_uuid),
@@ -132,7 +132,7 @@ def get_convertible_file_references(
             if not dataset_has_image_creation_prerequisites(dataset):
                 continue
 
-        file_references = get_all_api_results(
+        file_references: list[bia_data_model.FileReference] = get_all_api_results(
             uuid=dataset.uuid,
             api_method=api_client.get_file_reference_linking_dataset,
             page_size_setting=100,

@@ -1,0 +1,74 @@
+{
+    "title": "Study Component 1",
+    "uuid": "63e33342-2390-49e1-af69-2652f7c97296",
+    "description": "Description of study component 1",
+    "object_creator": "bia_ingest",
+    "additional_metadata": [
+        {
+            "provenance": "bia_ingest",
+            "name": "image_acquisition_protocol_uuid",
+            "value": {
+                "image_acquisition_protocol_uuid": [
+                    "c2e44a1b-a43c-476e-8ddf-8587f4c955b3"
+                ]
+            }
+        },
+        {
+            "provenance": "bia_ingest",
+            "name": "specimen_imaging_preparation_protocol_uuid",
+            "value": {
+                "specimen_imaging_preparation_protocol_uuid": [
+                    "7199d730-29f1-4ad8-b599-e9089cbb2d7b"
+                ]
+            }
+        },
+        {
+            "provenance": "bia_ingest",
+            "name": "bio_sample_uuid",
+            "value": {
+                "bio_sample_uuid": [
+                    "64a67727-4e7c-469a-91c4-6219ae072e99",
+                    "6950718c-4917-47a1-a807-11b874e80a23"
+                ]
+            }
+        },
+        {
+            "value": {
+                "image_analysis": "Test image analysis",
+                "image_correlation": null,
+                "biosample": "Test Biosample 2",
+                "image_acquisition": "Test Primary Screen Image Acquisition",
+                "specimen": "Test specimen 1"
+            },
+            "name": "associations",
+            "provenance": "bia_ingest"
+        },
+        {
+            "value": {
+                "image_analysis": "Test image analysis",
+                "image_correlation": null,
+                "biosample": "Test Biosample 1",
+                "image_acquisition": "Test Primary Screen Image Acquisition",
+                "specimen": "Test specimen 1"
+            },
+            "name": "associations",
+            "provenance": "bia_ingest"
+        }
+    ],
+    "model": {
+        "type_name": "Dataset",
+        "version": 2
+    },
+    "analysis_method": [
+        {
+            "title": "Test image analysis",
+            "protocol_description": "Test image analysis",
+            "features_analysed": "Test image analysis overview",
+            "additional_metadata": []
+        }
+    ],
+    "submitted_in_study_uuid": "c2cf7af2-36a7-4249-9e69-a6ba565e94a2",
+    "correlation_method": [],
+    "example_image_uri": [],
+    "version": 0
+}
