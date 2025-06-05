@@ -12,9 +12,9 @@ This sub-package assigns file reference(s) to BIA Image objects and creates imag
 
 ## Usage
 This package has the following CLI commands:
- * **propose-images**: generate proposals for convertible images from accessions
+ * **propose-images**: generate proposals for convertible images from accessions. Proposals can then be used as the input of assignment to create image objects from file references.
  * **assign-from-proposal**: process a proposal file to create images and representations
- * **assign**: used to assign file reference(s) to BIA Image objects
+ * **assign**: used to create BIA Image objects from file references.
  * **representations**: used to create image representation objects (without conversion of images) from BIA Image objects
 
 The artefacts created are saved to the production version of the API by default. To save to a local
@@ -24,23 +24,24 @@ version of the API use the `--api local` (for prod it is `--api prod` which is t
 The recommended workflow is to first generate proposals for which images to convert:
 
 ```sh
-poetry run bia-assign-image propose-images S-BIAD1423 proposals.txt --max-items 5
+poetry run bia-assign-image propose-images S-BIAD1423 proposals.yaml --max-items 5
 ```
 or to run against your local version of the API
 ```sh
-poetry run bia-assign-image propose-images S-BIAD1423 proposals.txt --max-items 5 --api local
+poetry run bia-assign-image propose-images S-BIAD1423 proposals.yaml --max-items 5 --api local
 ```
 
-This will analyze the accession and suggest up to 5 file references to convert, writing them to proposals.txt.
+This will analyze the accession and suggest up to 5 file references to convert, writing them to proposals.yaml.
 You can specify multiple accession IDs and use --append to add to an existing proposal file.
 
 Then process the proposals to create images and representations:
 
 ```sh
-poetry run bia-assign-image assign-from-proposal proposals.txt
+poetry run bia-assign-image assign-from-proposal proposals.yaml
 ```
 
 This will create BIA Image objects and default representations for each proposed file reference.
+
 ### Manual Assignment
 To directly create a BIA Image from file references without using proposals, run:
 ```sh
@@ -50,6 +51,7 @@ E.g. Assuming the study S-BIAD1285 has been ingested:
 ```sh
 poetry run bia-assign-image assign S-BIAD1285 b768fb72-7ea2-4b80-b54d-bdf5ca280bfd
 ```
+
 ### Using patterns during assignment
 The python [parse](https://github.com/r1chardj0n3s/parse) library is used for pattern matching. Multiple files (e.g. multichannel images or time series stored individually) can be assigned into one image if their filenames follow a predictable structure allowing the creation of a *file pattern*. E.g. the file pattern `image_01_channel_{c:d}_slice_{z:d}.tiff` can be used to combine the following four files into one 3D multichannel image:<br>
  image_01_channel_00_slice_00.tiff with uuid: 12345678-abcd-ef12-3456-012345678900<br>
