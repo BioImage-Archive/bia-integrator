@@ -4,6 +4,7 @@ import pytest
 
 from bia_shared_datamodels import bia_data_model, uuid_creation
 from bia_integrator_api import PrivateApi
+import bia_integrator_api.models as bia_api_model
 
 from bia_assign_image.api_client import (
     get_local_bia_api_client,
@@ -28,7 +29,7 @@ def new_study_object() -> bia_data_model.Study:
 
 
 @pytest.fixture
-def new_study_uuid(new_study_object) -> str:
+def new_study_uuid(new_study_object: bia_data_model.Study) -> str:
     return str(new_study_object.uuid)
 
 
@@ -37,37 +38,36 @@ def api_client() -> PrivateApi:
     return get_local_bia_api_client()
 
 
-def compare_bia_study_object_with_api_study_object(bia_study, api_study):
-    """Helper function to compare bia_data_model.Study vs api_models.Study
-
-    This function uses the dicts of the two models and adjusts for the
-    difference in type of the 'uuid' property in both. It is called by
-    the tests when comparing the new_study_object with its API equivalent.
+def compare_bia_study_object_with_api_study_object(bia_study: bia_data_model.Study, api_study: bia_api_model.Study):
     """
-    bia_study_dict = bia_study.model_dump()
+    Note that bia_data_model.Study != bia_api_model.Study
 
-    # bia_data_model.Study.uuid is UUID, but api_models.Study.uuid is str
-    bia_study_dict["uuid"] = str(bia_study_dict["uuid"])
+    bia_data_model classes will accept str etc for some fields and turn them into UUID/URLs as necessary.
+    Dumping these objects out will produce e.g. "UUID('...')" for UUIDs
+    However the bia_api_model classes only accept strings and won't add these extras.
+    """ 
+    api_study = bia_data_model.Study.model_validate(api_study.model_dump())
 
-    api_study_dict = api_study.model_dump()
-    return bia_study_dict == api_study_dict
+    assert bia_study == api_study
 
 
-def test_store_new_object(new_study_uuid, new_study_object, api_client):
+def test_store_new_object(new_study_uuid, new_study_object, api_client: PrivateApi):
     store_object_in_api_idempotent(api_client, new_study_object)
     api_copy_of_new_study = api_client.get_study(new_study_uuid)
-    assert compare_bia_study_object_with_api_study_object(
+    
+    compare_bia_study_object_with_api_study_object(
         new_study_object, api_copy_of_new_study
     )
 
 
 def test_store_exact_same_object_returns_object_exists_message(
-    new_study_uuid, new_study_object, api_client, caplog
+    new_study_uuid, new_study_object, api_client: PrivateApi, caplog
 ):
     # First save
     store_object_in_api_idempotent(api_client, new_study_object)
     api_copy_of_new_study = api_client.get_study(new_study_uuid)
-    assert compare_bia_study_object_with_api_study_object(
+    
+    compare_bia_study_object_with_api_study_object(
         new_study_object, api_copy_of_new_study
     )
 
@@ -76,7 +76,8 @@ def test_store_exact_same_object_returns_object_exists_message(
 
     # Check API version has not changed
     api_copy_of_new_study = api_client.get_study(new_study_uuid)
-    assert compare_bia_study_object_with_api_study_object(
+    
+    compare_bia_study_object_with_api_study_object(
         new_study_object, api_copy_of_new_study
     )
 
@@ -87,7 +88,8 @@ def test_store_modified_object_updates_version(
     # First save
     store_object_in_api_idempotent(api_client, new_study_object)
     api_copy_of_new_study = api_client.get_study(new_study_uuid)
-    assert compare_bia_study_object_with_api_study_object(
+    
+    compare_bia_study_object_with_api_study_object(
         new_study_object, api_copy_of_new_study
     )
 
@@ -100,6 +102,7 @@ def test_store_modified_object_updates_version(
 
     # Update new_study_object version before comparing
     new_study_object.version += 1
-    assert compare_bia_study_object_with_api_study_object(
+    
+    compare_bia_study_object_with_api_study_object(
         new_study_object, api_copy_of_new_study
     )
