@@ -1,6 +1,7 @@
 from pathlib import Path
 from uuid import UUID
-from typing import Callable
+from typing import Any, Callable, List
+from bia_shared_datamodels import semantic_models
 from bia_shared_datamodels.bia_data_model import DocumentMixin
 
 single_file_formats_path = (
@@ -77,3 +78,21 @@ def get_all_api_results(
         return aggregator_list
     else:
         return get_all_api_results(uuid, api_method, page_size_setting, aggregator_list)
+
+
+def get_value_from_attribute_list(
+    attribute_list: List[semantic_models.Attribute],
+    attribute_name: str,
+    default: Any = [],
+) -> Any:
+    """Get the value of named attribute from a list of attributes"""
+
+    # Assumes attribute.value is a Dict
+    return next(
+        (
+            attribute.value[attribute_name]
+            for attribute in attribute_list
+            if attribute.name == attribute_name
+        ),
+        default,
+    )

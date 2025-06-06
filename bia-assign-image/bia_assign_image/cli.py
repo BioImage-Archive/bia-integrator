@@ -1,24 +1,24 @@
-from typing import List, Any
+from typing import List
 from pathlib import Path
 from typing import Annotated
 import typer
 from bia_shared_datamodels import uuid_creation, semantic_models
-from bia_assign_image import (
+from bia_assign_image import propose
+from bia_assign_image.object_creation import (
     image,
-    specimen,
-    creation_process,
-    propose,
+    image_representation,
 )
-from bia_assign_image.image_representation import get_image_representation
 from bia_assign_image.api_client import (
     ApiTarget,
     get_api_client,
     store_object_in_api_idempotent,
 )
-
-# For read only client
-
 import logging
+from bia_assign_image.image_assignment import (
+    find_exisiting_image_dependencies,
+    create_missing_dependencies,
+    ImageDependencies,
+)
 
 app = typer.Typer()
 representations_app = typer.Typer()
@@ -37,24 +37,6 @@ logging.basicConfig(
 logger = logging.getLogger()
 
 
-def _get_value_from_attribute_list(
-    attribute_list: List[semantic_models.Attribute],
-    attribute_name: str,
-    default: Any = [],
-) -> Any:
-    """Get the value of named attribute from a list of attributes"""
-
-    # Assumes attribute.value is a Dict
-    return next(
-        (
-            attribute.value[attribute_name]
-            for attribute in attribute_list
-            if attribute.name == attribute_name
-        ),
-        default,
-    )
-
-
 @app.command(help="Assign listed file references to an image")
 def assign(
     accession_id: Annotated[str, typer.Argument()],
@@ -69,88 +51,33 @@ def assign(
 ) -> str:
     api_client = get_api_client(api_target)
 
-    file_reference_uuid_list = file_reference_uuids[0].split(" ")
-    file_references = [
-        api_client.get_file_reference(f) for f in file_reference_uuid_list
-    ]
-    dataset_uuids = [f.submission_dataset_uuid for f in file_references]
-    assert len(set(dataset_uuids)) == 1
-    submission_dataset_uuid = dataset_uuids[0]
-    dataset = api_client.get_dataset(submission_dataset_uuid)
-    study_uuid = dataset.submitted_in_study_uuid
-
+    # Get / Create relevant uuids that will be used for missing dependency creation
+    study_uuid = uuid_creation.create_study_uuid(accession_id)
     image_uuid_unique_string = image.create_image_uuid_unique_string(
         file_reference_uuids
     )
     image_uuid = uuid_creation.create_image_uuid(study_uuid, image_uuid_unique_string)
 
-    image_acquisition_protocol_uuid = _get_value_from_attribute_list(
-        dataset.additional_metadata, "image_acquisition_protocol_uuid"
-    )
-    image_preparation_protocol_uuid = _get_value_from_attribute_list(
-        dataset.additional_metadata, "specimen_imaging_preparation_protocol_uuid"
-    )
-    bio_sample_uuid = _get_value_from_attribute_list(
-        dataset.additional_metadata, "bio_sample_uuid"
-    )
-    image_pre_requisites = [
-        len(image_acquisition_protocol_uuid),
-        len(image_preparation_protocol_uuid),
-        len(bio_sample_uuid),
+    file_reference_uuid_list = file_reference_uuids[0].split(" ")
+    file_references = [
+        api_client.get_file_reference(f) for f in file_reference_uuid_list
     ]
 
-    assert_error_msg = (
-        "Incomplete requisites for creating Specimen AND CreationProcess. "
-        + "Need ImageAcquisitionProtocol, SpecimenImagePreparationProtocol and BioSample UUIDs in "
-        + "dataset attributes. Got "
-        + f"ImageAcquisitionProtocol: {image_acquisition_protocol_uuid},"
-        + f"SpecimenImagePreparationProtocol: {image_preparation_protocol_uuid},"
-        + f"BioSample: {bio_sample_uuid}"
+    image_dependencies: ImageDependencies = find_exisiting_image_dependencies(
+        file_references, api_client
     )
-    assert any(image_pre_requisites) and all(image_pre_requisites), assert_error_msg
-
-    if not any(image_pre_requisites):
-        logger.warning(
-            "No image_preparation_protocol or bio_sample uuids found in dataset attributes. No Specimen object will be created for this image!"
-        )
-        bia_specimen = None
-    else:
-        bia_specimen = specimen.get_specimen(
-            study_uuid,
-            image_uuid,
-            image_preparation_protocol_uuid,
-            bio_sample_uuid,
-        )
-        if dryrun:
-            logger.info(
-                f"Dryrun: Created specimen(s) {bia_specimen}, but not persisting."
-            )
-        else:
-            store_object_in_api_idempotent(api_client, bia_specimen)
-
-    if not bia_specimen:
-        logger.warning("Creating CreationProcess with no Specimen")
-    if not image_acquisition_protocol_uuid:
-        logger.warning("Creating CreationProcess with no ImageAcquisitionProtocol")
-    bia_creation_process = creation_process.get_creation_process(
-        study_uuid,
-        image_uuid,
-        bia_specimen.uuid,
-        image_acquisition_protocol_uuid,
+    image_dependencies = create_missing_dependencies(
+        study_uuid, image_uuid, image_dependencies, api_client, dryrun
     )
-    if dryrun:
-        logger.info(
-            f"Dryrun: Created creation process(es) {bia_creation_process}, but not persisting."
-        )
-    else:
-        store_object_in_api_idempotent(api_client, bia_creation_process)
 
+    assert image_dependencies.has_dependencies_for_image_creation()
     bia_image = image.get_image(
-        study_uuid,
-        submission_dataset_uuid,
-        bia_creation_process.uuid,
-        file_references=file_references,
-        file_pattern=pattern,
+        image_uuid,
+        image_uuid_unique_string,
+        image_dependencies.dataset_uuid,
+        image_dependencies.creation_process_uuid,
+        file_references,
+        pattern,
     )
     if dryrun:
         logger.info(f"Dryrun: Created Image(s) {bia_image}, but not persisting.")
@@ -198,24 +125,20 @@ def create(
         logger.debug(
             f"starting creation of image representation for Image {bia_image.uuid}"
         )
-        image_representation = get_image_representation(
+        image_rep = image_representation.get_image_representation(
             study.uuid,
             file_references,
             bia_image,
             object_creator=semantic_models.Provenance.bia_image_assignment,
         )
-        if image_representation:
-            message = f"COMPLETED: Creation of image representation {image_representation.uuid} for bia_data_model.Image {bia_image.uuid} of {accession_id}"
+        if image_rep:
+            message = f"COMPLETED: Creation of image representation {image_rep.uuid} for bia_data_model.Image {bia_image.uuid} of {accession_id}"
             logger.info(message)
             if dryrun:
-                logger.info(
-                    f"Dryrun: Not persisting image representation:{image_representation}."
-                )
+                logger.info(f"Dryrun: Not persisting image representation:{image_rep}.")
             else:
-                store_object_in_api_idempotent(api_client, image_representation)
-                logger.info(
-                    f"Persisted image_representation {image_representation.uuid}"
-                )
+                store_object_in_api_idempotent(api_client, image_rep)
+                logger.info(f"Persisted image_representation {image_rep.uuid}")
         else:
             message = f"WARNING: Could NOT create image representation for bia_data_model.Image {bia_image.uuid} of {accession_id}"
             logger.warning(message)
