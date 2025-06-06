@@ -1,0 +1,23 @@
+{
+    "uuid": "2aa90693-ee47-48ea-b052-ebe4d5b0cba2",
+    "version": 0,
+    "model": {
+        "type_name": "FileReference",
+        "version": 3
+    },
+    "file_path": "EM04226_01/slice_00288_z=1.4263um.tif",
+    "format": ".tif",
+    "size_in_bytes": 65481296,
+    "uri": "https://ftp.ebi.ac.uk/empiar/world_availability/10326/data/EM04226_01/slice_00288_z=1.4263um.tif",
+    "submission_dataset_uuid": "ce368513-a786-42dc-8018-4faf1eb3dcd0",
+    "object_creator": "bia_ingest",
+    "additional_metadata": [
+        {
+            "provenance": "bia_ingest",
+            "name": "uuid_unique_input",
+            "value": {
+                "uuid_unique_input": "EM04226_01/slice_00288_z=1.4263um.tif65481296"
+            }
+        }
+    ]
+}

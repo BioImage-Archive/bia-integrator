@@ -80,7 +80,7 @@ def assign(
     study_uuid = dataset.submitted_in_study_uuid
 
     image_uuid_unique_string = image.create_image_uuid_unique_string(
-        file_reference_uuids
+        file_reference_uuid_list
     )
     image_uuid = uuid_creation.create_image_uuid(study_uuid, image_uuid_unique_string)
 
