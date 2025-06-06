@@ -1,0 +1,21 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "385e63bd-c129-4b8c-83c8-553e8e329d1e",
+  "version": 0,
+  "model": {
+    "type_name": "SpecimenImagingPreparationProtocol",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Specimen-1"
+      }
+    }
+  ],
+  "title": "FIB SEM Sample Preparation",
+  "protocol_description": "Following fixation in 4% formaldehyde for 15 min at 37\u00b0C, cells were washed in 0.1 M PB and fixed in EM fixative (2.5% gluteraldehyde, 4% formaldehyde in 0.1 M PB) for 30 min at room temperature. Cells were processed using a Pelco BioWave Pro+ microwave with staining in 2% osmium tetroxide and 1.5% potassium ferricyanide, followed by 1% thiocarbohydrazide, 2% osmium tetroxide, 1% uranyl acetate, and Walton's lead aspartate. Samples were dehydrated in graded ethanol series and embedded in Durcupan ACM resin. Specific regions of interest were trimmed and mounted on SEM stubs using conductive epoxy and coated with 5 nm platinum.",
+  "signal_channel_information": []
+}

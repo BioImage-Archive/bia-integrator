@@ -54,7 +54,7 @@ def assign(
     # Get / Create relevant uuids that will be used for missing dependency creation
     study_uuid = uuid_creation.create_study_uuid(accession_id)
     image_uuid_unique_string = image.create_image_uuid_unique_string(
-        file_reference_uuids
+        file_reference_uuid_list
     )
     image_uuid = uuid_creation.create_image_uuid(study_uuid, image_uuid_unique_string)
 

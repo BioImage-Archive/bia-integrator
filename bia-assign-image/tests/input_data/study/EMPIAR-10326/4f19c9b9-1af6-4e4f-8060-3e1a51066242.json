@@ -1,0 +1,124 @@
+{
+    "uuid": "4f19c9b9-1af6-4e4f-8060-3e1a51066242",
+    "version": 0,
+    "object_creator": "bia_ingest",
+    "model": {
+        "type_name": "Study",
+        "version": 3
+    },
+    "attribute": [],
+    "accession_id": "EMPIAR-10326",
+    "licence": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "author": [
+        {
+            "rorid": null,
+            "address": null,
+            "website": null,
+            "orcid": "0000-0001-7431-7156",
+            "display_name": "Hunt A",
+            "affiliation": [],
+            "contact_email": null,
+            "role": []
+        },
+        {
+            "rorid": null,
+            "address": null,
+            "website": null,
+            "orcid": "0000-0003-4608-7669",
+            "display_name": "Russell MRG",
+            "affiliation": [],
+            "contact_email": null,
+            "role": []
+        },
+        {
+            "rorid": null,
+            "address": null,
+            "website": null,
+            "orcid": "0000-0002-7227-4348",
+            "display_name": "Wagener J",
+            "affiliation": [],
+            "contact_email": null,
+            "role": []
+        },
+        {
+            "rorid": null,
+            "address": null,
+            "website": null,
+            "orcid": "0000-0002-2584-4694",
+            "display_name": "Kent R",
+            "affiliation": [],
+            "contact_email": null,
+            "role": []
+        },
+        {
+            "rorid": null,
+            "address": null,
+            "website": null,
+            "orcid": null,
+            "display_name": "Carmeille R",
+            "affiliation": [],
+            "contact_email": null,
+            "role": []
+        },
+        {
+            "rorid": null,
+            "address": null,
+            "website": null,
+            "orcid": null,
+            "display_name": "Peddie CJ",
+            "affiliation": [],
+            "contact_email": null,
+            "role": []
+        },
+        {
+            "rorid": null,
+            "address": null,
+            "website": null,
+            "orcid": null,
+            "display_name": "Collinson L",
+            "affiliation": [],
+            "contact_email": null,
+            "role": []
+        },
+        {
+            "rorid": null,
+            "address": null,
+            "website": null,
+            "orcid": null,
+            "display_name": "Heaslip A",
+            "affiliation": [],
+            "contact_email": null,
+            "role": []
+        },
+        {
+            "rorid": null,
+            "address": null,
+            "website": null,
+            "orcid": "0000-0003-4138-3055",
+            "display_name": "Ward GE",
+            "affiliation": [],
+            "contact_email": null,
+            "role": []
+        },
+        {
+            "rorid": null,
+            "address": null,
+            "website": null,
+            "orcid": "0000-0002-9727-6657",
+            "display_name": "Treeck M",
+            "affiliation": [],
+            "contact_email": null,
+            "role": []
+        }
+    ],
+    "title": "Raw FIB SEM images of a parasitophorous vacuole containing Toxoplasma gondii \u2206CAP parasites.",
+    "release_date": "2019-10-07",
+    "description": "",
+    "keyword": [],
+    "acknowledgement": null,
+    "see_also": [],
+    "related_publication": [],
+    "grant": [],
+    "funding_statement": null,
+    "additional_metadata": []
+}
