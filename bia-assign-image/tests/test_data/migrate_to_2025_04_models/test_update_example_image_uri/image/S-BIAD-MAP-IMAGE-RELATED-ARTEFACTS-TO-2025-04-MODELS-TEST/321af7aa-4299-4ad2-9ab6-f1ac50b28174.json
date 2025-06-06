@@ -1,0 +1,42 @@
+{
+    "object_creator": "bia_image_assignment",
+    "uuid": "321af7aa-4299-4ad2-9ab6-f1ac50b28174",
+    "version": 0,
+    "model": {"type_name": "Image", "version": 2},
+    "additional_metadata": [
+        {
+            "provenance": "bia_image_assignment",
+            "name": "attributes_from_file_reference_f28edbad-9d68-4a8e-a453-8cbba49a653e",
+            "value": {
+                 "attributes": {
+                    "file_list_col1": "col1value",
+                    "file_list_col2": "col2value"
+                 }
+             }
+        },
+        {
+            "provenance": "bia_image_assignment",
+            "name": "file_pattern",
+            "value": {
+                "file_pattern": "S-BIAD-MAP-IMAGE-RELATED-ARTEFACTS-TO-2025-04-MODELS-TEST/file_reference2.tif"
+            }
+        },
+        {
+            "provenance": "bia_image_assignment",
+            "name": "uuid_unique_input",
+            "value": {"uuid_unique_input": "f28edbad-9d68-4a8e-a453-8cbba49a653e"}
+        },
+        {
+          "provenance": "bia_image_assignment",
+          "name": "static_display_uri",
+          "value": {
+            "static_display_uri": [
+              "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD-MAP-IMAGE-RELATED-ARTEFACTS-TO-2025-04-MODELS-TEST/321af7aa-4299-4ad2-9ab6-f1ac50b28174-static_display.png"
+            ]
+          }
+        }
+    ],
+    "submission_dataset_uuid": "4e59fb10-5b86-4caf-bbca-02360078c6cb",
+    "creation_process_uuid": "c27f5bcc-3ee4-412e-ac21-849947a6ed4b",
+    "original_file_reference_uuid": ["f28edbad-9d68-4a8e-a453-8cbba49a653e"]
+}

@@ -55,8 +55,10 @@ def expected_2025_04_image_representation(
     pre_2025_04_image_representation_dict,
     expected_2025_04_image,
 ) -> bia_data_model.ImageRepresentation:
+    uploaded_by_submitter_uuid = "a7d0c3c4-58bd-4da4-a8e7-3fbef5f7afc9"
+    conversion_function_str = "{'conversion_function': 'map_image_representation_to_2025_04_model'}"
     image_representation_dict = {
-        "uuid": "fee02b2d-2e5c-4994-9588-7763e8c26bee",
+        "uuid": "3db70621-3726-428d-b61e-3d9496456f4d",
         "representation_of_uuid": str(expected_2025_04_image.uuid),
         "image_format": ".ome.zarr",
         "total_size_in_bytes": 0,
@@ -77,7 +79,7 @@ def expected_2025_04_image_representation(
                 "provenance": semantic_models.Provenance.bia_image_conversion,
                 "name": "uuid_unique_input",
                 "value": {
-                    "uuid_unique_input": "{'conversion_function': 'map_image_representation_to_2025_04_model'}"
+                    "uuid_unique_input": f"{uploaded_by_submitter_uuid} {conversion_function_str}"
                 },
             }
         ],

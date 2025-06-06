@@ -1,0 +1,83 @@
+{
+    "56ead10e-7f19-4ab0-9f17-bf5608fb5e78": {
+        "uuid": "56ead10e-7f19-4ab0-9f17-bf5608fb5e78",
+        "version": 0,
+        "model": {
+            "type_name": "Image",
+            "version": 1
+        },
+        "attribute": [
+            {
+                "provenance": "bia_conversion",
+                "name": "attributes_from_file_reference_502b2fd6-44c6-4609-b580-d3b74cf6d1e9",
+                "value": {
+                    "attributes": {
+                        "Type": "Raw image",
+                        "Tissue": "Striatum",
+                        "Genotype": "wildtype"
+                    }
+                }
+            }
+        ],
+        "submission_dataset_uuid": "8732e307-9251-4ac9-8207-ec3fecd9e726",
+        "creation_process_uuid": "c949f64a-48b0-4256-bd6f-b5d62cce0540",
+        "original_file_reference_uuid": [
+            "502b2fd6-44c6-4609-b580-d3b74cf6d1e9"
+        ],
+        "file_reference": [
+            {
+                "uuid": "502b2fd6-44c6-4609-b580-d3b74cf6d1e9",
+                "version": 0,
+                "model": {
+                    "type_name": "FileReference",
+                    "version": 2
+                },
+                "attribute": [
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "attributes_from_biostudies.File",
+                        "value": {
+                            "attributes": {
+                                "Type": "Raw image",
+                                "Tissue": "Striatum",
+                                "Genotype": "wildtype"
+                            }
+                        }
+                    }
+                ],
+                "file_path": "EMBOJ-2022-111515R-Q _ IF images/Appendix Figure S10/Striatum/Butyrate.tif",
+                "format": "file",
+                "size_in_bytes": 5110968,
+                "uri": "https://www.ebi.ac.uk/biostudies/files/S-BIAD609/EMBOJ-2022-111515R-Q _ IF images/Appendix Figure S10/Striatum/Butyrate.tif",
+                "submission_dataset_uuid": "8732e307-9251-4ac9-8207-ec3fecd9e726"
+            }
+        ],
+        "image_representation": [
+            {
+                "uuid": "d44d480e-6d11-4135-a99b-fd7093a76b2c",
+                "version": 0,
+                "model": {
+                    "type_name": "ImageRepresentation",
+                    "version": 3
+                },
+                "attribute": [],
+                "image_format": ".tiff",
+                "use_type": "UPLOADED_BY_SUBMITTER",
+                "file_uri": [
+                    "https://www.ebi.ac.uk/biostudies/files/S-BIAD609/EMBOJ-2022-111515R-Q _ IF images/Appendix Figure S10/Striatum/Butyrate.tif"
+                ],
+                "total_size_in_bytes": 5110968,
+                "physical_size_x": null,
+                "physical_size_y": null,
+                "physical_size_z": null,
+                "size_x": null,
+                "size_y": null,
+                "size_z": null,
+                "size_c": null,
+                "size_t": null,
+                "image_viewer_setting": [],
+                "representation_of_uuid": "56ead10e-7f19-4ab0-9f17-bf5608fb5e78"
+            }
+        ]
+    }
+}

@@ -1,5 +1,5 @@
 {
-    "uuid": "2a8ecffd-6690-494f-acbb-81fb94f2df30",
+    "uuid": "cca7f5db-2c46-4234-8d48-eb431a733007",
     "representation_of_uuid": "71fb4f2d-6cff-495f-ae21-d1c6ab068de7",
     "image_format": ".ome.zarr",
     "total_size_in_bytes": 0,
@@ -48,7 +48,7 @@
             "provenance": "bia_image_conversion",
             "name": "uuid_unique_input",
             "value": {
-                "uuid_unique_input": "{'conversion_function': 'map_image_representation_to_2025_04_model'}"
+                "uuid_unique_input": "87f9f5e7-473e-4c81-afbf-1dcd148492f4 {'conversion_function': 'map_image_representation_to_2025_04_model'}"
             }
         }
     ]

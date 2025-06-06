@@ -18,6 +18,7 @@ os.environ["PYTHONPATH"] = ";".join(
 )
 from scripts.map_image_related_artefacts_to_2025_04_models import (
     map_image_related_artefacts_to_2025_04_models,
+    contains_displayable_image_representation,
 )
 
 # Use details from an actual study
@@ -33,6 +34,17 @@ def base_path() -> Path:
 def file_reference_mapping(base_path) -> dict:
     file_reference_mapping_path = (
         base_path / "pre_2025_04_models" / "test-file-reference-mapping.json"
+    )
+    file_reference_mappings = json.loads(file_reference_mapping_path.read_text())
+    return list(file_reference_mappings.values())[0]
+
+
+@pytest.fixture
+def file_reference_mapping_no_displayable_images(base_path) -> dict:
+    file_reference_mapping_path = (
+        base_path
+        / "pre_2025_04_models"
+        / "test-file-reference-mapping-no-displayable-images.json"
     )
     file_reference_mappings = json.loads(file_reference_mapping_path.read_text())
     return list(file_reference_mappings.values())[0]
@@ -59,7 +71,7 @@ def expected_2025_04_representation_of_image_converted_to_ome_zarr(
     base_path,
 ) -> bia_data_model.ImageRepresentation:
     obj_path = base_path / "2025_04_models"
-    uuid = "2a8ecffd-6690-494f-acbb-81fb94f2df30"
+    uuid = "cca7f5db-2c46-4234-8d48-eb431a733007"
     return get_expected_object(obj_path, "ImageRepresentation", accession_id, uuid)
 
 
@@ -90,3 +102,16 @@ def test_map_image_related_artefacts_to_2025_04_models(
     # Test if Dataset details in Image are correct?
 
     # Test if Creation process details in Image are correct?
+
+
+def test_identification_of_mappings_with_no_displayable_image_representations(
+    file_reference_mapping,
+    file_reference_mapping_no_displayable_images,
+):
+    displayable_image_representations = contains_displayable_image_representation(
+        file_reference_mapping_no_displayable_images,
+    )
+    displayable_image_representations = contains_displayable_image_representation(
+        file_reference_mapping,
+    )
+    assert displayable_image_representations == True
