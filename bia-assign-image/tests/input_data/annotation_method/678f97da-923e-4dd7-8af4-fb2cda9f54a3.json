@@ -1,0 +1,19 @@
+{
+    "uuid": "678f97da-923e-4dd7-8af4-fb2cda9f54a3",
+    "title": "Template Annotation Dataset",
+    "protocol_description": "Template annotation method description",
+    "version": 0,
+    "object_creator": "bia_ingest",
+    "annotation_criteria": "Template annotation criteria",
+    "annotation_coverage": "Template annotation coverage",
+    "transformation_description": "Template transformation description",
+    "spatial_information": "Template spatial information",
+    "method_type": [
+        "segmentation_mask"
+    ],
+    "additional_metadata": [],
+    "model": {
+        "type_name": "AnnotationMethod",
+        "version": 4
+    }
+}

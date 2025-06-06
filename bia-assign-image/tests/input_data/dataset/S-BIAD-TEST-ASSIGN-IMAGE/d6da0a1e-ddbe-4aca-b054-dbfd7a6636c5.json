@@ -1,0 +1,31 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "d6da0a1e-ddbe-4aca-b054-dbfd7a6636c5",
+  "version": 0,
+  "model": {
+    "type_name": "Dataset",
+    "version": 2
+  },
+  "additional_metadata": [
+    {
+      "provenance": "submitter",
+      "name": "file_list_columns",
+      "value": {}
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "annotation_method_uuid",
+      "value": {
+        "annotation_method_uuid": ["678f97da-923e-4dd7-8af4-fb2cda9f54a3"]
+      }
+    }
+  ],
+  "title": "Template Annotation Dataset",
+  "description": "Template description",
+  "analysis_method": [],
+  "correlation_method": [],
+  "example_image_uri": [
+    "https://dummy.url.org"
+  ],
+  "submitted_in_study_uuid": "7b1daf68-3ba3-4501-8166-6a05de7c975f"
+}
