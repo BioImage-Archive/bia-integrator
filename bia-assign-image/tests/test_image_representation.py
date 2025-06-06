@@ -4,7 +4,7 @@ from uuid import UUID
 from pathlib import Path
 import pytest
 from bia_shared_datamodels import bia_data_model, uuid_creation, semantic_models
-from bia_assign_image import image_representation
+from bia_assign_image.object_creation import image_representation
 from .conftest import get_expected_object
 
 # TODO: Create accession ID and artefacts specific to this test

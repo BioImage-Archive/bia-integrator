@@ -1,0 +1,39 @@
+{
+  "object_creator": "bia_image_assignment",
+  "uuid": "b912bebc-8386-47cc-a0fe-0af500d63a8a",
+  "version": 0,
+  "model": {
+    "type_name": "Image",
+    "version": 2
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_image_assignment",
+      "name": "attributes_from_file_reference_c252f796-fd5c-416b-bfaa-3c2554492b68",
+      "value": {
+        "source_image": "S-BIAD-TEST-ASSIGN-IMAGE/file_reference1.tif",
+        "file_list_col2": "col2value"
+      }
+    },
+    {
+      "provenance": "bia_image_assignment",
+      "name": "file_pattern",
+      "value": {
+        "file_pattern": "S-BIAD-TEST-ASSIGN-IMAGE/annotation_file_reference1.tif"
+      }
+    },
+    {
+      "provenance": "bia_image_assignment",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "c252f796-fd5c-416b-bfaa-3c2554492b68"
+      }
+    }
+  ],
+  "label": null,
+  "submission_dataset_uuid": "d6da0a1e-ddbe-4aca-b054-dbfd7a6636c5",
+  "creation_process_uuid": "18fc18d2-f3e0-4b7c-a89d-c62e6b354e26",
+  "original_file_reference_uuid": [
+    "c252f796-fd5c-416b-bfaa-3c2554492b68"
+  ]
+}

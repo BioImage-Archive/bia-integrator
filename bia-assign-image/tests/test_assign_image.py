@@ -2,13 +2,20 @@ from typing import List
 from uuid import UUID
 from pathlib import Path
 import pytest
-from bia_assign_image import image, specimen, creation_process
-from bia_shared_datamodels import bia_data_model
+from bia_assign_image.object_creation import image, creation_process
+from bia_shared_datamodels import bia_data_model, uuid_creation
+
+from bia_assign_image.object_creation import specimen
 
 from .conftest import get_expected_object
 
 ACCESSION_ID = "S-BIAD-TEST-ASSIGN-IMAGE"
 EXPECTED_OBJECT_BASE_PATH = Path(__file__).parent / "test_data"
+
+
+@pytest.fixture
+def study_uuid():
+    return uuid_creation.create_study_uuid(ACCESSION_ID)
 
 
 @pytest.fixture
@@ -36,6 +43,20 @@ def file_references(
     return private_client.get_file_reference_linking_dataset(dataset.uuid, page_size=1)
 
 
+@pytest.fixture()
+def image_unique_str(file_references: List[bia_data_model.FileReference]) -> str:
+    fr_uuids = [str(fr.uuid) for fr in file_references]
+    return image.create_image_uuid_unique_string(fr_uuids)
+
+
+@pytest.fixture()
+def image_uuid(
+    study_uuid,
+    image_unique_str,
+):
+    return uuid_creation.create_image_uuid(study_uuid, image_unique_str)
+
+
 @pytest.fixture
 def specimen_imaging_preparation_protocol_uuid(
     dataset,
@@ -46,10 +67,9 @@ def specimen_imaging_preparation_protocol_uuid(
 
 
 @pytest.fixture
-def expected_image() -> bia_data_model.Image:
-    expected_image_uuid = "97456be4-fd3b-4303-bff3-02b93d00bd8e"
+def expected_image(image_uuid) -> bia_data_model.Image:
     return get_expected_object(
-        EXPECTED_OBJECT_BASE_PATH, "Image", ACCESSION_ID, expected_image_uuid
+        EXPECTED_OBJECT_BASE_PATH, "Image", ACCESSION_ID, image_uuid
     )
 
 
@@ -77,9 +97,12 @@ def bio_sample_uuid(dataset) -> List[UUID]:
     return dataset.additional_metadata[3].value["bio_sample_uuid"]
 
 
-def test_bia_image_with_one_file_reference(dataset, expected_image, file_references):
+def test_bia_image_with_one_file_reference(
+    image_uuid, image_unique_str, dataset, expected_image, file_references
+):
     created_image = image.get_image(
-        study_uuid=dataset.submitted_in_study_uuid,
+        image_uuid=image_uuid,
+        image_uuid_unique_string=image_unique_str,
         submission_dataset_uuid=dataset.uuid,
         creation_process_uuid=expected_image.creation_process_uuid,
         file_references=file_references,
@@ -89,15 +112,15 @@ def test_bia_image_with_one_file_reference(dataset, expected_image, file_referen
 
 
 def test_bia_specimen(
-    dataset,
+    study_uuid,
+    image_uuid,
     specimen_imaging_preparation_protocol_uuid,
     bio_sample_uuid,
     expected_specimen,
-    expected_image,
 ):
     created_specimen = specimen.get_specimen(
-        dataset.submitted_in_study_uuid,
-        expected_image.uuid,
+        study_uuid,
+        image_uuid,
         specimen_imaging_preparation_protocol_uuid,
         bio_sample_uuid,
     )
@@ -105,11 +128,15 @@ def test_bia_specimen(
     assert expected_specimen == created_specimen
 
 
-def test_bia_creation_process(dataset, expected_creation_process, expected_image):
+def test_bia_creation_process(
+    study_uuid,
+    image_uuid,
+    expected_creation_process,
+):
     # expected = mock_creation_process.get_creation_process_with_one_file_reference()
     created_creation_process = creation_process.get_creation_process(
-        study_uuid=dataset.submitted_in_study_uuid,
-        output_image_uuid=expected_image.uuid,
+        study_uuid=study_uuid,
+        output_image_uuid=image_uuid,
         subject_specimen_uuid=expected_creation_process.subject_specimen_uuid,
         image_acquisition_protocol_uuid=expected_creation_process.image_acquisition_protocol_uuid,
     )
