@@ -11,6 +11,7 @@ from bia_assign_image.api_client import (
 from scripts.map_image_related_artefacts_to_2025_04_models import (
     map_image_related_artefacts_to_2025_04_models,
     contains_displayable_image_representation,
+    update_dataset_example_image_uri,
 )
 
 import logging
@@ -105,6 +106,37 @@ def map_to_2025_04_models(
                         "representation_of_image_converted_to_ome_zarr"
                     ),
                 )
+
+
+@app.command(help="Map image related artefacts to 2025/04 models")
+def update_dataset_example_image_uris(
+    old_bia_study_metadata_path: Annotated[Path, typer.Argument()],
+    # accession_ids: Annotated[list[str], typer.Argument()],
+    accession_ids: Annotated[
+        list[str], typer.Option("--accession-ids", "-i", case_sensitive=False)
+    ] = [],
+    accession_id_path: Annotated[
+        Path | None, typer.Option("--accession-id-path", case_sensitive=False)
+    ] = None,
+    api_target: Annotated[
+        ApiTarget, typer.Option("--api", "-a", case_sensitive=False)
+    ] = ApiTarget.local,
+    verbose: Annotated[bool, typer.Option("--verbose", "-v")] = False,
+):
+    if verbose:
+        logger.setLevel(logging.DEBUG)
+
+    old_bia_study_metadata = json.loads(old_bia_study_metadata_path.read_text())
+
+    if accession_id_path:
+        accession_ids = accession_id_path.read_text().strip().split("\n")
+    elif accession_ids == ["all"]:
+        accession_ids = old_bia_study_metadata.keys()
+
+    updated_datasets = update_dataset_example_image_uri(
+        accession_ids, old_bia_study_metadata, api_target
+    )
+    logger.info(f"{len(updated_datasets)} datasets updated")
 
 
 @app.callback()

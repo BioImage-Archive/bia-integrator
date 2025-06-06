@@ -1,7 +1,11 @@
 from bia_shared_datamodels import bia_data_model, uuid_creation, attribute_models
 import copy
+import logging
 from bia_assign_image.cli import assign
 from bia_assign_image.api_client import get_api_client, store_object_in_api_idempotent
+from bia_assign_image.utils import get_all_api_results
+
+logger = logging.getLogger("__main__." + __name__)
 
 
 def contains_displayable_image_representation(file_reference_mapping: dict) -> bool:
@@ -254,5 +258,43 @@ def update_dataset_example_image_uri(
     old_bia_study_metadata: dict,
     api_target,
 ) -> list:
-    
-    return []
+    """Take bia-study-metadata.json from bia-export of pre 2025/04 models and map example image uris to new datasets"""
+
+    api_client = get_api_client(api_target)
+    updated_datasets = []
+    for accession_id in accession_ids:
+        if accession_id not in old_bia_study_metadata:
+            logger.info(f"{accession_id} not in supplied bia-study-metadata")
+            continue
+        study_uuid = uuid_creation.create_study_uuid(accession_id)
+        old_datasets = old_bia_study_metadata[accession_id]["dataset"]
+        new_datasets = []
+        image_uri_to_dataset_map = {}
+        for old_dataset in old_datasets:
+            if not old_dataset.get("example_image_uri"):
+                continue
+            if not new_datasets:
+                new_datasets = get_all_api_results(
+                    study_uuid, api_client.get_dataset_linking_study
+                )
+                for new_ds in new_datasets:
+                    images = get_all_api_results(
+                        new_ds.uuid, api_client.get_image_linking_dataset
+                    )
+                    for image in images:
+                        for additional_metadata in image.additional_metadata:
+                            if additional_metadata.name == "static_display_uri":
+                                static_display_uri = additional_metadata.value[
+                                    "static_display_uri"
+                                ]
+                                image_uri_to_dataset_map[static_display_uri[0]] = new_ds
+            example_image_uri = old_dataset["example_image_uri"]
+            new_dataset = image_uri_to_dataset_map.get(example_image_uri[0])
+            if new_dataset:
+                new_dataset.example_image_uri = example_image_uri
+                store_object_in_api_idempotent(api_client, new_dataset)
+                logger.info(
+                    f"Updated example_image_uri for dataset with uuid {new_dataset.uuid} of study {accession_id} to {example_image_uri}"
+                )
+                updated_datasets.append(new_dataset)
+    return updated_datasets
