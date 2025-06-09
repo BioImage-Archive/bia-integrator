@@ -75,10 +75,17 @@ async def fts(
     rsp = await elastic.client.search(
         index=elastic.index,
         query={
-            "multi_match": {
-                "query": query,
-                "fields": ["*"],
-                "type": "phrase",
+            "bool": {
+                "should": [
+                    {
+                        "multi_match": {
+                            "query": query,
+                            "fields": ["*"],
+                            "type": "phrase",
+                        }
+                    },
+                    {"query_string": {"query": f"*{query}*", "fields": ["*"]}},
+                ]
             }
         },
         size=5,

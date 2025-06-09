@@ -144,9 +144,7 @@ def test_get_multi_repeated_filter(api_client: TestClient, datasets_many: List[d
     not test_settings.elastic_connstring, reason="Elasticsearch URL not configured"
 )
 def test_fts(api_client: TestClient):
-    rsp = api_client.get(
-        f"search/fts", params={"query": "ZFTA_RELA HEK293T Puncta Studies"}
-    )
+    rsp = api_client.get(f"search/fts", params={"query": "Drosophila"})
     assert rsp.status_code == 200
 
     body = rsp.json()
