@@ -97,6 +97,7 @@ class Repository:
 
     async def _add_indices_collection_biaint(self) -> None:
         await self.biaint.create_index([("uuid", 1)], unique=True, name="doc_uuid")
+        await self.biaint.create_index([("model", 1)], name="doc_model")
 
         await self._add_indices_reverse_links()
 

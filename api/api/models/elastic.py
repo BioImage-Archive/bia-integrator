@@ -30,12 +30,14 @@ class Elastic:
                         "dynamic": False,
                         "properties": {
                             "accession_id": {"type": "keyword"},
-                            "author": {"type": "flattened"},
                             "title": {"type": "text"},
-                            "dataset": {"type": "flattened"},
                             "description": {"type": "text"},
+                            "funding_statement": {"type": "text"},
+                            "keyword": {"type": "keyword"},
+                            "author": {"type": "flattened"},
+                            "grant": {"type": "flattened"},
                         },
-                    }
+                    },
                 },
             )
 
