@@ -94,4 +94,4 @@ def create_image_uuid_unique_string(
     file_reference_uuids: List[UUID] | List[str],
 ) -> str:
     """Create the unique string used in generating uuids for bia_data_model.Image objects"""
-    return " ".join([str(f) for f in file_reference_uuids])
+    return " ".join([str(f) for f in sorted(file_reference_uuids)])

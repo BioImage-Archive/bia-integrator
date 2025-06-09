@@ -1,0 +1,356 @@
+{
+    "8bf3c882-6c45-4b28-9f46-030aac5e177a": {
+        "uuid": "8bf3c882-6c45-4b28-9f46-030aac5e177a",
+        "version": 1,
+        "model": {
+            "type_name": "Image",
+            "version": 1
+        },
+        "attribute": [
+            {
+                "provenance": "bia_conversion",
+                "name": "preferred_neuroglancer_image_representation_uuid",
+                "value": {
+                    "preferred_neuroglancer_image_representation_uuid": "0f441ba7-0126-42cc-ad33-8ac4b4a7ec24"
+                }
+            }
+        ],
+        "submission_dataset_uuid": "3440f89f-b5eb-4d21-832b-3d6a0ce33a8f",
+        "creation_process_uuid": "9db15700-a848-4a6f-858a-0592713738db",
+        "original_file_reference_uuid": [
+            "000d5533-548a-4690-8fd5-a5015bd63bf6",
+            "0027b6ba-49f8-416f-a764-02242dfee186",
+            "0034150e-aafb-4c81-8869-8e2667bf08e0",
+            "0049dd72-77cd-4509-beaf-c447d646ec7c",
+            "0051a70c-58ff-4dd8-b00d-ba513aced995",
+            "ffb6867f-c2ae-401f-b10c-f59ad531820f",
+            "ffd03364-bea8-4c07-bec4-23b7ef78e434",
+            "ffe2ecc9-e116-4fb4-8587-75c00530fedf",
+            "ffeb85ac-cba8-4e52-a88c-460fa28df85b",
+            "ffed93a5-7f03-4cf0-9254-45a2da3567ec"
+        ],
+        "file_reference": [
+            {
+                "uuid": "000d5533-548a-4690-8fd5-a5015bd63bf6",
+                "version": 0,
+                "model": {
+                    "type_name": "FileReference",
+                    "version": 2
+                },
+                "attribute": [],
+                "file_path": "EM04226_01/slice_01393_z=6.9272um.tif",
+                "format": ".tif",
+                "size_in_bytes": 65481292,
+                "uri": "https://ftp.ebi.ac.uk/empiar/world_availability/10326/data/EM04226_01/slice_01393_z=6.9272um.tif",
+                "submission_dataset_uuid": "3440f89f-b5eb-4d21-832b-3d6a0ce33a8f"
+            },
+            {
+                "uuid": "0027b6ba-49f8-416f-a764-02242dfee186",
+                "version": 0,
+                "model": {
+                    "type_name": "FileReference",
+                    "version": 2
+                },
+                "attribute": [],
+                "file_path": "EM04226_01/slice_02534_z=12.6376um.tif",
+                "format": ".tif",
+                "size_in_bytes": 65481294,
+                "uri": "https://ftp.ebi.ac.uk/empiar/world_availability/10326/data/EM04226_01/slice_02534_z=12.6376um.tif",
+                "submission_dataset_uuid": "3440f89f-b5eb-4d21-832b-3d6a0ce33a8f"
+            },
+            {
+                "uuid": "0034150e-aafb-4c81-8869-8e2667bf08e0",
+                "version": 0,
+                "model": {
+                    "type_name": "FileReference",
+                    "version": 2
+                },
+                "attribute": [],
+                "file_path": "EM04226_01/slice_00288_z=1.4263um.tif",
+                "format": ".tif",
+                "size_in_bytes": 65481296,
+                "uri": "https://ftp.ebi.ac.uk/empiar/world_availability/10326/data/EM04226_01/slice_00288_z=1.4263um.tif",
+                "submission_dataset_uuid": "3440f89f-b5eb-4d21-832b-3d6a0ce33a8f"
+            },
+            {
+                "uuid": "0049dd72-77cd-4509-beaf-c447d646ec7c",
+                "version": 0,
+                "model": {
+                    "type_name": "FileReference",
+                    "version": 2
+                },
+                "attribute": [],
+                "file_path": "EM04226_01/slice_02731_z=13.6305um.tif",
+                "format": ".tif",
+                "size_in_bytes": 65481296,
+                "uri": "https://ftp.ebi.ac.uk/empiar/world_availability/10326/data/EM04226_01/slice_02731_z=13.6305um.tif",
+                "submission_dataset_uuid": "3440f89f-b5eb-4d21-832b-3d6a0ce33a8f"
+            },
+            {
+                "uuid": "0051a70c-58ff-4dd8-b00d-ba513aced995",
+                "version": 0,
+                "model": {
+                    "type_name": "FileReference",
+                    "version": 2
+                },
+                "attribute": [],
+                "file_path": "EM04226_01/slice_03979_z=19.8626um.tif",
+                "format": ".tif",
+                "size_in_bytes": 65481296,
+                "uri": "https://ftp.ebi.ac.uk/empiar/world_availability/10326/data/EM04226_01/slice_03979_z=19.8626um.tif",
+                "submission_dataset_uuid": "3440f89f-b5eb-4d21-832b-3d6a0ce33a8f"
+            },
+            {
+                "uuid": "ffb6867f-c2ae-401f-b10c-f59ad531820f",
+                "version": 0,
+                "model": {
+                    "type_name": "FileReference",
+                    "version": 2
+                },
+                "attribute": [],
+                "file_path": "EM04226_01/slice_01366_z=6.7979um.tif",
+                "format": ".tif",
+                "size_in_bytes": 65481296,
+                "uri": "https://ftp.ebi.ac.uk/empiar/world_availability/10326/data/EM04226_01/slice_01366_z=6.7979um.tif",
+                "submission_dataset_uuid": "3440f89f-b5eb-4d21-832b-3d6a0ce33a8f"
+            },
+            {
+                "uuid": "ffd03364-bea8-4c07-bec4-23b7ef78e434",
+                "version": 0,
+                "model": {
+                    "type_name": "FileReference",
+                    "version": 2
+                },
+                "attribute": [],
+                "file_path": "EM04226_01/slice_03809_z=18.9997um.tif",
+                "format": ".tif",
+                "size_in_bytes": 65481298,
+                "uri": "https://ftp.ebi.ac.uk/empiar/world_availability/10326/data/EM04226_01/slice_03809_z=18.9997um.tif",
+                "submission_dataset_uuid": "3440f89f-b5eb-4d21-832b-3d6a0ce33a8f"
+            },
+            {
+                "uuid": "ffe2ecc9-e116-4fb4-8587-75c00530fedf",
+                "version": 0,
+                "model": {
+                    "type_name": "FileReference",
+                    "version": 2
+                },
+                "attribute": [],
+                "file_path": "EM04226_01/slice_01493_z=7.4266um.tif",
+                "format": ".tif",
+                "size_in_bytes": 65481294,
+                "uri": "https://ftp.ebi.ac.uk/empiar/world_availability/10326/data/EM04226_01/slice_01493_z=7.4266um.tif",
+                "submission_dataset_uuid": "3440f89f-b5eb-4d21-832b-3d6a0ce33a8f"
+            },
+            {
+                "uuid": "ffeb85ac-cba8-4e52-a88c-460fa28df85b",
+                "version": 0,
+                "model": {
+                    "type_name": "FileReference",
+                    "version": 2
+                },
+                "attribute": [],
+                "file_path": "EM04226_01/slice_01608_z=8.0099um.tif",
+                "format": ".tif",
+                "size_in_bytes": 65481298,
+                "uri": "https://ftp.ebi.ac.uk/empiar/world_availability/10326/data/EM04226_01/slice_01608_z=8.0099um.tif",
+                "submission_dataset_uuid": "3440f89f-b5eb-4d21-832b-3d6a0ce33a8f"
+            },
+            {
+                "uuid": "ffed93a5-7f03-4cf0-9254-45a2da3567ec",
+                "version": 0,
+                "model": {
+                    "type_name": "FileReference",
+                    "version": 2
+                },
+                "attribute": [],
+                "file_path": "EM04226_01/slice_02847_z=14.2121um.tif",
+                "format": ".tif",
+                "size_in_bytes": 65481294,
+                "uri": "https://ftp.ebi.ac.uk/empiar/world_availability/10326/data/EM04226_01/slice_02847_z=14.2121um.tif",
+                "submission_dataset_uuid": "3440f89f-b5eb-4d21-832b-3d6a0ce33a8f"
+            }
+        ],
+        "image_representation": [
+            {
+                "uuid": "0f441ba7-0126-42cc-ad33-8ac4b4a7ec24",
+                "version": 1,
+                "model": {
+                    "type_name": "ImageRepresentation",
+                    "version": 3
+                },
+                "attribute": [
+                    {
+                        "provenance": "bia_conversion",
+                        "name": "ome_zarr_config",
+                        "value": {
+                            "chunk_scheme": [
+                                1,
+                                1,
+                                64,
+                                64,
+                                64
+                            ],
+                            "downsample_factors": [
+                                1,
+                                1,
+                                2,
+                                2,
+                                2
+                            ],
+                            "n_scales": 5,
+                            "zarr_version": 3,
+                            "shard_scheme": [
+                                1,
+                                1,
+                                256,
+                                256,
+                                256
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_conversion",
+                        "name": "neuroglancer_view_link",
+                        "value": {
+                            "neuroglancer_view_link": "https://neuroglancer-demo.appspot.com/#!%7B%22dimensions%22:%7B%22t%22:%5B1%2C%22%22%5D%2C%22z%22:%5B5e-9%2C%22m%22%5D%2C%22y%22:%5B5e-9%2C%22m%22%5D%2C%22x%22:%5B5e-9%2C%22m%22%5D%7D%2C%22displayDimensions%22:%5B%22x%22%2C%22y%22%2C%22z%22%5D%2C%22position%22:%5B0%2C1885.7039794921875%2C3326.357421875%2C2723.323974609375%5D%2C%22crossSectionScale%22:7.729663327319976%2C%22projectionScale%22:268435456%2C%22layers%22:%5B%7B%22type%22:%22image%22%2C%22source%22:%22https://bioimaging-01-pub.livingobjects.ebi.ac.uk/phase1test/EMPIAR-10326-IM1.ome.zarr/%7Czarr3:%22%2C%22localDimensions%22:%7B%22c%27%22:%5B1%2C%22%22%5D%7D%2C%22localPosition%22:%5B0%5D%2C%22tab%22:%22rendering%22%2C%22shader%22:%22#uicontrol%20invlerp%20normalized%5Cnvoid%20main%28%29%20%7B%5Cn%20%20emitGrayscale%281.0-normalized%28%29%29%3B%5Cn%7D%5Cn%22%2C%22name%22:%22EMPIAR-10326-IM1.ome.zarr%22%7D%5D%2C%22selectedLayer%22:%7B%22layer%22:%22EMPIAR-10326-IM1.ome.zarr%22%7D%2C%22layout%22:%224panel%22%7D"
+                        }
+                    }
+                ],
+                "image_format": ".ome.zarr",
+                "use_type": "INTERACTIVE_DISPLAY",
+                "file_uri": [
+                    "https://bioimaging-01-pub.livingobjects.ebi.ac.uk/phase1test/EMPIAR-10326-IM1.ome.zarr"
+                ],
+                "total_size_in_bytes": 0,
+                "physical_size_x": 5e-09,
+                "physical_size_y": 5e-09,
+                "physical_size_z": 5e-09,
+                "size_x": 5632,
+                "size_y": 5632,
+                "size_z": 4490,
+                "size_c": 1,
+                "size_t": 1,
+                "image_viewer_setting": [],
+                "representation_of_uuid": "8bf3c882-6c45-4b28-9f46-030aac5e177a"
+            },
+            {
+                "uuid": "25c70018-7209-4218-a260-edf040ccf970",
+                "version": 0,
+                "model": {
+                    "type_name": "ImageRepresentation",
+                    "version": 3
+                },
+                "attribute": [],
+                "image_format": ".ome.zarr",
+                "use_type": "INTERACTIVE_DISPLAY",
+                "file_uri": [
+                    "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/EMPIAR-10326/8bf3c882-6c45-4b28-9f46-030aac5e177a/25c70018-7209-4218-a260-edf040ccf970.ome.zarr/0"
+                ],
+                "total_size_in_bytes": 8772795,
+                "physical_size_x": 1.0,
+                "physical_size_y": 1.0,
+                "physical_size_z": 1.0,
+                "size_x": 5632,
+                "size_y": 5632,
+                "size_z": 4490,
+                "size_c": 1,
+                "size_t": 1,
+                "image_viewer_setting": [],
+                "representation_of_uuid": "8bf3c882-6c45-4b28-9f46-030aac5e177a"
+            },
+            {
+                "uuid": "29094359-598b-4d5b-9068-88fe54ad5d56",
+                "version": 0,
+                "model": {
+                    "type_name": "ImageRepresentation",
+                    "version": 3
+                },
+                "attribute": [],
+                "image_format": ".png",
+                "use_type": "THUMBNAIL",
+                "file_uri": [
+                    "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/EMPIAR-10326/8bf3c882-6c45-4b28-9f46-030aac5e177a/29094359-598b-4d5b-9068-88fe54ad5d56.png"
+                ],
+                "total_size_in_bytes": 16216,
+                "physical_size_x": null,
+                "physical_size_y": null,
+                "physical_size_z": null,
+                "size_x": 256,
+                "size_y": 256,
+                "size_z": null,
+                "size_c": null,
+                "size_t": null,
+                "image_viewer_setting": [],
+                "representation_of_uuid": "8bf3c882-6c45-4b28-9f46-030aac5e177a"
+            },
+            {
+                "uuid": "2e37e0fc-96c9-4f8d-bf29-6c7c5ab927c8",
+                "version": 0,
+                "model": {
+                    "type_name": "ImageRepresentation",
+                    "version": 3
+                },
+                "attribute": [
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "file_pattern",
+                        "value": {
+                            "file_pattern": "EM04226_01/slice_{z:d}_z={}.tif"
+                        }
+                    }
+                ],
+                "image_format": "multi .tif",
+                "use_type": "UPLOADED_BY_SUBMITTER",
+                "file_uri": [
+                    "https://ftp.ebi.ac.uk/empiar/world_availability/10326/data/EM04226_01/slice_01393_z=6.9272um.tif",
+                    "https://ftp.ebi.ac.uk/empiar/world_availability/10326/data/EM04226_01/slice_02534_z=12.6376um.tif",
+                    "https://ftp.ebi.ac.uk/empiar/world_availability/10326/data/EM04226_01/slice_00288_z=1.4263um.tif",
+                    "https://ftp.ebi.ac.uk/empiar/world_availability/10326/data/EM04226_01/slice_02731_z=13.6305um.tif",
+                    "https://ftp.ebi.ac.uk/empiar/world_availability/10326/data/EM04226_01/slice_03979_z=19.8626um.tif",
+                    "https://ftp.ebi.ac.uk/empiar/world_availability/10326/data/EM04226_01/slice_01366_z=6.7979um.tif",
+                    "https://ftp.ebi.ac.uk/empiar/world_availability/10326/data/EM04226_01/slice_03809_z=18.9997um.tif",
+                    "https://ftp.ebi.ac.uk/empiar/world_availability/10326/data/EM04226_01/slice_01493_z=7.4266um.tif",
+                    "https://ftp.ebi.ac.uk/empiar/world_availability/10326/data/EM04226_01/slice_01608_z=8.0099um.tif",
+                    "https://ftp.ebi.ac.uk/empiar/world_availability/10326/data/EM04226_01/slice_02847_z=14.2121um.tif"
+                ],
+                "total_size_in_bytes": 654812954,
+                "physical_size_x": null,
+                "physical_size_y": null,
+                "physical_size_z": null,
+                "size_x": null,
+                "size_y": null,
+                "size_z": null,
+                "size_c": null,
+                "size_t": null,
+                "image_viewer_setting": [],
+                "representation_of_uuid": "8bf3c882-6c45-4b28-9f46-030aac5e177a"
+            },
+            {
+                "uuid": "d044ff82-49c6-425e-8dd8-899ad9ec1db6",
+                "version": 0,
+                "model": {
+                    "type_name": "ImageRepresentation",
+                    "version": 3
+                },
+                "attribute": [],
+                "image_format": ".png",
+                "use_type": "STATIC_DISPLAY",
+                "file_uri": [
+                    "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/EMPIAR-10326/8bf3c882-6c45-4b28-9f46-030aac5e177a/d044ff82-49c6-425e-8dd8-899ad9ec1db6.png"
+                ],
+                "total_size_in_bytes": 62114,
+                "physical_size_x": null,
+                "physical_size_y": null,
+                "physical_size_z": null,
+                "size_x": 512,
+                "size_y": 512,
+                "size_z": null,
+                "size_c": null,
+                "size_t": null,
+                "image_viewer_setting": [],
+                "representation_of_uuid": "8bf3c882-6c45-4b28-9f46-030aac5e177a"
+            }
+        ]
+    }
+}
