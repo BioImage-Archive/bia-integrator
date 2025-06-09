@@ -66,7 +66,7 @@ def get_contributor_dict(
     if completeness == Completeness.COMPLETE:
         contributor_dict |= {
             "contact_email": "contributor1@org1.ac.uk",
-            "role": [ "contributing author" ],
+            "role": ["contributing author"],
             "affiliation": [
                 get_affiliation_dict(Completeness.COMPLETE),
             ],
@@ -552,5 +552,16 @@ def get_document_uuid_uinque_input_attribute(
         "provenance": semantic_models.Provenance.bia_ingest,
         "name": "uuid_unique_input",
         "value": {"uuid_unique_input": "Biosample-1"},
+    }
+    return attribute
+
+
+def get_input_image_for_annotation_attribute(
+    completeness=Completeness.COMPLETE,
+) -> dict:
+    attribute = {
+        "provenance": semantic_models.Provenance.bia_ingest,
+        "name": "source_image_uuid",
+        "value": {"source_image_uuid": [str(get_file_reference_dict()["uuid"])]},
     }
     return attribute

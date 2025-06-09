@@ -134,3 +134,30 @@ class DocumentUUIDUinqueInputAttribute(Attribute, SubAttributeMixin):
         return value
 
     value: dict[str, str] = Field()
+
+
+class InputImageForAnnotation(Attribute, SubAttributeMixin):
+    """
+    Model for storing the link from one file reference to another.
+    Typically this was provided by users in filelists in the form of a 'Source Image' column.
+    """
+
+    @field_validator("name", mode="after")
+    @classmethod
+    def validate_attribute_name(cls, value) -> Self:
+        if value != "source_image_uuid":
+            raise ValueError(
+                f"Name for this type of attribute must be 'source_image_uuid'"
+            )
+        return value
+
+    @field_validator("value", mode="after")
+    @classmethod
+    def attribute_value(cls, value: dict) -> dict:
+        if len(value.keys()) != 1:
+            raise ValueError("Value dictionary should have exactly one 1 key")
+        elif "source_image_uuid" not in value.keys():
+            raise ValueError(f'The value dictionary key must be "source_image_uuid"')
+        return value
+
+    value: dict[str, list[str]] = Field()
