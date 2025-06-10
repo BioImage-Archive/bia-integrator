@@ -1,14 +1,15 @@
 {
-  "title_id": "Annotations and segmentation masks",
+  "title": "Annotations and segmentation masks",
   "uuid": "ef019f5d-d3e0-4122-89ae-1d1d07d2830f",
   "version": 0,
   "model": {
     "type_name": "AnnotationMethod",
-    "version": 3
+    "version": 4
   },
   "protocol_description": "Test protocol description",
   "annotation_criteria": "Test annotation criteria.",
   "annotation_coverage": "Test annotation coverage.",
-  "attribute": [],
+  "object_creator": "bia_ingest",
+  "additional_metadata": [],
   "method_type": ["other"]
 }

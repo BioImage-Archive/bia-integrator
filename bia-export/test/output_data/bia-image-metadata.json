@@ -1,23 +1,26 @@
 {
     "7966aa52-e3db-4ce3-801e-44c524b73ee3": {
+        "object_creator": "bia_ingest",
         "uuid": "7966aa52-e3db-4ce3-801e-44c524b73ee3",
         "version": 0,
         "model": {
             "type_name": "Image",
-            "version": 1
+            "version": 2
         },
-        "attribute": [],
+        "additional_metadata": [],
+        "label": null,
         "submission_dataset_uuid": "21999a9f-6f16-45d4-91c9-ed46cbfe015c",
         "creation_process_uuid": "8444ff28-e32b-4c6f-9677-d9ff597b0c29",
         "original_file_reference_uuid": [],
         "creation_process": {
+            "object_creator": "bia_image_assignment",
             "uuid": "8444ff28-e32b-4c6f-9677-d9ff597b0c29",
             "version": 0,
             "model": {
                 "type_name": "CreationProcess",
-                "version": 2
+                "version": 3
             },
-            "attribute": [],
+            "additional_metadata": [],
             "subject_specimen_uuid": null,
             "image_acquisition_protocol_uuid": [],
             "input_image_uuid": [
@@ -32,14 +35,15 @@
             "annotation_method": [
                 {
                     "default_open": true,
-                    "title_id": "Annotations and segmentation masks",
+                    "object_creator": "bia_ingest",
                     "uuid": "ef019f5d-d3e0-4122-89ae-1d1d07d2830f",
                     "version": 0,
                     "model": {
                         "type_name": "AnnotationMethod",
-                        "version": 3
+                        "version": 4
                     },
-                    "attribute": [],
+                    "additional_metadata": [],
+                    "title": "Annotations and segmentation masks",
                     "protocol_description": "Test protocol description",
                     "annotation_criteria": "Test annotation criteria.",
                     "annotation_coverage": "Test annotation coverage.",
@@ -56,24 +60,27 @@
         "representation": []
     },
     "e7322131-8e27-455d-b9fc-8add0719af70": {
+        "object_creator": "bia_image_assignment",
         "uuid": "e7322131-8e27-455d-b9fc-8add0719af70",
         "version": 0,
         "model": {
             "type_name": "Image",
-            "version": 1
+            "version": 2
         },
-        "attribute": [],
+        "additional_metadata": [],
+        "label": null,
         "submission_dataset_uuid": "47a4ab60-c76d-4424-bfaa-c2a024de720c",
         "creation_process_uuid": "2447db96-dd23-44eb-ad47-1086c9be1cba",
         "original_file_reference_uuid": [],
         "creation_process": {
+            "object_creator": "bia_image_assignment",
             "uuid": "2447db96-dd23-44eb-ad47-1086c9be1cba",
             "version": 0,
             "model": {
                 "type_name": "CreationProcess",
-                "version": 2
+                "version": 3
             },
-            "attribute": [],
+            "additional_metadata": [],
             "subject_specimen_uuid": "dcc18482-fa1a-468f-878f-c00f9cd46376",
             "image_acquisition_protocol_uuid": [
                 "c2e44a1b-a43c-476e-8ddf-8587f4c955b3"
@@ -84,14 +91,15 @@
             "acquisition_process": [
                 {
                     "default_open": true,
-                    "title_id": "Test Primary Screen Image Acquisition",
+                    "object_creator": "bia_ingest",
                     "uuid": "c2e44a1b-a43c-476e-8ddf-8587f4c955b3",
                     "version": 0,
                     "model": {
                         "type_name": "ImageAcquisitionProtocol",
-                        "version": 2
+                        "version": 3
                     },
-                    "attribute": [],
+                    "additional_metadata": [],
+                    "title": "Test Primary Screen Image Acquisition",
                     "protocol_description": "Test image acquisition parameters 1",
                     "imaging_instrument_description": "Test imaging instrument 1",
                     "fbbi_id": [],
@@ -101,13 +109,14 @@
                 }
             ],
             "subject": {
+                "object_creator": "bia_image_assignment",
                 "uuid": "dcc18482-fa1a-468f-878f-c00f9cd46376",
                 "version": 0,
                 "model": {
                     "type_name": "Specimen",
-                    "version": 2
+                    "version": 3
                 },
-                "attribute": [],
+                "additional_metadata": [],
                 "imaging_preparation_protocol_uuid": [
                     "7199d730-29f1-4ad8-b599-e9089cbb2d7b"
                 ],
@@ -117,14 +126,15 @@
                 "imaging_preparation_protocol": [
                     {
                         "default_open": true,
-                        "title_id": "Test specimen 1",
+                        "object_creator": "bia_ingest",
                         "uuid": "7199d730-29f1-4ad8-b599-e9089cbb2d7b",
                         "version": 0,
                         "model": {
                             "type_name": "SpecimenImagingPreparationProtocol",
-                            "version": 2
+                            "version": 3
                         },
-                        "attribute": [],
+                        "additional_metadata": [],
+                        "title": "Test specimen 1",
                         "protocol_description": "Test sample preparation protocol 1",
                         "signal_channel_information": []
                     }
@@ -132,17 +142,18 @@
                 "sample_of": [
                     {
                         "default_open": true,
-                        "title_id": "Test Biosample 1",
+                        "object_creator": "bia_ingest",
                         "uuid": "64a67727-4e7c-469a-91c4-6219ae072e99",
                         "version": 0,
                         "model": {
                             "type_name": "BioSample",
-                            "version": 3
+                            "version": 4
                         },
-                        "attribute": [],
+                        "additional_metadata": [],
+                        "title": "Test Biosample 1",
                         "organism_classification": [
                             {
-                                "attribute": [],
+                                "additional_metadata": [],
                                 "common_name": "human",
                                 "scientific_name": "Homo sapiens",
                                 "ncbi_id": null
@@ -160,14 +171,15 @@
                         ],
                         "growth_protocol_uuid": "a2ce3950-3b28-40b3-a6a5-23c4f7864912",
                         "growth_protocol": {
-                            "title_id": "Test specimen 1",
+                            "object_creator": "bia_ingest",
                             "uuid": "a2ce3950-3b28-40b3-a6a5-23c4f7864912",
                             "version": 0,
                             "model": {
                                 "type_name": "Protocol",
-                                "version": 2
+                                "version": 3
                             },
-                            "attribute": [],
+                            "additional_metadata": [],
+                            "title": "Test specimen 1",
                             "protocol_description": "Test sample growth protocol 1"
                         }
                     }
@@ -178,22 +190,22 @@
         },
         "representation": [
             {
+                "object_creator": "bia_image_conversion",
                 "uuid": "570a177d-de5d-4bee-bbd1-fd2dcbec9e2a",
                 "version": 0,
                 "model": {
                     "type_name": "ImageRepresentation",
-                    "version": 3
+                    "version": 4
                 },
-                "attribute": [],
+                "additional_metadata": [],
                 "image_format": "Template image format",
-                "use_type": "INTERACTIVE_DISPLAY",
                 "file_uri": [
                     "https://dummy.uri.org"
                 ],
                 "total_size_in_bytes": 0,
-                "physical_size_x": 1,
-                "physical_size_y": 1,
-                "physical_size_z": 1,
+                "voxel_physical_size_x": null,
+                "voxel_physical_size_y": null,
+                "voxel_physical_size_z": null,
                 "size_x": 1,
                 "size_y": 1,
                 "size_z": 1,
@@ -203,50 +215,27 @@
                 "representation_of_uuid": "e7322131-8e27-455d-b9fc-8add0719af70"
             },
             {
+                "object_creator": "bia_image_assignment",
                 "uuid": "677d5571-8ca3-4478-9e9f-cfeb3b012703",
                 "version": 0,
                 "model": {
                     "type_name": "ImageRepresentation",
-                    "version": 3
+                    "version": 4
                 },
-                "attribute": [],
+                "additional_metadata": [],
                 "image_format": "Template image format",
-                "use_type": "UPLOADED_BY_SUBMITTER",
                 "file_uri": [
                     "https://dummy.uri.org"
                 ],
                 "total_size_in_bytes": 0,
-                "physical_size_x": 1,
-                "physical_size_y": 1,
-                "physical_size_z": 1,
+                "voxel_physical_size_x": null,
+                "voxel_physical_size_y": null,
+                "voxel_physical_size_z": null,
                 "size_x": 1,
                 "size_y": 1,
                 "size_z": 1,
                 "size_c": 1,
                 "size_t": 1,
-                "image_viewer_setting": [],
-                "representation_of_uuid": "e7322131-8e27-455d-b9fc-8add0719af70"
-            },
-            {
-                "uuid": "8bfef1ff-18ec-4de7-8a10-2c19d552c150",
-                "version": 0,
-                "model": {
-                    "type_name": "ImageRepresentation",
-                    "version": 3
-                },
-                "attribute": [],
-                "image_format": "png",
-                "use_type": "THUMBNAIL",
-                "file_uri": [],
-                "total_size_in_bytes": 0,
-                "physical_size_x": null,
-                "physical_size_y": null,
-                "physical_size_z": null,
-                "size_x": null,
-                "size_y": null,
-                "size_z": null,
-                "size_c": null,
-                "size_t": null,
                 "image_viewer_setting": [],
                 "representation_of_uuid": "e7322131-8e27-455d-b9fc-8add0719af70"
             }
