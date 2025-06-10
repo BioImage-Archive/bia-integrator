@@ -1,15 +1,12 @@
 import logging
-from typing import List, Dict, Optional
+from typing import List, Optional
 from uuid import UUID
 
-from bia_ingest.persistence_strategy import PersistenceStrategy
 from bia_ingest.biostudies.submission_parsing_utils import (
     find_datasets_with_file_lists,
     attributes_to_dict,
 )
-from bia_ingest.bia_object_creation_utils import (
-    dicts_to_api_models,
-)
+from bia_ingest.bia_object_creation_utils import dict_to_api_model
 
 from bia_ingest.biostudies.api import (
     Submission,
@@ -23,13 +20,13 @@ from bia_shared_datamodels.uuid_creation import create_file_reference_uuid
 logger = logging.getLogger("__main__." + __name__)
 
 
-def get_file_reference_by_dataset(
+def get_file_reference_by_dataset_as_map(
+    file_path_to_file_ref_map: dict[str, dict],
     submission: Submission,
     study_uuid: UUID,
     datasets_in_submission: List[bia_data_model.Dataset],
     result_summary: dict,
-    persister: Optional[PersistenceStrategy] = None,
-) -> Dict[str, List[bia_data_model.FileReference]]:
+) -> dict[str, bia_data_model.FileReference]:
     """
     Return Dict of list of file references in datasets.
     """
@@ -58,31 +55,22 @@ def get_file_reference_by_dataset(
             message = f"""Number of datasets with file lists ({n_datasets_with_file_lists}) is not equal to the number of datasets passed as input to this function ({n_datasets_in_submission}). Was this deliberate?"""
             logger.warning(message)
 
-    fileref_to_datasets = {}
     for dataset_name, dataset in datasets_to_process.items():
         for file_list in dataset_file_list_map[dataset_name]:
-            if dataset_name not in fileref_to_datasets:
-                fileref_to_datasets[dataset_name] = []
 
             fname = file_list["File List"]
             files_in_fl = flist_from_flist_fname(submission.accno, fname)
 
-            file_reference_dicts = get_file_reference_dicts_for_submission_dataset(
-                submission.accno, study_uuid, dataset, files_in_fl
+            file_path_to_file_ref_map = get_file_reference_dicts_for_submission_dataset(
+                submission.accno,
+                study_uuid,
+                dataset,
+                files_in_fl,
+                file_path_to_file_ref_map,
+                result_summary,
             )
 
-            file_references = dicts_to_api_models(
-                file_reference_dicts,
-                bia_data_model.FileReference,
-                result_summary[submission.accno],
-            )
-
-            if persister:
-                persister.persist(file_references)
-
-            fileref_to_datasets[dataset_name].extend(file_references)
-
-    return fileref_to_datasets
+    return file_path_to_file_ref_map
 
 
 def get_file_reference_dicts_for_submission_dataset(
@@ -90,16 +78,44 @@ def get_file_reference_dicts_for_submission_dataset(
     study_uuid: UUID,
     submission_dataset: bia_data_model.Dataset,
     files_in_file_list: List[BioStudiesAPIFile],
-) -> list[dict]:
+    file_path_to_file_ref_map: dict[str:UUID],
+    result_summary: dict,
+) -> dict[UUID, dict]:
     """
     Return list of file references for particular submission dataset
     """
 
-    file_references = []
     for f in files_in_file_list:
         file_path = str(f.path.as_posix())
         size_in_bytes = int(f.size)
         uuid_unique_input = f"{file_path}{size_in_bytes}"
+
+        attributes = attributes_to_dict(f.attributes)
+        additional_metadata = [
+            {
+                "provenance": semantic_models.Provenance.bia_ingest,
+                "name": "attributes_from_biostudies.File",
+                "value": {
+                    "attributes": attributes,
+                },
+            },
+            {
+                "provenance": semantic_models.Provenance.bia_ingest,
+                "name": "uuid_unique_input",
+                "value": {"uuid_unique_input": uuid_unique_input},
+            },
+        ]
+
+        input_image = get_source_image(attributes, file_path_to_file_ref_map)
+        if input_image:
+            additional_metadata.append(
+                {
+                    "provenance": semantic_models.Provenance.bia_ingest,
+                    "name": "source_image_uuid",
+                    "value": {"source_image_uuid": [str(input_image)]},
+                }
+            )
+
         file_dict = {
             "uuid": create_file_reference_uuid(study_uuid, uuid_unique_input),
             "file_path": file_path,
@@ -109,27 +125,69 @@ def get_file_reference_dicts_for_submission_dataset(
             "submission_dataset_uuid": submission_dataset.uuid,
             "version": 0,
             "object_creator": semantic_models.Provenance.bia_ingest,
+            "additional_metadata": additional_metadata,
         }
 
-        attributes = attributes_to_dict(f.attributes)
-
-        attributes_as_attr_dict = {
-            "provenance": semantic_models.Provenance.bia_ingest,
-            "name": "attributes_from_biostudies.File",
-            "value": {
-                "attributes": attributes,
-            },
-        }
-        file_dict["additional_metadata"] = [
-            attributes_as_attr_dict,
-        ]
-        file_dict["additional_metadata"].append(
-            {
-                "provenance": semantic_models.Provenance.bia_ingest,
-                "name": "uuid_unique_input",
-                "value": {"uuid_unique_input": uuid_unique_input},
-            }
+        file_ref = dict_to_api_model(
+            file_dict, bia_data_model.FileReference, result_summary[accession_id]
         )
-        file_references.append(file_dict)
 
-    return file_references
+        if file_dict["file_path"] in file_path_to_file_ref_map.keys():
+            file_ref = file_ref_update(
+                file_ref, file_path_to_file_ref_map[file_dict["file_path"]]
+            )
+
+        file_path_to_file_ref_map[file_dict["file_path"]] = file_ref
+
+    return file_path_to_file_ref_map
+
+
+def get_source_image(
+    attributes_from_filelist: dict[str, str], file_path_to_file_ref_map: dict[str, dict]
+) -> Optional[UUID]:
+    input_image_uuid = None
+
+    possible_source_image_column_names = ["source image", "source image association"]
+
+    for key in attributes_from_filelist.keys():
+        if (
+            key.lower() in possible_source_image_column_names
+            and attributes_from_filelist[key]
+        ):
+            try:
+                input_image_uuid = file_path_to_file_ref_map[
+                    attributes_from_filelist[key]
+                ].uuid
+            except KeyError:
+                logger.warning(
+                    f"Annotation image could not find source image at path: {attributes_from_filelist[key]}"
+                )
+
+    return input_image_uuid
+
+
+def file_ref_update(
+    new_file_ref: bia_data_model.FileReference,
+    existing_proposed_file_ref: bia_data_model.FileReference,
+) -> bia_data_model.FileReference:
+    """
+    We assume that studies are ingested such that all non-annotation dataset file references are created first, then annotation file references.
+    If a file is referenced multiple times, we assume that the first dataset it was ingest with is correct.
+    The additional_metadata field is merged between the two objects.
+    """
+
+    new_file_ref.submission_dataset_uuid = (
+        existing_proposed_file_ref.submission_dataset_uuid
+    )
+
+    combined_additional_metadata = existing_proposed_file_ref.additional_metadata
+    api_obj_attribute_names = [
+        attr.name for attr in existing_proposed_file_ref.additional_metadata
+    ]
+    for attribute in new_file_ref.additional_metadata:
+        if attribute.name not in api_obj_attribute_names:
+            combined_additional_metadata.append(attribute)
+
+    new_file_ref.additional_metadata = combined_additional_metadata
+
+    return new_file_ref

@@ -5,7 +5,7 @@ from bia_ingest.biostudies.v4.growth_protocol import get_growth_protocol_as_map
 from bia_ingest.biostudies.v4.specimen_imaging_preparation_protocol import (
     get_specimen_imaging_preparation_protocol_as_map,
 )
-from bia_ingest.biostudies.v4.file_reference import get_file_reference_by_dataset
+from bia_ingest.biostudies.v4.file_reference import get_file_reference_by_dataset_as_map
 from bia_ingest.biostudies.v4.image_acquisition_protocol import (
     get_image_acquisition_protocol_map,
 )
@@ -64,30 +64,37 @@ def process_submission_v4(submission, result_summary, process_files, persister):
     )
 
     if process_files:
-        # Currently (03/02/2025) Image conversion does not create images for annotation datasets
-        # In cases where a user has provided confusing connections between their files and datasets
-        # i.e. through multiple datasets having file lists which reference the same file (often re-using the same file list)
-        # we would prefer the created file reference to link to non-annotation dataset, since we can then use them for image conversion.
-        # By processing file lists from Study Component sections last, we overwrite the submission_dataset_uuid of any duplicate created file reference.
-        # We do not have a particular preference order between datasets that were all created from Study Components.
-        for datasets_key, datasets_value in datasets.items():
-            if datasets_key != "from_study_component" and datasets.get(datasets_key):
-                get_file_reference_by_dataset(
-                    submission,
-                    study_uuid,
-                    datasets[datasets_key],
-                    result_summary,
-                    persister=persister,
-                )
+        file_path_to_uuid_map: dict[str, dict] = {}
 
         if datasets.get("from_study_component"):
-            get_file_reference_by_dataset(
+            get_file_reference_by_dataset_as_map(
+                file_path_to_uuid_map,
                 submission,
                 study_uuid,
                 datasets["from_study_component"],
                 result_summary,
-                persister=persister,
             )
+
+        if datasets.get("other"):
+            get_file_reference_by_dataset_as_map(
+                file_path_to_uuid_map,
+                submission,
+                study_uuid,
+                datasets["other"],
+                result_summary,
+            )
+
+        if datasets.get("from_annotation"):
+            get_file_reference_by_dataset_as_map(
+                file_path_to_uuid_map,
+                submission,
+                study_uuid,
+                datasets["from_annotation"],
+                result_summary,
+            )
+
+        if persister:
+            persister.persist(file_path_to_uuid_map.values())
 
     else:
         logger.info("Skipping file reference creation.")

@@ -51,7 +51,13 @@ def test_cli_writes_expected_files(
 
     expected_objects_dict, n_expected_objects = expected_bia_agent_objects
 
-    path_to_load = Path(__file__).parent / "data" / "example_bia_agent_study" / "input"
+    path_to_load = (
+        Path(__file__).parent
+        / "data"
+        / "example_bia_agent_study"
+        / "input"
+        / "S-BIAD1492"
+    )
 
     def _mock_filelist_get(flist_url: str) -> dict[str, str]:
         path = path_to_load / Path(flist_url).name

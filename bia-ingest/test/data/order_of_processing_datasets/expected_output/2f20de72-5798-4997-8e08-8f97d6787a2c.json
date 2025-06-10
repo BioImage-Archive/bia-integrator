@@ -1,0 +1,34 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "2f20de72-5798-4997-8e08-8f97d6787a2c",
+  "version": 0,
+  "model": {
+    "type_name": "FileReference",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "attributes_from_biostudies.File",
+      "value": {
+        "attributes": {
+          "AnnotationsIn": "ann06-10.json",
+          "metadata1_key": "metadata1_value",
+          "metadata2_key": "metadata2_value"
+        }
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "study_component1/im06.png3"
+      }
+    }
+  ],
+  "file_path": "study_component1/im06.png",
+  "format": "file",
+  "size_in_bytes": 3,
+  "uri": "https://www.ebi.ac.uk/biostudies/files/S-BIADTEST/study_component1/im06.png",
+  "submission_dataset_uuid": "1b6100a9-d573-4f19-8f0f-4e9c2b490a70"
+}
