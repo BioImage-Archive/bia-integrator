@@ -84,7 +84,7 @@ async def fts(
                             "type": "phrase",
                         }
                     },
-                    {"query_string": {"query": f"*{query}*", "fields": ["*"]}},
+                    {"simple_query_string": {"query": f"*{query}*", "fields": ["*"]}},
                 ]
             }
         },
