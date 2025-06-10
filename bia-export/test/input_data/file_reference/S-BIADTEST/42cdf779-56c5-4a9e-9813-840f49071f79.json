@@ -3,12 +3,13 @@
   "version": 0,
   "model": {
     "type_name": "FileReference",
-    "version": 2
+    "version": 3
   },
+  "object_creator": "bia_ingest",
   "file_path": "F2/IF/35E1_ROI.zip",
   "format": "file",
   "size_in_bytes": 5904,
   "uri": "https://www.ebi.ac.uk/biostudies/files/S-BIAD915/F2/IF/35E1_ROI.zip",
-  "attribute": [],
+  "additional_metadata": [],
   "submission_dataset_uuid": "21999a9f-6f16-45d4-91c9-ed46cbfe015c"
 }

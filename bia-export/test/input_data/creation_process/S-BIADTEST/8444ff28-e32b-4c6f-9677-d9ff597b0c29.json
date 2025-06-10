@@ -3,12 +3,13 @@
   "annotation_method_uuid": ["ef019f5d-d3e0-4122-89ae-1d1d07d2830f"],
   "image_acquisition_protocol_uuid": [],
   "subject_specimen_uuid": null,
-  "attribute": [],
+  "additional_metadata": [],
   "protocol_uuid": [],
   "input_image_uuid": ["e7322131-8e27-455d-b9fc-8add0719af70"],
   "version": 0,
+    "object_creator": "bia_image_assignment",
   "model": {
     "type_name": "CreationProcess",
-    "version": 2
+    "version": 3
   }
 }

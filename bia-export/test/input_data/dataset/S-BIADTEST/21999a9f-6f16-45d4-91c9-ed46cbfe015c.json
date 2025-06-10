@@ -1,13 +1,15 @@
 {
-  "title_id": "Annotations and segmentation masks",
+  "title": "Annotations and segmentation masks",
   "uuid": "21999a9f-6f16-45d4-91c9-ed46cbfe015c",
   "version": 0,
   "model": {
     "type_name": "Dataset",
-    "version": 1
+    "version": 2
   },
   "description": null,
-  "attribute": [
+    "object_creator": "bia_ingest",
+
+  "additional_metadata": [
     {
       "provenance": "bia_ingest",
       "name": "annotation_method_uuid",
