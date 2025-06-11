@@ -120,6 +120,9 @@ def persist(
     persistence_mode: PersistenceMode,
 ):
 
+    if len(objects_to_save) == 0:
+        return
+
     if persistence_mode == PersistenceMode.LOCAL_FILE:
         save_local_file(accession_id, object_type, objects_to_save)
     elif persistence_mode == PersistenceMode.LOCAL_API:

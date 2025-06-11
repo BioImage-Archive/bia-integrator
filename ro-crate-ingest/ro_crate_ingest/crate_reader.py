@@ -63,6 +63,10 @@ def load_entities(data: dict) -> dict[str, ROCrateModel]:
         for name, model in classes:
             if model.model_config["model_type"] in entity_type:
                 object: ROCrateModel = model(**entity)
+                if object.id in crate_objects_by_id.keys():
+                    raise RuntimeError(
+                        f"Duplicate object found in ro-crate with id: {object.id}"
+                    )
                 crate_objects_by_id[object.id] = object
                 break
         if len(crate_objects_by_id) == start_len:

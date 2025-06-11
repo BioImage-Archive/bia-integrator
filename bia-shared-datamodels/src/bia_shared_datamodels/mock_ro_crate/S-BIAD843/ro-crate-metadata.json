@@ -523,6 +523,86 @@
             ]
         },
         {
+            "@id": "data/images/confocal/WD1_15-02_WT_confocalonly.ome.zarr.zip",
+            "@type": [
+                "File",
+                "bia:Image"
+            ],
+            "resultOf": {
+                "@id": "_:cp4"
+            }
+        },
+        {
+            "@id": "_:cp4",
+            "@type": [
+                "bia:CreationProcess"
+            ],
+            "subject": {
+                "@id": "_:s0"
+            },
+            "imageAcquisitionProtocol": [
+                {
+                    "@id": "Confocal imaging"
+                }
+            ]
+        },
+        {
+            "@id": "_:s0",
+            "@type": [
+                "bia:Specimen"
+            ],
+            "biologicalEntity": [
+                {
+                    "@id": "Wing disk"
+                }
+            ],
+            "imagingPreparationProtocol": [
+                {
+                    "@id": "Wing disk culture"
+                }
+            ]
+        },
+        {
+            "@id": "data/images/confocal/WD2.1_21-02_WT_confocalonly.ome.zarr.zip",
+            "@type": [
+                "File",
+                "bia:Image"
+            ],
+            "resultOf": {
+                "@id": "_:cp5"
+            }
+        },
+        {
+            "@id": "_:cp5",
+            "@type": [
+                "bia:CreationProcess"
+            ],
+            "subject": {
+                "@id": "_:s1"
+            },
+            "imageAcquisitionProtocol": [
+                {
+                    "@id": "Confocal imaging"
+                }
+            ]
+        },
+        {
+            "@id": "_:s1",
+            "@type": [
+                "bia:Specimen"
+            ],
+            "biologicalEntity": [
+                {
+                    "@id": "Wing disk"
+                }
+            ],
+            "imagingPreparationProtocol": [
+                {
+                    "@id": "Wing disk culture"
+                }
+            ]
+        },
+        {
             "@id": "data/images/MP/",
             "@type": [
                 "bia:Dataset",
@@ -551,6 +631,86 @@
                 },
                 {
                     "@id": "data/images/MP/WD3.2_21-03_WT_MP.ome.zarr.zip"
+                }
+            ]
+        },
+        {
+            "@id": "data/images/MP/WD1.1_17-03_WT_MP.ome.zarr.zip",
+            "@type": [
+                "File",
+                "bia:Image"
+            ],
+            "resultOf": {
+                "@id": "_:cp6"
+            }
+        },
+        {
+            "@id": "_:cp6",
+            "@type": [
+                "bia:CreationProcess"
+            ],
+            "subject": {
+                "@id": "_:s2"
+            },
+            "imageAcquisitionProtocol": [
+                {
+                    "@id": "Multi-photon imaging"
+                }
+            ]
+        },
+        {
+            "@id": "_:s2",
+            "@type": [
+                "bia:Specimen"
+            ],
+            "biologicalEntity": [
+                {
+                    "@id": "Wing disk"
+                }
+            ],
+            "imagingPreparationProtocol": [
+                {
+                    "@id": "Wing disk culture"
+                }
+            ]
+        },
+        {
+            "@id": "data/images/MP/WD3.2_21-03_WT_MP.ome.zarr.zip",
+            "@type": [
+                "File",
+                "bia:Image"
+            ],
+            "resultOf": {
+                "@id": "_:cp7"
+            }
+        },
+        {
+            "@id": "_:cp7",
+            "@type": [
+                "bia:CreationProcess"
+            ],
+            "subject": {
+                "@id": "_:s3"
+            },
+            "imageAcquisitionProtocol": [
+                {
+                    "@id": "Multi-photon imaging"
+                }
+            ]
+        },
+        {
+            "@id": "_:s3",
+            "@type": [
+                "bia:Specimen"
+            ],
+            "biologicalEntity": [
+                {
+                    "@id": "Wing disk"
+                }
+            ],
+            "imagingPreparationProtocol": [
+                {
+                    "@id": "Wing disk culture"
                 }
             ]
         },

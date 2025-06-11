@@ -31,13 +31,32 @@ def create_image_and_dependencies(
         if isinstance(obj, ROCrateModels.Image)
     )
 
+
+    ro_crate_creation_processes = (
+        obj
+        for obj in crate_objects_by_id.values()
+        if isinstance(obj, ROCrateModels.CreationProcess)
+    )
+
+    ro_crate_specimen= (
+        obj
+        for obj in crate_objects_by_id.values()
+        if isinstance(obj, ROCrateModels.Specimen)
+    )
+
+
     crate_graph = load_ro_crate_metadata_to_graph(crate_path)
 
     file_reference_list = []
     image_by_id = {}
     creation_process_by_id = {}
+    image_ro_crate_id_uuid_map = {}
 
     for image in ro_crate_images:
+
+        ro_crate_creation_process = crate_objects_by_id[image.resultOf.id]
+        if len(ro_crate_creation_process.inputImage) > 0:
+            pass
 
         image_dataset = crate_objects_by_id[
             get_image_dataset_id(image.id, crate_graph, crate_path)
@@ -48,9 +67,8 @@ def create_image_and_dependencies(
         )
         file_reference_list += file_references
 
-        ro_crate_creaiton_process = crate_objects_by_id[image.resultOf.id]
         creation_process = convert_creation_process(
-            ro_crate_creaiton_process, study_uuid
+            ro_crate_creation_process, study_uuid
         )
 
         creation_process_by_id[creation_process.uuid] = creation_process

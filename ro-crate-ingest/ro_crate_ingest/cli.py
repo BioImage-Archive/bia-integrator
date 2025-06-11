@@ -52,7 +52,6 @@ def convert(
     entities = process_ro_crate(crate_path)
 
     api_objects = []
-
     study = Study.create_api_study(entities)
     accession_id = study.accession_id
     persist(accession_id, models.Study, [study], persistence_mode)
