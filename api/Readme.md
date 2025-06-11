@@ -42,13 +42,6 @@ curl -H "Content-Type: application/json" \
 
 The response should be just `null` and there should be no errors in the api container.
 
-### Local services
-
-Dejavu (Elastic viewer):
-* Url: http://localhost:1358/
-* Connection string: http://elastic:test@localhost:9200
-* Index: test_index
-
 ## Development
 
 ### Testing with VS CODE
@@ -107,7 +100,7 @@ To rebuild the api image and push it to the docker container registry. Assuming 
 # building the api image
 docker login ghcr.io
 
-docker buildx build --platform linux/amd64,linux/arm64 ../ -f Dockerfile -t bia-integrator-api
+docker build  ../ -f Dockerfile -t bia-integrator-api
 docker image tag bia-integrator-api ghcr.io/bioimage-archive/bia-integrator-api:$(make api.version)
 docker image push ghcr.io/bioimage-archive/bia-integrator-api:$(make api.version)
 ```
