@@ -1,0 +1,2123 @@
+{
+    "S-BIAD1553": {
+        "object_creator": "bia_ingest",
+        "uuid": "011cfb43-fa60-4e21-a047-e077c805840f",
+        "version": 0,
+        "model": {
+            "type_name": "Study",
+            "version": 3
+        },
+        "additional_metadata": [
+            {
+                "provenance": "bia_ingest",
+                "name": "biostudies json/pagetab entry",
+                "value": {
+                    "json": "https://www.ebi.ac.uk/biostudies/files/S-BIAD1553/S-BIAD1553.json",
+                    "pagetab": "https://www.ebi.ac.uk/biostudies/files/S-BIAD1553/S-BIAD1553.tsv"
+                }
+            }
+        ],
+        "accession_id": "S-BIAD1553",
+        "licence": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "author": [
+            {
+                "rorid": null,
+                "address": null,
+                "website": null,
+                "orcid": "0000-0002-9145-5216",
+                "display_name": "Nicola Laura Diny",
+                "affiliation": [
+                    {
+                        "rorid": null,
+                        "address": null,
+                        "website": null,
+                        "display_name": "University of Bonn"
+                    }
+                ],
+                "contact_email": "nicola.diny@uni-bonn.de",
+                "role": [
+                    "corresponding author"
+                ]
+            },
+            {
+                "rorid": null,
+                "address": null,
+                "website": null,
+                "orcid": null,
+                "display_name": "Cyrille Alexandre",
+                "affiliation": [
+                    {
+                        "rorid": null,
+                        "address": null,
+                        "website": null,
+                        "display_name": "The Francis Crick Institute"
+                    }
+                ],
+                "contact_email": "nicola.diny@uni-bonn.de",
+                "role": [
+                    "investigator"
+                ]
+            },
+            {
+                "rorid": null,
+                "address": null,
+                "website": null,
+                "orcid": null,
+                "display_name": "Adrien Franchet",
+                "affiliation": [
+                    {
+                        "rorid": null,
+                        "address": null,
+                        "website": null,
+                        "display_name": "The Francis Crick Institute"
+                    }
+                ],
+                "contact_email": "adrien.franchet@crick.ac.uk",
+                "role": [
+                    "investigator"
+                ]
+            },
+            {
+                "rorid": null,
+                "address": null,
+                "website": null,
+                "orcid": null,
+                "display_name": "Brigitta Stockinger",
+                "affiliation": [
+                    {
+                        "rorid": null,
+                        "address": null,
+                        "website": null,
+                        "display_name": "The Francis Crick Institute"
+                    }
+                ],
+                "contact_email": "BriGitta.Stockinger@crick.ac.uk",
+                "role": [
+                    "investigator"
+                ]
+            }
+        ],
+        "title": "Drosophila AHR limits tumor growth and stem cell proliferation in the intestine",
+        "release_date": "2024-12-31",
+        "description": "Background: The aryl hydrocarbon receptor (AHR) plays important roles in intestinal homeostasis, limiting tumour growth and promoting differentiation in the intestinal epithelium. Spineless, the Drosophila homolog of AHR, has only been studied in the context of development but not in the adult intestine. \nMethods: The role of Spineless in the Drosophila midgut was studied by overexpression or knockdown of Spineless in infection and tumour models and RNA sequencing of sorted midgut progenitor cells.\nResults: We show that spineless is upregulated in the adult intestinal epithelium after infection with Pseudomonas entomophila (P.e.). Spineless knockdown increased stem cell proliferation following infection-induced injury. Spineless overexpression limited intestinal stem cell proliferation and reduced survival after infection. In two tumour models, using either Notch RNAi or constitutively active Yorkie, Spineless suppressed tumour growth and doubled the lifespan of tumour-bearing flies. At the transcriptional level it reversed the gene expression changes induced in Yorkie tumours, counteracting cell proliferation and altered metabolism. \nConclusions: These findings demonstrate a new role for Spineless in the adult Drosophila midgut and highlight the evolutionarily conserved functions of AHR/Spineless in the control of proliferation and differentiation of the intestinal epithelium. \n",
+        "keyword": [
+            "drosophila",
+            "Spineless",
+            "aryl hydrocarbon receptor",
+            "tumour model",
+            "Pseudomonas entomophila"
+        ],
+        "acknowledgement": "",
+        "see_also": [],
+        "related_publication": [],
+        "grant": [
+            {
+                "id": "220497",
+                "funder": [
+                    {
+                        "display_name": "Wellcome",
+                        "id": null
+                    }
+                ]
+            },
+            {
+                "id": "210556",
+                "funder": [
+                    {
+                        "display_name": "Wellcome",
+                        "id": null
+                    }
+                ]
+            }
+        ],
+        "funding_statement": "This work was supported by Wellcome [220497; Sir Henry Wellcome Fellowship to N.L.D.] [210556; Wellcome Investigator Award to B.S.]; the Francis Crick Institute, which receives its core funding from Cancer Research UK [CC2016]; the UK Medical Research Council [CC2016].",
+        "dataset": [
+            {
+                "image_count": 0,
+                "file_reference_count": 0,
+                "file_reference_size_bytes": 0,
+                "file_type_counts": {},
+                "object_creator": "bia_ingest",
+                "uuid": "06316b4a-8d63-4feb-888f-f25579cd5f43",
+                "version": 0,
+                "model": {
+                    "type_name": "Dataset",
+                    "version": 2
+                },
+                "additional_metadata": [
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "annotation_method_uuid",
+                        "value": {
+                            "annotation_method_uuid": [
+                                "6bf79932-6a38-4cf5-b3f6-f5c890c580e2"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "uuid_unique_input",
+                        "value": {
+                            "uuid_unique_input": "Annotations-6"
+                        }
+                    }
+                ],
+                "title": "Notch-RNAi tumours",
+                "description": "midguts from Notch RNAi tumours and controls",
+                "analysis_method": [],
+                "correlation_method": [],
+                "example_image_uri": [],
+                "submitted_in_study_uuid": "011cfb43-fa60-4e21-a047-e077c805840f",
+                "acquisition_process": [],
+                "specimen_imaging_preparation_protocol": [],
+                "biological_entity": [],
+                "annotation_process": [
+                    {
+                        "default_open": true,
+                        "object_creator": "bia_ingest",
+                        "uuid": "6bf79932-6a38-4cf5-b3f6-f5c890c580e2",
+                        "version": 0,
+                        "model": {
+                            "type_name": "AnnotationMethod",
+                            "version": 4
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_ingest",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "Annotations-6"
+                                }
+                            }
+                        ],
+                        "title": "Notch-RNAi tumours",
+                        "protocol_description": "none",
+                        "annotation_criteria": null,
+                        "annotation_coverage": null,
+                        "transformation_description": null,
+                        "spatial_information": null,
+                        "method_type": [
+                            "other"
+                        ],
+                        "annotation_source_indicator": null
+                    }
+                ],
+                "other_creation_process": [],
+                "image": []
+            },
+            {
+                "image_count": 1,
+                "file_reference_count": 16,
+                "file_reference_size_bytes": 292209039,
+                "file_type_counts": {
+                    "file": 16
+                },
+                "object_creator": "bia_ingest",
+                "uuid": "3c808719-644d-427d-9ea5-56258228a2ec",
+                "version": 0,
+                "model": {
+                    "type_name": "Dataset",
+                    "version": 2
+                },
+                "additional_metadata": [
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "associations",
+                        "value": {
+                            "associations": [
+                                {
+                                    "image_analysis": "Image analysis",
+                                    "image_correlation": "Image correlation 1",
+                                    "biosample": "Constitutively active yorkie tumours",
+                                    "image_acquisition": "Image acquisition confocal microscopy",
+                                    "specimen": "immunofluorescent staining with DAPI"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "image_acquisition_protocol_uuid",
+                        "value": {
+                            "image_acquisition_protocol_uuid": [
+                                "73d34ca3-b775-4f95-9e3d-e9851efde086"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "specimen_imaging_preparation_protocol_uuid",
+                        "value": {
+                            "specimen_imaging_preparation_protocol_uuid": [
+                                "c7aedac7-2417-40d7-b574-d2ca04bc018d"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "bio_sample_uuid",
+                        "value": {
+                            "bio_sample_uuid": [
+                                "b4610b51-896c-4652-90b1-295998388914"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "uuid_unique_input",
+                        "value": {
+                            "uuid_unique_input": "Study Component-4"
+                        }
+                    }
+                ],
+                "title": "Yorkie tumours",
+                "description": "midguts from Yorkie tumours",
+                "analysis_method": [],
+                "correlation_method": [
+                    {
+                        "additional_metadata": [],
+                        "title": "Image correlation 1",
+                        "protocol_description": "",
+                        "fiducials_used": null,
+                        "transformation_matrix": null
+                    }
+                ],
+                "example_image_uri": [],
+                "submitted_in_study_uuid": "011cfb43-fa60-4e21-a047-e077c805840f",
+                "acquisition_process": [
+                    {
+                        "default_open": true,
+                        "object_creator": "bia_ingest",
+                        "uuid": "73d34ca3-b775-4f95-9e3d-e9851efde086",
+                        "version": 0,
+                        "model": {
+                            "type_name": "ImageAcquisitionProtocol",
+                            "version": 3
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_ingest",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "Image acquisition-3"
+                                }
+                            }
+                        ],
+                        "title": "Image acquisition confocal microscopy",
+                        "protocol_description": "Images within stacks were collected at 3-5\u00b5m z-interval, 5-7 images per stack were taken to cover the complete depth of samples acquired from R2 of the midugt.",
+                        "imaging_instrument_description": "Zeiss LSM 710 confocal microscope ",
+                        "fbbi_id": [],
+                        "imaging_method_name": [
+                            "confocal microscopy"
+                        ]
+                    }
+                ],
+                "specimen_imaging_preparation_protocol": [
+                    {
+                        "default_open": true,
+                        "object_creator": "bia_ingest",
+                        "uuid": "c7aedac7-2417-40d7-b574-d2ca04bc018d",
+                        "version": 0,
+                        "model": {
+                            "type_name": "SpecimenImagingPreparationProtocol",
+                            "version": 3
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_ingest",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "Specimen-2"
+                                }
+                            }
+                        ],
+                        "title": "immunofluorescent staining with DAPI",
+                        "protocol_description": "Drosophila midguts were dissected and fixed with 4% (w/v) Formaldehyde (Thermofisher) in PBS at room temperature for 30 minutes, permeabilised with PBS 0.2% Triton x-100 (PBST) at room temperature for 30 minutes and blocked with 10% (w/v) Bovine Serum Albumin (SigmaAldrich) in PBST (PBSA) at room temperature for 30 minutes. Tissues were stained 1:10000 PBS-diluted DAPI staining (5mg/mL in H2O, SigmaAldrich, D9542) for 10 minutes before PBS washing. Ovaries and posterior abdomen were removed, and the remaining midguts were then mounted with antifade (Thermofisher, P36934) on 21-well glass slides (1 gut/well). Images were acquired on a Zeiss LSM 710 confocal microscope. Images within stacks were collected at 3-5\u00b5m z-interval, 5-7 images per stack were taken to cover the complete depth of samples acquired from R2 of the midugt. ",
+                        "signal_channel_information": []
+                    }
+                ],
+                "biological_entity": [
+                    {
+                        "default_open": true,
+                        "object_creator": "bia_ingest",
+                        "uuid": "b4610b51-896c-4652-90b1-295998388914",
+                        "version": 0,
+                        "model": {
+                            "type_name": "BioSample",
+                            "version": 4
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_ingest",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "Biosample-12"
+                                }
+                            }
+                        ],
+                        "title": "Constitutively active yorkie tumours",
+                        "organism_classification": [
+                            {
+                                "additional_metadata": [],
+                                "common_name": "fruit fly",
+                                "scientific_name": "Drosophila melanogaster",
+                                "ncbi_id": null
+                            }
+                        ],
+                        "biological_entity_description": "Drosophila midgut",
+                        "experimental_variable_description": [
+                            "genotype"
+                        ],
+                        "extrinsic_variable_description": [],
+                        "intrinsic_variable_description": [],
+                        "growth_protocol_uuid": null,
+                        "growth_protocol": null
+                    }
+                ],
+                "annotation_process": [],
+                "other_creation_process": [],
+                "image": [
+                    {
+                        "object_creator": "bia_image_assignment",
+                        "uuid": "bc8efc45-3442-4c70-add4-8f037cd617a6",
+                        "version": 1,
+                        "model": {
+                            "type_name": "Image",
+                            "version": 2
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "attributes_from_file_reference_c4a92624-440c-4bfb-b8dc-800c1673be45",
+                                "value": {
+                                    "attributes": {
+                                        "timepoint": "Day 2",
+                                        "genotype": "esgts>ykiact, ssHA "
+                                    }
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "file_pattern",
+                                "value": {
+                                    "file_pattern": "esg-N-ss_day2_02_bright.jpg"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "c4a92624-440c-4bfb-b8dc-800c1673be45"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "thumbnail_uri",
+                                "value": {
+                                    "thumbnail_uri": [
+                                        "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1553/5481818e-a20e-4c0e-b78e-fa8fbe673433/2e4dcef9-8ea3-468b-90a6-4b1aca0bf5f2.png"
+                                    ]
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "recommended_vizarr_representation",
+                                "value": {
+                                    "recommended_vizarr_representation": "a19d8ad3-b620-4338-81eb-f4e9c1871e02"
+                                }
+                            }
+                        ],
+                        "label": null,
+                        "submission_dataset_uuid": "3c808719-644d-427d-9ea5-56258228a2ec",
+                        "creation_process_uuid": "bfeb997d-0046-4fbe-99f6-51bfb22c5a87",
+                        "original_file_reference_uuid": [
+                            "c4a92624-440c-4bfb-b8dc-800c1673be45"
+                        ]
+                    }
+                ]
+            },
+            {
+                "image_count": 0,
+                "file_reference_count": 0,
+                "file_reference_size_bytes": 0,
+                "file_type_counts": {},
+                "object_creator": "bia_ingest",
+                "uuid": "807d979b-a20e-40e6-89a8-65d0ed06233a",
+                "version": 0,
+                "model": {
+                    "type_name": "Dataset",
+                    "version": 2
+                },
+                "additional_metadata": [
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "annotation_method_uuid",
+                        "value": {
+                            "annotation_method_uuid": [
+                                "c90cf7dc-ae70-4d43-8bd8-0437197b0847"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "uuid_unique_input",
+                        "value": {
+                            "uuid_unique_input": "Annotations-14"
+                        }
+                    }
+                ],
+                "title": "rotund ssGFP flies",
+                "description": "phenotype of ssGFP, rn>anti-GFP flies",
+                "analysis_method": [],
+                "correlation_method": [],
+                "example_image_uri": [],
+                "submitted_in_study_uuid": "011cfb43-fa60-4e21-a047-e077c805840f",
+                "acquisition_process": [],
+                "specimen_imaging_preparation_protocol": [],
+                "biological_entity": [],
+                "annotation_process": [
+                    {
+                        "default_open": true,
+                        "object_creator": "bia_ingest",
+                        "uuid": "c90cf7dc-ae70-4d43-8bd8-0437197b0847",
+                        "version": 0,
+                        "model": {
+                            "type_name": "AnnotationMethod",
+                            "version": 4
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_ingest",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "Annotations-14"
+                                }
+                            }
+                        ],
+                        "title": "rotund ssGFP flies",
+                        "protocol_description": "none",
+                        "annotation_criteria": null,
+                        "annotation_coverage": null,
+                        "transformation_description": null,
+                        "spatial_information": null,
+                        "method_type": [
+                            "other"
+                        ],
+                        "annotation_source_indicator": null
+                    }
+                ],
+                "other_creation_process": [],
+                "image": []
+            },
+            {
+                "image_count": 3,
+                "file_reference_count": 4,
+                "file_reference_size_bytes": 166705908,
+                "file_type_counts": {
+                    "file": 4
+                },
+                "object_creator": "bia_ingest",
+                "uuid": "99968d8b-9ca9-4aab-a21f-acc71ce02673",
+                "version": 1,
+                "model": {
+                    "type_name": "Dataset",
+                    "version": 2
+                },
+                "additional_metadata": [
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "associations",
+                        "value": {
+                            "associations": [
+                                {
+                                    "image_analysis": "Image analysis",
+                                    "image_correlation": "Image correlation 1",
+                                    "biosample": "P.e. infected midguts",
+                                    "image_acquisition": "Image acquisition confocal microscopy",
+                                    "specimen": "Staining with phalloidin and DAPI"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "image_acquisition_protocol_uuid",
+                        "value": {
+                            "image_acquisition_protocol_uuid": [
+                                "73d34ca3-b775-4f95-9e3d-e9851efde086"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "specimen_imaging_preparation_protocol_uuid",
+                        "value": {
+                            "specimen_imaging_preparation_protocol_uuid": [
+                                "38735102-c8c3-46f0-937e-9067d6b57816"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "bio_sample_uuid",
+                        "value": {
+                            "bio_sample_uuid": [
+                                "866c1aaf-a227-41b1-9433-12923c8ca81a"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "uuid_unique_input",
+                        "value": {
+                            "uuid_unique_input": "Study Component-20"
+                        }
+                    }
+                ],
+                "title": "Pe infected midguts",
+                "description": "midguts from flies infected with Pseudomonas entomophila",
+                "analysis_method": [],
+                "correlation_method": [
+                    {
+                        "additional_metadata": [],
+                        "title": "Image correlation 1",
+                        "protocol_description": "",
+                        "fiducials_used": null,
+                        "transformation_matrix": null
+                    }
+                ],
+                "example_image_uri": [
+                    "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1553/f2ea13ce-915f-4087-9183-3c8ed165cb69/b6e32c01-f630-4dc1-95b0-b6a19f48ccbc.png"
+                ],
+                "submitted_in_study_uuid": "011cfb43-fa60-4e21-a047-e077c805840f",
+                "acquisition_process": [
+                    {
+                        "default_open": false,
+                        "object_creator": "bia_ingest",
+                        "uuid": "73d34ca3-b775-4f95-9e3d-e9851efde086",
+                        "version": 0,
+                        "model": {
+                            "type_name": "ImageAcquisitionProtocol",
+                            "version": 3
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_ingest",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "Image acquisition-3"
+                                }
+                            }
+                        ],
+                        "title": "Image acquisition confocal microscopy",
+                        "protocol_description": "Images within stacks were collected at 3-5\u00b5m z-interval, 5-7 images per stack were taken to cover the complete depth of samples acquired from R2 of the midugt.",
+                        "imaging_instrument_description": "Zeiss LSM 710 confocal microscope ",
+                        "fbbi_id": [],
+                        "imaging_method_name": [
+                            "confocal microscopy"
+                        ]
+                    }
+                ],
+                "specimen_imaging_preparation_protocol": [
+                    {
+                        "default_open": true,
+                        "object_creator": "bia_ingest",
+                        "uuid": "38735102-c8c3-46f0-937e-9067d6b57816",
+                        "version": 0,
+                        "model": {
+                            "type_name": "SpecimenImagingPreparationProtocol",
+                            "version": 3
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_ingest",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "Specimen-13"
+                                }
+                            }
+                        ],
+                        "title": "Staining with phalloidin and DAPI",
+                        "protocol_description": "Drosophila midguts were dissected and fixed with 4% (w/v) Formaldehyde (Thermofisher) in PBS at room temperature for 30 minutes, permeabilised with PBS 0.2% Triton x-100 (PBST) at room temperature for 30 minutes and blocked with 10% (w/v) Bovine Serum Albumin (SigmaAldrich) in PBST (PBSA) at room temperature for 30 minutes. Tissues were stained for 2h with phalloidin-Alexa Fluor 555 (ThermoFisher), 1:100 in PBST with 10% goat serum and washed 5 times in PBST. Tissues were stained 1:10000 PBS-diluted DAPI staining (5mg/mL in H2O, SigmaAldrich, D9542) for 10 minutes before PBS washing. Ovaries and posterior abdomen were removed, and the remaining midguts were then mounted with antifade (Thermofisher, P36934) on 21-well glass slides (1 gut/well). Images were acquired on a Zeiss LSM 710 confocal microscope. Images within stacks were collected at 3-5\u00b5m z-interval, 5-7 images per stack were taken to cover the complete depth of samples acquired from R2 of the midugt. ",
+                        "signal_channel_information": []
+                    }
+                ],
+                "biological_entity": [
+                    {
+                        "default_open": true,
+                        "object_creator": "bia_ingest",
+                        "uuid": "866c1aaf-a227-41b1-9433-12923c8ca81a",
+                        "version": 0,
+                        "model": {
+                            "type_name": "BioSample",
+                            "version": 4
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_ingest",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "Biosample-10"
+                                }
+                            }
+                        ],
+                        "title": "P.e. infected midguts",
+                        "organism_classification": [
+                            {
+                                "additional_metadata": [],
+                                "common_name": "fruit fly",
+                                "scientific_name": "Drosophila melanogaster",
+                                "ncbi_id": null
+                            }
+                        ],
+                        "biological_entity_description": "Drosophila midgut",
+                        "experimental_variable_description": [
+                            "genotype, Pseudomonas entomophila infection"
+                        ],
+                        "extrinsic_variable_description": [],
+                        "intrinsic_variable_description": [],
+                        "growth_protocol_uuid": null,
+                        "growth_protocol": null
+                    }
+                ],
+                "annotation_process": [],
+                "other_creation_process": [],
+                "image": [
+                    {
+                        "object_creator": "bia_image_assignment",
+                        "uuid": "155f9b52-ffc9-4341-a9ee-7d1e7e906a22",
+                        "version": 1,
+                        "model": {
+                            "type_name": "Image",
+                            "version": 2
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "attributes_from_file_reference_80b597a3-8b59-44db-9518-6116dad8d658",
+                                "value": {
+                                    "attributes": {
+                                        "timepoint": "24h",
+                                        "genotype": "esgts> GFP, ssHA ",
+                                        "infection": "control"
+                                    }
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "file_pattern",
+                                "value": {
+                                    "file_pattern": "Dm18_Ctrl_UASss.lif"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "80b597a3-8b59-44db-9518-6116dad8d658"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "thumbnail_uri",
+                                "value": {
+                                    "thumbnail_uri": [
+                                        "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1553/f2ea13ce-915f-4087-9183-3c8ed165cb69/d8b40c6d-2dec-4067-925f-4ccddb7b95cd.png"
+                                    ]
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "static_display_uri",
+                                "value": {
+                                    "static_display_uri": [
+                                        "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1553/f2ea13ce-915f-4087-9183-3c8ed165cb69/b6e32c01-f630-4dc1-95b0-b6a19f48ccbc.png"
+                                    ]
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "recommended_vizarr_representation",
+                                "value": {
+                                    "recommended_vizarr_representation": "5399d3b5-7565-4c79-a3c9-234603eebb9e"
+                                }
+                            }
+                        ],
+                        "label": null,
+                        "submission_dataset_uuid": "99968d8b-9ca9-4aab-a21f-acc71ce02673",
+                        "creation_process_uuid": "c54e7c6d-ce55-4dd1-888f-6cc966b83216",
+                        "original_file_reference_uuid": [
+                            "80b597a3-8b59-44db-9518-6116dad8d658"
+                        ]
+                    },
+                    {
+                        "object_creator": "bia_image_assignment",
+                        "uuid": "53d89263-3d26-4744-ac61-8cdbc2cc0134",
+                        "version": 1,
+                        "model": {
+                            "type_name": "Image",
+                            "version": 2
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "attributes_from_file_reference_399cf7ea-8b9d-4927-96aa-dba027629154",
+                                "value": {
+                                    "attributes": {
+                                        "timepoint": "24h",
+                                        "genotype": "esgts> GFP, ssHA ",
+                                        "infection": "Pseudomonas entomophila"
+                                    }
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "file_pattern",
+                                "value": {
+                                    "file_pattern": "Dm18_Pe_UASss.lif"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "399cf7ea-8b9d-4927-96aa-dba027629154"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "thumbnail_uri",
+                                "value": {
+                                    "thumbnail_uri": [
+                                        "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1553/93b44141-a0b7-41cd-9cc0-397ae935ce51/92424927-4b15-479e-833e-d613bc123565.png"
+                                    ]
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "recommended_vizarr_representation",
+                                "value": {
+                                    "recommended_vizarr_representation": "28769c84-226b-4da4-b52e-7b6028ba49ee"
+                                }
+                            }
+                        ],
+                        "label": null,
+                        "submission_dataset_uuid": "99968d8b-9ca9-4aab-a21f-acc71ce02673",
+                        "creation_process_uuid": "5bb9ec6b-fdc3-4545-b9f4-6bae7f4bd49b",
+                        "original_file_reference_uuid": [
+                            "399cf7ea-8b9d-4927-96aa-dba027629154"
+                        ]
+                    },
+                    {
+                        "object_creator": "bia_image_assignment",
+                        "uuid": "e1c71013-2e72-4b02-afde-d69824d1a206",
+                        "version": 1,
+                        "model": {
+                            "type_name": "Image",
+                            "version": 2
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "attributes_from_file_reference_7f953c8a-e65f-4e33-808a-13c3789e7173",
+                                "value": {
+                                    "attributes": {
+                                        "timepoint": "24h",
+                                        "genotype": "esgts> GFP",
+                                        "infection": "control"
+                                    }
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "file_pattern",
+                                "value": {
+                                    "file_pattern": "Dm18_Ctrl_w1118.lif"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "7f953c8a-e65f-4e33-808a-13c3789e7173"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "thumbnail_uri",
+                                "value": {
+                                    "thumbnail_uri": [
+                                        "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1553/b6abcf43-a8c9-4732-a23c-4f63e6edceec/c0c1dd7b-4faf-498e-8c43-6fc373bbc527.png"
+                                    ]
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "recommended_vizarr_representation",
+                                "value": {
+                                    "recommended_vizarr_representation": "e86037f9-5cc2-4a16-b90a-66d9314905d3"
+                                }
+                            }
+                        ],
+                        "label": null,
+                        "submission_dataset_uuid": "99968d8b-9ca9-4aab-a21f-acc71ce02673",
+                        "creation_process_uuid": "32b8ad8e-b377-4fed-89d5-b1f13b6c9dfe",
+                        "original_file_reference_uuid": [
+                            "7f953c8a-e65f-4e33-808a-13c3789e7173"
+                        ]
+                    }
+                ]
+            },
+            {
+                "image_count": 1,
+                "file_reference_count": 22,
+                "file_reference_size_bytes": 46231841,
+                "file_type_counts": {
+                    "file": 22
+                },
+                "object_creator": "bia_ingest",
+                "uuid": "acb0f2d9-01b0-4aad-aacb-be680b3362b3",
+                "version": 0,
+                "model": {
+                    "type_name": "Dataset",
+                    "version": 2
+                },
+                "additional_metadata": [
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "associations",
+                        "value": {
+                            "associations": [
+                                {
+                                    "image_analysis": "Image analysis",
+                                    "image_correlation": "Image correlation 1",
+                                    "biosample": "Notch RNAi tumours",
+                                    "image_acquisition": "Image acquisition confocal microscopy",
+                                    "specimen": "immunofluorescent staining with DAPI"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "image_acquisition_protocol_uuid",
+                        "value": {
+                            "image_acquisition_protocol_uuid": [
+                                "73d34ca3-b775-4f95-9e3d-e9851efde086"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "specimen_imaging_preparation_protocol_uuid",
+                        "value": {
+                            "specimen_imaging_preparation_protocol_uuid": [
+                                "c7aedac7-2417-40d7-b574-d2ca04bc018d"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "bio_sample_uuid",
+                        "value": {
+                            "bio_sample_uuid": [
+                                "ae70f172-7047-4b70-b4e7-ce0c843a8ab3"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "uuid_unique_input",
+                        "value": {
+                            "uuid_unique_input": "Study Component-15"
+                        }
+                    }
+                ],
+                "title": "Notch RNAi tumours",
+                "description": "midguts from flies with Notch RNAi tumours",
+                "analysis_method": [],
+                "correlation_method": [
+                    {
+                        "additional_metadata": [],
+                        "title": "Image correlation 1",
+                        "protocol_description": "",
+                        "fiducials_used": null,
+                        "transformation_matrix": null
+                    }
+                ],
+                "example_image_uri": [],
+                "submitted_in_study_uuid": "011cfb43-fa60-4e21-a047-e077c805840f",
+                "acquisition_process": [
+                    {
+                        "default_open": false,
+                        "object_creator": "bia_ingest",
+                        "uuid": "73d34ca3-b775-4f95-9e3d-e9851efde086",
+                        "version": 0,
+                        "model": {
+                            "type_name": "ImageAcquisitionProtocol",
+                            "version": 3
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_ingest",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "Image acquisition-3"
+                                }
+                            }
+                        ],
+                        "title": "Image acquisition confocal microscopy",
+                        "protocol_description": "Images within stacks were collected at 3-5\u00b5m z-interval, 5-7 images per stack were taken to cover the complete depth of samples acquired from R2 of the midugt.",
+                        "imaging_instrument_description": "Zeiss LSM 710 confocal microscope ",
+                        "fbbi_id": [],
+                        "imaging_method_name": [
+                            "confocal microscopy"
+                        ]
+                    }
+                ],
+                "specimen_imaging_preparation_protocol": [
+                    {
+                        "default_open": false,
+                        "object_creator": "bia_ingest",
+                        "uuid": "c7aedac7-2417-40d7-b574-d2ca04bc018d",
+                        "version": 0,
+                        "model": {
+                            "type_name": "SpecimenImagingPreparationProtocol",
+                            "version": 3
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_ingest",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "Specimen-2"
+                                }
+                            }
+                        ],
+                        "title": "immunofluorescent staining with DAPI",
+                        "protocol_description": "Drosophila midguts were dissected and fixed with 4% (w/v) Formaldehyde (Thermofisher) in PBS at room temperature for 30 minutes, permeabilised with PBS 0.2% Triton x-100 (PBST) at room temperature for 30 minutes and blocked with 10% (w/v) Bovine Serum Albumin (SigmaAldrich) in PBST (PBSA) at room temperature for 30 minutes. Tissues were stained 1:10000 PBS-diluted DAPI staining (5mg/mL in H2O, SigmaAldrich, D9542) for 10 minutes before PBS washing. Ovaries and posterior abdomen were removed, and the remaining midguts were then mounted with antifade (Thermofisher, P36934) on 21-well glass slides (1 gut/well). Images were acquired on a Zeiss LSM 710 confocal microscope. Images within stacks were collected at 3-5\u00b5m z-interval, 5-7 images per stack were taken to cover the complete depth of samples acquired from R2 of the midugt. ",
+                        "signal_channel_information": []
+                    }
+                ],
+                "biological_entity": [
+                    {
+                        "default_open": true,
+                        "object_creator": "bia_ingest",
+                        "uuid": "ae70f172-7047-4b70-b4e7-ce0c843a8ab3",
+                        "version": 0,
+                        "model": {
+                            "type_name": "BioSample",
+                            "version": 4
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_ingest",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "Biosample-11"
+                                }
+                            }
+                        ],
+                        "title": "Notch RNAi tumours",
+                        "organism_classification": [
+                            {
+                                "additional_metadata": [],
+                                "common_name": "fruit fly",
+                                "scientific_name": "Drosophila melanogaster",
+                                "ncbi_id": null
+                            }
+                        ],
+                        "biological_entity_description": "Drosophila midgut",
+                        "experimental_variable_description": [
+                            "genotype"
+                        ],
+                        "extrinsic_variable_description": [],
+                        "intrinsic_variable_description": [],
+                        "growth_protocol_uuid": null,
+                        "growth_protocol": null
+                    }
+                ],
+                "annotation_process": [],
+                "other_creation_process": [],
+                "image": [
+                    {
+                        "object_creator": "bia_image_assignment",
+                        "uuid": "1049e31d-9f73-47b2-9ff0-68318daf2610",
+                        "version": 1,
+                        "model": {
+                            "type_name": "Image",
+                            "version": 2
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "attributes_from_file_reference_2dca5622-2bb1-43b3-9773-79ec0c63d4a5",
+                                "value": {
+                                    "attributes": {
+                                        "timepoint": "Day 5",
+                                        "genotype": "esgts"
+                                    }
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "file_pattern",
+                                "value": {
+                                    "file_pattern": "Day5_esg_GFP_3_R2.jpg"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "2dca5622-2bb1-43b3-9773-79ec0c63d4a5"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "thumbnail_uri",
+                                "value": {
+                                    "thumbnail_uri": [
+                                        "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1553/dc53aa81-e359-457c-acb1-aa0e7f4655b8/fac640a8-aa2d-47f1-8c3e-d4c1634d2417.png"
+                                    ]
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "recommended_vizarr_representation",
+                                "value": {
+                                    "recommended_vizarr_representation": "c7ee8065-64d0-4a0b-bd24-d639340bb80b"
+                                }
+                            }
+                        ],
+                        "label": null,
+                        "submission_dataset_uuid": "acb0f2d9-01b0-4aad-aacb-be680b3362b3",
+                        "creation_process_uuid": "c856b116-178e-4242-bb12-35b52fc96f8c",
+                        "original_file_reference_uuid": [
+                            "2dca5622-2bb1-43b3-9773-79ec0c63d4a5"
+                        ]
+                    }
+                ]
+            },
+            {
+                "image_count": 0,
+                "file_reference_count": 1,
+                "file_reference_size_bytes": 45440187,
+                "file_type_counts": {
+                    "file": 1
+                },
+                "object_creator": "bia_ingest",
+                "uuid": "af16d0de-cf2b-4cd0-80e7-f11b2bcd6919",
+                "version": 0,
+                "model": {
+                    "type_name": "Dataset",
+                    "version": 2
+                },
+                "additional_metadata": [
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "associations",
+                        "value": {
+                            "associations": [
+                                {
+                                    "image_analysis": "Image analysis",
+                                    "image_correlation": "Image correlation 1",
+                                    "biosample": "Midgut of ssGFP flies",
+                                    "image_acquisition": "Image acquisition confocal microscopy",
+                                    "specimen": "Staining with phalloidin and DAPI"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "image_acquisition_protocol_uuid",
+                        "value": {
+                            "image_acquisition_protocol_uuid": [
+                                "73d34ca3-b775-4f95-9e3d-e9851efde086"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "specimen_imaging_preparation_protocol_uuid",
+                        "value": {
+                            "specimen_imaging_preparation_protocol_uuid": [
+                                "38735102-c8c3-46f0-937e-9067d6b57816"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "bio_sample_uuid",
+                        "value": {
+                            "bio_sample_uuid": [
+                                "aac8712d-a3fe-4af6-a851-c64505916fee"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "uuid_unique_input",
+                        "value": {
+                            "uuid_unique_input": "Study Component-19"
+                        }
+                    }
+                ],
+                "title": "Midgut of ssGFP flies",
+                "description": "midgut of ssGFP flies and w1118 controls",
+                "analysis_method": [],
+                "correlation_method": [
+                    {
+                        "additional_metadata": [],
+                        "title": "Image correlation 1",
+                        "protocol_description": "",
+                        "fiducials_used": null,
+                        "transformation_matrix": null
+                    }
+                ],
+                "example_image_uri": [],
+                "submitted_in_study_uuid": "011cfb43-fa60-4e21-a047-e077c805840f",
+                "acquisition_process": [
+                    {
+                        "default_open": false,
+                        "object_creator": "bia_ingest",
+                        "uuid": "73d34ca3-b775-4f95-9e3d-e9851efde086",
+                        "version": 0,
+                        "model": {
+                            "type_name": "ImageAcquisitionProtocol",
+                            "version": 3
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_ingest",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "Image acquisition-3"
+                                }
+                            }
+                        ],
+                        "title": "Image acquisition confocal microscopy",
+                        "protocol_description": "Images within stacks were collected at 3-5\u00b5m z-interval, 5-7 images per stack were taken to cover the complete depth of samples acquired from R2 of the midugt.",
+                        "imaging_instrument_description": "Zeiss LSM 710 confocal microscope ",
+                        "fbbi_id": [],
+                        "imaging_method_name": [
+                            "confocal microscopy"
+                        ]
+                    }
+                ],
+                "specimen_imaging_preparation_protocol": [
+                    {
+                        "default_open": false,
+                        "object_creator": "bia_ingest",
+                        "uuid": "38735102-c8c3-46f0-937e-9067d6b57816",
+                        "version": 0,
+                        "model": {
+                            "type_name": "SpecimenImagingPreparationProtocol",
+                            "version": 3
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_ingest",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "Specimen-13"
+                                }
+                            }
+                        ],
+                        "title": "Staining with phalloidin and DAPI",
+                        "protocol_description": "Drosophila midguts were dissected and fixed with 4% (w/v) Formaldehyde (Thermofisher) in PBS at room temperature for 30 minutes, permeabilised with PBS 0.2% Triton x-100 (PBST) at room temperature for 30 minutes and blocked with 10% (w/v) Bovine Serum Albumin (SigmaAldrich) in PBST (PBSA) at room temperature for 30 minutes. Tissues were stained for 2h with phalloidin-Alexa Fluor 555 (ThermoFisher), 1:100 in PBST with 10% goat serum and washed 5 times in PBST. Tissues were stained 1:10000 PBS-diluted DAPI staining (5mg/mL in H2O, SigmaAldrich, D9542) for 10 minutes before PBS washing. Ovaries and posterior abdomen were removed, and the remaining midguts were then mounted with antifade (Thermofisher, P36934) on 21-well glass slides (1 gut/well). Images were acquired on a Zeiss LSM 710 confocal microscope. Images within stacks were collected at 3-5\u00b5m z-interval, 5-7 images per stack were taken to cover the complete depth of samples acquired from R2 of the midugt. ",
+                        "signal_channel_information": []
+                    }
+                ],
+                "biological_entity": [
+                    {
+                        "default_open": true,
+                        "object_creator": "bia_ingest",
+                        "uuid": "aac8712d-a3fe-4af6-a851-c64505916fee",
+                        "version": 0,
+                        "model": {
+                            "type_name": "BioSample",
+                            "version": 4
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_ingest",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "Biosample-8"
+                                }
+                            }
+                        ],
+                        "title": "Midgut of ssGFP flies",
+                        "organism_classification": [
+                            {
+                                "additional_metadata": [],
+                                "common_name": "fruit fly",
+                                "scientific_name": "Drosophila melanogaster",
+                                "ncbi_id": null
+                            }
+                        ],
+                        "biological_entity_description": "midgut",
+                        "experimental_variable_description": [],
+                        "extrinsic_variable_description": [],
+                        "intrinsic_variable_description": [],
+                        "growth_protocol_uuid": null,
+                        "growth_protocol": null
+                    }
+                ],
+                "annotation_process": [],
+                "other_creation_process": [],
+                "image": []
+            },
+            {
+                "image_count": 0,
+                "file_reference_count": 2,
+                "file_reference_size_bytes": 8725211,
+                "file_type_counts": {
+                    "file": 2
+                },
+                "object_creator": "bia_ingest",
+                "uuid": "dad7a6c3-2fff-4052-a6a5-51de39b1e229",
+                "version": 0,
+                "model": {
+                    "type_name": "Dataset",
+                    "version": 2
+                },
+                "additional_metadata": [
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "associations",
+                        "value": {
+                            "associations": [
+                                {
+                                    "image_analysis": "Image analysis",
+                                    "image_correlation": "Image correlation 1",
+                                    "biosample": "rn-Gal4, uas- anti-GFP, ssGFP flies",
+                                    "image_acquisition": "Image acquisition confocal microscopy",
+                                    "specimen": "whole fly imaging"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "image_acquisition_protocol_uuid",
+                        "value": {
+                            "image_acquisition_protocol_uuid": [
+                                "73d34ca3-b775-4f95-9e3d-e9851efde086"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "specimen_imaging_preparation_protocol_uuid",
+                        "value": {
+                            "specimen_imaging_preparation_protocol_uuid": [
+                                "d36a0b8c-43ea-43d9-9ad2-8cabfed4464f"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "bio_sample_uuid",
+                        "value": {
+                            "bio_sample_uuid": [
+                                "b7e38582-9368-4e49-a016-4816802415e5"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "uuid_unique_input",
+                        "value": {
+                            "uuid_unique_input": "Study Component-17"
+                        }
+                    }
+                ],
+                "title": "phenotype of rn ssGFP flies",
+                "description": "imaging of macroscropic phenotype",
+                "analysis_method": [],
+                "correlation_method": [
+                    {
+                        "additional_metadata": [],
+                        "title": "Image correlation 1",
+                        "protocol_description": "",
+                        "fiducials_used": null,
+                        "transformation_matrix": null
+                    }
+                ],
+                "example_image_uri": [],
+                "submitted_in_study_uuid": "011cfb43-fa60-4e21-a047-e077c805840f",
+                "acquisition_process": [
+                    {
+                        "default_open": false,
+                        "object_creator": "bia_ingest",
+                        "uuid": "73d34ca3-b775-4f95-9e3d-e9851efde086",
+                        "version": 0,
+                        "model": {
+                            "type_name": "ImageAcquisitionProtocol",
+                            "version": 3
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_ingest",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "Image acquisition-3"
+                                }
+                            }
+                        ],
+                        "title": "Image acquisition confocal microscopy",
+                        "protocol_description": "Images within stacks were collected at 3-5\u00b5m z-interval, 5-7 images per stack were taken to cover the complete depth of samples acquired from R2 of the midugt.",
+                        "imaging_instrument_description": "Zeiss LSM 710 confocal microscope ",
+                        "fbbi_id": [],
+                        "imaging_method_name": [
+                            "confocal microscopy"
+                        ]
+                    }
+                ],
+                "specimen_imaging_preparation_protocol": [
+                    {
+                        "default_open": true,
+                        "object_creator": "bia_ingest",
+                        "uuid": "d36a0b8c-43ea-43d9-9ad2-8cabfed4464f",
+                        "version": 0,
+                        "model": {
+                            "type_name": "SpecimenImagingPreparationProtocol",
+                            "version": 3
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_ingest",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "Specimen-16"
+                                }
+                            }
+                        ],
+                        "title": "whole fly imaging",
+                        "protocol_description": "whole flies were imaged by light microscopy to asess the phenotype",
+                        "signal_channel_information": []
+                    }
+                ],
+                "biological_entity": [
+                    {
+                        "default_open": true,
+                        "object_creator": "bia_ingest",
+                        "uuid": "b7e38582-9368-4e49-a016-4816802415e5",
+                        "version": 0,
+                        "model": {
+                            "type_name": "BioSample",
+                            "version": 4
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_ingest",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "Biosample-9"
+                                }
+                            }
+                        ],
+                        "title": "rn-Gal4, uas- anti-GFP, ssGFP flies",
+                        "organism_classification": [
+                            {
+                                "additional_metadata": [],
+                                "common_name": "fruit fly",
+                                "scientific_name": "Drosophila melanogaster",
+                                "ncbi_id": null
+                            }
+                        ],
+                        "biological_entity_description": "head, leg",
+                        "experimental_variable_description": [],
+                        "extrinsic_variable_description": [],
+                        "intrinsic_variable_description": [],
+                        "growth_protocol_uuid": null,
+                        "growth_protocol": null
+                    }
+                ],
+                "annotation_process": [],
+                "other_creation_process": [],
+                "image": []
+            },
+            {
+                "image_count": 0,
+                "file_reference_count": 1,
+                "file_reference_size_bytes": 481092043,
+                "file_type_counts": {
+                    "file": 1
+                },
+                "object_creator": "bia_ingest",
+                "uuid": "eeff0b8f-3ff2-4a1b-983a-82709a106c11",
+                "version": 0,
+                "model": {
+                    "type_name": "Dataset",
+                    "version": 2
+                },
+                "additional_metadata": [
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "associations",
+                        "value": {
+                            "associations": [
+                                {
+                                    "image_analysis": "Image analysis",
+                                    "image_correlation": "Image correlation 1",
+                                    "biosample": "Imaginal discs",
+                                    "image_acquisition": "Image acquisition confocal microscopy",
+                                    "specimen": "immunofluorescent staining with DAPI"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "image_acquisition_protocol_uuid",
+                        "value": {
+                            "image_acquisition_protocol_uuid": [
+                                "73d34ca3-b775-4f95-9e3d-e9851efde086"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "specimen_imaging_preparation_protocol_uuid",
+                        "value": {
+                            "specimen_imaging_preparation_protocol_uuid": [
+                                "c7aedac7-2417-40d7-b574-d2ca04bc018d"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "bio_sample_uuid",
+                        "value": {
+                            "bio_sample_uuid": [
+                                "c8c89785-8120-4bf7-8a2a-e9cd147e2a66"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "uuid_unique_input",
+                        "value": {
+                            "uuid_unique_input": "Study Component-18"
+                        }
+                    }
+                ],
+                "title": "Imaginal discs of ssGFP flies",
+                "description": "imaginal discs of L3 larvae from w1118 and ssGFP flies",
+                "analysis_method": [],
+                "correlation_method": [
+                    {
+                        "additional_metadata": [],
+                        "title": "Image correlation 1",
+                        "protocol_description": "",
+                        "fiducials_used": null,
+                        "transformation_matrix": null
+                    }
+                ],
+                "example_image_uri": [],
+                "submitted_in_study_uuid": "011cfb43-fa60-4e21-a047-e077c805840f",
+                "acquisition_process": [
+                    {
+                        "default_open": false,
+                        "object_creator": "bia_ingest",
+                        "uuid": "73d34ca3-b775-4f95-9e3d-e9851efde086",
+                        "version": 0,
+                        "model": {
+                            "type_name": "ImageAcquisitionProtocol",
+                            "version": 3
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_ingest",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "Image acquisition-3"
+                                }
+                            }
+                        ],
+                        "title": "Image acquisition confocal microscopy",
+                        "protocol_description": "Images within stacks were collected at 3-5\u00b5m z-interval, 5-7 images per stack were taken to cover the complete depth of samples acquired from R2 of the midugt.",
+                        "imaging_instrument_description": "Zeiss LSM 710 confocal microscope ",
+                        "fbbi_id": [],
+                        "imaging_method_name": [
+                            "confocal microscopy"
+                        ]
+                    }
+                ],
+                "specimen_imaging_preparation_protocol": [
+                    {
+                        "default_open": false,
+                        "object_creator": "bia_ingest",
+                        "uuid": "c7aedac7-2417-40d7-b574-d2ca04bc018d",
+                        "version": 0,
+                        "model": {
+                            "type_name": "SpecimenImagingPreparationProtocol",
+                            "version": 3
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_ingest",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "Specimen-2"
+                                }
+                            }
+                        ],
+                        "title": "immunofluorescent staining with DAPI",
+                        "protocol_description": "Drosophila midguts were dissected and fixed with 4% (w/v) Formaldehyde (Thermofisher) in PBS at room temperature for 30 minutes, permeabilised with PBS 0.2% Triton x-100 (PBST) at room temperature for 30 minutes and blocked with 10% (w/v) Bovine Serum Albumin (SigmaAldrich) in PBST (PBSA) at room temperature for 30 minutes. Tissues were stained 1:10000 PBS-diluted DAPI staining (5mg/mL in H2O, SigmaAldrich, D9542) for 10 minutes before PBS washing. Ovaries and posterior abdomen were removed, and the remaining midguts were then mounted with antifade (Thermofisher, P36934) on 21-well glass slides (1 gut/well). Images were acquired on a Zeiss LSM 710 confocal microscope. Images within stacks were collected at 3-5\u00b5m z-interval, 5-7 images per stack were taken to cover the complete depth of samples acquired from R2 of the midugt. ",
+                        "signal_channel_information": []
+                    }
+                ],
+                "biological_entity": [
+                    {
+                        "default_open": true,
+                        "object_creator": "bia_ingest",
+                        "uuid": "c8c89785-8120-4bf7-8a2a-e9cd147e2a66",
+                        "version": 0,
+                        "model": {
+                            "type_name": "BioSample",
+                            "version": 4
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_ingest",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "Biosample-1"
+                                }
+                            }
+                        ],
+                        "title": "Imaginal discs",
+                        "organism_classification": [
+                            {
+                                "additional_metadata": [],
+                                "common_name": "fruit fly",
+                                "scientific_name": "Drosophila melanogaster",
+                                "ncbi_id": null
+                            }
+                        ],
+                        "biological_entity_description": "Drosophila midgut",
+                        "experimental_variable_description": [
+                            "genotype"
+                        ],
+                        "extrinsic_variable_description": [
+                            "DAPI staining"
+                        ],
+                        "intrinsic_variable_description": [
+                            "ssGFP or control flies"
+                        ],
+                        "growth_protocol_uuid": null,
+                        "growth_protocol": null
+                    }
+                ],
+                "annotation_process": [],
+                "other_creation_process": [],
+                "image": []
+            }
+        ]
+    },
+    "S-BIAD1466": {
+        "object_creator": "bia_ingest",
+        "uuid": "4382e69e-5cce-4285-a315-57a8ffa8a213",
+        "version": 0,
+        "model": {
+            "type_name": "Study",
+            "version": 3
+        },
+        "additional_metadata": [
+            {
+                "provenance": "bia_ingest",
+                "name": "biostudies json/pagetab entry",
+                "value": {
+                    "json": "https://www.ebi.ac.uk/biostudies/files/S-BIAD1466/S-BIAD1466.json",
+                    "pagetab": "https://www.ebi.ac.uk/biostudies/files/S-BIAD1466/S-BIAD1466.tsv"
+                }
+            }
+        ],
+        "accession_id": "S-BIAD1466",
+        "licence": "https://creativecommons.org/licenses/by/4.0/",
+        "author": [
+            {
+                "rorid": null,
+                "address": null,
+                "website": null,
+                "orcid": "0000-0002-8685-4896",
+                "display_name": "Lu Gan",
+                "affiliation": [
+                    {
+                        "rorid": "https://ror.org/01tgyzw49",
+                        "address": null,
+                        "website": null,
+                        "display_name": "National University of Singapore"
+                    }
+                ],
+                "contact_email": "lu@anaphase.org",
+                "role": [
+                    "principal investigator"
+                ]
+            }
+        ],
+        "title": "Nanoscale analysis of human G1 and metaphase chromatin in situ",
+        "release_date": "2024-11-06",
+        "description": "Confocal and immunoblot data of RPE-1 cells",
+        "keyword": [
+            "RPE-1, confocal, immunoblot"
+        ],
+        "acknowledgement": "",
+        "see_also": [],
+        "related_publication": [],
+        "grant": [],
+        "funding_statement": "",
+        "dataset": [
+            {
+                "image_count": 5,
+                "file_reference_count": 160,
+                "file_reference_size_bytes": 15343456154,
+                "file_type_counts": {
+                    "file": 160
+                },
+                "object_creator": "bia_ingest",
+                "uuid": "a227a231-b041-4d92-ae0f-4f72e3dca66c",
+                "version": 1,
+                "model": {
+                    "type_name": "Dataset",
+                    "version": 2
+                },
+                "additional_metadata": [
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "associations",
+                        "value": {
+                            "associations": [
+                                {
+                                    "image_analysis": null,
+                                    "image_correlation": null,
+                                    "biosample": "RPE-1 cells",
+                                    "image_acquisition": "Confocal microscopy",
+                                    "specimen": "RPE-1 cells"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "image_acquisition_protocol_uuid",
+                        "value": {
+                            "image_acquisition_protocol_uuid": [
+                                "a2d8c50a-25b4-4dc9-bd06-3ff7acb2f750"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "specimen_imaging_preparation_protocol_uuid",
+                        "value": {
+                            "specimen_imaging_preparation_protocol_uuid": [
+                                "eed23bc4-25b6-4bcd-9efb-d6b3f4d55646"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "bio_sample_uuid",
+                        "value": {
+                            "bio_sample_uuid": [
+                                "4f8bc9e1-678a-4c48-9c9e-60b3fa9144d8"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "uuid_unique_input",
+                        "value": {
+                            "uuid_unique_input": "Study Component-4"
+                        }
+                    }
+                ],
+                "title": "Nanoscale analysis of human G1 and metaphase chromatin in situ",
+                "description": "Confocal and immunoblots of RPE-1 cells",
+                "analysis_method": [],
+                "correlation_method": [],
+                "example_image_uri": [
+                    "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1466/8313aad7-c1a9-4848-9fd3-1df262a80ffc/b00a732a-246c-4f7d-a774-5c5b348bf938.png"
+                ],
+                "submitted_in_study_uuid": "4382e69e-5cce-4285-a315-57a8ffa8a213",
+                "acquisition_process": [
+                    {
+                        "default_open": true,
+                        "object_creator": "bia_ingest",
+                        "uuid": "a2d8c50a-25b4-4dc9-bd06-3ff7acb2f750",
+                        "version": 0,
+                        "model": {
+                            "type_name": "ImageAcquisitionProtocol",
+                            "version": 3
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_ingest",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "Image acquisition-3"
+                                }
+                            }
+                        ],
+                        "title": "Confocal microscopy",
+                        "protocol_description": "For morphological analysis, RPE-1 cells were imaged using a Nikon Eclipse Ti microscope (Nikon Instruments Inc., Tokyo, Japan) equipped with a Plan Fluor 10\u00d7 Ph1 objective lens. To obtain fields of view of multiple cells, Z-stack images were acquired on an LSM 900 AiryScan microscope controlled by ZEN 3.1 software, using a 20\u00d7 0.8 NA Plan-Apochromat under confocal mode (Zeiss, Jena, Germany). Z-projection at maximum intensity was done in FIJI.\n\nTo obtain a large field of view containing multiple cells, Z-stacks were acquired with a Zeiss LSM 900 confocal microscope (see above). To observe details of single cells, Z-stacks were acquired with the same microscope, but using a 63\u00d7 1.4 NA Plan-Apochromat oil-immersion objective and operated in Airyscan super-resolution mode. Z-stacks (3-D) were projected using Fiji\u2019s \u201c3D Project\u201d brightest point method.",
+                        "imaging_instrument_description": "LSM900",
+                        "fbbi_id": [],
+                        "imaging_method_name": [
+                            "fluorescence microscopy"
+                        ]
+                    }
+                ],
+                "specimen_imaging_preparation_protocol": [
+                    {
+                        "default_open": true,
+                        "object_creator": "bia_ingest",
+                        "uuid": "eed23bc4-25b6-4bcd-9efb-d6b3f4d55646",
+                        "version": 0,
+                        "model": {
+                            "type_name": "SpecimenImagingPreparationProtocol",
+                            "version": 3
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_ingest",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "Specimen-2"
+                                }
+                            }
+                        ],
+                        "title": "RPE-1 cells",
+                        "protocol_description": "hTERT-RPE-1 cells (human retina epithelium cells immortalized with hTERT; CRL-4000\u2122) were obtained from ATCC (Manassas, VA). The cells were grown in an incubator set to 37\u00b0C and 5% CO2. The cells were cultured in complete medium consisting of DMEM/F-12 with GlutaMAX\u2122 medium supplemented with 10% fetal bovine serum and 1% penicillin-streptomycin (Pen-strep). Cell washing was done with PBS+Ca+Mg, consisting of Phosphate-buffered saline, 0.1 mg/mL CaCl2, and 0.1 mg/mL MgCl2. ",
+                        "signal_channel_information": []
+                    }
+                ],
+                "biological_entity": [
+                    {
+                        "default_open": true,
+                        "object_creator": "bia_ingest",
+                        "uuid": "4f8bc9e1-678a-4c48-9c9e-60b3fa9144d8",
+                        "version": 0,
+                        "model": {
+                            "type_name": "BioSample",
+                            "version": 4
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_ingest",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "Biosample-1"
+                                }
+                            }
+                        ],
+                        "title": "RPE-1 cells",
+                        "organism_classification": [
+                            {
+                                "additional_metadata": [],
+                                "common_name": "human",
+                                "scientific_name": "Homo sapiens",
+                                "ncbi_id": null
+                            }
+                        ],
+                        "biological_entity_description": "RPE-1 cells",
+                        "experimental_variable_description": [],
+                        "extrinsic_variable_description": [],
+                        "intrinsic_variable_description": [],
+                        "growth_protocol_uuid": null,
+                        "growth_protocol": null
+                    }
+                ],
+                "annotation_process": [],
+                "other_creation_process": [],
+                "image": [
+                    {
+                        "object_creator": "bia_image_assignment",
+                        "uuid": "6a4b49b4-6ca5-4376-9e99-b674f4985bc3",
+                        "version": 1,
+                        "model": {
+                            "type_name": "Image",
+                            "version": 2
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "attributes_from_file_reference_16df5aae-6a8b-47be-94b0-9f65ef1aaa99",
+                                "value": {
+                                    "attributes": {}
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "file_pattern",
+                                "value": {
+                                    "file_pattern": "2024_Chen_RPE-1_confocal_source/Figure_S3_C/20211221_9pctglycerol-01.czi"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "16df5aae-6a8b-47be-94b0-9f65ef1aaa99"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "thumbnail_uri",
+                                "value": {
+                                    "thumbnail_uri": [
+                                        "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1466/8313aad7-c1a9-4848-9fd3-1df262a80ffc/f80ceb75-9310-4ef4-814d-593f095ebf62.png"
+                                    ]
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "static_display_uri",
+                                "value": {
+                                    "static_display_uri": [
+                                        "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1466/8313aad7-c1a9-4848-9fd3-1df262a80ffc/b00a732a-246c-4f7d-a774-5c5b348bf938.png"
+                                    ]
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "recommended_vizarr_representation",
+                                "value": {
+                                    "recommended_vizarr_representation": "a3b6f95a-5094-448e-84b4-97f8b87dcd06"
+                                }
+                            }
+                        ],
+                        "label": null,
+                        "submission_dataset_uuid": "a227a231-b041-4d92-ae0f-4f72e3dca66c",
+                        "creation_process_uuid": "c49eb34b-4f70-43d3-bb4d-76be7ba510ae",
+                        "original_file_reference_uuid": [
+                            "16df5aae-6a8b-47be-94b0-9f65ef1aaa99"
+                        ]
+                    },
+                    {
+                        "object_creator": "bia_image_assignment",
+                        "uuid": "6ed9380d-5aaf-4dfa-b0f1-0c565fb2204b",
+                        "version": 1,
+                        "model": {
+                            "type_name": "Image",
+                            "version": 2
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "attributes_from_file_reference_f12d90fe-878b-4a12-b89d-c4b9761fed02",
+                                "value": {
+                                    "attributes": {}
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "file_pattern",
+                                "value": {
+                                    "file_pattern": "2024_Chen_RPE-1_confocal_source/Figure_S3_A/20211223_DF101-01.czi"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "f12d90fe-878b-4a12-b89d-c4b9761fed02"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "thumbnail_uri",
+                                "value": {
+                                    "thumbnail_uri": [
+                                        "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1466/d206e679-0c12-4361-a7ae-d42bc3207d4f/744c058c-406f-402b-a361-048c372c4644.png"
+                                    ]
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "recommended_vizarr_representation",
+                                "value": {
+                                    "recommended_vizarr_representation": "d2196ae7-632a-4ee6-8aa5-689c3e6df9eb"
+                                }
+                            }
+                        ],
+                        "label": null,
+                        "submission_dataset_uuid": "a227a231-b041-4d92-ae0f-4f72e3dca66c",
+                        "creation_process_uuid": "933f6770-8101-4124-886b-5b041c65857e",
+                        "original_file_reference_uuid": [
+                            "f12d90fe-878b-4a12-b89d-c4b9761fed02"
+                        ]
+                    },
+                    {
+                        "object_creator": "bia_image_assignment",
+                        "uuid": "7a156799-8301-4923-ba98-49d3ef5320bf",
+                        "version": 1,
+                        "model": {
+                            "type_name": "Image",
+                            "version": 2
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "attributes_from_file_reference_b2145fa9-b3cb-4798-bb7d-9239e531f30c",
+                                "value": {
+                                    "attributes": {}
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "file_pattern",
+                                "value": {
+                                    "file_pattern": "2024_Chen_RPE-1_confocal_source/Figure_S1_B/Raw_tiff/20230526_RPE1_Nocowashout_0_30_60_120min_BetaTubulin_High5s.tif"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "b2145fa9-b3cb-4798-bb7d-9239e531f30c"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "thumbnail_uri",
+                                "value": {
+                                    "thumbnail_uri": [
+                                        "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1466/a7d89b34-9f46-45ea-9999-6dedeb760cd6/f4dc08db-d28d-490e-840d-ca61e1481052.png"
+                                    ]
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "recommended_vizarr_representation",
+                                "value": {
+                                    "recommended_vizarr_representation": "50e7acf0-605a-44e0-ad03-336a1048b532"
+                                }
+                            }
+                        ],
+                        "label": null,
+                        "submission_dataset_uuid": "a227a231-b041-4d92-ae0f-4f72e3dca66c",
+                        "creation_process_uuid": "0dacf5ef-db08-40fe-af85-080cf75aca50",
+                        "original_file_reference_uuid": [
+                            "b2145fa9-b3cb-4798-bb7d-9239e531f30c"
+                        ]
+                    },
+                    {
+                        "object_creator": "bia_image_assignment",
+                        "uuid": "9cf9a2a7-53ae-491a-8522-fe1d764360c8",
+                        "version": 1,
+                        "model": {
+                            "type_name": "Image",
+                            "version": 2
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "attributes_from_file_reference_60c5a368-760b-4e5a-aeb1-a1b3a3461cb8",
+                                "value": {
+                                    "attributes": {}
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "file_pattern",
+                                "value": {
+                                    "file_pattern": "2024_Chen_RPE-1_confocal_source/Figure_EV1_A/Figure_EV1A_G1/20240131_RPE1_G1_S2P_DapiPol2s2p_63o-01.czi"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "60c5a368-760b-4e5a-aeb1-a1b3a3461cb8"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "thumbnail_uri",
+                                "value": {
+                                    "thumbnail_uri": [
+                                        "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1466/1b36ecea-781e-444f-bcc7-1d2d7a77c238/2acddff2-d655-45f8-a3ff-56f20fa92ed8.png"
+                                    ]
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "recommended_vizarr_representation",
+                                "value": {
+                                    "recommended_vizarr_representation": "e7a0af3e-b706-46e6-9124-366603bd7cce"
+                                }
+                            }
+                        ],
+                        "label": null,
+                        "submission_dataset_uuid": "a227a231-b041-4d92-ae0f-4f72e3dca66c",
+                        "creation_process_uuid": "8fd2504e-2001-4f0f-b0aa-bdb0d6135cdb",
+                        "original_file_reference_uuid": [
+                            "60c5a368-760b-4e5a-aeb1-a1b3a3461cb8"
+                        ]
+                    },
+                    {
+                        "object_creator": "bia_image_assignment",
+                        "uuid": "bf975c1f-8fe6-42e8-bd3a-4c733313c91d",
+                        "version": 1,
+                        "model": {
+                            "type_name": "Image",
+                            "version": 2
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "attributes_from_file_reference_c576f788-c861-4c0e-8938-ad6474eb7b59",
+                                "value": {
+                                    "attributes": {}
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "file_pattern",
+                                "value": {
+                                    "file_pattern": "2024_Chen_RPE-1_confocal_source/Figure_S31_C/20240105_RPE1_Apoptosis_PARP1_High2MIN.png"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "c576f788-c861-4c0e-8938-ad6474eb7b59"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "thumbnail_uri",
+                                "value": {
+                                    "thumbnail_uri": [
+                                        "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1466/bfc5fb2a-29df-4394-90a4-3e88f3e59656/4d0fc675-f060-49de-807b-feebb7f7ce4e.png"
+                                    ]
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "recommended_vizarr_representation",
+                                "value": {
+                                    "recommended_vizarr_representation": "8ccbf0df-0691-432f-b01d-8337c8a49dab"
+                                }
+                            }
+                        ],
+                        "label": null,
+                        "submission_dataset_uuid": "a227a231-b041-4d92-ae0f-4f72e3dca66c",
+                        "creation_process_uuid": "9e5e796b-28d6-4792-9a7a-3718497a8c13",
+                        "original_file_reference_uuid": [
+                            "c576f788-c861-4c0e-8938-ad6474eb7b59"
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}
