@@ -53,6 +53,7 @@ jobs:
             bia-assign-image,
             bia-converter,
             ro-crate-ingest,
+            bia-search
           ]
     runs-on: ${{ matrix.os }}
     defaults:
