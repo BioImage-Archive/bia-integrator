@@ -94,3 +94,23 @@ services:
       - ./clients/python:/mnt/share
     profiles:
       - client_examples
+  bia-integrator-search:
+    build:
+      context: .
+      dockerfile: bia-search/Dockerfile
+    image: bia-integrator-search
+    env_file: bia-search/.env_compose
+    container_name: bia-search
+    hostname: bia-search
+    ports:
+      - 8081:8080
+    expose:
+      - 8080
+    depends_on:
+      biaint-elastic:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-O", "-", "bia-search:8080/openapi.json"]
+      interval: 1s
+      timeout: 10s
+      retries: 10

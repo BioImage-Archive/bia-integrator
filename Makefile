@@ -17,3 +17,9 @@ api.up:
 
 api.down:
 	docker compose down
+
+search.up:
+	docker compose --profile search up -d --build --wait --force-recreate --remove-orphans
+
+search.down:
+	docker compose down
