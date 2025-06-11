@@ -44,35 +44,6 @@ def event_loop():
     asyncio.get_event_loop().close()
 
 
-@pytest_asyncio.fixture(scope="session", autouse=True)
-async def elastic():
-    from api.models.elastic import elastic_create
-
-    el = await elastic_create(test_settings)
-    if not el.client:
-        yield
-        return
-
-    try:
-        await el.client.indices.delete(index="test_index")
-    except:
-        pass
-
-    await el.configure(test_settings)
-
-    test_data = (
-        pathlib.Path(__file__).parent / "test_data" / "bia-study-metadata.json.bulk"
-    ).read_text()
-    response = await el.client.bulk(body=test_data)
-    assert not response.body["errors"]
-
-    await el.client.indices.refresh(index="test_index")
-
-    yield el
-
-    await el.close()
-
-
 def get_client():
     from fastapi.responses import JSONResponse
     from fastapi import Request
