@@ -16,6 +16,7 @@ from fastapi import FastAPI, Depends, Request
 from api.public import make_router as public_make_router
 from api.private import make_router as private_make_router
 from api.auth import make_router as auth_make_router, get_current_user
+from api.search import make_router as search_make_router
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -116,4 +117,8 @@ app.include_router(
     private_make_router(),
     prefix="/v2",
     dependencies=[Depends(get_current_user)],
+)
+app.include_router(
+    search_make_router(),
+    prefix="/v2",
 )
