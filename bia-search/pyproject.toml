@@ -23,5 +23,5 @@ pyyaml = "^6.0.1"
 
 
 [build-system]
-requires = ["poetry-core"]
+requires = ["poetry-core>=1.8.0"]
 build-backend = "poetry.core.masonry.api"
