@@ -12,6 +12,8 @@ from ro_crate_ingest.entity_conversion.FileReference import (
     create_api_file_reference,
 )
 from ro_crate_ingest.entity_conversion.CreationProcess import convert_creation_process
+from .image_dependency_ordering import order_creation_processes_and_images
+from .Specimen import convert_specimen
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -22,64 +24,70 @@ def create_image_and_dependencies(
     crate_path: pathlib.Path,
 ) -> tuple[
     list[APIModels.FileReference],
-    dict[str, APIModels.CreationProcess],
-    dict[str, APIModels.Image],
+    dict[int, list[ROCrateModels.CreationProcess | ROCrateModels.Image]],
+    int,
 ]:
-    ro_crate_images = (
-        obj
-        for obj in crate_objects_by_id.values()
-        if isinstance(obj, ROCrateModels.Image)
-    )
-
-
-    ro_crate_creation_processes = (
-        obj
-        for obj in crate_objects_by_id.values()
-        if isinstance(obj, ROCrateModels.CreationProcess)
-    )
-
-    ro_crate_specimen= (
-        obj
-        for obj in crate_objects_by_id.values()
-        if isinstance(obj, ROCrateModels.Specimen)
-    )
-
 
     crate_graph = load_ro_crate_metadata_to_graph(crate_path)
 
+    ro_crate_images = {
+        id: obj
+        for id, obj in crate_objects_by_id.items()
+        if isinstance(obj, ROCrateModels.Image)
+    }
+
+    ro_crate_creation_processes = {
+        id: obj
+        for id, obj in crate_objects_by_id.items()
+        if isinstance(obj, ROCrateModels.CreationProcess)
+    }
+
+    if len(ro_crate_images) == 0:
+        return [], {}, 0
+
+    ordered_image_creation_process_list, max_dependency_chain_length = (
+        order_creation_processes_and_images(
+            ro_crate_creation_processes, ro_crate_images
+        )
+    )
+
     file_reference_list = []
-    image_by_id = {}
-    creation_process_by_id = {}
-    image_ro_crate_id_uuid_map = {}
+    ordered_objects_to_create: dict[
+        int, list[APIModels.CreationProcess | APIModels.Image]
+    ] = {i: list() for i in range(max_dependency_chain_length + 1)}
 
-    for image in ro_crate_images:
+    chain_length = 0
+    while chain_length <= max_dependency_chain_length:
+        if chain_length % 2 == 0:
+            # Even chain length means it's a creation process
+            for ro_crate_creation_process in ordered_image_creation_process_list[
+                chain_length
+            ]:
+                ordered_objects_to_create[chain_length].append(
+                    convert_creation_process(ro_crate_creation_process, study_uuid)
+                )
+        else:
+            # Odd chain length means it's an image
+            for image in ordered_image_creation_process_list[chain_length]:
+                image_dataset = crate_objects_by_id[
+                    get_image_dataset_id(image.id, crate_graph, crate_path)
+                ]
 
-        ro_crate_creation_process = crate_objects_by_id[image.resultOf.id]
-        if len(ro_crate_creation_process.inputImage) > 0:
-            pass
+                file_references = convert_file_reference(
+                    image, study_uuid, image_dataset, crate_path
+                )
+                file_reference_list += file_references
+                ordered_objects_to_create[chain_length].append(
+                    convert_image(
+                        image,
+                        study_uuid,
+                        file_references,
+                        image_dataset,
+                    )
+                )
+        chain_length += 1
 
-        image_dataset = crate_objects_by_id[
-            get_image_dataset_id(image.id, crate_graph, crate_path)
-        ]
-
-        file_references = convert_file_reference(
-            image, study_uuid, image_dataset, crate_path
-        )
-        file_reference_list += file_references
-
-        creation_process = convert_creation_process(
-            ro_crate_creation_process, study_uuid
-        )
-
-        creation_process_by_id[creation_process.uuid] = creation_process
-
-        image = convert_image(
-            image, study_uuid, file_references, creation_process.uuid, image_dataset
-        )
-
-        image_by_id[image.uuid] = image
-
-    return (file_reference_list, creation_process_by_id, image_by_id)
+    return (file_reference_list, ordered_objects_to_create, max_dependency_chain_length)
 
 
 def get_image_dataset_id(image_id: str, graph: rdflib.Graph, crate_path: str) -> str:
@@ -148,19 +156,20 @@ def convert_image(
     image: ROCrateModels.Image,
     study_uuid: str,
     file_references: list[APIModels.FileReference],
-    creation_process_uuid: str,
     image_dataset: ROCrateModels.Dataset,
 ):
 
     original_file_reference_uuids = [file_ref.uuid for file_ref in file_references]
-    uuid_unique_string = " ".join(original_file_reference_uuids)
+    # uuid_unique_string = " ".join(original_file_reference_uuids)
 
     image = {
-        "uuid": str(uuid_creation.create_image_uuid(study_uuid, uuid_unique_string)),
+        "uuid": str(uuid_creation.create_image_uuid(study_uuid, image.id)),
         "submission_dataset_uuid": str(
             uuid_creation.create_dataset_uuid(study_uuid, image_dataset.id)
         ),
-        "creation_process_uuid": creation_process_uuid,
+        "creation_process_uuid": str(
+            uuid_creation.create_creation_process_uuid(study_uuid, image.resultOf.id)
+        ),
         "version": 0,
         "object_creator": APIModels.Provenance.BIA_INGEST,
         "original_file_reference_uuid": original_file_reference_uuids,
@@ -168,7 +177,7 @@ def convert_image(
             AttributeModels.DocumentUUIDUinqueInputAttribute(
                 provenance=APIModels.Provenance.BIA_INGEST,
                 name="uuid_unique_input",
-                value={"uuid_unique_input": uuid_unique_string},
+                value={"uuid_unique_input": image.id},
             ).model_dump()
         ],
     }

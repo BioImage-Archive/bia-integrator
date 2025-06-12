@@ -13,6 +13,7 @@ def convert_creation_process(
     annotation_method_uuid = []
     image_acquisition_protocol_uuid = []
     input_image_uuid = []
+    protocol_uuid = []
 
     if creation_process.annotationMethod and len(creation_process.annotationMethod) > 0:
         annotation_method_uuid = create_uuid_list(
@@ -28,6 +29,13 @@ def convert_creation_process(
         image_acquisition_protocol_uuid = create_uuid_list(
             creation_process.imageAcquisitionProtocol,
             uuid_creation.create_image_acquisition_protocol_uuid,
+            study_uuid,
+        )
+
+    if creation_process.protocol and len(creation_process.protocol) > 0:
+        image_acquisition_protocol_uuid = create_uuid_list(
+            creation_process.protocol,
+            uuid_creation.create_protocol_uuid,
             study_uuid,
         )
 
@@ -52,6 +60,7 @@ def convert_creation_process(
         "annotation_method_uuid": annotation_method_uuid,
         "subject_specimen_uuid": subject_specimen_uuid,
         "image_acquisition_protocol_uuid": image_acquisition_protocol_uuid,
+        "protocol_uuid": protocol_uuid,
         "input_image_uuid": input_image_uuid,
         "object_creator": APIModels.Provenance.BIA_INGEST,
         "additional_metadata": [

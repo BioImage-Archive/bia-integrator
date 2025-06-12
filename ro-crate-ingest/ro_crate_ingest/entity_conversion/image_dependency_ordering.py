@@ -52,7 +52,7 @@ def creation_process_dependency_chain_length(
             max_length = 0
             for image_uuid in creation_process.inputImage:
                 img_chain_length = image_dependency_chain_length(
-                    images[image_uuid],
+                    images[image_uuid.id],
                     dependency_chain_length,
                     images,
                     creation_processes,
@@ -74,12 +74,12 @@ def image_dependency_chain_length(
 
     # Images depend on at least 1 creation process, so always have a dependency chain length of: creation process dependcy chain length + 1
     if id not in dependency_chain_length.keys():
-        if image.resultOf in dependency_chain_length.keys():
-            dependency_chain_length[id] = dependency_chain_length[image.resultOf] + 1
+        if image.resultOf.id in dependency_chain_length.keys():
+            dependency_chain_length[id] = dependency_chain_length[image.resultOf.id] + 1
         else:
             cp_id = image.resultOf
             cp_chain_length = creation_process_dependency_chain_length(
-                creation_processes[cp_id],
+                creation_processes[cp_id.id],
                 dependency_chain_length,
                 images,
                 creation_processes,
