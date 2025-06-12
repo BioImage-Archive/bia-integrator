@@ -23,6 +23,15 @@
       "value": {
         "uuid_unique_input": "BBBC024/BBBC024_v1_c25_highSNR_images_TIFF/image-labels_0012.tif3207776"
       }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "source_image_uuid",
+      "value": {
+        "source_image_uuid": [
+          "d8c44405-3949-4063-b0d2-fe566e2bcd96"
+        ]
+      }
     }
   ],
   "file_path": "BBBC024/BBBC024_v1_c25_highSNR_images_TIFF/image-labels_0012.tif",
