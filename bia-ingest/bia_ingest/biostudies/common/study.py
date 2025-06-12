@@ -132,6 +132,7 @@ def get_licence(study_attributes: Dict[str, Any]) -> semantic_models.Licence:
     """
     temp = re.sub(r"\s", "_", study_attributes.get("License", "CC0"))
     licence = re.sub(r"\.", "", temp)
+    licence = licence.replace('-','_')
     return semantic_models.Licence[licence]
 
 
