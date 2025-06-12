@@ -143,17 +143,28 @@ def get_file_reference_dicts_for_submission_dataset(
 
 
 def get_source_image(
-    attributes_from_filelist: dict[str, str], file_path_to_file_ref_map: dict[str, dict]
+    attributes_from_filelist: dict[str, [str | list[str]]],
+    file_path_to_file_ref_map: dict[str, dict],
 ) -> Optional[UUID]:
     input_image_uuid = None
 
-    possible_source_image_column_names = ["source image", "source image association"]
+    possible_source_image_column_names = [
+        "source image",
+        "source_image",
+        "source image association",
+        "source_image_association",
+    ]
 
     for key in attributes_from_filelist.keys():
         if (
             key.lower() in possible_source_image_column_names
             and attributes_from_filelist[key]
         ):
+            if isinstance(attributes_from_filelist[key], list):
+                raise TypeError(
+                    f"Expected a single string, but found list, when trying to get Source Image from row in filelist."
+                )
+
             try:
                 input_image_uuid = file_path_to_file_ref_map[
                     attributes_from_filelist[key]
