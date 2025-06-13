@@ -9,7 +9,7 @@ readme = "Readme.md"
 ro-crate-ingest = "ro_crate_ingest.cli:ro_crate_ingest"
 
 [tool.poetry.dependencies]
-python = "^3.10,<3.12"
+python = "^3.13"
 bia-shared-datamodels = { path = "../bia-shared-datamodels", develop = true }
 bia-integrator-api = { path = "../clients/python", develop = true }
 

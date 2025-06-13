@@ -120,6 +120,9 @@ def persist(
     persistence_mode: PersistenceMode,
 ):
 
+    if len(objects_to_save) == 0:
+        return
+
     if persistence_mode == PersistenceMode.LOCAL_FILE:
         save_local_file(accession_id, object_type, objects_to_save)
     elif persistence_mode == PersistenceMode.LOCAL_API:
@@ -150,3 +153,32 @@ def round_trip_object_class_from_client_to_datamodel(api_object):
     )
 
     return original_object
+
+
+
+def persist_in_order(
+    ordered_creation_processes_and_images,
+    max_chain_length: int,
+    persistence_mode: PersistenceMode,
+    accession_id: str,
+):
+    
+    chain_length = 0
+    while chain_length <= max_chain_length:
+        if chain_length % 2 == 0:
+            # Even chain length means it's a creation process
+            persist(
+                accession_id,
+                api_models.CreationProcess,
+                ordered_creation_processes_and_images.get(chain_length, []),
+                persistence_mode,
+            )
+        else:
+            # Odd chain length means it's an image
+            persist(
+                accession_id,
+                api_models.Image,
+                ordered_creation_processes_and_images.get(chain_length, []),
+                persistence_mode,
+            )
+        chain_length += 1

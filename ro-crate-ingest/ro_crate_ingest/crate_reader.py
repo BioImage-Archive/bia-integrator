@@ -15,7 +15,7 @@ import requests
 logger = logging.getLogger("__main__." + __name__)
 
 
-def read_json_from_ro_crate(crate_path: str) -> dict:
+def load_ro_crate_metadata_to_dict(crate_path: str) -> dict:
     crate_path: Path = Path(crate_path)
 
     if crate_path.is_dir():
@@ -63,6 +63,10 @@ def load_entities(data: dict) -> dict[str, ROCrateModel]:
         for name, model in classes:
             if model.model_config["model_type"] in entity_type:
                 object: ROCrateModel = model(**entity)
+                if object.id in crate_objects_by_id.keys():
+                    raise RuntimeError(
+                        f"Duplicate object found in ro-crate with id: {object.id}"
+                    )
                 crate_objects_by_id[object.id] = object
                 break
         if len(crate_objects_by_id) == start_len:
@@ -86,7 +90,7 @@ def crate_read(path: Path):
 
 
 def process_ro_crate(crate_path):
-    data = read_json_from_ro_crate(crate_path)
+    data = load_ro_crate_metadata_to_dict(crate_path)
     if validate_json(data):
         return load_entities(data)
     else:
@@ -131,3 +135,21 @@ def load_external_context(url) -> dict:
     except Exception as e:
         logger.error(f"Failed to load context from {url}: {e}")
         return {}
+
+
+def load_ro_crate_metadata_to_graph(crate_path: str) -> rdflib.Graph:
+    crate_path: Path = Path(crate_path)
+
+    if crate_path.is_dir():
+        crate_metadata_path = crate_path / "ro-crate-metadata.json"
+    else:
+        crate_metadata_path = crate_path
+
+    if not os.path.exists(crate_metadata_path):
+        raise FileNotFoundError(f"File {crate_metadata_path} not found.")
+
+    graph = rdflib.Graph()
+
+    graph.parse(crate_metadata_path, format="json-ld")
+
+    return graph

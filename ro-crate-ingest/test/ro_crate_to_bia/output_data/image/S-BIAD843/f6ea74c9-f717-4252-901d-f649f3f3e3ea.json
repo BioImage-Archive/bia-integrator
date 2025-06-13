@@ -1,0 +1,24 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "f6ea74c9-f717-4252-901d-f649f3f3e3ea",
+  "version": 0,
+  "model": {
+    "type_name": "Image",
+    "version": 2
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "data/annotations/WD1.1_17-03_WT_MP_segmented.ome.zarr.zip"
+      }
+    }
+  ],
+  "label": null,
+  "submission_dataset_uuid": "d7243fe5-6745-44c2-9f54-3ea5c7777df4",
+  "creation_process_uuid": "77b5ebac-6d1b-4f9a-960c-da486412fb5d",
+  "original_file_reference_uuid": [
+    "ee8d99c2-9f52-44ff-a768-55804b4f6392"
+  ]
+}
