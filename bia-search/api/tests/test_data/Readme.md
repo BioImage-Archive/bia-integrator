@@ -31,8 +31,8 @@ curl -X PUT "http://localhost:9200/test_index" \
 
 # run a few times
 #? workaround for --directory not working
-#poetry --directory=../../../../bia-export run bia-export website study S-BIAD1078 S-BIAD1556
-(cd ../../../../bia-export && poetry run bia-export website study --out_file=../api/api/tests/test_data/bia-study-metadata.json S-BIAD1078 S-BIAD1556)
+#poetry --directory=../../../../bia-export run bia-export website study S-BIAD1466 S-BIAD1553
+(cd ../../../../bia-export && poetry run bia-export website study --out_file=../api/api/tests/test_data/bia-study-metadata.json S-BIAD1466 S-BIAD1553)
 
 jq -c 'to_entries | map(.value)[:10000][] | ({"index": {"_index": "test_index"}}, .)' bia-study-metadata.json \
     > bia-study-metadata.json.bulk

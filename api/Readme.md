@@ -4,14 +4,6 @@ Run
 ```
 poetry install
 ```
-Will generate the following warning:
-```
-Warning: The current project could not be installed: No file/folder found for package bia-integrator-api
-If you do not want to install the current project use --no-root.
-If you want to use Poetry only for dependency management but not for packaging, you can set the operating mode to "non-package" in your pyproject.toml file.
-In a future version of Poetry this warning will become an error!
-```
-This can be ignored.
 
 ### Install recommended extensions
 
@@ -41,13 +33,6 @@ curl -H "Content-Type: application/json" \
 ```
 
 The response should be just `null` and there should be no errors in the api container.
-
-### Local services
-
-Dejavu (Elastic viewer):
-* Url: http://localhost:1358/
-* Connection string: http://elastic:test@localhost:9200
-* Index: test_index
 
 ## Development
 

@@ -10,13 +10,6 @@ class Elastic:
         pass
 
     async def configure(self, settings: Settings):
-        #! if Elastic is used without being configured, exception raised.
-        # If never used and not configured, no exception
-        #   -> can disable it like a feature flag, and also catch misconfigurations
-        if not settings.elastic_connstring:
-            self.client = None
-            return
-
         self.client = AsyncElasticsearch(
             settings.elastic_connstring, verify_certs=False
         )
