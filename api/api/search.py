@@ -43,6 +43,19 @@ async def searchImageRepresentationByFileUri(
     )
 
 
+@router.get("/file_reference/by_path_name")
+async def searchFileReferenceByPathName(
+    path_name: Annotated[str, Query(min_length=1, max_length=1000)],
+    db: Annotated[Repository, Depends(get_db)],
+    pagination: Annotated[Pagination, Depends()],
+) -> List[shared_data_models.FileReference]:
+    return await db.get_docs(
+        {"file_path": path_name},  # <-- exact match
+        shared_data_models.FileReference,
+        pagination=pagination,
+    )
+
+
 def make_search_items(t: Type[shared_data_models.DocumentMixin]):
     async def get_items(
         db: Annotated[Repository, Depends(get_db)],
