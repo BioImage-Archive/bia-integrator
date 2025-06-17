@@ -32,7 +32,10 @@ def related_ontologies():
         "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/dublin_core_terms.ttl"
     )
 
-    return schema + dc + rdf
+    csvw = Graph()
+    csvw.parse("http://www.w3.org/ns/csvw#")
+
+    return schema + dc + rdf + csvw
 
 
 @pytest.fixture()

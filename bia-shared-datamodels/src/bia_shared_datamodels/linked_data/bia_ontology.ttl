@@ -6,6 +6,7 @@
 @prefix jerm: <http://jermontology.org/ontology/JERMOntology#> .
 @prefix schema: <http://schema.org/> .
 @prefix dc: <http://purl.org/dc/terms/> .
+@prefix csvw: <https://www.w3.org/ns/csvw#> .
 
 
 bia: a owl:Ontology ;
@@ -202,11 +203,6 @@ bia:Dataset a owl:Class ;
     rdfs:label "dataset"@en ;
     rdfs:comment "A logical collection of images that were created by following a similar set of protocols."@en .
 
-bia:Association a owl:Class ;
-    rdfs:label "association"@en ;
-    rdfs:comment 
-        """An object to hold information that applies to all files that are schema:isPartOf a dataset, but not the dataset itself."""@en .
-
 bia:AssociationProperty a owl:Class ;
     rdfs:subClassOf rdf:Property ;
     rdfs:label "association"@en ;
@@ -241,7 +237,7 @@ bia:associatedSubject a owl:ObjectProperty, bia:AssociationProperty ;
         Assuming `dataset bia:associatedSubject specimen`,
         then for every image that matches `dataset schema:hasPart image`, there exists the statments:
         `image bia:resultOf creation_process` and `creation_process bia:subject specimen`."""@en ;
-    rdfs:domain bia:Association ;
+    rdfs:domain bia:Dataset ;
     rdfs:range bia:Specimen .
 
 bia:associatedBiologicalEntity a owl:ObjectProperty, bia:AssociationProperty ;
@@ -251,7 +247,7 @@ bia:associatedBiologicalEntity a owl:ObjectProperty, bia:AssociationProperty ;
         Assuming `dataset bia:association association`, and `association bia:associatedBiologicalEntity bio_sample`,
         then for every image that matches `dataset schema:hasPart image`, there exists the statments:
         `image bia:resultOf creation_process`, `creation_process bia:subject specimen`, and `specimen bia:biologicalEntity bio_sample`."""@en ;
-    rdfs:domain bia:Association ;
+    rdfs:domain bia:Dataset ;
     rdfs:range bia:Specimen .
 
 bia:associatedImagingPreparationProtocol a owl:ObjectProperty, bia:AssociationProperty ;
@@ -261,7 +257,7 @@ bia:associatedImagingPreparationProtocol a owl:ObjectProperty, bia:AssociationPr
         Assuming `dataset bia:associatedImagingPreparationProtocol specimen_imaging_preparation_protcol`,
         then for every image that matches `dataset schema:hasPart image`, there exists the statments:
         `image bia:resultOf creation_process`, `creation_process bia:subject specimen`, and `specimen bia:imagingPreparationProtocol  specimen_imaging_preparation_protcol`."""@en ;
-    rdfs:domain bia:Association ;
+    rdfs:domain bia:Dataset ;
     rdfs:range bia:Specimen .
 
 bia:associatedImageAcquisitionProtocol a owl:ObjectProperty, bia:AssociationProperty ;
@@ -271,7 +267,7 @@ bia:associatedImageAcquisitionProtocol a owl:ObjectProperty, bia:AssociationProp
         Assuming `dataset bia:associatedImagingPreparationProtocol specimen_imaging_preparation_protcol`,
         then for every image that matches `dataset schema:hasPart image`, there exists the statments:
         `image bia:resultOf creation_process`, `creation_process bia:subject specimen`, and `specimen bia:imagingPreparationProtocol  specimen_imaging_preparation_protcol`."""@en ;
-    rdfs:domain bia:Association ;
+    rdfs:domain bia:Dataset ;
     rdfs:range bia:Specimen .
 
 bia:associatedProtocol a owl:ObjectProperty, bia:AssociationProperty ;
@@ -281,7 +277,7 @@ bia:associatedProtocol a owl:ObjectProperty, bia:AssociationProperty ;
         Assuming `dataset bia:associatedProtocol protocol`,
         then for every image that matches `dataset schema:hasPart image`, there exists the statments:
         `image bia:resultOf creation_process`, and `creation_process bia:subject protocol`."""@en ;
-    rdfs:domain bia:Association ;
+    rdfs:domain bia:Dataset ;
     rdfs:range bia:Specimen .
 
 bia:associatedAnnotationMethod a owl:ObjectProperty, bia:AssociationProperty ;
@@ -291,8 +287,15 @@ bia:associatedAnnotationMethod a owl:ObjectProperty, bia:AssociationProperty ;
         Assuming `dataset bia:associatedAnnotationMethod annotation_method`,
         then for every image that matches `dataset schema:hasPart image`, there exists the statments:
         `image bia:resultOf creation_process`, and `creation_process bia:annotationMethod annotation_method`."""@en ;
-    rdfs:domain bia:Association ;
+    rdfs:domain bia:Dataset ;
     rdfs:range bia:Specimen .
+
+bia:associationFileMetadata a owl:ObjectProperty;
+    rdfs:label "association file metadata"@en ;
+    rdfs:comment 
+    """A file, typically of a tabular format, which contains information about files in the dataset."""@en; 
+    rdfs:domain bia:Dataset ;
+    rdfs:range schema:MediaObject .
 
 ## Images, Image Representations
 
@@ -694,13 +697,13 @@ bia:channelBiologicalEntity a owl:DatatypeProperty ;
     rdfs:range rdf:langString ;
     rdfs:domain bia:SignalChannel .
 
-## File reference & Annotation Data
+## File reference, lists & Annotation Data
 
 # Classes
 
 bia:FileReference a owl:Class ;
-    rdfs:subClassOf schema:File ;
-    rdfs:label "file reference" ;
+    rdfs:subClassOf schema:MediaObject ;
+    rdfs:label "file reference"@en ;
     rdfs:comment "An individual file."@en .
 
 
@@ -708,10 +711,17 @@ bia:AnnotationData a owl:Class ;
     rdfs:label "annotation data"@en ;
     rdfs:comment "Annotation data that is not captured in an image/viewable form, such as a table of labels for many different images."@en .
 
+
+bia:FileList a owl:Class ;
+    rdfs:subClassOf schema:MediaObject, csvw:Table ;
+    rdfs:label "file list"@en ;
+    rdfs:comment "A file that is a csvw:Table of information about other files in the ro-crate. These should be used when there is both a large number of files in a submission, and each file requires file-specific metadata."@en .
+
 # Properties
 
 # We recommend using the following properties from other ontologies:
 # - schema:fileFormat to capture file format or type.
+# - various properties from https://www.w3.org/ns/csvw to describe FileLists, most importantly: csvw:tableSchema, csvw:columns, csvw:propertyUrl, csvw:name.
 
 bia:filePath a owl:DatatypeProperty ;
     rdfs:label "file path"@en ;

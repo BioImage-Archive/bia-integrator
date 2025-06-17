@@ -4,7 +4,7 @@ from bia_shared_datamodels.linked_data.ld_context.SimpleJSONLDContext import (
 import bia_shared_datamodels.ro_crate_models as ro_crate_models
 from bia_shared_datamodels.linked_data.pydantic_ld import LDModel, ROCrateModel
 from rdflib.graph import Graph
-from rdflib.namespace import RDF, OWL
+from rdflib.namespace import RDF, OWL, RDFS
 from pathlib import Path
 import inspect
 from typing import Type
@@ -22,7 +22,9 @@ def test_ro_crate_used_terms_are_defined(
 ):
 
     combined_ontology = bia_ontology + related_ontologies
-    ontology_classes = [str(x) for x in combined_ontology.subjects(RDF.type, OWL.Class)]
+    ontology_classes = [
+        str(x) for x in combined_ontology.subjects(RDF.type, OWL.Class)
+    ] + [str(x) for x in combined_ontology.subjects(RDF.type, RDFS.Class)]
 
     ro_crate_pydantic_models = inspect.getmembers(
         ro_crate_models,
@@ -40,7 +42,9 @@ def test_ro_crate_used_terms_are_defined(
 
 
 @pytest.mark.parametrize(
-    "path_to_example_ro_crate", ["S-BIAD1494", "S-BIAD843"], indirect=True
+    "path_to_example_ro_crate",
+    ["S-BIAD1494", "S-BIAD843", "S-BIADWITHFILELIST"],
+    indirect=True,
 )
 def test_ro_crate_context_is_used_in_example(path_to_example_ro_crate):
 
@@ -51,6 +55,7 @@ def test_ro_crate_context_is_used_in_example(path_to_example_ro_crate):
         "schema": "http://schema.org/",
         "dc": "http://purl.org/dc/terms/",
         "bia": "http://bia/",
+        "csvw": "http://www.w3.org/ns/csvw#",
     }
 
     context = SimpleJSONLDContext(prefixes=prefixes)
@@ -85,7 +90,9 @@ def test_ro_crate_context_is_used_in_example(path_to_example_ro_crate):
 
 
 @pytest.mark.parametrize(
-    "path_to_example_ro_crate", ["S-BIAD1494", "S-BIAD843"], indirect=True
+    "path_to_example_ro_crate",
+    ["S-BIAD1494", "S-BIAD843", "S-BIADWITHFILELIST"],
+    indirect=True,
 )
 def test_example_ro_crate_is_valid_ro_crate(path_to_example_ro_crate):
 
@@ -103,7 +110,9 @@ def test_example_ro_crate_is_valid_ro_crate(path_to_example_ro_crate):
 
 
 @pytest.mark.parametrize(
-    "path_to_example_ro_crate", ["S-BIAD1494", "S-BIAD843"], indirect=True
+    "path_to_example_ro_crate",
+    ["S-BIAD1494", "S-BIAD843", "S-BIADWITHFILELIST"],
+    indirect=True,
 )
 def test_objects_in_example_ro_crate_match_pydantic_models(
     path_to_example_ro_crate: Path,

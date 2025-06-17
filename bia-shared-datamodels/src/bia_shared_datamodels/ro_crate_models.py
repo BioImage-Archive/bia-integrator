@@ -145,8 +145,47 @@ class Dataset(ROCrateModel):
     hasPart: Annotated[
         list[ObjectReference], FieldContext("http://schema.org/hasPart", isIdField=True)
     ] = Field(default_factory=list)
+    associationFileMetadata: Annotated[
+        Optional[ObjectReference],
+        FieldContext("http://bia/associationFileMetadata", isIdField=True),
+    ] = Field(default=None)
 
     model_config = ConfigDict(model_type="http://bia/Dataset")
+
+
+# File List
+
+
+class FileList(ROCrateModel):
+
+    tableSchema: Annotated[
+        ObjectReference,
+        FieldContext("http://www.w3.org/ns/csvw#tableSchema", isIdField=True),
+    ] = Field()
+
+    model_config = ConfigDict(model_type="http://bia/FileList")
+
+
+class TableSchema(ROCrateModel):
+    column: Annotated[
+        list[ObjectReference],
+        FieldContext("http://www.w3.org/ns/csvw#column", isIdField=True),
+    ] = Field()
+
+    model_config = ConfigDict(model_type="http://www.w3.org/ns/csvw#Schema")
+
+
+class Column(ROCrateModel):
+    columnName: Annotated[
+        str,
+        FieldContext("http://www.w3.org/ns/csvw#name"),
+    ] = Field()
+    propertyUrl: Annotated[
+        str,
+        FieldContext("http://www.w3.org/ns/csvw#propertyUrl"),
+    ] = Field()
+
+    model_config = ConfigDict(model_type="http://www.w3.org/ns/csvw#Column")
 
 
 # Images, Image represntations
