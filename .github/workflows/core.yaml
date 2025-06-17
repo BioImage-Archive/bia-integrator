@@ -7,7 +7,7 @@ jobs:
       fail-fast: false
       matrix:
         python-version: ["3.11", "3.13"]
-        poetry-version: ["1.4.2"]
+        poetry-version: ["1.8"]
         os: [ubuntu-22.04, macos-latest, windows-latest]
         project:
           [
@@ -42,7 +42,7 @@ jobs:
       fail-fast: false
       matrix:
         python-version: ["3.11"]
-        poetry-version: ["1.4.2"]
+        poetry-version: ["1.8"]
         # Note we do not test on windows or mac. Currently, github mac runners do not support nested virtualization, so we cannot run docker on them (since mac docker virtualises linux)
         # See https://docs.github.com/en/actions/using-github-hosted-runners/using-github-hosted-runners/about-github-hosted-runners#limitations-for-arm64-macos-runners
         os: [ubuntu-22.04]
@@ -52,6 +52,8 @@ jobs:
             bia-ingest,
             bia-assign-image,
             bia-converter,
+            ro-crate-ingest,
+            bia-search
           ]
     runs-on: ${{ matrix.os }}
     defaults:
@@ -61,9 +63,9 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
         with:
-          python-version:  ${{ matrix.python-version }}
-      - name: Run poetry image
-        uses: abatilo/actions-poetry@v2
+          python-version: ${{ matrix.python-version }}
+      - name: Install poetry
+        uses: abatilo/actions-poetry@v4
         with:
           poetry-version: ${{ matrix.poetry-version }}
       - name: Run docker
