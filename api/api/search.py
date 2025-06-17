@@ -45,15 +45,91 @@ async def searchImageRepresentationByFileUri(
 
 @router.get("/file_reference/by_path_name")
 async def searchFileReferenceByPathName(
-    path_name: Annotated[str, Query(min_length=1, max_length=1000)],
+    path_name: Annotated[str, Query(min_length=5, max_length=1000)],
     db: Annotated[Repository, Depends(get_db)],
     pagination: Annotated[Pagination, Depends()],
-) -> List[shared_data_models.FileReference]:
-    return await db.get_docs(
-        {"file_path": path_name},  # <-- exact match
-        shared_data_models.FileReference,
-        pagination=pagination,
+    uuid: shared_data_models.UUID = None,
+) -> List:
+
+    if not uuid:
+        return await db.get_docs(
+            {"file_path": path_name},
+            shared_data_models.FileReference,
+            pagination=pagination,
+        )
+
+    study = await db.get_doc(uuid, shared_data_models.Study)
+
+    results = await db.aggregate(
+        [
+            {"$match": {"uuid": uuid, "model.type_name": "Study", "model.version": 3}},
+            {
+                "$lookup": {
+                    "from": "bia_integrator",
+                    "let": {"study_uuid": "$uuid"},
+                    "pipeline": [
+                        {
+                            "$match": {
+                                "$expr": {
+                                    "$eq": ["$submitted_in_study_uuid", "$$study_uuid"]
+                                }
+                            }
+                        },
+                        {
+                            "$project": {
+                                "uuid": 1,
+                                "submitted_in_study_uuid": 1,
+                                "_id": 0,
+                            }
+                        },
+                    ],
+                    "as": "dataset",
+                }
+            },
+            {
+                "$lookup": {
+                    "from": "bia_integrator",
+                    "let": {
+                        "dataset_uuids": {
+                            "$map": {"input": "$dataset", "as": "ds", "in": "$$ds.uuid"}
+                        }
+                    },
+                    "pipeline": [
+                        {
+                            "$match": {
+                                "$expr": {
+                                    "$and": [
+                                        {
+                                            "$in": [
+                                                "$submission_dataset_uuid",
+                                                "$$dataset_uuids",
+                                            ]
+                                        },
+                                        {"$eq": ["$file_path", path_name]},
+                                    ]
+                                }
+                            }
+                        },
+                        {"$project": {"_id": 0}},
+                    ],
+                    "as": "files",
+                }
+            },
+            {
+                "$project": {
+                    "_id": 0,
+                    "uuid": 1,
+                    "dataset": 1,
+                    "files": {"$slice": ["$files", pagination.page_size]},
+                }
+            },
+        ]
     )
+
+    if results and "files" in results[0]:
+        return results[0]["files"]
+    else:
+        return []
 
 
 def make_search_items(t: Type[shared_data_models.DocumentMixin]):
