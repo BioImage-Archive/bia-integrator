@@ -48,7 +48,7 @@ async def searchFileReferenceByPathName(
     path_name: Annotated[str, Query(min_length=5, max_length=1000)],
     db: Annotated[Repository, Depends(get_db)],
     pagination: Annotated[Pagination, Depends()],
-    study_uuid: shared_data_models.UUID = None,
+    study_uuid: shared_data_models.UUID,
 ) -> List:
 
     study = await db.get_doc(study_uuid, shared_data_models.Study)
