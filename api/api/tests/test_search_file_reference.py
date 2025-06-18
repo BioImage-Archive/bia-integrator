@@ -12,7 +12,6 @@ def file_references_many(
     Creates several FileReference objects that share the same file_path.
     """
     file_references = [existing_file_reference]
-    study_id = existing_dataset["submitted_in_study_uuid"]
     for _ in range(5):
         new_ref = existing_file_reference.copy()
         new_ref["file_path"] = "test file path"
@@ -23,47 +22,25 @@ def file_references_many(
         file_references.append(new_ref)
 
     file_references.sort(key=lambda fr: fr["uuid"])
-    return {"file_references": file_references, "study_id": study_id}
-
-
-def test_file_reference_path_name(api_client: TestClient, file_references_many: dict):
-    page_size = 3
-    file_path = "test file path"
-    rsp = api_client.get(
-        "/v2/search/file_reference/by_path_name",
-        params={"path_name": file_path, "page_size": page_size},
-    )
-    file_references = [
-        fr
-        for fr in file_references_many["file_references"]
-        if fr["file_path"] == file_path
-    ][:page_size]
-
-    assert rsp.status_code == 200
-    assert len(rsp.json()) == page_size
-    actual_sorted = sorted(rsp.json(), key=lambda fr: fr["uuid"])
-    expected_sorted = sorted(file_references, key=lambda fr: fr["uuid"])
-    assert actual_sorted == expected_sorted
+    return file_references
 
 
 def test_file_reference_path_name_with_study(
-    api_client: TestClient, file_references_many: dict
+    api_client: TestClient, file_references_many: List[dict], existing_dataset: dict
 ):
     page_size = 5
-    study_id = file_references_many["study_id"]
+    study_id = existing_dataset["submitted_in_study_uuid"]
     file_path = "test file path"
     rsp = api_client.get(
         "/v2/search/file_reference/by_path_name",
         params={
             "path_name": file_path,
             "page_size": page_size,
-            "uuid": study_id,
+            "study_uuid": study_id,
         },
     )
     file_references = [
-        fr
-        for fr in file_references_many["file_references"]
-        if fr["file_path"] == file_path
+        fr for fr in file_references_many if fr["file_path"] == file_path
     ][:page_size]
 
     assert rsp.status_code == 200

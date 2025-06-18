@@ -48,21 +48,19 @@ async def searchFileReferenceByPathName(
     path_name: Annotated[str, Query(min_length=5, max_length=1000)],
     db: Annotated[Repository, Depends(get_db)],
     pagination: Annotated[Pagination, Depends()],
-    uuid: shared_data_models.UUID = None,
+    study_uuid: shared_data_models.UUID = None,
 ) -> List:
 
-    if not uuid:
-        return await db.get_docs(
-            {"file_path": path_name},
-            shared_data_models.FileReference,
-            pagination=pagination,
-        )
-
-    study = await db.get_doc(uuid, shared_data_models.Study)
+    study = await db.get_doc(study_uuid, shared_data_models.Study)
 
     results = await db.aggregate(
         [
-            {"$match": {"uuid": uuid, "model.type_name": "Study", "model.version": 3}},
+            {
+                "$match": {
+                    "uuid": study_uuid,
+                    "model": shared_data_models.Study.get_model_metadata().model_dump(),
+                }
+            },
             {
                 "$lookup": {
                     "from": "bia_integrator",
