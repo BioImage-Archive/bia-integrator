@@ -106,13 +106,20 @@ def expected_2025_04_representation_of_image_converted_to_ome_zarr(
 @pytest.fixture
 def expected_2025_04_representation_of_image_converted_to_ome_zarr_empiar(
     base_path,
-) -> bia_data_model.ImageRepresentation:
+) -> list[bia_data_model.ImageRepresentation]:
     obj_path = base_path / "2025_04_models"
-    uuid = "5548efdd-d554-4df1-b988-1f07191b39b1"
-    return get_expected_object(
-        obj_path, "ImageRepresentation", empiar_accession_id, uuid
-    )
-
+    uuids = [
+        "c7a0a5d2-0866-4cf7-8ae5-434b8562f888",
+        "a7f977ed-721c-4bb7-92b8-e14a57615477",
+    ]
+    expected_objects = []
+    for uuid in uuids:
+        expected_objects.append(
+            get_expected_object(
+                obj_path, "ImageRepresentation", empiar_accession_id, uuid
+            )
+        )
+    return expected_objects
 
 def test_map_image_related_artefacts_to_2025_04_models(
     file_reference_mapping,
@@ -133,8 +140,9 @@ def test_map_image_related_artefacts_to_2025_04_models(
         mapped_artefacts["representation_of_image_uploaded_by_submitter"]
         == expected_2025_04_representation_of_image_uploaded_by_submitter
     )
+    assert len(mapped_artefacts["representation_of_image_converted_to_ome_zarr"]) == 1
     assert (
-        mapped_artefacts["representation_of_image_converted_to_ome_zarr"]
+        mapped_artefacts["representation_of_image_converted_to_ome_zarr"][0]
         == expected_2025_04_representation_of_image_converted_to_ome_zarr
     )
 
@@ -176,12 +184,14 @@ def test_map_image_related_artefacts_to_2025_04_models_empiar(
         == expected_2025_04_representation_of_image_uploaded_by_submitter_empiar
     )
 
-    mapped_artefacts[
-        "representation_of_image_converted_to_ome_zarr"
-    ].version = (
-        expected_2025_04_representation_of_image_converted_to_ome_zarr_empiar.version
-    )
-    assert (
-        mapped_artefacts["representation_of_image_converted_to_ome_zarr"]
-        == expected_2025_04_representation_of_image_converted_to_ome_zarr_empiar
-    )
+    # For EMPIAR entries we are returning lists
+    n_expected_image_representations = len(expected_2025_04_representation_of_image_converted_to_ome_zarr_empiar)
+    n_mapped_image_representations = len(mapped_artefacts["representation_of_image_converted_to_ome_zarr"])
+    assert n_expected_image_representations == n_mapped_image_representations
+
+    for expected, mapped in zip(
+        expected_2025_04_representation_of_image_converted_to_ome_zarr_empiar,
+        mapped_artefacts["representation_of_image_converted_to_ome_zarr"],
+    ):
+        mapped.version = expected.version
+        assert mapped == expected

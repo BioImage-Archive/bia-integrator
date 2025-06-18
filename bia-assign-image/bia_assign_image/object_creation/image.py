@@ -99,7 +99,7 @@ def add_file_pattern_attribute(
     if not file_pattern:
         if len(file_references) > 1:
             message = (
-                "No file pattern received. Only the first file reference out of {n_file_references} "
+                f"No file pattern received. Only the first file reference out of {n_file_references} "
                 + "has been added to the file pattern."
             )
             logger.warning(message)

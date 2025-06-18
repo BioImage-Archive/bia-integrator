@@ -22,7 +22,7 @@
            "provenance": "bia_ingest",
            "name": "dirpath_prefix",
            "value": {
-               "prefix": "data/EM04226_01"
+               "dirpath_prefix": "data/EM04226_01"
            }
        },
        {

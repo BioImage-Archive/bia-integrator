@@ -8,6 +8,7 @@ from bia_assign_image.api_client import (
     get_api_client,
     store_object_in_api_idempotent,
 )
+from bia_integrator_api.exceptions import NotFoundException
 from scripts.map_image_related_artefacts_to_2025_04_models import (
     map_image_related_artefacts_to_2025_04_models,
     contains_displayable_image_representation,
@@ -30,7 +31,7 @@ logger = logging.getLogger()
 def _get_accession_id(file_reference_mapping: dict) -> str | None:
     """Return the accession ID associated with the mapping"""
 
-    pattern = r"^.*/(S-[A-Za-z0-9_\-]+)/.*$"
+    pattern = r"^.*/((?:S|EMPIAR)-[A-Za-z0-9_\-]+)/.*$"
     matcher = re.compile(pattern)
 
     file_references = file_reference_mapping.get("file_reference")
@@ -88,7 +89,7 @@ def map_to_2025_04_models(
                     accession_id,
                     api_target,
                 )
-            except AssertionError as e:
+            except (AssertionError, NotFoundException) as e:
                 logger.error(f"Error while processing {accession_id}: {e}")
                 mapped_artefacts = None
                 continue
@@ -100,12 +101,8 @@ def map_to_2025_04_models(
                     ),
                 )
             if mapped_artefacts.get("representation_of_image_converted_to_ome_zarr"):
-                store_object_in_api_idempotent(
-                    api_client,
-                    mapped_artefacts.get(
-                        "representation_of_image_converted_to_ome_zarr"
-                    ),
-                )
+                for rep in mapped_artefacts.get("representation_of_image_converted_to_ome_zarr"):
+                    store_object_in_api_idempotent(api_client, rep)
 
 
 @app.command(help="Map image related artefacts to 2025/04 models")

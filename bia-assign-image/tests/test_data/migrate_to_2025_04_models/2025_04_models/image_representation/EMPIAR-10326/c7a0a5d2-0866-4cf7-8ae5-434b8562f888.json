@@ -1,5 +1,5 @@
 {
-    "uuid": "5548efdd-d554-4df1-b988-1f07191b39b1",
+    "uuid": "c7a0a5d2-0866-4cf7-8ae5-434b8562f888",
     "representation_of_uuid": "0c51b3ea-256d-43c6-a648-26ed787a6b62",
     "image_format": ".ome.zarr",
     "total_size_in_bytes": 0,
@@ -58,7 +58,7 @@
             "provenance": "bia_image_conversion",
             "name": "uuid_unique_input",
             "value": {
-                "uuid_unique_input": "8dd18449-7eea-4e65-b6d7-58cb16a733f8 {'conversion_function': 'map_image_representation_to_2025_04_model'}"
+                "uuid_unique_input": "8dd18449-7eea-4e65-b6d7-58cb16a733f8 {'conversion_function': 'map_image_representation_to_2025_04_model', 'chunk_scheme': [1, 1, 64, 64, 64], 'downsample_factors': [1, 1, 2, 2, 2], 'n_scales': 5, 'zarr_version': 3, 'shard_scheme': [1, 1, 256, 256, 256]}"
             }
         }
     ]
