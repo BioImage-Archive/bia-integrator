@@ -3,6 +3,7 @@
   "schema": "http://schema.org/",
   "dc": "http://purl.org/dc/terms/",
   "bia": "http://bia/",
+  "csvw": "http://www.w3.org/ns/csvw#",
   "displayName": {
     "@id": "schema:name"
   },
@@ -57,6 +58,12 @@
   "growthProtocol": {
     "@id": "bia:growthProtocol"
   },
+  "columnName": {
+    "@id": "csvw:name"
+  },
+  "propertyUrl": {
+    "@id": "csvw:propertyUrl"
+  },
   "role": {
     "@id": "bia:role"
   },
@@ -108,11 +115,17 @@
   "hasPart": {
     "@id": "schema:hasPart"
   },
+  "associationFileMetadata": {
+    "@id": "bia:associationFileMetadata"
+  },
   "link": {
     "@id": "schema:url"
   },
   "linkDescription": {
     "@id": "schema:description"
+  },
+  "tableSchema": {
+    "@id": "csvw:tableSchema"
   },
   "resultOf": {
     "@id": "bia:resultOf"
@@ -176,6 +189,9 @@
   },
   "accessionId": {
     "@id": "schema:identifier"
+  },
+  "column": {
+    "@id": "csvw:column"
   },
   "commonName": {
     "@id": "bia:commonName"

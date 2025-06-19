@@ -15,6 +15,7 @@ def generate_bia_ro_crate_context(file_path: Path):
         "schema": "http://schema.org/",
         "dc": "http://purl.org/dc/terms/",
         "bia": "http://bia/",
+        "csvw": "http://www.w3.org/ns/csvw#",
     }
 
     context = SimpleJSONLDContext(prefixes=prefixes)
