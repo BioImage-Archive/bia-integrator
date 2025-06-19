@@ -77,17 +77,24 @@ def test_file_reference_search_bad_page_size_rejected(api_client: TestClient):
         assert rsp.status_code == 422
 
 
-def test_file_reference_search_study_uuid_required(api_client: TestClient):
+def test_file_reference_search_study_uuid_required(
+    api_client: TestClient, existing_dataset: dict
+):
     rsp = api_client.get(
         "/v2/search/file_reference/by_path_name",
-        params={"study_uuid": "8c16740a-6805-4b86-80b6-caa036bf2a8a", "page_size": 1},
+        params={
+            "study_uuid": existing_dataset["submitted_in_study_uuid"],
+            "page_size": 1,
+        },
     )
     assert rsp.status_code == 422
 
 
-def test_file_reference_search_path_name_required(api_client: TestClient):
+def test_file_reference_search_path_name_required(
+    api_client: TestClient, existing_file_reference: dict
+):
     rsp = api_client.get(
         "/v2/search/file_reference/by_path_name",
-        params={"path_name": "Dummy file path", "page_size": 1},
+        params={"path_name": existing_file_reference["file_path"], "page_size": 1},
     )
     assert rsp.status_code == 422

@@ -55,6 +55,7 @@ async def searchFileReferenceByPathName(
         {
             "$match": {
                 "submitted_in_study_uuid": study_uuid,
+                "model": shared_data_models.Dataset.get_model_metadata().model_dump(),
             }
         },
         {
@@ -64,17 +65,11 @@ async def searchFileReferenceByPathName(
                 "pipeline": [
                     {
                         "$match": {
+                            "model": shared_data_models.FileReference.get_model_metadata().model_dump(),
+                            "file_path": path_name,
                             "$expr": {
-                                "$and": [
-                                    {
-                                        "$eq": [
-                                            "$submission_dataset_uuid",
-                                            "$$dataset_uuid",
-                                        ]
-                                    },
-                                    {"$eq": ["$file_path", path_name]},
-                                ]
-                            }
+                                "$eq": ["$submission_dataset_uuid", "$$dataset_uuid"]
+                            },
                         }
                     },
                     {"$project": {"_id": 0}},
