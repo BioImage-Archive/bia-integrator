@@ -47,7 +47,6 @@ async def searchImageRepresentationByFileUri(
 async def searchFileReferenceByPathName(
     path_name: Annotated[str, Query(min_length=5, max_length=1000)],
     db: Annotated[Repository, Depends(get_db)],
-    pagination: Annotated[Pagination, Depends()],
     study_uuid: shared_data_models.UUID,
 ) -> List[shared_data_models.FileReference]:
     study = await db.get_doc(study_uuid, shared_data_models.Study)
@@ -88,7 +87,7 @@ async def searchFileReferenceByPathName(
     ]
     results = await db.aggregate(pipeline)
     if results:
-        results = [x for res in results for x in res["files"]][: pagination.page_size]
+        results = [x for res in results for x in res["files"]]
     return results
 
 

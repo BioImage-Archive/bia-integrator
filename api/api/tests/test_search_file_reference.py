@@ -46,35 +46,23 @@ def file_references_many(
 def test_file_reference_search_by_path_name_and_study_uuid(
     api_client: TestClient, file_references_many: List[dict], existing_dataset: dict
 ):
-    page_size = 5
     study_id = existing_dataset["submitted_in_study_uuid"]
     file_path = "test file path"
     rsp = api_client.get(
         "/v2/search/file_reference/by_path_name",
         params={
             "path_name": file_path,
-            "page_size": page_size,
             "study_uuid": study_id,
         },
     )
     file_references = [
         fr for fr in file_references_many if fr["file_path"] == file_path
-    ][:page_size]
+    ]
 
     assert rsp.status_code == 200
-    assert len(rsp.json()) == page_size
     actual_sorted = sorted(rsp.json(), key=lambda fr: fr["uuid"])
     expected_sorted = sorted(file_references, key=lambda fr: fr["uuid"])
     assert actual_sorted == expected_sorted
-
-
-def test_file_reference_search_bad_page_size_rejected(api_client: TestClient):
-    for bad in [0, -5]:
-        rsp = api_client.get(
-            "/v2/search/file_reference/by_path_name",
-            params={"path_name": "Dummy file path", "page_size": bad},
-        )
-        assert rsp.status_code == 422
 
 
 def test_file_reference_search_study_uuid_required(
@@ -84,7 +72,6 @@ def test_file_reference_search_study_uuid_required(
         "/v2/search/file_reference/by_path_name",
         params={
             "study_uuid": existing_dataset["submitted_in_study_uuid"],
-            "page_size": 1,
         },
     )
     assert rsp.status_code == 422
@@ -95,6 +82,6 @@ def test_file_reference_search_path_name_required(
 ):
     rsp = api_client.get(
         "/v2/search/file_reference/by_path_name",
-        params={"path_name": existing_file_reference["file_path"], "page_size": 1},
+        params={"path_name": existing_file_reference["file_path"]},
     )
     assert rsp.status_code == 422
