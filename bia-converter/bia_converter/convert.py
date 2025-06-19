@@ -7,7 +7,6 @@ from pathlib import Path
 import parse  # type: ignore
 from bia_integrator_api.models import (  # type: ignore
     ImageRepresentation,
-    ImageRepresentationUseType,
     FileReference,
 )
 from bia_shared_datamodels.uuid_creation import (  # type: ignore
@@ -27,6 +26,9 @@ from .utils import (
 
 
 logger = logging.getLogger(__file__)
+
+# TODO - temp to stop import errors - REMOVE!!!
+ImageRepresentationUseType = None
 
 
 def create_image_representation_object(image, image_format, use_type):
