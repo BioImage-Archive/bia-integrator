@@ -43,6 +43,54 @@ async def searchImageRepresentationByFileUri(
     )
 
 
+@router.get("/file_reference/by_path_name")
+async def searchFileReferenceByPathName(
+    path_name: Annotated[str, Query(min_length=5, max_length=1000)],
+    db: Annotated[Repository, Depends(get_db)],
+    study_uuid: shared_data_models.UUID,
+) -> List[shared_data_models.FileReference]:
+    study = await db.get_doc(study_uuid, shared_data_models.Study)
+    pipeline = [
+        {
+            "$match": {
+                "submitted_in_study_uuid": study_uuid,
+                "model": shared_data_models.Dataset.get_model_metadata().model_dump(),
+            }
+        },
+        {
+            "$lookup": {
+                "from": "bia_integrator",
+                "let": {"dataset_uuid": "$uuid"},
+                "pipeline": [
+                    {
+                        "$match": {
+                            "model": shared_data_models.FileReference.get_model_metadata().model_dump(),
+                            "file_path": path_name,
+                            "$expr": {
+                                "$eq": ["$submission_dataset_uuid", "$$dataset_uuid"]
+                            },
+                        }
+                    },
+                    {"$project": {"_id": 0}},
+                ],
+                "as": "files",
+            }
+        },
+        {
+            "$project": {
+                "_id": 0,
+                "uuid": 1,
+                "submitted_in_study_uuid": 1,
+                "files": 1,
+            }
+        },
+    ]
+    results = await db.aggregate(pipeline)
+    if results:
+        results = [x for res in results for x in res["files"]]
+    return results
+
+
 def make_search_items(t: Type[shared_data_models.DocumentMixin]):
     async def get_items(
         db: Annotated[Repository, Depends(get_db)],
