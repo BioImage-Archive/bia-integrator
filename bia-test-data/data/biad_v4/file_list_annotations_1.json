@@ -8,11 +8,11 @@
         "value": "None"
       },
       {
-        "name": "metadata1",
-        "value": "None"
+        "name": "Source image",
+        "value": "study_component1/im06.png"
       },
       {
-        "name": "metadata2",
+        "name": "metadata1",
         "value": "None"
       }
     ],
@@ -27,11 +27,11 @@
         "value": "None"
       },
       {
-        "name": "metadata1",
-        "value": "None"
+        "name": "Source image",
+        "value": "study_component1/im08.png"
       },
       {
-        "name": "metadata2",
+        "name": "metadata1",
         "value": "None"
       }
     ],

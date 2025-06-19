@@ -1,14 +1,15 @@
 {
     "S-BIADTEST": {
+        "object_creator": "bia_ingest",
         "uuid": "a2fdbd58-ee11-4cd9-bc6a-f3d3da7fff71",
         "version": 0,
         "model": {
             "type_name": "Study",
-            "version": 2
+            "version": 3
         },
-        "attribute": [],
+        "additional_metadata": [],
         "accession_id": "S-BIADTEST",
-        "licence": "CC0",
+        "licence": "https://creativecommons.org/publicdomain/zero/1.0/",
         "author": [
             {
                 "rorid": null,
@@ -25,7 +26,9 @@
                     }
                 ],
                 "contact_email": "test_author1@ebi.ac.uk",
-                "role": "corresponding author"
+                "role": [
+                    "corresponding author"
+                ]
             },
             {
                 "rorid": null,
@@ -42,7 +45,9 @@
                     }
                 ],
                 "contact_email": "test_author2@ebi.ac.uk",
-                "role": "first author"
+                "role": [
+                    "first author"
+                ]
             }
         ],
         "title": "A test submission with title greater than 25 characters",
@@ -85,14 +90,14 @@
                 "file_type_counts": {
                     "file": 2
                 },
-                "title_id": "Annotations and segmentation masks",
+                "object_creator": "bia_ingest",
                 "uuid": "21999a9f-6f16-45d4-91c9-ed46cbfe015c",
                 "version": 0,
                 "model": {
                     "type_name": "Dataset",
-                    "version": 1
+                    "version": 2
                 },
-                "attribute": [
+                "additional_metadata": [
                     {
                         "provenance": "bia_ingest",
                         "name": "annotation_method_uuid",
@@ -103,6 +108,7 @@
                         }
                     }
                 ],
+                "title": "Annotations and segmentation masks",
                 "description": null,
                 "analysis_method": [],
                 "correlation_method": [],
@@ -114,14 +120,15 @@
                 "annotation_process": [
                     {
                         "default_open": true,
-                        "title_id": "Annotations and segmentation masks",
+                        "object_creator": "bia_ingest",
                         "uuid": "ef019f5d-d3e0-4122-89ae-1d1d07d2830f",
                         "version": 0,
                         "model": {
                             "type_name": "AnnotationMethod",
-                            "version": 3
+                            "version": 4
                         },
-                        "attribute": [],
+                        "additional_metadata": [],
+                        "title": "Annotations and segmentation masks",
                         "protocol_description": "Test protocol description",
                         "annotation_criteria": "Test annotation criteria.",
                         "annotation_coverage": "Test annotation coverage.",
@@ -136,13 +143,15 @@
                 "other_creation_process": [],
                 "image": [
                     {
+                        "object_creator": "bia_ingest",
                         "uuid": "7966aa52-e3db-4ce3-801e-44c524b73ee3",
                         "version": 0,
                         "model": {
                             "type_name": "Image",
-                            "version": 1
+                            "version": 2
                         },
-                        "attribute": [],
+                        "additional_metadata": [],
+                        "label": null,
                         "submission_dataset_uuid": "21999a9f-6f16-45d4-91c9-ed46cbfe015c",
                         "creation_process_uuid": "8444ff28-e32b-4c6f-9677-d9ff597b0c29",
                         "original_file_reference_uuid": []
@@ -156,14 +165,14 @@
                 "file_type_counts": {
                     "file": 2
                 },
-                "title_id": "Study Component 1",
+                "object_creator": "bia_ingest",
                 "uuid": "47a4ab60-c76d-4424-bfaa-c2a024de720c",
                 "version": 0,
                 "model": {
                     "type_name": "Dataset",
-                    "version": 1
+                    "version": 2
                 },
-                "attribute": [
+                "additional_metadata": [
                     {
                         "provenance": "bia_ingest",
                         "name": "image_acquisition_protocol_uuid",
@@ -215,10 +224,12 @@
                         }
                     }
                 ],
+                "title": "Study Component 1",
                 "description": "Description of study component 1",
                 "analysis_method": [
                     {
-                        "attribute": [],
+                        "additional_metadata": [],
+                        "title": "Test image analysis title",
                         "protocol_description": "Test image analysis",
                         "features_analysed": "Test image analysis overview"
                     }
@@ -229,14 +240,15 @@
                 "acquisition_process": [
                     {
                         "default_open": true,
-                        "title_id": "Test Primary Screen Image Acquisition",
+                        "object_creator": "bia_ingest",
                         "uuid": "c2e44a1b-a43c-476e-8ddf-8587f4c955b3",
                         "version": 0,
                         "model": {
                             "type_name": "ImageAcquisitionProtocol",
-                            "version": 2
+                            "version": 3
                         },
-                        "attribute": [],
+                        "additional_metadata": [],
+                        "title": "Test Primary Screen Image Acquisition",
                         "protocol_description": "Test image acquisition parameters 1",
                         "imaging_instrument_description": "Test imaging instrument 1",
                         "fbbi_id": [],
@@ -248,14 +260,15 @@
                 "specimen_imaging_preparation_protocol": [
                     {
                         "default_open": true,
-                        "title_id": "Test specimen 1",
+                        "object_creator": "bia_ingest",
                         "uuid": "7199d730-29f1-4ad8-b599-e9089cbb2d7b",
                         "version": 0,
                         "model": {
                             "type_name": "SpecimenImagingPreparationProtocol",
-                            "version": 2
+                            "version": 3
                         },
-                        "attribute": [],
+                        "additional_metadata": [],
+                        "title": "Test specimen 1",
                         "protocol_description": "Test sample preparation protocol 1",
                         "signal_channel_information": []
                     }
@@ -263,17 +276,18 @@
                 "biological_entity": [
                     {
                         "default_open": true,
-                        "title_id": "Test Biosample 1",
+                        "object_creator": "bia_ingest",
                         "uuid": "64a67727-4e7c-469a-91c4-6219ae072e99",
                         "version": 0,
                         "model": {
                             "type_name": "BioSample",
-                            "version": 3
+                            "version": 4
                         },
-                        "attribute": [],
+                        "additional_metadata": [],
+                        "title": "Test Biosample 1",
                         "organism_classification": [
                             {
-                                "attribute": [],
+                                "additional_metadata": [],
                                 "common_name": "human",
                                 "scientific_name": "Homo sapiens",
                                 "ncbi_id": null
@@ -291,30 +305,32 @@
                         ],
                         "growth_protocol_uuid": "a2ce3950-3b28-40b3-a6a5-23c4f7864912",
                         "growth_protocol": {
-                            "title_id": "Test specimen 1",
+                            "object_creator": "bia_ingest",
                             "uuid": "a2ce3950-3b28-40b3-a6a5-23c4f7864912",
                             "version": 0,
                             "model": {
                                 "type_name": "Protocol",
-                                "version": 2
+                                "version": 3
                             },
-                            "attribute": [],
+                            "additional_metadata": [],
+                            "title": "Test specimen 1",
                             "protocol_description": "Test sample growth protocol 1"
                         }
                     },
                     {
                         "default_open": true,
-                        "title_id": "Test Biosample 2",
+                        "object_creator": "bia_ingest",
                         "uuid": "6950718c-4917-47a1-a807-11b874e80a23",
                         "version": 0,
                         "model": {
                             "type_name": "BioSample",
-                            "version": 3
+                            "version": 4
                         },
-                        "attribute": [],
+                        "additional_metadata": [],
+                        "title": "Test Biosample 2",
                         "organism_classification": [
                             {
-                                "attribute": [],
+                                "additional_metadata": [],
                                 "common_name": "mouse",
                                 "scientific_name": "Mus musculus",
                                 "ncbi_id": null
@@ -332,14 +348,15 @@
                         ],
                         "growth_protocol_uuid": "a2ce3950-3b28-40b3-a6a5-23c4f7864912",
                         "growth_protocol": {
-                            "title_id": "Test specimen 1",
+                            "object_creator": "bia_ingest",
                             "uuid": "a2ce3950-3b28-40b3-a6a5-23c4f7864912",
                             "version": 0,
                             "model": {
                                 "type_name": "Protocol",
-                                "version": 2
+                                "version": 3
                             },
-                            "attribute": [],
+                            "additional_metadata": [],
+                            "title": "Test specimen 1",
                             "protocol_description": "Test sample growth protocol 1"
                         }
                     }
@@ -348,13 +365,15 @@
                 "other_creation_process": [],
                 "image": [
                     {
+                        "object_creator": "bia_image_assignment",
                         "uuid": "e7322131-8e27-455d-b9fc-8add0719af70",
                         "version": 0,
                         "model": {
                             "type_name": "Image",
-                            "version": 1
+                            "version": 2
                         },
-                        "attribute": [],
+                        "additional_metadata": [],
+                        "label": null,
                         "submission_dataset_uuid": "47a4ab60-c76d-4424-bfaa-c2a024de720c",
                         "creation_process_uuid": "2447db96-dd23-44eb-ad47-1086c9be1cba",
                         "original_file_reference_uuid": []
@@ -366,14 +385,14 @@
                 "file_reference_count": 0,
                 "file_reference_size_bytes": 0,
                 "file_type_counts": {},
-                "title_id": "Study Component 2",
+                "object_creator": "bia_ingest",
                 "uuid": "850a1ca3-9681-4a8a-b625-477936fcb954",
                 "version": 0,
                 "model": {
                     "type_name": "Dataset",
-                    "version": 1
+                    "version": 2
                 },
-                "attribute": [
+                "additional_metadata": [
                     {
                         "provenance": "bia_ingest",
                         "name": "image_acquisition_protocol_uuid",
@@ -413,10 +432,12 @@
                         }
                     }
                 ],
+                "title": "Study Component 2",
                 "description": "Description of study component 2",
                 "analysis_method": [
                     {
-                        "attribute": [],
+                        "additional_metadata": [],
+                        "title": "Test image analysis title",
                         "protocol_description": "Test image analysis",
                         "features_analysed": "Test image analysis overview"
                     }
@@ -427,14 +448,15 @@
                 "acquisition_process": [
                     {
                         "default_open": false,
-                        "title_id": "Test Primary Screen Image Acquisition",
+                        "object_creator": "bia_ingest",
                         "uuid": "c2e44a1b-a43c-476e-8ddf-8587f4c955b3",
                         "version": 0,
                         "model": {
                             "type_name": "ImageAcquisitionProtocol",
-                            "version": 2
+                            "version": 3
                         },
-                        "attribute": [],
+                        "additional_metadata": [],
+                        "title": "Test Primary Screen Image Acquisition",
                         "protocol_description": "Test image acquisition parameters 1",
                         "imaging_instrument_description": "Test imaging instrument 1",
                         "fbbi_id": [],
@@ -446,14 +468,15 @@
                 "specimen_imaging_preparation_protocol": [
                     {
                         "default_open": false,
-                        "title_id": "Test specimen 1",
+                        "object_creator": "bia_ingest",
                         "uuid": "7199d730-29f1-4ad8-b599-e9089cbb2d7b",
                         "version": 0,
                         "model": {
                             "type_name": "SpecimenImagingPreparationProtocol",
-                            "version": 2
+                            "version": 3
                         },
-                        "attribute": [],
+                        "additional_metadata": [],
+                        "title": "Test specimen 1",
                         "protocol_description": "Test sample preparation protocol 1",
                         "signal_channel_information": []
                     }
@@ -461,17 +484,18 @@
                 "biological_entity": [
                     {
                         "default_open": false,
-                        "title_id": "Test Biosample 1",
+                        "object_creator": "bia_ingest",
                         "uuid": "64a67727-4e7c-469a-91c4-6219ae072e99",
                         "version": 0,
                         "model": {
                             "type_name": "BioSample",
-                            "version": 3
+                            "version": 4
                         },
-                        "attribute": [],
+                        "additional_metadata": [],
+                        "title": "Test Biosample 1",
                         "organism_classification": [
                             {
-                                "attribute": [],
+                                "additional_metadata": [],
                                 "common_name": "human",
                                 "scientific_name": "Homo sapiens",
                                 "ncbi_id": null
@@ -489,14 +513,15 @@
                         ],
                         "growth_protocol_uuid": "a2ce3950-3b28-40b3-a6a5-23c4f7864912",
                         "growth_protocol": {
-                            "title_id": "Test specimen 1",
+                            "object_creator": "bia_ingest",
                             "uuid": "a2ce3950-3b28-40b3-a6a5-23c4f7864912",
                             "version": 0,
                             "model": {
                                 "type_name": "Protocol",
-                                "version": 2
+                                "version": 3
                             },
-                            "attribute": [],
+                            "additional_metadata": [],
+                            "title": "Test specimen 1",
                             "protocol_description": "Test sample growth protocol 1"
                         }
                     }

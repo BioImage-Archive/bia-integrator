@@ -1,7 +1,6 @@
 from api.settings import Settings
 
 from api.models.repository import repository_create, Repository
-from api.models.elastic import Elastic, elastic_create
 import asyncio
 
 
@@ -13,16 +12,11 @@ async def get_db() -> Repository:
     return app.extra["extra"]["event_loop_specific"][event_loop]["db"]
 
 
-async def get_elastic() -> Elastic:
-    event_loop = asyncio.get_event_loop()
-    return app.extra["extra"]["event_loop_specific"][event_loop]["elastic"]
-
-
 from fastapi import FastAPI, Depends, Request
 from api.public import make_router as public_make_router
 from api.private import make_router as private_make_router
-from api.search import make_router as search_make_router
 from api.auth import make_router as auth_make_router, get_current_user
+from api.search import make_router as search_make_router
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -98,8 +92,7 @@ async def on_start():
         log_info("App updating indexes")
 
     app.extra["extra"]["event_loop_specific"][event_loop] = {
-        "db": await repository_create(settings),
-        "elastic": await elastic_create(settings),
+        "db": await repository_create(settings)
     }
 
     log_info("App started")
@@ -109,7 +102,6 @@ async def on_start():
 async def on_stop():
     event_loop = asyncio.get_event_loop()
     app.extra["extra"]["event_loop_specific"][event_loop]["db"].connection.close()
-    await app.extra["extra"]["event_loop_specific"][event_loop]["elastic"].close()
 
 
 @app.on_event("shutdown")
@@ -122,11 +114,11 @@ app.include_router(
     prefix="/v2",
 )
 app.include_router(
-    search_make_router(),
-    prefix="/v2",
-)
-app.include_router(
     private_make_router(),
     prefix="/v2",
     dependencies=[Depends(get_current_user)],
+)
+app.include_router(
+    search_make_router(),
+    prefix="/v2",
 )

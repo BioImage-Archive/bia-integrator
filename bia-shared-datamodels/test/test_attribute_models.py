@@ -23,6 +23,10 @@ from typing import Callable
             attribute_models.DocumentUUIDUinqueInputAttribute,
             mock_objects.get_document_uuid_uinque_input_attribute,
         ),
+        (
+            attribute_models.InputImageForAnnotation,
+            mock_objects.get_input_image_for_annotation_attribute,
+        ),
     ),
 )
 def test_sub_attribute_models(

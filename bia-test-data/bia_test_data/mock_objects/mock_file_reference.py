@@ -53,6 +53,37 @@ def get_file_reference_data(
                 "uuid_unique_input": unique_string,
             },
         }
+        additional_metadata = [attributes_as_attr_dict, unique_uuid_input_dict]
+        if (
+            filelist == "biad_v4/file_list_annotations_1.json"
+            or filelist == "biad_v4/file_list_annotations_and_images.json"
+            or filelist == "biad_v4/file_list_study_component_2.json"
+        ):
+            file_list_size_map = {
+                "study_component2/im08.png": "123",
+                "study_component2/im06.png": "24649",
+                "study_component1/im08.png": "123",
+                "study_component1/im06.png": "3",
+            }
+            source_image = attributes.get("Source image", None)
+            if source_image:
+                additional_metadata.append(
+                    {
+                        "provenance": semantic_models.Provenance.bia_ingest,
+                        "name": "source_image_uuid",
+                        "value": {
+                            "source_image_uuid": [
+                                str(
+                                    create_file_reference_uuid(
+                                        study_uuid,
+                                        f"{source_image}{file_list_size_map[source_image]}",
+                                    )
+                                )
+                            ],
+                        },
+                    }
+                )
+
         file_reference_data.append(
             {
                 "uuid": create_file_reference_uuid(study_uuid, unique_string),
@@ -65,10 +96,7 @@ def get_file_reference_data(
                 "submission_dataset_uuid": dataset_uuid,
                 "version": 0,
                 "object_creator": semantic_models.Provenance.bia_ingest,
-                "additional_metadata": [
-                    attributes_as_attr_dict,
-                    unique_uuid_input_dict,
-                ],
+                "additional_metadata": additional_metadata,
             }
         )
 

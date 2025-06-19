@@ -116,6 +116,7 @@ def test_api_client():
 # TODO: When use of RO crate complete also check CreationProcess and Specimen in all tests below
 def test_cli_assign_from_proposal_command(
     test_api_client,
+    data_in_api,
     assign_from_proposal_input_path_yaml,
     expected_bia_image_2channels,
     expected_uploaded_by_submitter_representation_2channels,
@@ -168,6 +169,7 @@ def test_cli_assign_from_proposal_command(
 
 def test_cli_assign_command_with_pattern(
     test_api_client,
+    data_in_api,
     file_reference_uuids_1channel,
     expected_bia_image_1channel,
     expected_uploaded_by_submitter_representation_1channel,

@@ -11,10 +11,12 @@ from ro_crate_ingest.entity_conversion import (
     SpecimenImagingPreparationProtocol,
     Study,
     FileReference,
+    Image,
+    Specimen,
 )
 from pathlib import Path
 from rich.logging import RichHandler
-from .save_utils import PersistenceMode, persist
+from .save_utils import PersistenceMode, persist, persist_in_order
 from bia_integrator_api import models
 
 ro_crate_ingest = typer.Typer()
@@ -50,7 +52,6 @@ def convert(
     entities = process_ro_crate(crate_path)
 
     api_objects = []
-
     study = Study.create_api_study(entities)
     accession_id = study.accession_id
     persist(accession_id, models.Study, [study], persistence_mode)
@@ -99,6 +100,19 @@ def convert(
     )
     api_objects += specimen_imaging_preparation_protocols
 
+    specimen = Specimen.create_api_specimen(entities, study_uuid)
+    api_objects += specimen
+    persist(accession_id, models.Specimen, specimen, persistence_mode)
+
+    # TODO: Handle dependency tree for images and creation processes, expecially when annotation images are explicitly included, but original images are not.
+    image_file_refs, ordered_images_and_creation_processes, max_chain_length = Image.create_image_and_dependencies(
+        entities, study_uuid, crate_path
+    )
+    persist(accession_id, models.FileReference, image_file_refs, persistence_mode)
+    api_objects += image_file_refs
+    persist_in_order(ordered_images_and_creation_processes, max_chain_length, persistence_mode, accession_id)
+
+    # TODO: don't create file references again for files that are already created with images
     file_references = FileReference.create_file_reference(
         entities, study_uuid, crate_path
     )

@@ -1,0 +1,24 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "3e2e54b4-94d9-4ee2-89c4-46255b612129",
+  "version": 0,
+  "model": {
+    "type_name": "Image",
+    "version": 2
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "data/images/confocal/WD2.1_21-02_WT_confocalonly.ome.zarr.zip"
+      }
+    }
+  ],
+  "label": null,
+  "submission_dataset_uuid": "69c30a4d-7481-4e5f-b63b-d0d6b1fc01a1",
+  "creation_process_uuid": "1dacce32-3492-4e6c-82c4-119c71a69c8f",
+  "original_file_reference_uuid": [
+    "0fd14666-8d57-4529-aa90-8c069f0e87de"
+  ]
+}

@@ -1,9 +1,9 @@
 {
   "uuid": "570a177d-de5d-4bee-bbd1-fd2dcbec9e2a",
   "representation_of_uuid": "e7322131-8e27-455d-b9fc-8add0719af70",
-  "use_type": "INTERACTIVE_DISPLAY",
+  "object_creator": "bia_image_conversion",
   "image_format": "Template image format",
-  "attribute": [],
+  "additional_metadata": [],
   "total_size_in_bytes": 0,
   "version": 0,
   "file_uri": [
@@ -20,6 +20,6 @@
   "image_viewer_setting": [],
   "model": {
     "type_name": "ImageRepresentation",
-    "version": 3
+    "version": 4
   }
 }
