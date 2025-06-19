@@ -9,23 +9,41 @@ def file_references_many(
     api_client: TestClient, existing_file_reference: dict, existing_dataset: dict
 ):
     """
-    Creates several FileReference objects that share the same file_path.
+    Creates two datasets part of the same study with same file_path in the FileReference
+    along with several FileReference objects that share the same file_path within the dataset.
     """
     file_references = [existing_file_reference]
-    for _ in range(5):
-        new_ref = existing_file_reference.copy()
-        new_ref["file_path"] = "test file path"
-        new_ref["uuid"] = get_uuid()
-        new_ref["submission_dataset_uuid"] = existing_dataset["uuid"]
-        rsp = api_client.post("private/file_reference", json=new_ref)
-        assert rsp.status_code == 201, rsp.json()
-        file_references.append(new_ref)
+
+    def create_new_file_references(
+        file_references, existing_file_reference, dataset_uuid, number_of_fr
+    ):
+        for _ in range(number_of_fr):
+            new_ref = existing_file_reference.copy()
+            new_ref["file_path"] = "test file path"
+            new_ref["uuid"] = get_uuid()
+            new_ref["submission_dataset_uuid"] = dataset_uuid
+            rsp = api_client.post("private/file_reference", json=new_ref)
+            assert rsp.status_code == 201, rsp.json()
+            file_references.append(new_ref)
+        return file_references
+
+    new_dataset = existing_dataset.copy()
+    new_dataset["uuid"] = get_uuid()
+    rsp = api_client.post("private/dataset", json=new_dataset)
+    assert rsp.status_code == 201, rsp.json()
+
+    file_references = create_new_file_references(
+        file_references, existing_file_reference, new_dataset["uuid"], 2
+    )
+    file_references = create_new_file_references(
+        file_references, existing_file_reference, existing_dataset["uuid"], 3
+    )
 
     file_references.sort(key=lambda fr: fr["uuid"])
     return file_references
 
 
-def test_file_reference_path_name_with_study(
+def test_file_reference_search_by_path_name_and_study_uuid(
     api_client: TestClient, file_references_many: List[dict], existing_dataset: dict
 ):
     page_size = 5
@@ -50,7 +68,7 @@ def test_file_reference_path_name_with_study(
     assert actual_sorted == expected_sorted
 
 
-def test_file_reference_bad_page_size_rejected(api_client: TestClient):
+def test_file_reference_search_bad_page_size_rejected(api_client: TestClient):
     for bad in [0, -5]:
         rsp = api_client.get(
             "/v2/search/file_reference/by_path_name",
@@ -59,6 +77,17 @@ def test_file_reference_bad_page_size_rejected(api_client: TestClient):
         assert rsp.status_code == 422
 
 
-def test_file_reference_path_name_required(api_client: TestClient):
-    rsp = api_client.get("/v2/search/file_reference/by_path_name")
+def test_file_reference_search_study_uuid_required(api_client: TestClient):
+    rsp = api_client.get(
+        "/v2/search/file_reference/by_path_name",
+        params={"study_uuid": "8c16740a-6805-4b86-80b6-caa036bf2a8a", "page_size": 1},
+    )
+    assert rsp.status_code == 422
+
+
+def test_file_reference_search_path_name_required(api_client: TestClient):
+    rsp = api_client.get(
+        "/v2/search/file_reference/by_path_name",
+        params={"path_name": "Dummy file path", "page_size": 1},
+    )
     assert rsp.status_code == 422

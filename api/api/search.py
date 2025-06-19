@@ -49,85 +49,52 @@ async def searchFileReferenceByPathName(
     db: Annotated[Repository, Depends(get_db)],
     pagination: Annotated[Pagination, Depends()],
     study_uuid: shared_data_models.UUID,
-) -> List:
-
+) -> List[shared_data_models.FileReference]:
     study = await db.get_doc(study_uuid, shared_data_models.Study)
-
-    results = await db.aggregate(
-        [
-            {
-                "$match": {
-                    "uuid": study_uuid,
-                    "model": shared_data_models.Study.get_model_metadata().model_dump(),
-                }
-            },
-            {
-                "$lookup": {
-                    "from": "bia_integrator",
-                    "let": {"study_uuid": "$uuid"},
-                    "pipeline": [
-                        {
-                            "$match": {
-                                "$expr": {
-                                    "$eq": ["$submitted_in_study_uuid", "$$study_uuid"]
-                                }
+    pipeline = [
+        {
+            "$match": {
+                "submitted_in_study_uuid": study_uuid,
+            }
+        },
+        {
+            "$lookup": {
+                "from": "bia_integrator",
+                "let": {"dataset_uuid": "$uuid"},
+                "pipeline": [
+                    {
+                        "$match": {
+                            "$expr": {
+                                "$and": [
+                                    {
+                                        "$eq": [
+                                            "$submission_dataset_uuid",
+                                            "$$dataset_uuid",
+                                        ]
+                                    },
+                                    {"$eq": ["$file_path", path_name]},
+                                ]
                             }
-                        },
-                        {
-                            "$project": {
-                                "uuid": 1,
-                                "submitted_in_study_uuid": 1,
-                                "_id": 0,
-                            }
-                        },
-                    ],
-                    "as": "dataset",
-                }
-            },
-            {
-                "$lookup": {
-                    "from": "bia_integrator",
-                    "let": {
-                        "dataset_uuids": {
-                            "$map": {"input": "$dataset", "as": "ds", "in": "$$ds.uuid"}
                         }
                     },
-                    "pipeline": [
-                        {
-                            "$match": {
-                                "$expr": {
-                                    "$and": [
-                                        {
-                                            "$in": [
-                                                "$submission_dataset_uuid",
-                                                "$$dataset_uuids",
-                                            ]
-                                        },
-                                        {"$eq": ["$file_path", path_name]},
-                                    ]
-                                }
-                            }
-                        },
-                        {"$project": {"_id": 0}},
-                    ],
-                    "as": "files",
-                }
-            },
-            {
-                "$project": {
-                    "_id": 0,
-                    "uuid": 1,
-                    "dataset": 1,
-                    "files": {"$slice": ["$files", pagination.page_size]},
-                }
-            },
-        ]
-    )
-
-    if results and "files" in results[0]:
-        return results[0]["files"]
-    else:
-        return []
+                    {"$project": {"_id": 0}},
+                ],
+                "as": "files",
+            }
+        },
+        {
+            "$project": {
+                "_id": 0,
+                "uuid": 1,
+                "submitted_in_study_uuid": 1,
+                "files": 1,
+            }
+        },
+    ]
+    results = await db.aggregate(pipeline)
+    if results:
+        results = [x for res in results for x in res["files"]][: pagination.page_size]
+    return results
 
 
 def make_search_items(t: Type[shared_data_models.DocumentMixin]):
