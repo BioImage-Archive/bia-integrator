@@ -48,7 +48,7 @@ def runner() -> CliRunner:
 
 @pytest.fixture
 def uploaded_by_submitter_rep_uuid() -> str:
-    return "feafb069-7a94-48b7-9a15-25d3f85dda40"
+    return "3b4415ed-fe6f-4591-a4a1-eebc9f4a6750"
 
 
 @pytest.fixture
@@ -97,22 +97,22 @@ def expected_interactive_display() -> bia_data_model.ImageRepresentation:
     return bia_data_model.ImageRepresentation.model_validate_json(obj_path.read_text())
 
 
-@pytest.fixture
-def expected_static_display() -> bia_data_model.ImageRepresentation:
-    obj_path = (
-        Path(__file__).parent
-        / "data"
-        / "expected_static_display_image_representation.json"
-    )
-    return bia_data_model.ImageRepresentation.model_validate_json(obj_path.read_text())
-
-
-@pytest.fixture
-def expected_thumbnail() -> bia_data_model.ImageRepresentation:
-    obj_path = (
-        Path(__file__).parent / "data" / "expected_thumbnail_image_representation.json"
-    )
-    return bia_data_model.ImageRepresentation.model_validate_json(obj_path.read_text())
+# TODO - We are no more having static_display and thumbnail reps
+# @pytest.fixture
+# def expected_static_display() -> bia_data_model.ImageRepresentation:
+#    obj_path = (
+#        Path(__file__).parent
+#        / "data"
+#        / "expected_static_display_image_representation.json"
+#    )
+#    return bia_data_model.ImageRepresentation.model_validate_json(obj_path.read_text())
+#
+# @pytest.fixture
+# def expected_thumbnail() -> bia_data_model.ImageRepresentation:
+#    obj_path = (
+#        Path(__file__).parent / "data" / "expected_thumbnail_image_representation.json"
+#    )
+#    return bia_data_model.ImageRepresentation.model_validate_json(obj_path.read_text())
 
 
 def test_cli_convert_uploaded_by_submitter_to_interactive_display(
@@ -154,60 +154,63 @@ def test_cli_convert_uploaded_by_submitter_to_interactive_display(
     assert created_zarr_path.exists()
 
 
-def test_cli_convert_interactive_display_to_static_display(
-    runner, interactive_image_rep_uuid, mock_copy_local_to_s3, expected_static_display
-):
-    result = runner.invoke(
-        cli.app,
-        [
-            "convert",
-            interactive_image_rep_uuid,
-            "STATIC_DISPLAY",
-        ],
-        catch_exceptions=False,
-    )
-
-    assert result.exit_code == 0
-
-    created_static_display = api_client.get_image_representation(
-        str(expected_static_display.uuid)
-    )
-    assert compare_created_vs_expected_image_representation(
-        created_static_display, expected_static_display
-    )
-
-    created_static_display_path = (
-        settings.cache_root_dirpath / "mock_s3" / f"{expected_static_display.uuid}.png"
-    )
-    assert created_static_display_path.exists()
-
-
-def test_cli_convert_interactive_display_to_thumbnail(
-    runner,
-    interactive_image_rep_uuid,
-    mock_copy_local_to_s3,
-    expected_thumbnail,
-):
-    result = runner.invoke(
-        cli.app,
-        [
-            "convert",
-            interactive_image_rep_uuid,
-            "THUMBNAIL",
-        ],
-        catch_exceptions=False,
-    )
-
-    assert result.exit_code == 0
-
-    created_thumbnail = api_client.get_image_representation(
-        str(expected_thumbnail.uuid)
-    )
-    assert compare_created_vs_expected_image_representation(
-        created_thumbnail, expected_thumbnail
-    )
-
-    created_thumbnail_path = (
-        settings.cache_root_dirpath / "mock_s3" / f"{expected_thumbnail.uuid}.png"
-    )
-    assert created_thumbnail_path.exists()
+# TODO - rename these tests appropriately - we are no more having static_display and thumbnail reps
+#
+# def test_cli_convert_interactive_display_to_static_display(
+#    runner, interactive_image_rep_uuid, mock_copy_local_to_s3, expected_static_display
+# ):
+#    result = runner.invoke(
+#        cli.app,
+#        [
+#            "convert",
+#            interactive_image_rep_uuid,
+#            "STATIC_DISPLAY",
+#        ],
+#        catch_exceptions=False,
+#    )
+#
+#    assert result.exit_code == 0
+#
+#    created_static_display = api_client.get_image_representation(
+#        str(expected_static_display.uuid)
+#    )
+#    assert compare_created_vs_expected_image_representation(
+#        created_static_display, expected_static_display
+#    )
+#
+#    created_static_display_path = (
+#        settings.cache_root_dirpath / "mock_s3" / f"{expected_static_display.uuid}.png"
+#    )
+#    assert created_static_display_path.exists()
+#
+#
+# def test_cli_convert_interactive_display_to_thumbnail(
+#    runner,
+#    interactive_image_rep_uuid,
+#    mock_copy_local_to_s3,
+#    expected_thumbnail,
+# ):
+#    result = runner.invoke(
+#        cli.app,
+#        [
+#            "convert",
+#            interactive_image_rep_uuid,
+#            "THUMBNAIL",
+#        ],
+#        catch_exceptions=False,
+#    )
+#
+#    assert result.exit_code == 0
+#
+#    created_thumbnail = api_client.get_image_representation(
+#        str(expected_thumbnail.uuid)
+#    )
+#    assert compare_created_vs_expected_image_representation(
+#        created_thumbnail, expected_thumbnail
+#    )
+#
+#    created_thumbnail_path = (
+#        settings.cache_root_dirpath / "mock_s3" / f"{expected_thumbnail.uuid}.png"
+#    )
+#    assert created_thumbnail_path.exists()
+#

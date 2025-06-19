@@ -1,12 +1,21 @@
 {
-    "title_id": "Test specimen 1",
-    "uuid": "263f642d-0ed4-4a91-945b-57016abf23c8",
+    "title": "Test specimen 1",
+    "object_creator": "bia_image_assignment",
+    "uuid": "902187f3-1d46-42cf-8458-f4c77d104cde",
     "protocol_description": "Test sample preparation protocol 1",
     "signal_channel_information": [],
     "version": 0,
     "model": {
         "type_name": "SpecimenImagingPreparationProtocol",
-        "version": 2
+        "version": 3
     },
-    "attribute": []
+    "additional_metadata": [
+    {
+      "provenance": "bia_image_assignment",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Specimen-1"
+      }
+    }
+  ]
 }
