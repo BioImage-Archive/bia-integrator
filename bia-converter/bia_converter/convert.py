@@ -10,10 +10,12 @@ from bia_integrator_api.models import (  # type: ignore
     Image,
     ImageRepresentation,
     FileReference,
+    Provenance,
 )
 from bia_shared_datamodels.uuid_creation import (  # type: ignore
     create_image_representation_uuid,
 )
+from bia_shared_datamodels.attribute_models import DocumentUUIDUinqueInputAttribute
 
 from .config import settings
 from .io import copy_local_to_s3, stage_fileref_and_get_fpath, sync_dirpath_to_s3
@@ -39,18 +41,29 @@ def create_image_representation_object(
     # Create the base image representation object. Cannot by itself create the file_uri or
     # size attributes correctly
 
+    unique_input = DocumentUUIDUinqueInputAttribute.model_validate(
+        {
+            "provenance": "bia_image_conversion",
+            "name": "uuid_unique_input",
+            "value": {
+                "uuid_unique_input": unique_string,
+            },
+        }
+    )
+
     dataset = api_client.get_dataset(image.submission_dataset_uuid)
     study_uuid = UUID(dataset.submitted_in_study_uuid)
     image_rep_uuid = create_image_representation_uuid(study_uuid, unique_string)
     image_rep = ImageRepresentation(
-        # TODO fix object creator
-        object_creator="bia_image_assignment",
+        object_creator=Provenance.BIA_IMAGE_CONVERSION,
         uuid=str(image_rep_uuid),
         version=0,
         representation_of_uuid=image.uuid,
         # TODO Does image format need to be set?
         image_format=image_format,
-        additional_metadata=[],
+        additional_metadata=[
+            unique_input.model_dump(),
+        ],
         total_size_in_bytes=0,
         file_uri=[],
     )
@@ -264,9 +277,9 @@ def get_dimensions_dict_from_zarr(ome_zarr_image_uri):
         "sizeZ": "size_z",
         "sizeC": "size_c",
         "sizeT": "size_t",
-        "PhysicalSizeX": "physical_size_x",
-        "PhysicalSizeY": "physical_size_y",
-        "PhysicalSizeZ": "physical_size_z",
+        "PhysicalSizeX": "voxel_physical_size_x",
+        "PhysicalSizeY": "voxel_physical_size_y",
+        "PhysicalSizeZ": "voxel_physical_size_z",
     }
 
     update_dict = {v: im.__dict__[k] for k, v in attr_map.items()}
@@ -377,8 +390,12 @@ def convert_uploaded_by_submitter_to_interactive_display(
 
     # For unique string for image representation we are using bioformats to raw
     unique_string_dict = {
-        "conversion_function": "bioformats2raw",
-        "conversion_parameters": conversion_parameters,
+        "image_representation_of_submitted_by_uploader": f"{input_image_rep.uuid}",
+        "conversion_function": {
+            "conversion_function": "bioformats2raw",
+            "version": settings.bioformats2raw_docker_tag,
+        },
+        "conversion_config": conversion_parameters,
     }
     unique_string = f"{unique_string_dict}"
     base_image_rep = create_image_representation_object(
