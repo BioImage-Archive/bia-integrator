@@ -26,7 +26,9 @@ def info():
 @app.command()
 def convert(
     image_rep_uuid: str,
-    conversion_function_name: Annotated[Optional[str], typer.Argument()] = "{}",
+    conversion_function_name: Annotated[
+        str, typer.Argument()
+    ] = "convert_uploaded_by_submitter_to_interactive_display",
     conversion_config: Annotated[Optional[str], typer.Argument()] = "{}",
 ):
     logging.basicConfig(level=logging.INFO)

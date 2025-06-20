@@ -47,7 +47,10 @@ def attributes_by_name(model_object):
                 }
     """
 
-    return {attribute.name: attribute.value for attribute in model_object.attribute}
+    return {
+        attribute.name: attribute.value
+        for attribute in model_object.additional_metadata
+    }
 
 
 def get_dir_size(path: Union[str, Path]) -> int:

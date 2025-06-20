@@ -132,7 +132,7 @@ def test_cli_convert_uploaded_by_submitter_to_interactive_display(
         [
             "convert",
             uploaded_by_submitter_rep_uuid,
-            "INTERACTIVE_DISPLAY",
+            "convert_uploaded_by_submitter_to_interactive_display",
         ],
         catch_exceptions=False,
     )
