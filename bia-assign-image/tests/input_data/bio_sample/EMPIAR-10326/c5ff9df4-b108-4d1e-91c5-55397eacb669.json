@@ -1,0 +1,33 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "c5ff9df4-b108-4d1e-91c5-55397eacb669",
+  "version": 0,
+  "model": {
+    "type_name": "BioSample",
+    "version": 4
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Biosample-1"
+      }
+    }
+  ],
+  "title": "Toxoplasma gondii tachyzoites",
+  "organism_classification": [
+    {
+      "additional_metadata": [
+      ],
+      "common_name": "Toxoplasma",
+      "scientific_name": "Toxoplasma gondii",
+      "ncbi_id": "NCBI:txid5811"
+    }
+  ],
+  "biological_entity_description": "Toxoplasma gondii \u0394CAP parasites (CAP gene knockout strain) within parasitophorous vacuoles in host cells",
+  "experimental_variable_description": [],
+  "extrinsic_variable_description": [],
+  "intrinsic_variable_description": [],
+  "growth_protocol_uuid": null
+}

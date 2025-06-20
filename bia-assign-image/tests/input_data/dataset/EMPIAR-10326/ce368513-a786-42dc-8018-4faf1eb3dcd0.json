@@ -1,0 +1,71 @@
+{
+  "object_creator": "bia_ingest",
+  "title": "Raw FIB SEM images of a parasitophorous vacuole containing Toxoplasma gondii \u2206CAP parasites.",
+  "uuid": "ce368513-a786-42dc-8018-4faf1eb3dcd0",
+  "version": 0,
+  "model": {
+       "type_name": "Dataset",
+       "version": 2
+   },
+   "additional_metadata": [
+       {
+           "provenance": "submitter",
+           "name": "imageset_metadata",
+           "value": {
+               "pixel_width": 50.0,
+               "pixel_height": 50.0,
+               "header_format": "TIFF",
+               "data_format": "TIFF"
+           }
+       },
+       {
+           "provenance": "bia_ingest",
+           "name": "dirpath_prefix",
+           "value": {
+               "dirpath_prefix": "data/EM04226_01"
+           }
+       },
+       {
+           "provenance": "bia_ingest",
+           "name": "bio_sample_uuid",
+           "value": {
+               "bio_sample_uuid": [
+                   "c5ff9df4-b108-4d1e-91c5-55397eacb669"
+               ]
+           }
+       },
+       {
+           "provenance": "bia_ingest",
+           "name": "image_acquisition_protocol_uuid",
+           "value": {
+               "image_acquisition_protocol_uuid": [
+                   "33626ff7-d4f9-4cce-8f78-e27767efd5ae"
+               ]
+           }
+       },
+       {
+           "provenance": "bia_ingest",
+           "name": "specimen_imaging_preparation_protocol_uuid",
+           "value": {
+               "specimen_imaging_preparation_protocol_uuid": [
+                   "385e63bd-c129-4b8c-83c8-553e8e329d1e"
+               ]
+           }
+       },
+      {
+         "provenance": "bia_ingest",
+         "name": "uuid_unique_input",
+         "value": {
+           "uuid_unique_input": "Study Component-1"
+         }
+      }
+
+   ],
+   "description": "Image acquisition;\n5 nm voxels: xy pixel set to 5 nm, FIB mill every 5 nm.\nSEM: 1.5 kV with 1 nA current, 10 \u03bcs dwell time.\nEsB detector grid voltage: 1200 V.\nIon beam milling: 30 kV, 700 pA.",
+   "analysis_method": [],
+   "correlation_method": [],
+   "example_image_uri": [
+       "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/EMPIAR-10326/8bf3c882-6c45-4b28-9f46-030aac5e177a/d044ff82-49c6-425e-8dd8-899ad9ec1db6.png"
+   ],
+   "submitted_in_study_uuid": "4f19c9b9-1af6-4e4f-8060-3e1a51066242"
+}

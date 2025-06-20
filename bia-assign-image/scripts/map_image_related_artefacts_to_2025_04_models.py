@@ -1,4 +1,5 @@
 from bia_shared_datamodels import bia_data_model, uuid_creation, attribute_models
+from uuid import UUID
 import copy
 import logging
 from bia_assign_image.cli import assign
@@ -67,13 +68,9 @@ def map_image_representation_to_2025_04_model(
         unique_string = f"{image_2025_04_uuid}"
         object_creator = "bia_image_assignment"
     elif use_type == "INTERACTIVE_DISPLAY":
-        uploaded_by_submitter_rep_uuid = uuid_creation.create_image_representation_uuid(
-            study_uuid, unique_string=f"{image_2025_04_uuid}"
+        unique_string = _compute_unique_string_for_interactive_display(
+            accession_id, study_uuid, image_2025_04_uuid, old_image_representation_dict,
         )
-        conversion_function = (
-            "{'conversion_function': 'map_image_representation_to_2025_04_model'}"
-        )
-        unique_string = f"{uploaded_by_submitter_rep_uuid} {conversion_function}"
         object_creator = "bia_image_conversion"
     else:
         raise Exception(f"Use type{use_type} is not mapped to 2025/04 models")
@@ -149,14 +146,15 @@ def map_image_related_artefacts_to_2025_04_models(
 
     representations_old = file_reference_mapping["image_representation"]
 
-    uploaded_by_submitter_rep = _get_im_rep_from_im_rep_list(
+    uploaded_by_submitter_reps = _get_im_rep_from_im_rep_list(
         representations_old,
         "UPLOADED_BY_SUBMITTER",
     )
-    if uploaded_by_submitter_rep:
+    if uploaded_by_submitter_reps:
+        assert len(uploaded_by_submitter_reps) == 1
         rep_of_image_uploaded_by_submitter_2025_04 = (
             map_image_representation_to_2025_04_model(
-                uploaded_by_submitter_rep,
+                uploaded_by_submitter_reps[0],
                 image_2025_04_uuid,
                 accession_id,
             )
@@ -164,65 +162,70 @@ def map_image_related_artefacts_to_2025_04_models(
     else:
         rep_of_image_uploaded_by_submitter_2025_04 = {}
 
-    interactive_display_rep = _get_im_rep_from_im_rep_list(
+    interactive_display_reps = _get_im_rep_from_im_rep_list(
         representations_old,
         "INTERACTIVE_DISPLAY",
     )
-    if interactive_display_rep:
-        rep_of_image_converted_to_ome_zarr_2025_04 = (
-            map_image_representation_to_2025_04_model(
-                interactive_display_rep,
-                image_2025_04_uuid,
-                accession_id,
+    if interactive_display_reps:
+        reps_of_image_converted_to_ome_zarr_2025_04 = []
+        for interactive_display_rep in interactive_display_reps:
+            rep_of_image_converted_to_ome_zarr_2025_04 = (
+                map_image_representation_to_2025_04_model(
+                    interactive_display_rep,
+                    image_2025_04_uuid,
+                    accession_id,
+                )
             )
-        )
+            reps_of_image_converted_to_ome_zarr_2025_04.append(rep_of_image_converted_to_ome_zarr_2025_04)
     else:
-        rep_of_image_converted_to_ome_zarr_2025_04 = {}
+        reps_of_image_converted_to_ome_zarr_2025_04 = []
 
-    thumbnail_rep = _get_im_rep_from_im_rep_list(
+    thumbnail_reps = _get_im_rep_from_im_rep_list(
         representations_old,
         "THUMBNAIL",
     )
-    if thumbnail_rep:
+    if thumbnail_reps:
+        assert len(thumbnail_reps) == 1
         thumbnail_uri = attribute_models.Attribute.model_validate(
             {
                 "provenance": "bia_image_assignment",
                 "name": "thumbnail_uri",
-                "value": {"thumbnail_uri": thumbnail_rep["file_uri"]},
+                "value": {"thumbnail_uri": thumbnail_reps[0]["file_uri"]},
             }
         )
         image_2025_04.additional_metadata.append(thumbnail_uri)
 
-    static_display_rep = _get_im_rep_from_im_rep_list(
+    static_display_reps = _get_im_rep_from_im_rep_list(
         representations_old,
         "STATIC_DISPLAY",
     )
-    if static_display_rep:
+    if static_display_reps:
+        assert len(static_display_reps) == 1
         static_display_uri = attribute_models.Attribute.model_validate(
             {
                 "provenance": "bia_image_assignment",
                 "name": "static_display_uri",
-                "value": {"static_display_uri": static_display_rep["file_uri"]},
+                "value": {"static_display_uri": static_display_reps[0]["file_uri"]},
             }
         )
         image_2025_04.additional_metadata.append(static_display_uri)
 
-    if rep_of_image_converted_to_ome_zarr_2025_04:
+    if reps_of_image_converted_to_ome_zarr_2025_04:
         recommended_vizarr_representation = attribute_models.Attribute.model_validate(
             {
                 "provenance": "bia_image_assignment",
                 "name": "recommended_vizarr_representation",
                 "value": {
-                    "recommended_vizarr_representation": rep_of_image_converted_to_ome_zarr_2025_04.uuid,
+                    "recommended_vizarr_representation": reps_of_image_converted_to_ome_zarr_2025_04[0].uuid,
                 },
             }
         )
         image_2025_04.additional_metadata.append(recommended_vizarr_representation)
 
     if (
-        thumbnail_rep
-        or static_display_rep
-        or rep_of_image_converted_to_ome_zarr_2025_04
+        thumbnail_reps
+        or static_display_reps
+        or reps_of_image_converted_to_ome_zarr_2025_04
     ):
         # image_2025_04.version += 1
         api_client = get_api_client(api_target)
@@ -237,21 +240,58 @@ def map_image_related_artefacts_to_2025_04_models(
     return {
         "image": image_2025_04,
         "representation_of_image_uploaded_by_submitter": rep_of_image_uploaded_by_submitter_2025_04,
-        "representation_of_image_converted_to_ome_zarr": rep_of_image_converted_to_ome_zarr_2025_04,
+        "representation_of_image_converted_to_ome_zarr": reps_of_image_converted_to_ome_zarr_2025_04,
     }
 
 
 def _get_im_rep_from_im_rep_list(
     im_rep_list: list,
     use_type: str,
-) -> dict:
+) -> list[dict]:
     """Get image representation with specified use type from list of reps"""
 
-    return next(
-        (rep for rep in im_rep_list if rep["use_type"] == use_type),
-        {},
-    )
+    reps = []
 
+    for rep in im_rep_list:
+        if rep["use_type"] == use_type:
+            reps.append(rep)
+    
+    return reps
+
+def _compute_unique_string_for_interactive_display(
+        accession_id: str,
+        study_uuid: str | UUID,
+        image_2025_04_uuid: str,
+        old_image_representation_dict: dict,
+) -> str:
+    """Return unique string value depending on whether BIA or EMPIAR study.
+    
+    """
+    uploaded_by_submitter_rep_uuid = uuid_creation.create_image_representation_uuid(
+        study_uuid, unique_string=f"{image_2025_04_uuid}"
+    )
+    conversion_function = (
+        "{'conversion_function': 'map_image_representation_to_2025_04_model'}"
+    )
+    if accession_id.upper().startswith("S"):
+        return f"{uploaded_by_submitter_rep_uuid} {conversion_function}"
+    
+    # Otherwise we are dealing with EMPIAR study
+    # If ome_config in attributes add to unique string. Otherwise add file_uri
+    ome_zarr_config = {}
+    for attribute in old_image_representation_dict["attribute"]:
+        if attribute["name"] == "ome_zarr_config":
+            ome_zarr_config = attribute["value"]
+    
+    unique_string_extras = {
+        "conversion_function": "map_image_representation_to_2025_04_model"
+    }
+    if ome_zarr_config:
+        unique_string_extras.update(ome_zarr_config)
+    else:
+        unique_string_extras["file_uri"] = old_image_representation_dict["file_uri"]
+    
+    return f"{uploaded_by_submitter_rep_uuid} {unique_string_extras}"
 
 def update_dataset_example_image_uri(
     accession_ids: list[str],
