@@ -1,12 +1,20 @@
 {
-  "uuid": "302d2c87-adf1-4a35-839b-3acaa6973ff7",
-  "object_creator": "bia_image_assignment",
+  "uuid": "11a34e8a-10ce-4529-9409-b6fc6ada1194",
+  "object_creator": "bia_image_conversion",
   "version": 0,
   "model": {
     "type_name": "ImageRepresentation",
     "version": 4
   },
-  "additional_metadata": [],
+  "additional_metadata": [
+    {
+      "provenance": "bia_image_conversion",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "{'image_representation_of_submitted_by_uploader': '3b4415ed-fe6f-4591-a4a1-eebc9f4a6750', 'conversion_function': {'conversion_function': 'bioformats2raw', 'version': '0.9.1'}, 'conversion_config': {}}"
+      }
+    }
+  ],
   "image_format": ".ome.zarr",
   "file_uri": [
     "https://uk1s3.embassy.ebi.ac.uk/testbucket-bia/S-BIAD-BIACONVERTER-TEST/26959638-a790-4b0f-8ee5-20a986411e5c/302d2c87-adf1-4a35-839b-3acaa6973ff7.zarr/0"
@@ -21,5 +29,5 @@
   "size_c": 3,
   "size_t": 1,
   "image_viewer_setting": [],
-  "representation_of_uuid": "26959638-a790-4b0f-8ee5-20a986411e5c"
+  "representation_of_uuid": "c6b16918-0851-42f0-9d7a-7ba01b42f06c"
 }
