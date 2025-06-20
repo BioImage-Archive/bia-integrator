@@ -26,7 +26,7 @@ from bia_ingest.biostudies.process_submission_v4 import (
 from bia_ingest.biostudies.process_submission_default import (
     process_submission_default,
 )
-from bia_ingest.biostudies.find_bia_studies import (find_unprocessed_studies)
+from bia_ingest.biostudies.find_bia_studies import find_unprocessed_studies
 
 import logging
 from rich import print
@@ -55,7 +55,7 @@ class ProcessFilelistMode(str, Enum):
 
 @find.command("new-biostudies-studies")
 def find_new_studies(
-    output_file: Annotated[Optional[Path], typer.Option("--output_file", "-o")] = None
+    output_file: Annotated[Optional[Path], typer.Option("--output_file", "-o")] = None,
 ):
     find_unprocessed_studies(output_file)
 
@@ -69,7 +69,8 @@ def ingest(
     ] = PersistenceMode.disk,
     verbose: Annotated[bool, typer.Option("--verbose", "-v")] = False,
     process_filelist: Annotated[
-        ProcessFilelistMode, typer.Option("--process-filelist", "-pf", case_sensitive=False)
+        ProcessFilelistMode,
+        typer.Option("--process-filelist", "-pf", case_sensitive=False),
     ] = ProcessFilelistMode.ask,
     dryrun: Annotated[bool, typer.Option()] = False,
     write_csv: Annotated[str, typer.Option()] = None,
@@ -91,7 +92,9 @@ def ingest(
 
         persister = None
         if not dryrun:
-            persister = persistence_strategy_factory(persistence_mode, accession_id=accession_id)
+            persister = persistence_strategy_factory(
+                persistence_mode, accession_id=accession_id
+            )
 
         try:
             # Get information from biostudies
@@ -179,10 +182,10 @@ def determine_biostudies_processing_version(submission: Submission):
     override_map = {
         "S-BIAD43": BioStudiesProcessingVersion.V4,
         "S-BIAD44": BioStudiesProcessingVersion.V4,
-        "S-BIAD590": BioStudiesProcessingVersion.V4, 
-        "S-BIAD599": BioStudiesProcessingVersion.V4, 
-        "S-BIAD628": BioStudiesProcessingVersion.V4, 
-        "S-BIAD677": BioStudiesProcessingVersion.V4, 
+        "S-BIAD590": BioStudiesProcessingVersion.V4,
+        "S-BIAD599": BioStudiesProcessingVersion.V4,
+        "S-BIAD628": BioStudiesProcessingVersion.V4,
+        "S-BIAD677": BioStudiesProcessingVersion.V4,
         "S-BIAD686": BioStudiesProcessingVersion.V4,
         "S-BIAD822": BioStudiesProcessingVersion.V4,
         "S-BIAD843": BioStudiesProcessingVersion.V4,
@@ -196,7 +199,11 @@ def determine_biostudies_processing_version(submission: Submission):
         "S-BIAD1492": BioStudiesProcessingVersion.V4,
         "S-BIAD1518": BioStudiesProcessingVersion.V4,
         "S-BIAD650": BioStudiesProcessingVersion.FALLBACK,  # Uses v4 template but doesn't actually have rembi components
-        "S-BSST567": BioStudiesProcessingVersion.V4, 
+        "S-BSST567": BioStudiesProcessingVersion.V4,
+        "S-BIAD1392": BioStudiesProcessingVersion.V4,
+        "S-BIAD1367": BioStudiesProcessingVersion.V4,
+        "S-BIAD1269": BioStudiesProcessingVersion.V4,
+        "S-BIAD843": BioStudiesProcessingVersion.V4,
     }
     accession_id = submission.accno
     if accession_id in override_map:
