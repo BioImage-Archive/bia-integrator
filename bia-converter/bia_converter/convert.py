@@ -3,9 +3,11 @@ import logging
 import zipfile
 import tempfile
 from pathlib import Path
+from uuid import UUID
 
 import parse  # type: ignore
 from bia_integrator_api.models import (  # type: ignore
+    Image,
     ImageRepresentation,
     FileReference,
 )
@@ -31,18 +33,24 @@ logger = logging.getLogger(__file__)
 ImageRepresentationUseType = None
 
 
-def create_image_representation_object(image, image_format, use_type):
+def create_image_representation_object(
+    image: Image, unique_string: str, image_format: str
+) -> ImageRepresentation:
     # Create the base image representation object. Cannot by itself create the file_uri or
     # size attributes correctly
 
-    image_rep_uuid = create_image_representation_uuid(image, image_format, use_type)
+    dataset = api_client.get_dataset(image.submission_dataset_uuid)
+    study_uuid = UUID(dataset.submitted_in_study_uuid)
+    image_rep_uuid = create_image_representation_uuid(study_uuid, unique_string)
     image_rep = ImageRepresentation(
+        # TODO fix object creator
+        object_creator="bia_image_assignment",
         uuid=str(image_rep_uuid),
         version=0,
         representation_of_uuid=image.uuid,
-        use_type=use_type,
+        # TODO Does image format need to be set?
         image_format=image_format,
-        attribute=[],
+        additional_metadata=[],
         total_size_in_bytes=0,
         file_uri=[],
     )
@@ -362,19 +370,28 @@ def convert_uploaded_by_submitter_to_interactive_display(
 ) -> ImageRepresentation:
     # Should convert an UPLOADED_BY_SUBMITTER rep, to an INTERACTIVE_DISPLAY rep
 
-    assert input_image_rep.use_type == ImageRepresentationUseType.UPLOADED_BY_SUBMITTER
+    # TODO: Are there any checks with 2025/04 models to ensure the input image rep is as desired?
+    # assert input_image_rep.use_type == ImageRepresentationUseType.UPLOADED_BY_SUBMITTER
 
     image = api_client.get_image(input_image_rep.representation_of_uuid)
+
+    # For unique string for image representation we are using bioformats to raw
+    unique_string_dict = {
+        "conversion_function": "bioformats2raw",
+        "conversion_parameters": conversion_parameters,
+    }
+    unique_string = f"{unique_string_dict}"
     base_image_rep = create_image_representation_object(
-        image, ".ome.zarr", "INTERACTIVE_DISPLAY"
+        image, unique_string, image_format=".ome.zarr"
     )
     logger.info(
-        f"Created INTERACTIVE_DISPLAY image representation with uuid: {base_image_rep.uuid}"
+        f"Created image representation for converted image with uuid: {base_image_rep.uuid}"
     )
 
     # Get the file references we'll need
     file_references = get_all_file_references_for_image(image)
 
+    # TODO: refactor to move extraction of zips to its own function
     if input_image_rep.image_format == ".ome.zarr.zip":
         assert len(file_references) == 1
         output_zarr_fpath = fetch_ome_zarr_zip_fileref_and_unzip(
