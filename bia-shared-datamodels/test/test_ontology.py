@@ -18,6 +18,7 @@ def test_bia_terms_have_sensible_type(bia_ontology: Graph):
             (OWL.Ontology in subject_types)
             ^ (OWL.ObjectProperty in subject_types)
             ^ (OWL.DatatypeProperty in subject_types)
+            ^ (OWL.AnnotationProperty in subject_types or RDFS.Class in subject_types)
             ^ (OWL.Class in subject_types or RDFS.Class in subject_types)
         )
 

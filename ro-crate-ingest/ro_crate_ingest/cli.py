@@ -3,21 +3,23 @@ import logging
 from typing import Annotated, Optional
 from ro_crate_ingest.crate_reader import process_ro_crate
 from ro_crate_ingest.entity_conversion import (
-    AnnotationMethod,
-    BioSample,
-    Dataset,
-    ImageAcquisitionProtocol,
-    Protocol,
-    SpecimenImagingPreparationProtocol,
-    Study,
-    FileReference,
-    Image,
-    Specimen,
+    dataset,
+    image_acquisition_protocol,
+    protocol,
+    study,
+    image,
+    specimen,
+    annotation_method,
+    bio_sample,
+    file_reference,
+    specimen_imaging_preparation_protocol,
 )
+from ro_crate_ingest.file_list import find_file_lists
 from pathlib import Path
 from rich.logging import RichHandler
 from .save_utils import PersistenceMode, persist, persist_in_order
 from bia_integrator_api import models
+from ro_crate_ingest.crate_reader import load_ro_crate_metadata_to_graph
 
 ro_crate_ingest = typer.Typer()
 
@@ -50,34 +52,36 @@ def convert(
 ):
 
     entities = process_ro_crate(crate_path)
+    crate_graph = load_ro_crate_metadata_to_graph(crate_path)
+
 
     api_objects = []
-    study = Study.create_api_study(entities)
-    accession_id = study.accession_id
-    persist(accession_id, models.Study, [study], persistence_mode)
+    api_study = study.create_api_study(entities)
+    accession_id = api_study.accession_id
+    persist(accession_id, models.Study, [api_study], persistence_mode)
     api_objects.append(study)
-    study_uuid = study.uuid
+    study_uuid = api_study.uuid
 
-    datasets = Dataset.create_api_dataset(entities, study_uuid)
+    datasets = dataset.create_api_dataset(entities, study_uuid)
     persist(accession_id, models.Dataset, datasets, persistence_mode)
     api_objects += datasets
 
-    annotation_methods = AnnotationMethod.create_api_image_acquisition_protocol(
+    annotation_methods = annotation_method.create_api_image_acquisition_protocol(
         entities, study_uuid
     )
     persist(accession_id, models.AnnotationMethod, annotation_methods, persistence_mode)
     api_objects += annotation_methods
 
-    protocols = Protocol.create_api_protocol(entities, study_uuid)
+    protocols = protocol.create_api_protocol(entities, study_uuid)
     persist(accession_id, models.Protocol, protocols, persistence_mode)
     api_objects += protocols
 
-    bio_samples = BioSample.create_api_bio_sample(entities, study_uuid)
+    bio_samples = bio_sample.create_api_bio_sample(entities, study_uuid)
     persist(accession_id, models.BioSample, bio_samples, persistence_mode)
     api_objects += bio_samples
 
     image_acquisition_protocols = (
-        ImageAcquisitionProtocol.create_api_image_acquisition_protocol(
+        image_acquisition_protocol.create_api_image_acquisition_protocol(
             entities, study_uuid
         )
     )
@@ -89,7 +93,7 @@ def convert(
     )
     api_objects += image_acquisition_protocols
 
-    specimen_imaging_preparation_protocols = SpecimenImagingPreparationProtocol.create_api_specimen_imaging_preparation_protocol(
+    specimen_imaging_preparation_protocols = specimen_imaging_preparation_protocol.create_api_specimen_imaging_preparation_protocol(
         entities, study_uuid
     )
     persist(
@@ -100,20 +104,27 @@ def convert(
     )
     api_objects += specimen_imaging_preparation_protocols
 
-    specimen = Specimen.create_api_specimen(entities, study_uuid)
-    api_objects += specimen
-    persist(accession_id, models.Specimen, specimen, persistence_mode)
+    specimens = specimen.create_api_specimen(entities, study_uuid)
+    api_objects += specimens
+    persist(accession_id, models.Specimen, specimens, persistence_mode)
 
     # TODO: Handle dependency tree for images and creation processes, expecially when annotation images are explicitly included, but original images are not.
-    image_file_refs, ordered_images_and_creation_processes, max_chain_length = Image.create_image_and_dependencies(
-        entities, study_uuid, crate_path
+    image_file_refs, ordered_images_and_creation_processes, max_chain_length = (
+        image.create_image_and_dependencies(entities, study_uuid, crate_path, crate_graph)
     )
     persist(accession_id, models.FileReference, image_file_refs, persistence_mode)
     api_objects += image_file_refs
-    persist_in_order(ordered_images_and_creation_processes, max_chain_length, persistence_mode, accession_id)
+    persist_in_order(
+        ordered_images_and_creation_processes,
+        max_chain_length,
+        persistence_mode,
+        accession_id,
+    )
+
+    file_lists = find_file_lists(entities, crate_path, crate_graph)
 
     # TODO: don't create file references again for files that are already created with images
-    file_references = FileReference.create_file_reference(
+    file_references = file_reference.create_file_reference(
         entities, study_uuid, crate_path
     )
     persist(accession_id, models.FileReference, file_references, persistence_mode)

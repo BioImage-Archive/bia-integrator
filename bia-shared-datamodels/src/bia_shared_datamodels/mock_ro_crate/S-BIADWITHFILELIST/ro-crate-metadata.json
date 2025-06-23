@@ -254,7 +254,7 @@
             "contactEmail": "fsherwood@ebi.ac.uk",
             "affiliation": [
                 {
-                    "@id": "https://ror.org/00fv61j67"
+                    "@id": "https://ror.org/02catss52"
                 }
             ]
         },
@@ -425,7 +425,7 @@
                 "csvw:Column"
             ],
             "columnName": "file_path",
-            "propertyUrl": "https://schema.org/name"
+            "propertyUrl": "https://bia/filePath"
         },
         {
             "@id": "_:b1",
@@ -433,7 +433,7 @@
                 "csvw:Column"
             ],
             "columnName": "image_name",
-            "propertyUrl": "https://bia/sourceImage"
+            "propertyUrl": "https://schema.org/name"
         },
         {
             "@id": "_:b2",
@@ -441,7 +441,7 @@
                 "csvw:Column"
             ],
             "columnName": "source_image",
-            "propertyUrl": "https://bia/sourceImage"
+            "propertyUrl": "https://bia/sourceImagePath"
         }
     ]
 }
