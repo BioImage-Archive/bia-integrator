@@ -1,0 +1,29 @@
+{
+    "uuid": "a7f977ed-721c-4bb7-92b8-e14a57615477",
+    "representation_of_uuid": "0c51b3ea-256d-43c6-a648-26ed787a6b62",
+    "image_format": ".ome.zarr",
+    "total_size_in_bytes": 8772795,
+    "voxel_physical_size_x": 1.0,
+    "voxel_physical_size_y": 1.0,
+    "voxel_physical_size_z": 1.0,
+    "size_x": 5632,
+    "size_y": 5632,
+    "size_z": 4490,
+    "size_c": 1,
+    "size_t": 1,
+    "version": 0,
+    "file_uri": [
+        "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/EMPIAR-10326/8bf3c882-6c45-4b28-9f46-030aac5e177a/25c70018-7209-4218-a260-edf040ccf970.ome.zarr/0"
+    ],
+    "object_creator": "bia_image_conversion",
+    "model": {"type_name": "ImageRepresentation", "version": 4},
+    "additional_metadata": [
+        {
+            "provenance": "bia_image_conversion",
+            "name": "uuid_unique_input",
+            "value": {
+                "uuid_unique_input": "8dd18449-7eea-4e65-b6d7-58cb16a733f8 {'conversion_function': 'map_image_representation_to_2025_04_model', 'file_uri': ['https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/EMPIAR-10326/8bf3c882-6c45-4b28-9f46-030aac5e177a/25c70018-7209-4218-a260-edf040ccf970.ome.zarr/0']}"
+            }
+        }
+    ]
+}

@@ -1,0 +1,59 @@
+{
+    "object_creator": "bia_image_assignment",
+    "uuid": "0c51b3ea-256d-43c6-a648-26ed787a6b62",
+    "version": 1,
+    "model": {"type_name": "Image", "version": 2},
+    "additional_metadata": [
+        {
+            "provenance": "bia_image_assignment",
+            "name": "file_pattern",
+            "value": {
+                "file_pattern": "EM04226_01/slice_01393_z=6.9272um.tif"
+            }
+        },
+        {
+            "provenance": "bia_image_assignment",
+            "name": "uuid_unique_input",
+            "value": {"uuid_unique_input": "139fe380-e09f-4aa5-b4f8-764f7a8ffe2a 15340e6d-4223-42f7-9130-da9320e9fdda 2aa90693-ee47-48ea-b052-ebe4d5b0cba2 2e27c22b-e5e2-406d-95d6-17f458407563 2fb872f8-9c1b-4eba-9bfa-6758f8df8a22 6abd0891-01bf-40a3-a3b9-fa00478bacf7 70b328bb-ae22-489b-940d-62d83013e8d8 ea51e091-4efb-4169-bf3f-5078551c8344 f4dc4989-699c-485f-98d9-23c7e1f53c44 fee6dfa2-d5a4-40ea-b642-c224f1958fe1"}
+        },
+        {
+      "provenance": "bia_image_assignment",
+      "name": "thumbnail_uri",
+      "value": {
+        "thumbnail_uri": [
+          "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/EMPIAR-10326/8bf3c882-6c45-4b28-9f46-030aac5e177a/29094359-598b-4d5b-9068-88fe54ad5d56.png"
+        ]
+      }
+    },
+    {
+      "provenance": "bia_image_assignment",
+      "name": "static_display_uri",
+      "value": {
+        "static_display_uri": [
+          "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/EMPIAR-10326/8bf3c882-6c45-4b28-9f46-030aac5e177a/d044ff82-49c6-425e-8dd8-899ad9ec1db6.png"
+        ]
+      }
+    },
+    {
+      "provenance": "bia_image_assignment",
+      "name": "recommended_vizarr_representation",
+      "value": {
+        "recommended_vizarr_representation": "c7a0a5d2-0866-4cf7-8ae5-434b8562f888"
+      }
+    }
+    ],
+    "submission_dataset_uuid": "ce368513-a786-42dc-8018-4faf1eb3dcd0",
+    "creation_process_uuid": "199a48c5-96f0-4339-95d5-f011cbd6f75d",
+    "original_file_reference_uuid": [
+        "2e27c22b-e5e2-406d-95d6-17f458407563",
+        "139fe380-e09f-4aa5-b4f8-764f7a8ffe2a",
+        "2aa90693-ee47-48ea-b052-ebe4d5b0cba2",
+        "2fb872f8-9c1b-4eba-9bfa-6758f8df8a22",
+        "f4dc4989-699c-485f-98d9-23c7e1f53c44",
+        "6abd0891-01bf-40a3-a3b9-fa00478bacf7",
+        "70b328bb-ae22-489b-940d-62d83013e8d8",
+        "fee6dfa2-d5a4-40ea-b642-c224f1958fe1",
+        "ea51e091-4efb-4169-bf3f-5078551c8344",
+        "15340e6d-4223-42f7-9130-da9320e9fdda"
+    ]
+}

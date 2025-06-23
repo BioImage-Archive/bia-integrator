@@ -1,0 +1,27 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "33626ff7-d4f9-4cce-8f78-e27767efd5ae",
+  "version": 0,
+  "model": {
+    "type_name": "ImageAcquisitionProtocol",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Image Acquisition-1"
+      }
+    }
+  ],
+  "title": "FIB SEM Imaging",
+  "protocol_description": "FIB SEM data was collected using a Crossbeam 540 FIB SEM with Atlas 5 for 3-dimensional tomography acquisition. Images were acquired at 5 nm isotropic resolution throughout each region of interest, using a 10 ms dwell time. The SEM was operated at an accelerating voltage of 1.5 kV with 1 nA current. The EsB detector was used with a grid voltage of 1,200 V. Ion beam milling was performed at an accelerating voltage of 30 kV and current of 700 pA.",
+  "imaging_instrument_description": "Zeiss Crossbeam 540 FIB SEM",
+  "fbbi_id": [
+    "obo:FBbi_00050000"
+  ],
+  "imaging_method_name": [
+    "Focused Ion Beam Scanning Electron Microscopy"
+  ]
+}

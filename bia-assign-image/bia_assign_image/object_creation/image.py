@@ -5,7 +5,6 @@ from typing import List, Optional
 from bia_shared_datamodels import (
     bia_data_model,
     semantic_models,
-    uuid_creation,
     attribute_models,
 )
 
@@ -97,9 +96,10 @@ def add_file_pattern_attribute(
     # At the moment we are only adding the first file in the list of file references.
     # TODO: Find out how to add pattern for selecting whole words with 'OR' in parse module. I.e. 'file path 1' or 'file path 2' or ...
     if not file_pattern:
-        if len(file_references) > 1:
+        n_file_references = len(file_references)
+        if n_file_references > 1:
             message = (
-                "No file pattern received. Only the first file reference out of {n_file_references} "
+                f"No file pattern received. Only the first file reference out of {n_file_references} "
                 + "has been added to the file pattern."
             )
             logger.warning(message)
