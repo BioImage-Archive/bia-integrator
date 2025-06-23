@@ -82,9 +82,12 @@ def extract_annotation_method_dicts(
 
         annotation_types = attr_dict.get("Annotation Type", "")
         if annotation_types:
+            if isinstance(annotation_types, str):
+                annotation_types = annotation_types.split(",")
+
             model_dict["method_type"] = [
                 semantic_models.AnnotationMethodType(annotation_type.strip())
-                for annotation_type in annotation_types.split(",")
+                for annotation_type in annotation_types
             ]
         else:
             model_dict["method_type"] = [
