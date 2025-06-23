@@ -5,6 +5,7 @@ from typing import Optional, List
 
 import zarr
 import dask.array as da
+import numpy as np
 from pydantic import BaseModel
 
 from .omezarrmeta import ZMeta, DataSet, CoordinateTransformation
@@ -158,7 +159,17 @@ def calculate_scale_ratios(
     for i in range(len(scales) - 1):
         current_scale = scales[i]
         next_scale = scales[i + 1]
-        level_ratio = [next_scale[j] / current_scale[j] for j in range(n_dims)]
+        # TODO: Discuss with MH. We have some cases where the ratios are 0.0 -> append 1.0 to ratios?
+        level_ratio = []
+        for j in range(n_dims):
+            try:
+                level_ratio.append(next_scale[j] / current_scale[j])
+            except ZeroDivisionError as e:
+                tol = 1e-10
+                if np.isclose(next_scale[j], current_scale[j], atol=tol):
+                    level_ratio.append(1.0)
+                else:
+                    raise (e)
         ratios.append(level_ratio)
 
     # Convert to dictionary with dimension labels as keys

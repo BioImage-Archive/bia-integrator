@@ -419,7 +419,7 @@ def convert_uploaded_by_submitter_to_interactive_display(
             output_zarr_fpath = convert_with_bioformats2raw_pattern(
                 input_image_rep, file_references, base_image_rep
             )
-        except AssertionError as e:
+        except (KeyError, AssertionError) as e:
             if len(file_references) == 1:
                 logger.info(
                     f"Failed to convert using pattern. As image has 1 file reference will attempt to convert from this file reference with file path: {file_references[0].file_path}."
