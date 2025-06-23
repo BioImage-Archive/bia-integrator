@@ -11,6 +11,7 @@ from bia_integrator_api.models import (  # type: ignore
     ImageRepresentation,
     FileReference,
     Provenance,
+    Attribute,
 )
 from bia_shared_datamodels.uuid_creation import (  # type: ignore
     create_image_representation_uuid,
@@ -24,6 +25,7 @@ from .bia_api_client import api_client, store_object_in_api_idempotent
 from .rendering import generate_padded_thumbnail_from_ngff_uri
 from .utils import (
     create_s3_uri_suffix_for_image_representation,
+    create_s3_uri_suffix_for_2d_view_of_image_representation,
     attributes_by_name,
     get_dir_size,
 )
@@ -85,37 +87,36 @@ def create_2d_image_and_upload_to_s3(ome_zarr_uri, dims, dst_key):
 
 def convert_interactive_display_to_thumbnail(
     input_image_rep: ImageRepresentation,
-) -> ImageRepresentation:
-    # Should convert an INTERACTIVE_DISPLAY rep, to a THUMBNAIL rep
+) -> str:
+    # Should create a 2D thumbnail from convert an INTERACTIVE_DISPLAY rep
 
     dims = (256, 256)
     # Check the image rep
-    assert input_image_rep.use_type == ImageRepresentationUseType.INTERACTIVE_DISPLAY
+    assert ".zarr" in input_image_rep.file_uri[0]
 
     # Retrieve model ibjects
     input_image = api_client.get_image(input_image_rep.representation_of_uuid)
 
-    base_image_rep = create_image_representation_object(
-        input_image, ".png", "THUMBNAIL"
+    dst_key = create_s3_uri_suffix_for_2d_view_of_image_representation(
+        input_image_rep, dims=dims, name="thumbnail"
     )
-    logger.info(
-        f"Created THUMBNAIL image representation with uuid: {base_image_rep.uuid}"
-    )
-    w, h = dims
-    base_image_rep.size_x = w
-    base_image_rep.size_y = h
-
-    dst_key = create_s3_uri_suffix_for_image_representation(base_image_rep)
     file_uri, size_in_bytes = create_2d_image_and_upload_to_s3(
         input_image_rep.file_uri[0], dims, dst_key
     )
 
-    base_image_rep.file_uri = [file_uri]
-    base_image_rep.total_size_in_bytes = size_in_bytes
+    # Update the BIA Image object with uri for this 2D view
+    view_details_dict = {
+        "provenance": Provenance.BIA_IMAGE_CONVERSION,
+        "name": "image_thumbnail_uri",
+        "value": {
+            "image_thumbnail_uri": [dst_key],
+        },
+    }
+    view_details = Attribute.model_validate(view_details_dict)
+    input_image.additional_metadata.append(view_details)
+    store_object_in_api_idempotent(input_image)
 
-    store_object_in_api_idempotent(base_image_rep)
-
-    return base_image_rep
+    return dst_key
 
 
 # TODO - should be able to merge these

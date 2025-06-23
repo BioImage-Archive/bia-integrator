@@ -47,5 +47,16 @@ def convert(
     conversion_function(image_rep)
 
 
+@app.command()
+def create_thumbnail(
+    image_rep_uuid: str,
+):
+    logging.basicConfig(level=logging.INFO)
+
+    image_rep = api_client.get_image_representation(image_rep_uuid)
+    thumbnail_uri = convert_module.convert_interactive_display_to_thumbnail(image_rep)
+    logger.info(f"Created thumbnail at {thumbnail_uri}")
+
+
 if __name__ == "__main__":
     app()
