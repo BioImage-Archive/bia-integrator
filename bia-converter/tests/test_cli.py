@@ -10,6 +10,8 @@ from bia_converter import cli
 from bia_converter.config import settings
 from bia_converter.bia_api_client import api_client
 
+accession_id = "S-BIAD-BIACONVERTER-TEST"
+
 
 @pytest.fixture
 def mock_copy_uri_to_local(monkeypatch):
@@ -43,7 +45,7 @@ def mock_sync_dirpath_to_s3(monkeypatch):
 
 @pytest.fixture
 def runner() -> CliRunner:
-    return CliRunner(mix_stderr=False)
+    return CliRunner()
 
 
 @pytest.fixture
@@ -52,10 +54,24 @@ def uploaded_by_submitter_rep_uuid() -> str:
 
 
 @pytest.fixture
+def expected_image(uploaded_by_submitter_rep_uuid) -> bia_data_model.Image:
+    uploaded_by_submitter_rep = api_client.get_image_representation(
+        uploaded_by_submitter_rep_uuid
+    )
+    image = api_client.get_image(str(uploaded_by_submitter_rep.representation_of_uuid))
+    return bia_data_model.Image.model_validate(image.model_dump())
+
+
+@pytest.fixture
+def expected_thumbnail_uri(expected_image) -> str:
+    return f"{settings.endpoint_url}/{settings.bucket_name}/{accession_id}/{expected_image.uuid}_thumbnail_256x256.png"
+
+
+@pytest.fixture
 def interactive_image_rep_uuid() -> str:
     # This image representation is created by
     # test_cli_convert_uploaded_by_submitter_to_interactive_display!!!
-    return "302d2c87-adf1-4a35-839b-3acaa6973ff7"
+    return "11a34e8a-10ce-4529-9409-b6fc6ada1194"
 
 
 def compare_created_vs_expected_image_representation(
@@ -184,33 +200,30 @@ def test_cli_convert_uploaded_by_submitter_to_interactive_display(
 #    assert created_static_display_path.exists()
 #
 #
-# def test_cli_convert_interactive_display_to_thumbnail(
-#    runner,
-#    interactive_image_rep_uuid,
-#    mock_copy_local_to_s3,
-#    expected_thumbnail,
-# ):
-#    result = runner.invoke(
-#        cli.app,
-#        [
-#            "convert",
-#            interactive_image_rep_uuid,
-#            "THUMBNAIL",
-#        ],
-#        catch_exceptions=False,
-#    )
-#
-#    assert result.exit_code == 0
-#
-#    created_thumbnail = api_client.get_image_representation(
-#        str(expected_thumbnail.uuid)
-#    )
-#    assert compare_created_vs_expected_image_representation(
-#        created_thumbnail, expected_thumbnail
-#    )
-#
-#    created_thumbnail_path = (
-#        settings.cache_root_dirpath / "mock_s3" / f"{expected_thumbnail.uuid}.png"
-#    )
-#    assert created_thumbnail_path.exists()
-#
+def test_cli_convert_interactive_display_to_thumbnail(
+    runner,
+    interactive_image_rep_uuid,
+    mock_copy_local_to_s3,
+    expected_thumbnail_uri,
+    expected_image,
+):
+    result = runner.invoke(
+        cli.app,
+        [
+            "create-thumbnail",
+            interactive_image_rep_uuid,
+        ],
+        catch_exceptions=False,
+    )
+
+    assert result.exit_code == 0
+
+    updated_image = api_client.get_image_representation(str(expected_image.uuid))
+    assert compare_created_vs_expected_image_representation(
+        updated_image, expected_image
+    )
+
+    created_thumbnail_path = (
+        settings.cache_root_dirpath / "mock_s3" / f"{expected_image.uuid}.png"
+    )
+    assert created_thumbnail_path.exists()
