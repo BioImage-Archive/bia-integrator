@@ -87,7 +87,7 @@ def copy_uri_to_local(src_uri: str, dst_fpath: Path):
             temp_file.unlink()
 
 
-def copy_local_to_s3(src_fpath: Path, dst_key: str) -> str:
+def copy_local_to_s3(src_fpath: Path, dst_key: str, dry_run: bool = False) -> str:
     """Copy the local file with the given path to the S3 location for which the endpoint
     and bucket are described in the global Config object, and the destination key is
     passed as an argument.
@@ -98,13 +98,16 @@ def copy_local_to_s3(src_fpath: Path, dst_key: str) -> str:
     bucket_name = settings.bucket_name
 
     cmd = f"aws --region us-east-1 --endpoint-url {settings.endpoint_url} s3 cp {src_fpath} s3://{bucket_name}/{dst_key} --acl public-read"
-    logger.info(f"Uploading {src_fpath} to {dst_key}")
-    retval = subprocess.run(
-        cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
-    )
-    assert (
-        retval.returncode == 0
-    ), f"Error uploading to s3: {retval.stderr.decode('utf-8')}"
+    if dry_run:
+        logger.info(f"Dryrun: Would run command {cmd} to Upload {src_fpath} to {dst_key}")
+    else:
+        logger.info(f"Uploading {src_fpath} to {dst_key}")
+        retval = subprocess.run(
+            cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+        )
+        assert (
+            retval.returncode == 0
+        ), f"Error uploading to s3: {retval.stderr.decode('utf-8')}"
     return f"{endpoint_url}/{bucket_name}/{dst_key}"
 
 
