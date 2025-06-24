@@ -109,50 +109,49 @@ def convert_interactive_display_to_thumbnail(
         "provenance": Provenance.BIA_IMAGE_CONVERSION,
         "name": "image_thumbnail_uri",
         "value": {
-            "image_thumbnail_uri": [dst_key],
+            "image_thumbnail_uri": [file_uri],
         },
     }
     view_details = Attribute.model_validate(view_details_dict)
     input_image.additional_metadata.append(view_details)
     store_object_in_api_idempotent(input_image)
 
-    return dst_key
+    return file_uri
 
 
 # TODO - should be able to merge these
 def convert_interactive_display_to_static_display(
     input_image_rep: ImageRepresentation,
-) -> ImageRepresentation:
+) -> str:
     # Should convert an INTERACTIVE_DISPLAY rep, to a STATIC_DISPLAY rep
 
     dims = (512, 512)
     # Check the image rep
-    assert input_image_rep.use_type == ImageRepresentationUseType.INTERACTIVE_DISPLAY
+    assert ".zarr" in input_image_rep.file_uri[0]
 
     # Retrieve model ibjects
     input_image = api_client.get_image(input_image_rep.representation_of_uuid)
 
-    base_image_rep = create_image_representation_object(
-        input_image, ".png", "STATIC_DISPLAY"
+    dst_key = create_s3_uri_suffix_for_2d_view_of_image_representation(
+        input_image_rep, dims=dims, name="static_display"
     )
-    logger.info(
-        f"Created STATIC_DISPLAY image representation with uuid: {base_image_rep.uuid}"
-    )
-    w, h = dims
-    base_image_rep.size_x = w
-    base_image_rep.size_y = h
-
-    dst_key = create_s3_uri_suffix_for_image_representation(base_image_rep)
     file_uri, size_in_bytes = create_2d_image_and_upload_to_s3(
         input_image_rep.file_uri[0], dims, dst_key
     )
 
-    base_image_rep.file_uri = [file_uri]
-    base_image_rep.total_size_in_bytes = size_in_bytes
+    # Update the BIA Image object with uri for this 2D view
+    view_details_dict = {
+        "provenance": Provenance.BIA_IMAGE_CONVERSION,
+        "name": "image_static_display_uri",
+        "value": {
+            "image_static_display_uri": [file_uri],
+        },
+    }
+    view_details = Attribute.model_validate(view_details_dict)
+    input_image.additional_metadata.append(view_details)
+    store_object_in_api_idempotent(input_image)
 
-    store_object_in_api_idempotent(base_image_rep)
-
-    return base_image_rep
+    return file_uri
 
 
 def get_all_file_references_for_image(image):
