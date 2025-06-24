@@ -36,7 +36,7 @@ def create_s3_uri_suffix_for_2d_view_of_image_representation(
     name: str,
     image_format: str = ".png",
 ) -> str:
-    """Create the uri for a 2D view of an image representation"""
+    """Create the part of the uri that goes after the bucket name for a 2D view of an image representation"""
 
     assert isinstance(representation.representation_of_uuid, UUID) or isinstance(
         UUID(representation.representation_of_uuid), UUID

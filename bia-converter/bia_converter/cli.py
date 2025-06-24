@@ -46,7 +46,6 @@ def convert(
 
     conversion_function(image_rep)
 
-
 @app.command()
 def create_thumbnail(
     image_rep_uuid: str,
@@ -56,6 +55,17 @@ def create_thumbnail(
     image_rep = api_client.get_image_representation(image_rep_uuid)
     thumbnail_uri = convert_module.convert_interactive_display_to_thumbnail(image_rep)
     logger.info(f"Created thumbnail at {thumbnail_uri}")
+
+
+@app.command()
+def create_static_display(
+    image_rep_uuid: str,
+):
+    logging.basicConfig(level=logging.INFO)
+
+    image_rep = api_client.get_image_representation(image_rep_uuid)
+    static_display_uri = convert_module.convert_interactive_display_to_static_display(image_rep)
+    logger.info(f"Created thumbnail at {static_display_uri}")
 
 
 if __name__ == "__main__":
