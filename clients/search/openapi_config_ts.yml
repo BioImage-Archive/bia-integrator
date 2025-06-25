@@ -1,0 +1,11 @@
+supportsES6: true
+npmName: search-client
+npmVersion: 0.1.0
+snapshot: false
+stringEnums: true
+withInterfaces: true
+useSingleRequestParameter: true
+prependFormOrBodyParameters: true
+useObjectParameters: true
+withNodeImports: true
+typescriptThreePlus: true
