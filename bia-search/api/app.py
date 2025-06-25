@@ -1,8 +1,7 @@
-from fastapi import FastAPI, Depends, Query
+from fastapi import FastAPI
 from api.settings import Settings
 from api.elastic import Elastic, elastic_create
 import asyncio
-from typing import Annotated
 from api.api_logging import log_info
 
 
@@ -38,30 +37,3 @@ async def on_stop():
 async def get_elastic() -> Elastic:
     event_loop = asyncio.get_event_loop()
     return app.extra["extra"]["event_loop_specific"][event_loop]["elastic"]
-
-
-@app.get("/fts")
-async def fts(
-    elastic: Annotated[Elastic, Depends(get_elastic)],
-    query: Annotated[str, Query(min_length=1, max_length=500)],
-) -> dict:
-    rsp = await elastic.client.search(
-        index=elastic.index,
-        query={
-            "bool": {
-                "should": [
-                    {
-                        "multi_match": {
-                            "query": query,
-                            "fields": ["*"],
-                            "type": "phrase",
-                        }
-                    },
-                    {"simple_query_string": {"query": f"*{query}*", "fields": ["*"]}},
-                ]
-            }
-        },
-        size=5,
-    )
-
-    return rsp.body["hits"]
