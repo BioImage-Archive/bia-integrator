@@ -1,6 +1,8 @@
 from bia_shared_datamodels.linked_data.pydantic_ld.ROCrateModel import ROCrateModel
 from ro_crate_ingest.graph_utils import get_hasPart_parent_id_from_child
-from ro_crate_ingest.entity_conversion.file_reference import create_api_file_reference
+from ro_crate_ingest.ro_crate_to_api.entity_conversion.file_reference import (
+    create_api_file_reference,
+)
 import bia_integrator_api.models as APIModels
 from pathlib import Path
 from bia_shared_datamodels import semantic_models, ro_crate_models, uuid_creation

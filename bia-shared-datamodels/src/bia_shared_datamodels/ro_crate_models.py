@@ -44,10 +44,12 @@ class Publication(ROCrateModel):
 
 class Contributor(ROCrateModel):
     displayName: Annotated[str, FieldContext("http://schema.org/name")] = Field()
-    address: Annotated[str, FieldContext("http://schema.org/address")] = Field(
+    address: Annotated[Optional[str], FieldContext("http://schema.org/address")] = (
+        Field(default=None)
+    )
+    website: Annotated[Optional[AnyUrl], FieldContext("http://bia/website")] = Field(
         default=None
     )
-    website: Annotated[AnyUrl, FieldContext("http://bia/website")] = Field(default=None)
     affiliation: Annotated[
         list[ObjectReference],
         FieldContext("http://schema.org/memberOf"),
@@ -64,14 +66,12 @@ class Contributor(ROCrateModel):
 
 class Affiliaton(ROCrateModel):
     displayName: Annotated[str, FieldContext("http://schema.org/name")] = Field()
-    address: Annotated[str, FieldContext("http://schema.org/address")] = Field(
+    address: Annotated[Optional[str], FieldContext("http://schema.org/address")] = (
+        Field(default=None)
+    )
+    website: Annotated[Optional[AnyUrl], FieldContext("http://bia/website")] = Field(
         default=None
     )
-    website: Annotated[AnyUrl, FieldContext("http://bia/website")] = Field(default=None)
-    affiliation: Annotated[
-        list[str],
-        FieldContext("http://schema.org/memberOf"),
-    ] = Field(default_factory=list)
 
     model_config = ConfigDict(model_type="http://bia/Affiliation")
 
@@ -241,6 +241,7 @@ class CreationProcess(ROCrateModel):
 
 
 class BioSample(ROCrateModel):
+    title: Annotated[Optional[str], FieldContext("http://schema.org/name")] = Field()
     biologicalEntityDescription: Annotated[
         str, FieldContext("http://bia/biologicalEntityDescription")
     ] = Field()
