@@ -1,5 +1,5 @@
 {
-  "uuid": "11a34e8a-10ce-4529-9409-b6fc6ada1194",
+  "uuid": "841aaca8-633d-48f9-bfdb-6fe765aad109",
   "object_creator": "bia_image_conversion",
   "version": 0,
   "model": {
@@ -11,13 +11,13 @@
       "provenance": "bia_image_conversion",
       "name": "uuid_unique_input",
       "value": {
-        "uuid_unique_input": "{'image_representation_of_submitted_by_uploader': '3b4415ed-fe6f-4591-a4a1-eebc9f4a6750', 'conversion_function': {'conversion_function': 'bioformats2raw', 'version': '0.9.1'}, 'conversion_config': {}}"
+        "uuid_unique_input": "{'image_representation_of_submitted_by_uploader': 'not-created-for-this-test-case', 'conversion_function': {'conversion_function': 'bioformats2raw', 'version': '0.9.1'}, 'conversion_config': {}}"
       }
     }
   ],
   "image_format": ".ome.zarr",
   "file_uri": [
-    "https://uk1s3.embassy.ebi.ac.uk/testbucket-bia/S-BIAD-BIACONVERTER-TEST/c6b16918-0851-42f0-9d7a-7ba01b42f06c/11a34e8a-10ce-4529-9409-b6fc6ada1194.ome.zarr/0"
+    "https://uk1s3.embassy.ebi.ac.uk/testbucket-bia/S-BIAD-BIACONVERTER-TEST/dc981ee8-ab5b-427e-8a4b-81a6e34bc3fb/841aaca8-633d-48f9-bfdb-6fe765aad109.ome.zarr/0"
   ],
   "total_size_in_bytes": 3033,
   "voxel_physical_size_x": 1.0,
@@ -29,5 +29,5 @@
   "size_c": 3,
   "size_t": 1,
   "image_viewer_setting": [],
-  "representation_of_uuid": "c6b16918-0851-42f0-9d7a-7ba01b42f06c"
+  "representation_of_uuid": "dc981ee8-ab5b-427e-8a4b-81a6e34bc3fb"
 }

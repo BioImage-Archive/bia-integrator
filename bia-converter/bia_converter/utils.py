@@ -30,6 +30,30 @@ def create_s3_uri_suffix_for_image_representation(
     return f"{study.accession_id}/{representation.representation_of_uuid}/{representation.uuid}{representation.image_format}"
 
 
+def create_s3_uri_suffix_for_2d_view_of_image_representation(
+    representation: ImageRepresentation,
+    dims: tuple,
+    name: str,
+    image_format: str = ".png",
+) -> str:
+    """Create the part of the uri that goes after the bucket name for a 2D view of an image representation"""
+
+    assert isinstance(representation.representation_of_uuid, UUID) or isinstance(
+        UUID(representation.representation_of_uuid), UUID
+    )
+    input_image = api_client.get_image(representation.representation_of_uuid)
+    dataset = api_client.get_dataset(input_image.submission_dataset_uuid)
+    study = api_client.get_study(dataset.submitted_in_study_uuid)
+
+    dims_as_str = "x".join([str(d) for d in dims])
+
+    assert len(image_format) > 0
+    if image_format[0] != ".":
+        image_format = "." + image_format
+
+    return f"{study.accession_id}/{representation.representation_of_uuid}/{name}_{dims_as_str}{image_format}"
+
+
 def attributes_by_name(model_object):
     """
     Converts a list of Attribute objects into a dictionary mapping attribute names to their values.
@@ -47,7 +71,10 @@ def attributes_by_name(model_object):
                 }
     """
 
-    return {attribute.name: attribute.value for attribute in model_object.attribute}
+    return {
+        attribute.name: attribute.value
+        for attribute in model_object.additional_metadata
+    }
 
 
 def get_dir_size(path: Union[str, Path]) -> int:

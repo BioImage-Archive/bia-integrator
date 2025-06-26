@@ -1,0 +1,20 @@
+{
+    "object_creator": "bia_ingest",
+    "uuid": "a98da4a8-10d1-4537-b0ab-a2f346734a0f",
+    "version": 0,
+    "model": {
+        "type_name": "Protocol",
+        "version": 3
+    },
+    "additional_metadata": [
+        {
+            "provenance": "bia_ingest",
+            "name": "uuid_unique_input",
+            "value": {
+                "uuid_unique_input": "Specimen-1"
+            }
+        }
+    ],
+    "title": "Test growth protocol",
+    "protocol_description": "Test sample growth protocol 1"
+}
