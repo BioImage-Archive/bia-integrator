@@ -7,7 +7,7 @@ readme = "Readme.md"
 package-mode = false
 
 [tool.poetry.dependencies]
-python = "^3.10,<3.12"
+python = "^3.13"
 pydantic = "^2.4.0"
 fastapi = "^0.103.2"
 motor = "^3.1.2"
@@ -22,7 +22,6 @@ ome-types = "^0.4.2"
 # transitive dependency from ome-types
 #   not directly needed except the latest version crashes the api on start
 xsdata = "23.8"
-lxml = "^4.9.3"
 json-log-formatter = "^1.0"
 #@TODO: CHANGEME
 bia-shared-datamodels = { path = "../bia-shared-datamodels", develop = true }
@@ -34,6 +33,7 @@ pydantic-settings = "^2.3"
 #   to check if issue still occurs, comment line below & poetry lock; if it doesn't, delete this
 gevent = "24.10.2"
 aiohttp = "^3.11.13"
+lxml = "^6.0.0"
 
 [tool.poetry.group.dev.dependencies]
 locust = "^2.16.1"
