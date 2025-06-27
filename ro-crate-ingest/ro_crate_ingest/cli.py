@@ -14,7 +14,7 @@ from ro_crate_ingest.entity_conversion import (
     file_reference,
     specimen_imaging_preparation_protocol,
 )
-from ro_crate_ingest.file_list import find_file_lists
+from ro_crate_ingest.entity_conversion.file_list import process_file_lists
 from pathlib import Path
 from rich.logging import RichHandler
 from .save_utils import PersistenceMode, persist, persist_in_order
@@ -51,9 +51,9 @@ def convert(
     ] = PersistenceMode.LOCAL_FILE,
 ):
 
+    crate_path = crate_path.resolve()
     entities = process_ro_crate(crate_path)
     crate_graph = load_ro_crate_metadata_to_graph(crate_path)
-
 
     api_objects = []
     api_study = study.create_api_study(entities)
@@ -108,12 +108,19 @@ def convert(
     api_objects += specimens
     persist(accession_id, models.Specimen, specimens, persistence_mode)
 
+    processed_file_paths = []
     # TODO: Handle dependency tree for images and creation processes, expecially when annotation images are explicitly included, but original images are not.
-    image_file_refs, ordered_images_and_creation_processes, max_chain_length = (
-        image.create_image_and_dependencies(entities, study_uuid, crate_path, crate_graph)
+    (
+        image_file_refs,
+        file_paths,
+        ordered_images_and_creation_processes,
+        max_chain_length,
+    ) = image.create_image_and_dependencies(
+        entities, study_uuid, crate_path, crate_graph
     )
     persist(accession_id, models.FileReference, image_file_refs, persistence_mode)
     api_objects += image_file_refs
+    processed_file_paths += file_paths
     persist_in_order(
         ordered_images_and_creation_processes,
         max_chain_length,
@@ -121,11 +128,16 @@ def convert(
         accession_id,
     )
 
-    file_lists = find_file_lists(entities, crate_path, crate_graph)
+    file_list_file_refs, file_paths = process_file_lists(
+        entities, crate_path, crate_graph, study_uuid
+    )
+    persist(accession_id, models.FileReference, file_list_file_refs, persistence_mode)
+    api_objects += file_list_file_refs
+    processed_file_paths += file_paths
 
     # TODO: don't create file references again for files that are already created with images
     file_references = file_reference.create_file_reference(
-        entities, study_uuid, crate_path
+        entities, study_uuid, crate_path, processed_file_paths
     )
     persist(accession_id, models.FileReference, file_references, persistence_mode)
     api_objects += file_references

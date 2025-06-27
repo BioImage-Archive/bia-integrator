@@ -27,6 +27,7 @@ def create_image_and_dependencies(
     crate_graph: rdflib.Graph,
 ) -> tuple[
     list[APIModels.FileReference],
+    list[str],
     dict[int, list[ROCrateModels.CreationProcess | ROCrateModels.Image]],
     int,
 ]:
@@ -44,7 +45,7 @@ def create_image_and_dependencies(
     }
 
     if len(ro_crate_images) == 0:
-        return [], {}, 0
+        return [], [], {}, 0
 
     ordered_image_creation_process_list, max_dependency_chain_length = (
         order_creation_processes_and_images(
@@ -53,6 +54,7 @@ def create_image_and_dependencies(
     )
 
     file_reference_list = []
+    file_path_list = []
     ordered_objects_to_create: dict[
         int, list[APIModels.CreationProcess | APIModels.Image]
     ] = {i: list() for i in range(max_dependency_chain_length + 1)}
@@ -74,10 +76,12 @@ def create_image_and_dependencies(
                     get_hasPart_parent_id_from_child(image.id, crate_graph, crate_path)
                 ]
 
-                file_references = convert_file_reference(
+                file_references, file_paths = convert_file_reference(
                     image, study_uuid, image_dataset, crate_path
                 )
                 file_reference_list += file_references
+                file_path_list += file_paths
+
                 ordered_objects_to_create[chain_length].append(
                     convert_image(
                         image,
@@ -88,7 +92,12 @@ def create_image_and_dependencies(
                 )
         chain_length += 1
 
-    return (file_reference_list, ordered_objects_to_create, max_dependency_chain_length)
+    return (
+        file_reference_list,
+        file_path_list,
+        ordered_objects_to_create,
+        max_dependency_chain_length,
+    )
 
 
 def convert_file_reference(
@@ -101,17 +110,20 @@ def convert_file_reference(
     dataset_uuid = str(uuid_creation.create_dataset_uuid(study_uuid, dataset.id))
 
     files = []
+    file_paths = []
 
     # TODO: Handle types better, in case of different context useage - probably requires minor refactor of crate_reader to extract context once.
     if "Dataset" in image.type:
         file_paths = find_files(dataset, crate_path)
         for file_path in file_paths:
+            file_paths.append(str(file_path))
             files.append(
                 create_api_file_reference(
                     str(file_path), study_uuid, dataset_uuid, crate_path
                 )
             )
     elif "File" in image.type:
+        file_paths.append(pathlib.Path(crate_path) / image.id)
         files.append(
             create_api_file_reference(
                 str(pathlib.Path(crate_path) / image.id),
@@ -127,7 +139,7 @@ def convert_file_reference(
             f"Image {image.id} is missing Dataset or File type. Types found: {image.type}"
         )
 
-    return files
+    return files, file_paths
 
 
 def convert_image(

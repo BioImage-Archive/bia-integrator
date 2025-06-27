@@ -98,7 +98,7 @@ def convert_contributor(
 
 
 def convert_affiliation(
-    affiliation: ROCrateModels.Affiliaiton,
+    affiliation: ROCrateModels.Affiliaton,
 ) -> APIModels.Affiliation:
     affiliation_dictionary = {
         "display_name": affiliation.displayName,
