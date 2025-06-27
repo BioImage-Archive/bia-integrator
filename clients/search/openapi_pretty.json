@@ -5,7 +5,7 @@
     "version": "0.1.0"
   },
   "paths": {
-    "/fts": {
+    "/search/fts": {
       "get": {
         "summary": "Fts",
         "operationId": "fts",
@@ -31,6 +31,49 @@
                   "type": "object",
                   "additionalProperties": true,
                   "title": "Response Fts"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/website/doc": {
+      "get": {
+        "summary": "Get Doc",
+        "operationId": "get_doc",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 500,
+              "title": "Uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Get Doc"
                 }
               }
             }

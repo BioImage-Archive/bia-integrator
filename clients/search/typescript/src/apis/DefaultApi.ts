@@ -26,6 +26,10 @@ export interface FtsRequest {
     query: string;
 }
 
+export interface GetDocRequest {
+    uuid: string;
+}
+
 /**
  * DefaultApi - interface
  * 
@@ -47,6 +51,21 @@ export interface DefaultApiInterface {
      * Fts
      */
     fts(requestParameters: FtsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<{ [key: string]: any; }>;
+
+    /**
+     * 
+     * @summary Get Doc
+     * @param {string} uuid 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApiInterface
+     */
+    getDocRaw(requestParameters: GetDocRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<{ [key: string]: any; }>>;
+
+    /**
+     * Get Doc
+     */
+    getDoc(requestParameters: GetDocRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<{ [key: string]: any; }>;
 
 }
 
@@ -75,7 +94,7 @@ export class DefaultApi extends runtime.BaseAPI implements DefaultApiInterface {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/fts`,
+            path: `/search/fts`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -89,6 +108,43 @@ export class DefaultApi extends runtime.BaseAPI implements DefaultApiInterface {
      */
     async fts(requestParameters: FtsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<{ [key: string]: any; }> {
         const response = await this.ftsRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get Doc
+     */
+    async getDocRaw(requestParameters: GetDocRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<{ [key: string]: any; }>> {
+        if (requestParameters['uuid'] == null) {
+            throw new runtime.RequiredError(
+                'uuid',
+                'Required parameter "uuid" was null or undefined when calling getDoc().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['uuid'] != null) {
+            queryParameters['uuid'] = requestParameters['uuid'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/website/doc`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse<any>(response);
+    }
+
+    /**
+     * Get Doc
+     */
+    async getDoc(requestParameters: GetDocRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<{ [key: string]: any; }> {
+        const response = await this.getDocRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
