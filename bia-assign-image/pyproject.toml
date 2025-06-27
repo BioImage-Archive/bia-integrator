@@ -8,7 +8,7 @@ readme = "README.md"
 packages = [{include = "bia_assign_image"}]
 
 [tool.poetry.dependencies]
-python = "^3.10,<3.12"
+python = "^3.13"
 bia-shared-datamodels = { path = "../bia-shared-datamodels", develop = true }
 bia-integrator-api = { path = "../clients/python", develop = true }
 bia-test-data = { path = "../bia-test-data", develop = true }
