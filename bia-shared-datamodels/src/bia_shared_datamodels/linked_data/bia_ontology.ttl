@@ -743,3 +743,11 @@ bia:uri a owl:DatatypeProperty ;
     rdfs:comment "URI from which the file can be accessed."@en ;
     rdfs:range xsd:string ;
     rdfs:domain bia:FileReference .
+
+bia:sourceImagePath a owl:AnnotationProperty ;
+    rdfs:label "source image path"@en ;
+    rdfs:comment "In a file list, this is the set of file paths of the Image that was used as an input of it's creation (e.g. for a segmentation mask, the value of bia:sourceImagePath would be the original images pre-segmentation). This property should be used over bia:sourceImageName if the paths are unique to each Image, which is usually the case."@en .
+
+bia:sourceImageName a owl:AnnotationProperty ;
+    rdfs:label "source image path"@en ;
+    rdfs:comment "In a file list, this is the set of image names of that were used as an input to creating another Image. This property should be used over bia:sourceImagePath if there are images are composed of more than one file. In this case the image names should be unique."@en .

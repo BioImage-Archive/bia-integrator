@@ -1,0 +1,23 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "ad85052c-7a36-4152-b07c-9de656363330",
+  "version": 0,
+  "model": {
+    "type_name": "FileReference",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "data/images/images_file_list.csv 194"
+      }
+    }
+  ],
+  "file_path": "data/images/images_file_list.csv",
+  "format": ".csv",
+  "size_in_bytes": 194,
+  "uri": "None?",
+  "submission_dataset_uuid": "ac9988f4-391c-4012-9deb-c0a0e7d188da"
+}

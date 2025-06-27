@@ -1,0 +1,27 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "9c3cfb8b-2442-4815-82e5-9e04f73b95bc",
+  "version": 0,
+  "model": {
+    "type_name": "ImageAcquisitionProtocol",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Confocal imaging"
+      }
+    }
+  ],
+  "title": "Confocal imaging",
+  "protocol_description": "Voxel size 0.0430x0.0430x0.5002 micron^3",
+  "imaging_instrument_description": "Leica Microsystems Stellaris 8 DIVE (Deep In-Vivo Explorer)",
+  "fbbi_id": [
+    "fbbi_00000251"
+  ],
+  "imaging_method_name": [
+    "confocal microscopy"
+  ]
+}

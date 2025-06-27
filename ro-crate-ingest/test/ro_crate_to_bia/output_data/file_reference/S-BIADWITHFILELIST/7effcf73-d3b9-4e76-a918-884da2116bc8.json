@@ -1,0 +1,33 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "7effcf73-d3b9-4e76-a918-884da2116bc8",
+  "version": 0,
+  "model": {
+    "type_name": "FileReference",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "attributes_from_biostudies.File",
+      "value": {
+        "attributes": {
+          "image_name": "WD1_15-02_WT_confocalonly",
+          "source_image": ""
+        }
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "data/images/WD1_15-02_WT_confocalonly.ome.zarr.zip 7933589"
+      }
+    }
+  ],
+  "file_path": "data/images/WD1_15-02_WT_confocalonly.ome.zarr.zip",
+  "format": ".zip",
+  "size_in_bytes": 7933589,
+  "uri": "None?",
+  "submission_dataset_uuid": "ac9988f4-391c-4012-9deb-c0a0e7d188da"
+}
