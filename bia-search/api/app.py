@@ -4,7 +4,6 @@ from api.elastic import Elastic, elastic_create
 import asyncio
 from api.api_logging import log_info
 
-
 settings = Settings()
 app = FastAPI(
     generate_unique_id_function=lambda route: route.name,
@@ -37,3 +36,13 @@ async def on_stop():
 async def get_elastic() -> Elastic:
     event_loop = asyncio.get_event_loop()
     return app.extra["extra"]["event_loop_specific"][event_loop]["elastic"]
+
+from api.website import router as website_router
+from api.search import router as search_router
+
+app.include_router(
+    search_router
+)
+app.include_router(
+    website_router
+)
