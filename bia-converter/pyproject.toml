@@ -8,7 +8,7 @@ readme = "README.rst"
 packages = [{include = "bia_converter"}]
 
 [tool.poetry.dependencies]
-python = ">=3.11,<3.12"
+python = "^3.13"
 rich = "^13.8.1"
 bia-shared-datamodels = { path = "../bia-shared-datamodels", develop = true }
 bia-integrator-api = { path = "../clients/python", develop = true }

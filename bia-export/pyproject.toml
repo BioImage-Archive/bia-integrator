@@ -10,7 +10,7 @@ packages = [{include = "bia_export"}]
 bia-export = "bia_export.cli:app"
 
 [tool.poetry.dependencies]
-python = "^3.10,<3.12"
+python = "^3.13"
 pydantic = "^2"
 bia-shared-datamodels = { path = "../bia-shared-datamodels", develop = true }
 bia-test-data = { path = "../bia-test-data", develop = true }
