@@ -8,7 +8,7 @@ packages = [{include = "python_example"}]
 package-mode = false
 
 [tool.poetry.dependencies]
-python = "^3.8,<3.12"
+python = "^3.13"
 # WIP - UNCOMMENT
 #bia-integrator-api = { git = "https://github.com/BioImage-Archive/bia-integrator.git", subdirectory = "clients/python", branch = "main" }
 bia-integrator-api = { path = "../", develop=true}
