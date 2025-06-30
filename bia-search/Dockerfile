@@ -1,5 +1,5 @@
 # Define base image
-FROM python:3.10.0
+FROM python:3.13.0
 
 EXPOSE 8080
 
