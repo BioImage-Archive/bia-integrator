@@ -30,6 +30,10 @@ def create_s3_uri_suffix_for_image_representation(
     return f"{study.accession_id}/{representation.representation_of_uuid}/{representation.uuid}{representation.image_format}"
 
 
+def image_dimensions_as_string(dims: list[int] | tuple[int]) -> str:
+    return "_".join([str(d) for d in dims])
+
+
 def create_s3_uri_suffix_for_2d_view_of_image_representation(
     representation: ImageRepresentation,
     dims: tuple,
@@ -45,7 +49,7 @@ def create_s3_uri_suffix_for_2d_view_of_image_representation(
     dataset = api_client.get_dataset(input_image.submission_dataset_uuid)
     study = api_client.get_study(dataset.submitted_in_study_uuid)
 
-    dims_as_str = "x".join([str(d) for d in dims])
+    dims_as_str = image_dimensions_as_string(dims)
 
     assert len(image_format) > 0
     if image_format[0] != ".":

@@ -28,6 +28,7 @@ from .utils import (
     create_s3_uri_suffix_for_2d_view_of_image_representation,
     attributes_by_name,
     get_dir_size,
+    image_dimensions_as_string,
 )
 
 
@@ -105,11 +106,13 @@ def convert_interactive_display_to_thumbnail(
     )
 
     # Update the BIA Image object with uri for this 2D view
+    thumbnail_uri_key = image_dimensions_as_string(dims)
     view_details_dict = {
         "provenance": Provenance.BIA_IMAGE_CONVERSION,
         "name": "image_thumbnail_uri",
         "value": {
-            "image_thumbnail_uri": [file_uri],
+            thumbnail_uri_key: file_uri,
+            "size": dims,
         },
     }
     view_details = Attribute.model_validate(view_details_dict)
@@ -144,7 +147,8 @@ def convert_interactive_display_to_static_display(
         "provenance": Provenance.BIA_IMAGE_CONVERSION,
         "name": "image_static_display_uri",
         "value": {
-            "image_static_display_uri": [file_uri],
+            "slice": file_uri,
+            "size": dims,
         },
     }
     view_details = Attribute.model_validate(view_details_dict)
