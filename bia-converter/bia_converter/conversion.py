@@ -28,7 +28,7 @@ def run_bioformats2raw_with_docker(input_fpath: Path, output_dirpath: Path):
     )
     zarr_cmd = (
         f"docker run --rm -u {user_id}:{group_id} -v  {input_dir_map} -v {output_dir_map} "
-        + f'{docker_image} "{docker_input_fpath}" "{docker_output_dirpath}"'
+        + f'{docker_image} --overwrite "{docker_input_fpath}" "{docker_output_dirpath}"'
     )
 
     logger.info(f"Converting with {zarr_cmd}")

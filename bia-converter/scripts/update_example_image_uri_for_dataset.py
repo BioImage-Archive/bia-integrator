@@ -4,8 +4,9 @@ from enum import Enum
 import typer
 from typing_extensions import Annotated
 
-from bia_shared_datamodels.semantic_models import ImageRepresentationUseType
+from bia_integrator_api.exceptions import NotFoundException
 from bia_converter.bia_api_client import api_client, update_object_in_api_idempotent
+from bia_converter.utils import attributes_by_name
 
 import logging
 from rich.logging import RichHandler
@@ -27,55 +28,54 @@ logger = logging.getLogger()
 
 
 def update_example_image_uri(
-    representation_uuid: Union[UUID, str],
+    image_uuid: Union[UUID, str],
     update_mode: UpdateMode = UpdateMode.REPLACE,
 ) -> bool:
     try:
-        representation = api_client.get_image_representation(representation_uuid)
-    except Exception as e:
-        logger.error(f"Could not retrieve image representation. Error was {e}.")
+        image = api_client.get_image(f"{image_uuid}")
+    except NotFoundException as e:
+        logger.error(f"Could not retrieve image. Error was {e}.")
         return False
-    if representation.use_type == ImageRepresentationUseType.STATIC_DISPLAY:
-        image = api_client.get_image(representation.representation_of_uuid)
-        dataset = api_client.get_dataset(image.submission_dataset_uuid)
-        if update_mode == UpdateMode.REPLACE:
-            dataset.example_image_uri = [
-                representation.file_uri[0],
-            ]
-        elif update_mode == UpdateMode.APPEND:
-            dataset.example_image_uri.append(representation.file_uri[0])
-        elif update_mode == UpdateMode.PREPEND:
-            dataset.example_image_uri.insert(0, representation.file_uri[0])
-        else:
-            raise (
-                Exception(
-                    f"Invalid update mode {update_mode}. Expected 'APPEND', 'PREPEND' or 'REPLACE'"
-                )
-            )
-        update_object_in_api_idempotent(dataset)
 
-        logger.info(
-            f"Updated example image uri of dataset {dataset.uuid} to {dataset.example_image_uri}"
-        )
-        return True
+    dataset = api_client.get_dataset(image.submission_dataset_uuid)
+    attributes = attributes_by_name(image)
+    image_static_display_uri_key = "image_static_display_uri"
+    assert image_static_display_uri_key in attributes
+    image_static_display_uri = attributes[image_static_display_uri_key]["slice"]
+
+    if update_mode == UpdateMode.REPLACE:
+        dataset.example_image_uri = [
+            image_static_display_uri,
+        ]
+    elif update_mode == UpdateMode.APPEND:
+        dataset.example_image_uri.append(image_static_display_uri)
+    elif update_mode == UpdateMode.PREPEND:
+        dataset.example_image_uri.insert(0, image_static_display_uri)
     else:
-        logger.warning(
-            f"Cannot update dataset example image uri when image representation use type is {representation.use_type.value}"
+        raise (
+            Exception(
+                f"Invalid update mode {update_mode}. Expected 'APPEND', 'PREPEND' or 'REPLACE'"
+            )
         )
-        return False
+    update_object_in_api_idempotent(dataset)
+
+    logger.info(
+        f"Updated example image uri of dataset {dataset.uuid} to {dataset.example_image_uri}"
+    )
+    return True
 
 
 @app.command()
 def main(
-    representation_uuid: Annotated[
+    image_uuid: Annotated[
         str,
-        typer.Argument(help="UUID for a STATIC_DISPLAY representation of the dataset"),
+        typer.Argument(help="UUID for image of the dataset with a static_display view"),
     ],
     update_mode: Annotated[
         UpdateMode, typer.Option("--update-mode", "-m")
     ] = UpdateMode.REPLACE,
 ):
-    update_example_image_uri(representation_uuid, update_mode)
+    update_example_image_uri(image_uuid, update_mode)
 
 
 if __name__ == "__main__":
