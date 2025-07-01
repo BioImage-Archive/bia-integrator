@@ -49,3 +49,40 @@ jobs:
         run: |
           docker compose down
         if: ${{ always() }}
+  elastic-api-test:
+    runs-on: ubuntu-latest
+    environment:
+      name: test
+    env:
+      MONGO_INITDB_ROOT_PASSWORD: ${{ secrets.MONGO_INITDB_ROOT_PASSWORD }}
+      MONGO_INITDB_ROOT_USERNAME: ${{ vars.MONGO_INITDB_ROOT_USERNAME }}
+      MONGO_CONNSTRING: mongodb://${{ vars.MONGO_INITDB_ROOT_USERNAME }}:${{ secrets.MONGO_INITDB_ROOT_PASSWORD }}@biaint-mongo:27017
+      DB_NAME: ${{ vars.DB_NAME }}
+      JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
+      USER_CREATE_SECRET_TOKEN: ${{ secrets.USER_CREATE_SECRET_TOKEN }}
+    defaults:
+      run:
+        working-directory: ./
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2 # Checkout your repository to the GitHub Actions runner
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1 # Set up Docker Buildx for building and pushing Docker images
+      - name: Cache Docker layers
+        uses: actions/cache@v4
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+      - name: Docker Compose Up
+        run: |
+          make search.up
+      - name: Run tests
+        # api moved to api/ , src left in as a reference as we transition. All tests there are failing and that directory will be deleted anyway
+        run: |
+          docker compose run -T bia-integrator-search poetry run pytest
+      - name: Docker Compose Down
+        run: |
+          docker compose down
+        if: ${{ always() }}
