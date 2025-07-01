@@ -2,7 +2,7 @@
 # Given an accession ID, propose images, assign and convert
 #   e.g. source assign_and_convert_images.sh S-BIAD686
 # Optionally, to skip propose images step also give path to proposal file
-#   e.g. source assign_and_convert_images.sh S-BIAD686 /home/bia_svc/temp/propose_images_S-BIAD686.tsv
+#   e.g. source assign_and_convert_images.sh S-BIAD686 /home/bia_svc/temp/propose_images_S-BIAD686.yaml
 # Assumes the script is being run in this directory and env variables in ./set_local_env_template.sh are set
 
 accession_id=$1
@@ -31,7 +31,7 @@ bia_converter_dir=../
 update_example_image_uri_script_path=$(realpath update_example_image_uri_for_dataset.py)
 # Create proposals if the location of a proposals file was not specified
 if [ -z "$propose_images_output" ]; then
-    propose_images_output="$artefact_dir_base/propose_$accession_id.tsv"
+    propose_images_output="$artefact_dir_base/propose_$accession_id.yaml"
     command="poetry --directory $bia_assign_image_dir run bia-assign-image propose-images --api $API_PROFILE --no-append --max-items $n_images_to_convert $accession_id $propose_images_output"
 
     echo $command
@@ -51,7 +51,7 @@ for uploaded_by_submitter_uuid in $uploaded_by_submitter_uuids
 do
     # Create interactive display representation
     convert_to_interactive_display_output="$logs_dir_base/convert_to_interactive_display_output_$uploaded_by_submitter_uuid.txt"
-    command='poetry --directory '"$bia_converter_dir"' run bia-converter convert '"$uploaded_by_submitter_uuid"' INTERACTIVE_DISPLAY 2>&1 | tee '"$convert_to_interactive_display_output"'; echo exit_status=${PIPESTATUS[0]}'
+    command='poetry --directory '"$bia_converter_dir"' run bia-converter convert '"$uploaded_by_submitter_uuid"' 2>&1 | tee '"$convert_to_interactive_display_output"'; echo exit_status=${PIPESTATUS[0]}'
     echo $command;
     eval_output=$(eval "$command")
     echo $eval_output
@@ -59,23 +59,23 @@ do
 
     if [ "$exit_status" = "0" ]; then
         ((n_images_converted++))
-        interactive_display_uuid=$(grep -oP 'Created INTERACTIVE_DISPLAY image representation with uuid: \K[0-9a-fA-F-]+' $convert_to_interactive_display_output)
-        # Create static display representatino and update example image uri if this is first image converted
+        interactive_display_uuid=$(grep -oP 'Created image representation for converted image with uuid: \K[0-9a-fA-F-]+' $convert_to_interactive_display_output)
+        # Create static display representation and update example image uri if this is first image converted
         if [ "$n_images_converted" -eq 1 ]; then
             convert_to_static_display_output="$logs_dir_base/convert_to_static_display_output_$interactive_display_uuid.txt"
-            command="poetry --directory $bia_converter_dir run bia-converter convert $interactive_display_uuid STATIC_DISPLAY 2>&1 | tee $convert_to_static_display_output"
+            command="poetry --directory $bia_converter_dir run bia-converter create-static-display  $interactive_display_uuid 2>&1 | tee $convert_to_static_display_output"
             echo $command
             eval $command
 
-            static_display_uuid=$(grep -oP 'Created STATIC_DISPLAY image representation with uuid: \K[0-9a-fA-F-]+' $convert_to_static_display_output)
-            command="poetry --directory $bia_converter_dir run python $update_example_image_uri_script_path --update-mode replace $static_display_uuid"
+            image_uuid=$(grep -oP 'COMPLETE.*bia_data_model.Image \K[0-9a-fA-F-]+' $assign_from_proposals_output | head -n 1)
+            command="poetry --directory $bia_converter_dir run python $update_example_image_uri_script_path --update-mode replace $image_uuid"
             echo $command
             eval $command
         fi
 
         # Create thumbnail representation
         convert_to_thumbnail_output="$logs_dir_base/convert_to_thumbnail_output_$interactive_display_uuid.txt"
-        command="poetry --directory $bia_converter_dir run bia-converter convert $interactive_display_uuid THUMBNAIL 2>&1 | tee $convert_to_thumbnail_output"
+        command="poetry --directory $bia_converter_dir run bia-converter create-thumbnail $interactive_display_uuid 2>&1 | tee $convert_to_thumbnail_output"
         echo $command
         eval $command
     fi
