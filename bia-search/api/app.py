@@ -1,8 +1,9 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from api.settings import Settings
 from api.elastic import Elastic, elastic_create
 import asyncio
-from api.api_logging import log_info
+import datetime
+from api.api_logging import log_info, log_access
 
 settings = Settings()
 app = FastAPI(
@@ -31,6 +32,30 @@ async def on_start():
 async def on_stop():
     event_loop = asyncio.get_event_loop()
     await app.extra["extra"]["event_loop_specific"][event_loop]["elastic"].close()
+
+@app.middleware("http")
+async def custom_access_log(request: Request, call_next):
+    start = datetime.datetime.now(datetime.timezone.utc)
+
+    response = await call_next(request)
+
+    end = datetime.datetime.now(datetime.timezone.utc)
+
+    # ! post body not safe to log
+    log_access(
+        "",
+        extra={
+            "method": request.method,
+            "status": response.status_code,
+            "path": request.url.path,
+            # query params ImmutableMultiDict in Starlette - ex for lists
+            "query": request.query_params.multi_items(),
+            "response_time_ms": int((end - start).total_seconds() * 1000),
+            "response_size_bytes": response.headers.get("content-length", None),
+            "request_size_bytes": request.headers.get("content-length", None),
+        },
+    )
+    return response
 
 
 async def get_elastic() -> Elastic:

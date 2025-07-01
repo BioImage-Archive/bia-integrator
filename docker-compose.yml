@@ -24,8 +24,12 @@ services:
       - http.cors.enabled=true
       - http.cors.allow-headers=X-Requested-With,X-Auth-Token,Content-Type,Content-Length,Authorization
       - http.cors.allow-credentials=true
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - bootstrap.memory_lock=true
     ports:
       - 9200:9200
+    mem_limit: 1g
+    mem_reservation: 800m
     healthcheck:
       test: ["CMD", "curl", "-u", "elastic:test", "-f", "http://localhost:9200/_cluster/health?wait_for_status=yellow&timeout=30s"]
       interval: 10s
