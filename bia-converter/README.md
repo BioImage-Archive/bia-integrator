@@ -80,7 +80,6 @@ bia-converter create-static-display 123e4567-e89b-12d3-a456-426614174000
 This will log the URI of the generated static display image after processing.
 ## TODO
 
-* Update the scripts in [./scripts](./scripts) to work with new `bia-converter` and `bia-assign-image` commands
 * Allow overrides when units are not set correctly
 * More broadly, support passing in conversion options
 * Support routes where we can convert *some* subtypes of a representation (e.g., ``UPLOADED_BY_SUBMITTER`` MRC files to PNG)
