@@ -1,0 +1,33 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "ea203990-166b-4658-bbe3-cead4f4778d0",
+  "version": 0,
+  "model": {
+    "type_name": "Dataset",
+    "version": 2
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "annotation_method_uuid",
+      "value": {
+        "annotation_method_uuid": [
+          "218f8e09-b3de-4e9c-b537-ef13db6af229"
+        ]
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Annotations-6"
+      }
+    }
+  ],
+  "title": "Annotation 1",
+  "description": "manual segmentation",
+  "analysis_method": [],
+  "correlation_method": [],
+  "example_image_uri": [],
+  "submitted_in_study_uuid": "bee3ebf2-73c7-4089-a9dd-c62998810921"
+}

@@ -1,0 +1,43 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "07b9ca05-f14a-442d-8798-88bdfcfcc4cc",
+  "version": 0,
+  "model": {
+    "type_name": "Dataset",
+    "version": 2
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Study Component-1"
+      }
+    }
+  ],
+  "title": "Dataset to test proposing source image and all related annotations images",
+  "description": "Template description",
+  "analysis_method": [
+    {
+      "additional_metadata": [
+      ],
+      "title": "Template analysis method title",
+      "protocol_description": "Template Analysis method",
+      "features_analysed": "Template features analysed"
+    }
+  ],
+  "correlation_method": [
+    {
+      "additional_metadata": [
+      ],
+      "title": "Template correlation method title",
+      "protocol_description": "Template Analysis method",
+      "fiducials_used": "Template fiducials used",
+      "transformation_matrix": "Template transformation matrix"
+    }
+  ],
+  "example_image_uri": [
+    "https://dummy.url.org"
+  ],
+  "submitted_in_study_uuid": "bee3ebf2-73c7-4089-a9dd-c62998810921"
+}
