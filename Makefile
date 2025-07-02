@@ -1,4 +1,4 @@
-.PHONY: api.version client.generate api.up api.down
+.PHONY: $(MAKECMDGOALS)
 
 api.version:
 	@echo $(shell grep '^version =' api/pyproject.toml | awk -F\" '{print $$2}')
