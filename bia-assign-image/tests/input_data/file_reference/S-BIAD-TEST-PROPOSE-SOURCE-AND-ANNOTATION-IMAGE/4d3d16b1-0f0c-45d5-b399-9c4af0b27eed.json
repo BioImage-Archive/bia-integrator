@@ -1,0 +1,32 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "4d3d16b1-0f0c-45d5-b399-9c4af0b27eed",
+  "version": 0,
+  "model": {
+    "type_name": "FileReference",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "attributes_from_biostudies.File",
+      "value": {
+        "attributes": {
+
+        }
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "source_image_1.tif100"
+      }
+    }
+  ],
+  "file_path": "source_image_1.tif",
+  "format": "file",
+  "size_in_bytes": 100,
+  "uri": "https://www.ebi.ac.uk/biostudies/files/S-BIAD-TEST-PROPOSE-SOURCE-AND-ANNOTATION-IMAGE/source_image_1.tif",
+  "submission_dataset_uuid": "07b9ca05-f14a-442d-8798-88bdfcfcc4cc"
+}

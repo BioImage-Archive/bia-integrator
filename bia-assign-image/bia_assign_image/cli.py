@@ -211,6 +211,47 @@ def propose_images(
         logger.info(f"Wrote {count} proposals for {accession_id} to {output_path}")
 
 
+@app.command(
+    help="Propose file references for source images and associated annotations to convert for an accession"
+)
+def propose_images_and_annotations(
+    accession_ids: Annotated[
+        List[str], typer.Argument(help="Accession IDs to process")
+    ],
+    output_path: Annotated[Path, typer.Argument(help="Path to write the proposals")],
+    api_target: Annotated[
+        ApiTarget, typer.Option("--api", "-a", case_sensitive=False)
+    ] = ApiTarget.prod,
+    max_items: Annotated[
+        int, typer.Option(help="Maximum number of items to propose")
+    ] = 5,
+    append: Annotated[
+        bool, typer.Option(help="Append to existing file instead of overwriting")
+    ] = True,
+    check_image_creation_prerequisites: Annotated[
+        bool,
+        typer.Option(
+            help="Check whether dataset linked to file reference contains requirements needed to create a bia_data_model Image object."
+        ),
+    ] = False,
+) -> None:
+    """Propose file references for source images and associated annotations to convert for an accession IDs"""
+    for accession_id in accession_ids:
+        n_source_images, n_annotations = (
+            propose.write_convertible_source_annotation_file_refs_for_acc_id(
+                accession_id,
+                output_path,
+                api_target=api_target,
+                max_items=max_items,
+                check_image_creation_prerequisites=check_image_creation_prerequisites,
+                append=append,
+            )
+        )
+        logger.info(
+            f"Wrote {n_source_images} source image proposals and {n_annotations} annotation image proposals for {accession_id} to {output_path}"
+        )
+
+
 @app.callback()
 def main() -> None:
     return

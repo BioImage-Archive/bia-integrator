@@ -83,14 +83,17 @@ def get_all_api_results(
 def get_value_from_attribute_list(
     attribute_list: List[semantic_models.Attribute],
     attribute_name: str,
+    attribute_value_name: str = "",
     default: Any = [],
 ) -> Any:
     """Get the value of named attribute from a list of attributes"""
 
     # Assumes attribute.value is a Dict
+    if attribute_value_name == "":
+        attribute_value_name = attribute_name
     return next(
         (
-            attribute.value[attribute_name]
+            attribute.value[attribute_value_name]
             for attribute in attribute_list
             if attribute.name == attribute_name
         ),
