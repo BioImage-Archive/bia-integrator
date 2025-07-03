@@ -14,7 +14,7 @@ import logging
 logger = logging.getLogger("__main__." + __name__)
 
 
-class PersistenceMode(str, Enum):
+class PersistanceMode(str, Enum):
     """
     Enum for the different persistance modes.
     """
@@ -117,17 +117,17 @@ def persist(
     accession_id: str,
     object_type: Type[bia_data_model.DocumentMixin],
     objects_to_save: list[bia_data_model.DocumentMixin],
-    persistence_mode: PersistenceMode,
+    persistence_mode: PersistanceMode,
 ):
 
     if len(objects_to_save) == 0:
         return
 
-    if persistence_mode == PersistenceMode.LOCAL_FILE:
+    if persistence_mode == PersistanceMode.LOCAL_FILE:
         save_local_file(accession_id, object_type, objects_to_save)
-    elif persistence_mode == PersistenceMode.LOCAL_API:
+    elif persistence_mode == PersistanceMode.LOCAL_API:
         save_local_api(object_type, objects_to_save)
-    elif persistence_mode == PersistenceMode.BIA_API:
+    elif persistence_mode == PersistanceMode.BIA_API:
         save_bia_api(object_type, objects_to_save)
     else:
         raise ValueError(
@@ -155,14 +155,13 @@ def round_trip_object_class_from_client_to_datamodel(api_object):
     return original_object
 
 
-
 def persist_in_order(
     ordered_creation_processes_and_images,
     max_chain_length: int,
-    persistence_mode: PersistenceMode,
+    persistence_mode: PersistanceMode,
     accession_id: str,
 ):
-    
+
     chain_length = 0
     while chain_length <= max_chain_length:
         if chain_length % 2 == 0:

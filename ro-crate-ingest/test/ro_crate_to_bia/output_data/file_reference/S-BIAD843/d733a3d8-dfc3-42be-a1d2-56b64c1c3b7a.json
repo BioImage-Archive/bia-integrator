@@ -1,0 +1,23 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "d733a3d8-dfc3-42be-a1d2-56b64c1c3b7a",
+  "version": 0,
+  "model": {
+    "type_name": "FileReference",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "data/annotations/WD1.1_17-03_WT_MP_segmented.ome.zarr.zip2959273"
+      }
+    }
+  ],
+  "file_path": "data/annotations/WD1.1_17-03_WT_MP_segmented.ome.zarr.zip",
+  "format": ".zip",
+  "size_in_bytes": 2959273,
+  "uri": "None?",
+  "submission_dataset_uuid": "d7243fe5-6745-44c2-9f54-3ea5c7777df4"
+}

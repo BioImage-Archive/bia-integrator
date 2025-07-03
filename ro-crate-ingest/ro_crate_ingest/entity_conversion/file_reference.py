@@ -72,7 +72,7 @@ def create_api_file_reference(
 
     file_size = pathlib.Path(file_path).stat().st_size
 
-    uuid_string = f"{str(relative_path)} {file_size}"
+    uuid_string = f"{str(relative_path)}{file_size}"
 
     additional_metadata = []
     if additional_attributes and len(additional_attributes) > 0:

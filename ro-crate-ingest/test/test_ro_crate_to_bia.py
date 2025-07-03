@@ -65,14 +65,7 @@ def test_ingest_ro_crate_metadata(accession_id: str, tmp_bia_data_dir: Path):
 )
 def test_ingest_ro_crate_metadata_with_api(accession_id: str, get_bia_api_client):
 
-    crate_path = (
-        Path(__file__).parents[2]
-        / "bia-shared-datamodels"
-        / "src"
-        / "bia_shared_datamodels"
-        / "mock_ro_crate"
-        / accession_id
-    )
+    crate_path = get_ro_crate_path(accession_id)
 
     result = runner.invoke(ro_crate_ingest, ["-c", crate_path, "-p", "local_api"])
 
