@@ -24,14 +24,21 @@ services:
       - http.cors.enabled=true
       - http.cors.allow-headers=X-Requested-With,X-Auth-Token,Content-Type,Content-Length,Authorization
       - http.cors.allow-credentials=true
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - bootstrap.memory_lock=true
     ports:
       - 9200:9200
+    mem_limit: 1g
+    mem_reservation: 800m
     healthcheck:
       test: ["CMD", "curl", "-u", "elastic:test", "-f", "http://localhost:9200/_cluster/health?wait_for_status=yellow&timeout=30s"]
       interval: 10s
       timeout: 5s
       retries: 5
       start_period: 30s
+    profiles:
+      - search
+      - codegen_search
 
   dejavu:
     image: appbaseio/dejavu:3.6.0
@@ -43,6 +50,8 @@ services:
     depends_on:
       biaint-elastic:
         condition: service_healthy
+    profiles:
+      - search
   bia-integrator-api:
     build:
       context: .
@@ -57,8 +66,6 @@ services:
       - 8080
     depends_on:
       biaint-mongo:
-        condition: service_healthy
-      biaint-elastic:
         condition: service_healthy
     healthcheck:
       # !! important to sync services
@@ -81,6 +88,7 @@ services:
       - ./clients:/mnt/share
     profiles:
       - codegen
+ 
   client-examples:
     depends_on:
       bia-integrator-api:
@@ -109,8 +117,26 @@ services:
     depends_on:
       biaint-elastic:
         condition: service_healthy
+    profiles:
+      - codegen_search
+      - search
     healthcheck:
       test: ["CMD", "wget", "-O", "-", "bia-search:8080/openapi.json"]
       interval: 1s
       timeout: 10s
       retries: 10
+  client-search-refresh:
+    depends_on:
+      bia-integrator-search:
+        condition: service_healthy
+    container_name: openapi-generator-search
+    user: ${MY_UID}
+    image: openapitools/openapi-generator-cli:v7.8.0
+    # docker-entrypoint.sh does argument parsing in the entrypoint and only picks up the bash command
+    #   so re-run after pulling openapi.json to have the right env setup
+    command: bash -c "wget -q -O - bia-search:8080/openapi.json > openapi.json && docker-entrypoint.sh generate -i openapi.json -g typescript-fetch -o typescript --config openapi_config_ts.yml"
+    working_dir: /mnt/share
+    volumes:
+      - ./clients/search:/mnt/share
+    profiles:
+      - codegen_search

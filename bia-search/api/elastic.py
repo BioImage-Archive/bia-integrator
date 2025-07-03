@@ -22,6 +22,7 @@ class Elastic:
                     "mappings": {
                         "dynamic": False,
                         "properties": {
+                            "uuid": {"type": "keyword"},
                             "accession_id": {"type": "keyword"},
                             "title": {"type": "text"},
                             "description": {"type": "text"},

@@ -1,4 +1,4 @@
-.PHONY: api.version client.generate api.up api.down
+.PHONY: $(MAKECMDGOALS)
 
 api.version:
 	@echo $(shell grep '^version =' api/pyproject.toml | awk -F\" '{print $$2}')
@@ -11,6 +11,10 @@ client.generate:
 
 client.examples:
 	docker compose --profile client_examples up --build --force-recreate --remove-orphans --abort-on-container-exit
+
+client.search.generate:
+	MY_UID=$(shell id -u) docker compose --profile codegen_search up --build --force-recreate --remove-orphans --abort-on-container-exit
+	jq '.' $(CURDIR)/clients/search/openapi.json > $(CURDIR)/clients/search/openapi_pretty.json
 
 api.up:
 	docker compose up -d --build --wait
