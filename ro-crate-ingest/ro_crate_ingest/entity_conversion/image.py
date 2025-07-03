@@ -105,7 +105,7 @@ def convert_file_reference(
     study_uuid: str,
     dataset: ROCrateModels.Dataset,
     crate_path: pathlib.Path,
-) -> list[APIModels.FileReference]:
+) -> list[APIModels.Image]:
 
     dataset_uuid = str(uuid_creation.create_dataset_uuid(study_uuid, dataset.id))
 
