@@ -1,0 +1,51 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "5fe64571-5e93-4035-bc83-cc5d53c76f2f",
+  "version": 0,
+  "model": {
+    "type_name": "Study",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "S-BIADWITHFILELIST"
+      }
+    }
+  ],
+  "accession_id": "S-BIADWITHFILELIST",
+  "licence": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "author": [
+    {
+      "rorid": null,
+      "address": null,
+      "website": null,
+      "orcid": "https://orcid.org/0009-0007-4223-1439",
+      "display_name": "Francois Sherwood",
+      "affiliation": [
+        {
+          "rorid": "https://ror.org/02catss52",
+          "address": null,
+          "website": null,
+          "display_name": "European Bioinformatics Institute"
+        }
+      ],
+      "contact_email": "fsherwood@ebi.ac.uk",
+      "role": [
+        "data acquisition",
+        "data curator"
+      ]
+    }
+  ],
+  "title": "3D cell shape of Drosophila Wing Disc",
+  "release_date": "2023-08-14",
+  "description": "Individual 3D cell shapes of Drosophila Wing Disc",
+  "keyword": [],
+  "acknowledgement": null,
+  "see_also": [],
+  "related_publication": [],
+  "grant": [],
+  "funding_statement": null
+}

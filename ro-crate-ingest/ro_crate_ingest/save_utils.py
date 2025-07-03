@@ -16,7 +16,7 @@ logger = logging.getLogger("__main__." + __name__)
 
 class PersistenceMode(str, Enum):
     """
-    Enum for the different persistance modes.
+    Enum for the different persistence modes.
     """
 
     LOCAL_FILE = "local_file"
@@ -155,14 +155,13 @@ def round_trip_object_class_from_client_to_datamodel(api_object):
     return original_object
 
 
-
 def persist_in_order(
     ordered_creation_processes_and_images,
     max_chain_length: int,
     persistence_mode: PersistenceMode,
     accession_id: str,
 ):
-    
+
     chain_length = 0
     while chain_length <= max_chain_length:
         if chain_length % 2 == 0:

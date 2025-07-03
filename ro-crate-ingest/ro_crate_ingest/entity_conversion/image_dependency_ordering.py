@@ -1,5 +1,4 @@
 import bia_shared_datamodels.ro_crate_models as ROCrateModels
-from ro_crate_ingest.save_utils import persist, PersistenceMode
 
 
 def calculate_dependency_chain_length(
@@ -89,7 +88,6 @@ def image_dependency_chain_length(
     return dependency_chain_length[id]
 
 
-
 def order_creation_processes_and_images(
     creation_process_by_id: dict[str, ROCrateModels.CreationProcess],
     image_by_id: dict[str, ROCrateModels.Image],
@@ -99,7 +97,9 @@ def order_creation_processes_and_images(
         creation_process_by_id, image_by_id
     )
 
-    object_order: dict[int, list[ROCrateModels.CreationProcess | ROCrateModels.Image]] = {}
+    object_order: dict[
+        int, list[ROCrateModels.CreationProcess | ROCrateModels.Image]
+    ] = {}
     max_chain_length = 0
     for uuid, chain_length in dependecy_chain_length.items():
         if chain_length not in object_order.keys():

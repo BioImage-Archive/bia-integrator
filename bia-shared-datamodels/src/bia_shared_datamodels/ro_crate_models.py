@@ -62,7 +62,7 @@ class Contributor(ROCrateModel):
     model_config = ConfigDict(model_type="http://bia/Contributor")
 
 
-class Affiliaiton(ROCrateModel):
+class Affiliaton(ROCrateModel):
     displayName: Annotated[str, FieldContext("http://schema.org/name")] = Field()
     address: Annotated[str, FieldContext("http://schema.org/address")] = Field(
         default=None
