@@ -5,6 +5,7 @@ from typing import Optional, List
 
 import zarr
 import dask.array as da
+import numpy as np
 from pydantic import BaseModel
 
 from .omezarrmeta import ZMeta, DataSet, CoordinateTransformation
@@ -158,7 +159,18 @@ def calculate_scale_ratios(
     for i in range(len(scales) - 1):
         current_scale = scales[i]
         next_scale = scales[i + 1]
-        level_ratio = [next_scale[j] / current_scale[j] for j in range(n_dims)]
+        level_ratio = []
+        for j in range(n_dims):
+            try:
+                level_ratio.append(next_scale[j] / current_scale[j])
+            except ZeroDivisionError as e:
+                # If this axes is 'c' or 't' set ratio to 1 if both scales are close to 0
+                axis = dimension_str.lower()[j]  
+                tol = 1e-10
+                if axis in ('c', 't') and np.isclose(next_scale[j], current_scale[j], atol=tol):
+                    level_ratio.append(1.0)
+                else:
+                    raise (e)
         ratios.append(level_ratio)
 
     # Convert to dictionary with dimension labels as keys
@@ -232,7 +244,7 @@ def ome_zarr_image_from_ome_zarr_uri(uri, ignore_unit_errors=False):
     parsing the NGFF metadata for properties."""
 
     zgroup = zarr.open(uri)
-    ngff_metadata = ZMeta.parse_obj(zgroup.attrs.asdict())
+    ngff_metadata = ZMeta.model_validate(zgroup.attrs.asdict())
 
     assert len(ngff_metadata.multiscales) == 1
 

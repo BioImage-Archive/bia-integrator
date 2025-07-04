@@ -28,7 +28,7 @@ def run_bioformats2raw_with_docker(input_fpath: Path, output_dirpath: Path):
     )
     zarr_cmd = (
         f"docker run --rm -u {user_id}:{group_id} -v  {input_dir_map} -v {output_dir_map} "
-        + f'{docker_image} "{docker_input_fpath}" "{docker_output_dirpath}"'
+        + f'{docker_image} --overwrite "{docker_input_fpath}" "{docker_output_dirpath}"'
     )
 
     logger.info(f"Converting with {zarr_cmd}")
@@ -82,10 +82,10 @@ def run_zarr_conversion(input_fpath: Path, output_dirpath: Path):
     # Some of our macs are running arm64 -> run with cli for arm64.
     platform_type = platform.machine().lower()
     arm64_platform = "arm64" in platform_type
-    if not arm64_platform and shutil.which("singularity"):
-        run_bioformats2raw_with_singularity(input_fpath, output_dirpath)
-    elif not arm64_platform and shutil.which("docker"):
+    if not arm64_platform and shutil.which("docker"):
         run_bioformats2raw_with_docker(input_fpath, output_dirpath)
+    elif not arm64_platform and shutil.which("singularity"):
+        run_bioformats2raw_with_singularity(input_fpath, output_dirpath)
     else:
         run_bioformats2raw_java_cli(input_fpath, output_dirpath)
 
