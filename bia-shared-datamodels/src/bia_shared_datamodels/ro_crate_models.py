@@ -241,7 +241,9 @@ class CreationProcess(ROCrateModel):
 
 
 class BioSample(ROCrateModel):
-    title: Annotated[Optional[str], FieldContext("http://schema.org/name")] = Field()
+    title: Annotated[Optional[str], FieldContext("http://schema.org/name")] = Field(
+        default=None
+    )
     biologicalEntityDescription: Annotated[
         str, FieldContext("http://bia/biologicalEntityDescription")
     ] = Field()
