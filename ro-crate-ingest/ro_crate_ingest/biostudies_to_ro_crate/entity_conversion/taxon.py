@@ -14,9 +14,11 @@ import re
 logger = logging.getLogger("__main__." + __name__)
 
 
+TAXON_BNODE_INT = 0
+
+
 def get_taxon_under_biosample(
     bio_sample_section: Section,
-    taxon_bnode_int: int,
     unique_taxon_list: list[ro_crate_models.Taxon],
 ) -> ro_crate_models.Taxon:
 
@@ -28,7 +30,7 @@ def get_taxon_under_biosample(
         for section in sections:
             tx_info: dict = get_taxon_information_from_section(section)
             taxon_id, is_unique = get_taxon_id_and_uniqueness(
-                tx_info, unique_taxon_list, taxon_bnode_int
+                tx_info, unique_taxon_list
             )
             taxon = get_taxon(taxon_id, tx_info)
             roc_object_list.append(taxon)
@@ -39,9 +41,7 @@ def get_taxon_under_biosample(
         tx_info: dict = get_taxon_information_from_biosample_attribute(
             bio_sample_section
         )
-        taxon_id, is_unique = get_taxon_id_and_uniqueness(
-            tx_info, unique_taxon_list, taxon_bnode_int
-        )
+        taxon_id, is_unique = get_taxon_id_and_uniqueness(tx_info, unique_taxon_list)
         taxon = get_taxon(taxon_id, tx_info)
         roc_object_list.append(taxon)
         if is_unique:
@@ -104,7 +104,6 @@ def get_taxon(
 def get_taxon_id_and_uniqueness(
     taxon_info: dict,
     unique_taxon_list: list[ro_crate_models.Taxon],
-    taxon_bnode_int: int,
 ) -> tuple[str, bool]:
     taxon_id = None
     is_unique = True
@@ -126,6 +125,7 @@ def get_taxon_id_and_uniqueness(
                 add_to_taxon_list = False
                 return taxon_id, add_to_taxon_list
 
-        taxon_id = f"_:tx{taxon_bnode_int}"
-        taxon_bnode_int += 1
+        global TAXON_BNODE_INT
+        taxon_id = f"_:tx{TAXON_BNODE_INT}"
+        TAXON_BNODE_INT += 1
         return taxon_id, is_unique

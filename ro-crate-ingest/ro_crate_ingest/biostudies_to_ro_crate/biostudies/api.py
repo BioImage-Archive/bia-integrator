@@ -1,12 +1,10 @@
-import json
 import logging
 import pathlib
-import datetime
-from typing import Union, Optional, Any
-from copy import deepcopy
+from typing import Union, Optional
 
 import requests
-from pydantic import BaseModel, TypeAdapter, ConfigDict
+from pydantic import BaseModel, ConfigDict
+from ro_crate_ingest.settings import get_settings
 
 
 logger = logging.getLogger("__main__." + __name__)
@@ -77,21 +75,7 @@ class Submission(BaseModel):
 def load_submission(accession_id: str) -> Submission:
     # Note this is a dictionary to include reasons why the override was made
     overrides = {
-        "S-BSMS4": "Author links to affiliations were missing 'reference: true'",
-        "S-BIAD15": "Invalid licence, and affilicaiton was missing accno",
-        "S-BIAD1076": "Biosample had the Experimental variables text split up into 3 sections, possibly due to commas?",
-        "S-BIAD1261": "Author had no name, and the email was for a whole lab. Name added as Cytology Department RUB",
-        "S-BIAD978": "Unreferenced Image analysis-5, and a broken association to image analysis 1 (that doesn't exist)",
-        "S-BIAD954": "invalid email: Julia Nöth <julia.noeth@ufz.de> changed to: julia.noeth@ufz.de",
-        "S-BIAD1136": "invalid email: oona.paavolainen@ut changed to: oona.k.paavolainen@utu.fi (same ending as other authors - seemed to be missing the .k. based off google search)",
-        "S-BIAD1223": "invalid email: ylva.ivarsson@kemi..u.se changed to: ylva.ivarsson@kemi.uu.se",
-        "S-BIAD1344": "invalid email: raffaeledefilippis92@gmail.comraffaeledefilippis92@gmail.com changed to: raffaeledefilippis92@gmail.com",
-        "S-BSST651": "invalid email: huw.williams@williams@nottingham.ac.uk changed to: huw.williams@nottingham.ac.uk",
-        "S-BSST744": "invalid email: ‫britta.engelhardt@tki.unibe.ch (right-to-left embedding) changed to: britta.engelhardt@tki.unibe.ch",
-        "S-BIAD590": "missing study component assosiations subsection",
-        "S-BIAD599": "missing study component assosiations subsection",
-        "S-BIAD628": "missing study component assosiations subsection",
-        "S-BIAD677": "missing study component assosiations subsection",
+        "S-BIADTEST_AUTHOR_AFFILIATION": "A test submission that covers different author and affiliations options."
     }
     if accession_id in overrides:
         return read_override(accession_id)
@@ -100,8 +84,11 @@ def load_submission(accession_id: str) -> Submission:
 
 
 def read_override(accession_id: str) -> Submission:
+
     submission_path = pathlib.Path(
-        "submission_overrides/biostudies", accession_id, f"{accession_id}_override.json"
+        get_settings().biostudies_override_dir,
+        accession_id,
+        f"{accession_id}_override.json",
     )
     abs_path = submission_path.absolute()
     logger.info(f"Reading submission from {abs_path}")

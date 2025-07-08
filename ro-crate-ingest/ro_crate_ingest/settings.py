@@ -19,7 +19,7 @@ class Settings(BaseSettings):
         ],
         env_file_encoding="utf-8",
         case_sensitive=False,
-        extra='ignore'
+        extra="ignore",
     )
 
     bia_data_dir: str = Field(
@@ -37,6 +37,9 @@ class Settings(BaseSettings):
     bia_api_username: str = Field("")
     bia_api_password: str = Field("")
 
+    biostudies_override_dir: str = Field(
+        str(Path(__file__).parents[1] / "override_data" / "biostudies")
+    )
 
 
 def get_settings():
