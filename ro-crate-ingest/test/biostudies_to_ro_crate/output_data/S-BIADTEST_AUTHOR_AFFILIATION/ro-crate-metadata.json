@@ -364,7 +364,7 @@
                 "bia:Dataset"
             ],
             "title": "Confocal fluorescence images",
-            "description": null,
+            "description": "Study component description 1",
             "associatedBiologicalEntity": [
                 {
                     "@id": "biostudies_bs:Biosample-1"
