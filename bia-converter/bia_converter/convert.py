@@ -20,7 +20,7 @@ from bia_shared_datamodels.attribute_models import DocumentUUIDUinqueInputAttrib
 
 from .config import settings
 from .io import copy_local_to_s3, stage_fileref_and_get_fpath, sync_dirpath_to_s3
-from .conversion import run_zarr_conversion
+from .conversion import run_zarr_conversion, get_bioformats2raw_version
 from .bia_api_client import api_client, store_object_in_api_idempotent
 from .rendering import generate_padded_thumbnail_from_ngff_uri
 from .utils import (
@@ -33,10 +33,6 @@ from .utils import (
 
 
 logger = logging.getLogger(__file__)
-
-# TODO - temp to stop import errors - REMOVE!!!
-ImageRepresentationUseType = None
-
 
 def create_image_representation_object(
     image: Image, unique_string: str, image_format: str
@@ -397,7 +393,7 @@ def convert_uploaded_by_submitter_to_interactive_display(
         "image_representation_of_submitted_by_uploader": f"{input_image_rep.uuid}",
         "conversion_function": {
             "conversion_function": "bioformats2raw",
-            "version": settings.bioformats2raw_docker_tag,
+            "version": get_bioformats2raw_version(),
         },
         "conversion_config": conversion_parameters,
     }

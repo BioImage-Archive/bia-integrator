@@ -9,8 +9,6 @@ from bia_converter.bia_api_client import api_client
 from bia_converter import convert as convert_module
 
 
-# TODO - temp to stop import errors - REMOVE!!!
-ImageRepresentationUseType = None
 app = typer.Typer()
 
 
