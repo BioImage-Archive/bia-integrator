@@ -1,6 +1,5 @@
 from ro_crate_ingest.biostudies_to_ro_crate.biostudies.api import (
     load_submission,
-    load_submission_table_info,
 )
 from ro_crate_ingest.biostudies_to_ro_crate.entity_conversion import (
     contributor,
@@ -36,7 +35,6 @@ def convert_biostudies_to_ro_crate(accession_id: str, crate_path: Optional[Path]
     try:
         # Get information from biostudies
         submission = load_submission(accession_id)
-        submission_table = load_submission_table_info(accession_id)
     except AssertionError as error:
         logger.error("Failed to retrieve information from BioStudies")
         logging.exception("message")
