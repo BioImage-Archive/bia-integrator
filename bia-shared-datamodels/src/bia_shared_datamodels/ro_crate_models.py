@@ -359,7 +359,7 @@ class AnnotationMethod(ProtocolMixin, ROCrateModel):
     model_config = ConfigDict(model_type="http://bia/AnnotationMethod")
 
 
-class ImageAnyalysisMethod(ProtocolMixin, ROCrateModel):
+class ImageAnalysisMethod(ProtocolMixin, ROCrateModel):
     featuresAnalysed: Annotated[
         Optional[str], FieldContext("http://bia/featuresAnalysed")
     ] = Field(default=None)
