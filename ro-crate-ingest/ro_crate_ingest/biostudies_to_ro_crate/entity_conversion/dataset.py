@@ -109,47 +109,57 @@ def get_association_field_from_associations(
         "associatedProtocol": [],
     }
 
+    rembi_component_mapping = [
+        (
+            "image acquisition",
+            image_aquisition_protocols,
+            "associatedImageAcquisitionProtocol",
+        ),
+        (
+            "specimen",
+            specimen_imaging_preparation_protocols,
+            "associatedSpecimenImagingPreparationProtocol",
+        ),
+        (
+            "image correlation",
+            image_correlation_method,
+            "associatedImageCorrelationMethod",
+        ),
+        (
+            "image analysis",
+            image_analysis_methods,
+            "associatedImageAnalysisMethod",
+        ),
+    ]
+
     # Assocations will only come up for REMBI components
     associations = find_sections_recursive(section, ["Associations"], [])
     for association in associations:
         attr_dict = attributes_to_dict(association.attributes)
 
-        rembi_component_mapping = [
-            (
-                "image acquisition",
-                image_aquisition_protocols,
-                "associatedImageAcquisitionProtocol",
-            ),
-            (
-                "specimen",
-                specimen_imaging_preparation_protocols,
-                "associatedSpecimenImagingPreparationProtocol",
-            ),
-            (
-                "image correlation",
-                image_correlation_method,
-                "associatedImageCorrelationMethod",
-            ),
-            (
-                "image analysis",
-                image_analysis_methods,
-                "associatedImageAnalysisMethod",
-            ),
-        ]
-
         for mapping in rembi_component_mapping:
             title = attr_dict.get(mapping[0], None)
-            if title:
+            if (
+                title
+                and {"@id": mapping[1][title].id} not in association_dict[mapping[2]]
+            ):
                 association_dict[mapping[2]].append({"@id": mapping[1][title].id})
 
         biosample_title = attr_dict.get("biosample", None)
         specimen_title = attr_dict.get("specimen", None)
 
-        if specimen_title in bio_samples_association[biosample_title]:
+        if (
+            specimen_title in bio_samples_association[biosample_title]
+            and {"@id": bio_samples_association[biosample_title][specimen_title]}
+            not in association_dict["associatedBiologicalEntity"]
+        ):
             association_dict["associatedBiologicalEntity"].append(
                 {"@id": bio_samples_association[biosample_title][specimen_title]}
             )
-        else:
+
+        elif {
+            "@id": bio_samples_association[biosample_title][None]
+        } not in association_dict["associatedBiologicalEntity"]:
             association_dict["associatedBiologicalEntity"].append(
                 {"@id": bio_samples_association[biosample_title][None]}
             )

@@ -17,7 +17,7 @@ def get_image_correlation_method_by_title(
     submission: Submission,
 ) -> dict[str, ro_crate_models.ImageCorrelationMethod]:
 
-    sections = find_sections_recursive(submission.section, ["Specimen"], [])
+    sections = find_sections_recursive(submission.section, ["Image correlation"], [])
 
     roc_object_dict = {}
     for section in sections:

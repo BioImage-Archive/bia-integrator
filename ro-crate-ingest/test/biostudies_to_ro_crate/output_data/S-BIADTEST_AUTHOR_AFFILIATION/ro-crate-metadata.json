@@ -423,7 +423,7 @@
         {
             "@id": "biostudies_bs:Biosample-1",
             "@type": [
-                "bia:AnnotationMethod"
+                "bia:BioSample"
             ],
             "title": "Biosample 1 Title",
             "biologicalEntityDescription": "Specific part of fly.",
@@ -436,16 +436,6 @@
                 }
             ],
             "growthProtocol": []
-        },
-        {
-            "@id": "biostudies_gp:Specimen-1",
-            "@type": [
-                "bia:AnnotationMethod"
-            ],
-            "title": "Specimen 1 Title",
-            "protocolDescription": "",
-            "fiducialsUsed": null,
-            "transformationMatrix": null
         }
     ]
 }

@@ -225,15 +225,6 @@
             "contributor": [
                 {
                     "@id": "https://orcid.org/0009-0007-4223-1439"
-                },
-                {
-                    "@id": "_:c0"
-                },
-                {
-                    "@id": "https://orcid.org/0000-0000-0000-TEST"
-                },
-                {
-                    "@id": "_:c1"
                 }
             ],
             "description": "Description 1",
@@ -244,78 +235,15 @@
             "hasPart": [
                 {
                     "@id": "./Study Component-1"
-                }
-            ],
-            "accessionId": "S-BIADTEST_AUTHOR_AFFILIATION"
-        },
-        {
-            "@id": "_:c1",
-            "@type": [
-                "Person",
-                "bia:Contributor"
-            ],
-            "displayName": "Author with multiple affiliaition as a string list",
-            "address": null,
-            "website": null,
-            "affiliation": [
-                {
-                    "@id": "_:o1"
                 },
                 {
-                    "@id": "_:o2"
-                }
-            ],
-            "role": [
-                "data acquisition",
-                "data annotator",
-                "data curator"
-            ],
-            "contactEmail": null
-        },
-        {
-            "@id": "https://orcid.org/0000-0000-0000-TEST",
-            "@type": [
-                "Person",
-                "bia:Contributor"
-            ],
-            "displayName": "Author with multiple affiliaition as different attributes",
-            "address": null,
-            "website": null,
-            "affiliation": [
-                {
-                    "@id": "_:o1"
+                    "@id": "./Study Component-2"
                 },
                 {
-                    "@id": "_:o2"
+                    "@id": "./Study Component-3"
                 }
             ],
-            "role": [
-                "data acquisition",
-                "data annotator",
-                "data curator"
-            ],
-            "contactEmail": null
-        },
-        {
-            "@id": "_:c0",
-            "@type": [
-                "Person",
-                "bia:Contributor"
-            ],
-            "displayName": "User with afiliation but no orcid",
-            "address": null,
-            "website": null,
-            "affiliation": [
-                {
-                    "@id": "_:o1"
-                }
-            ],
-            "role": [
-                "data acquisition",
-                "data annotator",
-                "data curator"
-            ],
-            "contactEmail": null
+            "accessionId": "S-BIADTEST_COMPLEX_BIOSAMPLE"
         },
         {
             "@id": "https://orcid.org/0009-0007-4223-1439",
@@ -338,16 +266,6 @@
             "contactEmail": "user1@ebi.ac.uk"
         },
         {
-            "@id": "_:o2",
-            "@type": [
-                "Organisation",
-                "bia:Affiliation"
-            ],
-            "displayName": "Organiszation with no address or rorid",
-            "address": null,
-            "website": null
-        },
-        {
             "@id": "_:o1",
             "@type": [
                 "Organisation",
@@ -358,16 +276,84 @@
             "website": null
         },
         {
+            "@id": "./Study Component-3",
+            "@type": [
+                "Dataset",
+                "bia:Dataset"
+            ],
+            "title": "Component 3",
+            "description": null,
+            "associatedBiologicalEntity": [
+                {
+                    "@id": "biostudies_bs:Biosample-2"
+                },
+                {
+                    "@id": "biostudies_bs:Biosample-3"
+                }
+            ],
+            "associatedSpecimenImagingPreparationProtocol": [
+                {
+                    "@id": "biostudies_sipp:Specimen-1"
+                }
+            ],
+            "associatedSpecimen": null,
+            "associatedImageAcquisitionProtocol": [
+                {
+                    "@id": "biostudies_iap:Image Acquisition-1"
+                }
+            ],
+            "associatedAnnotationMethod": [],
+            "associatedImageAnalysisMethod": [],
+            "associatedImageCorrelationMethod": [],
+            "associatedProtocol": [],
+            "hasPart": [],
+            "associationFileMetadata": null
+        },
+        {
+            "@id": "./Study Component-2",
+            "@type": [
+                "Dataset",
+                "bia:Dataset"
+            ],
+            "title": "Component 2",
+            "description": null,
+            "associatedBiologicalEntity": [
+                {
+                    "@id": "biostudies_bs:Biosample-1_biostudies_gp:Specimen-2"
+                }
+            ],
+            "associatedSpecimenImagingPreparationProtocol": [
+                {
+                    "@id": "biostudies_sipp:Specimen-2"
+                }
+            ],
+            "associatedSpecimen": null,
+            "associatedImageAcquisitionProtocol": [
+                {
+                    "@id": "biostudies_iap:Image Acquisition-1"
+                }
+            ],
+            "associatedAnnotationMethod": [],
+            "associatedImageAnalysisMethod": [],
+            "associatedImageCorrelationMethod": [],
+            "associatedProtocol": [],
+            "hasPart": [],
+            "associationFileMetadata": null
+        },
+        {
             "@id": "./Study Component-1",
             "@type": [
                 "Dataset",
                 "bia:Dataset"
             ],
-            "title": "Confocal fluorescence images",
+            "title": "Component 1",
             "description": null,
             "associatedBiologicalEntity": [
                 {
                     "@id": "biostudies_bs:Biosample-1"
+                },
+                {
+                    "@id": "biostudies_bs:Biosample-4"
                 }
             ],
             "associatedSpecimenImagingPreparationProtocol": [
@@ -404,13 +390,38 @@
             ]
         },
         {
+            "@id": "biostudies_sipp:Specimen-2",
+            "@type": [
+                "bia:SpecimenImagingPreparationProtocol"
+            ],
+            "title": "Specimen with growth protocol",
+            "protocolDescription": "Followed step 1, 2 and 3",
+            "signalChannelInformation": []
+        },
+        {
             "@id": "biostudies_sipp:Specimen-1",
             "@type": [
                 "bia:SpecimenImagingPreparationProtocol"
             ],
-            "title": "Specimen 1 Title",
+            "title": "Specimen without growth protocol",
             "protocolDescription": "Followed step 1, 2 and 3",
             "signalChannelInformation": []
+        },
+        {
+            "@id": "_:tx1",
+            "@type": [
+                "bia:Taxon"
+            ],
+            "commonName": "zebra fish",
+            "scientificName": "Danio  rerio"
+        },
+        {
+            "@id": "_:tx0",
+            "@type": [
+                "bia:Taxon"
+            ],
+            "commonName": "Homo sapiens",
+            "scientificName": "Human"
         },
         {
             "@id": "NCBI:txid7227",
@@ -421,11 +432,83 @@
             "scientificName": "Drosophila melanogaster"
         },
         {
+            "@id": "biostudies_bs:Biosample-4",
+            "@type": [
+                "bia:BioSample"
+            ],
+            "title": "Second Biosample with organism subsection without ncbi id",
+            "biologicalEntityDescription": "Specific part of fish.",
+            "experimentalVariableDescription": [],
+            "extrinsicVariableDescription": [],
+            "intrinsicVariableDescription": [],
+            "organismClassification": [
+                {
+                    "@id": "_:tx1"
+                }
+            ],
+            "growthProtocol": []
+        },
+        {
+            "@id": "biostudies_bs:Biosample-3",
+            "@type": [
+                "bia:BioSample"
+            ],
+            "title": "Second Biosample with organism attribute",
+            "biologicalEntityDescription": "Specific part of human.",
+            "experimentalVariableDescription": [],
+            "extrinsicVariableDescription": [],
+            "intrinsicVariableDescription": [],
+            "organismClassification": [
+                {
+                    "@id": "_:tx0"
+                }
+            ],
+            "growthProtocol": []
+        },
+        {
+            "@id": "biostudies_bs:Biosample-2",
+            "@type": [
+                "bia:BioSample"
+            ],
+            "title": "Biosample with organism attribute",
+            "biologicalEntityDescription": "Specific part of human.",
+            "experimentalVariableDescription": [],
+            "extrinsicVariableDescription": [],
+            "intrinsicVariableDescription": [],
+            "organismClassification": [
+                {
+                    "@id": "_:tx0"
+                }
+            ],
+            "growthProtocol": []
+        },
+        {
+            "@id": "biostudies_bs:Biosample-1_biostudies_gp:Specimen-2",
+            "@type": [
+                "bia:BioSample"
+            ],
+            "title": "Biosample with organism subsection",
+            "biologicalEntityDescription": "Specific part of fly.",
+            "experimentalVariableDescription": [],
+            "extrinsicVariableDescription": [],
+            "intrinsicVariableDescription": [],
+            "organismClassification": [
+                {
+                    "@id": "NCBI:txid7227"
+                }
+            ],
+            "growthProtocol": [
+                {
+                    "@id": "biostudies_gp:Specimen-2"
+                }
+            ]
+        },
+        {
             "@id": "biostudies_bs:Biosample-1",
             "@type": [
-                "bia:AnnotationMethod"
+                "bia:BioSample"
             ],
-            "title": "Biosample 1 Title",
+            "title": "Biosample with organism subsection",
             "biologicalEntityDescription": "Specific part of fly.",
             "experimentalVariableDescription": [],
             "extrinsicVariableDescription": [],
@@ -438,14 +521,12 @@
             "growthProtocol": []
         },
         {
-            "@id": "biostudies_gp:Specimen-1",
+            "@id": "biostudies_gp:Specimen-2",
             "@type": [
-                "bia:AnnotationMethod"
+                "bia:Protocol"
             ],
-            "title": "Specimen 1 Title",
-            "protocolDescription": "",
-            "fiducialsUsed": null,
-            "transformationMatrix": null
+            "title": "Specimen with growth protocol",
+            "protocolDescription": "Followed step 1, 2, 3 and 4 to grow samples."
         }
     ]
 }
