@@ -46,7 +46,7 @@ def update_recommended_vizarr_representation(
 
     image_rep = api_client.get_image_representation(image_rep_uuid)
     convert_module.update_recommended_vizarr_representation_for_image(image_rep)
-    logger.info(f"Updated recommended vizarr representation of image with uuid {image_rep.representation_of_uuid} to {image_rep.file_uri}")
+    logger.info(f"Updated recommended vizarr representation of image with uuid {image_rep.representation_of_uuid} to {image_rep.uuid}")
 
 @app.command()
 def create_thumbnail(

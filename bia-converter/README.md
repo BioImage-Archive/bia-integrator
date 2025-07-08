@@ -26,7 +26,7 @@ The cli commands in this module take image representations as inputs. If the ima
 Run a specified image conversion function on a given image representation.
 
 ```bash
-bia-converter convert <IMAGE_REP_UUID> [CONVERSION_FUNCTION_NAME] [CONVERSION_CONFIG]
+poetry run bia-converter convert <IMAGE_REP_UUID> [CONVERSION_FUNCTION_NAME] [CONVERSION_CONFIG]
 ```
 
 - `IMAGE_REP_UUID`: UUID of the image representation.
@@ -36,11 +36,11 @@ bia-converter convert <IMAGE_REP_UUID> [CONVERSION_FUNCTION_NAME] [CONVERSION_CO
 **Examples**:
 
 ```bash
-bia-converter convert 123e4567-e89b-12d3-a456-426614174000
+poetry run bia-converter convert 123e4567-e89b-12d3-a456-426614174000
 ```
 
 ```bash
-bia-converter convert 123e4567-e89b-12d3-a456-426614174000 convert_interactive_display_to_static_display
+poetry run bia-converter convert 123e4567-e89b-12d3-a456-426614174000 convert_interactive_display_to_static_display
 ```
 
 ---
@@ -50,13 +50,13 @@ bia-converter convert 123e4567-e89b-12d3-a456-426614174000 convert_interactive_d
 Create a thumbnail from an `INTERACTIVE_DISPLAY` image representation.
 
 ```bash
-bia-converter create-thumbnail <IMAGE_REP_UUID>
+poetry run bia-converter create-thumbnail <IMAGE_REP_UUID>
 ```
 
 **Example**:
 
 ```bash
-bia-converter create-thumbnail 123e4567-e89b-12d3-a456-426614174000
+poetry run bia-converter create-thumbnail 123e4567-e89b-12d3-a456-426614174000
 ```
 
 This will log the URI of the generated thumbnail after processing.
@@ -68,16 +68,32 @@ This will log the URI of the generated thumbnail after processing.
 Create a static display from an `INTERACTIVE_DISPLAY` image representation.
 
 ```bash
-bia-converter create-static-display <IMAGE_REP_UUID>
+poetry run bia-converter create-static-display <IMAGE_REP_UUID>
 ```
 
 **Example**:
 
 ```bash
-bia-converter create-static-display 123e4567-e89b-12d3-a456-426614174000
+poetry run bia-converter create-static-display 123e4567-e89b-12d3-a456-426614174000
 ```
 
 This will log the URI of the generated static display image after processing.
+
+### `update-recommended-vizarr-representation`
+
+Updated the recommended-vizarr-representation attribute of an image
+
+```bash
+poetry run bia-converter update-recommended-vizarr-representation <IMAGE_REP_UUID>
+```
+
+**Example**:
+
+```bash
+poetry run bia-converter update-recommended-vizarr-representation 123e4567-e89b-12d3-a456-426614174000
+```
+
+This will log the UUID of the image updated and that of the recommended zarr representation
 ## TODO
 
 * Allow overrides when units are not set correctly
