@@ -345,7 +345,7 @@
           },
           {
             "name": "Description",
-            "value": "Has 1 associations, with biosample 1, but a different specimen to Component 1, which has a growth protocol."
+            "value": "Has 1 association, re-using biosample 1, but with different specimen to Component 1 (which has a growth protocol) so should have a different ro-crate biosample."
           },
           {
             "name": "File List",

@@ -65,7 +65,7 @@ def get_dataset_from_study_component(
         "@id": f"./{section.accno}",
         "@type": ["Dataset", "bia:Dataset"],
         "title": attr_dict["name"],
-        "desciption": attr_dict["description"],
+        "description": attr_dict["description"],
     }
 
     return ro_crate_models.Dataset(**model_dict)
@@ -81,7 +81,7 @@ def get_dataset_from_annotation_component(
         "@id": f"./{section.accno}",
         "@type": ["Dataset", "bia:Dataset"],
         "title": attr_dict["title"],
-        "desciption": attr_dict.get("annotation overview", None),
+        "description": attr_dict.get("annotation overview", None),
         "associatedAnnotationMethod": [
             {"@id": annotation_methods[attr_dict["title"]].id}
         ],
