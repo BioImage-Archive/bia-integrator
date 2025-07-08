@@ -7,6 +7,7 @@ from pathlib import Path
 
 from bia_integrator_api.models import (  # type: ignore
     ImageRepresentation,
+    Attribute,
 )
 
 from .bia_api_client import api_client
@@ -30,7 +31,7 @@ def create_s3_uri_suffix_for_image_representation(
     return f"{study.accession_id}/{representation.representation_of_uuid}/{representation.uuid}{representation.image_format}"
 
 
-def image_dimensions_as_string(dims: list[int] | tuple[int]) -> str:
+def image_dimensions_as_string(dims: list[int] | tuple[int, int]) -> str:
     return "_".join([str(d) for d in dims])
 
 
@@ -114,3 +115,25 @@ def get_dir_size(path: Union[str, Path]) -> int:
                 continue
 
     return total_size
+
+def add_or_update_attribute(attribute_to_add: Attribute, attributes: list[Attribute]):
+    """
+    Idempotently add or update an attribute in attributes.
+
+    Parameters:
+    - attributes: list of bia_shared_models.Attribute
+    - name: the name of the attribute to add or update
+    - value: the value to set for the attribute
+    """
+
+    for i, attr in enumerate(attributes):
+        if attr.name == attribute_to_add.name:
+            # We treat 'static_image_uri' differently
+            if attr.name == "image_static_display_uri":
+                attributes[i].value.update(attribute_to_add.value)
+            else:
+                attributes[i].value = attribute_to_add.value
+            return
+    # If not found, append it
+    attributes.append(attribute_to_add)
+

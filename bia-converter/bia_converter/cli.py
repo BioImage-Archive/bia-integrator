@@ -15,12 +15,6 @@ app = typer.Typer()
 logger = logging.getLogger("bia-converter")
 
 
-# We need at least two commands because otherwise Typer makes 'convert' the default and arguments get weird
-@app.command()
-def info():
-    pass
-
-
 @app.command()
 def convert(
     image_rep_uuid: str,
@@ -45,6 +39,16 @@ def convert(
     conversion_function(image_rep)
 
 @app.command()
+def update_recommended_vizarr_representation(
+    image_rep_uuid: str,
+):
+    logging.basicConfig(level=logging.INFO)
+
+    image_rep = api_client.get_image_representation(image_rep_uuid)
+    convert_module.update_recommended_vizarr_representation_for_image(image_rep)
+    logger.info(f"Updated recommended vizarr representation of image with uuid {image_rep.representation_of_uuid} to {image_rep.file_uri}")
+
+@app.command()
 def create_thumbnail(
     image_rep_uuid: str,
 ):
@@ -63,7 +67,7 @@ def create_static_display(
 
     image_rep = api_client.get_image_representation(image_rep_uuid)
     static_display_uri = convert_module.convert_interactive_display_to_static_display(image_rep)
-    logger.info(f"Created thumbnail at {static_display_uri}")
+    logger.info(f"Created static display at {static_display_uri}")
 
 
 if __name__ == "__main__":

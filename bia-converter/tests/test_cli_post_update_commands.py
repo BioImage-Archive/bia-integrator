@@ -62,8 +62,7 @@ def expected_static_display_uri_attribute(input_image_uuid) -> api_models.Attrib
             "provenance": "bia_image_conversion",
             "name": "image_static_display_uri",
             "value": {
-                "slice": file_uri,
-                "size": [512, 512],
+                "slice": {"uri": file_uri, "size": [512, 512],},
             },
         }
     )
@@ -188,3 +187,27 @@ def test_cli_convert_interactive_display_to_thumbnail(
         settings.cache_root_dirpath / "mock_s3" / "thumbnail_256_256.png"
     )
     assert created_thumbnail_path.exists()
+
+def test_cli_update_recommended_vizarr_rep_for_image(
+    runner,
+    interactive_image_rep_uuid,
+    input_image_uuid,
+):
+    result = runner.invoke(
+        cli.app,
+        [
+            "update-recommended-vizarr-representation",
+            interactive_image_rep_uuid,
+        ],
+        catch_exceptions=False,
+    )
+
+    assert result.exit_code == 0
+
+    updated_image = api_client.get_image(input_image_uuid)
+    attr_name = "recommended_vizarr_representation"
+    recommended_vizarr_rep_attribute = next(
+        a for a in updated_image.additional_metadata if a.name == attr_name
+    )
+    recommended_vizarr_rep = recommended_vizarr_rep_attribute.value[attr_name]
+    assert recommended_vizarr_rep == interactive_image_rep_uuid

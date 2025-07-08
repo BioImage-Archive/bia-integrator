@@ -29,6 +29,7 @@ from .utils import (
     attributes_by_name,
     get_dir_size,
     image_dimensions_as_string,
+    add_or_update_attribute,
 )
 
 
@@ -112,7 +113,7 @@ def convert_interactive_display_to_thumbnail(
         },
     }
     view_details = Attribute.model_validate(view_details_dict)
-    input_image.additional_metadata.append(view_details)
+    add_or_update_attribute(view_details, input_image.additional_metadata)
     store_object_in_api_idempotent(input_image)
 
     return file_uri
@@ -143,12 +144,11 @@ def convert_interactive_display_to_static_display(
         "provenance": Provenance.BIA_IMAGE_CONVERSION,
         "name": "image_static_display_uri",
         "value": {
-            "slice": file_uri,
-            "size": dims,
+            "slice": {"uri": file_uri, "size": dims,},
         },
     }
     view_details = Attribute.model_validate(view_details_dict)
-    input_image.additional_metadata.append(view_details)
+    add_or_update_attribute(view_details, input_image.additional_metadata)
     store_object_in_api_idempotent(input_image)
 
     return file_uri
@@ -452,3 +452,22 @@ def convert_uploaded_by_submitter_to_interactive_display(
     store_object_in_api_idempotent(base_image_rep)
 
     return base_image_rep
+
+def update_recommended_vizarr_representation_for_image(image_rep: ImageRepresentation):
+    """Update 'recommended_vizarr_representation' attr of underlying Image object
+    
+    """
+
+    attribute = Attribute.model_validate(
+        {
+            "provenance": "bia_image_conversion",
+            "name": "recommended_vizarr_representation",
+            "value": {
+                "recommended_vizarr_representation": image_rep.uuid,
+            },
+        }
+    )
+    image_uuid = image_rep.representation_of_uuid
+    image = api_client.get_image(image_uuid)
+    add_or_update_attribute(attribute, image.additional_metadata)
+    store_object_in_api_idempotent(image)
