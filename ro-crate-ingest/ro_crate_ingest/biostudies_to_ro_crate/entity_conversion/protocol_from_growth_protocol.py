@@ -39,7 +39,7 @@ def get_growth_protocol(
 
     model_dict = {
         "@id": f"biostudies_gp:{section.accno}",
-        "@type": ["bia:AnnotationMethod"],
+        "@type": ["bia:Protocol"],
         "title": attr_dict["title"],
         "protocolDescription": attr_dict.get("growth protocol", ""),
     }

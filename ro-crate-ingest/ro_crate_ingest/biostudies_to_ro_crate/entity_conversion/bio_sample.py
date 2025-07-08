@@ -74,7 +74,7 @@ def get_bio_sample(
             if growth_protocol
             else f"biostudies_bs:{section.accno}"
         ),
-        "@type": ["bia:AnnotationMethod"],
+        "@type": ["bia:BioSample"],
         "title": attr_dict["title"],
         "biologicalEntityDescription": attr_dict.get("biological entity", ""),
         "intrinsicVariableDescription": get_value_in_list_or_empty_list(

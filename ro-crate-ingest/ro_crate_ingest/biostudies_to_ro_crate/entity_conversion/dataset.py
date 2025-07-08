@@ -21,7 +21,7 @@ def get_datasets(
         str, ro_crate_models.SpecimenImagingPreparationProtocol
     ],
     annotation_methods: dict[str, ro_crate_models.AnnotationMethod],
-    image_analysis_methods: dict[str, ro_crate_models.ImageAnyalysisMethod],
+    image_analysis_methods: dict[str, ro_crate_models.ImageAnalysisMethod],
     image_correlation_method: dict[str, ro_crate_models.ImageCorrelationMethod],
     bio_samples_association: dict[str, dict[Optional[str], str]],
 ) -> dict[str, ro_crate_models.Dataset]:
@@ -95,7 +95,7 @@ def get_association_field_from_associations(
     specimen_imaging_preparation_protocols: dict[
         str, ro_crate_models.SpecimenImagingPreparationProtocol
     ],
-    image_analysis_methods: dict[str, ro_crate_models.ImageAnyalysisMethod],
+    image_analysis_methods: dict[str, ro_crate_models.ImageAnalysisMethod],
     image_correlation_method: dict[str, ro_crate_models.ImageCorrelationMethod],
     bio_samples_association: dict[str, dict[Optional[str], str]],
 ):

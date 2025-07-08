@@ -75,7 +75,8 @@ class Submission(BaseModel):
 def load_submission(accession_id: str) -> Submission:
     # Note this is a dictionary to include reasons why the override was made
     overrides = {
-        "S-BIADTEST_AUTHOR_AFFILIATION": "A test submission that covers different author and affiliations options."
+        "S-BIADTEST_AUTHOR_AFFILIATION": "A test submission that covers different author and affiliations options.",
+        "S-BIADTEST_COMPLEX_BIOSAMPLE": "A test submission that covers different biosample, taxon, and REMBI study component associations.",
     }
     if accession_id in overrides:
         return read_override(accession_id)
