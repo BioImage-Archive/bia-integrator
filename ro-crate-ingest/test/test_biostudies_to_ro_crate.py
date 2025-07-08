@@ -30,7 +30,7 @@ def get_created_ro_crate_metadata(base_path: Path, accession_id: str):
 @pytest.mark.parametrize(
     "accession_id",
     [
-        "S-BIADTEST_AUTHOR_AFFILIATION",
+        "S-BIADTEST_AUTHOR_AFFILIATION", "S-BIADTEST_COMPLEX_BIOSAMPLE"
     ],
 )
 def test_biostudies_to_ro_crate(accession_id: str, tmp_bia_data_dir: Path):

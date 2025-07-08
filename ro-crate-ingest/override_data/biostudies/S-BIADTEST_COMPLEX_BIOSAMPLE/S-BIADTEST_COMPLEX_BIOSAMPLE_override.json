@@ -1,0 +1,432 @@
+{
+  "accno": "S-BIADTEST_COMPLEX_BIOSAMPLE",
+  "attributes": [
+    {
+      "name": "Title",
+      "value": "BIADTEST AUTHOR AFFILIATION TEST"
+    },
+    {
+      "name": "ReleaseDate",
+      "value": "2023-08-14"
+    },
+    {
+      "name": "AttachTo",
+      "value": "BioImages"
+    }
+  ],
+  "section": {
+    "type": "Study",
+    "attributes": [
+      {
+        "name": "Description",
+        "value": "Description 1"
+      },
+      {
+        "name": "Keyword",
+        "value": "Keyword1"
+      },
+      {
+        "name": "Keyword",
+        "value": "Keyword2"
+      },
+      {
+        "name": "Keyword",
+        "value": "Keyword3"
+      }
+    ],
+    "links": [
+      {
+        "url": "https://www.ebi.ac.uk/bioimage-archive/",
+        "attributes": [
+          {
+            "name": "Description",
+            "value": "BIA website"
+          }
+        ]
+      },
+      {
+        "url": "https://www.ebi.ac.uk/bioimage-archive/galleries/galleries.html",
+        "attributes": [
+          {
+            "name": "Description",
+            "value": "Pretty pictures"
+          }
+        ]
+      }
+    ],
+    "subsections": [
+      {
+        "type": "author",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "User with affiliaition and orcid"
+          },
+          {
+            "name": "E-mail",
+            "value": "user1@ebi.ac.uk"
+          },
+          {
+            "name": "Role",
+            "value": "data acquisition, data curator"
+          },
+          {
+            "name": "ORCID",
+            "value": "0009-0007-4223-1439"
+          },
+          {
+            "name": "affiliation",
+            "value": "o1",
+            "reference": true
+          }
+        ]
+      },
+      {
+        "accno": "o1",
+        "type": "organization",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Organization with no rorid"
+          },
+          {
+            "name": "Address",
+            "value": "Hinxton, UK"
+          }
+        ]
+      },
+      {
+        "accno": "Biosample-1",
+        "type": "Biosample",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "Biosample with organism subsection"
+          },
+          {
+            "name": "Biological entity",
+            "value": "Specific part of fly."
+          },
+          {
+            "name": "Description",
+            "value": "Description of how it was obtained etc."
+          }
+        ],
+        "subsections": [
+          {
+            "accno": "Organism-1",
+            "type": "Organism",
+            "attributes": [
+              {
+                "name": "Scientific name",
+                "value": "Drosophila melanogaster"
+              },
+              {
+                "name": "Common name",
+                "value": "fruit fly"
+              },
+              {
+                "name": "NCBI taxon ID",
+                "value": "NCBI:txid7227"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "accno": "Biosample-2",
+        "type": "Biosample",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "Biosample with organism attribute"
+          },
+          {
+            "name": "Biological entity",
+            "value": "Specific part of human."
+          },
+          {
+            "name": "Description",
+            "value": "Description of how it was obtained etc."
+          },
+          {
+            "name": "Organism",
+            "value": "Human (Homo sapiens)"
+          }
+        ]
+      },
+      {
+        "accno": "Biosample-3",
+        "type": "Biosample",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "Second Biosample with organism attribute"
+          },
+          {
+            "name": "Biological entity",
+            "value": "Specific part of human."
+          },
+          {
+            "name": "Description",
+            "value": "Has same organism as \"Biosample with organism attribute\" for testing."
+          },
+          {
+            "name": "Organism",
+            "value": "Human (Homo sapiens)"
+          }
+        ]
+      },
+      {
+        "accno": "Biosample-4",
+        "type": "Biosample",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "Second Biosample with organism subsection without ncbi id"
+          },
+          {
+            "name": "Biological entity",
+            "value": "Specific part of fish."
+          },
+          {
+            "name": "Description",
+            "value": "Test description."
+          }
+        ],
+        "subsections": [
+          {
+            "accno": "Organism-2",
+            "type": "Organism",
+            "attributes": [
+              {
+                "name": "Scientific name",
+                "value": "Danio  rerio"
+              },
+              {
+                "name": "Common name",
+                "value": "zebra fish"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "accno": "Specimen-1",
+        "type": "Specimen",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "Specimen without growth protocol"
+          },
+          {
+            "name": "Sample Preparation Protocol",
+            "value": "Followed step 1, 2 and 3"
+          }
+        ]
+      },
+      {
+        "accno": "Specimen-2",
+        "type": "Specimen",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "Specimen with growth protocol"
+          },
+          {
+            "name": "Sample Preparation Protocol",
+            "value": "Followed step 1, 2 and 3"
+          },
+          {
+            "name": "Growth protocol",
+            "value": "Followed step 1, 2, 3 and 4 to grow samples."
+          }
+        ]
+      },
+      {
+        "accno": "Image Acquisition-1",
+        "type": "Image Acquisition",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "Image Acquisition 1 Title"
+          },
+          {
+            "name": "Imaging Instrument",
+            "value": "Microscope and/or telescope (but looking the other way)."
+          },
+          {
+            "name": "Image Acquisition Parameters",
+            "value": "Voxel size 0.0430x0.0430x0.5002 micron^3"
+          }
+        ],
+        "subsections": [
+          {
+            "accno": "Imaging Method-1",
+            "type": "Imaging Method",
+            "attributes": [
+              {
+                "name": "Ontology Value",
+                "value": "Confocal microscopy"
+              },
+              {
+                "name": "Ontology Name",
+                "value": "Biological Imaging Methods Ontology (FBbi)"
+              },
+              {
+                "name": "Ontology Term ID",
+                "value": "http://purl.obolibrary.org/obo/FBbi_00000251"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "accno": "Study Component-1",
+        "type": "Study Component",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Component 1"
+          },
+          {
+            "name": "Description",
+            "value": "Has 2 associations, with the same specimen, image aquisition, but differnt biosamples"
+          },
+          {
+            "name": "File List",
+            "value": "file_list_test_1.json"
+          }
+        ],
+        "subsections": [
+          {
+            "type": "Associations",
+            "attributes": [
+              {
+                "name": "Biosample",
+                "value": "Biosample with organism subsection"
+              },
+              {
+                "name": "Specimen",
+                "value": "Specimen without growth protocol"
+              },
+              {
+                "name": "Image acquisition",
+                "value": "Image Acquisition 1 Title"
+              }
+            ]
+          },
+          {
+            "type": "Associations",
+            "attributes": [
+              {
+                "name": "Biosample",
+                "value": "Second Biosample with organism subsection without ncbi id"
+              },
+              {
+                "name": "Specimen",
+                "value": "Specimen without growth protocol"
+              },
+              {
+                "name": "Image acquisition",
+                "value": "Image Acquisition 1 Title"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "accno": "Study Component-2",
+        "type": "Study Component",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Component 2"
+          },
+          {
+            "name": "Description",
+            "value": "Has 1 associations, with biosample 1, but a different specimen to Component 1, which has a growth protocol."
+          },
+          {
+            "name": "File List",
+            "value": "file_list_test_2.json"
+          }
+        ],
+        "subsections": [
+          {
+            "type": "Associations",
+            "attributes": [
+              {
+                "name": "Biosample",
+                "value": "Biosample with organism subsection"
+              },
+              {
+                "name": "Specimen",
+                "value": "Specimen with growth protocol"
+              },
+              {
+                "name": "Image acquisition",
+                "value": "Image Acquisition 1 Title"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "accno": "Study Component-3",
+        "type": "Study Component",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Component 3"
+          },
+          {
+            "name": "Description",
+            "value": "Has 2 associations with the two biosamples that should have the same taxon."
+          },
+          {
+            "name": "File List",
+            "value": "file_list_test_3.json"
+          }
+        ],
+        "subsections": [
+          {
+            "type": "Associations",
+            "attributes": [
+              {
+                "name": "Biosample",
+                "value": "Biosample with organism attribute"
+              },
+              {
+                "name": "Specimen",
+                "value": "Specimen without growth protocol"
+              },
+              {
+                "name": "Image acquisition",
+                "value": "Image Acquisition 1 Title"
+              }
+            ]
+          },
+          {
+            "type": "Associations",
+            "attributes": [
+              {
+                "name": "Biosample",
+                "value": "Second Biosample with organism attribute"
+              },
+              {
+                "name": "Specimen",
+                "value": "Specimen without growth protocol"
+              },
+              {
+                "name": "Image acquisition",
+                "value": "Image Acquisition 1 Title"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "type": "submission"
+}
