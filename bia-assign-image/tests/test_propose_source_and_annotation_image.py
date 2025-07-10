@@ -33,8 +33,8 @@ def expected_proposal_details(test_accession_id) -> List[Dict]:
             "file_reference_uuid": "b17bac3c-4a4d-4d18-8fd9-9fdc2a900c86",
             "size_in_bytes": 100,
             "size_human_readable": "100.0B",
-            "source_image_uuid": ["283440f8-d18d-416b-bda7-54375fa25d84"],
-            "source_image": "source_image_1.tif",
+            "source_image_uuid": ["4d3d16b1-0f0c-45d5-b399-9c4af0b27eed"],
+            # "source_image": "source_image_1.tif",
         },
         {
             "accession_id": test_accession_id,
@@ -44,8 +44,8 @@ def expected_proposal_details(test_accession_id) -> List[Dict]:
             "file_reference_uuid": "fd66d5e2-a87b-400a-9182-6ea649853726",
             "size_in_bytes": 100,
             "size_human_readable": "100.0B",
-            "source_image_uuid": ["283440f8-d18d-416b-bda7-54375fa25d84"],
-            "source_image": "source_image_1.tif",
+            "source_image_uuid": ["4d3d16b1-0f0c-45d5-b399-9c4af0b27eed"],
+            # "source_image": "source_image_1.tif",
         },
     ]
 

@@ -61,17 +61,17 @@ do
         ((n_images_converted++))
         interactive_display_uuid=$(grep -oP 'Created image representation for converted image with uuid: \K[0-9a-fA-F-]+' $convert_to_interactive_display_output)
         # Create static display representation and update example image uri if this is first image converted
-        if [ "$n_images_converted" -eq 1 ]; then
-            convert_to_static_display_output="$logs_dir_base/convert_to_static_display_output_$interactive_display_uuid.txt"
-            command="poetry --directory $bia_converter_dir run bia-converter create-static-display  $interactive_display_uuid 2>&1 | tee $convert_to_static_display_output"
-            echo $command
-            eval $command
+        #if [ "$n_images_converted" -eq 1 ]; then
+        #    convert_to_static_display_output="$logs_dir_base/convert_to_static_display_output_$interactive_display_uuid.txt"
+        #    command="poetry --directory $bia_converter_dir run bia-converter create-static-display  $interactive_display_uuid 2>&1 | tee $convert_to_static_display_output"
+        #    echo $command
+        #    eval $command
 
-            image_uuid=$(grep -oP 'COMPLETE.*bia_data_model.Image \K[0-9a-fA-F-]+' $assign_from_proposals_output | head -n 1)
-            command="poetry --directory $bia_converter_dir run python $update_example_image_uri_script_path --update-mode replace $image_uuid"
-            echo $command
-            eval $command
-        fi
+        #    image_uuid=$(grep -oP 'COMPLETE.*bia_data_model.Image \K[0-9a-fA-F-]+' $assign_from_proposals_output | head -n 1)
+        #    command="poetry --directory $bia_converter_dir run python $update_example_image_uri_script_path --update-mode replace $image_uuid"
+        #    echo $command
+        #    eval $command
+        #fi
 
         # Create thumbnail representation
         convert_to_thumbnail_output="$logs_dir_base/convert_to_thumbnail_output_$interactive_display_uuid.txt"
