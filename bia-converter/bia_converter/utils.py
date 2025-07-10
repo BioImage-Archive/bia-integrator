@@ -116,6 +116,7 @@ def get_dir_size(path: Union[str, Path]) -> int:
 
     return total_size
 
+
 def add_or_update_attribute(attribute_to_add: Attribute, attributes: list[Attribute]):
     """
     Idempotently add or update an attribute in attributes.
@@ -136,4 +137,3 @@ def add_or_update_attribute(attribute_to_add: Attribute, attributes: list[Attrib
             return
     # If not found, append it
     attributes.append(attribute_to_add)
-

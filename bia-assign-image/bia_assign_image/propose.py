@@ -95,7 +95,7 @@ def get_convertible_file_references(
     api_target: ApiTarget,
     check_image_creation_prerequisites: bool = True,
     include_annotation_details: bool = False,
-) -> List[Dict]:
+) -> dict[str, dict]:
     """Get details of convertible images for given accession ID"""
 
     api_client = get_api_client(api_target)
@@ -108,7 +108,7 @@ def get_convertible_file_references(
         page_size_setting=20,
     )
 
-    convertible_file_references = []
+    convertible_file_references = {}
 
     for dataset in datasets:
         if check_image_creation_prerequisites:
@@ -128,12 +128,14 @@ def get_convertible_file_references(
             file_references,
             include_annotation_details,
         )
-        convertible_file_references.extend(file_reference_details)
+        convertible_file_references.update(file_reference_details)
 
-    convertible_file_references = sorted(
-        convertible_file_references,
-        key=lambda fr: (fr["size_in_bytes"], fr["name"]),
-        reverse=True,
+    convertible_file_references = dict(
+        sorted(
+            convertible_file_references.items(),
+            key=lambda item: (item[1]["size_in_bytes"], item[1]["name"]),
+            reverse=True,
+        )
     )
     return convertible_file_references
 
@@ -161,8 +163,10 @@ def write_convertible_file_references_for_accession_id(
             f"Proposals writer not implemented for suffix {output_path_suffix}"
         )
 
-    convertible_file_references = get_convertible_file_references(
-        accession_id, api_target, check_image_creation_prerequisites
+    convertible_file_references = list(
+        get_convertible_file_references(
+            accession_id, api_target, check_image_creation_prerequisites
+        ).values()
     )
 
     n_proposal_candidates = len(convertible_file_references)
@@ -194,13 +198,16 @@ def write_convertible_source_annotation_file_refs_for_acc_id(
 
     # Ensure we can write out the results before going through file references
     output_path_suffix = output_path.suffix.lower()
-    if output_path_suffix == ".tsv":
-        write_file_reference_details_func = write_file_reference_details_to_tsv
-    elif output_path_suffix == ".yaml" or output_path_suffix == ".yml":
+
+    # TODO: Discuss if we still need tsv. If so function needs to be modified to be more generic
+    # if output_path_suffix == ".tsv":
+    #    write_file_reference_details_func = write_file_reference_details_to_tsv
+    # elif output_path_suffix == ".yaml" or output_path_suffix == ".yml":
+    if output_path_suffix == ".yaml" or output_path_suffix == ".yml":
         write_file_reference_details_func = write_file_reference_details_to_yaml
     else:
         raise Exception(
-            f"Proposals writer not implemented for suffix {output_path_suffix}"
+            f"Proposals with annotations writer not implemented for suffix {output_path_suffix}"
         )
 
     convertible_file_references = get_convertible_file_references(
@@ -210,29 +217,24 @@ def write_convertible_source_annotation_file_refs_for_acc_id(
         include_annotation_details=True,
     )
 
-    # index annotation images by their corresponding source images
+    # Below assumes ingest has populated 'source_image_uuid'
+    # Note: source_image_uuid is uuid of file reference of raw image - NOTHING to do with bia_shared_datamodel.Image objects!)
+    # index annotation images by their corresponding source image uuids
     index = {}
-    for fr in convertible_file_references:
-        if "source_image" in fr and "source_image_uuid" in fr:
-            source_image_path = fr["source_image"]
-            source_image_details = next(
-                (
-                    f
-                    for f in convertible_file_references
-                    if f["name"] == source_image_path
-                ),
-                None,
-            )
-            if not source_image_details:
-                continue
+    for fr in convertible_file_references.values():
+        source_image_uuid = fr.get("source_image_uuid")
+        if not source_image_uuid:
+            continue
 
-            if source_image_path not in index:
-                index[source_image_path] = {
-                    "source_file_reference": source_image_details,
-                    "annotation_file_references": [fr],
-                }
-            else:
-                index[source_image_path]["annotation_file_references"].append(fr)
+        assert len(source_image_uuid) == 1
+        source_image_uuid = source_image_uuid[0]
+        file_reference_uuid = fr["file_reference_uuid"]
+        if source_image_uuid not in index:
+            index[source_image_uuid] = [
+                file_reference_uuid,
+            ]
+        else:
+            index[source_image_uuid].append(file_reference_uuid)
 
     n_proposal_candidates = len(index)
     indicies_to_select = select_indicies(n_proposal_candidates, max_items)
@@ -240,10 +242,16 @@ def write_convertible_source_annotation_file_refs_for_acc_id(
     keys_to_select = [keys[i] for i in indicies_to_select]
     file_reference_details = []
     n_annotations = 0
-    for key in keys_to_select:
-        file_reference_details.append(index[key]["source_file_reference"])
-        file_reference_details.extend(index[key]["annotation_file_references"])
-        n_annotations += len(index[key]["annotation_file_references"])
+    for source_image_uuid in keys_to_select:
+        # Add source image
+        file_reference_details.append(convertible_file_references[source_image_uuid])
+
+        # Add annotation images
+        for annotation_image_uuid in index[source_image_uuid]:
+            file_reference_details.append(
+                convertible_file_references[annotation_image_uuid]
+            )
+        n_annotations += len(index[source_image_uuid])
 
     write_file_reference_details_func(
         file_reference_details,
@@ -357,8 +365,8 @@ def extract_file_reference_details(
     dataset_uuid: str,
     file_references: list[bia_data_model.FileReference],
     include_annotation_details,
-) -> list[dict]:
-    file_reference_details = []
+) -> dict[str, dict]:
+    file_reference_details = {}
 
     for fr in file_references:
         if not in_bioformats_single_file_formats_list(fr.file_path):
@@ -382,16 +390,6 @@ def extract_file_reference_details(
             if source_image_uuid:
                 fr_details["source_image_uuid"] = source_image_uuid
 
-                attributes = get_value_from_attribute_list(
-                    fr.additional_metadata,
-                    "attributes_from_biostudies.File",
-                    attribute_value_name="attributes",
-                )
-                if attributes:
-                    source_image = attributes.get("source_image")
-                    if source_image:
-                        fr_details["source_image"] = source_image
-
-        file_reference_details.append(fr_details)
+        file_reference_details[f"{fr.uuid}"] = fr_details
 
     return file_reference_details
