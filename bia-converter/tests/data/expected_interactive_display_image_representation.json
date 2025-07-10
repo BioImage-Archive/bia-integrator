@@ -1,5 +1,5 @@
 {
-  "uuid": "11a34e8a-10ce-4529-9409-b6fc6ada1194",
+  "uuid": "To be computed at runtime",
   "object_creator": "bia_image_conversion",
   "version": 0,
   "model": {
@@ -11,7 +11,7 @@
       "provenance": "bia_image_conversion",
       "name": "uuid_unique_input",
       "value": {
-        "uuid_unique_input": "{'image_representation_of_submitted_by_uploader': '3b4415ed-fe6f-4591-a4a1-eebc9f4a6750', 'conversion_function': {'conversion_function': 'bioformats2raw', 'version': '0.9.1'}, 'conversion_config': {}}"
+        "uuid_unique_input": "{'image_representation_of_submitted_by_uploader': '3b4415ed-fe6f-4591-a4a1-eebc9f4a6750', 'conversion_function': {'conversion_function': 'bioformats2raw', 'version': 'compute version at runtime'}, 'conversion_config': {}}"
       }
     }
   ],

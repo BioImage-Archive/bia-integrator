@@ -1,6 +1,8 @@
 from pathlib import Path
 import shutil
+import json
 import pytest
+from bia_shared_datamodels import uuid_creation
 import bia_integrator_api.models as api_models
 from bia_integrator_api.exceptions import NotFoundException
 from bia_converter import io
@@ -9,15 +11,15 @@ from typer.testing import CliRunner
 from bia_converter import cli
 from bia_converter.config import settings
 from bia_converter.bia_api_client import api_client
+from bia_converter.conversion import get_bioformats2raw_version
 
 accession_id = "S-BIAD-BIACONVERTER-TEST"
 
 
 @pytest.fixture
 def mock_copy_uri_to_local(monkeypatch):
-    """Copy files from the tests/data directory instead of the file_uri
-    
-    """
+    """Copy files from the tests/data directory instead of the file_uri"""
+
     def _mock_copy_uri_to_local(src_uri: str, dst_fpath: Path):
         src_fpath = Path(__file__).parent / "data" / Path(src_uri).name
         shutil.copy(src_fpath, dst_fpath)
@@ -27,9 +29,8 @@ def mock_copy_uri_to_local(monkeypatch):
 
 @pytest.fixture
 def mock_sync_dirpath_to_s3(monkeypatch):
-    """Return s3 uri instead of syncing contents of a directory to s3 bucket specified in settings.bucket
-    
-    """
+    """Return s3 uri instead of syncing contents of a directory to s3 bucket specified in settings.bucket"""
+
     def _sync_dirpath_to_s3(src_dirpath, dst_suffix):
         return f"{src_dirpath}"
 
@@ -69,6 +70,7 @@ def compare_created_vs_expected_image_representation(
 
     return created == expected
 
+
 @pytest.fixture
 def expected_interactive_display() -> api_models.ImageRepresentation:
     obj_path = (
@@ -76,7 +78,21 @@ def expected_interactive_display() -> api_models.ImageRepresentation:
         / "data"
         / "expected_interactive_display_image_representation.json"
     )
-    return api_models.ImageRepresentation.model_validate_json(obj_path.read_text())
+
+    # Compute UUID at runtime as uuid_unique_input includes version of bioformats2raw on testing machine
+    obj_dict = json.loads(obj_path.read_text())
+    uuid_unique_input = obj_dict["additional_metadata"][0]["value"]["uuid_unique_input"]
+    unique_string = uuid_unique_input.replace(
+        "compute version at runtime", get_bioformats2raw_version()
+    )
+    obj_dict["additional_metadata"][0]["value"]["uuid_unique_input"] = unique_string
+    study_uuid = uuid_creation.create_study_uuid(accession_id)
+    im_rep_uuid = uuid_creation.create_image_representation_uuid(
+        study_uuid, unique_string
+    )
+    obj_dict["uuid"] = str(im_rep_uuid)
+    return api_models.ImageRepresentation.model_validate(obj_dict)
+
 
 @pytest.fixture
 def reset_expected_interactive_display_in_api(expected_interactive_display):
@@ -85,8 +101,10 @@ def reset_expected_interactive_display_in_api(expected_interactive_display):
     This may happen if this test is run more than once without cleaning out the local API.
     """
     try:
-        im_rep = api_client.get_image_representation(str(expected_interactive_display.uuid))
-        
+        im_rep = api_client.get_image_representation(
+            str(expected_interactive_display.uuid)
+        )
+
         im_rep.additional_metadata = []
         im_rep.file_uri = []
         im_rep.image_format = ""
