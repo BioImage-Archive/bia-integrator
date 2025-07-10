@@ -3,44 +3,67 @@ import logging
 import zipfile
 import tempfile
 from pathlib import Path
+from uuid import UUID
 
 import parse  # type: ignore
 from bia_integrator_api.models import (  # type: ignore
+    Image,
     ImageRepresentation,
-    ImageRepresentationUseType,
     FileReference,
+    Provenance,
+    Attribute,
 )
 from bia_shared_datamodels.uuid_creation import (  # type: ignore
     create_image_representation_uuid,
 )
+from bia_shared_datamodels.attribute_models import DocumentUUIDUinqueInputAttribute
 
 from .config import settings
 from .io import copy_local_to_s3, stage_fileref_and_get_fpath, sync_dirpath_to_s3
-from .conversion import run_zarr_conversion
+from .conversion import run_zarr_conversion, get_bioformats2raw_version
 from .bia_api_client import api_client, store_object_in_api_idempotent
 from .rendering import generate_padded_thumbnail_from_ngff_uri
 from .utils import (
     create_s3_uri_suffix_for_image_representation,
+    create_s3_uri_suffix_for_2d_view_of_image_representation,
     attributes_by_name,
     get_dir_size,
+    image_dimensions_as_string,
+    add_or_update_attribute,
 )
 
 
 logger = logging.getLogger(__file__)
 
-
-def create_image_representation_object(image, image_format, use_type):
+def create_image_representation_object(
+    image: Image, unique_string: str, image_format: str
+) -> ImageRepresentation:
     # Create the base image representation object. Cannot by itself create the file_uri or
     # size attributes correctly
 
-    image_rep_uuid = create_image_representation_uuid(image, image_format, use_type)
+    unique_input = DocumentUUIDUinqueInputAttribute.model_validate(
+        {
+            "provenance": "bia_image_conversion",
+            "name": "uuid_unique_input",
+            "value": {
+                "uuid_unique_input": unique_string,
+            },
+        }
+    )
+
+    dataset = api_client.get_dataset(image.submission_dataset_uuid)
+    study_uuid = UUID(dataset.submitted_in_study_uuid)
+    image_rep_uuid = create_image_representation_uuid(study_uuid, unique_string)
     image_rep = ImageRepresentation(
+        object_creator=Provenance.BIA_IMAGE_CONVERSION,
         uuid=str(image_rep_uuid),
         version=0,
         representation_of_uuid=image.uuid,
-        use_type=use_type,
+        # TODO Does image format need to be set?
         image_format=image_format,
-        attribute=[],
+        additional_metadata=[
+            unique_input.model_dump(),
+        ],
         total_size_in_bytes=0,
         file_uri=[],
     )
@@ -62,73 +85,73 @@ def create_2d_image_and_upload_to_s3(ome_zarr_uri, dims, dst_key):
 
 def convert_interactive_display_to_thumbnail(
     input_image_rep: ImageRepresentation,
-) -> ImageRepresentation:
-    # Should convert an INTERACTIVE_DISPLAY rep, to a THUMBNAIL rep
+) -> str:
+    # Should create a 2D thumbnail from convert an INTERACTIVE_DISPLAY rep
 
     dims = (256, 256)
     # Check the image rep
-    assert input_image_rep.use_type == ImageRepresentationUseType.INTERACTIVE_DISPLAY
+    assert ".zarr" in input_image_rep.file_uri[0]
 
     # Retrieve model ibjects
     input_image = api_client.get_image(input_image_rep.representation_of_uuid)
 
-    base_image_rep = create_image_representation_object(
-        input_image, ".png", "THUMBNAIL"
+    dst_key = create_s3_uri_suffix_for_2d_view_of_image_representation(
+        input_image_rep, dims=dims, name="thumbnail"
     )
-    logger.info(
-        f"Created THUMBNAIL image representation with uuid: {base_image_rep.uuid}"
-    )
-    w, h = dims
-    base_image_rep.size_x = w
-    base_image_rep.size_y = h
-
-    dst_key = create_s3_uri_suffix_for_image_representation(base_image_rep)
     file_uri, size_in_bytes = create_2d_image_and_upload_to_s3(
         input_image_rep.file_uri[0], dims, dst_key
     )
 
-    base_image_rep.file_uri = [file_uri]
-    base_image_rep.total_size_in_bytes = size_in_bytes
+    # Update the BIA Image object with uri for this 2D view
+    thumbnail_uri_key = image_dimensions_as_string(dims)
+    view_details_dict = {
+        "provenance": Provenance.BIA_IMAGE_CONVERSION,
+        "name": "image_thumbnail_uri",
+        "value": {
+            thumbnail_uri_key: file_uri,
+            "size": dims,
+        },
+    }
+    view_details = Attribute.model_validate(view_details_dict)
+    add_or_update_attribute(view_details, input_image.additional_metadata)
+    store_object_in_api_idempotent(input_image)
 
-    store_object_in_api_idempotent(base_image_rep)
-
-    return base_image_rep
+    return file_uri
 
 
 # TODO - should be able to merge these
 def convert_interactive_display_to_static_display(
     input_image_rep: ImageRepresentation,
-) -> ImageRepresentation:
+) -> str:
     # Should convert an INTERACTIVE_DISPLAY rep, to a STATIC_DISPLAY rep
 
     dims = (512, 512)
     # Check the image rep
-    assert input_image_rep.use_type == ImageRepresentationUseType.INTERACTIVE_DISPLAY
+    assert ".zarr" in input_image_rep.file_uri[0]
 
     # Retrieve model ibjects
     input_image = api_client.get_image(input_image_rep.representation_of_uuid)
 
-    base_image_rep = create_image_representation_object(
-        input_image, ".png", "STATIC_DISPLAY"
+    dst_key = create_s3_uri_suffix_for_2d_view_of_image_representation(
+        input_image_rep, dims=dims, name="static_display"
     )
-    logger.info(
-        f"Created STATIC_DISPLAY image representation with uuid: {base_image_rep.uuid}"
-    )
-    w, h = dims
-    base_image_rep.size_x = w
-    base_image_rep.size_y = h
-
-    dst_key = create_s3_uri_suffix_for_image_representation(base_image_rep)
     file_uri, size_in_bytes = create_2d_image_and_upload_to_s3(
         input_image_rep.file_uri[0], dims, dst_key
     )
 
-    base_image_rep.file_uri = [file_uri]
-    base_image_rep.total_size_in_bytes = size_in_bytes
+    # Update the BIA Image object with uri for this 2D view
+    view_details_dict = {
+        "provenance": Provenance.BIA_IMAGE_CONVERSION,
+        "name": "image_static_display_uri",
+        "value": {
+            "slice": {"uri": file_uri, "size": dims,},
+        },
+    }
+    view_details = Attribute.model_validate(view_details_dict)
+    add_or_update_attribute(view_details, input_image.additional_metadata)
+    store_object_in_api_idempotent(input_image)
 
-    store_object_in_api_idempotent(base_image_rep)
-
-    return base_image_rep
+    return file_uri
 
 
 def get_all_file_references_for_image(image):
@@ -254,9 +277,9 @@ def get_dimensions_dict_from_zarr(ome_zarr_image_uri):
         "sizeZ": "size_z",
         "sizeC": "size_c",
         "sizeT": "size_t",
-        "PhysicalSizeX": "physical_size_x",
-        "PhysicalSizeY": "physical_size_y",
-        "PhysicalSizeZ": "physical_size_z",
+        "PhysicalSizeX": "voxel_physical_size_x",
+        "PhysicalSizeY": "voxel_physical_size_y",
+        "PhysicalSizeZ": "voxel_physical_size_z",
     }
 
     update_dict = {v: im.__dict__[k] for k, v in attr_map.items()}
@@ -360,19 +383,32 @@ def convert_uploaded_by_submitter_to_interactive_display(
 ) -> ImageRepresentation:
     # Should convert an UPLOADED_BY_SUBMITTER rep, to an INTERACTIVE_DISPLAY rep
 
-    assert input_image_rep.use_type == ImageRepresentationUseType.UPLOADED_BY_SUBMITTER
+    # TODO: Are there any checks with 2025/04 models to ensure the input image rep is as desired?
+    # assert input_image_rep.use_type == ImageRepresentationUseType.UPLOADED_BY_SUBMITTER
 
     image = api_client.get_image(input_image_rep.representation_of_uuid)
+
+    # For unique string for image representation we are using bioformats to raw
+    unique_string_dict = {
+        "image_representation_of_submitted_by_uploader": f"{input_image_rep.uuid}",
+        "conversion_function": {
+            "conversion_function": "bioformats2raw",
+            "version": get_bioformats2raw_version(),
+        },
+        "conversion_config": conversion_parameters,
+    }
+    unique_string = f"{unique_string_dict}"
     base_image_rep = create_image_representation_object(
-        image, ".ome.zarr", "INTERACTIVE_DISPLAY"
+        image, unique_string, image_format=".ome.zarr"
     )
     logger.info(
-        f"Created INTERACTIVE_DISPLAY image representation with uuid: {base_image_rep.uuid}"
+        f"Created image representation for converted image with uuid: {base_image_rep.uuid}"
     )
 
     # Get the file references we'll need
     file_references = get_all_file_references_for_image(image)
 
+    # TODO: refactor to move extraction of zips to its own function
     if input_image_rep.image_format == ".ome.zarr.zip":
         assert len(file_references) == 1
         output_zarr_fpath = fetch_ome_zarr_zip_fileref_and_unzip(
@@ -383,7 +419,7 @@ def convert_uploaded_by_submitter_to_interactive_display(
             output_zarr_fpath = convert_with_bioformats2raw_pattern(
                 input_image_rep, file_references, base_image_rep
             )
-        except AssertionError as e:
+        except (KeyError, AssertionError) as e:
             if len(file_references) == 1:
                 logger.info(
                     f"Failed to convert using pattern. As image has 1 file reference will attempt to convert from this file reference with file path: {file_references[0].file_path}."
@@ -416,3 +452,22 @@ def convert_uploaded_by_submitter_to_interactive_display(
     store_object_in_api_idempotent(base_image_rep)
 
     return base_image_rep
+
+def update_recommended_vizarr_representation_for_image(image_rep: ImageRepresentation):
+    """Update 'recommended_vizarr_representation' attr of underlying Image object
+    
+    """
+
+    attribute = Attribute.model_validate(
+        {
+            "provenance": "bia_image_conversion",
+            "name": "recommended_vizarr_representation",
+            "value": {
+                "recommended_vizarr_representation": image_rep.uuid,
+            },
+        }
+    )
+    image_uuid = image_rep.representation_of_uuid
+    image = api_client.get_image(image_uuid)
+    add_or_update_attribute(attribute, image.additional_metadata)
+    store_object_in_api_idempotent(image)

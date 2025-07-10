@@ -2,9 +2,9 @@
 name = "bia-converter"
 version = "0.1.0"
 description = "BioImage Archive internal conversion package"
-authors = ["Matthew Hartley <matthewh@ebi.ac.uk>"]
+authors = ["Matthew Hartley <matthewh@ebi.ac.uk>", "Kola Babalola <kola@ebi.ac.uk>"]
 license = "Apache 2.0"
-readme = "README.rst"
+readme = "README.md"
 packages = [{include = "bia_converter"}]
 
 [tool.poetry.dependencies]

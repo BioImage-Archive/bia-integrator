@@ -7,6 +7,7 @@ from pathlib import Path
 
 from bia_integrator_api.models import (  # type: ignore
     ImageRepresentation,
+    Attribute,
 )
 
 from .bia_api_client import api_client
@@ -30,6 +31,34 @@ def create_s3_uri_suffix_for_image_representation(
     return f"{study.accession_id}/{representation.representation_of_uuid}/{representation.uuid}{representation.image_format}"
 
 
+def image_dimensions_as_string(dims: list[int] | tuple[int, int]) -> str:
+    return "_".join([str(d) for d in dims])
+
+
+def create_s3_uri_suffix_for_2d_view_of_image_representation(
+    representation: ImageRepresentation,
+    dims: tuple,
+    name: str,
+    image_format: str = ".png",
+) -> str:
+    """Create the part of the uri that goes after the bucket name for a 2D view of an image representation"""
+
+    assert isinstance(representation.representation_of_uuid, UUID) or isinstance(
+        UUID(representation.representation_of_uuid), UUID
+    )
+    input_image = api_client.get_image(representation.representation_of_uuid)
+    dataset = api_client.get_dataset(input_image.submission_dataset_uuid)
+    study = api_client.get_study(dataset.submitted_in_study_uuid)
+
+    dims_as_str = image_dimensions_as_string(dims)
+
+    assert len(image_format) > 0
+    if image_format[0] != ".":
+        image_format = "." + image_format
+
+    return f"{study.accession_id}/{representation.representation_of_uuid}/{name}_{dims_as_str}{image_format}"
+
+
 def attributes_by_name(model_object):
     """
     Converts a list of Attribute objects into a dictionary mapping attribute names to their values.
@@ -47,7 +76,10 @@ def attributes_by_name(model_object):
                 }
     """
 
-    return {attribute.name: attribute.value for attribute in model_object.attribute}
+    return {
+        attribute.name: attribute.value
+        for attribute in model_object.additional_metadata
+    }
 
 
 def get_dir_size(path: Union[str, Path]) -> int:
@@ -83,3 +115,25 @@ def get_dir_size(path: Union[str, Path]) -> int:
                 continue
 
     return total_size
+
+def add_or_update_attribute(attribute_to_add: Attribute, attributes: list[Attribute]):
+    """
+    Idempotently add or update an attribute in attributes.
+
+    Parameters:
+    - attributes: list of bia_shared_models.Attribute
+    - name: the name of the attribute to add or update
+    - value: the value to set for the attribute
+    """
+
+    for i, attr in enumerate(attributes):
+        if attr.name == attribute_to_add.name:
+            # We treat 'static_image_uri' differently
+            if attr.name == "image_static_display_uri":
+                attributes[i].value.update(attribute_to_add.value)
+            else:
+                attributes[i].value = attribute_to_add.value
+            return
+    # If not found, append it
+    attributes.append(attribute_to_add)
+
