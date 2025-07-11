@@ -1,10 +1,9 @@
-from ro_crate_ingest.biostudies_to_ro_crate.biostudies.api import (
+from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_api import (
     Attribute,
     Section,
+    Submission,
 )
-from ro_crate_ingest.biostudies_to_ro_crate.biostudies.biostudies_processing_version import (
-    BioStudiesProcessingVersion,
-)
+from ro_crate_ingest.biostudies_to_ro_crate.biostudies.filelist_api import File
 
 from typing import Optional
 import logging
@@ -57,3 +56,39 @@ def find_sections_recursive(
         find_sections_recursive(section, search_types, results)
 
     return results
+
+
+def find_file_lists_under_section(
+    section: Section,
+    flists: list[str],
+) -> list[str]:
+    """
+    Find all of the File lists in a Section, recursively descending through the subsections.
+
+    Return a list of file list paths.
+    """
+
+    attr_dict = attributes_to_dict(section.attributes)
+
+    if "file list" in attr_dict:
+        flists.append(attr_dict["file list"])
+
+    for subsection in section.subsections:
+        subsection_type = type(subsection)
+        if subsection_type == Section:
+            find_file_lists_under_section(subsection, flists)
+
+    return flists
+
+
+def find_file_lists_in_submission(
+    submission: Submission,
+) -> list[str]:
+    return find_file_lists_under_section(submission.section, [])
+
+
+def find_files_under_section(section: Section) -> list[File]:
+    """
+    For earlier Biostudies submissions where files are documented in the pagetab json, rather than in a separate filelist
+    """
+    pass

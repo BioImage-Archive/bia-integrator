@@ -3,7 +3,7 @@ import re
 from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_parsing_utils import (
     attributes_to_dict,
 )
-from ro_crate_ingest.biostudies_to_ro_crate.biostudies.api import Submission
+from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_api import Submission
 
 from bia_shared_datamodels import ro_crate_models, semantic_models
 
