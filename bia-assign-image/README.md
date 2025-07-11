@@ -32,12 +32,34 @@ poetry run bia-assign-image propose-images S-BIAD1423 proposals.yaml --max-items
 ```
 
 This will analyze the accession and suggest up to 5 file references to convert, writing them to proposals.yaml.
-You can specify multiple accession IDs and use --append to add to an existing proposal file.
+You can specify multiple accession IDs and use `--append` to add to an existing proposal file.
 
 Then process the proposals to create images and representations:
 
 ```sh
 poetry run bia-assign-image assign-from-proposal proposals.yaml
+```
+
+This will create BIA Image objects and default representations for each proposed file reference.
+
+### Proposing Images and Associated Annotations
+In the case where a study has annotation datasets, and the file list column has a 'source_image' entry, the ingest process creates a 'source_image_uuid' entry in the additional metadata of annotation file references. The `propose-images-and-annotations` command can be used to create a proposal file with source images and their respective annotation images. It is advisable to use this command with `--no-check-image-creation-prerequisites` in case the annotation datasets are missing information on associations to bio-samples, sample image preparation protocols etc.
+
+```sh
+poetry run bia-assign-image propose-images-and-annotations --no-check-image-creation-prerequisites S-BIAD1735 image-annotation-proposals.yaml --max-items 5
+```
+or to run against your local version of the API
+```sh
+poetry run bia-assign-image propose-images-and-annotations --no-check-image-creation-prerequisites S-BIAD1735 image-annotation-proposals.yaml --max-items 5 --api local
+```
+
+This will analyze the accession and suggest up to 5 file references to convert, including all their annotations - writing them to proposals.yaml.
+You can specify multiple accession IDs and use `--append` to add to an existing proposal file.
+
+Then process the proposals and annotations to create images and representations:
+
+```sh
+poetry run bia-assign-image assign-from-proposal image-annotation-proposals.yaml
 ```
 
 This will create BIA Image objects and default representations for each proposed file reference.
