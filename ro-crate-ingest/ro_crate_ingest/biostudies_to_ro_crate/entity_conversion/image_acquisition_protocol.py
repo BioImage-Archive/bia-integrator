@@ -17,9 +17,7 @@ def get_image_acquisition_protocol_by_title(
     submission: Submission,
 ) -> dict[str, ro_crate_models.ImageAcquisitionProtocol]:
 
-    sections = find_sections_recursive(
-        submission.section, ["Image acquisition"], []
-    )
+    sections = find_sections_recursive(submission.section, ["Image acquisition"], [])
 
     roc_object_dict = {}
     for section in sections:
@@ -36,6 +34,9 @@ def get_image_acquisition_protocol(
 
     if not "imaging method" in attr_dict:
         imagingMethodName, fbbi_id = get_imaging_method_fbbi_from_subsection(section)
+    elif isinstance(attr_dict["imaging method"], list):
+        imagingMethodName = attr_dict["imaging method"]
+        fbbi_id = []
     else:
         imagingMethodName = [attr_dict["imaging method"]]
         fbbi_id = []

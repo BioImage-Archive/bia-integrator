@@ -18,7 +18,7 @@ logger = logging.getLogger()
 
 
 @ro_crate_ingest.command("ingest")
-def convert(
+def ro_crate_to_bia(
     crate_path: Annotated[
         Optional[Path],
         typer.Option(
@@ -46,7 +46,7 @@ def convert(
 
 
 @ro_crate_ingest.command("biostudies-to-roc")
-def convert(
+def biostudies_to_ro_crate(
     accession_id: Annotated[
         str,
         typer.Argument(
