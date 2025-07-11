@@ -276,6 +276,102 @@
             "website": null
         },
         {
+            "@id": "Study Component-3/file_list_test_3.tsv",
+            "@type": [
+                "File",
+                "bia:FileList",
+                "csvw:Table"
+            ],
+            "tableSchema": {
+                "@id": "_:ts0"
+            }
+        },
+        {
+            "@id": "Study Component-2/file_list_test_2.tsv",
+            "@type": [
+                "File",
+                "bia:FileList",
+                "csvw:Table"
+            ],
+            "tableSchema": {
+                "@id": "_:ts0"
+            }
+        },
+        {
+            "@id": "Study Component-1/file_list_test_1.tsv",
+            "@type": [
+                "File",
+                "bia:FileList",
+                "csvw:Table"
+            ],
+            "tableSchema": {
+                "@id": "_:ts0"
+            }
+        },
+        {
+            "@id": "_:ts0",
+            "@type": [
+                "csvw:Schema"
+            ],
+            "column": [
+                {
+                    "@id": "_:col0"
+                },
+                {
+                    "@id": "_:col1"
+                },
+                {
+                    "@id": "_:col2"
+                },
+                {
+                    "@id": "_:col3"
+                },
+                {
+                    "@id": "_:col4"
+                }
+            ]
+        },
+        {
+            "@id": "_:col4",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "Channel 1",
+            "propertyUrl": null
+        },
+        {
+            "@id": "_:col3",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "Genotype/Line",
+            "propertyUrl": null
+        },
+        {
+            "@id": "_:col2",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "type",
+            "propertyUrl": null
+        },
+        {
+            "@id": "_:col1",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "size",
+            "propertyUrl": "https://bia/sizeInBytes"
+        },
+        {
+            "@id": "_:col0",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "path",
+            "propertyUrl": "https://bia/filePath"
+        },
+        {
             "@id": "./Study Component-3",
             "@type": [
                 "Dataset",
@@ -306,8 +402,14 @@
             "associatedImageAnalysisMethod": [],
             "associatedImageCorrelationMethod": [],
             "associatedProtocol": [],
-            "hasPart": [],
-            "associationFileMetadata": null
+            "hasPart": [
+                {
+                    "@id": "Study Component-3/file_list_test_3.tsv"
+                }
+            ],
+            "associationFileMetadata": {
+                "@id": "Study Component-3/file_list_test_3.tsv"
+            }
         },
         {
             "@id": "./Study Component-2",
@@ -337,8 +439,14 @@
             "associatedImageAnalysisMethod": [],
             "associatedImageCorrelationMethod": [],
             "associatedProtocol": [],
-            "hasPart": [],
-            "associationFileMetadata": null
+            "hasPart": [
+                {
+                    "@id": "Study Component-2/file_list_test_2.tsv"
+                }
+            ],
+            "associationFileMetadata": {
+                "@id": "Study Component-2/file_list_test_2.tsv"
+            }
         },
         {
             "@id": "./Study Component-1",
@@ -371,8 +479,14 @@
             "associatedImageAnalysisMethod": [],
             "associatedImageCorrelationMethod": [],
             "associatedProtocol": [],
-            "hasPart": [],
-            "associationFileMetadata": null
+            "hasPart": [
+                {
+                    "@id": "Study Component-1/file_list_test_1.tsv"
+                }
+            ],
+            "associationFileMetadata": {
+                "@id": "Study Component-1/file_list_test_1.tsv"
+            }
         },
         {
             "@id": "biostudies_iap:Image Acquisition-1",

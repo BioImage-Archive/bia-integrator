@@ -1,0 +1,32 @@
+[
+  {
+    "path": "folder1/file1.ome.zarr.zip",
+    "size": 24628037,
+    "attributes": [
+      {
+        "name": "Genotype/Line",
+        "value": "; ubiCAAX-GFP/+ ; neuPH-RFP/+"
+      },
+      {
+        "name": "Channel 1",
+        "value": "CAAX"
+      }
+    ],
+    "type": "file"
+  },
+  {
+    "path": "folder1/file2.ome.zarr.zip",
+    "size": 13161534,
+    "attributes": [
+      {
+        "name": "Genotype/Line",
+        "value": "; ubiCAAX-GFP/+ ; neuPH-RFP/+"
+      },
+      {
+        "name": "Channel 1",
+        "value": "CAAX"
+      }
+    ],
+    "type": "file"
+  }
+]

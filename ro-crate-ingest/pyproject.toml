@@ -20,6 +20,7 @@ roc-validator = "^0"
 deepdiff = "^8.3.0"
 pyld = "^2"
 pydantic-settings = "^2.9.1"
+pandas = "^2.3.1"
 
 
 [tool.poetry.group.dev.dependencies]

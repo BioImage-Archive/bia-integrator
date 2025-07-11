@@ -3,18 +3,21 @@ from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_parsing_utils 
     attributes_to_dict,
     find_sections_recursive,
 )
-from ro_crate_ingest.biostudies_to_ro_crate.biostudies.api import (
+from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_api import (
     Submission,
     Section,
 )
 from typing import Optional
 from bia_shared_datamodels import ro_crate_models
-
+from ro_crate_ingest.biostudies_to_ro_crate.entity_conversion.file_list import (
+    generate_relative_filelist_path,
+    get_filelist_name_from_dataset,
+)
 
 logger = logging.getLogger("__main__." + __name__)
 
 
-def get_datasets(
+def get_datasets_by_accno(
     submission: Submission,
     image_aquisition_protocols: dict[str, ro_crate_models.ImageAcquisitionProtocol],
     specimen_imaging_preparation_protocols: dict[
@@ -34,7 +37,7 @@ def get_datasets(
         submission.section, ["Annotations"], []
     )
 
-    datasets = []
+    datasets_by_accno = {}
     for section in study_comp_sections:
         association_dict = get_association_field_from_associations(
             section=section,
@@ -44,14 +47,16 @@ def get_datasets(
             image_analysis_methods=image_analysis_methods,
             image_correlation_method=image_correlation_method,
         )
-        datasets.append(get_dataset_from_study_component(section, association_dict))
-
-    for section in annotation_sections:
-        datasets.append(
-            get_dataset_from_annotation_component(section, annotation_methods)
+        datasets_by_accno[section.accno] = get_dataset_from_study_component(
+            section, association_dict
         )
 
-    return datasets
+    for section in annotation_sections:
+        datasets_by_accno[section.accno] = get_dataset_from_annotation_component(
+            section, annotation_methods
+        )
+
+    return datasets_by_accno
 
 
 def get_dataset_from_study_component(
@@ -59,13 +64,18 @@ def get_dataset_from_study_component(
     association_dict: dict[str, dict[str, str]],
 ):
 
+    id = f"./{section.accno}"
+
     attr_dict = attributes_to_dict(section.attributes)
+    filelist_id_ref = {"@id": get_filelist_reference(id, section)}
 
     model_dict = association_dict | {
-        "@id": f"./{section.accno}",
+        "@id": id,
         "@type": ["Dataset", "bia:Dataset"],
         "title": attr_dict["name"],
         "description": attr_dict["description"],
+        "hasPart": [filelist_id_ref],
+        "associationFileMetadata": filelist_id_ref,
     }
 
     return ro_crate_models.Dataset(**model_dict)
@@ -74,17 +84,22 @@ def get_dataset_from_study_component(
 def get_dataset_from_annotation_component(
     section: Section, annotation_methods: dict[str, ro_crate_models.AnnotationMethod]
 ):
+    id = f"./{section.accno}"
 
     attr_dict = attributes_to_dict(section.attributes)
+    filelist_id_ref = {"@id": get_filelist_reference(id, section)}
 
     model_dict = {
-        "@id": f"./{section.accno}",
+        "@id": id,
         "@type": ["Dataset", "bia:Dataset"],
         "title": attr_dict["title"],
         "description": attr_dict.get("annotation overview", None),
         "associatedAnnotationMethod": [
             {"@id": annotation_methods[attr_dict["title"]].id}
         ],
+        "hasPart": [filelist_id_ref],
+        "associationFileMetadata": filelist_id_ref,
+        "associationFileMetadata": filelist_id_ref,
     }
     return ro_crate_models.Dataset(**model_dict)
 
@@ -165,3 +180,8 @@ def get_association_field_from_associations(
             )
 
     return association_dict
+
+
+def get_filelist_reference(dataset_id: str, dataset_section: Section):
+    file_list_name = get_filelist_name_from_dataset(dataset_section)
+    return generate_relative_filelist_path(dataset_id, file_list_name)
