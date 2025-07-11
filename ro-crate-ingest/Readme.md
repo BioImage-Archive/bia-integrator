@@ -4,7 +4,7 @@ A CLI tool to convert between BioImage Archive API objects and JSON objects rela
 
 ## Install
 ```
-poetry env use python3.10
+poetry env use python3.13
 poetry install
 ```
 
@@ -15,7 +15,7 @@ Creates json BIA api objects for the objects in an ro-crate json.
 Example use:
 
 ```
-poetry run ro-crate-ingest -c ../bia-shared-datamodels/src/bia_shared_datamodels/mock_ro_crate/S-BIAD1494
+poetry run ro-crate-ingest ingest -c ../bia-shared-datamodels/src/bia_shared_datamodels/mock_ro_crate/S-BIAD1494
 ```
 
 This will create files for objects in the default cache location: ~/.cache/ro-crate-ingest
@@ -23,6 +23,18 @@ This will create files for objects in the default cache location: ~/.cache/ro-cr
 
 the -p option can be used to save objects in a local api or the bia api. Settings for the BIA api can be set up by copying the .env_template file to an .env file, and filling in the details for your BIA account.
 
+
+## Biostudies to ro-crate
+
+Creates an ro-crate with an ro-crate-metadata.json and filelist per dataset:
+
+Example use:
+
+```
+poetry run ro-crate-ingest biostudies-to-roc S-BIAD843
+```
+
+Can choose the output folder with -c 
 
 ## Testing
 

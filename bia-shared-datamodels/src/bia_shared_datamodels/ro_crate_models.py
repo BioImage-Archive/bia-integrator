@@ -44,10 +44,12 @@ class Publication(ROCrateModel):
 
 class Contributor(ROCrateModel):
     displayName: Annotated[str, FieldContext("http://schema.org/name")] = Field()
-    address: Annotated[str, FieldContext("http://schema.org/address")] = Field(
+    address: Annotated[Optional[str], FieldContext("http://schema.org/address")] = (
+        Field(default=None)
+    )
+    website: Annotated[Optional[AnyUrl], FieldContext("http://bia/website")] = Field(
         default=None
     )
-    website: Annotated[AnyUrl, FieldContext("http://bia/website")] = Field(default=None)
     affiliation: Annotated[
         list[ObjectReference],
         FieldContext("http://schema.org/memberOf"),
@@ -64,14 +66,12 @@ class Contributor(ROCrateModel):
 
 class Affiliaton(ROCrateModel):
     displayName: Annotated[str, FieldContext("http://schema.org/name")] = Field()
-    address: Annotated[str, FieldContext("http://schema.org/address")] = Field(
+    address: Annotated[Optional[str], FieldContext("http://schema.org/address")] = (
+        Field(default=None)
+    )
+    website: Annotated[Optional[AnyUrl], FieldContext("http://bia/website")] = Field(
         default=None
     )
-    website: Annotated[AnyUrl, FieldContext("http://bia/website")] = Field(default=None)
-    affiliation: Annotated[
-        list[str],
-        FieldContext("http://schema.org/memberOf"),
-    ] = Field(default_factory=list)
 
     model_config = ConfigDict(model_type="http://bia/Affiliation")
 
@@ -241,6 +241,9 @@ class CreationProcess(ROCrateModel):
 
 
 class BioSample(ROCrateModel):
+    title: Annotated[Optional[str], FieldContext("http://schema.org/name")] = Field(
+        default=None
+    )
     biologicalEntityDescription: Annotated[
         str, FieldContext("http://bia/biologicalEntityDescription")
     ] = Field()
@@ -356,7 +359,7 @@ class AnnotationMethod(ProtocolMixin, ROCrateModel):
     model_config = ConfigDict(model_type="http://bia/AnnotationMethod")
 
 
-class ImageAnyalysisMethod(ProtocolMixin, ROCrateModel):
+class ImageAnalysisMethod(ProtocolMixin, ROCrateModel):
     featuresAnalysed: Annotated[
         Optional[str], FieldContext("http://bia/featuresAnalysed")
     ] = Field(default=None)

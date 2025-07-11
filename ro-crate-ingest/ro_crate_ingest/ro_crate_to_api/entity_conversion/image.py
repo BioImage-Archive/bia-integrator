@@ -6,12 +6,14 @@ import bia_shared_datamodels.attribute_models as AttributeModels
 import logging
 import pathlib
 import rdflib
-from ro_crate_ingest.entity_conversion.file_reference import (
+from ro_crate_ingest.ro_crate_to_api.entity_conversion.file_reference import (
     find_files,
     create_api_file_reference,
 )
-from ro_crate_ingest.entity_conversion.creation_process import convert_creation_process
-from ro_crate_ingest.entity_conversion.image_dependency_ordering import (
+from ro_crate_ingest.ro_crate_to_api.entity_conversion.creation_process import (
+    convert_creation_process,
+)
+from ro_crate_ingest.ro_crate_to_api.entity_conversion.image_dependency_ordering import (
     order_creation_processes_and_images,
 )
 from ro_crate_ingest.graph_utils import get_hasPart_parent_id_from_child

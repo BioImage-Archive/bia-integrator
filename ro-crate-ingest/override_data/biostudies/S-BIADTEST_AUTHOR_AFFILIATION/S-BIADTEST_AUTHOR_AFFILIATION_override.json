@@ -1,0 +1,301 @@
+{
+  "accno": "S-BIADTEST_AUTHOR_AFFILIATION",
+  "attributes": [
+    {
+      "name": "Title",
+      "value": "BIADTEST AUTHOR AFFILIATION TEST"
+    },
+    {
+      "name": "ReleaseDate",
+      "value": "2023-08-14"
+    },
+    {
+      "name": "AttachTo",
+      "value": "BioImages"
+    }
+  ],
+  "section": {
+    "type": "Study",
+    "attributes": [
+      {
+        "name": "Description",
+        "value": "Description 1"
+      },
+      {
+        "name": "Keyword",
+        "value": "Keyword1"
+      },
+      {
+        "name": "Keyword",
+        "value": "Keyword2"
+      },
+      {
+        "name": "Keyword",
+        "value": "Keyword3"
+      }
+    ],
+    "links": [
+      {
+        "url": "https://www.ebi.ac.uk/bioimage-archive/",
+        "attributes": [
+          {
+            "name": "Description",
+            "value": "BIA website"
+          }
+        ]
+      },
+      {
+        "url": "https://www.ebi.ac.uk/bioimage-archive/galleries/galleries.html",
+        "attributes": [
+          {
+            "name": "Description",
+            "value": "Pretty pictures"
+          }
+        ]
+      }
+    ],
+    "subsections": [
+      {
+        "type": "author",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "User with affiliaition and orcid"
+          },
+          {
+            "name": "E-mail",
+            "value": "user1@ebi.ac.uk"
+          },
+          {
+            "name": "Role",
+            "value": "data acquisition, data curator"
+          },
+          {
+            "name": "ORCID",
+            "value": "0009-0007-4223-1439"
+          },
+          {
+            "name": "affiliation",
+            "value": "o1",
+            "reference": true
+          }
+        ]
+      },
+      {
+        "type": "author",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "User with afiliation but no orcid"
+          },
+          {
+            "name": "Role",
+            "value": "data acquisition, data annotator, data curator"
+          },
+          {
+            "name": "affiliation",
+            "value": "o1",
+            "reference": true
+          }
+        ]
+      },
+      {
+        "type": "author",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Author with multiple affiliaition as different attributes"
+          },
+          {
+            "name": "Role",
+            "value": "data acquisition, data annotator, data curator"
+          },
+          {
+            "name": "ORCID",
+            "value": "0000-0000-0000-TEST"
+          },
+          {
+            "name": "affiliation",
+            "value": "o1",
+            "reference": true
+          },
+          {
+            "name": "affiliation",
+            "value": "o2",
+            "reference": true
+          }
+        ]
+      },
+      {
+        "type": "author",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Author with multiple affiliaition as a string list"
+          },
+          {
+            "name": "Role",
+            "value": "data acquisition, data annotator, data curator"
+          },
+          {
+            "name": "affiliation",
+            "value": "o1, o2",
+            "reference": true
+          }
+        ]
+      },
+      {
+        "accno": "o1",
+        "type": "organization",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Organization with no rorid"
+          },
+          {
+            "name": "Address",
+            "value": "Hinxton, UK"
+          }
+        ]
+      },
+      {
+        "accno": "o2",
+        "type": "organization",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Organiszation with no address or rorid"
+          }
+        ]
+      },
+      {
+        "accno": "Biosample-1",
+        "type": "Biosample",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "Biosample 1 Title"
+          },
+          {
+            "name": "Biological entity",
+            "value": "Specific part of fly."
+          },
+          {
+            "name": "Description",
+            "value": "Description of how it was obtained etc."
+          }
+        ],
+        "subsections": [
+          {
+            "accno": "Organism-1",
+            "type": "Organism",
+            "attributes": [
+              {
+                "name": "Scientific name",
+                "value": "Drosophila melanogaster"
+              },
+              {
+                "name": "Common name",
+                "value": "fruit fly"
+              },
+              {
+                "name": "NCBI taxon ID",
+                "value": "NCBI:txid7227"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "accno": "Specimen-1",
+        "type": "Specimen",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "Specimen 1 Title"
+          },
+          {
+            "name": "Sample Preparation Protocol",
+            "value": "Followed step 1, 2 and 3"
+          }
+        ]
+      },
+      {
+        "accno": "Image Acquisition-1",
+        "type": "Image Acquisition",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "Image Acquisition 1 Title"
+          },
+          {
+            "name": "Imaging Instrument",
+            "value": "Microscope and/or telescope (but looking the other way)."
+          },
+          {
+            "name": "Image Acquisition Parameters",
+            "value": "Voxel size 0.0430x0.0430x0.5002 micron^3"
+          }
+        ],
+        "subsections": [
+          {
+            "accno": "Imaging Method-1",
+            "type": "Imaging Method",
+            "attributes": [
+              {
+                "name": "Ontology Value",
+                "value": "Confocal microscopy"
+              },
+              {
+                "name": "Ontology Name",
+                "value": "Biological Imaging Methods Ontology (FBbi)"
+              },
+              {
+                "name": "Ontology Term ID",
+                "value": "http://purl.obolibrary.org/obo/FBbi_00000251"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "accno": "Study Component-1",
+        "type": "Study Component",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Confocal fluorescence images"
+          },
+          {
+            "name": "Description",
+            "value": "Study component description 1"
+          },
+          {
+            "name": "File List",
+            "value": "file_list_test_1.json"
+          }
+        ],
+        "subsections": [
+          {
+            "type": "Associations",
+            "attributes": [
+              {
+                "name": "Biosample",
+                "value": "Biosample 1 Title"
+              },
+              {
+                "name": "Specimen",
+                "value": "Specimen 1 Title"
+              },
+              {
+                "name": "Image acquisition",
+                "value": "Image Acquisition 1 Title"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "type": "submission"
+}

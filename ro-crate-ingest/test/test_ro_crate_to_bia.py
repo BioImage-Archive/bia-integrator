@@ -35,7 +35,7 @@ def test_ingest_ro_crate_metadata(accession_id: str, tmp_bia_data_dir: Path):
 
     crate_path = get_ro_crate_path(accession_id)
 
-    result = runner.invoke(ro_crate_ingest, ["-c", crate_path])
+    result = runner.invoke(ro_crate_ingest, ["ingest", "-c", crate_path])
 
     assert result.exit_code == 0
 
@@ -67,7 +67,9 @@ def test_ingest_ro_crate_metadata_with_api(accession_id: str, get_bia_api_client
 
     crate_path = get_ro_crate_path(accession_id)
 
-    result = runner.invoke(ro_crate_ingest, ["-c", crate_path, "-p", "local_api"])
+    result = runner.invoke(
+        ro_crate_ingest, ["ingest", "-c", crate_path, "-p", "local_api"]
+    )
 
     assert result.exit_code == 0
 
