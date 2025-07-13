@@ -5,7 +5,8 @@
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
     "python.analysis.extraPaths": [
-        "./clients/python"
+        "./clients/python",
+        "./bia-assign-image/scripts"
     ],
     "python.analysis.typeCheckingMode": "basic"
 }
