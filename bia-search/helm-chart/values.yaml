@@ -1,0 +1,31 @@
+replicaCount: 1
+
+image:
+  tag: "0.1.0"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 8080
+
+ingress:
+  # TODO
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+
+resources:
+  limits:
+    memory: "256M"
+    cpu: ".25"
+
+search_env:
+  elasticHostname: ""
+  elasticUsername: ""
+  elasticPassword: ""
+  elasticIndex: ""
