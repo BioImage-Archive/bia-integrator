@@ -54,6 +54,7 @@ def save_local_file(
         os.makedirs(object_dir)
 
     for document in objects_to_save:
+        round_trip_object_class_from_client_to_datamodel(document)
         save_local_individual_file(object_dir, document)
 
 
@@ -94,23 +95,18 @@ def save_api(
 ):
     for obj in objects_to_save:
 
-        obj = round_trip_object_class_from_client_to_datamodel(obj)
-
-        api_copy_of_obj = fetch_document(object_type, obj, client)
-        if api_copy_of_obj:
-            if obj == api_copy_of_obj:
-                message = f"Not writing object with uuid: {obj.uuid} and type: {obj.model.type_name} to API because an identical copy of object exists in API"
-                logger.warning(message)
-                continue
-            elif api_copy_of_obj:
-                obj.version = api_copy_of_obj.version + 1
-
         api_obj = getattr(api_models, object_type.__name__).model_validate_json(
             obj.model_dump_json()
         )
         api_creation_method = f"post_{to_snake(object_type.__name__)}"
         post_function = getattr(client, api_creation_method)
-        post_function(api_obj)
+        try:
+            post_function(api_obj)
+        except:
+            api_copy_of_obj = fetch_document(object_type, obj, client)
+            if api_copy_of_obj:
+                obj.version = api_copy_of_obj.version + 1
+            post_function(api_obj)
 
 
 def persist(
@@ -138,8 +134,7 @@ def persist(
 def round_trip_object_class_from_client_to_datamodel(api_object):
     """
     This function is used to add in the information that the API would automatically add to the object.
-    This is to deal enable the ingest to check if the object has been changed and only bump the object version if it has.
-    Otherwise, the comparison would always fail because the API is adding e.g. model information to the object.
+    This is to make the to disk ingest create objects that are exactly what would then be returned by the api.
     """
     obj_class_api = api_object.__class__
     bia_data_model_class = getattr(bia_data_model, obj_class_api.__name__)
