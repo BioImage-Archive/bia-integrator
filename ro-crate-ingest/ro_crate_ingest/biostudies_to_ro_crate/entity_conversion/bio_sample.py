@@ -11,7 +11,7 @@ from ro_crate_ingest.biostudies_to_ro_crate.entity_conversion.taxon import (
     get_taxon_under_biosample,
 )
 from typing import Optional
-
+from ro_crate_ingest.biostudies_to_ro_crate.entity_conversion import uuid_creation 
 from bia_shared_datamodels import ro_crate_models
 
 logger = logging.getLogger("__main__." + __name__)
@@ -69,11 +69,7 @@ def get_bio_sample(
     attr_dict = attributes_to_dict(section.attributes)
 
     model_dict = {
-        "@id": (
-            f"biostudies_bs:{section.accno}_{growth_protocol.id}"
-            if growth_protocol
-            else f"biostudies_bs:{section.accno}"
-        ),
+        "@id": uuid_creation.create_bio_sample_uuid(),
         "@type": ["bia:BioSample"],
         "title": attr_dict["title"],
         "biologicalEntityDescription": attr_dict.get("biological entity", ""),

@@ -161,9 +161,9 @@ def get_column(
     column_name: str, column_by_name_url: dict[str, dict[str, ro_crate_models.Column]]
 ) -> ro_crate_models.Column:
     ontology_map = {
-        "path": "https://bia/filePath",
-        "size": "https://bia/sizeInBytes",
-        "sourceImage": "https://bia/sourceImagePath",
+        "path": "http://bia/filePath",
+        "size": "http://bia/sizeInBytes",
+        "sourceImage": "http://bia/sourceImagePath",
     }
 
     column_data = {"columnName": column_name}

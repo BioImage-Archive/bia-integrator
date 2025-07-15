@@ -38,14 +38,16 @@ def process_file_lists(
         )
 
         property_map = get_file_list_column_property_map(fl_obj, crate_objects_by_id)
+        inv_prop_map = {v: k for k, v in property_map.items() if v}
+        filtered_property_map = {k: v for k, v in property_map.items() if v}
 
         file_list_path = ro_crate_path / id
         with open(file_list_path, "r") as f:
-            reader = csv.DictReader(f)
+            reader = csv.DictReader(f, delimiter="\t")
             for row in reader:
                 file_ref, path = create_file_reference_from_row(
                     row,
-                    property_map,
+                    filtered_property_map,
                     str(dataset_uuid),
                     study_uuid,
                     ro_crate_path,
@@ -83,11 +85,18 @@ def create_file_reference_from_row(
     study_uuid: str,
     ro_crate_path: Path,
 ) -> APIModels.FileReference:
-    inv_prop_map = {v: k for k, v in property_map.items() if v}
 
-    path_field = inv_prop_map["https://bia/filePath"]
+    # path_field = inv_prop_map["https://bia/filePath"]
 
-    file_path = ro_crate_path / row.pop(path_field)
+    # file_path = ro_crate_path / row.pop(path_field)
+
+    mapped_row = {}
+
+    for key, value in row.items():
+        if key in property_map:
+            mapped_row[property_map[key]] = value
+        else:
+            mapped_row[key] = value
 
     attributes = [
         {
@@ -101,7 +110,7 @@ def create_file_reference_from_row(
 
     return (
         create_api_file_reference(
-            file_path, study_uuid, file_list_dataset_id, ro_crate_path, attributes
+            mapped_row, study_uuid, file_list_dataset_id, ro_crate_path, attributes
         ),
-        file_path,
+        mapped_row["http://bia/filePath"],
     )

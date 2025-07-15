@@ -38,12 +38,18 @@ def ro_crate_to_bia(
             help="Mode to persist the data. Options: local_file, local_api, bia_api",
         ),
     ] = PersistenceMode.LOCAL_FILE,
+    trust_uuid_id: Annotated[
+        Optional[bool],
+        typer.Option(
+            help="Wheher to use the IDs of objects as uuids for objects directly. For use with trusted import sources, such a ro-crates generated from Biostudies."
+        ),
+    ] = False,
 ):
     crate_path = crate_path.resolve()
     if crate_path.name == "ro-crate-metadata.json":
         crate_path = crate_path.parent
 
-    convert_ro_crate_to_bia_api(crate_path, persistence_mode)
+    convert_ro_crate_to_bia_api(crate_path, persistence_mode, trust_uuid_id)
 
 
 @ro_crate_ingest.command("biostudies-to-roc")
