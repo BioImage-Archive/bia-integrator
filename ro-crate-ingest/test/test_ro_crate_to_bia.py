@@ -91,3 +91,15 @@ def test_ingest_ro_crate_metadata_with_api(accession_id: str, get_bia_api_client
         expected_object = api_obj_type.model_validate(expected_out)
 
         assert api_obj == expected_object
+
+
+@pytest.mark.parametrize(
+    "accession_id", ["S-BIAD843"]
+)
+def test_debug(accession_id: str, tmp_bia_data_dir: Path):
+
+    crate_path = Path(__file__).parents[1] / accession_id
+
+    result = runner.invoke(ro_crate_ingest, ["ingest", "-c", crate_path])
+
+    assert result.exit_code == 0

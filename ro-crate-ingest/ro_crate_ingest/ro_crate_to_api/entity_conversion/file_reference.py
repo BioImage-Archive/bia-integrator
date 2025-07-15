@@ -39,7 +39,10 @@ def create_file_reference(
             if pathlib.Path(file_path) not in processed_file_paths:
                 file_reference_list.append(
                     create_api_file_reference(
-                        file_path, study_uuid, dataset_uuid, crate_path
+                        {"http://bia/filePath": file_path},
+                        study_uuid,
+                        dataset_uuid,
+                        crate_path,
                     )
                 )
 
@@ -58,19 +61,25 @@ def get_suffix(file_path: str) -> str:
 
 
 def create_api_file_reference(
-    file_path: str,
+    file_ref_dictionary: dict[str, str],
     study_uuid: str,
     dataset_uuid: str,
     crate_path: pathlib.Path,
     additional_attributes: Optional[list] = None,
 ) -> APIModels.FileReference:
 
-    relative_path = pathlib.Path(file_path).relative_to(crate_path).as_posix()
-    relative_path = pathlib.Path(file_path).relative_to(crate_path).as_posix()
+    file_path = file_ref_dictionary["http://bia/filePath"]
+
+    if pathlib.Path(file_path).is_absolute():
+        relative_path = pathlib.Path(file_path).relative_to(crate_path).as_posix()
+    else:
+        relative_path = file_path
 
     # TODO: Work out how file URI would be generated.
-
-    file_size = pathlib.Path(file_path).stat().st_size
+    try:
+        file_size = int(file_ref_dictionary["http://bia/sizeInBytes"])
+    except KeyError:
+        file_size = pathlib.Path(file_path).stat().st_size
 
     uuid_string = f"{str(relative_path)}{file_size}"
 

@@ -30,7 +30,9 @@ logging.basicConfig(
 logger = logging.getLogger()
 
 
-def convert_ro_crate_to_bia_api(crate_path: Path, persistence_mode: PersistenceMode):
+def convert_ro_crate_to_bia_api(
+    crate_path: Path, persistence_mode: PersistenceMode, trust_uuid_id: bool
+):
     entities = process_ro_crate(crate_path)
     crate_graph = load_ro_crate_metadata_to_graph(crate_path)
 

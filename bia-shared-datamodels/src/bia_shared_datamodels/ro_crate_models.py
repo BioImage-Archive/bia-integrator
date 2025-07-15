@@ -120,7 +120,8 @@ class Dataset(ROCrateModel):
         FieldContext("http://bia/associatedImagingPreparationProtocol", isIdField=True),
     ] = Field(default_factory=list)
     associatedSpecimen: Annotated[
-        ObjectReference, FieldContext("http://bia/associatedSubject", isIdField=True)
+        Optional[ObjectReference],
+        FieldContext("http://bia/associatedSubject", isIdField=True),
     ] = Field(default=None)
     associatedImageAcquisitionProtocol: Annotated[
         list[ObjectReference],
