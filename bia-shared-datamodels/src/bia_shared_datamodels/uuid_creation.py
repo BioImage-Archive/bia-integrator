@@ -12,6 +12,7 @@ from .bia_data_model import (
     ImageAcquisitionProtocol,
     SpecimenImagingPreparationProtocol,
     BioSample,
+    AnnotationData,
 )
 
 
@@ -39,6 +40,10 @@ def create_file_reference_uuid(study_uuid: UUID, unique_string: str) -> UUID:
 
 def create_image_uuid(study_uuid: UUID, unique_string: str) -> UUID:
     return __list_to_uuid([study_uuid, Image.__name__, unique_string])
+
+
+def create_annotation_data_uuid(study_uuid: UUID, unique_string: str) -> UUID:
+    return __list_to_uuid([study_uuid, AnnotationData.__name__, unique_string])
 
 
 def create_image_representation_uuid(study_uuid: UUID, unique_string: str) -> UUID:
