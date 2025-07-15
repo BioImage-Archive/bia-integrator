@@ -8,6 +8,7 @@ from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_api import (
     Section,
 )
 from typing import Optional
+from ro_crate_ingest.biostudies_to_ro_crate.entity_conversion import uuid_creation
 
 from bia_shared_datamodels import ro_crate_models
 
@@ -16,13 +17,14 @@ logger = logging.getLogger("__main__." + __name__)
 
 def get_growth_protocol_by_title(
     submission: Submission,
+    study_uuid: str,
 ) -> dict[str, ro_crate_models.Protocol]:
 
     sections = find_sections_recursive(submission.section, ["Specimen"], [])
 
     roc_object_dict = {}
     for section in sections:
-        roc_object = get_growth_protocol(section)
+        roc_object = get_growth_protocol(section, study_uuid)
         # Note growth protocol title is from Specimen title, so matches association from biostudies.
         if roc_object:
             roc_object_dict[roc_object.title] = roc_object
@@ -31,6 +33,7 @@ def get_growth_protocol_by_title(
 
 def get_growth_protocol(
     section: Section,
+    study_uuid: str,
 ) -> Optional[ro_crate_models.Protocol]:
     attr_dict = attributes_to_dict(section.attributes)
 
@@ -38,7 +41,7 @@ def get_growth_protocol(
         return None
 
     model_dict = {
-        "@id": f"biostudies_gp:{section.accno}",
+        "@id": uuid_creation.create_protocol_uuid(study_uuid, section.accno),
         "@type": ["bia:Protocol"],
         "title": attr_dict["title"],
         "protocolDescription": attr_dict.get("growth protocol", ""),
