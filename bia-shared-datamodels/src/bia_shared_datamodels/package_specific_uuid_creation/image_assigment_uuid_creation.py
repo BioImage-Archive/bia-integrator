@@ -20,38 +20,3 @@ def create_image_representation_uuid(
         ),
     )
 
-
-def create_image_uuid(
-    study_uuid: str,
-    file_reference_uuids: list[str],
-) -> tuple[UUID, attribute_models.DocumentUUIDUinqueInputAttribute]:
-    return shared.create_image_uuid(
-        study_uuid, file_reference_uuids, provenance=Provenance.bia_image_assignment
-    )
-
-
-def create_annotation_data_uuid(
-    study_uuid: str,
-    file_reference_uuids: list[str],
-) -> tuple[UUID, attribute_models.DocumentUUIDUinqueInputAttribute]:
-    return shared.create_annotation_data_uuid(
-        study_uuid, file_reference_uuids, provenance=Provenance.bia_image_assignment
-    )
-
-
-def create_specimen_uuid(
-    study_uuid: str,
-    image_uuid: str,
-) -> tuple[UUID, attribute_models.DocumentUUIDUinqueInputAttribute]:
-    return shared.create_specimen_uuid(
-        study_uuid, image_uuid, provenance=Provenance.bia_image_assignment
-    )
-
-
-def create_creation_process_uuid(
-    study_uuid: str,
-    image_uuid: str,
-) -> tuple[UUID, attribute_models.DocumentUUIDUinqueInputAttribute]:
-    return shared.create_creation_process_uuid(
-        study_uuid, image_uuid, provenance=Provenance.bia_image_assignment
-    )
