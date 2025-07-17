@@ -79,19 +79,3 @@ def create_image_acquisition_protocol_uuid(
     )
 
 
-def create_image_representation_uuid(
-    study_uuid: str, image_uuid: str, image_format: str, image_chunking: str
-) -> tuple[UUID, attribute_models.DocumentUUIDUinqueInputAttribute]:
-    """
-    For creating the base represetation of image e.g. the first one, comprised of the file(s) sent to us by a contributor.
-    """
-    unique_string = " ".join([image_uuid, image_format, image_chunking])
-
-    return (
-        uuid_creation.create_image_representation_uuid(
-            study_uuid=study_uuid,
-            unique_string=unique_string,
-        ),
-        shared.create_unique_str_attribute(unique_string, Provenance.bia_ingest),
-    )
-
