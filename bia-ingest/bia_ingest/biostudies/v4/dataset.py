@@ -17,7 +17,9 @@ from bia_ingest.biostudies.submission_parsing_utils import (
 )
 
 from bia_shared_datamodels import bia_data_model, semantic_models, attribute_models
-from bia_shared_datamodels.uuid_creation import create_dataset_uuid
+from bia_shared_datamodels.package_specific_uuid_creation.biostudies_ingest_uuid_creation import (
+    create_dataset_uuid,
+)
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -94,11 +96,11 @@ def get_dataset_dict_from_study_component(
                 associations, bsst_title_to_bia_object_map
             )
 
-        uuid_unique_input = section.accno
-        # TODO: Actually use correlation methods?
+        uuid, uuid_attibute = create_dataset_uuid(study_uuid, section.accno)
+
         model_dict = {
             "object_creator": semantic_models.Provenance.bia_ingest,
-            "uuid": create_dataset_uuid(study_uuid, uuid_unique_input),
+            "uuid": uuid,
             "title": attr_dict["Name"],
             "description": attr_dict["Description"],
             "submitted_in_study_uuid": study_uuid,
@@ -108,13 +110,7 @@ def get_dataset_dict_from_study_component(
             "version": 0,
             "additional_metadata": attribute_list,
         }
-        model_dict["additional_metadata"].append(
-            {
-                "provenance": semantic_models.Provenance.bia_ingest,
-                "name": "uuid_unique_input",
-                "value": {"uuid_unique_input": uuid_unique_input},
-            }
-        )
+        model_dict["additional_metadata"].append(uuid_attibute.model_dump())
 
         model_dicts.append(model_dict)
 
@@ -139,11 +135,11 @@ def get_dataset_dict_from_annotation(
             attr_dict, bsst_title_to_bia_object_map
         )
 
-        uuid_unique_input = section.accno
+        uuid, uuid_attibute = create_dataset_uuid(study_uuid, section.accno)
 
         model_dict = {
             "object_creator": semantic_models.Provenance.bia_ingest,
-            "uuid": create_dataset_uuid(study_uuid, uuid_unique_input),
+            "uuid": uuid,
             "title": attr_dict["Title"],
             "description": attr_dict.get("Annotation Overview", None),
             "submitted_in_study_uuid": study_uuid,
@@ -153,13 +149,7 @@ def get_dataset_dict_from_annotation(
             "version": 0,
             "additional_metadata": attribute_list,
         }
-        model_dict["additional_metadata"].append(
-            {
-                "provenance": semantic_models.Provenance.bia_ingest,
-                "name": "uuid_unique_input",
-                "value": {"uuid_unique_input": uuid_unique_input},
-            }
-        )
+        model_dict["additional_metadata"].append(uuid_attibute.model_dump())
         model_dicts.append(model_dict)
 
     return model_dicts

@@ -17,8 +17,25 @@ def create_dataset_uuid(
     )
 
 
+def create_dataset_uuid_for_default_bsst_template_submissions(
+    study_uuid: str,
+) -> tuple[UUID, attribute_models.DocumentUUIDUinqueInputAttribute]:
+    """
+    Used when a biostudies submission has no dataset and has file references attached to the study directly.
+    """
+    unique_string = f"Default template. No Study Components"
+    return (
+        uuid_creation.create_dataset_uuid(
+            study_uuid=study_uuid, unique_string=unique_string
+        ),
+        shared.create_unique_str_attribute(unique_string, Provenance.bia_ingest),
+    )
+
+
 def create_bio_sample_uuid(
-    study_uuid: str, biostudies_section_accno: str, growth_protocol_uuid: Optional[str]
+    study_uuid: str,
+    biostudies_section_accno: str,
+    growth_protocol_uuid: Optional[str] = None,
 ) -> tuple[UUID, attribute_models.DocumentUUIDUinqueInputAttribute]:
     if growth_protocol_uuid:
         unique_string = f"{biostudies_section_accno} {growth_protocol_uuid}"

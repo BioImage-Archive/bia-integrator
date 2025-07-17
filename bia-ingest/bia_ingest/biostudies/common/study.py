@@ -23,8 +23,9 @@ from bia_ingest.biostudies.submission_parsing_utils import (
 from bia_ingest.biostudies.api import Attribute, Submission
 
 from bia_shared_datamodels import bia_data_model, semantic_models
-from bia_shared_datamodels.uuid_creation import create_study_uuid
-
+from bia_shared_datamodels.package_specific_uuid_creation.shared import (
+    create_study_uuid,
+)
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -83,8 +84,11 @@ def get_study(
         }
     )
 
+    # Note we have not been storing uuid_attribute in additional metedata since it's always just the accno.
+    uuid, uuid_attribute = create_study_uuid(submission.accno)
+
     study_dict = {
-        "uuid": create_study_uuid(submission.accno),
+        "uuid": uuid,
         "accession_id": submission.accno,
         # TODO: Do more robust search for title - sometimes it is in
         #       actual submission - see old ingest code
@@ -132,7 +136,7 @@ def get_licence(study_attributes: Dict[str, Any]) -> semantic_models.Licence:
     """
     temp = re.sub(r"\s", "_", study_attributes.get("License", "CC0"))
     licence = re.sub(r"\.", "", temp)
-    licence = licence.replace('-','_')
+    licence = licence.replace("-", "_")
     return semantic_models.Licence[licence]
 
 

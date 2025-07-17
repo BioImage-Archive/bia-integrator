@@ -13,7 +13,9 @@ from bia_ingest.biostudies.submission_parsing_utils import (
 from bia_ingest.biostudies.api import Submission, Section
 
 from bia_shared_datamodels import bia_data_model, semantic_models
-from bia_shared_datamodels.uuid_creation import create_image_acquisition_protocol_uuid
+from bia_shared_datamodels.package_specific_uuid_creation.biostudies_ingest_uuid_creation import (
+    create_image_acquisition_protocol_uuid,
+)
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -90,22 +92,16 @@ def extract_image_acquisition_protocol_dicts(
             ]
 
         model_dict["version"] = 0
-        uuid_unique_input = section.accno
-        model_dict["uuid"] = create_image_acquisition_protocol_uuid(
+        uuid, uuid_attribute = create_image_acquisition_protocol_uuid(
             study_uuid,
-            uuid_unique_input,
+            section.accno,
         )
+        model_dict["uuid"] = uuid
 
         model_dict_map[attr_dict["Title"]] = model_dict
 
         model_dict["object_creator"] = semantic_models.Provenance.bia_ingest
-        model_dict["additional_metadata"] = [
-            {
-                "provenance": semantic_models.Provenance.bia_ingest,
-                "name": "uuid_unique_input",
-                "value": {"uuid_unique_input": uuid_unique_input},
-            },
-        ]
+        model_dict["additional_metadata"] = [uuid_attribute.model_dump()]
     return model_dict_map
 
 

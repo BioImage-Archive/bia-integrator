@@ -15,7 +15,7 @@ from bia_ingest.biostudies.submission_parsing_utils import (
 from bia_ingest.biostudies.api import Submission
 
 from bia_shared_datamodels import bia_data_model, semantic_models
-from bia_shared_datamodels.uuid_creation import (
+from bia_shared_datamodels.package_specific_uuid_creation.biostudies_ingest_uuid_creation import (
     create_specimen_imaging_preparation_protocol_uuid,
 )
 
@@ -75,20 +75,15 @@ def extract_specimen_preparation_protocol_dicts(
         # Currently generates empty list as we need to change the submission template
         model_dict["signal_channel_information"] = []
 
-        uuid_unique_input = section.accno
-        model_dict["uuid"] = create_specimen_imaging_preparation_protocol_uuid(
-            study_uuid, uuid_unique_input
+        uuid, uuid_attribute = create_specimen_imaging_preparation_protocol_uuid(
+            study_uuid,
+            section.accno,
         )
+        model_dict["uuid"] = uuid
         model_dict["version"] = 0
         model_dict["object_creator"] = semantic_models.Provenance.bia_ingest
 
-        model_dict["additional_metadata"] = [
-            {
-                "provenance": semantic_models.Provenance.bia_ingest,
-                "name": "uuid_unique_input",
-                "value": {"uuid_unique_input": uuid_unique_input},
-            },
-        ]
+        model_dict["additional_metadata"] = [uuid_attribute.model_dump()]
         model_dict_map[attr_dict["Title"]] = model_dict
 
     return model_dict_map

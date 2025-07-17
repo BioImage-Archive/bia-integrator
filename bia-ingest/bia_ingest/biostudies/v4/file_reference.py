@@ -15,7 +15,9 @@ from bia_ingest.biostudies.api import (
     File as BioStudiesAPIFile,
 )
 from bia_shared_datamodels import bia_data_model, semantic_models
-from bia_shared_datamodels.uuid_creation import create_file_reference_uuid
+from bia_shared_datamodels.package_specific_uuid_creation.shared import (
+    create_file_reference_uuid,
+)
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -88,7 +90,9 @@ def get_file_reference_dicts_for_submission_dataset(
     for f in files_in_file_list:
         file_path = str(f.path.as_posix())
         size_in_bytes = int(f.size)
-        uuid_unique_input = f"{file_path}{size_in_bytes}"
+        uuid, uuid_attribute = create_file_reference_uuid(
+            study_uuid, file_path, size_in_bytes
+        )
 
         attributes = attributes_to_dict(f.attributes)
         additional_metadata = [
@@ -99,11 +103,7 @@ def get_file_reference_dicts_for_submission_dataset(
                     "attributes": attributes,
                 },
             },
-            {
-                "provenance": semantic_models.Provenance.bia_ingest,
-                "name": "uuid_unique_input",
-                "value": {"uuid_unique_input": uuid_unique_input},
-            },
+            uuid_attribute,
         ]
 
         input_image = get_source_image(attributes, file_path_to_file_ref_map)
@@ -117,7 +117,7 @@ def get_file_reference_dicts_for_submission_dataset(
             )
 
         file_dict = {
-            "uuid": create_file_reference_uuid(study_uuid, uuid_unique_input),
+            "uuid": uuid,
             "file_path": file_path,
             "format": f.type,
             "size_in_bytes": size_in_bytes,
@@ -143,7 +143,7 @@ def get_file_reference_dicts_for_submission_dataset(
 
 
 def get_source_image(
-    attributes_from_filelist: dict[str, [str | list[str]]],
+    attributes_from_filelist: dict[str, str | list[str]],
     file_path_to_file_ref_map: dict[str, dict],
 ) -> Optional[UUID]:
     input_image_uuid = None

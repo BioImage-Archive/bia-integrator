@@ -12,34 +12,38 @@ from bia_ingest.biostudies.submission_parsing_utils import (
 )
 
 from bia_shared_datamodels import bia_data_model, semantic_models
-from bia_shared_datamodels.uuid_creation import create_dataset_uuid
+from bia_shared_datamodels.package_specific_uuid_creation.biostudies_ingest_uuid_creation import (
+    create_dataset_uuid_for_default_bsst_template_submissions,
+)
 
 logger = logging.getLogger("__main__." + __name__)
 
 
 def get_dataset_overview(
-    submission: Submission, 
+    submission: Submission,
     study_uuid: UUID,
-    result_summary: dict, 
-    persister: Optional[PersistenceStrategy] = None
+    result_summary: dict,
+    persister: Optional[PersistenceStrategy] = None,
 ) -> bia_data_model.Dataset:
     """
-    Returns the overview part of a dataset. 
+    Returns the overview part of a dataset.
     For use only with default template submissions.
     """
-    
+
     accno = submission.accno
 
     # Assumptions about study section: always at least one, and can be more than one
     study_section = find_sections_recursive(submission.section, ["Study"])
     num_studies = len(study_section)
     if num_studies > 1:
-        logger.warning(f"More than one study section found in deafult template: {study_section}")
+        logger.warning(
+            f"More than one study section found in deafult template: {study_section}"
+        )
         result_summary[accno].__setattr__(
             "Warning",
             f"{len(study_section)} studies found in deafult template",
         )
-    
+
     # Regardless, study_section is returned as a list
     study_section = study_section[0]
 
@@ -57,7 +61,7 @@ def get_dataset_overview(
             f"No title found for dataset for submission: {submission.accno}",
         )
         study_title = ""
-    
+
     if "Description" in study_attr_dict:
         description = study_attr_dict["Description"]
     else:
@@ -65,14 +69,12 @@ def get_dataset_overview(
 
     # This should normally be the unique ID of the corresponding Study Component
     # in the pagetab.json file, which the default template does not have.
-    dataset_uuid_unique_input = "Default template. No Study Components"
-    dataset_uuid_unique_input_dict = {
-        "provenance": semantic_models.Provenance.bia_ingest,
-        "name": "uuid_unique_input",
-        "value": {"uuid_unique_input": dataset_uuid_unique_input},
-    }
+    uuid, uuid_attribute = create_dataset_uuid_for_default_bsst_template_submissions(
+        study_uuid
+    )
+
     model_dict = {
-        "uuid": create_dataset_uuid(study_uuid, dataset_uuid_unique_input),
+        "uuid": uuid,
         "object_creator": semantic_models.Provenance.bia_ingest,
         "title": study_title,
         "description": description,
@@ -81,7 +83,7 @@ def get_dataset_overview(
         "correlation_method": [],
         "example_image_uri": [],
         "version": 0,
-        "additional_metadata": [dataset_uuid_unique_input_dict,]
+        "additional_metadata": [uuid_attribute.model_dump()],
     }
 
     dataset = dict_to_api_model(
