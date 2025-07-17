@@ -3,10 +3,11 @@ from pydantic import BaseModel, Field
 from typing import Optional
 import logging
 from bia_assign_image.api_client import store_object_in_api_idempotent
-from bia_assign_image.object_creation import specimen, creation_process, image
+from bia_assign_image.object_creation import specimen, creation_process
 from bia_integrator_api.api import PrivateApi
 from bia_integrator_api import exceptions, models
-from bia_shared_datamodels import uuid_creation
+from bia_shared_datamodels.package_specific_uuid_creation import shared
+from bia_shared_datamodels import semantic_models
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -141,12 +142,11 @@ def find_input_image_dependencies(
 
     if len(input_file_ref_uuid_list) > 0:
         input_file_ref_uuid_list = list(set(input_file_ref_uuid_list))
-        input_image_unique_str = image.create_image_uuid_unique_string(
-            input_file_ref_uuid_list
-        )
-        input_image_uuid = uuid_creation.create_image_uuid(
-            study_uuid, input_image_unique_str
-        )
+        input_image_uuid = shared.create_image_uuid(
+            study_uuid,
+            input_file_ref_uuid_list,
+            semantic_models.Provenance.bia_image_assignment,
+        )[0]
         try:
             input_image = api_client.get_image(str(input_image_uuid))
         except exceptions.NotFoundException:
