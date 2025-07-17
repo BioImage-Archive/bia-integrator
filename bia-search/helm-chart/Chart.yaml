@@ -1,18 +1,12 @@
 apiVersion: v2
-name: api
-description: A Helm chart for the BioImage Archive api
+name: search
+description: A Helm chart for the BioImage Archive search api
 maintainers:
   - name: LA  # Liviu Anita
     email: liviu@ebi.ac.uk
 
 type: application
 
-version: 0.2.2
+version: 0.1.0
 
-appVersion: "0.2.3"
-
-dependencies:
-  - name: mongodb
-    version: 15.4.3
-    repository: https://charts.bitnami.com/bitnami
-    condition: mongodb.enabled
+appVersion: "0.1.0"
