@@ -69,7 +69,7 @@ def create_specimen_uuid(
         uuid_creation.create_specimen_uuid(
             accession_id=study_uuid, uuid_unique_input=uuid_unique_input
         ),
-        uuid_unique_input,
+        create_unique_str_attribute(uuid_unique_input, provenance),
     )
 
 
@@ -87,15 +87,32 @@ def create_creation_process_uuid(
         uuid_creation.create_creation_process_uuid(
             study_uuid=study_uuid,
         ),
-        unique_string,
+        create_unique_str_attribute(unique_string, provenance),
+    )
+
+
+def create_image_representation_uuid(
+    study_uuid: str,
+    image_uuid: str,
+    provenance: Provenance,
+) -> tuple[UUID, attribute_models.DocumentUUIDUinqueInputAttribute]:
+    """
+    For creating the base represetation of image e.g. the first one, comprised of the file(s) sent to us by a contributor.
+    """
+    unique_string = f"{image_uuid}"
+    return (
+        uuid_creation.create_image_representation_uuid(
+            study_uuid=study_uuid, unique_string=unique_string
+        ),
+        create_unique_str_attribute(unique_string, provenance),
     )
 
 
 def create_unique_str_attribute(
-    unique_string: str, provenence: Provenance
+    unique_string: str, provenance: Provenance
 ) -> attribute_models.DocumentUUIDUinqueInputAttribute:
     return attribute_models.DocumentUUIDUinqueInputAttribute(
-        provenance=provenence,
+        provenance=provenance,
         name="uuid_unique_input",
         value={"uuid_unique_input": unique_string},
     )
