@@ -13,7 +13,7 @@ from bia_ingest.biostudies.submission_parsing_utils import (
 from bia_ingest.biostudies.api import Submission
 
 from bia_shared_datamodels import bia_data_model, semantic_models
-from bia_shared_datamodels.uuid_creation import create_protocol_uuid
+from bia_shared_datamodels.package_specific_uuid_creation.biostudies_ingest_uuid_creation import create_protocol_uuid
 
 logger = logging.getLogger("__main__." + __name__)
 

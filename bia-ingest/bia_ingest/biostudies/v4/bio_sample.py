@@ -24,7 +24,9 @@ from bia_ingest.persistence_strategy import PersistenceStrategy
 
 
 from bia_shared_datamodels import bia_data_model, semantic_models
-from bia_shared_datamodels.uuid_creation import create_bio_sample_uuid
+from bia_shared_datamodels.package_specific_uuid_creation.biostudies_ingest_uuid_creation import (
+    create_bio_sample_uuid,
+)
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -120,34 +122,22 @@ def extract_biosample_dicts(
             model_dict_with_gp = deepcopy(model_dict)
             model_dict_with_gp["growth_protocol_uuid"] = gp_uuid
 
-            uuid_unique_input = f"{section.accno} {gp_uuid}"
-            model_dict_with_gp["uuid"] = create_bio_sample_uuid(
-                study_uuid,
-                uuid_unique_input,
+            uuid, uuid_attribute = create_bio_sample_uuid(
+                study_uuid, section.accno, gp_uuid
             )
-            model_dict_with_gp["additional_metadata"] = [
-                {
-                    "provenance": semantic_models.Provenance.bia_ingest,
-                    "name": "uuid_unique_input",
-                    "value": {"uuid_unique_input": uuid_unique_input},
-                },
-            ]
+
+            model_dict_with_gp["uuid"] = uuid
+            model_dict_with_gp["additional_metadata"] = [uuid_attribute]
             model_dicts_map[attr_dict["Title"] + "." + specimen] = model_dict_with_gp
 
         if bs_without_gp:
             model_dict["growth_protocol_uuid"] = None
-            uuid_unique_input = f"{section.accno}"
-            model_dict["uuid"] = create_bio_sample_uuid(
-                study_uuid,
-                uuid_unique_input,
+            uuid, uuid_attribute = create_bio_sample_uuid(
+                study_uuid, section.accno, gp_uuid
             )
-            model_dict["additional_metadata"] = [
-                {
-                    "provenance": semantic_models.Provenance.bia_ingest,
-                    "name": "uuid_unique_input",
-                    "value": {"uuid_unique_input": uuid_unique_input},
-                },
-            ]
+
+            model_dict["uuid"] = uuid
+            model_dict["additional_metadata"] = [uuid_attribute]
             model_dicts_map[attr_dict["Title"]] = model_dict
     return model_dicts_map
 
