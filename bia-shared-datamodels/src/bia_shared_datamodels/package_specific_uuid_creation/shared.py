@@ -32,12 +32,12 @@ def create_image_uuid(
     file_reference_uuids: list[str],
     provenance: Provenance,
 ) -> tuple[UUID, attribute_models.DocumentUUIDUinqueInputAttribute]:
-    uuid_unique_input = " ".join([str(u) for u in sorted(file_reference_uuids)])
+    unique_string = " ".join([str(u) for u in sorted(file_reference_uuids)])
     return (
         uuid_creation.create_image_uuid(
-            study_uuid=study_uuid, uuid_unique_input=uuid_unique_input
+            study_uuid=study_uuid, unique_string=unique_string
         ),
-        create_unique_str_attribute(uuid_unique_input, provenance),
+        create_unique_str_attribute(unique_string, provenance),
     )
 
 
@@ -46,12 +46,12 @@ def create_annotation_data_uuid(
     file_reference_uuids: list[str],
     provenance: Provenance,
 ) -> tuple[UUID, attribute_models.DocumentUUIDUinqueInputAttribute]:
-    uuid_unique_input = " ".join([str(u) for u in sorted(file_reference_uuids)])
+    unique_string = " ".join([str(u) for u in sorted(file_reference_uuids)])
     return (
         uuid_creation.create_annotation_data_uuid(
-            study_uuid=study_uuid, uuid_unique_input=uuid_unique_input
+            study_uuid=study_uuid, unique_string=unique_string
         ),
-        create_unique_str_attribute(uuid_unique_input, provenance),
+        create_unique_str_attribute(unique_string, provenance),
     )
 
 
@@ -64,12 +64,12 @@ def create_specimen_uuid(
     This is for creating a specimen object assuming it is unqiue to an image, and no id has been provided.
     If multiple images were created using the same specimen explicitly some other uuid creation may be more appropriate.
     """
-    uuid_unique_input = f"{image_uuid}"
+    unique_string = f"{image_uuid}"
     return (
         uuid_creation.create_specimen_uuid(
-            accession_id=study_uuid, uuid_unique_input=uuid_unique_input
+            study_uuid=study_uuid, unique_string=unique_string
         ),
-        create_unique_str_attribute(uuid_unique_input, provenance),
+        create_unique_str_attribute(unique_string, provenance),
     )
 
 
@@ -85,7 +85,7 @@ def create_creation_process_uuid(
     unique_string = f"{image_uuid}"
     return (
         uuid_creation.create_creation_process_uuid(
-            study_uuid=study_uuid,
+            study_uuid=study_uuid, unique_string=unique_string
         ),
         create_unique_str_attribute(unique_string, provenance),
     )

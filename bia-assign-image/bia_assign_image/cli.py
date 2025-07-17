@@ -19,6 +19,8 @@ from bia_assign_image.image_assignment import (
     create_missing_dependencies,
     ImageDependencies,
 )
+from bia_shared_datamodels.package_specific_uuid_creation import shared
+
 
 app = typer.Typer()
 representations_app = typer.Typer()
@@ -54,10 +56,12 @@ def assign(
     file_reference_uuid_list = file_reference_uuids[0].split(" ")
     # Get / Create relevant uuids that will be used for missing dependency creation
     study_uuid = uuid_creation.create_study_uuid(accession_id)
-    image_uuid_unique_string = image.create_image_uuid_unique_string(
-        file_reference_uuid_list
+
+    image_uuid, image_uuid_attribute = shared.create_image_uuid(
+        study_uuid,
+        file_reference_uuid_list,
+        semantic_models.Provenance.bia_image_assignment,
     )
-    image_uuid = uuid_creation.create_image_uuid(study_uuid, image_uuid_unique_string)
 
     file_references = [
         api_client.get_file_reference(f) for f in file_reference_uuid_list
@@ -73,7 +77,7 @@ def assign(
     assert image_dependencies.has_dependencies_for_image_creation()
     bia_image = image.get_image(
         image_uuid,
-        image_uuid_unique_string,
+        image_uuid_attribute,
         image_dependencies.dataset_uuid,
         image_dependencies.creation_process_uuid,
         file_references,

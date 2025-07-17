@@ -16,7 +16,7 @@ logger = logging.getLogger()
 #       other UUIDs from this.
 def get_image(
     image_uuid: UUID,
-    image_uuid_unique_string: str,
+    image_uuid_unique_string_attribute: attribute_models.DocumentUUIDUinqueInputAttribute,
     submission_dataset_uuid: UUID,
     creation_process_uuid: UUID,
     file_references: List[bia_data_model.FileReference,],
@@ -36,7 +36,7 @@ def get_image(
         file_references=file_references,
         additional_metadata=additional_metadata,
     )
-    add_uuid_unique_input_attribute(image_uuid_unique_string, additional_metadata)
+    additional_metadata.append(image_uuid_unique_string_attribute.model_dump())
 
     model_dict = {
         "uuid": image_uuid,
@@ -51,23 +51,6 @@ def get_image(
     model = bia_data_model.Image.model_validate(model_dict)
 
     return model
-
-
-def add_uuid_unique_input_attribute(
-    image_uuid_unique_string: str, additional_metadata: list
-) -> None:
-    unique_string_dict = {
-        "provenance": semantic_models.Provenance.bia_image_assignment,
-        "name": "uuid_unique_input",
-        "value": {
-            "uuid_unique_input": image_uuid_unique_string,
-        },
-    }
-    additional_metadata.append(
-        attribute_models.DocumentUUIDUinqueInputAttribute.model_validate(
-            unique_string_dict
-        )
-    )
 
 
 def add_attributes_from_file_references(
@@ -115,10 +98,3 @@ def add_file_pattern_attribute(
     additional_metadata.append(
         semantic_models.Attribute.model_validate(file_pattern_attr_dict)
     )
-
-
-def create_image_uuid_unique_string(
-    file_reference_uuids: List[UUID] | List[str],
-) -> str:
-    """Create the unique string used in generating uuids for bia_data_model.Image objects"""
-    return " ".join([str(f) for f in sorted(file_reference_uuids)])

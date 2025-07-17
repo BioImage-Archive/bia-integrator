@@ -4,9 +4,8 @@ from typing import List
 from bia_shared_datamodels import (
     bia_data_model,
     semantic_models,
-    uuid_creation,
-    attribute_models,
 )
+from bia_shared_datamodels.package_specific_uuid_creation import shared
 
 
 def get_image_representation(
@@ -68,18 +67,13 @@ def get_image_representation(
     # if file_pattern:
     #    attribute.append(file_pattern)
 
-    if object_creator == semantic_models.Provenance.bia_image_assignment:
-        unique_string = f"{image.uuid}"
-    elif object_creator == semantic_models.Provenance.bia_image_conversion:
-        raise Exception("ImageRepresentations for conversion not yet implemented")
-    else:
-        raise Exception(
-            "object_creator must be either bia_image_assignment or bia_image_conversion"
-        )
+    if object_creator != semantic_models.Provenance.bia_image_assignment:
+        raise Exception("object_creator must be bia_image_assignment")
 
-    image_representation_uuid = uuid_creation.create_image_representation_uuid(
-        study_uuid,
-        unique_string,
+    image_representation_uuid, image_representation_uuid_attribute = (
+        shared.create_image_representation_uuid(
+            study_uuid, image.uuid, semantic_models.Provenance.bia_image_assignment
+        )
     )
 
     model_dict = {
@@ -93,17 +87,8 @@ def get_image_representation(
         "additional_metadata": additional_metadata,
     }
 
-    unique_string_dict = {
-        "provenance": object_creator,
-        "name": "uuid_unique_input",
-        "value": {
-            "uuid_unique_input": unique_string,
-        },
-    }
     model_dict["additional_metadata"].append(
-        attribute_models.DocumentUUIDUinqueInputAttribute.model_validate(
-            unique_string_dict
-        )
+        image_representation_uuid_attribute.model_dump()
     )
 
     model = bia_data_model.ImageRepresentation.model_validate(model_dict)
