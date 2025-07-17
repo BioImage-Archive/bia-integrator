@@ -4,7 +4,11 @@ from pydantic import BaseModel
 from pydantic.alias_generators import to_snake
 import pytest
 from bia_shared_datamodels import bia_data_model
-from bia_test_data.data_to_api import add_objects_to_api, get_object_creation_client, PrivateApi
+from bia_test_data.data_to_api import (
+    add_objects_to_api,
+    get_object_creation_client,
+    PrivateApi,
+)
 from bia_assign_image.settings import settings
 import json
 import os
@@ -15,7 +19,7 @@ def get_expected_object(
     base_path: Path, object_type: str, accession_id: str, uuid: str
 ) -> Type[BaseModel]:
     """Return bia_data_model from json"""
-    object_path = base_path / to_snake(object_type) / accession_id / f"{uuid}.json"
+    object_path = base_path / to_snake(object_type) / accession_id / f"{str(uuid)}.json"
     obj = getattr(bia_data_model, object_type)
     return obj.model_validate_json(object_path.read_text())
 
@@ -23,6 +27,7 @@ def get_expected_object(
 @pytest.fixture(scope="session")
 def private_client() -> PrivateApi:
     return get_object_creation_client(settings.local_bia_api_basepath)
+
 
 @pytest.fixture(scope="session", autouse=True)
 def data_in_api():

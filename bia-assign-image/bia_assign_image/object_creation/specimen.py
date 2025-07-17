@@ -6,6 +6,7 @@ from bia_shared_datamodels import (
     semantic_models,
     attribute_models,
 )
+from bia_shared_datamodels.package_specific_uuid_creation import shared
 
 
 def get_specimen(
@@ -14,26 +15,22 @@ def get_specimen(
     imaging_preparation_protocol_uuid: List[UUID],
     sample_of_uuid: List[UUID],
 ) -> bia_data_model.Specimen:
-    unique_string = str(image_uuid)
+
+    specimen_uuid, specimen_uuid_attribute = shared.create_specimen_uuid(
+        study_uuid,
+        image_uuid,
+        semantic_models.Provenance.bia_image_assignment,
+    )
+
     model_dict = {
         "version": 0,
-        "uuid": uuid_creation.create_specimen_uuid(study_uuid, unique_string),
+        "uuid": specimen_uuid,
         "imaging_preparation_protocol_uuid": imaging_preparation_protocol_uuid,
         "sample_of_uuid": sample_of_uuid,
         "object_creator": semantic_models.Provenance.bia_image_assignment,
         "additional_metadata": [],
     }
-    unique_string_dict = {
-        "provenance": semantic_models.Provenance.bia_image_assignment,
-        "name": "uuid_unique_input",
-        "value": {
-            "uuid_unique_input": unique_string,
-        },
-    }
-    model_dict["additional_metadata"].append(
-        attribute_models.DocumentUUIDUinqueInputAttribute.model_validate(
-            unique_string_dict
-        )
-    )
+
+    model_dict["additional_metadata"].append(specimen_uuid_attribute.model_dump())
 
     return bia_data_model.Specimen.model_validate(model_dict)
