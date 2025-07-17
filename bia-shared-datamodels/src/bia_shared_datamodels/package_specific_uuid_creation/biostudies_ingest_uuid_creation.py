@@ -33,7 +33,9 @@ def create_dataset_uuid_for_default_bsst_template_submissions(
 
 
 def create_bio_sample_uuid(
-    study_uuid: str, biostudies_section_accno: str, growth_protocol_uuid: Optional[str]
+    study_uuid: str,
+    biostudies_section_accno: str,
+    growth_protocol_uuid: Optional[str] = None,
 ) -> tuple[UUID, attribute_models.DocumentUUIDUinqueInputAttribute]:
     if growth_protocol_uuid:
         unique_string = f"{biostudies_section_accno} {growth_protocol_uuid}"
