@@ -103,7 +103,7 @@ def extract_annotation_method_dicts(
         model_dict["uuid"] = uuid
         model_dict["version"] = 0
         model_dict["object_creator"] = semantic_models.Provenance.bia_ingest
-        model_dict["additional_metadata"] = [uuid_attribute]
+        model_dict["additional_metadata"] = [uuid_attribute.model_dump()]
 
         model_dict_map[attr_dict["Title"]] = model_dict
 

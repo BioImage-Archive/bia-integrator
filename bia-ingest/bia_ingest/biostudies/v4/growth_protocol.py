@@ -13,7 +13,9 @@ from bia_ingest.biostudies.submission_parsing_utils import (
 from bia_ingest.biostudies.api import Submission
 
 from bia_shared_datamodels import bia_data_model, semantic_models
-from bia_shared_datamodels.package_specific_uuid_creation.biostudies_ingest_uuid_creation import create_protocol_uuid
+from bia_shared_datamodels.package_specific_uuid_creation.biostudies_ingest_uuid_creation import (
+    create_protocol_uuid,
+)
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -63,7 +65,10 @@ def extract_growth_protocol_dicts(
     model_dict_map = {}
     for section in specimen_sections:
         attr_dict = attributes_to_dict(section.attributes)
-        uuid_unique_input = section.accno
+        uuid, uuid_attribute = create_protocol_uuid(
+            study_uuid,
+            section.accno,
+        )
 
         if "Growth protocol" in attr_dict:
             model_dict = {
@@ -72,15 +77,9 @@ def extract_growth_protocol_dicts(
             }
 
             model_dict["version"] = 0
-            model_dict["uuid"] = create_protocol_uuid(study_uuid, uuid_unique_input)
+            model_dict["uuid"] = uuid
             model_dict["object_creator"] = semantic_models.Provenance.bia_ingest
-            model_dict["additional_metadata"] = [
-                {
-                    "provenance": semantic_models.Provenance.bia_ingest,
-                    "name": "uuid_unique_input",
-                    "value": {"uuid_unique_input": uuid_unique_input},
-                },
-            ]
+            model_dict["additional_metadata"] = [uuid_attribute.model_dump()]
 
             model_dict_map[attr_dict["Title"] + ".growth_protocol"] = model_dict
 

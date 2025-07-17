@@ -127,17 +127,15 @@ def extract_biosample_dicts(
             )
 
             model_dict_with_gp["uuid"] = uuid
-            model_dict_with_gp["additional_metadata"] = [uuid_attribute]
+            model_dict_with_gp["additional_metadata"] = [uuid_attribute.model_dump()]
             model_dicts_map[attr_dict["Title"] + "." + specimen] = model_dict_with_gp
 
         if bs_without_gp:
             model_dict["growth_protocol_uuid"] = None
-            uuid, uuid_attribute = create_bio_sample_uuid(
-                study_uuid, section.accno, gp_uuid
-            )
+            uuid, uuid_attribute = create_bio_sample_uuid(study_uuid, section.accno)
 
             model_dict["uuid"] = uuid
-            model_dict["additional_metadata"] = [uuid_attribute]
+            model_dict["additional_metadata"] = [uuid_attribute.model_dump()]
             model_dicts_map[attr_dict["Title"]] = model_dict
     return model_dicts_map
 

@@ -83,7 +83,7 @@ def get_dataset_overview(
         "correlation_method": [],
         "example_image_uri": [],
         "version": 0,
-        "additional_metadata": [uuid_attribute],
+        "additional_metadata": [uuid_attribute.model_dump()],
     }
 
     dataset = dict_to_api_model(

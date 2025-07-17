@@ -101,7 +101,7 @@ def extract_image_acquisition_protocol_dicts(
         model_dict_map[attr_dict["Title"]] = model_dict
 
         model_dict["object_creator"] = semantic_models.Provenance.bia_ingest
-        model_dict["additional_metadata"] = [uuid_attribute]
+        model_dict["additional_metadata"] = [uuid_attribute.model_dump()]
     return model_dict_map
 
 

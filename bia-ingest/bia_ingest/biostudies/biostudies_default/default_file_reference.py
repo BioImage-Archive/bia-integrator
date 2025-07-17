@@ -101,7 +101,7 @@ def get_file_reference_dicts_for_submission_dataset(
         }
         file_dict["additional_metadata"] = [
             attributes_as_attr_dict,
-            uuid_attribute,
+            uuid_attribute.model_dump(),
         ]
         file_references.append(file_dict)
 

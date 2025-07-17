@@ -110,7 +110,7 @@ def get_dataset_dict_from_study_component(
             "version": 0,
             "additional_metadata": attribute_list,
         }
-        model_dict["additional_metadata"].append(uuid_attibute)
+        model_dict["additional_metadata"].append(uuid_attibute.model_dump())
 
         model_dicts.append(model_dict)
 
