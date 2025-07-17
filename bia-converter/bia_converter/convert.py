@@ -38,10 +38,9 @@ def create_image_representation_object(
     # Create the base image representation object. Cannot by itself create the file_uri or
     # size attributes correctly
 
-    uuid, uuid_attribute = create_image_representation_uuid(study_uuid, conversion_process_dict)
-
     dataset = api_client.get_dataset(image.submission_dataset_uuid)
     study_uuid = UUID(dataset.submitted_in_study_uuid)
+    uuid, uuid_attribute = create_image_representation_uuid(study_uuid, conversion_process_dict)
     image_rep = ImageRepresentation(
         object_creator=Provenance.BIA_IMAGE_CONVERSION,
         uuid=str(uuid),
