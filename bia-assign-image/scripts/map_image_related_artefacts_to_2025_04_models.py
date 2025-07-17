@@ -34,7 +34,7 @@ def map_image_to_2025_04_model(
     # Make file_reference_uuids a list of strings (because of quirky
     # way the typer cli arguments are implemented in bia_assign_image.cli.assign)
     file_reference_uuids = [
-        " ".join([str(f) for f in sorted(file_reference_uuids_2025_04)]),
+        " ".join([str(f) for f in file_reference_uuids_2025_04]),
     ]
 
     image_uuid = assign(accession_id, file_reference_uuids, api_target)

@@ -59,7 +59,7 @@ def assign(
 
     image_uuid, image_uuid_attribute = shared.create_image_uuid(
         study_uuid,
-        file_reference_uuids,
+        file_reference_uuid_list,
         semantic_models.Provenance.bia_image_assignment,
     )
 
