@@ -135,11 +135,11 @@ def get_dataset_dict_from_annotation(
             attr_dict, bsst_title_to_bia_object_map
         )
 
-        uuid_unique_input = section.accno
+        uuid, uuid_attibute = create_dataset_uuid(study_uuid, section.accno)
 
         model_dict = {
             "object_creator": semantic_models.Provenance.bia_ingest,
-            "uuid": create_dataset_uuid(study_uuid, uuid_unique_input),
+            "uuid": uuid,
             "title": attr_dict["Title"],
             "description": attr_dict.get("Annotation Overview", None),
             "submitted_in_study_uuid": study_uuid,
@@ -149,13 +149,7 @@ def get_dataset_dict_from_annotation(
             "version": 0,
             "additional_metadata": attribute_list,
         }
-        model_dict["additional_metadata"].append(
-            {
-                "provenance": semantic_models.Provenance.bia_ingest,
-                "name": "uuid_unique_input",
-                "value": {"uuid_unique_input": uuid_unique_input},
-            }
-        )
+        model_dict["additional_metadata"].append(uuid_attibute.model_dump())
         model_dicts.append(model_dict)
 
     return model_dicts
