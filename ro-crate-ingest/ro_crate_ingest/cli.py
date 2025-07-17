@@ -9,6 +9,9 @@ from ro_crate_ingest.biostudies_to_ro_crate.biostudies_conversion import (
     convert_biostudies_to_ro_crate,
 )
 import os
+from ro_crate_ingest.empiar_to_ro_crate.empiar_proposal_conversion import (
+    convert_empiar_proposal_to_ro_crate,
+)
 
 ro_crate_ingest = typer.Typer()
 
@@ -70,3 +73,23 @@ def biostudies_to_ro_crate(
     if not os.path.exists(ro_crate_dir):
         os.makedirs(ro_crate_dir)
     convert_biostudies_to_ro_crate(accession_id, ro_crate_dir)
+
+
+@ro_crate_ingest.command("empiar-to-roc")
+def empiar_to_ro_crate(
+    proposal_path: Annotated[
+        Path,
+        typer.Argument(help="Path to the yaml proposal file."),
+    ],
+    crate_path: Annotated[
+        Optional[Path],
+        typer.Option(
+            "--crate-path",
+            "-c",
+            case_sensitive=False,
+            help="Path to output the ro-crate document",
+        ),
+    ] = None,
+):
+
+    convert_empiar_proposal_to_ro_crate(proposal_path, crate_path)

@@ -1,0 +1,267 @@
+{
+  "EMPIAR-TEST": {
+    "imagesets": [
+      {
+        "segmentations": [],
+        "name": "Sieve element cells of Arabidopsis thaliana roots",
+        "directory": "data/MRC_Files",
+        "category": "micrographs - multiframe",
+        "header_format": "MRC",
+        "data_format": "MRC",
+        "num_images_or_tilt_series": 1,
+        "frames_per_image": 1061,
+        "frame_range_min": 1,
+        "frame_range_max": 1061,
+        "voxel_type": "UNSIGNED BYTE",
+        "pixel_width": 70,
+        "pixel_height": 70,
+        "micrographs_file_pattern": "",
+        "picked_particles_file_pattern": "",
+        "picked_particles_directory": "",
+        "details": "Processed datasets: image processing was done in Microscopy Image Browser and included adjustment of contrast, alignment and calibration. The bounding box coordinates represent position of the dataset relative to the tip of the root\n\nDataset: 170314_Col-0_R20_339-381um.am\nVoxel size: 0.007 x 0.007 x 0.04 um\nBoundingBox (xmin, xmax, ymin, ymax, zmin, zmax) 527.30140 555.40970 -686.83160 -663.23020 339.14530 379.14530\nMIB(1704051124): Flip: mode=flipZ\nMIB(1704051130): ContrastGamma: Min:12585.2355, Max: 36949.7536, Gamma: 1\nMIB(1704051130): Converted to from uint16 to uint8\nMIB(1704051135): Aligned using Drift correction; relative to 0\nMIB(1704051143): Aligned using Single landmark point; relative to 0\nMIB(1704051206): ImCrop: [x1 y1 dx dy z1 dz t1 dt]: [682   418  3874  3253     1  1061     1     1]",
+        "image_width": "3874",
+        "image_height": "3253"
+      },
+      {
+        "segmentations": [],
+        "name": "Sieve element cells of Arabidopsis thaliana roots",
+        "directory": "data/MRC_Files",
+        "category": "micrographs - multiframe",
+        "header_format": "MRC",
+        "data_format": "MRC",
+        "num_images_or_tilt_series": 1,
+        "frames_per_image": 544,
+        "frame_range_min": 1,
+        "frame_range_max": 544,
+        "voxel_type": "UNSIGNED BYTE",
+        "pixel_width": 70,
+        "pixel_height": 70,
+        "micrographs_file_pattern": "",
+        "picked_particles_file_pattern": "",
+        "picked_particles_directory": "",
+        "details": "Processed datasets: image processing was done in Microscopy Image Browser and included adjustment of contrast, alignment and calibration. The bounding box coordinates represent position of the dataset relative to the tip of the root\n\nDataset: 170821_Col-0_R01_294-317um.am\nVoxel size: 0.007 x 0.007 x 0.04 um \nBoundingBox -46.17730 -20.82255 71.14690 86.00187 294.89500 314.89500\nMIB(1709011612): Aligned using Single landmark point; relative to 0\nMIB(1709011614): Aligned using Drift correction; relative to 0\nMIB(1709011623): Aligned using Single landmark point; relative to 0\nMIB(1709011623): ImCrop: [x1 y1 dx dy z1 dz t1 dt]: [119   482  3430  2010     1   544     1     1]\nMIB(1709011626): Normalize contrast, mode: mask, Ch: 1\nMIB(1709011628): ContrastGamma: Min:14265.0396, Max: 23898.9022, Gamma: 1\nMIB(1709011628): Converted to from uint16 to uint8\nMIB(1709011628): Flip: mode=flipZ",
+        "image_width": "3430",
+        "image_height": "2010"
+      },
+      {
+        "segmentations": [],
+        "name": "Sieve element cells of Arabidopsis thaliana roots",
+        "directory": "data/MRC_Files",
+        "category": "micrographs - multiframe",
+        "header_format": "MRC",
+        "data_format": "MRC",
+        "num_images_or_tilt_series": 1,
+        "frames_per_image": 717,
+        "frame_range_min": 1,
+        "frame_range_max": 717,
+        "voxel_type": "UNSIGNED BYTE",
+        "pixel_width": 100,
+        "pixel_height": 100,
+        "micrographs_file_pattern": "",
+        "picked_particles_file_pattern": "",
+        "picked_particles_directory": "",
+        "details": "Processed datasets: image processing was done in Microscopy Image Browser and included adjustment of contrast, alignment and calibration. The bounding box coordinates represent position of the dataset relative to the tip of the root\n\nDataset: 180130_PLM_SE_down_278-307um.am\nVoxel size: 0.010 x 0.01 x 0.04 um \nBoundingBox -166.42400 -143.02300 -290.90100 -274.02000 278.23500 306.23500\nMIB(1802021325): Aligned using Drift correction; relative to 0\nMIB(1802021327): Aligned using Single landmark point; relative to 0\nMIB(1802021330): Normalize contrast, mode: mask, Ch: 1\nMIB(1802021334): Normalize contrast, mode: mask, Ch: 1\nMIB(1802021335): ContrastGamma: Min:29058.337, Max: 44837.221, Gamma: 1\nMIB(1802021335): Converted to from uint16 to uint8\nMIB(1802021336): ImCrop: [x1 y1 dx dy z1 dz t1 dt]: [296   448  2341  1689     1   717     1     1]",
+        "image_width": "2341",
+        "image_height": "1689"
+      },
+      {
+        "segmentations": [],
+        "name": "Sieve element cells of Arabidopsis thaliana roots",
+        "directory": "data/MRC_Files",
+        "category": "micrographs - multiframe",
+        "header_format": "MRC",
+        "data_format": "MRC",
+        "num_images_or_tilt_series": 1,
+        "frames_per_image": 717,
+        "frame_range_min": 1,
+        "frame_range_max": 717,
+        "voxel_type": "UNSIGNED BYTE",
+        "pixel_width": 100,
+        "pixel_height": 100,
+        "micrographs_file_pattern": "",
+        "picked_particles_file_pattern": "",
+        "picked_particles_directory": "",
+        "details": "Processed datasets: image processing was done in Microscopy Image Browser and included adjustment of contrast, alignment and calibration. The bounding box coordinates represent position of the dataset relative to the tip of the root\n\nDataset: 180130_PLM_SE_up_278-307um.am\nVoxel size: 0.010 x 0.01 x 0.04 um \nBoundingBox -161.23100 -135.28000 -327.25700 -309.95700 278.23500 306.23500\nMIB(1802021310): Aligned using Drift correction; relative to 0\nMIB(1802021312): Aligned using Single landmark point; relative to 0\nMIB(1802021316): ImCrop: [x1 y1 dx dy z1 dz t1 dt]: [183   462  2596  1731     1   717     1     1]\nMIB(1802021319): Normalize contrast, mode: mask, Ch: 1\nMIB(1802021320): ContrastGamma: Min:28724.6413, Max: 45826.6123, Gamma: 1\nMIB(1802021320): Converted to from uint16 to uint8",
+        "image_width": "2596",
+        "image_height": "1731"
+      }
+    ],
+    "workflow_file": null,
+    "grant_references": [],
+    "version_history": [],
+    "title": "170314, Five-day-old Col-0 Arabidopsis thaliana root, phloem pole unloading zone (339-381 um from the root tip)",
+    "principal_investigator": [
+      {
+        "author_orcid": "0000-0002-7287-8459",
+        "middle_name": null,
+        "organization": "Sainsbury Laboratory, University of Cambridge",
+        "street": "Bateman Street",
+        "town_or_city": "Cambridge",
+        "state_or_province": "Cambridgeshire",
+        "post_or_zip": "CB2 1LR",
+        "telephone": null,
+        "fax": null,
+        "first_name": "Yrjö",
+        "last_name": "Helariutta",
+        "email": "yrjo.helariutta [at] slcu.cam.ac.uk",
+        "country": "United Kingdom",
+        "entry": "EMPIAR-10442"
+      }
+    ],
+    "status": "REL",
+    "deposition_date": "2020-06-04",
+    "release_date": "2020-10-23",
+    "obsolete_date": null,
+    "update_date": "2020-10-23",
+    "corresponding_author": {
+      "author": {
+        "author_orcid": "0000-0003-2190-4909",
+        "middle_name": null,
+        "organization": "Electron Microscopy Unit, Institute of Biotechnology, University of Helsinki",
+        "street": "PL56 (Viikinkaari 9)",
+        "town_or_city": "Helsinki",
+        "state_or_province": "Uusimaa",
+        "post_or_zip": "00014",
+        "first_name": "Ilya",
+        "last_name": "Belevich",
+        "country": "Finland"
+      }
+    },
+    "authors": [
+      {
+        "author": {
+          "name": "Paterlini A",
+          "author_orcid": "0000-0002-1777-3160"
+        }
+      },
+      {
+        "author": {
+          "name": "Belevich I",
+          "author_orcid": "0000-0003-2190-4909"
+        }
+      },
+      {
+        "author": {
+          "name": "Jokitalo E",
+          "author_orcid": "0000-0002-4159-6934"
+        }
+      },
+      {
+        "author": {
+          "name": "Helariutta Y",
+          "author_orcid": "0000-0002-7287-8459"
+        }
+      }
+    ],
+    "cross_references": [],
+    "biostudies_references": [],
+    "idr_references": [],
+    "empiar_references": [],
+    "citation": [
+      {
+        "authors": [
+          {
+            "name": "Yan D",
+            "author_orcid": "0000-0001-8256-0279"
+          },
+          {
+            "name": "Yadav SR",
+            "author_orcid": null
+          },
+          {
+            "name": "Paterlini A",
+            "author_orcid": "0000-0002-1777-3160"
+          },
+          {
+            "name": "Nicolas WJ",
+            "author_orcid": "0000-0001-5970-8626"
+          },
+          {
+            "name": "Petit JD",
+            "author_orcid": null
+          },
+          {
+            "name": "Brocard L",
+            "author_orcid": null
+          },
+          {
+            "name": "Belevich I",
+            "author_orcid": "0000-0003-2190-4909"
+          },
+          {
+            "name": "Grison MS",
+            "author_orcid": "0000-0002-3080-3686"
+          },
+          {
+            "name": "Vaten A",
+            "author_orcid": "0000-0003-1788-5127"
+          },
+          {
+            "name": "Karami L",
+            "author_orcid": null
+          },
+          {
+            "name": "El-Showk S",
+            "author_orcid": null
+          },
+          {
+            "name": "Lee JY",
+            "author_orcid": "0000-0003-4604-7974"
+          },
+          {
+            "name": "Murawska GM",
+            "author_orcid": null
+          },
+          {
+            "name": "Mortimer J",
+            "author_orcid": "0000-0001-6624-636X"
+          },
+          {
+            "name": "Knoblauch M",
+            "author_orcid": null
+          },
+          {
+            "name": "Jokitalo E",
+            "author_orcid": "0000-0002-4159-6934"
+          },
+          {
+            "name": "Markham JE",
+            "author_orcid": null
+          },
+          {
+            "name": "Bayer EM",
+            "author_orcid": "0000-0001-8642-5293"
+          },
+          {
+            "name": "Helariutta Y",
+            "author_orcid": "0000-0002-7287-8459"
+          }
+        ],
+        "editors": [],
+        "published": true,
+        "j_or_nj_citation": true,
+        "title": "Sphingolipid biosynthesis modulates plasmodesmal ultrastructure and phloem unloading",
+        "volume": "5",
+        "country": "",
+        "first_page": "604",
+        "last_page": "615",
+        "year": "2019",
+        "language": "English",
+        "doi": "10.1038/s41477-019-0429-5",
+        "pubmedid": "31182845",
+        "details": null,
+        "book_chapter_title": null,
+        "publisher": null,
+        "publication_location": null,
+        "journal": "Nature plants",
+        "journal_abbreviation": "Nat Plants",
+        "issue": "6",
+        "preprint": false
+      }
+    ],
+    "dataset_size": "43.2 GB",
+    "experiment_type": "SBF-SEM",
+    "scale": null,
+    "entry_doi": "10.6019/EMPIAR-10442"
+  }
+}
