@@ -17,7 +17,9 @@ from bia_ingest.biostudies.api import (
     File as BioStudiesAPIFile,
 )
 from bia_shared_datamodels import bia_data_model, semantic_models
-from bia_shared_datamodels.uuid_creation import create_file_reference_uuid
+from bia_shared_datamodels.package_specific_uuid_creation.shared import (
+    create_file_reference_uuid,
+)
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -75,16 +77,10 @@ def get_file_reference_dicts_for_submission_dataset(
     file_references = []
     for f in files_in_file_list:
         file_path = str(f.path.as_posix())
-        unique_string = f"{file_path}{f.size}"
-        unique_string_dict = {
-            "provenance": semantic_models.Provenance.bia_ingest,
-            "name": "uuid_unique_input",
-            "value": {
-                "uuid_unique_input": unique_string,
-            },
-        }
+
+        uuid, uuid_attribute = create_file_reference_uuid(study_uuid, file_path, f.size)
         file_dict = {
-            "uuid": create_file_reference_uuid(study_uuid, unique_string),
+            "uuid": uuid,
             "object_creator": semantic_models.Provenance.bia_ingest,
             "file_path": file_path,
             "format": f.type,
@@ -105,7 +101,7 @@ def get_file_reference_dicts_for_submission_dataset(
         }
         file_dict["additional_metadata"] = [
             attributes_as_attr_dict,
-            unique_string_dict,
+            uuid_attribute.model_dump(),
         ]
         file_references.append(file_dict)
 
