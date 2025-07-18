@@ -51,4 +51,6 @@ spec:
                   name: {{ include "search.fullname" . }}
                   key: elasticConnstring
             - name: ELASTIC_INDEX
-              value: "{{ .Values.search_env.elasticIndex }}"
+              value: "{{ .Values.search_env.elasticIndex }}" 
+            - name: FASTAPI_ROOT_PATH
+              value: "{{ .Values.search_env.fastapiRootPath }}"
