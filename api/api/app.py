@@ -1,3 +1,5 @@
+import h11
+import pymongo
 from api.settings import Settings
 
 from api.models.repository import repository_create, Repository
@@ -82,6 +84,12 @@ def remap_validation_error(_, exc: ValidationError):
     See https://github.com/fastapi/fastapi/issues/4974
     """
     return JSONResponse(status_code=422, content={"message": str(exc)})
+
+
+@app.exception_handler(h11.LocalProtocolError)
+@app.exception_handler(pymongo.errors.NetworkTimeout)
+def remap_mongo_error(_, exc):
+    return JSONResponse(status_code=429, content={"message": "Too Many Requests"})
 
 
 @app.on_event("startup")
