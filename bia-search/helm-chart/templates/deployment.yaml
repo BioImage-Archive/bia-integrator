@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "search.fullname" . }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "search.selectorLabels" . | nindent 6 }}
+  replicas: {{ .Values.replicaCount }}
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        {{- include "search.labels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "ghcr.io/bioimage-archive/bia-integrator-search:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          #livenessProbe:
+          #   @TODO: Can't use a dummy uuid (404). Re-add when we have an endpoint that lists objects + pagination
+          #     this should touch the db
+          #  httpGet:
+          #    path: /v2/study/00000000-0000-0000-0000-000000000000
+          #    port: http
+          #  initialDelaySeconds: 10
+          #  failureThreshold: 10
+          #  periodSeconds: 60
+          readinessProbe:
+            httpGet:
+              path: /openapi.json
+              port: http
+            initialDelaySeconds: 10
+            failureThreshold: 10
+            periodSeconds: 60
+          env:
+            - name: ELASTIC_CONNSTRING
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "search.fullname" . }}
+                  key: elasticConnstring
+            - name: ELASTIC_INDEX
+              value: "{{ .Values.search_env.elasticIndex }}"

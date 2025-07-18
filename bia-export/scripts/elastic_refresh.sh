@@ -24,18 +24,20 @@ curl -k -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX}" \
 	-u "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" \
 	-H "Content-Type: application/json" \
 	-d '{
-	"mappings": {
-		"dynamic": false,
-		"properties": {
-			"accession_id": {
-				"type": "keyword"
-			},
-			"author": {
-				"type": "flattened"
+		"mappings": {
+			"dynamic": false,
+			"properties": {
+				"uuid": {"type": "keyword"},
+				"accession_id": {"type": "keyword"},
+				"title": {"type": "text"},
+				"description": {"type": "text"},
+				"funding_statement": {"type": "text"},
+				"keyword": {"type": "keyword"},
+				"author": {"type": "flattened"},
+				"grant": {"type": "flattened"}
 			}
 		}
-	}
-}'
+	}'
 
 curl -k -u "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" \
 	-H  "Content-Type: application/x-ndjson" \
