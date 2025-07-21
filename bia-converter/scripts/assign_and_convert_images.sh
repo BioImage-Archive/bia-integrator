@@ -11,7 +11,7 @@ if [ $# -gt 1 ]; then
     propose_images_output=$2
 fi
 
-n_images_to_convert=5
+n_images_to_convert=2
 artefact_dir_base=~/temp/assign_and_convert
 
 if [ ! -d $artefact_dir_base ]; then

@@ -30,7 +30,7 @@ def static_display_from_convert_v1() -> dict:
     return {
         "provenance": "bia_image_conversion",
         "name": "image_static_display_uri",
-        "value": {"slice": "http://static_display_uri", "size": (256, 256)},
+        "value": {"slice": "http://static_display_uri", "size": (512, 512)},
     }
 
 
@@ -56,7 +56,7 @@ def test_fix_static_display_uri_from_migration_script(
 
 
 def test_fix_wrong_static_display_details_from_convert(
-    static_display_from_convert, expected_static_display
+    static_display_from_convert_v1, expected_static_display
 ):
-    fixed_static_display = fix_static_display_uri(static_display_from_convert)
+    fixed_static_display = fix_static_display_uri(static_display_from_convert_v1)
     assert fixed_static_display == expected_static_display

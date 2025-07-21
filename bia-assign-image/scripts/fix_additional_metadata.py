@@ -71,6 +71,70 @@ def fix_thumbnail_uri(uri_dict: dict) -> dict:
     return attribute.model_dump()
 
 
+def fix_static_display_uri(uri_dict: dict) -> dict:
+    # Convert to bia_data_model AdditionalMetadata attribute
+    # This serves as a check that we have the correct structure
+    attribute = Attribute.model_validate(uri_dict)
+    if "static_display_uri" not in attribute.name:
+        logger.warning(
+            f"Expected attribute with name including 'static_display_uri'. Got name: '{attribute.name}' - exiting."
+        )
+        return uri_dict
+
+    old_value = copy.deepcopy(uri_dict["value"])
+    # Case 1 -> value: {"static_display_uri": ["http://static_display_uri"]}
+    if old_value.get("static_display_uri"):
+        assert attribute.name == "static_display_uri"
+        assert len(old_value["static_display_uri"]) == 1
+        new_value = {
+            "slice": {
+                "uri": old_value["static_display_uri"][0],
+                "size": 512,
+            }
+        }
+        attribute.name = "image_static_display_uri"
+    elif attribute.name == "image_static_display_uri":
+        assert "slice" in old_value
+        if isinstance(old_value["slice"], str):
+            static_display_uri = old_value["slice"]
+            # Case 2 -> value: {"slice": "http://static_display_uri", "size": (512,512)}
+            assert "size" in old_value and isinstance(old_value["size"], tuple)
+            new_value = {
+                "slice": {
+                    "uri": static_display_uri,
+                    "size": old_value["size"][0],
+                }
+            }
+        elif isinstance(old_value["slice"], dict):
+            # Case 3 -> value: {"slice": {"uri": "http://static_display_uri", "size": (512,512)}}
+            # Assert this and do nothing
+            assert "uri" in old_value["slice"] and isinstance(
+                old_value["slice"]["uri"], str
+            )
+            assert "size" in old_value["slice"] and isinstance(
+                old_value["slice"]["size"], tuple
+            )
+            logger.warning(
+                f"Input is already in expected form. Not modifying anything. Got: {old_value}. Exiting!"
+            )
+            return uri_dict
+        else:
+            # We don't know how to handle this -> assert or return unchanged???
+            logger.warning(
+                f"Did not get expected for of static_display_uri dict. Not modifying anything. Got: {old_value}. Exiting!"
+            )
+            return uri_dict
+    else:
+        # We don't know how to handle this -> assert or return unchanged???
+        logger.warning(
+            f"Did not get expected for of static_display_uri dict. Not modifying anything. Got: {old_value}. Exiting!"
+        )
+        return uri_dict
+
+    attribute.value = new_value
+    return attribute.model_dump()
+
+
 def get_images_in_api(api_target: ApiTarget, page_size=100) -> list:
     api_client = get_api_client(api_target)
     images = []
