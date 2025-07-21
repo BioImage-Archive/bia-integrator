@@ -181,9 +181,9 @@ class Column(ROCrateModel):
         FieldContext("http://www.w3.org/ns/csvw#name"),
     ] = Field()
     propertyUrl: Annotated[
-        str,
+        Optional[str],
         FieldContext("http://www.w3.org/ns/csvw#propertyUrl"),
-    ] = Field()
+    ] = Field(default=None)
 
     model_config = ConfigDict(model_type="http://www.w3.org/ns/csvw#Column")
 

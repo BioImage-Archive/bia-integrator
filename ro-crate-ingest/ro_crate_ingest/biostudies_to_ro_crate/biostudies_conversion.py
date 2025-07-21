@@ -1,4 +1,4 @@
-from ro_crate_ingest.biostudies_to_ro_crate.biostudies.api import (
+from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_api import (
     load_submission,
 )
 from ro_crate_ingest.biostudies_to_ro_crate.entity_conversion import (
@@ -13,6 +13,7 @@ from ro_crate_ingest.biostudies_to_ro_crate.entity_conversion import (
     image_analysis_method,
     image_correlation_method,
     protocol_from_growth_protocol,
+    file_list,
 )
 import json
 from pydantic import BaseModel, Field
@@ -70,7 +71,7 @@ def convert_biostudies_to_ro_crate(accession_id: str, crate_path: Optional[Path]
     )
     graph += roc_iap.values()
 
-    roc_datasets = dataset.get_datasets(
+    roc_datasets = dataset.get_datasets_by_accno(
         submission,
         image_aquisition_protocols=roc_iap,
         specimen_imaging_preparation_protocols=roc_sipp,
@@ -79,7 +80,12 @@ def convert_biostudies_to_ro_crate(accession_id: str, crate_path: Optional[Path]
         image_correlation_method=roc_icm,
         bio_samples_association=bs_association_map,
     )
-    graph += roc_datasets
+    graph += roc_datasets.values()
+
+    roc_file_list_schema_objects = file_list.create_file_list(
+        crate_path, submission, roc_datasets
+    )
+    graph += roc_file_list_schema_objects
 
     roc_affiliation_by_accno = affiliation.get_affiliations_by_accno(submission)
     graph += roc_affiliation_by_accno.values()
@@ -89,7 +95,7 @@ def convert_biostudies_to_ro_crate(accession_id: str, crate_path: Optional[Path]
     )
     graph += roc_contributors
 
-    roc_study = study.get_study(submission, roc_contributors, roc_datasets)
+    roc_study = study.get_study(submission, roc_contributors, roc_datasets.values())
     graph.append(roc_study)
 
     graph.append(ROCrateCreativeWork())
@@ -109,11 +115,9 @@ def convert_biostudies_to_ro_crate(accession_id: str, crate_path: Optional[Path]
         bia_specific_context,
     ]
 
-    output_path = crate_path if crate_path else Path(__file__).parents[2]
-    ro_crate_dir = output_path / accession_id
-    if not os.path.exists(ro_crate_dir):
-        os.makedirs(ro_crate_dir)
-    with open(ro_crate_dir / "ro-crate-metadata.json", "w") as f:
+    logging.info(f"writing to {crate_path}")
+
+    with open(crate_path / "ro-crate-metadata.json", "w") as f:
         f.write(
             json.dumps(
                 {
