@@ -5,7 +5,7 @@ from bia_shared_datamodels.package_specific_uuid_creation import shared
 
 
 def create_dataset_uuid(
-    study_uuid: str, imageset_title: str, imageset_directory_path: UUID
+    study_uuid: str, imageset_title: str, imageset_directory_path: str
 ) -> tuple[UUID, attribute_models.DocumentUUIDUinqueInputAttribute]:
     unique_string = " ".join([imageset_title, imageset_directory_path])
     return (
