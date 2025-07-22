@@ -39,7 +39,7 @@ def expected_thumbnail() -> dict:
     return {
         "provenance": "bia_image_conversion",
         "name": "image_thumbnail_uri",
-        "value": {256: {"size": 256, "uri": "http://thumbnail_uri"}},
+        "value": {"256": {"size": 256, "uri": "http://thumbnail_uri"}},
     }
 
 

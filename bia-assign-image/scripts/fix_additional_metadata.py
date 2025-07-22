@@ -34,7 +34,7 @@ def fix_thumbnail_uri(uri_dict: dict) -> dict:
         if thumbnail_key == "thumbnail_uri":
             if len(old_value) == 1:
                 new_value = {
-                    256: {
+                    "256": {
                         "uri": old_value[thumbnail_key][0],
                         "size": 256,
                     }
@@ -48,7 +48,7 @@ def fix_thumbnail_uri(uri_dict: dict) -> dict:
         elif "256" in thumbnail_key:
             if len(old_value) == 2 and "size" in old_value:
                 new_value = {
-                    256: {
+                    "256": {
                         "uri": old_value[thumbnail_key],
                         "size": 256,
                     }
@@ -111,8 +111,10 @@ def fix_static_display_uri(uri_dict: dict) -> dict:
             assert "uri" in old_value["slice"] and isinstance(
                 old_value["slice"]["uri"], str
             )
-            assert "size" in old_value["slice"] and isinstance(
-                old_value["slice"]["size"], tuple
+            assert "size" in old_value["slice"] and (
+                isinstance(old_value["slice"]["size"], tuple)
+                or isinstance(old_value["slice"]["size"], list)
+                or isinstance(old_value["slice"]["size"], int)
             )
             logger.warning(
                 f"Input is already in expected form. Not modifying anything. Got: {old_value}. Exiting!"
