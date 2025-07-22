@@ -32,7 +32,7 @@ def get_image_analysis_method(
     attr_dict = attributes_to_dict(section.attributes)
 
     model_dict = {
-        "@id": f"biostudies_iam:{section.accno}",
+        "@id": f"_:{section.accno}",
         "@type": ["bia:ImageAnalysisMethod"],
         "title": attr_dict["title"],
         "protocolDescription": attr_dict.get("image analysis overview", ""),

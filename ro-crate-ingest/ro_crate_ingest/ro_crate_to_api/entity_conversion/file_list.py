@@ -5,11 +5,15 @@ from ro_crate_ingest.ro_crate_to_api.entity_conversion.file_reference import (
 )
 import bia_integrator_api.models as APIModels
 from pathlib import Path
-from bia_shared_datamodels import semantic_models, ro_crate_models, uuid_creation
+from bia_shared_datamodels import semantic_models, ro_crate_models
 import csv
 import rdflib
 import logging
 from typing import Optional
+from bia_shared_datamodels.package_specific_uuid_creation.ro_crate_uuid_creation import (
+    create_dataset_uuid,
+)
+
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -33,8 +37,8 @@ def process_file_lists(
         file_list_dataset_ro_crate_id = get_hasPart_parent_id_from_child(
             id, crate_graph, ro_crate_path
         )
-        dataset_uuid = uuid_creation.create_dataset_uuid(
-            study_uuid, file_list_dataset_ro_crate_id
+        dataset_uuid = str(
+            create_dataset_uuid(study_uuid, file_list_dataset_ro_crate_id)[0]
         )
 
         property_map = get_file_list_column_property_map(fl_obj, crate_objects_by_id)

@@ -3,6 +3,9 @@ from bia_shared_datamodels import uuid_creation
 import bia_integrator_api.models as APIModels
 import bia_shared_datamodels.ro_crate_models as ROCrateModels
 import bia_shared_datamodels.attribute_models as AttributeModels
+from bia_shared_datamodels.package_specific_uuid_creation.ro_crate_uuid_creation import (
+    create_image_acquisition_protocol_uuid,
+)
 
 import logging
 
@@ -36,12 +39,10 @@ def convert_image_acquisition_protocol(
     elif ro_crate_iap.id:
         title = ro_crate_iap.id
 
+    uuid, uuid_attribute = create_image_acquisition_protocol_uuid(study_uuid, ro_crate_iap.id)
+
     iap = {
-        "uuid": str(
-            uuid_creation.create_image_acquisition_protocol_uuid(
-                study_uuid, ro_crate_iap.id
-            )
-        ),
+        "uuid": str(uuid),
         "title": title,
         "protocol_description": ro_crate_iap.protocolDescription,
         "imaging_instrument_description": ro_crate_iap.imagingInstrumentDescription,
@@ -49,13 +50,7 @@ def convert_image_acquisition_protocol(
         "fbbi_id": ro_crate_iap.fbbiId,
         "version": 0,
         "object_creator": APIModels.Provenance.BIA_INGEST,
-        "additional_metadata": [
-            AttributeModels.DocumentUUIDUinqueInputAttribute(
-                provenance=APIModels.Provenance.BIA_INGEST,
-                name="uuid_unique_input",
-                value={"uuid_unique_input": ro_crate_iap.id},
-            ).model_dump()
-        ],
+        "additional_metadata": [uuid_attribute.model_dump()],
     }
 
     return APIModels.ImageAcquisitionProtocol(**iap)

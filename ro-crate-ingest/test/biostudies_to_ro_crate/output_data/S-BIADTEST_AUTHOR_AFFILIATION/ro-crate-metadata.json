@@ -441,18 +441,18 @@
             "description": "Study component description 1",
             "associatedBiologicalEntity": [
                 {
-                    "@id": "biostudies_bs:Biosample-1"
+                    "@id": "_:Biosample-1"
                 }
             ],
             "associatedSpecimenImagingPreparationProtocol": [
                 {
-                    "@id": "biostudies_sipp:Specimen-1"
+                    "@id": "_:Specimen-1"
                 }
             ],
             "associatedSpecimen": null,
             "associatedImageAcquisitionProtocol": [
                 {
-                    "@id": "biostudies_iap:Image Acquisition-1"
+                    "@id": "_:Image Acquisition-1"
                 }
             ],
             "associatedAnnotationMethod": [],
@@ -469,7 +469,7 @@
             }
         },
         {
-            "@id": "biostudies_iap:Image Acquisition-1",
+            "@id": "_:Image Acquisition-1",
             "@type": [
                 "bia:ImageAcquisitionProtocol"
             ],
@@ -484,7 +484,7 @@
             ]
         },
         {
-            "@id": "biostudies_sipp:Specimen-1",
+            "@id": "_:Specimen-1",
             "@type": [
                 "bia:SpecimenImagingPreparationProtocol"
             ],
@@ -501,7 +501,7 @@
             "scientificName": "Drosophila melanogaster"
         },
         {
-            "@id": "biostudies_bs:Biosample-1",
+            "@id": "_:Biosample-1",
             "@type": [
                 "bia:BioSample"
             ],

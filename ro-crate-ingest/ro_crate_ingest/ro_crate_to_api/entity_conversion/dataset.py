@@ -4,6 +4,9 @@ import bia_integrator_api.models as APIModels
 import bia_shared_datamodels.ro_crate_models as ROCrateModels
 import bia_shared_datamodels.attribute_models as AttributeModels
 import logging
+from bia_shared_datamodels.package_specific_uuid_creation.ro_crate_uuid_creation import (
+    create_dataset_uuid,
+)
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -35,19 +38,15 @@ def convert_dataset(
     elif ro_crate_dataset.id:
         title = ro_crate_dataset.id
 
+    uuid, uuid_attribute = create_dataset_uuid(study_uuid, ro_crate_dataset.id)
+
     additional_metadata = dataset_attribute_links_with_uuids(
         ro_crate_dataset, study_uuid
     )
-    additional_metadata.append(
-        AttributeModels.DocumentUUIDUinqueInputAttribute(
-            provenance=APIModels.Provenance.BIA_INGEST,
-            name="uuid_unique_input",
-            value={"uuid_unique_input": ro_crate_dataset.id},
-        ).model_dump()
-    )
+    additional_metadata.append(uuid_attribute.model_dump())
 
     dataset = {
-        "uuid": str(uuid_creation.create_dataset_uuid(study_uuid, ro_crate_dataset.id)),
+        "uuid": str(uuid),
         "submitted_in_study_uuid": study_uuid,
         "title": title,
         "description": ro_crate_dataset.description,
