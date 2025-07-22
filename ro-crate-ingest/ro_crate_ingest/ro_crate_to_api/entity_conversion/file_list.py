@@ -13,6 +13,7 @@ from typing import Optional
 from bia_shared_datamodels.package_specific_uuid_creation.ro_crate_uuid_creation import (
     create_dataset_uuid,
 )
+from urllib.parse import urljoin
 
 
 logger = logging.getLogger("__main__." + __name__)
@@ -44,7 +45,7 @@ def process_file_lists(
         property_map = get_file_list_column_property_map(fl_obj, crate_objects_by_id)
         filtered_property_map = {k: v for k, v in property_map.items() if v}
 
-        file_list_path = ro_crate_path / id
+        file_list_path = Path().from_uri(urljoin(Path(ro_crate_path).absolute().as_uri() + "/", id))
         with open(file_list_path, "r") as f:
             reader = csv.DictReader(f, delimiter="\t")
             for row in reader:

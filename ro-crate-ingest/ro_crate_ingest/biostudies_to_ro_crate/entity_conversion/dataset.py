@@ -13,6 +13,7 @@ from ro_crate_ingest.biostudies_to_ro_crate.entity_conversion.file_list import (
     generate_relative_filelist_path,
     get_filelist_name_from_dataset,
 )
+from urllib.parse import quote
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -64,7 +65,7 @@ def get_dataset_from_study_component(
     association_dict: dict[str, dict[str, str]],
 ):
 
-    id = f"./{section.accno}"
+    id = f"{quote(section.accno)}/"
 
     attr_dict = attributes_to_dict(section.attributes)
     filelist_id_ref = {"@id": get_filelist_reference(id, section)}
@@ -84,7 +85,7 @@ def get_dataset_from_study_component(
 def get_dataset_from_annotation_component(
     section: Section, annotation_methods: dict[str, ro_crate_models.AnnotationMethod]
 ):
-    id = f"./{section.accno}"
+    id = f"{quote(section.accno)}/"
 
     attr_dict = attributes_to_dict(section.attributes)
     filelist_id_ref = {"@id": get_filelist_reference(id, section)}

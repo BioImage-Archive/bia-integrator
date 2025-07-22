@@ -1,3 +1,5 @@
+# Test that the output of biostudies_to_ro_crate tests can be used at the input to the ro-crate -> bia api part of the pipeline.
+
 from pathlib import Path
 from typer.testing import CliRunner
 from ro_crate_ingest.cli import ro_crate_ingest
@@ -6,17 +8,10 @@ import pytest
 
 runner = CliRunner()
 
-accession_ids = ["S-BIAD1494", "S-BIAD843"]
-
 
 def get_ro_crate_path(accession_id) -> Path:
     return (
-        Path(__file__).parents[2]
-        / "bia-shared-datamodels"
-        / "src"
-        / "bia_shared_datamodels"
-        / "mock_ro_crate"
-        / accession_id
+        Path(__file__).parent / "biostudies_to_ro_crate" / "output_data" / accession_id
     )
 
 
@@ -29,7 +24,7 @@ def get_expected_files(accession_id) -> list[Path]:
 
 
 @pytest.mark.parametrize(
-    "accession_id", ["S-BIAD1494", "S-BIAD843", "S-BIADWITHFILELIST"]
+    "accession_id", ["S-BIADTEST_AUTHOR_AFFILIATION", "S-BIADTEST_COMPLEX_BIOSAMPLE"]
 )
 def test_ingest_ro_crate_metadata(accession_id: str, tmp_bia_data_dir: Path):
 
@@ -61,7 +56,7 @@ def test_ingest_ro_crate_metadata(accession_id: str, tmp_bia_data_dir: Path):
 
 
 @pytest.mark.parametrize(
-    "accession_id", ["S-BIAD1494", "S-BIAD843", "S-BIADWITHFILELIST"]
+    "accession_id", ["S-BIADTEST_AUTHOR_AFFILIATION", "S-BIADTEST_COMPLEX_BIOSAMPLE"]
 )
 def test_ingest_ro_crate_metadata_with_api(accession_id: str, get_bia_api_client):
 
@@ -92,14 +87,3 @@ def test_ingest_ro_crate_metadata_with_api(accession_id: str, get_bia_api_client
 
         assert api_obj == expected_object
 
-
-@pytest.mark.parametrize(
-    "accession_id", ["S-BIAD843"]
-)
-def test_debug(accession_id: str, tmp_bia_data_dir: Path):
-
-    crate_path = Path(__file__).parents[1] / accession_id
-
-    result = runner.invoke(ro_crate_ingest, ["ingest", "-c", crate_path])
-
-    assert result.exit_code == 0

@@ -1,0 +1,36 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "233c7b4b-1a2d-497f-af53-e52ecb715040",
+  "version": 0,
+  "model": {
+    "type_name": "FileReference",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "attributes_from_biostudies.File",
+      "value": {
+        "attributes": {
+          "path": "folder3/file2.ome.zarr.zip",
+          "size": "13161534",
+          "type": "file",
+          "Genotype/Line": "; ubiCAAX-GFP/+ ; neuPH-RFP/+",
+          "Channel 1": "CAAX"
+        }
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "folder3/file2.ome.zarr.zip13161534"
+      }
+    }
+  ],
+  "file_path": "folder3/file2.ome.zarr.zip",
+  "format": ".zip",
+  "size_in_bytes": 13161534,
+  "uri": "None?",
+  "submission_dataset_uuid": "6161b376-278d-48a1-b2a1-d25c92b36c2c"
+}

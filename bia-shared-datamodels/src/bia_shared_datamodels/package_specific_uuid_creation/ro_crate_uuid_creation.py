@@ -2,12 +2,13 @@ from uuid import UUID
 from bia_shared_datamodels import uuid_creation, attribute_models
 from bia_shared_datamodels.semantic_models import Provenance
 from bia_shared_datamodels.package_specific_uuid_creation import shared
-
+from urllib.parse import unquote
 
 def create_dataset_uuid(
     study_uuid: str, ro_crate_id: str
 ) -> tuple[UUID, attribute_models.DocumentUUIDUinqueInputAttribute]:
-    unique_string = f"{ro_crate_id.removeprefix("./").removesuffix("/")}"
+    # unqote is used to transform %20 that may be present in the uri id into spaces
+    unique_string = unquote(str(ro_crate_id).removeprefix("./").removesuffix("/"))
     return (
         uuid_creation.create_dataset_uuid(
             study_uuid=study_uuid, unique_string=unique_string

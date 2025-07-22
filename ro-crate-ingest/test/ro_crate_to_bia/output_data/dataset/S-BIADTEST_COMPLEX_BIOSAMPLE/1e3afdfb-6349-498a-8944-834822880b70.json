@@ -1,0 +1,52 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "1e3afdfb-6349-498a-8944-834822880b70",
+  "version": 0,
+  "model": {
+    "type_name": "Dataset",
+    "version": 2
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "image_acquisition_protocol_uuid",
+      "value": {
+        "image_acquisition_protocol_uuid": [
+          "12d0526b-16b9-47fa-a7fe-00e683860466"
+        ]
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "specimen_imaging_preparation_protocol_uuid",
+      "value": {
+        "specimen_imaging_preparation_protocol_uuid": [
+          "24a0c942-935c-44c4-bcaf-98e338b1c241"
+        ]
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "bio_sample_uuid",
+      "value": {
+        "bio_sample_uuid": [
+          "7f736411-21e2-47f4-9fcd-fc84804ea345",
+          "243f4d6c-b867-4a0d-828e-807767f87e24"
+        ]
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Study Component-1"
+      }
+    }
+  ],
+  "title": "Component 1",
+  "description": "Has 2 associations, with the same specimen, image aquisition, but differnt biosamples",
+  "analysis_method": [],
+  "correlation_method": [],
+  "example_image_uri": [],
+  "submitted_in_study_uuid": "6f707d67-3320-4bec-b0a3-8291f2275b97"
+}

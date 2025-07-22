@@ -1,0 +1,52 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "6161b376-278d-48a1-b2a1-d25c92b36c2c",
+  "version": 0,
+  "model": {
+    "type_name": "Dataset",
+    "version": 2
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "image_acquisition_protocol_uuid",
+      "value": {
+        "image_acquisition_protocol_uuid": [
+          "12d0526b-16b9-47fa-a7fe-00e683860466"
+        ]
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "specimen_imaging_preparation_protocol_uuid",
+      "value": {
+        "specimen_imaging_preparation_protocol_uuid": [
+          "24a0c942-935c-44c4-bcaf-98e338b1c241"
+        ]
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "bio_sample_uuid",
+      "value": {
+        "bio_sample_uuid": [
+          "0452b071-ac24-4cc6-b8c2-d6e44c6ce785",
+          "ff6872b6-4731-4fbb-b118-2461f5b71f65"
+        ]
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Study Component-3"
+      }
+    }
+  ],
+  "title": "Component 3",
+  "description": "Has 2 associations with the two biosamples that should have the same taxon.",
+  "analysis_method": [],
+  "correlation_method": [],
+  "example_image_uri": [],
+  "submitted_in_study_uuid": "6f707d67-3320-4bec-b0a3-8291f2275b97"
+}

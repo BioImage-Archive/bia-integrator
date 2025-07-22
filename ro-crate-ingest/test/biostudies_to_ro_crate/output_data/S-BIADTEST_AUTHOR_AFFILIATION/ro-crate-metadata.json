@@ -243,7 +243,7 @@
             "acknowledgement": null,
             "hasPart": [
                 {
-                    "@id": "./Study Component-1"
+                    "@id": "Study%20Component-1/"
                 }
             ],
             "accessionId": "S-BIADTEST_AUTHOR_AFFILIATION"
@@ -358,7 +358,7 @@
             "website": null
         },
         {
-            "@id": "Study Component-1/file_list_test_1.tsv",
+            "@id": "Study%20Component-1/file_list_test_1.tsv",
             "@type": [
                 "File",
                 "bia:FileList",
@@ -421,7 +421,7 @@
                 "csvw:Column"
             ],
             "columnName": "size",
-            "propertyUrl": "https://bia/sizeInBytes"
+            "propertyUrl": "http://bia/sizeInBytes"
         },
         {
             "@id": "_:col0",
@@ -429,10 +429,10 @@
                 "csvw:Column"
             ],
             "columnName": "path",
-            "propertyUrl": "https://bia/filePath"
+            "propertyUrl": "http://bia/filePath"
         },
         {
-            "@id": "./Study Component-1",
+            "@id": "Study%20Component-1/",
             "@type": [
                 "Dataset",
                 "bia:Dataset"
@@ -461,11 +461,11 @@
             "associatedProtocol": [],
             "hasPart": [
                 {
-                    "@id": "Study Component-1/file_list_test_1.tsv"
+                    "@id": "Study%20Component-1/file_list_test_1.tsv"
                 }
             ],
             "associationFileMetadata": {
-                "@id": "Study Component-1/file_list_test_1.tsv"
+                "@id": "Study%20Component-1/file_list_test_1.tsv"
             }
         },
         {

@@ -1,0 +1,20 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "20a8ffd0-bf74-402f-817a-6dbe57b736bc",
+  "version": 0,
+  "model": {
+    "type_name": "Protocol",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "_:_Specimen-2"
+      }
+    }
+  ],
+  "title": "Specimen with growth protocol",
+  "protocol_description": "Followed step 1, 2, 3 and 4 to grow samples."
+}

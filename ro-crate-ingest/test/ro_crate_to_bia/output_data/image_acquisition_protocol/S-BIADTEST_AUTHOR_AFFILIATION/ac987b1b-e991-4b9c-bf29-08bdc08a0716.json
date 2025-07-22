@@ -1,0 +1,27 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "ac987b1b-e991-4b9c-bf29-08bdc08a0716",
+  "version": 0,
+  "model": {
+    "type_name": "ImageAcquisitionProtocol",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Image Acquisition-1"
+      }
+    }
+  ],
+  "title": "Image Acquisition 1 Title",
+  "protocol_description": "Voxel size 0.0430x0.0430x0.5002 micron^3",
+  "imaging_instrument_description": "Microscope and/or telescope (but looking the other way).",
+  "fbbi_id": [
+    "http://purl.obolibrary.org/obo/FBbi_00000251"
+  ],
+  "imaging_method_name": [
+    "Confocal microscopy"
+  ]
+}

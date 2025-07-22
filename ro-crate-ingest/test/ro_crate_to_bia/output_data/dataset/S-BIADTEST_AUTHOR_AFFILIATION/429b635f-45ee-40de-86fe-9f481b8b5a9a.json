@@ -1,0 +1,51 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "429b635f-45ee-40de-86fe-9f481b8b5a9a",
+  "version": 0,
+  "model": {
+    "type_name": "Dataset",
+    "version": 2
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "image_acquisition_protocol_uuid",
+      "value": {
+        "image_acquisition_protocol_uuid": [
+          "25fd8699-1f6b-4a6b-9a30-c18f0de0a26c"
+        ]
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "specimen_imaging_preparation_protocol_uuid",
+      "value": {
+        "specimen_imaging_preparation_protocol_uuid": [
+          "ce5b4c7a-a454-41db-8124-1475d0ecb5fd"
+        ]
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "bio_sample_uuid",
+      "value": {
+        "bio_sample_uuid": [
+          "e78a7595-c5de-4f1d-8f24-b8a5b857f210"
+        ]
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Study Component-1"
+      }
+    }
+  ],
+  "title": "Confocal fluorescence images",
+  "description": "Study component description 1",
+  "analysis_method": [],
+  "correlation_method": [],
+  "example_image_uri": [],
+  "submitted_in_study_uuid": "944a593d-7ced-4db9-9f1e-635722238214"
+}

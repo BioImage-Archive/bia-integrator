@@ -116,7 +116,6 @@ def convert_ro_crate_to_bia_api(
     api_objects += file_list_file_refs
     processed_file_paths += file_paths
 
-    # TODO: don't create file references again for files that are already created with images
     file_references = file_reference.create_file_reference(
         entities, study_uuid, crate_path, processed_file_paths
     )
