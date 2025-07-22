@@ -33,9 +33,7 @@ def map_image_to_2025_04_model(
 
     # Make file_reference_uuids a list of strings (because of quirky
     # way the typer cli arguments are implemented in bia_assign_image.cli.assign)
-    file_reference_uuids = [
-        " ".join([str(f) for f in file_reference_uuids_2025_04]),
-    ]
+    file_reference_uuids = [str(f) for f in file_reference_uuids_2025_04]
 
     image_uuid = assign(accession_id, file_reference_uuids, api_target)
 
@@ -69,7 +67,10 @@ def map_image_representation_to_2025_04_model(
         object_creator = "bia_image_assignment"
     elif use_type == "INTERACTIVE_DISPLAY":
         unique_string = _compute_unique_string_for_interactive_display(
-            accession_id, study_uuid, image_2025_04_uuid, old_image_representation_dict,
+            accession_id,
+            study_uuid,
+            image_2025_04_uuid,
+            old_image_representation_dict,
         )
         object_creator = "bia_image_conversion"
     else:
@@ -176,7 +177,9 @@ def map_image_related_artefacts_to_2025_04_models(
                     accession_id,
                 )
             )
-            reps_of_image_converted_to_ome_zarr_2025_04.append(rep_of_image_converted_to_ome_zarr_2025_04)
+            reps_of_image_converted_to_ome_zarr_2025_04.append(
+                rep_of_image_converted_to_ome_zarr_2025_04
+            )
     else:
         reps_of_image_converted_to_ome_zarr_2025_04 = []
 
@@ -216,7 +219,9 @@ def map_image_related_artefacts_to_2025_04_models(
                 "provenance": "bia_image_assignment",
                 "name": "recommended_vizarr_representation",
                 "value": {
-                    "recommended_vizarr_representation": reps_of_image_converted_to_ome_zarr_2025_04[0].uuid,
+                    "recommended_vizarr_representation": reps_of_image_converted_to_ome_zarr_2025_04[
+                        0
+                    ].uuid,
                 },
             }
         )
@@ -255,18 +260,17 @@ def _get_im_rep_from_im_rep_list(
     for rep in im_rep_list:
         if rep["use_type"] == use_type:
             reps.append(rep)
-    
+
     return reps
 
+
 def _compute_unique_string_for_interactive_display(
-        accession_id: str,
-        study_uuid: str | UUID,
-        image_2025_04_uuid: str,
-        old_image_representation_dict: dict,
+    accession_id: str,
+    study_uuid: str | UUID,
+    image_2025_04_uuid: str,
+    old_image_representation_dict: dict,
 ) -> str:
-    """Return unique string value depending on whether BIA or EMPIAR study.
-    
-    """
+    """Return unique string value depending on whether BIA or EMPIAR study."""
     uploaded_by_submitter_rep_uuid = uuid_creation.create_image_representation_uuid(
         study_uuid, unique_string=f"{image_2025_04_uuid}"
     )
@@ -275,14 +279,14 @@ def _compute_unique_string_for_interactive_display(
     )
     if accession_id.upper().startswith("S"):
         return f"{uploaded_by_submitter_rep_uuid} {conversion_function}"
-    
+
     # Otherwise we are dealing with EMPIAR study
     # If ome_config in attributes add to unique string. Otherwise add file_uri
     ome_zarr_config = {}
     for attribute in old_image_representation_dict["attribute"]:
         if attribute["name"] == "ome_zarr_config":
             ome_zarr_config = attribute["value"]
-    
+
     unique_string_extras = {
         "conversion_function": "map_image_representation_to_2025_04_model"
     }
@@ -290,8 +294,9 @@ def _compute_unique_string_for_interactive_display(
         unique_string_extras.update(ome_zarr_config)
     else:
         unique_string_extras["file_uri"] = old_image_representation_dict["file_uri"]
-    
+
     return f"{uploaded_by_submitter_rep_uuid} {unique_string_extras}"
+
 
 def update_dataset_example_image_uri(
     accession_ids: list[str],

@@ -53,19 +53,16 @@ def assign(
 ) -> str:
     api_client = get_api_client(api_target)
 
-    file_reference_uuid_list = file_reference_uuids[0].split(" ")
     # Get / Create relevant uuids that will be used for missing dependency creation
     study_uuid = uuid_creation.create_study_uuid(accession_id)
 
     image_uuid, image_uuid_attribute = shared.create_image_uuid(
         study_uuid,
-        file_reference_uuid_list,
+        file_reference_uuids,
         semantic_models.Provenance.bia_image_assignment,
     )
 
-    file_references = [
-        api_client.get_file_reference(f) for f in file_reference_uuid_list
-    ]
+    file_references = [api_client.get_file_reference(f) for f in file_reference_uuids]
 
     image_dependencies: ImageDependencies = find_exisiting_image_dependencies(
         file_references, api_client
@@ -161,9 +158,7 @@ def assign_from_proposal(
 
     for p in proposals:
         accession_id = p["accession_id"]
-        file_reference_uuids = [
-            p["file_reference_uuid"],
-        ]
+        file_reference_uuids = p["file_reference_uuid"].split(" ")
         pattern = p.get("pattern", None)
         try:
             assign(
