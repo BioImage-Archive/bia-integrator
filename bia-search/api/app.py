@@ -4,6 +4,7 @@ from api.elastic import Elastic, elastic_create
 import asyncio
 import datetime
 from api.api_logging import log_info, log_access
+from fastapi.middleware.cors import CORSMiddleware
 
 settings = Settings()
 app = FastAPI(
@@ -14,6 +15,20 @@ app = FastAPI(
     debug=False,
     root_path=settings.fastapi_root_path,
     extra={"event_loop_specific": {}},
+)
+origins = [
+    "http://localhost:4321",  
+    "http://localhost:3000",
+    "https://www.ebi.ac.uk",  # production
+    "https://alpha.bioimagearchive.org" # production
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,  # or use ["*"] for public access
+    allow_credentials=True,
+    allow_methods=["GET", "POSRT"],
+    allow_headers=["*"],
 )
 
 
