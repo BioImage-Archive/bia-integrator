@@ -124,14 +124,17 @@ def convert_file_reference(
             file_paths.append(str(file_path))
             files.append(
                 create_api_file_reference(
-                    str(file_path), study_uuid, dataset_uuid, crate_path
+                    {"http://bia/filePath": str(file_path)},
+                    study_uuid,
+                    dataset_uuid,
+                    crate_path,
                 )
             )
     elif "File" in image.type:
         file_paths.append(pathlib.Path(crate_path) / image.id)
         files.append(
             create_api_file_reference(
-                str(pathlib.Path(crate_path) / image.id),
+                {"http://bia/filePath": str(pathlib.Path(crate_path) / image.id)},
                 study_uuid,
                 dataset_uuid,
                 crate_path,

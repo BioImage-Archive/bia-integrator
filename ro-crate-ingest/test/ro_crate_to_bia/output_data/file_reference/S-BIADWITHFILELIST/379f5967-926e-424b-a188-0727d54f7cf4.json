@@ -1,6 +1,6 @@
 {
   "object_creator": "bia_ingest",
-  "uuid": "665c27f1-86b5-4759-86fc-1d30cddb1ba5",
+  "uuid": "379f5967-926e-424b-a188-0727d54f7cf4",
   "version": 0,
   "model": {
     "type_name": "FileReference",
@@ -11,12 +11,12 @@
       "provenance": "bia_ingest",
       "name": "uuid_unique_input",
       "value": {
-        "uuid_unique_input": "data/annotations/annotations_file_list.csv341"
+        "uuid_unique_input": "data/annotations/annotations_file_list.tsv341"
       }
     }
   ],
-  "file_path": "data/annotations/annotations_file_list.csv",
-  "format": ".csv",
+  "file_path": "data/annotations/annotations_file_list.tsv",
+  "format": ".tsv",
   "size_in_bytes": 341,
   "uri": "None?",
   "submission_dataset_uuid": "21df3e51-af25-4ebe-ab48-3e66d9eec7e7"

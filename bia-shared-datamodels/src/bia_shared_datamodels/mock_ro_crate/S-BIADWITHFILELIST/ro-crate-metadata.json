@@ -351,11 +351,11 @@
                 }
             ],
             "associationFileMetadata": {
-                "@id": "data/images/images_file_list.csv"
+                "@id": "data/images/images_file_list.tsv"
             },
             "hasPart": [
                 {
-                    "@id": "data/images/images_file_list.csv"
+                    "@id": "data/images/images_file_list.tsv"
                 }
             ]
         },
@@ -372,16 +372,16 @@
                 }
             ],
             "associationFileMetadata": {
-                "@id": "data/annotations/annotations_file_list.csv"
+                "@id": "data/annotations/annotations_file_list.tsv"
             },
             "hasPart": [
                 {
-                    "@id": "data/annotations/annotations_file_list.csv"
+                    "@id": "data/annotations/annotations_file_list.tsv"
                 }
             ]
         },
         {
-            "@id": "data/images/images_file_list.csv",
+            "@id": "data/images/images_file_list.tsv",
             "@type": [
                 "File",
                 "bia:FileList",
@@ -392,7 +392,7 @@
             }
         },
         {
-            "@id": "data/annotations/annotations_file_list.csv",
+            "@id": "data/annotations/annotations_file_list.tsv",
             "@type": [
                 "File",
                 "bia:FileList",
@@ -425,7 +425,7 @@
                 "csvw:Column"
             ],
             "columnName": "file_path",
-            "propertyUrl": "https://bia/filePath"
+            "propertyUrl": "http://bia/filePath"
         },
         {
             "@id": "_:b1",
@@ -433,7 +433,7 @@
                 "csvw:Column"
             ],
             "columnName": "image_name",
-            "propertyUrl": "https://schema.org/name"
+            "propertyUrl": "http://schema.org/name"
         },
         {
             "@id": "_:b2",
@@ -441,7 +441,7 @@
                 "csvw:Column"
             ],
             "columnName": "source_image",
-            "propertyUrl": "https://bia/sourceImagePath"
+            "propertyUrl": "http://bia/sourceImagePath"
         }
     ]
 }

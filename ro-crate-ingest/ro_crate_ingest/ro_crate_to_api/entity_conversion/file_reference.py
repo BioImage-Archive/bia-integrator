@@ -78,14 +78,16 @@ def create_api_file_reference(
 
     if pathlib.Path(file_path).is_absolute():
         relative_path = pathlib.Path(file_path).relative_to(crate_path).as_posix()
+        absolute_path = file_path
     else:
         relative_path = file_path
+        absolute_path = crate_path / file_path
 
     # TODO: Work out how file URI would be generated.
     try:
         file_size = int(file_ref_dictionary["http://bia/sizeInBytes"])
     except KeyError:
-        file_size = pathlib.Path(file_path).stat().st_size
+        file_size = pathlib.Path(absolute_path).stat().st_size
 
     additional_metadata = []
     if additional_attributes and len(additional_attributes) > 0:

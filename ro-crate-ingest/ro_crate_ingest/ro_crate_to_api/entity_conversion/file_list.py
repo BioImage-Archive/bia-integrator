@@ -42,7 +42,6 @@ def process_file_lists(
         )
 
         property_map = get_file_list_column_property_map(fl_obj, crate_objects_by_id)
-        inv_prop_map = {v: k for k, v in property_map.items() if v}
         filtered_property_map = {k: v for k, v in property_map.items() if v}
 
         file_list_path = ro_crate_path / id
@@ -52,7 +51,7 @@ def process_file_lists(
                 file_ref, path = create_file_reference_from_row(
                     row,
                     filtered_property_map,
-                    str(dataset_uuid),
+                    dataset_uuid,
                     study_uuid,
                     ro_crate_path,
                 )
@@ -90,9 +89,6 @@ def create_file_reference_from_row(
     ro_crate_path: Path,
 ) -> APIModels.FileReference:
 
-    # path_field = inv_prop_map["https://bia/filePath"]
-
-    # file_path = ro_crate_path / row.pop(path_field)
 
     mapped_row = {}
 
@@ -116,5 +112,5 @@ def create_file_reference_from_row(
         create_api_file_reference(
             mapped_row, study_uuid, file_list_dataset_id, ro_crate_path, attributes
         ),
-        mapped_row["http://bia/filePath"],
+        ro_crate_path / mapped_row["http://bia/filePath"],
     )

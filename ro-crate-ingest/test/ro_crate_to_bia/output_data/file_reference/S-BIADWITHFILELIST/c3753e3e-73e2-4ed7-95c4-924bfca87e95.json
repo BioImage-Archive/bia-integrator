@@ -12,6 +12,7 @@
       "name": "attributes_from_biostudies.File",
       "value": {
         "attributes": {
+          "file_path": "data/images/WD2.1_21-02_WT_confocalonly.ome.zarr.zip",
           "image_name": "WD2.1_21-02_WT_confocalonly",
           "source_image": ""
         }
