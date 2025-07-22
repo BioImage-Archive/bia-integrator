@@ -1,11 +1,7 @@
 """Functions and cli tools to fix issues with additional metadata during translational period of 2025/04 model adoption"""
 
-from pathlib import Path
-from typing import Annotated
 import copy
-import json
 import logging
-import typer
 from bia_assign_image.api_client import get_api_client, ApiTarget
 from bia_shared_datamodels.semantic_models import Attribute
 import time
@@ -155,26 +151,10 @@ def get_images_in_api(api_target: ApiTarget, page_size=100) -> list:
     return images
 
 
-def store_images_to_disk(images: list, output_path: Path):
-    images_as_dicts = [i.model_dump() for i in images]
-    output_path.write_text(json.dumps(images_as_dicts, indent=2))
-    print(f"written images to {output_path}")
+# TODO Write cli to get images using API, fix uris and update via API
+# app = typer.Typer()
 
 
-# ===============CLI stuff=======================
-app = typer.Typer()
-
-
-@app.command(help="Get all images in API and save to disk")
-def get_all_images(
-    output_path: Annotated[Path, typer.Argument()],
-    api_target: Annotated[
-        ApiTarget, typer.Option("--api", "-a", case_sensitive=False)
-    ] = ApiTarget.local,
-):
-    images = get_images_in_api(api_target=api_target)
-    store_images_to_disk(images, output_path)
-
-
-if __name__ == "__main__":
-    app()
+# if __name__ == "__main__":
+#    app()
+#
