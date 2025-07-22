@@ -7,7 +7,12 @@ import pathlib
 import glob
 import logging
 from typing import Optional
-from bia_shared_datamodels.package_specific_uuid_creation.ro_crate_uuid_creation import create_dataset_uuid
+from bia_shared_datamodels.package_specific_uuid_creation.ro_crate_uuid_creation import (
+    create_dataset_uuid,
+)
+from bia_shared_datamodels.package_specific_uuid_creation.shared import (
+    create_file_reference_uuid,
+)
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -82,21 +87,17 @@ def create_api_file_reference(
     except KeyError:
         file_size = pathlib.Path(file_path).stat().st_size
 
-    uuid_string = f"{str(relative_path)}{file_size}"
-
     additional_metadata = []
     if additional_attributes and len(additional_attributes) > 0:
         additional_metadata.extend(additional_attributes)
-    additional_metadata.append(
-        AttributeModels.DocumentUUIDUinqueInputAttribute(
-            provenance=APIModels.Provenance.BIA_INGEST,
-            name="uuid_unique_input",
-            value={"uuid_unique_input": uuid_string},
-        ).model_dump()
+
+    uuid, uuid_attribute = create_file_reference_uuid(
+        study_uuid, str(relative_path), str(file_size)
     )
+    additional_metadata.append(uuid_attribute.model_dump())
 
     file_reference = {
-        "uuid": str(uuid_creation.create_file_reference_uuid(study_uuid, uuid_string)),
+        "uuid": str(uuid),
         "submission_dataset_uuid": dataset_uuid,
         "file_path": str(relative_path),
         "version": 0,
