@@ -73,13 +73,11 @@ def file_reference_uuids_2channels(expected_bia_image_2channels) -> str:
 
 
 @pytest.fixture
-def file_reference_uuids_1channel(expected_bia_image_1channel) -> str:
-    return " ".join(
-        [
-            str(f_uuid)
-            for f_uuid in expected_bia_image_1channel.original_file_reference_uuid
-        ]
-    )
+def file_reference_uuids_1channel(expected_bia_image_1channel) -> list:
+    return [
+        str(f_uuid)
+        for f_uuid in expected_bia_image_1channel.original_file_reference_uuid
+    ]
 
 
 @pytest.fixture
@@ -176,18 +174,18 @@ def test_cli_assign_command_with_pattern(
 ):
     # This implicitly tests the 'assign' and 'create' commands
     runner = CliRunner()
-
+    cli_args = [
+        "assign",
+        "--api",
+        "local",
+        "--pattern",
+        pattern_1channel,
+        accession_id,
+    ]
+    cli_args.extend(file_reference_uuids_1channel)
     result = runner.invoke(
         cli.app,
-        [
-            "assign",
-            "--api",
-            "local",
-            "--pattern",
-            pattern_1channel,
-            accession_id,
-            file_reference_uuids_1channel,
-        ],
+        cli_args,
     )
 
     assert result.exit_code == 0
