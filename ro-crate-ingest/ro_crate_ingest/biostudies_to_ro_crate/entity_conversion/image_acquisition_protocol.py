@@ -42,7 +42,7 @@ def get_image_acquisition_protocol(
         fbbi_id = []
 
     model_dict = {
-        "@id": f"biostudies_iap:{section.accno}",
+        "@id": f"_:{section.accno}",
         "@type": ["bia:ImageAcquisitionProtocol"],
         "title": attr_dict["title"],
         "protocolDescription": attr_dict.get("image acquisition parameters", ""),

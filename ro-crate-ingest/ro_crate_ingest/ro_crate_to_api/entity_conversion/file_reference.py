@@ -7,6 +7,7 @@ import pathlib
 import glob
 import logging
 from typing import Optional
+from bia_shared_datamodels.package_specific_uuid_creation.ro_crate_uuid_creation import create_dataset_uuid
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -33,7 +34,7 @@ def create_file_reference(
 
         # TODO: deal with files not in datasets, and possibly edge cases like unzipped omezarrs, or nested datasets paths.
 
-        dataset_uuid = str(uuid_creation.create_dataset_uuid(study_uuid, dataset.id))
+        dataset_uuid = str(create_dataset_uuid(study_uuid, dataset.id)[0])
 
         for file_path in file_paths:
             if pathlib.Path(file_path) not in processed_file_paths:

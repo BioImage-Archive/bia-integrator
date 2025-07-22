@@ -4,6 +4,9 @@ import bia_integrator_api.models as APIModels
 import bia_shared_datamodels.ro_crate_models as ROCrateModels
 import bia_shared_datamodels.attribute_models as AttributeModels
 import logging
+from bia_shared_datamodels.package_specific_uuid_creation.ro_crate_uuid_creation import (
+    create_bio_sample_uuid,
+)
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -36,10 +39,10 @@ def convert_bio_sample(
     for taxon_reference in ro_crate_bio_sample.organismClassification:
         taxons.append(convert_taxon(crate_objects_by_id[taxon_reference.id]))
 
+    uuid, uuid_attribute = create_bio_sample_uuid(study_uuid, ro_crate_bio_sample.id)
+
     bio_sample = {
-        "uuid": str(
-            uuid_creation.create_bio_sample_uuid(study_uuid, ro_crate_bio_sample.id)
-        ),
+        "uuid": str(uuid),
         "title": ro_crate_bio_sample.id,
         "version": 0,
         "organism_classification": taxons,
@@ -48,13 +51,7 @@ def convert_bio_sample(
         "extrinsic_variable_description": ro_crate_bio_sample.extrinsicVariableDescription,
         "experimental_variable_description": ro_crate_bio_sample.experimentalVariableDescription,
         "object_creator": APIModels.Provenance.BIA_INGEST,
-        "additional_metadata": [
-            AttributeModels.DocumentUUIDUinqueInputAttribute(
-                provenance=APIModels.Provenance.BIA_INGEST,
-                name="uuid_unique_input",
-                value={"uuid_unique_input": ro_crate_bio_sample.id},
-            ).model_dump()
-        ],
+        "additional_metadata": [uuid_attribute.model_dump()],
     }
 
     return APIModels.BioSample(**bio_sample)

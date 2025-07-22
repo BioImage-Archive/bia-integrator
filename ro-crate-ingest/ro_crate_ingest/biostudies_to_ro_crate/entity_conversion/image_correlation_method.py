@@ -33,7 +33,7 @@ def get_image_correlation_method(
     attr_dict = attributes_to_dict(section.attributes)
 
     model_dict = {
-        "@id": f"biostudies_gp:{section.accno}",
+        "@id": f"_:{section.accno}",
         "@type": ["bia:ImageCorrelationMethod"],
         "title": attr_dict["title"],
         "protocolDescription": attr_dict.get("spatial and temporal alignment", ""),
