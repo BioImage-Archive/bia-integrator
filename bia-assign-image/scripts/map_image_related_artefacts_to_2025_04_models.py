@@ -193,7 +193,9 @@ def map_image_related_artefacts_to_2025_04_models(
             {
                 "provenance": "bia_image_assignment",
                 "name": "thumbnail_uri",
-                "value": {"thumbnail_uri": thumbnail_reps[0]["file_uri"]},
+                "value": {
+                    "256": {"uri": thumbnail_reps[0]["file_uri"][0], "size": 256}
+                },
             }
         )
         image_2025_04.additional_metadata.append(thumbnail_uri)
@@ -207,8 +209,10 @@ def map_image_related_artefacts_to_2025_04_models(
         static_display_uri = attribute_models.Attribute.model_validate(
             {
                 "provenance": "bia_image_assignment",
-                "name": "static_display_uri",
-                "value": {"static_display_uri": static_display_reps[0]["file_uri"]},
+                "name": "image_static_display_uri",
+                "value": {
+                    "slice": {"uri": static_display_reps[0]["file_uri"][0], "size": 512}
+                },
             }
         )
         image_2025_04.additional_metadata.append(static_display_uri)
