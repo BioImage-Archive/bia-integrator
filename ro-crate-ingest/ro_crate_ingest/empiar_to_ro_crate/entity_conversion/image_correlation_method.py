@@ -4,7 +4,7 @@ from bia_shared_datamodels.ro_crate_models import ImageCorrelationMethod
 logger = logging.getLogger("__main__." + __name__)
 
 
-def get_image_correlation_methods(
+def get_image_correlation_methods_by_title(
     rembi_yaml: dict,
 ) -> dict[str, ImageCorrelationMethod]:
 
@@ -12,12 +12,12 @@ def get_image_correlation_methods(
         "ImageCorrelationMethod", []
     )
 
-    roc_objects = []
+    roc_objects_dict = {}
     for yaml_object in yaml_list_of_objs:
+        roc_object = get_image_correlation_method(yaml_object)
+        roc_objects_dict[roc_object.title] = roc_object
 
-        roc_objects.append(get_image_correlation_method(yaml_object))
-
-    return roc_objects
+    return roc_objects_dict
 
 
 def get_image_correlation_method(yaml_object: dict) -> ImageCorrelationMethod:

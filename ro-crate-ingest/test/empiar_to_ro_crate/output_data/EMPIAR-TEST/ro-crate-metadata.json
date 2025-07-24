@@ -224,16 +224,16 @@
             "title": "170314, Five-day-old Col-0 Arabidopsis thaliana root, phloem pole unloading zone (339-381 um from the root tip)",
             "contributor": [
                 {
-                    "@id": "0000-0002-1777-3160"
+                    "@id": "https://orcid.org/0000-0002-1777-3160"
                 },
                 {
-                    "@id": "0000-0003-2190-4909"
+                    "@id": "https://orcid.org/0000-0003-2190-4909"
                 },
                 {
-                    "@id": "0000-0002-4159-6934"
+                    "@id": "https://orcid.org/0000-0002-4159-6934"
                 },
                 {
-                    "@id": "0000-0002-7287-8459"
+                    "@id": "https://orcid.org/0000-0002-7287-8459"
                 }
             ],
             "description": "",
@@ -249,7 +249,7 @@
             "accessionId": "EMPIAR-TEST"
         },
         {
-            "@id": "0000-0002-7287-8459",
+            "@id": "https://orcid.org/0000-0002-7287-8459",
             "@type": [
                 "Person",
                 "bia:Contributor"
@@ -262,7 +262,7 @@
             "contactEmail": null
         },
         {
-            "@id": "0000-0002-4159-6934",
+            "@id": "https://orcid.org/0000-0002-4159-6934",
             "@type": [
                 "Person",
                 "bia:Contributor"
@@ -275,7 +275,7 @@
             "contactEmail": null
         },
         {
-            "@id": "0000-0003-2190-4909",
+            "@id": "https://orcid.org/0000-0003-2190-4909",
             "@type": [
                 "Person",
                 "bia:Contributor"
@@ -288,7 +288,7 @@
             "contactEmail": null
         },
         {
-            "@id": "0000-0002-1777-3160",
+            "@id": "https://orcid.org/0000-0002-1777-3160",
             "@type": [
                 "Person",
                 "bia:Contributor"

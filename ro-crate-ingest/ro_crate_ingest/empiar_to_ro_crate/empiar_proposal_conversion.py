@@ -49,17 +49,22 @@ def convert_empiar_proposal_to_ro_crate(proposal_path: Path, crate_path: Path):
     roc_annotation_method = annotation_method.get_annotation_methods(yaml_file)
     graph += roc_annotation_method
 
-    roc_image_correlation_method = (
-        image_correlation_method.get_image_correlation_methods(yaml_file)
+    roc_image_correlation_method_map = (
+        image_correlation_method.get_image_correlation_methods_by_title(yaml_file)
     )
-    graph += roc_image_correlation_method
+    graph += roc_image_correlation_method_map.values()
 
-    roc_image_correlation_method = image_analysis_method.get_image_analysis_methods(
-        yaml_file
+    roc_image_analysis_methods_map = (
+        image_analysis_method.get_image_analysis_methods_by_title(yaml_file)
     )
-    graph += roc_image_correlation_method
+    graph += roc_image_analysis_methods_map.values()
 
-    roc_dataset = dataset.get_datasets(yaml_file, empiar_api_entry)
+    roc_dataset = dataset.get_datasets(
+        yaml_file=yaml_file,
+        empiar_api_entry=empiar_api_entry,
+        image_analysis_methods_map=roc_image_analysis_methods_map,
+        image_correlation_method_map=roc_image_correlation_method_map,
+    )
     graph += roc_dataset
 
     roc_contributors = contributor.get_contributors(empiar_api_entry)
