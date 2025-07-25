@@ -26,11 +26,22 @@ def thumbnail_from_migration_script() -> dict:
 
 
 @pytest.fixture
-def thumbnail_from_convert() -> dict:
+def thumbnail_from_convert_v1() -> dict:
     return {
         "provenance": "bia_image_conversion",
         "name": "image_thumbnail_uri",
         "value": {"256x256 or 256_256": "http://thumbnail_uri", "size": (256, 256)},
+    }
+
+
+@pytest.fixture
+def thumbnail_from_convert_v2() -> dict:
+    return {
+        "provenance": "bia_image_conversion",
+        "name": "image_thumbnail_uri",
+        "value": {
+            "image_thumbnail_uri": ["http://thumbnail_uri"],
+        },
     }
 
 
@@ -50,8 +61,15 @@ def test_fix_thumbnail_uri_from_migration_script(
     assert fixed_thumbnail == expected_thumbnail
 
 
-def test_fix_wrong_thumbnail_details_from_convert(
-    thumbnail_from_convert, expected_thumbnail
+def test_fix_wrong_thumbnail_details_from_convert_v1(
+    thumbnail_from_convert_v1, expected_thumbnail
 ):
-    fixed_thumbnail = fix_thumbnail_uri(thumbnail_from_convert)
+    fixed_thumbnail = fix_thumbnail_uri(thumbnail_from_convert_v1)
+    assert fixed_thumbnail == expected_thumbnail
+
+
+def test_fix_wrong_thumbnail_details_from_convert_v2(
+    thumbnail_from_convert_v2, expected_thumbnail
+):
+    fixed_thumbnail = fix_thumbnail_uri(thumbnail_from_convert_v2)
     assert fixed_thumbnail == expected_thumbnail
