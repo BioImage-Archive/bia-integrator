@@ -1,0 +1,34 @@
+accession_id: EMPIAR-TEST
+paper_doi: 10.1038/s41477-019-0429-5
+rembis:
+  ImageAcquisitionProtocol:
+    - title: "Serial Block Face SEM"
+      protocol_description: "Images were acquired with an FEG-SEM Quanta 250 using a backscattered electron detector with a 2.5-kV beam voltage, a spot size of 3 and pressure between 0.1 and 0.3 Torr. Images were collected moving away from the stumped root tip in 40-nm steps."
+      imaging_instrument_description: "FEG-SEM Quanta 250, FEI"
+      fbbi_id:
+        - "obo:FBbi_00000585" # serial block face SEM (SBFSEM)
+      imaging_method_name:
+        - "Serial Block Face Scanning Electron Microscopy"
+  BioSample:
+    - title: "Arabidopsis root"
+      organism_classification:
+        - common_name: "thale cress"
+          scientific_name: "Arabidopsis thaliana"
+          ncbi_id: "NCBI:txid3702"
+      biological_entity_description: "Five-day-old root tips from wild-type Col-0 and plm-2 mutant Arabidopsis seedlings"
+  SpecimenImagingPreparationProtocol:
+    - title: "SBF-SEM preparation"
+      protocol_description: "Five-day-old Col-0 and plm-2 roots were fixed, dehydrated and embedded in Durcupan resin following protocols previously described in refs. 52,53. To improve handling, the roots were shortened to a total length of about 600 μm from the tip using a grinding machine (LaboPol-5, Struers). Ground roots were then mounted by the ground side to a 3View pin and trimmed from the opposite end to 240 μm from the root tip using an EM Ultracut UC6i ultramicrotome (Leica Mikrosysteme) and a diamond knife. The trimming distance was selected based on markers for SE enucleation to get as close as possible to the area of interest. As a control, a histological section was cut and checked after the trimming. The blocks were covered with silver paint (Agar Scientific) and platinum coated using Quorum Q150TS (Quorum Technologies)."
+datasets:
+  - title: "Sieve element cells of Arabidopsis thaliana roots"
+    assigned_images:
+      - label: "170821_Col-0_R01_294-317um"
+        file_pattern: "MRC_Files/170821_Col-0_R01_294-317um.mrc"
+        biosample_title: "Arabidopsis root" 
+        image_acquisition_protocol_title: "Serial Block Face SEM"
+        specimen_imaging_preparation_protocol_title: "SBF-SEM preparation"
+      - label: "170314_COL-0_R20_339-381um"
+        file_pattern: "MRC_Files/170314_Col-0_R20_339-381um.mrc"
+        biosample_title: "Arabidopsis root" 
+        image_acquisition_protocol_title: "Serial Block Face SEM"
+        specimen_imaging_preparation_protocol_title: "SBF-SEM preparation"

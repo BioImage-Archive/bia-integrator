@@ -40,6 +40,9 @@ class Settings(BaseSettings):
     biostudies_override_dir: str = Field(
         str(Path(__file__).parents[1] / "override_data" / "biostudies")
     )
+    empiar_override_dir: str = Field(
+        str(Path(__file__).parents[1] / "override_data" / "empiar")
+    )
 
 
 def get_settings():
