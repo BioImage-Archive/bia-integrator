@@ -24,15 +24,14 @@ from typing import Optional
 from bia_shared_datamodels.package_specific_uuid_creation.shared import (
     create_study_uuid,
 )
+from ro_crate_ingest.ro_crate_defaults import (
+    ROCrateCreativeWork,
+    get_default_context,
+    write_ro_crate_metadata,
+    create_ro_crate_folder,
+)
 
 logger = logging.getLogger("__main__." + __name__)
-
-
-class ROCrateCreativeWork(BaseModel):
-    id: str = Field(alias="@id", default="ro-crate-metadata.json")
-    type: str = Field(alias="@type", default="CreativeWork")
-    conformsTo: dict = Field(default={"@id": "https://w3id.org/ro/crate/1.1"})
-    about: dict = Field(default={"@id": "./"})
 
 
 def convert_biostudies_to_ro_crate(accession_id: str, crate_path: Optional[Path]):
@@ -43,6 +42,8 @@ def convert_biostudies_to_ro_crate(accession_id: str, crate_path: Optional[Path]
         logger.error("Failed to retrieve information from BioStudies")
         logging.exception("message")
         return
+
+    ro_crate_dir = create_ro_crate_folder(accession_id, crate_path)
 
     graph = []
 
@@ -55,7 +56,9 @@ def convert_biostudies_to_ro_crate(accession_id: str, crate_path: Optional[Path]
     roc_icm = image_correlation_method.get_image_correlation_method_by_title(submission)
     graph += roc_icm.values()
 
-    roc_gp = protocol_from_growth_protocol.get_growth_protocol_by_title(submission, study_uuid)
+    roc_gp = protocol_from_growth_protocol.get_growth_protocol_by_title(
+        submission, study_uuid
+    )
     graph += roc_gp.values()
 
     roc_taxon, roc_bio_sample, bs_association_map = (
@@ -91,7 +94,7 @@ def convert_biostudies_to_ro_crate(accession_id: str, crate_path: Optional[Path]
     graph += roc_datasets.values()
 
     roc_file_list_schema_objects = file_list.create_file_list(
-        crate_path, submission, roc_datasets
+        ro_crate_dir, submission, roc_datasets
     )
     graph += roc_file_list_schema_objects
 
@@ -108,34 +111,6 @@ def convert_biostudies_to_ro_crate(accession_id: str, crate_path: Optional[Path]
     graph.append(roc_study)
 
     graph.append(ROCrateCreativeWork())
+    context = get_default_context()
 
-    with open(
-        Path(__file__).parents[3]
-        / "bia-shared-datamodels"
-        / "src"
-        / "bia_shared_datamodels"
-        / "linked_data"
-        / "bia_ro_crate_context.json"
-    ) as f:
-        bia_specific_context = json.loads(f.read())
-
-    bia_ro_crate_context = [
-        "https://w3id.org/ro/crate/1.1/context",
-        bia_specific_context,
-    ]
-
-    logging.info(f"writing to {crate_path}")
-
-    with open(crate_path / "ro-crate-metadata.json", "w") as f:
-        f.write(
-            json.dumps(
-                {
-                    "@context": bia_ro_crate_context,
-                    "@graph": [
-                        json.loads(x.model_dump_json(by_alias=True))
-                        for x in reversed(graph)
-                    ],
-                },
-                indent=4,
-            )
-        )
+    write_ro_crate_metadata(ro_crate_dir, context, graph)

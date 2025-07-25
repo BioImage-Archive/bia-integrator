@@ -8,7 +8,6 @@ from ro_crate_ingest.ro_crate_to_api.api_conversion import convert_ro_crate_to_b
 from ro_crate_ingest.biostudies_to_ro_crate.biostudies_conversion import (
     convert_biostudies_to_ro_crate,
 )
-import os
 from ro_crate_ingest.empiar_to_ro_crate.empiar_proposal_conversion import (
     convert_empiar_proposal_to_ro_crate,
 )
@@ -68,11 +67,7 @@ def biostudies_to_ro_crate(
     ] = None,
 ):
 
-    output_path = crate_path if crate_path else Path(__file__).parents[1]
-    ro_crate_dir = output_path / accession_id
-    if not os.path.exists(ro_crate_dir):
-        os.makedirs(ro_crate_dir)
-    convert_biostudies_to_ro_crate(accession_id, ro_crate_dir)
+    convert_biostudies_to_ro_crate(accession_id, crate_path)
 
 
 @ro_crate_ingest.command("empiar-to-roc")
