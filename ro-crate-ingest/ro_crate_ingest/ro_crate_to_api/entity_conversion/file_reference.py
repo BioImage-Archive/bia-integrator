@@ -7,6 +7,12 @@ import pathlib
 import glob
 import logging
 from typing import Optional
+from bia_shared_datamodels.package_specific_uuid_creation.ro_crate_uuid_creation import (
+    create_dataset_uuid,
+)
+from bia_shared_datamodels.package_specific_uuid_creation.shared import (
+    create_file_reference_uuid,
+)
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -33,13 +39,16 @@ def create_file_reference(
 
         # TODO: deal with files not in datasets, and possibly edge cases like unzipped omezarrs, or nested datasets paths.
 
-        dataset_uuid = str(uuid_creation.create_dataset_uuid(study_uuid, dataset.id))
+        dataset_uuid = str(create_dataset_uuid(study_uuid, dataset.id)[0])
 
         for file_path in file_paths:
             if pathlib.Path(file_path) not in processed_file_paths:
                 file_reference_list.append(
                     create_api_file_reference(
-                        file_path, study_uuid, dataset_uuid, crate_path
+                        {"http://bia/filePath": file_path},
+                        study_uuid,
+                        dataset_uuid,
+                        crate_path,
                     )
                 )
 
@@ -58,35 +67,39 @@ def get_suffix(file_path: str) -> str:
 
 
 def create_api_file_reference(
-    file_path: str,
+    file_ref_dictionary: dict[str, str],
     study_uuid: str,
     dataset_uuid: str,
     crate_path: pathlib.Path,
     additional_attributes: Optional[list] = None,
 ) -> APIModels.FileReference:
 
-    relative_path = pathlib.Path(file_path).relative_to(crate_path).as_posix()
-    relative_path = pathlib.Path(file_path).relative_to(crate_path).as_posix()
+    file_path = file_ref_dictionary["http://bia/filePath"]
+
+    if pathlib.Path(file_path).is_absolute():
+        relative_path = pathlib.Path(file_path).relative_to(crate_path).as_posix()
+        absolute_path = file_path
+    else:
+        relative_path = file_path
+        absolute_path = crate_path / file_path
 
     # TODO: Work out how file URI would be generated.
-
-    file_size = pathlib.Path(file_path).stat().st_size
-
-    uuid_string = f"{str(relative_path)}{file_size}"
+    try:
+        file_size = int(file_ref_dictionary["http://bia/sizeInBytes"])
+    except KeyError:
+        file_size = pathlib.Path(absolute_path).stat().st_size
 
     additional_metadata = []
     if additional_attributes and len(additional_attributes) > 0:
         additional_metadata.extend(additional_attributes)
-    additional_metadata.append(
-        AttributeModels.DocumentUUIDUinqueInputAttribute(
-            provenance=APIModels.Provenance.BIA_INGEST,
-            name="uuid_unique_input",
-            value={"uuid_unique_input": uuid_string},
-        ).model_dump()
+
+    uuid, uuid_attribute = create_file_reference_uuid(
+        study_uuid, str(relative_path), str(file_size)
     )
+    additional_metadata.append(uuid_attribute.model_dump())
 
     file_reference = {
-        "uuid": str(uuid_creation.create_file_reference_uuid(study_uuid, uuid_string)),
+        "uuid": str(uuid),
         "submission_dataset_uuid": dataset_uuid,
         "file_path": str(relative_path),
         "version": 0,

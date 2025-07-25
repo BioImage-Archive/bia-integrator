@@ -30,7 +30,10 @@ logging.basicConfig(
 logger = logging.getLogger()
 
 
-def convert_ro_crate_to_bia_api(crate_path: Path, persistence_mode: PersistenceMode):
+def convert_ro_crate_to_bia_api(
+    crate_path: Path,
+    persistence_mode: PersistenceMode,
+):
     entities = process_ro_crate(crate_path)
     crate_graph = load_ro_crate_metadata_to_graph(crate_path)
 
@@ -114,7 +117,6 @@ def convert_ro_crate_to_bia_api(crate_path: Path, persistence_mode: PersistenceM
     api_objects += file_list_file_refs
     processed_file_paths += file_paths
 
-    # TODO: don't create file references again for files that are already created with images
     file_references = file_reference.create_file_reference(
         entities, study_uuid, crate_path, processed_file_paths
     )

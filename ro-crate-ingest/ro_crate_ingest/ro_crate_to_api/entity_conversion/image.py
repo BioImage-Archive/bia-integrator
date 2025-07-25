@@ -17,6 +17,9 @@ from ro_crate_ingest.ro_crate_to_api.entity_conversion.image_dependency_ordering
     order_creation_processes_and_images,
 )
 from ro_crate_ingest.graph_utils import get_hasPart_parent_id_from_child
+from bia_shared_datamodels.package_specific_uuid_creation.ro_crate_uuid_creation import (
+    create_dataset_uuid,
+)
 
 
 logger = logging.getLogger("__main__." + __name__)
@@ -109,7 +112,7 @@ def convert_file_reference(
     crate_path: pathlib.Path,
 ) -> list[APIModels.Image]:
 
-    dataset_uuid = str(uuid_creation.create_dataset_uuid(study_uuid, dataset.id))
+    dataset_uuid = str(create_dataset_uuid(study_uuid, dataset.id)[0])
 
     files = []
     file_paths = []
@@ -121,14 +124,17 @@ def convert_file_reference(
             file_paths.append(str(file_path))
             files.append(
                 create_api_file_reference(
-                    str(file_path), study_uuid, dataset_uuid, crate_path
+                    {"http://bia/filePath": str(file_path)},
+                    study_uuid,
+                    dataset_uuid,
+                    crate_path,
                 )
             )
     elif "File" in image.type:
         file_paths.append(pathlib.Path(crate_path) / image.id)
         files.append(
             create_api_file_reference(
-                str(pathlib.Path(crate_path) / image.id),
+                {"http://bia/filePath": str(pathlib.Path(crate_path) / image.id)},
                 study_uuid,
                 dataset_uuid,
                 crate_path,
@@ -157,7 +163,7 @@ def convert_image(
     image = {
         "uuid": str(uuid_creation.create_image_uuid(study_uuid, image.id)),
         "submission_dataset_uuid": str(
-            uuid_creation.create_dataset_uuid(study_uuid, image_dataset.id)
+            create_dataset_uuid(study_uuid, image_dataset.id)[0]
         ),
         "creation_process_uuid": str(
             uuid_creation.create_creation_process_uuid(study_uuid, image.resultOf.id)

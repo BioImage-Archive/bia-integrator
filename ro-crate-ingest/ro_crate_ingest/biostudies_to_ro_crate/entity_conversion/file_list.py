@@ -15,6 +15,7 @@ from pathlib import Path
 from bia_shared_datamodels import ro_crate_models
 from bia_shared_datamodels.linked_data.pydantic_ld.LDModel import ObjectReference
 import os
+from ro_crate_ingest.graph_utils import ro_crate_data_entity_id_to_path
 
 COLUMN_BNODE_INT = 0
 SCHEMA_BNODE_INT = 0
@@ -105,7 +106,7 @@ def normalise_headers(filelist_dataframe: pd.DataFrame):
 def write_filelist(
     output_ro_crate_path: Path, filelist_id: str, filelist_dataframe: pd.DataFrame
 ) -> None:
-    filelist_path = output_ro_crate_path / filelist_id
+    filelist_path = ro_crate_data_entity_id_to_path(output_ro_crate_path, filelist_id)
     if not os.path.exists(filelist_path.parent):
         os.makedirs(filelist_path.parent)
     filelist_dataframe.to_csv(filelist_path, sep="\t", index=False)
@@ -161,9 +162,9 @@ def get_column(
     column_name: str, column_by_name_url: dict[str, dict[str, ro_crate_models.Column]]
 ) -> ro_crate_models.Column:
     ontology_map = {
-        "path": "https://bia/filePath",
-        "size": "https://bia/sizeInBytes",
-        "sourceImage": "https://bia/sourceImagePath",
+        "path": "http://bia/filePath",
+        "size": "http://bia/sizeInBytes",
+        "sourceImage": "http://bia/sourceImagePath",
     }
 
     column_data = {"columnName": column_name}

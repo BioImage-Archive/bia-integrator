@@ -6,10 +6,8 @@ import pytest
 
 runner = CliRunner()
 
-accession_ids = ["S-BIAD1494", "S-BIAD843"]
 
-
-def get_ro_crate_path(accession_id) -> Path:
+def get_mock_ro_crate_path(accession_id) -> Path:
     return (
         Path(__file__).parents[2]
         / "bia-shared-datamodels"
@@ -17,6 +15,12 @@ def get_ro_crate_path(accession_id) -> Path:
         / "bia_shared_datamodels"
         / "mock_ro_crate"
         / accession_id
+    )
+
+
+def get_biostudies_to_ro_crate_path(accession_id) -> Path:
+    return (
+        Path(__file__).parent / "biostudies_to_ro_crate" / "output_data" / accession_id
     )
 
 
@@ -31,9 +35,46 @@ def get_expected_files(accession_id) -> list[Path]:
 @pytest.mark.parametrize(
     "accession_id", ["S-BIAD1494", "S-BIAD843", "S-BIADWITHFILELIST"]
 )
-def test_ingest_ro_crate_metadata(accession_id: str, tmp_bia_data_dir: Path):
+def test_ingest_mock_ro_crate_metadata(accession_id: str, tmp_bia_data_dir: Path):
 
-    crate_path = get_ro_crate_path(accession_id)
+    crate_path = get_mock_ro_crate_path(accession_id)
+
+    ingest_local_test(accession_id, tmp_bia_data_dir, crate_path)
+
+
+@pytest.mark.parametrize(
+    "accession_id", ["S-BIAD1494", "S-BIAD843", "S-BIADWITHFILELIST"]
+)
+def test_ingest_mock_ro_crate_metadata_with_api(accession_id: str, get_bia_api_client):
+
+    crate_path = get_mock_ro_crate_path(accession_id)
+
+    ingest_api_test(accession_id, get_bia_api_client, crate_path)
+
+
+@pytest.mark.parametrize(
+    "accession_id", ["S-BIADTEST_AUTHOR_AFFILIATION", "S-BIADTEST_COMPLEX_BIOSAMPLE"]
+)
+def test_ingest_biostudies_ro_crate_metadata(accession_id: str, tmp_bia_data_dir: Path):
+
+    crate_path = get_biostudies_to_ro_crate_path(accession_id)
+
+    ingest_local_test(accession_id, tmp_bia_data_dir, crate_path)
+
+
+@pytest.mark.parametrize(
+    "accession_id", ["S-BIADTEST_AUTHOR_AFFILIATION", "S-BIADTEST_COMPLEX_BIOSAMPLE"]
+)
+def test_ingest_biostudies_ro_crate_metadata_with_api(
+    accession_id: str, get_bia_api_client
+):
+
+    crate_path = get_biostudies_to_ro_crate_path(accession_id)
+
+    ingest_api_test(accession_id, get_bia_api_client, crate_path)
+
+
+def ingest_local_test(accession_id: str, tmp_bia_data_dir: Path, crate_path: Path):
 
     result = runner.invoke(ro_crate_ingest, ["ingest", "-c", crate_path])
 
@@ -60,13 +101,7 @@ def test_ingest_ro_crate_metadata(accession_id: str, tmp_bia_data_dir: Path):
         assert cli_out == expected_out
 
 
-@pytest.mark.parametrize(
-    "accession_id", ["S-BIAD1494", "S-BIAD843", "S-BIADWITHFILELIST"]
-)
-def test_ingest_ro_crate_metadata_with_api(accession_id: str, get_bia_api_client):
-
-    crate_path = get_ro_crate_path(accession_id)
-
+def ingest_api_test(accession_id: str, get_bia_api_client, crate_path: Path):
     result = runner.invoke(
         ro_crate_ingest, ["ingest", "-c", crate_path, "-p", "local_api"]
     )

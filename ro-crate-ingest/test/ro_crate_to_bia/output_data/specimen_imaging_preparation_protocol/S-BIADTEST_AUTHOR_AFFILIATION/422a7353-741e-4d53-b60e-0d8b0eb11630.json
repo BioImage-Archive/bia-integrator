@@ -1,0 +1,21 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "422a7353-741e-4d53-b60e-0d8b0eb11630",
+  "version": 0,
+  "model": {
+    "type_name": "SpecimenImagingPreparationProtocol",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Specimen-1"
+      }
+    }
+  ],
+  "title": "Specimen 1 Title",
+  "protocol_description": "Followed step 1, 2 and 3",
+  "signal_channel_information": []
+}

@@ -243,7 +243,7 @@
             "acknowledgement": null,
             "hasPart": [
                 {
-                    "@id": "./Study Component-1"
+                    "@id": "Study%20Component-1/"
                 }
             ],
             "accessionId": "S-BIADTEST_AUTHOR_AFFILIATION"
@@ -358,7 +358,7 @@
             "website": null
         },
         {
-            "@id": "Study Component-1/file_list_test_1.tsv",
+            "@id": "Study%20Component-1/file_list_test_1.tsv",
             "@type": [
                 "File",
                 "bia:FileList",
@@ -421,7 +421,7 @@
                 "csvw:Column"
             ],
             "columnName": "size",
-            "propertyUrl": "https://bia/sizeInBytes"
+            "propertyUrl": "http://bia/sizeInBytes"
         },
         {
             "@id": "_:col0",
@@ -429,10 +429,10 @@
                 "csvw:Column"
             ],
             "columnName": "path",
-            "propertyUrl": "https://bia/filePath"
+            "propertyUrl": "http://bia/filePath"
         },
         {
-            "@id": "./Study Component-1",
+            "@id": "Study%20Component-1/",
             "@type": [
                 "Dataset",
                 "bia:Dataset"
@@ -441,18 +441,18 @@
             "description": "Study component description 1",
             "associatedBiologicalEntity": [
                 {
-                    "@id": "biostudies_bs:Biosample-1"
+                    "@id": "_:Biosample-1"
                 }
             ],
             "associatedSpecimenImagingPreparationProtocol": [
                 {
-                    "@id": "biostudies_sipp:Specimen-1"
+                    "@id": "_:Specimen-1"
                 }
             ],
             "associatedSpecimen": null,
             "associatedImageAcquisitionProtocol": [
                 {
-                    "@id": "biostudies_iap:Image Acquisition-1"
+                    "@id": "_:Image Acquisition-1"
                 }
             ],
             "associatedAnnotationMethod": [],
@@ -461,15 +461,15 @@
             "associatedProtocol": [],
             "hasPart": [
                 {
-                    "@id": "Study Component-1/file_list_test_1.tsv"
+                    "@id": "Study%20Component-1/file_list_test_1.tsv"
                 }
             ],
             "associationFileMetadata": {
-                "@id": "Study Component-1/file_list_test_1.tsv"
+                "@id": "Study%20Component-1/file_list_test_1.tsv"
             }
         },
         {
-            "@id": "biostudies_iap:Image Acquisition-1",
+            "@id": "_:Image Acquisition-1",
             "@type": [
                 "bia:ImageAcquisitionProtocol"
             ],
@@ -484,7 +484,7 @@
             ]
         },
         {
-            "@id": "biostudies_sipp:Specimen-1",
+            "@id": "_:Specimen-1",
             "@type": [
                 "bia:SpecimenImagingPreparationProtocol"
             ],
@@ -501,7 +501,7 @@
             "scientificName": "Drosophila melanogaster"
         },
         {
-            "@id": "biostudies_bs:Biosample-1",
+            "@id": "_:Biosample-1",
             "@type": [
                 "bia:BioSample"
             ],

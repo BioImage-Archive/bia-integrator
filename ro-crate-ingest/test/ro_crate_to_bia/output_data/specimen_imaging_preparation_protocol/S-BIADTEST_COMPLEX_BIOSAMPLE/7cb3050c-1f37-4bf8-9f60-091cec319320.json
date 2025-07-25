@@ -1,0 +1,21 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "7cb3050c-1f37-4bf8-9f60-091cec319320",
+  "version": 0,
+  "model": {
+    "type_name": "SpecimenImagingPreparationProtocol",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Specimen-1"
+      }
+    }
+  ],
+  "title": "Specimen without growth protocol",
+  "protocol_description": "Followed step 1, 2 and 3",
+  "signal_channel_information": []
+}

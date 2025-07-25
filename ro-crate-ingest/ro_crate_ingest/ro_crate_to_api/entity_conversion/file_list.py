@@ -5,11 +5,16 @@ from ro_crate_ingest.ro_crate_to_api.entity_conversion.file_reference import (
 )
 import bia_integrator_api.models as APIModels
 from pathlib import Path
-from bia_shared_datamodels import semantic_models, ro_crate_models, uuid_creation
+from bia_shared_datamodels import semantic_models, ro_crate_models
 import csv
 import rdflib
 import logging
 from typing import Optional
+from bia_shared_datamodels.package_specific_uuid_creation.ro_crate_uuid_creation import (
+    create_dataset_uuid,
+)
+from urllib.parse import urljoin
+
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -33,20 +38,21 @@ def process_file_lists(
         file_list_dataset_ro_crate_id = get_hasPart_parent_id_from_child(
             id, crate_graph, ro_crate_path
         )
-        dataset_uuid = uuid_creation.create_dataset_uuid(
-            study_uuid, file_list_dataset_ro_crate_id
+        dataset_uuid = str(
+            create_dataset_uuid(study_uuid, file_list_dataset_ro_crate_id)[0]
         )
 
         property_map = get_file_list_column_property_map(fl_obj, crate_objects_by_id)
+        filtered_property_map = {k: v for k, v in property_map.items() if v}
 
-        file_list_path = ro_crate_path / id
+        file_list_path = Path().from_uri(urljoin(Path(ro_crate_path).absolute().as_uri() + "/", id))
         with open(file_list_path, "r") as f:
-            reader = csv.DictReader(f)
+            reader = csv.DictReader(f, delimiter="\t")
             for row in reader:
                 file_ref, path = create_file_reference_from_row(
                     row,
-                    property_map,
-                    str(dataset_uuid),
+                    filtered_property_map,
+                    dataset_uuid,
                     study_uuid,
                     ro_crate_path,
                 )
@@ -83,11 +89,15 @@ def create_file_reference_from_row(
     study_uuid: str,
     ro_crate_path: Path,
 ) -> APIModels.FileReference:
-    inv_prop_map = {v: k for k, v in property_map.items() if v}
 
-    path_field = inv_prop_map["https://bia/filePath"]
 
-    file_path = ro_crate_path / row.pop(path_field)
+    mapped_row = {}
+
+    for key, value in row.items():
+        if key in property_map:
+            mapped_row[property_map[key]] = value
+        else:
+            mapped_row[key] = value
 
     attributes = [
         {
@@ -101,7 +111,7 @@ def create_file_reference_from_row(
 
     return (
         create_api_file_reference(
-            file_path, study_uuid, file_list_dataset_id, ro_crate_path, attributes
+            mapped_row, study_uuid, file_list_dataset_id, ro_crate_path, attributes
         ),
-        file_path,
+        ro_crate_path / mapped_row["http://bia/filePath"],
     )

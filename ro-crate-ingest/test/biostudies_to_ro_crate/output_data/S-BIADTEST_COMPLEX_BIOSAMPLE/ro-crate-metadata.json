@@ -234,13 +234,13 @@
             "acknowledgement": null,
             "hasPart": [
                 {
-                    "@id": "./Study Component-1"
+                    "@id":  "Study%20Component-1/"
                 },
                 {
-                    "@id": "./Study Component-2"
+                    "@id":  "Study%20Component-2/"
                 },
                 {
-                    "@id": "./Study Component-3"
+                    "@id":  "Study%20Component-3/"
                 }
             ],
             "accessionId": "S-BIADTEST_COMPLEX_BIOSAMPLE"
@@ -276,7 +276,7 @@
             "website": null
         },
         {
-            "@id": "Study Component-3/file_list_test_3.tsv",
+            "@id":  "Study%20Component-3/file_list_test_3.tsv",
             "@type": [
                 "File",
                 "bia:FileList",
@@ -287,7 +287,7 @@
             }
         },
         {
-            "@id": "Study Component-2/file_list_test_2.tsv",
+            "@id":  "Study%20Component-2/file_list_test_2.tsv",
             "@type": [
                 "File",
                 "bia:FileList",
@@ -298,7 +298,7 @@
             }
         },
         {
-            "@id": "Study Component-1/file_list_test_1.tsv",
+            "@id":  "Study%20Component-1/file_list_test_1.tsv",
             "@type": [
                 "File",
                 "bia:FileList",
@@ -361,7 +361,7 @@
                 "csvw:Column"
             ],
             "columnName": "size",
-            "propertyUrl": "https://bia/sizeInBytes"
+            "propertyUrl": "http://bia/sizeInBytes"
         },
         {
             "@id": "_:col0",
@@ -369,10 +369,10 @@
                 "csvw:Column"
             ],
             "columnName": "path",
-            "propertyUrl": "https://bia/filePath"
+            "propertyUrl": "http://bia/filePath"
         },
         {
-            "@id": "./Study Component-3",
+            "@id":  "Study%20Component-3/",
             "@type": [
                 "Dataset",
                 "bia:Dataset"
@@ -381,21 +381,21 @@
             "description": "Has 2 associations with the two biosamples that should have the same taxon.",
             "associatedBiologicalEntity": [
                 {
-                    "@id": "biostudies_bs:Biosample-2"
+                    "@id": "_:Biosample-2"
                 },
                 {
-                    "@id": "biostudies_bs:Biosample-3"
+                    "@id": "_:Biosample-3"
                 }
             ],
             "associatedSpecimenImagingPreparationProtocol": [
                 {
-                    "@id": "biostudies_sipp:Specimen-1"
+                    "@id": "_:Specimen-1"
                 }
             ],
             "associatedSpecimen": null,
             "associatedImageAcquisitionProtocol": [
                 {
-                    "@id": "biostudies_iap:Image Acquisition-1"
+                    "@id": "_:Image Acquisition-1"
                 }
             ],
             "associatedAnnotationMethod": [],
@@ -404,15 +404,15 @@
             "associatedProtocol": [],
             "hasPart": [
                 {
-                    "@id": "Study Component-3/file_list_test_3.tsv"
+                    "@id":  "Study%20Component-3/file_list_test_3.tsv"
                 }
             ],
             "associationFileMetadata": {
-                "@id": "Study Component-3/file_list_test_3.tsv"
+                "@id":  "Study%20Component-3/file_list_test_3.tsv"
             }
         },
         {
-            "@id": "./Study Component-2",
+            "@id":  "Study%20Component-2/",
             "@type": [
                 "Dataset",
                 "bia:Dataset"
@@ -421,18 +421,18 @@
             "description": "Has 1 association, re-using biosample 1, but with different specimen to Component 1 (which has a growth protocol) so should have a different ro-crate biosample.",
             "associatedBiologicalEntity": [
                 {
-                    "@id": "biostudies_bs:Biosample-1_biostudies_gp:Specimen-2"
+                    "@id": "_:Biosample-1 fcdd4e00-45d6-45b7-9a03-d01dc34ce221"
                 }
             ],
             "associatedSpecimenImagingPreparationProtocol": [
                 {
-                    "@id": "biostudies_sipp:Specimen-2"
+                    "@id": "_:Specimen-2"
                 }
             ],
             "associatedSpecimen": null,
             "associatedImageAcquisitionProtocol": [
                 {
-                    "@id": "biostudies_iap:Image Acquisition-1"
+                    "@id": "_:Image Acquisition-1"
                 }
             ],
             "associatedAnnotationMethod": [],
@@ -441,15 +441,15 @@
             "associatedProtocol": [],
             "hasPart": [
                 {
-                    "@id": "Study Component-2/file_list_test_2.tsv"
+                    "@id":  "Study%20Component-2/file_list_test_2.tsv"
                 }
             ],
             "associationFileMetadata": {
-                "@id": "Study Component-2/file_list_test_2.tsv"
+                "@id":  "Study%20Component-2/file_list_test_2.tsv"
             }
         },
         {
-            "@id": "./Study Component-1",
+            "@id":  "Study%20Component-1/",
             "@type": [
                 "Dataset",
                 "bia:Dataset"
@@ -458,21 +458,21 @@
             "description": "Has 2 associations, with the same specimen, image aquisition, but differnt biosamples",
             "associatedBiologicalEntity": [
                 {
-                    "@id": "biostudies_bs:Biosample-1"
+                    "@id": "_:Biosample-1"
                 },
                 {
-                    "@id": "biostudies_bs:Biosample-4"
+                    "@id": "_:Biosample-4"
                 }
             ],
             "associatedSpecimenImagingPreparationProtocol": [
                 {
-                    "@id": "biostudies_sipp:Specimen-1"
+                    "@id": "_:Specimen-1"
                 }
             ],
             "associatedSpecimen": null,
             "associatedImageAcquisitionProtocol": [
                 {
-                    "@id": "biostudies_iap:Image Acquisition-1"
+                    "@id": "_:Image Acquisition-1"
                 }
             ],
             "associatedAnnotationMethod": [],
@@ -481,15 +481,15 @@
             "associatedProtocol": [],
             "hasPart": [
                 {
-                    "@id": "Study Component-1/file_list_test_1.tsv"
+                    "@id":  "Study%20Component-1/file_list_test_1.tsv"
                 }
             ],
             "associationFileMetadata": {
-                "@id": "Study Component-1/file_list_test_1.tsv"
+                "@id":  "Study%20Component-1/file_list_test_1.tsv"
             }
         },
         {
-            "@id": "biostudies_iap:Image Acquisition-1",
+            "@id": "_:Image Acquisition-1",
             "@type": [
                 "bia:ImageAcquisitionProtocol"
             ],
@@ -504,7 +504,7 @@
             ]
         },
         {
-            "@id": "biostudies_sipp:Specimen-2",
+            "@id": "_:Specimen-2",
             "@type": [
                 "bia:SpecimenImagingPreparationProtocol"
             ],
@@ -513,7 +513,7 @@
             "signalChannelInformation": []
         },
         {
-            "@id": "biostudies_sipp:Specimen-1",
+            "@id": "_:Specimen-1",
             "@type": [
                 "bia:SpecimenImagingPreparationProtocol"
             ],
@@ -546,7 +546,7 @@
             "scientificName": "Drosophila melanogaster"
         },
         {
-            "@id": "biostudies_bs:Biosample-4",
+            "@id": "_:Biosample-4",
             "@type": [
                 "bia:BioSample"
             ],
@@ -563,7 +563,7 @@
             "growthProtocol": []
         },
         {
-            "@id": "biostudies_bs:Biosample-3",
+            "@id": "_:Biosample-3",
             "@type": [
                 "bia:BioSample"
             ],
@@ -580,7 +580,7 @@
             "growthProtocol": []
         },
         {
-            "@id": "biostudies_bs:Biosample-2",
+            "@id": "_:Biosample-2",
             "@type": [
                 "bia:BioSample"
             ],
@@ -597,7 +597,7 @@
             "growthProtocol": []
         },
         {
-            "@id": "biostudies_bs:Biosample-1_biostudies_gp:Specimen-2",
+            "@id": "_:Biosample-1 fcdd4e00-45d6-45b7-9a03-d01dc34ce221",
             "@type": [
                 "bia:BioSample"
             ],
@@ -613,12 +613,12 @@
             ],
             "growthProtocol": [
                 {
-                    "@id": "biostudies_gp:Specimen-2"
+                    "@id": "_:_Specimen-2"
                 }
             ]
         },
         {
-            "@id": "biostudies_bs:Biosample-1",
+            "@id": "_:Biosample-1",
             "@type": [
                 "bia:BioSample"
             ],
@@ -635,7 +635,7 @@
             "growthProtocol": []
         },
         {
-            "@id": "biostudies_gp:Specimen-2",
+            "@id": "_:_Specimen-2",
             "@type": [
                 "bia:Protocol"
             ],

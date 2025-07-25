@@ -17,9 +17,7 @@ def get_annotation_method_by_title(
     submission: Submission,
 ) -> dict[str, ro_crate_models.AnnotationMethod]:
 
-    sections = find_sections_recursive(
-        submission.section, ["Annotations"], []
-    )
+    sections = find_sections_recursive(submission.section, ["Annotations"], [])
 
     roc_object_dict = {}
     for section in sections:
@@ -34,7 +32,7 @@ def get_annotation_method(
     attr_dict = attributes_to_dict(section.attributes)
 
     model_dict = {
-        "@id": f"biostudies_am:{section.accno}",
+        "@id": f"_:{section.accno}",
         "@type": ["bia:AnnotationMethod"],
         "title": attr_dict["title"],
         "protocolDescription": attr_dict.get("annotation method", ""),

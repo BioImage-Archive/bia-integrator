@@ -15,12 +15,15 @@ from ro_crate_ingest.biostudies_to_ro_crate.entity_conversion import (
     protocol_from_growth_protocol,
     file_list,
 )
+from bia_shared_datamodels.uuid_creation import create_study_uuid
 import json
 from pydantic import BaseModel, Field
 from pathlib import Path
 import logging
-import os
 from typing import Optional
+from bia_shared_datamodels.package_specific_uuid_creation.shared import (
+    create_study_uuid,
+)
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -43,17 +46,22 @@ def convert_biostudies_to_ro_crate(accession_id: str, crate_path: Optional[Path]
 
     graph = []
 
+    # Used for the creation of other uuids, not the actual study.
+    study_uuid = create_study_uuid(submission.accno)
+
     roc_iam = image_analysis_method.get_image_analysis_method_by_title(submission)
     graph += roc_iam.values()
 
     roc_icm = image_correlation_method.get_image_correlation_method_by_title(submission)
     graph += roc_icm.values()
 
-    roc_gp = protocol_from_growth_protocol.get_growth_protocol_by_title(submission)
+    roc_gp = protocol_from_growth_protocol.get_growth_protocol_by_title(submission, study_uuid)
     graph += roc_gp.values()
 
     roc_taxon, roc_bio_sample, bs_association_map = (
-        bio_sample.get_taxons_bio_samples_and_association_map(submission, roc_gp)
+        bio_sample.get_taxons_bio_samples_and_association_map(
+            submission, roc_gp, accession_id
+        )
     )
     graph += roc_bio_sample
     graph += roc_taxon
@@ -91,7 +99,8 @@ def convert_biostudies_to_ro_crate(accession_id: str, crate_path: Optional[Path]
     graph += roc_affiliation_by_accno.values()
 
     roc_contributors = contributor.get_contributors(
-        submission, roc_affiliation_by_accno
+        submission,
+        roc_affiliation_by_accno,
     )
     graph += roc_contributors
 

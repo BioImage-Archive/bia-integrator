@@ -3,6 +3,9 @@ from bia_shared_datamodels import uuid_creation
 import bia_integrator_api.models as APIModels
 import bia_shared_datamodels.attribute_models as AttributeModels
 import bia_shared_datamodels.ro_crate_models as ROCrateModels
+from bia_shared_datamodels.package_specific_uuid_creation.ro_crate_uuid_creation import (
+    create_annotation_method_uuid,
+)
 import logging
 
 logger = logging.getLogger("__main__." + __name__)
@@ -30,15 +33,17 @@ def convert_annotation_method(
     ro_crate_annotation_method: ROCrateModels.AnnotationMethod,
     study_uuid: str,
 ) -> APIModels.AnnotationMethod:
-    
+
     method_type = []
     for mt in ro_crate_annotation_method.methodType:
         method_type.append(mt.replace(" ", "_").lower())
 
+    uuid, uuid_attribute = create_annotation_method_uuid(
+        study_uuid, ro_crate_annotation_method.id
+    )
+
     iap = {
-        "uuid": str(uuid_creation.create_annotation_method_uuid(
-            study_uuid, ro_crate_annotation_method.id
-        )),
+        "uuid": str(uuid),
         "title": ro_crate_annotation_method.title,
         "protocol_description": ro_crate_annotation_method.protocolDescription,
         "annotation_criteria": ro_crate_annotation_method.annotationCriteria,
@@ -47,13 +52,7 @@ def convert_annotation_method(
         "annotation_source_indicator": ro_crate_annotation_method.annotationSourceIndicator,
         "version": 0,
         "object_creator": APIModels.Provenance.BIA_INGEST,
-        "additional_metadata": [
-            AttributeModels.DocumentUUIDUinqueInputAttribute(
-                provenance=APIModels.Provenance.BIA_INGEST,
-                name="uuid_unique_input",
-                value={"uuid_unique_input": ro_crate_annotation_method.id},
-            ).model_dump()
-        ],
+        "additional_metadata": [uuid_attribute.model_dump()],
     }
 
     return APIModels.AnnotationMethod(**iap)

@@ -11,14 +11,19 @@ from ro_crate_ingest.biostudies_to_ro_crate.entity_conversion.taxon import (
     get_taxon_under_biosample,
 )
 from typing import Optional
-
 from bia_shared_datamodels import ro_crate_models
+from bia_shared_datamodels.package_specific_uuid_creation import (
+    shared,
+    biostudies_ingest_uuid_creation,
+)
 
 logger = logging.getLogger("__main__." + __name__)
 
 
 def get_taxons_bio_samples_and_association_map(
-    submission: Submission, roc_growth_protocols: dict[str, ro_crate_models.Protocol]
+    submission: Submission,
+    roc_growth_protocols: dict[str, ro_crate_models.Protocol],
+    accession_id: str,
 ) -> tuple[
     list[ro_crate_models.Taxon],
     list[ro_crate_models.BioSample],
@@ -45,7 +50,9 @@ def get_taxons_bio_samples_and_association_map(
         attr_dict = attributes_to_dict(section.attributes)
 
         for growth_protocol in biosample_specimen_map[attr_dict["title"]]:
-            bio_sample = get_bio_sample(section, biosample_taxons, growth_protocol)
+            bio_sample = get_bio_sample(
+                section, biosample_taxons, growth_protocol, accession_id
+            )
             roc_biosamples.append(bio_sample)
 
             if bio_sample.title not in association_mapping:
@@ -65,14 +72,15 @@ def get_bio_sample(
     section: Section,
     biosample_taxons: list[ro_crate_models.Taxon],
     growth_protocol: Optional[ro_crate_models.Protocol],
+    accession_id: str,
 ) -> ro_crate_models.BioSample:
     attr_dict = attributes_to_dict(section.attributes)
 
     model_dict = {
         "@id": (
-            f"biostudies_bs:{section.accno}_{growth_protocol.id}"
+            f"_:{section.accno} {str(biostudies_ingest_uuid_creation.create_protocol_uuid(shared.create_study_uuid(accession_id), growth_protocol.id.removeprefix("_:_"))[0])}"
             if growth_protocol
-            else f"biostudies_bs:{section.accno}"
+            else f"_:{section.accno}"
         ),
         "@type": ["bia:BioSample"],
         "title": attr_dict["title"],

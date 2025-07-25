@@ -1,3 +1,0 @@
-file_path,image_name,source_image
-data/annotations/WD1_15-02_WT_confocalonly_segmented.ome.zarr.zip,WD1_15-02_WT_confocalonly_segmented,data/images/WD1_15-02_WT_confocalonly.ome.zarr.zip
-data/annotations/WD2.1_21-02_WT_confocalonly_segmented.ome.zarr.zip,WD2.1_21-02_WT_confocalonly_segmented,data/images/WD2.1_21-02_WT_confocalonly.ome.zarr
