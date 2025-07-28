@@ -46,8 +46,10 @@ def expected_thumbnail_uri_attribute(input_image_uuid) -> api_models.Attribute:
             "provenance": "bia_image_conversion",
             "name": "image_thumbnail_uri",
             "value": {
-                "256_256": file_uri,
-                "size": [256, 256],
+                "256": {
+                    "uri": file_uri,
+                    "size": 256,
+                },
             },
         }
     )
@@ -62,7 +64,10 @@ def expected_static_display_uri_attribute(input_image_uuid) -> api_models.Attrib
             "provenance": "bia_image_conversion",
             "name": "image_static_display_uri",
             "value": {
-                "slice": {"uri": file_uri, "size": [512, 512],},
+                "slice": {
+                    "uri": file_uri,
+                    "size": 512,
+                },
             },
         }
     )
@@ -187,6 +192,7 @@ def test_cli_convert_interactive_display_to_thumbnail(
         settings.cache_root_dirpath / "mock_s3" / "thumbnail_256_256.png"
     )
     assert created_thumbnail_path.exists()
+
 
 def test_cli_update_recommended_vizarr_rep_for_image(
     runner,

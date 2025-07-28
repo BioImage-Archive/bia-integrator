@@ -129,8 +129,14 @@ def add_or_update_attribute(attribute_to_add: Attribute, attributes: list[Attrib
 
     for i, attr in enumerate(attributes):
         if attr.name == attribute_to_add.name:
-            # We treat 'static_image_uri' differently
-            if attr.name == "image_static_display_uri":
+            # We treat 'static_image_uri' and 'thumbnail_uri' differently
+            # The value can have multiple keys. E.g.
+            # {
+            #   "256": value_for_256,
+            #   "512": value_for_512
+            # }
+            # so we update values instead or replace.
+            if attr.name == "image_static_display_uri" or attr.name == "thumbnail_uri":
                 attributes[i].value.update(attribute_to_add.value)
             else:
                 attributes[i].value = attribute_to_add.value
