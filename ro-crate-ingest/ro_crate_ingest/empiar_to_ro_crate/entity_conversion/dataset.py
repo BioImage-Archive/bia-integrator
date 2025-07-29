@@ -99,7 +99,7 @@ def get_assigned_dataset_rembis(
     for title in yaml_dict.get("assigned_dataset_rembis", []):
         if title in image_analysis_methods_map:
             image_analysis_methods.append({"@id": image_analysis_methods_map[title].id})
-        elif title in image_analysis_methods_map:
+        elif title in image_correlation_method_map:
             image_correlations.append({"@id": image_correlation_method_map[title].id})
         else:
             logger.warning(
