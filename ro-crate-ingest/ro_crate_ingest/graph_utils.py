@@ -6,6 +6,25 @@ from urllib.parse import urljoin
 logger = logging.getLogger("__main__." + __name__)
 
 
+def get_dataset_for_filelist(
+    file_list_id: str, graph: rdflib.Graph, crate_path: pathlib.Path
+) -> str:
+    pathlib_path_uri = pathlib.Path(crate_path).absolute().as_uri() + "/"
+    file_list_rdf_ref = urljoin(pathlib_path_uri, file_list_id)
+    subjects = list(
+        graph.subjects(
+            rdflib.URIRef("http://bia/associationFileMetadata"), rdflib.URIRef(file_list_rdf_ref)
+        )
+    )
+    if len(subjects) == 1:
+        parent_id = pathlib.Path.from_uri(subjects[0]).relative_to(crate_path)
+        return f"{str(parent_id)}/"
+    else:
+        raise ValueError(
+            f"Incorrect number of datasets found for filelist {file_list_id}. Please check the RO-Crate metadata."
+        )
+
+
 def get_hasPart_parent_id_from_child(
     child_id: str, graph: rdflib.Graph, crate_path: str
 ) -> str:

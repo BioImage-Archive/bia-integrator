@@ -11,16 +11,15 @@ from ro_crate_ingest.ro_crate_to_api.entity_conversion import (
     protocol,
     specimen_imaging_preparation_protocol,
     study,
-    file_reference,
-    image,
-    specimen,
-)
-from ro_crate_ingest.ro_crate_to_api.entity_conversion.file_list import (
-    process_file_lists,
+
+    dataframe_assembly,
+    dataframe_file_reference,
+    dataframe_image_prerequisites,
+    dataframe_image_and_dependencies,
 )
 from pathlib import Path
 from rich.logging import RichHandler
-from ..save_utils import PersistenceMode, persist, persist_in_order
+from ..save_utils import PersistenceMode, persist
 from bia_integrator_api import models
 
 
@@ -33,6 +32,7 @@ logger = logging.getLogger()
 def convert_ro_crate_to_bia_api(
     crate_path: Path,
     persistence_mode: PersistenceMode,
+    file_ref_url_prefix: str,
 ):
     entities = process_ro_crate(crate_path)
     crate_graph = load_ro_crate_metadata_to_graph(crate_path)
@@ -86,39 +86,31 @@ def convert_ro_crate_to_bia_api(
     )
     api_objects += specimen_imaging_preparation_protocols
 
-    specimens = specimen.create_api_specimen(entities, study_uuid)
-    api_objects += specimens
-    persist(accession_id, models.Specimen, specimens, persistence_mode)
-
-    processed_file_paths = []
-    # TODO: Handle dependency tree for images and creation processes, expecially when annotation images are explicitly included, but original images are not.
-    (
-        image_file_refs,
-        file_paths,
-        ordered_images_and_creation_processes,
-        max_chain_length,
-    ) = image.create_image_and_dependencies(
-        entities, study_uuid, crate_path, crate_graph
+    file_dataframe = dataframe_assembly.create_combined_file_dataframe(
+        entities, crate_path, crate_graph
     )
-    persist(accession_id, models.FileReference, image_file_refs, persistence_mode)
-    api_objects += image_file_refs
-    processed_file_paths += file_paths
-    persist_in_order(
-        ordered_images_and_creation_processes,
-        max_chain_length,
-        persistence_mode,
+
+    image_raw_dataframe = dataframe_file_reference.process_and_persist_file_references(
+        file_dataframe,
+        study_uuid,
         accession_id,
+        file_ref_url_prefix,
+        persistence_mode,
+        2,
     )
 
-    file_list_file_refs, file_paths = process_file_lists(
-        entities, crate_path, crate_graph, study_uuid
-    )
-    persist(accession_id, models.FileReference, file_list_file_refs, persistence_mode)
-    api_objects += file_list_file_refs
-    processed_file_paths += file_paths
-
-    file_references = file_reference.create_file_reference(
-        entities, study_uuid, crate_path, processed_file_paths
-    )
-    persist(accession_id, models.FileReference, file_references, persistence_mode)
-    api_objects += file_references
+    if not image_raw_dataframe["image_id"].isna().all():
+        image_dataframe, id_uuid_map = (
+            dataframe_image_prerequisites.prepare_all_ids_for_images(
+                image_raw_dataframe, entities, study_uuid
+            )
+        )
+        dataframe_image_and_dependencies.create_images_and_dependencies(
+            image_dataframe,
+            entities,
+            id_uuid_map,
+            study_uuid,
+            accession_id,
+            persistence_mode,
+            2,
+        )
