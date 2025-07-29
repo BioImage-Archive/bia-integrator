@@ -41,7 +41,7 @@ def update_example_image_uri(
     attributes = attributes_by_name(image)
     image_static_display_uri_key = "image_static_display_uri"
     assert image_static_display_uri_key in attributes
-    image_static_display_uri = attributes[image_static_display_uri_key]["slice"]
+    image_static_display_uri = attributes[image_static_display_uri_key]["slice"]["uri"]
 
     if update_mode == UpdateMode.REPLACE:
         dataset.example_image_uri = [

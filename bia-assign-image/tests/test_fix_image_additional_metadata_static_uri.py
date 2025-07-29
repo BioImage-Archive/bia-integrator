@@ -35,6 +35,17 @@ def static_display_from_convert_v1() -> dict:
 
 
 @pytest.fixture
+def static_display_from_convert_v2() -> dict:
+    return {
+        "provenance": "bia_image_conversion",
+        "name": "image_static_display_uri",
+        "value": {
+            "image_static_display_uri": ["http://static_display_uri"],
+        },
+    }
+
+
+@pytest.fixture
 def expected_static_display() -> dict:
     return {
         "provenance": "bia_image_conversion",
@@ -55,8 +66,15 @@ def test_fix_static_display_uri_from_migration_script(
     assert fixed_static_display == expected_static_display
 
 
-def test_fix_wrong_static_display_details_from_convert(
+def test_fix_wrong_static_display_details_from_convert_v1(
     static_display_from_convert_v1, expected_static_display
 ):
     fixed_static_display = fix_static_display_uri(static_display_from_convert_v1)
+    assert fixed_static_display == expected_static_display
+
+
+def test_fix_wrong_static_display_details_from_convert_v2(
+    static_display_from_convert_v2, expected_static_display
+):
+    fixed_static_display = fix_static_display_uri(static_display_from_convert_v2)
     assert fixed_static_display == expected_static_display

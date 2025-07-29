@@ -13,7 +13,9 @@ from bia_integrator_api.models import (  # type: ignore
     Provenance,
     Attribute,
 )
-from bia_shared_datamodels.package_specific_uuid_creation.image_conversion_uuid_creation import create_image_representation_uuid
+from bia_shared_datamodels.package_specific_uuid_creation.image_conversion_uuid_creation import (
+    create_image_representation_uuid,
+)
 
 from .config import settings
 from .io import copy_local_to_s3, stage_fileref_and_get_fpath, sync_dirpath_to_s3
@@ -25,12 +27,12 @@ from .utils import (
     create_s3_uri_suffix_for_2d_view_of_image_representation,
     attributes_by_name,
     get_dir_size,
-    image_dimensions_as_string,
     add_or_update_attribute,
 )
 
 
 logger = logging.getLogger(__file__)
+
 
 def create_image_representation_object(
     image: Image, conversion_process_dict: dict, image_format: str
@@ -40,7 +42,9 @@ def create_image_representation_object(
 
     dataset = api_client.get_dataset(image.submission_dataset_uuid)
     study_uuid = UUID(dataset.submitted_in_study_uuid)
-    uuid, uuid_attribute = create_image_representation_uuid(study_uuid, conversion_process_dict)
+    uuid, uuid_attribute = create_image_representation_uuid(
+        study_uuid, conversion_process_dict
+    )
     image_rep = ImageRepresentation(
         object_creator=Provenance.BIA_IMAGE_CONVERSION,
         uuid=str(uuid),
@@ -90,13 +94,15 @@ def convert_interactive_display_to_thumbnail(
     )
 
     # Update the BIA Image object with uri for this 2D view
-    thumbnail_uri_key = image_dimensions_as_string(dims)
+    thumbnail_uri_key = f"{dims[0]}"
     view_details_dict = {
         "provenance": Provenance.BIA_IMAGE_CONVERSION,
         "name": "image_thumbnail_uri",
         "value": {
-            thumbnail_uri_key: file_uri,
-            "size": dims,
+            thumbnail_uri_key: {
+                "uri": file_uri,
+                "size": dims[0],
+            },
         },
     }
     view_details = Attribute.model_validate(view_details_dict)
@@ -131,7 +137,10 @@ def convert_interactive_display_to_static_display(
         "provenance": Provenance.BIA_IMAGE_CONVERSION,
         "name": "image_static_display_uri",
         "value": {
-            "slice": {"uri": file_uri, "size": dims,},
+            "slice": {
+                "uri": file_uri,
+                "size": dims[0],
+            },
         },
     }
     view_details = Attribute.model_validate(view_details_dict)
@@ -439,10 +448,9 @@ def convert_uploaded_by_submitter_to_interactive_display(
 
     return base_image_rep
 
+
 def update_recommended_vizarr_representation_for_image(image_rep: ImageRepresentation):
-    """Update 'recommended_vizarr_representation' attr of underlying Image object
-    
-    """
+    """Update 'recommended_vizarr_representation' attr of underlying Image object"""
 
     attribute = Attribute.model_validate(
         {
