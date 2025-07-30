@@ -1,0 +1,54 @@
+accession_id: EMPIAR-ANNOTATIONTEST
+paper_doi: https://doi.org/10.1038/nprot.2016.124
+rembis:
+  ImageAcquisitionProtocol:
+    - title: "Cryo-electron tomography"
+      protocol_description: "Seven tomograms were collected on a sample of purified 80S ribosomes from S. cerevisiae."
+      imaging_instrument_description: "Cryo-electron microscope"
+      fbbi_id:
+        - "obo:FBbi_00000256"
+      imaging_method_name:
+        - "Cryo-electron tomography"
+  BioSample:
+    - title: "Purified 80S ribosomes from S. cerevisiae"
+      organism_classification:
+        - common_name: "Baker's yeast"
+          scientific_name: "Saccharomyces cerevisiae"
+          ncbi_id: "NCBI:txid4932"
+      biological_entity_description: "Purified 80S ribosomes isolated from Saccharomyces cerevisiae"
+  SpecimenImagingPreparationProtocol:
+    - title: "Cryo-ET sample preparation for ribosomes"
+      protocol_description: "Purified 80S ribosomes from S. cerevisiae were prepared for cryo-electron tomography."
+  AnnotationMethod:
+    - title: "Ribosome particle picking and refinement"
+      protocol_description: To find the positions of macromolecular complexes within tomograms we either used the MolMatch software for template matching or manually picked particles using 3dmod and converted the resulting model into a text file using the IMOD model2point command.
+      method_type: ["point_annotations"]
+dataset_rembis:
+  ImageAnalysisMethod:
+    - title: "Sub-tomogram averaging in RELION"
+      protocol_description: "The dataset was used for sub-tomogram averaging in RELION. Tomograms were processed according to Steps 1-7 as described in the protocol, with results stored in the ./AnticipatedResults subdirectory of the EMPIAR entry. To enter the RELION workflow, we assume that tomograms have been generated in MRC format. Tomogram calculation is not done inside RELION but instead relies on software packages such as IMOD, Tomo3D, pyTOM or Bsoft. In the examples in the paper, the IMOD package was used for tilt series alignment, and Tomo3D for tomographic reconstruction."
+      features_analysed: "Tomograms"
+    - title: "Testing testing"
+      protocol_description: "This is a test protocol."
+      features_analysed: "Tomograms"
+datasets:
+  - title: "Raw data and also processed datafor sub-tomogram averaging of S. cerevisiae 80S ribosomes"
+    assigned_images:
+      - label: "Tomogram 05"
+        file_pattern: "ribosomes/Tomograms/05/IS002_291013_005.mrc"
+        biosample_title: "Purified 80S ribosomes from S. cerevisiae"
+        image_acquisition_protocol_title: "Cryo-electron tomography"
+        specimen_imaging_preparation_protocol_title: "Cryo-ET sample preparation for ribosomes"
+        annotation_label_pattern: [["Anticipated results coordinates", "Tomograms/05/IS002_291013_005.mrc"]]
+      - label: "Tomogram 06"
+        file_pattern: "ribosomes/Tomograms/06/IS002_291013_006.mrc"
+        biosample_title: "Purified 80S ribosomes from S. cerevisiae"
+        image_acquisition_protocol_title: "Cryo-electron tomography"
+        specimen_imaging_preparation_protocol_title: "Cryo-ET sample preparation for ribosomes"
+        annotation_label_pattern: [["Anticipated results coordinates", "Tomograms/06/IS002_291013_006.mrc"]]
+    assigned_annotations:
+      - label: "Anticipated results coordinates"
+        file_pattern: "ribosomes/AnticipatedResults/particles_subtomo_good.star"
+        annotation_method_title: "Ribosome particle picking and refinement"
+    assigned_dataset_rembis:
+      - label: "Sub-tomogram averaging in RELION"

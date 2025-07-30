@@ -1,0 +1,60 @@
+{
+  "EMPIAR-ANNOTATIONTEST": {
+    "imagesets": [
+      {
+        "segmentations": [],
+        "name": "Raw data and also processed datafor sub-tomogram averaging of S. cerevisiae 80S ribosomes",
+        "directory": "data",
+        "category": "class averages",
+        "header_format": "MRC",
+        "data_format": "MRC",
+        "num_images_or_tilt_series": 7,
+        "frames_per_image": 1,
+        "frame_range_min": null,
+        "frame_range_max": null,
+        "voxel_type": "UNSIGNED BYTE",
+        "pixel_width": 2.17,
+        "pixel_height": 2.17,
+        "micrographs_file_pattern": "",
+        "picked_particles_file_pattern": "",
+        "picked_particles_directory": "",
+        "details": "This data set contains raw data in ./Tomograms/ . It also contains processed data in ./AnticipatedResults/ .\nThe dataset contains a variable number of frames in each file.",
+        "image_width": null,
+        "image_height": null
+      }
+    ],
+    "workflow_file": null,
+    "grant_references": [],
+    "version_history": [],
+    "title": "Sub-tomogram averaging in RELION",
+    "principal_investigator": [],
+    "status": "REL",
+    "deposition_date": "2015-11-02",
+    "release_date": "2015-11-19",
+    "obsolete_date": null,
+    "update_date": "2020-04-07",
+    "corresponding_author": {},
+    "authors": [
+      {
+        "author": {
+          "name": "NameAndInitials NAI",
+          "author_orcid": "0000-0000-0000-0001"
+        }
+      },
+      {
+        "author": {
+          "name": "SecondAuthor AB",
+          "author_orcid": "0000-0000-0000-0002"
+        }
+      }
+    ],
+    "biostudies_references": [],
+    "idr_references": [],
+    "empiar_references": [],
+    "citation": [],
+    "dataset_size": "842.8 GB",
+    "experiment_type": "EMDB",
+    "scale": null,
+    "entry_doi": "10.6019/EMPIAR-ANNOTATIONTEST"
+  }
+}

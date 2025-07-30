@@ -12,6 +12,7 @@ def load_empiar_entry(accession_id) -> Entry:
     # Note this is a dictionary to include reasons why the override was made
     overrides = {
         "EMPIAR-TEST": "A test submission.",
+        "EMPIAR-ANNOTATIONTEST": "A test submission.",
     }
     if accession_id in overrides:
         return read_empiar_entry_override(accession_id)
