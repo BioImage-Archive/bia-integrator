@@ -3,9 +3,7 @@ from typing import Annotated
 from api.elastic import Elastic
 from api.app import get_elastic
 
-router = APIRouter(
-    prefix="/search"
-)
+router = APIRouter(prefix="/search")
 
 
 @router.get("/fts")
