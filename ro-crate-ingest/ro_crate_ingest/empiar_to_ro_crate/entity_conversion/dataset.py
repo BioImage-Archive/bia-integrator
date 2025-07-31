@@ -61,7 +61,7 @@ def get_dataset(
         ],
         "associatedBiologicalEntity": association_yaml_fields["biosample_title"],
         "associatedAnnotationMethod": [
-            f"_:{x["annotation_method_title"]}"
+            {"@id": f"_:{x["annotation_method_title"]}"}
             for x in yaml_dict.get("assigned_annotations", [])
         ],
         "associatedImageAnalysisMethod": image_analysis_methods,
@@ -96,13 +96,17 @@ def get_assigned_dataset_rembis(
 ):
     image_analysis_methods = []
     image_correlations = []
-    for title in yaml_dict.get("assigned_dataset_rembis", []):
-        if title in image_analysis_methods_map:
-            image_analysis_methods.append({"@id": image_analysis_methods_map[title].id})
-        elif title in image_correlation_method_map:
-            image_correlations.append({"@id": image_correlation_method_map[title].id})
+    for label_dict in yaml_dict.get("assigned_dataset_rembis", []):
+        if label_dict["label"] in image_analysis_methods_map:
+            image_analysis_methods.append(
+                {"@id": image_analysis_methods_map[label_dict["label"]].id}
+            )
+        elif label_dict["label"] in image_correlation_method_map:
+            image_correlations.append(
+                {"@id": image_correlation_method_map[label_dict["label"]].id}
+            )
         else:
             logger.warning(
-                f"Did not find the reference dataset_rembis object {title} in {yaml_dict["title"]}"
+                f"Did not find the reference dataset_rembis object {label_dict["label"]} in {yaml_dict["title"]}"
             )
     return image_analysis_methods, image_correlations
