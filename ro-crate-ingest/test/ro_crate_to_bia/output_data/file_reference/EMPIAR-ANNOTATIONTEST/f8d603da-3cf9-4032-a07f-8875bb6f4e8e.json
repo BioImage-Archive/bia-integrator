@@ -1,0 +1,33 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "f8d603da-3cf9-4032-a07f-8875bb6f4e8e",
+  "version": 0,
+  "model": {
+    "type_name": "FileReference",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "attributes_from_biostudies.File",
+      "value": {
+        "attributes": {
+          "file_path": "data/ribosomes/Tomograms/05/IS002_291013_005.mrc",
+          "size_in_bytes": "12"
+        }
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "data/ribosomes/Tomograms/05/IS002_291013_005.mrc12"
+      }
+    }
+  ],
+  "file_path": "data/ribosomes/Tomograms/05/IS002_291013_005.mrc",
+  "format": ".mrc",
+  "size_in_bytes": 12,
+  "uri": "None?",
+  "submission_dataset_uuid": "897615f4-a993-42db-878e-507056332e9e"
+}

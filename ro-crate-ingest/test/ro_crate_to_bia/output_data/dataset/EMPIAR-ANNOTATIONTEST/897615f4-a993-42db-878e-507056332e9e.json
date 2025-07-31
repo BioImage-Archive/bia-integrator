@@ -1,0 +1,60 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "897615f4-a993-42db-878e-507056332e9e",
+  "version": 0,
+  "model": {
+    "type_name": "Dataset",
+    "version": 2
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "image_acquisition_protocol_uuid",
+      "value": {
+        "image_acquisition_protocol_uuid": [
+          "295614fc-5b2b-49d2-b7d5-83a5038354d5"
+        ]
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "specimen_imaging_preparation_protocol_uuid",
+      "value": {
+        "specimen_imaging_preparation_protocol_uuid": [
+          "8c4ca634-0e6f-49b0-8f9d-0b058a5a7992"
+        ]
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "bio_sample_uuid",
+      "value": {
+        "bio_sample_uuid": [
+          "39584db1-583e-47b2-b219-68c1b668e318"
+        ]
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "annotation_method_uuid",
+      "value": {
+        "annotation_method_uuid": [
+          "4f9cb0c5-20b8-47e8-931b-166066dc4d6a"
+        ]
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Raw data and also processed datafor sub-tomogram averaging of S. cerevisiae 80S ribosomes data"
+      }
+    }
+  ],
+  "title": "Raw data and also processed datafor sub-tomogram averaging of S. cerevisiae 80S ribosomes",
+  "description": "This data set contains raw data in ./Tomograms/ . It also contains processed data in ./AnticipatedResults/ .\nThe dataset contains a variable number of frames in each file.",
+  "analysis_method": [],
+  "correlation_method": [],
+  "example_image_uri": [],
+  "submitted_in_study_uuid": "b30a0e20-387d-4bfe-938c-41ddbfccb91f"
+}
