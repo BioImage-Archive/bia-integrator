@@ -8,7 +8,7 @@ from pydantic.alias_generators import to_snake
 from enum import Enum
 from .api_client import get_local_bia_api_client, get_bia_api_client
 import bia_integrator_api.models as api_models
-from bia_integrator_api.exceptions import NotFoundException
+from bia_integrator_api.exceptions import NotFoundException, ApiException
 import logging
 
 logger = logging.getLogger("__main__." + __name__)
@@ -102,11 +102,11 @@ def save_api(
         post_function = getattr(client, api_creation_method)
         try:
             post_function(api_obj)
-        except:
+        except ApiException:
             api_copy_of_obj = fetch_document(object_type, obj, client)
-            if api_copy_of_obj:
+            if api_copy_of_obj and round_trip_object_class_from_client_to_datamodel(api_obj) != api_copy_of_obj:
                 obj.version = api_copy_of_obj.version + 1
-            post_function(api_obj)
+                post_function(api_obj)
 
 
 def persist(
