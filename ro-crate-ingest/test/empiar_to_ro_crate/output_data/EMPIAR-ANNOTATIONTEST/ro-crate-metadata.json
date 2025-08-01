@@ -269,6 +269,47 @@
             "contactEmail": null
         },
         {
+            "@id": "Raw%20data%20and%20also%20processed%20datafor%20sub-tomogram%20averaging%20of%20S.%20cerevisiae%2080S%20ribosomes%20data/file_list.tsv",
+            "@type": [
+                "File",
+                "bia:FileList",
+                "csvw:Table"
+            ],
+            "tableSchema": {
+                "@id": "_:ts0"
+            }
+        },
+        {
+            "@id": "_:col1",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "size_in_bytes",
+            "propertyUrl": "http://bia/sizeInBytes"
+        },
+        {
+            "@id": "_:col0",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "file_path",
+            "propertyUrl": "http://bia/filePath"
+        },
+        {
+            "@id": "_:ts0",
+            "@type": [
+                "csvw:Schema"
+            ],
+            "column": [
+                {
+                    "@id": "_:col0"
+                },
+                {
+                    "@id": "_:col1"
+                }
+            ]
+        },
+        {
             "@id": "Raw%20data%20and%20also%20processed%20datafor%20sub-tomogram%20averaging%20of%20S.%20cerevisiae%2080S%20ribosomes%20data/",
             "@type": [
                 "Dataset",
@@ -304,8 +345,14 @@
             ],
             "associatedImageCorrelationMethod": [],
             "associatedProtocol": [],
-            "hasPart": [],
-            "associationFileMetadata": null
+            "hasPart": [
+                {
+                    "@id": "Raw%20data%20and%20also%20processed%20datafor%20sub-tomogram%20averaging%20of%20S.%20cerevisiae%2080S%20ribosomes%20data/file_list.tsv"
+                }
+            ],
+            "associationFileMetadata": {
+                "@id": "Raw%20data%20and%20also%20processed%20datafor%20sub-tomogram%20averaging%20of%20S.%20cerevisiae%2080S%20ribosomes%20data/file_list.tsv"
+            }
         },
         {
             "@id": "_:Testing testing",

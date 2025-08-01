@@ -1,34 +1,35 @@
 from bia_shared_datamodels import ro_crate_models
 from ro_crate_ingest.empiar_to_ro_crate.empiar.entry_api_models import Imageset, Entry
+from ro_crate_ingest.empiar_to_ro_crate.entity_conversion.file_list import (
+    generate_relative_filelist_path,
+)
 import logging
 from urllib.parse import quote
 
 logger = logging.getLogger("__main__." + __name__)
 
 
-def get_datasets(
+def get_datasets_by_imageset_title(
     yaml_file: dict,
     empiar_api_entry: Entry,
     image_analysis_methods_map: dict[str, ro_crate_models.ImageAnalysisMethod],
     image_correlation_method_map: dict[str, ro_crate_models.ImageCorrelationMethod],
-) -> list[ro_crate_models.Dataset]:
+) -> dict[str, ro_crate_models.Dataset]:
     yaml_list_of_objs = yaml_file.get("datasets", [])
 
     imageset_by_name = {
         imageset.name: imageset for imageset in empiar_api_entry.imagesets
     }
 
-    datasets = []
+    datasets = {}
 
     for obj_dict in yaml_list_of_objs:
         imageset = imageset_by_name[obj_dict["title"]]
-        datasets.append(
-            get_dataset(
-                imageset=imageset,
-                yaml_dict=obj_dict,
-                image_analysis_methods_map=image_analysis_methods_map,
-                image_correlation_method_map=image_correlation_method_map,
-            )
+        datasets[obj_dict["title"]] = get_dataset(
+            imageset=imageset,
+            yaml_dict=obj_dict,
+            image_analysis_methods_map=image_analysis_methods_map,
+            image_correlation_method_map=image_correlation_method_map,
         )
 
     return datasets
@@ -47,12 +48,15 @@ def get_dataset(
         yaml_dict, image_analysis_methods_map, image_correlation_method_map
     )
 
+    id = quote(f"{imageset.name} {imageset.directory}/")
+    filelist_id = generate_relative_filelist_path(id)
+
     model_dict = {
-        "@id": quote(f"{imageset.name} {imageset.directory}/"),
+        "@id": id,
         "@type": ["Dataset", "bia:Dataset"],
         "title": imageset.name,
         "description": imageset.details,
-        "hasPart": [],
+        "hasPart": [{"@id": filelist_id}],
         "associatedImageAcquisitionProtocol": association_yaml_fields[
             "image_acquisition_protocol_title"
         ],
@@ -67,6 +71,7 @@ def get_dataset(
         "associatedImageAnalysisMethod": image_analysis_methods,
         "associatedImageCorrelationMethod": image_correlations,
         "associatedProtocol": [],
+        "associationFileMetadata": {"@id": filelist_id},
     }
     return ro_crate_models.Dataset(**model_dict)
 

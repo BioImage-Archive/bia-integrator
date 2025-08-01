@@ -1,0 +1,51 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "b30a0e20-387d-4bfe-938c-41ddbfccb91f",
+  "version": 0,
+  "model": {
+    "type_name": "Study",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "EMPIAR-ANNOTATIONTEST"
+      }
+    }
+  ],
+  "accession_id": "EMPIAR-ANNOTATIONTEST",
+  "licence": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "author": [
+    {
+      "rorid": null,
+      "address": null,
+      "website": null,
+      "orcid": "https://orcid.org/0000-0000-0000-0001",
+      "display_name": "NameAndInitials NAI",
+      "affiliation": [],
+      "contact_email": null,
+      "role": []
+    },
+    {
+      "rorid": null,
+      "address": null,
+      "website": null,
+      "orcid": "https://orcid.org/0000-0000-0000-0002",
+      "display_name": "SecondAuthor AB",
+      "affiliation": [],
+      "contact_email": null,
+      "role": []
+    }
+  ],
+  "title": "Sub-tomogram averaging in RELION",
+  "release_date": "2015-11-19",
+  "description": "",
+  "keyword": [],
+  "acknowledgement": null,
+  "see_also": [],
+  "related_publication": [],
+  "grant": [],
+  "funding_statement": null
+}

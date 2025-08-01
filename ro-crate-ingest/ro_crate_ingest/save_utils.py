@@ -1,14 +1,18 @@
-from .settings import get_settings
+from ro_crate_ingest.settings import get_settings
+from ro_crate_ingest.graph_utils import ro_crate_data_entity_id_to_path
+from ro_crate_ingest.api_client import get_local_bia_api_client, get_bia_api_client
+
+from bia_shared_datamodels import bia_data_model
+from bia_integrator_api.exceptions import NotFoundException
+
 from pathlib import Path
 import os
-from bia_shared_datamodels import bia_data_model
 from typing import Type
 from enum import Enum
 from pydantic.alias_generators import to_snake
-from enum import Enum
-from .api_client import get_local_bia_api_client, get_bia_api_client
 import bia_integrator_api.models as api_models
 from bia_integrator_api.exceptions import NotFoundException, ApiException
+import pandas as pd
 import logging
 
 logger = logging.getLogger("__main__." + __name__)
@@ -176,3 +180,12 @@ def persist_in_order(
                 persistence_mode,
             )
         chain_length += 1
+
+
+def write_filelist(
+    output_ro_crate_path: Path, filelist_id: str, filelist_dataframe: pd.DataFrame
+) -> None:
+    filelist_path = ro_crate_data_entity_id_to_path(output_ro_crate_path, filelist_id)
+    if not os.path.exists(filelist_path.parent):
+        os.makedirs(filelist_path.parent)
+    filelist_dataframe.to_csv(filelist_path, sep="\t", index=False)

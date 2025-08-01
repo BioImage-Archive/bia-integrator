@@ -1,0 +1,21 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "6ee464f9-ffc2-4883-af09-b9c2603563c0",
+  "version": 0,
+  "model": {
+    "type_name": "SpecimenImagingPreparationProtocol",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Cryo-ET sample preparation for ribosomes"
+      }
+    }
+  ],
+  "title": "Cryo-ET sample preparation for ribosomes",
+  "protocol_description": "Purified 80S ribosomes from S. cerevisiae were prepared for cryo-electron tomography.",
+  "signal_channel_information": []
+}

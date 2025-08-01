@@ -1,10 +1,9 @@
-from fs.ftpfs import FTPFS
 from pydantic import BaseModel
-
-
 import pathlib
-
+from ftplib import FTP
+import aioftp
 from ro_crate_ingest.settings import get_settings
+import asyncio
 
 
 class EMPIARFile(BaseModel, frozen=True):
@@ -29,7 +28,7 @@ def get_file_info_from_override(accession_id: str) -> list[EMPIARFile]:
     data_path = override_dir / "data"
     return [
         EMPIARFile(
-            path=str(pathlib.Path(file).relative_to(override_dir)),
+            path=pathlib.Path(file).relative_to(override_dir),
             size_in_bytes=file.stat().st_size,
         )
         for file in data_path.rglob("*")
@@ -37,19 +36,30 @@ def get_file_info_from_override(accession_id: str) -> list[EMPIARFile]:
     ]
 
 
-def get_files_from_ftp(accession_id: str) -> list[EMPIARFile]:
-
+async def get_files_from_ftp_async(accession_id: str) -> list[EMPIARFile]:
     accession_no = accession_id.split("-")[1]
-    ftp_fs = FTPFS("ftp.ebi.ac.uk")
-    root_path = f"/empiar/world_availability/{accession_no}/data"
-    walker = ftp_fs.walk(root_path)
+    root_path = pathlib.Path(f"/empiar/world_availability/{accession_no}")
+    data_path = root_path / "data"
 
     empiar_files = []
 
-    for path, dirs, files in walker:
-        for file in files:
-            relpath = pathlib.Path(path).relative_to(root_path)
-            empiar_file = EMPIARFile(path=relpath / file.name, size_in_bytes=file.size)
-            empiar_files.append(empiar_file)
+    async with aioftp.Client.context("ftp.ebi.ac.uk") as client:
+        try:
+            async for path, path_info in client.list(data_path, recursive=True):
+                if path_info["type"] == "file":
+                    rel_path = path.relative_to(root_path)
+                    empiar_files.append(
+                        EMPIARFile(
+                            path=rel_path, size_in_bytes=path_info.get("size", 0)
+                        )
+                    )
+        except aioftp.StatusCodeError as e:
+            # skip directories/files we can't access
+            pass
 
     return empiar_files
+
+
+def get_files_from_ftp(accession_id: str) -> list[EMPIARFile]:
+    files = asyncio.run(get_files_from_ftp_async(accession_id))
+    return files
