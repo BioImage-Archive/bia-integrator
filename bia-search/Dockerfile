@@ -19,16 +19,17 @@ ADD bia-search/poetry.lock* bia-search/poetry.lock
 ADD bia-search/pyproject.toml bia-search/pyproject.toml
 
 # This will now cache unless theres changes to the lock file, or the pyproject.toml, or bia-shared-datamodels
-RUN poetry install --no-root --directory /bia-integrator/bia-search
+RUN poetry install --no-root --directory bia-search
 
 ADD bia-export/poetry.lock* bia-export/poetry.lock
 ADD bia-export/pyproject.toml bia-export/pyproject.toml
-RUN poetry install --no-root --directory /bia-integrator/bia-export
-
+RUN poetry install --no-root --directory bia-export
 
 # Add the rest of the files
 # The previous layers will cache fully and only this layer will be rebuilt if there are changes to the files.
 
 ADD . ..
+
+WORKDIR /bia-integrator/bia-search
 
 CMD ["poetry", "run", "uvicorn", "--workers", "1", "--port", "8080", "--log-config", "api/log_config.yml", "--host", "0.0.0.0", "--no-access-log", "api.app:app"]
