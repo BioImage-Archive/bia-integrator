@@ -24,6 +24,10 @@ def get_biostudies_to_ro_crate_path(accession_id) -> Path:
     )
 
 
+def get_empiar_to_ro_crate_path(accession_id) -> Path:
+    return Path(__file__).parent / "empiar_to_ro_crate" / "output_data" / accession_id
+
+
 def get_expected_files(accession_id) -> list[Path]:
     expected_out_dir = Path(__file__).parent / "ro_crate_to_bia" / "output_data"
 
@@ -70,6 +74,24 @@ def test_ingest_biostudies_ro_crate_metadata_with_api(
 ):
 
     crate_path = get_biostudies_to_ro_crate_path(accession_id)
+
+    ingest_api_test(accession_id, get_bia_api_client, crate_path)
+
+
+@pytest.mark.parametrize("accession_id", [ "EMPIAR-ANNOTATIONTEST"])
+def test_ingest_empiar_ro_crate_metadata(accession_id: str, tmp_bia_data_dir: Path):
+
+    crate_path = get_empiar_to_ro_crate_path(accession_id)
+
+    ingest_local_test(accession_id, tmp_bia_data_dir, crate_path)
+
+
+@pytest.mark.parametrize("accession_id", ["EMPIAR-ANNOTATIONTEST"])
+def test_ingest_empiar_ro_crate_metadata_with_api(
+    accession_id: str, get_bia_api_client
+):
+
+    crate_path = get_empiar_to_ro_crate_path(accession_id)
 
     ingest_api_test(accession_id, get_bia_api_client, crate_path)
 
