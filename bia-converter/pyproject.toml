@@ -25,6 +25,7 @@ pillow = "^11.1.0"
 microfilm = "^0.3.0"
 aiohttp = "^3.11.11"
 tensorstore = "^0.1.71"
+ngff-zarr = "^0.16.0"
 
 [tool.poetry.scripts]
 bia-converter = "bia_converter.cli:app"
