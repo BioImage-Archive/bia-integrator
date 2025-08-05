@@ -28,11 +28,12 @@
         },
         {
           "provenance": "bia_image_assignment",
-          "name": "static_display_uri",
+          "name": "image_static_display_uri",
           "value": {
-            "static_display_uri": [
-              "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD-MAP-IMAGE-RELATED-ARTEFACTS-TO-2025-04-MODELS-TEST/321af7aa-4299-4ad2-9ab6-f1ac50b28174-static_display.png"
-            ]
+              "slice": {
+                "uri": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD-MAP-IMAGE-RELATED-ARTEFACTS-TO-2025-04-MODELS-TEST/321af7aa-4299-4ad2-9ab6-f1ac50b28174-static_display.png",
+                "size": 512
+              }
           }
         }
     ],

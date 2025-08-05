@@ -29,7 +29,7 @@
         },
         {
             "provenance": "bia_image_assignment",
-            "name": "thumbnail_uri",
+            "name": "image_thumbnail_uri",
             "value": {
                 "256": {
                     "uri": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD609/b0ecfe5d-b32d-4ab6-9c3c-a5afeba0a575/826f0fe5-ee2d-4d43-a612-4ce659b5426d.png",
