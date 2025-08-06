@@ -96,9 +96,11 @@ def expected_updated_dataset_example_image_uri(image_uuid, base_path):
     obj_base_path = base_path / "test_update_example_image_uri"
     image = get_expected_object(obj_base_path, "Image", accession_id, image_uuid)
     additional_metadata = next(
-        am for am in image.additional_metadata if am.name == "static_display_uri"
+        am for am in image.additional_metadata if am.name == "image_static_display_uri"
     )
-    return additional_metadata.value["static_display_uri"]
+    return [
+        additional_metadata.value["slice"]["uri"],
+    ]
 
 
 def test_update_dataset_example_image_uri(

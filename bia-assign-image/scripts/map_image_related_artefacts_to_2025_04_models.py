@@ -152,7 +152,16 @@ def map_image_related_artefacts_to_2025_04_models(
         "UPLOADED_BY_SUBMITTER",
     )
     if uploaded_by_submitter_reps:
-        assert len(uploaded_by_submitter_reps) == 1
+        n_uploaded_by_submitter_reps = len(uploaded_by_submitter_reps)
+        # Fix for rare cases (e.g. EMPIAR-12377) with > 1 uploaded_by_submitter rep
+        assert n_uploaded_by_submitter_reps >= 1
+        if n_uploaded_by_submitter_reps > 1:
+            warning_str = (
+                f"Got {n_uploaded_by_submitter_reps} "
+                + "uploaded by submitter representations! Expected exactly 1. "
+                + "using first representation in list."
+            )
+            logger.warning(warning_str)
         rep_of_image_uploaded_by_submitter_2025_04 = (
             map_image_representation_to_2025_04_model(
                 uploaded_by_submitter_reps[0],
@@ -192,7 +201,7 @@ def map_image_related_artefacts_to_2025_04_models(
         thumbnail_uri = attribute_models.Attribute.model_validate(
             {
                 "provenance": "bia_image_assignment",
-                "name": "thumbnail_uri",
+                "name": "image_thumbnail_uri",
                 "value": {
                     "256": {"uri": thumbnail_reps[0]["file_uri"][0], "size": 256}
                 },
@@ -332,11 +341,11 @@ def update_dataset_example_image_uri(
                     )
                     for image in images:
                         for additional_metadata in image.additional_metadata:
-                            if additional_metadata.name == "static_display_uri":
-                                static_display_uri = additional_metadata.value[
-                                    "static_display_uri"
+                            if additional_metadata.name == "image_static_display_uri":
+                                static_display_uri = additional_metadata.value["slice"][
+                                    "uri"
                                 ]
-                                image_uri_to_dataset_map[static_display_uri[0]] = new_ds
+                                image_uri_to_dataset_map[static_display_uri] = new_ds
             example_image_uri = old_dataset["example_image_uri"]
             new_dataset = image_uri_to_dataset_map.get(example_image_uri[0])
             if new_dataset:
