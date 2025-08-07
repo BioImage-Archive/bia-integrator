@@ -5,35 +5,36 @@ from numpy import percentile
 import urllib.parse
 import typer
 from typing_extensions import Annotated
+from typing import List, Tuple, Optional, Dict
 
 app = typer.Typer()
 
-def generate_image_map(images):
-    ## Study specific filter to remove certain images from S-BIAD634
+def generate_image_map(images: Dict):
     FILTER = [
         "Raw image in JPEG format",
         "Visualization of groundtruth masks in PNG format",
         "Visualization of groundtruth for randomly selected nuclei in PNG format"
-    ]
-    def has_filtered_description(metadata, filter_list):
+    ] ## Study specific filter to remove certain images from S-BIAD634
+    
+    def has_filtered_description(metadata: Dict, filter_list: List):
         return any(
             md.get("value", {}).get("attributes", {}).get("file description") in filter_list
             for md in metadata
         )
 
-    def is_valid_rep(rep):
+    def is_valid_rep(rep: Dict):
         return (
             rep.get("image_format") == ".ome.zarr" and
             not has_filtered_description(img.get("additional_metadata", []), FILTER)
         )
     
-    def check_voxels(voxels):
+    def check_voxels(voxels: Tuple) -> List:
         return [1e-6 if voxel is None else voxel for voxel in voxels]
 
-    def get_voxels_from_image_rep(image_rep):
+    def get_voxels_from_image_rep(image_rep: Dict):
         return check_voxels((image_rep["voxel_physical_size_x"], image_rep["voxel_physical_size_y"], image_rep["voxel_physical_size_z"], image_rep["size_c"], image_rep["size_t"]))
     
-    def file_filter(img):
+    def file_filter(img: dict):
         return not has_filtered_description(img.get("additional_metadata", []), FILTER)
     
     annotated_images_map = {}
@@ -80,15 +81,30 @@ def generate_image_map(images):
 
     return annotated_images_map
 
-def write_json(filepath: Path, data: dict):
+def write_json(filepath: Path, data: dict) -> None:
     with open(filepath, "w") as f:
         json.dump(data, f, indent=2)
 
-def read_json(path):
+def read_json(path: Path) -> dict:
     with open(path) as f:
         return json.load(f)
 
-def get_contrast_and_xyz_dims(source_url, scale_level=0, use_percentiles=True):
+def get_contrast_and_xyz_dims(
+        source_url: str,
+        scale_level: int = 0,
+        use_percentiles: bool = True
+    ) -> List:
+    """
+    Compute contrast range (min, max) and spatial dimensions (x, y, z) for a given OME-Zarr source.
+
+    Args:
+        source_url (str): URL of the source OME-Zarr image.
+        scale_level (int): Downsample level to use from the image pyramid.
+        use_percentiles (bool): Whether to compute contrast using percentiles (1% and 99%).
+
+    Returns:
+        Tuple: ([min_val, max_val], [x, y, z])
+    """
     source = nz.from_ngff_zarr(source_url)
     image = source.images[scale_level]
     data = image.data
@@ -103,7 +119,7 @@ def get_contrast_and_xyz_dims(source_url, scale_level=0, use_percentiles=True):
         
     return [[min_val, max_val], [x,y,z]]
 
-def get_dimensions(dims):
+def get_dimensions(dims: Tuple[float, float, float, int, int]):
     dims = process_xy_voxels(dims)
     units = "m" if dims[0] < 1 else "um"
     return {
@@ -114,16 +130,30 @@ def get_dimensions(dims):
             "x": [float(dims[0]), units]
         }
 
-def get_tranformations(output_dims, input_dims):
+def get_transformations(
+        output_dims: Tuple[float, float, float, int, int],
+        input_dims: Tuple[float, float, float, int, int]
+    ) -> dict:
     return {
         "outputDimensions": get_dimensions(output_dims),
         "inputDimensions": get_dimensions(input_dims)
     }
 
-def get_transformed_layer(source, source_voxel, annotated_voxel):
-    return {"url": f"{source}/|zarr2:", "transform": get_tranformations(source_voxel, annotated_voxel)}
+def get_transformed_layer(
+        source: str,
+        source_voxel: Tuple[float, float, float, int, int],
+        annotated_voxel: Tuple[float, float, float, int, int]
+    ) -> dict:
+    return {"url": f"{source}/|zarr2:", "transform": get_transformations(source_voxel, annotated_voxel)}
 
-def get_layer(source, layer_type, name, source_voxel, annotated_voxels, contrast=None):
+def get_layer(
+        source: str,
+        layer_type: str,
+        name: str,
+        source_voxel: Tuple[float, float, float, int, int],
+        annotated_voxels: Tuple[float, float, float, int, int],
+        contrast: Optional[List[float]] = None
+    ) -> dict:
     if annotated_voxels:
         if source_voxel[0] >= annotated_voxels[0]:
             source_transformation =  get_transformed_layer(source, annotated_voxels, source_voxel)
@@ -140,15 +170,35 @@ def get_layer(source, layer_type, name, source_voxel, annotated_voxels, contrast
         "segments": [] if layer_type == "segmentation" else None
     }
 
-def convert_voxel_size_to_um(vx):
+def convert_voxel_size_to_um(vx: float) -> float:
     return vx * 1e-6 if int(vx) == 1 else vx
 
-def process_xy_voxels(obj):
+def process_xy_voxels(obj: Tuple) -> Tuple:
     for i in range(2):  # Only x and y
         obj[i] = convert_voxel_size_to_um(obj[i])
     return obj
 
-def generate_neuroglancer_url(source_url, segmentation_urls, source_voxel=(1,1,1,1,1), annotation_voxels=[(1,1,1,1,1)], layout="xy"):
+def generate_neuroglancer_url(
+        source_url: str,
+        segmentation_urls: List[str],
+        source_voxel: Tuple[float, float, float, int, int] = (1, 1, 1, 1, 1),
+        annotation_voxels: Optional[List[Tuple[float, float, float, int, int]]] = [(1, 1, 1, 1, 1)],
+        layout: str = "xy"
+    ) -> str:
+    """
+    Generate a Neuroglancer URL to visualize the source image and segmentation layers.
+
+    Args:
+        source_url (str): The URL of the source OME-Zarr image.
+        segmentation_urls (List[str]): URLs of segmentation annotations.
+        source_voxel (Tuple[float, float, float, int, int], optional): Voxel sizes of the source image.
+        annotation_voxels (List[Tuple[float, float, float, int, int]], optional): Voxel sizes of the segmentations.
+        layout (str, optional): Layout style for Neuroglancer.
+
+    Returns:
+        str: Neuroglancer-compatible URL.
+    """
+
     source_label = "Source Image"
     contrast, xyz = get_contrast_and_xyz_dims(source_url)
     x,y,z = xyz
