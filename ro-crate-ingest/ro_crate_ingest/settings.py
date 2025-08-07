@@ -44,6 +44,14 @@ class Settings(BaseSettings):
         str(Path(__file__).parents[1] / "override_data" / "empiar")
     )
 
+    accepted_bioformats_file: str = Field(
+        str(
+            Path(__file__).parents[1]
+            / "resources"
+            / "bioformats_curated_single_file_formats.txt"
+        )
+    )
+
 
 def get_settings():
     return Settings()

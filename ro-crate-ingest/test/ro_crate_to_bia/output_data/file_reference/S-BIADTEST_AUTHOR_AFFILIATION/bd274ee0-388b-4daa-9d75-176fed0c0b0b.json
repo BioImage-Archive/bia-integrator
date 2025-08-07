@@ -9,22 +9,20 @@
   "additional_metadata": [
     {
       "provenance": "bia_ingest",
-      "name": "attributes_from_biostudies.File",
+      "name": "uuid_unique_input",
       "value": {
-        "attributes": {
-          "path": "folder1/file1.ome.zarr.zip",
-          "size": "24628037",
-          "type": "file",
-          "Genotype/Line": "; ubiCAAX-GFP/+ ; neuPH-RFP/+",
-          "Channel 1": "CAAX"
-        }
+        "uuid_unique_input": "folder1/file1.ome.zarr.zip24628037"
       }
     },
     {
       "provenance": "bia_ingest",
-      "name": "uuid_unique_input",
+      "name": "attributes_from_file_list",
       "value": {
-        "uuid_unique_input": "folder1/file1.ome.zarr.zip24628037"
+        "http://bia/filePath": "folder1/file1.ome.zarr.zip",
+        "http://bia/sizeInBytes": "24628037",
+        "type": "file",
+        "Genotype/Line": "; ubiCAAX-GFP/+ ; neuPH-RFP/+",
+        "Channel 1": "CAAX"
       }
     }
   ],

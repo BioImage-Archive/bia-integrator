@@ -1,0 +1,23 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "7a956dfc-923c-4bb3-9ab6-b4f406e0c608",
+  "version": 0,
+  "model": {
+    "type_name": "FileReference",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Study Component-1/file_list_test_1.tsv191"
+      }
+    }
+  ],
+  "file_path": "Study Component-1/file_list_test_1.tsv",
+  "format": ".tsv",
+  "size_in_bytes": 191,
+  "uri": "None?",
+  "submission_dataset_uuid": "1e3afdfb-6349-498a-8944-834822880b70"
+}

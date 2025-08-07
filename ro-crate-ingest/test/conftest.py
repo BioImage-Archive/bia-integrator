@@ -13,10 +13,11 @@ def pytest_configure(config: pytest.Config):
     os.environ["bia_api_password"] = env_settings["local_bia_api_password"]
 
 
-@pytest.fixture()
-def tmp_bia_data_dir(tmp_path):
-    os.environ["bia_data_dir"] = str(tmp_path)
-    return tmp_path
+@pytest.fixture(scope="session")
+def tmp_bia_data_dir(tmp_path_factory):
+    tmp_dir = tmp_path_factory.mktemp("bia_data_dir")
+    os.environ["bia_data_dir"] = str(tmp_dir)
+    return tmp_dir
 
 
 @pytest.fixture()
