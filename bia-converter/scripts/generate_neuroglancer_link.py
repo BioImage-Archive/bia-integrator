@@ -4,42 +4,43 @@ from pathlib import Path
 from numpy import percentile
 import urllib.parse
 import typer
+from typing_extensions import Annotated
 
 app = typer.Typer()
 
-def generateImageMap(images):
+def generate_image_map(images):
+    ## Study specific filter to remove certain images from S-BIAD634
     FILTER = [
         "Raw image in JPEG format",
         "Visualization of groundtruth masks in PNG format",
         "Visualization of groundtruth for randomly selected nuclei in PNG format"
     ]
+    def has_filtered_description(metadata, filter_list):
+        return any(
+            md.get("value", {}).get("attributes", {}).get("file description") in filter_list
+            for md in metadata
+        )
+
     def is_valid_rep(rep):
-            return ( rep.get("image_format") == ".ome.zarr" and
-                not any(
-                    md.get("value", {}).get("attributes", {}).get("file description") in FILTER
-                    for md in img.get("additional_metadata", [])
-                )
-            )
+        return (
+            rep.get("image_format") == ".ome.zarr" and
+            not has_filtered_description(img.get("additional_metadata", []), FILTER)
+        )
     
-    def checkVoxels(voxels):
+    def check_voxels(voxels):
         return [1e-6 if voxel is None else voxel for voxel in voxels]
 
-    def getVoxelsFromImageRep(image_rep):
-        return checkVoxels((image_rep["voxel_physical_size_x"], image_rep["voxel_physical_size_y"], image_rep["voxel_physical_size_z"], image_rep["size_c"], image_rep["size_t"]))
+    def get_voxels_from_image_rep(image_rep):
+        return check_voxels((image_rep["voxel_physical_size_x"], image_rep["voxel_physical_size_y"], image_rep["voxel_physical_size_z"], image_rep["size_c"], image_rep["size_t"]))
     
-    def fileFilter(img):
-        metadata = img.get("additional_metadata", [])
-        for md in metadata:
-            fd = md.get("value", {}).get("attributes", {})
-            if fd and fd.get("file description") in FILTER:
-                return False
-        return True
+    def file_filter(img):
+        return not has_filtered_description(img.get("additional_metadata", []), FILTER)
     
     annotated_images_map = {}
     
     for img in images.values():
         input_image_uuid = img.get("creation_process", {}).get("input_image_uuid", [])
-        if not input_image_uuid or not fileFilter(img):
+        if not input_image_uuid or not file_filter(img):
             continue
         key = input_image_uuid[0]
         if key not in images:
@@ -51,7 +52,7 @@ def generateImageMap(images):
 
         source_rep = valid_rep_source[0]
         source_url = source_rep["file_uri"][0]
-        source_voxel = getVoxelsFromImageRep(source_rep)
+        source_voxel = get_voxels_from_image_rep(source_rep)
 
         if key not in annotated_images_map:
             annotated_images_map[key] = {
@@ -63,7 +64,7 @@ def generateImageMap(images):
         annotations = [
             {
                 "url": rep["file_uri"][0],
-                "voxels": getVoxelsFromImageRep(rep)
+                "voxels": get_voxels_from_image_rep(rep)
             }
             for rep in img.get("representation", []) if is_valid_rep(rep)
         ]
@@ -79,19 +80,19 @@ def generateImageMap(images):
 
     return annotated_images_map
 
-def writeJSON(filepath, data):
+def write_json(filepath: Path, data: dict):
     with open(filepath, "w") as f:
         json.dump(data, f, indent=2)
 
-def readJSON(path):
+def read_json(path):
     with open(path) as f:
         return json.load(f)
 
-def getContrastValuesAndXYZ(source_url, scale_level=0, use_percentiles=True):
+def get_contrast_and_xyz_dims(source_url, scale_level=0, use_percentiles=True):
     source = nz.from_ngff_zarr(source_url)
     image = source.images[scale_level]
     data = image.data
-    x, y, z = data.shape[4], data.shape[3], data.shape[2]
+    x, y, z = data.shape[-1], data.shape[-2], data.shape[-3]
 
     if use_percentiles:
         min_val = percentile(data.__array__(), 1)
@@ -102,8 +103,8 @@ def getContrastValuesAndXYZ(source_url, scale_level=0, use_percentiles=True):
         
     return [[min_val, max_val], [x,y,z]]
 
-def getDimensions(dims):
-    dims = processXYVoxels(dims)
+def get_dimensions(dims):
+    dims = process_xy_voxels(dims)
     units = "m" if dims[0] < 1 else "um"
     return {
             "t": [dims[4], ""],
@@ -113,23 +114,21 @@ def getDimensions(dims):
             "x": [float(dims[0]), units]
         }
 
-def getTranformations(output_dims, input_dims):
+def get_tranformations(output_dims, input_dims):
     return {
-        "outputDimensions": getDimensions(output_dims),
-        "inputDimensions": getDimensions(input_dims)
+        "outputDimensions": get_dimensions(output_dims),
+        "inputDimensions": get_dimensions(input_dims)
     }
 
-def getTransformedLayer(source, source_voxel, annotated_voxel):
-    return {"url": f"{source}/|zarr2:", "transform": getTranformations(source_voxel, annotated_voxel)}
+def get_transformed_layer(source, source_voxel, annotated_voxel):
+    return {"url": f"{source}/|zarr2:", "transform": get_tranformations(source_voxel, annotated_voxel)}
 
-def getLayer(source, layer_type, name, source_voxel, annotated_voxels, contrast=None):
+def get_layer(source, layer_type, name, source_voxel, annotated_voxels, contrast=None):
     if annotated_voxels:
-        if source_voxel[0] > annotated_voxels[0]:
-            source_transformation =  getTransformedLayer(source, annotated_voxels, source_voxel)
-        elif source_voxel[0] == annotated_voxels[0]:
-            source_transformation = getTransformedLayer(source, annotated_voxels, source_voxel)
+        if source_voxel[0] >= annotated_voxels[0]:
+            source_transformation =  get_transformed_layer(source, annotated_voxels, source_voxel)
         else:
-            source_transformation =  getTransformedLayer(source, source_voxel, source_voxel)
+            source_transformation =  get_transformed_layer(source, source_voxel, source_voxel)
 
     shaders = {"normalized": {"range": contrast}} if layer_type == "image" else {}
     return {
@@ -141,23 +140,23 @@ def getLayer(source, layer_type, name, source_voxel, annotated_voxels, contrast=
         "segments": [] if layer_type == "segmentation" else None
     }
 
-def convertVoxelSizeToUM(vx):
+def convert_voxel_size_to_um(vx):
     return vx * 1e-6 if int(vx) == 1 else vx
 
-def processXYVoxels(obj):
+def process_xy_voxels(obj):
     for i in range(2):  # Only x and y
-        obj[i] = convertVoxelSizeToUM(obj[i])
+        obj[i] = convert_voxel_size_to_um(obj[i])
     return obj
 
-def generateNeuroglancerUrl(source_url, segmentation_urls, source_voxel=(1,1,1,1,1), annotation_voxels=[(1,1,1,1,1)], layout="xy"):
+def generate_neuroglancer_url(source_url, segmentation_urls, source_voxel=(1,1,1,1,1), annotation_voxels=[(1,1,1,1,1)], layout="xy"):
     source_label = "Source Image"
-    contrast, xyz = getContrastValuesAndXYZ(source_url)
+    contrast, xyz = get_contrast_and_xyz_dims(source_url)
     x,y,z = xyz
-    layers = [getLayer(source_url, "image", source_label, source_voxel, annotation_voxels[0], contrast)]
-    dimensions = getDimensions(source_voxel)
+    layers = [get_layer(source_url, "image", source_label, source_voxel, annotation_voxels[0], contrast)]
+    dimensions = get_dimensions(source_voxel)
 
     for i, seg_url in enumerate(segmentation_urls):
-        layers.append(getLayer(seg_url, "segmentation", f"Annotation {i+1}", source_voxel, annotation_voxels[i]))
+        layers.append(get_layer(seg_url, "segmentation", f"Annotation {i+1}", source_voxel, annotation_voxels[i]))
 
     imageHasZDims = int(source_voxel[2]) != 1 and int(annotation_voxels[0][2]) != 1 and int(z) != 1
     
@@ -183,7 +182,7 @@ def generateNeuroglancerUrl(source_url, segmentation_urls, source_voxel=(1,1,1,1
 
 @app.command()
 def main(images_path: Path = typer.Option(..., help="Path to raw OME-Zarr JSON")):
-    annotated_image_map = generateImageMap(readJSON(images_path))
+    annotated_image_map = generate_image_map(read_json(images_path))
 
     uuid_to_skip = []
     overlays = {}
@@ -205,10 +204,10 @@ def main(images_path: Path = typer.Option(..., help="Path to raw OME-Zarr JSON")
         if not annotation_voxels:
             print(f"Skipping {key} due to missing annotation voxels.")
             continue
-        url = generateNeuroglancerUrl(source_image_url, annotation_urls, source_voxels, annotation_voxels)
+        url = generate_neuroglancer_url(source_image_url, annotation_urls, source_voxels, annotation_voxels)
         overlays[key] = url
 
-    writeJSON("overlay_neuroglancer_links.json", overlays)
+    write_json("overlay_neuroglancer_links.json", overlays)
 
 
 if __name__ == "__main__":
