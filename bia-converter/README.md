@@ -134,4 +134,4 @@ The `.env_template` in this directory contains the items that can be configured 
 
 
 ## Scripts
-The [scripts](./scripts) sub-directory contains a bash script for a sample workflow to produce converted images for a BIA study.
+The [scripts](./scripts) sub-directory contains a bash script for a sample workflow to produce converted images for a BIA study. The sub-directory also contains a script to generate neuroglancer links for source and annotated image pairs from the exported image.json and returns a json object with source UUID and overlayed neuroglancer URLs. 
