@@ -33,6 +33,7 @@ async def on_stop():
     event_loop = asyncio.get_event_loop()
     await app.extra["extra"]["event_loop_specific"][event_loop]["elastic"].close()
 
+
 @app.middleware("http")
 async def custom_access_log(request: Request, call_next):
     start = datetime.datetime.now(datetime.timezone.utc)
@@ -62,12 +63,9 @@ async def get_elastic() -> Elastic:
     event_loop = asyncio.get_event_loop()
     return app.extra["extra"]["event_loop_specific"][event_loop]["elastic"]
 
+
 from api.website import router as website_router
 from api.search import router as search_router
 
-app.include_router(
-    search_router
-)
-app.include_router(
-    website_router
-)
+app.include_router(search_router)
+app.include_router(website_router)
