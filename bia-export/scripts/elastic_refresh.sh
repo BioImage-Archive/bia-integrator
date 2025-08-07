@@ -27,14 +27,65 @@ curl -k -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX}" \
 		"mappings": {
 			"dynamic": false,
 			"properties": {
-				"uuid": {"type": "keyword"},
-				"accession_id": {"type": "keyword"},
-				"title": {"type": "text"},
-				"description": {"type": "text"},
-				"funding_statement": {"type": "text"},
-				"keyword": {"type": "keyword"},
-				"author": {"type": "flattened"},
-				"grant": {"type": "flattened"}
+				"uuid": {
+					"type": "keyword"
+				},
+				"accession_id": {
+					"type": "keyword"
+				},
+				"title": {
+					"type": "text"
+				},
+				"description": {
+					"type": "text"
+				},
+				"funding_statement": {
+					"type": "text"
+				},
+				"keyword": {
+					"type": "keyword"
+				},
+				"author": {
+					"type": "flattened"
+				},
+				"grant": {
+					"type": "flattened"
+				},
+				"dataset": {
+					"type": "object",
+					"properties": {
+						"biological_entity": {
+							"type": "object",
+							"properties": {
+								"organism_classification": {
+									"type": "object",
+									"properties": {
+										"scientific_name": {
+											"type": "keyword"
+										},
+										"common_name": {
+											"type": "keyword"
+										},
+										"ncbi_id": {
+											"type": "keyword"
+										}
+									}
+								}
+							}
+						},
+						"acquisition_process": {
+							"type": "object",
+							"properties": {
+								"imaging_method_name": {
+									"type": "keyword"
+								}
+							}
+						}
+					}
+				},
+				"release_date": {
+					"type": "date"
+				}
 			}
 		}
 	}'

@@ -9,8 +9,47 @@ router = APIRouter(prefix="/search")
 @router.get("/fts")
 async def fts(
     elastic: Annotated[Elastic, Depends(get_elastic)],
-    query: Annotated[str, Query(min_length=1, max_length=500)],
+    query: Annotated[str, Query(min_length=1, max_length=100)],
+    organism: Annotated[list[str] | None, Query(max_length=4)] = None,
+    imaging_method: Annotated[list[str] | None, Query(max_length=4)] = None,
+    year: Annotated[list[str] | None, Query(max_length=4)] = None,
 ) -> dict:
+    filters = []
+    if organism:
+        filters.append(
+            {
+                "terms": {
+                    "dataset.biological_entity.organism_classification.scientific_name": organism,
+                }
+            }
+        )
+    if imaging_method:
+        filters.append(
+            {
+                "terms": {
+                    "dataset.acquisition_process.imaging_method_name": imaging_method,
+                }
+            }
+        )
+    if year:
+        filters.append(
+            {
+                "bool": {
+                    "should": [
+                        {
+                            "range": {
+                                "release_date": {
+                                    "gte": f"{i}-01-01",
+                                    "lte": f"{i}-12-31",
+                                }
+                            }
+                        }
+                        for i in year
+                    ],
+                },
+            }
+        )
+
     rsp = await elastic.client.search(
         index=elastic.index,
         query={
@@ -24,10 +63,33 @@ async def fts(
                         }
                     },
                     {"simple_query_string": {"query": f"*{query}*", "fields": ["*"]}},
-                ]
+                ],
+                "filter": filters,
             }
         },
-        size=5,
+        aggs={
+            "scientific_name": {
+                "terms": {
+                    "field": "dataset.biological_entity.organism_classification.scientific_name"
+                }
+            },
+            "release_date": {
+                "date_histogram": {
+                    "field": "release_date",
+                    "calendar_interval": "1y",
+                    "format": "yyyy",
+                }
+            },
+            "imaging_method": {
+                "terms": {
+                    "field": "dataset.acquisition_process.imaging_method_name",
+                }
+            },
+        },
+        size=50,
     )
 
-    return rsp.body["hits"]
+    return {
+        "hits": rsp.body["hits"],
+        "facets": rsp.body["aggregations"],
+    }

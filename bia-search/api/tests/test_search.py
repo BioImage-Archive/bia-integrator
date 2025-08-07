@@ -8,7 +8,86 @@ def test_fts(api_client: TestClient):
     assert rsp.status_code == 200
 
     body = rsp.json()
-    assert body["total"]["value"] == 1
+    assert body["hits"]["total"]["value"] == 1
+
+
+def test_fts_facet_discovery_organism(api_client: TestClient):
+    rsp = api_client.get(f"/search/fts", params={"query": "with"})
+    assert rsp.status_code == 200
+
+    body = rsp.json()
+    assert len(body["facets"]["scientific_name"]["buckets"]) == 3
+    assert {
+        "key": "Homo sapiens",
+        "doc_count": 1,
+    } in body["facets"][
+        "scientific_name"
+    ]["buckets"]
+    assert {
+        "key": "Drosophila melanogaster",
+        "doc_count": 1,
+    } in body["facets"][
+        "scientific_name"
+    ]["buckets"]
+    assert {
+        "key": "Mus musculus",
+        "doc_count": 2,
+    } in body["facets"][
+        "scientific_name"
+    ]["buckets"]
+
+
+def test_fts_facet_discovery_release_date(api_client: TestClient):
+    rsp = api_client.get(f"/search/fts", params={"query": "with"})
+    assert rsp.status_code == 200
+
+    body = rsp.json()
+    assert {"key_as_string": "2024", "key": 1704067200000, "doc_count": 1} in body[
+        "facets"
+    ]["release_date"]["buckets"]
+    assert {"key_as_string": "2025", "key": 1735689600000, "doc_count": 3} in body[
+        "facets"
+    ]["release_date"]["buckets"]
+
+
+def test_fts_facet_discovery_imaging_method(api_client: TestClient):
+    rsp = api_client.get(f"/search/fts", params={"query": "with"})
+    assert rsp.status_code == 200
+
+    body = rsp.json()
+    assert len(body["facets"]["imaging_method"]["buckets"]) == 1
+
+
+def test_fts_use_facet_organism(api_client: TestClient):
+    rsp = api_client.get(
+        f"/search/fts",
+        params={"query": "with", "organism": ["Homo sapiens", "Mus musculus"]},
+    )
+    assert rsp.status_code == 200
+
+    body = rsp.json()
+    assert len(body["hits"]["hits"]) == 4
+
+
+def test_fts_use_facet_year(api_client: TestClient):
+    rsp = api_client.get(
+        f"/search/fts",
+        params={"query": "with", "year": ["2024"]},
+    )
+    assert rsp.status_code == 200
+    body = rsp.json()
+    assert len(body["hits"]["hits"]) == 2
+
+
+def test_fts_use_facet_imaging_method(api_client: TestClient):
+
+    rsp = api_client.get(
+        f"/search/fts",
+        params={"query": "with", "imaging_method": ["confocal microscopy"]},
+    )
+    assert rsp.status_code == 200
+    body = rsp.json()
+    assert len(body["hits"]["hits"]) == 4
 
 
 def test_get(api_client: TestClient):

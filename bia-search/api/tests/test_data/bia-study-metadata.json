@@ -1,4 +1,1594 @@
 {
+    "S-BIAD1556": {
+        "object_creator": "bia_ingest",
+        "uuid": "87089e93-1775-45b9-8695-190630681c3b",
+        "version": 0,
+        "model": {
+            "type_name": "Study",
+            "version": 3
+        },
+        "additional_metadata": [
+            {
+                "provenance": "bia_ingest",
+                "name": "biostudies json/pagetab entry",
+                "value": {
+                    "json": "https://www.ebi.ac.uk/biostudies/files/S-BIAD1556/S-BIAD1556.json",
+                    "pagetab": "https://www.ebi.ac.uk/biostudies/files/S-BIAD1556/S-BIAD1556.tsv"
+                }
+            }
+        ],
+        "accession_id": "S-BIAD1556",
+        "licence": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "author": [
+            {
+                "rorid": null,
+                "address": null,
+                "website": null,
+                "orcid": null,
+                "display_name": "Amir Arabzade",
+                "affiliation": [
+                    {
+                        "rorid": null,
+                        "address": null,
+                        "website": null,
+                        "display_name": "St. Jude Children's Research Hospital"
+                    }
+                ],
+                "contact_email": "aarabzad@stjude.org",
+                "role": [
+                    "first author"
+                ]
+            },
+            {
+                "rorid": null,
+                "address": null,
+                "website": null,
+                "orcid": null,
+                "display_name": "David Baggett",
+                "affiliation": [
+                    {
+                        "rorid": null,
+                        "address": null,
+                        "website": null,
+                        "display_name": "St. Jude Children's Research Hospital"
+                    }
+                ],
+                "contact_email": "dbaggett@stjude.org",
+                "role": [
+                    "data analyst"
+                ]
+            },
+            {
+                "rorid": null,
+                "address": null,
+                "website": null,
+                "orcid": null,
+                "display_name": "Hazheen Shirnekhi",
+                "affiliation": [
+                    {
+                        "rorid": null,
+                        "address": null,
+                        "website": null,
+                        "display_name": "St. Jude Children's Research Hospital"
+                    }
+                ],
+                "contact_email": "h.shirnekhi@gmail.com",
+                "role": [
+                    "data acquisition"
+                ]
+            },
+            {
+                "rorid": null,
+                "address": null,
+                "website": null,
+                "orcid": null,
+                "display_name": "Minjeong Jo",
+                "affiliation": [
+                    {
+                        "rorid": null,
+                        "address": null,
+                        "website": null,
+                        "display_name": "St. Jude Children's Research Hospital"
+                    }
+                ],
+                "contact_email": "mjo@stjude.org",
+                "role": [
+                    "data acquisition"
+                ]
+            },
+            {
+                "rorid": null,
+                "address": null,
+                "website": null,
+                "orcid": null,
+                "display_name": "Stephen Mack",
+                "affiliation": [
+                    {
+                        "rorid": null,
+                        "address": null,
+                        "website": null,
+                        "display_name": "St. Jude Children's Research Hospital"
+                    }
+                ],
+                "contact_email": "smack@stjude.org",
+                "role": [
+                    "principal investigator"
+                ]
+            },
+            {
+                "rorid": null,
+                "address": null,
+                "website": null,
+                "orcid": null,
+                "display_name": "Richard Kriwacki",
+                "affiliation": [
+                    {
+                        "rorid": null,
+                        "address": null,
+                        "website": null,
+                        "display_name": "St. Jude Children's Research Hospital"
+                    }
+                ],
+                "contact_email": "rkriwack@stjude.org",
+                "role": [
+                    "principal investigator"
+                ]
+            }
+        ],
+        "title": "ZFTA_RELA HEK293T Puncta Studies",
+        "release_date": "2025-01-27",
+        "description": "Studies examining the puncta formation ability of ZFTA_RELA, and mutants with altered IDR3 domains.",
+        "keyword": [
+            "Condensate",
+            "Oncogene"
+        ],
+        "acknowledgement": "We would like to acknowledge the NBTS, CERN foundation, and Robert Connor Dawes Foundation for their ongoing support of brain tumor research, including ependymoma.",
+        "see_also": [],
+        "related_publication": [],
+        "grant": [
+            {
+                "id": "U54CA243124",
+                "funder": []
+            },
+            {
+                "id": "U01CA294103",
+                "funder": []
+            },
+            {
+                "id": "R01CA246125",
+                "funder": []
+            },
+            {
+                "id": "P30CA021765",
+                "funder": []
+            }
+        ],
+        "funding_statement": "We acknowledge support from NIH, including U54CA243124 (to R.W.K), U01CA294103 (to S.M. and R.W.K.), R01CA246125 (to R.W.K.), and P30CA021765 (C. Roberts, PI), and ALSAC.",
+        "dataset": [
+            {
+                "image_count": 1,
+                "file_reference_count": 1963,
+                "file_reference_size_bytes": 530175344194,
+                "file_type_counts": {
+                    "file": 1963
+                },
+                "object_creator": "bia_ingest",
+                "uuid": "753726af-28ac-45d3-a124-8a0710472333",
+                "version": 3,
+                "model": {
+                    "type_name": "Dataset",
+                    "version": 2
+                },
+                "additional_metadata": [
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "associations",
+                        "value": {
+                            "associations": [
+                                {
+                                    "image_analysis": "Quantification of distinct fluorescent puncta within individual nuclei.",
+                                    "image_correlation": null,
+                                    "biosample": "ZFTA_RELA HEK293T Puncta Studies",
+                                    "image_acquisition": "ZFTA_RELA HEK293T Puncta Studies",
+                                    "specimen": "HEK293T Cells"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "image_acquisition_protocol_uuid",
+                        "value": {
+                            "image_acquisition_protocol_uuid": [
+                                "395ba1bc-cad7-4513-b6fa-6f58fa95e164"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "specimen_imaging_preparation_protocol_uuid",
+                        "value": {
+                            "specimen_imaging_preparation_protocol_uuid": [
+                                "4f4260f2-a7cb-471d-ab66-fdf1123da36f"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "bio_sample_uuid",
+                        "value": {
+                            "bio_sample_uuid": [
+                                "756c8f41-7e58-4ba3-8056-e8a6bc230953"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "uuid_unique_input",
+                        "value": {
+                            "uuid_unique_input": "Study Component-4"
+                        }
+                    }
+                ],
+                "title": "Image analysis of HEK293T Cells with GFP-ZFTA::RELA constructs",
+                "description": "Image analysis done using the punctatools pipeline to establish puncta density in experiments probing the effects of various mutations on the ability of ZFTA_RELA to form cellular puncta.",
+                "analysis_method": [
+                    {
+                        "additional_metadata": [],
+                        "title": "Quantification of distinct fluorescent puncta within individual nuclei.",
+                        "protocol_description": "Images were exported as tiff files and background corrected with a flat subtraction of 100 intensity.  Following background correction, Cellpose was used to segment individual nuclei using the Hoechst channel for each Z-slice.  Cellpose labels were consolidated by unifying masks with the greatest overlap, provided that any overlapping mask was more than 50% of each stack's area.  After Segmentation, out-of focus z-stacks were removed by calculating normalized variance across all images in the z-stack using code from https://sites.google.com/site/qingzongtseng/find-focus#h.plx6cfnctssk, then removing those z-stacks with less than 80% of the maximal normalized variance value in that z-stack, and returning the largest contiguous section of remaining z-slices.  After trimming out-of focus z-slices, each nuclei was segmented for puncta.   For each nucleus: voxels in the bottom 95% of intensity values were removed, as well as all voxels with less than twice the median intensity value. Of the remaining pixels, those not adjacent to any other pixel were also removed.   The resulting image was blurred using a gaussian filter, then segmented using cellpose.  Puncta within a nucleus were combined across z-stacks using the same algorithm that evaluated overlap across z-stacks.  Nuclei properties such as # of puncta per nuclei were then calculated using the analysis code published in Baggett et. al..",
+                        "features_analysed": null
+                    }
+                ],
+                "correlation_method": [],
+                "example_image_uri": [
+                    "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1556/505d6c05-06e4-4364-b018-d313e7ffdd05/25034645-2f43-4822-b808-f7364c6aca28.png"
+                ],
+                "submitted_in_study_uuid": "87089e93-1775-45b9-8695-190630681c3b",
+                "acquisition_process": [
+                    {
+                        "default_open": true,
+                        "object_creator": "bia_ingest",
+                        "uuid": "395ba1bc-cad7-4513-b6fa-6f58fa95e164",
+                        "version": 0,
+                        "model": {
+                            "type_name": "ImageAcquisitionProtocol",
+                            "version": 3
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_ingest",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "Image acquisition-3"
+                                }
+                            }
+                        ],
+                        "title": "ZFTA_RELA HEK293T Puncta Studies",
+                        "protocol_description": "3D images of cells were captured as z stacks with 0.2\u2009mm spacing between planes, spanning 12.2\u2009mm in total. Live cells were imaged at 37\u2009\u00b0C in phenol red-free DMEM with high glucose (Gibco) supplemented with 1\u00d7 penicillin/streptomycin, 10% fetal bovine serum, 4 mM l-Glutamine, and 25\u2009mM HEPES",
+                        "imaging_instrument_description": "3i Marianas system configured with a Yokogawa CSU-W spinning disk confocal microscope utilizing a 100x Zeiss objective, 405\u2009nm (Hoechst) and 488\u2009nm (mEGFP) laser lines, and Slidebook (RRID:SCR_014300) 6.0 (3i). ",
+                        "fbbi_id": [],
+                        "imaging_method_name": [
+                            "confocal microscopy"
+                        ]
+                    }
+                ],
+                "specimen_imaging_preparation_protocol": [
+                    {
+                        "default_open": true,
+                        "object_creator": "bia_ingest",
+                        "uuid": "4f4260f2-a7cb-471d-ab66-fdf1123da36f",
+                        "version": 0,
+                        "model": {
+                            "type_name": "SpecimenImagingPreparationProtocol",
+                            "version": 3
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_ingest",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "Specimen-2"
+                                }
+                            }
+                        ],
+                        "title": "HEK293T Cells",
+                        "protocol_description": "Transfections were done using FuGENE HD transfection reagent (Promega, E2311) according to the manufacturer\u2019s instructions. Briefly, for fixed cell experiments, cells were seeded to a density of 60-70% in a 6-well plate on the day before transfection. For each transfection, 3 ug of endotoxin-free plasmid was mixed with 97 uL of Opti-mem (Gibco 11058021), mixed and incubated at room temperature for 5 minutes. For live cell confocal microscopy, cells were transfected in a 96 well plate with 100 ng of plasmid DNA in the CL20 vector backbone using FuGENE HD per the manufacturer\u2019s instructions. All FOs were transfected under identical conditions (e.g., same amount of plasmid, same protocol, same incubation period).",
+                        "signal_channel_information": []
+                    }
+                ],
+                "biological_entity": [
+                    {
+                        "default_open": true,
+                        "object_creator": "bia_ingest",
+                        "uuid": "756c8f41-7e58-4ba3-8056-e8a6bc230953",
+                        "version": 0,
+                        "model": {
+                            "type_name": "BioSample",
+                            "version": 4
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_ingest",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "Biosample-1 a7d4cd6a-2e7e-479e-8df2-3b9248cb7ab3"
+                                }
+                            }
+                        ],
+                        "title": "ZFTA_RELA HEK293T Puncta Studies",
+                        "organism_classification": [
+                            {
+                                "additional_metadata": [],
+                                "common_name": "human",
+                                "scientific_name": "Homo sapiens",
+                                "ncbi_id": null
+                            }
+                        ],
+                        "biological_entity_description": "HEK293T cells",
+                        "experimental_variable_description": [
+                            "GFP-tagged construct"
+                        ],
+                        "extrinsic_variable_description": [],
+                        "intrinsic_variable_description": [],
+                        "growth_protocol_uuid": "a7d4cd6a-2e7e-479e-8df2-3b9248cb7ab3",
+                        "growth_protocol": {
+                            "object_creator": "bia_ingest",
+                            "uuid": "a7d4cd6a-2e7e-479e-8df2-3b9248cb7ab3",
+                            "version": 0,
+                            "model": {
+                                "type_name": "Protocol",
+                                "version": 3
+                            },
+                            "additional_metadata": [
+                                {
+                                    "provenance": "bia_ingest",
+                                    "name": "uuid_unique_input",
+                                    "value": {
+                                        "uuid_unique_input": "Specimen-2"
+                                    }
+                                }
+                            ],
+                            "title": "HEK293T Cells",
+                            "protocol_description": "HEK293T lines were grown on tissue culture treated plates using DMEM media supplemented with FBS, Sodium pyruvate, glutamine and Primocin. All lines tested negative for Mycoplasma contamination, as assessed using a PCR based approach. Cell lines were confirmed to be authentic and unique by short tandem repeat fingerprinting."
+                        }
+                    }
+                ],
+                "annotation_process": [],
+                "other_creation_process": [],
+                "image": [
+                    {
+                        "object_creator": "bia_image_assignment",
+                        "uuid": "445cb17b-95dc-47a3-9efc-b7a1a066bb51",
+                        "version": 6,
+                        "model": {
+                            "type_name": "Image",
+                            "version": 2
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "attributes_from_file_reference_e66bc935-8f6e-4d7a-baa5-b00e5001fd99",
+                                "value": {
+                                    "attributes": {
+                                        "Description": "Raw acquisition data for experiments probing the deletion of IDRs of ZFTA::RELA"
+                                    }
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "file_pattern",
+                                "value": {
+                                    "file_pattern": "Delta_IDR_mutants/Raw_Tiff/110922_delIDR1/110922_ZFTA_RELA_HEK.sld - 110922_delIDR1 - Position 20.tif"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "e66bc935-8f6e-4d7a-baa5-b00e5001fd99"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "image_thumbnail_uri",
+                                "value": {
+                                    "256": {
+                                        "uri": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1556/505d6c05-06e4-4364-b018-d313e7ffdd05/e3e5886d-531d-45b5-a999-7dc081688461.png",
+                                        "size": 256
+                                    }
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "image_static_display_uri",
+                                "value": {
+                                    "slice": {
+                                        "uri": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1556/505d6c05-06e4-4364-b018-d313e7ffdd05/25034645-2f43-4822-b808-f7364c6aca28.png",
+                                        "size": 512
+                                    }
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "recommended_vizarr_representation",
+                                "value": {
+                                    "recommended_vizarr_representation": "c90504d6-42a6-4067-8834-db0c3d4093ce"
+                                }
+                            }
+                        ],
+                        "label": null,
+                        "submission_dataset_uuid": "753726af-28ac-45d3-a124-8a0710472333",
+                        "creation_process_uuid": "36b8bca1-df4a-4473-b722-6ca39f013b5f",
+                        "original_file_reference_uuid": [
+                            "e66bc935-8f6e-4d7a-baa5-b00e5001fd99"
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "S-BIAD1495": {
+        "object_creator": "bia_ingest",
+        "uuid": "be24a902-f8d5-4ef0-bcd9-c2aa93221187",
+        "version": 0,
+        "model": {
+            "type_name": "Study",
+            "version": 3
+        },
+        "additional_metadata": [
+            {
+                "provenance": "bia_ingest",
+                "name": "biostudies json/pagetab entry",
+                "value": {
+                    "json": "https://www.ebi.ac.uk/biostudies/files/S-BIAD1495/S-BIAD1495.json",
+                    "pagetab": "https://www.ebi.ac.uk/biostudies/files/S-BIAD1495/S-BIAD1495.tsv"
+                }
+            }
+        ],
+        "accession_id": "S-BIAD1495",
+        "licence": "https://creativecommons.org/licenses/by/4.0/",
+        "author": [
+            {
+                "rorid": null,
+                "address": null,
+                "website": null,
+                "orcid": "0000-0003-3862-8349",
+                "display_name": "Reiya Taniguchi",
+                "affiliation": [
+                    {
+                        "rorid": null,
+                        "address": null,
+                        "website": null,
+                        "display_name": "Max Planck Institute of Biophysics"
+                    }
+                ],
+                "contact_email": "reiya.taniguchi@biophys.mpg.de",
+                "role": [
+                    "first author"
+                ]
+            },
+            {
+                "rorid": null,
+                "address": null,
+                "website": null,
+                "orcid": "0000-0002-7397-1321",
+                "display_name": "Martin Beck",
+                "affiliation": [
+                    {
+                        "rorid": null,
+                        "address": null,
+                        "website": null,
+                        "display_name": "Max Planck Institute of Biophysics"
+                    }
+                ],
+                "contact_email": "martin.beck@biophys.mpg.de",
+                "role": [
+                    "corresponding author"
+                ]
+            }
+        ],
+        "title": "Immunofluorescence staining images of mouse neuronal precursors with nuclear YAP",
+        "release_date": "2025-01-14",
+        "description": "Wild-type and Nup133-deficient cells were fixed with 4% PFA and subjected to immunofluorescence staining experiments to assess the nuclear localization of transcription factor YAP. Neuronal precursors at different time points in the neuronal differentiation (2h, 24h, 48h) were used for the experiments.",
+        "keyword": [
+            "immunofluorescence staining"
+        ],
+        "acknowledgement": "",
+        "see_also": [],
+        "related_publication": [],
+        "grant": [],
+        "funding_statement": "",
+        "dataset": [
+            {
+                "image_count": 5,
+                "file_reference_count": 240,
+                "file_reference_size_bytes": 26315932656,
+                "file_type_counts": {
+                    "file": 240
+                },
+                "object_creator": "bia_ingest",
+                "uuid": "3e8b8ab8-c256-423d-8832-73066fb043b9",
+                "version": 1,
+                "model": {
+                    "type_name": "Dataset",
+                    "version": 2
+                },
+                "additional_metadata": [
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "associations",
+                        "value": {
+                            "associations": [
+                                {
+                                    "image_analysis": null,
+                                    "image_correlation": null,
+                                    "biosample": "mouse neuronal precursors",
+                                    "image_acquisition": "Confocal stack acquisition",
+                                    "specimen": "mouse neuronal precursors"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "image_acquisition_protocol_uuid",
+                        "value": {
+                            "image_acquisition_protocol_uuid": [
+                                "c4bd275f-d5fa-4f98-97b0-5bbcb546e122"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "specimen_imaging_preparation_protocol_uuid",
+                        "value": {
+                            "specimen_imaging_preparation_protocol_uuid": [
+                                "cbf90555-9c04-46ad-9754-401c65df5d61"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "bio_sample_uuid",
+                        "value": {
+                            "bio_sample_uuid": [
+                                "2769bcb2-9c3b-4fbf-92f9-411862d386ce"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "uuid_unique_input",
+                        "value": {
+                            "uuid_unique_input": "Study Component-4"
+                        }
+                    }
+                ],
+                "title": "Analysis of nuclear YAP localization",
+                "description": "Nuclear localization of transcription factor YAP in neuronal precursors were analyzed using confocal stacks of PFA-fixed and immunofluorescence-stained samples.",
+                "analysis_method": [],
+                "correlation_method": [],
+                "example_image_uri": [
+                    "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1495/7746a993-6a3e-44ec-8329-aec04a4143bf/92522d90-96ba-47bc-8582-34139f39c062.png"
+                ],
+                "submitted_in_study_uuid": "be24a902-f8d5-4ef0-bcd9-c2aa93221187",
+                "acquisition_process": [
+                    {
+                        "default_open": true,
+                        "object_creator": "bia_ingest",
+                        "uuid": "c4bd275f-d5fa-4f98-97b0-5bbcb546e122",
+                        "version": 0,
+                        "model": {
+                            "type_name": "ImageAcquisitionProtocol",
+                            "version": 3
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_ingest",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "Image acquisition-3"
+                                }
+                            }
+                        ],
+                        "title": "Confocal stack acquisition",
+                        "protocol_description": "Images were acquired using a 63\u00d7/1.40 oil objective. 25 Z stacks were acquired with 0.6 um intervals. Bidirectional image acquisition with scan speed of 600 was used for the data acquisition. Line average was set to 2.",
+                        "imaging_instrument_description": "Stellaris 5 confocal microscope",
+                        "fbbi_id": [],
+                        "imaging_method_name": [
+                            "confocal microscopy"
+                        ]
+                    }
+                ],
+                "specimen_imaging_preparation_protocol": [
+                    {
+                        "default_open": true,
+                        "object_creator": "bia_ingest",
+                        "uuid": "cbf90555-9c04-46ad-9754-401c65df5d61",
+                        "version": 0,
+                        "model": {
+                            "type_name": "SpecimenImagingPreparationProtocol",
+                            "version": 3
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_ingest",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "Specimen-2"
+                                }
+                            }
+                        ],
+                        "title": "mouse neuronal precursors",
+                        "protocol_description": "For mES cell culture, the wild-type HM1 line and the HM1-derived Nup133-/- clone (#14) described previously were used. Mouse embryonic stem cell medium was prepared by supplementing EmbryoMax\u00ae DMEM (Millipore, SLM-220-B) with 15% FBS (Gibco, 10270-106), 2 mM L-Glutamine (Gibco, 25030-024), 1 \u00d7 non-essential amino acids (Gibco, 11140-035 or 11140-050), 1 \u00d7 EmbryoMax\u00ae nucleosides (Millipore, ES-008-D), 110 \u03bcM \u03b2-mercaptoethanol (Gibco, 21985-023) and 1 \u00d7 penicillin/streptomycin (Gibco, 15070-063). mES cells were cultured on mitomycin-treated mouse embryonic fibroblasts (feeder cells) plated on 0.1% gelatin (Sigma-Aldrich) in mouse embryonic stem cell medium supplemented with leukemia inhibitory factor (LIF, ESGRO, Millipore, final 1000 U/ml), and kept at 37\u00b0C with 5% CO2. Cells were used within eight passages after thawing frozen vials to ensure the quality of the stem cell culture.\nThe neural progenitor differentiation was performed following the previously published protocol. Briefly, after two passages on feeder cells, mES cells were transferred to gelatin-coated plates without feeder cells, and cultured for two to four passages in the presence of LIF. Subsequently, cells were trypsinized and 4 \u00d7 106 cells were transferred to non-coated 10-cm Petri dishes (Greiner, 633102) and cultured for eight days within DMEM supplemented with 10% FBS (Gibco, 10270-106), 2 mM L-glutamine (Gibco, 25030-024), 1 \u00d7 MEM non-essential amino acids (Gibco, 11140-035) and 100 \u03bcM \u03b2-mercaptoethanol (Gibco, 31350-010) without LIF. The culture medium was changed every two days, and after four days, 5 \u03bcM retinoic acid (Sigma, R2625) was added to the medium. After eight days of culture, the aggregates of neural progenitors were dissociated by trypsinization at 37\u00b0C for 5 min in the water bath, and the dissociated cells were either immediately used for cryo-EM grid preparation as described below, frozen within the medium supplemented with 10% DMSO and stored until use, or directly used for subsequent neuronal differentiation. For the neuronal differentiation, dissociated cells were seeded on glass bottom plates (ibidi, 80827) coated with poly-DL-ornithine (Sigma, P8638) and laminin (Roche, 11243217001) at approximately 1\u20132 \u00d7 105 cells/cm2, and cultured in N2 medium (1:1 mixture of DMEM (Gibco, 21969-035) and Ham\u2019s F-12 nutrient mix (Gibco, 21765-029), supplemented with 2 mM L-glutamine, 25 \u03bcg/ml insulin (Sigma, I6634), 50 \u03bcg/ml transferrin (Sigma, T1147), 20 nM progesterone (Sigma, P8783), 100 nM putrescine (Sigma, P5780), 30 nM sodium-selenite (Sigma, 214485), 50 \u03bcg/ml BSA (Sigma, A9418), and 1 \u00d7 penicillin/streptomycin (Gibco, 15140-122)) for two days. \nCells were fixed at the indicated time point after seeding in 4% paraformaldehyde for 15 min. For staining, cells were permeabilized in 0.1% Triton in PBS for 10 min, washed three times with PBS for 5 min each, and blocked for 30 min using 3% BSA-containing PBS (PBS/BSA). After blocking, primary antibodies diluted in PBS/BSA were applied, and samples were incubated overnight at 4\u00b0C. After washing the samples with PBS, samples were incubated with secondary antibodies diluted in PBS for 2 h at room temperature. DNA was stained with 1 \u03bcM of Hoechst 33342 (Thermo Fisher Scientific, 62249).",
+                        "signal_channel_information": []
+                    }
+                ],
+                "biological_entity": [
+                    {
+                        "default_open": true,
+                        "object_creator": "bia_ingest",
+                        "uuid": "2769bcb2-9c3b-4fbf-92f9-411862d386ce",
+                        "version": 0,
+                        "model": {
+                            "type_name": "BioSample",
+                            "version": 4
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_ingest",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "Biosample-1"
+                                }
+                            }
+                        ],
+                        "title": "mouse neuronal precursors",
+                        "organism_classification": [
+                            {
+                                "additional_metadata": [],
+                                "common_name": "mouse",
+                                "scientific_name": "Mus musculus",
+                                "ncbi_id": null
+                            }
+                        ],
+                        "biological_entity_description": "mouse neuronal precursors",
+                        "experimental_variable_description": [],
+                        "extrinsic_variable_description": [],
+                        "intrinsic_variable_description": [],
+                        "growth_protocol_uuid": null,
+                        "growth_protocol": null
+                    }
+                ],
+                "annotation_process": [],
+                "other_creation_process": [],
+                "image": [
+                    {
+                        "object_creator": "bia_image_assignment",
+                        "uuid": "441ed8bf-f03b-4e9a-ab77-213da188a6dd",
+                        "version": 4,
+                        "model": {
+                            "type_name": "Image",
+                            "version": 2
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "attributes_from_file_reference_90c2e93c-4bb1-401d-90a3-0065e106a997",
+                                "value": {
+                                    "attributes": {
+                                        "sample": "wild-type",
+                                        "time-point": "24h",
+                                        "Replicate": "replicate-2",
+                                        "channel-1": "Hoechst33342",
+                                        "chanel-2": "Alexa-Fluor-594",
+                                        "c2-antibody": "anti-YAP",
+                                        "c2-antibody-provider": "Cell-Signaling-Technology",
+                                        "c2-antibody-number": "14074"
+                                    }
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "file_pattern",
+                                "value": {
+                                    "file_pattern": "YAP/WT/NP_24h/Rep2/NPWT_B9_24h_YAP-594_010.tif"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "90c2e93c-4bb1-401d-90a3-0065e106a997"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "image_thumbnail_uri",
+                                "value": {
+                                    "256": {
+                                        "uri": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1495/f1dd425c-01be-4c43-841e-d0cb2d650fb4/41f29145-1228-45c0-b1fd-73dcb112d037.png",
+                                        "size": 256
+                                    }
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "recommended_vizarr_representation",
+                                "value": {
+                                    "recommended_vizarr_representation": "f274a9ee-aebc-41a6-8b42-5a50f0278129"
+                                }
+                            }
+                        ],
+                        "label": null,
+                        "submission_dataset_uuid": "3e8b8ab8-c256-423d-8832-73066fb043b9",
+                        "creation_process_uuid": "32957374-a230-406e-971a-dadf059eb762",
+                        "original_file_reference_uuid": [
+                            "90c2e93c-4bb1-401d-90a3-0065e106a997"
+                        ]
+                    },
+                    {
+                        "object_creator": "bia_image_assignment",
+                        "uuid": "6fc58209-9827-4e3c-9e49-f42fde03601d",
+                        "version": 4,
+                        "model": {
+                            "type_name": "Image",
+                            "version": 2
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "attributes_from_file_reference_44b56947-b7c0-4ff0-9880-32e4f6953680",
+                                "value": {
+                                    "attributes": {
+                                        "sample": "wild-type",
+                                        "time-point": "2h",
+                                        "Replicate": "replicate-1",
+                                        "channel-1": "Hoechst33342",
+                                        "chanel-2": "Alexa-Fluor-594",
+                                        "c2-antibody": "anti-YAP",
+                                        "c2-antibody-provider": "Cell-Signaling-Technology",
+                                        "c2-antibody-number": "14074"
+                                    }
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "file_pattern",
+                                "value": {
+                                    "file_pattern": "YAP/WT/NP_2h/Rep1/NPWT_B8_2h_YAP-594_001.tif"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "44b56947-b7c0-4ff0-9880-32e4f6953680"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "image_thumbnail_uri",
+                                "value": {
+                                    "256": {
+                                        "uri": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1495/7f96343f-591c-482c-8eff-dfe0f4e540a0/591e3624-f973-433c-94c3-092c46179c5e.png",
+                                        "size": 256
+                                    }
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "recommended_vizarr_representation",
+                                "value": {
+                                    "recommended_vizarr_representation": "5fa6194a-3db5-492a-80dc-74c3ddbb6f8e"
+                                }
+                            }
+                        ],
+                        "label": null,
+                        "submission_dataset_uuid": "3e8b8ab8-c256-423d-8832-73066fb043b9",
+                        "creation_process_uuid": "7355ea8c-5cb2-49dc-9471-0590d6bfc71a",
+                        "original_file_reference_uuid": [
+                            "44b56947-b7c0-4ff0-9880-32e4f6953680"
+                        ]
+                    },
+                    {
+                        "object_creator": "bia_image_assignment",
+                        "uuid": "7599cc18-4f87-49e0-8a64-778140837123",
+                        "version": 4,
+                        "model": {
+                            "type_name": "Image",
+                            "version": 2
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "attributes_from_file_reference_57d03047-6d86-4900-ab60-8286f634845b",
+                                "value": {
+                                    "attributes": {
+                                        "sample": "wild-type",
+                                        "time-point": "24h",
+                                        "Replicate": "replicate-4",
+                                        "channel-1": "Hoechst33342",
+                                        "chanel-2": "Alexa-Fluor-594",
+                                        "c2-antibody": "anti-YAP",
+                                        "c2-antibody-provider": "Cell-Signaling-Technology",
+                                        "c2-antibody-number": "14074"
+                                    }
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "file_pattern",
+                                "value": {
+                                    "file_pattern": "YAP/WT/NP_24h/Rep4/NPWT_B11_24h_YAP-594_011.tif"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "57d03047-6d86-4900-ab60-8286f634845b"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "image_thumbnail_uri",
+                                "value": {
+                                    "256": {
+                                        "uri": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1495/bef9b05e-4eff-4718-8b74-94b286b899ca/ae278c07-8b1e-47f9-9f21-56c19f0e9b04.png",
+                                        "size": 256
+                                    }
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "recommended_vizarr_representation",
+                                "value": {
+                                    "recommended_vizarr_representation": "8f857e44-dd2d-4694-a408-29b106689ad0"
+                                }
+                            }
+                        ],
+                        "label": null,
+                        "submission_dataset_uuid": "3e8b8ab8-c256-423d-8832-73066fb043b9",
+                        "creation_process_uuid": "cce62bb7-53bd-4509-8dea-b060e9a6ae90",
+                        "original_file_reference_uuid": [
+                            "57d03047-6d86-4900-ab60-8286f634845b"
+                        ]
+                    },
+                    {
+                        "object_creator": "bia_image_assignment",
+                        "uuid": "85077e18-928a-424b-b4e1-2802b834c79c",
+                        "version": 4,
+                        "model": {
+                            "type_name": "Image",
+                            "version": 2
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "attributes_from_file_reference_54c93316-97a3-42ed-a81a-dc0c5b23debe",
+                                "value": {
+                                    "attributes": {
+                                        "sample": "Nup133-KO",
+                                        "time-point": "24h",
+                                        "Replicate": "replicate-4",
+                                        "channel-1": "Hoechst33342",
+                                        "chanel-2": "Alexa-Fluor-594",
+                                        "c2-antibody": "anti-YAP",
+                                        "c2-antibody-provider": "Cell-Signaling-Technology",
+                                        "c2-antibody-number": "14074"
+                                    }
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "file_pattern",
+                                "value": {
+                                    "file_pattern": "YAP/Nup133KO/NP_24h/Rep4/NPKO133_B11_24h_YAP-594_008.tif"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "54c93316-97a3-42ed-a81a-dc0c5b23debe"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "image_thumbnail_uri",
+                                "value": {
+                                    "256": {
+                                        "uri": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1495/7746a993-6a3e-44ec-8329-aec04a4143bf/af9ec076-61c2-485b-ae80-c3a915de3455.png",
+                                        "size": 256
+                                    }
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "image_static_display_uri",
+                                "value": {
+                                    "slice": {
+                                        "uri": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1495/7746a993-6a3e-44ec-8329-aec04a4143bf/92522d90-96ba-47bc-8582-34139f39c062.png",
+                                        "size": 512
+                                    }
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "recommended_vizarr_representation",
+                                "value": {
+                                    "recommended_vizarr_representation": "2eb5b3bc-71e1-4214-9af8-e0e5ba62a548"
+                                }
+                            }
+                        ],
+                        "label": null,
+                        "submission_dataset_uuid": "3e8b8ab8-c256-423d-8832-73066fb043b9",
+                        "creation_process_uuid": "34fe5c92-7327-494d-aebf-c6f3d6317f5e",
+                        "original_file_reference_uuid": [
+                            "54c93316-97a3-42ed-a81a-dc0c5b23debe"
+                        ]
+                    },
+                    {
+                        "object_creator": "bia_image_assignment",
+                        "uuid": "8c535a72-448f-4398-9b23-3cefc37f7244",
+                        "version": 4,
+                        "model": {
+                            "type_name": "Image",
+                            "version": 2
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "attributes_from_file_reference_11727ea8-3abd-4b8f-b7ca-26344e6871cb",
+                                "value": {
+                                    "attributes": {
+                                        "sample": "Nup133-KO",
+                                        "time-point": "2h",
+                                        "Replicate": "replicate-2",
+                                        "channel-1": "Hoechst33342",
+                                        "chanel-2": "Alexa-Fluor-594",
+                                        "c2-antibody": "anti-YAP",
+                                        "c2-antibody-provider": "Cell-Signaling-Technology",
+                                        "c2-antibody-number": "14074"
+                                    }
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "file_pattern",
+                                "value": {
+                                    "file_pattern": "YAP/Nup133KO/NP_2h/Rep2/NPKO133_B9_2h_YAP-594_005.tif"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "11727ea8-3abd-4b8f-b7ca-26344e6871cb"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "image_thumbnail_uri",
+                                "value": {
+                                    "256": {
+                                        "uri": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1495/4eb363de-94ca-4987-b94a-e4a42be16ff4/f90aea06-625a-46fc-bfa3-a1ab1736bb39.png",
+                                        "size": 256
+                                    }
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "recommended_vizarr_representation",
+                                "value": {
+                                    "recommended_vizarr_representation": "edb6cf69-f41b-46bb-a959-4d8b042ff7b0"
+                                }
+                            }
+                        ],
+                        "label": null,
+                        "submission_dataset_uuid": "3e8b8ab8-c256-423d-8832-73066fb043b9",
+                        "creation_process_uuid": "2b852e8f-0e08-40b5-9a39-f5b0fc4101ad",
+                        "original_file_reference_uuid": [
+                            "11727ea8-3abd-4b8f-b7ca-26344e6871cb"
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "S-BIAD1494": {
+        "object_creator": "bia_ingest",
+        "uuid": "6c7bd4af-6d77-433f-a5b6-0dbc545ff214",
+        "version": 0,
+        "model": {
+            "type_name": "Study",
+            "version": 3
+        },
+        "additional_metadata": [
+            {
+                "provenance": "bia_ingest",
+                "name": "biostudies json/pagetab entry",
+                "value": {
+                    "json": "https://www.ebi.ac.uk/biostudies/files/S-BIAD1494/S-BIAD1494.json",
+                    "pagetab": "https://www.ebi.ac.uk/biostudies/files/S-BIAD1494/S-BIAD1494.tsv"
+                }
+            }
+        ],
+        "accession_id": "S-BIAD1494",
+        "licence": "https://creativecommons.org/licenses/by/4.0/",
+        "author": [
+            {
+                "rorid": null,
+                "address": null,
+                "website": null,
+                "orcid": "0000-0003-3862-8349",
+                "display_name": "Reiya Taniguchi",
+                "affiliation": [
+                    {
+                        "rorid": null,
+                        "address": null,
+                        "website": null,
+                        "display_name": "Max Planck Institute of Biophysics"
+                    }
+                ],
+                "contact_email": "reiya.taniguchi@biophys.mpg.de",
+                "role": [
+                    "first author"
+                ]
+            },
+            {
+                "rorid": null,
+                "address": null,
+                "website": null,
+                "orcid": "0000-0002-7397-1321",
+                "display_name": "Martin Beck",
+                "affiliation": [
+                    {
+                        "rorid": null,
+                        "address": null,
+                        "website": null,
+                        "display_name": "Max Planck Institute of Biophysics"
+                    }
+                ],
+                "contact_email": "martin.beck@biophys.mpg.de",
+                "role": [
+                    "corresponding author"
+                ]
+            }
+        ],
+        "title": "Immunofluorescence staining images of mouse embryonic stem cells and neuronal precursors with y-H2AX and 53BP1 foci",
+        "release_date": "2025-01-14",
+        "description": "Wild-type and Nup133-deficient cells were fixed with 4% PFA and subjected to immunofluorescence staining experiments to assess the accumulation of DNA damage. mouse embryonic stem cells and differentiating neuronal precursors at two different time points in the neuronal differentiation (2h and 24h) were used for the experiments.",
+        "keyword": [
+            "immunofluorescence staining",
+            "DNA damage"
+        ],
+        "acknowledgement": "",
+        "see_also": [],
+        "related_publication": [],
+        "grant": [],
+        "funding_statement": "",
+        "dataset": [
+            {
+                "image_count": 5,
+                "file_reference_count": 178,
+                "file_reference_size_bytes": 28633636010,
+                "file_type_counts": {
+                    "file": 178
+                },
+                "object_creator": "bia_ingest",
+                "uuid": "95851fc6-2297-471b-83c7-d1c783a1d945",
+                "version": 1,
+                "model": {
+                    "type_name": "Dataset",
+                    "version": 2
+                },
+                "additional_metadata": [
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "associations",
+                        "value": {
+                            "associations": [
+                                {
+                                    "image_analysis": null,
+                                    "image_correlation": null,
+                                    "biosample": "mouse embryonic stem cells and differentiated neuronal precursors",
+                                    "image_acquisition": "Confocal stack acquisition",
+                                    "specimen": "mouse embryonic stem cells and differentiated neuronal precursors"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "image_acquisition_protocol_uuid",
+                        "value": {
+                            "image_acquisition_protocol_uuid": [
+                                "af6c32a8-38c6-4919-8dcd-b9336183f004"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "specimen_imaging_preparation_protocol_uuid",
+                        "value": {
+                            "specimen_imaging_preparation_protocol_uuid": [
+                                "39162696-500c-4cc8-bd7b-cc94e4f9500e"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "bio_sample_uuid",
+                        "value": {
+                            "bio_sample_uuid": [
+                                "e3a31826-32da-4d4f-9b2b-5a1fc13c2652"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "uuid_unique_input",
+                        "value": {
+                            "uuid_unique_input": "Study Component-4"
+                        }
+                    }
+                ],
+                "title": "Analysis of DNA damage accumulation",
+                "description": "Accumulation of DNA damage within the nuclei of mouse embryonic stem cells and differentiating neuronal precursors were analyzed using confocal stacks of PFA-fixed and immunofluorescence-stained samples.",
+                "analysis_method": [],
+                "correlation_method": [],
+                "example_image_uri": [
+                    "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1494/6049731e-b088-4310-b7de-0da47b37446a/8702cb3e-6107-4259-b9f7-7fdc8fd8bd99.png"
+                ],
+                "submitted_in_study_uuid": "6c7bd4af-6d77-433f-a5b6-0dbc545ff214",
+                "acquisition_process": [
+                    {
+                        "default_open": true,
+                        "object_creator": "bia_ingest",
+                        "uuid": "af6c32a8-38c6-4919-8dcd-b9336183f004",
+                        "version": 0,
+                        "model": {
+                            "type_name": "ImageAcquisitionProtocol",
+                            "version": 3
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_ingest",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "Image acquisition-3"
+                                }
+                            }
+                        ],
+                        "title": "Confocal stack acquisition",
+                        "protocol_description": "Images were acquired using a 63\u00d7/1.40 oil objective. 25 Z stacks were acquired with 0.6 um intervals. Bidirectional image acquisition with scan speed of 400 was used for the data acquisition. Line average was set to 4.",
+                        "imaging_instrument_description": "Stellaris 5 confocal microscope",
+                        "fbbi_id": [],
+                        "imaging_method_name": [
+                            "confocal microscopy"
+                        ]
+                    }
+                ],
+                "specimen_imaging_preparation_protocol": [
+                    {
+                        "default_open": true,
+                        "object_creator": "bia_ingest",
+                        "uuid": "39162696-500c-4cc8-bd7b-cc94e4f9500e",
+                        "version": 0,
+                        "model": {
+                            "type_name": "SpecimenImagingPreparationProtocol",
+                            "version": 3
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_ingest",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "Specimen-2"
+                                }
+                            }
+                        ],
+                        "title": "mouse embryonic stem cells and differentiated neuronal precursors",
+                        "protocol_description": "For mES cell culture, the wild-type HM1 line and the HM1-derived Nup133-/- clone (#14) described previously were used. Mouse embryonic stem cell medium was prepared by supplementing EmbryoMax\u00ae DMEM (Millipore, SLM-220-B) with 15% FBS (Gibco, 10270-106), 2 mM L-Glutamine (Gibco, 25030-024), 1 \u00d7 non-essential amino acids (Gibco, 11140-035 or 11140-050), 1 \u00d7 EmbryoMax\u00ae nucleosides (Millipore, ES-008-D), 110 \u03bcM \u03b2-mercaptoethanol (Gibco, 21985-023) and 1 \u00d7 penicillin/streptomycin (Gibco, 15070-063). mES cells were cultured on mitomycin-treated mouse embryonic fibroblasts (feeder cells) plated on 0.1% gelatin (Sigma-Aldrich) in mouse embryonic stem cell medium supplemented with leukemia inhibitory factor (LIF, ESGRO, Millipore, final 1000 U/ml), and kept at 37\u00b0C with 5% CO2. Cells were used within eight passages after thawing frozen vials to ensure the quality of the stem cell culture.\nThe neural progenitor differentiation was performed following the previously published protocol. Briefly, after two passages on feeder cells, mES cells were transferred to gelatin-coated plates without feeder cells, and cultured for two to four passages in the presence of LIF. Subsequently, cells were trypsinized and 4 \u00d7 106 cells were transferred to non-coated 10-cm Petri dishes (Greiner, 633102) and cultured for eight days within DMEM supplemented with 10% FBS (Gibco, 10270-106), 2 mM L-glutamine (Gibco, 25030-024), 1 \u00d7 MEM non-essential amino acids (Gibco, 11140-035) and 100 \u03bcM \u03b2-mercaptoethanol (Gibco, 31350-010) without LIF. The culture medium was changed every two days, and after four days, 5 \u03bcM retinoic acid (Sigma, R2625) was added to the medium. After eight days of culture, the aggregates of neural progenitors were dissociated by trypsinization at 37\u00b0C for 5 min in the water bath, and the dissociated cells were either immediately used for cryo-EM grid preparation as described below, frozen within the medium supplemented with 10% DMSO and stored until use, or directly used for subsequent neuronal differentiation. For the neuronal differentiation, dissociated cells were seeded on glass bottom plates (ibidi, 80827) coated with poly-DL-ornithine (Sigma, P8638) and laminin (Roche, 11243217001) at approximately 1\u20132 \u00d7 105 cells/cm2, and cultured in N2 medium (1:1 mixture of DMEM (Gibco, 21969-035) and Ham\u2019s F-12 nutrient mix (Gibco, 21765-029), supplemented with 2 mM L-glutamine, 25 \u03bcg/ml insulin (Sigma, I6634), 50 \u03bcg/ml transferrin (Sigma, T1147), 20 nM progesterone (Sigma, P8783), 100 nM putrescine (Sigma, P5780), 30 nM sodium-selenite (Sigma, 214485), 50 \u03bcg/ml BSA (Sigma, A9418), and 1 \u00d7 penicillin/streptomycin (Gibco, 15140-122)) for two days. The medium was changed to fresh N2 medium 2 h and one day after plating. \nFor mES samples, feeder cells were first seeded on 8-well polymer bottom chambered slides (ibidi, 80826) coated with 0.1% gelatin at a seeding density of 2 \u00d7 104 cells/cm2. mES cells were seeded on feeder cells at a density of 4 \u00d7 104 cells/cm2, and cultured for 24h before fixation with 4% paraformaldehyde for 15 min. For neuronal precursor samples, cells were seeded on 8-well glass bottom chambered slides (ibidi, 80827) coated with poly-LD-ornithine and laminin as described above, and fixed at the indicated time point after seeding in 4% paraformaldehyde for 15 min. For staining, cells were permeabilized in 0.1% Triton in PBS for 10 min, washed three times with PBS for 5 min each, and blocked for 30 min using 3% BSA-containing PBS (PBS/BSA). After blocking, primary antibodies diluted in PBS/BSA were applied, and samples were incubated overnight at 4\u00b0C. After washing the samples with PBS, samples were incubated with secondary antibodies diluted in PBS for 2 h at room temperature. DNA was stained with 1 \u03bcM of Hoechst 33342 (Thermo Fisher Scientific, 62249). ",
+                        "signal_channel_information": []
+                    }
+                ],
+                "biological_entity": [
+                    {
+                        "default_open": true,
+                        "object_creator": "bia_ingest",
+                        "uuid": "e3a31826-32da-4d4f-9b2b-5a1fc13c2652",
+                        "version": 0,
+                        "model": {
+                            "type_name": "BioSample",
+                            "version": 4
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_ingest",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "Biosample-1"
+                                }
+                            }
+                        ],
+                        "title": "mouse embryonic stem cells and differentiated neuronal precursors",
+                        "organism_classification": [
+                            {
+                                "additional_metadata": [],
+                                "common_name": "mouse",
+                                "scientific_name": "Mus musculus",
+                                "ncbi_id": null
+                            }
+                        ],
+                        "biological_entity_description": "mouse embryonic stem cells and differentiated neuronal precursors",
+                        "experimental_variable_description": [],
+                        "extrinsic_variable_description": [],
+                        "intrinsic_variable_description": [],
+                        "growth_protocol_uuid": null,
+                        "growth_protocol": null
+                    }
+                ],
+                "annotation_process": [],
+                "other_creation_process": [],
+                "image": [
+                    {
+                        "object_creator": "bia_image_assignment",
+                        "uuid": "16b7653d-28af-4ded-acf7-0dc236294001",
+                        "version": 4,
+                        "model": {
+                            "type_name": "Image",
+                            "version": 2
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "attributes_from_file_reference_e5c0f9b5-6834-43f9-a05a-899ae7bf0469",
+                                "value": {
+                                    "attributes": {
+                                        "sample": "Nup133-KO",
+                                        "time-point": "mES",
+                                        "Replicate": "replicate-2",
+                                        "channel-1": "Hoechst33342",
+                                        "chanel-2": "Alexa-Fluor-Plus-488",
+                                        "c2-antibody": "anti-yH2AX",
+                                        "c2-antibody-provider": "merck",
+                                        "c2-antibody-number": "05-636",
+                                        "channel-3": "Alexa-Fluor-594",
+                                        "c3-antibody": "anti-53BP1",
+                                        "c3-antibody-provider": "Novus-Biologicals",
+                                        "c3-antibody-number": "NB100-304SS"
+                                    }
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "file_pattern",
+                                "value": {
+                                    "file_pattern": "DNA_damage/Nup133KO/mES/Rep2/mESKO133_b24_H2AX-488_53BP1-594_006.tif"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "e5c0f9b5-6834-43f9-a05a-899ae7bf0469"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "image_thumbnail_uri",
+                                "value": {
+                                    "256": {
+                                        "uri": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1494/938890af-b2ae-4ef7-8859-a10f95c18cef/848c6709-fd6d-459f-b018-bd835bd41d3b.png",
+                                        "size": 256
+                                    }
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "recommended_vizarr_representation",
+                                "value": {
+                                    "recommended_vizarr_representation": "94cff40a-31a1-4160-9a23-f4e8b44c1a45"
+                                }
+                            }
+                        ],
+                        "label": null,
+                        "submission_dataset_uuid": "95851fc6-2297-471b-83c7-d1c783a1d945",
+                        "creation_process_uuid": "ecac1ed4-fa5c-4342-b7fa-ad89b02622ee",
+                        "original_file_reference_uuid": [
+                            "e5c0f9b5-6834-43f9-a05a-899ae7bf0469"
+                        ]
+                    },
+                    {
+                        "object_creator": "bia_image_assignment",
+                        "uuid": "467543b1-ab88-4354-b20c-a4d6aaa21e2c",
+                        "version": 4,
+                        "model": {
+                            "type_name": "Image",
+                            "version": 2
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "attributes_from_file_reference_69907d58-30b0-4f79-921b-bc9a60acbe6e",
+                                "value": {
+                                    "attributes": {
+                                        "sample": "Nup133-KO",
+                                        "time-point": "mES",
+                                        "Replicate": "replicate-1",
+                                        "channel-1": "Hoechst33342",
+                                        "chanel-2": "Alexa-Fluor-Plus-488",
+                                        "c2-antibody": "anti-yH2AX",
+                                        "c2-antibody-provider": "merck",
+                                        "c2-antibody-number": "05-636",
+                                        "channel-3": "Alexa-Fluor-594",
+                                        "c3-antibody": "anti-53BP1",
+                                        "c3-antibody-provider": "Novus-Biologicals",
+                                        "c3-antibody-number": "NB100-304SS"
+                                    }
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "file_pattern",
+                                "value": {
+                                    "file_pattern": "DNA_damage/Nup133KO/mES/Rep1/mESKO133_b22_H2AX-488_53BP1-594_003.tif"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "69907d58-30b0-4f79-921b-bc9a60acbe6e"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "image_thumbnail_uri",
+                                "value": {
+                                    "256": {
+                                        "uri": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1494/6049731e-b088-4310-b7de-0da47b37446a/ea5a2a3e-d3f4-4e5d-bb9c-71bcd463920a.png",
+                                        "size": 256
+                                    }
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "image_static_display_uri",
+                                "value": {
+                                    "slice": {
+                                        "uri": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1494/6049731e-b088-4310-b7de-0da47b37446a/8702cb3e-6107-4259-b9f7-7fdc8fd8bd99.png",
+                                        "size": 512
+                                    }
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "recommended_vizarr_representation",
+                                "value": {
+                                    "recommended_vizarr_representation": "ba62eb9e-b521-49fd-9628-3ec054664bee"
+                                }
+                            }
+                        ],
+                        "label": null,
+                        "submission_dataset_uuid": "95851fc6-2297-471b-83c7-d1c783a1d945",
+                        "creation_process_uuid": "a1e3aabd-85ee-4e87-9069-b90a8d957871",
+                        "original_file_reference_uuid": [
+                            "69907d58-30b0-4f79-921b-bc9a60acbe6e"
+                        ]
+                    },
+                    {
+                        "object_creator": "bia_image_assignment",
+                        "uuid": "5fea5a7c-fe07-4c28-afd7-c08d72950852",
+                        "version": 4,
+                        "model": {
+                            "type_name": "Image",
+                            "version": 2
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "attributes_from_file_reference_d3cddd6e-2faf-4921-a541-42c44259701f",
+                                "value": {
+                                    "attributes": {
+                                        "sample": "Nup133-KO",
+                                        "time-point": "24h",
+                                        "Replicate": "replicate-2",
+                                        "channel-1": "Hoechst33342",
+                                        "chanel-2": "Alexa-Fluor-Plus-488",
+                                        "c2-antibody": "anti-yH2AX",
+                                        "c2-antibody-provider": "merck",
+                                        "c2-antibody-number": "05-636",
+                                        "channel-3": "Alexa-Fluor-594",
+                                        "c3-antibody": "anti-53BP1",
+                                        "c3-antibody-provider": "Novus-Biologicals",
+                                        "c3-antibody-number": "NB100-304SS"
+                                    }
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "file_pattern",
+                                "value": {
+                                    "file_pattern": "DNA_damage/Nup133KO/NP_24h/Rep2/NPKO133_B2_24h_H2AX-488_53BP1-594_004.tif"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "d3cddd6e-2faf-4921-a541-42c44259701f"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "image_thumbnail_uri",
+                                "value": {
+                                    "256": {
+                                        "uri": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1494/f659385a-fabb-4931-b2b6-18cb00c16625/f4d3c83d-28d4-4a56-8376-a456a6a3640b.png",
+                                        "size": 256
+                                    }
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "recommended_vizarr_representation",
+                                "value": {
+                                    "recommended_vizarr_representation": "3e8d8bd8-d4a1-4122-8c14-fbfe5fccb3fb"
+                                }
+                            }
+                        ],
+                        "label": null,
+                        "submission_dataset_uuid": "95851fc6-2297-471b-83c7-d1c783a1d945",
+                        "creation_process_uuid": "6d706752-5a47-4557-b4c1-c1276223348f",
+                        "original_file_reference_uuid": [
+                            "d3cddd6e-2faf-4921-a541-42c44259701f"
+                        ]
+                    },
+                    {
+                        "object_creator": "bia_image_assignment",
+                        "uuid": "74ead1cc-ece5-436e-9708-5879da4a940f",
+                        "version": 4,
+                        "model": {
+                            "type_name": "Image",
+                            "version": 2
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "attributes_from_file_reference_154af1eb-3aa7-4b85-996d-6461139910db",
+                                "value": {
+                                    "attributes": {
+                                        "sample": "Nup133-KO",
+                                        "time-point": "2h",
+                                        "Replicate": "replicate-2",
+                                        "channel-1": "Hoechst33342",
+                                        "chanel-2": "Alexa-Fluor-Plus-488",
+                                        "c2-antibody": "anti-yH2AX",
+                                        "c2-antibody-provider": "merck",
+                                        "c2-antibody-number": "05-636",
+                                        "channel-3": "Alexa-Fluor-594",
+                                        "c3-antibody": "anti-53BP1",
+                                        "c3-antibody-provider": "Novus-Biologicals",
+                                        "c3-antibody-number": "NB100-304SS"
+                                    }
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "file_pattern",
+                                "value": {
+                                    "file_pattern": "DNA_damage/Nup133KO/NP_2h/Rep2/NPKO133_B2_2h_H2AX-488_53BP1-594_001.tif"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "154af1eb-3aa7-4b85-996d-6461139910db"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "image_thumbnail_uri",
+                                "value": {
+                                    "256": {
+                                        "uri": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1494/51c6877d-a445-400d-891f-e2a857f48662/e7654e73-bd3a-482b-8604-74df42b5b54e.png",
+                                        "size": 256
+                                    }
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "recommended_vizarr_representation",
+                                "value": {
+                                    "recommended_vizarr_representation": "61d13839-5385-483c-9b62-536fce9fbe6a"
+                                }
+                            }
+                        ],
+                        "label": null,
+                        "submission_dataset_uuid": "95851fc6-2297-471b-83c7-d1c783a1d945",
+                        "creation_process_uuid": "f3e4a4fa-5435-4757-a842-13681112ebe1",
+                        "original_file_reference_uuid": [
+                            "154af1eb-3aa7-4b85-996d-6461139910db"
+                        ]
+                    },
+                    {
+                        "object_creator": "bia_image_assignment",
+                        "uuid": "ebd7587f-1d37-4908-bd86-0921c2fbb0cb",
+                        "version": 4,
+                        "model": {
+                            "type_name": "Image",
+                            "version": 2
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "attributes_from_file_reference_7832078c-3b73-45d5-af3d-e49bae79950e",
+                                "value": {
+                                    "attributes": {
+                                        "sample": "wild-type",
+                                        "time-point": "24h",
+                                        "Replicate": "replicate-3",
+                                        "channel-1": "Hoechst33342",
+                                        "chanel-2": "Alexa-Fluor-Plus-488",
+                                        "c2-antibody": "anti-yH2AX",
+                                        "c2-antibody-provider": "merck",
+                                        "c2-antibody-number": "05-636",
+                                        "channel-3": "Alexa-Fluor-594",
+                                        "c3-antibody": "anti-53BP1",
+                                        "c3-antibody-provider": "Novus-Biologicals",
+                                        "c3-antibody-number": "NB100-304SS"
+                                    }
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "file_pattern",
+                                "value": {
+                                    "file_pattern": "DNA_damage/WT/NP_24h/Rep3/NPWT_B3_24h_H2AX-488_53BP1-594_004.tif"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "7832078c-3b73-45d5-af3d-e49bae79950e"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "image_thumbnail_uri",
+                                "value": {
+                                    "256": {
+                                        "uri": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1494/a81ac569-9ad6-410c-9479-40779b966639/87c4327b-b9af-43ea-9743-6d80b024a0b6.png",
+                                        "size": 256
+                                    }
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "recommended_vizarr_representation",
+                                "value": {
+                                    "recommended_vizarr_representation": "c01efe8d-1406-40b7-970b-18d64f594381"
+                                }
+                            }
+                        ],
+                        "label": null,
+                        "submission_dataset_uuid": "95851fc6-2297-471b-83c7-d1c783a1d945",
+                        "creation_process_uuid": "a21f2d4d-fb94-4d78-b21f-3ed4a77d0370",
+                        "original_file_reference_uuid": [
+                            "7832078c-3b73-45d5-af3d-e49bae79950e"
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
     "S-BIAD1553": {
         "object_creator": "bia_ingest",
         "uuid": "011cfb43-fa60-4e21-a047-e077c805840f",
@@ -380,7 +1970,7 @@
                     {
                         "object_creator": "bia_image_assignment",
                         "uuid": "bc8efc45-3442-4c70-add4-8f037cd617a6",
-                        "version": 1,
+                        "version": 4,
                         "model": {
                             "type_name": "Image",
                             "version": 2
@@ -412,11 +2002,12 @@
                             },
                             {
                                 "provenance": "bia_image_assignment",
-                                "name": "thumbnail_uri",
+                                "name": "image_thumbnail_uri",
                                 "value": {
-                                    "thumbnail_uri": [
-                                        "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1553/5481818e-a20e-4c0e-b78e-fa8fbe673433/2e4dcef9-8ea3-468b-90a6-4b1aca0bf5f2.png"
-                                    ]
+                                    "256": {
+                                        "uri": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1553/5481818e-a20e-4c0e-b78e-fa8fbe673433/2e4dcef9-8ea3-468b-90a6-4b1aca0bf5f2.png",
+                                        "size": 256
+                                    }
                                 }
                             },
                             {
@@ -518,7 +2109,7 @@
                 },
                 "object_creator": "bia_ingest",
                 "uuid": "99968d8b-9ca9-4aab-a21f-acc71ce02673",
-                "version": 1,
+                "version": 3,
                 "model": {
                     "type_name": "Dataset",
                     "version": 2
@@ -686,7 +2277,7 @@
                     {
                         "object_creator": "bia_image_assignment",
                         "uuid": "155f9b52-ffc9-4341-a9ee-7d1e7e906a22",
-                        "version": 1,
+                        "version": 4,
                         "model": {
                             "type_name": "Image",
                             "version": 2
@@ -719,20 +2310,22 @@
                             },
                             {
                                 "provenance": "bia_image_assignment",
-                                "name": "thumbnail_uri",
+                                "name": "image_thumbnail_uri",
                                 "value": {
-                                    "thumbnail_uri": [
-                                        "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1553/f2ea13ce-915f-4087-9183-3c8ed165cb69/d8b40c6d-2dec-4067-925f-4ccddb7b95cd.png"
-                                    ]
+                                    "256": {
+                                        "uri": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1553/f2ea13ce-915f-4087-9183-3c8ed165cb69/d8b40c6d-2dec-4067-925f-4ccddb7b95cd.png",
+                                        "size": 256
+                                    }
                                 }
                             },
                             {
                                 "provenance": "bia_image_assignment",
-                                "name": "static_display_uri",
+                                "name": "image_static_display_uri",
                                 "value": {
-                                    "static_display_uri": [
-                                        "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1553/f2ea13ce-915f-4087-9183-3c8ed165cb69/b6e32c01-f630-4dc1-95b0-b6a19f48ccbc.png"
-                                    ]
+                                    "slice": {
+                                        "uri": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1553/f2ea13ce-915f-4087-9183-3c8ed165cb69/b6e32c01-f630-4dc1-95b0-b6a19f48ccbc.png",
+                                        "size": 512
+                                    }
                                 }
                             },
                             {
@@ -753,7 +2346,7 @@
                     {
                         "object_creator": "bia_image_assignment",
                         "uuid": "53d89263-3d26-4744-ac61-8cdbc2cc0134",
-                        "version": 1,
+                        "version": 4,
                         "model": {
                             "type_name": "Image",
                             "version": 2
@@ -786,11 +2379,12 @@
                             },
                             {
                                 "provenance": "bia_image_assignment",
-                                "name": "thumbnail_uri",
+                                "name": "image_thumbnail_uri",
                                 "value": {
-                                    "thumbnail_uri": [
-                                        "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1553/93b44141-a0b7-41cd-9cc0-397ae935ce51/92424927-4b15-479e-833e-d613bc123565.png"
-                                    ]
+                                    "256": {
+                                        "uri": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1553/93b44141-a0b7-41cd-9cc0-397ae935ce51/92424927-4b15-479e-833e-d613bc123565.png",
+                                        "size": 256
+                                    }
                                 }
                             },
                             {
@@ -811,7 +2405,7 @@
                     {
                         "object_creator": "bia_image_assignment",
                         "uuid": "e1c71013-2e72-4b02-afde-d69824d1a206",
-                        "version": 1,
+                        "version": 4,
                         "model": {
                             "type_name": "Image",
                             "version": 2
@@ -844,11 +2438,12 @@
                             },
                             {
                                 "provenance": "bia_image_assignment",
-                                "name": "thumbnail_uri",
+                                "name": "image_thumbnail_uri",
                                 "value": {
-                                    "thumbnail_uri": [
-                                        "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1553/b6abcf43-a8c9-4732-a23c-4f63e6edceec/c0c1dd7b-4faf-498e-8c43-6fc373bbc527.png"
-                                    ]
+                                    "256": {
+                                        "uri": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1553/b6abcf43-a8c9-4732-a23c-4f63e6edceec/c0c1dd7b-4faf-498e-8c43-6fc373bbc527.png",
+                                        "size": 256
+                                    }
                                 }
                             },
                             {
@@ -1043,7 +2638,7 @@
                     {
                         "object_creator": "bia_image_assignment",
                         "uuid": "1049e31d-9f73-47b2-9ff0-68318daf2610",
-                        "version": 1,
+                        "version": 4,
                         "model": {
                             "type_name": "Image",
                             "version": 2
@@ -1075,11 +2670,12 @@
                             },
                             {
                                 "provenance": "bia_image_assignment",
-                                "name": "thumbnail_uri",
+                                "name": "image_thumbnail_uri",
                                 "value": {
-                                    "thumbnail_uri": [
-                                        "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1553/dc53aa81-e359-457c-acb1-aa0e7f4655b8/fac640a8-aa2d-47f1-8c3e-d4c1634d2417.png"
-                                    ]
+                                    "256": {
+                                        "uri": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1553/dc53aa81-e359-457c-acb1-aa0e7f4655b8/fac640a8-aa2d-47f1-8c3e-d4c1634d2417.png",
+                                        "size": 256
+                                    }
                                 }
                             },
                             {
@@ -1682,7 +3278,7 @@
                 },
                 "object_creator": "bia_ingest",
                 "uuid": "a227a231-b041-4d92-ae0f-4f72e3dca66c",
-                "version": 1,
+                "version": 3,
                 "model": {
                     "type_name": "Dataset",
                     "version": 2
@@ -1840,7 +3436,7 @@
                     {
                         "object_creator": "bia_image_assignment",
                         "uuid": "6a4b49b4-6ca5-4376-9e99-b674f4985bc3",
-                        "version": 1,
+                        "version": 4,
                         "model": {
                             "type_name": "Image",
                             "version": 2
@@ -1869,20 +3465,22 @@
                             },
                             {
                                 "provenance": "bia_image_assignment",
-                                "name": "thumbnail_uri",
+                                "name": "image_thumbnail_uri",
                                 "value": {
-                                    "thumbnail_uri": [
-                                        "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1466/8313aad7-c1a9-4848-9fd3-1df262a80ffc/f80ceb75-9310-4ef4-814d-593f095ebf62.png"
-                                    ]
+                                    "256": {
+                                        "uri": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1466/8313aad7-c1a9-4848-9fd3-1df262a80ffc/f80ceb75-9310-4ef4-814d-593f095ebf62.png",
+                                        "size": 256
+                                    }
                                 }
                             },
                             {
                                 "provenance": "bia_image_assignment",
-                                "name": "static_display_uri",
+                                "name": "image_static_display_uri",
                                 "value": {
-                                    "static_display_uri": [
-                                        "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1466/8313aad7-c1a9-4848-9fd3-1df262a80ffc/b00a732a-246c-4f7d-a774-5c5b348bf938.png"
-                                    ]
+                                    "slice": {
+                                        "uri": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1466/8313aad7-c1a9-4848-9fd3-1df262a80ffc/b00a732a-246c-4f7d-a774-5c5b348bf938.png",
+                                        "size": 512
+                                    }
                                 }
                             },
                             {
@@ -1903,7 +3501,7 @@
                     {
                         "object_creator": "bia_image_assignment",
                         "uuid": "6ed9380d-5aaf-4dfa-b0f1-0c565fb2204b",
-                        "version": 1,
+                        "version": 4,
                         "model": {
                             "type_name": "Image",
                             "version": 2
@@ -1932,11 +3530,12 @@
                             },
                             {
                                 "provenance": "bia_image_assignment",
-                                "name": "thumbnail_uri",
+                                "name": "image_thumbnail_uri",
                                 "value": {
-                                    "thumbnail_uri": [
-                                        "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1466/d206e679-0c12-4361-a7ae-d42bc3207d4f/744c058c-406f-402b-a361-048c372c4644.png"
-                                    ]
+                                    "256": {
+                                        "uri": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1466/d206e679-0c12-4361-a7ae-d42bc3207d4f/744c058c-406f-402b-a361-048c372c4644.png",
+                                        "size": 256
+                                    }
                                 }
                             },
                             {
@@ -1957,7 +3556,7 @@
                     {
                         "object_creator": "bia_image_assignment",
                         "uuid": "7a156799-8301-4923-ba98-49d3ef5320bf",
-                        "version": 1,
+                        "version": 4,
                         "model": {
                             "type_name": "Image",
                             "version": 2
@@ -1986,11 +3585,12 @@
                             },
                             {
                                 "provenance": "bia_image_assignment",
-                                "name": "thumbnail_uri",
+                                "name": "image_thumbnail_uri",
                                 "value": {
-                                    "thumbnail_uri": [
-                                        "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1466/a7d89b34-9f46-45ea-9999-6dedeb760cd6/f4dc08db-d28d-490e-840d-ca61e1481052.png"
-                                    ]
+                                    "256": {
+                                        "uri": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1466/a7d89b34-9f46-45ea-9999-6dedeb760cd6/f4dc08db-d28d-490e-840d-ca61e1481052.png",
+                                        "size": 256
+                                    }
                                 }
                             },
                             {
@@ -2011,7 +3611,7 @@
                     {
                         "object_creator": "bia_image_assignment",
                         "uuid": "9cf9a2a7-53ae-491a-8522-fe1d764360c8",
-                        "version": 1,
+                        "version": 4,
                         "model": {
                             "type_name": "Image",
                             "version": 2
@@ -2040,11 +3640,12 @@
                             },
                             {
                                 "provenance": "bia_image_assignment",
-                                "name": "thumbnail_uri",
+                                "name": "image_thumbnail_uri",
                                 "value": {
-                                    "thumbnail_uri": [
-                                        "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1466/1b36ecea-781e-444f-bcc7-1d2d7a77c238/2acddff2-d655-45f8-a3ff-56f20fa92ed8.png"
-                                    ]
+                                    "256": {
+                                        "uri": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1466/1b36ecea-781e-444f-bcc7-1d2d7a77c238/2acddff2-d655-45f8-a3ff-56f20fa92ed8.png",
+                                        "size": 256
+                                    }
                                 }
                             },
                             {
@@ -2065,7 +3666,7 @@
                     {
                         "object_creator": "bia_image_assignment",
                         "uuid": "bf975c1f-8fe6-42e8-bd3a-4c733313c91d",
-                        "version": 1,
+                        "version": 4,
                         "model": {
                             "type_name": "Image",
                             "version": 2
@@ -2094,11 +3695,12 @@
                             },
                             {
                                 "provenance": "bia_image_assignment",
-                                "name": "thumbnail_uri",
+                                "name": "image_thumbnail_uri",
                                 "value": {
-                                    "thumbnail_uri": [
-                                        "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1466/bfc5fb2a-29df-4394-90a4-3e88f3e59656/4d0fc675-f060-49de-807b-feebb7f7ce4e.png"
-                                    ]
+                                    "256": {
+                                        "uri": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1466/bfc5fb2a-29df-4394-90a4-3e88f3e59656/4d0fc675-f060-49de-807b-feebb7f7ce4e.png",
+                                        "size": 256
+                                    }
                                 }
                             },
                             {
