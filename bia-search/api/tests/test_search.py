@@ -19,7 +19,7 @@ def test_fts_facet_discovery_organism(api_client: TestClient):
     assert len(body["facets"]["scientific_name"]["buckets"]) == 3
     assert {
         "key": "Homo sapiens",
-        "doc_count": 1,
+        "doc_count": 2,
     } in body["facets"][
         "scientific_name"
     ]["buckets"]
@@ -31,7 +31,7 @@ def test_fts_facet_discovery_organism(api_client: TestClient):
     ]["buckets"]
     assert {
         "key": "Mus musculus",
-        "doc_count": 2,
+        "doc_count": 3,
     } in body["facets"][
         "scientific_name"
     ]["buckets"]
@@ -42,7 +42,7 @@ def test_fts_facet_discovery_release_date(api_client: TestClient):
     assert rsp.status_code == 200
 
     body = rsp.json()
-    assert {"key_as_string": "2024", "key": 1704067200000, "doc_count": 1} in body[
+    assert {"key_as_string": "2024", "key": 1704067200000, "doc_count": 2} in body[
         "facets"
     ]["release_date"]["buckets"]
     assert {"key_as_string": "2025", "key": 1735689600000, "doc_count": 3} in body[
@@ -55,7 +55,7 @@ def test_fts_facet_discovery_imaging_method(api_client: TestClient):
     assert rsp.status_code == 200
 
     body = rsp.json()
-    assert len(body["facets"]["imaging_method"]["buckets"]) == 1
+    assert len(body["facets"]["imaging_method"]["buckets"]) == 2
 
 
 def test_fts_use_facet_organism(api_client: TestClient):
