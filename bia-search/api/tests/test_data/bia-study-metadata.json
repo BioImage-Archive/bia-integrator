@@ -3721,5 +3721,1574 @@
                 ]
             }
         ]
+    },
+    "S-BIAD1422": {
+        "object_creator": "bia_ingest",
+        "uuid": "8115a821-6a9f-44d7-8f96-a77bd9819147",
+        "version": 0,
+        "model": {
+            "type_name": "Study",
+            "version": 3
+        },
+        "additional_metadata": [
+            {
+                "provenance": "bia_ingest",
+                "name": "biostudies json/pagetab entry",
+                "value": {
+                    "json": "https://www.ebi.ac.uk/biostudies/files/S-BIAD1422/S-BIAD1422.json",
+                    "pagetab": "https://www.ebi.ac.uk/biostudies/files/S-BIAD1422/S-BIAD1422.tsv"
+                }
+            }
+        ],
+        "accession_id": "S-BIAD1422",
+        "licence": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "author": [
+            {
+                "rorid": null,
+                "address": null,
+                "website": null,
+                "orcid": "0000-0002-5938-258X",
+                "display_name": "Shao Thing Teoh",
+                "affiliation": [
+                    {
+                        "rorid": null,
+                        "address": null,
+                        "website": null,
+                        "display_name": "CeMM Research Center for Molecular Medicine"
+                    }
+                ],
+                "contact_email": "steoh@cemm.at",
+                "role": [
+                    "investigator"
+                ]
+            }
+        ],
+        "title": "Localization of HA-tagged SLC45A4 expressed in HCT 116 cells",
+        "release_date": "2024-10-16",
+        "description": "Representative immunofluorescence images of HCT116-SLC45A4-KO-OE cells +/- 24 h doxycycline (Dox) induction. Red and blue channels show HA-tagged SLC45A4 and DAPI nuclear counterstain, respectively. ",
+        "keyword": [
+            "SLC45A4",
+            "knockout-overexpression",
+            "HA tag",
+            "HCT 116 cells"
+        ],
+        "acknowledgement": "",
+        "see_also": [],
+        "related_publication": [],
+        "grant": [],
+        "funding_statement": "",
+        "dataset": [
+            {
+                "image_count": 2,
+                "file_reference_count": 2,
+                "file_reference_size_bytes": 4513312,
+                "file_type_counts": {
+                    "file": 2
+                },
+                "object_creator": "bia_ingest",
+                "uuid": "ea0ce741-2f93-4b35-a9d7-0307629c0130",
+                "version": 1,
+                "model": {
+                    "type_name": "Dataset",
+                    "version": 2
+                },
+                "additional_metadata": [
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "associations",
+                        "value": {
+                            "associations": [
+                                {
+                                    "image_analysis": null,
+                                    "image_correlation": null,
+                                    "biosample": "HCT116-SLC45A4-KO-OE +Dox",
+                                    "image_acquisition": "HA-tag & DAPI immunofluorescence image acquisition",
+                                    "specimen": "doxycycline-induced HCT116-SLC45A4-KO-OE cells"
+                                },
+                                {
+                                    "image_analysis": null,
+                                    "image_correlation": null,
+                                    "biosample": "HCT116-SLC45A4-KO-OE uninduced",
+                                    "image_acquisition": "HA-tag & DAPI immunofluorescence image acquisition",
+                                    "specimen": "uninduced HCT116-SLC45A4-KO-OE cells"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "image_acquisition_protocol_uuid",
+                        "value": {
+                            "image_acquisition_protocol_uuid": [
+                                "b8ae1b91-259e-4e5a-8e44-771d1c7a8751"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "specimen_imaging_preparation_protocol_uuid",
+                        "value": {
+                            "specimen_imaging_preparation_protocol_uuid": [
+                                "891bc45f-7413-43c7-9f88-989e0c798421",
+                                "5d922c20-1a63-411a-b89e-d448b456767e"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "bio_sample_uuid",
+                        "value": {
+                            "bio_sample_uuid": [
+                                "4a4eb421-dc72-4113-b5c8-40e28af62134",
+                                "cd76197d-a0d7-487e-b685-88c80b81eee7"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "uuid_unique_input",
+                        "value": {
+                            "uuid_unique_input": "Study Component-4"
+                        }
+                    }
+                ],
+                "title": "Localization of HA-tagged SLC45A4 using HCT116-SLC45A4-KO-OE cells",
+                "description": "Dox-induced and uninduced HCT116-SLC45A4-KO-OE cells were compared by immunofluorescence microscopy to determine localization of the HA tag",
+                "analysis_method": [],
+                "correlation_method": [],
+                "example_image_uri": [
+                    "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1422/98a28259-c89e-47e8-9724-a8d810aaaa64/df6485a2-88ef-4c6f-a38f-e79a3301e6c6.png"
+                ],
+                "submitted_in_study_uuid": "8115a821-6a9f-44d7-8f96-a77bd9819147",
+                "acquisition_process": [
+                    {
+                        "default_open": true,
+                        "object_creator": "bia_ingest",
+                        "uuid": "b8ae1b91-259e-4e5a-8e44-771d1c7a8751",
+                        "version": 0,
+                        "model": {
+                            "type_name": "ImageAcquisitionProtocol",
+                            "version": 3
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_ingest",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "Image acquisition-3"
+                                }
+                            }
+                        ],
+                        "title": "HA-tag & DAPI immunofluorescence image acquisition",
+                        "protocol_description": "Coverslip-mounted cells were imaged on a Zeiss LSM 700 confocal microscope using the Plan-Apochromat 63x/1.40 oil objective. The 555 nm laser at 2% power with a pinhole of 1.11 AU was used to image HA-tagged SLC45A4 (AlexaFluor 568) with detection wavelength range 568-800, and the 405 nm laser at 2% power with a pinhole of 1.19 AU was used to image nuclei (DAPI) with detection wavelength range 300-483. Pixel and line times were 1.58 \u00b5s and 30.00 \u00b5s respectively for both channels.",
+                        "imaging_instrument_description": "Zeiss LSM 700",
+                        "fbbi_id": [],
+                        "imaging_method_name": [
+                            "confocal microscopy",
+                            "immunofluorescence"
+                        ]
+                    }
+                ],
+                "specimen_imaging_preparation_protocol": [
+                    {
+                        "default_open": true,
+                        "object_creator": "bia_ingest",
+                        "uuid": "891bc45f-7413-43c7-9f88-989e0c798421",
+                        "version": 0,
+                        "model": {
+                            "type_name": "SpecimenImagingPreparationProtocol",
+                            "version": 3
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_ingest",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "Specimen-7"
+                                }
+                            }
+                        ],
+                        "title": "doxycycline-induced HCT116-SLC45A4-KO-OE cells",
+                        "protocol_description": "HCT116-SLC45A4-KO-OE cells were seeded at 150 000 cells/well on a polylysine-coated glass cover slip placed in 24-well plates and induced with 1 \u00b5g/mL Dox overnight. Media was aspirated and cells were fixed in 4% formaldehyde in PBS for 10 min at room temperature. Cells were then blocked and permeabilized with IF blocking buffer (PBS + 10% FBS + 0.3% Triton X-100) for 1 h, then primary antibodies added at the following dilutions in IF blocking buffer: rat anti-HA 1:1000 (Roche). Following two hours of gentle rocking at room temperature, cells were washed three times with IF blocking buffer, then secondary staining performed for 1 h with the following antibodies: anti-mouse Alexa Fluor 568 1:1000, DAPI 1:2000. Cells were washed three times, mounted on glass slides with Fluoromount-G (Thermo Fisher), then imaged with an LSM 700 confocal microscope (Zeiss).",
+                        "signal_channel_information": []
+                    },
+                    {
+                        "default_open": true,
+                        "object_creator": "bia_ingest",
+                        "uuid": "5d922c20-1a63-411a-b89e-d448b456767e",
+                        "version": 0,
+                        "model": {
+                            "type_name": "SpecimenImagingPreparationProtocol",
+                            "version": 3
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_ingest",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "Specimen-8"
+                                }
+                            }
+                        ],
+                        "title": "uninduced HCT116-SLC45A4-KO-OE cells",
+                        "protocol_description": "HCT116-SLC45A4-KO-OE cells were seeded at 150 000 cells/well on a polylysine-coated glass cover slip placed in 24-well plates and grown overnight. Media was aspirated and cells were fixed in 4% formaldehyde in PBS for 10 min at room temperature. Cells were then blocked and permeabilized with IF blocking buffer (PBS + 10% FBS + 0.3% Triton X-100) for 1 h, then primary antibodies added at the following dilutions in IF blocking buffer: rat anti-HA 1:1000 (Roche). Following two hours of gentle rocking at room temperature, cells were washed three times with IF blocking buffer, then secondary staining performed for 1 h with the following antibodies: anti-mouse Alexa Fluor 568 1:1000, DAPI 1:2000. Cells were washed three times, mounted on glass slides with Fluoromount-G (Thermo Fisher), then imaged with an LSM 700 confocal microscope (Zeiss).",
+                        "signal_channel_information": []
+                    }
+                ],
+                "biological_entity": [
+                    {
+                        "default_open": true,
+                        "object_creator": "bia_ingest",
+                        "uuid": "4a4eb421-dc72-4113-b5c8-40e28af62134",
+                        "version": 0,
+                        "model": {
+                            "type_name": "BioSample",
+                            "version": 4
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_ingest",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "Biosample-5"
+                                }
+                            }
+                        ],
+                        "title": "HCT116-SLC45A4-KO-OE +Dox",
+                        "organism_classification": [
+                            {
+                                "additional_metadata": [],
+                                "common_name": "human",
+                                "scientific_name": "Homo sapiens",
+                                "ncbi_id": null
+                            }
+                        ],
+                        "biological_entity_description": "HCT 116 human colon cancer cell line with endogenous SLC45A4 knocked out and stably transduced with HA-tagged SLC45A4 overexpression construct",
+                        "experimental_variable_description": [],
+                        "extrinsic_variable_description": [],
+                        "intrinsic_variable_description": [],
+                        "growth_protocol_uuid": null,
+                        "growth_protocol": null
+                    },
+                    {
+                        "default_open": true,
+                        "object_creator": "bia_ingest",
+                        "uuid": "cd76197d-a0d7-487e-b685-88c80b81eee7",
+                        "version": 0,
+                        "model": {
+                            "type_name": "BioSample",
+                            "version": 4
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_ingest",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "Biosample-6"
+                                }
+                            }
+                        ],
+                        "title": "HCT116-SLC45A4-KO-OE uninduced",
+                        "organism_classification": [
+                            {
+                                "additional_metadata": [],
+                                "common_name": "human",
+                                "scientific_name": "Homo sapiens",
+                                "ncbi_id": null
+                            }
+                        ],
+                        "biological_entity_description": "HCT 116 human colon cancer cell line with endogenous SLC45A4 knocked out and stably transduced with HA-tagged SLC45A4 overexpression construct\n\n",
+                        "experimental_variable_description": [],
+                        "extrinsic_variable_description": [],
+                        "intrinsic_variable_description": [],
+                        "growth_protocol_uuid": null,
+                        "growth_protocol": null
+                    }
+                ],
+                "annotation_process": [],
+                "other_creation_process": [],
+                "image": [
+                    {
+                        "object_creator": "bia_image_assignment",
+                        "uuid": "419af67d-df36-4b35-b20e-a81223baa828",
+                        "version": 2,
+                        "model": {
+                            "type_name": "Image",
+                            "version": 2
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "attributes_from_file_reference_9de61ed5-18f9-47b6-b037-6166274ff6cc",
+                                "value": {
+                                    "attributes": {
+                                        "Condition": "Dox-induced"
+                                    }
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "file_pattern",
+                                "value": {
+                                    "file_pattern": "SLC45A4 KOOE parental Dox.czi"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "9de61ed5-18f9-47b6-b037-6166274ff6cc"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "image_thumbnail_uri",
+                                "value": {
+                                    "256": {
+                                        "uri": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1422/98a28259-c89e-47e8-9724-a8d810aaaa64/3712cb9e-74bd-4c16-8efa-a01649848c33.png",
+                                        "size": 256
+                                    }
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "image_static_display_uri",
+                                "value": {
+                                    "slice": {
+                                        "uri": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1422/98a28259-c89e-47e8-9724-a8d810aaaa64/df6485a2-88ef-4c6f-a38f-e79a3301e6c6.png",
+                                        "size": 512
+                                    }
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "recommended_vizarr_representation",
+                                "value": {
+                                    "recommended_vizarr_representation": "1fd63a7c-56e4-4c48-92a8-0dfbd0c53564"
+                                }
+                            }
+                        ],
+                        "label": null,
+                        "submission_dataset_uuid": "ea0ce741-2f93-4b35-a9d7-0307629c0130",
+                        "creation_process_uuid": "24f8c9b8-4841-4398-8e84-c6dba400832b",
+                        "original_file_reference_uuid": [
+                            "9de61ed5-18f9-47b6-b037-6166274ff6cc"
+                        ]
+                    },
+                    {
+                        "object_creator": "bia_image_assignment",
+                        "uuid": "4b511fe2-4da6-4693-b954-429df6e5a887",
+                        "version": 2,
+                        "model": {
+                            "type_name": "Image",
+                            "version": 2
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "attributes_from_file_reference_264208dd-37e7-4c91-8d79-26175404f52f",
+                                "value": {
+                                    "attributes": {
+                                        "Condition": "uninduced"
+                                    }
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "file_pattern",
+                                "value": {
+                                    "file_pattern": "SLC45A4 KOOE parental unind.czi"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "264208dd-37e7-4c91-8d79-26175404f52f"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "image_thumbnail_uri",
+                                "value": {
+                                    "256": {
+                                        "uri": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1422/c10d9664-2b19-4b51-a825-17529877bcf1/c6fd906e-8f97-48ea-8f42-4a9f852701e1.png",
+                                        "size": 256
+                                    }
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "recommended_vizarr_representation",
+                                "value": {
+                                    "recommended_vizarr_representation": "38f06546-4637-406c-b70f-6773576607f3"
+                                }
+                            }
+                        ],
+                        "label": null,
+                        "submission_dataset_uuid": "ea0ce741-2f93-4b35-a9d7-0307629c0130",
+                        "creation_process_uuid": "fe4c6307-5ba1-4769-a87e-17297df00691",
+                        "original_file_reference_uuid": [
+                            "264208dd-37e7-4c91-8d79-26175404f52f"
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "S-BIAD1197": {
+        "object_creator": "bia_ingest",
+        "uuid": "c94cfc98-cd71-4cff-a2ee-dfd5aeb45c92",
+        "version": 0,
+        "model": {
+            "type_name": "Study",
+            "version": 3
+        },
+        "additional_metadata": [
+            {
+                "provenance": "bia_ingest",
+                "name": "biostudies json/pagetab entry",
+                "value": {
+                    "json": "https://www.ebi.ac.uk/biostudies/files/S-BIAD1197/S-BIAD1197.json",
+                    "pagetab": "https://www.ebi.ac.uk/biostudies/files/S-BIAD1197/S-BIAD1197.tsv"
+                }
+            }
+        ],
+        "accession_id": "S-BIAD1197",
+        "licence": "https://creativecommons.org/licenses/by/4.0/",
+        "author": [
+            {
+                "rorid": null,
+                "address": null,
+                "website": null,
+                "orcid": "0009-0008-8183-6729",
+                "display_name": "Ying Chen",
+                "affiliation": [
+                    {
+                        "rorid": null,
+                        "address": null,
+                        "website": null,
+                        "display_name": "Ludwig-Maximilians-Universit\u00e4t M\u00fcnchen"
+                    }
+                ],
+                "contact_email": "ying.chen@campus.lmu.de",
+                "role": [
+                    ""
+                ]
+            },
+            {
+                "rorid": null,
+                "address": null,
+                "website": null,
+                "orcid": "0000-0002-4844-6955",
+                "display_name": "Johannes C. Paetzold",
+                "affiliation": [
+                    {
+                        "rorid": null,
+                        "address": null,
+                        "website": null,
+                        "display_name": "Imperial College London"
+                    }
+                ],
+                "contact_email": "j.paetzold@ic.ac.uk",
+                "role": [
+                    ""
+                ]
+            },
+            {
+                "rorid": null,
+                "address": null,
+                "website": null,
+                "orcid": "0000-0001-5163-5100",
+                "display_name": "Ali Erturk",
+                "affiliation": [
+                    {
+                        "rorid": null,
+                        "address": null,
+                        "website": null,
+                        "display_name": "Helmholtz Zentrum M\u00fcnchen"
+                    }
+                ],
+                "contact_email": "ali.erturk@helmholtz-munich.de",
+                "role": [
+                    ""
+                ]
+            },
+            {
+                "rorid": null,
+                "address": null,
+                "website": null,
+                "orcid": null,
+                "display_name": "Doris Kaltenecker",
+                "affiliation": [
+                    {
+                        "rorid": null,
+                        "address": null,
+                        "website": null,
+                        "display_name": "Helmholtz Zentrum M\u00fcnchen"
+                    }
+                ],
+                "contact_email": null,
+                "role": [
+                    ""
+                ]
+            },
+            {
+                "rorid": null,
+                "address": null,
+                "website": null,
+                "orcid": "0000-0002-8627-1260",
+                "display_name": "Mihail Todorov",
+                "affiliation": [
+                    {
+                        "rorid": null,
+                        "address": null,
+                        "website": null,
+                        "display_name": "Ludwig-Maximilians-Universit\u00e4t M\u00fcnchen"
+                    }
+                ],
+                "contact_email": null,
+                "role": [
+                    ""
+                ]
+            },
+            {
+                "rorid": null,
+                "address": null,
+                "website": null,
+                "orcid": "0000-0001-9912-8263",
+                "display_name": "Harsharan Singh Bhatia",
+                "affiliation": [
+                    {
+                        "rorid": null,
+                        "address": null,
+                        "website": null,
+                        "display_name": "Helmholtz Zentrum M\u00fcnchen"
+                    }
+                ],
+                "contact_email": null,
+                "role": [
+                    ""
+                ]
+            },
+            {
+                "rorid": null,
+                "address": null,
+                "website": null,
+                "orcid": null,
+                "display_name": "Shan Zhao",
+                "affiliation": [
+                    {
+                        "rorid": null,
+                        "address": null,
+                        "website": null,
+                        "display_name": "Ludwig-Maximilians-Universit\u00e4t M\u00fcnchen"
+                    }
+                ],
+                "contact_email": null,
+                "role": [
+                    ""
+                ]
+            }
+        ],
+        "title": "3D light-sheet microscopy data for SELMA3D 2024 challenge - Training subset with no annotations - whole brain images",
+        "release_date": "2024-06-06",
+        "description": "This dataset is the training set containing whole-brain images without annotations for the SELMA3D challenge. The SELMA3D challenge focuses on self-supervised learning for 3D light-sheet microscopy image segmentation. Its objective is to encourage the development of self-supervised learning methods for general segmentation of various structures in 3D light-sheet microscopy images. The dataset contains 3D whole-brain microscopy image of different labeled biological structures, including blood vessels, c-Fos labeled brain cells involved in neural activity, cell nuclei, and Alzheimer's disease plaques. ",
+        "keyword": [
+            "light-sheet microscopy",
+            "fluorescence microscopy",
+            "3D microscopic image",
+            " image segmentation",
+            " deep learning"
+        ],
+        "acknowledgement": "",
+        "see_also": [],
+        "related_publication": [],
+        "grant": [],
+        "funding_statement": "",
+        "dataset": [
+            {
+                "image_count": 1,
+                "file_reference_count": 2826,
+                "file_reference_size_bytes": 1103633243622,
+                "file_type_counts": {
+                    "file": 2826
+                },
+                "object_creator": "bia_ingest",
+                "uuid": "01220525-2d6d-4288-b80d-96a256716d93",
+                "version": 1,
+                "model": {
+                    "type_name": "Dataset",
+                    "version": 2
+                },
+                "additional_metadata": [
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "associations",
+                        "value": {
+                            "associations": [
+                                {
+                                    "image_analysis": null,
+                                    "image_correlation": null,
+                                    "biosample": "Biosamples for brain cell nucleus images",
+                                    "image_acquisition": "Image acquisition - cell nucleus images",
+                                    "specimen": "Specimens for brain cell nucleus images"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "image_acquisition_protocol_uuid",
+                        "value": {
+                            "image_acquisition_protocol_uuid": [
+                                "f1e7aac8-757d-4865-9c00-25ebae9af27f"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "specimen_imaging_preparation_protocol_uuid",
+                        "value": {
+                            "specimen_imaging_preparation_protocol_uuid": [
+                                "9939c6c2-1fec-4bb2-bcd5-dce3b3b29f83"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "bio_sample_uuid",
+                        "value": {
+                            "bio_sample_uuid": [
+                                "bbe9beda-802a-4820-8965-adf6f2968e54"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "uuid_unique_input",
+                        "value": {
+                            "uuid_unique_input": "Study Component-18"
+                        }
+                    }
+                ],
+                "title": "brain cell nucleus images",
+                "description": "4 brain cell nucleus images respectively of the hippocampus, motor cortex, sensory cortex, visual cortex.",
+                "analysis_method": [],
+                "correlation_method": [],
+                "example_image_uri": [
+                    "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1197/3fd95a9b-cc48-4902-811e-e37a601f8871/e5185408-249d-4abc-9755-6c5503ee1dec.png"
+                ],
+                "submitted_in_study_uuid": "c94cfc98-cd71-4cff-a2ee-dfd5aeb45c92",
+                "acquisition_process": [
+                    {
+                        "default_open": true,
+                        "object_creator": "bia_ingest",
+                        "uuid": "f1e7aac8-757d-4865-9c00-25ebae9af27f",
+                        "version": 0,
+                        "model": {
+                            "type_name": "ImageAcquisitionProtocol",
+                            "version": 3
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_ingest",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "Image acquisition-15"
+                                }
+                            }
+                        ],
+                        "title": "Image acquisition - cell nucleus images",
+                        "protocol_description": "Images were taken with 16-bit depth and at a nominal resolution of 0.54 \u03bcm per voxel on the x and y axes. In the z dimension, we took sectional images in 5-\u03bcm steps.",
+                        "imaging_instrument_description": "Imaging was performed using a 12x objective lens ( LaVision BioTec MI PLAN) coupled to an Olympus revolving zoom body unit (U-TVCAC) kept at 1x. ",
+                        "fbbi_id": [],
+                        "imaging_method_name": [
+                            "fluorescence microscopy"
+                        ]
+                    }
+                ],
+                "specimen_imaging_preparation_protocol": [
+                    {
+                        "default_open": true,
+                        "object_creator": "bia_ingest",
+                        "uuid": "9939c6c2-1fec-4bb2-bcd5-dce3b3b29f83",
+                        "version": 0,
+                        "model": {
+                            "type_name": "SpecimenImagingPreparationProtocol",
+                            "version": 3
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_ingest",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "Specimen-12"
+                                }
+                            }
+                        ],
+                        "title": "Specimens for brain cell nucleus images",
+                        "protocol_description": "The brains of human males were fixed in situ by whole head perfusion via carotid and vertebral arteries under a pressure of below 1 bar. The head was first perfused with 5 L heparinized 0.01 M PBS (10 U/ml of heparin, Ratiopharm), followed by 3 L 4% PFA in 0.01 M PBS for 2-3 h. The veins were finally closed to maintain the PFA to the brain. Then the brains were recovered by calvarian dissection and preserved at least 1-2 weeks for post-fixation submersed in the 4% PFA solution. \nPFA-fixed intact human brain was actively pumped with 5 L 10% w/v CHAPS and 25% w/v N- Methyldiethanolamine solution for one month with solution refreshed once at day 15. Then the solution was changed to PBS for active washing for 2 days. The intact human brain was cooled in PBS at 4 \u00b0C overnight, then directly cut into 1.5 cm-thick slices in coronal plane using a Rotation Cutting Slicer (Rotation Schneidemaschine, Biodur, Heidelberg, Germany). The total 12 slices were serially labeled and stored in 70% EtOH at 4 \u00b0C. \nA 1.5 cm-thick intact human brain slice was randomly chosen and passively incubated with 400 mL TO-PRO-3 (1:2000 dilution) in PBS at room temperature for 1 week. Then the solution was changed to 400 mL with 100 mM of Methoxy X-04 (Tocris, 4920) in 40% EtOH (pH = 10 adjusted by NaOH (Roth, 6771.1)) and the sample was incubated for another week. After labeling, the slice was washed with PBS for 1 day. The clearing started with dehydration using a series of 1 L of EtOH/DiH2O solutions (50%, 70%, 100%, 100% v/v) and followed by delipidation using 1 L DCM. Each step lasted 1 day. Then the samples were incubated in 1 L BABB solution at room temperature until completely transparency in around 2 weeks.\n1.5 cm-thick human brain slices were randomly chosen and dehydrated with a series of 1 L EtOH/DiH2O (50%, 70%, 100%, 100% v/v), then delipidated with 2 L DCM/MeOH (2:1 v/v), then rehydrated with a series of 1 L EtOH/DiH2O (100%, 70%, 50%, 0% v/v) at room temperature. After incubating with 1 L 0.5 M acetic acid (Roth, T179.1) in DiH2O, this solution was changed to a mixture of 4 M guanidine hydrochloride (Roth, 6069.3), 0.05 M sodium acetate (Sigma, S2889) and 2% Triton X-100 in PBS, pH = 6.0, at room temperature to loosen the extra cellular matrix. The incubation time for each of all above mentioned solutions was 1 day. Next, the slices were shortly incubated with 10% w/v CHAPS and 25% w/v N-Methyldiethanolamine solution for 4 hours and washed with PBS for 1 day. The intact slices were stored in the blocking buffer (0.2% Triton X-100/10% DMSO (Roth, A994.2)/10% goat serum/PBS) at 4 \u00b0C.\nRegions of interest (including hippocampus, primary motor cortex, primary sensory cortex, and primary visual cortex, 2-4 cm x 2-4 cm x 1.5 cm) were cut and incubated with the same blocking buffer at 37 \u00b0C for 1 day. Then the samples were incubated with rabbit antibody anti-Iba1 (1:1000, Wako, 019-19741) or rabbit antibody anti-TH (1:250, abcam, ab112) in the antibody incubation buffer (3% goat serum/3% DMSO/0.2% Tween-20/10mg\u2219L-1Heparin/PBS) for 1 week at 37 \u00b0C. After the primary antibody incubation, samples were washed with the washing buffer (0.2% Tween-20/10mg\u2219L-1Heparin/PBS) for 1 day refreshing 3 times and then incubated with Alexa 647-conjugated secondary antibodies (1:500, Thermo Fisher, A-21245) in the antibody incubation buffer for 1 week at 37 \u00b0C. Other samples were incubated with DyLight 649-lectin (1:500, Vector, DL-1178) in the antibody incubation buffer for 1 week at 37 \u00b0C. After washing with PBS, propidium iodide (1:100, Thermo Fisher, P3566) or TO-PRO-3 dye was added in PBS for 3 days at 37 for cell nuclei staining. After labeling, the samples were dehydrated with a series of solutions of EtOH/DiH2O (50%, 70%, 100%, 100% v/v) and delipidated with the DCM solution for 4 hours each solution followed by BABB incubation at room temperature until the sample transparency was reached in 2-3 days.\nPlease refer to https://www.sciencedirect.com/science/article/pii/S0092867420301112 for more details about the preparation step.",
+                        "signal_channel_information": []
+                    }
+                ],
+                "biological_entity": [
+                    {
+                        "default_open": true,
+                        "object_creator": "bia_ingest",
+                        "uuid": "bbe9beda-802a-4820-8965-adf6f2968e54",
+                        "version": 0,
+                        "model": {
+                            "type_name": "BioSample",
+                            "version": 4
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_ingest",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "Biosample-9"
+                                }
+                            }
+                        ],
+                        "title": "Biosamples for brain cell nucleus images",
+                        "organism_classification": [
+                            {
+                                "additional_metadata": [],
+                                "common_name": "human",
+                                "scientific_name": "Homo sapiens",
+                                "ncbi_id": null
+                            }
+                        ],
+                        "biological_entity_description": "human brain",
+                        "experimental_variable_description": [],
+                        "extrinsic_variable_description": [],
+                        "intrinsic_variable_description": [],
+                        "growth_protocol_uuid": null,
+                        "growth_protocol": null
+                    }
+                ],
+                "annotation_process": [],
+                "other_creation_process": [],
+                "image": [
+                    {
+                        "object_creator": "bia_image_assignment",
+                        "uuid": "d8383c63-6e5b-418a-8a7b-bee6b73c0e2d",
+                        "version": 2,
+                        "model": {
+                            "type_name": "Image",
+                            "version": 2
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "attributes_from_file_reference_6827a1a1-0386-4276-bd38-650d23f4fef6",
+                                "value": {
+                                    "attributes": {}
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "file_pattern",
+                                "value": {
+                                    "file_pattern": "brain_microscopy_image/brain_microscopy_image/cell_nucleus/sample4/C01/C01_0655.tif"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "6827a1a1-0386-4276-bd38-650d23f4fef6"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "image_thumbnail_uri",
+                                "value": {
+                                    "256": {
+                                        "uri": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1197/3fd95a9b-cc48-4902-811e-e37a601f8871/cdaacf4f-8b08-42d6-bb27-013ff80abecb.png",
+                                        "size": 256
+                                    }
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "image_static_display_uri",
+                                "value": {
+                                    "slice": {
+                                        "uri": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1197/3fd95a9b-cc48-4902-811e-e37a601f8871/e5185408-249d-4abc-9755-6c5503ee1dec.png",
+                                        "size": 512
+                                    }
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "recommended_vizarr_representation",
+                                "value": {
+                                    "recommended_vizarr_representation": "53d96a4d-fdee-4466-af8a-73c235f1e4a5"
+                                }
+                            }
+                        ],
+                        "label": null,
+                        "submission_dataset_uuid": "01220525-2d6d-4288-b80d-96a256716d93",
+                        "creation_process_uuid": "edb8b6f5-2f18-407a-87b7-4d1bfe45a60d",
+                        "original_file_reference_uuid": [
+                            "6827a1a1-0386-4276-bd38-650d23f4fef6"
+                        ]
+                    }
+                ]
+            },
+            {
+                "image_count": 3,
+                "file_reference_count": 35972,
+                "file_reference_size_bytes": 547860041084,
+                "file_type_counts": {
+                    "file": 35972
+                },
+                "object_creator": "bia_ingest",
+                "uuid": "030e3d78-4816-41eb-953c-cee1d6e43b45",
+                "version": 0,
+                "model": {
+                    "type_name": "Dataset",
+                    "version": 2
+                },
+                "additional_metadata": [
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "associations",
+                        "value": {
+                            "associations": [
+                                {
+                                    "image_analysis": null,
+                                    "image_correlation": null,
+                                    "biosample": "Biosamples for whole-brain blood vessel images",
+                                    "image_acquisition": "Image acquisition - blood vessel images",
+                                    "specimen": "Specimens for whole-brain blood vessel images"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "image_acquisition_protocol_uuid",
+                        "value": {
+                            "image_acquisition_protocol_uuid": [
+                                "bb7ee31b-7d84-4ef7-bc5a-772e03604345"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "specimen_imaging_preparation_protocol_uuid",
+                        "value": {
+                            "specimen_imaging_preparation_protocol_uuid": [
+                                "67083981-1d9e-479d-b278-e73ede3f37e6"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "bio_sample_uuid",
+                        "value": {
+                            "bio_sample_uuid": [
+                                "5f481834-3db3-4e2b-ae65-01340fea7520"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "uuid_unique_input",
+                        "value": {
+                            "uuid_unique_input": "Study Component-4"
+                        }
+                    }
+                ],
+                "title": "whole-brain blood vessel images",
+                "description": "9 whole-brain blood vessel images. Every image has two channels, C00 for WGA (mainly microvessels) and C01 for EB (mainly major blood vessels). ",
+                "analysis_method": [],
+                "correlation_method": [],
+                "example_image_uri": [],
+                "submitted_in_study_uuid": "c94cfc98-cd71-4cff-a2ee-dfd5aeb45c92",
+                "acquisition_process": [
+                    {
+                        "default_open": true,
+                        "object_creator": "bia_ingest",
+                        "uuid": "bb7ee31b-7d84-4ef7-bc5a-772e03604345",
+                        "version": 0,
+                        "model": {
+                            "type_name": "ImageAcquisitionProtocol",
+                            "version": 3
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_ingest",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "Image acquisition-3"
+                                }
+                            }
+                        ],
+                        "title": "Image acquisition - blood vessel images",
+                        "protocol_description": "Images were taken with 16-bit depth and at a nominal resolution of 1.625 \u03bcm per voxel on the x and y axes. In the z dimension, we took sectional images in 3-\u03bcm steps while using left- and right-sided illumination. ",
+                        "imaging_instrument_description": "Imaging was performed using a 4\u00d7 objective lens (Olympus XLFLUOR 340) equipped with an immersion corrected dipping cap mounted on a LaVision UltraII microscope coupled to a white-light laser module (NKT SuperK Extreme EXW-12) for imaging. ",
+                        "fbbi_id": [],
+                        "imaging_method_name": [
+                            "fluorescence microscopy"
+                        ]
+                    }
+                ],
+                "specimen_imaging_preparation_protocol": [
+                    {
+                        "default_open": true,
+                        "object_creator": "bia_ingest",
+                        "uuid": "67083981-1d9e-479d-b278-e73ede3f37e6",
+                        "version": 0,
+                        "model": {
+                            "type_name": "SpecimenImagingPreparationProtocol",
+                            "version": 3
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_ingest",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "Specimen-2"
+                                }
+                            }
+                        ],
+                        "title": "Specimens for whole-brain blood vessel images",
+                        "protocol_description": "150\u03bcl (2%(vol/vol) in saline) EB dye (Sigma-Aldrich, E2129) was injected intraperitoneally into 3-mothold male mice from the C57BL/6J, CD1 and BALB/c strains (Charles River, strain codes 027, 482 and 028, respectively). Twelve hours afer injection of EB dye, we anesthetized the animals with a combination of midazolam, medetomidine and fentanyl (administered intraperitoneally; 1ml per 100 g body weight containing 5mg, 0.5mg and 0.05mg per kg body weight, respectively) and opened their chest for transcardial perfusion. Medium with WGA (0.25mg WGA conjugated to Alexa Fluor 594 dye (Termo Fisher Scientifc, W11262) in 150\u00b5l PBS, pH7.2) was supplied by peristaltic pump set to deliver the medium at a rate of 8ml/min, along with 15ml of 1\u00d7 PBS and 15ml of 4% paraformaldehyde. This short perfusion protocol was established on the basis of preliminary experiments, where both WGA and EB staining were partially washed out, with the goal of delivering fixative to brain tissue via the vessels to achieve a homogenous preservation efect. \nAfter perfusion, brains were extracted from the neurocranium while severing some of the segments of the circle of Willis, which is an inevitable component of most retrieval processes aside from corrosion cast techniques. Next, the samples were incubated in 3DISCO clearing solutions. Briefly, we immersed them in a gradient of tetrahydrofuran (Sigma-Aldrich, 186562): 50%, 70%, 80% and 90% (in distilled water) followed by 100%, at 25 \u00b0C for 12h at each concentration. At this point, we modified the protocol by incubating the samples in tert-butanol for 12h at 35 \u00b0C followed by immersion in dichloromethane (Sigma-Aldrich, 270997) for 12h at room temperature and a final incubation with refractive index-matched BABB solution (benzyl alcohol+benzyl benzoate, 1:2; Sigma-Aldrich, 24122 and W213802), for at least 24h at room temperature until transparency was achieved. Each incubation step was carried out on a laboratory shaker. \nPlease refer to https://www.nature.com/articles/s41592-020-0792-1 for more details about the preparation step.",
+                        "signal_channel_information": []
+                    }
+                ],
+                "biological_entity": [
+                    {
+                        "default_open": true,
+                        "object_creator": "bia_ingest",
+                        "uuid": "5f481834-3db3-4e2b-ae65-01340fea7520",
+                        "version": 0,
+                        "model": {
+                            "type_name": "BioSample",
+                            "version": 4
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_ingest",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "Biosample-1"
+                                }
+                            }
+                        ],
+                        "title": "Biosamples for whole-brain blood vessel images",
+                        "organism_classification": [
+                            {
+                                "additional_metadata": [],
+                                "common_name": "mouse",
+                                "scientific_name": "Mus musculus",
+                                "ncbi_id": null
+                            }
+                        ],
+                        "biological_entity_description": "mouse brain",
+                        "experimental_variable_description": [],
+                        "extrinsic_variable_description": [],
+                        "intrinsic_variable_description": [],
+                        "growth_protocol_uuid": null,
+                        "growth_protocol": null
+                    }
+                ],
+                "annotation_process": [],
+                "other_creation_process": [],
+                "image": [
+                    {
+                        "object_creator": "bia_image_assignment",
+                        "uuid": "86bef452-940f-473b-98bc-e828ba84be41",
+                        "version": 2,
+                        "model": {
+                            "type_name": "Image",
+                            "version": 2
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "attributes_from_file_reference_fcf252b2-ba3d-4e7e-afdf-e0e3a49c8d58",
+                                "value": {
+                                    "attributes": {}
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "file_pattern",
+                                "value": {
+                                    "file_pattern": "brain_microscopy_image/brain_microscopy_image/vessel/sample9/C00/C00_0312.tif"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "fcf252b2-ba3d-4e7e-afdf-e0e3a49c8d58"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "image_thumbnail_uri",
+                                "value": {
+                                    "256": {
+                                        "uri": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1197/4c21ba68-06d3-4207-b2c9-3ed6c9b444c6/7345df6b-072a-4367-b6de-0b48586e3400.png",
+                                        "size": 256
+                                    }
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "image_static_display_uri",
+                                "value": {
+                                    "slice": {
+                                        "uri": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1197/4c21ba68-06d3-4207-b2c9-3ed6c9b444c6/51233071-a1aa-44ce-95d4-a07b5bc2ffa4.png",
+                                        "size": 512
+                                    }
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "recommended_vizarr_representation",
+                                "value": {
+                                    "recommended_vizarr_representation": "ddcaf0cd-bd20-4e1b-9f8d-2b6ad876a97e"
+                                }
+                            }
+                        ],
+                        "label": null,
+                        "submission_dataset_uuid": "030e3d78-4816-41eb-953c-cee1d6e43b45",
+                        "creation_process_uuid": "e436f1d4-e9e0-4358-9e30-91001dfa7519",
+                        "original_file_reference_uuid": [
+                            "fcf252b2-ba3d-4e7e-afdf-e0e3a49c8d58"
+                        ]
+                    },
+                    {
+                        "object_creator": "bia_image_assignment",
+                        "uuid": "9bc3b357-53a5-42e4-850f-d46877629169",
+                        "version": 2,
+                        "model": {
+                            "type_name": "Image",
+                            "version": 2
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "attributes_from_file_reference_052f92c9-ec1b-4b80-95d1-e35045481a30",
+                                "value": {
+                                    "attributes": {}
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "file_pattern",
+                                "value": {
+                                    "file_pattern": "brain_microscopy_image/brain_microscopy_image/vessel/sample2/C00/C00_1082.tif"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "052f92c9-ec1b-4b80-95d1-e35045481a30"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "image_thumbnail_uri",
+                                "value": {
+                                    "256": {
+                                        "uri": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1197/af96a4a7-862d-4781-9ff6-c2fd4431c8f3/da699d74-d19c-44e6-8b70-1c39fbf33455.png",
+                                        "size": 256
+                                    }
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "image_static_display_uri",
+                                "value": {
+                                    "slice": {
+                                        "uri": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1197/af96a4a7-862d-4781-9ff6-c2fd4431c8f3/7b6158a8-cd0f-4b0a-a138-06eac87deb01.png",
+                                        "size": 512
+                                    }
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "recommended_vizarr_representation",
+                                "value": {
+                                    "recommended_vizarr_representation": "e1d62089-1c28-41c9-ae2d-afdf6c19337c"
+                                }
+                            }
+                        ],
+                        "label": null,
+                        "submission_dataset_uuid": "030e3d78-4816-41eb-953c-cee1d6e43b45",
+                        "creation_process_uuid": "34b6e3e4-1eb5-4864-a4d1-ec3d726b1073",
+                        "original_file_reference_uuid": [
+                            "052f92c9-ec1b-4b80-95d1-e35045481a30"
+                        ]
+                    },
+                    {
+                        "object_creator": "bia_image_assignment",
+                        "uuid": "c7aa9dc4-97e3-4279-8fc9-9a1ddf66aa48",
+                        "version": 2,
+                        "model": {
+                            "type_name": "Image",
+                            "version": 2
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "attributes_from_file_reference_07c33243-dae7-491c-be08-83149e3a8226",
+                                "value": {
+                                    "attributes": {}
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "file_pattern",
+                                "value": {
+                                    "file_pattern": "brain_microscopy_image/brain_microscopy_image/vessel/sample3/C01/C01_1294.tif"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "07c33243-dae7-491c-be08-83149e3a8226"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "image_thumbnail_uri",
+                                "value": {
+                                    "256": {
+                                        "uri": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1197/a2df7461-6534-427a-b6af-a815e31fb87c/da1e8360-74be-4d5a-8c6e-bb95ae256172.png",
+                                        "size": 256
+                                    }
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "image_static_display_uri",
+                                "value": {
+                                    "slice": {
+                                        "uri": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1197/a2df7461-6534-427a-b6af-a815e31fb87c/bc8d019b-8e60-4854-9c5a-1babb960266b.png",
+                                        "size": 512
+                                    }
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "recommended_vizarr_representation",
+                                "value": {
+                                    "recommended_vizarr_representation": "e67a20e0-6919-423e-8b2b-6fb4c39670ab"
+                                }
+                            }
+                        ],
+                        "label": null,
+                        "submission_dataset_uuid": "030e3d78-4816-41eb-953c-cee1d6e43b45",
+                        "creation_process_uuid": "60fd7169-1fde-487f-80c3-d7b56d25b226",
+                        "original_file_reference_uuid": [
+                            "07c33243-dae7-491c-be08-83149e3a8226"
+                        ]
+                    }
+                ]
+            },
+            {
+                "image_count": 1,
+                "file_reference_count": 12763,
+                "file_reference_size_bytes": 954166474680,
+                "file_type_counts": {
+                    "file": 12763
+                },
+                "object_creator": "bia_ingest",
+                "uuid": "121b2274-3b72-40f4-aedb-9053fbbeae4d",
+                "version": 0,
+                "model": {
+                    "type_name": "Dataset",
+                    "version": 2
+                },
+                "additional_metadata": [
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "associations",
+                        "value": {
+                            "associations": [
+                                {
+                                    "image_analysis": null,
+                                    "image_correlation": null,
+                                    "biosample": "Biosamples for whole-brain c-Fos-positive cell images",
+                                    "image_acquisition": "Image acquisition - c-Fos-positive cell images",
+                                    "specimen": "Specimens for whole-brain c-Fos-positive cell images"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "image_acquisition_protocol_uuid",
+                        "value": {
+                            "image_acquisition_protocol_uuid": [
+                                "29c19a6a-ecc8-4754-8d69-e3a54ea734cd"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "specimen_imaging_preparation_protocol_uuid",
+                        "value": {
+                            "specimen_imaging_preparation_protocol_uuid": [
+                                "77706632-56cf-4712-9939-6af31f546be5"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "bio_sample_uuid",
+                        "value": {
+                            "bio_sample_uuid": [
+                                "372eac1f-6a2f-4317-96f9-0a880fc62cd9"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "uuid_unique_input",
+                        "value": {
+                            "uuid_unique_input": "Study Component-19"
+                        }
+                    }
+                ],
+                "title": "whole-brain c-Fos-positive cell images",
+                "description": "18 whole-brain c-Fos-positive cell images.",
+                "analysis_method": [],
+                "correlation_method": [],
+                "example_image_uri": [],
+                "submitted_in_study_uuid": "c94cfc98-cd71-4cff-a2ee-dfd5aeb45c92",
+                "acquisition_process": [
+                    {
+                        "default_open": true,
+                        "object_creator": "bia_ingest",
+                        "uuid": "29c19a6a-ecc8-4754-8d69-e3a54ea734cd",
+                        "version": 0,
+                        "model": {
+                            "type_name": "ImageAcquisitionProtocol",
+                            "version": 3
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_ingest",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "Image acquisition-16"
+                                }
+                            }
+                        ],
+                        "title": "Image acquisition - c-Fos-positive cell images",
+                        "protocol_description": "Images were taken with 16-bit depth and at a nominal resolution of 1.625 \u03bcm per voxel on the x and y axes. In the z dimension, we took sectional images in 6-\u03bcm steps while using left- and right-sided illumination. ",
+                        "imaging_instrument_description": "Imaging was performed using a 4\u00d7 objective lens (Olympus XLFLUOR 340) equipped with an immersion corrected dipping cap mounted on a LaVision UltraII microscope coupled to a white-light laser module (NKT SuperK Extreme EXW-12) for imaging. ",
+                        "fbbi_id": [],
+                        "imaging_method_name": [
+                            "fluorescence microscopy"
+                        ]
+                    }
+                ],
+                "specimen_imaging_preparation_protocol": [
+                    {
+                        "default_open": true,
+                        "object_creator": "bia_ingest",
+                        "uuid": "77706632-56cf-4712-9939-6af31f546be5",
+                        "version": 0,
+                        "model": {
+                            "type_name": "SpecimenImagingPreparationProtocol",
+                            "version": 3
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_ingest",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "Specimen-13"
+                                }
+                            }
+                        ],
+                        "title": "Specimens for whole-brain c-Fos-positive cell images",
+                        "protocol_description": "Mice were killed following deep anesthesia with a mix of ketamine/xylazine, followed by intracardiac perfusion with heparinized PBS (10\u2009U/ml heparin) and by a perfusion with 4% paraformaldehyde (PFA). Tissues and organs were dissected, weighed and post-fixed at 4\u2009\u00b0C overnight. Immunostaining for c-Fos was performed using a modified version of SHANEL (https://www.sciencedirect.com/science/article/pii/S0092867420301112). All incubation steps were carried out under moderate shaking (300\u2009rpm). For the pretreatment, samples were dehydrated with an ethanol/water series (50%, 70% and 100% ethanol) at room temperature for 3\u2009h per step. Next, samples were incubated in dichloromethane (DCM) /methanol (2:1\u2009v/v) at room temperature for 1 day. Brains were rehydrated with an ethanol/water series (100%, 70% and 50% ethanol and diH2O) at room temperature for 3\u2009h per step. Samples were incubated in 0.5\u2009M acetic acid at room temperature for 5\u2009h followed by washing with diH2O. Next, brains were incubated in 4\u2009M guanidine HCl, 0.05\u2009M sodium acetate, 2% v/v Triton X-100, pH 6.0, at room temperature for 5\u2009h followed by washing with diH2O. Brains were incubated in a mix of 10% CHAPS and 25% N-methyldiethanolamine at 37\u2009\u00b0C for 12\u2009h before washing with diH2O. Blocking was performed by incubating the brains in 0.2% Triton X-100, 10% dimethylsulfoxide and 10% goat serum in PBS shaking at 37\u2009\u00b0C for 2 days. Samples were incubated with c-Fos primary antibody (Cell Signaling Technology, 2250, 1:1000 dilution) in primary antibody buffer (0.2% Tween-20, 5% dimethylsulfoxide, 3% goat serum and 100\u2009\u00b5l heparin per 100\u2009ml PBS) shaking at 37\u2009\u00b0C for 7 days. The antibody solution was filtered (22-\u00b5m pore size) before use. Samples were washed in washing solution (0.2% Tween-20 and 100\u2009\u00b5l heparin in 100\u2009ml PBS) shaking at 37\u2009\u00b0C for 1 day at which the washing solution was refreshed five times. Brains were incubated with the secondary antibody (Alexa Fluor 647 and goat anti-rabbit IgG (H\u2009+\u2009L) from Invitrogen, A-21245, 1:500 dilution) in secondary antibody buffer (0.2% Tween-20, 3% goat serum and 100\u2009\u00b5l heparin per 100\u2009ml PBS) shaking at 37\u2009\u00b0C for 7 days followed by incubating in washing solution shaking at 37\u2009\u00b0C for 1 day at which the washing solution was refreshed five times. Brains were dehydrated using 3DISCO with a THF/H2O series (50%, 70%, 90% and 100% THF) for 12\u2009h per step followed by an incubation in DCM for 1\u2009h. Tissues were incubated in benzyl alcohol/benzyl benzoate (1:2\u2009v/v) until tissue transparency was reached (>4\u2009h). \nPlease refer to https://www.nature.com/articles/s41592-024-02245-2 for more details about the preparation step.",
+                        "signal_channel_information": []
+                    }
+                ],
+                "biological_entity": [
+                    {
+                        "default_open": true,
+                        "object_creator": "bia_ingest",
+                        "uuid": "372eac1f-6a2f-4317-96f9-0a880fc62cd9",
+                        "version": 0,
+                        "model": {
+                            "type_name": "BioSample",
+                            "version": 4
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_ingest",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "Biosample-10"
+                                }
+                            }
+                        ],
+                        "title": "Biosamples for whole-brain c-Fos-positive cell images",
+                        "organism_classification": [
+                            {
+                                "additional_metadata": [],
+                                "common_name": "mouse",
+                                "scientific_name": "Mus musculus",
+                                "ncbi_id": null
+                            }
+                        ],
+                        "biological_entity_description": "mouse brain",
+                        "experimental_variable_description": [],
+                        "extrinsic_variable_description": [],
+                        "intrinsic_variable_description": [],
+                        "growth_protocol_uuid": null,
+                        "growth_protocol": null
+                    }
+                ],
+                "annotation_process": [],
+                "other_creation_process": [],
+                "image": [
+                    {
+                        "object_creator": "bia_image_assignment",
+                        "uuid": "81502fba-a1a1-4ab5-986a-0198ba6c3bf4",
+                        "version": 2,
+                        "model": {
+                            "type_name": "Image",
+                            "version": 2
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "attributes_from_file_reference_4fc78c1d-7451-493b-b0c1-c8f76a57e855",
+                                "value": {
+                                    "attributes": {}
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "file_pattern",
+                                "value": {
+                                    "file_pattern": "brain_microscopy_image/brain_microscopy_image/c-Fos_brain_cells/sample12/C01/C01_0661.tif"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "4fc78c1d-7451-493b-b0c1-c8f76a57e855"
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "image_thumbnail_uri",
+                                "value": {
+                                    "256": {
+                                        "uri": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1197/8552be9e-73b4-492f-9f0b-8a20c39c3826/41028757-e288-4131-b3ee-7ec64ad5b280.png",
+                                        "size": 256
+                                    }
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "image_static_display_uri",
+                                "value": {
+                                    "slice": {
+                                        "uri": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1197/8552be9e-73b4-492f-9f0b-8a20c39c3826/171cf4d6-01c0-4fea-95eb-cc57992f3183.png",
+                                        "size": 512
+                                    }
+                                }
+                            },
+                            {
+                                "provenance": "bia_image_assignment",
+                                "name": "recommended_vizarr_representation",
+                                "value": {
+                                    "recommended_vizarr_representation": "0370ade1-de48-4507-8e06-9484e1edace0"
+                                }
+                            }
+                        ],
+                        "label": null,
+                        "submission_dataset_uuid": "121b2274-3b72-40f4-aedb-9053fbbeae4d",
+                        "creation_process_uuid": "a0e3f978-ad8b-43d7-b88b-ae375a344d85",
+                        "original_file_reference_uuid": [
+                            "4fc78c1d-7451-493b-b0c1-c8f76a57e855"
+                        ]
+                    }
+                ]
+            },
+            {
+                "image_count": 0,
+                "file_reference_count": 9024,
+                "file_reference_size_bytes": 181412825052,
+                "file_type_counts": {
+                    "file": 9024
+                },
+                "object_creator": "bia_ingest",
+                "uuid": "97f9c9bb-ed91-473b-9de9-db662524329c",
+                "version": 0,
+                "model": {
+                    "type_name": "Dataset",
+                    "version": 2
+                },
+                "additional_metadata": [
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "associations",
+                        "value": {
+                            "associations": [
+                                {
+                                    "image_analysis": null,
+                                    "image_correlation": null,
+                                    "biosample": "Biosamples for whole-brain amyloid plaque images",
+                                    "image_acquisition": "Image acquisition - amyloid plaque images",
+                                    "specimen": "Specimens for whole-brain amyloid plaque images"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "image_acquisition_protocol_uuid",
+                        "value": {
+                            "image_acquisition_protocol_uuid": [
+                                "2e4316e5-c153-4b6f-b097-f9ea3790eda0"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "specimen_imaging_preparation_protocol_uuid",
+                        "value": {
+                            "specimen_imaging_preparation_protocol_uuid": [
+                                "2e08561b-2b30-4b9d-bb61-d45151a8ba45"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "bio_sample_uuid",
+                        "value": {
+                            "bio_sample_uuid": [
+                                "e1694470-3bbe-45b8-80dc-4f7c9fde06b1"
+                            ]
+                        }
+                    },
+                    {
+                        "provenance": "bia_ingest",
+                        "name": "uuid_unique_input",
+                        "value": {
+                            "uuid_unique_input": "Study Component-20"
+                        }
+                    }
+                ],
+                "title": "whole-brain amyloid plaque images",
+                "description": "4 whole-brain amyloid plaque images.",
+                "analysis_method": [],
+                "correlation_method": [],
+                "example_image_uri": [],
+                "submitted_in_study_uuid": "c94cfc98-cd71-4cff-a2ee-dfd5aeb45c92",
+                "acquisition_process": [
+                    {
+                        "default_open": true,
+                        "object_creator": "bia_ingest",
+                        "uuid": "2e4316e5-c153-4b6f-b097-f9ea3790eda0",
+                        "version": 0,
+                        "model": {
+                            "type_name": "ImageAcquisitionProtocol",
+                            "version": 3
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_ingest",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "Image acquisition-17"
+                                }
+                            }
+                        ],
+                        "title": "Image acquisition - amyloid plaque images",
+                        "protocol_description": "Images were taken with 16-bit depth and at a nominal resolution of 1.63 \u03bcm per voxel on the x and y axes. In the z dimension, we took sectional images in 4-\u03bcm steps. ",
+                        "imaging_instrument_description": "Imaging was performed using a 4\u00d7 objective lens (Olympus XLFLUOR) coupled to an Olympus revolving zoom body unit (U-TVCAC) kept at 1x.",
+                        "fbbi_id": [],
+                        "imaging_method_name": [
+                            "fluorescence microscopy"
+                        ]
+                    }
+                ],
+                "specimen_imaging_preparation_protocol": [
+                    {
+                        "default_open": true,
+                        "object_creator": "bia_ingest",
+                        "uuid": "2e08561b-2b30-4b9d-bb61-d45151a8ba45",
+                        "version": 0,
+                        "model": {
+                            "type_name": "SpecimenImagingPreparationProtocol",
+                            "version": 3
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_ingest",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "Specimen-14"
+                                }
+                            }
+                        ],
+                        "title": "Specimens for whole-brain amyloid plaque images",
+                        "protocol_description": "Mice were anesthetized using a combination of midazolam, medetomidine and fentanyl (MMF) (1mL/100g of body mass for mice; i.p.). As soon as the animals did not show any pedal reflex, they were intracardially perfused with cold heparinized 0.1 M PBS (10 U/mL of Heparin, Ratiopharm; 100\u2013125 mmHg pressure using a Leica Perfusion One system) for 5\u201310 min at room temperature until the blood was washed out, followed by ice-cold 4% paraformaldehyde (PFA) in 0.1 M PBS (pH 7.4) (Sigma) for 10 min. Then, the brains were extracted and post-fixed in 4% PFA for 1 day at 4 \u00b0C and later washed with 0.1 M PBS for 10 min 3 times at room temperature. For the collection of fresh frozen samples, animals were sacrificed by cervical dislocation and brains were quickly snapped frozen in liquid nitrogen and stored in \u221280 \u00b0C until further processing. Whole brains were dehydrated with gradual addition of methanol in PBS (50% x1, 80% x1, 100% x2, each for 1 h). Overnight bleaching with 5% hydrogen peroxide in methanol was done at 4 \u00b0C. Brains were then gradually rehydrated in 100%, 80%, 50% methanol in PBS (1 h for each step, followed by 2 additional washes in PBS). Detergent washing was then performed in PBS with 0.2% Triton X-100 for 2 h, brains were incubated overnight at 37 \u00b0C in PBS with 0.2% Triton X-100 and 0.3 M glycine, followed by blocking in PBS with 0.2% Triton X-100 and 6% goat serum for 7 days. Following blocking, the tissue was washed for 1 h twice in PBS with 0.2% Tween 20 and 10 \u03bcg/mL heparin (PTwH). Next, brains were incubated with 10 \u03bcM Congo Red (Sigma, C6277) at 37 \u00b0C in PTwH for 5 days. After that, brains were washed in PTwH for 2 days with periodic solution changes and gradually dehydrated using 3DISCO clearing as described next. Dissected brains were placed in 5 mL tubes (Eppendorf, 0,030,119.401) and covered with 4.5 mL of clearing solution. All incubation steps were performed in a fume hood with gentle shaking or rotation, with the samples covered with aluminum foil to keep them in dark. To clear the samples using 3DISCO, gradient of tetrahydrofuran (THF) in distilled water (v/v %), 2 h for each step, was used as 50%, 70%, 90%, 100% and overnight 100% THF; after dehydration, the samples were incubated for 45 min in dichloromethane (DCM, Sigma, 270,997), and finally in BABB (benzyl alcohol + benzyl benzoate 1:2, Sigma, 24,122 and W213802) until transparency.  \nPlease refer to https://www.cell.com/cell/fulltext/S0092-8674(22)01465-9 for more details about the preparation step.",
+                        "signal_channel_information": []
+                    }
+                ],
+                "biological_entity": [
+                    {
+                        "default_open": true,
+                        "object_creator": "bia_ingest",
+                        "uuid": "e1694470-3bbe-45b8-80dc-4f7c9fde06b1",
+                        "version": 0,
+                        "model": {
+                            "type_name": "BioSample",
+                            "version": 4
+                        },
+                        "additional_metadata": [
+                            {
+                                "provenance": "bia_ingest",
+                                "name": "uuid_unique_input",
+                                "value": {
+                                    "uuid_unique_input": "Biosample-11"
+                                }
+                            }
+                        ],
+                        "title": "Biosamples for whole-brain amyloid plaque images",
+                        "organism_classification": [
+                            {
+                                "additional_metadata": [],
+                                "common_name": "mouse",
+                                "scientific_name": "Mus musculus",
+                                "ncbi_id": null
+                            }
+                        ],
+                        "biological_entity_description": "mouse brain",
+                        "experimental_variable_description": [],
+                        "extrinsic_variable_description": [],
+                        "intrinsic_variable_description": [],
+                        "growth_protocol_uuid": null,
+                        "growth_protocol": null
+                    }
+                ],
+                "annotation_process": [],
+                "other_creation_process": [],
+                "image": []
+            }
+        ]
     }
 }
