@@ -64,6 +64,7 @@ async def fts(
                     },
                     {"simple_query_string": {"query": f"*{query}*", "fields": ["*"]}},
                 ],
+                "minimum_should_match": 1,
                 "filter": filters,
             }
         },

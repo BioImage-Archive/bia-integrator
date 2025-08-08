@@ -98,3 +98,36 @@ def test_get(api_client: TestClient):
     body = rsp.json()
     assert len(body["hits"]) == 1
     assert body["hits"][0]["_source"]["uuid"] == doc_uuid
+
+
+def test_search_with_filter_restricts_results(api_client: TestClient):
+    rsp_all = api_client.get(
+        f"/search/fts",
+        params={"query": "with"},
+    )
+    assert rsp_all.status_code == 200
+    body_all = rsp_all.json()
+    assert len(body_all["hits"]["hits"]) == 5
+    assert body_all["hits"]["total"]["value"] == len(body_all["hits"]["hits"])
+
+    expected_filtered_count = [
+        i["doc_count"]
+        for i in body_all["facets"]["scientific_name"]["buckets"]
+        if i["key"] == "Homo sapiens"
+    ][0]
+    rsp_filtered = api_client.get(
+        f"/search/fts",
+        params={"query": "with", "organism": ["Homo sapiens"]},
+    )
+    assert rsp_filtered.status_code == 200
+    body_filtered = rsp_filtered.json()
+    assert len(body_filtered["hits"]["hits"]) == expected_filtered_count
+    assert body_filtered["hits"]["total"]["value"] == len(body_filtered["hits"]["hits"])
+
+    all_uuids = set(hit["_source"]["uuid"] for hit in body_all["hits"]["hits"])
+    filtered_uuids = set(
+        hit["_source"]["uuid"] for hit in body_filtered["hits"]["hits"]
+    )
+    assert filtered_uuids.issubset(filtered_uuids), filtered_uuids.symmetric_difference(
+        all_uuids
+    )
