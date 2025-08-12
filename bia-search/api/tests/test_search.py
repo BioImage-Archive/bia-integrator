@@ -66,7 +66,24 @@ def test_fts_use_facet_organism(api_client: TestClient):
     assert rsp.status_code == 200
 
     body = rsp.json()
-    assert len(body["hits"]["hits"]) == 4
+    assert len(body["hits"]["hits"]) == 3
+
+
+def test_fts_no_query(api_client: TestClient):
+    rsp = api_client.get(f"/search/fts")
+    assert rsp.status_code == 200
+    body = rsp.json()
+    facet_homo_sapiens = next(
+        bucket
+        for bucket in body["facets"]["scientific_name"]["buckets"]
+        if bucket["key"] == "Homo sapiens"
+    )["doc_count"]
+    assert len(body["hits"]["hits"]) == 5
+
+    rsp = api_client.get(f"/search/fts", params={"organism": ["Homo sapiens"]})
+    assert rsp.status_code == 200
+    body = rsp.json()
+    assert len(body["hits"]["hits"]) == facet_homo_sapiens
 
 
 def test_fts_use_facet_year(api_client: TestClient):
@@ -76,7 +93,7 @@ def test_fts_use_facet_year(api_client: TestClient):
     )
     assert rsp.status_code == 200
     body = rsp.json()
-    assert len(body["hits"]["hits"]) == 2
+    assert len(body["hits"]["hits"]) == 1
 
 
 def test_fts_use_facet_imaging_method(api_client: TestClient):

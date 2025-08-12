@@ -9,7 +9,7 @@ router = APIRouter(prefix="/search")
 @router.get("/fts")
 async def fts(
     elastic: Annotated[Elastic, Depends(get_elastic)],
-    query: Annotated[str, Query(min_length=1, max_length=100)],
+    query: Annotated[str | None, Query()] = None,
     organism: Annotated[list[str] | None, Query(max_length=4)] = None,
     imaging_method: Annotated[list[str] | None, Query(max_length=4)] = None,
     year: Annotated[list[str] | None, Query(max_length=4)] = None,
@@ -50,23 +50,26 @@ async def fts(
             }
         )
 
+    query_body = {
+        "bool": {
+            "filter": filters,
+        }
+    }
+    if query:
+        query_body["bool"]["should"] = [
+            {
+                "multi_match": {
+                    "query": query,
+                    "fields": ["*"],
+                    "type": "phrase",
+                }
+            },
+            {"simple_query_string": {"query": f"*{query}*", "fields": ["*"]}},
+        ]
+        query_body["bool"]["minimum_should_match"] = 1
     rsp = await elastic.client.search(
         index=elastic.index,
-        query={
-            "bool": {
-                "should": [
-                    {
-                        "multi_match": {
-                            "query": query,
-                            "fields": ["*"],
-                            "type": "phrase",
-                        }
-                    },
-                    {"simple_query_string": {"query": f"*{query}*", "fields": ["*"]}},
-                ],
-                "filter": filters,
-            }
-        },
+        query=query_body,
         aggs={
             "scientific_name": {
                 "terms": {
