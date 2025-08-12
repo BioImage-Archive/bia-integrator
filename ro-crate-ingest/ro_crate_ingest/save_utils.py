@@ -99,15 +99,21 @@ def save_api(
         post_function = getattr(client, api_creation_method)
         try:
             post_function(api_obj)
-        except ApiException:
-            api_copy_of_obj = fetch_document(object_type, obj, client)
-            if (
-                api_copy_of_obj
-                and round_trip_object_class_from_client_to_datamodel(api_obj)
-                != api_copy_of_obj
-            ):
-                obj.version = api_copy_of_obj.version + 1
-                post_function(api_obj)
+        except ApiException as e:
+            if e.reason == "Conflict":
+                api_copy_of_obj = fetch_document(object_type, obj, client)
+                if (
+                    api_copy_of_obj
+                    and round_trip_object_class_from_client_to_datamodel(api_obj)
+                    != api_copy_of_obj
+                ):
+                    logger.info(
+                        f"Updating: {api_copy_of_obj.uuid} and bumping version."
+                    )
+                    obj.version = api_copy_of_obj.version + 1
+                    post_function(api_obj)
+            else:
+                raise e
 
 
 def persist(

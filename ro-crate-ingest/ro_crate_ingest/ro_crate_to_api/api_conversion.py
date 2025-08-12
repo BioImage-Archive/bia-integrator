@@ -21,6 +21,8 @@ from pathlib import Path
 from rich.logging import RichHandler
 from ..save_utils import PersistenceMode, persist
 from bia_integrator_api import models
+from ro_crate_ingest.settings import get_settings
+
 
 
 logging.basicConfig(
@@ -96,7 +98,7 @@ def convert_ro_crate_to_bia_api(
         accession_id,
         file_ref_url_prefix,
         persistence_mode,
-        2,
+        get_settings().parallelisation_max_workers,
     )
 
     if not image_raw_dataframe["image_id"].isna().all():
@@ -112,5 +114,5 @@ def convert_ro_crate_to_bia_api(
             study_uuid,
             accession_id,
             persistence_mode,
-            2,
+            get_settings().parallelisation_max_workers,
         )

@@ -13,6 +13,7 @@ from ro_crate_ingest.save_utils import PersistenceMode, persist
 
 from concurrent.futures import ProcessPoolExecutor
 from functools import partial
+import time
 
 import logging
 from numpy import nan

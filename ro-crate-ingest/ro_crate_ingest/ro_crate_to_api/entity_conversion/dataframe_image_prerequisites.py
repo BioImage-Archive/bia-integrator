@@ -39,10 +39,11 @@ def prepare_all_ids_for_images(
 ) -> tuple[pd.DataFrame, dict[str, str]]:
     image_uuid_dataframe: pd.DataFrame = image_dataframe.groupby(
         "image_id", dropna=True
-    ).apply(
+    )[['path', 'file_ref_uuid', 'dataset_roc_id', 'dataset_uuid', 'image_id', 'source_image_id_from_filelist']].apply(
         prep_image_data_row,
         crate_objects_by_id,
         study_uuid,
+        include_groups=True
     )
     image_id_uuid_map = dict(
         zip(image_uuid_dataframe["image_id"], image_uuid_dataframe["image_uuid"])
@@ -111,7 +112,7 @@ def prep_image_data_row(
             x.id for x in dataset.associatedImageAcquisitionProtocol
         ]
         protocol_id = [x.id for x in dataset.associatedProtocol]
-        bio_sample_id = [x.id for x in dataset.associatedImageAcquisitionProtocol]
+        bio_sample_id = [x.id for x in dataset.associatedBiologicalEntity]
         specimen_imaging_preparation_protocol_id = [
             x.id for x in dataset.associatedSpecimenImagingPreparationProtocol
         ]
