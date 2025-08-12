@@ -9,9 +9,7 @@ from ro_crate_ingest.graph_utils import (
 import csv
 import logging
 from urllib.parse import unquote
-from rdflib import Graph, URIRef
-from numpy import nan
-
+from rdflib import Graph
 logger = logging.getLogger("__main__." + __name__)
 
 
