@@ -63,7 +63,9 @@ def test_ingest_biostudies_ro_crate_metadata(accession_id: str, tmp_bia_data_dir
 
     crate_path = get_biostudies_to_ro_crate_path(accession_id)
 
-    ingest_local_test(accession_id, tmp_bia_data_dir, crate_path)
+    ingest_local_test(
+        accession_id, tmp_bia_data_dir, crate_path, file_ref_url_prefix="biostudies"
+    )
 
 
 @pytest.mark.parametrize(
@@ -75,15 +77,19 @@ def test_ingest_biostudies_ro_crate_metadata_with_api(
 
     crate_path = get_biostudies_to_ro_crate_path(accession_id)
 
-    ingest_api_test(accession_id, get_bia_api_client, crate_path)
+    ingest_api_test(
+        accession_id, get_bia_api_client, crate_path, file_ref_url_prefix="biostudies"
+    )
 
 
-@pytest.mark.parametrize("accession_id", [ "EMPIAR-ANNOTATIONTEST"])
+@pytest.mark.parametrize("accession_id", ["EMPIAR-ANNOTATIONTEST"])
 def test_ingest_empiar_ro_crate_metadata(accession_id: str, tmp_bia_data_dir: Path):
 
     crate_path = get_empiar_to_ro_crate_path(accession_id)
 
-    ingest_local_test(accession_id, tmp_bia_data_dir, crate_path)
+    ingest_local_test(
+        accession_id, tmp_bia_data_dir, crate_path, file_ref_url_prefix="empiar"
+    )
 
 
 @pytest.mark.parametrize("accession_id", ["EMPIAR-ANNOTATIONTEST"])
@@ -93,12 +99,22 @@ def test_ingest_empiar_ro_crate_metadata_with_api(
 
     crate_path = get_empiar_to_ro_crate_path(accession_id)
 
-    ingest_api_test(accession_id, get_bia_api_client, crate_path)
+    ingest_api_test(
+        accession_id, get_bia_api_client, crate_path, file_ref_url_prefix="empiar"
+    )
 
 
-def ingest_local_test(accession_id: str, tmp_bia_data_dir: Path, crate_path: Path):
+def ingest_local_test(
+    accession_id: str,
+    tmp_bia_data_dir: Path,
+    crate_path: Path,
+    file_ref_url_prefix: str = None,
+):
 
-    result = runner.invoke(ro_crate_ingest, ["ingest", "-c", crate_path])
+    arguments = ["ingest", "-c", crate_path]
+    if file_ref_url_prefix:
+        arguments.extend(["-u", file_ref_url_prefix])
+    result = runner.invoke(ro_crate_ingest, arguments)
 
     assert result.exit_code == 0
 
@@ -123,10 +139,16 @@ def ingest_local_test(accession_id: str, tmp_bia_data_dir: Path, crate_path: Pat
         assert cli_out == expected_out
 
 
-def ingest_api_test(accession_id: str, get_bia_api_client, crate_path: Path):
-    result = runner.invoke(
-        ro_crate_ingest, ["ingest", "-c", crate_path, "-p", "local_api"]
-    )
+def ingest_api_test(
+    accession_id: str,
+    get_bia_api_client,
+    crate_path: Path,
+    file_ref_url_prefix: str = None,
+):
+    arguments = ["ingest", "-c", crate_path, "-p", "local_api"]
+    if file_ref_url_prefix:
+        arguments.extend(["-u", file_ref_url_prefix])
+    result = runner.invoke(ro_crate_ingest, arguments)
 
     assert result.exit_code == 0
 

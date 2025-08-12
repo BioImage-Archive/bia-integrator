@@ -29,6 +29,6 @@
   "file_path": "folder3/file2.ome.zarr.zip",
   "format": ".zip",
   "size_in_bytes": 13161534,
-  "uri": "None?",
+  "uri": "https://www.ebi.ac.uk/biostudies/files/S-BIADTEST_COMPLEX_BIOSAMPLE/folder3/file2.ome.zarr.zip",
   "submission_dataset_uuid": "6161b376-278d-48a1-b2a1-d25c92b36c2c"
 }
