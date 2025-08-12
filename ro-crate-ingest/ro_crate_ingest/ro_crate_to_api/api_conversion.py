@@ -11,7 +11,6 @@ from ro_crate_ingest.ro_crate_to_api.entity_conversion import (
     protocol,
     specimen_imaging_preparation_protocol,
     study,
-
     dataframe_assembly,
     dataframe_file_reference,
     dataframe_image_prerequisites,
@@ -22,7 +21,6 @@ from rich.logging import RichHandler
 from ..save_utils import PersistenceMode, persist
 from bia_integrator_api import models
 from ro_crate_ingest.settings import get_settings
-
 
 
 logging.basicConfig(
@@ -104,7 +102,10 @@ def convert_ro_crate_to_bia_api(
     if not image_raw_dataframe["image_id"].isna().all():
         image_dataframe, id_uuid_map = (
             dataframe_image_prerequisites.prepare_all_ids_for_images(
-                image_raw_dataframe, entities, study_uuid
+                image_raw_dataframe,
+                entities,
+                study_uuid,
+                get_settings().parallelisation_max_workers,
             )
         )
         dataframe_image_and_dependencies.create_images_and_dependencies(

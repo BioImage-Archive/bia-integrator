@@ -1,12 +1,4 @@
 import pandas as pd
-from bia_shared_datamodels.package_specific_uuid_creation.shared import (
-    create_file_reference_uuid,
-    create_image_uuid,
-)
-from bia_shared_datamodels.package_specific_uuid_creation.ro_crate_uuid_creation import (
-    create_dataset_uuid,
-    create_specimen_uuid,
-)
 from bia_shared_datamodels.package_specific_uuid_creation import (
     shared,
     ro_crate_uuid_creation,
@@ -17,6 +9,8 @@ from bia_shared_datamodels import ro_crate_models
 import logging
 import numpy as np
 from urllib.parse import quote
+from concurrent.futures import ProcessPoolExecutor
+from functools import partial
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -36,15 +30,26 @@ def prepare_all_ids_for_images(
     image_dataframe: pd.DataFrame,
     crate_objects_by_id: dict[str, ROCrateModel],
     study_uuid: str,
+    max_workers: int,
 ) -> tuple[pd.DataFrame, dict[str, str]]:
-    image_uuid_dataframe: pd.DataFrame = image_dataframe.groupby(
+    image_by_group: pd.DataFrame = image_dataframe.groupby(
         "image_id", dropna=True
-    )[['path', 'file_ref_uuid', 'dataset_roc_id', 'dataset_uuid', 'image_id', 'source_image_id_from_filelist']].apply(
-        prep_image_data_row,
-        crate_objects_by_id,
-        study_uuid,
-        include_groups=True
     )
+
+    with ProcessPoolExecutor(max_workers=max_workers) as executor:
+        results = list(
+            executor.map(
+                partial(
+                    prep_image_data_row,
+                    crate_objects_by_id=crate_objects_by_id,
+                    study_uuid=study_uuid,
+                ),
+                image_by_group,
+            )
+        )
+
+    image_uuid_dataframe = pd.DataFrame(results)
+
     image_id_uuid_map = dict(
         zip(image_uuid_dataframe["image_id"], image_uuid_dataframe["image_uuid"])
     )
@@ -53,8 +58,10 @@ def prepare_all_ids_for_images(
 
 
 def prep_image_data_row(
-    df: pd.DataFrame, crate_objects_by_id: dict[str, ROCrateModel], study_uuid: str
+    group_df: pd.DataFrame, crate_objects_by_id: dict[str, ROCrateModel], study_uuid: str
 ):
+    image_id = group_df[0]
+    df = group_df[1]
     file_uuids = list(df["file_ref_uuid"])
     image_uuid, image_uuid_attribute = shared.create_image_uuid(
         study_uuid, file_uuids, APIModels.Provenance.BIA_INGEST
@@ -75,7 +82,6 @@ def prep_image_data_row(
     roc_creation_process_input_image = None
 
     # Use ro-crate creation process, if provided
-    image_id = df["image_id"].unique()[0]
     if image_id in crate_objects_by_id:
         roc_image: ro_crate_models.Image = crate_objects_by_id[image_id]
         if roc_image.resultOf:
