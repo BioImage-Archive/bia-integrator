@@ -44,8 +44,6 @@ def create_file_list(
     SCHEMA_BNODE_INT = 0
 
     dataset_sections: list[Section] = []
-    find_sections_recursive(submission.section, ["Study Component"], dataset_sections)
-    find_sections_recursive(submission.section, ["Annotations"], dataset_sections)
     find_sections_with_filelists_recursive(submission.section, dataset_sections)
 
     column_by_name_url: dict[str, dict[str, ro_crate_models.Column]] = {}

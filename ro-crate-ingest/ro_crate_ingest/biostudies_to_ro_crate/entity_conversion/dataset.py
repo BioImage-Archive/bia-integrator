@@ -41,7 +41,7 @@ def get_datasets_by_accno(
     )
 
     generic_section_with_filelist = find_sections_with_filelists_recursive(
-        submission.section
+        submission.section, ignore_types=["Study Component", "Annotations"]
     )
 
     datasets_by_accno = {}

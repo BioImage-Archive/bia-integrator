@@ -97,6 +97,7 @@ def find_files_under_section(section: Section) -> list[File]:
 def find_sections_with_filelists_recursive(
     section: Section,
     results: Optional[list[Section]] = None,
+    ignore_types: Optional[list[str]] = None,
 ) -> list[Section]:
     """
     Find all of the Sections with a File lists, recursively descending through the subsections.
@@ -109,7 +110,12 @@ def find_sections_with_filelists_recursive(
 
     attr_dict = attributes_to_dict(section.attributes)
     if "file list" in attr_dict:
-        results.append(section)
+        if ignore_types:
+            ignore_types_lower = [s.lower() for s in ignore_types]
+            if section.type.lower() not in ignore_types_lower:
+                results.append(section)
+        else:
+            results.append(section)
 
     # Each thing in section.subsections is either Section or List[Section] which we want to flatten
     flattened = []
@@ -121,6 +127,6 @@ def find_sections_with_filelists_recursive(
             flattened.append(item)
 
     for subsection in flattened:
-        find_sections_with_filelists_recursive(subsection, results)
+        find_sections_with_filelists_recursive(subsection, results, ignore_types)
 
     return results
