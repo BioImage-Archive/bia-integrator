@@ -2,29 +2,16 @@ from pathlib import Path
 from typer.testing import CliRunner
 from ro_crate_ingest.cli import ro_crate_ingest
 import pytest
-import json
+from .conftest import (
+    expected_path_to_created_path,
+    get_expected_ro_crate_directory,
+    get_created_ro_crate_metadata,
+    get_expected_ro_crate_metadata,
+)
+import glob
+import pandas as pd
 
 runner = CliRunner()
-
-
-def get_expected_ro_crate_metadata(accession_id: str) -> dict:
-    expected_ro_crate_metadata_path = (
-        Path(__file__).parent
-        / "empiar_to_ro_crate"
-        / "output_data"
-        / accession_id
-        / "ro-crate-metadata.json"
-    )
-
-    with open(expected_ro_crate_metadata_path) as f:
-        return json.loads(f.read())
-
-
-def get_created_ro_crate_metadata(base_path: Path, accession_id: str) -> dict:
-    created_metatadata_path = base_path / accession_id / "ro-crate-metadata.json"
-
-    with open(created_metatadata_path) as f:
-        return json.loads(f.read())
 
 
 def get_input_proposal_path(accession_id: str) -> Path:
@@ -39,7 +26,7 @@ def get_input_proposal_path(accession_id: str) -> Path:
 
 @pytest.mark.parametrize(
     "accession_id",
-    ["EMPIAR-ANNOTATIONTEST"],
+    ["EMPIAR-ANNOTATIONTEST", "EMPIAR-IMAGEPATTERNTEST"],
 )
 def test_biostudies_to_ro_crate(accession_id: str, tmp_bia_data_dir: Path):
 
@@ -51,8 +38,26 @@ def test_biostudies_to_ro_crate(accession_id: str, tmp_bia_data_dir: Path):
 
     assert result.exit_code == 0
 
-    expected_metadata = get_expected_ro_crate_metadata(accession_id)
+    expected_metadata = get_expected_ro_crate_metadata(
+        accession_id, "empiar_to_ro_crate"
+    )
     created_ro_crate_metadata = get_created_ro_crate_metadata(
         tmp_bia_data_dir, accession_id
     )
     assert created_ro_crate_metadata == expected_metadata
+
+    expected_files = glob.glob(
+        f"{get_expected_ro_crate_directory(accession_id, "empiar_to_ro_crate")}/**/*",
+        recursive=True,
+    )
+    created_files = glob.glob(f"{tmp_bia_data_dir / accession_id}/**/*", recursive=True)
+
+    assert len(expected_files) == len(created_files)
+    for expected_file in expected_files:
+        if expected_file.endswith(".tsv"):
+            created_file_path = expected_path_to_created_path(
+                expected_file, tmp_bia_data_dir, "empiar_to_ro_crate"
+            )
+            expected_tsv = pd.read_csv(expected_file, sep="\t")
+            created_tsv = pd.read_csv(created_file_path, sep="\t")
+            assert expected_tsv.equals(created_tsv)

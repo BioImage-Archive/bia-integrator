@@ -1,4 +1,4 @@
-file_path	size_in_bytes
-data/ribosomes/Tomograms/05/IS002_291013_005.mrc	12
-data/ribosomes/Tomograms/07/IS002_291013_007.mrc	12
-data/ribosomes/Tomograms/06/IS002_291013_006.mrc	12
+file_path	size_in_bytes	image_label
+data/ribosomes/Tomograms/05/IS002_291013_005.mrc	12	Tomogram 05
+data/ribosomes/Tomograms/07/IS002_291013_007.mrc	12	
+data/ribosomes/Tomograms/06/IS002_291013_006.mrc	12	Tomogram 06

@@ -221,34 +221,31 @@
                 "Dataset",
                 "bia:Study"
             ],
-            "title": "Sub-tomogram averaging in RELION",
+            "title": "Cryo serial FIB/SEM of HeLa cells",
             "contributor": [
                 {
-                    "@id": "https://orcid.org/0000-0000-0000-0001"
-                },
-                {
-                    "@id": "https://orcid.org/0000-0000-0000-0002"
+                    "@id": "_:c0"
                 }
             ],
             "description": "",
             "licence": "https://creativecommons.org/publicdomain/zero/1.0/",
-            "datePublished": "2015-11-19",
+            "datePublished": "2023-02-28",
             "keyword": [],
             "acknowledgement": null,
             "hasPart": [
                 {
-                    "@id": "Raw%20data%20and%20also%20processed%20datafor%20sub-tomogram%20averaging%20of%20S.%20cerevisiae%2080S%20ribosomes%20data/"
+                    "@id": "Cryo%20Serial%20FIB/SEM%20of%20HeLa%20cells%20data/HeLa/"
                 }
             ],
-            "accessionId": "EMPIAR-ANNOTATIONTEST"
+            "accessionId": "EMPIAR-IMAGEPATTERNTEST"
         },
         {
-            "@id": "https://orcid.org/0000-0000-0000-0002",
+            "@id": "_:c0",
             "@type": [
                 "Person",
                 "bia:Contributor"
             ],
-            "displayName": "SecondAuthor AB",
+            "displayName": "Test",
             "address": null,
             "website": null,
             "affiliation": [],
@@ -256,20 +253,7 @@
             "contactEmail": null
         },
         {
-            "@id": "https://orcid.org/0000-0000-0000-0001",
-            "@type": [
-                "Person",
-                "bia:Contributor"
-            ],
-            "displayName": "NameAndInitials NAI",
-            "address": null,
-            "website": null,
-            "affiliation": [],
-            "role": [],
-            "contactEmail": null
-        },
-        {
-            "@id": "Raw%20data%20and%20also%20processed%20datafor%20sub-tomogram%20averaging%20of%20S.%20cerevisiae%2080S%20ribosomes%20data/file_list.tsv",
+            "@id": "Cryo%20Serial%20FIB/SEM%20of%20HeLa%20cells%20data/HeLa/file_list.tsv",
             "@type": [
                 "File",
                 "bia:FileList",
@@ -321,127 +305,87 @@
             ]
         },
         {
-            "@id": "Raw%20data%20and%20also%20processed%20datafor%20sub-tomogram%20averaging%20of%20S.%20cerevisiae%2080S%20ribosomes%20data/",
+            "@id": "Cryo%20Serial%20FIB/SEM%20of%20HeLa%20cells%20data/HeLa/",
             "@type": [
                 "Dataset",
                 "bia:Dataset"
             ],
-            "title": "Raw data and also processed datafor sub-tomogram averaging of S. cerevisiae 80S ribosomes",
-            "description": "This data set contains raw data in ./Tomograms/ . It also contains processed data in ./AnticipatedResults/ .\nThe dataset contains a variable number of frames in each file.",
+            "title": "Cryo Serial FIB/SEM of HeLa cells",
+            "description": "",
             "associatedBiologicalEntity": [
                 {
-                    "@id": "_:Purified 80S ribosomes from S. cerevisiae"
+                    "@id": "_:HeLa cells"
                 }
             ],
             "associatedSpecimenImagingPreparationProtocol": [
                 {
-                    "@id": "_:Cryo-ET sample preparation for ribosomes"
+                    "@id": "_:Cryo-FIB/SEM sample preparation"
                 }
             ],
             "associatedSpecimen": null,
             "associatedImageAcquisitionProtocol": [
                 {
-                    "@id": "_:Cryo-electron tomography"
+                    "@id": "_:Cryo-serial pFIB/SEM"
                 }
             ],
-            "associatedAnnotationMethod": [
-                {
-                    "@id": "_:Ribosome particle picking and refinement"
-                }
-            ],
-            "associatedImageAnalysisMethod": [
-                {
-                    "@id": "_:Sub-tomogram averaging in RELION"
-                }
-            ],
+            "associatedAnnotationMethod": [],
+            "associatedImageAnalysisMethod": [],
             "associatedImageCorrelationMethod": [],
             "associatedProtocol": [],
             "hasPart": [
                 {
-                    "@id": "Raw%20data%20and%20also%20processed%20datafor%20sub-tomogram%20averaging%20of%20S.%20cerevisiae%2080S%20ribosomes%20data/file_list.tsv"
+                    "@id": "Cryo%20Serial%20FIB/SEM%20of%20HeLa%20cells%20data/HeLa/file_list.tsv"
                 }
             ],
             "associationFileMetadata": {
-                "@id": "Raw%20data%20and%20also%20processed%20datafor%20sub-tomogram%20averaging%20of%20S.%20cerevisiae%2080S%20ribosomes%20data/file_list.tsv"
+                "@id": "Cryo%20Serial%20FIB/SEM%20of%20HeLa%20cells%20data/HeLa/file_list.tsv"
             }
         },
         {
-            "@id": "_:Testing testing",
-            "@type": [
-                "bia:ImageAnalysisMethod"
-            ],
-            "title": "Testing testing",
-            "protocolDescription": "This is a test protocol.",
-            "featuresAnalysed": "Tomograms"
-        },
-        {
-            "@id": "_:Sub-tomogram averaging in RELION",
-            "@type": [
-                "bia:ImageAnalysisMethod"
-            ],
-            "title": "Sub-tomogram averaging in RELION",
-            "protocolDescription": "The dataset was used for sub-tomogram averaging in RELION. Tomograms were processed according to Steps 1-7 as described in the protocol, with results stored in the ./AnticipatedResults subdirectory of the EMPIAR entry. To enter the RELION workflow, we assume that tomograms have been generated in MRC format. Tomogram calculation is not done inside RELION but instead relies on software packages such as IMOD, Tomo3D, pyTOM or Bsoft. In the examples in the paper, the IMOD package was used for tilt series alignment, and Tomo3D for tomographic reconstruction.",
-            "featuresAnalysed": "Tomograms"
-        },
-        {
-            "@id": "_:Ribosome particle picking and refinement",
-            "@type": [
-                "bia:AnnotationMethod"
-            ],
-            "title": "Ribosome particle picking and refinement",
-            "protocolDescription": "To find the positions of macromolecular complexes within tomograms we either used the MolMatch software for template matching or manually picked particles using 3dmod and converted the resulting model into a text file using the IMOD model2point command.",
-            "annotationCriteria": null,
-            "annotationCoverage": null,
-            "transformationDescription": null,
-            "spatialInformation": null,
-            "methodType": [],
-            "annotationSourceIndicator": null
-        },
-        {
-            "@id": "_:Cryo-ET sample preparation for ribosomes",
+            "@id": "_:Cryo-FIB/SEM sample preparation",
             "@type": [
                 "bia:SpecimenImagingPreparationProtocol"
             ],
-            "title": "Cryo-ET sample preparation for ribosomes",
-            "protocolDescription": "Purified 80S ribosomes from S. cerevisiae were prepared for cryo-electron tomography.",
+            "title": "Cryo-FIB/SEM sample preparation",
+            "protocolDescription": "Cells were seeded onto gold grids (either 'UltrAuFoil' 200 Au mesh, R2/2 gold film, or Quantifoil 300 Au mesh, R2/2 carbon film) and grown to 50% confluency. Grids were then plunge-frozen in nitrogen-cooled liquid ethane using a Vitrobot. To protect the leading edge while milling and reduce surface topography, an organic platinum layer of ~1-2 \u00b5m was deposited using a gas injection system, followed by two sputter-coated platinum layers before and after the organic platinum layer.",
             "signalChannelInformation": []
         },
         {
-            "@id": "_:Cryo-electron tomography",
+            "@id": "_:Cryo-serial pFIB/SEM",
             "@type": [
                 "bia:ImageAcquisitionProtocol"
             ],
-            "title": "Cryo-electron tomography",
-            "protocolDescription": "Seven tomograms were collected on a sample of purified 80S ribosomes from S. cerevisiae.",
-            "imagingInstrumentDescription": "Cryo-electron microscope",
+            "title": "Cryo-serial pFIB/SEM",
+            "protocolDescription": "Serial plasma FIB/SEM imaging was performed on a dual-beam FIB/SEM 'Helios G4 Hydra' equipped with an Aquilos II type cryo-stage, a four source 'Hydra' plasma ion column and an 'Elstar' SEM column. The samples were loaded into a custom purpose 25\u00b0 pre-tilt holder. Imaging parameters used were: argon plasma source at 20 kV and 0.2 nA for milling, with SEM imaging at 1.25 kV, 6.25 pA beam current, 100 ns dwell time, and 100 line integrations. The electron dose was under 10\u22122 e\u2212/\u00c52.",
+            "imagingInstrumentDescription": "Helios G4 Hydra FIB/SEM (Thermo Fisher Scientific) with Aquilos II cryo-stage",
             "imagingMethodName": [
-                "Cryo-electron tomography"
+                "Cryo-FIB/SEM"
             ],
             "fbbiId": [
-                "obo:FBbi_00000256"
+                "obo:FBbi_00050000"
             ]
         },
         {
-            "@id": "NCBI:txid4932",
+            "@id": "NCBI:txid9606",
             "@type": [
                 "bia:Taxon"
             ],
-            "commonName": "Baker's yeast",
-            "scientificName": "Saccharomyces cerevisiae"
+            "commonName": "human cervical cancer cells",
+            "scientificName": "Homo sapiens"
         },
         {
-            "@id": "_:Purified 80S ribosomes from S. cerevisiae",
+            "@id": "_:HeLa cells",
             "@type": [
                 "bia:BioSample"
             ],
-            "title": "Purified 80S ribosomes from S. cerevisiae",
-            "biologicalEntityDescription": "Purified 80S ribosomes isolated from Saccharomyces cerevisiae",
+            "title": "HeLa cells",
+            "biologicalEntityDescription": "HeLa cells (CCL-2, ATCC) grown in high glucose DMEM with non-essential amino acids supplemented with 10% FBS, 1% penicillin/streptomycin, and 1% glutamine at 37\u00b0C and 5% CO2",
             "experimentalVariableDescription": [],
             "extrinsicVariableDescription": [],
             "intrinsicVariableDescription": [],
             "organismClassification": [
                 {
-                    "@id": "NCBI:txid4932"
+                    "@id": "NCBI:txid9606"
                 }
             ],
             "growthProtocol": []
