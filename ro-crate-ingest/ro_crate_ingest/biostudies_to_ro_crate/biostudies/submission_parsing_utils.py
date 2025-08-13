@@ -92,3 +92,35 @@ def find_files_under_section(section: Section) -> list[File]:
     For earlier Biostudies submissions where files are documented in the pagetab json, rather than in a separate filelist
     """
     pass
+
+
+def find_sections_with_filelists_recursive(
+    section: Section,
+    results: Optional[list[Section]] = None,
+) -> list[Section]:
+    """
+    Find all of the Sections with a File lists, recursively descending through the subsections.
+
+    Return a list of sections with filists.
+    """
+
+    if results == None:
+        results = []
+
+    attr_dict = attributes_to_dict(section.attributes)
+    if "file list" in attr_dict:
+        results.append(section)
+
+    # Each thing in section.subsections is either Section or List[Section] which we want to flatten
+    flattened = []
+    for item in section.subsections:
+        if isinstance(item, list):
+            for sub_item in item:
+                flattened.append(sub_item)
+        else:
+            flattened.append(item)
+
+    for subsection in flattened:
+        find_sections_with_filelists_recursive(subsection, results)
+
+    return results

@@ -1,0 +1,20 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "bfd19b91-42a8-4109-9dc4-f7c31ff4b18f",
+  "version": 0,
+  "model": {
+    "type_name": "Protocol",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "_:experimentB : data analysis protocol"
+      }
+    }
+  ],
+  "title": "experimentB : data analysis protocol",
+  "protocol_description": "In this work, we utilized the FUCCI system to model cell cycle position. To generate a continuous representation of cell cycle position, we utilized a polar regression based on a log-scale scatter plot of GMNN (FUCCI-green) and CDT1 (FUCCI-red), where each point represents a single cell. This data was shifted, such that the origin point lay at the center of mass. The angles of the rays from the origin to the position of each cell determined by the FUCCI marker intensities generate a representation of continuous cell cycle position. The cell-division point was calculated by finding the angle representing the lowest cell density on the polar ray from the origin. This is justified by the knowledge that the M phase, where cells express neither GMNN nor CDT1 highly, is much shorter than all other phases. The selected point was validated via visual inspection of nearby cells. This allowed us to linearize the progression of time from 0 to 1 representing the fractional distance along this polar axis from 0 to 360 degrees."
+}

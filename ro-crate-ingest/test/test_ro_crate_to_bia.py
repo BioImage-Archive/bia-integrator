@@ -57,7 +57,7 @@ def test_ingest_mock_ro_crate_metadata_with_api(accession_id: str, get_bia_api_c
 
 
 @pytest.mark.parametrize(
-    "accession_id", ["S-BIADTEST_AUTHOR_AFFILIATION", "S-BIADTEST_COMPLEX_BIOSAMPLE"]
+    "accession_id", ["S-BIADTEST_AUTHOR_AFFILIATION", "S-BIADTEST_COMPLEX_BIOSAMPLE", "S-BIADTEST_PROTOCOL_STUDY"]
 )
 def test_ingest_biostudies_ro_crate_metadata(accession_id: str, tmp_bia_data_dir: Path):
 
@@ -69,7 +69,7 @@ def test_ingest_biostudies_ro_crate_metadata(accession_id: str, tmp_bia_data_dir
 
 
 @pytest.mark.parametrize(
-    "accession_id", ["S-BIADTEST_AUTHOR_AFFILIATION", "S-BIADTEST_COMPLEX_BIOSAMPLE"]
+    "accession_id", ["S-BIADTEST_AUTHOR_AFFILIATION", "S-BIADTEST_COMPLEX_BIOSAMPLE", "S-BIADTEST_PROTOCOL_STUDY"]
 )
 def test_ingest_biostudies_ro_crate_metadata_with_api(
     accession_id: str, get_bia_api_client

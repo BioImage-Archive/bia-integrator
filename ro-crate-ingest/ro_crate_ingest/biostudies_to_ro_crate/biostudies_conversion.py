@@ -14,6 +14,7 @@ from ro_crate_ingest.biostudies_to_ro_crate.entity_conversion import (
     image_correlation_method,
     protocol_from_growth_protocol,
     file_list,
+    protocol,
 )
 from bia_shared_datamodels.uuid_creation import create_study_uuid
 import json
@@ -82,6 +83,9 @@ def convert_biostudies_to_ro_crate(accession_id: str, crate_path: Optional[Path]
     )
     graph += roc_iap.values()
 
+    roc_generic_protocols = protocol.get_protocol_by_title(submission)
+    graph += roc_generic_protocols.values()
+
     roc_datasets = dataset.get_datasets_by_accno(
         submission,
         image_aquisition_protocols=roc_iap,
@@ -90,6 +94,7 @@ def convert_biostudies_to_ro_crate(accession_id: str, crate_path: Optional[Path]
         image_analysis_methods=roc_iam,
         image_correlation_method=roc_icm,
         bio_samples_association=bs_association_map,
+        protocols=roc_generic_protocols,
     )
     graph += roc_datasets.values()
 

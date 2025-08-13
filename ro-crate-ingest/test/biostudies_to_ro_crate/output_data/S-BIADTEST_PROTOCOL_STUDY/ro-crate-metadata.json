@@ -1,0 +1,436 @@
+{
+    "@context": [
+        "https://w3id.org/ro/crate/1.1/context",
+        {
+            "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+            "schema": "http://schema.org/",
+            "dc": "http://purl.org/dc/terms/",
+            "bia": "http://bia/",
+            "csvw": "http://www.w3.org/ns/csvw#",
+            "displayName": {
+                "@id": "schema:name"
+            },
+            "address": {
+                "@id": "schema:address"
+            },
+            "website": {
+                "@id": "bia:website"
+            },
+            "affiliation": {
+                "@id": "schema:memberOf"
+            },
+            "title": {
+                "@id": "schema:name"
+            },
+            "protocolDescription": {
+                "@id": "schema:description"
+            },
+            "annotationCriteria": {
+                "@id": "bia:annotationCriteria"
+            },
+            "annotationCoverage": {
+                "@id": "bia:annotationCoverage"
+            },
+            "transformationDescription": {
+                "@id": "bia:transformationDescription"
+            },
+            "spatialInformation": {
+                "@id": "bia:spatialInformation"
+            },
+            "methodType": {
+                "@id": "bia:annotationMethodType"
+            },
+            "annotationSourceIndicator": {
+                "@id": "bia:annotationSourceIndicator"
+            },
+            "biologicalEntityDescription": {
+                "@id": "bia:biologicalEntityDescription"
+            },
+            "experimentalVariableDescription": {
+                "@id": "bia:experimentalVariableDescription"
+            },
+            "extrinsicVariableDescription": {
+                "@id": "bia:extrinsicVariableDescription"
+            },
+            "intrinsicVariableDescription": {
+                "@id": "bia:intrinsicVariableDescription"
+            },
+            "organismClassification": {
+                "@id": "bia:organismClassification"
+            },
+            "growthProtocol": {
+                "@id": "bia:growthProtocol"
+            },
+            "columnName": {
+                "@id": "csvw:name"
+            },
+            "propertyUrl": {
+                "@id": "csvw:propertyUrl"
+            },
+            "role": {
+                "@id": "bia:role"
+            },
+            "contactEmail": {
+                "@id": "schema:email"
+            },
+            "imageAcquisitionProtocol": {
+                "@id": "bia:imageAcquisitionProtocol"
+            },
+            "subject": {
+                "@id": "bia:subject"
+            },
+            "protocol": {
+                "@id": "bia:protocol"
+            },
+            "annotationMethod": {
+                "@id": "bia:annotationMethod"
+            },
+            "inputImage": {
+                "@id": "bia:inputImage"
+            },
+            "description": {
+                "@id": "schema:description"
+            },
+            "associatedBiologicalEntity": {
+                "@id": "bia:associatedBiologicalEntity"
+            },
+            "associatedSpecimenImagingPreparationProtocol": {
+                "@id": "bia:associatedImagingPreparationProtocol"
+            },
+            "associatedSpecimen": {
+                "@id": "bia:associatedSubject"
+            },
+            "associatedImageAcquisitionProtocol": {
+                "@id": "bia:associatedImageAcquisitionProtocol"
+            },
+            "associatedAnnotationMethod": {
+                "@id": "bia:associatedAnnotationMethod"
+            },
+            "associatedImageAnalysisMethod": {
+                "@id": "bia:associatedAnalysisMethod"
+            },
+            "associatedImageCorrelationMethod": {
+                "@id": "bia:associatedCorrelationMethod"
+            },
+            "associatedProtocol": {
+                "@id": "bia:associatedProtocol"
+            },
+            "hasPart": {
+                "@id": "schema:hasPart"
+            },
+            "associationFileMetadata": {
+                "@id": "bia:associationFileMetadata"
+            },
+            "link": {
+                "@id": "schema:url"
+            },
+            "linkDescription": {
+                "@id": "schema:description"
+            },
+            "tableSchema": {
+                "@id": "csvw:tableSchema"
+            },
+            "resultOf": {
+                "@id": "bia:resultOf"
+            },
+            "imagingInstrumentDescription": {
+                "@id": "bia:imagingInstrumentDescription"
+            },
+            "imagingMethodName": {
+                "@id": "bia:imagingMethodName"
+            },
+            "fbbiId": {
+                "@id": "bia:fbbiId"
+            },
+            "featuresAnalysed": {
+                "@id": "bia:featuresAnalysed"
+            },
+            "fiducialsUsed": {
+                "@id": "bia:fiducialsUsed"
+            },
+            "transformationMatrix": {
+                "@id": "bia:transformationMatrix"
+            },
+            "authorNames": {
+                "@id": "bia:authorNames"
+            },
+            "signalContrastMechanismDescription": {
+                "@id": "bia:signalContrastMechanismDescription"
+            },
+            "channelContentDescription": {
+                "@id": "bia:channelContentDescription"
+            },
+            "channelBiologicalEntity": {
+                "@id": "bia:channelBiologicalEntity"
+            },
+            "channelLabel": {
+                "@id": "dc:identifier"
+            },
+            "biologicalEntity": {
+                "@id": "bia:sampleOf"
+            },
+            "imagingPreparationProtocol": {
+                "@id": "bia:imagingPreparationProtocol"
+            },
+            "signalChannelInformation": {
+                "@id": "bia:signalChannelInformation"
+            },
+            "contributor": {
+                "@id": "schema:author"
+            },
+            "licence": {
+                "@id": "schema:license"
+            },
+            "datePublished": {
+                "@id": "schema:datePublished"
+            },
+            "keyword": {
+                "@id": "schema:keywords"
+            },
+            "acknowledgement": {
+                "@id": "bia:acknowledgement"
+            },
+            "accessionId": {
+                "@id": "schema:identifier"
+            },
+            "column": {
+                "@id": "csvw:column"
+            },
+            "commonName": {
+                "@id": "bia:commonName"
+            },
+            "scientificName": {
+                "@id": "bia:scientificName"
+            }
+        }
+    ],
+    "@graph": [
+        {
+            "@id": "ro-crate-metadata.json",
+            "@type": "CreativeWork",
+            "conformsTo": {
+                "@id": "https://w3id.org/ro/crate/1.1"
+            },
+            "about": {
+                "@id": "./"
+            }
+        },
+        {
+            "@id": "./",
+            "@type": [
+                "Dataset",
+                "bia:Study"
+            ],
+            "title": "Spatiotemporal dissection of the cell cycle with single-cell proteogenomics",
+            "contributor": [
+                {
+                    "@id": "https://orcid.org/0000-0000-0111-0202"
+                }
+            ],
+            "description": "Cellular division is a fundamental source of variability between individual cells, and while studies of transcript and protein abundances have revealed several hundred genes that are regulated by the cell cycle, none provide single-cell resolution of protein expression. Here, we present the first comprehensive map of spatiotemporal heterogeneity of the human proteome by integrating proteomics at subcellular resolution, single-cell transcriptomics, and pseudotime measurements of individual cells within the cell cycle. We identify that 18% of the human proteome displays cell-to-cell variability, of which 27% is correlated to cell cycle progression, and we present the first evidence of cell cycle association for 301 proteins. Only 15% of proteomic cell cycle regulation is due to transcriptomic cycling, which points to other means of regulation such as post-translational modifications. For proteins regulated at the transcript level, we observe a 8.6 hour delay between peak expression of transcript and protein on average. This spatially resolved proteomic map of the cell cycle has been integrated into the Human Protein Atlas and serves as a valuable resource for accelerating molecular studies of the human cell cycle and cell proliferation.",
+            "licence": "https://creativecommons.org/publicdomain/zero/1.0/",
+            "datePublished": "2020-12-17",
+            "keyword": [],
+            "acknowledgement": null,
+            "hasPart": [
+                {
+                    "@id": "experimentB/"
+                }
+            ],
+            "accessionId": "S-BIADTEST_PROTOCOL_STUDY"
+        },
+        {
+            "@id": "https://orcid.org/0000-0000-0111-0202",
+            "@type": [
+                "Person",
+                "bia:Contributor"
+            ],
+            "displayName": "Test name",
+            "address": null,
+            "website": null,
+            "affiliation": [
+                {
+                    "@id": "_:o1"
+                }
+            ],
+            "role": [],
+            "contactEmail": null
+        },
+        {
+            "@id": "_:o1",
+            "@type": [
+                "Organisation",
+                "bia:Affiliation"
+            ],
+            "displayName": "Science for Life Laboratory, Tomtebodav\u00e4gen 23A, 17165, Solna, Sweden.",
+            "address": null,
+            "website": null
+        },
+        {
+            "@id": "experimentB/experimentB.tsv",
+            "@type": [
+                "File",
+                "bia:FileList",
+                "csvw:Table"
+            ],
+            "tableSchema": {
+                "@id": "_:ts0"
+            }
+        },
+        {
+            "@id": "_:ts0",
+            "@type": [
+                "csvw:Schema"
+            ],
+            "column": [
+                {
+                    "@id": "_:col0"
+                },
+                {
+                    "@id": "_:col1"
+                },
+                {
+                    "@id": "_:col2"
+                },
+                {
+                    "@id": "_:col3"
+                },
+                {
+                    "@id": "_:col4"
+                },
+                {
+                    "@id": "_:col5"
+                },
+                {
+                    "@id": "_:col6"
+                }
+            ]
+        },
+        {
+            "@id": "_:col6",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "Channels",
+            "propertyUrl": null
+        },
+        {
+            "@id": "_:col5",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "Gene Annotation Comments",
+            "propertyUrl": null
+        },
+        {
+            "@id": "_:col4",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "Gene Symbol",
+            "propertyUrl": null
+        },
+        {
+            "@id": "_:col3",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "Gene Identifier",
+            "propertyUrl": null
+        },
+        {
+            "@id": "_:col2",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "type",
+            "propertyUrl": null
+        },
+        {
+            "@id": "_:col1",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "size",
+            "propertyUrl": "http://bia/sizeInBytes"
+        },
+        {
+            "@id": "_:col0",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "path",
+            "propertyUrl": "http://bia/filePath"
+        },
+        {
+            "@id": "experimentB/",
+            "@type": [
+                "Dataset",
+                "bia:Dataset"
+            ],
+            "title": "experimentB",
+            "description": null,
+            "associatedBiologicalEntity": [],
+            "associatedSpecimenImagingPreparationProtocol": [],
+            "associatedSpecimen": null,
+            "associatedImageAcquisitionProtocol": [],
+            "associatedAnnotationMethod": [],
+            "associatedImageAnalysisMethod": [],
+            "associatedImageCorrelationMethod": [],
+            "associatedProtocol": [
+                {
+                    "@id": "_:experimentB : growth protocol"
+                },
+                {
+                    "@id": "_:experimentB : treatment protocol"
+                },
+                {
+                    "@id": "_:experimentB : image acquistion and feature extraction protocol"
+                },
+                {
+                    "@id": "_:experimentB : data analysis protocol"
+                }
+            ],
+            "hasPart": [
+                {
+                    "@id": "experimentB/experimentB.tsv"
+                }
+            ],
+            "associationFileMetadata": {
+                "@id": "experimentB/experimentB.tsv"
+            }
+        },
+        {
+            "@id": "_:experimentB : data analysis protocol",
+            "@type": [
+                "bia:Protocol"
+            ],
+            "title": "experimentB : data analysis protocol",
+            "protocolDescription": "In this work, we utilized the FUCCI system to model cell cycle position. To generate a continuous representation of cell cycle position, we utilized a polar regression based on a log-scale scatter plot of GMNN (FUCCI-green) and CDT1 (FUCCI-red), where each point represents a single cell. This data was shifted, such that the origin point lay at the center of mass. The angles of the rays from the origin to the position of each cell determined by the FUCCI marker intensities generate a representation of continuous cell cycle position. The cell-division point was calculated by finding the angle representing the lowest cell density on the polar ray from the origin. This is justified by the knowledge that the M phase, where cells express neither GMNN nor CDT1 highly, is much shorter than all other phases. The selected point was validated via visual inspection of nearby cells. This allowed us to linearize the progression of time from 0 to 1 representing the fractional distance along this polar axis from 0 to 360 degrees."
+        },
+        {
+            "@id": "_:experimentB : image acquistion and feature extraction protocol",
+            "@type": [
+                "bia:Protocol"
+            ],
+            "title": "experimentB : image acquistion and feature extraction protocol",
+            "protocolDescription": "Image acquisition of the immunostained U-2 OS FUCCI cells was performed using ImageXpress Micro XL (Molecular Device) high content screening equipped with a 40 x Plan Apo objective and supported with the MetaXpress software for automated acquisition. Images of the four channels were acquired at room temperature from six positions per sample. Four wavelengths were acquired; W1 for the microtubules DAPI-5060C filter, W2 FITC-3540C filter, W3 CY3-4040C filter and W4 CY5-4040C for the protein of interest. The images were unbinned with a pixel size of 0.1625 \u00d7 0.1625 \u00b5m. For a limited subset of samples, image acquisition of the immunostained U-2 OS FUCCI cells was performed using InCell 2200 (GE Healthcare) high content screening equipped with a 40 x Plan Apo objective. Images of the four channels were acquired at room temperature from six positions per sample. Four wavelengths were acquired; W1 for the microtubules DAPI (Excitation 390nm/Emission 435nm), W2 FITC (475 nm/511 nm) filter, W3 CY3 (542 nm/597 nm) filter and W4 CY5 (632 nm/679 nm) for the protein of interest. The images were unbinned with a pixel size of 0.1625 \u00d7 0.1625 \u00b5m. The segmentation of each cell was performed using the Cell Profiler software, where the overlay of the FUCCI tags was used for nuclei segmentation, and the microtubule staining was used for segmentation of the cell. The mean intensity of the target protein was measured in one of the three main compartments; nucleus, cytosol or cell, based on the a priori-known subcellular localization of the target protein from the HPA Cell Atlas. For each sample, we removed outliers cells with target protein intensities greater than five standard deviations above or below the mean.  The dataset analyzed in this paper consists of 264,863 cells that exhibited single cell variations during interphase. These were the remaining cells after filtering out-of-focus images, samples with negative antibody staining, samples containing antibodies that were failed in the HPA validation pipeline, samples with very few cells (< 60) due to the difficulty of analyzing cell cycle dependence, cells undergoing mitosis by excluding small nuclei (> 2 standard deviations below mean of nuclei sizes), and segmentation artifacts identified by excluding large nuclei (> 2 standard deviations above mean of nuclei sizes).To adjust for batch effects observed between plates, which were acquired with two microscopes with different dynamic ranges, the fluorescently tagged CDT1 and GMNN intensities were zero-centered and rescaled in log10 space as follows. We note that these corrections were not performed for the protein of interest because those measurements are later evaluated on a per-protein basis and not compared between samples like the FUCCI intensities. The resulting normalized intensity values ranged from 0 to 1 and had batch effects removed due to the centering of each plate around zero for both CDT1 and GMNN in log10 space."
+        },
+        {
+            "@id": "_:experimentB : treatment protocol",
+            "@type": [
+                "bia:Protocol"
+            ],
+            "title": "experimentB : treatment protocol",
+            "protocolDescription": "Immunostaining of the U-2 OS FUCCI cells5 was performed in 96-well glass bottom plates (Whatman, GE Healthcare, UK, and Greiner Sensoplate Plus, Greiner Bio-One, Germany) coated with 50 \u03bcl of 12.5 \u03bcg/ml human fibronectin (Sigma Aldrich, Darmstadt, Germany). Approximately 8,000 cells were seeded in each well and incubated at 37 \u00b0C for 24 hours. After washing with Phosphate Buffered Saline (PBS, pH=7), cells were fixed with 40 \u03bcl 4% ice cold PFA (Sigma Aldrich, Darmstadt, Germany) dissolved in growth medium supplemented with 10 % serum for 15 minutes and permeabilized with 40 \u03bcl 0.1% Triton X-100 (Sigma Aldrich) in PBS for 3x5 minutes. Rabbit polyclonal HPA antibodies targeting the proteins of interest were dissolved to 2-4 \u03bcg/ml in blocking buffer (PBS + 4% FBS) containing 1 \u03bcg/ml mouse anti-tubulin (Abcam, ab7291, Cambridge, UK). After washing with PBS, the diluted primary antibodies were added (40 \u03bcl/well) and the plates were incubated overnight at 4 \u00b0C. After overnight incubation, wells were washed with PBS for 3x10 minutes. Secondary antibodies, goat anti-mouse Alexa405 (A31553, ThermoFisher) and goat anti-rabbit Alexa647 (A21245, ThermoFisher) diluted to 2,5 \u03bcg /ml in blocking buffer were added and the plates were incubated for 90 minutes at room temperature. After washing with PBS, all wells were mounted with PBS containing 78 % glycerol before being sealed."
+        },
+        {
+            "@id": "_:experimentB : growth protocol",
+            "@type": [
+                "bia:Protocol"
+            ],
+            "title": "experimentB : growth protocol",
+            "protocolDescription": "U-2 OS FUCCI cells are endogenously tagged with two fluorescent proteins fused to cell cycle regulators to allow cell cycle monitoring; CDT1 (mKO2-hCdt1+) accumulates in G1 phase, while Geminin (mAG-hGem+) accumulates in S and G2 phases. Cells expressing FUCCI probes are divided into red mKO2(+)mAG(-), yellow mKO2(+)mAG(+), and green mKO2(-)mAG(+) emitting populations. The cells were cultivated in Petri dishes at 37 \u00b0C in a 5.0 % CO2 humidified environment in McCoy\u2019s 5A (modified) medium GlutaMAX supplement, (ThermoFisher, 36600021, MA, USA) supplemented with 10% fetal bovine serum (FBS, VWR, Radnor, PA, USA) without antibiotics. The cells were maintained sub-confluent and harvested by trypsinization at log-phase growth (60% confluency) for subsequent analysis."
+        }
+    ]
+}

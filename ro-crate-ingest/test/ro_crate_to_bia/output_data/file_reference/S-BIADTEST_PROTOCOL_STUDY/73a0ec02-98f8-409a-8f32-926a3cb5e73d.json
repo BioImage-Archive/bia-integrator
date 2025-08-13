@@ -1,0 +1,38 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "73a0ec02-98f8-409a-8f32-926a3cb5e73d",
+  "version": 0,
+  "model": {
+    "type_name": "FileReference",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "attributes_from_biostudies.File",
+      "value": {
+        "attributes": {
+          "path": "HPA043018",
+          "size": "280865015",
+          "type": "directory",
+          "Gene Identifier": "ENSG00000003249",
+          "Gene Symbol": "DBNDD1",
+          "Gene Annotation Comments": "dysbindin domain containing 1",
+          "Channels": "W1 microtubules, W2 FITC GMNN tagged  , W3 Cy3 CDT1 tagged, W4 Cy5 protein of intrest "
+        }
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "HPA043018280865015"
+      }
+    }
+  ],
+  "file_path": "HPA043018",
+  "format": "",
+  "size_in_bytes": 280865015,
+  "uri": "None?",
+  "submission_dataset_uuid": "ab729130-a750-4642-a379-fd66d1c48ef6"
+}

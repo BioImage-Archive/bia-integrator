@@ -1,0 +1,281 @@
+{
+  "accno": "S-BIADTEST_PROTOCOL_STUDY",
+  "attributes": [
+    {
+      "name": "ReleaseDate",
+      "value": "2020-12-17"
+    },
+    {
+      "name": "RootPath",
+      "value": "IDR/testuser"
+    },
+    {
+      "name": "AttachTo",
+      "value": "BioImages"
+    }
+  ],
+  "section": {
+    "type": "Study",
+    "attributes": [
+      {
+        "name": "Title",
+        "value": "Spatiotemporal dissection of the cell cycle with single-cell proteogenomics"
+      },
+      {
+        "name": "Description",
+        "value": "Cellular division is a fundamental source of variability between individual cells, and while studies of transcript and protein abundances have revealed several hundred genes that are regulated by the cell cycle, none provide single-cell resolution of protein expression. Here, we present the first comprehensive map of spatiotemporal heterogeneity of the human proteome by integrating proteomics at subcellular resolution, single-cell transcriptomics, and pseudotime measurements of individual cells within the cell cycle. We identify that 18% of the human proteome displays cell-to-cell variability, of which 27% is correlated to cell cycle progression, and we present the first evidence of cell cycle association for 301 proteins. Only 15% of proteomic cell cycle regulation is due to transcriptomic cycling, which points to other means of regulation such as post-translational modifications. For proteins regulated at the transcript level, we observe a 8.6 hour delay between peak expression of transcript and protein on average. This spatially resolved proteomic map of the cell cycle has been integrated into the Human Protein Atlas and serves as a valuable resource for accelerating molecular studies of the human cell cycle and cell proliferation."
+      },
+      {
+        "name": "Organism",
+        "value": "Homo sapiens (Human bone osteosarcoma cell line (U-2 OS cells))."
+      },
+      {
+        "name": "Keyword",
+        "value": "Proteogenomics, Single cell variation, Spatiotemporal variations, Cell cycle, proliferation markers."
+      },
+      {
+        "name": "Number of experiments",
+        "value": "1"
+      }
+    ],
+    "links": [
+      {
+        "url": "https://www.proteinatlas.org/humanproteome/cell/cell+cycle+dependent",
+        "attributes": [
+          {
+            "name": "Type",
+            "value": "External link"
+          }
+        ]
+      }
+    ],
+    "subsections": [
+      {
+        "type": "Publication",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "Spatiotemporal dissection of the cell cycle with single-cell proteogenomics"
+          },
+          {
+            "name": "Authors",
+            "value": "Diana Mahdessian, Anthony J. Cesnik, Christian Gnann, Frida Danielsson, Lovisa Stenström, Muhammad Arif, Cheng Zhang, Trang Le, Fredric Johansson, Rutger Shutten, Anna Bäckström, Ulrika Axelsson, Peter Thul, Nathan H. Cho, Oana Carja, Mathias Uhlén, Adil Mardinoglu, Charlotte Stadler, Cecilia Lindskog, Burcu Ayoglu, Manuel D. Leonetti, Fredrik Pontén, Devin Sullivan, Emma Lundberg"
+          }
+        ],
+        "links": [
+          {
+            "url": "doi: https://doi.org/10.1101/543231",
+            "attributes": [
+              {
+                "name": "Type",
+                "value": "DOI"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "Author",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Test name"
+          },
+          {
+            "name": "Email",
+            "value": "test@example.co.uk"
+          },
+          {
+            "name": "ORCID",
+            "value": "https://orcid.org/0000-0000-0111-0202"
+          },
+          {
+            "name": "affiliation",
+            "value": "o1",
+            "reference": true
+          }
+        ]
+      },
+      {
+        "accno": "o1",
+        "type": "Organization",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Science for Life Laboratory, Tomtebodavägen 23A, 17165, Solna, Sweden."
+          }
+        ]
+      },
+      {
+        "accno": "experimentB",
+        "type": "Experiment",
+        "attributes": [
+          {
+            "name": "Description",
+            "value": "Screening of 1,166 proteins identified to show cell to cell variability for in-depth analysis of protein localisation and abundance using immunofluorescence in U-OS FUCCI cells over the course of the cell cycle."
+          },
+          {
+            "name": "Experiment size",
+            "value": "5D Images: 1 plane"
+          },
+          {
+            "name": "Experiment size",
+            "value": "Average Image Dimension (XYZCT): 2160x2160x1x4x1"
+          },
+          {
+            "name": "Experiment size",
+            "value": "Total Tb: 0.3"
+          },
+          {
+            "name": "Imaging Method",
+            "value": "fluorescence microscopy",
+            "valqual": [
+              {
+                "name": "Ontology",
+                "value": "Fbbi"
+              },
+              {
+                "name": "TermId",
+                "value": "FBbi_00000246"
+              }
+            ]
+          },
+          {
+            "name": "Phenotype",
+            "value": "Cell cycle dependent (CCD).",
+            "valqual": [
+              {
+                "name": "Description",
+                "value": "We utilized the FUCCI system to model cell cycle position. To generate a continuous representation of cell cycle position, we utilized a polar regression based on a log-scale scatter plot of GMNN (FUCCI-green) and CDT1 (FUCCI-red), where each point represents a single cell. The percent explained variance is used to describe the quality of our moving average model fit. It describes the portion of data which a certain mathematical model accounts for, in our case the moving average of protein along the pseudotime axis. An additional 8% percent variance than random was required for a protein to be called significantly CCD, otherwise the protein is marked as non-CCD."
+              },
+              {
+                "name": "Score type",
+                "value": "automatic"
+              }
+            ]
+          },
+          {
+            "name": "Phenotype",
+            "value": "Non Cell cycle dependent (non-CCD)."
+          },
+          {
+            "name": "Quality control description",
+            "value": "The experiments were conducted under sterile and controlled conditions."
+          },
+          {
+            "name": "Characteristics [Organism]",
+            "value": "Homo sapiens"
+          },
+          {
+            "name": "Experimental Condition",
+            "value": "Antibody"
+          },
+          {
+            "name": "Characteristics [Cell Line]",
+            "value": "U-2 OS"
+          },
+          {
+            "name": "File List",
+            "value": "experimentB.json"
+          }
+        ],
+        "files": [
+          {
+            "path": "experimentB-processed.txt",
+            "size": 158385,
+            "attributes": [
+              {
+                "name": "Type",
+                "value": "processed data"
+              },
+              {
+                "name": "Format",
+                "value": "tab-delimited text"
+              }
+            ],
+            "type": "file"
+          }
+        ],
+        "subsections": [
+          {
+            "accno": "experimentB : growth protocol",
+            "type": "Protocol",
+            "attributes": [
+              {
+                "name": "Type",
+                "value": "growth protocol",
+                "valqual": [
+                  {
+                    "name": "Ontology",
+                    "value": "EFO"
+                  },
+                  {
+                    "name": "TermId",
+                    "value": "EFO_0003789"
+                  }
+                ]
+              },
+              {
+                "name": "Description",
+                "value": "U-2 OS FUCCI cells are endogenously tagged with two fluorescent proteins fused to cell cycle regulators to allow cell cycle monitoring; CDT1 (mKO2-hCdt1+) accumulates in G1 phase, while Geminin (mAG-hGem+) accumulates in S and G2 phases. Cells expressing FUCCI probes are divided into red mKO2(+)mAG(-), yellow mKO2(+)mAG(+), and green mKO2(-)mAG(+) emitting populations. The cells were cultivated in Petri dishes at 37 °C in a 5.0 % CO2 humidified environment in McCoy’s 5A (modified) medium GlutaMAX supplement, (ThermoFisher, 36600021, MA, USA) supplemented with 10% fetal bovine serum (FBS, VWR, Radnor, PA, USA) without antibiotics. The cells were maintained sub-confluent and harvested by trypsinization at log-phase growth (60% confluency) for subsequent analysis."
+              }
+            ]
+          },
+          {
+            "accno": "experimentB : treatment protocol",
+            "type": "Protocol",
+            "attributes": [
+              {
+                "name": "Type",
+                "value": "treatment protocol",
+                "valqual": [
+                  {
+                    "name": "Ontology",
+                    "value": "EFO"
+                  },
+                  {
+                    "name": "TermId",
+                    "value": "EFO_0003969"
+                  }
+                ]
+              },
+              {
+                "name": "Description",
+                "value": "Immunostaining of the U-2 OS FUCCI cells5 was performed in 96-well glass bottom plates (Whatman, GE Healthcare, UK, and Greiner Sensoplate Plus, Greiner Bio-One, Germany) coated with 50 μl of 12.5 μg/ml human fibronectin (Sigma Aldrich, Darmstadt, Germany). Approximately 8,000 cells were seeded in each well and incubated at 37 °C for 24 hours. After washing with Phosphate Buffered Saline (PBS, pH=7), cells were fixed with 40 μl 4% ice cold PFA (Sigma Aldrich, Darmstadt, Germany) dissolved in growth medium supplemented with 10 % serum for 15 minutes and permeabilized with 40 μl 0.1% Triton X-100 (Sigma Aldrich) in PBS for 3x5 minutes. Rabbit polyclonal HPA antibodies targeting the proteins of interest were dissolved to 2-4 μg/ml in blocking buffer (PBS + 4% FBS) containing 1 μg/ml mouse anti-tubulin (Abcam, ab7291, Cambridge, UK). After washing with PBS, the diluted primary antibodies were added (40 μl/well) and the plates were incubated overnight at 4 °C. After overnight incubation, wells were washed with PBS for 3x10 minutes. Secondary antibodies, goat anti-mouse Alexa405 (A31553, ThermoFisher) and goat anti-rabbit Alexa647 (A21245, ThermoFisher) diluted to 2,5 μg /ml in blocking buffer were added and the plates were incubated for 90 minutes at room temperature. After washing with PBS, all wells were mounted with PBS containing 78 % glycerol before being sealed."
+              }
+            ]
+          },
+          {
+            "accno": "experimentB : image acquistion and feature extraction protocol",
+            "type": "Protocol",
+            "attributes": [
+              {
+                "name": "Type",
+                "value": "image acquistion and feature extraction protocol"
+              },
+              {
+                "name": "Description",
+                "value": "Image acquisition of the immunostained U-2 OS FUCCI cells was performed using ImageXpress Micro XL (Molecular Device) high content screening equipped with a 40 x Plan Apo objective and supported with the MetaXpress software for automated acquisition. Images of the four channels were acquired at room temperature from six positions per sample. Four wavelengths were acquired; W1 for the microtubules DAPI-5060C filter, W2 FITC-3540C filter, W3 CY3-4040C filter and W4 CY5-4040C for the protein of interest. The images were unbinned with a pixel size of 0.1625 × 0.1625 µm. For a limited subset of samples, image acquisition of the immunostained U-2 OS FUCCI cells was performed using InCell 2200 (GE Healthcare) high content screening equipped with a 40 x Plan Apo objective. Images of the four channels were acquired at room temperature from six positions per sample. Four wavelengths were acquired; W1 for the microtubules DAPI (Excitation 390nm/Emission 435nm), W2 FITC (475 nm/511 nm) filter, W3 CY3 (542 nm/597 nm) filter and W4 CY5 (632 nm/679 nm) for the protein of interest. The images were unbinned with a pixel size of 0.1625 × 0.1625 µm. The segmentation of each cell was performed using the Cell Profiler software, where the overlay of the FUCCI tags was used for nuclei segmentation, and the microtubule staining was used for segmentation of the cell. The mean intensity of the target protein was measured in one of the three main compartments; nucleus, cytosol or cell, based on the a priori-known subcellular localization of the target protein from the HPA Cell Atlas. For each sample, we removed outliers cells with target protein intensities greater than five standard deviations above or below the mean.  The dataset analyzed in this paper consists of 264,863 cells that exhibited single cell variations during interphase. These were the remaining cells after filtering out-of-focus images, samples with negative antibody staining, samples containing antibodies that were failed in the HPA validation pipeline, samples with very few cells (< 60) due to the difficulty of analyzing cell cycle dependence, cells undergoing mitosis by excluding small nuclei (> 2 standard deviations below mean of nuclei sizes), and segmentation artifacts identified by excluding large nuclei (> 2 standard deviations above mean of nuclei sizes).To adjust for batch effects observed between plates, which were acquired with two microscopes with different dynamic ranges, the fluorescently tagged CDT1 and GMNN intensities were zero-centered and rescaled in log10 space as follows. We note that these corrections were not performed for the protein of interest because those measurements are later evaluated on a per-protein basis and not compared between samples like the FUCCI intensities. The resulting normalized intensity values ranged from 0 to 1 and had batch effects removed due to the centering of each plate around zero for both CDT1 and GMNN in log10 space."
+              }
+            ]
+          },
+          {
+            "accno": "experimentB : data analysis protocol",
+            "type": "Protocol",
+            "attributes": [
+              {
+                "name": "Type",
+                "value": "data analysis protocol"
+              },
+              {
+                "name": "Description",
+                "value": "In this work, we utilized the FUCCI system to model cell cycle position. To generate a continuous representation of cell cycle position, we utilized a polar regression based on a log-scale scatter plot of GMNN (FUCCI-green) and CDT1 (FUCCI-red), where each point represents a single cell. This data was shifted, such that the origin point lay at the center of mass. The angles of the rays from the origin to the position of each cell determined by the FUCCI marker intensities generate a representation of continuous cell cycle position. The cell-division point was calculated by finding the angle representing the lowest cell density on the polar ray from the origin. This is justified by the knowledge that the M phase, where cells express neither GMNN nor CDT1 highly, is much shorter than all other phases. The selected point was validated via visual inspection of nearby cells. This allowed us to linearize the progression of time from 0 to 1 representing the fractional distance along this polar axis from 0 to 360 degrees."
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "type": "submission"
+}

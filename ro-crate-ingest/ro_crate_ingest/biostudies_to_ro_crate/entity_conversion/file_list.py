@@ -10,6 +10,7 @@ from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_api import (
 from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_parsing_utils import (
     find_file_lists_under_section,
     find_sections_recursive,
+    find_sections_with_filelists_recursive,
 )
 from pathlib import Path
 from bia_shared_datamodels import ro_crate_models
@@ -45,6 +46,7 @@ def create_file_list(
     dataset_sections: list[Section] = []
     find_sections_recursive(submission.section, ["Study Component"], dataset_sections)
     find_sections_recursive(submission.section, ["Annotations"], dataset_sections)
+    find_sections_with_filelists_recursive(submission.section, dataset_sections)
 
     column_by_name_url: dict[str, dict[str, ro_crate_models.Column]] = {}
     schema_list: list[ro_crate_models.TableSchema] = []

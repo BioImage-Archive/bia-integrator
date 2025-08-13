@@ -1,0 +1,36 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "ab729130-a750-4642-a379-fd66d1c48ef6",
+  "version": 0,
+  "model": {
+    "type_name": "Dataset",
+    "version": 2
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "protocol_uuid",
+      "value": {
+        "protocol_uuid": [
+          "d45c9958-cf8e-4182-a42d-c1a626b63b9b",
+          "52d20ac5-bfb4-4c50-af7a-047e358d6f68",
+          "f603f065-17f5-4634-9627-80356ac5b1f2",
+          "b87c51df-afb9-4a3f-aae1-a87a5f2c0021"
+        ]
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "experimentB"
+      }
+    }
+  ],
+  "title": "experimentB",
+  "description": null,
+  "analysis_method": [],
+  "correlation_method": [],
+  "example_image_uri": [],
+  "submitted_in_study_uuid": "7e075f96-7042-4ce3-bb72-24403253a5a9"
+}
