@@ -1,0 +1,61 @@
+{
+  "EMPIAR-IMAGEPATTERNTEST": {
+    "imagesets": [
+      {
+        "segmentations": [],
+        "name": "Cryo Serial FIB/SEM of HeLa cells",
+        "directory": "data/HeLa",
+        "category": "micrographs - single frame",
+        "header_format": "TIFF",
+        "data_format": "TIFF",
+        "num_images_or_tilt_series": 46,
+        "frames_per_image": 1,
+        "frame_range_min": null,
+        "frame_range_max": null,
+        "voxel_type": "BIT",
+        "pixel_width": null,
+        "pixel_height": null,
+        "micrographs_file_pattern": "",
+        "picked_particles_file_pattern": "",
+        "picked_particles_directory": "",
+        "details": "",
+        "image_width": null,
+        "image_height": null
+      }
+    ],
+    "workflow_file": null,
+    "grant_references": [
+      {
+        "funding_body": "Wellcome Trust",
+        "code": "220526/Z/20/Z",
+        "country": "United Kingdom"
+      }
+    ],
+    "version_history": [],
+    "title": "Cryo serial FIB/SEM of HeLa cells",
+    "principal_investigator": [],
+    "status": "REL",
+    "deposition_date": "2023-01-25",
+    "release_date": "2023-02-28",
+    "obsolete_date": null,
+    "update_date": "2023-04-14",
+    "corresponding_author": {},
+    "authors": [
+      {
+        "author": {
+          "name": "Test",
+          "author_orcid": null
+        }
+      }
+    ],
+    "cross_references": [],
+    "biostudies_references": [],
+    "idr_references": [],
+    "empiar_references": [],
+    "citation": [],
+    "dataset_size": "6.7 GB",
+    "experiment_type": "FIB-SEM",
+    "scale": "virus",
+    "entry_doi": "10.6019/EMPIAR-11419"
+  }
+}

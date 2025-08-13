@@ -106,26 +106,13 @@ def expand_dataframe_metadata(
     return file_list_df
 
 
-def find_image_label(row: pd.Series, yaml_entry: dict) -> Optional[str]:
-    file_path: Path = row["file_path"]
-    path = file_path.as_posix()
-    if row["dataset_ref"] in yaml_entry["datasets"]:
-        dataset = yaml_entry["datasets"][row["dataset_ref"]]
-        for image in dataset["assigned_images"]:
-            pattern = image["file_pattern"]
-            result = parse.parse(pattern, path)
-            if result is not None:
-                return image["label"]
-    return None
-
-
 def find_matching_imageset_and_images(
     row: pd.Series,
     dir_to_imageset_map: dict[Path, str],
     additional_files_pattern_to_dataset_map: dict[str, str],
     imageset_to_dataset_id: dict[str, StopIteration],
     yaml_dataset_by_title: dict,
-) -> Optional[str]:
+) -> pd.Series:
     file_path: Path = row["file_path"]
 
     path = file_path.as_posix()
