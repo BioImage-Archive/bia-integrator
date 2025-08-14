@@ -1,0 +1,21 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "1b77dc38-9072-4e26-9759-4b45b0433aea",
+  "version": 0,
+  "model": {
+    "type_name": "SpecimenImagingPreparationProtocol",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Cryo-FIB/SEM sample preparation"
+      }
+    }
+  ],
+  "title": "Cryo-FIB/SEM sample preparation",
+  "protocol_description": "Cells were seeded onto gold grids (either 'UltrAuFoil' 200 Au mesh, R2/2 gold film, or Quantifoil 300 Au mesh, R2/2 carbon film) and grown to 50% confluency. Grids were then plunge-frozen in nitrogen-cooled liquid ethane using a Vitrobot. To protect the leading edge while milling and reduce surface topography, an organic platinum layer of ~1-2 µm was deposited using a gas injection system, followed by two sputter-coated platinum layers before and after the organic platinum layer.",
+  "signal_channel_information": []
+}

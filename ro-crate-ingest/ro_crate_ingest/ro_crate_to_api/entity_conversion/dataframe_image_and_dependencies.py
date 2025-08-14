@@ -252,6 +252,7 @@ def create_image(
     accession_id: str,
     persistence_mode: PersistenceMode,
 ):
+    import pandas as pd
 
     model_dict = {
         "uuid": row["image_uuid"],
@@ -261,6 +262,7 @@ def create_image(
         "object_creator": APIModels.Provenance.BIA_INGEST,
         "original_file_reference_uuid": row["file_ref_uuids"],
         "additional_metadata": [row["image_uuid_attribute"]],
+        "label": (row["image_label"] if not pd.isna(row["image_label"]) else None),
     }
 
     persist(
