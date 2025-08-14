@@ -206,8 +206,15 @@ def accepted_image_extensions(path: str) -> list[str]:
 
 def select_file_list_source_image_id(row: dict) -> Optional[str]:
     info_from_file_list = row.get("info_from_file_list", nan)
+    source_image_id = nan
     if not pd.isna(info_from_file_list):
         if "http://bia/sourceImagePath" in info_from_file_list:
-            return info_from_file_list["http://bia/sourceImagePath"]
+            sid = info_from_file_list["http://bia/sourceImagePath"]
+            if sid != "":
+                source_image_id = sid
         elif "http://bia/sourceImageName" in info_from_file_list:
-            return info_from_file_list["http://bia/sourceImageName"]
+            sid = info_from_file_list["http://bia/sourceImageName"]
+            if sid != "":
+                source_image_id = sid
+
+    return source_image_id

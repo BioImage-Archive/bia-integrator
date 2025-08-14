@@ -87,7 +87,7 @@ def prep_image_data_row(
     # Use ro-crate creation process, if provided
     if image_id in crate_objects_by_id:
         roc_image: ro_crate_models.Image = crate_objects_by_id[image_id]
-        image_label = roc_image.name
+        image_label = roc_image.label
         if roc_image.resultOf:
             creation_process_id = roc_image.resultOf.id
             creation_process: ro_crate_models.CreationProcess = crate_objects_by_id[

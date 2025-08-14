@@ -444,7 +444,7 @@
                 "csvw:Column"
             ],
             "columnName": "source_image",
-            "propertyUrl": "http://bia/sourceImagePath"
+            "propertyUrl": "http://bia/sourceImageName"
         }
     ]
 }

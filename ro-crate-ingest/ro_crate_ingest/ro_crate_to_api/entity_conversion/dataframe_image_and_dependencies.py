@@ -207,7 +207,7 @@ def create_creation_process(
 
     if not pd.isna(first_entry["source_image_id_from_filelist"]):
         input_image_uuid = [
-            image_id_uuid_map.get(x)
+            image_id_uuid_map[x]
             for x in first_entry["source_image_id_from_filelist"]
         ]
     else:
