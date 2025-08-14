@@ -40,12 +40,21 @@ def ro_crate_to_bia(
             help="Mode to persist the data. Options: local_file, local_api, bia_api",
         ),
     ] = PersistenceMode.LOCAL_FILE,
+    file_ref_url_prefix: Annotated[
+        Optional[str],
+        typer.Option(
+            "--url-prefix",
+            "-u",
+            case_sensitive=False,
+            help="File url prefix for file reference creation.",
+        ),
+    ] = None,
 ):
     crate_path = crate_path.resolve()
     if crate_path.name == "ro-crate-metadata.json":
         crate_path = crate_path.parent
 
-    convert_ro_crate_to_bia_api(crate_path, persistence_mode)
+    convert_ro_crate_to_bia_api(crate_path, persistence_mode, file_ref_url_prefix)
 
 
 @ro_crate_ingest.command("biostudies-to-roc")
@@ -88,3 +97,4 @@ def empiar_to_ro_crate(
 ):
 
     convert_empiar_proposal_to_ro_crate(proposal_path, crate_path)
+

@@ -6,6 +6,11 @@ import bia_shared_datamodels.attribute_models as AttributeModels
 import logging
 from bia_shared_datamodels.package_specific_uuid_creation.ro_crate_uuid_creation import (
     create_dataset_uuid,
+    create_bio_sample_uuid,
+    create_protocol_uuid,
+    create_image_acquisition_protocol_uuid,
+    create_annotation_method_uuid,
+    create_specimen_imaging_preparation_protocol_uuid,
 )
 
 logger = logging.getLogger("__main__." + __name__)
@@ -66,21 +71,30 @@ def dataset_attribute_links_with_uuids(
 ) -> list[dict]:
     additional_metadata = []
 
-    field_attribute_pairs = [
-        ("associatedImageAcquisitionProtocol", "image_acquisition_protocol_uuid"),
+    field_attribute_map = [
+        (
+            "associatedImageAcquisitionProtocol",
+            "image_acquisition_protocol_uuid",
+            create_image_acquisition_protocol_uuid,
+        ),
         (
             "associatedSpecimenImagingPreparationProtocol",
             "specimen_imaging_preparation_protocol_uuid",
+            create_specimen_imaging_preparation_protocol_uuid,
         ),
-        ("associatedBiologicalEntity", "bio_sample_uuid"),
-        ("associatedAnnotationMethod", "annotation_method_uuid"),
-        ("associatedProtocol", "protocol_uuid"),
+        (
+            "associatedAnnotationMethod",
+            "annotation_method_uuid",
+            create_annotation_method_uuid,
+        ),
+        ("associatedBiologicalEntity", "bio_sample_uuid", create_bio_sample_uuid),
+        ("associatedProtocol", "protocol_uuid", create_protocol_uuid),
     ]
 
-    for field, attribute_name in field_attribute_pairs:
+    for field, attribute_name, uuid_func in field_attribute_map:
         if len(getattr(ro_crate_dataset, field)) > 0:
             uuids = [
-                str(uuid_creation.create_annotation_method_uuid(study_uuid, x.id))
+                str(uuid_func(study_uuid, x.id)[0])
                 for x in getattr(ro_crate_dataset, field)
             ]
             additional_metadata.append(

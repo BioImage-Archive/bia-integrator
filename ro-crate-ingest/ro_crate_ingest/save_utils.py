@@ -44,18 +44,11 @@ def save_local_file(
 
     local_cache_dir = Path(get_settings().bia_data_dir)
 
-    if not os.path.exists(local_cache_dir):
-        os.makedirs(get_settings().bia_data_dir)
-
     object_type_dir = local_cache_dir / to_snake(object_type.__name__)
-
-    if not os.path.exists(object_type_dir):
-        os.makedirs(object_type_dir)
 
     object_dir = object_type_dir / accession_id
 
-    if not os.path.exists(object_dir):
-        os.makedirs(object_dir)
+    os.makedirs(object_dir, exist_ok=True)
 
     for document in objects_to_save:
         round_trip_object_class_from_client_to_datamodel(document)
@@ -106,11 +99,21 @@ def save_api(
         post_function = getattr(client, api_creation_method)
         try:
             post_function(api_obj)
-        except ApiException:
-            api_copy_of_obj = fetch_document(object_type, obj, client)
-            if api_copy_of_obj and round_trip_object_class_from_client_to_datamodel(api_obj) != api_copy_of_obj:
-                obj.version = api_copy_of_obj.version + 1
-                post_function(api_obj)
+        except ApiException as e:
+            if e.reason == "Conflict":
+                api_copy_of_obj = fetch_document(object_type, obj, client)
+                if (
+                    api_copy_of_obj
+                    and round_trip_object_class_from_client_to_datamodel(api_obj)
+                    != api_copy_of_obj
+                ):
+                    logger.info(
+                        f"Updating: {api_copy_of_obj.uuid} and bumping version."
+                    )
+                    obj.version = api_copy_of_obj.version + 1
+                    post_function(api_obj)
+            else:
+                raise e
 
 
 def persist(

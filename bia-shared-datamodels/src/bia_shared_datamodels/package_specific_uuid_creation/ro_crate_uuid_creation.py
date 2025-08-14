@@ -75,3 +75,37 @@ def create_image_acquisition_protocol_uuid(
         ),
         shared.create_unique_str_attribute(unique_string, Provenance.bia_ingest),
     )
+
+
+
+def create_specimen_uuid(
+    study_uuid: str,
+    ro_crate_id: str,
+) -> tuple[UUID, attribute_models.DocumentUUIDUinqueInputAttribute]:
+    """
+    This is for creating a specimen object assuming it was included in the ro-crate.
+    """
+    unique_string = f"{ro_crate_id}".lstrip("_:")
+    return (
+        uuid_creation.create_specimen_uuid(
+            study_uuid=study_uuid, unique_string=unique_string
+        ),
+        shared.create_unique_str_attribute(unique_string, Provenance.bia_ingest),
+    )
+
+
+def create_creation_process_uuid(
+    study_uuid: str,
+    ro_crate_id: str,
+) -> tuple[UUID, attribute_models.DocumentUUIDUinqueInputAttribute]:
+    """
+    This is for creating a creation process object assuming it was included in the ro-crate.
+    """
+    unique_string = f"{ro_crate_id}".lstrip("_:")
+    return (
+        uuid_creation.create_creation_process_uuid(
+            study_uuid=study_uuid, unique_string=unique_string
+        ),
+        shared.create_unique_str_attribute(unique_string, Provenance.bia_ingest),
+    )
+

@@ -12,7 +12,7 @@
       "name": "image_acquisition_protocol_uuid",
       "value": {
         "image_acquisition_protocol_uuid": [
-          "e2a4192f-dcc8-4a8b-a40d-5b66aa43670e"
+          "04c217ef-0db2-4208-a5c5-266bdd0fea1d"
         ]
       }
     },
@@ -21,7 +21,7 @@
       "name": "specimen_imaging_preparation_protocol_uuid",
       "value": {
         "specimen_imaging_preparation_protocol_uuid": [
-          "e5ab90df-1a99-4996-9046-02fc4377dd56"
+          "fae0666a-31db-4768-8920-b6d6cad98907"
         ]
       }
     },
@@ -30,7 +30,7 @@
       "name": "bio_sample_uuid",
       "value": {
         "bio_sample_uuid": [
-          "5196f13c-5bf2-46c6-8091-3fae1db37660"
+          "ad4d4922-1e34-449c-8196-df1ea9d43f7a"
         ]
       }
     },

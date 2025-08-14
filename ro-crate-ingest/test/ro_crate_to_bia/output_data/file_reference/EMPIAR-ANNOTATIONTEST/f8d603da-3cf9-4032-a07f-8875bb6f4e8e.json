@@ -9,25 +9,23 @@
   "additional_metadata": [
     {
       "provenance": "bia_ingest",
-      "name": "attributes_from_biostudies.File",
+      "name": "uuid_unique_input",
       "value": {
-        "attributes": {
-          "file_path": "data/ribosomes/Tomograms/05/IS002_291013_005.mrc",
-          "size_in_bytes": "12"
-        }
+        "uuid_unique_input": "data/ribosomes/Tomograms/05/IS002_291013_005.mrc12"
       }
     },
     {
       "provenance": "bia_ingest",
-      "name": "uuid_unique_input",
+      "name": "attributes_from_file_list",
       "value": {
-        "uuid_unique_input": "data/ribosomes/Tomograms/05/IS002_291013_005.mrc12"
+        "http://bia/filePath": "data/ribosomes/Tomograms/05/IS002_291013_005.mrc",
+        "http://bia/sizeInBytes": "12"
       }
     }
   ],
   "file_path": "data/ribosomes/Tomograms/05/IS002_291013_005.mrc",
   "format": ".mrc",
   "size_in_bytes": 12,
-  "uri": "None?",
+  "uri": "https://ftp.ebi.ac.uk/empiar/world_availability/ANNOTATIONTEST/data/data/ribosomes/Tomograms/05/IS002_291013_005.mrc",
   "submission_dataset_uuid": "897615f4-a993-42db-878e-507056332e9e"
 }

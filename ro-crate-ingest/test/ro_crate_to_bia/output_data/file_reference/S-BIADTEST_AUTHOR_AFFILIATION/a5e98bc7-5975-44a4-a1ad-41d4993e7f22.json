@@ -1,0 +1,23 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "a5e98bc7-5975-44a4-a1ad-41d4993e7f22",
+  "version": 0,
+  "model": {
+    "type_name": "FileReference",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Study Component-1/file_list_test_1.tsv191"
+      }
+    }
+  ],
+  "file_path": "Study Component-1/file_list_test_1.tsv",
+  "format": ".tsv",
+  "size_in_bytes": 191,
+  "uri": "https://www.ebi.ac.uk/biostudies/files/S-BIADTEST_AUTHOR_AFFILIATION/Study Component-1/file_list_test_1.tsv",
+  "submission_dataset_uuid": "429b635f-45ee-40de-86fe-9f481b8b5a9a"
+}

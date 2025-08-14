@@ -9,20 +9,18 @@
   "additional_metadata": [
     {
       "provenance": "bia_ingest",
-      "name": "attributes_from_biostudies.File",
+      "name": "uuid_unique_input",
       "value": {
-        "attributes": {
-          "file_path": "data/annotations/WD2.1_21-02_WT_confocalonly_segmented.ome.zarr.zip",
-          "image_name": "WD2.1_21-02_WT_confocalonly_segmented",
-          "source_image": "data/images/WD2.1_21-02_WT_confocalonly.ome.zarr"
-        }
+        "uuid_unique_input": "data/annotations/WD2.1_21-02_WT_confocalonly_segmented.ome.zarr.zip958385"
       }
     },
     {
       "provenance": "bia_ingest",
-      "name": "uuid_unique_input",
+      "name": "attributes_from_file_list",
       "value": {
-        "uuid_unique_input": "data/annotations/WD2.1_21-02_WT_confocalonly_segmented.ome.zarr.zip958385"
+        "http://bia/filePath": "data/annotations/WD2.1_21-02_WT_confocalonly_segmented.ome.zarr.zip",
+        "http://schema.org/name": "WD2.1_21-02_WT_confocalonly_segmented",
+        "http://bia/sourceImagePath": "data/images/WD2.1_21-02_WT_confocalonly.ome.zarr"
       }
     }
   ],
