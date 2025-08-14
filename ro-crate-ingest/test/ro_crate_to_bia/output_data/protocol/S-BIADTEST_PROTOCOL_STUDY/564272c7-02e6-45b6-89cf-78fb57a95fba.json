@@ -1,6 +1,6 @@
 {
   "object_creator": "bia_ingest",
-  "uuid": "bfd19b91-42a8-4109-9dc4-f7c31ff4b18f",
+  "uuid": "564272c7-02e6-45b6-89cf-78fb57a95fba",
   "version": 0,
   "model": {
     "type_name": "Protocol",
@@ -11,7 +11,7 @@
       "provenance": "bia_ingest",
       "name": "uuid_unique_input",
       "value": {
-        "uuid_unique_input": "_:experimentB : data analysis protocol"
+        "uuid_unique_input": "experimentB : data analysis protocol"
       }
     }
   ],

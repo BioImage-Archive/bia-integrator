@@ -1,6 +1,6 @@
 {
   "object_creator": "bia_ingest",
-  "uuid": "528ea2b9-b297-40d0-84b0-4e30ecbd5b42",
+  "uuid": "4b412519-120a-47b0-b5e3-c06a06b238a8",
   "version": 0,
   "model": {
     "type_name": "Protocol",
@@ -11,7 +11,7 @@
       "provenance": "bia_ingest",
       "name": "uuid_unique_input",
       "value": {
-        "uuid_unique_input": "_:experimentB : growth protocol"
+        "uuid_unique_input": "experimentB : growth protocol"
       }
     }
   ],

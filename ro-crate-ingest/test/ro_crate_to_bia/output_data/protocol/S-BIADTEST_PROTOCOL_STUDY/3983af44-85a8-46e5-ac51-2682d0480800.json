@@ -1,6 +1,6 @@
 {
   "object_creator": "bia_ingest",
-  "uuid": "0e431b4a-38ce-4c09-bc21-207d61d5ca7f",
+  "uuid": "3983af44-85a8-46e5-ac51-2682d0480800",
   "version": 0,
   "model": {
     "type_name": "Protocol",
@@ -11,7 +11,7 @@
       "provenance": "bia_ingest",
       "name": "uuid_unique_input",
       "value": {
-        "uuid_unique_input": "_:experimentB : treatment protocol"
+        "uuid_unique_input": "experimentB : treatment protocol"
       }
     }
   ],

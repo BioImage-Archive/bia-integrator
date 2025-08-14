@@ -1,6 +1,6 @@
 {
   "object_creator": "bia_ingest",
-  "uuid": "20a8ffd0-bf74-402f-817a-6dbe57b736bc",
+  "uuid": "9094eed1-c332-4f45-add1-dc6e153ceb56",
   "version": 0,
   "model": {
     "type_name": "Protocol",
@@ -11,7 +11,7 @@
       "provenance": "bia_ingest",
       "name": "uuid_unique_input",
       "value": {
-        "uuid_unique_input": "_:_Specimen-2"
+        "uuid_unique_input": "Specimen-2"
       }
     }
   ],

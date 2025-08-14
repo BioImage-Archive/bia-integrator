@@ -1,6 +1,6 @@
 {
   "object_creator": "bia_ingest",
-  "uuid": "ccfe22e8-c742-4606-8af5-8d7b8bdbe8d0",
+  "uuid": "8a9e3e7e-3034-47ec-ae5f-0332052ca33e",
   "version": 0,
   "model": {
     "type_name": "Protocol",
@@ -11,7 +11,7 @@
       "provenance": "bia_ingest",
       "name": "uuid_unique_input",
       "value": {
-        "uuid_unique_input": "_:experimentB : image acquistion and feature extraction protocol"
+        "uuid_unique_input": "experimentB : image acquistion and feature extraction protocol"
       }
     }
   ],
