@@ -98,6 +98,3 @@ def empiar_to_ro_crate(
 
     convert_empiar_proposal_to_ro_crate(proposal_path, crate_path)
 
-
-if __name__ == "__main__":
-    ro_crate_ingest()

@@ -99,7 +99,7 @@ def create_creation_process_uuid(
     ro_crate_id: str,
 ) -> tuple[UUID, attribute_models.DocumentUUIDUinqueInputAttribute]:
     """
-    This is for creating a specimen object assuming it was included in the ro-crate.
+    This is for creating a creation process object assuming it was included in the ro-crate.
     """
     unique_string = f"{ro_crate_id}".lstrip("_:")
     return (
