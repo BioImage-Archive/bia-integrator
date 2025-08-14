@@ -19,7 +19,8 @@
       "name": "attributes_from_file_list",
       "value": {
         "http://bia/filePath": "data/ribosomes/Tomograms/07/IS002_291013_007.mrc",
-        "http://bia/sizeInBytes": "12"
+        "http://bia/sizeInBytes": "12",
+        "http://schema.org/name": ""
       }
     }
   ],

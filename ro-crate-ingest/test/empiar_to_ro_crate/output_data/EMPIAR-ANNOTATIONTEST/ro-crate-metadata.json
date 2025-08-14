@@ -70,6 +70,9 @@
             "role": {
                 "@id": "bia:role"
             },
+            "label": {
+                "@id": "schema:name"
+            },
             "contactEmail": {
                 "@id": "schema:email"
             },
@@ -280,6 +283,14 @@
             }
         },
         {
+            "@id": "_:col2",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "image_label",
+            "propertyUrl": "http://schema.org/name"
+        },
+        {
             "@id": "_:col1",
             "@type": [
                 "csvw:Column"
@@ -306,6 +317,9 @@
                 },
                 {
                     "@id": "_:col1"
+                },
+                {
+                    "@id": "_:col2"
                 }
             ]
         },

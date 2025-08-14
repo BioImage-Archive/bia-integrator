@@ -4,6 +4,7 @@ import pytest
 import os
 from dotenv import dotenv_values
 from bia_integrator_api.util import get_client
+import json
 
 
 def pytest_configure(config: pytest.Config):
@@ -49,3 +50,32 @@ def related_ontologies():
     )
 
     return schema + dc + rdf
+
+
+def get_expected_ro_crate_directory(accession_id: str, source_folder: str) -> dict:
+    return Path(__file__).parent / source_folder / "output_data" / accession_id
+
+
+def get_expected_ro_crate_metadata(accession_id: str, source_folder: str) -> dict:
+    expected_ro_crate_metadata_path = (
+        get_expected_ro_crate_directory(accession_id, source_folder)
+        / "ro-crate-metadata.json"
+    )
+
+    with open(expected_ro_crate_metadata_path) as f:
+        return json.loads(f.read())
+
+
+def get_created_ro_crate_metadata(base_path: Path, accession_id: str):
+    created_metatadata_path = base_path / accession_id / "ro-crate-metadata.json"
+
+    with open(created_metatadata_path) as f:
+        return json.loads(f.read())
+
+
+def expected_path_to_created_path(
+    expected_path: str, output_dir: Path, source_folder: str
+) -> Path:
+    expected_output_base = Path(__file__).parent / source_folder / "output_data"
+    relative = Path(expected_path).relative_to(expected_output_base)
+    return output_dir / relative

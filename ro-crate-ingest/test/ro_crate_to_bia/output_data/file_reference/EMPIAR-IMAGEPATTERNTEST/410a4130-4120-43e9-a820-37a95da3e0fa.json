@@ -1,0 +1,32 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "410a4130-4120-43e9-a820-37a95da3e0fa",
+  "version": 0,
+  "model": {
+    "type_name": "FileReference",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "data/HeLa/Raw SEM images/param.pdf0"
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "attributes_from_file_list",
+      "value": {
+        "http://bia/filePath": "data/HeLa/Raw SEM images/param.pdf",
+        "http://bia/sizeInBytes": "0",
+        "http://schema.org/name": ""
+      }
+    }
+  ],
+  "file_path": "data/HeLa/Raw SEM images/param.pdf",
+  "format": ".pdf",
+  "size_in_bytes": 0,
+  "uri": "https://ftp.ebi.ac.uk/empiar/world_availability/IMAGEPATTERNTEST/data/data/HeLa/Raw SEM images/param.pdf",
+  "submission_dataset_uuid": "8745e192-ad53-4a7f-adba-200cdeab3d95"
+}

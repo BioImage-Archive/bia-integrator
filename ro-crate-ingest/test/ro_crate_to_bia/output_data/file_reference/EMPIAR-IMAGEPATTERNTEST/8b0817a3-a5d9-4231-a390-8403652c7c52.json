@@ -1,0 +1,32 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "8b0817a3-a5d9-4231-a390-8403652c7c52",
+  "version": 0,
+  "model": {
+    "type_name": "FileReference",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "data/HeLa/Raw SEM images/SEM Image - SliceImage - 001.tif12"
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "attributes_from_file_list",
+      "value": {
+        "http://bia/filePath": "data/HeLa/Raw SEM images/SEM Image - SliceImage - 001.tif",
+        "http://bia/sizeInBytes": "12",
+        "http://schema.org/name": "Cryo-serial pFIB/SEM of HeLa cell"
+      }
+    }
+  ],
+  "file_path": "data/HeLa/Raw SEM images/SEM Image - SliceImage - 001.tif",
+  "format": ".tif",
+  "size_in_bytes": 12,
+  "uri": "https://ftp.ebi.ac.uk/empiar/world_availability/IMAGEPATTERNTEST/data/data/HeLa/Raw SEM images/SEM Image - SliceImage - 001.tif",
+  "submission_dataset_uuid": "8745e192-ad53-4a7f-adba-200cdeab3d95"
+}

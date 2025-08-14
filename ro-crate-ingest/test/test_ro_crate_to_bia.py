@@ -82,7 +82,7 @@ def test_ingest_biostudies_ro_crate_metadata_with_api(
     )
 
 
-@pytest.mark.parametrize("accession_id", ["EMPIAR-ANNOTATIONTEST"])
+@pytest.mark.parametrize("accession_id", ["EMPIAR-ANNOTATIONTEST", "EMPIAR-IMAGEPATTERNTEST"])
 def test_ingest_empiar_ro_crate_metadata(accession_id: str, tmp_bia_data_dir: Path):
 
     crate_path = get_empiar_to_ro_crate_path(accession_id)
@@ -92,7 +92,7 @@ def test_ingest_empiar_ro_crate_metadata(accession_id: str, tmp_bia_data_dir: Pa
     )
 
 
-@pytest.mark.parametrize("accession_id", ["EMPIAR-ANNOTATIONTEST"])
+@pytest.mark.parametrize("accession_id", ["EMPIAR-ANNOTATIONTEST", "EMPIAR-IMAGEPATTERNTEST"])
 def test_ingest_empiar_ro_crate_metadata_with_api(
     accession_id: str, get_bia_api_client
 ):

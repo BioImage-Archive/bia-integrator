@@ -32,9 +32,7 @@ def prepare_all_ids_for_images(
     study_uuid: str,
     max_workers: int,
 ) -> tuple[pd.DataFrame, dict[str, str]]:
-    image_by_group: pd.DataFrame = image_dataframe.groupby(
-        "image_id", dropna=True
-    )
+    image_by_group: pd.DataFrame = image_dataframe.groupby("image_id", dropna=True)
 
     with ProcessPoolExecutor(max_workers=max_workers) as executor:
         results = list(
@@ -58,8 +56,12 @@ def prepare_all_ids_for_images(
 
 
 def prep_image_data_row(
-    group_df: pd.DataFrame, crate_objects_by_id: dict[str, ROCrateModel], study_uuid: str
+    group_df: pd.DataFrame,
+    crate_objects_by_id: dict[str, ROCrateModel],
+    study_uuid: str,
 ):
+    import pandas as pd
+
     image_id = group_df[0]
     df = group_df[1]
     file_uuids = list(df["file_ref_uuid"])
@@ -67,6 +69,7 @@ def prep_image_data_row(
         study_uuid, file_uuids, APIModels.Provenance.BIA_INGEST
     )
 
+    image_label = None
     creation_process_id = None
     creation_process_uuid = None
     creation_process_uuid_attr = None
@@ -84,6 +87,7 @@ def prep_image_data_row(
     # Use ro-crate creation process, if provided
     if image_id in crate_objects_by_id:
         roc_image: ro_crate_models.Image = crate_objects_by_id[image_id]
+        image_label = roc_image.label
         if roc_image.resultOf:
             creation_process_id = roc_image.resultOf.id
             creation_process: ro_crate_models.CreationProcess = crate_objects_by_id[
@@ -172,6 +176,10 @@ def prep_image_data_row(
     else:
         source_image_id = np.nan
 
+    filelist_label_index = df["image_label_from_filelist"].first_valid_index()
+    if not image_label and filelist_label_index:
+        image_label = str(df["image_label_from_filelist"].loc[filelist_label_index])
+
     return pd.Series(
         {
             "file_ref_uuids": file_uuids,
@@ -179,6 +187,7 @@ def prep_image_data_row(
             "dataset_uuid": flatten_set_of_same_values(df["dataset_uuid"]),
             "image_id": flatten_set_of_same_values(df["image_id"]),
             "image_uuid": str(image_uuid),
+            "image_label": image_label,
             "image_uuid_attribute": image_uuid_attribute.model_dump(),
             "source_image_id_from_filelist": source_image_id,
             "creation_process_id": creation_process_id,

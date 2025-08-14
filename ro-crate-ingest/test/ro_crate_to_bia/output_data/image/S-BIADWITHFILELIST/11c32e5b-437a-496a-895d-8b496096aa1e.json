@@ -1,0 +1,24 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "11c32e5b-437a-496a-895d-8b496096aa1e",
+  "version": 0,
+  "model": {
+    "type_name": "Image",
+    "version": 2
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "727dc7ac-1242-449e-b14c-37a60fcad1a9"
+      }
+    }
+  ],
+  "label": "WD1_15-02_WT_confocalonly",
+  "submission_dataset_uuid": "bc1eb45b-6844-4ec2-b6e8-8eb50ddefcf7",
+  "creation_process_uuid": "a7312c64-a81f-4e3c-b3ae-67b3efc30885",
+  "original_file_reference_uuid": [
+    "727dc7ac-1242-449e-b14c-37a60fcad1a9"
+  ]
+}

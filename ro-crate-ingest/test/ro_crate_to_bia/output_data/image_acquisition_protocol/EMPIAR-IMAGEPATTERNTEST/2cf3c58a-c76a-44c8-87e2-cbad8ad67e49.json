@@ -1,0 +1,27 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "2cf3c58a-c76a-44c8-87e2-cbad8ad67e49",
+  "version": 0,
+  "model": {
+    "type_name": "ImageAcquisitionProtocol",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Cryo-serial pFIB/SEM"
+      }
+    }
+  ],
+  "title": "Cryo-serial pFIB/SEM",
+  "protocol_description": "Serial plasma FIB/SEM imaging was performed on a dual-beam FIB/SEM 'Helios G4 Hydra' equipped with an Aquilos II type cryo-stage, a four source 'Hydra' plasma ion column and an 'Elstar' SEM column. The samples were loaded into a custom purpose 25° pre-tilt holder. Imaging parameters used were: argon plasma source at 20 kV and 0.2 nA for milling, with SEM imaging at 1.25 kV, 6.25 pA beam current, 100 ns dwell time, and 100 line integrations. The electron dose was under 10−2 e−/Å2.",
+  "imaging_instrument_description": "Helios G4 Hydra FIB/SEM (Thermo Fisher Scientific) with Aquilos II cryo-stage",
+  "fbbi_id": [
+    "obo:FBbi_00050000"
+  ],
+  "imaging_method_name": [
+    "Cryo-FIB/SEM"
+  ]
+}

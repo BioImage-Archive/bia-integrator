@@ -1,0 +1,24 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "5002eca4-5e25-4c2c-83c9-91434c93bfac",
+  "version": 0,
+  "model": {
+    "type_name": "Specimen",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "57b2dff5-06bf-42d1-bb75-c62c43bb909b"
+      }
+    }
+  ],
+  "imaging_preparation_protocol_uuid": [
+    "1b77dc38-9072-4e26-9759-4b45b0433aea"
+  ],
+  "sample_of_uuid": [
+    "c4efe1c7-cff8-443f-8f2c-af532591e2fb"
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "c4efe1c7-cff8-443f-8f2c-af532591e2fb",
+  "version": 0,
+  "model": {
+    "type_name": "BioSample",
+    "version": 4
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "HeLa cells"
+      }
+    }
+  ],
+  "title": "_:HeLa cells",
+  "organism_classification": [
+    {
+      "additional_metadata": [],
+      "common_name": "human cervical cancer cells",
+      "scientific_name": "Homo sapiens",
+      "ncbi_id": null
+    }
+  ],
+  "biological_entity_description": "HeLa cells (CCL-2, ATCC) grown in high glucose DMEM with non-essential amino acids supplemented with 10% FBS, 1% penicillin/streptomycin, and 1% glutamine at 37°C and 5% CO2",
+  "experimental_variable_description": [],
+  "extrinsic_variable_description": [],
+  "intrinsic_variable_description": [],
+  "growth_protocol_uuid": null
+}

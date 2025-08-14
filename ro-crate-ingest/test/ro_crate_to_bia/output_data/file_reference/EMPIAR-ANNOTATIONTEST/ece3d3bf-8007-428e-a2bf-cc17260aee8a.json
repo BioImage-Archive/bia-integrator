@@ -1,6 +1,6 @@
 {
   "object_creator": "bia_ingest",
-  "uuid": "fddc11d2-7275-4bbd-95de-39e719eabc30",
+  "uuid": "ece3d3bf-8007-428e-a2bf-cc17260aee8a",
   "version": 0,
   "model": {
     "type_name": "FileReference",
@@ -11,13 +11,13 @@
       "provenance": "bia_ingest",
       "name": "uuid_unique_input",
       "value": {
-        "uuid_unique_input": "Raw data and also processed datafor sub-tomogram averaging of S. cerevisiae 80S ribosomes data/file_list.tsv180"
+        "uuid_unique_input": "Raw data and also processed datafor sub-tomogram averaging of S. cerevisiae 80S ribosomes data/file_list.tsv217"
       }
     }
   ],
   "file_path": "Raw data and also processed datafor sub-tomogram averaging of S. cerevisiae 80S ribosomes data/file_list.tsv",
   "format": ".tsv",
-  "size_in_bytes": 180,
+  "size_in_bytes": 217,
   "uri": "https://ftp.ebi.ac.uk/empiar/world_availability/ANNOTATIONTEST/data/Raw data and also processed datafor sub-tomogram averaging of S. cerevisiae 80S ribosomes data/file_list.tsv",
   "submission_dataset_uuid": "897615f4-a993-42db-878e-507056332e9e"
 }

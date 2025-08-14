@@ -191,4 +191,6 @@ def write_filelist(
     filelist_path = ro_crate_data_entity_id_to_path(output_ro_crate_path, filelist_id)
     if not os.path.exists(filelist_path.parent):
         os.makedirs(filelist_path.parent)
+
+    filelist_dataframe.sort_values(axis=0, by=filelist_dataframe.columns[0], inplace=True)
     filelist_dataframe.to_csv(filelist_path, sep="\t", index=False)

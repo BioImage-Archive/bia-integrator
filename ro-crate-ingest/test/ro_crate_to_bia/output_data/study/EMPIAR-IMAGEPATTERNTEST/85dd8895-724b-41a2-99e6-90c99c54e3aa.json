@@ -1,0 +1,41 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "85dd8895-724b-41a2-99e6-90c99c54e3aa",
+  "version": 0,
+  "model": {
+    "type_name": "Study",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "EMPIAR-IMAGEPATTERNTEST"
+      }
+    }
+  ],
+  "accession_id": "EMPIAR-IMAGEPATTERNTEST",
+  "licence": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "author": [
+    {
+      "rorid": null,
+      "address": null,
+      "website": null,
+      "orcid": null,
+      "display_name": "Test",
+      "affiliation": [],
+      "contact_email": null,
+      "role": []
+    }
+  ],
+  "title": "Cryo serial FIB/SEM of HeLa cells",
+  "release_date": "2023-02-28",
+  "description": "",
+  "keyword": [],
+  "acknowledgement": null,
+  "see_also": [],
+  "related_publication": [],
+  "grant": [],
+  "funding_statement": null
+}
