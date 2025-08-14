@@ -60,4 +60,4 @@ def test_biostudies_to_ro_crate(accession_id: str, tmp_bia_data_dir: Path):
             )
             expected_tsv = pd.read_csv(expected_file, sep="\t")
             created_tsv = pd.read_csv(created_file_path, sep="\t")
-            assert expected_tsv.equals(created_tsv)
+            pd.testing.assert_frame_equal(expected_tsv, created_tsv)
