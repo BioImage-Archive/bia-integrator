@@ -2,6 +2,7 @@ import logging
 from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_parsing_utils import (
     attributes_to_dict,
     find_sections_recursive,
+    find_sections_with_filelists_recursive,
 )
 from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_api import (
     Submission,
@@ -28,6 +29,7 @@ def get_datasets_by_accno(
     image_analysis_methods: dict[str, ro_crate_models.ImageAnalysisMethod],
     image_correlation_method: dict[str, ro_crate_models.ImageCorrelationMethod],
     bio_samples_association: dict[str, dict[Optional[str], str]],
+    protocols: dict[str, ro_crate_models.Protocol],
 ) -> dict[str, ro_crate_models.Dataset]:
 
     study_comp_sections = find_sections_recursive(
@@ -36,6 +38,10 @@ def get_datasets_by_accno(
 
     annotation_sections = find_sections_recursive(
         submission.section, ["Annotations"], []
+    )
+
+    generic_section_with_filelist = find_sections_with_filelists_recursive(
+        submission.section, ignore_types=["Study Component", "Annotations"]
     )
 
     datasets_by_accno = {}
@@ -55,6 +61,11 @@ def get_datasets_by_accno(
     for section in annotation_sections:
         datasets_by_accno[section.accno] = get_dataset_from_annotation_component(
             section, annotation_methods
+        )
+
+    for section in generic_section_with_filelist:
+        datasets_by_accno[section.accno] = get_dataset_from_generic_filelist_section(
+            section, protocols
         )
 
     return datasets_by_accno
@@ -100,8 +111,35 @@ def get_dataset_from_annotation_component(
         ],
         "hasPart": [filelist_id_ref],
         "associationFileMetadata": filelist_id_ref,
+    }
+    return ro_crate_models.Dataset(**model_dict)
+
+
+def get_dataset_from_generic_filelist_section(
+    section: Section, protocols: dict[str, ro_crate_models.Protocol]
+):
+    id = f"{quote(section.accno)}/"
+
+    attr_dict = attributes_to_dict(section.attributes)
+    filelist_id_ref = {"@id": get_filelist_reference(id, section)}
+
+    protocol_subsections_ids = [
+        protocol.accno
+        for protocol in find_sections_recursive(section, ["Protocol"])
+    ]
+
+    model_dict = {
+        "@id": id,
+        "@type": ["Dataset", "bia:Dataset"],
+        "title": f"{section.accno}",
+        "description": attr_dict.get("Description", None),
+        "associatedProtocol": [
+            {"@id": protocols[accno].id} for accno in protocol_subsections_ids
+        ],
+        "hasPart": [filelist_id_ref],
         "associationFileMetadata": filelist_id_ref,
     }
+
     return ro_crate_models.Dataset(**model_dict)
 
 

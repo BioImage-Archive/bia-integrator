@@ -1,0 +1,23 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "41173779-d4bf-4d15-ac0b-73cee7d881ba",
+  "version": 0,
+  "model": {
+    "type_name": "FileReference",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "experimentB/experimentB.tsv435"
+      }
+    }
+  ],
+  "file_path": "experimentB/experimentB.tsv",
+  "format": ".tsv",
+  "size_in_bytes": 435,
+  "uri": "https://www.ebi.ac.uk/biostudies/files/S-BIADTEST_PROTOCOL_STUDY/experimentB/experimentB.tsv",
+  "submission_dataset_uuid": "ab729130-a750-4642-a379-fd66d1c48ef6"
+}

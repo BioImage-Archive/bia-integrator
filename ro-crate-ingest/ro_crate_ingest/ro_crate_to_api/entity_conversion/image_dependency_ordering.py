@@ -1,5 +1,8 @@
 import bia_shared_datamodels.ro_crate_models as ROCrateModels
 
+# NOTE: this code is not currently in use, since using dataframe processing. However, the new processing mode cannot handle 3 + levels of image dependency. I.e:
+# Image3 -resultOf-> Creation Process 3 -inputImage-> Image2 -resultOf-> Creation Process 2 -inputImage-> Image1
+# If we want to handle that case, this code may be useful once again.
 
 def calculate_dependency_chain_length(
     creation_process_by_id: dict[str, ROCrateModels.CreationProcess],

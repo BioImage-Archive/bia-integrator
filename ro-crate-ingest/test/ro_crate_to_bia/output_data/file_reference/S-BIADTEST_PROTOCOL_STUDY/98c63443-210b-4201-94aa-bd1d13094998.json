@@ -1,0 +1,36 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "98c63443-210b-4201-94aa-bd1d13094998",
+  "version": 0,
+  "model": {
+    "type_name": "FileReference",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "HPA012567233935740"
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "attributes_from_file_list",
+      "value": {
+        "http://bia/filePath": "HPA012567",
+        "http://bia/sizeInBytes": "233935740",
+        "type": "directory",
+        "Gene Identifier": "ENSG00000003137",
+        "Gene Symbol": "CYP26B1",
+        "Gene Annotation Comments": "cytochrome P450 family 26 subfamily B member 1",
+        "Channels": "W1 microtubules, W2 FITC GMNN tagged  , W3 Cy3 CDT1 tagged, W4 Cy5 protein of intrest "
+      }
+    }
+  ],
+  "file_path": "HPA012567",
+  "format": "",
+  "size_in_bytes": 233935740,
+  "uri": "https://www.ebi.ac.uk/biostudies/files/S-BIADTEST_PROTOCOL_STUDY/HPA012567",
+  "submission_dataset_uuid": "ab729130-a750-4642-a379-fd66d1c48ef6"
+}

@@ -1,0 +1,20 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "4b412519-120a-47b0-b5e3-c06a06b238a8",
+  "version": 0,
+  "model": {
+    "type_name": "Protocol",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "experimentB : growth protocol"
+      }
+    }
+  ],
+  "title": "experimentB : growth protocol",
+  "protocol_description": "U-2 OS FUCCI cells are endogenously tagged with two fluorescent proteins fused to cell cycle regulators to allow cell cycle monitoring; CDT1 (mKO2-hCdt1+) accumulates in G1 phase, while Geminin (mAG-hGem+) accumulates in S and G2 phases. Cells expressing FUCCI probes are divided into red mKO2(+)mAG(-), yellow mKO2(+)mAG(+), and green mKO2(-)mAG(+) emitting populations. The cells were cultivated in Petri dishes at 37 °C in a 5.0 % CO2 humidified environment in McCoy’s 5A (modified) medium GlutaMAX supplement, (ThermoFisher, 36600021, MA, USA) supplemented with 10% fetal bovine serum (FBS, VWR, Radnor, PA, USA) without antibiotics. The cells were maintained sub-confluent and harvested by trypsinization at log-phase growth (60% confluency) for subsequent analysis."
+}

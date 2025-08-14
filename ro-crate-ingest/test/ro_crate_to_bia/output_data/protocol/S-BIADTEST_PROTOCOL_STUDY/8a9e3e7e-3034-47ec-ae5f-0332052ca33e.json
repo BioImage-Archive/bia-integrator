@@ -1,0 +1,20 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "8a9e3e7e-3034-47ec-ae5f-0332052ca33e",
+  "version": 0,
+  "model": {
+    "type_name": "Protocol",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "experimentB : image acquistion and feature extraction protocol"
+      }
+    }
+  ],
+  "title": "experimentB : image acquistion and feature extraction protocol",
+  "protocol_description": "Image acquisition of the immunostained U-2 OS FUCCI cells was performed using ImageXpress Micro XL (Molecular Device) high content screening equipped with a 40 x Plan Apo objective and supported with the MetaXpress software for automated acquisition. Images of the four channels were acquired at room temperature from six positions per sample. Four wavelengths were acquired; W1 for the microtubules DAPI-5060C filter, W2 FITC-3540C filter, W3 CY3-4040C filter and W4 CY5-4040C for the protein of interest. The images were unbinned with a pixel size of 0.1625 × 0.1625 µm. For a limited subset of samples, image acquisition of the immunostained U-2 OS FUCCI cells was performed using InCell 2200 (GE Healthcare) high content screening equipped with a 40 x Plan Apo objective. Images of the four channels were acquired at room temperature from six positions per sample. Four wavelengths were acquired; W1 for the microtubules DAPI (Excitation 390nm/Emission 435nm), W2 FITC (475 nm/511 nm) filter, W3 CY3 (542 nm/597 nm) filter and W4 CY5 (632 nm/679 nm) for the protein of interest. The images were unbinned with a pixel size of 0.1625 × 0.1625 µm. The segmentation of each cell was performed using the Cell Profiler software, where the overlay of the FUCCI tags was used for nuclei segmentation, and the microtubule staining was used for segmentation of the cell. The mean intensity of the target protein was measured in one of the three main compartments; nucleus, cytosol or cell, based on the a priori-known subcellular localization of the target protein from the HPA Cell Atlas. For each sample, we removed outliers cells with target protein intensities greater than five standard deviations above or below the mean.  The dataset analyzed in this paper consists of 264,863 cells that exhibited single cell variations during interphase. These were the remaining cells after filtering out-of-focus images, samples with negative antibody staining, samples containing antibodies that were failed in the HPA validation pipeline, samples with very few cells (< 60) due to the difficulty of analyzing cell cycle dependence, cells undergoing mitosis by excluding small nuclei (> 2 standard deviations below mean of nuclei sizes), and segmentation artifacts identified by excluding large nuclei (> 2 standard deviations above mean of nuclei sizes).To adjust for batch effects observed between plates, which were acquired with two microscopes with different dynamic ranges, the fluorescently tagged CDT1 and GMNN intensities were zero-centered and rescaled in log10 space as follows. We note that these corrections were not performed for the protein of interest because those measurements are later evaluated on a per-protein basis and not compared between samples like the FUCCI intensities. The resulting normalized intensity values ranged from 0 to 1 and had batch effects removed due to the centering of each plate around zero for both CDT1 and GMNN in log10 space."
+}

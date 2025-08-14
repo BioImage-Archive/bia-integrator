@@ -1,0 +1,48 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "7e075f96-7042-4ce3-bb72-24403253a5a9",
+  "version": 0,
+  "model": {
+    "type_name": "Study",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "S-BIADTEST_PROTOCOL_STUDY"
+      }
+    }
+  ],
+  "accession_id": "S-BIADTEST_PROTOCOL_STUDY",
+  "licence": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "author": [
+    {
+      "rorid": null,
+      "address": null,
+      "website": null,
+      "orcid": "https://orcid.org/0000-0000-0111-0202",
+      "display_name": "Test name",
+      "affiliation": [
+        {
+          "rorid": null,
+          "address": null,
+          "website": null,
+          "display_name": "Science for Life Laboratory, Tomtebodavägen 23A, 17165, Solna, Sweden."
+        }
+      ],
+      "contact_email": null,
+      "role": []
+    }
+  ],
+  "title": "Spatiotemporal dissection of the cell cycle with single-cell proteogenomics",
+  "release_date": "2020-12-17",
+  "description": "Cellular division is a fundamental source of variability between individual cells, and while studies of transcript and protein abundances have revealed several hundred genes that are regulated by the cell cycle, none provide single-cell resolution of protein expression. Here, we present the first comprehensive map of spatiotemporal heterogeneity of the human proteome by integrating proteomics at subcellular resolution, single-cell transcriptomics, and pseudotime measurements of individual cells within the cell cycle. We identify that 18% of the human proteome displays cell-to-cell variability, of which 27% is correlated to cell cycle progression, and we present the first evidence of cell cycle association for 301 proteins. Only 15% of proteomic cell cycle regulation is due to transcriptomic cycling, which points to other means of regulation such as post-translational modifications. For proteins regulated at the transcript level, we observe a 8.6 hour delay between peak expression of transcript and protein on average. This spatially resolved proteomic map of the cell cycle has been integrated into the Human Protein Atlas and serves as a valuable resource for accelerating molecular studies of the human cell cycle and cell proliferation.",
+  "keyword": [],
+  "acknowledgement": null,
+  "see_also": [],
+  "related_publication": [],
+  "grant": [],
+  "funding_statement": null
+}

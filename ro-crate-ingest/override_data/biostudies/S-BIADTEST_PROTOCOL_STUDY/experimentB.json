@@ -1,0 +1,49 @@
+
+[
+  {
+    "path": "HPA012567",
+    "size": 233935740,
+    "attributes": [
+      {
+        "name": "Gene Identifier",
+        "value": "ENSG00000003137"
+      },
+      {
+        "name": "Gene Symbol",
+        "value": "CYP26B1"
+      },
+      {
+        "name": "Gene Annotation Comments",
+        "value": "cytochrome P450 family 26 subfamily B member 1"
+      },
+      {
+        "name": "Channels",
+        "value": "W1 microtubules, W2 FITC GMNN tagged  , W3 Cy3 CDT1 tagged, W4 Cy5 protein of intrest "
+      }
+    ],
+    "type": "directory"
+  },
+  {
+    "path": "HPA043018",
+    "size": 280865015,
+    "attributes": [
+      {
+        "name": "Gene Identifier",
+        "value": "ENSG00000003249"
+      },
+      {
+        "name": "Gene Symbol",
+        "value": "DBNDD1"
+      },
+      {
+        "name": "Gene Annotation Comments",
+        "value": "dysbindin domain containing 1"
+      },
+      {
+        "name": "Channels",
+        "value": "W1 microtubules, W2 FITC GMNN tagged  , W3 Cy3 CDT1 tagged, W4 Cy5 protein of intrest "
+      }
+    ],
+    "type": "directory"
+  }
+]

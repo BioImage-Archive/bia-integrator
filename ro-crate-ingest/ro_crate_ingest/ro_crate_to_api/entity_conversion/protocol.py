@@ -1,5 +1,7 @@
 from bia_shared_datamodels.linked_data.pydantic_ld.ROCrateModel import ROCrateModel
-from bia_shared_datamodels import uuid_creation
+from bia_shared_datamodels.package_specific_uuid_creation.ro_crate_uuid_creation import (
+    create_protocol_uuid,
+)
 import bia_integrator_api.models as APIModels
 import bia_shared_datamodels.ro_crate_models as ROCrateModels
 import bia_shared_datamodels.attribute_models as AttributeModels
@@ -36,21 +38,15 @@ def convert_protocol(
     elif ro_crate_protocol.id:
         title = ro_crate_protocol.id
 
+    uuid, uuid_attr = create_protocol_uuid(study_uuid, ro_crate_protocol.id)
+
     protocol = {
-        "uuid": str(
-            uuid_creation.create_protocol_uuid(study_uuid, ro_crate_protocol.id)
-        ),
+        "uuid": str(uuid),
         "title": title,
         "protocol_description": ro_crate_protocol.protocolDescription,
         "version": 0,
         "object_creator": APIModels.Provenance.BIA_INGEST,
-        "additional_metadata": [
-            AttributeModels.DocumentUUIDUinqueInputAttribute(
-                provenance=APIModels.Provenance.BIA_INGEST,
-                name="uuid_unique_input",
-                value={"uuid_unique_input": ro_crate_protocol.id},
-            ).model_dump()
-        ],
+        "additional_metadata": [uuid_attr.model_dump()],
     }
 
     return APIModels.Protocol(**protocol)

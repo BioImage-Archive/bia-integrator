@@ -1,0 +1,3 @@
+path	size	type	Gene Identifier	Gene Symbol	Gene Annotation Comments	Channels
+HPA012567	233935740	directory	ENSG00000003137	CYP26B1	cytochrome P450 family 26 subfamily B member 1	W1 microtubules, W2 FITC GMNN tagged  , W3 Cy3 CDT1 tagged, W4 Cy5 protein of intrest 
+HPA043018	280865015	directory	ENSG00000003249	DBNDD1	dysbindin domain containing 1	W1 microtubules, W2 FITC GMNN tagged  , W3 Cy3 CDT1 tagged, W4 Cy5 protein of intrest 
