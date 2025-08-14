@@ -9,30 +9,28 @@
   "additional_metadata": [
     {
       "provenance": "bia_ingest",
-      "name": "attributes_from_biostudies.File",
+      "name": "uuid_unique_input",
       "value": {
-        "attributes": {
-          "path": "HPA043018",
-          "size": "280865015",
-          "type": "directory",
-          "Gene Identifier": "ENSG00000003249",
-          "Gene Symbol": "DBNDD1",
-          "Gene Annotation Comments": "dysbindin domain containing 1",
-          "Channels": "W1 microtubules, W2 FITC GMNN tagged  , W3 Cy3 CDT1 tagged, W4 Cy5 protein of intrest "
-        }
+        "uuid_unique_input": "HPA043018280865015"
       }
     },
     {
       "provenance": "bia_ingest",
-      "name": "uuid_unique_input",
+      "name": "attributes_from_file_list",
       "value": {
-        "uuid_unique_input": "HPA043018280865015"
+        "http://bia/filePath": "HPA043018",
+        "http://bia/sizeInBytes": "280865015",
+        "type": "directory",
+        "Gene Identifier": "ENSG00000003249",
+        "Gene Symbol": "DBNDD1",
+        "Gene Annotation Comments": "dysbindin domain containing 1",
+        "Channels": "W1 microtubules, W2 FITC GMNN tagged  , W3 Cy3 CDT1 tagged, W4 Cy5 protein of intrest "
       }
     }
   ],
   "file_path": "HPA043018",
   "format": "",
   "size_in_bytes": 280865015,
-  "uri": "None?",
+  "uri": "https://www.ebi.ac.uk/biostudies/files/S-BIADTEST_PROTOCOL_STUDY/HPA043018",
   "submission_dataset_uuid": "ab729130-a750-4642-a379-fd66d1c48ef6"
 }
