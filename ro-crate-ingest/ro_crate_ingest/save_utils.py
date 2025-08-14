@@ -192,5 +192,5 @@ def write_filelist(
     if not os.path.exists(filelist_path.parent):
         os.makedirs(filelist_path.parent)
 
-    filelist_dataframe.sort_values(axis=0, by=filelist_dataframe.columns[0])
+    filelist_dataframe.sort_values(axis=0, by=filelist_dataframe.columns[0], inplace=True)
     filelist_dataframe.to_csv(filelist_path, sep="\t", index=False)
