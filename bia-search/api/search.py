@@ -10,9 +10,13 @@ router = APIRouter(prefix="/search")
 async def fts(
     elastic: Annotated[Elastic, Depends(get_elastic)],
     query: Annotated[str | None, Query()] = None,
-    organism: Annotated[list[str] | None, Query(max_length=4)] = None,
-    imaging_method: Annotated[list[str] | None, Query(max_length=4)] = None,
-    year: Annotated[list[str] | None, Query(max_length=4)] = None,
+    organism: Annotated[
+        list[str] | None, Query(max_length=4, alias="facet.organism")
+    ] = None,
+    imaging_method: Annotated[
+        list[str] | None, Query(max_length=4, alias="facet.imaging_method")
+    ] = None,
+    year: Annotated[list[str] | None, Query(max_length=4, alias="facet.year")] = None,
 ) -> dict:
     filters = []
     if organism:
@@ -68,7 +72,7 @@ async def fts(
         ]
         query_body["bool"]["minimum_should_match"] = 1
     rsp = await elastic.client.search(
-        index=elastic.index,
+        index=elastic.index_study,
         query=query_body,
         aggs={
             "scientific_name": {
@@ -89,6 +93,40 @@ async def fts(
                 }
             },
         },
+        size=50,
+    )
+
+    return {
+        "hits": rsp.body["hits"],
+        "facets": rsp.body["aggregations"],
+    }
+
+
+@router.get("/fts/image")
+async def fts_image(
+    elastic: Annotated[Elastic, Depends(get_elastic)],
+    query: Annotated[str | None, Query()] = None,
+) -> dict:
+    filters = []
+    query_body = {
+        "bool": {
+            "filter": filters,
+        }
+    }
+
+    if query:
+        query_body["bool"]["should"] = [{"match": {"uuid": query}}]
+        query_body["bool"]["minimum_should_match"] = 1
+
+    rsp = await elastic.client.search(
+        index=elastic.index_image,
+        query={
+            "bool": {
+                "should": [{"match": {"uuid": query}}],
+                "minimum_should_match": 1,
+            }
+        },
+        aggs={"image_format": {"terms": {"field": "representation.image_format"}}},
         size=50,
     )
 

@@ -27,7 +27,7 @@ async def elastic():
         return
 
     try:
-        await el.client.indices.delete(index="test_index")
+        await el.client.indices.delete(index=[el.index_study, el.index_image])
     except:
         pass
 
@@ -39,7 +39,13 @@ async def elastic():
     response = await el.client.bulk(body=test_data)
     assert not response.body["errors"]
 
-    await el.client.indices.refresh(index="test_index")
+    test_data = (
+        pathlib.Path(__file__).parent / "test_data" / "bia-image-metadata.json.bulk"
+    ).read_text()
+    response = await el.client.bulk(body=test_data)
+    assert not response.body["errors"]
+
+    await el.client.indices.refresh(index=[el.index_study, el.index_image])
 
     yield el
 
