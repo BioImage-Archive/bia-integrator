@@ -1,0 +1,4 @@
+file_path	size_in_bytes	type	label	source_image_label	associated_annotation_method	associated_protocol
+data/211206/tomograms/211206.star	71	http://bia/AnnotationData	Coordinates from subtomogram averaging of GEM2 particles for dataset 1 (211206)	['Tomogram TS_016', 'Tomogram TS_019']		
+data/211206/tomograms/TS_016.mrc_aretomo.mrc	16	http://bia/Image	Tomogram TS_016	Tilt series TS_016		
+data/211206/tomograms/TS_019.mrc_aretomo.mrc	16	http://bia/Image	Tomogram TS_019	Tilt series TS_019		

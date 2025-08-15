@@ -1,0 +1,25 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "dbc5b328-21a4-478a-a6f9-01c53a90c61b",
+  "version": 0,
+  "model": {
+    "type_name": "Image",
+    "version": 2
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "485a1ea7-19d2-4ce4-b1d2-bc252dda3c9c cb417807-328d-4fd7-a7b9-66b69870dd03"
+      }
+    }
+  ],
+  "label": "Unaligned, unbinned, multi-frame micrograph TS_008",
+  "submission_dataset_uuid": "c5edec32-e491-4b05-8ed9-1ee09f23155d",
+  "creation_process_uuid": "12aaf755-97f1-4ac8-9a5d-578e4bdb181e",
+  "original_file_reference_uuid": [
+    "485a1ea7-19d2-4ce4-b1d2-bc252dda3c9c",
+    "cb417807-328d-4fd7-a7b9-66b69870dd03"
+  ]
+}

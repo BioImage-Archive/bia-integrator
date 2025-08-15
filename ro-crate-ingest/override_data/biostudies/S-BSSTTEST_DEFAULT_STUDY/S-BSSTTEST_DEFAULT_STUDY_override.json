@@ -1,0 +1,236 @@
+{
+  "accno": "S-BSSTTEST_DEFAULT_STUDY",
+  "attributes": [
+    {
+      "name": "Template",
+      "value": "Default"
+    },
+    {
+      "name": "Title",
+      "value": "Targeting the Pregnane X Receptor Using Microbial Metabolite Mimicry"
+    },
+    {
+      "name": "ReleaseDate",
+      "value": "2019-12-13"
+    },
+    {
+      "name": "AttachTo",
+      "value": "BioImages"
+    }
+  ],
+  "section": {
+    "type": "Study",
+    "attributes": [
+      {
+        "name": "Title",
+        "value": "Targeting the Pregnane X Receptor Using Microbial Metabolite Mimicry"
+      },
+      {
+        "name": "Description",
+        "value": "The human pregnane X receptor (PXR), a master regulator of drug metabolism, has important roles in intestinal homeostasis and abrogating inflammation. Existing PXR ligands have substantial off-target toxicity. Based on prior work that established microbial (indole) metabolites as PXR ligands, we proposed microbial metabolite mimicry as a novel strategy for drug discovery that allows to exploit previously unexplored parts of chemical space. Here we report functionalized indole-derivatives as first-in-class non-cytotoxic PXR agonists, as a proof-of-concept for microbial metabolite mimicry. The lead compound, FKK6, binds directly to PXR protein in solution, induces PXR specific target gene expression in, cells, human organoids, and mice.  FKK6 significantly represses pro-inflammatory cytokine production cells and abrogates inflammation in human intestinal organoids and Caco-2 expressing the human PXR gene. These confocal images show FKK6 reduces NfKB translocation to the nucelus of intestinal organoids and caco-2 incubated with pro-inflammatory cocktail. "
+      },
+      {
+        "name": "Organism",
+        "value": "human "
+      },
+      {
+        "name": "Cell type",
+        "value": "intestinal organoids "
+      },
+      {
+        "name": "Cell type",
+        "value": "caco-2"
+      }
+    ],
+    "files": [
+      {
+        "path": "12 hr Caco-2 CK FKK5 25.tif",
+        "size": 788181,
+        "attributes": [
+          {
+            "name": "Description",
+            "value": "12 hr NFKB Caco-2 after cytokine stimulation and treatment with 25uM FKK5"
+          }
+        ],
+        "type": "file"
+      },
+      {
+        "path": "12 hr Caco-2 CK FKK6 25.tif",
+        "size": 788178,
+        "attributes": [
+          {
+            "name": "Description",
+            "value": "12 hr NFKB Caco-2 after cytokine stimulation and treatment with 25uM FKK6"
+          }
+        ],
+        "type": "file"
+      },
+      {
+        "path": "12 hr Caco-2 CK.tif",
+        "size": 788176,
+        "attributes": [
+          {
+            "name": "Description",
+            "value": "12 hr NFKB Caco-2 after cytokine stimulation "
+          }
+        ],
+        "type": "file"
+      },
+      {
+        "path": "12 hr Caco-2 no CK.tif",
+        "size": 788174,
+        "attributes": [
+          {
+            "name": "Description",
+            "value": "NFKB Caco-2 control"
+          }
+        ],
+        "type": "file"
+      },
+      {
+        "path": "2 hr Caco-2 CK FKK5 25.tif",
+        "size": 788178,
+        "attributes": [
+          {
+            "name": "Description",
+            "value": "2 hr NFKB Caco-2 after cytokine stimulation and treatment with 25uM FKK5"
+          }
+        ],
+        "type": "file"
+      },
+      {
+        "path": "2 hr Caco-2 CK FKK6 25.tif",
+        "size": 788170,
+        "attributes": [
+          {
+            "name": "Description",
+            "value": "2 hr NFKB Caco-2 after cytokine stimulation and treatment with 25uM FKK6"
+          }
+        ],
+        "type": "file"
+      },
+      {
+        "path": "2 hr Caco-2 CK.tif",
+        "size": 788172,
+        "attributes": [
+          {
+            "name": "Description",
+            "value": "2 hr NFKB Caco-2 after cytokine stimulation "
+          }
+        ],
+        "type": "file"
+      },
+      {
+        "path": "12 hr HIO CK FKK5 25.tif",
+        "size": 788166,
+        "attributes": [
+          {
+            "name": "Description",
+            "value": "12 hr NFKB HIOs after cytokine stimulation and treatment with 25uM FKK5"
+          }
+        ],
+        "type": "file"
+      },
+      {
+        "path": "12 hr HIO CK FKK6 25.tif",
+        "size": 788181,
+        "attributes": [
+          {
+            "name": "Description",
+            "value": "12 hr NFKB HIOs after cytokine stimulation and treatment with 25uM FKK6"
+          }
+        ],
+        "type": "file"
+      },
+      {
+        "path": "2 hr HIO CK FKK5 25.tif",
+        "size": 788177,
+        "attributes": [
+          {
+            "name": "Description",
+            "value": "2 hr NFKB HIOs after cytokine stimulation and treatment with 25uM FKK5"
+          }
+        ],
+        "type": "file"
+      },
+      {
+        "path": "2 hr HIO CK FKK6 25.tif",
+        "size": 788174,
+        "attributes": [
+          {
+            "name": "Description",
+            "value": "2 hr NFKB HIOs after cytokine stimulation and treatment with 25uM FKK6"
+          }
+        ],
+        "type": "file"
+      },
+      {
+        "path": "2 hr HIO CK.tif",
+        "size": 788164,
+        "attributes": [
+          {
+            "name": "Description",
+            "value": "2 hr NFKB HIOs after cytokine stimulation "
+          }
+        ],
+        "type": "file"
+      },
+      {
+        "path": "12 hr HIO CK.tif",
+        "size": 788162,
+        "attributes": [
+          {
+            "name": "Description",
+            "value": "12 hr NFKB HIOs after cytokine stimulation "
+          }
+        ],
+        "type": "file"
+      },
+      {
+        "path": "12 hr HIO no CK.tif",
+        "size": 788175,
+        "attributes": [
+          {
+            "name": "Description",
+            "value": "NFKB HIOs control"
+          }
+        ],
+        "type": "file"
+      }
+    ],
+    "links": [
+      {}
+    ],
+    "subsections": [
+      {
+        "type": "Author",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "cait costelllo"
+          },
+          {
+            "name": "E-mail",
+            "value": "cmc483@cornell.edu"
+          },
+          {
+            "name": "affiliation",
+            "value": "o1",
+            "reference": true
+          }
+        ]
+      },
+      {
+        "accno": "o1",
+        "type": "Organization",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "cornell university "
+          }
+        ]
+      }
+    ]
+  },
+  "type": "submission"
+}

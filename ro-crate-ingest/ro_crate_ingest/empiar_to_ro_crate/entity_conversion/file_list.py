@@ -119,6 +119,11 @@ def find_matching_imageset_and_images(
 
     dataset_id = None
     imageset_title = None
+    source_image_label = None
+    associated_annotation_method = None
+    associated_protocol = None
+    bia_type = None
+    label = None
 
     for dir_path in dir_to_imageset_map:
         if path.startswith(dir_path.as_posix()):
@@ -132,22 +137,56 @@ def find_matching_imageset_and_images(
                     additional_files_pattern_to_dataset_map[pattern], None
                 )
 
-    image_label = None
-
     if imageset_title and (imageset_title in yaml_dataset_by_title):
         for image in yaml_dataset_by_title[imageset_title].get("assigned_images", []):
             pattern = image.get("file_pattern", None)
             if pattern:
                 result = parse.parse(f"data/{pattern}", path)
                 if result is not None:
-                    image_label = image["label"]
+                    label = image["label"]
+                    bia_type = "http://bia/Image"
+                    source_image_label = image.get("input_image_label", None)
+                    associated_annotation_method = image.get(
+                        "associated_annotation_title", None
+                    )
+                    associated_protocol = image.get("associated_protocol_title", None)
+                    break
+        if not label:
+            for annotation_data in yaml_dataset_by_title[imageset_title].get(
+                "assigned_annotations", []
+            ):
+                pattern = annotation_data.get("file_pattern", None)
+                if pattern:
+                    result = parse.parse(f"data/{pattern}", path)
+                    if result is not None:
+                        label = annotation_data["label"]
+                        bia_type = "http://bia/AnnotationData"
+                        source_image_label = annotation_data.get(
+                            "input_image_label", None
+                        )
+                        if is_list_of_dicts(source_image_label):
+                            source_image_label = [
+                                source_img_dict["label"]
+                                for source_img_dict in source_image_label
+                            ]
+                        associated_annotation_method = annotation_data.get(
+                            "associated_annotation_title", None
+                        )
+                        associated_protocol = annotation_data.get(
+                            "associated_protocol_title", None
+                        )
+                        break
 
     return pd.Series(
         {
             "file_path": str(file_path),
             "size_in_bytes": int(row["size_in_bytes"]),
             "dataset_ref": dataset_id,
-            "image_label": image_label,
+            "type": bia_type,
+            "label": label,
+            "source_image_label": source_image_label,
+            "associated_annotation_method": associated_annotation_method,
+            "associated_protocol": associated_protocol,
         }
     )
 
@@ -155,13 +194,15 @@ def find_matching_imageset_and_images(
 def split_dataframes_by_dataset(file_df: pd.DataFrame):
     split_dfs = {}
     for name in file_df["dataset_ref"].dropna().unique():
-        split_dfs[name] = file_df[file_df["dataset_ref"] == name]
-        split_dfs[name].drop("dataset_ref", axis=1, inplace=True)
+        x = file_df[file_df["dataset_ref"] == name]
+        y = x.drop("dataset_ref", axis=1)
+        split_dfs[name] = y
 
-    ussaigned_files = file_df[file_df["dataset_ref"].isna()]
-    if len(ussaigned_files) > 0:
-        split_dfs["unassigned"] = ussaigned_files
-        split_dfs["unassigned"].drop("dataset_ref", axis=1, inplace=True)
+    unassigned_files = file_df[file_df["dataset_ref"].isna()]
+    if len(unassigned_files) > 0:
+        x = unassigned_files
+        y = x.drop("dataset_ref", axis=1)
+        split_dfs["unassigned"] = y
     return split_dfs
 
 
@@ -195,7 +236,11 @@ def get_column_list() -> list[ro_crate_models.Column]:
     columns_properties = {
         "file_path": "http://bia/filePath",
         "size_in_bytes": "http://bia/sizeInBytes",
-        "image_label": "http://schema.org/name",
+        "type": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+        "label": "http://schema.org/name",
+        "source_image_label": "http://bia/sourceImageLabel",
+        "associated_annotation_method": "http://bia/associatedAnnotationMethod",
+        "associated_protocol": "http://bia/associatedProtocol",
     }
 
     id_no = 0
@@ -213,3 +258,11 @@ def get_column_list() -> list[ro_crate_models.Column]:
         id_no += 1
 
     return columns
+
+
+def is_list_of_dicts(object_from_yaml):
+    return (
+        isinstance(object_from_yaml, list)
+        and len(object_from_yaml) > 0
+        and isinstance(object_from_yaml[0], dict)
+    )

@@ -26,7 +26,7 @@ def get_input_proposal_path(accession_id: str) -> Path:
 
 @pytest.mark.parametrize(
     "accession_id",
-    ["EMPIAR-ANNOTATIONTEST", "EMPIAR-IMAGEPATTERNTEST"],
+    ["EMPIAR-ANNOTATIONTEST", "EMPIAR-IMAGEPATTERNTEST", "EMPIAR-STARFILETEST"],
 )
 def test_biostudies_to_ro_crate(accession_id: str, tmp_bia_data_dir: Path):
 

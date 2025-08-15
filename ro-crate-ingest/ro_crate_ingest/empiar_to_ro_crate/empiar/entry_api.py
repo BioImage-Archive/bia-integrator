@@ -13,6 +13,7 @@ def load_empiar_entry(accession_id) -> Entry:
     overrides = {
         "EMPIAR-ANNOTATIONTEST": "A test submission.",
         "EMPIAR-IMAGEPATTERNTEST": "A test submission.",
+        "EMPIAR-STARFILETEST": "A test submission.",
     }
     if accession_id in overrides:
         return read_empiar_entry_override(accession_id)

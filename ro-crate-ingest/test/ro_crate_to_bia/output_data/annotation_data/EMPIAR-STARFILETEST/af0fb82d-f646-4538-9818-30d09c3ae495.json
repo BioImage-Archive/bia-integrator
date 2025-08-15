@@ -1,0 +1,23 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "af0fb82d-f646-4538-9818-30d09c3ae495",
+  "version": 0,
+  "model": {
+    "type_name": "AnnotationData",
+    "version": 2
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "66187fb9-9211-42ac-93ad-32452c83725c"
+      }
+    }
+  ],
+  "submission_dataset_uuid": "d672654f-e309-4988-b9f6-9c00986b9892",
+  "creation_process_uuid": "f4fb15bf-6091-41bf-aa20-65628d9e8b1b",
+  "original_file_reference_uuid": [
+    "66187fb9-9211-42ac-93ad-32452c83725c"
+  ]
+}

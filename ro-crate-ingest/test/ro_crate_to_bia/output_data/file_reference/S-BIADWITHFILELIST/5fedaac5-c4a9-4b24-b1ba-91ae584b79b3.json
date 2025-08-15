@@ -20,7 +20,7 @@
       "value": {
         "http://bia/filePath": "data/annotations/WD2.1_21-02_WT_confocalonly_segmented.ome.zarr.zip",
         "http://schema.org/name": "WD2.1_21-02_WT_confocalonly_segmented",
-        "http://bia/sourceImageName": "WD2.1_21-02_WT_confocalonly"
+        "http://bia/sourceImageLabel": "WD2.1_21-02_WT_confocalonly"
       }
     }
   ],

@@ -15,24 +15,15 @@ from functools import partial
 logger = logging.getLogger("__main__." + __name__)
 
 
-# Recieves:
-# {
-#         "path": row["path"],
-#         "file_ref_uuid": str(uuid),
-#         "dataset_roc_id": dataset_roc_id,
-#         "dataset_uuid": dataset_uuid,
-#         "image_id": image_id,
-#         "source_image_id_from_filelist": file_list_source_image_id,
-#     }
-
-
 def prepare_all_ids_for_images(
     image_dataframe: pd.DataFrame,
     crate_objects_by_id: dict[str, ROCrateModel],
     study_uuid: str,
     max_workers: int,
 ) -> tuple[pd.DataFrame, dict[str, str]]:
-    image_by_group: pd.DataFrame = image_dataframe.groupby("image_id", dropna=True)
+    result_data_by_id: pd.DataFrame = image_dataframe.groupby(
+        "result_data_id", dropna=True
+    )
 
     with ProcessPoolExecutor(max_workers=max_workers) as executor:
         results = list(
@@ -42,17 +33,20 @@ def prepare_all_ids_for_images(
                     crate_objects_by_id=crate_objects_by_id,
                     study_uuid=study_uuid,
                 ),
-                image_by_group,
+                result_data_by_id,
             )
         )
 
-    image_uuid_dataframe = pd.DataFrame(results)
+    result_data_uuid_dataframe = pd.DataFrame(results)
 
-    image_id_uuid_map = dict(
-        zip(image_uuid_dataframe["image_id"], image_uuid_dataframe["image_uuid"])
+    result_data_id_uuid_map = dict(
+        zip(
+            result_data_uuid_dataframe["result_data_id"],
+            result_data_uuid_dataframe["result_data_uuid"],
+        )
     )
 
-    return image_uuid_dataframe, image_id_uuid_map
+    return result_data_uuid_dataframe, result_data_id_uuid_map
 
 
 def prep_image_data_row(
@@ -61,15 +55,29 @@ def prep_image_data_row(
     study_uuid: str,
 ):
     import pandas as pd
+    from numpy import nan
 
-    image_id = group_df[0]
+    result_data_id = group_df[0]
     df = group_df[1]
     file_uuids = list(df["file_ref_uuid"])
-    image_uuid, image_uuid_attribute = shared.create_image_uuid(
-        study_uuid, file_uuids, APIModels.Provenance.BIA_INGEST
-    )
 
-    image_label = None
+    obj_type = df["result_type"].iloc[0]
+    if obj_type == "http://bia/Image":
+        result_data_uuid, result_data_uuid_attribute = shared.create_image_uuid(
+            study_uuid, file_uuids, APIModels.Provenance.BIA_INGEST
+        )
+    elif obj_type == "http://bia/AnnotationData":
+        result_data_uuid, result_data_uuid_attribute = (
+            shared.create_annotation_data_uuid(
+                study_uuid, file_uuids, APIModels.Provenance.BIA_INGEST
+            )
+        )
+    else:
+        raise ValueError(
+            f"Expected {result_data_id} to be of type http://bia/Image or http://bia/AnnotationData, but fount: {obj_type}"
+        )
+
+    result_data_label = None
     creation_process_id = None
     creation_process_uuid = None
     creation_process_uuid_attr = None
@@ -85,9 +93,9 @@ def prep_image_data_row(
     roc_creation_process_input_image = None
 
     # Use ro-crate creation process, if provided
-    if image_id in crate_objects_by_id:
-        roc_image: ro_crate_models.Image = crate_objects_by_id[image_id]
-        image_label = roc_image.label
+    if result_data_id in crate_objects_by_id:
+        roc_image: ro_crate_models.Image = crate_objects_by_id[result_data_id]
+        result_data_label = roc_image.label
         if roc_image.resultOf:
             creation_process_id = roc_image.resultOf.id
             creation_process: ro_crate_models.CreationProcess = crate_objects_by_id[
@@ -150,21 +158,21 @@ def prep_image_data_row(
         )
     ):
         specimen_uuid, specimen_uuid_attr = shared.create_specimen_uuid(
-            study_uuid, image_uuid, APIModels.Provenance.BIA_INGEST
+            study_uuid, result_data_uuid, APIModels.Provenance.BIA_INGEST
         )
     if not creation_process_id:
         creation_process_uuid, creation_process_uuid_attr = (
             shared.create_creation_process_uuid(
-                study_uuid, image_uuid, APIModels.Provenance.BIA_INGEST
+                study_uuid, result_data_uuid, APIModels.Provenance.BIA_INGEST
             )
         )
 
     # Sort out source image ids:
-    source_image_id_from_filelist = (
-        df["source_image_id_from_filelist"].dropna().unique()
-        if len(df["source_image_id_from_filelist"].dropna().unique()) > 0
-        else None
-    )
+    source_image_ids = set()
+    for source_img_list in df["source_image_id_from_filelist"]:
+        if isinstance(source_img_list, list):
+            [source_image_ids.add(source_img_id) for source_img_id in source_img_list]
+    source_image_id_from_filelist = sorted(list(source_image_ids))
     if source_image_id_from_filelist and roc_creation_process_input_image:
         source_image_id = roc_creation_process_input_image.extend(
             source_image_id_from_filelist
@@ -176,19 +184,22 @@ def prep_image_data_row(
     else:
         source_image_id = np.nan
 
-    filelist_label_index = df["image_label_from_filelist"].first_valid_index()
-    if not image_label and filelist_label_index:
-        image_label = str(df["image_label_from_filelist"].loc[filelist_label_index])
+    filelist_label_index = df["result_data_label_from_filelist"].first_valid_index()
+    if not result_data_label and filelist_label_index:
+        result_data_label = str(
+            df["result_data_label_from_filelist"].loc[filelist_label_index]
+        )
 
     return pd.Series(
         {
             "file_ref_uuids": file_uuids,
             "dataset_roc_id": dataset_id,
             "dataset_uuid": flatten_set_of_same_values(df["dataset_uuid"]),
-            "image_id": flatten_set_of_same_values(df["image_id"]),
-            "image_uuid": str(image_uuid),
-            "image_label": image_label,
-            "image_uuid_attribute": image_uuid_attribute.model_dump(),
+            "result_data_id": flatten_set_of_same_values(df["result_data_id"]),
+            "result_type": obj_type,
+            "result_data_uuid": str(result_data_uuid),
+            "result_data_label": result_data_label,
+            "result_data_uuid_attribute": result_data_uuid_attribute.model_dump(),
             "source_image_id_from_filelist": source_image_id,
             "creation_process_id": creation_process_id,
             "creation_process_uuid": str(creation_process_uuid),

@@ -16,6 +16,7 @@ def get_files(accession_id: str) -> list[EMPIARFile]:
     overrides = {
         "EMPIAR-ANNOTATIONTEST": "A test submission.",
         "EMPIAR-IMAGEPATTERNTEST": "A test submission.",
+        "EMPIAR-STARFILETEST": "A test submission.",
     }
     if accession_id in overrides:
         return get_file_info_from_override(accession_id)

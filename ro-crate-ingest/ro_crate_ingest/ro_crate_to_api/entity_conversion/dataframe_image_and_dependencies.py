@@ -19,35 +19,10 @@ import logging
 logger = logging.getLogger("__main__." + __name__)
 
 
-# Recieves:
-# {
-#        "file_ref_uuids": file_uuids,
-#         "dataset_roc_id": dataset_id,
-#         "dataset_uuid": flatten_set_of_same_values(df["dataset_uuid"]),
-#         "image_id": flatten_set_of_same_values(df["image_id"]),
-#         "image_uuid": str(image_uuid),
-#         "image_uuid_attribute": image_uuid_attribute.model_dump(),
-#         "source_image_id_from_filelist": df["source_image_id_from_filelist"].unique(),
-# "creation_process_id": creation_process_id,
-# "creation_process_uuid": str(creation_process_uuid),
-# "creation_process_uuid_attr": creation_process_uuid_attr.model_dump(),
-# "specimen_id": specimen_id,
-# "specimen_uuid": (str(specimen_uuid) if specimen_uuid else None),
-# "specimen_uuid_attr": (
-#     specimen_uuid_attr.model_dump() if specimen_uuid_attr else None
-# ),
-# "annotation_method_id": annotation_method_id,
-# "image_acquisition_protocol_id": image_acquisition_protocol_id,
-# "protocol_id": protocol_id,
-# "bio_sample_id": bio_sample_id,
-# "specimen_imaging_preparation_protocol_id": specimen_imaging_preparation_protocol_id,
-#     }
-
-
 def create_images_and_dependencies(
-    image_dataframe: pd.DataFrame,
+    result_data_dataframe: pd.DataFrame,
     crate_objects_by_id: dict[str, ROCrateModel],
-    image_id_uuid_map: dict[str, str],
+    result_data_id_uuid_map: dict[str, str],
     study_uuid: str,
     accession_id: str,
     persistence_mode: PersistenceMode,
@@ -56,7 +31,9 @@ def create_images_and_dependencies(
 
     specimens_by_group = [
         (uuid, group_df)
-        for uuid, group_df in image_dataframe.groupby("specimen_uuid", dropna=True)
+        for uuid, group_df in result_data_dataframe.groupby(
+            "specimen_uuid", dropna=True
+        )
     ]
 
     with ProcessPoolExecutor(max_workers=max_workers) as executor:
@@ -72,10 +49,10 @@ def create_images_and_dependencies(
             )
         )
 
-    base_images = image_dataframe[
-        image_dataframe["source_image_id_from_filelist"].isna()
+    base_objects = result_data_dataframe[
+        result_data_dataframe["source_image_id_from_filelist"].isna()
     ]
-    images_with_image_dependencies = image_dataframe.dropna(
+    objects_with_image_dependencies = result_data_dataframe.dropna(
         subset=["source_image_id_from_filelist"]
     )
 
@@ -83,7 +60,7 @@ def create_images_and_dependencies(
 
     base_creation_process_by_group = [
         (uuid, group_df)
-        for uuid, group_df in base_images.groupby("creation_process_uuid")
+        for uuid, group_df in base_objects.groupby("creation_process_uuid")
     ]
 
     with ProcessPoolExecutor(max_workers=max_workers) as executor:
@@ -94,13 +71,15 @@ def create_images_and_dependencies(
                     study_uuid=study_uuid,
                     accession_id=accession_id,
                     persistence_mode=persistence_mode,
-                    image_id_uuid_map=image_id_uuid_map,
+                    image_id_uuid_map=result_data_id_uuid_map,
                 ),
                 base_creation_process_by_group,
             )
         )
 
-    base_images_rows = base_images.to_dict("records")
+    base_images_rows = base_objects[
+        base_objects["result_type"] == "http://bia/Image"
+    ].to_dict("records")
     with ProcessPoolExecutor(max_workers=max_workers) as executor:
         r = list(
             executor.map(
@@ -113,12 +92,29 @@ def create_images_and_dependencies(
             )
         )
 
+    # This is likely to be empty most times
+    base_annotation_rows = base_objects[
+        base_objects["result_type"] == "http://bia/AnnotationData"
+    ].to_dict("records")
+    if len(base_annotation_rows) > 0:
+        with ProcessPoolExecutor(max_workers=max_workers) as executor:
+            r = list(
+                executor.map(
+                    partial(
+                        create_annotation_data,
+                        accession_id=accession_id,
+                        persistence_mode=persistence_mode,
+                    ),
+                    base_annotation_rows,
+                )
+            )
+
     # Then process images & creation processes with any dependencies
     # NOTE!!! This does not account for order for dependencies chains > 1. So this could fail when pushing objects to the API in such a case.
 
     dependent_creation_process_by_group = [
         (uuid, group_df)
-        for uuid, group_df in images_with_image_dependencies.groupby(
+        for uuid, group_df in objects_with_image_dependencies.groupby(
             "creation_process_uuid"
         )
     ]
@@ -131,26 +127,43 @@ def create_images_and_dependencies(
                     study_uuid=study_uuid,
                     accession_id=accession_id,
                     persistence_mode=persistence_mode,
-                    image_id_uuid_map=image_id_uuid_map,
+                    image_id_uuid_map=result_data_id_uuid_map,
                 ),
                 dependent_creation_process_by_group,
             )
         )
 
-    images_with_image_dependencies_rows = images_with_image_dependencies.to_dict(
-        "records"
-    )
-    with ProcessPoolExecutor(max_workers=max_workers) as executor:
-        r = list(
-            executor.map(
-                partial(
-                    create_image,
-                    accession_id=accession_id,
-                    persistence_mode=persistence_mode,
-                ),
-                images_with_image_dependencies_rows,
+    images_with_image_dependencies_rows = objects_with_image_dependencies[
+        objects_with_image_dependencies["result_type"] == "http://bia/Image"
+    ].to_dict("records")
+    if len(images_with_image_dependencies_rows) > 0:
+        with ProcessPoolExecutor(max_workers=max_workers) as executor:
+            r = list(
+                executor.map(
+                    partial(
+                        create_image,
+                        accession_id=accession_id,
+                        persistence_mode=persistence_mode,
+                    ),
+                    images_with_image_dependencies_rows,
+                )
             )
-        )
+
+    annotation_data_with_image_dependencies_rows = objects_with_image_dependencies[
+        objects_with_image_dependencies["result_type"] == "http://bia/AnnotationData"
+    ].to_dict("records")
+    if len(annotation_data_with_image_dependencies_rows) > 0:
+        with ProcessPoolExecutor(max_workers=max_workers) as executor:
+            r = list(
+                executor.map(
+                    partial(
+                        create_annotation_data,
+                        accession_id=accession_id,
+                        persistence_mode=persistence_mode,
+                    ),
+                    annotation_data_with_image_dependencies_rows,
+                )
+            )
 
 
 def create_specimen_from_group(
@@ -205,10 +218,9 @@ def create_creation_process(
     # All rows in group should have the same value for the point of view of creating a creation process.
     first_entry = dataframe_group.iloc[0]
 
-    if not pd.isna(first_entry["source_image_id_from_filelist"]):
+    if isinstance(first_entry["source_image_id_from_filelist"], list):
         input_image_uuid = [
-            image_id_uuid_map[x]
-            for x in first_entry["source_image_id_from_filelist"]
+            image_id_uuid_map[x] for x in first_entry["source_image_id_from_filelist"]
         ]
     else:
         input_image_uuid = []
@@ -255,14 +267,16 @@ def create_image(
     import pandas as pd
 
     model_dict = {
-        "uuid": row["image_uuid"],
+        "uuid": row["result_data_uuid"],
         "submission_dataset_uuid": row["dataset_uuid"],
         "creation_process_uuid": row["creation_process_uuid"],
         "version": 0,
         "object_creator": APIModels.Provenance.BIA_INGEST,
         "original_file_reference_uuid": row["file_ref_uuids"],
-        "additional_metadata": [row["image_uuid_attribute"]],
-        "label": (row["image_label"] if not pd.isna(row["image_label"]) else None),
+        "additional_metadata": [row["result_data_uuid_attribute"]],
+        "label": (
+            row["result_data_label"] if not pd.isna(row["result_data_label"]) else None
+        ),
     }
 
     persist(
@@ -283,3 +297,31 @@ def create_uuid_list(
         str(uuid_creation_function(study_uuid, obj_id)[0])
         for obj_id in object_ro_crate_id_list
     ]
+
+
+def create_annotation_data(
+    row: dict,
+    accession_id: str,
+    persistence_mode: PersistenceMode,
+):
+    import pandas as pd
+
+    model_dict = {
+        "uuid": row["result_data_uuid"],
+        "submission_dataset_uuid": row["dataset_uuid"],
+        "creation_process_uuid": row["creation_process_uuid"],
+        "version": 0,
+        "object_creator": APIModels.Provenance.BIA_INGEST,
+        "original_file_reference_uuid": row["file_ref_uuids"],
+        "additional_metadata": [row["result_data_uuid_attribute"]],
+        "label": (
+            row["result_data_label"] if not pd.isna(row["result_data_label"]) else None
+        ),
+    }
+
+    persist(
+        accession_id,
+        APIModels.AnnotationData,
+        [APIModels.AnnotationData(**model_dict)],
+        persistence_mode,
+    )

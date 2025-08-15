@@ -21,6 +21,7 @@ def create_combined_file_dataframe(
     dataset_ro_crate_objects: list[ro_crate_models.Dataset] = []
     file_lists_ro_crate_objects: list[ro_crate_models.FileList] = []
     image_ro_crate_objects: list[ro_crate_models.Image] = []
+    annotation_data_ro_crate_objects: list[ro_crate_models.Image] = []
 
     for crate_obj in crate_objects_by_id.values():
         if isinstance(crate_obj, ro_crate_models.Dataset):
@@ -29,6 +30,8 @@ def create_combined_file_dataframe(
             image_ro_crate_objects.append(crate_obj)
         elif isinstance(crate_obj, ro_crate_models.FileList):
             file_lists_ro_crate_objects.append(crate_obj)
+        elif isinstance(crate_obj, ro_crate_models.AnnotationData):
+            annotation_data_ro_crate_objects.append(crate_obj)
 
     size_order = {"disk_files": 0, "file_list": 0, "images": 0}
 
@@ -37,6 +40,10 @@ def create_combined_file_dataframe(
     ro_crate_image_df = image_df(
         image_ro_crate_objects, size_order, crate_graph, ro_crate_path
     )
+
+    # annotation_data = image_df(
+    #     annotation_data_ro_crate_objects, size_order, crate_graph, ro_crate_path, "http://bia/AnnotationData"
+    # )
 
     file_list_dataframe = file_list_df(
         crate_objects_by_id,

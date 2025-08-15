@@ -189,7 +189,7 @@ class Column(ROCrateModel):
     model_config = ConfigDict(model_type="http://www.w3.org/ns/csvw#Column")
 
 
-# Images, Image represntations
+# Images, Image represntations, AnnotationData
 
 
 class Image(ROCrateModel):
@@ -202,6 +202,16 @@ class Image(ROCrateModel):
     )
 
     model_config = ConfigDict(model_type="http://bia/Image")
+
+
+class AnnotationData(ROCrateModel):
+    resultOf: Annotated[
+        ObjectReference, FieldContext("http://bia/resultOf", isIdField=True)
+    ] = Field(default=None)
+    label: Annotated[Optional[str], FieldContext("http://schema.org/name")] = Field(
+        default=None
+    )
+    model_config = ConfigDict(model_type="http://bia/AnnotationData")
 
 
 # CreationProcess, Specimen

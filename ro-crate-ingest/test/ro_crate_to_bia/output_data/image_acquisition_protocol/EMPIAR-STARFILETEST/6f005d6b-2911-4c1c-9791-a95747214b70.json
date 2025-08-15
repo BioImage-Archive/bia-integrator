@@ -1,0 +1,27 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "6f005d6b-2911-4c1c-9791-a95747214b70",
+  "version": 0,
+  "model": {
+    "type_name": "ImageAcquisitionProtocol",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Cryo-electron tomography"
+      }
+    }
+  ],
+  "title": "Cryo-electron tomography",
+  "protocol_description": "Cryo-TEM montages and tilt series were collected on a Titan Krios G3 (Thermo Fisher Scientific) equipped with a Gatan K2 Summit detector and Quantum energy filter, or a Gatan K3 detector and BioQuantum energy filter, using SerialEM. Grids were loaded such that the lamella pretilt axis aligns with the microscope stage tilt axis. Images were acquired at a pixel size of 3.370 or 3.425 Å/pixel at 1.5–4.0 µm defocus, with an electron dose of 2.0–2.5 e−/Å2 per image fractionated over 8–10 frames. A dose-symmetric tilt scheme was used with 2° increments starting from the lamella pretilt (±13°) and an effective tilt range of +56° to −56° using SerialEM. Data were collected with a 70-µm objective aperture or a Volta phase plate, and 20 eV slit width.",
+  "imaging_instrument_description": "Titan Krios G3, Thermo Fisher Scientific",
+  "fbbi_id": [
+    "obo:FBbi_00000256"
+  ],
+  "imaging_method_name": [
+    "Cryo-electron tomography"
+  ]
+}

@@ -94,10 +94,10 @@ def file_reference_from_row_dict(
         persistence_mode,
     )
 
-    image_id = select_image_id(row, image_extensions)
-    image_label = None
-    if image_id:
-        image_label = select_image_label(row)
+    result_data_id, obj_type = select_result_data_id_and_type(row, image_extensions)
+    result_data_label = None
+    if result_data_id:
+        result_data_label = select_result_data_label(row)
     file_list_source_image_id = select_file_list_source_image_id(row)
 
     return {
@@ -105,8 +105,9 @@ def file_reference_from_row_dict(
         "file_ref_uuid": str(uuid),
         "dataset_roc_id": dataset_roc_id,
         "dataset_uuid": dataset_uuid,
-        "image_id": image_id,
-        "image_label_from_filelist": image_label,
+        "result_type": obj_type,
+        "result_data_id": result_data_id,
+        "result_data_label_from_filelist": result_data_label,
         "source_image_id_from_filelist": file_list_source_image_id,
     }
 
@@ -150,23 +151,41 @@ def select_size_in_bytes(row: dict) -> int:
     raise ValueError(f"No dataset found for file: {row["path"]}")
 
 
-def select_image_id(row: dict, image_extensions: list[str]) -> Optional[str]:
+def select_result_data_id_and_type(row: dict, image_extensions: list[str]) -> Optional[str]:
+    id = None
+    bia_type = None
+
     if not pd.isna(row.get("image_id", nan)):
-        return row["image_id"]
+        id = row["image_id"]
+        bia_type = "http://bia/Image"
 
     if not pd.isna(row.get("info_from_file_list", nan)):
         file_list_info = row["info_from_file_list"]
         if file_list_info.get("http://schema.org/name", None):
-            return file_list_info["http://schema.org/name"]
+            id = file_list_info["http://schema.org/name"]
         elif file_list_info.get("https://schema.org/name", None):
-            return file_list_info["https://schema.org/name"]
+            id = file_list_info["https://schema.org/name"]
 
-    standardised_file_extension = get_standardised_extension(row["path"])
-    if standardised_file_extension in image_extensions:
-        return row["path"]
+        if file_list_info.get("http://www.w3.org/1999/02/22-rdf-syntax-ns#type", None):
+            bia_type = file_list_info["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"]
+        elif id:
+            # Assume something that has been named in a filelist is an image
+            bia_type = "http://bia/Image"
+
+    if not id:
+        standardised_file_extension = get_standardised_extension(row["path"])
+        if standardised_file_extension in image_extensions:
+            id = row["path"]
+            bia_type = "http://bia/Image"
+    elif not bia_type:
+        standardised_file_extension = get_standardised_extension(row["path"])
+        if standardised_file_extension in image_extensions:
+            bia_type = "http://bia/Image"
+
+    return id, bia_type
 
 
-def select_image_label(row: dict) -> Optional[str]:
+def select_result_data_label(row: dict) -> Optional[str]:
     if not pd.isna(row.get("info_from_file_list", nan)):
         file_list_info = row["info_from_file_list"]
         if file_list_info.get("http://schema.org/name", None):
@@ -209,12 +228,16 @@ def select_file_list_source_image_id(row: dict) -> Optional[str]:
     source_image_id = nan
     if not pd.isna(info_from_file_list):
         if "http://bia/sourceImagePath" in info_from_file_list:
-            sid = info_from_file_list["http://bia/sourceImagePath"]
-            if sid != "":
-                source_image_id = sid
-        elif "http://bia/sourceImageName" in info_from_file_list:
-            sid = info_from_file_list["http://bia/sourceImageName"]
-            if sid != "":
-                source_image_id = sid
+            sid: str = info_from_file_list["http://bia/sourceImagePath"]
+            if sid.startswith("["):
+                source_image_id = [x.strip("'\"\\ ") for x in sid.strip("[]").split(",")]
+            elif sid != "":
+                source_image_id = [sid]
+        elif "http://bia/sourceImageLabel" in info_from_file_list:
+            sid = info_from_file_list["http://bia/sourceImageLabel"]
+            if sid.startswith("["):
+                source_image_id = [x.strip("'\"\\ ") for x in sid.strip("[]").split(",")]
+            elif sid != "":
+                source_image_id = [sid]
 
     return source_image_id

@@ -99,7 +99,7 @@ def convert_ro_crate_to_bia_api(
         get_settings().parallelisation_max_workers,
     )
 
-    if not image_raw_dataframe["image_id"].isna().all():
+    if not image_raw_dataframe["result_data_id"].isna().all():
         image_dataframe, id_uuid_map = (
             dataframe_image_prerequisites.prepare_all_ids_for_images(
                 image_raw_dataframe,
