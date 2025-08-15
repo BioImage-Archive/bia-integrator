@@ -61,7 +61,7 @@ def test_fts_facet_discovery_imaging_method(api_client: TestClient):
 def test_fts_use_facet_organism(api_client: TestClient):
     rsp = api_client.get(
         f"/search/fts",
-        params={"query": "with", "organism": ["Homo sapiens", "Mus musculus"]},
+        params={"query": "with", "facet.organism": ["Homo sapiens", "Mus musculus"]},
     )
     assert rsp.status_code == 200
 
@@ -80,7 +80,7 @@ def test_fts_no_query(api_client: TestClient):
     )["doc_count"]
     assert len(body["hits"]["hits"]) == 5
 
-    rsp = api_client.get(f"/search/fts", params={"organism": ["Homo sapiens"]})
+    rsp = api_client.get(f"/search/fts", params={"facet.organism": ["Homo sapiens"]})
     assert rsp.status_code == 200
     body = rsp.json()
     assert len(body["hits"]["hits"]) == facet_homo_sapiens
@@ -89,7 +89,7 @@ def test_fts_no_query(api_client: TestClient):
 def test_fts_use_facet_year(api_client: TestClient):
     rsp = api_client.get(
         f"/search/fts",
-        params={"query": "with", "year": ["2024"]},
+        params={"query": "with", "facet.year": ["2024"]},
     )
     assert rsp.status_code == 200
     body = rsp.json()
@@ -115,3 +115,17 @@ def test_get(api_client: TestClient):
     body = rsp.json()
     assert len(body["hits"]) == 1
     assert body["hits"][0]["_source"]["uuid"] == doc_uuid
+
+
+def test_fts_image(api_client: TestClient):
+    rsp = api_client.get(
+        f"/search/fts/image", params={"query": "445cb17b-95dc-47a3-9efc-b7a1a066bb51"}
+    )
+    assert rsp.status_code == 200
+
+    body = rsp.json()
+    assert body["hits"]["total"]["value"] == 1
+    assert (
+        body["hits"]["hits"][0]["_source"]["uuid"]
+        == "445cb17b-95dc-47a3-9efc-b7a1a066bb51"
+    )
