@@ -207,7 +207,7 @@ def create_creation_process(
 
     if not pd.isna(first_entry["source_image_id_from_filelist"]):
         input_image_uuid = [
-            image_id_uuid_map.get(x)
+            image_id_uuid_map[x]
             for x in first_entry["source_image_id_from_filelist"]
         ]
     else:
@@ -252,6 +252,7 @@ def create_image(
     accession_id: str,
     persistence_mode: PersistenceMode,
 ):
+    import pandas as pd
 
     model_dict = {
         "uuid": row["image_uuid"],
@@ -261,6 +262,7 @@ def create_image(
         "object_creator": APIModels.Provenance.BIA_INGEST,
         "original_file_reference_uuid": row["file_ref_uuids"],
         "additional_metadata": [row["image_uuid_attribute"]],
+        "label": (row["image_label"] if not pd.isna(row["image_label"]) else None),
     }
 
     persist(

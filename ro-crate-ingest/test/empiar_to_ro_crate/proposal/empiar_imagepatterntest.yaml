@@ -1,0 +1,29 @@
+accession_id: EMPIAR-IMAGEPATTERNTEST
+paper_doi: https://doi.org/10.7554/eLife.83623
+rembis:
+  ImageAcquisitionProtocol:
+    - title: "Cryo-serial pFIB/SEM"
+      protocol_description: "Serial plasma FIB/SEM imaging was performed on a dual-beam FIB/SEM 'Helios G4 Hydra' equipped with an Aquilos II type cryo-stage, a four source 'Hydra' plasma ion column and an 'Elstar' SEM column. The samples were loaded into a custom purpose 25° pre-tilt holder. Imaging parameters used were: argon plasma source at 20 kV and 0.2 nA for milling, with SEM imaging at 1.25 kV, 6.25 pA beam current, 100 ns dwell time, and 100 line integrations. The electron dose was under 10−2 e−/Å2."
+      imaging_instrument_description: "Helios G4 Hydra FIB/SEM (Thermo Fisher Scientific) with Aquilos II cryo-stage"
+      fbbi_id: 
+        - "obo:FBbi_00050000" # Focused Ion Beam Scanning Electron Microscope
+      imaging_method_name:
+        - "Cryo-FIB/SEM"
+  BioSample:
+    - title: "HeLa cells"
+      organism_classification:
+        - common_name: "human cervical cancer cells"
+          scientific_name: "Homo sapiens"
+          ncbi_id: "NCBI:txid9606"
+      biological_entity_description: "HeLa cells (CCL-2, ATCC) grown in high glucose DMEM with non-essential amino acids supplemented with 10% FBS, 1% penicillin/streptomycin, and 1% glutamine at 37°C and 5% CO2"
+  SpecimenImagingPreparationProtocol:
+    - title: "Cryo-FIB/SEM sample preparation"
+      protocol_description: "Cells were seeded onto gold grids (either 'UltrAuFoil' 200 Au mesh, R2/2 gold film, or Quantifoil 300 Au mesh, R2/2 carbon film) and grown to 50% confluency. Grids were then plunge-frozen in nitrogen-cooled liquid ethane using a Vitrobot. To protect the leading edge while milling and reduce surface topography, an organic platinum layer of ~1-2 µm was deposited using a gas injection system, followed by two sputter-coated platinum layers before and after the organic platinum layer."
+datasets:
+  - title: "Cryo Serial FIB/SEM of HeLa cells"
+    assigned_images:
+      - label: "Cryo-serial pFIB/SEM of HeLa cell"
+        file_pattern: "HeLa/Raw SEM images/SEM Image - SliceImage - {z:d}.tif"
+        biosample_title: "HeLa cells"
+        image_acquisition_protocol_title: "Cryo-serial pFIB/SEM"
+        specimen_imaging_preparation_protocol_title: "Cryo-FIB/SEM sample preparation"

@@ -14,6 +14,7 @@ from numpy import nan
 from ro_crate_ingest.settings import get_settings
 from typing import Optional
 import logging
+
 logger = logging.getLogger("__main__." + __name__)
 
 
@@ -94,6 +95,9 @@ def file_reference_from_row_dict(
     )
 
     image_id = select_image_id(row, image_extensions)
+    image_label = None
+    if image_id:
+        image_label = select_image_label(row)
     file_list_source_image_id = select_file_list_source_image_id(row)
 
     return {
@@ -102,6 +106,7 @@ def file_reference_from_row_dict(
         "dataset_roc_id": dataset_roc_id,
         "dataset_uuid": dataset_uuid,
         "image_id": image_id,
+        "image_label_from_filelist": image_label,
         "source_image_id_from_filelist": file_list_source_image_id,
     }
 
@@ -151,12 +156,23 @@ def select_image_id(row: dict, image_extensions: list[str]) -> Optional[str]:
 
     if not pd.isna(row.get("info_from_file_list", nan)):
         file_list_info = row["info_from_file_list"]
-        if file_list_info.get("image_id", None):
-            return file_list_info["http://bia/image_id"]
+        if file_list_info.get("http://schema.org/name", None):
+            return file_list_info["http://schema.org/name"]
+        elif file_list_info.get("https://schema.org/name", None):
+            return file_list_info["https://schema.org/name"]
 
     standardised_file_extension = get_standardised_extension(row["path"])
     if standardised_file_extension in image_extensions:
         return row["path"]
+
+
+def select_image_label(row: dict) -> Optional[str]:
+    if not pd.isna(row.get("info_from_file_list", nan)):
+        file_list_info = row["info_from_file_list"]
+        if file_list_info.get("http://schema.org/name", None):
+            return file_list_info["http://schema.org/name"]
+        elif file_list_info.get("https://schema.org/name", None):
+            return file_list_info["https://schema.org/name"]
 
 
 def get_standardised_extension(file_path: str) -> str:
@@ -190,8 +206,15 @@ def accepted_image_extensions(path: str) -> list[str]:
 
 def select_file_list_source_image_id(row: dict) -> Optional[str]:
     info_from_file_list = row.get("info_from_file_list", nan)
+    source_image_id = nan
     if not pd.isna(info_from_file_list):
         if "http://bia/sourceImagePath" in info_from_file_list:
-            return info_from_file_list["http://bia/sourceImagePath"]
+            sid = info_from_file_list["http://bia/sourceImagePath"]
+            if sid != "":
+                source_image_id = sid
         elif "http://bia/sourceImageName" in info_from_file_list:
-            return info_from_file_list["http://bia/sourceImageName"]
+            sid = info_from_file_list["http://bia/sourceImageName"]
+            if sid != "":
+                source_image_id = sid
+
+    return source_image_id

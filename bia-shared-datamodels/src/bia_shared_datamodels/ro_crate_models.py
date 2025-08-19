@@ -197,6 +197,9 @@ class Image(ROCrateModel):
     resultOf: Annotated[
         ObjectReference, FieldContext("http://bia/resultOf", isIdField=True)
     ] = Field(default=None)
+    label: Annotated[Optional[str], FieldContext("http://schema.org/name")] = Field(
+        default=None
+    )
 
     model_config = ConfigDict(model_type="http://bia/Image")
 

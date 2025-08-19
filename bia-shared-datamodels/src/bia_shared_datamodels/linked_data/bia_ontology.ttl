@@ -367,7 +367,7 @@ bia:physicalSizeZ a owl:DatatypeProperty ;
     rdfs:domain bia:ImageRepresentation ;
     rdfs:range xsd:decimal .
 
-bia:phsyicalSizeT a owl:DatatypeProperty ;
+bia:physicalSizeT a owl:DatatypeProperty ;
     rdfs:label "physical size t"@en ;
     rdfs:comment "Size of the duration (in seconds) captured by the image/video."@en ;
     rdfs:domain bia:ImageRepresentation ;

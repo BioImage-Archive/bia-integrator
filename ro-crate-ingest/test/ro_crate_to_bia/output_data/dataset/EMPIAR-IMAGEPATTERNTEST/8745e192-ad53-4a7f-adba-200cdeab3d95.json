@@ -1,0 +1,51 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "8745e192-ad53-4a7f-adba-200cdeab3d95",
+  "version": 0,
+  "model": {
+    "type_name": "Dataset",
+    "version": 2
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "image_acquisition_protocol_uuid",
+      "value": {
+        "image_acquisition_protocol_uuid": [
+          "2cf3c58a-c76a-44c8-87e2-cbad8ad67e49"
+        ]
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "specimen_imaging_preparation_protocol_uuid",
+      "value": {
+        "specimen_imaging_preparation_protocol_uuid": [
+          "1b77dc38-9072-4e26-9759-4b45b0433aea"
+        ]
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "bio_sample_uuid",
+      "value": {
+        "bio_sample_uuid": [
+          "c4efe1c7-cff8-443f-8f2c-af532591e2fb"
+        ]
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Cryo Serial FIB/SEM of HeLa cells data/HeLa"
+      }
+    }
+  ],
+  "title": "Cryo Serial FIB/SEM of HeLa cells",
+  "description": "",
+  "analysis_method": [],
+  "correlation_method": [],
+  "example_image_uri": [],
+  "submitted_in_study_uuid": "85dd8895-724b-41a2-99e6-90c99c54e3aa"
+}

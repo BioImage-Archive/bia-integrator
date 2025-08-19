@@ -16,9 +16,6 @@
             "website": {
                 "@id": "bia:website"
             },
-            "affiliation": {
-                "@id": "schema:memberOf"
-            },
             "title": {
                 "@id": "schema:name"
             },
@@ -66,6 +63,9 @@
             },
             "propertyUrl": {
                 "@id": "csvw:propertyUrl"
+            },
+            "affiliation": {
+                "@id": "schema:memberOf"
             },
             "role": {
                 "@id": "bia:role"
@@ -132,6 +132,9 @@
             },
             "resultOf": {
                 "@id": "bia:resultOf"
+            },
+            "label": {
+                "@id": "schema:name"
             },
             "imagingInstrumentDescription": {
                 "@id": "bia:imagingInstrumentDescription"
@@ -441,7 +444,7 @@
                 "csvw:Column"
             ],
             "columnName": "source_image",
-            "propertyUrl": "http://bia/sourceImagePath"
+            "propertyUrl": "http://bia/sourceImageName"
         }
     ]
 }
