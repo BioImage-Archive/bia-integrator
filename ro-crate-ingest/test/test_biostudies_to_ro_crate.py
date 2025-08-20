@@ -59,7 +59,10 @@ def test_biostudies_to_ro_crate(accession_id: str, tmp_bia_data_dir: Path):
     created_ro_crate_metadata = get_created_ro_crate_metadata(
         tmp_bia_data_dir, accession_id
     )
-    assert created_ro_crate_metadata == expected_metadata
+    assert created_ro_crate_metadata["@context"] == expected_metadata["@context"]
+    assert sorted(
+        created_ro_crate_metadata["@graph"], key=lambda d: d["@id"]
+    ) == sorted(expected_metadata["@graph"], key=lambda d: d["@id"])
 
     expected_files = glob.glob(
         f"{get_expected_ro_crate_directory(accession_id)}/**/*", recursive=True
