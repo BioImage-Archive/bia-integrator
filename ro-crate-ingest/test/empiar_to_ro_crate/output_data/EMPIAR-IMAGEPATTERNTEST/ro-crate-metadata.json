@@ -16,9 +16,6 @@
             "website": {
                 "@id": "bia:website"
             },
-            "affiliation": {
-                "@id": "schema:memberOf"
-            },
             "title": {
                 "@id": "schema:name"
             },
@@ -67,11 +64,11 @@
             "propertyUrl": {
                 "@id": "csvw:propertyUrl"
             },
+            "affiliation": {
+                "@id": "schema:memberOf"
+            },
             "role": {
                 "@id": "bia:role"
-            },
-            "label": {
-                "@id": "schema:name"
             },
             "contactEmail": {
                 "@id": "schema:email"
@@ -135,6 +132,9 @@
             },
             "resultOf": {
                 "@id": "bia:resultOf"
+            },
+            "label": {
+                "@id": "schema:name"
             },
             "imagingInstrumentDescription": {
                 "@id": "bia:imagingInstrumentDescription"
@@ -267,12 +267,44 @@
             }
         },
         {
+            "@id": "_:col6",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "associated_protocol",
+            "propertyUrl": "http://bia/associatedProtocol"
+        },
+        {
+            "@id": "_:col5",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "associated_annotation_method",
+            "propertyUrl": "http://bia/associatedAnnotationMethod"
+        },
+        {
+            "@id": "_:col4",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "source_image_label",
+            "propertyUrl": "http://bia/sourceImageLabel"
+        },
+        {
+            "@id": "_:col3",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "label",
+            "propertyUrl": "http://schema.org/name"
+        },
+        {
             "@id": "_:col2",
             "@type": [
                 "csvw:Column"
             ],
-            "columnName": "image_label",
-            "propertyUrl": "http://schema.org/name"
+            "columnName": "type",
+            "propertyUrl": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
         },
         {
             "@id": "_:col1",
@@ -304,6 +336,18 @@
                 },
                 {
                     "@id": "_:col2"
+                },
+                {
+                    "@id": "_:col3"
+                },
+                {
+                    "@id": "_:col4"
+                },
+                {
+                    "@id": "_:col5"
+                },
+                {
+                    "@id": "_:col6"
                 }
             ]
         },

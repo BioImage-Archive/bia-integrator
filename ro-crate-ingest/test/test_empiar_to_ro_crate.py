@@ -28,7 +28,7 @@ def get_input_proposal_path(accession_id: str) -> Path:
     "accession_id",
     ["EMPIAR-ANNOTATIONTEST", "EMPIAR-IMAGEPATTERNTEST", "EMPIAR-STARFILETEST"],
 )
-def test_biostudies_to_ro_crate(accession_id: str, tmp_bia_data_dir: Path):
+def test_empiar_to_ro_crate(accession_id: str, tmp_bia_data_dir: Path):
 
     proposal_file = get_input_proposal_path(accession_id)
 

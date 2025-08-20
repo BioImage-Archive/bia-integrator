@@ -20,7 +20,11 @@
       "value": {
         "http://bia/filePath": "data/HeLa/segmentation/centrioles.tif",
         "http://bia/sizeInBytes": "12",
-        "http://schema.org/name": ""
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "",
+        "http://schema.org/name": "",
+        "http://bia/sourceImageLabel": "",
+        "http://bia/associatedAnnotationMethod": "",
+        "http://bia/associatedProtocol": ""
       }
     }
   ],

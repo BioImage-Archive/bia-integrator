@@ -20,7 +20,11 @@
       "value": {
         "http://bia/filePath": "data/ribosomes/Tomograms/05/IS002_291013_005.mrc",
         "http://bia/sizeInBytes": "12",
-        "http://schema.org/name": "Tomogram 05"
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "http://bia/Image",
+        "http://schema.org/name": "Tomogram 05",
+        "http://bia/sourceImageLabel": "",
+        "http://bia/associatedAnnotationMethod": "",
+        "http://bia/associatedProtocol": ""
       }
     }
   ],
