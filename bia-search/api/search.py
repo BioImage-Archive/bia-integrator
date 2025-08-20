@@ -17,8 +17,8 @@ async def fts(
         list[str] | None, Query(max_length=4, alias="facet.imaging_method")
     ] = None,
     year: Annotated[list[str] | None, Query(max_length=4, alias="facet.year")] = None,
-    page: Annotated[int, Query(ge=1)] = 1,
-    page_size: Annotated[int, Query(ge=1, le=100)] = 50,
+    page: Annotated[int, Query(ge=1, alias="pagination.page", le=100)] = 1,
+    page_size: Annotated[int, Query(ge=1, le=100, alias="pagination.page_size")] = 50,
 ) -> dict:
     filters = []
     if organism:
@@ -121,8 +121,8 @@ async def fts(
 async def fts_image(
     elastic: Annotated[Elastic, Depends(get_elastic)],
     query: Annotated[str | None, Query()] = None,
-    page: Annotated[int, Query(ge=1)] = 1,
-    page_size: Annotated[int, Query(ge=1, le=100)] = 50,
+    page: Annotated[int, Query(ge=1, alias="pagination.page", le=100)] = 1,
+    page_size: Annotated[int, Query(ge=1, le=100, alias="pagination.page_size")] = 50,
 ) -> dict:
     filters = []
     query_body = {
@@ -164,6 +164,8 @@ async def fts_image(
 async def fts_image(
     elastic: Annotated[Elastic, Depends(get_elastic)],
     query: Annotated[str | None, Query()] = None,
+    page: Annotated[int, Query(ge=1, alias="pagination.page", le=100)] = 1,
+    page_size: Annotated[int, Query(ge=1, le=100, alias="pagination.page_size")] = 50,
 ) -> dict:
     filters = []
     query_body = {
@@ -188,7 +190,15 @@ async def fts_image(
         size=50,
     )
 
+    total = rsp.body["hits"]["total"]["value"]
+    total_pages = (total + page_size - 1) // page_size if page_size > 0 else 0
+
     return {
         "hits": rsp.body["hits"],
         "facets": rsp.body["aggregations"],
+        "pagination": {
+            "page": page,
+            "page_size": page_size,
+            "total_pages": total_pages,
+        },
     }
