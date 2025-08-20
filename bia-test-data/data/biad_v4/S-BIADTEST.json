@@ -205,7 +205,7 @@
             "name": "Scientific name",
             "value" : "Homo sapiens"
           } ]
-        } 
+        }
       ]
     }, {
       "accno" : "Biosample-2",
@@ -312,6 +312,10 @@
         "value" : "Test image analysis overview"
       } ]
     }, {
+      "accNo" : "Image analysis -no title",
+      "type" : "Image analysis",
+      "attributes" : [ ]
+    }, {
       "accno" : "Image correlation-6",
       "type" : "Image correlation",
       "attributes" : [ {
@@ -327,6 +331,10 @@
         "name" : "Transformation matrix",
         "value" : "Template transformation matrix"
       }]
+    }, {
+      "accNo" : "Image correlation -no title",
+      "type" : "Image correlation",
+      "attributes" : [ ]
     }, {
       "accno" : "Annotations-29",
       "type" : "Annotations",
