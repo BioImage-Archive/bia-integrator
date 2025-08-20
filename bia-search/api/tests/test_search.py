@@ -129,3 +129,23 @@ def test_fts_image(api_client: TestClient):
         body["hits"]["hits"][0]["_source"]["uuid"]
         == "445cb17b-95dc-47a3-9efc-b7a1a066bb51"
     )
+
+
+def test_fts_paging(api_client: TestClient):
+    rsp = api_client.get(
+        f"/search/fts", params={"query": "with", "page": 1, "page_size": 1}
+    )
+    assert rsp.status_code == 200
+    body = rsp.json()
+    assert len(body["hits"]["hits"]) == 1
+    assert body["pagination"]["page"] == 1
+    assert body["pagination"]["page_size"] == 1
+
+    rsp = api_client.get(
+        f"/search/fts", params={"query": "with", "page": 2, "page_size": 1}
+    )
+    assert rsp.status_code == 200
+    body = rsp.json()
+    assert len(body["hits"]["hits"]) == 1
+    assert body["pagination"]["page"] == 2
+    assert body["pagination"]["page_size"] == 1

@@ -17,6 +17,8 @@ async def fts(
         list[str] | None, Query(max_length=4, alias="facet.imaging_method")
     ] = None,
     year: Annotated[list[str] | None, Query(max_length=4, alias="facet.year")] = None,
+    page: Annotated[int, Query(ge=1)] = 1,
+    page_size: Annotated[int, Query(ge=1, le=100)] = 50,
 ) -> dict:
     filters = []
     if organism:
@@ -71,9 +73,15 @@ async def fts(
             {"simple_query_string": {"query": f"*{query}*", "fields": ["*"]}},
         ]
         query_body["bool"]["minimum_should_match"] = 1
+
+    # Calculate offset from page and page_size
+    offset = (page - 1) * page_size
+
     rsp = await elastic.client.search(
         index=elastic.index_study,
         query=query_body,
+        from_=offset,
+        size=page_size,
         aggs={
             "scientific_name": {
                 "terms": {
@@ -93,12 +101,62 @@ async def fts(
                 }
             },
         },
-        size=50,
     )
+
+    total = rsp.body["hits"]["total"]["value"]
+    total_pages = (total + page_size - 1) // page_size if page_size > 0 else 0
 
     return {
         "hits": rsp.body["hits"],
         "facets": rsp.body["aggregations"],
+        "pagination": {
+            "page": page,
+            "page_size": page_size,
+            "total_pages": total_pages,
+        },
+    }
+
+
+@router.get("/fts/image")
+async def fts_image(
+    elastic: Annotated[Elastic, Depends(get_elastic)],
+    query: Annotated[str | None, Query()] = None,
+    page: Annotated[int, Query(ge=1)] = 1,
+    page_size: Annotated[int, Query(ge=1, le=100)] = 50,
+) -> dict:
+    filters = []
+    query_body = {
+        "bool": {
+            "filter": filters,
+        }
+    }
+
+    if query:
+        query_body["bool"]["should"] = [{"match": {"uuid": query}}]
+        query_body["bool"]["minimum_should_match"] = 1
+
+    # Calculate offset from page and page_size
+    offset = (page - 1) * page_size
+
+    rsp = await elastic.client.search(
+        index=elastic.index_image,
+        query=query_body,
+        from_=offset,
+        size=page_size,
+        aggs={"image_format": {"terms": {"field": "representation.image_format"}}},
+    )
+
+    total = rsp.body["hits"]["total"]["value"]
+    total_pages = (total + page_size - 1) // page_size if page_size > 0 else 0
+
+    return {
+        "hits": rsp.body["hits"],
+        "facets": rsp.body["aggregations"],
+        "pagination": {
+            "page": page,
+            "page_size": page_size,
+            "total_pages": total_pages,
+        },
     }
 
 
