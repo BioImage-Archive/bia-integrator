@@ -129,3 +129,37 @@ def test_fts_image(api_client: TestClient):
         body["hits"]["hits"][0]["_source"]["uuid"]
         == "445cb17b-95dc-47a3-9efc-b7a1a066bb51"
     )
+
+
+def test_fts_paging(api_client: TestClient):
+    rsp = api_client.get(
+        f"/search/fts",
+        params={"query": "with", "pagination.page": 1, "pagination.page_size": 1},
+    )
+    assert rsp.status_code == 200
+    page_1 = rsp.json()
+    assert len(page_1["hits"]["hits"]) == 1
+    assert page_1["pagination"]["page"] == 1
+    assert page_1["pagination"]["page_size"] == 1
+
+    rsp = api_client.get(
+        f"/search/fts",
+        params={"query": "with", "pagination.page": 2, "pagination.page_size": 1},
+    )
+    assert rsp.status_code == 200
+    page_2 = rsp.json()
+    assert len(page_2["hits"]["hits"]) == 1
+    assert page_2["pagination"]["page"] == 2
+    assert page_2["pagination"]["page_size"] == 1
+
+    rsp = api_client.get(
+        f"/search/fts",
+        params={"query": "with", "pagination.page": 1, "pagination.page_size": 2},
+    )
+    assert rsp.status_code == 200
+    pages_both = rsp.json()
+    assert len(pages_both["hits"]["hits"]) == 2
+    uuids_in_both = [hit["_source"]["uuid"] for hit in pages_both["hits"]["hits"]]
+    uuid_1 = page_1["hits"]["hits"][0]["_source"]["uuid"]
+    uuid_2 = page_2["hits"]["hits"][0]["_source"]["uuid"]
+    assert [uuid_1, uuid_2] == uuids_in_both
