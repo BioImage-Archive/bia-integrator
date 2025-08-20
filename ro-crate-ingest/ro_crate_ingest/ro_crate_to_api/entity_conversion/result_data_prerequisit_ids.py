@@ -182,7 +182,7 @@ def prep_image_data_row(
     elif roc_creation_process_input_image:
         source_image_id = roc_creation_process_input_image
     else:
-        source_image_id = np.nan
+        source_image_id = []
 
     filelist_label_index = df["result_data_label_from_filelist"].first_valid_index()
     if not result_data_label and filelist_label_index:
@@ -200,7 +200,7 @@ def prep_image_data_row(
             "result_data_uuid": str(result_data_uuid),
             "result_data_label": result_data_label,
             "result_data_uuid_attribute": result_data_uuid_attribute.model_dump(),
-            "source_image_id_from_filelist": source_image_id,
+            "source_image_id": source_image_id,
             "creation_process_id": creation_process_id,
             "creation_process_uuid": str(creation_process_uuid),
             "creation_process_uuid_attr": creation_process_uuid_attr.model_dump(),

@@ -49,119 +49,42 @@ def create_images_and_dependencies(
             )
         )
 
-    base_objects = result_data_dataframe[
-        result_data_dataframe["source_image_id_from_filelist"].isna()
-    ]
-    objects_with_image_dependencies = result_data_dataframe.dropna(
-        subset=["source_image_id_from_filelist"]
-    )
+    result_data_dataframe["height"] = caluclate_dependency_height(result_data_dataframe)
+    max_height = result_data_dataframe["height"].max()
 
-    # Process images & creation processes without any dependencies first
+    for process_height in range(max_height + 1):
 
-    base_creation_process_by_group = [
-        (uuid, group_df)
-        for uuid, group_df in base_objects.groupby("creation_process_uuid")
-    ]
+        df = result_data_dataframe[result_data_dataframe["height"] == process_height]
 
-    with ProcessPoolExecutor(max_workers=max_workers) as executor:
-        r = list(
-            executor.map(
-                partial(
-                    create_creation_process,
-                    study_uuid=study_uuid,
-                    accession_id=accession_id,
-                    persistence_mode=persistence_mode,
-                    image_id_uuid_map=result_data_id_uuid_map,
-                ),
-                base_creation_process_by_group,
-            )
-        )
+        creation_process_by_group = [
+            (uuid, group_df) for uuid, group_df in df.groupby("creation_process_uuid")
+        ]
 
-    base_images_rows = base_objects[
-        base_objects["result_type"] == "http://bia/Image"
-    ].to_dict("records")
-    with ProcessPoolExecutor(max_workers=max_workers) as executor:
-        r = list(
-            executor.map(
-                partial(
-                    create_image,
-                    accession_id=accession_id,
-                    persistence_mode=persistence_mode,
-                ),
-                base_images_rows,
-            )
-        )
+        result_data_by_group = df.to_dict("records")
 
-    # This is likely to be empty most times
-    base_annotation_rows = base_objects[
-        base_objects["result_type"] == "http://bia/AnnotationData"
-    ].to_dict("records")
-    if len(base_annotation_rows) > 0:
         with ProcessPoolExecutor(max_workers=max_workers) as executor:
             r = list(
                 executor.map(
                     partial(
-                        create_annotation_data,
+                        create_creation_process,
+                        study_uuid=study_uuid,
                         accession_id=accession_id,
                         persistence_mode=persistence_mode,
+                        image_id_uuid_map=result_data_id_uuid_map,
                     ),
-                    base_annotation_rows,
+                    creation_process_by_group,
                 )
             )
 
-    # Then process images & creation processes with any dependencies
-    # NOTE!!! This does not account for order for dependencies chains > 1. So this could fail when pushing objects to the API in such a case.
-
-    dependent_creation_process_by_group = [
-        (uuid, group_df)
-        for uuid, group_df in objects_with_image_dependencies.groupby(
-            "creation_process_uuid"
-        )
-    ]
-
-    with ProcessPoolExecutor(max_workers=max_workers) as executor:
-        r = list(
-            executor.map(
-                partial(
-                    create_creation_process,
-                    study_uuid=study_uuid,
-                    accession_id=accession_id,
-                    persistence_mode=persistence_mode,
-                    image_id_uuid_map=result_data_id_uuid_map,
-                ),
-                dependent_creation_process_by_group,
-            )
-        )
-
-    images_with_image_dependencies_rows = objects_with_image_dependencies[
-        objects_with_image_dependencies["result_type"] == "http://bia/Image"
-    ].to_dict("records")
-    if len(images_with_image_dependencies_rows) > 0:
         with ProcessPoolExecutor(max_workers=max_workers) as executor:
             r = list(
                 executor.map(
                     partial(
-                        create_image,
+                        create_result_data,
                         accession_id=accession_id,
                         persistence_mode=persistence_mode,
                     ),
-                    images_with_image_dependencies_rows,
-                )
-            )
-
-    annotation_data_with_image_dependencies_rows = objects_with_image_dependencies[
-        objects_with_image_dependencies["result_type"] == "http://bia/AnnotationData"
-    ].to_dict("records")
-    if len(annotation_data_with_image_dependencies_rows) > 0:
-        with ProcessPoolExecutor(max_workers=max_workers) as executor:
-            r = list(
-                executor.map(
-                    partial(
-                        create_annotation_data,
-                        accession_id=accession_id,
-                        persistence_mode=persistence_mode,
-                    ),
-                    annotation_data_with_image_dependencies_rows,
+                    result_data_by_group,
                 )
             )
 
@@ -218,9 +141,9 @@ def create_creation_process(
     # All rows in group should have the same value for the point of view of creating a creation process.
     first_entry = dataframe_group.iloc[0]
 
-    if isinstance(first_entry["source_image_id_from_filelist"], list):
+    if isinstance(first_entry["source_image_id"], list):
         input_image_uuid = [
-            image_id_uuid_map[x] for x in first_entry["source_image_id_from_filelist"]
+            image_id_uuid_map[x] for x in first_entry["source_image_id"]
         ]
     else:
         input_image_uuid = []
@@ -257,6 +180,17 @@ def create_creation_process(
         [APIModels.CreationProcess(**model_dict)],
         persistence_mode,
     )
+
+
+def create_result_data(
+    row: dict,
+    accession_id: str,
+    persistence_mode: PersistenceMode,
+):
+    if row["result_type"] == "http://bia/Image":
+        create_image(row, accession_id, persistence_mode)
+    elif row["result_type"] == "http://bia/AnnotationData":
+        create_annotation_data(row, accession_id, persistence_mode)
 
 
 def create_image(
@@ -325,3 +259,24 @@ def create_annotation_data(
         [APIModels.AnnotationData(**model_dict)],
         persistence_mode,
     )
+
+
+def caluclate_dependency_height(df):
+    dep_map = dict(zip(df["result_data_id"], df["source_image_id"]))
+
+    heights = {}
+    visiting = set()
+
+    def calculate_height(id):
+        if id in heights:
+            return heights[id]
+        if id in visiting:
+            raise ValueError(f"Cycle detected with {id}")
+        visiting.add(id)
+        deps = dep_map.get(id, [])
+        height = 0 if not deps else 1 + max(calculate_height(d) for d in deps if d in dep_map)
+        visiting.remove(id)
+        heights[id] = height
+        return height
+
+    return df["result_data_id"].map(calculate_height).astype(int)
