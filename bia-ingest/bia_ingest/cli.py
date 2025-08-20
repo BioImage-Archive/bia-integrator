@@ -100,7 +100,7 @@ def ingest(
             # Get information from biostudies
             submission = load_submission(accession_id)
             submission_table = load_submission_table_info(accession_id)
-        except AssertionError as error:
+        except AssertionError:
             logger.error("Failed to retrieve information from BioStudies")
             result_summary[accession_id].__setattr__(
                 "Uncaught_Exception",
@@ -203,7 +203,6 @@ def determine_biostudies_processing_version(submission: Submission):
         "S-BIAD1392": BioStudiesProcessingVersion.V4,
         "S-BIAD1367": BioStudiesProcessingVersion.V4,
         "S-BIAD1269": BioStudiesProcessingVersion.V4,
-        "S-BIAD843": BioStudiesProcessingVersion.V4,
     }
     accession_id = submission.accno
     if accession_id in override_map:
@@ -211,7 +210,7 @@ def determine_biostudies_processing_version(submission: Submission):
     else:
         submission_attributes = attributes_to_dict(submission.attributes)
         submission_template = submission_attributes.get("Template", None)
-        if submission_template == "BioImages.v4":
+        if submission_template in ["BioImages.v4", "BioImages.v5"]:
             return BioStudiesProcessingVersion.V4
         elif submission_template == "Default":
             return BioStudiesProcessingVersion.BIOSTUDIES_DEFAULT

@@ -31,6 +31,11 @@ def get_image_analysis_method_as_map(
     for section in image_analysis_sections:
         attr_dict = attributes_to_dict(section.attributes)
 
+        # KB 20250820. New ST allows empty Image Correlation section. Fix
+        # has been requested, but some studies have slipped through.
+        if "Title" not in attr_dict:
+            continue
+
         model_dict = {
             k: case_insensitive_get(attr_dict, v, default)
             for k, v, default in key_mapping
