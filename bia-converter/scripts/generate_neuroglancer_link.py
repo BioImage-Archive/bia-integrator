@@ -25,8 +25,7 @@ def get_voxels_from_scales(scales, units, data):
     voxels = {}
     for key in scales.keys():
         if key in units.keys():
-            au = 1 if units[key] is None else units[key]
-            au = 1e-6 if au == "micrometer" else 1
+            au = 1 if units[key] is None or units[key] != 'micrometer' else 1e-6
             scale = scales[key]
             voxels[key] = scale * au
     voxels['t'], voxels['c'] = t, c
