@@ -38,4 +38,11 @@ jq -c 'to_entries | map(.value)[:10000][] | ({"index": {"_index": "test_index"}}
     > bia-study-metadata.json.bulk
 
 curl -H "Content-Type: application/x-ndjson" -XPOST 'localhost:9200/_bulk?pretty&error_trace=true' --data-binary @bia-study-metadata.json.bulk | jq '.items.[] | select(.index.status != 201)'
+
+
+
+jq -c 'to_entries | map(.value)[:10000][] | ({"index": {"_index": "test_index_images"}}, .)' bia-image-metadata.json \
+    > bia-image-metadata.json.bulk
+
+curl -H "Content-Type: application/x-ndjson" -XPOST 'localhost:9200/_bulk?pretty&error_trace=true' --data-binary @bia-image-metadata.json.bulk | jq '.items.[] | select(.index.status != 201)'
 ```

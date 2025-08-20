@@ -12,7 +12,9 @@ async def get_doc(
     uuid: Annotated[str, Query(min_length=1, max_length=500)],
 ) -> dict:
     rsp = await elastic.client.search(
-        index=elastic.index, query={"match": {"uuid": uuid}}, size=1
+        index=[elastic.index_study, elastic.index_image],
+        query={"match": {"uuid": uuid}},
+        size=1,
     )
 
     return rsp.body["hits"]

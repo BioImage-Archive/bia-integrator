@@ -4,7 +4,8 @@ from api.settings import Settings
 
 class Elastic:
     client: AsyncElasticsearch
-    index: str
+    index_study: str
+    index_image: str
 
     def __init__(self):
         pass
@@ -13,11 +14,12 @@ class Elastic:
         self.client = AsyncElasticsearch(
             settings.elastic_connstring, verify_certs=False
         )
-        self.index = settings.elastic_index
+        self.index_study = settings.elastic_index_study
+        self.index_image = settings.elastic_index_image
 
-        if not await self.client.indices.exists(index=self.index):
+        if not await self.client.indices.exists(index=self.index_study):
             await self.client.indices.create(
-                index=self.index,
+                index=self.index_study,
                 body={
                     "mappings": {
                         "dynamic": False,
@@ -59,6 +61,23 @@ class Elastic:
                             "release_date": {"type": "date"},
                         },
                     },
+                },
+            )
+
+        if not await self.client.indices.exists(index=self.index_image):
+            await self.client.indices.create(
+                index=self.index_image,
+                body={
+                    "mappings": {
+                        "dynamic": False,
+                        "properties": {
+                            "uuid": {"type": "keyword"},
+                            "representation": {
+                                "type": "object",
+                                "properties": {"image_format": {"type": "keyword"}},
+                            },
+                        },
+                    }
                 },
             )
 
