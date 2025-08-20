@@ -16,13 +16,14 @@ from bia_shared_datamodels import ro_crate_models
 logger = logging.getLogger("__main__." + __name__)
 
 
-CONTRIBUTOR_BNODE_INT = 0
-
 
 def get_contributors(
     submission: Submission,
     roc_affiliation_by_accno: dict[str, ro_crate_models.Affiliaton],
 ) -> list[ro_crate_models.Contributor]:
+
+    global CONTRIBUTOR_BNODE_INT
+    CONTRIBUTOR_BNODE_INT = 0
 
     sections = find_sections_recursive(submission.section, ["author"])
 
