@@ -110,7 +110,6 @@ def convert_ro_crate_to_bia_api(
         )
         result_data_and_dependency_creation.create_images_and_dependencies(
             image_dataframe,
-            entities,
             id_uuid_map,
             study_uuid,
             accession_id,

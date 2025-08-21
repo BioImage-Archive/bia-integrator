@@ -21,7 +21,6 @@ logger = logging.getLogger("__main__." + __name__)
 
 def create_images_and_dependencies(
     result_data_dataframe: pd.DataFrame,
-    crate_objects_by_id: dict[str, ROCrateModel],
     result_data_id_uuid_map: dict[str, str],
     study_uuid: str,
     accession_id: str,
@@ -49,12 +48,12 @@ def create_images_and_dependencies(
             )
         )
 
-    result_data_dataframe["height"] = caluclate_dependency_height(result_data_dataframe)
-    max_height = result_data_dataframe["height"].max()
+    result_data_dataframe["dependency_chain_length"] = caluclate_dependency_chain_length(result_data_dataframe)
+    max_dependency_chain_length = result_data_dataframe["dependency_chain_length"].max()
 
-    for process_height in range(max_height + 1):
+    for process_height in range(max_dependency_chain_length + 1):
 
-        df = result_data_dataframe[result_data_dataframe["height"] == process_height]
+        df = result_data_dataframe[result_data_dataframe["dependency_chain_length"] == process_height]
 
         creation_process_by_group = [
             (uuid, group_df) for uuid, group_df in df.groupby("creation_process_uuid")
@@ -261,7 +260,11 @@ def create_annotation_data(
     )
 
 
-def caluclate_dependency_height(df):
+def caluclate_dependency_chain_length(df):
+    """
+    Calcualte the longest dependency chain for a given result data (image or annotation data).
+    This is always 1 more than the largest value of all of it's dependencies.
+    """
     dep_map = dict(zip(df["result_data_id"], df["source_image_id"]))
 
     heights = {}
