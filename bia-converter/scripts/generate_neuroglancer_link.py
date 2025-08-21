@@ -1,101 +1,44 @@
 import json
 import ngff_zarr as nz
-from pathlib import Path
-from numpy import percentile
 import urllib.parse
 import typer
+from typing import List, Optional
 from typing_extensions import Annotated
-from typing import List, Tuple, Optional, Dict
+from numpy import percentile
+import logging
+from rich.logging import RichHandler
 
 app = typer.Typer()
 
-def generate_image_map(images: Dict):
-    FILTER = [
-        "Raw image in JPEG format",
-        "Visualization of groundtruth masks in PNG format",
-        "Visualization of groundtruth for randomly selected nuclei in PNG format"
-    ] ## Study specific filter to remove certain images from S-BIAD634
-    
-    def has_filtered_description(metadata: Dict, filter_list: List):
-        return any(
-            md.get("value", {}).get("attributes", {}).get("file description") in filter_list
-            for md in metadata
-        )
+logging.basicConfig(
+    level=logging.INFO, format="%(message)s", handlers=[RichHandler(show_time=False)]
+)
 
-    def is_valid_rep(rep: Dict):
-        return (
-            rep.get("image_format") == ".ome.zarr" and
-            not has_filtered_description(img.get("additional_metadata", []), FILTER)
-        )
-    
-    def check_voxels(voxels: Tuple) -> List:
-        return [1e-6 if voxel is None else voxel for voxel in voxels]
+logger = logging.getLogger()
 
-    def get_voxels_from_image_rep(image_rep: Dict):
-        return check_voxels((image_rep["voxel_physical_size_x"], image_rep["voxel_physical_size_y"], image_rep["voxel_physical_size_z"], image_rep["size_c"], image_rep["size_t"]))
-    
-    def file_filter(img: dict):
-        return not has_filtered_description(img.get("additional_metadata", []), FILTER)
-    
-    annotated_images_map = {}
-    
-    for img in images.values():
-        input_image_uuid = img.get("creation_process", {}).get("input_image_uuid", [])
-        if not input_image_uuid or not file_filter(img):
-            continue
-        key = input_image_uuid[0]
-        if key not in images:
-            continue
+def get_voxels_from_scales(scales, units, data):
+    """
+    Gets voxel values using scales and axis units and uses image data to get 
+    number of channels and time-steps
+    """
+    t, c = data[0], data[1]
+    voxels = {}
+    for key in scales.keys():
+        if key in units.keys():
+            au = 1e-6 if units[key] == 'micrometer' else 1
+            scale = scales[key]
+            voxels[key] = scale * au
+    voxels['t'], voxels['c'] = t, c
+    return voxels
 
-        valid_rep_source = [rep for rep in images[key].get("representation", []) if is_valid_rep(rep)]
-        if not valid_rep_source:
-            continue
-
-        source_rep = valid_rep_source[0]
-        source_url = source_rep["file_uri"][0]
-        source_voxel = get_voxels_from_image_rep(source_rep)
-
-        if key not in annotated_images_map:
-            annotated_images_map[key] = {
-                "source_url": source_url,
-                "source_voxel": source_voxel,
-                "annotations": []
-            }
-
-        annotations = [
-            {
-                "url": rep["file_uri"][0],
-                "voxels": get_voxels_from_image_rep(rep)
-            }
-            for rep in img.get("representation", []) if is_valid_rep(rep)
-        ]
-
-        if not annotations:
-            continue
-
-        annotated_images_map[key]["annotations"].append({
-            "annotation_uuid": img["uuid"],
-            "annotation_url": [ann["url"] for ann in annotations],
-            "annotation_voxels": [ann["voxels"] for ann in annotations]
-        })
-
-    return annotated_images_map
-
-def write_json(filepath: Path, data: dict) -> None:
-    with open(filepath, "w") as f:
-        json.dump(data, f, indent=2)
-
-def read_json(path: Path) -> dict:
-    with open(path) as f:
-        return json.load(f)
-
-def get_contrast_and_xyz_dims(
+def get_image_info_from_ome(
         source_url: str,
         scale_level: int = 0,
-        use_percentiles: bool = True
+        use_percentiles: bool = False
     ) -> List:
     """
-    Compute contrast range (min, max) and spatial dimensions (x, y, z) for a given OME-Zarr source.
+    Compute contrast range (min, max), spatial dimensions (x, y, z), voxels and channel information
+    for a given OME-Zarr source.
 
     Args:
         source_url (str): URL of the source OME-Zarr image.
@@ -103,36 +46,50 @@ def get_contrast_and_xyz_dims(
         use_percentiles (bool): Whether to compute contrast using percentiles (1% and 99%).
 
     Returns:
-        Tuple: ([min_val, max_val], [x, y, z])
+        Tuple: ([min_val, max_val], [x, y, z], voxels, channel_info)
     """
     source = nz.from_ngff_zarr(source_url)
     image = source.images[scale_level]
+    scales = image.scale
+    axes_units = image.axes_units
     data = image.data
+
+    channel_info = {}
+    if (omero := getattr(source.metadata, "omero", None)) and omero.channels:
+        for ch in omero.channels:
+            label = ch.label.replace("C:", "").replace("Channel ", "")
+            channel_info[int(label)] = {
+                "color": ch.color,
+                "min": ch.window.min,
+                "max": ch.window.max
+            }
+
+    voxels = get_voxels_from_scales(scales, axes_units, data.shape)
+    
     x, y, z = data.shape[-1], data.shape[-2], data.shape[-3]
 
     if use_percentiles:
         min_val = percentile(data.__array__(), 1)
         max_val = percentile(data.__array__(), 99)
     else:
-        min_val = min(data.__array__())
-        max_val = max(data.__array__())
-        
-    return [[min_val, max_val], [x,y,z]]
+        min_val = min(data.__array__().flatten())
+        max_val = max(data.__array__().flatten())
+    return [[int(min_val), int(max_val)], [x,y,z], voxels, channel_info]
 
-def get_dimensions(dims: Tuple[float, float, float, int, int]):
+def get_dimensions(dims: dict):
     dims = process_xy_voxels(dims)
-    units = "m" if dims[0] < 1 else "um"
+    units = "m" if dims['x'] < 1 else "um"
     return {
-            "t": [dims[4], ""],
-            "c": [dims[3], ""],
-            "z": [float(dims[2]), ""],
-            "y": [float(dims[1]), units],
-            "x": [float(dims[0]), units]
+            "t": [dims['t'], ""],
+            "c": [dims['c'], ""],
+            "z": [float(dims['z']), ""],
+            "y": [float(dims['y']), units],
+            "x": [float(dims['x']), units]
         }
 
 def get_transformations(
-        output_dims: Tuple[float, float, float, int, int],
-        input_dims: Tuple[float, float, float, int, int]
+        output_dims: dict,
+        input_dims: dict
     ) -> dict:
     return {
         "outputDimensions": get_dimensions(output_dims),
@@ -141,8 +98,8 @@ def get_transformations(
 
 def get_transformed_layer(
         source: str,
-        source_voxel: Tuple[float, float, float, int, int],
-        annotated_voxel: Tuple[float, float, float, int, int]
+        source_voxel: dict,
+        annotated_voxel: dict
     ) -> dict:
     return {"url": f"{source}/|zarr2:", "transform": get_transformations(source_voxel, annotated_voxel)}
 
@@ -150,39 +107,56 @@ def get_layer(
         source: str,
         layer_type: str,
         name: str,
-        source_voxel: Tuple[float, float, float, int, int],
-        annotated_voxels: Tuple[float, float, float, int, int],
-        contrast: Optional[List[float]] = None
+        source_voxel: dict,
+        annotated_voxel: dict,
+        channel: int = 0,
+        contrast: Optional[List[float]] = None,
+        channel_info : Optional[dict] = None
     ) -> dict:
-    if annotated_voxels:
-        if source_voxel[0] >= annotated_voxels[0]:
-            source_transformation =  get_transformed_layer(source, annotated_voxels, source_voxel)
+    if annotated_voxel:
+        if source_voxel['x'] >= annotated_voxel['x']:
+            source_transformation =  get_transformed_layer(source, annotated_voxel, source_voxel)
         else:
             source_transformation =  get_transformed_layer(source, source_voxel, source_voxel)
-
-    shaders = {"normalized": {"range": contrast}} if layer_type == "image" else {}
-    return {
+    
+    if source_voxel['c'] > 1 and layer_type == "image" and channel_info:
+        channel_map = {0: "r", 1: "g", 2: "b"}
+        min, max = channel_info[channel]['min'], channel_info[channel]['max']
+        shader = f"#uicontrol float channel_min slider(min={min}, max={max}, default={min})\n#uicontrol float channel_max slider(min={min}, max={max}, default={max})\n#uicontrol float channel_intensity slider(min=0, max=2, default=1)\n"
+        shader = shader + "void main() {\nfloat r = 0.0, g = 0.0, b = 0.0, channel = 0.0;\nfloat scale = channel_max - channel_min;\nif (scale > 0.0){\nfloat norm = clamp((float(getDataValue(0).value) - channel_min) / scale, 0.0, 1.0);\nchannel += norm * channel_intensity;\n}\n" 
+        selected_channel = channel_map[channel]
+        shader = str(shader + f"{selected_channel} = channel;\n" + "emitRGB(vec3(clamp(r, 0.0, 1.0), clamp(g, 0.0, 1.0), clamp(b, 0.0, 1.0)));\n}")
+        shaderControls = "shader"
+    else:
+        shader = {"normalized": {"range": contrast}} if layer_type == "image" else {}
+        shaderControls = "shaderControls"
+    layer_dict = {
         "type": layer_type,
         "source": source_transformation,
         "name": name,
         "tab": "source" if layer_type == "image" else "segments",
-        "shaderControls": shaders,
-        "segments": [] if layer_type == "segmentation" else None
+        f"{shaderControls}": shader,
+        "segments": [] if layer_type == "segmentation" else None,
+        "localPosition": [channel],
     }
+
+    if source_voxel['c'] > 1 and layer_type == "image":
+        layer_dict["blend"] = "additive"
+        layer_dict["opacity"] =  1
+
+    return layer_dict
 
 def convert_voxel_size_to_um(vx: float) -> float:
     return vx * 1e-6 if int(vx) == 1 else vx
 
-def process_xy_voxels(obj: Tuple) -> Tuple:
-    for i in range(2):  # Only x and y
-        obj[i] = convert_voxel_size_to_um(obj[i])
+def process_xy_voxels(obj: dict) -> dict:
+    obj['x'] = convert_voxel_size_to_um(obj['x'])
+    obj['y'] = convert_voxel_size_to_um(obj['y'])
     return obj
 
 def generate_neuroglancer_url(
         source_url: str,
         segmentation_urls: List[str],
-        source_voxel: Tuple[float, float, float, int, int] = (1, 1, 1, 1, 1),
-        annotation_voxels: Optional[List[Tuple[float, float, float, int, int]]] = [(1, 1, 1, 1, 1)],
         layout: str = "xy"
     ) -> str:
     """
@@ -198,22 +172,32 @@ def generate_neuroglancer_url(
     Returns:
         str: Neuroglancer-compatible URL.
     """
-
+    layers = []
     source_label = "Source Image"
-    contrast, xyz = get_contrast_and_xyz_dims(source_url)
-    x,y,z = xyz
-    layers = [get_layer(source_url, "image", source_label, source_voxel, annotation_voxels[0], contrast)]
+    source_contrast, image_resolution, source_voxel, source_channel_info = get_image_info_from_ome(source_url)
+    x_res, y_res, z_res = image_resolution
+    
     dimensions = get_dimensions(source_voxel)
 
     for i, seg_url in enumerate(segmentation_urls):
-        layers.append(get_layer(seg_url, "segmentation", f"Annotation {i+1}", source_voxel, annotation_voxels[i]))
+        contrast, annotation_image_shape, annotation_voxel, annotation_channel_info = get_image_info_from_ome(seg_url)
+        if i == 0:
+            if source_voxel['c'] > 1:
+                for channel in range(source_voxel['c']):
+                    layers.append(get_layer(source_url, "image", f"{source_label}-channel-{channel}", source_voxel, annotation_voxel, channel, source_contrast, source_channel_info))
+            else:
+                layers.append(get_layer(source_url, "image", source_label, source_voxel, annotation_voxel, 0, source_contrast))
+            imageHasZDims = int(source_voxel['z']) != 1 and int(annotation_voxel['z']) != 1 and int(z_res) != 1
+        layers.append(get_layer(seg_url, "segmentation", f"Annotation {i+1}", source_voxel, annotation_voxel))
 
-    imageHasZDims = int(source_voxel[2]) != 1 and int(annotation_voxels[0][2]) != 1 and int(z) != 1
-    
+
     display_dimension = ["x", "y", "z"] if imageHasZDims else ["x", "y"]
     layout = "4panel-alt" if imageHasZDims else "xy" 
-    position = [0, 0, 0, int(y/2), int(x/2)] if imageHasZDims else [0, 0, int(y/2), int(x/2)]
-    cross_section_scale = 3 if int(x) > 2000 else 1
+    position = [0, 0, 0, int(y_res/2), int(x_res/2)]
+
+    max_res = max(x_res, y_res)
+    cross_section_scale = 0.5 * (max_res / 100) ** 0.6
+    cross_section_scale = min(cross_section_scale, 3)
 
 
     state = {
@@ -231,33 +215,23 @@ def generate_neuroglancer_url(
     return f"https://neuroglancer-demo.appspot.com/#!{encoded_json}"
 
 @app.command()
-def main(images_path: Path = typer.Option(..., help="Path to raw OME-Zarr JSON")):
-    annotated_image_map = generate_image_map(read_json(images_path))
+def main(
+    source_image_url: Annotated[
+        str, typer.Option("--source-image-url", help="S3 url for the source image")
+    ],
+    annotation_image_urls: Annotated[
+        List[str], typer.Option("--annotation-image-urls", help="S3 url for One or more annotation image")
+    ],
+    layout: Annotated[
+        str, typer.Option("--layout", help="Neuroglancer layout (e.g., xy, 4panel-alt)")
+    ] = "xy"
+):
 
-    uuid_to_skip = []
-    overlays = {}
-
-    for key, values in annotated_image_map.items():
-        if key in uuid_to_skip or not values:
-            continue
-
-        source_image_url = values["source_url"]
-        source_voxels = values["source_voxel"]
-
-        if not source_image_url:
-            continue
-
-        annotated_images = values["annotations"]
-        annotation_urls = [a["annotation_url"][0] for a in annotated_images if a["annotation_url"]]
-        annotation_voxels = [a["annotation_voxels"][0] for a in annotated_images if a["annotation_voxels"]]
-
-        if not annotation_voxels:
-            print(f"Skipping {key} due to missing annotation voxels.")
-            continue
-        url = generate_neuroglancer_url(source_image_url, annotation_urls, source_voxels, annotation_voxels)
-        overlays[key] = url
-
-    write_json("overlay_neuroglancer_links.json", overlays)
+    """
+    Generate a Neuroglancer URL from a source image and annotation images.
+    """
+    url = generate_neuroglancer_url(source_image_url, annotation_image_urls, layout) 
+    print(url) # For now just print the neuroglancer link this will get added to the image object later.   
 
 
 if __name__ == "__main__":
