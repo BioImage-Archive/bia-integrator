@@ -33,6 +33,8 @@ def get_image_analysis_method_as_map(
 
         # KB 20250820. New ST allows empty Image Correlation section. Fix
         # has been requested, but some studies have slipped through.
+        # Without a title, it can't be associated to anything, so we
+        # skip creating them because they won't appear in any dataset.
         if "Title" not in attr_dict:
             continue
 
