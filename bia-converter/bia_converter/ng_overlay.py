@@ -1,12 +1,30 @@
+"""
+Functions for generating overlays for source and annotation images using neuroglancer
+
+- Takes in source image uuid and finds the annotation image pairs
+- Generate the state for the view, by creating layers for source and annotation
+- For creating layers, reads the OME.ZAR data and creates transformation if required
+
+"""
+
+
 import json
 import ngff_zarr as nz
 import urllib.parse
 import typer
-from typing import List, Optional
-from typing_extensions import Annotated
+from uuid import UUID
+from typing import List, Optional, Union
 from numpy import percentile
 import logging
 from rich.logging import RichHandler
+from bia_integrator_api.exceptions import NotFoundException
+from bia_converter.bia_api_client import api_client, store_object_in_api_idempotent
+from bia_converter.utils import add_or_update_attribute, attributes_by_name
+from bia_integrator_api.models import ( 
+    Provenance,
+    Attribute
+)
+
 
 app = typer.Typer()
 
@@ -15,6 +33,7 @@ logging.basicConfig(
 )
 
 logger = logging.getLogger()
+
 
 def get_voxels_from_scales(scales, units, data):
     """
@@ -30,6 +49,7 @@ def get_voxels_from_scales(scales, units, data):
             voxels[key] = scale * au
     voxels['t'], voxels['c'] = t, c
     return voxels
+
 
 def get_image_info_from_ome(
         source_url: str,
@@ -76,6 +96,7 @@ def get_image_info_from_ome(
         max_val = max(data.__array__().flatten())
     return [[int(min_val), int(max_val)], [x,y,z], voxels, channel_info]
 
+
 def get_dimensions(dims: dict):
     dims = process_xy_voxels(dims)
     units = "m" if dims['x'] < 1 else "um"
@@ -87,6 +108,7 @@ def get_dimensions(dims: dict):
             "x": [float(dims['x']), units]
         }
 
+
 def get_transformations(
         output_dims: dict,
         input_dims: dict
@@ -96,12 +118,14 @@ def get_transformations(
         "inputDimensions": get_dimensions(input_dims)
     }
 
+
 def get_transformed_layer(
         source: str,
         source_voxel: dict,
         annotated_voxel: dict
     ) -> dict:
     return {"url": f"{source}/|zarr2:", "transform": get_transformations(source_voxel, annotated_voxel)}
+
 
 def get_layer(
         source: str,
@@ -144,15 +168,20 @@ def get_layer(
         layer_dict["blend"] = "additive"
         layer_dict["opacity"] =  1
 
+    logger.info(f"Creating layer for {name}")
+
     return layer_dict
+
 
 def convert_voxel_size_to_um(vx: float) -> float:
     return vx * 1e-6 if int(vx) == 1 else vx
+
 
 def process_xy_voxels(obj: dict) -> dict:
     obj['x'] = convert_voxel_size_to_um(obj['x'])
     obj['y'] = convert_voxel_size_to_um(obj['y'])
     return obj
+
 
 def generate_neuroglancer_url(
         source_url: str,
@@ -214,25 +243,76 @@ def generate_neuroglancer_url(
     encoded_json = urllib.parse.quote(json_str)
     return f"https://neuroglancer-demo.appspot.com/#!{encoded_json}"
 
-@app.command()
-def main(
-    source_image_url: Annotated[
-        str, typer.Option("--source-image-url", help="S3 url for the source image")
-    ],
-    annotation_image_urls: Annotated[
-        List[str], typer.Option("--annotation-image-urls", help="S3 url for One or more annotation image")
-    ],
-    layout: Annotated[
-        str, typer.Option("--layout", help="Neuroglancer layout (e.g., xy, 4panel-alt)")
-    ] = "xy"
-):
 
-    """
-    Generate a Neuroglancer URL from a source image and annotation images.
-    """
-    url = generate_neuroglancer_url(source_image_url, annotation_image_urls, layout) 
-    print(url) # For now just print the neuroglancer link this will get added to the image object later.   
+def get_ome_zar_file_uri(image_uuid: Union[UUID, str]):
+    try:
+        image_reps = api_client.get_image_representation_linking_image(str(image_uuid), page_size=5)
+        if len(image_reps)>0:
+            image_file_uri = [image_rep.file_uri[0] for image_rep in image_reps if '.zarr' in image_rep.file_uri[0]][0]
+            return image_file_uri
+        return False
+    except NotFoundException as e:
+        logger.error(f"Could not retrieve image. Error was {e}.")
+        return False
 
 
-if __name__ == "__main__":
-    app()
+def annotation_filter(image):
+    # Descriptions we want to exclude - study specific - S-BIAD634
+    excluded_descriptions = {
+        "Raw image in JPEG format",
+        "Visualization of groundtruth masks in PNG format",
+        "Visualization of groundtruth for randomly selected nuclei in PNG format"
+    }
+    metadata = attributes_by_name(image)
+    if not metadata:
+        return True
+    for value in metadata.values():
+        if not isinstance(value, dict):
+            continue
+        attributes = value.get("attributes", {})
+        desc = attributes.get("file description")
+        if desc in excluded_descriptions:
+            return False
+    return image
+
+
+def update_additional_metadata_source_image_with_ng_view_url(uuid: Union[UUID, str], url: str):
+    try:
+        image = api_client.get_image(str(uuid))
+        attribute = Attribute.model_validate(
+            {
+                "provenance": Provenance.BIA_IMAGE_CONVERSION,
+                "name": "neuroglancer_view_link",
+                "value": {
+                    "neuroglancer_view_link": url,
+                },
+            }
+        )
+        add_or_update_attribute(attribute, image.additional_metadata)
+        store_object_in_api_idempotent(image)
+
+    except NotFoundException as e:
+        logger.error(f"Could not update image object. Error was {e}.")
+        return False
+
+
+def source_annotation_image_pairs(source_image_uuid: Union[UUID, str]):
+    try:
+        creation_process = api_client.get_creation_process_linking_image(str(source_image_uuid), 20)
+        annotated_images = [ annotation_filter(api_client.get_image_linking_creation_process(cp.uuid, 1)[0]) for cp in creation_process]
+        annotate_image_urls = [ str(get_ome_zar_file_uri(ai.uuid)) for ai in annotated_images if ai]
+        logger.info(f"For source image: {source_image_uuid} found {len(annotate_image_urls)} annotated images.")
+        return annotate_image_urls
+    except NotFoundException as e:
+        logger.error(f"Could not find pairs. Error was {e}.")
+        return False
+
+
+def generate_overlays(source_image_uuid: Union[UUID, str], layout: str = "xy"):
+    source_image_url = get_ome_zar_file_uri(source_image_uuid)
+    annotation_image_urls = source_annotation_image_pairs(source_image_uuid)
+    if source_image_url and annotation_image_urls:
+        url = generate_neuroglancer_url(source_image_url, annotation_image_urls, layout)    
+        update_additional_metadata_source_image_with_ng_view_url(source_image_uuid, url)
+    else:   
+        logger.info(f"No annotated images found for {source_image_uuid}.")
