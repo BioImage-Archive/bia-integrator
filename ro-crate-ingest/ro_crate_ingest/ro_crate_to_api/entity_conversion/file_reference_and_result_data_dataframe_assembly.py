@@ -41,10 +41,6 @@ def create_combined_file_dataframe(
         image_ro_crate_objects, size_order, crate_graph, ro_crate_path
     )
 
-    # annotation_data = image_df(
-    #     annotation_data_ro_crate_objects, size_order, crate_graph, ro_crate_path, "http://bia/AnnotationData"
-    # )
-
     file_list_dataframe = file_list_df(
         crate_objects_by_id,
         ro_crate_path,

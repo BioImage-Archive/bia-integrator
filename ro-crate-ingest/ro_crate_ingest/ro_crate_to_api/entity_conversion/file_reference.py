@@ -35,7 +35,7 @@ def process_and_persist_file_references(
 
     with ProcessPoolExecutor(max_workers=max_workers) as executor:
         func = partial(
-            file_reference_from_row_dict,
+            create_file_reference_and_result_data_row,
             study_uuid=study_uuid,
             accession_id=accession_id,
             file_ref_url_prefix=url_prefix,
@@ -43,10 +43,12 @@ def process_and_persist_file_references(
             image_extensions=image_extensions,
         )
         results = list(executor.map(func, rows))
-    return pd.DataFrame(results)
+
+    # Only return the result data that has had an id identified for it (and should therefore be created)
+    return pd.DataFrame(results).dropna(subset=["result_data_id"])
 
 
-def file_reference_from_row_dict(
+def create_file_reference_and_result_data_row(
     row: dict,
     study_uuid: str,
     accession_id: str,
@@ -54,6 +56,10 @@ def file_reference_from_row_dict(
     persistence_mode: PersistenceMode,
     image_extensions: list[str],
 ) -> APIModels.FileReference:
+    """
+    Creates & persists file references.
+    Return the required information needed to create result data (images, annotationd data).
+    """
     import pandas as pd
     from numpy import nan
 
@@ -94,12 +100,21 @@ def file_reference_from_row_dict(
         persistence_mode,
     )
 
-    result_data_id, obj_type = select_result_data_id_and_type(row, image_extensions)
-    result_data_label = None
-    if result_data_id:
-        result_data_label = select_result_data_label(row)
-    file_list_source_image_id = select_file_list_source_image_id(row)
+    return information_for_result_data_creation(
+        row, image_extensions, uuid, dataset_roc_id, dataset_uuid
+    )
 
+
+def information_for_result_data_creation(
+    row, image_extensions, uuid, dataset_roc_id, dataset_uuid
+) -> Optional[dict]:
+
+    result_data_id, obj_type = select_result_data_id_and_type(row, image_extensions)
+    result_data_label_from_filelist = None
+    file_list_source_image_id = None
+    if result_data_id:
+        result_data_label_from_filelist = get_result_data_label_in_filelist(row)
+        file_list_source_image_id = get_file_list_source_image_id(row)
     return {
         "path": row["path"],
         "file_ref_uuid": str(uuid),
@@ -107,7 +122,7 @@ def file_reference_from_row_dict(
         "dataset_uuid": dataset_uuid,
         "result_type": obj_type,
         "result_data_id": result_data_id,
-        "result_data_label_from_filelist": result_data_label,
+        "result_data_label_from_filelist": result_data_label_from_filelist,
         "source_image_id_from_filelist": file_list_source_image_id,
     }
 
@@ -151,7 +166,13 @@ def select_size_in_bytes(row: dict) -> int:
     raise ValueError(f"No dataset found for file: {row["path"]}")
 
 
-def select_result_data_id_and_type(row: dict, image_extensions: list[str]) -> Optional[str]:
+def select_result_data_id_and_type(
+    row: dict, image_extensions: list[str]
+) -> tuple[Optional[str], Optional[str]]:
+    """
+    Finds the most appropriate string to use as an ID for result data (images or annotation data).
+    If not found, this file reference shouldn't be processed
+    """
     id = None
     bia_type = None
 
@@ -169,7 +190,7 @@ def select_result_data_id_and_type(row: dict, image_extensions: list[str]) -> Op
         if file_list_info.get("http://www.w3.org/1999/02/22-rdf-syntax-ns#type", None):
             bia_type = file_list_info["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"]
         elif id:
-            # Assume something that has been named in a filelist is an image
+            # Assume something that has been named in a filelist is an image if not specified that it's annotation data
             bia_type = "http://bia/Image"
 
     if not id:
@@ -185,7 +206,7 @@ def select_result_data_id_and_type(row: dict, image_extensions: list[str]) -> Op
     return id, bia_type
 
 
-def select_result_data_label(row: dict) -> Optional[str]:
+def get_result_data_label_in_filelist(row: dict) -> Optional[str]:
     if not pd.isna(row.get("info_from_file_list", nan)):
         file_list_info = row["info_from_file_list"]
         if file_list_info.get("http://schema.org/name", None):
@@ -223,20 +244,24 @@ def accepted_image_extensions(path: str) -> list[str]:
     return file_formats
 
 
-def select_file_list_source_image_id(row: dict) -> Optional[str]:
+def get_file_list_source_image_id(row: dict) -> Optional[str]:
     info_from_file_list = row.get("info_from_file_list", nan)
     source_image_id = nan
     if not pd.isna(info_from_file_list):
         if "http://bia/sourceImagePath" in info_from_file_list:
             sid: str = info_from_file_list["http://bia/sourceImagePath"]
             if sid.startswith("["):
-                source_image_id = [x.strip("'\"\\ ") for x in sid.strip("[]").split(",")]
+                source_image_id = [
+                    x.strip("'\"\\ ") for x in sid.strip("[]").split(",")
+                ]
             elif sid != "":
                 source_image_id = [sid]
         elif "http://bia/sourceImageLabel" in info_from_file_list:
             sid = info_from_file_list["http://bia/sourceImageLabel"]
             if sid.startswith("["):
-                source_image_id = [x.strip("'\"\\ ") for x in sid.strip("[]").split(",")]
+                source_image_id = [
+                    x.strip("'\"\\ ") for x in sid.strip("[]").split(",")
+                ]
             elif sid != "":
                 source_image_id = [sid]
 

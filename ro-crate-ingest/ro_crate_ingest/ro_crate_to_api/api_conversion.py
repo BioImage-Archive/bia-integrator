@@ -12,7 +12,7 @@ from ro_crate_ingest.ro_crate_to_api.entity_conversion import (
     image_acquisition_protocol,
     protocol,
     result_data_and_dependency_creation,
-    result_data_prerequisit_ids,
+    result_data_prerequisite_ids,
     specimen_imaging_preparation_protocol,
     study,
 )
@@ -90,7 +90,7 @@ def convert_ro_crate_to_bia_api(
         entities, crate_path, crate_graph
     )
 
-    image_raw_dataframe = file_reference.process_and_persist_file_references(
+    identified_result_data = file_reference.process_and_persist_file_references(
         file_dataframe,
         study_uuid,
         accession_id,
@@ -99,10 +99,10 @@ def convert_ro_crate_to_bia_api(
         get_settings().parallelisation_max_workers,
     )
 
-    if not image_raw_dataframe["result_data_id"].isna().all():
+    if not identified_result_data.empty:
         image_dataframe, id_uuid_map = (
-            result_data_prerequisit_ids.prepare_all_ids_for_images(
-                image_raw_dataframe,
+            result_data_prerequisite_ids.prepare_all_ids_for_images(
+                identified_result_data,
                 entities,
                 study_uuid,
                 get_settings().parallelisation_max_workers,

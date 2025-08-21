@@ -1,4 +1,5 @@
 import pandas as pd
+import pandas.api.typing as pdtypes
 from bia_shared_datamodels.package_specific_uuid_creation import (
     shared,
     ro_crate_uuid_creation,
@@ -21,15 +22,16 @@ def prepare_all_ids_for_images(
     study_uuid: str,
     max_workers: int,
 ) -> tuple[pd.DataFrame, dict[str, str]]:
-    result_data_by_id: pd.DataFrame = image_dataframe.groupby(
+    result_data_by_id: pdtypes.DataFrameGroupBy = image_dataframe.groupby(
         "result_data_id", dropna=True
     )
 
+    
     with ProcessPoolExecutor(max_workers=max_workers) as executor:
         results = list(
             executor.map(
                 partial(
-                    prep_image_data_row,
+                    prep_result_data_row,
                     crate_objects_by_id=crate_objects_by_id,
                     study_uuid=study_uuid,
                 ),
@@ -47,9 +49,10 @@ def prepare_all_ids_for_images(
     )
 
     return result_data_uuid_dataframe, result_data_id_uuid_map
+ 
 
 
-def prep_image_data_row(
+def prep_result_data_row(
     group_df: pd.DataFrame,
     crate_objects_by_id: dict[str, ROCrateModel],
     study_uuid: str,
