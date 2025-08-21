@@ -11,9 +11,8 @@ logger = logging.getLogger("__main__." + __name__)
 def load_empiar_entry(accession_id) -> Entry:
     # Note this is a dictionary to include reasons why the override was made
     overrides = {
-        "EMPIAR-ANNOTATIONTEST": "A test submission.",
-        "EMPIAR-IMAGEPATTERNTEST": "A test submission.",
-        "EMPIAR-STARFILETEST": "A test submission.",
+        "EMPIAR-IMAGEPATTERNTEST": "A test submission covering file pattern shapes.",
+        "EMPIAR-STARFILETEST": "A test submission covering star file annotation, with tomograms, and other image dependencies.",
     }
     if accession_id in overrides:
         return read_empiar_entry_override(accession_id)
