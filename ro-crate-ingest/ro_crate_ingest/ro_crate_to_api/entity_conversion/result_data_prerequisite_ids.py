@@ -188,7 +188,7 @@ def prep_result_data_row(
         source_image_id = []
 
     filelist_label_index = df["result_data_label_from_filelist"].first_valid_index()
-    if not result_data_label and filelist_label_index:
+    if filelist_label_index != None and not result_data_label:
         result_data_label = str(
             df["result_data_label_from_filelist"].loc[filelist_label_index]
         )
