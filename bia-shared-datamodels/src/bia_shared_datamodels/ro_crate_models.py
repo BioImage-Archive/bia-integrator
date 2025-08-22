@@ -274,8 +274,9 @@ class BioSample(ROCrateModel):
         list[ObjectReference], FieldContext("http://bia/organismClassification")
     ] = Field(default_factory=list)
     growthProtocol: Annotated[
-        list[ObjectReference], FieldContext("http://bia/growthProtocol", isIdField=True)
-    ] = Field(default_factory=list)
+        Optional[ObjectReference],
+        FieldContext("http://bia/growthProtocol", isIdField=True),
+    ] = Field(default=None)
 
     model_config = ConfigDict(model_type="http://bia/BioSample")
 
