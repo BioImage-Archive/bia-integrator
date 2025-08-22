@@ -82,7 +82,7 @@ def test_ingest_biostudies_ro_crate_metadata_with_api(
     )
 
 
-@pytest.mark.parametrize("accession_id", ["EMPIAR-ANNOTATIONTEST", "EMPIAR-IMAGEPATTERNTEST"])
+@pytest.mark.parametrize("accession_id", ["EMPIAR-IMAGEPATTERNTEST", "EMPIAR-STARFILETEST"])
 def test_ingest_empiar_ro_crate_metadata(accession_id: str, tmp_bia_data_dir: Path):
 
     crate_path = get_empiar_to_ro_crate_path(accession_id)
@@ -92,7 +92,7 @@ def test_ingest_empiar_ro_crate_metadata(accession_id: str, tmp_bia_data_dir: Pa
     )
 
 
-@pytest.mark.parametrize("accession_id", ["EMPIAR-ANNOTATIONTEST", "EMPIAR-IMAGEPATTERNTEST"])
+@pytest.mark.parametrize("accession_id", ["EMPIAR-IMAGEPATTERNTEST", "EMPIAR-STARFILETEST"])
 def test_ingest_empiar_ro_crate_metadata_with_api(
     accession_id: str, get_bia_api_client
 ):
@@ -118,9 +118,9 @@ def ingest_local_test(
 
     assert result.exit_code == 0
 
-    files_written = [f for f in tmp_bia_data_dir.rglob(f"*/{accession_id}/*.json")]
+    files_written = sorted([f for f in tmp_bia_data_dir.rglob(f"*/{accession_id}/*.json")])
 
-    expected_files = get_expected_files(accession_id)
+    expected_files = sorted(get_expected_files(accession_id))
 
     assert len(files_written) == len(expected_files)
 

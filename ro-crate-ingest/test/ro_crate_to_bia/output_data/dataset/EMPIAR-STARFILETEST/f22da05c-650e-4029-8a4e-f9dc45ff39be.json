@@ -1,0 +1,33 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "f22da05c-650e-4029-8a4e-f9dc45ff39be",
+  "version": 0,
+  "model": {
+    "type_name": "Dataset",
+    "version": 2
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "annotation_method_uuid",
+      "value": {
+        "annotation_method_uuid": [
+          "4aaaad85-4f00-4877-8a7b-cdcf09153f1f"
+        ]
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Reconstructed tomograms for dataset 2 (220330) data/220330/tomograms"
+      }
+    }
+  ],
+  "title": "Reconstructed tomograms for dataset 2 (220330)",
+  "description": "Tomograms (*.mrc) reconstructed by weighted back-projection in AreTomo and 4-times binned, and coordinates from subtomogram averaging of GEM2 particles (*.star). Data acquired with defocus only, no Volta phase plate, on a K3 BioQuantum detector. See README.md under All Files for more information (also copied below).\n\n# Cryo-electron tomography of GEM2-labelled Mito-EGFP in HeLa cells\n\nFive independent cryo-ET datasets were collected. Each dataset is organised under the following directory structure, with the directories \"data/\", \"alignment/\", and \"tomograms/\" each designated as an Image Set.\n\n- data/\n    - CountRef.mrc    gain reference\n    - defects.tif     defect map (K3 data only)\n    - frames/         unaligned, unbinned multi-frame micrographs\n    - mdoc/           MDOC files listing exposure dose, pixel size and tilt angle information for each tilt\n- alignment/\n    - TS_###.mrc/     \n        - TS_###.mrc.st        sorted, motion-corrected tilt series from WARP\n        - TS_###.mrc.rawtlt    tilt angle information corresponding to tilt series\n        - TS_###.mrc.aln       AreTomo tilt series alignment solution\n        - TS_###.mrc.xf        XF file from AreTomo alignment\n    - mdoc_edited/             MDOC files with entries for discarded tilts during alignment removed\n- tomograms/\n    - *.mrc          tomograms reconstructed by weighted back-projection in AreTomo, 4-times binned\n    - ######.star    combined STAR file listing the refined coordinates of GEM2 particles at 6.85 A/px in this dataset\n\nAcquisition parameters differ for each dataset and are specified below. Tilt series were aligned in AreTomo 1.3.1 with the following parameters: 8 by 6 patches (K3 data) or 6 by 6 patches (K2 data), VolZ 2000, AlignZ 1000, TiltAxis ## -1 (as calibrated for the magnification and microsco\npe used), TiltCor 0.\n\n## Dataset 1 (211206) - Image Sets 1 to 3\n\nData acquired with defocus only, no Volta phase plate, on a K3 BioQuantum detector. 2 tilt series. Pixel size, 3.425 A/px.\n\n## Dataset 2 (220330) - Image Sets 4 to 6\n\nData acquired with defocus only, no Volta phase plate, on a K3 BioQuantum detector. 3 tilt series. Pixel size, 3.425 A/px.\n\n## Dataset 3 (220504) - Image Sets 7 to 9\n\nData acquired with Volta phase plate on a K2 Summit detector. 1 tilt series. Pixel size, 3.3701 A/px.\n\n## Dataset 4 (220506) - Image Sets 10 to 12\n\nData acquired with Volta phase plate on a K3 BioQuantum detector. 5 tilt series. Pixel size, 3.425 A/px.\n\n## Dataset 5 (220720) - Image Sets 13 to 15\n\nData acquired with Volta phase plate on a K3 BioQuantum detector. 6 tilt series. Pixel size, 3.425 A/px.",
+  "analysis_method": [],
+  "correlation_method": [],
+  "example_image_uri": [],
+  "submitted_in_study_uuid": "6f3a34a0-bf21-4b07-9f9b-286367226cbd"
+}

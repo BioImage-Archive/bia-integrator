@@ -24,7 +24,7 @@ def get_image_correlation_method(yaml_object: dict) -> ImageCorrelationMethod:
 
     model_dict = {
         "@id": f"_:{yaml_object["title"]}",
-        "@type": ["bia:ImageAnalysisMethod"],
+        "@type": ["bia:ImageCorrelationMethod"],
         "title": yaml_object["title"],
         "protocolDescription": yaml_object["protocol_description"],
         "fiducialsUsed": yaml_object.get("fiducials_used", None),

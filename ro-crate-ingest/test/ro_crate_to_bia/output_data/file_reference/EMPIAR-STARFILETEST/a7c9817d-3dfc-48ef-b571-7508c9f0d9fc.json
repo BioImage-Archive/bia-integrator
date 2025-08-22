@@ -1,0 +1,23 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "a7c9817d-3dfc-48ef-b571-7508c9f0d9fc",
+  "version": 0,
+  "model": {
+    "type_name": "FileReference",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Reconstructed tomograms for dataset 1 (211206) data/211206/tomograms/file_list.tsv491"
+      }
+    }
+  ],
+  "file_path": "Reconstructed tomograms for dataset 1 (211206) data/211206/tomograms/file_list.tsv",
+  "format": ".tsv",
+  "size_in_bytes": 491,
+  "uri": "https://ftp.ebi.ac.uk/empiar/world_availability/STARFILETEST/data/Reconstructed tomograms for dataset 1 (211206) data/211206/tomograms/file_list.tsv",
+  "submission_dataset_uuid": "d672654f-e309-4988-b9f6-9c00986b9892"
+}

@@ -1,0 +1,24 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "6265ecb0-1c64-4909-bb89-ee0a08a68c9c",
+  "version": 0,
+  "model": {
+    "type_name": "Image",
+    "version": 2
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "9cfad2ef-abfd-47df-9039-982dfef856dc"
+      }
+    }
+  ],
+  "label": "Tilt series TS_017",
+  "submission_dataset_uuid": "f20b8e26-9a74-470e-b5b7-b877ffff7754",
+  "creation_process_uuid": "2ade7966-3a40-4bc3-ba74-d045daae3ef4",
+  "original_file_reference_uuid": [
+    "9cfad2ef-abfd-47df-9039-982dfef856dc"
+  ]
+}

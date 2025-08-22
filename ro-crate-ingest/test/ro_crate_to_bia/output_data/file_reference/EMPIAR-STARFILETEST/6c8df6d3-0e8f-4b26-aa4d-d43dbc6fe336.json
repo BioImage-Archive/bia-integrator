@@ -1,0 +1,23 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "6c8df6d3-0e8f-4b26-aa4d-d43dbc6fe336",
+  "version": 0,
+  "model": {
+    "type_name": "FileReference",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Tilt series and alignment information for dataset 1 (211206) data/211206/alignment/file_list.tsv381"
+      }
+    }
+  ],
+  "file_path": "Tilt series and alignment information for dataset 1 (211206) data/211206/alignment/file_list.tsv",
+  "format": ".tsv",
+  "size_in_bytes": 381,
+  "uri": "https://ftp.ebi.ac.uk/empiar/world_availability/STARFILETEST/data/Tilt series and alignment information for dataset 1 (211206) data/211206/alignment/file_list.tsv",
+  "submission_dataset_uuid": "0bf4462d-039c-4f5c-a6ed-d91265cd9c2a"
+}

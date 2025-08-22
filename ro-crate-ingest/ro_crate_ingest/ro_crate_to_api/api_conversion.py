@@ -7,14 +7,14 @@ from ro_crate_ingest.ro_crate_to_api.entity_conversion import (
     annotation_method,
     bio_sample,
     dataset,
+    file_reference,
+    file_reference_and_result_data_dataframe_assembly,
     image_acquisition_protocol,
     protocol,
+    result_data_and_dependency_creation,
+    result_data_prerequisite_ids,
     specimen_imaging_preparation_protocol,
     study,
-    dataframe_assembly,
-    dataframe_file_reference,
-    dataframe_image_prerequisites,
-    dataframe_image_and_dependencies,
 )
 from pathlib import Path
 from rich.logging import RichHandler
@@ -86,11 +86,11 @@ def convert_ro_crate_to_bia_api(
     )
     api_objects += specimen_imaging_preparation_protocols
 
-    file_dataframe = dataframe_assembly.create_combined_file_dataframe(
+    file_dataframe = file_reference_and_result_data_dataframe_assembly.create_combined_file_dataframe(
         entities, crate_path, crate_graph
     )
 
-    image_raw_dataframe = dataframe_file_reference.process_and_persist_file_references(
+    identified_result_data = file_reference.process_and_persist_file_references(
         file_dataframe,
         study_uuid,
         accession_id,
@@ -99,18 +99,17 @@ def convert_ro_crate_to_bia_api(
         get_settings().parallelisation_max_workers,
     )
 
-    if not image_raw_dataframe["image_id"].isna().all():
+    if not identified_result_data.empty:
         image_dataframe, id_uuid_map = (
-            dataframe_image_prerequisites.prepare_all_ids_for_images(
-                image_raw_dataframe,
+            result_data_prerequisite_ids.prepare_all_ids_for_images(
+                identified_result_data,
                 entities,
                 study_uuid,
                 get_settings().parallelisation_max_workers,
             )
         )
-        dataframe_image_and_dependencies.create_images_and_dependencies(
+        result_data_and_dependency_creation.create_images_and_dependencies(
             image_dataframe,
-            entities,
             id_uuid_map,
             study_uuid,
             accession_id,

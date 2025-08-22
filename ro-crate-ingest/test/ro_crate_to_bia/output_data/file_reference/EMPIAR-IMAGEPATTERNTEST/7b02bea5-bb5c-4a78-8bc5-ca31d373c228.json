@@ -20,7 +20,11 @@
       "value": {
         "http://bia/filePath": "data/HeLa/Raw SEM images/SEM Image - SliceImage - 002.tif",
         "http://bia/sizeInBytes": "12",
-        "http://schema.org/name": "Cryo-serial pFIB/SEM of HeLa cell"
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "http://bia/Image",
+        "http://schema.org/name": "Cryo-serial pFIB/SEM of HeLa cell",
+        "http://bia/sourceImageLabel": "",
+        "http://bia/associatedAnnotationMethod": "",
+        "http://bia/associatedProtocol": ""
       }
     }
   ],

@@ -1,0 +1,139 @@
+accession_id: EMPIAR-STARFILETEST
+paper_doi: https://doi.org/10.1038/s41592-023-02053-0
+rembis:
+  ImageAcquisitionProtocol:
+    - title: "Cryo-electron tomography"
+      protocol_description: "Cryo-TEM montages and tilt series were collected on a Titan Krios G3 (Thermo Fisher Scientific) equipped with a Gatan K2 Summit detector and Quantum energy filter, or a Gatan K3 detector and BioQuantum energy filter, using SerialEM. Grids were loaded such that the lamella pretilt axis aligns with the microscope stage tilt axis. Images were acquired at a pixel size of 3.370 or 3.425 Å/pixel at 1.5–4.0 µm defocus, with an electron dose of 2.0–2.5 e−/Å2 per image fractionated over 8–10 frames. A dose-symmetric tilt scheme was used with 2° increments starting from the lamella pretilt (±13°) and an effective tilt range of +56° to −56° using SerialEM. Data were collected with a 70-µm objective aperture or a Volta phase plate, and 20 eV slit width."
+      imaging_instrument_description: "Titan Krios G3, Thermo Fisher Scientific"
+      fbbi_id:
+        - "obo:FBbi_00000256"
+      imaging_method_name:
+        - "Cryo-electron tomography"
+  BioSample:
+    - title: "GEM2-labelled Mito-EGFP in HeLa cells"
+      organism_classification:
+        - common_name: "human"
+          scientific_name: "Homo sapiens"
+          ncbi_id: "NCBI:txid9606"
+      biological_entity_description: "HeLa cells expressing Mito-EGFP and genetically encoded multimeric particle (GEM) GEM2 system. Mito-EGFP specifically labels mitochondria, while the GEM2 system provides genetically encoded multimeric nanoparticles for visualization by electron microscopy."
+  SpecimenImagingPreparationProtocol:
+    - title: "Cryo-ET sample preparation of GEM2-labelled HeLa cells"
+      protocol_description: "For Mito-EGFP, cells seeded in a 6 cm dish were treated with 2 µg ml−1 doxycycline for 1 day. Then, 2.0 × 10^5 trypsinized cells were seeded onto Au SiO2 R1.2/20 Quantifoil grids (200 mesh) micropatterned with 30-µm fibronectin circles in the center of grid squares, placed in ibidi 35 mm low dishes (six grids per dish) and incubated in 1 ml of medium for 1 h. After cell attachment, grids were transferred to new ibidi 35 mm low dishes and further cultured in 1 ml of medium containing 2 µg ml−1 doxycycline for 1 day. Cells were stained with 50 nM Halo-JF646 for 1 h to label GEMs and then treated with 0.5 µM rapalog for 30 min. To verify GEM2 expression and labeling before freezing, fluorescence imaging was performed. For freezing, 3 µl of medium was added to the cell side of grids before blotting to reduce cell flattening. Grids were blotted from the back for 1–3 s at 37 °C, 90% humidity and plunge-frozen into liquid ethane at −185 °C on a Leica EM GP2 system, clipped into cryo-FIB auto-grids and stored in sealed boxes in liquid nitrogen. Lamellae were prepared using a 45°-pretilt shuttle in an Aquilos FIB-SEM microscope (Thermo Fisher Scientific). Before milling, metallic platinum was deposited by sputter coating (1 kV, 10 mA, 10 Pa, 15–20 s), and organometallic platinum via the gas injection system at a working distance of 10.6 mm and injection times of 8–11 s. Cells were milled to 1-μm thickness at a stage tilt of 20° with decreasing ion beam currents (1, 0.5 and 0.3 nA, 30 keV) and then thinned all together to a target thickness of 200–250 nm at 50 and 30 pA. Lamellae were thinned at the back at a stage tilt of 21–22°, and finally sputter-coated with platinum (1 kV, 10 mA, 10 Pa, 5–15 s) to reduce charging and beam-induced motion during TEM imaging. Milling progress was assessed by scanning electron microscopy (10 keV, 50 pA). For cryogenic on-lamella CLEM, milled grids were loaded onto a Zeiss LSM 900 Airyscan2 microscope equipped with a Linkam cryo-stage. Using a ×5 air objective in widefield mode, an overview image was acquired to localize lamellae. Next, z-stacks with 0.5 µm spacing covering 4–6 µm were acquired in Airyscan mode with 488 and 640 laser lines and a Zeiss Plan-Neofluar ×100/0.75 NA air objective, using a pixel size of 79 nm. In addition, reflection mode images were acquired for each z-plane. For each image, four averages between frames were acquired to increase signal-to-noise ratio."
+  AnnotationMethod:
+    - title: "DeePiCt and manual particle picking"
+      protocol_description: "To train a DeePiCt neural network for the detection of genetically encoded multimeric particles (GEMs), tomograms were binned to a pixel size of 13.48 or 13.70 Å and filtered with the following parameters in EMAN2: filter.low-pass.gauss:cutoff_abs=0.25, filter.highpass.gauss:cutoff_pixels=5, normalize, threshold.clampminmax.nsigma:nsigma=3. Spherical labels of 137 Å radius were generated based on the coordinates of 161 manually picked particles in EMAN2. A DeePiCt network of depth 2, with 32 initial features and batch normalization, was trained with an increasing number of particles and iterative refinement of coordinates via subtomogram averaging. The initial training set contained 161 particles from 39 tomograms, whereas the final training set contained 1284 particles from 71 tomograms. The number of grids and tomograms for the GEM2-labelled Mito-EGFP were six grids, 12 lamellae and 17 tomograms. Application of the CNN on 17 tomograms of the Mito-EGFP data set yielded 68 peaks after stringent postprocessing, which included thresholding at a value of 0.5, application of a lamella mask and a size filter for connected components of 5,000–50,000 pixels at 13.7 Å/pixel. Of the 68 peaks, two were discarded due to being in a lysosome or mitochondrion, three discarded due to beam-induced damage of the lamella surface and three were cytosolic but did not resemble a GEM visually. On visual inspection of smaller-sized peaks, 63 particles were added manually for subtomogram averaging."
+      method_type: ["point_annotations"]
+  Protocol:
+      - title: "Tomogram reconstruction and sub-tomogram averaging"
+        protocol_description: "Dose-weighted motion-corrected images were exported for tomographic reconstruction by weighted back-projection in AreTomo and 4-times binned. Averaging was performed in RELION with 1,284 particles, I1 symmetry, using a 60-Å-low-pass-filtered map of the encapsulin scaffold (PDB 6X8M) as a reference."
+dataset_rembis:
+  ImageAnalysisMethod:
+    - title: "CTF estimation and motion correction"
+      protocol_description: "CTF estimation and motion correction were performed in WARP."
+      features_analysed: "Tilt series"
+  ImageCorrelationMethod:
+   - title: "Cryo-CLEM correlation"
+     protocol_description: "Z-stacks were 2D Airyscan processed and maximum intensity projections were generated. Subsequent correlation of Airyscan images and low magnification TEM images (lamella maps) was performed with Icy eC-CLEM and Fiji BigWarp using the lamellae shape and features (such as LDs) visible in the reflection images as landmarks."
+     fiducials_used: "Lamellae shape and lipid droplets (LDs) visible in the reflection images"
+     transformation_matrix: "Correlation transforms generated by eC-CLEM and BigWarp"
+datasets:
+  # Image set 1 (211206)
+  - title: "Unaligned multi-frame micrographs for dataset 1 (211206)"
+    assigned_images:
+      - label: "Unaligned, unbinned, multi-frame micrograph TS_016"
+        file_pattern: "211206/data/frames/TS_016_76_{z:d}_{}.tif"
+        biosample_title: "GEM2-labelled Mito-EGFP in HeLa cells"
+        image_acquisition_protocol_title: "Cryo-electron tomography"
+        specimen_imaging_preparation_protocol_title: "Cryo-ET sample preparation of GEM2-labelled HeLa cells"
+      - label: "Unaligned, unbinned, multi-frame micrograph TS_019"
+        file_pattern: "211206/data/frames/TS_019_84_{z:d}_{}.tif"
+        biosample_title: "GEM2-labelled Mito-EGFP in HeLa cells"
+        image_acquisition_protocol_title: "Cryo-electron tomography"
+        specimen_imaging_preparation_protocol_title: "Cryo-ET sample preparation of GEM2-labelled HeLa cells"
+  - title: "Tilt series and alignment information for dataset 1 (211206)"
+    assigned_images:
+      - label: "Tilt series TS_016"
+        file_pattern: "211206/alignment/TS_016.mrc/TS_016.mrc.st"
+        input_image_label: "Unaligned, unbinned, multi-frame micrograph TS_016"
+      - label: "Tilt series TS_019"
+        file_pattern: "211206/alignment/TS_019.mrc/TS_019.mrc.st"
+        input_image_label: "Unaligned, unbinned, multi-frame micrograph TS_019"
+    assigned_dataset_rembis:
+      - label: "CTF estimation and motion correction"
+  - title: "Reconstructed tomograms for dataset 1 (211206)"
+    assigned_images:
+      - label: "Tomogram TS_016"
+        file_pattern: "211206/tomograms/TS_016.mrc_aretomo.mrc"
+        input_image_label: "Tilt series TS_016"
+        protocol_title: "Tomogram reconstruction and sub-tomogram averaging"
+      - label: "Tomogram TS_019"
+        file_pattern: "211206/tomograms/TS_019.mrc_aretomo.mrc"
+        input_image_label: "Tilt series TS_019"
+        protocol_title: "Tomogram reconstruction and sub-tomogram averaging"
+    assigned_annotations:
+      - label: "Coordinates from subtomogram averaging of GEM2 particles for dataset 1 (211206)"
+        file_pattern: "211206/tomograms/211206.star"
+        annotation_method_title: "DeePiCt and manual particle picking"
+        input_image_label: 
+          - label: "Tomogram TS_016"
+            file_section: "TS_016_aretomo.mrc"
+          - label: "Tomogram TS_019"
+            file_section: "TS_019_aretomo.mrc"
+    assigned_dataset_rembis:
+      - label: "Cryo-CLEM correlation"
+  # Image set 2 (220330)
+  - title: "Unaligned multi-frame micrographs for dataset 2 (220330)"
+    assigned_images:
+      - label: "Unaligned, unbinned, multi-frame micrograph TS_008"
+        file_pattern: "220330/data/frames/TS_008_42_{z:d}_{}.tif"
+        biosample_title: "GEM2-labelled Mito-EGFP in HeLa cells"
+        image_acquisition_protocol_title: "Cryo-electron tomography"
+        specimen_imaging_preparation_protocol_title: "Cryo-ET sample preparation of GEM2-labelled HeLa cells"
+      - label: "Unaligned, unbinned, multi-frame micrograph TS_010"
+        file_pattern: "220330/data/frames/TS_010_48_{z:d}_{}.tif"
+        biosample_title: "GEM2-labelled Mito-EGFP in HeLa cells"
+        image_acquisition_protocol_title: "Cryo-electron tomography"
+        specimen_imaging_preparation_protocol_title: "Cryo-ET sample preparation of GEM2-labelled HeLa cells"
+      - label: "Unaligned, unbinned, multi-frame micrograph TS_017"
+        file_pattern: "220330/data/frames/TS_017_23_{z:d}_{}.tif"
+        biosample_title: "GEM2-labelled Mito-EGFP in HeLa cells"
+        image_acquisition_protocol_title: "Cryo-electron tomography"
+        specimen_imaging_preparation_protocol_title: "Cryo-ET sample preparation of GEM2-labelled HeLa cells"
+  - title: "Tilt series and alignment information for dataset 2 (220330)"
+    assigned_images:
+      - label: "Tilt series TS_008"
+        file_pattern: "220330/alignment/TS_008.mrc/TS_008.mrc.st"
+        input_image_label: "Unaligned, unbinned, multi-frame micrograph TS_008"
+      - label: "Tilt series TS_010"
+        file_pattern: "220330/alignment/TS_010.mrc/TS_010.mrc.st"
+        input_image_label: "Unaligned, unbinned, multi-frame micrograph TS_010"
+      - label: "Tilt series TS_017"
+        file_pattern: "220330/alignment/TS_017.mrc/TS_017.mrc.st"
+        input_image_label: "Unaligned, unbinned, multi-frame micrograph TS_017"
+    assigned_dataset_rembis:
+      - label: "CTF estimation and motion correction"
+  - title: "Reconstructed tomograms for dataset 2 (220330)"
+    assigned_images:
+      - label: "Tomogram TS_008"
+        file_pattern: "220330/tomograms/TS_008.mrc_aretomo.mrc"
+        input_image_label: "Tilt series TS_008"
+        protocol_title: "Tomogram reconstruction and sub-tomogram averaging"
+      - label: "Tomogram TS_010"
+        file_pattern: "220330/tomograms/TS_010.mrc_aretomo.mrc"
+        input_image_label: "Tilt series TS_010"
+        protocol_title: "Tomogram reconstruction and sub-tomogram averaging"
+      - label: "Tomogram TS_017"
+        file_pattern: "220330/tomograms/TS_017.mrc_aretomo.mrc"
+        input_image_label: "Tilt series TS_017"
+        protocol_title: "Tomogram reconstruction and sub-tomogram averaging"
+    assigned_annotations:
+      - label: "Coordinates from subtomogram averaging of GEM2 particles for dataset 2 (220330)"
+        file_pattern: "220330/tomograms/220330.star"
+        annotation_method_title: "DeePiCt and manual particle picking"
+        input_image_label: 
+          - label: "Tomogram TS_008"
+            file_section: "TS_008_aretomo.mrc"
+          - label: "Tomogram TS_010"
+            file_section: "TS_010_aretomo.mrc"
+          - label: "Tomogram TS_017"
+            file_section: "TS_017_aretomo.mrc"

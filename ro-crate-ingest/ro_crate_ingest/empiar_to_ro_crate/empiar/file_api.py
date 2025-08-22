@@ -14,8 +14,8 @@ class EMPIARFile(BaseModel, frozen=True):
 def get_files(accession_id: str) -> list[EMPIARFile]:
     # Note this is a dictionary to include reasons why the override was made
     overrides = {
-        "EMPIAR-ANNOTATIONTEST": "A test submission.",
-        "EMPIAR-IMAGEPATTERNTEST": "A test submission.",
+        "EMPIAR-IMAGEPATTERNTEST": "A test submission covering file pattern shapes.",
+        "EMPIAR-STARFILETEST": "A test submission covering star file annotation, with tomograms, and other image dependencies.",
     }
     if accession_id in overrides:
         return get_file_info_from_override(accession_id)

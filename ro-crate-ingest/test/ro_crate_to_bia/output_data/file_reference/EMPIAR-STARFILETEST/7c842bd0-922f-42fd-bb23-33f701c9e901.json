@@ -1,0 +1,36 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "7c842bd0-922f-42fd-bb23-33f701c9e901",
+  "version": 0,
+  "model": {
+    "type_name": "FileReference",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "data/220330/alignment/TS_008.mrc/TS_008.mrc.st27"
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "attributes_from_file_list",
+      "value": {
+        "http://bia/filePath": "data/220330/alignment/TS_008.mrc/TS_008.mrc.st",
+        "http://bia/sizeInBytes": "27",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "http://bia/Image",
+        "http://schema.org/name": "Tilt series TS_008",
+        "http://bia/sourceImageLabel": "Unaligned, unbinned, multi-frame micrograph TS_008",
+        "http://bia/associatedAnnotationMethod": "",
+        "http://bia/associatedProtocol": ""
+      }
+    }
+  ],
+  "file_path": "data/220330/alignment/TS_008.mrc/TS_008.mrc.st",
+  "format": ".st",
+  "size_in_bytes": 27,
+  "uri": "https://ftp.ebi.ac.uk/empiar/world_availability/STARFILETEST/data/data/220330/alignment/TS_008.mrc/TS_008.mrc.st",
+  "submission_dataset_uuid": "f20b8e26-9a74-470e-b5b7-b877ffff7754"
+}

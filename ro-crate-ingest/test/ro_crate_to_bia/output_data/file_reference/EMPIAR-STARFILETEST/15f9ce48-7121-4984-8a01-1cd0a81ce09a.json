@@ -1,0 +1,23 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "15f9ce48-7121-4984-8a01-1cd0a81ce09a",
+  "version": 0,
+  "model": {
+    "type_name": "FileReference",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Unaligned multi-frame micrographs for dataset 2 (220330) data/220330/data/file_list.tsv817"
+      }
+    }
+  ],
+  "file_path": "Unaligned multi-frame micrographs for dataset 2 (220330) data/220330/data/file_list.tsv",
+  "format": ".tsv",
+  "size_in_bytes": 817,
+  "uri": "https://ftp.ebi.ac.uk/empiar/world_availability/STARFILETEST/data/Unaligned multi-frame micrographs for dataset 2 (220330) data/220330/data/file_list.tsv",
+  "submission_dataset_uuid": "c5edec32-e491-4b05-8ed9-1ee09f23155d"
+}

@@ -187,6 +187,9 @@
             "keyword": {
                 "@id": "schema:keywords"
             },
+            "label": {
+                "@id": "schema:name"
+            },
             "acknowledgement": {
                 "@id": "bia:acknowledgement"
             },
