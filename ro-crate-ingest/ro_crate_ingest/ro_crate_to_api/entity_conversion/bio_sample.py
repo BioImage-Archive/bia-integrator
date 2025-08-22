@@ -40,6 +40,12 @@ def convert_bio_sample(
 
     uuid, uuid_attribute = create_bio_sample_uuid(study_uuid, ro_crate_bio_sample.id)
 
+    growth_protocol_uuid = None
+    if ro_crate_bio_sample.growthProtocol:
+        growth_protocol_uuid = str(
+            create_protocol_uuid(study_uuid, ro_crate_bio_sample.growthProtocol.id)[0]
+        )
+
     bio_sample = {
         "uuid": str(uuid),
         "title": ro_crate_bio_sample.id,
@@ -49,9 +55,7 @@ def convert_bio_sample(
         "intrinsic_variable_description": ro_crate_bio_sample.intrinsicVariableDescription,
         "extrinsic_variable_description": ro_crate_bio_sample.extrinsicVariableDescription,
         "experimental_variable_description": ro_crate_bio_sample.experimentalVariableDescription,
-        "growth_protocol_uuid": str(
-            create_protocol_uuid(study_uuid, ro_crate_bio_sample.growthProtocol.id)[0]
-        ),
+        "growth_protocol_uuid": growth_protocol_uuid,
         "object_creator": APIModels.Provenance.BIA_INGEST,
         "additional_metadata": [uuid_attribute.model_dump()],
     }
