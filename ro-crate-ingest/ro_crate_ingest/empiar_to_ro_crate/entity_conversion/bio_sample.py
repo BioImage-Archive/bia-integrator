@@ -39,7 +39,7 @@ def get_bio_sample(bio_sample_dict: dict) -> BioSample:
             {"@id": taxon["ncbi_id"]}
             for taxon in bio_sample_dict["organism_classification"]
         ],
-        "growthProtocol": [],
+        "growthProtocol": None,
     }
 
     return BioSample(**model_dict)

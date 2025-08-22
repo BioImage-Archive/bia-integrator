@@ -237,13 +237,13 @@
             "acknowledgement": null,
             "hasPart": [
                 {
-                    "@id":  "Study%20Component-1/"
+                    "@id": "Study%20Component-1/"
                 },
                 {
-                    "@id":  "Study%20Component-2/"
+                    "@id": "Study%20Component-2/"
                 },
                 {
-                    "@id":  "Study%20Component-3/"
+                    "@id": "Study%20Component-3/"
                 }
             ],
             "accessionId": "S-BIADTEST_COMPLEX_BIOSAMPLE"
@@ -279,7 +279,7 @@
             "website": null
         },
         {
-            "@id":  "Study%20Component-3/file_list_test_3.tsv",
+            "@id": "Study%20Component-3/file_list_test_3.tsv",
             "@type": [
                 "File",
                 "bia:FileList",
@@ -290,7 +290,7 @@
             }
         },
         {
-            "@id":  "Study%20Component-2/file_list_test_2.tsv",
+            "@id": "Study%20Component-2/file_list_test_2.tsv",
             "@type": [
                 "File",
                 "bia:FileList",
@@ -301,7 +301,7 @@
             }
         },
         {
-            "@id":  "Study%20Component-1/file_list_test_1.tsv",
+            "@id": "Study%20Component-1/file_list_test_1.tsv",
             "@type": [
                 "File",
                 "bia:FileList",
@@ -375,7 +375,7 @@
             "propertyUrl": "http://bia/filePath"
         },
         {
-            "@id":  "Study%20Component-3/",
+            "@id": "Study%20Component-3/",
             "@type": [
                 "Dataset",
                 "bia:Dataset"
@@ -407,15 +407,15 @@
             "associatedProtocol": [],
             "hasPart": [
                 {
-                    "@id":  "Study%20Component-3/file_list_test_3.tsv"
+                    "@id": "Study%20Component-3/file_list_test_3.tsv"
                 }
             ],
             "associationFileMetadata": {
-                "@id":  "Study%20Component-3/file_list_test_3.tsv"
+                "@id": "Study%20Component-3/file_list_test_3.tsv"
             }
         },
         {
-            "@id":  "Study%20Component-2/",
+            "@id": "Study%20Component-2/",
             "@type": [
                 "Dataset",
                 "bia:Dataset"
@@ -444,15 +444,15 @@
             "associatedProtocol": [],
             "hasPart": [
                 {
-                    "@id":  "Study%20Component-2/file_list_test_2.tsv"
+                    "@id": "Study%20Component-2/file_list_test_2.tsv"
                 }
             ],
             "associationFileMetadata": {
-                "@id":  "Study%20Component-2/file_list_test_2.tsv"
+                "@id": "Study%20Component-2/file_list_test_2.tsv"
             }
         },
         {
-            "@id":  "Study%20Component-1/",
+            "@id": "Study%20Component-1/",
             "@type": [
                 "Dataset",
                 "bia:Dataset"
@@ -484,11 +484,11 @@
             "associatedProtocol": [],
             "hasPart": [
                 {
-                    "@id":  "Study%20Component-1/file_list_test_1.tsv"
+                    "@id": "Study%20Component-1/file_list_test_1.tsv"
                 }
             ],
             "associationFileMetadata": {
-                "@id":  "Study%20Component-1/file_list_test_1.tsv"
+                "@id": "Study%20Component-1/file_list_test_1.tsv"
             }
         },
         {
@@ -563,7 +563,7 @@
                     "@id": "_:tx1"
                 }
             ],
-            "growthProtocol": []
+            "growthProtocol": null
         },
         {
             "@id": "_:Biosample-3",
@@ -580,7 +580,7 @@
                     "@id": "_:tx0"
                 }
             ],
-            "growthProtocol": []
+            "growthProtocol": null
         },
         {
             "@id": "_:Biosample-2",
@@ -597,7 +597,7 @@
                     "@id": "_:tx0"
                 }
             ],
-            "growthProtocol": []
+            "growthProtocol": null
         },
         {
             "@id": "_:Biosample-1 fcdd4e00-45d6-45b7-9a03-d01dc34ce221",
@@ -614,11 +614,9 @@
                     "@id": "NCBI:txid7227"
                 }
             ],
-            "growthProtocol": [
-                {
-                    "@id": "_:_Specimen-2"
-                }
-            ]
+            "growthProtocol": {
+                "@id": "_:_Specimen-2"
+            }
         },
         {
             "@id": "_:Biosample-1",
@@ -635,7 +633,7 @@
                     "@id": "NCBI:txid7227"
                 }
             ],
-            "growthProtocol": []
+            "growthProtocol": null
         },
         {
             "@id": "_:_Specimen-2",

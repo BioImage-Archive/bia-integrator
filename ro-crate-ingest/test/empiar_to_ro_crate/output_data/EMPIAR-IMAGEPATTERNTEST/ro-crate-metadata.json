@@ -435,7 +435,7 @@
                     "@id": "NCBI:txid9606"
                 }
             ],
-            "growthProtocol": []
+            "growthProtocol": null
         }
     ]
 }
