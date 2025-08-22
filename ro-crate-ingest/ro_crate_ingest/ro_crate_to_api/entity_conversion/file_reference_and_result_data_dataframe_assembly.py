@@ -35,7 +35,7 @@ def create_combined_file_dataframe(
 
     size_order = {"disk_files": 0, "file_list": 0, "images": 0}
 
-    file_df = ro_crate_files_df(ro_crate_path, dataset_ro_crate_objects, size_order)
+    file_df = ro_crate_files_df(ro_crate_path, dataset_ro_crate_objects, size_order, file_lists_ro_crate_objects)
 
     ro_crate_image_df = image_df(
         image_ro_crate_objects, size_order, crate_graph, ro_crate_path
@@ -177,7 +177,9 @@ def ro_crate_files_df(
     ro_crate_path: Path,
     dataset_ro_crate_objects: list[ro_crate_models.Dataset],
     size_order: dict[str, int],
+    file_lists_ro_crate_objects: list[ro_crate_models.FileList]
 ):
+    file_list_rel_paths = [unquote(fl.id) for fl in file_lists_ro_crate_objects]
     ro_crate_files = []
     for dataset in dataset_ro_crate_objects:
         path = ro_crate_path / unquote(dataset.id)
@@ -188,7 +190,7 @@ def ro_crate_files_df(
                 f.stat().st_size,
             )
             for f in path.rglob("*")
-            if f.is_file()
+            if f.is_file() and f.relative_to(ro_crate_path).as_posix() not in file_list_rel_paths
         ]
         ro_crate_files.extend(files)
 
