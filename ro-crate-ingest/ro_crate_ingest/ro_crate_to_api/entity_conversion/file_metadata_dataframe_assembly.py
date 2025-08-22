@@ -180,7 +180,11 @@ def ro_crate_files_df(
     ro_crate_path: Path,
     dataset_ro_crate_objects: list[ro_crate_models.Dataset],
     size_order: dict[str, int],
+<<<<<<< HEAD:ro-crate-ingest/ro_crate_ingest/ro_crate_to_api/entity_conversion/file_metadata_dataframe_assembly.py
     file_lists_ro_crate_objects: list[ro_crate_models.FileList],
+=======
+    file_lists_ro_crate_objects: list[ro_crate_models.FileList]
+>>>>>>> 321c442c (removed file list from file reference creation):ro-crate-ingest/ro_crate_ingest/ro_crate_to_api/entity_conversion/file_reference_and_result_data_dataframe_assembly.py
 ):
     file_list_rel_paths = [unquote(fl.id) for fl in file_lists_ro_crate_objects]
     ro_crate_files = []
@@ -193,10 +197,14 @@ def ro_crate_files_df(
                 f.stat().st_size,
             )
             for f in path.rglob("*")
+<<<<<<< HEAD:ro-crate-ingest/ro_crate_ingest/ro_crate_to_api/entity_conversion/file_metadata_dataframe_assembly.py
             if (
                 f.is_file()
                 and f.relative_to(ro_crate_path).as_posix() not in file_list_rel_paths
             )
+=======
+            if f.is_file() and f.relative_to(ro_crate_path).as_posix() not in file_list_rel_paths
+>>>>>>> 321c442c (removed file list from file reference creation):ro-crate-ingest/ro_crate_ingest/ro_crate_to_api/entity_conversion/file_reference_and_result_data_dataframe_assembly.py
         ]
         ro_crate_files.extend(files)
 
