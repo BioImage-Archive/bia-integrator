@@ -1,13 +1,13 @@
 import sys
 import logging
-from typing import Optional, List
+from typing import Optional
 
 import typer
 from typing_extensions import Annotated
 
 from bia_converter.bia_api_client import api_client
 from bia_converter import convert as convert_module
-from bia_converter.ng_overlay import generate_overlays
+from bia_converter.ng_overlay import generate_overlays, NeuroglancerLayouts
 
 app = typer.Typer()
 
@@ -75,11 +75,11 @@ def generate_neuroglancer_view_link(
         str, typer.Option("--source-image-uuid", help="UUID for the source image")
     ],
     layout: Annotated[
-        str, typer.Option("--layout", help="Neuroglancer layout (e.g., xy, 4panel-alt)")
-    ] = "xy"
+        NeuroglancerLayouts, typer.Option("--layout", help="Neuroglancer layout (e.g., xy, 4panel-alt)")
+    ] = NeuroglancerLayouts.XY
 ):
     logging.basicConfig(level=logging.INFO)
-    generate_overlays(source_image_uuid)
+    generate_overlays(source_image_uuid, layout)
     logger.info(f"Generated neuroglancer view link for {source_image_uuid}")
 
 

@@ -13,6 +13,7 @@ import ngff_zarr as nz
 import urllib.parse
 import typer
 from uuid import UUID
+from enum import Enum
 from typing import List, Optional, Union
 from numpy import percentile
 import logging
@@ -22,7 +23,8 @@ from bia_converter.bia_api_client import api_client, store_object_in_api_idempot
 from bia_converter.utils import add_or_update_attribute, attributes_by_name
 from bia_integrator_api.models import ( 
     Provenance,
-    Attribute
+    Attribute,
+    Image
 )
 
 
@@ -34,8 +36,19 @@ logging.basicConfig(
 
 logger = logging.getLogger()
 
+class NeuroglancerLayouts(str, Enum):
+    XY = "xy"
+    YZ = "yz"
+    XZ = "xz"
+    THREED =  "3d"
+    XY_THREED = "xy-3d"
+    YZ_THREED = "yz-3d"	
+    XZ_THREED = "xz-3d"	
+    PANEL = "4panel"
+    PANEL_ALT = "4panel-alt"
 
-def get_voxels_from_scales(scales, units, data):
+
+def get_voxels_from_scales(scales, units, data) -> dict:
     """
     Gets voxel values using scales and axis units and uses image data to get 
     number of channels and time-steps
@@ -97,7 +110,7 @@ def get_image_info_from_ome(
     return [[int(min_val), int(max_val)], [x,y,z], voxels, channel_info]
 
 
-def get_dimensions(dims: dict):
+def get_dimensions(dims: dict) -> dict:
     dims = process_xy_voxels(dims)
     units = "m" if dims['x'] < 1 else "um"
     return {
@@ -244,9 +257,9 @@ def generate_neuroglancer_url(
     return f"https://neuroglancer-demo.appspot.com/#!{encoded_json}"
 
 
-def get_ome_zar_file_uri(image_uuid: Union[UUID, str]):
+def get_ome_zar_file_uri(image_uuid: Union[UUID, str]) -> Union[str, bool]:
     try:
-        image_reps = api_client.get_image_representation_linking_image(str(image_uuid), page_size=5)
+        image_reps = api_client.get_image_representation_linking_image(str(image_uuid), page_size=10)
         if len(image_reps)>0:
             image_file_uri = [image_rep.file_uri[0] for image_rep in image_reps if '.zarr' in image_rep.file_uri[0]][0]
             return image_file_uri
@@ -256,7 +269,7 @@ def get_ome_zar_file_uri(image_uuid: Union[UUID, str]):
         return False
 
 
-def annotation_filter(image):
+def annotation_filter(image: Image) -> Union[Image, bool]:
     # Descriptions we want to exclude - study specific - S-BIAD634
     excluded_descriptions = {
         "Raw image in JPEG format",
@@ -276,7 +289,7 @@ def annotation_filter(image):
     return image
 
 
-def update_additional_metadata_source_image_with_ng_view_url(uuid: Union[UUID, str], url: str):
+def update_additional_metadata_source_image_with_ng_view_url(uuid: Union[UUID, str], url: str) -> Optional[bool]:
     try:
         image = api_client.get_image(str(uuid))
         attribute = Attribute.model_validate(
@@ -296,19 +309,35 @@ def update_additional_metadata_source_image_with_ng_view_url(uuid: Union[UUID, s
         return False
 
 
-def source_annotation_image_pairs(source_image_uuid: Union[UUID, str]):
+def source_annotation_image_pairs(source_image_uuid: Union[UUID, str]) -> Union[List[str], bool]:
+    """
+    Given a source image UUID, finds all annotation images created from it
+    and returns their OME-Zarr file URIs.
+    """
     try:
+        # Using creation_process.input_image_uuid to get all creation processes 
+        # for the source image. For each creation process, the image 
+        # object that was created using it (assuming exactly one output image per process) is retrieved.
         creation_process = api_client.get_creation_process_linking_image(str(source_image_uuid), 20)
-        annotated_images = [ annotation_filter(api_client.get_image_linking_creation_process(cp.uuid, 1)[0]) for cp in creation_process]
-        annotate_image_urls = [ str(get_ome_zar_file_uri(ai.uuid)) for ai in annotated_images if ai]
+        annotated_images = [
+            annotation_filter(api_client.get_image_linking_creation_process(cp.uuid, 1)[0])
+            for cp in creation_process
+        ]
+
+        # From valid annotation images, collect OME-Zarr file URIs
+        annotate_image_urls = [
+            str(get_ome_zar_file_uri(ai.uuid)) for ai in annotated_images if ai
+        ]
+
         logger.info(f"For source image: {source_image_uuid} found {len(annotate_image_urls)} annotated images.")
         return annotate_image_urls
+
     except NotFoundException as e:
         logger.error(f"Could not find pairs. Error was {e}.")
         return False
 
 
-def generate_overlays(source_image_uuid: Union[UUID, str], layout: str = "xy"):
+def generate_overlays(source_image_uuid: Union[UUID, str], layout: NeuroglancerLayouts) -> None:
     source_image_url = get_ome_zar_file_uri(source_image_uuid)
     annotation_image_urls = source_annotation_image_pairs(source_image_uuid)
     if source_image_url and annotation_image_urls:
