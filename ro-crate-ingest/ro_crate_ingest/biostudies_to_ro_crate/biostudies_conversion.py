@@ -15,6 +15,7 @@ from ro_crate_ingest.biostudies_to_ro_crate.entity_conversion import (
     protocol_from_growth_protocol,
     file_list,
     protocol,
+    pagetab_file,
 )
 from bia_shared_datamodels.uuid_creation import create_study_uuid
 import json
@@ -102,6 +103,13 @@ def convert_biostudies_to_ro_crate(accession_id: str, crate_path: Optional[Path]
         ro_crate_dir, submission, roc_datasets
     )
     graph += roc_file_list_schema_objects
+
+    roc_dataset_and_filelist_objs = (
+        pagetab_file.get_dataset_and_filelist_for_pagetab_files(
+            ro_crate_dir, submission
+        )
+    )
+    graph += roc_dataset_and_filelist_objs
 
     roc_affiliation_by_accno = affiliation.get_affiliations_by_accno(submission)
     graph += roc_affiliation_by_accno.values()
