@@ -7,7 +7,7 @@ from typing_extensions import Annotated
 
 from bia_converter.bia_api_client import api_client
 from bia_converter import convert as convert_module
-
+from bia_converter.ng_overlay import generate_overlays, NeuroglancerLayouts
 
 app = typer.Typer()
 
@@ -68,6 +68,19 @@ def create_static_display(
     image_rep = api_client.get_image_representation(image_rep_uuid)
     static_display_uri = convert_module.convert_interactive_display_to_static_display(image_rep)
     logger.info(f"Created static display at {static_display_uri}")
+
+@app.command()
+def generate_neuroglancer_view_link(
+    source_image_uuid: Annotated[
+        str, typer.Option("--source-image-uuid", help="UUID for the source image")
+    ],
+    layout: Annotated[
+        NeuroglancerLayouts, typer.Option("--layout", help="Neuroglancer layout (e.g., xy, 4panel-alt)")
+    ] = NeuroglancerLayouts.XY
+):
+    logging.basicConfig(level=logging.INFO)
+    generate_overlays(source_image_uuid, layout)
+    logger.info(f"Generated neuroglancer view link for {source_image_uuid}")
 
 
 if __name__ == "__main__":
