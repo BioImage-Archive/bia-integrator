@@ -1,0 +1,535 @@
+{
+  "@context": [
+    "https://w3id.org/ro/crate/1.1/context",
+    {
+      "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+      "schema": "http://schema.org/",
+      "dc": "http://purl.org/dc/terms/",
+      "bia": "http://bia/",
+      "csvw": "http://www.w3.org/ns/csvw#",
+      "displayName": {
+        "@id": "schema:name"
+      },
+      "address": {
+        "@id": "schema:address"
+      },
+      "website": {
+        "@id": "bia:website"
+      },
+      "title": {
+        "@id": "schema:name"
+      },
+      "protocolDescription": {
+        "@id": "schema:description"
+      },
+      "annotationCriteria": {
+        "@id": "bia:annotationCriteria"
+      },
+      "annotationCoverage": {
+        "@id": "bia:annotationCoverage"
+      },
+      "transformationDescription": {
+        "@id": "bia:transformationDescription"
+      },
+      "spatialInformation": {
+        "@id": "bia:spatialInformation"
+      },
+      "methodType": {
+        "@id": "bia:annotationMethodType"
+      },
+      "annotationSourceIndicator": {
+        "@id": "bia:annotationSourceIndicator"
+      },
+      "biologicalEntityDescription": {
+        "@id": "bia:biologicalEntityDescription"
+      },
+      "experimentalVariableDescription": {
+        "@id": "bia:experimentalVariableDescription"
+      },
+      "extrinsicVariableDescription": {
+        "@id": "bia:extrinsicVariableDescription"
+      },
+      "intrinsicVariableDescription": {
+        "@id": "bia:intrinsicVariableDescription"
+      },
+      "organismClassification": {
+        "@id": "bia:organismClassification"
+      },
+      "growthProtocol": {
+        "@id": "bia:growthProtocol"
+      },
+      "columnName": {
+        "@id": "csvw:name"
+      },
+      "propertyUrl": {
+        "@id": "csvw:propertyUrl"
+      },
+      "affiliation": {
+        "@id": "schema:memberOf"
+      },
+      "role": {
+        "@id": "bia:role"
+      },
+      "contactEmail": {
+        "@id": "schema:email"
+      },
+      "imageAcquisitionProtocol": {
+        "@id": "bia:imageAcquisitionProtocol"
+      },
+      "subject": {
+        "@id": "bia:subject"
+      },
+      "protocol": {
+        "@id": "bia:protocol"
+      },
+      "annotationMethod": {
+        "@id": "bia:annotationMethod"
+      },
+      "inputImage": {
+        "@id": "bia:inputImage"
+      },
+      "description": {
+        "@id": "schema:description"
+      },
+      "associatedBiologicalEntity": {
+        "@id": "bia:associatedBiologicalEntity"
+      },
+      "associatedSpecimenImagingPreparationProtocol": {
+        "@id": "bia:associatedImagingPreparationProtocol"
+      },
+      "associatedSpecimen": {
+        "@id": "bia:associatedSubject"
+      },
+      "associatedImageAcquisitionProtocol": {
+        "@id": "bia:associatedImageAcquisitionProtocol"
+      },
+      "associatedAnnotationMethod": {
+        "@id": "bia:associatedAnnotationMethod"
+      },
+      "associatedImageAnalysisMethod": {
+        "@id": "bia:associatedAnalysisMethod"
+      },
+      "associatedImageCorrelationMethod": {
+        "@id": "bia:associatedCorrelationMethod"
+      },
+      "associatedProtocol": {
+        "@id": "bia:associatedProtocol"
+      },
+      "hasPart": {
+        "@id": "schema:hasPart"
+      },
+      "associationFileMetadata": {
+        "@id": "bia:associationFileMetadata"
+      },
+      "link": {
+        "@id": "schema:url"
+      },
+      "linkDescription": {
+        "@id": "schema:description"
+      },
+      "tableSchema": {
+        "@id": "csvw:tableSchema"
+      },
+      "resultOf": {
+        "@id": "bia:resultOf"
+      },
+      "label": {
+        "@id": "schema:name"
+      },
+      "imagingInstrumentDescription": {
+        "@id": "bia:imagingInstrumentDescription"
+      },
+      "imagingMethodName": {
+        "@id": "bia:imagingMethodName"
+      },
+      "fbbiId": {
+        "@id": "bia:fbbiId"
+      },
+      "featuresAnalysed": {
+        "@id": "bia:featuresAnalysed"
+      },
+      "fiducialsUsed": {
+        "@id": "bia:fiducialsUsed"
+      },
+      "transformationMatrix": {
+        "@id": "bia:transformationMatrix"
+      },
+      "authorNames": {
+        "@id": "bia:authorNames"
+      },
+      "signalContrastMechanismDescription": {
+        "@id": "bia:signalContrastMechanismDescription"
+      },
+      "channelContentDescription": {
+        "@id": "bia:channelContentDescription"
+      },
+      "channelBiologicalEntity": {
+        "@id": "bia:channelBiologicalEntity"
+      },
+      "channelLabel": {
+        "@id": "dc:identifier"
+      },
+      "biologicalEntity": {
+        "@id": "bia:sampleOf"
+      },
+      "imagingPreparationProtocol": {
+        "@id": "bia:imagingPreparationProtocol"
+      },
+      "signalChannelInformation": {
+        "@id": "bia:signalChannelInformation"
+      },
+      "contributor": {
+        "@id": "schema:author"
+      },
+      "licence": {
+        "@id": "schema:license"
+      },
+      "datePublished": {
+        "@id": "schema:datePublished"
+      },
+      "keyword": {
+        "@id": "schema:keywords"
+      },
+      "acknowledgement": {
+        "@id": "bia:acknowledgement"
+      },
+      "accessionId": {
+        "@id": "schema:identifier"
+      },
+      "column": {
+        "@id": "csvw:column"
+      },
+      "commonName": {
+        "@id": "bia:commonName"
+      },
+      "scientificName": {
+        "@id": "bia:scientificName"
+      }
+    }
+  ],
+  "@graph": [
+    {
+      "@id": "ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "conformsTo": {
+        "@id": "https://w3id.org/ro/crate/1.1"
+      },
+      "about": {
+        "@id": "./"
+      }
+    },
+    {
+      "@id": "./",
+      "@type": [
+        "Dataset",
+        "bia:Study"
+      ],
+      "title": "Test overlapping associations and metadata",
+      "contributor": [
+        {
+          "@id": "https://orcid.org/9999-0001-2222-3333"
+        }
+      ],
+      "description": "",
+      "licence": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "datePublished": "2023-09-05",
+      "keyword": [],
+      "acknowledgement": null,
+      "hasPart": [
+        {
+          "@id": "data/"
+        }
+      ],
+      "accessionId": "S-TEST_overlapping_file_list_and_ro_crate_info"
+    },
+    {
+      "@id": "https://orcid.org/9999-0001-2222-3333",
+      "@type": [
+        "Person",
+        "bia:Contributor"
+      ],
+      "displayName": "Test Author",
+      "address": null,
+      "website": null,
+      "affiliation": [],
+      "role": [],
+      "contactEmail": null
+    },
+    {
+      "@id": "data/file_list.tsv",
+      "@type": [
+        "File",
+        "bia:FileList",
+        "csvw:Table"
+      ],
+      "tableSchema": {
+        "@id": "_:ts0"
+      }
+    },
+    {
+      "@id": "_:col7",
+      "@type": [
+        "csvw:Column"
+      ],
+      "columnName": "associated_sipp",
+      "propertyUrl": "http://bia/associatedSpecimenImagingPreparationProtocol"
+    },
+    {
+      "@id": "_:col6",
+      "@type": [
+        "csvw:Column"
+      ],
+      "columnName": "associated_bio_sample",
+      "propertyUrl": "http://bia/associatedBiologicalEntity"
+    },
+    {
+      "@id": "_:col5",
+      "@type": [
+        "csvw:Column"
+      ],
+      "columnName": "associated_image_acquisition",
+      "propertyUrl": "http://bia/associatedImageAcquisitionProtocol"
+    },
+    {
+      "@id": "_:col4",
+      "@type": [
+        "csvw:Column"
+      ],
+      "columnName": "associated_protocol",
+      "propertyUrl": "http://bia/associatedProtocol"
+    },
+    {
+      "@id": "_:col3",
+      "@type": [
+        "csvw:Column"
+      ],
+      "columnName": "associated_annotation_method",
+      "propertyUrl": "http://bia/associatedAnnotationMethod"
+    },
+    {
+      "@id": "_:col2",
+      "@type": [
+        "csvw:Column"
+      ],
+      "columnName": "source_image_label",
+      "propertyUrl": "http://bia/sourceImageLabel"
+    },
+    {
+      "@id": "_:col1",
+      "@type": [
+        "csvw:Column"
+      ],
+      "columnName": "type",
+      "propertyUrl": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+    },
+    {
+      "@id": "_:col0",
+      "@type": [
+        "csvw:Column"
+      ],
+      "columnName": "file_path",
+      "propertyUrl": "http://bia/filePath"
+    },
+    {
+      "@id": "_:ts0",
+      "@type": [
+        "csvw:Schema"
+      ],
+      "column": [
+        {
+          "@id": "_:col0"
+        },
+        {
+          "@id": "_:col1"
+        },
+        {
+          "@id": "_:col2"
+        },
+        {
+          "@id": "_:col3"
+        },
+        {
+          "@id": "_:col4"
+        },
+        {
+          "@id": "_:col5"
+        },
+        {
+          "@id": "_:col6"
+        },
+        {
+          "@id": "_:col7"
+        }
+      ]
+    },
+    {
+      "@id": "data/",
+      "@type": [
+        "Dataset",
+        "bia:Dataset"
+      ],
+      "title": "Collection of images and annotations all together.",
+      "description": "Test of what happens when everying is grouped together, and overlapping ways of setting data are created. The associations here cover the sum of all the associations of files, even though each individual file is only linked to a subset.",
+      "associatedBiologicalEntity": [
+        {
+          "@id": "_:Biosample1"
+        }
+      ],
+      "associatedSpecimenImagingPreparationProtocol": [
+        {
+          "@id": "_:SpecimenPreparation"
+        }
+      ],
+      "associatedSpecimen": null,
+      "associatedImageAcquisitionProtocol": [
+        {
+          "@id": "_:ImageAcquisitionProtocol1"
+        }
+      ],
+      "associatedAnnotationMethod": [
+        {
+          "@id": "_:Cell counts"
+        }
+      ],
+      "associatedImageAnalysisMethod": [],
+      "associatedImageCorrelationMethod": [],
+      "associatedProtocol": [],
+      "hasPart": [
+        {
+          "@id": "data/file_list.tsv"
+        },
+        {
+          "@id": "data/image_1_use_ro_crate_info.tiff"
+        },
+        {
+          "@id": "data/annotation_data_in_ro_crate_refs_file_list_file.tsv"
+        }
+      ],
+      "associationFileMetadata": {
+        "@id": "data/file_list.tsv"
+      }
+    },
+    {
+      "@id": "_:Cell counts",
+      "@type": [
+        "bia:AnnotationMethod"
+      ],
+      "title": "Cell counts",
+      "protocolDescription": "counted cells manually.",
+      "methodType": [
+        "counts"
+      ]
+    },
+    {
+      "@id": "_:SpecimenPreparation",
+      "@type": [
+        "bia:SpecimenImagingPreparationProtocol"
+      ],
+      "title": "Specimen preparation",
+      "protocolDescription": "Steps 1-5."
+    },
+    {
+      "@id": "_:ImageAcquisitionProtocol1",
+      "@type": [
+        "bia:ImageAcquisitionProtocol"
+      ],
+      "title": "Microscopy",
+      "protocolDescription": "Steps 1-3",
+      "imagingInstrumentDescription": "Some microscope",
+      "imagingMethodName": [
+        "Microscopy"
+      ],
+      "fbbiId": [
+        "obo:FBbi_00000246"
+      ]
+    },
+    {
+      "@id": "NCBI:txid9606",
+      "@type": [
+        "bia:Taxon"
+      ],
+      "commonName": "human",
+      "scientificName": "Homo sapiens"
+    },
+    {
+      "@id": "_:Biosample1",
+      "@type": [
+        "bia:BioSample"
+      ],
+      "title": "Some biosample",
+      "biologicalEntityDescription": "Some description",
+      "organismClassification": [
+        {
+          "@id": "NCBI:txid9606"
+        }
+      ],
+      "growthProtocol": []
+    },
+    {
+      "@id": "data/image_1_use_ro_crate_info.tiff",
+      "@type": [
+        "bia:Image",
+        "File"
+      ],
+      "resultOf": {
+        "@id": "_:creation process for image 1"
+      }
+    },
+    {
+      "@id": "_:creation process for image 1",
+      "@type": [
+        "bia:CreationProcess"
+      ],
+      "imageAcquisitionProtocol": [
+        {
+          "@id": "_:ImageAcquisitionProtocol1"
+        }
+      ],
+      "subject": {
+        "@id": "_:Specimen1"
+      }
+    },
+    {
+      "@id": "_:Specimen1",
+      "@type": [
+        "bia:Specimen"
+      ],
+      "biologicalEntity": [
+        {
+          "@id": "_:Biosample1"
+        }
+      ],
+      "imagingPreparationProtocol": [
+        {
+          "@id": "_:SpecimenPreparation"
+        }
+      ]
+    },
+    {
+      "@id": "data/annotation_data_in_ro_crate_refs_file_list_file.tsv",
+      "@type": [
+        "bia:AnnotationData",
+        "File"
+      ],
+      "resultOf": {
+        "@id": "_:creation process for annotation_data"
+      }
+    },
+    {
+      "@id": "_:creation process for annotation_data",
+      "@type": [
+        "bia:CreationProcess"
+      ],
+      "annotationMethod": [
+        {
+          "@id": "_:Cell counts"
+        }
+      ],
+      "inputImage": [
+        {
+          "@id": "data/image_2.tiff"
+        }
+      ]
+    }
+  ]
+}
