@@ -261,8 +261,10 @@ def get_ome_zar_file_uri(image_uuid: Union[UUID, str]) -> Union[str, bool]:
     try:
         image_reps = api_client.get_image_representation_linking_image(str(image_uuid), page_size=10)
         if len(image_reps)>0:
-            image_file_uri = [image_rep.file_uri[0] for image_rep in image_reps if '.zarr' in image_rep.file_uri[0]][0]
-            return image_file_uri
+            image_file_uri = [image_rep.file_uri[0] for image_rep in image_reps if '.zarr' in image_rep.file_uri[0]]
+            if len(image_file_uri) == 0:
+                return False
+            return image_file_uri[0]
         return False
     except NotFoundException as e:
         logger.error(f"Could not retrieve image. Error was {e}.")
@@ -324,11 +326,13 @@ def source_annotation_image_pairs(source_image_uuid: Union[UUID, str]) -> Union[
             for cp in creation_process
         ]
 
-        # From valid annotation images, collect OME-Zarr file URIs
+       # From valid annotation images, collect OME-Zarr file URIs
         annotate_image_urls = [
-            str(get_ome_zar_file_uri(ai.uuid)) for ai in annotated_images if ai
+            str(uri)
+            for ai in annotated_images if ai
+            for uri in [get_ome_zar_file_uri(ai.uuid)]
+            if uri
         ]
-
         logger.info(f"For source image: {source_image_uuid} found {len(annotate_image_urls)} annotated images.")
         return annotate_image_urls
 
