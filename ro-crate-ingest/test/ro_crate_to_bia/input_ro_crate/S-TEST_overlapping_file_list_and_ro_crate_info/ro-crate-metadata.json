@@ -460,7 +460,7 @@
           "@id": "NCBI:txid9606"
         }
       ],
-      "growthProtocol": []
+      "growthProtocol": null
     },
     {
       "@id": "data/image_1_use_ro_crate_info.tiff",
