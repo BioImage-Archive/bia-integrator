@@ -518,7 +518,7 @@
                     "@id": "NCBI:txid7227"
                 }
             ],
-            "growthProtocol": []
+            "growthProtocol": null
         }
     ]
 }

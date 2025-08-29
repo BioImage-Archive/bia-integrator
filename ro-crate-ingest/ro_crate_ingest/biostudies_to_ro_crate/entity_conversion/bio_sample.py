@@ -95,7 +95,7 @@ def get_bio_sample(
             attr_dict, "experimental variable"
         ),
         "organismClassification": [{"@id": taxon.id} for taxon in biosample_taxons],
-        "growthProtocol": [{"@id": growth_protocol.id}] if growth_protocol else [],
+        "growthProtocol": {"@id": growth_protocol.id} if growth_protocol else None,
     }
 
     return ro_crate_models.BioSample(**model_dict)
