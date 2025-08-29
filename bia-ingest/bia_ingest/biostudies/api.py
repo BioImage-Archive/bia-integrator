@@ -246,7 +246,6 @@ def read_override(accession_id: str) -> Submission:
     )
     abs_path = submission_path.absolute()
     logger.info(f"Reading submission from {abs_path}")
-    logger.info(f"Absolute Path: {abs_path}.")
     file = abs_path.read_text()
     submission = Submission.model_validate_json(file)
     assert submission.accno == accession_id
