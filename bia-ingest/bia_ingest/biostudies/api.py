@@ -232,6 +232,7 @@ def load_submission(accession_id: str) -> Submission:
         "S-BIAD599": "missing study component assosiations subsection",
         "S-BIAD628": "missing study component assosiations subsection",
         "S-BIAD677": "missing study component assosiations subsection",
+        "S-BIAD2250": "Dataset cannot find Specimen Imaging Prepration Protocol that exists in its associations: All specimens",
     }
     if accession_id in overrides:
         return read_override(accession_id)
@@ -245,6 +246,7 @@ def read_override(accession_id: str) -> Submission:
     )
     abs_path = submission_path.absolute()
     logger.info(f"Reading submission from {abs_path}")
+    logger.info(f"Absolute Path: {abs_path}.")
     file = abs_path.read_text()
     submission = Submission.model_validate_json(file)
     assert submission.accno == accession_id
