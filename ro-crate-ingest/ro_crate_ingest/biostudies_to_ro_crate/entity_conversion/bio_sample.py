@@ -39,12 +39,14 @@ def get_taxons_bio_samples_and_association_map(
     taxon_list = []
     roc_biosamples = []
     association_mapping = {}
+    taxon_bnode_int = 0
 
     for section in biosample_sections:
 
-        biosample_taxons = get_taxon_under_biosample(
+        biosample_taxons, taxon_bnode_int = get_taxon_under_biosample(
             bio_sample_section=section,
             unique_taxon_list=taxon_list,
+            taxon_bnode_int=taxon_bnode_int
         )
 
         attr_dict = attributes_to_dict(section.attributes)

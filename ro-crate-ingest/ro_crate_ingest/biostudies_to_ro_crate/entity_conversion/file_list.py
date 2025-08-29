@@ -9,7 +9,6 @@ from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_api import (
 )
 from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_parsing_utils import (
     find_file_lists_under_section,
-    find_sections_recursive,
     find_sections_with_filelists_recursive,
 )
 from pathlib import Path
@@ -17,8 +16,6 @@ from bia_shared_datamodels import ro_crate_models
 from bia_shared_datamodels.linked_data.pydantic_ld.LDModel import ObjectReference
 from ro_crate_ingest.save_utils import write_filelist
 
-COLUMN_BNODE_INT = 0
-SCHEMA_BNODE_INT = 0
 
 
 def generate_relative_filelist_path(dataset_path: str, file_list_name: str) -> str:

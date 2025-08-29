@@ -1,0 +1,74 @@
+{
+  "accno": "S-BSST_PAGETAB_FILES",
+  "attributes": [
+    {
+      "name": "Template",
+      "value": "Default"
+    },
+    {
+      "name": "Title",
+      "value": "A scanning electron microscopy-based screen of leaves of Solanum lycopersicum cv. M82 x\nSolanum pennellii ac. LA716 introgression lines provides a resource for identification of loci\ninvolved in epidermal development in tomato."
+    },
+    {
+      "name": "ReleaseDate",
+      "value": "2018-11-30"
+    },
+    {
+      "name": "AttachTo",
+      "value": "BioImages"
+    }
+  ],
+  "section": {
+    "type": "Study",
+    "attributes": [
+      {
+        "name": "Title",
+        "value": "A scanning electron microscopy-based screen of leaves of Solanum lycopersicum cv. M82 x\nSolanum pennellii ac. LA716 introgression lines provides a resource for identification of loci\ninvolved in epidermal development in tomato."
+      },
+      {
+        "name": "Description",
+        "value": "This submission contains cryo-SEM micrographs of S. lycopersicum x S. pennellii introgression line (IL) population. Ther terms \"FEL\" and \"L\" both refer to the first fully-expanded true leaf of the plants assayed."
+      }
+    ],
+    "files": [
+      {
+        "path": "u/Cryo-SEM.zip",
+        "size": 1620870640,
+        "attributes": [
+          {
+            "name": "Description",
+            "value": "Cryo-SEM images"
+          }
+        ],
+        "type": "file"
+      },
+      {
+        "path": "u/Lisette Rodriguez.zip",
+        "size": 3508061759,
+        "attributes": [
+          {
+            "name": "Description",
+            "value": "SEM images"
+          }
+        ],
+        "type": "file"
+      }
+    ],
+    "subsections": [
+      {
+        "type": "Author",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Test Name"
+          },
+          {
+            "name": "E-mail",
+            "value": "jagalar92@gmail.com"
+          }
+        ]
+      }
+    ]
+  },
+  "type": "submission"
+}

@@ -45,6 +45,7 @@ def expected_path_to_created_path(expected_path: str, output_dir: Path) -> Path:
         "S-BIADTEST_AUTHOR_AFFILIATION",
         "S-BIADTEST_COMPLEX_BIOSAMPLE",
         "S-BIADTEST_PROTOCOL_STUDY",
+        "S-BSST_PAGETAB_FILES"
     ],
 )
 def test_biostudies_to_ro_crate(accession_id: str, tmp_bia_data_dir: Path):
