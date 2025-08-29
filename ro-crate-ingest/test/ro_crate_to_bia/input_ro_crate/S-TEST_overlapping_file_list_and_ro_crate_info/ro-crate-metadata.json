@@ -311,8 +311,8 @@
       "@type": [
         "csvw:Column"
       ],
-      "columnName": "source_image_label",
-      "propertyUrl": "http://bia/sourceImageLabel"
+      "columnName": "source_image_path",
+      "propertyUrl": "http://bia/sourceImagePath"
     },
     {
       "@id": "_:col1",
@@ -391,9 +391,6 @@
           "@id": "_:Cell counts"
         }
       ],
-      "associatedImageAnalysisMethod": [],
-      "associatedImageCorrelationMethod": [],
-      "associatedProtocol": [],
       "hasPart": [
         {
           "@id": "data/file_list.tsv"
@@ -527,7 +524,7 @@
       ],
       "inputImage": [
         {
-          "@id": "data/image_2.tiff"
+          "@id": "data/image_2_use_file_list_info.tiff"
         }
       ]
     }

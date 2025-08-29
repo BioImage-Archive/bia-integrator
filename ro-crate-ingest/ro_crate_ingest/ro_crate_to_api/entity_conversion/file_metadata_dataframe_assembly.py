@@ -22,7 +22,7 @@ def create_combined_file_dataframe(
     dataset_ro_crate_objects: list[ro_crate_models.Dataset] = []
     file_lists_ro_crate_objects: list[ro_crate_models.FileList] = []
     image_ro_crate_objects: list[ro_crate_models.Image] = []
-    annotation_data_ro_crate_objects: list[ro_crate_models.Image] = []
+    annotation_data_ro_crate_objects: list[ro_crate_models.AnnotationData] = []
 
     for crate_obj in crate_objects_by_id.values():
         if isinstance(crate_obj, ro_crate_models.Dataset):
@@ -34,14 +34,20 @@ def create_combined_file_dataframe(
         elif isinstance(crate_obj, ro_crate_models.AnnotationData):
             annotation_data_ro_crate_objects.append(crate_obj)
 
-    size_order = {"disk_files": 0, "file_list": 0, "images": 0}
+    result_data = image_ro_crate_objects + annotation_data_ro_crate_objects
+
+    size_order = {
+        "disk_files": 0,
+        "file_list": 0,
+        "result_data": 0,
+    }
 
     file_df = ro_crate_files_df(
         ro_crate_path, dataset_ro_crate_objects, size_order, file_lists_ro_crate_objects
     )
 
-    ro_crate_image_df = image_df(
-        image_ro_crate_objects, size_order, crate_graph, ro_crate_path
+    ro_crate_result_data_df = ro_crate_object_df(
+        result_data, size_order, crate_graph, ro_crate_path
     )
 
     file_list_dataframe = file_list_df(
@@ -55,7 +61,7 @@ def create_combined_file_dataframe(
     dataframes = {
         "disk_files": file_df,
         "file_list": file_list_dataframe,
-        "images": ro_crate_image_df,
+        "result_data": ro_crate_result_data_df,
     }
 
     combined_datafame = combine_dataframes(dataframes, size_order)
@@ -138,41 +144,49 @@ def file_list_df(
     return file_list_dataframe
 
 
-def image_df(
-    image_ro_crate_objects: list[ro_crate_models.Image],
+def ro_crate_object_df(
+    rd_ro_crate_objects: list[ro_crate_models.Image],
     size_order: dict[str, int],
     crate_graph: Graph,
     ro_crate_path: Path,
 ):
-    image_file = []
-    for image in image_ro_crate_objects:
-        image_dataset = get_hasPart_parent_id_from_child(
-            image.id, crate_graph, ro_crate_path
+    rd_file = []
+
+    for result_data in rd_ro_crate_objects:
+        rd_dataset = get_hasPart_parent_id_from_child(
+            result_data.id, crate_graph, ro_crate_path
         )
-        if "Dataset" in image.type:
+        rd_type = (
+            "http://bia/AnnotationData"
+            if isinstance(result_data, ro_crate_models.AnnotationData)
+            else "http://bia/Image"
+        )
+        if "Dataset" in result_data.type:
             files = [
                 (
                     f.as_posix(),
-                    image.id,
-                    image_dataset,
+                    result_data.id,
+                    rd_dataset,
+                    rd_type,
                 )
-                for f in Path(image.id).rglob("*")
+                for f in Path(result_data.id).rglob("*")
                 if f.is_file()
             ]
-            image_file.extend(files)
+            rd_file.extend(files)
         else:
-            image_file.append(
+            rd_file.append(
                 (
-                    Path(image.id).as_posix(),
-                    image.id,
-                    image_dataset,
+                    Path(result_data.id).as_posix(),
+                    result_data.id,
+                    rd_dataset,
+                    rd_type,
                 )
             )
 
     ro_crate_image_df = pd.DataFrame(
-        image_file, columns=["path", "image_id", "image_dataset_id"]
+        rd_file, columns=["path", "result_data_id", "image_dataset_id", "object_type"]
     )
-    size_order["images"] = len(ro_crate_image_df)
+    size_order["result_data"] = len(ro_crate_image_df)
     return ro_crate_image_df
 
 

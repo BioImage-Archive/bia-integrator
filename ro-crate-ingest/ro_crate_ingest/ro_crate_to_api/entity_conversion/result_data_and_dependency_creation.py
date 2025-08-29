@@ -206,7 +206,7 @@ def create_image(
         "version": 0,
         "object_creator": APIModels.Provenance.BIA_INGEST,
         "original_file_reference_uuid": row["file_ref_uuids"],
-        "additional_metadata": [row["result_data_uuid_attribute"]],
+        "additional_metadata": [row["result_data_uuid_attr"]],
         "label": (
             row["result_data_label"] if not pd.isna(row["result_data_label"]) else None
         ),
@@ -246,7 +246,7 @@ def create_annotation_data(
         "version": 0,
         "object_creator": APIModels.Provenance.BIA_INGEST,
         "original_file_reference_uuid": row["file_ref_uuids"],
-        "additional_metadata": [row["result_data_uuid_attribute"]],
+        "additional_metadata": [row["result_data_uuid_attr"]],
         "label": (
             row["result_data_label"] if not pd.isna(row["result_data_label"]) else None
         ),
