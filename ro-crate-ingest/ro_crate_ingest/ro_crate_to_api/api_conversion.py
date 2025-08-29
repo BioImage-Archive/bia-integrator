@@ -7,8 +7,8 @@ from ro_crate_ingest.ro_crate_to_api.entity_conversion import (
     annotation_method,
     bio_sample,
     dataset,
-    file_reference,
-    file_reference_and_result_data_dataframe_assembly,
+    file_metadata_dataframe_assembly,
+    file_reference_and_result_dataframe,
     image_acquisition_protocol,
     protocol,
     result_data_and_dependency_creation,
@@ -86,11 +86,11 @@ def convert_ro_crate_to_bia_api(
     )
     api_objects += specimen_imaging_preparation_protocols
 
-    file_dataframe = file_reference_and_result_data_dataframe_assembly.create_combined_file_dataframe(
+    file_dataframe = file_metadata_dataframe_assembly.create_combined_file_dataframe(
         entities, crate_path, crate_graph
     )
 
-    identified_result_data = file_reference.process_and_persist_file_references(
+    identified_result_data = file_reference_and_result_dataframe.process_and_persist_file_references(
         file_dataframe,
         study_uuid,
         accession_id,
