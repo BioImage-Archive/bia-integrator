@@ -22,25 +22,6 @@ from ro_crate_ingest.save_utils import write_filelist
 logger = logging.getLogger("__main__." + __name__)
 
 
-def get_dataset_and_filelist_for_pagetab_files(
-    output_ro_crate_path: Path,
-    submission: Submission,
-) -> dict[str, ro_crate_models.Dataset]:
-
-    if submission.section.files and len(submission.section.files) > 0:
-        dataset = create_root_dataset_for_submission(submission.section)
-
-        file_list_and_dependencies = create_file_list_from_pagetab_files(
-            submission.section.files, output_ro_crate_path, dataset.id
-        )
-
-        file_list_and_dependencies.append(dataset)
-
-        return file_list_and_dependencies
-    else:
-        return {}
-
-
 def create_root_dataset_for_submission(root_section: Section):
     section_name = "Default template. No Study Components"
     id = f"{quote(section_name)}/"
@@ -80,8 +61,6 @@ def create_file_list_from_pagetab_files(
         schema_list=schema_list,
     )
 
-    column_list = []
-    for x in column_by_name_url.values():
-        [col for col in x.values()]
+    column_list = [col for x in column_by_name_url.values() for col in x.values()]
 
     return column_list + schema_list + [filelist]

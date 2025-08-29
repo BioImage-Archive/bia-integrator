@@ -288,6 +288,38 @@
       }
     },
     {
+      "@id": "_:col0",
+      "@type": [
+        "csvw:Column"
+      ],
+      "columnName": "path",
+      "propertyUrl": "http://bia/filePath"
+    },
+    {
+      "@id": "_:col1",
+      "@type": [
+        "csvw:Column"
+      ],
+      "columnName": "size",
+      "propertyUrl": "http://bia/sizeInBytes"
+    },
+    {
+      "@id": "_:col2",
+      "@type": [
+        "csvw:Column"
+      ],
+      "columnName": "type",
+      "propertyUrl": null
+    },
+    {
+      "@id": "_:col3",
+      "@type": [
+        "csvw:Column"
+      ],
+      "columnName": "Description",
+      "propertyUrl": null
+    },
+    {
       "@id": "_:ts0",
       "@type": [
         "csvw:Schema"
