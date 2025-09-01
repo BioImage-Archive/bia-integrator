@@ -221,74 +221,62 @@ bia:AssociationProperty a owl:Class ;
 bia:associatedAnalysisMethod a owl:ObjectProperty, bia:AssociationProperty ;
     rdfs:label "associated analysis method"@en ;
     rdfs:comment "An analysis method that was applied to (at least some of) the data in this dataset in order to produce results."@en ;
-    rdfs:domain bia:Dataset ;
+    #rdfs:domain [ owl:unionOf ( bia:Dataset bia:FileReference) ];
     rdfs:range bia:ImageAnalysisMethod .
 
 bia:associatedCorrelationMethod a owl:ObjectProperty, bia:AssociationProperty ;
     rdfs:label "associated correlation method"@en ;
     rdfs:comment "A method that was applied to (at least some of) the data in the dataset to corralate data between two or more images."@en ;
-    rdfs:domain bia:Dataset ;
+    #rdfs:domain [ owl:unionOf ( bia:Dataset bia:FileReference) ];
     rdfs:range bia:ImageCorrelationMethod .
 
 bia:associatedSubject a owl:ObjectProperty, bia:AssociationProperty ;
     rdfs:label "associated subject"@en ;
     rdfs:comment 
-        """Used to assoicate a specific specimen with all images in a dataset. Useful for correlated images of the same specimen. More formally:
-        Assuming `dataset bia:associatedSubject specimen`,
-        then for every image that matches `dataset schema:hasPart image`, there exists the statments:
-        `image bia:resultOf creation_process` and `creation_process bia:subject specimen`."""@en ;
-    rdfs:domain bia:Dataset ;
+        """Used to indicate a Specmein as the subject of all Images that are associated with a dataset or file. With datasets, this can be useful for correlated images of the same Specimen."""@en ;
+    #rdfs:domain [ owl:unionOf ( bia:Dataset bia:FileReference) ];
     rdfs:range bia:Specimen .
 
 bia:associatedBiologicalEntity a owl:ObjectProperty, bia:AssociationProperty ;
     rdfs:label "associated biological entity"@en ;
     rdfs:comment 
-        """Used to associate a biosample with all images in a dataset.
-        Assuming `dataset bia:association association`, and `association bia:associatedBiologicalEntity bio_sample`,
-        then for every image that matches `dataset schema:hasPart image`, there exists the statments:
-        `image bia:resultOf creation_process`, `creation_process bia:subject specimen`, and `specimen bia:biologicalEntity bio_sample`."""@en ;
-    rdfs:domain bia:Dataset ;
-    rdfs:range bia:Specimen .
+        """Used to indicate a BioSample as the source biological entity that was associated with a dataset or file."""@en ;
+    #rdfs:domain [ owl:unionOf ( bia:Dataset bia:FileReference) ];
+    rdfs:range bia:BioSample .
 
 bia:associatedImagingPreparationProtocol a owl:ObjectProperty, bia:AssociationProperty ;
     rdfs:label "associated imaging preparation protocol"@en ;
     rdfs:comment 
-        """Used to associate a SpecimenImagingPreprationProtocol with all images in a dataset.
-        Assuming `dataset bia:associatedImagingPreparationProtocol specimen_imaging_preparation_protcol`,
-        then for every image that matches `dataset schema:hasPart image`, there exists the statments:
-        `image bia:resultOf creation_process`, `creation_process bia:subject specimen`, and `specimen bia:imagingPreparationProtocol  specimen_imaging_preparation_protcol`."""@en ;
-    rdfs:domain bia:Dataset ;
+        """Used to indicate an ImageAcquisitionProtocol as a protocol that was followed in the process of creating all the specimens associated with a dataset or file."""@en ;
+    #rdfs:domain [ owl:unionOf ( bia:Dataset bia:FileReference) ];
     rdfs:range bia:Specimen .
 
 bia:associatedImageAcquisitionProtocol a owl:ObjectProperty, bia:AssociationProperty ;
     rdfs:label "associated image acquisition protocol"@en ;
     rdfs:comment 
-        """Used to associate a ImageAcquistionProtocol with all images in a dataset.
-        Assuming `dataset bia:associatedImagingPreparationProtocol specimen_imaging_preparation_protcol`,
-        then for every image that matches `dataset schema:hasPart image`, there exists the statments:
-        `image bia:resultOf creation_process`, `creation_process bia:subject specimen`, and `specimen bia:imagingPreparationProtocol  specimen_imaging_preparation_protcol`."""@en ;
-    rdfs:domain bia:Dataset ;
+        """Used to indicate an ImageAcquisitionProtocol as a protocol that was followed in the process of creating all the Images or Annotation Data associated with a dataset or file."""@en ;
+    #rdfs:domain [ owl:unionOf ( bia:Dataset bia:FileReference) ];
     rdfs:range bia:Specimen .
 
 bia:associatedProtocol a owl:ObjectProperty, bia:AssociationProperty ;
     rdfs:label "associated protocol"@en ;
     rdfs:comment 
-        """Used to associate a protocol with all images in a dataset.
-        Assuming `dataset bia:associatedProtocol protocol`,
-        then for every image that matches `dataset schema:hasPart image`, there exists the statments:
-        `image bia:resultOf creation_process`, and `creation_process bia:subject protocol`."""@en ;
-    rdfs:domain bia:Dataset ;
+        """Used to indicate a Protocol that was followed in the process of creating all the Images or Annotation Data associated with a dataset or file."""@en ;
+    #rdfs:domain [ owl:unionOf ( bia:Dataset bia:FileReference) ];
     rdfs:range bia:Specimen .
 
 bia:associatedAnnotationMethod a owl:ObjectProperty, bia:AssociationProperty ;
     rdfs:label "associated protocol"@en ;
     rdfs:comment 
-        """Used to associate an annotation method with all images in a dataset.
-        Assuming `dataset bia:associatedAnnotationMethod annotation_method`,
-        then for every image that matches `dataset schema:hasPart image`, there exists the statments:
-        `image bia:resultOf creation_process`, and `creation_process bia:annotationMethod annotation_method`."""@en ;
-    rdfs:domain bia:Dataset ;
+        """Used to indicate an Annotation Method as a protocol that was followed in the process of creating all the Images or Annotation Data associated with a dataset or file."""@en;
+    #rdfs:domain [ owl:unionOf ( bia:Dataset bia:FileReference) ];
     rdfs:range bia:Specimen .
+
+bia:associatedSourceImage a owl:ObjectProperty, bia:AssociationProperty ;
+    rdfs:label "associated source image"@en ;
+    rdfs:comment """Used to indicate an Image as a source of data for a process that created all the Images or Annotation Data associated with a dataset or file."""@en ;
+    #rdfs:domain [ owl:unionOf ( bia:Dataset bia:FileReference) ];
+    rdfs:range bia:Image .
 
 bia:associationFileMetadata a owl:ObjectProperty;
     rdfs:label "association file metadata"@en ;
