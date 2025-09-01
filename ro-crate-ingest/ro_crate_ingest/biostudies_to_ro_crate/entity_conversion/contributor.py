@@ -16,20 +16,21 @@ from bia_shared_datamodels import ro_crate_models
 logger = logging.getLogger("__main__." + __name__)
 
 
-CONTRIBUTOR_BNODE_INT = 0
-
-
 def get_contributors(
     submission: Submission,
     roc_affiliation_by_accno: dict[str, ro_crate_models.Affiliaton],
 ) -> list[ro_crate_models.Contributor]:
 
+    contributor_bnode_int = 0
     sections = find_sections_recursive(submission.section, ["author"])
 
     contributors = []
     for section in sections:
 
-        contributors.append(get_contributor(section, roc_affiliation_by_accno))
+        contributor, contributor_bnode_int = get_contributor(
+            section, roc_affiliation_by_accno, contributor_bnode_int
+        )
+        contributors.append(contributor)
 
     return contributors
 
@@ -37,13 +38,16 @@ def get_contributors(
 def get_contributor(
     section: Section,
     roc_affiliation_by_accno: dict[str, ro_crate_models.Affiliaton],
-) -> ro_crate_models.Contributor:
+    contributor_bnode_int: int,
+) -> tuple[ro_crate_models.Contributor, int]:
 
     attributes_dict = attributes_to_dict(section.attributes)
 
+    contributor_id, contributor_bnode_int = get_contributor_id(attributes_dict, contributor_bnode_int)
+
     contributor_dict = {
         "@type": ["Person", "bia:Contributor"],
-        "@id": get_contributor_id(attributes_dict),
+        "@id": contributor_id,
         "displayName": attributes_dict["name"],
         "address": None,
         "website": None,
@@ -51,21 +55,20 @@ def get_contributor(
         "role": get_roles(attributes_dict),
         "contactEmail": sanitise_contributor_email(attributes_dict.get("e-mail")),
     }
-    return ro_crate_models.Contributor(**contributor_dict)
+    return ro_crate_models.Contributor(**contributor_dict), contributor_bnode_int
 
 
-def get_contributor_id(attributes_dict: dict):
+def get_contributor_id(attributes_dict: dict, contributor_bnode_int: int) -> tuple[str, int]:
 
     if "orcid" in attributes_dict:
         id: str = attributes_dict["orcid"]
         if not id.startswith("https://orcid.org/"):
             id = f"https://orcid.org/{id}"
     else:
-        global CONTRIBUTOR_BNODE_INT
-        id = f"_:c{CONTRIBUTOR_BNODE_INT}"
-        CONTRIBUTOR_BNODE_INT += 1
+        id = f"_:c{contributor_bnode_int}"
+        contributor_bnode_int += 1
 
-    return id
+    return id, contributor_bnode_int
 
 
 def sanitise_contributor_email(email: Optional[str]):

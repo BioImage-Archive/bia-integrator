@@ -15,10 +15,9 @@ from ro_crate_ingest.biostudies_to_ro_crate.entity_conversion import (
     protocol_from_growth_protocol,
     file_list,
     protocol,
+    pagetab_file,
 )
 from bia_shared_datamodels.uuid_creation import create_study_uuid
-import json
-from pydantic import BaseModel, Field
 from pathlib import Path
 import logging
 from typing import Optional
@@ -102,6 +101,18 @@ def convert_biostudies_to_ro_crate(accession_id: str, crate_path: Optional[Path]
         ro_crate_dir, submission, roc_datasets
     )
     graph += roc_file_list_schema_objects
+
+    if submission.section.files and len(submission.section.files) > 0:
+        # create a default dataset for the files that are part of the pagetab, rather than referenced via filelist
+        default_dataset = pagetab_file.create_root_dataset_for_submission(
+            submission.section
+        )
+        graph.append(default_dataset)
+
+        file_list_and_dependencies = pagetab_file.create_file_list_from_pagetab_files(
+            submission.section.files, ro_crate_dir, default_dataset.id
+        )
+        graph += file_list_and_dependencies
 
     roc_affiliation_by_accno = affiliation.get_affiliations_by_accno(submission)
     graph += roc_affiliation_by_accno.values()
