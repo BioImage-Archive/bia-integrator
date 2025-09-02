@@ -1,0 +1,20 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "7212c1b0-86ed-45c4-830f-eeb9e85b9fa9",
+  "version": 0,
+  "model": {
+    "type_name": "Protocol",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Tomogram reconstruction and sub-tomogram averaging"
+      }
+    }
+  ],
+  "title": "Tomogram reconstruction and sub-tomogram averaging",
+  "protocol_description": "Dose-weighted motion-corrected images were exported for tomographic reconstruction by weighted back-projection in AreTomo and 4-times binned. Averaging was performed in RELION with 1,284 particles, I1 symmetry, using a 60-Å-low-pass-filtered map of the encapsulin scaffold (PDB 6X8M) as a reference."
+}

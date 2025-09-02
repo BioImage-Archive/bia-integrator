@@ -20,6 +20,8 @@
   "input_image_uuid": [
     "88928f62-5799-498c-83fc-9b8922c046ea"
   ],
-  "protocol_uuid": [],
+  "protocol_uuid": [
+    "7212c1b0-86ed-45c4-830f-eeb9e85b9fa9"
+  ],
   "annotation_method_uuid": []
 }

@@ -18,6 +18,7 @@ from ro_crate_ingest.empiar_to_ro_crate.entity_conversion import (
     contributor,
     study,
     file_list,
+    protocol,
 )
 import logging
 
@@ -61,6 +62,9 @@ def convert_empiar_proposal_to_ro_crate(proposal_path: Path, crate_path: Path):
         image_analysis_method.get_image_analysis_methods_by_title(yaml_file)
     )
     graph += roc_image_analysis_methods_map.values()
+
+    roc_protocol = protocol.get_protocols(yaml_file)
+    graph += roc_protocol
 
     roc_dataset_title_map = dataset.get_datasets_by_imageset_title(
         yaml_file=yaml_file,
