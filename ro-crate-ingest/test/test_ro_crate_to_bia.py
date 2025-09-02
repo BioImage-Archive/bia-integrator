@@ -279,13 +279,3 @@ def test_overlapping_image_data(
                 assert field_value == None
             elif expected_length == 1:
                 assert field_value
-
-        # expected_creation_process_path = (
-        #     Path(__file__).parent
-        #     / "ro_crate_to_bia"
-        #     / "output_data"
-        #     / Path(*Path(creation_process_path).parts[-3:])
-        # )
-
-        # with open(expected_creation_process_path, "r") as f:
-        #     expeceted_creation_process = json.load(f)
