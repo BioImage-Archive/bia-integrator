@@ -252,21 +252,14 @@ def accepted_image_extensions(path: str) -> list[str]:
 
 
 def get_file_list_source_image_id(file_list_info: dict) -> Optional[str]:
-    source_image_id = nan
-    if "http://bia/sourceImagePath" in file_list_info:
-        sid: str = file_list_info["http://bia/sourceImagePath"]
-        if sid.startswith("["):
-            source_image_id = [x.strip("'\"\\ ") for x in sid.strip("[]").split(",")]
-        elif sid != "":
-            source_image_id = [sid]
-    elif "http://bia/sourceImageLabel" in file_list_info:
-        sid = file_list_info["http://bia/sourceImageLabel"]
-        if sid.startswith("["):
-            source_image_id = [x.strip("'\"\\ ") for x in sid.strip("[]").split(",")]
-        elif sid != "":
-            source_image_id = [sid]
-
-    return source_image_id
+    for key in ("http://bia/sourceImagePath", "http://bia/sourceImageLabel"):
+        sid = file_list_info.get(key)
+        if sid:
+            sid = sid.strip()
+            if sid.startswith("["):
+                return [x.strip("'\"\\ ") for x in sid.strip("[]").split(",")]
+            return [sid]
+    return None
 
 
 def get_filelist_to_ro_crate_object_reference(

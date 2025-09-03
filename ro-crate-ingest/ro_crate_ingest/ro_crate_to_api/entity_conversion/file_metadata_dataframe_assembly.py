@@ -157,9 +157,9 @@ def ro_crate_object_df(
             result_data.id, crate_graph, ro_crate_path
         )
         rd_type = (
-            "http://bia/AnnotationData"
+            ro_crate_models.AnnotationData.model_config["model_type"]
             if isinstance(result_data, ro_crate_models.AnnotationData)
-            else "http://bia/Image"
+            else ro_crate_models.Image.model_config["model_type"]
         )
         if "Dataset" in result_data.type:
             files = [
