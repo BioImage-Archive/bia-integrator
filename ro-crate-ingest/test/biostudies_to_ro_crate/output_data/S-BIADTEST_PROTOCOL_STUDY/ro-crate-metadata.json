@@ -270,7 +270,7 @@
             "website": null
         },
         {
-            "@id": "experimentB/experimentB.tsv",
+            "@id": "experimentB/experiment%20results.tsv",
             "@type": [
                 "File",
                 "bia:FileList",
@@ -396,11 +396,11 @@
             ],
             "hasPart": [
                 {
-                    "@id": "experimentB/experimentB.tsv"
+                    "@id": "experimentB/experiment%20results.tsv"
                 }
             ],
             "associationFileMetadata": {
-                "@id": "experimentB/experimentB.tsv"
+                "@id": "experimentB/experiment%20results.tsv"
             }
         },
         {
