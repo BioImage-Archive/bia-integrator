@@ -180,11 +180,11 @@ def select_result_data_id_and_type(
     Finds the most appropriate string to use as an ID for result data (images or annotation data).
     If not found, this file reference shouldn't be processed
     """
-    id = None
+    result_data_id = None
     bia_type = None
 
     if not pd.isna(row.get("result_data_id", nan)):
-        id = row["result_data_id"]
+        result_data_id = row["result_data_id"]
 
     if not pd.isna(row.get("object_type", nan)):
         bia_type = row["object_type"]
@@ -192,34 +192,34 @@ def select_result_data_id_and_type(
     if not pd.isna(row.get("info_from_file_list", nan)):
         file_list_info = row["info_from_file_list"]
         if file_list_info.get("http://schema.org/name", None):
-            id = file_list_info["http://schema.org/name"]
+            result_data_id = file_list_info["http://schema.org/name"]
         elif file_list_info.get("https://schema.org/name", None):
-            id = file_list_info["https://schema.org/name"]
+            result_data_id = file_list_info["https://schema.org/name"]
 
         if file_list_info.get("http://www.w3.org/1999/02/22-rdf-syntax-ns#type", None):
             bia_type = file_list_info["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"]
-        elif id:
+        elif result_data_id:
             # Assume something that has been named in a filelist is an image if not specified that it's annotation data
             bia_type = "http://bia/Image"
 
-    if not id:
+    if not result_data_id:
         standardised_file_extension = get_standardised_extension(row["path"])
         if standardised_file_extension in image_extensions:
-            id = row["path"]
+            result_data_id = row["path"]
             bia_type = "http://bia/Image"
     elif not bia_type:
         standardised_file_extension = get_standardised_extension(row["path"])
         if standardised_file_extension in image_extensions:
             bia_type = "http://bia/Image"
 
-    return id, bia_type
+    return result_data_id, bia_type
 
 
 def get_result_data_label_in_filelist(file_list_info: dict) -> Optional[str]:
-    if file_list_info.get("http://schema.org/name", None):
-        return file_list_info["http://schema.org/name"]
-    elif file_list_info.get("https://schema.org/name", None):
-        return file_list_info["https://schema.org/name"]
+    label = None
+    for schema_name_property in ["http://schema.org/name", "https://schema.org/name"]:
+        if label := file_list_info.get(schema_name_property):
+            return label
 
 
 def get_standardised_extension(file_path: str) -> str:
@@ -252,13 +252,17 @@ def accepted_image_extensions(path: str) -> list[str]:
 
 
 def get_file_list_source_image_id(file_list_info: dict) -> Optional[str]:
-    for key in ("http://bia/sourceImagePath", "http://bia/sourceImageLabel"):
-        sid = file_list_info.get(key)
-        if sid:
-            sid = sid.strip()
-            if sid.startswith("["):
-                return [x.strip("'\"\\ ") for x in sid.strip("[]").split(",")]
-            return [sid]
+    for bia_source_image_property in [
+        "http://bia/sourceImagePath",
+        "http://bia/sourceImageLabel",
+    ]:
+        if source_image_id := file_list_info.get(bia_source_image_property):
+            source_image_id = source_image_id.strip()
+            if source_image_id.startswith("["):
+                return [
+                    x.strip("'\"\\ ") for x in source_image_id.strip("[]").split(",")
+                ]
+            return [source_image_id]
     return None
 
 

@@ -76,13 +76,13 @@ def get_dataset_from_study_component(
     association_dict: dict[str, dict[str, str]],
 ):
 
-    id = f"{quote(section.accno)}/"
+    roc_id = f"{quote(section.accno)}/"
 
     attr_dict = attributes_to_dict(section.attributes)
-    filelist_id_ref = {"@id": get_filelist_reference(id, section)}
+    filelist_id_ref = {"@id": get_filelist_reference(roc_id, section)}
 
     model_dict = association_dict | {
-        "@id": id,
+        "@id": roc_id,
         "@type": ["Dataset", "bia:Dataset"],
         "title": attr_dict["name"],
         "description": attr_dict["description"],
@@ -96,13 +96,13 @@ def get_dataset_from_study_component(
 def get_dataset_from_annotation_component(
     section: Section, annotation_methods: dict[str, ro_crate_models.AnnotationMethod]
 ):
-    id = f"{quote(section.accno)}/"
+    roc_id = f"{quote(section.accno)}/"
 
     attr_dict = attributes_to_dict(section.attributes)
-    filelist_id_ref = {"@id": get_filelist_reference(id, section)}
+    filelist_id_ref = {"@id": get_filelist_reference(roc_id, section)}
 
     model_dict = {
-        "@id": id,
+        "@id": roc_id,
         "@type": ["Dataset", "bia:Dataset"],
         "title": attr_dict["title"],
         "description": attr_dict.get("annotation overview", None),
@@ -118,10 +118,10 @@ def get_dataset_from_annotation_component(
 def get_dataset_from_generic_filelist_section(
     section: Section, protocols: dict[str, ro_crate_models.Protocol]
 ):
-    id = f"{quote(section.accno)}/"
+    roc_id = f"{quote(section.accno)}/"
 
     attr_dict = attributes_to_dict(section.attributes)
-    filelist_id_ref = {"@id": get_filelist_reference(id, section)}
+    filelist_id_ref = {"@id": get_filelist_reference(roc_id, section)}
 
     protocol_subsections_ids = [
         protocol.accno
@@ -129,7 +129,7 @@ def get_dataset_from_generic_filelist_section(
     ]
 
     model_dict = {
-        "@id": id,
+        "@id": roc_id,
         "@type": ["Dataset", "bia:Dataset"],
         "title": f"{section.accno}",
         "description": attr_dict.get("Description", None),
