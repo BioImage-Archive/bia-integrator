@@ -7,7 +7,7 @@ from bia_shared_datamodels.package_specific_uuid_creation.ro_crate_uuid_creation
     create_image_acquisition_protocol_uuid,
     create_annotation_method_uuid,
 )
-from bia_shared_datamodels.linked_data.pydantic_ld.ROCrateModel import ROCrateModel
+from bia_shared_datamodels import ro_crate_models
 import bia_integrator_api.models as APIModels
 from ro_crate_ingest.save_utils import PersistenceMode, persist
 
@@ -48,12 +48,16 @@ def create_images_and_dependencies(
             )
         )
 
-    result_data_dataframe["dependency_chain_length"] = caluclate_dependency_chain_length(result_data_dataframe)
+    result_data_dataframe["dependency_chain_length"] = (
+        caluclate_dependency_chain_length(result_data_dataframe)
+    )
     max_dependency_chain_length = result_data_dataframe["dependency_chain_length"].max()
 
     for process_height in range(max_dependency_chain_length + 1):
 
-        df = result_data_dataframe[result_data_dataframe["dependency_chain_length"] == process_height]
+        df = result_data_dataframe[
+            result_data_dataframe["dependency_chain_length"] == process_height
+        ]
 
         creation_process_by_group = [
             (uuid, group_df) for uuid, group_df in df.groupby("creation_process_uuid")
@@ -186,9 +190,11 @@ def create_result_data(
     accession_id: str,
     persistence_mode: PersistenceMode,
 ):
-    if row["result_type"] == "http://bia/Image":
+    if row["result_type"] == ro_crate_models.Image.model_config["model_type"]:
         create_image(row, accession_id, persistence_mode)
-    elif row["result_type"] == "http://bia/AnnotationData":
+    elif (
+        row["result_type"] == ro_crate_models.AnnotationData.model_config["model_type"]
+    ):
         create_annotation_data(row, accession_id, persistence_mode)
 
 
@@ -206,7 +212,7 @@ def create_image(
         "version": 0,
         "object_creator": APIModels.Provenance.BIA_INGEST,
         "original_file_reference_uuid": row["file_ref_uuids"],
-        "additional_metadata": [row["result_data_uuid_attribute"]],
+        "additional_metadata": [row["result_data_uuid_attr"]],
         "label": (
             row["result_data_label"] if not pd.isna(row["result_data_label"]) else None
         ),
@@ -246,7 +252,7 @@ def create_annotation_data(
         "version": 0,
         "object_creator": APIModels.Provenance.BIA_INGEST,
         "original_file_reference_uuid": row["file_ref_uuids"],
-        "additional_metadata": [row["result_data_uuid_attribute"]],
+        "additional_metadata": [row["result_data_uuid_attr"]],
         "label": (
             row["result_data_label"] if not pd.isna(row["result_data_label"]) else None
         ),
@@ -277,7 +283,11 @@ def caluclate_dependency_chain_length(df):
             raise ValueError(f"Cycle detected with {id}")
         visiting.add(id)
         deps = dep_map.get(id, [])
-        height = 0 if not deps else 1 + max(calculate_height(d) for d in deps if d in dep_map)
+        height = (
+            0
+            if not deps
+            else 1 + max(calculate_height(d) for d in deps if d in dep_map)
+        )
         visiting.remove(id)
         heights[id] = height
         return height

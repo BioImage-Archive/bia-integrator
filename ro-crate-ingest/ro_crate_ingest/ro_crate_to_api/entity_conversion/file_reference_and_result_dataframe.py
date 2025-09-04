@@ -111,10 +111,16 @@ def information_for_result_data_creation(
 
     result_data_id, obj_type = select_result_data_id_and_type(row, image_extensions)
     result_data_label_from_filelist = None
-    file_list_source_image_id = None
-    if result_data_id:
-        result_data_label_from_filelist = get_result_data_label_in_filelist(row)
-        file_list_source_image_id = get_file_list_source_image_id(row)
+    filelist_to_ro_crate_object_reference = None
+    if result_data_id and not pd.isna(row.get("info_from_file_list", nan)):
+        file_list_info = row["info_from_file_list"]
+        result_data_label_from_filelist = get_result_data_label_in_filelist(
+            file_list_info
+        )
+        filelist_to_ro_crate_object_reference = (
+            get_filelist_to_ro_crate_object_reference(file_list_info)
+        )
+
     return {
         "path": row["path"],
         "file_ref_uuid": str(uuid),
@@ -123,7 +129,7 @@ def information_for_result_data_creation(
         "result_type": obj_type,
         "result_data_id": result_data_id,
         "result_data_label_from_filelist": result_data_label_from_filelist,
-        "source_image_id_from_filelist": file_list_source_image_id,
+        "association_data_from_filelist": filelist_to_ro_crate_object_reference,
     }
 
 
@@ -139,6 +145,7 @@ def get_file_ref_uri(file_ref_url_prefix, accession_id, file_path) -> str:
     elif file_ref_url_prefix == "biostudies":
         return f"https://www.ebi.ac.uk/biostudies/files/{accession_id}/{file_path}"
     else:
+        logger.warning("No known url for file reference")
         return "None?"
 
 
@@ -173,46 +180,46 @@ def select_result_data_id_and_type(
     Finds the most appropriate string to use as an ID for result data (images or annotation data).
     If not found, this file reference shouldn't be processed
     """
-    id = None
+    result_data_id = None
     bia_type = None
 
-    if not pd.isna(row.get("image_id", nan)):
-        id = row["image_id"]
-        bia_type = "http://bia/Image"
+    if not pd.isna(row.get("result_data_id", nan)):
+        result_data_id = row["result_data_id"]
+
+    if not pd.isna(row.get("object_type", nan)):
+        bia_type = row["object_type"]
 
     if not pd.isna(row.get("info_from_file_list", nan)):
         file_list_info = row["info_from_file_list"]
         if file_list_info.get("http://schema.org/name", None):
-            id = file_list_info["http://schema.org/name"]
+            result_data_id = file_list_info["http://schema.org/name"]
         elif file_list_info.get("https://schema.org/name", None):
-            id = file_list_info["https://schema.org/name"]
+            result_data_id = file_list_info["https://schema.org/name"]
 
         if file_list_info.get("http://www.w3.org/1999/02/22-rdf-syntax-ns#type", None):
             bia_type = file_list_info["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"]
-        elif id:
+        elif result_data_id:
             # Assume something that has been named in a filelist is an image if not specified that it's annotation data
             bia_type = "http://bia/Image"
 
-    if not id:
+    if not result_data_id:
         standardised_file_extension = get_standardised_extension(row["path"])
         if standardised_file_extension in image_extensions:
-            id = row["path"]
+            result_data_id = row["path"]
             bia_type = "http://bia/Image"
     elif not bia_type:
         standardised_file_extension = get_standardised_extension(row["path"])
         if standardised_file_extension in image_extensions:
             bia_type = "http://bia/Image"
 
-    return id, bia_type
+    return result_data_id, bia_type
 
 
-def get_result_data_label_in_filelist(row: dict) -> Optional[str]:
-    if not pd.isna(row.get("info_from_file_list", nan)):
-        file_list_info = row["info_from_file_list"]
-        if file_list_info.get("http://schema.org/name", None):
-            return file_list_info["http://schema.org/name"]
-        elif file_list_info.get("https://schema.org/name", None):
-            return file_list_info["https://schema.org/name"]
+def get_result_data_label_in_filelist(file_list_info: dict) -> Optional[str]:
+    label = None
+    for schema_name_property in ["http://schema.org/name", "https://schema.org/name"]:
+        if label := file_list_info.get(schema_name_property):
+            return label
 
 
 def get_standardised_extension(file_path: str) -> str:
@@ -244,25 +251,50 @@ def accepted_image_extensions(path: str) -> list[str]:
     return file_formats
 
 
-def get_file_list_source_image_id(row: dict) -> Optional[str]:
-    info_from_file_list = row.get("info_from_file_list", nan)
-    source_image_id = nan
-    if not pd.isna(info_from_file_list):
-        if "http://bia/sourceImagePath" in info_from_file_list:
-            sid: str = info_from_file_list["http://bia/sourceImagePath"]
-            if sid.startswith("["):
-                source_image_id = [
-                    x.strip("'\"\\ ") for x in sid.strip("[]").split(",")
+def get_file_list_source_image_id(file_list_info: dict) -> Optional[str]:
+    for bia_source_image_property in [
+        "http://bia/sourceImagePath",
+        "http://bia/sourceImageLabel",
+    ]:
+        if source_image_id := file_list_info.get(bia_source_image_property):
+            source_image_id = source_image_id.strip()
+            if source_image_id.startswith("["):
+                return [
+                    x.strip("'\"\\ ") for x in source_image_id.strip("[]").split(",")
                 ]
-            elif sid != "":
-                source_image_id = [sid]
-        elif "http://bia/sourceImageLabel" in info_from_file_list:
-            sid = info_from_file_list["http://bia/sourceImageLabel"]
-            if sid.startswith("["):
-                source_image_id = [
-                    x.strip("'\"\\ ") for x in sid.strip("[]").split(",")
-                ]
-            elif sid != "":
-                source_image_id = [sid]
+            return [source_image_id]
+    return None
 
-    return source_image_id
+
+def get_filelist_to_ro_crate_object_reference(
+    info_from_file_list: dict,
+) -> Optional[dict]:
+    list_fields = [
+        "http://bia/associatedBiologicalEntity",
+        "http://bia/associatedImagingPreparationProtocol",
+        "http://bia/associatedImageAcquisitionProtocol",
+        "http://bia/associatedAnnotationMethod",
+        "http://bia/associatedProtocol",
+    ]
+
+    result_dict = {}
+    for field in list_fields:
+        value = []
+        if field in info_from_file_list:
+            ro_crate_id: str = info_from_file_list[field]
+            if ro_crate_id.startswith("["):
+                value = [x.strip("'\"\\ ") for x in ro_crate_id.strip("[]").split(",")]
+            elif ro_crate_id != "":
+                value = [ro_crate_id]
+
+            result_dict[field] = value
+
+    if "http://bia/associatedSubject" in info_from_file_list:
+        value: str = info_from_file_list[field]
+        result_dict["http://bia/associatedSubject"] = value
+
+    source_image_id = get_file_list_source_image_id(info_from_file_list)
+    if isinstance(source_image_id, list):
+        result_dict["http://bia/associatedInputImage"] = source_image_id
+
+    return result_dict

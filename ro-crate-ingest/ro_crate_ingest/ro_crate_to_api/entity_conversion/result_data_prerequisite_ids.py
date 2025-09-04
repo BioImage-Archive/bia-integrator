@@ -26,7 +26,6 @@ def prepare_all_ids_for_images(
         "result_data_id", dropna=True
     )
 
-    
     with ProcessPoolExecutor(max_workers=max_workers) as executor:
         results = list(
             executor.map(
@@ -49,7 +48,6 @@ def prepare_all_ids_for_images(
     )
 
     return result_data_uuid_dataframe, result_data_id_uuid_map
- 
 
 
 def prep_result_data_row(
@@ -62,163 +60,116 @@ def prep_result_data_row(
 
     result_data_id = group_df[0]
     df = group_df[1]
-    file_uuids = list(df["file_ref_uuid"])
 
-    obj_type = df["result_type"].iloc[0]
-    if obj_type == "http://bia/Image":
-        result_data_uuid, result_data_uuid_attribute = shared.create_image_uuid(
-            study_uuid, file_uuids, APIModels.Provenance.BIA_INGEST
-        )
-    elif obj_type == "http://bia/AnnotationData":
-        result_data_uuid, result_data_uuid_attribute = (
-            shared.create_annotation_data_uuid(
-                study_uuid, file_uuids, APIModels.Provenance.BIA_INGEST
-            )
+    pre_requisite_ids_row = {
+        "file_ref_uuids": list(df["file_ref_uuid"]),
+        "dataset_roc_id": flatten_set_of_same_values(df["dataset_roc_id"]),
+        "dataset_uuid": flatten_set_of_same_values(df["dataset_uuid"]),
+        "result_data_id": result_data_id,
+        "result_type": df["result_type"].iloc[0],
+        "result_data_uuid": None,
+        "result_data_label": None,
+        "result_data_uuid_attr": None,
+        "source_image_id": [],
+        "creation_process_id": None,
+        "creation_process_uuid": None,
+        "creation_process_uuid_attr": None,
+        "specimen_id": None,
+        "specimen_uuid": None,
+        "specimen_uuid_attr": None,
+        "annotation_method_id": [],
+        "image_acquisition_protocol_id": [],
+        "protocol_id": [],
+        "bio_sample_id": [],
+        "specimen_imaging_preparation_protocol_id": [],
+    }
+
+    get_result_data_uuids(result_data_id, df, study_uuid, pre_requisite_ids_row)
+
+    # Assuming all rows are the the same
+    association_data_from_filelist = df["association_data_from_filelist"].iloc[0]
+    dataset: ro_crate_models.Dataset = crate_objects_by_id[
+        quote(pre_requisite_ids_row["dataset_roc_id"])
+    ]
+
+    if result_data_id in crate_objects_by_id:
+        get_result_data_from_ro_crate(
+            crate_objects_by_id, result_data_id, pre_requisite_ids_row
         )
     else:
-        raise ValueError(
-            f"Expected {result_data_id} to be of type http://bia/Image or http://bia/AnnotationData, but fount: {obj_type}"
-        )
-
-    result_data_label = None
-    creation_process_id = None
-    creation_process_uuid = None
-    creation_process_uuid_attr = None
-    specimen_id = None
-    specimen_uuid = None
-    specimen_uuid_attr = None
-    annotation_method_id = None
-    image_acquisition_protocol_id = None
-    protocol_id = None
-    bio_sample_id = None
-    specimen_imaging_preparation_protocol_id = None
-    specimen_uuid = None
-    roc_creation_process_input_image = None
-
-    # Use ro-crate creation process, if provided
-    if result_data_id in crate_objects_by_id:
-        roc_image: ro_crate_models.Image = crate_objects_by_id[result_data_id]
-        result_data_label = roc_image.label
-        if roc_image.resultOf:
-            creation_process_id = roc_image.resultOf.id
-            creation_process: ro_crate_models.CreationProcess = crate_objects_by_id[
-                creation_process_id
-            ]
-            creation_process_uuid, creation_process_uuid_attr = (
-                ro_crate_uuid_creation.create_creation_process_uuid(
-                    study_uuid, creation_process_id
-                )
+        filelist_label_index = df["result_data_label_from_filelist"].first_valid_index()
+        if filelist_label_index != None:
+            pre_requisite_ids_row["result_data_label"] = str(
+                df["result_data_label_from_filelist"].loc[filelist_label_index]
             )
-            if creation_process.subject:
-                specimen_id = creation_process.subject.id
 
-            roc_creation_process_input_image = [
-                x.id for x in creation_process.inputImage
-            ]
-            annotation_method_id = [x.id for x in creation_process.annotationMethod]
-            protocol_id = [x.id for x in creation_process.protocol]
-            image_acquisition_protocol_id = [
-                x.id for x in creation_process.imageAcquisitionProtocol
-            ]
-
-    # TODO: should use file-list level association information prior to falling back to dataset
-
-    # Fallback to using dataset association values
-    dataset_id = flatten_set_of_same_values(df["dataset_roc_id"])
-    if not creation_process_id:
-        dataset: ro_crate_models.Dataset = crate_objects_by_id[quote(dataset_id)]
-
-        annotation_method_id = [x.id for x in dataset.associatedAnnotationMethod]
-        image_acquisition_protocol_id = [
-            x.id for x in dataset.associatedImageAcquisitionProtocol
+    # Use ro-crate creation process, if provided, otherwise create one using information from association.
+    if pre_requisite_ids_row["creation_process_id"]:
+        creation_process: ro_crate_models.CreationProcess = crate_objects_by_id[
+            pre_requisite_ids_row["creation_process_id"]
         ]
-        protocol_id = [x.id for x in dataset.associatedProtocol]
-        bio_sample_id = [x.id for x in dataset.associatedBiologicalEntity]
-        specimen_imaging_preparation_protocol_id = [
-            x.id for x in dataset.associatedSpecimenImagingPreparationProtocol
-        ]
-
-        specimen_id = (
-            dataset.associatedSpecimen.id if dataset.associatedSpecimen else None
+        creation_process_uuid, creation_process_uuid_attr = (
+            ro_crate_uuid_creation.create_creation_process_uuid(
+                study_uuid, creation_process.id
+            )
         )
-
-    # If specimen was provided, use specimen's info instead of dataset
-    if specimen_id:
-        specimen: ro_crate_models.Specimen = crate_objects_by_id[specimen_id]
-        bio_sample_id = [x.id for x in specimen.biologicalEntity]
-        specimen_imaging_preparation_protocol_id = [
-            x.id for x in specimen.imagingPreparationProtocol
-        ]
-        specimen_uuid, specimen_uuid_attr = ro_crate_uuid_creation.create_specimen_uuid(
-            study_uuid, specimen_id
+        pre_requisite_ids_row["creation_process_uuid"] = str(creation_process_uuid)
+        pre_requisite_ids_row["creation_process_uuid_attr"] = (
+            creation_process_uuid_attr.model_dump()
         )
-
-    if (
-        not specimen_id
-        and any([bio_sample_id, specimen_imaging_preparation_protocol_id])
-        and (
-            len(bio_sample_id) > 0 or len(specimen_imaging_preparation_protocol_id) > 0
+        get_creation_process_dependencies_from_ro_crate(
+            creation_process, pre_requisite_ids_row
         )
-    ):
-        specimen_uuid, specimen_uuid_attr = shared.create_specimen_uuid(
-            study_uuid, result_data_uuid, APIModels.Provenance.BIA_INGEST
-        )
-    if not creation_process_id:
+    else:
         creation_process_uuid, creation_process_uuid_attr = (
             shared.create_creation_process_uuid(
-                study_uuid, result_data_uuid, APIModels.Provenance.BIA_INGEST
+                study_uuid,
+                pre_requisite_ids_row["result_data_uuid"],
+                APIModels.Provenance.BIA_INGEST,
             )
         )
-
-    # Sort out source image ids:
-    source_image_ids = set()
-    for source_img_list in df["source_image_id_from_filelist"]:
-        if isinstance(source_img_list, list):
-            [source_image_ids.add(source_img_id) for source_img_id in source_img_list]
-    source_image_id_from_filelist = sorted(list(source_image_ids))
-    if source_image_id_from_filelist and roc_creation_process_input_image:
-        source_image_id = roc_creation_process_input_image.extend(
-            source_image_id_from_filelist
+        pre_requisite_ids_row["creation_process_uuid"] = str(creation_process_uuid)
+        pre_requisite_ids_row["creation_process_uuid_attr"] = (
+            creation_process_uuid_attr.model_dump()
         )
-    elif source_image_id_from_filelist:
-        source_image_id = source_image_id_from_filelist
-    elif roc_creation_process_input_image:
-        source_image_id = roc_creation_process_input_image
+        get_creation_process_info_from_associations(
+            association_data_from_filelist, dataset, pre_requisite_ids_row
+        )
+
+        # TODO handle image dependencies
+
+    # Use ro-crate specimen, if provided, otherwise check to see if associations have a biosample or a specimen imaging preparation & create one if it has either.
+    if pre_requisite_ids_row["specimen_id"]:
+        specimen: ro_crate_models.Specimen = crate_objects_by_id[
+            pre_requisite_ids_row["specimen_id"]
+        ]
+        specimen_uuid, specimen_uuid_attr = ro_crate_uuid_creation.create_specimen_uuid(
+            study_uuid, pre_requisite_ids_row["specimen_id"]
+        )
+        pre_requisite_ids_row["specimen_uuid"] = str(specimen_uuid)
+        pre_requisite_ids_row["specimen_uuid_attr"] = specimen_uuid_attr.model_dump()
+        get_specimen_dependencies_from_ro_crate(specimen, pre_requisite_ids_row)
+
     else:
-        source_image_id = []
-
-    filelist_label_index = df["result_data_label_from_filelist"].first_valid_index()
-    if filelist_label_index != None and not result_data_label:
-        result_data_label = str(
-            df["result_data_label_from_filelist"].loc[filelist_label_index]
+        get_specimen_dependencies_from_associations(
+            association_data_from_filelist, dataset, pre_requisite_ids_row
         )
+        if (
+            len(pre_requisite_ids_row["bio_sample_id"]) > 0
+            and len(pre_requisite_ids_row["specimen_imaging_preparation_protocol_id"])
+            > 0
+        ):
+            specimen_uuid, specimen_uuid_attr = shared.create_specimen_uuid(
+                study_uuid,
+                pre_requisite_ids_row["result_data_uuid"],
+                APIModels.Provenance.BIA_INGEST,
+            )
+            pre_requisite_ids_row["specimen_uuid"] = str(specimen_uuid)
+            pre_requisite_ids_row["specimen_uuid_attr"] = (
+                specimen_uuid_attr.model_dump()
+            )
 
-    return pd.Series(
-        {
-            "file_ref_uuids": file_uuids,
-            "dataset_roc_id": dataset_id,
-            "dataset_uuid": flatten_set_of_same_values(df["dataset_uuid"]),
-            "result_data_id": flatten_set_of_same_values(df["result_data_id"]),
-            "result_type": obj_type,
-            "result_data_uuid": str(result_data_uuid),
-            "result_data_label": result_data_label,
-            "result_data_uuid_attribute": result_data_uuid_attribute.model_dump(),
-            "source_image_id": source_image_id,
-            "creation_process_id": creation_process_id,
-            "creation_process_uuid": str(creation_process_uuid),
-            "creation_process_uuid_attr": creation_process_uuid_attr.model_dump(),
-            "specimen_id": specimen_id,
-            "specimen_uuid": (str(specimen_uuid) if specimen_uuid else None),
-            "specimen_uuid_attr": (
-                specimen_uuid_attr.model_dump() if specimen_uuid_attr else None
-            ),
-            "annotation_method_id": annotation_method_id,
-            "image_acquisition_protocol_id": image_acquisition_protocol_id,
-            "protocol_id": protocol_id,
-            "bio_sample_id": bio_sample_id,
-            "specimen_imaging_preparation_protocol_id": specimen_imaging_preparation_protocol_id,
-        }
-    )
+    return pd.Series(pre_requisite_ids_row)
 
 
 def flatten_set_of_same_values(column: pd.Series):
@@ -227,3 +178,157 @@ def flatten_set_of_same_values(column: pd.Series):
         logger.warning("More than 1 unique value in image column")
 
     return values[0]
+
+
+def get_result_data_uuids(
+    result_data_id: str, df: pd.DataFrame, study_uuid: str, pre_requisite_ids_row: dict
+) -> None:
+    obj_type = pre_requisite_ids_row["result_type"]
+    if obj_type == "http://bia/Image":
+        result_data_uuid, result_data_uuid_attribute = shared.create_image_uuid(
+            study_uuid,
+            pre_requisite_ids_row["file_ref_uuids"],
+            APIModels.Provenance.BIA_INGEST,
+        )
+    elif obj_type == "http://bia/AnnotationData":
+        result_data_uuid, result_data_uuid_attribute = (
+            shared.create_annotation_data_uuid(
+                study_uuid,
+                pre_requisite_ids_row["file_ref_uuids"],
+                APIModels.Provenance.BIA_INGEST,
+            )
+        )
+    else:
+        raise ValueError(
+            f"Expected {result_data_id} to be of type http://bia/Image or http://bia/AnnotationData, but fount: {obj_type}"
+        )
+
+    pre_requisite_ids_row["result_data_uuid"] = str(result_data_uuid)
+    pre_requisite_ids_row["result_data_uuid_attr"] = (
+        result_data_uuid_attribute.model_dump()
+    )
+
+
+def get_result_data_from_ro_crate(
+    crate_objects_by_id: dict[str, ROCrateModel],
+    result_data_id: str,
+    pre_requisite_ids_row: dict,
+) -> None:
+    roc_result_data: ro_crate_models.Image | ro_crate_models.AnnotationData = (
+        crate_objects_by_id[result_data_id]
+    )
+    pre_requisite_ids_row["result_data_label"] = roc_result_data.label
+    if roc_result_data.resultOf:
+        pre_requisite_ids_row["creation_process_id"] = roc_result_data.resultOf.id
+
+
+def get_creation_process_dependencies_from_ro_crate(
+    creation_process: ro_crate_models.CreationProcess,
+    pre_requisite_ids_row: dict,
+):
+    if creation_process.subject:
+        pre_requisite_ids_row["specimen_id"] = creation_process.subject.id
+    pre_requisite_ids_row["source_image_id"] = [
+        x.id for x in creation_process.inputImage
+    ]
+    pre_requisite_ids_row["annotation_method_id"] = [
+        x.id for x in creation_process.annotationMethod
+    ]
+    pre_requisite_ids_row["protocol_id"] = [x.id for x in creation_process.protocol]
+    pre_requisite_ids_row["image_acquisition_protocol_id"] = [
+        x.id for x in creation_process.imageAcquisitionProtocol
+    ]
+
+
+def get_creation_process_info_from_associations(
+    association_data_from_filelist: dict,
+    dataset: ro_crate_models.Dataset,
+    pre_requisite_ids_row: dict,
+) -> None:
+    """
+    For each field in the creation process, use the file list information if the column was included in the file list.
+    If the column was not included, use the dataset's association.
+    """
+
+    field_id_mapping = [
+        ("associatedImageAcquisitionProtocol", "image_acquisition_protocol_id"),
+        ("associatedProtocol", "protocol_id"),
+        ("associatedAnnotationMethod", "annotation_method_id"),
+    ]
+
+    map_list_field_from_association(
+        association_data_from_filelist, dataset, pre_requisite_ids_row, field_id_mapping
+    )
+
+    # specimen is not a list field
+    if (
+        association_data_from_filelist
+        and "http://bia/associatedSubject" in association_data_from_filelist
+    ):
+        pre_requisite_ids_row["specimen_id"] = association_data_from_filelist[
+            "http://bia/associatedSubject"
+        ]
+    elif dataset.associatedSpecimen:
+        pre_requisite_ids_row["specimen_id"] = dataset.associatedSpecimen.id
+
+    # There is no associatedInputImage on datasets for now, since it seems unlikely a whole dataset would annotate a single iamge.
+    if (
+        association_data_from_filelist
+        and "http://bia/associatedInputImage" in association_data_from_filelist
+    ):
+        pre_requisite_ids_row["source_image_id"] = association_data_from_filelist[
+            "http://bia/associatedInputImage"
+        ]
+
+
+def get_specimen_dependencies_from_associations(
+    association_data_from_filelist: dict,
+    dataset: ro_crate_models.Dataset,
+    pre_requisite_ids_row: dict,
+) -> None:
+
+    field_id_mapping = [
+        ("associatedBiologicalEntity", "bio_sample_id"),
+        (
+            "associatedSpecimenImagingPreparationProtocol",
+            "specimen_imaging_preparation_protocol_id",
+        ),
+    ]
+
+    map_list_field_from_association(
+        association_data_from_filelist, dataset, pre_requisite_ids_row, field_id_mapping
+    )
+
+
+def get_specimen_dependencies_from_ro_crate(
+    specimen: ro_crate_models.Specimen,
+    pre_requisite_ids_row: dict,
+) -> None:
+    pre_requisite_ids_row["bio_sample_id"] = [x.id for x in specimen.biologicalEntity]
+    pre_requisite_ids_row["specimen_imaging_preparation_protocol_id"] = [
+        x.id for x in specimen.imagingPreparationProtocol
+    ]
+
+
+def map_list_field_from_association(
+    association_data_from_filelist: dict,
+    dataset: ro_crate_models.Dataset,
+    pre_requisite_ids_row: dict,
+    field_id_mapping: list[tuple],
+) -> None:
+    for ro_crate_name, row_field in field_id_mapping:
+        property_uri = f"http://bia/{ro_crate_name}"
+        if row_field == "specimen_imaging_preparation_protocol_id":
+            property_uri = "http://bia/associatedImagingPreparationProtocol"
+
+        if (
+            association_data_from_filelist
+            and property_uri in association_data_from_filelist
+        ):
+            pre_requisite_ids_row[row_field] = association_data_from_filelist[
+                property_uri
+            ]
+        else:
+            pre_requisite_ids_row[row_field] = [
+                x.id for x in getattr(dataset, ro_crate_name)
+            ]
