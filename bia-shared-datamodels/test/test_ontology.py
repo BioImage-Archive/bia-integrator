@@ -29,9 +29,12 @@ def test_bia_properties_use_defined_terms(
 
     combined_ontology = bia_ontology + related_ontologies
 
-    all_classes = set(combined_ontology.subjects(RDF.type, OWL.Class)) | set(
-        combined_ontology.subjects(RDF.type, RDFS.Class)
+    all_classes = (
+        set(combined_ontology.subjects(RDF.type, OWL.Class))
+        | set(combined_ontology.subjects(RDF.type, RDFS.Class))        
     )
+    # We use IAO's information content entity (IAO_0000030) as the domain for some classes
+    all_classes.add(URIRef("http://purl.obolibrary.org/obo/IAO_0000030"))
 
     all_properties = (
         set(combined_ontology.subjects(RDF.type, OWL.ObjectProperty))
