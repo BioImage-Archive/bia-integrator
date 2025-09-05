@@ -15,11 +15,11 @@ from pathlib import Path
 from bia_shared_datamodels import ro_crate_models
 from bia_shared_datamodels.linked_data.pydantic_ld.LDModel import ObjectReference
 from ro_crate_ingest.save_utils import write_filelist
-
+from urllib.parse import quote
 
 
 def generate_relative_filelist_path(dataset_path: str, file_list_name: str) -> str:
-    return str(Path(dataset_path) / f"{Path(file_list_name).stem}.tsv")
+    return str(Path(dataset_path) / f"{quote(Path(file_list_name).stem)}.tsv")
 
 
 def get_filelist_name_from_dataset(dataset_section: Section):
