@@ -3,6 +3,8 @@ from typer.testing import CliRunner
 from ro_crate_ingest.cli import ro_crate_ingest
 import json
 import pytest
+import pytest_check as check
+import deepdiff
 
 runner = CliRunner()
 
@@ -148,7 +150,7 @@ def ingest_local_test(
         relative_file_path = Path(file).parts[-3:]
         expected_path_of_written_file = tmp_bia_data_dir / Path(*relative_file_path)
 
-        assert expected_path_of_written_file.exists()
+        check.is_true(expected_path_of_written_file.exists())
 
         with open(expected_path_of_written_file, "r") as f:
             cli_out = json.load(f)
@@ -156,7 +158,12 @@ def ingest_local_test(
         with open(file, "r") as f:
             expected_out = json.load(f)
 
-        assert cli_out == expected_out
+        diff = deepdiff.DeepDiff(expected_out, cli_out, ignore_order=True, verbose_level=2)
+
+        check.is_true(
+            not diff,
+            f"Missmatch in object: {'/'.join(expected_path_of_written_file.parts[-3:])}:\n{diff.pretty()}",
+        )
 
 
 def ingest_api_test(
@@ -189,7 +196,14 @@ def ingest_api_test(
         api_obj_type = api_obj.__class__
         expected_object = api_obj_type.model_validate(expected_out)
 
-        assert api_obj == expected_object
+        diff = deepdiff.DeepDiff(
+            expected_object.model_dump(), api_obj.model_dump(), ignore_order=True, verbose_level=2
+        )
+
+        check.is_true(
+            not diff,
+            f"Missmatch in object: {'/'.join(relative_file_path)}:\n{diff.pretty()}",
+        )
 
 
 def test_overlapping_image_data(
@@ -271,7 +285,9 @@ def test_overlapping_image_data(
 
         original_file_path = file_reference["file_path"]
 
-        for field, expected_length in result_field_length_expectations[original_file_path].items():
+        for field, expected_length in result_field_length_expectations[
+            original_file_path
+        ].items():
             field_value = creation_process[field]
             if isinstance(field_value, list):
                 assert len(field_value) == expected_length

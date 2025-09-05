@@ -616,6 +616,14 @@
             }
         },
         {
+            "@id": "_:Tomogram reconstruction and sub-tomogram averaging",
+            "@type": [
+                "bia:Protocol"
+            ],
+            "title": "Tomogram reconstruction and sub-tomogram averaging",
+            "protocolDescription": "Dose-weighted motion-corrected images were exported for tomographic reconstruction by weighted back-projection in AreTomo and 4-times binned. Averaging was performed in RELION with 1,284 particles, I1 symmetry, using a 60-Å-low-pass-filtered map of the encapsulin scaffold (PDB 6X8M) as a reference."
+        },
+        {
             "@id": "_:CTF estimation and motion correction",
             "@type": [
                 "bia:ImageAnalysisMethod"

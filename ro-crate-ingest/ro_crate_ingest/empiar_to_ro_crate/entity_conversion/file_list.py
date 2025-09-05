@@ -146,9 +146,9 @@ def find_matching_imageset_and_images(
                 bia_type = "http://bia/Image"
                 source_image_label = image.get("input_image_label", None)
                 associated_annotation_method = image.get(
-                    "associated_annotation_title", None
+                    "annotation_method_title", None
                 )
-                associated_protocol = image.get("associated_protocol_title", None)
+                associated_protocol = image.get("protocol_title", None)
                 break
 
         if not label:
@@ -167,10 +167,10 @@ def find_matching_imageset_and_images(
                     ]
 
                     associated_annotation_method = annotation_data.get(
-                        "associated_annotation_title", None
+                        "annotation_method_title", None
                     )
                     associated_protocol = annotation_data.get(
-                        "associated_protocol_title", None
+                        "protocol_title", None
                     )
                     break
 

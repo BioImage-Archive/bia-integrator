@@ -23,7 +23,7 @@
         "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "http://bia/AnnotationData",
         "http://schema.org/name": "Coordinates from subtomogram averaging of GEM2 particles for dataset 1 (211206)",
         "http://bia/sourceImageLabel": "['Tomogram TS_016', 'Tomogram TS_019']",
-        "http://bia/associatedAnnotationMethod": "",
+        "http://bia/associatedAnnotationMethod": "DeePiCt and manual particle picking",
         "http://bia/associatedProtocol": ""
       }
     }
