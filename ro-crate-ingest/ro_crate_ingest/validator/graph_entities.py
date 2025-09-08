@@ -1,6 +1,6 @@
 from ro_crate_ingest.ro_crate_defaults import get_all_ro_crate_classes
 from ro_crate_ingest.crate_reader import expand_entity
-from ro_crate_ingest.validator.generic_validator import (
+from ro_crate_ingest.validator.validator import (
     ValidationError,
     ValidationResult,
     Validator,

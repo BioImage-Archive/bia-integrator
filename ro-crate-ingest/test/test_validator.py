@@ -27,11 +27,11 @@ def get_test_ro_crate_path(accession_id) -> Path:
                 ),
                 (
                     "ERROR",
-                    "./:\nThe Root Data Entity MUST have a `description` property (as specified by schema.org)",
+                    "At ro-crate object with @id: ./:\nThe Root Data Entity MUST have a `description` property (as specified by schema.org)",
                 ),
                 (
                     "ERROR",
-                    "./:\nThe Root Data Entity MUST be linked to either File or Directory instances, nothing else",
+                    "At ro-crate object with @id: ./:\nThe Root Data Entity MUST be linked to either File or Directory instances, nothing else",
                 ),
                 (
                     "ERROR",
@@ -39,11 +39,11 @@ def get_test_ro_crate_path(accession_id) -> Path:
                 ),
                 (
                     "ERROR",
-                    "./data1/:\nLess than 1 values on <file://.//data1/>->[ sh:inversePath <http://schema.org/hasPart> ]",
+                    "At ro-crate object with @id: ./data1FailedReference/:\nLess than 1 values on <file://.//data1FailedReference/>->[ sh:inversePath <http://schema.org/hasPart> ]",
                 ),
                 (
                     "ERROR",
-                    "./missing_has_part.tiff:\nLess than 1 values on <file://.//missing_has_part.tiff>->[ sh:inversePath <http://schema.org/hasPart> ]",
+                    "At ro-crate object with @id: ./missing_has_part.tiff:\nLess than 1 values on <file://.//missing_has_part.tiff>->[ sh:inversePath <http://schema.org/hasPart> ]",
                 ),
             ],
         ),
