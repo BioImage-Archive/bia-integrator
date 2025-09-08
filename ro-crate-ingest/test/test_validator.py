@@ -1,9 +1,7 @@
-from ro_crate_ingest.validator.context_validator import validate_bia_context
 
 from pathlib import Path
 from typer.testing import CliRunner
 from ro_crate_ingest.cli import ro_crate_ingest
-import json
 import pytest
 import logging
 

@@ -8,8 +8,7 @@ from ro_crate_ingest.validator.validator import (
 )
 from bia_shared_datamodels.linked_data.pydantic_ld import ROCrateModel
 import pydantic
-from typing import Optional
-import logging
+
 
 
 class GraphValidator(Validator):

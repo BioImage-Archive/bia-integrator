@@ -1,16 +1,10 @@
-from ro_crate_ingest.ro_crate_defaults import get_all_ro_crate_classes
-from ro_crate_ingest.crate_reader import expand_entity
 from ro_crate_ingest.validator.validator import (
     ValidationError,
     ValidationResult,
     Validator,
     Severity,
 )
-from bia_shared_datamodels.linked_data.pydantic_ld import ROCrateModel
-import pydantic
 from pathlib import Path
-from typing import Optional
-import logging
 from rocrate.rocrate import read_metadata
 from rocrate_validator import services, models
 

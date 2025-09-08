@@ -4,9 +4,6 @@ from enum import Enum
 from abc import ABC, abstractmethod
 
 
-from logging import getLevelName
-
-
 class Severity(str, Enum):
     """
     Copying logging levels from the logging module
@@ -16,7 +13,7 @@ class Severity(str, Enum):
     ERROR = "ERROR"
     WARNING = "WARNING"
     INFO = "INFO"
-    # DEBUG = "DEBUG"
+    DEBUG = "DEBUG"
 
 
 @dataclass
