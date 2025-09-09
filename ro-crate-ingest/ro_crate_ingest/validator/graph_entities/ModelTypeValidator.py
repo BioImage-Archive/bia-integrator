@@ -10,8 +10,7 @@ from bia_shared_datamodels.linked_data.pydantic_ld import ROCrateModel
 import pydantic
 
 
-
-class GraphValidator(Validator):
+class ModelTypeValidator(Validator):
 
     class_map: dict
 
@@ -47,26 +46,22 @@ class GraphValidator(Validator):
             class_intersection = self._get_class_intersection(object_types)
 
             if (class_intersection_count := len(class_intersection)) != 1:
-                if class_intersection_count == 0:
-                    self.issues.append(
-                        ValidationError(
-                            severity=Severity.ERROR,
-                            location_description=roc_object_location_template.format(
-                                roc_id=ro_crate_object.get("@id")
-                            ),
-                            message=f"@type of object does not contain any BIA classes. @type contains: {", ".join(ro_crate_object.get("@type"))}",
-                        )
+
+                error_msg = (
+                    f"@type of object does not contain any BIA classes. @type contains: {", ".join(ro_crate_object.get("@type"))}"
+                    if class_intersection_count == 0
+                    else f"@type of object contains multiple BIA classes. @type contains: {", ".join(sorted(class_intersection))}"
+                )
+
+                self.issues.append(
+                    ValidationError(
+                        severity=Severity.ERROR,
+                        location_description=roc_object_location_template.format(
+                            roc_id=ro_crate_object.get("@id")
+                        ),
+                        message=error_msg,
                     )
-                else:
-                    self.issues.append(
-                        ValidationError(
-                            severity=Severity.ERROR,
-                            location_description=roc_object_location_template.format(
-                                roc_id=ro_crate_object.get("@id")
-                            ),
-                            message=f"@type of object contains multiple BIA classes. @type contains: {", ".join(sorted(class_intersection))}",
-                        )
-                    )
+                )
                 continue
 
             model = self.class_map[class_intersection[0]]
@@ -84,17 +79,6 @@ class GraphValidator(Validator):
                     )
                 )
                 continue
-
-            if ro_crate_object.id in ro_crate_object_by_id:
-                self.issues.append(
-                    ValidationError(
-                        severity=Severity.ERROR,
-                        location_description=roc_object_location_template.format(
-                            roc_id=ro_crate_object.id
-                        ),
-                        message=f"Two objects with the same @id: @id should be unique.",
-                    )
-                )
 
             ro_crate_object_by_id[ro_crate_object.id] = ro_crate_object
 

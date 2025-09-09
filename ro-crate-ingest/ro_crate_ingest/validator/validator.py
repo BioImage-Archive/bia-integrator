@@ -50,5 +50,5 @@ class Validator(ABC):
         self.issues = []
 
     @abstractmethod
-    def validate(self):
-        pass
+    def validate(self) -> ValidationResult:
+        raise NotImplementedError
