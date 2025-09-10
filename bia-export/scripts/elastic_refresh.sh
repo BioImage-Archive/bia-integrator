@@ -111,17 +111,23 @@ curl -k -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX_IMAGES}" \
 	-u "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" \
 	-H "Content-Type: application/json" \
 	-d '{
-		"mappings": {
-			"dynamic": False,
-			"properties": {
-				"uuid": {"type": "keyword"},
-				"representation": {
-					"type": "object",
-					"properties": {"image_format": {"type": "keyword"}},
-				},
-			},
-		}
-	}'
+    "mappings": {
+        "dynamic": false,
+        "properties": {
+            "uuid": {
+                "type": "keyword"
+            },
+            "representation": {
+                "type": "object",
+                "properties": {
+                    "image_format": {
+                        "type": "keyword"
+                    }
+                }
+            }
+        }
+    }
+}'
 curl -k -u "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" \
 	-H  "Content-Type: application/x-ndjson" \
 	-XPOST "${ELASTIC_URL}/_bulk?pretty&error_trace=true" \
