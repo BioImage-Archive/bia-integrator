@@ -9,7 +9,9 @@ ELASTIC_URL=${ELASTIC_URL:-"http://localhost:9200"}
 ELASTIC_USERNAME=${ELASTIC_USERNAME:-"elastic"}
 ELASTIC_PASSWORD=${ELASTIC_PASSWORD:-"test"}
 ELASTIC_INDEX=${ELASTIC_INDEX:-"test_index"}
+ELASTIC_INDEX_IMAGES=${ELASTIC_INDEX_IMAGES:-"${ELASTIC_INDEX}_images"}
 
+# Export studies
 poetry --directory ${SCRIPT_DIR}/../../bia-export run bia-export website study --out_file=$EXPORT_JSON_OUT_FILE
 
 jq -c 'to_entries | map(.value)[:1000000][] | ({"index": {"_index": "'"${ELASTIC_INDEX}"'"}}, .)' $EXPORT_JSON_OUT_FILE | sed 's/"\./\"A./g' > ${EXPORT_JSON_OUT_FILE}.bulk
@@ -95,6 +97,42 @@ curl -k -u "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" \
 	-XPOST "${ELASTIC_URL}/_bulk?pretty&error_trace=true" \
 	--data-binary @${EXPORT_JSON_OUT_FILE}.bulk | jq '.items[] | select(.index.status != 201)'
 curl -k -u "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -X POST "${ELASTIC_URL}/${ELASTIC_INDEX}/_refresh"
+
+# Export images
+rm -rf $EXPORT_JSON_OUT_FILE
+
+poetry --directory ${SCRIPT_DIR}/../../bia-export run bia-export website image --out_file=$EXPORT_JSON_OUT_FILE
+
+jq -c 'to_entries | map(.value)[:1000000][] | ({"index": {"_index": "'"${ELASTIC_INDEX_IMAGES}"'"}}, .)' $EXPORT_JSON_OUT_FILE | sed 's/"\./\"A./g' > ${EXPORT_JSON_OUT_FILE}.bulk
+
+curl -k -u "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -X DELETE "${ELASTIC_URL}/${ELASTIC_INDEX_IMAGES}"
+
+curl -k -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX_IMAGES}" \
+	-u "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" \
+	-H "Content-Type: application/json" \
+	-d '{
+    "mappings": {
+        "dynamic": false,
+        "properties": {
+            "uuid": {
+                "type": "keyword"
+            },
+            "representation": {
+                "type": "object",
+                "properties": {
+                    "image_format": {
+                        "type": "keyword"
+                    }
+                }
+            }
+        }
+    }
+}'
+curl -k -u "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" \
+	-H  "Content-Type: application/x-ndjson" \
+	-XPOST "${ELASTIC_URL}/_bulk?pretty&error_trace=true" \
+	--data-binary @${EXPORT_JSON_OUT_FILE}.bulk | jq '.items[] | select(.index.status != 201)'
+curl -k -u "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -X POST "${ELASTIC_URL}/${ELASTIC_INDEX_IMAGES}/_refresh"
 
 echo -e "\n\n==============================================\nIndex Status: ${ELASTIC_INDEX}\n"
 
