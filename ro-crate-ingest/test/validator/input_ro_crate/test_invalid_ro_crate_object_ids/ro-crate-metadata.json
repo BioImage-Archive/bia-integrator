@@ -237,7 +237,7 @@
       "acknowledgement": null,
       "hasPart": [
         {
-          "@id": "data1/"
+          "@id": "path requires quoting/"
         },
         {
           "@id": "data2/"
@@ -259,7 +259,7 @@
       "contactEmail": null
     },
     {
-      "@id": "data1/",
+      "@id": "path requires quoting/",
       "@type": [
         "Dataset",
         "bia:Dataset"
@@ -268,12 +268,12 @@
       "description": "Example description",
       "associatedBiologicalEntity": [
         {
-          "@id": "_:Biosample1"
+          "@id": "_:RepeatedBiosample1"
         }
       ],
       "associatedSpecimenImagingPreparationProtocol": [
         {
-          "@id": "_:SpecimenPreparation"
+          "@id": "Invalid Blank Node-1"
         }
       ],
       "associatedSpecimen": null,
@@ -310,7 +310,7 @@
       "description": "Example description"
     },
     {
-      "@id": "_:SpecimenPreparation",
+      "@id": "Invalid Blank Node-1",
       "@type": [
         "bia:SpecimenImagingPreparationProtocol"
       ],
@@ -340,12 +340,26 @@
       "scientificName": "Homo sapiens"
     },
     {
-      "@id": "_:Biosample1",
+      "@id": "_:RepeatedBiosample1",
       "@type": [
         "bia:BioSample"
       ],
       "title": "First instance of some biosample",
       "biologicalEntityDescription": "Some description",
+      "organismClassification": [
+        {
+          "@id": "NCBI:txid9606"
+        }
+      ],
+      "growthProtocol": null
+    },
+    {
+      "@id": "_:RepeatedBiosample1",
+      "@type": [
+        "bia:BioSample"
+      ],
+      "title": "Repeated biosample",
+      "biologicalEntityDescription": "A second descriptin",
       "organismClassification": [
         {
           "@id": "NCBI:txid9606"

@@ -4,21 +4,24 @@ from ro_crate_ingest.validator.validator import (
     Validator,
     Severity,
 )
-from rdflib import URIRef
+from validator_collection import validators, errors
 
 
 class IDValidator(Validator):
 
-    def __init__(self):
+    graph = list[dict]
+
+    def __init__(self, graph):
+        self.graph = graph
         super().__init__()
 
-    def validate(self, graph: list[dict]) -> ValidationResult:
+    def validate(self) -> ValidationResult:
 
         roc_object_location_template = "At ro-crate object with @id: {roc_id}"
 
         ro_crate_object_ids = []
 
-        for ro_crate_object in graph:
+        for ro_crate_object in self.graph:
 
             roc_object_id = ro_crate_object.get("@id")
 
@@ -36,17 +39,10 @@ class IDValidator(Validator):
                         message=f"Two objects with the same @id: @id should be unique.",
                     )
                 )
+            else:
+                ro_crate_object_ids.append(roc_object_id)
 
-            if not URIRef(roc_object_id):
-                self.issues.append(
-                    ValidationError(
-                        severity=Severity.ERROR,
-                        location_description=roc_object_location_template.format(
-                            roc_id=roc_object_id
-                        ),
-                        message=f"ID does not create a valid URI or blank node identifier",
-                    )
-                )
+            #TODO: add URI/blank node validation as per: https://www.researchobject.org/ro-crate/specification/1.2/appendix/jsonld#describing-entities-in-json-ld
 
         return ValidationResult(
             issues=self.issues,

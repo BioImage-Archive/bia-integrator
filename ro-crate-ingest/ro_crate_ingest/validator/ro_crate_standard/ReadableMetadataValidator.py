@@ -10,9 +10,15 @@ from rocrate.rocrate import read_metadata
 
 class ReadableMetadataValidator(Validator):
 
-    def validate(self, path_to_ro_crate_metadata: Path) -> ValidationResult:
+    path_to_ro_crate_metadata: Path
+
+    def __init__(self, path_to_ro_crate_metadata):
+        self.path_to_ro_crate_metadata = path_to_ro_crate_metadata
+        super().__init__()
+
+    def validate(self) -> ValidationResult:
         try:
-            read_metadata(path_to_ro_crate_metadata)
+            read_metadata(self.path_to_ro_crate_metadata)
         except Exception as e:
             self.issues.append(
                 ValidationError(

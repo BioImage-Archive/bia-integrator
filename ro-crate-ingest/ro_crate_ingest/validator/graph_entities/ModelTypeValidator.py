@@ -13,25 +13,29 @@ import pydantic
 class ModelTypeValidator(Validator):
 
     class_map: dict
+    graph: list[dict]
+    context: dict | list | str
 
-    def __init__(self):
+    def __init__(self, graph: list[dict], context: dict | list | str):
         self.class_map = get_all_ro_crate_classes()
+        self.context = context
+        self.graph = graph
         super().__init__()
 
-    def validate(self, graph: list[dict], context) -> ValidationResult:
+    def validate(self) -> ValidationResult:
 
         roc_object_location_template = "At ro-crate object with @id: {roc_id}"
 
         ro_crate_object_by_id = {}
 
-        for ro_crate_object in graph:
+        for ro_crate_object in self.graph:
 
             if ro_crate_object.get("@id") == "ro-crate-metadata.json":
                 # We don't need to validate the self-reffering entity for the ro-crate-metadata.json.
                 continue
 
             try:
-                object_types = expand_entity(ro_crate_object, context)["@type"]
+                object_types = expand_entity(ro_crate_object, self.context)["@type"]
             except KeyError:
                 self.issues.append(
                     ValidationError(

@@ -1,4 +1,3 @@
-
 from pathlib import Path
 from typer.testing import CliRunner
 from ro_crate_ingest.cli import ro_crate_ingest
@@ -46,6 +45,16 @@ def get_test_ro_crate_path(accession_id) -> Path:
             ],
         ),
         (
+            "test_invalid_ro_crate_object_ids",
+            1,
+            [
+                (
+                    "ERROR",
+                    "At ro-crate object with @id: _:RepeatedBiosample1:\nTwo objects with the same @id: @id should be unique.",
+                ),
+            ],
+        ),
+        (
             "test_invalid_ro_crate_objects",
             1,
             [
@@ -64,10 +73,6 @@ def get_test_ro_crate_path(accession_id) -> Path:
                 (
                     "ERROR",
                     "At ro-crate object with @id: _:ImageAcquisitionProtocol1:\n1 validation error for ImageAcquisitionProtocol\nprotocolDescription\n  Field required [type=missing, input_value={'@id': '_:ImageAcquisiti...: ['obo:FBbi_00000246']}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.11/v/missing",
-                ),
-                (
-                    "ERROR",
-                    "At ro-crate object with @id: _:RepeatedBiosample1:\nTwo objects with the same @id: @id should be unique.",
                 ),
             ],
         ),

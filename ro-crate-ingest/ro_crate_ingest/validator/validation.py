@@ -19,11 +19,8 @@ def bia_roc_validation(ro_crate_directory: Path):
     metadata_path = ro_crate_directory / "ro-crate-metadata.json"
 
     logging.info(f"Perfoming generic ro-crate validation of {ro_crate_directory}")
-    validate(SHACLValidator.SHACLValidator, {"path_to_ro_crate": ro_crate_directory})
-    validate(
-        ReadableMetadataValidator.ReadableMetadataValidator,
-        {"path_to_ro_crate_metadata": metadata_path},
-    )
+    validate(SHACLValidator.SHACLValidator(ro_crate_directory))
+    validate(ReadableMetadataValidator.ReadableMetadataValidator(metadata_path))
 
     with open(metadata_path, "r") as f:
         ro_crate_json = json.load(f)
@@ -34,10 +31,8 @@ def bia_roc_validation(ro_crate_directory: Path):
     context = ro_crate_json.get("@context")
 
     logging.info(f"Validating ro-crate objects under in the @graph of {metadata_path}")
-    validate(IDValidator.IDValidator, {"graph": graph})
-    validate(
-        ModelTypeValidator.ModelTypeValidator, {"graph": graph, "context": context}
-    )
+    validate(IDValidator.IDValidator(graph))
+    validate(ModelTypeValidator.ModelTypeValidator(graph, context))
 
     # TODO: Add file list validation
 
@@ -52,12 +47,11 @@ def log_issues(validation_result: ValidationResult):
             logger.__getattribute__(issue.severity.lower())(issue.message)
 
 
-def validate(validator_type: Type[Validator], arguments: dict) -> ValidationResult:
-    validator = validator_type()
-    validation_result = validator.validate(**arguments)
+def validate(validator: Validator) -> ValidationResult:
+    validation_result = validator.validate()
     if validation_result.result == 1:
         log_issues(validation_result)
         raise typer.Exit(1)
     else:
-        logging.info(f"Passed {validator_type.__name__}.")
+        logging.info(f"Passed {type(validator).__name__}.")
         return validation_result

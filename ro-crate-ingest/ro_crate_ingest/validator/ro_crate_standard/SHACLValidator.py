@@ -9,9 +9,15 @@ from rocrate_validator import services, models
 
 class SHACLValidator(Validator):
 
-    def validate(self, path_to_ro_crate: Path) -> ValidationResult:
+    path_to_ro_crate: Path
+
+    def __init__(self, path_to_ro_crate: Path):
+        self.path_to_ro_crate = path_to_ro_crate
+        super().__init__()
+
+    def validate(self) -> ValidationResult:
         settings = services.ValidationSettings(
-            rocrate_uri=path_to_ro_crate,
+            rocrate_uri=self.path_to_ro_crate,
             profile_identifier="ro-crate-1.1",
             requirement_severity=models.Severity.REQUIRED,
         )
