@@ -4,8 +4,6 @@ from ro_crate_ingest.validator.validator import (
     Validator,
     Severity,
 )
-from validator_collection import validators, errors
-
 
 class IDValidator(Validator):
 
