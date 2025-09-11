@@ -224,9 +224,7 @@ def get_affiliation(
     key_mapping = [
         ("display_name", "Name", None),
         ("rorid", "RORID", None),
-        # TODO: Address does not exist in current biostudies.Organisation
         ("address", "Address", None),
-        # TODO:  does not exist in current biostudies.Organisation
         ("website", "Website", None),
     ]
 
@@ -305,7 +303,6 @@ def get_contributor(
         attributes = sanitise_affiliation_attribute(
             section.attributes, affiliation_dict, result_summary, submission.accno
         )
-
         attr_dict = mattributes_to_dict(attributes, affiliation_dict)
         model_dict = {
             k: case_insensitive_get(attr_dict, v, default)
