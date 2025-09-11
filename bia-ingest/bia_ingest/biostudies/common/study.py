@@ -325,9 +325,13 @@ def get_contributor(
         )
         model_dict["contact_email"] = sanitised_email
 
-        model_dict["role"] = [
-            role.strip(" ") for role in attr_dict.get("Role", "").split(",")
-        ]
+        # Role may contain 'NoneType' object leading to AttributeError
+        try:
+            model_dict["role"] = [
+                role.strip(" ") for role in attr_dict.get("Role", "").split(",")
+            ]
+        except AttributeError:
+            model_dict["role"] = [""]
 
         contributor_dicts.append(model_dict)
 
