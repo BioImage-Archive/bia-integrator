@@ -11,6 +11,7 @@ import rdflib
 import logging
 import urllib
 import requests
+from ro_crate_ingest.ro_crate_defaults import get_all_ro_crate_classes
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -50,18 +51,14 @@ def load_entities(data: dict) -> dict[str, ROCrateModel]:
 
     entities = data.get("@graph", [])
     crate_objects_by_id = {}
-    classes = inspect.getmembers(
-        ro_crate_models,
-        lambda member: inspect.isclass(member)
-        and member.__module__ == "bia_shared_datamodels.ro_crate_models"
-        and issubclass(member, ROCrateModel),
-    )
+    classes = get_all_ro_crate_classes()
 
     for entity in entities:
         start_len = len(crate_objects_by_id)
         entity_type = expand_entity(entity, loaded_context).get("@type")
-        for name, model in classes:
-            if model.model_config["model_type"] in entity_type:
+        for et in entity_type:
+            if et in classes:
+                model = classes[et]
                 object: ROCrateModel = model(**entity)
                 if object.id in crate_objects_by_id.keys():
                     raise RuntimeError(
@@ -91,11 +88,7 @@ def crate_read(path: Path):
 
 def process_ro_crate(crate_path):
     data = load_ro_crate_metadata_to_dict(crate_path)
-    if validate_json(data):
-        return load_entities(data)
-    else:
-        print("Invalid JSON data.")
-        return []
+    return load_entities(data)
 
 
 def map_files_to_datasets(crate_path: str, datasets: list):

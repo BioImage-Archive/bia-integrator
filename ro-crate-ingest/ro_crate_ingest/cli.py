@@ -11,6 +11,7 @@ from ro_crate_ingest.biostudies_to_ro_crate.biostudies_conversion import (
 from ro_crate_ingest.empiar_to_ro_crate.empiar_proposal_conversion import (
     convert_empiar_proposal_to_ro_crate,
 )
+from ro_crate_ingest.validator.validation import bia_roc_validation
 
 ro_crate_ingest = typer.Typer()
 
@@ -98,3 +99,15 @@ def empiar_to_ro_crate(
 
     convert_empiar_proposal_to_ro_crate(proposal_path, crate_path)
 
+
+@ro_crate_ingest.command("validate")
+def validate_ro_crate( crate_path: Annotated[
+        Optional[Path],
+        typer.Option(
+            "--crate-path",
+            "-c",
+            case_sensitive=False,
+            help="Path to the ro-crate root (or ro-crate-metadata.json)",
+        ),
+    ] = None,):
+    bia_roc_validation(crate_path)

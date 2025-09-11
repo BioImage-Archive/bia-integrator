@@ -1,0 +1,380 @@
+{
+  "@context": [
+    "https://w3id.org/ro/crate/1.1/context",
+    {
+      "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+      "schema": "http://schema.org/",
+      "dc": "http://purl.org/dc/terms/",
+      "bia": "http://bia/",
+      "csvw": "http://www.w3.org/ns/csvw#",
+      "displayName": {
+        "@id": "schema:name"
+      },
+      "address": {
+        "@id": "schema:address"
+      },
+      "website": {
+        "@id": "bia:website"
+      },
+      "title": {
+        "@id": "schema:name"
+      },
+      "protocolDescription": {
+        "@id": "schema:description"
+      },
+      "annotationCriteria": {
+        "@id": "bia:annotationCriteria"
+      },
+      "annotationCoverage": {
+        "@id": "bia:annotationCoverage"
+      },
+      "transformationDescription": {
+        "@id": "bia:transformationDescription"
+      },
+      "spatialInformation": {
+        "@id": "bia:spatialInformation"
+      },
+      "methodType": {
+        "@id": "bia:annotationMethodType"
+      },
+      "annotationSourceIndicator": {
+        "@id": "bia:annotationSourceIndicator"
+      },
+      "biologicalEntityDescription": {
+        "@id": "bia:biologicalEntityDescription"
+      },
+      "experimentalVariableDescription": {
+        "@id": "bia:experimentalVariableDescription"
+      },
+      "extrinsicVariableDescription": {
+        "@id": "bia:extrinsicVariableDescription"
+      },
+      "intrinsicVariableDescription": {
+        "@id": "bia:intrinsicVariableDescription"
+      },
+      "organismClassification": {
+        "@id": "bia:organismClassification"
+      },
+      "growthProtocol": {
+        "@id": "bia:growthProtocol"
+      },
+      "columnName": {
+        "@id": "csvw:name"
+      },
+      "propertyUrl": {
+        "@id": "csvw:propertyUrl"
+      },
+      "affiliation": {
+        "@id": "schema:memberOf"
+      },
+      "role": {
+        "@id": "bia:role"
+      },
+      "contactEmail": {
+        "@id": "schema:email"
+      },
+      "imageAcquisitionProtocol": {
+        "@id": "bia:imageAcquisitionProtocol"
+      },
+      "subject": {
+        "@id": "bia:subject"
+      },
+      "protocol": {
+        "@id": "bia:protocol"
+      },
+      "annotationMethod": {
+        "@id": "bia:annotationMethod"
+      },
+      "inputImage": {
+        "@id": "bia:inputImage"
+      },
+      "description": {
+        "@id": "schema:description"
+      },
+      "associatedBiologicalEntity": {
+        "@id": "bia:associatedBiologicalEntity"
+      },
+      "associatedSpecimenImagingPreparationProtocol": {
+        "@id": "bia:associatedImagingPreparationProtocol"
+      },
+      "associatedSpecimen": {
+        "@id": "bia:associatedSubject"
+      },
+      "associatedImageAcquisitionProtocol": {
+        "@id": "bia:associatedImageAcquisitionProtocol"
+      },
+      "associatedAnnotationMethod": {
+        "@id": "bia:associatedAnnotationMethod"
+      },
+      "associatedImageAnalysisMethod": {
+        "@id": "bia:associatedAnalysisMethod"
+      },
+      "associatedImageCorrelationMethod": {
+        "@id": "bia:associatedCorrelationMethod"
+      },
+      "associatedProtocol": {
+        "@id": "bia:associatedProtocol"
+      },
+      "hasPart": {
+        "@id": "schema:hasPart"
+      },
+      "associationFileMetadata": {
+        "@id": "bia:associationFileMetadata"
+      },
+      "link": {
+        "@id": "schema:url"
+      },
+      "linkDescription": {
+        "@id": "schema:description"
+      },
+      "tableSchema": {
+        "@id": "csvw:tableSchema"
+      },
+      "resultOf": {
+        "@id": "bia:resultOf"
+      },
+      "label": {
+        "@id": "schema:name"
+      },
+      "imagingInstrumentDescription": {
+        "@id": "bia:imagingInstrumentDescription"
+      },
+      "imagingMethodName": {
+        "@id": "bia:imagingMethodName"
+      },
+      "fbbiId": {
+        "@id": "bia:fbbiId"
+      },
+      "featuresAnalysed": {
+        "@id": "bia:featuresAnalysed"
+      },
+      "fiducialsUsed": {
+        "@id": "bia:fiducialsUsed"
+      },
+      "transformationMatrix": {
+        "@id": "bia:transformationMatrix"
+      },
+      "authorNames": {
+        "@id": "bia:authorNames"
+      },
+      "signalContrastMechanismDescription": {
+        "@id": "bia:signalContrastMechanismDescription"
+      },
+      "channelContentDescription": {
+        "@id": "bia:channelContentDescription"
+      },
+      "channelBiologicalEntity": {
+        "@id": "bia:channelBiologicalEntity"
+      },
+      "channelLabel": {
+        "@id": "dc:identifier"
+      },
+      "biologicalEntity": {
+        "@id": "bia:sampleOf"
+      },
+      "imagingPreparationProtocol": {
+        "@id": "bia:imagingPreparationProtocol"
+      },
+      "signalChannelInformation": {
+        "@id": "bia:signalChannelInformation"
+      },
+      "contributor": {
+        "@id": "schema:author"
+      },
+      "licence": {
+        "@id": "schema:license"
+      },
+      "datePublished": {
+        "@id": "schema:datePublished"
+      },
+      "keyword": {
+        "@id": "schema:keywords"
+      },
+      "acknowledgement": {
+        "@id": "bia:acknowledgement"
+      },
+      "accessionId": {
+        "@id": "schema:identifier"
+      },
+      "column": {
+        "@id": "csvw:column"
+      },
+      "commonName": {
+        "@id": "bia:commonName"
+      },
+      "scientificName": {
+        "@id": "bia:scientificName"
+      }
+    }
+  ],
+  "@graph": [
+    {
+      "@id": "ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "conformsTo": {
+        "@id": "https://w3id.org/ro/crate/1.1"
+      },
+      "about": {
+        "@id": "./"
+      }
+    },
+    {
+      "@id": "./",
+      "@type": [
+        "Dataset",
+        "bia:Study"
+      ],
+      "title": "Test invalid RO crate - required description field is missing",
+      "contributor": [
+        {
+          "@id": "https://orcid.org/9999-0001-2222-3333"
+        }
+      ],
+      "licence": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "datePublished": "2023-09-05",
+      "keyword": [],
+      "acknowledgement": null,
+      "hasPart": [
+        "data1FailedReference/",
+        {
+          "@id": "data2_missing_folder/"
+        },
+        {
+          "@id": "data 3 - with invalid URI does not error"
+        }
+      ],
+      "accessionId": "test_invalid_ro_crate_objects"
+    },
+    {
+      "@id": "https://orcid.org/9999-0001-2222-3333",
+      "@type": [
+        "Person",
+        "bia:Contributor"
+      ],
+      "displayName": "Test Author",
+      "address": null,
+      "website": null,
+      "affiliation": [],
+      "role": [],
+      "contactEmail": null
+    },
+    {
+      "@id": "data1FailedReference/",
+      "@type": [
+        "Dataset",
+        "bia:Dataset"
+      ],
+      "title": "Example title.",
+      "description": "Example description",
+      "associatedBiologicalEntity": [
+        {
+          "@id": "_:RepeatedBiosample1 - does not error"
+        }
+      ],
+      "associatedSpecimenImagingPreparationProtocol": [
+        {
+          "@id": "_:SpecimenPreparation"
+        }
+      ],
+      "associatedSpecimen": null,
+      "associatedImageAcquisitionProtocol": [
+        {
+          "@id": "_:ImageAcquisitionProtocol1"
+        }
+      ],
+      "associatedAnnotationMethod": [
+        {
+          "@id": "_:Cell counts"
+        }
+      ]
+    },
+    {
+      "@id": "data2_missing_folder/",
+      "@type": [
+        "Dataset"
+      ],
+      "title": "Dataset not included in ro-crate",
+      "description": "Example description",
+      "hasPart": [
+        {
+          "@id": "data2/groupedImage/"
+        }
+      ]
+    },
+    {
+      "@id": "data 3 - with invalid URI does not error",
+      "@type": [
+        "bia:Dataset", "Dataset"
+      ],
+      "title": "Dataset with invalid id does not error",
+      "description": "Example description"
+    },
+    {
+      "@id": "missing_has_part.tiff",
+      "@type": [
+        "File", "bia:Image"
+      ],
+      "title": "Image that is not connected via hasPart to a dataset",
+      "description": "Example description"
+    },
+    {
+      "@id": "_:SpecimenPreparation",
+      "@type": [
+        "bia:SpecimenImagingPreparationProtocol"
+      ],
+      "title": "Specimen preparation",
+      "protocolDescription": ["ERROR This shouldn't be a list"]
+    },
+    {
+      "@id": "_:ImageAcquisitionProtocol1",
+      "@type": [
+        "bia:ImageAcquisitionProtocol"
+      ],
+      "field_not_included_in_context": "Microscopy",
+      "protocolDescription": "Steps 1-3",
+      "imagingInstrumentDescription": "Some microscope",
+      "imagingMethodName": [
+        "Microscopy"
+      ],
+      "fbbiId": [
+        "obo:FBbi_00000246"
+      ]
+    },
+    {
+      "@id": "NCBI:txid9606",
+      "@type": [
+        "bia:Taxon"
+      ],
+      "commonName": "human",
+      "scientificName": "Homo sapiens"
+    },
+    {
+      "@id": "_:RepeatedBiosample1 - does not error",
+      "@type": [
+        "bia:BioSample"
+      ],
+      "title": "First instance of some biosample",
+      "biologicalEntityDescription": "Some description",
+      "organismClassification": [
+        {
+          "@id": "NCBI:txid9606"
+        }
+      ],
+      "growthProtocol": null
+    },
+    {
+      "@id": "_:RepeatedBiosample1 - does not error",
+      "@type": [
+        "bia:BioSample"
+      ],
+      "title": "Repeated biosample",
+      "biologicalEntityDescription": "A second descriptin",
+      "organismClassification": [
+        {
+          "@id": "NCBI:txid9606"
+        }
+      ],
+      "growthProtocol": null
+    }
+  ]
+}
