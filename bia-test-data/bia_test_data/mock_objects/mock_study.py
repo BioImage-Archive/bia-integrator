@@ -21,9 +21,18 @@ def get_affiliation() -> Dict[str, semantic_models.Affiliation]:
             "website": None,
         }
     )
+    affiliation3 = semantic_models.Affiliation.model_validate(
+        {
+            "display_name": "Test College 3",
+            "rorid": None,
+            "address": None,
+            "website": None,
+        }
+    )
     return {
         "o1": affiliation1,
         "o2": affiliation2,
+        "o3": affiliation3,
     }
 
 
@@ -34,9 +43,7 @@ def get_contributor() -> List[semantic_models.Contributor]:
             "display_name": "Test Author1",
             "contact_email": "test_author1@ebi.ac.uk",
             "role": ["corresponding author"],
-            "affiliation": [
-                affiliations["o1"],
-            ],
+            "affiliation": [affiliations["o1"], affiliations["o2"]],
             "rorid": None,
             "address": None,
             "website": None,
@@ -50,6 +57,7 @@ def get_contributor() -> List[semantic_models.Contributor]:
             "role": ["first author"],
             "affiliation": [
                 affiliations["o2"],
+                affiliations["o3"],
             ],
             "rorid": None,
             "address": None,
