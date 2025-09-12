@@ -54,7 +54,6 @@ def test_cli_writes_expected_files(
     expected_objects,
     tmp_bia_data_dir,
 ):
-
     expected_objects_dict, n_expected_objects = expected_objects
 
     def _load_submission(accession_id: str) -> api.Submission:
@@ -119,8 +118,7 @@ def test_cli_persists_expected_documents(
     expected_objects,
     get_bia_api_client,
 ):
-
-    expected_objects_dict, n_expected_objects = expected_objects
+    expected_objects_dict, _ = expected_objects
 
     def _load_submission(accession_id: str) -> api.Submission:
         return test_submission
@@ -154,9 +152,9 @@ def test_cli_persists_expected_documents(
             persisted_object = get_func(str(expected_object.uuid))
             # Using the model_dump_json instead of direct comparison because the expected objects
             # are instances of the bia_shared_models and not api client models
-            assert (
-                persisted_object.model_dump_json() == expected_object.model_dump_json()
-            )
+            persisted_object_dict = persisted_object.model_dump_json()
+            expected_object_dict = expected_object.model_dump_json()
+            assert persisted_object_dict == expected_object_dict
 
 
 def test_cli_find_test_study(
