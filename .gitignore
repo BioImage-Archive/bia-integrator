@@ -6,6 +6,4 @@ tools/.DS_Store
 **/__pycache__
 **/.env
 **.egg-info
-ro-crate-ingest/.gitignore
-bia-ingest/.vscode/settings.json
-ro-crate-ingest/.vscode/settings.json
+**/.vscode/
