@@ -83,7 +83,6 @@ class IngestionResult(CLIResult):
 def tabulate_ingestion_errors(
     dict_of_results: dict[str, IngestionResult], include_object_count=False
 ) -> Table:
-
     table = Table()
     headers = ["Accession ID", "Processing Mode", "Status", "Error: Count", "Warnings"]
 
@@ -177,7 +176,7 @@ def write_table(table: Table, location: str):
 def log_model_creation_count(
     model_class: Type[BaseModel], count: int, valdiation_error_tracking: CLIResult
 ) -> None:
-    logger.info(f"Created {model_class.__name__}. Count: {count}")
+    logger.debug(f"Created {model_class.__name__}. Count: {count}")
     field_name = f"{model_class.__name__}_CreationCount"
     valdiation_error_tracking.__setattr__(
         field_name, valdiation_error_tracking.__getattribute__(field_name) + count

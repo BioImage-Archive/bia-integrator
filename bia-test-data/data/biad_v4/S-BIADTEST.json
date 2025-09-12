@@ -1,439 +1,622 @@
 {
-  "accno" : "S-BIADTEST",
-  "attributes" : [ {
-    "name" : "Template",
-    "value" : "BioImages.v4"
-  }, {
-    "name" : "ReleaseDate",
-    "value" : "2024-02-13"
-  }, {
-    "name" : "AttachTo",
-    "value" : "BioImages"
-  } ],
-  "section" : {
-    "accno" : "section0",
-    "type" : "Study",
-    "attributes" : [ {
-      "name" : "Title",
-      "value" : "A test submission with title greater than 25 characters"
-    }, {
-      "name" : "Description",
-      "value" : "A test submission to allow testing without retrieving from bia server"
-    }, {
-      "name" : "Keywords",
-      "value" : "Test keyword1"
-    }, {
-      "name" : "Keywords",
-      "value" : "Test keyword2"
-    }, {
-      "name" : "Keywords",
-      "value" : "Test keyword3"
-    }, {
-      "name" : "Acknowledgements",
-      "value" : "We thank you"
-    }, {
-      "name" : "License",
-      "value" : "CC0",
-      "valqual" : [ {
-        "name" : "URL",
-        "value" : "https://creativecommons.org/publicdomain/zero/1.0/legalcode"
-      } ]
-    }, {
-      "name" : "Funding statement",
-      "value" : "This work was funded by the EBI"
-    }, {
-      "name" : "Extra attribute 1",
-      "value" : "Extra attribute 1 to test semantic_model.study.attribute"
-    }, {
-      "name" : "Extra attribute 2",
-      "value" : "Extra attribute 2 to test semantic_model.study.attribute"
-    }
-  ],
-    "links" : [ {
-      "url" : "https://www.test.link1.com/",
-      "attributes" : [ {
-        "name" : "Description",
-        "value" : "Test link 1."
-      } ]
-    }, {
-      "url" : "ERP116793",
-      "attributes" : [ {
-        "name" : "Description",
-        "value" : "Test ENA link"
-      }, {
-        "name" : "Type",
-        "value" : "ENA"
-      }]
-    } ],
-    "subsections" : [ {
-      "type" : "author",
-      "accno" : "author1",
-      "attributes" : [ {
-        "name" : "Name",
-        "value" : "Test Author1"
-      }, {
-        "name" : "E-mail",
-        "value" : "test_author1@ebi.ac.uk"
-      }, {
-        "name" : "Role",
-        "value" : "corresponding author"
-      }, {
-        "name" : "ORCID",
-        "value" : "0000-0000-0000-0000"
-      }, {
-        "name" : "affiliation",
-        "value" : "o1",
-        "reference" : true
-      } ]
-    },{
-      "type" : "Author",
-      "accno" : "author2",
-      "attributes" : [ {
-        "name" : "Name",
-        "value" : "Test Author2"
-      }, {
-        "name" : "E-mail",
-        "value" : "test_author2@ebi.ac.uk"
-      }, {
-        "name" : "Role",
-        "value" : "first author"
-      }, {
-        "name" : "ORCID",
-        "value" : "1111-1111-1111-1111"
-      }, {
-        "name" : "affiliation",
-        "value" : "o2",
-        "reference" : true
-      } ]
-    }, {
-      "accno" : "o1",
-      "type" : "organisation",
-      "attributes" : [ {
-        "name" : "Name",
-        "value" : "Test College 1"
-      } ]
-    }, {
-      "accno" : "o2",
-      "type" : "organisation",
-      "attributes" : [ {
-        "name" : "Name",
-        "value" : "Test College 2"
-      } ]
-    }, {
-      "type" : "Publication",
-      "attributes" : [ {
-        "name" : "Pubmed ID",
-        "value" : "38381674"
-      }, {
-        "name" : "Title",
-        "value" : "Test publication 1"
-      }, {
-        "name" : "Authors",
-        "value" : "Test Author11, Test Author12."
-      }, {
-        "name" : "Year",
-        "value" : "2024"
-      } ]
-    }, {
-      "type" : "Publication",
-      "attributes" : [ {
-        "name" : "Pubmed ID",
-        "value" : "38106175"
-      }, {
-        "name" : "Title",
-        "value" : "Test publication 2"
-      }, {
-        "name" : "Authors",
-        "value" : "Test Author21, Test Author22"
-      }, {
-        "name" : "DOI",
-        "value" : "10.1101/2023.12.07.570699"
-      },{
-        "name" : "Year",
-        "value" : "2023"
-      }]
-    }, {
-      "type" : "Funding",
-      "accno" : "funding1",
-      "attributes" : [ {
-        "name" : "Agency",
-        "value" : "Test funding body1"
-      }, {
-        "name" : "grant_id",
-        "value" : "TESTFUNDS1"
-      } ]
-    }, {
-      "type" : "Funding",
-      "accno" : "funding2",
-      "attributes" : [ {
-        "name" : "Agency",
-        "value" : "Test funding body2"
-      }, {
-        "name" : "grant_id",
-        "value" : "TESTFUNDS2"
-      } ]
-    }, {
-      "accno" : "Biosample-1",
-      "type" : "Biosample",
-      "attributes" : [ {
-        "name" : "Title",
-        "value" : "Test Biosample 1"
-      }, {
-        "name" : "Description",
-        "value" : "Test description 1 (\"with some escaped chars\") "
-      }, {
-        "name" : "Biological entity",
-        "value" : "Test biological entity 1"
-      }, {
-        "name" : "Experimental variable",
-        "value" : "Test experimental entity 1"
-      }, {
-        "name" : "Extrinsic variable",
-        "value" : "Test extrinsic variable 1"
-      }, {
-        "name" : "Intrinsic variable",
-        "value" : "Test intrinsic variable 1\nwith escaped character"
-      } ],
-      "subsections": [
-        {
-          "accno" : "Organism-1",
-          "type" : "Organism",
-          "attributes" : [ {
-            "name": "Common name",
-            "value" : "human"
-          }, {
-            "name": "Scientific name",
-            "value" : "Homo sapiens"
-          } ]
-        }
-      ]
-    }, {
-      "accno" : "Biosample-2",
-      "type" : "Biosample",
-      "attributes" : [ {
-        "name" : "Title",
-        "value" : "Test Biosample 2 "
-      }, {
-        "name" : "Organism",
-        "value" : "Mus musculus (mouse)"
-      }, {
-        "name" : "Description",
-        "value" : "Test description 2"
-      }, {
-        "name" : "Biological entity",
-        "value" : "Test biological entity 2"
-      }, {
-        "name" : "Experimental variable",
-        "value" : "Test experimental entity 2"
-      }, {
-        "name" : "Extrinsic variable",
-        "value" : "Test extrinsic variable 2"
-      }, {
-        "name" : "Intrinsic variable",
-        "value" : "Test intrinsic variable 2"
-      } ]
-    }, {
-      "accno" : "Specimen-1",
-      "type" : "Specimen",
-      "attributes" : [ {
-        "name" : "Title",
-        "value" : "Test specimen 1"
-      }, {
-        "name" : "Sample preparation protocol",
-        "value" : "Test sample preparation protocol 1"
-      }, {
-        "name" : "Growth protocol",
-        "value" : "Test growth protocol 1"
-      } ]
-    }, {
-      "accno" : "Specimen-2",
-      "type" : "Specimen",
-      "attributes" : [ {
-        "name" : "Title",
-        "value" : "Test specimen 2"
-      }, {
-        "name" : "Sample preparation protocol",
-        "value" : "Test sample preparation protocol 2"
-      }, {
-        "name" : "Growth protocol",
-        "value" : "Test growth protocol 2"
-      } ]
-    }, {
-      "accno" : "Image acquisition-3",
-      "type" : "Image acquisition",
-      "attributes" : [ {
-        "name" : "Title",
-        "value" : "Test Primary Screen Image Acquisition"
-      }, {
-        "name" : "Imaging instrument",
-        "value" : "Test imaging instrument 1"
-      }, {
-        "name" : "Image acquisition parameters",
-        "value" : "Test image acquisition parameters 1"
-      }, {
-        "name" : "Imaging method",
-        "value" : "confocal microscopy"
-      } ]
-    }, {
-      "accno" : "Image acquisition-7",
-      "type" : "Image acquisition",
-      "attributes" : [ {
-        "name" : "Title",
-        "value" : "Test Secondary Screen Image Acquisition"
-      }, {
-        "name" : "Imaging instrument",
-        "value" : "Test imaging instrument 2"
-      }, {
-        "name" : "Image acquisition parameters",
-        "value" : "Test image acquisition parameters 2"
-      } ],
-      "subsections" : [ {
-        "accno" : "Imaging Method-7-1",
-        "type" : "Imaging Method",
-        "attributes" : [ {
-          "name" : "Ontology Value",
-          "value" : "fluorescence microscopy"
-        }, {
-          "name" : "Ontology Name",
-          "value" : "FBbi"
-        }, {
-          "name" : "Ontology Term ID",
-          "value" : "FBbi:00000246"
-        } ]
-      } ]
-    }, {
-      "accno" : "Image analysis-5",
-      "type" : "Image analysis",
-      "attributes" : [ {
-        "name" : "Title",
-        "value" : "Test image analysis"
-      }, {
-        "name" : "Image analysis overview",
-        "value" : "Test image analysis overview"
-      } ]
-    }, {
-      "accNo" : "Image analysis -no title",
-      "type" : "Image analysis",
-      "attributes" : [ ]
-    }, {
-      "accno" : "Image correlation-6",
-      "type" : "Image correlation",
-      "attributes" : [ {
-        "name" : "Title",
-        "value" : "Template correlation method"
-      }, {
-        "name" : "Spatial and temporal alignment",
-        "value" : "Template correlation method description"
-      }, {
-        "name" : "Fiducials used",
-        "value" : "Template fiducials used"
-      } , {
-        "name" : "Transformation matrix",
-        "value" : "Template transformation matrix"
-      }]
-    }, {
-      "accNo" : "Image correlation -no title",
-      "type" : "Image correlation",
-      "attributes" : [ ]
-    }, {
-      "accno" : "Annotations-29",
-      "type" : "Annotations",
-      "attributes" : [ {
-        "name" : "Title",
-        "value" : "Segmentation masks"
-      }, {
-        "name" : "Annotation Overview",
-        "value" : "Test annotation overview 1"
-      }, {
-        "name" : "Annotation Method",
-        "value" : "Test annotation method 1"
-      }, {
-        "name" : "Annotation Type",
-        "value" : "class_labels, segmentation_mask"
-      }, {
-        "name" : "Annotation Criteria",
-        "value" : "Test annotation criteria 1"
-      }, {
-        "name" : "File List",
-        "value" : "file_list_annotations_1.json"
-      } ]
-    }, {
-      "accno" : "Study Component-1",
-      "type" : "Study Component",
-      "attributes" : [ {
-        "name" : "Name",
-        "value" : "Study Component 1"
-        }, {
-        "name" : "Description",
-        "value" : "Description of study component 1"
-      }, {
-        "name" : "File List",
-        "value" : "file_list_study_component_1.json"
-      } ],
-      "subsections" : [ {
-        "type" : "Associations",
-        "attributes" : [ {
-          "name" : "Biosample",
-          "value" : "Test Biosample 1"
-        }, {
-          "name" : "Specimen",
-          "value" : "Test specimen 1"
-        }, {
-          "name" : "Image acquisition",
-          "value" : "Test Primary Screen Image Acquisition"
-        }, {
-          "name" : "Image analysis",
-          "value" : "Test image analysis"
-        }, {
-          "name" : "Image correlation",
-          "value" : "Template correlation method"
-        } ]
-      }, {
-        "type" : "Associations",
-        "attributes" : [ {
-          "name" : "Biosample",
-          "value" : "Test Biosample 2 "
-        }, {
-          "name" : "Specimen",
-          "value" : "Test specimen 1"
-        }, {
-          "name" : "Image acquisition",
-          "value" : "Test Secondary Screen Image Acquisition"
-        }, {
-          "name" : "Image analysis",
-          "value" : "Test image analysis"
-        } ]
-      } ]
-    }, {
-      "accno" : "Study Component-2",
-      "type" : "Study Component",
-      "attributes" : [ {
-        "name" : "Name",
-        "value" : "Study Component 2"
-      }, {
-        "name" : "Description",
-        "value" : "Description of study component 2"
-      }, {
-        "name" : "File List",
-        "value" : "file_list_study_component_2.json"
-      } ],
-      "subsections" : [ {
-        "type" : "Associations",
-        "attributes" : [ {
-          "name" : "Biosample",
-          "value" : "Test Biosample 2 "
-        }, {
-          "name" : "Specimen",
-          "value" : "Test specimen 2"
-        }, {
-          "name" : "Image acquisition",
-          "value" : "Test Primary Screen Image Acquisition"
-        }, {
-          "name" : "Image analysis",
-          "value" : "Test image analysis"
-        } ]
-      } ]
-    } ]
-  },
-  "type" : "submission"
+	"accno": "S-BIADTEST",
+	"attributes": [
+		{
+			"name": "Template",
+			"value": "BioImages.v4"
+		},
+		{
+			"name": "ReleaseDate",
+			"value": "2024-02-13"
+		},
+		{
+			"name": "AttachTo",
+			"value": "BioImages"
+		}
+	],
+	"section": {
+		"accno": "section0",
+		"type": "Study",
+		"attributes": [
+			{
+				"name": "Title",
+				"value": "A test submission with title greater than 25 characters"
+			},
+			{
+				"name": "Description",
+				"value": "A test submission to allow testing without retrieving from bia server"
+			},
+			{
+				"name": "Keywords",
+				"value": "Test keyword1"
+			},
+			{
+				"name": "Keywords",
+				"value": "Test keyword2"
+			},
+			{
+				"name": "Keywords",
+				"value": "Test keyword3"
+			},
+			{
+				"name": "Acknowledgements",
+				"value": "We thank you"
+			},
+			{
+				"name": "License",
+				"value": "CC0",
+				"valqual": [
+					{
+						"name": "URL",
+						"value": "https://creativecommons.org/publicdomain/zero/1.0/legalcode"
+					}
+				]
+			},
+			{
+				"name": "Funding statement",
+				"value": "This work was funded by the EBI"
+			},
+			{
+				"name": "Extra attribute 1",
+				"value": "Extra attribute 1 to test semantic_model.study.attribute"
+			},
+			{
+				"name": "Extra attribute 2",
+				"value": "Extra attribute 2 to test semantic_model.study.attribute"
+			}
+		],
+		"links": [
+			{
+				"url": "https://www.test.link1.com/",
+				"attributes": [
+					{
+						"name": "Description",
+						"value": "Test link 1."
+					}
+				]
+			},
+			{
+				"url": "ERP116793",
+				"attributes": [
+					{
+						"name": "Description",
+						"value": "Test ENA link"
+					},
+					{
+						"name": "Type",
+						"value": "ENA"
+					}
+				]
+			}
+		],
+		"subsections": [
+			{
+				"type": "author",
+				"accno": "author1",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "Test Author1"
+					},
+					{
+						"name": "E-mail",
+						"value": "test_author1@ebi.ac.uk"
+					},
+					{
+						"name": "Role",
+						"value": "corresponding author"
+					},
+					{
+						"name": "ORCID",
+						"value": "0000-0000-0000-0000"
+					},
+					{
+						"name": "affiliation",
+						"value": "o1",
+						"reference": true
+					},
+					{
+						"name": "affiliation",
+						"value": "o2",
+						"reference": true
+					}
+				]
+			},
+			{
+				"type": "Author",
+				"accno": "author2",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "Test Author2"
+					},
+					{
+						"name": "E-mail",
+						"value": "test_author2@ebi.ac.uk"
+					},
+					{
+						"name": "Role",
+						"value": "first author"
+					},
+					{
+						"name": "ORCID",
+						"value": "1111-1111-1111-1111"
+					},
+					{
+						"name": "affiliation",
+						"value": "o2, o3",
+						"reference": true
+					}
+				]
+			},
+			{
+				"accno": "o1",
+				"type": "organisation",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "Test College 1"
+					}
+				]
+			},
+			{
+				"accno": "o2",
+				"type": "organisation",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "Test College 2"
+					}
+				]
+			},
+			{
+				"accno": "o3",
+				"type": "organisation",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "Test College 3"
+					}
+				]
+			},
+			{
+				"type": "Publication",
+				"attributes": [
+					{
+						"name": "Pubmed ID",
+						"value": "38381674"
+					},
+					{
+						"name": "Title",
+						"value": "Test publication 1"
+					},
+					{
+						"name": "Authors",
+						"value": "Test Author11, Test Author12."
+					},
+					{
+						"name": "Year",
+						"value": "2024"
+					}
+				]
+			},
+			{
+				"type": "Publication",
+				"attributes": [
+					{
+						"name": "Pubmed ID",
+						"value": "38106175"
+					},
+					{
+						"name": "Title",
+						"value": "Test publication 2"
+					},
+					{
+						"name": "Authors",
+						"value": "Test Author21, Test Author22"
+					},
+					{
+						"name": "DOI",
+						"value": "10.1101/2023.12.07.570699"
+					},
+					{
+						"name": "Year",
+						"value": "2023"
+					}
+				]
+			},
+			{
+				"type": "Funding",
+				"accno": "funding1",
+				"attributes": [
+					{
+						"name": "Agency",
+						"value": "Test funding body1"
+					},
+					{
+						"name": "grant_id",
+						"value": "TESTFUNDS1"
+					}
+				]
+			},
+			{
+				"type": "Funding",
+				"accno": "funding2",
+				"attributes": [
+					{
+						"name": "Agency",
+						"value": "Test funding body2"
+					},
+					{
+						"name": "grant_id",
+						"value": "TESTFUNDS2"
+					}
+				]
+			},
+			{
+				"accno": "Biosample-1",
+				"type": "Biosample",
+				"attributes": [
+					{
+						"name": "Title",
+						"value": "Test Biosample 1"
+					},
+					{
+						"name": "Description",
+						"value": "Test description 1 (\"with some escaped chars\") "
+					},
+					{
+						"name": "Biological entity",
+						"value": "Test biological entity 1"
+					},
+					{
+						"name": "Experimental variable",
+						"value": "Test experimental entity 1"
+					},
+					{
+						"name": "Extrinsic variable",
+						"value": "Test extrinsic variable 1"
+					},
+					{
+						"name": "Intrinsic variable",
+						"value": "Test intrinsic variable 1\nwith escaped character"
+					}
+				],
+				"subsections": [
+					{
+						"accno": "Organism-1",
+						"type": "Organism",
+						"attributes": [
+							{
+								"name": "Common name",
+								"value": "human"
+							},
+							{
+								"name": "Scientific name",
+								"value": "Homo sapiens"
+							}
+						]
+					}
+				]
+			},
+			{
+				"accno": "Biosample-2",
+				"type": "Biosample",
+				"attributes": [
+					{
+						"name": "Title",
+						"value": "Test Biosample 2 "
+					},
+					{
+						"name": "Organism",
+						"value": "Mus musculus (mouse)"
+					},
+					{
+						"name": "Description",
+						"value": "Test description 2"
+					},
+					{
+						"name": "Biological entity",
+						"value": "Test biological entity 2"
+					},
+					{
+						"name": "Experimental variable",
+						"value": "Test experimental entity 2"
+					},
+					{
+						"name": "Extrinsic variable",
+						"value": "Test extrinsic variable 2"
+					},
+					{
+						"name": "Intrinsic variable",
+						"value": "Test intrinsic variable 2"
+					}
+				]
+			},
+			{
+				"accno": "Specimen-1",
+				"type": "Specimen",
+				"attributes": [
+					{
+						"name": "Title",
+						"value": "Test specimen 1"
+					},
+					{
+						"name": "Sample preparation protocol",
+						"value": "Test sample preparation protocol 1"
+					},
+					{
+						"name": "Growth protocol",
+						"value": "Test growth protocol 1"
+					}
+				]
+			},
+			{
+				"accno": "Specimen-2",
+				"type": "Specimen",
+				"attributes": [
+					{
+						"name": "Title",
+						"value": "Test specimen 2"
+					},
+					{
+						"name": "Sample preparation protocol",
+						"value": "Test sample preparation protocol 2"
+					},
+					{
+						"name": "Growth protocol",
+						"value": "Test growth protocol 2"
+					}
+				]
+			},
+			{
+				"accno": "Image acquisition-3",
+				"type": "Image acquisition",
+				"attributes": [
+					{
+						"name": "Title",
+						"value": "Test Primary Screen Image Acquisition"
+					},
+					{
+						"name": "Imaging instrument",
+						"value": "Test imaging instrument 1"
+					},
+					{
+						"name": "Image acquisition parameters",
+						"value": "Test image acquisition parameters 1"
+					},
+					{
+						"name": "Imaging method",
+						"value": "confocal microscopy"
+					}
+				]
+			},
+			{
+				"accno": "Image acquisition-7",
+				"type": "Image acquisition",
+				"attributes": [
+					{
+						"name": "Title",
+						"value": "Test Secondary Screen Image Acquisition"
+					},
+					{
+						"name": "Imaging instrument",
+						"value": "Test imaging instrument 2"
+					},
+					{
+						"name": "Image acquisition parameters",
+						"value": "Test image acquisition parameters 2"
+					}
+				],
+				"subsections": [
+					{
+						"accno": "Imaging Method-7-1",
+						"type": "Imaging Method",
+						"attributes": [
+							{
+								"name": "Ontology Value",
+								"value": "fluorescence microscopy"
+							},
+							{
+								"name": "Ontology Name",
+								"value": "FBbi"
+							},
+							{
+								"name": "Ontology Term ID",
+								"value": "FBbi:00000246"
+							}
+						]
+					}
+				]
+			},
+			{
+				"accno": "Image analysis-5",
+				"type": "Image analysis",
+				"attributes": [
+					{
+						"name": "Title",
+						"value": "Test image analysis"
+					},
+					{
+						"name": "Image analysis overview",
+						"value": "Test image analysis overview"
+					}
+				]
+			},
+			{
+				"accNo": "Image analysis -no title",
+				"type": "Image analysis",
+				"attributes": [
+
+				]
+			},
+			{
+				"accno": "Image correlation-6",
+				"type": "Image correlation",
+				"attributes": [
+					{
+						"name": "Title",
+						"value": "Template correlation method"
+					},
+					{
+						"name": "Spatial and temporal alignment",
+						"value": "Template correlation method description"
+					},
+					{
+						"name": "Fiducials used",
+						"value": "Template fiducials used"
+					},
+					{
+						"name": "Transformation matrix",
+						"value": "Template transformation matrix"
+					}
+				]
+			},
+			{
+				"accNo": "Image correlation -no title",
+				"type": "Image correlation",
+				"attributes": [
+
+				]
+			},
+			{
+				"accno": "Annotations-29",
+				"type": "Annotations",
+				"attributes": [
+					{
+						"name": "Title",
+						"value": "Segmentation masks"
+					},
+					{
+						"name": "Annotation Overview",
+						"value": "Test annotation overview 1"
+					},
+					{
+						"name": "Annotation Method",
+						"value": "Test annotation method 1"
+					},
+					{
+						"name": "Annotation Type",
+						"value": "class_labels, segmentation_mask"
+					},
+					{
+						"name": "Annotation Criteria",
+						"value": "Test annotation criteria 1"
+					},
+					{
+						"name": "File List",
+						"value": "file_list_annotations_1.json"
+					}
+				]
+			},
+			{
+				"accno": "Study Component-1",
+				"type": "Study Component",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "Study Component 1"
+					},
+					{
+						"name": "Description",
+						"value": "Description of study component 1"
+					},
+					{
+						"name": "File List",
+						"value": "file_list_study_component_1.json"
+					}
+				],
+				"subsections": [
+					{
+						"type": "Associations",
+						"attributes": [
+							{
+								"name": "Biosample",
+								"value": "Test Biosample 1"
+							},
+							{
+								"name": "Specimen",
+								"value": "Test specimen 1"
+							},
+							{
+								"name": "Image acquisition",
+								"value": "Test Primary Screen Image Acquisition"
+							},
+							{
+								"name": "Image analysis",
+								"value": "Test image analysis"
+							},
+							{
+								"name": "Image correlation",
+								"value": "Template correlation method"
+							}
+						]
+					},
+					{
+						"type": "Associations",
+						"attributes": [
+							{
+								"name": "Biosample",
+								"value": "Test Biosample 2 "
+							},
+							{
+								"name": "Specimen",
+								"value": "Test specimen 1"
+							},
+							{
+								"name": "Image acquisition",
+								"value": "Test Secondary Screen Image Acquisition"
+							},
+							{
+								"name": "Image analysis",
+								"value": "Test image analysis"
+							}
+						]
+					}
+				]
+			},
+			{
+				"accno": "Study Component-2",
+				"type": "Study Component",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "Study Component 2"
+					},
+					{
+						"name": "Description",
+						"value": "Description of study component 2"
+					},
+					{
+						"name": "File List",
+						"value": "file_list_study_component_2.json"
+					}
+				],
+				"subsections": [
+					{
+						"type": "Associations",
+						"attributes": [
+							{
+								"name": "Biosample",
+								"value": "Test Biosample 2 "
+							},
+							{
+								"name": "Specimen",
+								"value": "Test specimen 2"
+							},
+							{
+								"name": "Image acquisition",
+								"value": "Test Primary Screen Image Acquisition"
+							},
+							{
+								"name": "Image analysis",
+								"value": "Test image analysis"
+							}
+						]
+					}
+				]
+			}
+		]
+	},
+	"type": "submission"
 }

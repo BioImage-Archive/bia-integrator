@@ -6,3 +6,4 @@ tools/.DS_Store
 **/__pycache__
 **/.env
 **.egg-info
+**/.vscode/

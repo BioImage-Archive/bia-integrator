@@ -1,3 +1,4 @@
+from collections import defaultdict
 from bia_ingest.biostudies.api import (
     Attribute,
     File,
@@ -36,8 +37,8 @@ def attributes_to_dict(
 
 
 def find_file_lists_in_section(
-    section: Section, 
-    flists: List[Dict[str, Union[str, None, List[str]]]], 
+    section: Section,
+    flists: List[Dict[str, Union[str, None, List[str]]]],
 ) -> List[Dict[str, Union[str, None, List[str]]]]:
     """
     Find all of the File Lists in a Section, recursively descending through the subsections.
@@ -76,10 +77,9 @@ def find_file_lists_in_submission(
 
 
 def find_files_in_submission_file_lists(
-    submission: Submission, 
-    result_summary: dict,    
+    submission: Submission,
+    result_summary: dict,
 ) -> List[File]:
-    
     accno = submission.accno
     submission_type = result_summary[accno].ProcessingVersion
 
@@ -94,10 +94,12 @@ def find_files_in_submission_file_lists(
             )
         if file_list_dict.get("associations") != []:
             if submission_type == BioStudiesProcessingVersion.BIOSTUDIES_DEFAULT:
-                logger.warning("Associations found in default template submission file list processing.")
+                logger.warning(
+                    "Associations found in default template submission file list processing."
+                )
                 result_summary[accno].__setattr__(
                     "Warning",
-                    f"Associations found in default template submission file list processing.",
+                    "Associations found in default template submission file list processing.",
                 )
             extra_attribute.append(
                 Attribute(
@@ -110,11 +112,8 @@ def find_files_in_submission_file_lists(
     return sum(file_lists, [])
 
 
-def find_files_in_submission(
-    section: Section, 
-    files_list: List[File]
-) -> List[File]:
-    """Find files in a submission that are attached directly, 
+def find_files_in_submission(section: Section, files_list: List[File]) -> List[File]:
+    """Find files in a submission that are attached directly,
     not in file lists."""
 
     section_type = type(section)
@@ -124,7 +123,7 @@ def find_files_in_submission(
                 files_list += file
             else:
                 files_list.append(file)
-        
+
         for subsection in section.subsections:
             find_files_in_submission(subsection, files_list)
 
@@ -132,19 +131,23 @@ def find_files_in_submission(
         logger.warning(
             f"Not processing subsection as type is {section_type}, not 'Section'. Contents={section}"
         )
-    
+
     return files_list
 
 
 def find_files_and_file_lists_in_default_submission(
-        submission: Submission, 
-        result_summary: dict,
+    submission: Submission,
+    result_summary: dict,
 ) -> List[File]:
     """Find all of the files in a submission, both attached directly to
     the submission and as file lists."""
 
-    all_files_and_file_lists = find_files_in_submission_file_lists(submission, result_summary)
-    all_files_and_file_lists = find_files_in_submission(submission.section, all_files_and_file_lists)
+    all_files_and_file_lists = find_files_in_submission_file_lists(
+        submission, result_summary
+    )
+    all_files_and_file_lists = find_files_in_submission(
+        submission.section, all_files_and_file_lists
+    )
 
     return all_files_and_file_lists
 
@@ -152,10 +155,10 @@ def find_files_and_file_lists_in_default_submission(
 def mattributes_to_dict(
     attributes: List[Attribute], reference_dict: Dict[str, Any]
 ) -> Dict[str, Any]:
-    """Return attributes as dictionary dereferencing attribute references
+    """Return attributes as dictionary dereferencing attribute references.
 
     Return the list of attributes supplied as a dictionary. Any attributes
-    whose values are references are 'dereferenced' using the reference_dict
+    whose values are references are 'dereferenced' using the reference_dict.
     """
 
     def value_or_dereference(attr):
@@ -164,7 +167,15 @@ def mattributes_to_dict(
         else:
             return attr.value
 
-    return {attr.name: value_or_dereference(attr) for attr in attributes}
+    return_dict = defaultdict(list)
+    for attribute in attributes:
+        return_dict[attribute.name].append(value_or_dereference(attribute))
+
+    return_dict = {
+        key: value[0] if len(value) == 1 else value
+        for key, value in return_dict.items()
+    }
+    return return_dict
 
 
 def find_sections_recursive(
@@ -173,7 +184,7 @@ def find_sections_recursive(
     """
     Find all sections of search_types within tree, starting at given section
     """
-    if results == None:
+    if results is None:
         results = []
 
     search_types_lower = [s.lower() for s in search_types]
