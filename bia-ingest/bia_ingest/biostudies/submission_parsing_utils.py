@@ -20,7 +20,8 @@ def attributes_to_dict(
     attributes: List[Attribute],
 ) -> Dict[str, Optional[str | List[str]]]:
     """
-    Docstring for attributes_to_dict
+    This method extract all the elements in the attributes dictionary
+    and reformat them in a  more flat like strucure.
 
     :param attributes: a list of dictionaries [{"name": "example_name", "value": "example value}, ...]
     :type attributes: List[Attribute]
