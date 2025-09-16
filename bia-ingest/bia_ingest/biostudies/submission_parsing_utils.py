@@ -19,18 +19,23 @@ logger = logging.getLogger("__main__." + __name__)
 def attributes_to_dict(
     attributes: List[Attribute],
 ) -> Dict[str, Optional[str | List[str]]]:
-    # TODO check type of reference_dict. Possibly Dict[str, str], but need to
-    # verify. This also determines type returned by function
+    """
+    Docstring for attributes_to_dict
+
+    :param attributes: a list of dictionaries [{"name": "example_name", "value": "example value}, ...]
+    :type attributes: List[Attribute]
+    :return: Description
+    :rtype: Dict[str, str | List[str] | None]
+    """
+
     attr_dict = {}
     for attr in attributes:
         if attr.name in attr_dict:
-            if isinstance(attr_dict[attr.name], list):
-                attr_dict[attr.name].append(attr.value)
-            else:
+            if not isinstance(attr_dict[attr.name], list):
                 attr_dict[attr.name] = [
                     attr_dict[attr.name],
                 ]
-                attr_dict[attr.name].append(attr.value)
+            attr_dict[attr.name].append(attr.value)
         else:
             attr_dict[attr.name] = attr.value
     return attr_dict
@@ -238,19 +243,19 @@ def find_datasets_with_file_lists(
     return datasets_with_file_lists
 
 
-def case_insensitive_get(d: dict, key: str, default: Any = "") -> Any:
+def case_insensitive_get(input_dict: dict, key: str, default: Any = "") -> Any:
     """Access dict values with case insensitive keys
 
     i.e. get value from {"Key": value} using "Key", "key", "KEY", etc.
     """
-    if key in d:
-        return d[key]
+    if key in input_dict:
+        return input_dict[key]
 
     # Line below assumes dict keys are unique when converted to lcase.
-    mapping_dict = {k.lower(): k for k in d.keys()}
+    mapping_dict = {k.lower(): k for k in input_dict.keys()}
 
     key = key.lower()
     if key in mapping_dict:
-        return d[mapping_dict[key]]
+        return input_dict[mapping_dict[key]]
     else:
         return default
