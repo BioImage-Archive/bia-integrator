@@ -18,13 +18,11 @@ def attributes_to_dict(
     for attr in attributes:
         normalised_key = attr.name.lower()
         if normalised_key in attr_dict:
-            if isinstance(attr_dict[normalised_key], list):
-                attr_dict[normalised_key].append(attr.value)
-            else:
+            if not isinstance(attr_dict[attr.name], list):
                 attr_dict[normalised_key] = [
                     attr_dict[normalised_key],
                 ]
-                attr_dict[normalised_key].append(attr.value)
+            attr_dict[normalised_key].append(attr.value)
         else:
             attr_dict[normalised_key] = attr.value
     return attr_dict
