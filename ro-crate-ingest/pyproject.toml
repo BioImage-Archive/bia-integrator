@@ -13,7 +13,7 @@ python = "^3.13"
 bia-shared-datamodels = { path = "../bia-shared-datamodels", develop = true }
 bia-integrator-api = { path = "../clients/python", develop = true }
 
-typer = "^0.12.5"
+typer = "^0.17"
 rocrate = "^0"
 linkml = "^1.8.7"
 roc-validator = "^0"

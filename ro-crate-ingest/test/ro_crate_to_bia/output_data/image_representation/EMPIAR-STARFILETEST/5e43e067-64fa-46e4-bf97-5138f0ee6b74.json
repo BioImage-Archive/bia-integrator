@@ -1,0 +1,33 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "5e43e067-64fa-46e4-bf97-5138f0ee6b74",
+  "version": 0,
+  "model": {
+    "type_name": "ImageRepresentation",
+    "version": 4
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "ea1a979c-03a4-458f-9640-4c332aef0328"
+      }
+    }
+  ],
+  "image_format": ".mrc",
+  "file_uri": [
+    "https://ftp.ebi.ac.uk/empiar/world_availability/STARFILETEST/data/211206/tomograms/TS_016.mrc_aretomo.mrc"
+  ],
+  "total_size_in_bytes": 16,
+  "voxel_physical_size_x": null,
+  "voxel_physical_size_y": null,
+  "voxel_physical_size_z": null,
+  "size_x": null,
+  "size_y": null,
+  "size_z": null,
+  "size_c": null,
+  "size_t": null,
+  "image_viewer_setting": [],
+  "representation_of_uuid": "ea1a979c-03a4-458f-9640-4c332aef0328"
+}

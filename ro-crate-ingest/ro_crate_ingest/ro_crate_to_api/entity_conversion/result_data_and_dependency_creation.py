@@ -8,6 +8,7 @@ from bia_shared_datamodels.package_specific_uuid_creation.ro_crate_uuid_creation
     create_annotation_method_uuid,
 )
 from bia_shared_datamodels import ro_crate_models
+from bia_shared_datamodels.package_specific_uuid_creation.shared import create_image_representation_uuid
 import bia_integrator_api.models as APIModels
 from ro_crate_ingest.save_utils import PersistenceMode, persist
 
@@ -192,6 +193,7 @@ def create_result_data(
 ):
     if row["result_type"] == ro_crate_models.Image.model_config["model_type"]:
         create_image(row, accession_id, persistence_mode)
+        create_image_representation(row, accession_id, persistence_mode)
     elif (
         row["result_type"] == ro_crate_models.AnnotationData.model_config["model_type"]
     ):
@@ -226,6 +228,31 @@ def create_image(
     )
 
 
+def create_image_representation(
+    row: dict,
+    accession_id: str,
+    persistence_mode: PersistenceMode,
+):
+    model_dict = {
+        "uuid": row["image_rep_uuid"],
+        "representation_of_uuid": row["result_data_uuid"],
+        "version": 0,
+        "file_uri": row["original_file_ref_uri"],
+        "image_format": row["original_file_ref_format"],
+        "object_creator": APIModels.Provenance.BIA_INGEST,
+        "total_size_in_bytes": row["original_file_ref_total_size"],
+        "additional_metadata": [row["image_rep_uuid_attr"]],
+        "image_viewer_setting": [],
+    }
+
+    persist(
+        accession_id,
+        APIModels.ImageRepresentation,
+        [APIModels.ImageRepresentation(**model_dict)],
+        persistence_mode,
+    )
+
+
 def create_uuid_list(
     object_ro_crate_id_list: list[str] | float,
     uuid_creation_function: callable,
@@ -253,9 +280,10 @@ def create_annotation_data(
         "object_creator": APIModels.Provenance.BIA_INGEST,
         "original_file_reference_uuid": row["file_ref_uuids"],
         "additional_metadata": [row["result_data_uuid_attr"]],
-        "label": (
-            row["result_data_label"] if not pd.isna(row["result_data_label"]) else None
-        ),
+        # TODO: allow labels on AnnotationData
+        # "label": (
+        #     row["result_data_label"] if not pd.isna(row["result_data_label"]) else None
+        # ),
     }
 
     persist(

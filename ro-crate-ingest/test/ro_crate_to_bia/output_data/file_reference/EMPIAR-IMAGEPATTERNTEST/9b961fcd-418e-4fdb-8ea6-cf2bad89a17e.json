@@ -31,6 +31,6 @@
   "file_path": "data/HeLa/segmentation/centrioles.tif",
   "format": ".tif",
   "size_in_bytes": 12,
-  "uri": "https://ftp.ebi.ac.uk/empiar/world_availability/IMAGEPATTERNTEST/data/data/HeLa/segmentation/centrioles.tif",
+  "uri": "https://ftp.ebi.ac.uk/empiar/world_availability/IMAGEPATTERNTEST/data/HeLa/segmentation/centrioles.tif",
   "submission_dataset_uuid": "8745e192-ad53-4a7f-adba-200cdeab3d95"
 }

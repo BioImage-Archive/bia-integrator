@@ -51,7 +51,7 @@ def prepare_all_ids_for_images(
 
 
 def prep_result_data_row(
-    group_df: pd.DataFrame,
+    group_df: tuple[str, pd.DataFrame],
     crate_objects_by_id: dict[str, ROCrateModel],
     study_uuid: str,
 ):
@@ -82,9 +82,14 @@ def prep_result_data_row(
         "protocol_id": [],
         "bio_sample_id": [],
         "specimen_imaging_preparation_protocol_id": [],
+        "original_file_ref_total_size": 0,
+        "original_file_ref_file_format": None,
+        "original_file_ref_uri": [],
+        "image_rep_uuid": None,
+        "image_rep_uuid_attr": None,
     }
 
-    get_result_data_uuids(result_data_id, df, study_uuid, pre_requisite_ids_row)
+    get_result_data_uuids(result_data_id, study_uuid, pre_requisite_ids_row)
 
     # Assuming all rows are the the same
     association_data_from_filelist = df["association_data_from_filelist"].iloc[0]
@@ -169,6 +174,21 @@ def prep_result_data_row(
                 specimen_uuid_attr.model_dump()
             )
 
+    # Add information for first image representation if the result data is an Image.
+    if pre_requisite_ids_row["result_type"] == "http://bia/Image":
+        image_rep_uuid, image_rep_uuid_attr = shared.create_image_representation_uuid(
+            study_uuid,
+            pre_requisite_ids_row["result_data_uuid"],
+            APIModels.Provenance.BIA_INGEST,
+        )
+        pre_requisite_ids_row |= {
+            "original_file_ref_total_size": int(df["size_in_bytes"].sum()),
+            "original_file_ref_format": df["file_format"].iloc[0],
+            "original_file_ref_uri": df["uri"].to_list(),
+            "image_rep_uuid": str(image_rep_uuid),
+            "image_rep_uuid_attr": image_rep_uuid_attr.model_dump(),
+        }
+
     return pd.Series(pre_requisite_ids_row)
 
 
@@ -181,7 +201,7 @@ def flatten_set_of_same_values(column: pd.Series):
 
 
 def get_result_data_uuids(
-    result_data_id: str, df: pd.DataFrame, study_uuid: str, pre_requisite_ids_row: dict
+    result_data_id: str, study_uuid: str, pre_requisite_ids_row: dict
 ) -> None:
     obj_type = pre_requisite_ids_row["result_type"]
     if obj_type == "http://bia/Image":
