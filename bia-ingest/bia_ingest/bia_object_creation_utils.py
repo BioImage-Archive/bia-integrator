@@ -9,18 +9,27 @@ from bia_ingest.cli_logging import (
 
 
 def dict_to_api_model(
-    dict: dict[str, Any],
+    input_dict: dict[str, Any],
     api_model_class: Type[BaseModel],
     valdiation_error_tracking: IngestionResult,
 ) -> Optional[BaseModel]:
-    api_model = None
+    """
+    This function instantiates any API model given a dict of its attributes
+    It tries to create the model and logs the creation in the provided IngestionResult
+    If the model creation fails due to a ValidationError, it logs the error and raises the exception
+    :param input_dict: A dictionary containing the attributes of the API model
+    :param api_model_class: The class of the API model to be instantiated
+    :param valdiation_error_tracking: An IngestionResult to log the model creation in
+    :return: The instantiated API model, or None if a ValidationError occurred
+    :raises ValidationError: If the model creation fails due to a ValidationError
+    """
     try:
-        api_model = api_model_class.model_validate(dict)
-    except ValidationError:
-        log_failed_model_creation(api_model_class, valdiation_error_tracking)
-    if api_model:
+        api_model = api_model_class.model_validate(input_dict)
         log_model_creation_count(api_model_class, 1, valdiation_error_tracking)
-    return api_model
+        return api_model
+    except ValidationError as error:
+        log_failed_model_creation(api_model_class, valdiation_error_tracking)
+        raise error
 
 
 def dicts_to_api_models(

@@ -32,9 +32,8 @@ class IngestionResult(CLIResult):
     FundingBody_ValidationErrorCount: int = Field(default=0)
     Grant_CreationCount: int = Field(default=0)
     Grant_ValidationErrorCount: int = Field(default=0)
-    # TODO: start ingesting these from biostudies
-    # ExternalLink_CreationCount: int = Field(default=0)
-    # ExternalLink_ValidationErrorCount: int = Field(default=0)
+    ExternalReference_CreationCount: int = Field(default=0)
+    ExternalReference_ValidationErrorCount: int = Field(default=0)
     # Publication_CreationCount: int = Field(default=0)
     # Publication_ValidationErrorCount: int = Field(default=0)
 
