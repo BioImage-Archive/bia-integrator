@@ -27,6 +27,7 @@ from bia_shared_datamodels.package_specific_uuid_creation.shared import (
     create_study_uuid,
 )
 
+
 logger = logging.getLogger("__main__." + __name__)
 
 
@@ -42,6 +43,7 @@ def get_study(
     submission_attributes = attributes_to_dict(submission.attributes)
     contributors = get_contributor(submission, result_summary)
     grants = get_grant_and_funding_body(submission, result_summary)
+    external_reference = get_external_references(submission, result_summary)
 
     study_attributes = attributes_to_dict(submission.section.attributes)
 
@@ -102,6 +104,7 @@ def get_study(
         "keyword": keywords,
         "author": [c.model_dump() for c in contributors],
         "grant": [g.model_dump() for g in grants],
+        "see_also": [ex_ref.model_dump(mode="json") for ex_ref in external_reference],
         "additional_metadata": additional_metadata,
         "version": 0,
     }
@@ -116,7 +119,10 @@ def get_study(
                 study,
             ]
         )
-    return study
+    if isinstance(study, bia_data_model.Study):  # Return study
+        return study
+    else:
+        raise Exception("Failed to create study model")
 
 
 def study_title_from_submission(submission: Submission) -> str:
@@ -140,42 +146,31 @@ def get_licence(study_attributes: Dict[str, Any]) -> semantic_models.Licence:
     return semantic_models.Licence[licence]
 
 
-def get_external_reference(
+def get_external_references(
     submission: Submission, result_summary: dict
 ) -> List[semantic_models.ExternalReference]:
     """
     Map biostudies.Submission.Link to semantic_models.ExternalReference
     """
-    sections = find_sections_recursive(
-        submission.section,
-        [
-            "links",
-        ],
-        [],
-    )
-
-    key_mapping = [
-        ("link", "url", None),
-        ("link_type", "Type", None),
-        ("description", "Description", None),
-    ]
-
-    return_list = []
-    for section in sections:
-        attr_dict = attributes_to_dict(section.attributes)
+    links = getattr(submission.section, "links")
+    external_references = []
+    for link in links:
+        attributes = attributes_to_dict(getattr(link, "attributes"))
         model_dict = {
-            k: case_insensitive_get(attr_dict, v, default)
-            for k, v, default in key_mapping
+            "link": getattr(link, "url"),
+            "link_type": case_insensitive_get(attributes, "type"),
+            "description": case_insensitive_get(attributes, "description"),
         }
 
-        external_ref = dict_to_api_model(
+        external_reference = dict_to_api_model(
             model_dict,
             semantic_models.ExternalReference,
             result_summary[submission.accno],
         )
-        if external_ref:
-            return_list.append(external_ref)
-    return return_list
+        if external_reference:
+            external_references.append(external_reference)
+
+    return external_references
 
 
 # TODO: Put comments and docstring
