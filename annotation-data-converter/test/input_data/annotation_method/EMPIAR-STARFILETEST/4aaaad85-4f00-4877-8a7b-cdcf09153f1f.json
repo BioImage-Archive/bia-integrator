@@ -1,0 +1,26 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "4aaaad85-4f00-4877-8a7b-cdcf09153f1f",
+  "version": 0,
+  "model": {
+    "type_name": "AnnotationMethod",
+    "version": 4
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "DeePiCt and manual particle picking"
+      }
+    }
+  ],
+  "title": "DeePiCt and manual particle picking",
+  "protocol_description": "To train a DeePiCt neural network for the detection of genetically encoded multimeric particles (GEMs), tomograms were binned to a pixel size of 13.48 or 13.70 Å and filtered with the following parameters in EMAN2: filter.low-pass.gauss:cutoff_abs=0.25, filter.highpass.gauss:cutoff_pixels=5, normalize, threshold.clampminmax.nsigma:nsigma=3. Spherical labels of 137 Å radius were generated based on the coordinates of 161 manually picked particles in EMAN2. A DeePiCt network of depth 2, with 32 initial features and batch normalization, was trained with an increasing number of particles and iterative refinement of coordinates via subtomogram averaging. The initial training set contained 161 particles from 39 tomograms, whereas the final training set contained 1284 particles from 71 tomograms. The number of grids and tomograms for the GEM2-labelled Mito-EGFP were six grids, 12 lamellae and 17 tomograms. Application of the CNN on 17 tomograms of the Mito-EGFP data set yielded 68 peaks after stringent postprocessing, which included thresholding at a value of 0.5, application of a lamella mask and a size filter for connected components of 5,000–50,000 pixels at 13.7 Å/pixel. Of the 68 peaks, two were discarded due to being in a lysosome or mitochondrion, three discarded due to beam-induced damage of the lamella surface and three were cytosolic but did not resemble a GEM visually. On visual inspection of smaller-sized peaks, 63 particles were added manually for subtomogram averaging.",
+  "annotation_criteria": null,
+  "annotation_coverage": null,
+  "transformation_description": null,
+  "spatial_information": null,
+  "method_type": [],
+  "annotation_source_indicator": null
+}

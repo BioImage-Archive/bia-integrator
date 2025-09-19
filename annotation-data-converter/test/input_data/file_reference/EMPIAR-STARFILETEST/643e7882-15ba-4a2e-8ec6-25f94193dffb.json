@@ -1,0 +1,36 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "643e7882-15ba-4a2e-8ec6-25f94193dffb",
+  "version": 0,
+  "model": {
+    "type_name": "FileReference",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "data/211206/tomograms/TS_016.mrc_aretomo.mrc16"
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "attributes_from_file_list",
+      "value": {
+        "http://bia/filePath": "data/211206/tomograms/TS_016.mrc_aretomo.mrc",
+        "http://bia/sizeInBytes": "16",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "http://bia/Image",
+        "http://schema.org/name": "Tomogram TS_016",
+        "http://bia/sourceImageLabel": "Tilt series TS_016",
+        "http://bia/associatedAnnotationMethod": "",
+        "http://bia/associatedProtocol": "Tomogram reconstruction and sub-tomogram averaging"
+      }
+    }
+  ],
+  "file_path": "data/211206/tomograms/TS_016.mrc_aretomo.mrc",
+  "format": ".mrc",
+  "size_in_bytes": 16,
+  "uri": "https://ftp.ebi.ac.uk/empiar/world_availability/STARFILETEST/data/data/211206/tomograms/TS_016.mrc_aretomo.mrc",
+  "submission_dataset_uuid": "d672654f-e309-4988-b9f6-9c00986b9892"
+}

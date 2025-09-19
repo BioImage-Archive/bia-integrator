@@ -1,0 +1,36 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "66187fb9-9211-42ac-93ad-32452c83725c",
+  "version": 0,
+  "model": {
+    "type_name": "FileReference",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "data/211206/tomograms/211206.star71"
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "attributes_from_file_list",
+      "value": {
+        "http://bia/filePath": "data/211206/tomograms/211206.star",
+        "http://bia/sizeInBytes": "71",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "http://bia/AnnotationData",
+        "http://schema.org/name": "Coordinates from subtomogram averaging of GEM2 particles for dataset 1 (211206)",
+        "http://bia/sourceImageLabel": "['Tomogram TS_016', 'Tomogram TS_019']",
+        "http://bia/associatedAnnotationMethod": "DeePiCt and manual particle picking",
+        "http://bia/associatedProtocol": ""
+      }
+    }
+  ],
+  "file_path": "data/211206/tomograms/211206.star",
+  "format": ".star",
+  "size_in_bytes": 71,
+  "uri": "https://ftp.ebi.ac.uk/empiar/world_availability/STARFILETEST/data/data/211206/tomograms/211206.star",
+  "submission_dataset_uuid": "d672654f-e309-4988-b9f6-9c00986b9892"
+}

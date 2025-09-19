@@ -11,26 +11,18 @@ python = "^3.13"
 rich = "^13.8.1"
 bia-shared-datamodels = { path = "../bia-shared-datamodels", develop = true }
 bia-integrator-api = { path = "../clients/python", develop = true }
+bia-test-data = { path = "../bia-test-data", develop = true }
 typer = "^0.17"
 requests = "^2.32.3"
 pydantic = "^2.9.2"
 pydantic-settings = "^2.5.2"
-#parse = "^1.20.2"
-#zarr = "^2.18.4"
-#numcodecs = "<= 0.14.1"
-#dask = "^2024.12.1"
-#microfilm = "^0.3.0"
-##pillow = "^11.1.0"
 tensorstore = "^0.1.71"
-##aiohttp = "^3.11.11"
-#ngff-zarr = "^0.16.0"
 starfile = "^0.5.13"
 neuroglancer = "^2.40.1"
 pyyaml = "^6.0.2"
 
 [tool.poetry.scripts]
 annotation_data_converter = "annotation_data_converter.cli:annotation_data_convert"
-#zarr2zarr = "bia_converter.zarr2zarr:app"
 
 [tool.poetry.group.dev.dependencies]
 ipython = "^8.32.0"
