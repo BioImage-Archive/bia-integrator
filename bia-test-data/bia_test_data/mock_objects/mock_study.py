@@ -153,8 +153,29 @@ def get_grant() -> List[semantic_models.Grant]:
     ]
 
 
+def get_external_references() -> List[semantic_models.ExternalReference]:
+    link1 = semantic_models.ExternalReference.model_validate(
+        {
+            "link": "https://www.test.link1.com/",
+            "description": "Test link 1.",
+        }
+    )
+    link2 = semantic_models.ExternalReference.model_validate(
+        {
+            "link": "ERP116793",
+            "description": "Test ENA link",
+            "link_type": "ENA",
+        }
+    )
+    return [
+        link1,
+        link2,
+    ]
+
+
 def get_study() -> bia_data_model.Study:
     contributor = get_contributor()
+    external_references = get_external_references()
     grant = get_grant()
     study_dict = {
         "uuid": create_study_uuid(accession_id),
@@ -189,6 +210,10 @@ def get_study() -> bia_data_model.Study:
                     "pagetab": f"https://www.ebi.ac.uk/biostudies/files/{accession_id}/{accession_id}.tsv",
                 },
             },
+        ],
+        "see_also": [
+            external_reference.model_dump(mode="json")
+            for external_reference in external_references
         ],
         "related_publication": [],
         "author": [c.model_dump() for c in contributor],

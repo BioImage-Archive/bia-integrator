@@ -132,7 +132,24 @@
   "description": "One of the principal challenges in counting or segmenting nuclei is dealing with clustered nuclei. To help assess algorithms' performance in this regard, this synthetic image set consists of four subsets with increasing degree of clustering. Each subset is also provided in two different levels of quality: high SNR and low SNR.",
   "keyword": [],
   "acknowledgement": "",
-  "see_also": [],
+  "see_also": [
+    {
+      "link": "https://bbbc.broadinstitute.org/BBBC024",
+      "link_type": null,
+      "description": "Original submission on the Broad Bioimage Benchmark Collection"
+    },
+    {
+      "link": "https://idr.openmicroscopy.org/webclient/?project=BBBC024",
+      "link_type": "Image Data Resource",
+      "description": "A link to an IDR project page"
+    },
+    {
+      "link": "https://www.ebi.ac.uk/empiar/EMPIAR-11380/",
+      "link_type": "empiar",
+      "description": "A link to an EMPIAR entry"
+    }
+
+  ],
   "related_publication": [],
   "grant": [],
   "funding_statement": ""
