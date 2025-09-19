@@ -1,19 +1,9 @@
 from __future__ import annotations
-import re
 
 from enum import Enum
 from datetime import date
-from typing import List, Optional, Any
-from pydantic import BaseModel, Field, EmailStr, AnyUrl, ConfigDict, model_validator
-
-from bia_shared_datamodels.constants import (
-    URL_TEMPLATES,
-    ALLOWED_LINK_TYPES,
-)
-
-
-# Strict URL detector for pre-checks (scheme://)
-_URL_RE = re.compile(r"^[a-z][a-z0-9+.-]*://", re.I)
+from typing import List, Optional
+from pydantic import BaseModel, Field, EmailStr, AnyUrl, ConfigDict
 
 
 #######################################################################################################
@@ -125,11 +115,6 @@ class Publication(ConfiguredBaseModel):
 class ExternalReference(ConfiguredBaseModel):
     """
     An object outside the BIA that a user wants to refer to.
-    Rules:
-      - If link_type is provided, link must be provided.
-      - link must be a valid URL. Non-URL inputs are only accepted when link_type is provided
-        AND can be mapped via TEMPLATES, in which case they are formatted into a URL.
-      - link_type must match one of the allowed display names (values of LINKTYPE_DISPLAY).
     """
 
     link: AnyUrl = Field(description="A URL linking to the referred resource.")
@@ -141,44 +126,6 @@ class ExternalReference(ConfiguredBaseModel):
         None,
         description="Brief description of the resource and relation.",
     )
-
-    @model_validator(mode="before")
-    @classmethod
-    def _coerce_and_validate(cls, data: Any) -> Any:
-        if not isinstance(data, dict):
-            return data
-
-        link_raw = data.get("link")
-        link_type_raw = data.get("link_type")
-
-        # If link looks like a URL, keep as-is. AnyUrl will validate strictly later.
-        looks_like_a_link = isinstance(link_raw, str) and _URL_RE.match(
-            link_raw.strip()
-        )
-        if looks_like_a_link:
-            return data  # AnyUrl field will validate it
-
-        # Normalize link_type and verify if provided
-        lt_norm = None
-        if link_type_raw is not None:
-            lt_norm = str(link_type_raw).strip().lower()
-            if lt_norm not in ALLOWED_LINK_TYPES and not looks_like_a_link:
-                raise ValueError(f"link_type not allowed: {link_type_raw}.")
-
-        # If link is not a URL
-        if lt_norm is not None and link_raw is not None and isinstance(link_raw, str):
-            # Try to build URL using template mapped from the display name
-            template = URL_TEMPLATES.get(ALLOWED_LINK_TYPES[lt_norm].lower())
-            if not template:
-                raise ValueError(
-                    f"no URL template for link_type: {ALLOWED_LINK_TYPES[lt_norm]}."
-                )
-            built = template.format(link_raw.strip())
-            data["link"] = built  # now a proper URL string; AnyUrl will validate
-            return data
-
-        # If we reach here, link is not a URL and no valid link_type templating is possible
-        raise ValueError(f"Invalid link or link_type in input data: {data}.")
 
 
 class Grant(ConfiguredBaseModel):

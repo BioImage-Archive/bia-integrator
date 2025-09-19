@@ -1,7 +1,7 @@
 import logging
 from pydantic import ValidationError
 import re
-from typing import List, Any, Dict, Optional
+from typing import List, Any, Dict, Optional, Tuple
 from email_validator import validate_email, EmailNotValidError
 
 from bia_ingest.cli_logging import (
@@ -21,12 +21,15 @@ from bia_ingest.biostudies.submission_parsing_utils import (
     case_insensitive_get,
 )
 from bia_ingest.biostudies.api import Attribute, Submission
+from bia_ingest.biostudies.common.constants import ALLOWED_LINK_TYPES, URL_TEMPLATES
 
 from bia_shared_datamodels import bia_data_model, semantic_models
 from bia_shared_datamodels.package_specific_uuid_creation.shared import (
     create_study_uuid,
 )
 
+# Strict URL detector for pre-checks (scheme://)
+_URL_RE = re.compile(r"^[a-z][a-z0-9+.-]*://", re.I)
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -146,6 +149,50 @@ def get_licence(study_attributes: Dict[str, Any]) -> semantic_models.Licence:
     return semantic_models.Licence[licence]
 
 
+def sanitise_link_and_link_type(link_raw, link_type_raw) -> Tuple[str, str]:
+    # If link looks like a URL, keep as-is. AnyUrl will validate strictly later.
+    """
+    Sanitise a link and its type.
+
+    If the link looks like a URL (validated by AnyUrl), keep as-is.
+    If the link is not a URL, normalise the link_type and verify if provided.
+    If link_type is not allowed, raise ValueError.
+    If link is not a URL, try to build a URL using the template mapped from the display name.
+    If no URL template is found for the link_type, raise ValueError.
+    If the link is not a URL and no valid link_type templating is possible, raise ValueError.
+
+    :param link_raw: The raw link string
+    :param link_type_raw: The raw link type string
+    :return: A tuple of the sanitised link and its type
+    :rtype: Tuple[str, str]
+    """
+    looks_like_a_link = isinstance(link_raw, str) and _URL_RE.match(link_raw.strip())
+    if looks_like_a_link:
+        return link_raw, link_type_raw  # AnyUrl field will validate it
+
+    # Normalize link_type and verify if provided
+    lt_norm = None
+    if link_type_raw is not None:
+        lt_norm = str(link_type_raw).strip().lower()
+        if lt_norm not in ALLOWED_LINK_TYPES and not looks_like_a_link:
+            raise ValueError(f"link_type not allowed: {link_type_raw}.")
+
+    # If link is not a URL
+    if lt_norm is not None and link_raw is not None and isinstance(link_raw, str):
+        # Try to build URL using template mapped from the display name
+        template = URL_TEMPLATES.get(ALLOWED_LINK_TYPES[lt_norm].lower())
+        if not template:
+            raise ValueError(
+                f"no URL template for link_type: {ALLOWED_LINK_TYPES[lt_norm]}."
+            )
+        built = template.format(link_raw.strip())
+        link = built  # now a proper URL string; AnyUrl will validate
+        return link, ALLOWED_LINK_TYPES[lt_norm]
+
+    # If we reach here, link is not a URL and no valid link_type templating is possible
+    raise ValueError(f"Invalid link or link_type provided: {link_raw}, {link_type_raw}")
+
+
 def get_external_references(
     submission: Submission, result_summary: dict
 ) -> List[semantic_models.ExternalReference]:
@@ -154,11 +201,17 @@ def get_external_references(
     """
     links = getattr(submission.section, "links")
     external_references = []
-    for link in links:
-        attributes = attributes_to_dict(getattr(link, "attributes"))
+    for link_section in links:
+        attributes = attributes_to_dict(getattr(link_section, "attributes"))
+        link, link_type = (
+            getattr(link_section, "url"),
+            case_insensitive_get(attributes, "type"),
+        )
+        link_type = link_type.lower() if isinstance(link_type, str) else link_type
+        link, link_type = sanitise_link_and_link_type(link, link_type)
         model_dict = {
-            "link": getattr(link, "url"),
-            "link_type": case_insensitive_get(attributes, "type"),
+            "link": link,
+            "link_type": link_type,
             "description": case_insensitive_get(attributes, "description"),
         }
 
