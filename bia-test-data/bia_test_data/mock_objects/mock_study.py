@@ -162,9 +162,9 @@ def get_external_references() -> List[semantic_models.ExternalReference]:
     )
     link2 = semantic_models.ExternalReference.model_validate(
         {
-            "link": "ERP116793",
+            "link": "https://www.ebi.ac.uk/ena/browser/view/ERP116793",
             "description": "Test ENA link",
-            "link_type": "ENA",
+            "link_type": "ena",
         }
     )
     return [

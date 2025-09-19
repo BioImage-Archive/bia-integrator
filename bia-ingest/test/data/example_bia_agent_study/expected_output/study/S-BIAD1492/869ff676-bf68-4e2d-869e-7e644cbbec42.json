@@ -140,7 +140,7 @@
     },
     {
       "link": "https://idr.openmicroscopy.org/webclient/?project=BBBC024",
-      "link_type": "Image Data Resource",
+      "link_type": "image data resource",
       "description": "A link to an IDR project page"
     },
     {
