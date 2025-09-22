@@ -55,7 +55,7 @@ def create_file_reference_and_result_data_row(
     file_ref_url_prefix: str,
     persistence_mode: PersistenceMode,
     image_extensions: list[str],
-) -> APIModels.FileReference:
+) -> dict:
     """
     Creates & persists file references.
     Return the required information needed to create result data (images, annotation data).
@@ -123,7 +123,7 @@ def information_for_result_data_creation(
     size_in_bytes,
     file_format,
     uri,
-) -> Optional[dict]:
+) -> dict:
 
     result_data_id, obj_type = select_result_data_id_and_type(row, image_extensions)
     result_data_label_from_filelist = None
