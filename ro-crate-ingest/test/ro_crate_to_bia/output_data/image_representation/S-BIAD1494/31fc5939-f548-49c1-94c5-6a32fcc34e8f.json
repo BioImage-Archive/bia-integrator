@@ -1,0 +1,33 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "31fc5939-f548-49c1-94c5-6a32fcc34e8f",
+  "version": 0,
+  "model": {
+    "type_name": "ImageRepresentation",
+    "version": 4
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "bbb632e5-33f7-4b43-a9f8-751cbc1cb6e4"
+      }
+    }
+  ],
+  "image_format": ".tif",
+  "file_uri": [
+    "None?"
+  ],
+  "total_size_in_bytes": 41,
+  "voxel_physical_size_x": null,
+  "voxel_physical_size_y": null,
+  "voxel_physical_size_z": null,
+  "size_x": null,
+  "size_y": null,
+  "size_z": null,
+  "size_c": null,
+  "size_t": null,
+  "image_viewer_setting": [],
+  "representation_of_uuid": "bbb632e5-33f7-4b43-a9f8-751cbc1cb6e4"
+}

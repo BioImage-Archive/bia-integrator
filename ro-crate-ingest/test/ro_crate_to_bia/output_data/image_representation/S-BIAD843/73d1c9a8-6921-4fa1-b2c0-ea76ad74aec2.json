@@ -1,0 +1,33 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "73d1c9a8-6921-4fa1-b2c0-ea76ad74aec2",
+  "version": 0,
+  "model": {
+    "type_name": "ImageRepresentation",
+    "version": 4
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "5293ec4b-4a16-4a52-b1d4-328fc8c6538b"
+      }
+    }
+  ],
+  "image_format": ".zip",
+  "file_uri": [
+    "None?"
+  ],
+  "total_size_in_bytes": 1728680,
+  "voxel_physical_size_x": null,
+  "voxel_physical_size_y": null,
+  "voxel_physical_size_z": null,
+  "size_x": null,
+  "size_y": null,
+  "size_z": null,
+  "size_c": null,
+  "size_t": null,
+  "image_viewer_setting": [],
+  "representation_of_uuid": "5293ec4b-4a16-4a52-b1d4-328fc8c6538b"
+}

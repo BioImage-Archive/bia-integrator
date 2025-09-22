@@ -1,0 +1,34 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "f73fb17d-2c5a-4158-a0f8-82ce738022cf",
+  "version": 0,
+  "model": {
+    "type_name": "ImageRepresentation",
+    "version": 4
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "dbc5b328-21a4-478a-a6f9-01c53a90c61b"
+      }
+    }
+  ],
+  "image_format": ".tif",
+  "file_uri": [
+    "https://ftp.ebi.ac.uk/empiar/world_availability/STARFILETEST/data/220330/data/frames/TS_008_42_001_12.tif",
+    "https://ftp.ebi.ac.uk/empiar/world_availability/STARFILETEST/data/220330/data/frames/TS_008_42_002_17.tif"
+  ],
+  "total_size_in_bytes": 34,
+  "voxel_physical_size_x": null,
+  "voxel_physical_size_y": null,
+  "voxel_physical_size_z": null,
+  "size_x": null,
+  "size_y": null,
+  "size_z": null,
+  "size_c": null,
+  "size_t": null,
+  "image_viewer_setting": [],
+  "representation_of_uuid": "dbc5b328-21a4-478a-a6f9-01c53a90c61b"
+}
