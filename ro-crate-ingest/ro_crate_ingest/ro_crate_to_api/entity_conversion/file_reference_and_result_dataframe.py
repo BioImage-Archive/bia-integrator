@@ -55,10 +55,10 @@ def create_file_reference_and_result_data_row(
     file_ref_url_prefix: str,
     persistence_mode: PersistenceMode,
     image_extensions: list[str],
-) -> APIModels.FileReference:
+) -> dict:
     """
     Creates & persists file references.
-    Return the required information needed to create result data (images, annotationd data).
+    Return the required information needed to create result data (images, annotation data).
     """
     import pandas as pd
     from numpy import nan
@@ -80,6 +80,8 @@ def create_file_reference_and_result_data_row(
 
     dataset_roc_id = select_dataset(row)
     dataset_uuid = str(create_dataset_uuid(study_uuid, dataset_roc_id)[0])
+    file_format = get_suffix(row["path"])
+    uri = get_file_ref_uri(file_ref_url_prefix, accession_id, row["path"])
 
     model_dict = {
         "uuid": str(uuid),
@@ -87,8 +89,8 @@ def create_file_reference_and_result_data_row(
         "file_path": row["path"],
         "version": 0,
         "size_in_bytes": size_in_bytes,
-        "format": get_suffix(row["path"]),
-        "uri": get_file_ref_uri(file_ref_url_prefix, accession_id, row["path"]),
+        "format": file_format,
+        "uri": uri,
         "object_creator": APIModels.Provenance.BIA_INGEST,
         "additional_metadata": additional_metadata,
     }
@@ -101,13 +103,27 @@ def create_file_reference_and_result_data_row(
     )
 
     return information_for_result_data_creation(
-        row, image_extensions, uuid, dataset_roc_id, dataset_uuid
+        row,
+        image_extensions,
+        uuid,
+        dataset_roc_id,
+        dataset_uuid,
+        size_in_bytes,
+        file_format,
+        uri,
     )
 
 
 def information_for_result_data_creation(
-    row, image_extensions, uuid, dataset_roc_id, dataset_uuid
-) -> Optional[dict]:
+    row,
+    image_extensions,
+    uuid,
+    dataset_roc_id,
+    dataset_uuid,
+    size_in_bytes,
+    file_format,
+    uri,
+) -> dict:
 
     result_data_id, obj_type = select_result_data_id_and_type(row, image_extensions)
     result_data_label_from_filelist = None
@@ -130,6 +146,9 @@ def information_for_result_data_creation(
         "result_data_id": result_data_id,
         "result_data_label_from_filelist": result_data_label_from_filelist,
         "association_data_from_filelist": filelist_to_ro_crate_object_reference,
+        "size_in_bytes": size_in_bytes,
+        "file_format": file_format,
+        "uri": uri,
     }
 
 
@@ -141,7 +160,7 @@ def get_suffix(file_path: str) -> str:
 def get_file_ref_uri(file_ref_url_prefix, accession_id, file_path) -> str:
     if file_ref_url_prefix == "empiar":
         accession_no = accession_id.split("-")[1]
-        return f"https://ftp.ebi.ac.uk/empiar/world_availability/{accession_no}/data/{file_path}"
+        return f"https://ftp.ebi.ac.uk/empiar/world_availability/{accession_no}/{file_path}"
     elif file_ref_url_prefix == "biostudies":
         return f"https://www.ebi.ac.uk/biostudies/files/{accession_id}/{file_path}"
     else:
