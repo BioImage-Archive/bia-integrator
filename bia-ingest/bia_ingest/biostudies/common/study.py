@@ -46,7 +46,8 @@ def get_study(
     submission_attributes = attributes_to_dict(submission.attributes)
     contributors = get_contributor(submission, result_summary)
     grants = get_grant_and_funding_body(submission, result_summary)
-    external_reference = get_external_references(submission, result_summary)
+    external_references = get_external_references(submission, result_summary)
+    related_publications = get_related_publications(submission, result_summary)
 
     study_attributes = attributes_to_dict(submission.section.attributes)
 
@@ -89,12 +90,14 @@ def get_study(
         }
     )
 
+    accno = getattr(submission, "accno")
+
     # Note we have not been storing uuid_attribute in additional metedata since it's always just the accno.
-    uuid, uuid_attribute = create_study_uuid(submission.accno)
+    uuid, uuid_attribute = create_study_uuid(accno)
 
     study_dict = {
         "uuid": uuid,
-        "accession_id": submission.accno,
+        "accession_id": accno,
         # TODO: Do more robust search for title - sometimes it is in
         #       actual submission - see old ingest code
         "title": study_title,
@@ -105,9 +108,16 @@ def get_study(
         "acknowledgement": acknowledgement,
         "funding_statement": funding_statement,
         "keyword": keywords,
-        "author": [c.model_dump() for c in contributors],
-        "grant": [g.model_dump() for g in grants],
-        "see_also": [ex_ref.model_dump(mode="json") for ex_ref in external_reference],
+        "author": [contributor.model_dump() for contributor in contributors],
+        "grant": [grant.model_dump() for grant in grants],
+        "see_also": [
+            external_reference.model_dump(mode="json")
+            for external_reference in external_references
+        ],
+        "related_publication": [
+            related_publication.model_dump(mode="json")
+            for related_publication in related_publications
+        ],
         "additional_metadata": additional_metadata,
         "version": 0,
     }
@@ -200,9 +210,9 @@ def get_external_references(
     Map biostudies.Submission.Link to semantic_models.ExternalReference
     """
     links = getattr(submission.section, "links")
-    external_references = []
+    external_references = list()
     for link_section in links:
-        attributes = attributes_to_dict(getattr(link_section, "attributes"))
+        attributes: dict = attributes_to_dict(getattr(link_section, "attributes"))
         link, link_type = (
             getattr(link_section, "url"),
             case_insensitive_get(attributes, "type"),
@@ -294,7 +304,7 @@ def get_affiliation(
     return affiliation_dict
 
 
-def get_publication(
+def get_related_publications(
     submission: Submission, result_summary: dict
 ) -> List[semantic_models.Publication]:
     publication_sections = find_sections_recursive(
@@ -304,26 +314,26 @@ def get_publication(
         ],
         [],
     )
-    key_mapping = [
-        ("doi", "DOI", None),
-        ("pubmed_id", "Pubmed ID", None),
-        ("author", "Authors", None),
-        ("release_date", "Year", None),
-        ("title", "Title", None),
-    ]
-    publications = []
-    for section in publication_sections:
-        attr_dict = attributes_to_dict(section.attributes)
 
-        model_dict = {
-            k: case_insensitive_get(attr_dict, v, default)
-            for k, v, default in key_mapping
+    publications: list = list()
+    for section in publication_sections:
+        attributes: dict = attributes_to_dict(section.attributes)
+        publication: dict = {
+            k: case_insensitive_get(attributes, v, default)
+            for k, v, default in [
+                ("doi", "DOI", None),
+                ("pubmed_id", "Pubmed ID", None),
+                ("authors_name", "Authors", None),
+                ("publication_year", "Year", None),
+                ("title", "Title", None),
+            ]
         }
         try:
-            publications.append(semantic_models.Publication.model_validate(model_dict))
+            publications.append(semantic_models.Publication.model_validate(publication))
         except ValidationError:
             log_failed_model_creation(
-                semantic_models.Publication, result_summary[submission.accno]
+                semantic_models.Publication,
+                result_summary[getattr(section, "accno")],
             )
 
     return publications
