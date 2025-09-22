@@ -34,8 +34,8 @@ class IngestionResult(CLIResult):
     Grant_ValidationErrorCount: int = Field(default=0)
     ExternalReference_CreationCount: int = Field(default=0)
     ExternalReference_ValidationErrorCount: int = Field(default=0)
-    # Publication_CreationCount: int = Field(default=0)
-    # Publication_ValidationErrorCount: int = Field(default=0)
+    Publication_CreationCount: int = Field(default=0)
+    Publication_ValidationErrorCount: int = Field(default=0)
 
     Dataset_CreationCount: int = Field(default=0)
     Dataset_ValidationErrorCount: int = Field(default=0)
