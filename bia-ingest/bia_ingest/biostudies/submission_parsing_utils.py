@@ -25,20 +25,22 @@ def attributes_to_dict(
 
     :param attributes: a list of dictionaries [{"name": "example_name", "value": "example value}, ...]
     :type attributes: List[Attribute]
-    :return: Description
+    :return: the following type of transformed dictionary: {"example_name": "example value", ...} or {"example_name": ["example value", ...], ...}
     :rtype: Dict[str, str | List[str] | None]
     """
 
     attr_dict = {}
-    for attr in attributes:
-        if attr.name in attr_dict:
-            if not isinstance(attr_dict[attr.name], list):
-                attr_dict[attr.name] = [
-                    attr_dict[attr.name],
+    for attribute in attributes:
+        attr_name = getattr(attribute, "name")
+        attr_value = getattr(attribute, "value")
+        if attr_name in attr_dict:
+            if not isinstance(attr_dict[attr_name], list):
+                attr_dict[attr_name] = [
+                    attr_dict[attr_name],
                 ]
-            attr_dict[attr.name].append(attr.value)
+            attr_dict[attr_name].append(attr_value)
         else:
-            attr_dict[attr.name] = attr.value
+            attr_dict[attr_name] = attr_value
     return attr_dict
 
 
@@ -244,19 +246,18 @@ def find_datasets_with_file_lists(
     return datasets_with_file_lists
 
 
-def case_insensitive_get(input_dict: dict, key: str, default: Any = "") -> Any:
+def case_insensitive_get(
+    input_dict: dict, key: str, default: Any = None
+) -> list[str] | str | None:
     """Access dict values with case insensitive keys
 
     i.e. get value from {"Key": value} using "Key", "key", "KEY", etc.
     """
-    if key in input_dict:
-        return input_dict[key]
+    key_lower = key.lower()
 
-    # Line below assumes dict keys are unique when converted to lcase.
-    mapping_dict = {k.lower(): k for k in input_dict.keys()}
-
-    key = key.lower()
-    if key in mapping_dict:
-        return input_dict[mapping_dict[key]]
+    if key_lower in (k.lower() for k in input_dict):
+        return next(
+            (v for k, v in input_dict.items() if k.lower() == key_lower), default
+        )
     else:
         return default
