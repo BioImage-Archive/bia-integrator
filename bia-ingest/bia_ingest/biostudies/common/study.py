@@ -333,7 +333,7 @@ def get_related_publications(
         except ValidationError:
             log_failed_model_creation(
                 semantic_models.Publication,
-                result_summary[getattr(section, "accno")],
+                result_summary[getattr(submission, "accno")],
             )
 
     return publications
