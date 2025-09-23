@@ -74,22 +74,30 @@ def extract_biosample_dicts(
     study_uuid: UUID,
     growth_protocol_map: dict[str, bia_data_model.BioSample],
     result_summary: dict,
-) -> list[dict[str, Any]]:
+) -> dict[str, Any]:
     biosample_sections = find_sections_recursive(submission.section, ["Biosample"])
-
-    key_mapping = [
-        ("title", "Title", ""),
-        ("biological_entity_description", "Biological entity", ""),
-    ]
 
     model_dicts_map = {}
     for section in biosample_sections:
+        model_dict = dict()
         attr_dict = attributes_to_dict(section.attributes)
+        title = case_insensitive_get(attr_dict, "Title", "")
 
-        model_dict = {
-            k: case_insensitive_get(attr_dict, v, default)
-            for k, v, default in key_mapping
-        }
+        biological_entity = case_insensitive_get(attr_dict, "Biological entity", "")
+        # clears the entity and ensures that it is dealin with a string
+        biological_entity = f"{biological_entity}".strip()
+        biological_entity = (
+            biological_entity[-1:]
+            if biological_entity != "" and biological_entity[-1] == "."
+            else biological_entity
+        )
+        description = case_insensitive_get(attr_dict, "Description", "")
+
+        model_dict.setdefault("title", title)
+        model_dict.setdefault(
+            "biological_entity_description",
+            f"{biological_entity}. {description}".strip(),
+        )
 
         # Populate intrinsic, extrinsic and experimental variables separately to base keys as they are list of strings
         for api_key, biostudies_key in (
