@@ -77,10 +77,8 @@ def get_publication() -> List[semantic_models.Publication]:
         {
             "pubmed_id": "38381674",
             "title": "Test publication 1",
-            # TODO: No release date -> ST only collects Year
-            "release_date": "2024",
-            # TODO: Author is a string here.
-            "author": "Test Author11, Test Author12.",
+            "publication_year": "2024",
+            "authors_name": "Test Author11, Test Author12.",
         }
     )
     publication2 = semantic_models.Publication.model_validate(
@@ -88,9 +86,8 @@ def get_publication() -> List[semantic_models.Publication]:
             "pubmed_id": "38106175",
             "doi": "10.1101/2023.12.07.570699",
             "title": "Test publication 2",
-            # TODO: Author is a string here.
-            "author": "Test Author21, Test Author22",
-            "release_date": "2023",
+            "authors_name": "Test Author21, Test Author22",
+            "publication_year": "2023",
         }
     )
     return [
@@ -176,6 +173,7 @@ def get_external_references() -> List[semantic_models.ExternalReference]:
 def get_study() -> bia_data_model.Study:
     contributor = get_contributor()
     external_references = get_external_references()
+    publications = get_publication()
     grant = get_grant()
     study_dict = {
         "uuid": create_study_uuid(accession_id),
@@ -215,7 +213,9 @@ def get_study() -> bia_data_model.Study:
             external_reference.model_dump(mode="json")
             for external_reference in external_references
         ],
-        "related_publication": [],
+        "related_publication": [
+            publication.model_dump(mode="json") for publication in publications
+        ],
         "author": [c.model_dump() for c in contributor],
         "keyword": [
             "Test keyword1",
