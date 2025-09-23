@@ -10,15 +10,15 @@ from bia_ingest.biostudies.biostudies_processing_version import (
     BioStudiesProcessingVersion,
 )
 
-from typing import Any, Dict, List, Optional, Union
+from typing import Any
 import logging
 
 logger = logging.getLogger("__main__." + __name__)
 
 
 def attributes_to_dict(
-    attributes: List[Attribute],
-) -> Dict[str, Optional[str | List[str]]]:
+    attributes: list[Attribute],
+) -> dict[str, str | list[str] | None]:
     """
     This method extract all the elements in the attributes dictionary
     and reformat them in a  more flat like strucure.
@@ -46,8 +46,8 @@ def attributes_to_dict(
 
 def find_file_lists_in_section(
     section: Section,
-    flists: List[Dict[str, Union[str, None, List[str]]]],
-) -> List[Dict[str, Union[str, None, List[str]]]]:
+    flists: list[dict[str, str | None | list[str]]],
+) -> list[dict[str, str | None | list[str]]]:
     """
     Find all of the File Lists in a Section, recursively descending through the subsections.
 
@@ -80,14 +80,14 @@ def find_file_lists_in_section(
 
 def find_file_lists_in_submission(
     submission: Submission,
-) -> List[Dict[str, Union[str, None, List[str]]]]:
+) -> list[dict[str, str | None | list[str]]]:
     return find_file_lists_in_section(submission.section, [])
 
 
 def find_files_in_submission_file_lists(
     submission: Submission,
     result_summary: dict,
-) -> List[File]:
+) -> list[File]:
     accno = submission.accno
     submission_type = result_summary[accno].ProcessingVersion
 
@@ -120,14 +120,14 @@ def find_files_in_submission_file_lists(
     return sum(file_lists, [])
 
 
-def find_files_in_submission(section: Section, files_list: List[File]) -> List[File]:
+def find_files_in_submission(section: Section, files_list: list[File]) -> list[File]:
     """Find files in a submission that are attached directly,
     not in file lists."""
 
     section_type = type(section)
     if section_type == Section:
         for file in section.files:
-            if isinstance(file, List):
+            if isinstance(file, list):
                 files_list += file
             else:
                 files_list.append(file)
@@ -146,7 +146,7 @@ def find_files_in_submission(section: Section, files_list: List[File]) -> List[F
 def find_files_and_file_lists_in_default_submission(
     submission: Submission,
     result_summary: dict,
-) -> List[File]:
+) -> list[File]:
     """Find all of the files in a submission, both attached directly to
     the submission and as file lists."""
 
@@ -161,8 +161,8 @@ def find_files_and_file_lists_in_default_submission(
 
 
 def mattributes_to_dict(
-    attributes: List[Attribute], reference_dict: Dict[str, Any]
-) -> Dict[str, Any]:
+    attributes: list[Attribute], reference_dict: dict[str, Any]
+) -> dict[str, Any]:
     """Return attributes as dictionary dereferencing attribute references.
 
     Return the list of attributes supplied as a dictionary. Any attributes
@@ -187,8 +187,8 @@ def mattributes_to_dict(
 
 
 def find_sections_recursive(
-    section: Section, search_types: List[str], results: Optional[list[Section]] = None
-) -> List[Section]:
+    section: Section, search_types: list[str], results: list[Section] | None = None
+) -> list[Section]:
     """
     Find all sections of search_types within tree, starting at given section
     """
@@ -216,7 +216,7 @@ def find_sections_recursive(
 
 def find_datasets_with_file_lists(
     submission: Submission,
-) -> Dict[str, List[Dict[str, Union[str, None, List[str]]]]]:
+) -> dict[str, list[dict[str, str | None | list[str]]]]:
     """
     Return dict with dataset names as keys and file lists dicts as values
 
