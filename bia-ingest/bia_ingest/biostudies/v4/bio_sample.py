@@ -84,6 +84,13 @@ def extract_biosample_dicts(
         title = case_insensitive_get(attr_dict, "Title", "")
 
         biological_entity = case_insensitive_get(attr_dict, "Biological entity", "")
+        # clears the entity and ensures that it is dealin with a string
+        biological_entity = f"{biological_entity}".strip()
+        biological_entity = (
+            biological_entity[-1:]
+            if biological_entity != "" and biological_entity[-1] == "."
+            else biological_entity
+        )
         description = case_insensitive_get(attr_dict, "Description", "")
 
         model_dict.setdefault("title", title)
