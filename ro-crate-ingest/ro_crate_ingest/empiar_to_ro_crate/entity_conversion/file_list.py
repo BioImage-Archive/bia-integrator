@@ -103,6 +103,7 @@ def expand_dataframe_metadata(
             additional_files_pattern_to_dataset_map,
             imageset_to_dataset_id,
             yaml_datasets_by_title,
+            file_df["file_path"].to_list(), 
         ),
         axis=1,
     )
@@ -116,6 +117,7 @@ def expand_row_metdata(
     additional_files_pattern_to_dataset_map: dict[str, str],
     imageset_to_dataset_id: dict[str, StopIteration],
     yaml_dataset_by_title: dict,
+    all_file_paths: list, 
 ) -> pd.Series:
     file_path: Path = row["file_path"]
 
@@ -155,27 +157,32 @@ def expand_row_metdata(
 
         for obj, obj_type in objects_with_types:
             if is_matching_file_pattern_from_yaml_object(obj, path):
-                update_row(output_row, obj, obj_type)
+                update_row(output_row, obj, obj_type, all_file_paths)
                 break
 
     return pd.Series(output_row)
 
 
-def update_row(output_row: dict, yaml_object: dict, row_type: str):
-    output_row["label"] = yaml_object["label"]
+def update_row(
+        output_row: dict, 
+        yaml_object: dict, 
+        row_type: str, 
+        all_file_paths: list
+):
+
+    output_row["label"] = yaml_object.get("file_group", output_row["file_path"])
+    
     output_row["type"] = row_type
     output_row["associated_annotation_method"] = yaml_object.get(
         "annotation_method_title", None
     )
     output_row["associated_protocol"] = yaml_object.get("protocol_title", None)
 
-    input_images = yaml_object.get("input_image_label", None)
-    if isinstance(input_images, list):
-        output_row["source_image_label"] = [
-            input_image.get("label") for input_image in input_images
-        ]
+    input_images = yaml_object.get("input_image_pattern", None)
+    if input_images:
+        output_row["source_image_label"] = find_matching_input_images(all_file_paths, input_images)
     else:
-        output_row["source_image_label"] = input_images
+        output_row["source_image_label"] = yaml_object.get("input_image_group", input_images)
 
 
 def get_dataset_id(
@@ -214,6 +221,23 @@ def is_matching_file_pattern_from_yaml_object(
         return result is not None
     else:
         return False
+
+
+def find_matching_input_images(
+        file_paths: list, 
+        pattern: str, 
+) -> list:
+    
+    matches = []
+    for path in file_paths:
+        result = parse.parse(f"data/{pattern}", str(path))
+        if result is not None:
+            matches.append(str(path))
+    
+    if len(matches) == 0:
+        raise ValueError(f"No files found matching input image pattern: {pattern}")
+
+    return matches
 
 
 def split_dataframe_by_dataset(file_df: pd.DataFrame) -> dict[str, pd.DataFrame]:
