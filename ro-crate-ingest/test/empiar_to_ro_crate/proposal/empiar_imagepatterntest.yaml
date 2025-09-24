@@ -27,3 +27,5 @@ datasets:
         biosample_title: "HeLa cells"
         image_acquisition_protocol_title: "Cryo-serial pFIB/SEM"
         specimen_imaging_preparation_protocol_title: "Cryo-FIB/SEM sample preparation"
+    additional_files:
+      - file_pattern: "additional_file.csv"
