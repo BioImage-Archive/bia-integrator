@@ -91,6 +91,8 @@ def get_study(
     )
 
     accno = getattr(submission, "accno")
+    doi = submission_attributes.pop("DOI", None)
+    release_date = submission_attributes.pop("ReleaseDate")
 
     # Note we have not been storing uuid_attribute in additional metedata since it's always just the accno.
     uuid, uuid_attribute = create_study_uuid(accno)
@@ -98,12 +100,13 @@ def get_study(
     study_dict = {
         "uuid": uuid,
         "accession_id": accno,
+        "doi": doi,
         # TODO: Do more robust search for title - sometimes it is in
         #       actual submission - see old ingest code
         "title": study_title,
         "object_creator": semantic_models.Provenance.bia_ingest,
         "description": description,
-        "release_date": submission_attributes.pop("ReleaseDate"),
+        "release_date": release_date,
         "licence": licence,
         "acknowledgement": acknowledgement,
         "funding_statement": funding_statement,
@@ -330,11 +333,12 @@ def get_related_publications(
         }
         try:
             publications.append(semantic_models.Publication.model_validate(publication))
-        except ValidationError:
+        except ValidationError as error:
             log_failed_model_creation(
                 semantic_models.Publication,
                 result_summary[getattr(submission, "accno")],
             )
+            raise error
 
     return publications
 
