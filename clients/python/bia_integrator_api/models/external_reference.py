@@ -27,7 +27,7 @@ class ExternalReference(BaseModel):
     """
     An object outside the BIA that a user wants to refer to.
     """ # noqa: E501
-    link: Annotated[str, Field(min_length=1, strict=True)] = Field(description="A URL linking to the refered resource.")
+    link: Annotated[str, Field(min_length=1, strict=True)] = Field(description="A URL linking to the referred resource.")
     link_type: Optional[StrictStr] = None
     description: Optional[StrictStr] = None
     __properties: ClassVar[List[str]] = ["link", "link_type", "description"]

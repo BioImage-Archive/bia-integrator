@@ -42,6 +42,7 @@ class Study(BaseModel):
     model: Optional[ModelMetadata] = None
     additional_metadata: Optional[List[Attribute]] = Field(default=None, description="Freeform key-value pairs that don't otherwise fit our data model, potentially from user provided metadata, BIA curation, and experimental fields.")
     accession_id: StrictStr = Field(description="Unique ID provided by BioStudies.")
+    doi: Optional[Annotated[str, Field(min_length=1, strict=True)]] = None
     licence: Licence
     author: Annotated[List[Contributor], Field(min_length=1)]
     title: StrictStr = Field(description="The title of a study. This will usually be displayed when search results including your data are shown.")
@@ -53,7 +54,7 @@ class Study(BaseModel):
     related_publication: Optional[List[Publication]] = Field(default=None, description="The publications that the work involved in the study contributed to.")
     grant: Optional[List[Grant]] = Field(default=None, description="The grants that funded the study.")
     funding_statement: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["object_creator", "uuid", "version", "model", "additional_metadata", "accession_id", "licence", "author", "title", "release_date", "description", "keyword", "acknowledgement", "see_also", "related_publication", "grant", "funding_statement"]
+    __properties: ClassVar[List[str]] = ["object_creator", "uuid", "version", "model", "additional_metadata", "accession_id", "doi", "licence", "author", "title", "release_date", "description", "keyword", "acknowledgement", "see_also", "related_publication", "grant", "funding_statement"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -137,6 +138,11 @@ class Study(BaseModel):
         if self.model is None and "model" in self.model_fields_set:
             _dict['model'] = None
 
+        # set to None if doi (nullable) is None
+        # and model_fields_set contains the field
+        if self.doi is None and "doi" in self.model_fields_set:
+            _dict['doi'] = None
+
         # set to None if acknowledgement (nullable) is None
         # and model_fields_set contains the field
         if self.acknowledgement is None and "acknowledgement" in self.model_fields_set:
@@ -165,6 +171,7 @@ class Study(BaseModel):
             "model": ModelMetadata.from_dict(obj["model"]) if obj.get("model") is not None else None,
             "additional_metadata": [Attribute.from_dict(_item) for _item in obj["additional_metadata"]] if obj.get("additional_metadata") is not None else None,
             "accession_id": obj.get("accession_id"),
+            "doi": obj.get("doi"),
             "licence": obj.get("licence"),
             "author": [Contributor.from_dict(_item) for _item in obj["author"]] if obj.get("author") is not None else None,
             "title": obj.get("title"),

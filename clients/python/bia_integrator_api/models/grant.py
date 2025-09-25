@@ -25,7 +25,7 @@ from typing_extensions import Self
 
 class Grant(BaseModel):
     """
-    
+    Grant
     """ # noqa: E501
     id: Optional[StrictStr] = None
     funder: Optional[List[FundingBody]] = Field(default=None, description="The name of the funding body providing support for the grant.")

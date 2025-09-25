@@ -1451,81 +1451,6 @@
         }
       }
     },
-    "/v2/image_acquisition_protocol/{uuid}/creation_process": {
-      "get": {
-        "tags": [
-          "public",
-          "private"
-        ],
-        "summary": "Get CreationProcess Linking ImageAcquisitionProtocol",
-        "description": "Naming convention is getSourceLinkingTarget, where source/target refer to the start/end of the linking arrow in the model diagram",
-        "operationId": "getCreationProcessLinkingImageAcquisitionProtocol",
-        "parameters": [
-          {
-            "name": "uuid",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "title": "Uuid"
-            }
-          },
-          {
-            "name": "start_from_uuid",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "format": "uuid"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Start From Uuid"
-            }
-          },
-          {
-            "name": "page_size",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "title": "Page Size"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/CreationProcess"
-                  },
-                  "title": "Response Getcreationprocesslinkingimageacquisitionprotocol"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/v2/image/{uuid}/creation_process": {
       "get": {
         "tags": [
@@ -1584,156 +1509,6 @@
                     "$ref": "#/components/schemas/CreationProcess"
                   },
                   "title": "Response Getcreationprocesslinkingimage"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v2/protocol/{uuid}/creation_process": {
-      "get": {
-        "tags": [
-          "public",
-          "private"
-        ],
-        "summary": "Get CreationProcess Linking Protocol",
-        "description": "Naming convention is getSourceLinkingTarget, where source/target refer to the start/end of the linking arrow in the model diagram",
-        "operationId": "getCreationProcessLinkingProtocol",
-        "parameters": [
-          {
-            "name": "uuid",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "title": "Uuid"
-            }
-          },
-          {
-            "name": "start_from_uuid",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "format": "uuid"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Start From Uuid"
-            }
-          },
-          {
-            "name": "page_size",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "title": "Page Size"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/CreationProcess"
-                  },
-                  "title": "Response Getcreationprocesslinkingprotocol"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v2/annotation_method/{uuid}/creation_process": {
-      "get": {
-        "tags": [
-          "public",
-          "private"
-        ],
-        "summary": "Get CreationProcess Linking AnnotationMethod",
-        "description": "Naming convention is getSourceLinkingTarget, where source/target refer to the start/end of the linking arrow in the model diagram",
-        "operationId": "getCreationProcessLinkingAnnotationMethod",
-        "parameters": [
-          {
-            "name": "uuid",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "title": "Uuid"
-            }
-          },
-          {
-            "name": "start_from_uuid",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "format": "uuid"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Start From Uuid"
-            }
-          },
-          {
-            "name": "page_size",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "title": "Page Size"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/CreationProcess"
-                  },
-                  "title": "Response Getcreationprocesslinkingannotationmethod"
                 }
               }
             }
@@ -1826,81 +1601,6 @@
         }
       }
     },
-    "/v2/creation_process/{uuid}/annotation_data": {
-      "get": {
-        "tags": [
-          "public",
-          "private"
-        ],
-        "summary": "Get AnnotationData Linking CreationProcess",
-        "description": "Naming convention is getSourceLinkingTarget, where source/target refer to the start/end of the linking arrow in the model diagram",
-        "operationId": "getAnnotationDataLinkingCreationProcess",
-        "parameters": [
-          {
-            "name": "uuid",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "title": "Uuid"
-            }
-          },
-          {
-            "name": "start_from_uuid",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "format": "uuid"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Start From Uuid"
-            }
-          },
-          {
-            "name": "page_size",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "title": "Page Size"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/AnnotationData"
-                  },
-                  "title": "Response Getannotationdatalinkingcreationprocess"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/v2/file_reference/{uuid}/annotation_data": {
       "get": {
         "tags": [
@@ -1974,6 +1674,578 @@
             }
           }
         }
+      }
+    },
+    "/v2/private/study": {
+      "post": {
+        "tags": [
+          "private"
+        ],
+        "summary": "Create Study",
+        "operationId": "postStudy",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Study"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/v2/private/file_reference": {
+      "post": {
+        "tags": [
+          "private"
+        ],
+        "summary": "Create FileReference",
+        "operationId": "postFileReference",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FileReference"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/v2/private/image_representation": {
+      "post": {
+        "tags": [
+          "private"
+        ],
+        "summary": "Create ImageRepresentation",
+        "operationId": "postImageRepresentation",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageRepresentation"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/v2/private/dataset": {
+      "post": {
+        "tags": [
+          "private"
+        ],
+        "summary": "Create Dataset",
+        "operationId": "postDataset",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Dataset"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/v2/private/specimen": {
+      "post": {
+        "tags": [
+          "private"
+        ],
+        "summary": "Create Specimen",
+        "operationId": "postSpecimen",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Specimen"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/v2/private/image": {
+      "post": {
+        "tags": [
+          "private"
+        ],
+        "summary": "Create Image",
+        "operationId": "postImage",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Image"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/v2/private/image_acquisition_protocol": {
+      "post": {
+        "tags": [
+          "private"
+        ],
+        "summary": "Create ImageAcquisitionProtocol",
+        "operationId": "postImageAcquisitionProtocol",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageAcquisitionProtocol"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/v2/private/specimen_imaging_preparation_protocol": {
+      "post": {
+        "tags": [
+          "private"
+        ],
+        "summary": "Create SpecimenImagingPreparationProtocol",
+        "operationId": "postSpecimenImagingPreparationProtocol",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpecimenImagingPreparationProtocol"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/v2/private/protocol": {
+      "post": {
+        "tags": [
+          "private"
+        ],
+        "summary": "Create Protocol",
+        "operationId": "postProtocol",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Protocol"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/v2/private/bio_sample": {
+      "post": {
+        "tags": [
+          "private"
+        ],
+        "summary": "Create BioSample",
+        "operationId": "postBioSample",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BioSample"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/v2/private/creation_process": {
+      "post": {
+        "tags": [
+          "private"
+        ],
+        "summary": "Create CreationProcess",
+        "operationId": "postCreationProcess",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreationProcess"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/v2/private/annotation_data": {
+      "post": {
+        "tags": [
+          "private"
+        ],
+        "summary": "Create AnnotationData",
+        "operationId": "postAnnotationData",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AnnotationData"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/v2/private/annotation_method": {
+      "post": {
+        "tags": [
+          "private"
+        ],
+        "summary": "Create AnnotationMethod",
+        "operationId": "postAnnotationMethod",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AnnotationMethod"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
       }
     },
     "/v2/search/study/accession": {
@@ -2102,24 +2374,34 @@
         }
       }
     },
-    "/v2/search/fts": {
+    "/v2/search/file_reference/by_path_name": {
       "get": {
         "tags": [
           "public",
           "private"
         ],
-        "summary": "Fts",
-        "operationId": "fts",
+        "summary": "Searchfilereferencebypathname",
+        "operationId": "searchFileReferenceByPathName",
         "parameters": [
           {
-            "name": "query",
+            "name": "path_name",
             "in": "query",
             "required": true,
             "schema": {
               "type": "string",
-              "minLength": 1,
-              "maxLength": 500,
-              "title": "Query"
+              "minLength": 5,
+              "maxLength": 1000,
+              "title": "Path Name"
+            }
+          },
+          {
+            "name": "study_uuid",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Study Uuid"
             }
           }
         ],
@@ -2129,8 +2411,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "title": "Response Fts"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FileReference"
+                  },
+                  "title": "Response Searchfilereferencebypathname"
                 }
               }
             }
@@ -3161,578 +3446,6 @@
           }
         }
       }
-    },
-    "/v2/private/study": {
-      "post": {
-        "tags": [
-          "private"
-        ],
-        "summary": "Create Study",
-        "operationId": "postStudy",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Study"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
-      }
-    },
-    "/v2/private/file_reference": {
-      "post": {
-        "tags": [
-          "private"
-        ],
-        "summary": "Create FileReference",
-        "operationId": "postFileReference",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/FileReference"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
-      }
-    },
-    "/v2/private/image_representation": {
-      "post": {
-        "tags": [
-          "private"
-        ],
-        "summary": "Create ImageRepresentation",
-        "operationId": "postImageRepresentation",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ImageRepresentation"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
-      }
-    },
-    "/v2/private/dataset": {
-      "post": {
-        "tags": [
-          "private"
-        ],
-        "summary": "Create Dataset",
-        "operationId": "postDataset",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Dataset"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
-      }
-    },
-    "/v2/private/specimen": {
-      "post": {
-        "tags": [
-          "private"
-        ],
-        "summary": "Create Specimen",
-        "operationId": "postSpecimen",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Specimen"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
-      }
-    },
-    "/v2/private/image": {
-      "post": {
-        "tags": [
-          "private"
-        ],
-        "summary": "Create Image",
-        "operationId": "postImage",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Image"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
-      }
-    },
-    "/v2/private/image_acquisition_protocol": {
-      "post": {
-        "tags": [
-          "private"
-        ],
-        "summary": "Create ImageAcquisitionProtocol",
-        "operationId": "postImageAcquisitionProtocol",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ImageAcquisitionProtocol"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
-      }
-    },
-    "/v2/private/specimen_imaging_preparation_protocol": {
-      "post": {
-        "tags": [
-          "private"
-        ],
-        "summary": "Create SpecimenImagingPreparationProtocol",
-        "operationId": "postSpecimenImagingPreparationProtocol",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SpecimenImagingPreparationProtocol"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
-      }
-    },
-    "/v2/private/protocol": {
-      "post": {
-        "tags": [
-          "private"
-        ],
-        "summary": "Create Protocol",
-        "operationId": "postProtocol",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Protocol"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
-      }
-    },
-    "/v2/private/bio_sample": {
-      "post": {
-        "tags": [
-          "private"
-        ],
-        "summary": "Create BioSample",
-        "operationId": "postBioSample",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/BioSample"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
-      }
-    },
-    "/v2/private/creation_process": {
-      "post": {
-        "tags": [
-          "private"
-        ],
-        "summary": "Create CreationProcess",
-        "operationId": "postCreationProcess",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreationProcess"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
-      }
-    },
-    "/v2/private/annotation_data": {
-      "post": {
-        "tags": [
-          "private"
-        ],
-        "summary": "Create AnnotationData",
-        "operationId": "postAnnotationData",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AnnotationData"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
-      }
-    },
-    "/v2/private/annotation_method": {
-      "post": {
-        "tags": [
-          "private"
-        ],
-        "summary": "Create AnnotationMethod",
-        "operationId": "postAnnotationMethod",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AnnotationMethod"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "OAuth2PasswordBearer": []
-          }
-        ]
-      }
     }
   },
   "components": {
@@ -4026,6 +3739,7 @@
             "description": "A descriptive name or identifier for the annotation."
           },
           "value": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Value",
             "description": "The value of an annotation, which is a stored in a freeform dicitionary"
@@ -4622,7 +4336,7 @@
             "minLength": 1,
             "format": "uri",
             "title": "Link",
-            "description": "A URL linking to the refered resource."
+            "description": "A URL linking to the referred resource."
           },
           "link_type": {
             "anyOf": [
@@ -4634,7 +4348,7 @@
               }
             ],
             "title": "Link Type",
-            "description": "Classifies the link by website domain and/or use-case, which is useful for display purposes and faceting search."
+            "description": "Classifies the link by domain/use-case for display and faceting."
           },
           "description": {
             "anyOf": [
@@ -4646,7 +4360,7 @@
               }
             ],
             "title": "Description",
-            "description": "Brief description of the resource and how it relates to the document providing the reference."
+            "description": "Brief description of the resource and relation."
           }
         },
         "additionalProperties": false,
@@ -4759,8 +4473,7 @@
         "required": [
           "display_name"
         ],
-        "title": "FundingBody",
-        "description": ""
+        "title": "FundingBody"
       },
       "Grant": {
         "properties": {
@@ -4787,8 +4500,7 @@
         },
         "additionalProperties": false,
         "type": "object",
-        "title": "Grant",
-        "description": ""
+        "title": "Grant"
       },
       "HTTPValidationError": {
         "properties": {
@@ -5358,17 +5070,38 @@
       "Publication": {
         "properties": {
           "authors_name": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Authors Name",
             "description": "The list of names of the authors as displayed in the publication."
           },
           "title": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Title",
             "description": "The title of the publication."
           },
           "publication_year": {
-            "type": "integer",
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Publication Year",
             "description": "Year the article was published"
           },
@@ -5387,7 +5120,9 @@
           "doi": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "string",
+                "minLength": 1,
+                "format": "uri"
               },
               {
                 "type": "null"
@@ -5696,6 +5431,20 @@
             "type": "string",
             "title": "Accession Id",
             "description": "Unique ID provided by BioStudies."
+          },
+          "doi": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "format": "uri"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Doi",
+            "description": "Digital Object Identifier (DOI)"
           },
           "licence": {
             "$ref": "#/components/schemas/Licence",

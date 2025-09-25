@@ -4,19 +4,14 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**fts**](PrivateApi.md#fts) | **GET** /v2/search/fts | Fts
 [**get_annotation_data**](PrivateApi.md#get_annotation_data) | **GET** /v2/annotation_data/{uuid} | Get AnnotationData
-[**get_annotation_data_linking_creation_process**](PrivateApi.md#get_annotation_data_linking_creation_process) | **GET** /v2/creation_process/{uuid}/annotation_data | Get AnnotationData Linking CreationProcess
 [**get_annotation_data_linking_dataset**](PrivateApi.md#get_annotation_data_linking_dataset) | **GET** /v2/dataset/{uuid}/annotation_data | Get AnnotationData Linking Dataset
 [**get_annotation_data_linking_file_reference**](PrivateApi.md#get_annotation_data_linking_file_reference) | **GET** /v2/file_reference/{uuid}/annotation_data | Get AnnotationData Linking FileReference
 [**get_annotation_method**](PrivateApi.md#get_annotation_method) | **GET** /v2/annotation_method/{uuid} | Get AnnotationMethod
 [**get_bio_sample**](PrivateApi.md#get_bio_sample) | **GET** /v2/bio_sample/{uuid} | Get BioSample
 [**get_bio_sample_linking_protocol**](PrivateApi.md#get_bio_sample_linking_protocol) | **GET** /v2/protocol/{uuid}/bio_sample | Get BioSample Linking Protocol
 [**get_creation_process**](PrivateApi.md#get_creation_process) | **GET** /v2/creation_process/{uuid} | Get CreationProcess
-[**get_creation_process_linking_annotation_method**](PrivateApi.md#get_creation_process_linking_annotation_method) | **GET** /v2/annotation_method/{uuid}/creation_process | Get CreationProcess Linking AnnotationMethod
 [**get_creation_process_linking_image**](PrivateApi.md#get_creation_process_linking_image) | **GET** /v2/image/{uuid}/creation_process | Get CreationProcess Linking Image
-[**get_creation_process_linking_image_acquisition_protocol**](PrivateApi.md#get_creation_process_linking_image_acquisition_protocol) | **GET** /v2/image_acquisition_protocol/{uuid}/creation_process | Get CreationProcess Linking ImageAcquisitionProtocol
-[**get_creation_process_linking_protocol**](PrivateApi.md#get_creation_process_linking_protocol) | **GET** /v2/protocol/{uuid}/creation_process | Get CreationProcess Linking Protocol
 [**get_creation_process_linking_specimen**](PrivateApi.md#get_creation_process_linking_specimen) | **GET** /v2/specimen/{uuid}/creation_process | Get CreationProcess Linking Specimen
 [**get_dataset**](PrivateApi.md#get_dataset) | **GET** /v2/dataset/{uuid} | Get Dataset
 [**get_dataset_linking_study**](PrivateApi.md#get_dataset_linking_study) | **GET** /v2/study/{uuid}/dataset | Get Dataset Linking Study
@@ -57,6 +52,7 @@ Method | HTTP request | Description
 [**search_creation_process**](PrivateApi.md#search_creation_process) | **GET** /v2/search/creation_process | Search all objects of type CreationProcess
 [**search_dataset**](PrivateApi.md#search_dataset) | **GET** /v2/search/dataset | Search all objects of type Dataset
 [**search_file_reference**](PrivateApi.md#search_file_reference) | **GET** /v2/search/file_reference | Search all objects of type FileReference
+[**search_file_reference_by_path_name**](PrivateApi.md#search_file_reference_by_path_name) | **GET** /v2/search/file_reference/by_path_name | Searchfilereferencebypathname
 [**search_image**](PrivateApi.md#search_image) | **GET** /v2/search/image | Search all objects of type Image
 [**search_image_acquisition_protocol**](PrivateApi.md#search_image_acquisition_protocol) | **GET** /v2/search/image_acquisition_protocol | Search all objects of type ImageAcquisitionProtocol
 [**search_image_representation**](PrivateApi.md#search_image_representation) | **GET** /v2/search/image_representation | Search all objects of type ImageRepresentation
@@ -67,72 +63,6 @@ Method | HTTP request | Description
 [**search_study**](PrivateApi.md#search_study) | **GET** /v2/search/study | Search all objects of type Study
 [**search_study_by_accession**](PrivateApi.md#search_study_by_accession) | **GET** /v2/search/study/accession | Searchstudybyaccession
 
-
-# **fts**
-> object fts(query)
-
-Fts
-
-### Example
-
-
-```python
-import bia_integrator_api
-from bia_integrator_api.rest import ApiException
-from pprint import pprint
-
-# Defining the host is optional and defaults to http://localhost
-# See configuration.py for a list of all supported configuration parameters.
-configuration = bia_integrator_api.Configuration(
-    host = "http://localhost"
-)
-
-
-# Enter a context with an instance of the API client
-with bia_integrator_api.ApiClient(configuration) as api_client:
-    # Create an instance of the API class
-    api_instance = bia_integrator_api.PrivateApi(api_client)
-    query = 'query_example' # str | 
-
-    try:
-        # Fts
-        api_response = api_instance.fts(query)
-        print("The response of PrivateApi->fts:\n")
-        pprint(api_response)
-    except Exception as e:
-        print("Exception when calling PrivateApi->fts: %s\n" % e)
-```
-
-
-
-### Parameters
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **query** | **str**|  | 
-
-### Return type
-
-**object**
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: application/json
-
-### HTTP response details
-
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-**200** | Successful Response |  -  |
-**422** | Validation Error |  -  |
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_annotation_data**
 > AnnotationData get_annotation_data(uuid)
@@ -182,79 +112,6 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**AnnotationData**](AnnotationData.md)
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: application/json
-
-### HTTP response details
-
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-**200** | Successful Response |  -  |
-**422** | Validation Error |  -  |
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **get_annotation_data_linking_creation_process**
-> List[AnnotationData] get_annotation_data_linking_creation_process(uuid, page_size, start_from_uuid=start_from_uuid)
-
-Get AnnotationData Linking CreationProcess
-
-Naming convention is getSourceLinkingTarget, where source/target refer to the start/end of the linking arrow in the model diagram
-
-### Example
-
-
-```python
-import bia_integrator_api
-from bia_integrator_api.models.annotation_data import AnnotationData
-from bia_integrator_api.rest import ApiException
-from pprint import pprint
-
-# Defining the host is optional and defaults to http://localhost
-# See configuration.py for a list of all supported configuration parameters.
-configuration = bia_integrator_api.Configuration(
-    host = "http://localhost"
-)
-
-
-# Enter a context with an instance of the API client
-with bia_integrator_api.ApiClient(configuration) as api_client:
-    # Create an instance of the API class
-    api_instance = bia_integrator_api.PrivateApi(api_client)
-    uuid = 'uuid_example' # str | 
-    page_size = 56 # int | 
-    start_from_uuid = 'start_from_uuid_example' # str |  (optional)
-
-    try:
-        # Get AnnotationData Linking CreationProcess
-        api_response = api_instance.get_annotation_data_linking_creation_process(uuid, page_size, start_from_uuid=start_from_uuid)
-        print("The response of PrivateApi->get_annotation_data_linking_creation_process:\n")
-        pprint(api_response)
-    except Exception as e:
-        print("Exception when calling PrivateApi->get_annotation_data_linking_creation_process: %s\n" % e)
-```
-
-
-
-### Parameters
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **uuid** | **str**|  | 
- **page_size** | **int**|  | 
- **start_from_uuid** | **str**|  | [optional] 
-
-### Return type
-
-[**List[AnnotationData]**](AnnotationData.md)
 
 ### Authorization
 
@@ -694,79 +551,6 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **get_creation_process_linking_annotation_method**
-> List[CreationProcess] get_creation_process_linking_annotation_method(uuid, page_size, start_from_uuid=start_from_uuid)
-
-Get CreationProcess Linking AnnotationMethod
-
-Naming convention is getSourceLinkingTarget, where source/target refer to the start/end of the linking arrow in the model diagram
-
-### Example
-
-
-```python
-import bia_integrator_api
-from bia_integrator_api.models.creation_process import CreationProcess
-from bia_integrator_api.rest import ApiException
-from pprint import pprint
-
-# Defining the host is optional and defaults to http://localhost
-# See configuration.py for a list of all supported configuration parameters.
-configuration = bia_integrator_api.Configuration(
-    host = "http://localhost"
-)
-
-
-# Enter a context with an instance of the API client
-with bia_integrator_api.ApiClient(configuration) as api_client:
-    # Create an instance of the API class
-    api_instance = bia_integrator_api.PrivateApi(api_client)
-    uuid = 'uuid_example' # str | 
-    page_size = 56 # int | 
-    start_from_uuid = 'start_from_uuid_example' # str |  (optional)
-
-    try:
-        # Get CreationProcess Linking AnnotationMethod
-        api_response = api_instance.get_creation_process_linking_annotation_method(uuid, page_size, start_from_uuid=start_from_uuid)
-        print("The response of PrivateApi->get_creation_process_linking_annotation_method:\n")
-        pprint(api_response)
-    except Exception as e:
-        print("Exception when calling PrivateApi->get_creation_process_linking_annotation_method: %s\n" % e)
-```
-
-
-
-### Parameters
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **uuid** | **str**|  | 
- **page_size** | **int**|  | 
- **start_from_uuid** | **str**|  | [optional] 
-
-### Return type
-
-[**List[CreationProcess]**](CreationProcess.md)
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: application/json
-
-### HTTP response details
-
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-**200** | Successful Response |  -  |
-**422** | Validation Error |  -  |
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
 # **get_creation_process_linking_image**
 > List[CreationProcess] get_creation_process_linking_image(uuid, page_size, start_from_uuid=start_from_uuid)
 
@@ -805,152 +589,6 @@ with bia_integrator_api.ApiClient(configuration) as api_client:
         pprint(api_response)
     except Exception as e:
         print("Exception when calling PrivateApi->get_creation_process_linking_image: %s\n" % e)
-```
-
-
-
-### Parameters
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **uuid** | **str**|  | 
- **page_size** | **int**|  | 
- **start_from_uuid** | **str**|  | [optional] 
-
-### Return type
-
-[**List[CreationProcess]**](CreationProcess.md)
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: application/json
-
-### HTTP response details
-
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-**200** | Successful Response |  -  |
-**422** | Validation Error |  -  |
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **get_creation_process_linking_image_acquisition_protocol**
-> List[CreationProcess] get_creation_process_linking_image_acquisition_protocol(uuid, page_size, start_from_uuid=start_from_uuid)
-
-Get CreationProcess Linking ImageAcquisitionProtocol
-
-Naming convention is getSourceLinkingTarget, where source/target refer to the start/end of the linking arrow in the model diagram
-
-### Example
-
-
-```python
-import bia_integrator_api
-from bia_integrator_api.models.creation_process import CreationProcess
-from bia_integrator_api.rest import ApiException
-from pprint import pprint
-
-# Defining the host is optional and defaults to http://localhost
-# See configuration.py for a list of all supported configuration parameters.
-configuration = bia_integrator_api.Configuration(
-    host = "http://localhost"
-)
-
-
-# Enter a context with an instance of the API client
-with bia_integrator_api.ApiClient(configuration) as api_client:
-    # Create an instance of the API class
-    api_instance = bia_integrator_api.PrivateApi(api_client)
-    uuid = 'uuid_example' # str | 
-    page_size = 56 # int | 
-    start_from_uuid = 'start_from_uuid_example' # str |  (optional)
-
-    try:
-        # Get CreationProcess Linking ImageAcquisitionProtocol
-        api_response = api_instance.get_creation_process_linking_image_acquisition_protocol(uuid, page_size, start_from_uuid=start_from_uuid)
-        print("The response of PrivateApi->get_creation_process_linking_image_acquisition_protocol:\n")
-        pprint(api_response)
-    except Exception as e:
-        print("Exception when calling PrivateApi->get_creation_process_linking_image_acquisition_protocol: %s\n" % e)
-```
-
-
-
-### Parameters
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **uuid** | **str**|  | 
- **page_size** | **int**|  | 
- **start_from_uuid** | **str**|  | [optional] 
-
-### Return type
-
-[**List[CreationProcess]**](CreationProcess.md)
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: application/json
-
-### HTTP response details
-
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-**200** | Successful Response |  -  |
-**422** | Validation Error |  -  |
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **get_creation_process_linking_protocol**
-> List[CreationProcess] get_creation_process_linking_protocol(uuid, page_size, start_from_uuid=start_from_uuid)
-
-Get CreationProcess Linking Protocol
-
-Naming convention is getSourceLinkingTarget, where source/target refer to the start/end of the linking arrow in the model diagram
-
-### Example
-
-
-```python
-import bia_integrator_api
-from bia_integrator_api.models.creation_process import CreationProcess
-from bia_integrator_api.rest import ApiException
-from pprint import pprint
-
-# Defining the host is optional and defaults to http://localhost
-# See configuration.py for a list of all supported configuration parameters.
-configuration = bia_integrator_api.Configuration(
-    host = "http://localhost"
-)
-
-
-# Enter a context with an instance of the API client
-with bia_integrator_api.ApiClient(configuration) as api_client:
-    # Create an instance of the API class
-    api_instance = bia_integrator_api.PrivateApi(api_client)
-    uuid = 'uuid_example' # str | 
-    page_size = 56 # int | 
-    start_from_uuid = 'start_from_uuid_example' # str |  (optional)
-
-    try:
-        # Get CreationProcess Linking Protocol
-        api_response = api_instance.get_creation_process_linking_protocol(uuid, page_size, start_from_uuid=start_from_uuid)
-        print("The response of PrivateApi->get_creation_process_linking_protocol:\n")
-        pprint(api_response)
-    except Exception as e:
-        print("Exception when calling PrivateApi->get_creation_process_linking_protocol: %s\n" % e)
 ```
 
 
@@ -3834,6 +3472,75 @@ Name | Type | Description  | Notes
  **page_size** | **int**|  | 
  **filter_uuid** | [**List[str]**](str.md)|  | [optional] 
  **start_from_uuid** | **str**|  | [optional] 
+
+### Return type
+
+[**List[FileReference]**](FileReference.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **search_file_reference_by_path_name**
+> List[FileReference] search_file_reference_by_path_name(path_name, study_uuid)
+
+Searchfilereferencebypathname
+
+### Example
+
+
+```python
+import bia_integrator_api
+from bia_integrator_api.models.file_reference import FileReference
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PrivateApi(api_client)
+    path_name = 'path_name_example' # str | 
+    study_uuid = 'study_uuid_example' # str | 
+
+    try:
+        # Searchfilereferencebypathname
+        api_response = api_instance.search_file_reference_by_path_name(path_name, study_uuid)
+        print("The response of PrivateApi->search_file_reference_by_path_name:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PrivateApi->search_file_reference_by_path_name: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **path_name** | **str**|  | 
+ **study_uuid** | **str**|  | 
 
 ### Return type
 
