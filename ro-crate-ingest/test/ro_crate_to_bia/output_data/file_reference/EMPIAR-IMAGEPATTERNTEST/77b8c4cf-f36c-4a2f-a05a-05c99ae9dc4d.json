@@ -1,0 +1,36 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "77b8c4cf-f36c-4a2f-a05a-05c99ae9dc4d",
+  "version": 0,
+  "model": {
+    "type_name": "FileReference",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "data/HeLa/tilt series/tiltimage 002 30.tif12"
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "attributes_from_file_list",
+      "value": {
+        "http://bia/filePath": "data/HeLa/tilt series/tiltimage 002 30.tif",
+        "http://bia/sizeInBytes": "12",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "http://bia/Image",
+        "http://schema.org/name": "",
+        "http://bia/sourceImageLabel": "",
+        "http://bia/associatedAnnotationMethod": "    ",
+        "http://bia/associatedProtocol": null
+      }
+    }
+  ],
+  "file_path": "data/HeLa/tilt series/tiltimage 002 30.tif",
+  "format": ".tif",
+  "size_in_bytes": 12,
+  "uri": "https://ftp.ebi.ac.uk/empiar/world_availability/IMAGEPATTERNTEST/data/HeLa/tilt series/tiltimage 002 30.tif",
+  "submission_dataset_uuid": "8745e192-ad53-4a7f-adba-200cdeab3d95"
+}
