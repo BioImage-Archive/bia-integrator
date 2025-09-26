@@ -7,7 +7,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **provenance** | [**Provenance**](Provenance.md) |  | 
 **name** | **str** | A descriptive name or identifier for the annotation. | 
-**value** | **object** | The value of an annotation, which is a stored in a freeform dicitionary | 
+**value** | **Dict[str, object]** | The value of an annotation, which is a stored in a freeform dicitionary | 
 
 ## Example
 

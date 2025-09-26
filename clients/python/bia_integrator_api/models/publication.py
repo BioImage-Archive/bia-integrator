@@ -19,6 +19,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -26,11 +27,11 @@ class Publication(BaseModel):
     """
     A published paper or written work.
     """ # noqa: E501
-    authors_name: StrictStr = Field(description="The list of names of the authors as displayed in the publication.")
-    title: StrictStr = Field(description="The title of the publication.")
-    publication_year: StrictInt = Field(description="Year the article was published")
+    authors_name: Optional[StrictStr]
+    title: Optional[StrictStr]
+    publication_year: Optional[StrictInt]
     pubmed_id: Optional[StrictStr] = None
-    doi: Optional[StrictStr] = None
+    doi: Optional[Annotated[str, Field(min_length=1, strict=True)]] = None
     __properties: ClassVar[List[str]] = ["authors_name", "title", "publication_year", "pubmed_id", "doi"]
 
     model_config = ConfigDict(
@@ -72,6 +73,21 @@ class Publication(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # set to None if authors_name (nullable) is None
+        # and model_fields_set contains the field
+        if self.authors_name is None and "authors_name" in self.model_fields_set:
+            _dict['authors_name'] = None
+
+        # set to None if title (nullable) is None
+        # and model_fields_set contains the field
+        if self.title is None and "title" in self.model_fields_set:
+            _dict['title'] = None
+
+        # set to None if publication_year (nullable) is None
+        # and model_fields_set contains the field
+        if self.publication_year is None and "publication_year" in self.model_fields_set:
+            _dict['publication_year'] = None
+
         # set to None if pubmed_id (nullable) is None
         # and model_fields_set contains the field
         if self.pubmed_id is None and "pubmed_id" in self.model_fields_set:

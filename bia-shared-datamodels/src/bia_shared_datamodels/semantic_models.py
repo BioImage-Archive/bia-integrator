@@ -3,8 +3,17 @@ from __future__ import annotations
 from enum import Enum
 from datetime import date
 from typing import List, Optional
-from pydantic import BaseModel, Field, EmailStr, AnyUrl, ConfigDict
+from pydantic import (
+    BaseModel,
+    Field,
+    EmailStr,
+    AnyUrl,
+    ConfigDict,
+    field_validator,
+    model_validator,
+)
 
+from .utils import sanitise_doi
 
 #######################################################################################################
 # Generic Classes
@@ -62,6 +71,9 @@ class Study(ConfiguredBaseModel, AttributeMixin):
     """
 
     accession_id: str = Field(description="""Unique ID provided by BioStudies.""")
+    doi: AnyUrl | None = Field(
+        default=None, description="""Digital Object Identifier (DOI)"""
+    )
     licence: Licence = Field(
         description="""The license under which the data associated with the study is made avaliable."""
     )
@@ -95,21 +107,48 @@ class Study(ConfiguredBaseModel, AttributeMixin):
         None, description="""Description of how the study was funded."""
     )
 
+    @field_validator("doi", mode="before")
+    @classmethod
+    def _coerce_doi(cls, v):
+        if v is None or (isinstance(v, str) and v.strip() == ""):
+            return None
+        return sanitise_doi(str(v))
+
 
 class Publication(ConfiguredBaseModel):
     """
     A published paper or written work.
     """
 
-    authors_name: str = Field(
+    authors_name: str | None = Field(
         description="""The list of names of the authors as displayed in the publication."""
     )
-    title: str = Field(description="""The title of the publication.""")
-    publication_year: int = Field(description="""Year the article was published""")
-    pubmed_id: Optional[str] = Field(
+    title: str | None = Field(description="""The title of the publication.""")
+    publication_year: int | None = Field(
+        description="""Year the article was published"""
+    )
+    pubmed_id: str | None = Field(
         None, description="""Identifier for journal articles/abstracts in PubMed"""
     )
-    doi: Optional[str] = Field(None, description="""Digital Object Identifier (DOI)""")
+    doi: AnyUrl | None = Field(
+        default=None, description="""Digital Object Identifier (DOI)"""
+    )
+
+    @field_validator("doi", mode="before")
+    @classmethod
+    def _coerce_doi(cls, v) -> str | None:
+        if v is None or (isinstance(v, str) and v.strip() == ""):
+            return None
+        return sanitise_doi(str(v))
+
+    def _present(self, v) -> bool:
+        return v is not None and (not isinstance(v, str) or v.strip() != "")
+
+    @model_validator(mode="after")
+    def _at_least_one(self) -> "Publication":
+        if not any(self._present(v) for v in (self.title, self.doi)):
+            raise ValueError("Provide at least publication Title or DOI.")
+        return self
 
 
 class ExternalReference(ConfiguredBaseModel):

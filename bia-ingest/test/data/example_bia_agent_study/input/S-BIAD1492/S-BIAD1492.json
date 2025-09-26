@@ -16,6 +16,10 @@
 		{
 			"name": "AttachTo",
 			"value": "BioImages"
+		},
+		{
+			"name": "DOI",
+			"value": "10.1101/2023.12.07.570699"
 		}
 	],
 	"section": {

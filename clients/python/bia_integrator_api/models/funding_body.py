@@ -24,7 +24,7 @@ from typing_extensions import Self
 
 class FundingBody(BaseModel):
     """
-    
+    FundingBody
     """ # noqa: E501
     display_name: StrictStr = Field(description="Name as it should be displayed on the BioImage Archive.")
     id: Optional[StrictStr] = None

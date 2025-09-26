@@ -45,15 +45,15 @@ configuration = bia_integrator_api.Configuration(
 with bia_integrator_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = bia_integrator_api.PrivateApi(api_client)
-    query = 'query_example' # str | 
+    uuid = 'uuid_example' # str | 
 
     try:
-        # Fts
-        api_response = api_instance.fts(query)
-        print("The response of PrivateApi->fts:\n")
+        # Get AnnotationData
+        api_response = api_instance.get_annotation_data(uuid)
+        print("The response of PrivateApi->get_annotation_data:\n")
         pprint(api_response)
     except ApiException as e:
-        print("Exception when calling PrivateApi->fts: %s\n" % e)
+        print("Exception when calling PrivateApi->get_annotation_data: %s\n" % e)
 
 ```
 
@@ -63,19 +63,14 @@ All URIs are relative to *http://localhost*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
-*PrivateApi* | [**fts**](bia_integrator_api/docs/PrivateApi.md#fts) | **GET** /v2/search/fts | Fts
 *PrivateApi* | [**get_annotation_data**](bia_integrator_api/docs/PrivateApi.md#get_annotation_data) | **GET** /v2/annotation_data/{uuid} | Get AnnotationData
-*PrivateApi* | [**get_annotation_data_linking_creation_process**](bia_integrator_api/docs/PrivateApi.md#get_annotation_data_linking_creation_process) | **GET** /v2/creation_process/{uuid}/annotation_data | Get AnnotationData Linking CreationProcess
 *PrivateApi* | [**get_annotation_data_linking_dataset**](bia_integrator_api/docs/PrivateApi.md#get_annotation_data_linking_dataset) | **GET** /v2/dataset/{uuid}/annotation_data | Get AnnotationData Linking Dataset
 *PrivateApi* | [**get_annotation_data_linking_file_reference**](bia_integrator_api/docs/PrivateApi.md#get_annotation_data_linking_file_reference) | **GET** /v2/file_reference/{uuid}/annotation_data | Get AnnotationData Linking FileReference
 *PrivateApi* | [**get_annotation_method**](bia_integrator_api/docs/PrivateApi.md#get_annotation_method) | **GET** /v2/annotation_method/{uuid} | Get AnnotationMethod
 *PrivateApi* | [**get_bio_sample**](bia_integrator_api/docs/PrivateApi.md#get_bio_sample) | **GET** /v2/bio_sample/{uuid} | Get BioSample
 *PrivateApi* | [**get_bio_sample_linking_protocol**](bia_integrator_api/docs/PrivateApi.md#get_bio_sample_linking_protocol) | **GET** /v2/protocol/{uuid}/bio_sample | Get BioSample Linking Protocol
 *PrivateApi* | [**get_creation_process**](bia_integrator_api/docs/PrivateApi.md#get_creation_process) | **GET** /v2/creation_process/{uuid} | Get CreationProcess
-*PrivateApi* | [**get_creation_process_linking_annotation_method**](bia_integrator_api/docs/PrivateApi.md#get_creation_process_linking_annotation_method) | **GET** /v2/annotation_method/{uuid}/creation_process | Get CreationProcess Linking AnnotationMethod
 *PrivateApi* | [**get_creation_process_linking_image**](bia_integrator_api/docs/PrivateApi.md#get_creation_process_linking_image) | **GET** /v2/image/{uuid}/creation_process | Get CreationProcess Linking Image
-*PrivateApi* | [**get_creation_process_linking_image_acquisition_protocol**](bia_integrator_api/docs/PrivateApi.md#get_creation_process_linking_image_acquisition_protocol) | **GET** /v2/image_acquisition_protocol/{uuid}/creation_process | Get CreationProcess Linking ImageAcquisitionProtocol
-*PrivateApi* | [**get_creation_process_linking_protocol**](bia_integrator_api/docs/PrivateApi.md#get_creation_process_linking_protocol) | **GET** /v2/protocol/{uuid}/creation_process | Get CreationProcess Linking Protocol
 *PrivateApi* | [**get_creation_process_linking_specimen**](bia_integrator_api/docs/PrivateApi.md#get_creation_process_linking_specimen) | **GET** /v2/specimen/{uuid}/creation_process | Get CreationProcess Linking Specimen
 *PrivateApi* | [**get_dataset**](bia_integrator_api/docs/PrivateApi.md#get_dataset) | **GET** /v2/dataset/{uuid} | Get Dataset
 *PrivateApi* | [**get_dataset_linking_study**](bia_integrator_api/docs/PrivateApi.md#get_dataset_linking_study) | **GET** /v2/study/{uuid}/dataset | Get Dataset Linking Study
@@ -116,6 +111,7 @@ Class | Method | HTTP request | Description
 *PrivateApi* | [**search_creation_process**](bia_integrator_api/docs/PrivateApi.md#search_creation_process) | **GET** /v2/search/creation_process | Search all objects of type CreationProcess
 *PrivateApi* | [**search_dataset**](bia_integrator_api/docs/PrivateApi.md#search_dataset) | **GET** /v2/search/dataset | Search all objects of type Dataset
 *PrivateApi* | [**search_file_reference**](bia_integrator_api/docs/PrivateApi.md#search_file_reference) | **GET** /v2/search/file_reference | Search all objects of type FileReference
+*PrivateApi* | [**search_file_reference_by_path_name**](bia_integrator_api/docs/PrivateApi.md#search_file_reference_by_path_name) | **GET** /v2/search/file_reference/by_path_name | Searchfilereferencebypathname
 *PrivateApi* | [**search_image**](bia_integrator_api/docs/PrivateApi.md#search_image) | **GET** /v2/search/image | Search all objects of type Image
 *PrivateApi* | [**search_image_acquisition_protocol**](bia_integrator_api/docs/PrivateApi.md#search_image_acquisition_protocol) | **GET** /v2/search/image_acquisition_protocol | Search all objects of type ImageAcquisitionProtocol
 *PrivateApi* | [**search_image_representation**](bia_integrator_api/docs/PrivateApi.md#search_image_representation) | **GET** /v2/search/image_representation | Search all objects of type ImageRepresentation
@@ -125,19 +121,14 @@ Class | Method | HTTP request | Description
 *PrivateApi* | [**search_specimen_imaging_preparation_protocol**](bia_integrator_api/docs/PrivateApi.md#search_specimen_imaging_preparation_protocol) | **GET** /v2/search/specimen_imaging_preparation_protocol | Search all objects of type SpecimenImagingPreparationProtocol
 *PrivateApi* | [**search_study**](bia_integrator_api/docs/PrivateApi.md#search_study) | **GET** /v2/search/study | Search all objects of type Study
 *PrivateApi* | [**search_study_by_accession**](bia_integrator_api/docs/PrivateApi.md#search_study_by_accession) | **GET** /v2/search/study/accession | Searchstudybyaccession
-*PublicApi* | [**fts**](bia_integrator_api/docs/PublicApi.md#fts) | **GET** /v2/search/fts | Fts
 *PublicApi* | [**get_annotation_data**](bia_integrator_api/docs/PublicApi.md#get_annotation_data) | **GET** /v2/annotation_data/{uuid} | Get AnnotationData
-*PublicApi* | [**get_annotation_data_linking_creation_process**](bia_integrator_api/docs/PublicApi.md#get_annotation_data_linking_creation_process) | **GET** /v2/creation_process/{uuid}/annotation_data | Get AnnotationData Linking CreationProcess
 *PublicApi* | [**get_annotation_data_linking_dataset**](bia_integrator_api/docs/PublicApi.md#get_annotation_data_linking_dataset) | **GET** /v2/dataset/{uuid}/annotation_data | Get AnnotationData Linking Dataset
 *PublicApi* | [**get_annotation_data_linking_file_reference**](bia_integrator_api/docs/PublicApi.md#get_annotation_data_linking_file_reference) | **GET** /v2/file_reference/{uuid}/annotation_data | Get AnnotationData Linking FileReference
 *PublicApi* | [**get_annotation_method**](bia_integrator_api/docs/PublicApi.md#get_annotation_method) | **GET** /v2/annotation_method/{uuid} | Get AnnotationMethod
 *PublicApi* | [**get_bio_sample**](bia_integrator_api/docs/PublicApi.md#get_bio_sample) | **GET** /v2/bio_sample/{uuid} | Get BioSample
 *PublicApi* | [**get_bio_sample_linking_protocol**](bia_integrator_api/docs/PublicApi.md#get_bio_sample_linking_protocol) | **GET** /v2/protocol/{uuid}/bio_sample | Get BioSample Linking Protocol
 *PublicApi* | [**get_creation_process**](bia_integrator_api/docs/PublicApi.md#get_creation_process) | **GET** /v2/creation_process/{uuid} | Get CreationProcess
-*PublicApi* | [**get_creation_process_linking_annotation_method**](bia_integrator_api/docs/PublicApi.md#get_creation_process_linking_annotation_method) | **GET** /v2/annotation_method/{uuid}/creation_process | Get CreationProcess Linking AnnotationMethod
 *PublicApi* | [**get_creation_process_linking_image**](bia_integrator_api/docs/PublicApi.md#get_creation_process_linking_image) | **GET** /v2/image/{uuid}/creation_process | Get CreationProcess Linking Image
-*PublicApi* | [**get_creation_process_linking_image_acquisition_protocol**](bia_integrator_api/docs/PublicApi.md#get_creation_process_linking_image_acquisition_protocol) | **GET** /v2/image_acquisition_protocol/{uuid}/creation_process | Get CreationProcess Linking ImageAcquisitionProtocol
-*PublicApi* | [**get_creation_process_linking_protocol**](bia_integrator_api/docs/PublicApi.md#get_creation_process_linking_protocol) | **GET** /v2/protocol/{uuid}/creation_process | Get CreationProcess Linking Protocol
 *PublicApi* | [**get_creation_process_linking_specimen**](bia_integrator_api/docs/PublicApi.md#get_creation_process_linking_specimen) | **GET** /v2/specimen/{uuid}/creation_process | Get CreationProcess Linking Specimen
 *PublicApi* | [**get_dataset**](bia_integrator_api/docs/PublicApi.md#get_dataset) | **GET** /v2/dataset/{uuid} | Get Dataset
 *PublicApi* | [**get_dataset_linking_study**](bia_integrator_api/docs/PublicApi.md#get_dataset_linking_study) | **GET** /v2/study/{uuid}/dataset | Get Dataset Linking Study
@@ -163,6 +154,7 @@ Class | Method | HTTP request | Description
 *PublicApi* | [**search_creation_process**](bia_integrator_api/docs/PublicApi.md#search_creation_process) | **GET** /v2/search/creation_process | Search all objects of type CreationProcess
 *PublicApi* | [**search_dataset**](bia_integrator_api/docs/PublicApi.md#search_dataset) | **GET** /v2/search/dataset | Search all objects of type Dataset
 *PublicApi* | [**search_file_reference**](bia_integrator_api/docs/PublicApi.md#search_file_reference) | **GET** /v2/search/file_reference | Search all objects of type FileReference
+*PublicApi* | [**search_file_reference_by_path_name**](bia_integrator_api/docs/PublicApi.md#search_file_reference_by_path_name) | **GET** /v2/search/file_reference/by_path_name | Searchfilereferencebypathname
 *PublicApi* | [**search_image**](bia_integrator_api/docs/PublicApi.md#search_image) | **GET** /v2/search/image | Search all objects of type Image
 *PublicApi* | [**search_image_acquisition_protocol**](bia_integrator_api/docs/PublicApi.md#search_image_acquisition_protocol) | **GET** /v2/search/image_acquisition_protocol | Search all objects of type ImageAcquisitionProtocol
 *PublicApi* | [**search_image_representation**](bia_integrator_api/docs/PublicApi.md#search_image_representation) | **GET** /v2/search/image_representation | Search all objects of type ImageRepresentation

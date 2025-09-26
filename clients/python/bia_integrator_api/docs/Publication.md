@@ -6,9 +6,9 @@ A published paper or written work.
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**authors_name** | **str** | The list of names of the authors as displayed in the publication. | 
-**title** | **str** | The title of the publication. | 
-**publication_year** | **int** | Year the article was published | 
+**authors_name** | **str** |  | 
+**title** | **str** |  | 
+**publication_year** | **int** |  | 
 **pubmed_id** | **str** |  | [optional] 
 **doi** | **str** |  | [optional] 
 

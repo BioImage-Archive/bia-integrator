@@ -90,10 +90,8 @@ def get_publication() -> List[semantic_models.Publication]:
             "publication_year": "2023",
         }
     )
-    return [
-        publication1,
-        publication2,
-    ]
+
+    return [publication1, publication2]
 
 
 def get_external_reference() -> List[semantic_models.ExternalReference]:
@@ -177,6 +175,7 @@ def get_study() -> bia_data_model.Study:
     grant = get_grant()
     study_dict = {
         "uuid": create_study_uuid(accession_id),
+        "doi": "10.1101/2023.12.07.570699",
         "object_creator": semantic_models.Provenance.bia_ingest,
         "accession_id": accession_id,
         "title": "A test submission with title greater than 25 characters",
