@@ -88,7 +88,7 @@ def point_annotation_conversion(
 
     filtered_data = point_annotations_to_ng_precompute.filter_point_annotation_data(
         annotation_data,
-        proposal_path,
+        yaml_file,
         annotation_file_reference=file_reference,
         image=image,
         pa_key_map=key_map,

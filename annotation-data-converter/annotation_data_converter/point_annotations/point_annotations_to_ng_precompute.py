@@ -49,10 +49,9 @@ def fetch_dependencies(
             f"Expected 1 original file reference for the annotation data, got: {annotation_data.original_file_reference_uuid}"
         )
 
-    annotation_data_file_reference = [
-        api_client.get_file_reference(uuid)
-        for uuid in annotation_data.original_file_reference_uuid
-    ]
+    annotation_data_file_reference = api_client.get_file_reference(
+        annotation_data.original_file_reference_uuid[0]
+    )
 
     return (image_rep, image, annotation_data, annotation_data_file_reference)
 
