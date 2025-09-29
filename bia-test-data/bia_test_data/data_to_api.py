@@ -44,7 +44,7 @@ def get_object_creation_client(
 
 
 def calculate_dependency_chain_length(
-    object_by_type: dict[str, dict[str, dict]]
+    object_by_type: dict[str, dict[str, dict]],
 ) -> dict[str, int]:
     """
     Images need their creation process to be added to the api before they can be added
@@ -66,12 +66,22 @@ def calculate_dependency_chain_length(
 
     for uuid, image in object_by_type["Image"].items():
         if uuid not in dependecy_chain_length.keys():
-            image_dependency_chain_length(
+            result_data_depenedcy_chain_length(
                 image,
                 dependecy_chain_length,
                 object_by_type["Image"],
                 object_by_type["CreationProcess"],
             )
+
+    for uuid, annotation_data in object_by_type["AnnotationData"].items():
+        if uuid not in dependecy_chain_length.keys():
+            result_data_depenedcy_chain_length(
+                annotation_data,
+                dependecy_chain_length,
+                object_by_type["AnnotationData"],
+                object_by_type["CreationProcess"],
+            )
+
     return dependecy_chain_length
 
 
@@ -94,7 +104,7 @@ def creation_process_dependency_chain_length(
         else:
             max_length = 0
             for image_uuid in creation_process["input_image_uuid"]:
-                img_chain_length = image_dependency_chain_length(
+                img_chain_length = result_data_depenedcy_chain_length(
                     images[image_uuid],
                     dependency_chain_length,
                     images,
@@ -107,7 +117,7 @@ def creation_process_dependency_chain_length(
     return dependency_chain_length[uuid]
 
 
-def image_dependency_chain_length(
+def result_data_depenedcy_chain_length(
     image: dict,
     dependency_chain_length: dict,
     images: dict[str, dict],
@@ -164,7 +174,13 @@ def add_creation_processes_and_images(
                 if uuid in object_by_type["CreationProcess"].keys():
                     ordered_object_list.append(object_by_type["CreationProcess"][uuid])
                 else:
-                    ordered_object_list.append(object_by_type["Image"][uuid])
+                    if uuid in object_by_type["Image"]:
+                        ordered_object_list.append(object_by_type["Image"][uuid])
+                    else:
+                        ordered_object_list.append(
+                            object_by_type["AnnotationData"][uuid]
+                        )
+
             chain_length += 1
 
     elif "CreationProcess" in object_by_type.keys():
@@ -209,7 +225,9 @@ def order_object_for_api(object_list: list[dict]):
     return ordered_object_list
 
 
-def add_objects_to_api(private_client, object_list: list[dict], auto_update_version = False):
+def add_objects_to_api(
+    private_client, object_list: list[dict], auto_update_version=False
+):
     ordered_object_list = order_object_for_api(object_list)
 
     for bia_object_dict in ordered_object_list:
@@ -228,7 +246,7 @@ def add_objects_to_api(private_client, object_list: list[dict], auto_update_vers
                 pass
             else:
                 if auto_update_version:
-                    api_obj.version = object_from_api.version + 1 
+                    api_obj.version = object_from_api.version + 1
                 post_method_name = "post_" + to_snake(bia_object_type)
                 post_function = private_client.__getattribute__(post_method_name)
                 post_function(api_obj)
