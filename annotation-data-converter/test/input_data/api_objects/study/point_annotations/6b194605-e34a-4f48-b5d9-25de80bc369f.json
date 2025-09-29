@@ -1,0 +1,41 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "6b194605-e34a-4f48-b5d9-25de80bc369f",
+  "version": 0,
+  "model": {
+    "type_name": "Study",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "point_annotations"
+      }
+    }
+  ],
+  "accession_id": "point_annotations",
+  "licence": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "author": [
+    {
+      "rorid": null,
+      "address": null,
+      "website": null,
+      "orcid": "https://orcid.org/9999-0001-2222-3333",
+      "display_name": "Test Author",
+      "affiliation": [],
+      "contact_email": null,
+      "role": []
+    }
+  ],
+  "title": "Point_annotations",
+  "release_date": "2023-09-05",
+  "description": "point annotation test submission",
+  "keyword": [],
+  "acknowledgement": null,
+  "see_also": [],
+  "related_publication": [],
+  "grant": [],
+  "funding_statement": null
+}

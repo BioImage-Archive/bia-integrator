@@ -1,0 +1,81 @@
+import pandas as pd
+import bia_integrator_api.models as APIModels
+from annotation_data_converter.point_annotations.Proposal import PointAnnotationProposal
+from pathlib import Path
+from neuroglancer import CoordinateSpace, write_annotations
+
+
+class PointAnnotationConverter:
+    """
+    Superclass of all point annotation converters.
+    load() should be overridden by more specific classes that can handle specific data files.
+    Methods that transform the data one loaded into a Dataframe should be written here.
+    """
+
+    proposal: PointAnnotationProposal
+    image_representation: APIModels.ImageRepresentation
+    annotation_data_file_reference: APIModels.FileReference
+    point_annotation_data: pd.DataFrame | None
+
+    def __init__(
+        self,
+        proposal: PointAnnotationProposal,
+        image_representation: APIModels.ImageRepresentation,
+        annotation_data_file_reference: APIModels.FileReference,
+    ):
+        self.proposal = proposal
+        self.image_representation = image_representation
+        self.annotation_data_file_reference = annotation_data_file_reference
+        self.point_annotation_data: None
+
+    def load(self):
+        raise NotImplementedError(
+            f"Do not instanciate {self.__class__.__name__} directly: use subclasses that are data format specific."
+        )
+
+    def convert_to_neuroglancer_precomputed(self, ng_output_dirpath: Path):
+
+        scales = [
+            self.image_representation.voxel_physical_size_x,
+            self.image_representation.voxel_physical_size_y,
+            self.image_representation.voxel_physical_size_z,
+        ]
+
+        coordinate_space = CoordinateSpace(
+            names=["z", "y", "x"],
+            units=["m", "m", "m"],
+            scales=scales,
+        )
+
+        writer = write_annotations.AnnotationWriter(
+            coordinate_space=coordinate_space, annotation_type="point"
+        )
+
+        x_column = self.proposal.x
+        y_column = self.proposal.y
+        z_column = self.proposal.z
+
+        def create_point(
+            row: pd.Series,
+            writer: write_annotations.AnnotationWriter,
+            x_column,
+            y_column,
+            z_column,
+        ):
+            x = int(row.get(x_column))
+            y = int(row.get(y_column))
+            z = int(row.get(z_column))
+            writer.add_point([z, y, x])
+
+        self.point_annotation_data.apply(
+            create_point,
+            axis=1,
+            args=(
+                writer,
+                x_column,
+                y_column,
+                z_column,
+            ),
+        )
+
+        writer.write(ng_output_dirpath)

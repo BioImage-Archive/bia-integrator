@@ -23,9 +23,18 @@ def private_client():
 
 
 @pytest.fixture(scope="session")
+def tmp_bia_data_dir(tmp_path_factory):
+    tmp_dir = tmp_path_factory.mktemp("bia_data_dir")
+    os.environ["bia_data_dir"] = str(tmp_dir)
+    return tmp_dir
+
+
+@pytest.fixture(scope="session")
 def data_in_api(private_client):
 
-    input_file_dir = Path(__file__).parent / "input_data" / "**" / "*.json"
+    input_file_dir = (
+        Path(__file__).parent / "input_data" / "api_objects" / "**" / "*.json"
+    )
     file_path_list = glob.glob(str(input_file_dir), recursive=True)
 
     object_list = []

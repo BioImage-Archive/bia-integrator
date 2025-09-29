@@ -1,0 +1,5 @@
+file_path	size_in_bytes	type	label	source_image_label	associated_annotation_method	associated_protocol
+data/image.tomo	10	http://bia/Image	Tomograph			
+data/rln_multi_tomo_point_data.star	10	http://bia/AnnotationData	rlnstar	Tomograph		
+data/single_tomo_point_data.csv	10	http://bia/AnnotationData	csv	Tomograph		
+data/single_tomo_point_data.star	10	http://bia/AnnotationData	star	Tomograph		

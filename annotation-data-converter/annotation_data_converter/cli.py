@@ -1,62 +1,44 @@
 import typer
 import logging
 import pathlib
-import yaml
+import json
 
 from annotation_data_converter.point_annotations import (
-    point_annotations_to_ng_precompute,
+    point_annotations,
 )
-
-from typing import Annotated, Optional
+from typing import Annotated
 from rich.logging import RichHandler
 from annotation_data_converter.api_client import get_client, APIMode
-from annotation_data_converter.point_annotations import read_point_annotation
-from annotation_data_converter.point_annotations.ProcessingMode import ProcessingMode
-
-annotation_data_convert = typer.Typer()
+from annotation_data_converter.point_annotations.Proposal import PointAnnotationProposal
 
 logging.basicConfig(
     level="NOTSET", format="%(message)s", datefmt="[%X]", handlers=[RichHandler()]
 )
 logger = logging.getLogger()
+annotation_data_convert = typer.Typer()
 
 
 @annotation_data_convert.command(
     help="Convert star file point annotations into pre-computed neuroglancer objects. Store these in s3 & add links to them from the relevant objects.",
 )
 def point_annotation_conversion(
-    annotation_data_uuid: Annotated[
-        str,
-        typer.Option(
-            "--annotation-data",
-            "-ad",
-            help="UUID of the AnnotationData object",
-        ),
-    ],
-    image_representation_uuid: Annotated[
-        str,
-        typer.Option(
-            "--image-representation",
-            "-ir",
-            help="UUID of the ImageRepresenation object",
-        ),
-    ],
     proposal_path: Annotated[
         pathlib.Path,
         typer.Option(
             "--proposal",
             "-p",
-            help="Path to the yaml propsal of the study.",
+            help="Path to the json propsal for the study.",
         ),
     ],
-    processing_mode: Annotated[
-        str,
+    output_directory: Annotated[
+        pathlib.Path | None,
         typer.Option(
-            "--processing-mode",
-            "-pm",
-            help="Path to the yaml propsal of the study.",
+            "--output_directory",
+            "-od",
+            case_sensitive=False,
+            help="Output directory for the data",
         ),
-    ],
+    ] = None,
     api_mode: Annotated[
         APIMode,
         typer.Option(
@@ -69,34 +51,34 @@ def point_annotation_conversion(
 ):
     api_client = get_client(api_mode)
 
-    with open(proposal_path) as f:
-        yaml_file = yaml.safe_load(f)
-
-    image_rep, image, annotation_data, file_reference = (
-        point_annotations_to_ng_precompute.fetch_dependencies(
-            annotation_data_uuid, image_representation_uuid, api_client
+    with open(proposal_path.absolute(), "r") as proposal_file:
+        proposal_list: list[PointAnnotationProposal] = json.loads(
+            proposal_file.read(), #object_hook=PointAnnotationProposal()
         )
-    )
 
-    annotation_data = read_point_annotation.read_point_data_to_dataframe(
-        file_reference.uri, file_reference.format
-    )
+    for proposal in proposal_list:
 
-    key_map = ProcessingMode.get(processing_mode)
-    if not key_map:
-        raise NotImplementedError("")
+        proposal = PointAnnotationProposal(**proposal)
 
-    filtered_data = point_annotations_to_ng_precompute.filter_point_annotation_data(
-        annotation_data,
-        yaml_file,
-        annotation_file_reference=file_reference,
-        image=image,
-        pa_key_map=key_map,
-    )
+        # Note, returns image and annotation data as these objects will need curating to add the s3 links.
+        image_rep, image, annotation_data, file_reference = (
+            point_annotations.fetch_api_object_dependencies(
+                proposal.annotation_data_uuid,
+                proposal.image_representation_uuid,
+                api_client,
+            )
+        )
 
-    point_annotations_to_ng_precompute.convert_starfile_df_to_ng_precomp(
-        filtered_data, "", image_rep, key_map
-    )
+        converter = point_annotations.create_converter(
+            image_representation=image_rep,
+            annotation_data_file_reference=file_reference,
+            proposal=proposal,
+        )
+
+        converter.load()
+        converter.convert_to_neuroglancer_precomputed(output_directory / f"{annotation_data.uuid}_{image.uuid}/")
+
+        # TODO: upload result to s3 & update api objects with s3 url
 
 
 if __name__ == "__main__":

@@ -1,0 +1,36 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "1e41099a-6d3f-417d-a679-b072e4a6d952",
+  "version": 0,
+  "model": {
+    "type_name": "FileReference",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "data/single_tomo_point_data.star10"
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "attributes_from_file_list",
+      "value": {
+        "http://bia/filePath": "data/single_tomo_point_data.star",
+        "http://bia/sizeInBytes": "10",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "http://bia/AnnotationData",
+        "http://schema.org/name": "star",
+        "http://bia/sourceImageLabel": "Tomograph",
+        "http://bia/associatedAnnotationMethod": "",
+        "http://bia/associatedProtocol": ""
+      }
+    }
+  ],
+  "file_path": "data/single_tomo_point_data.star",
+  "format": ".star",
+  "size_in_bytes": 10,
+  "uri": "None?",
+  "submission_dataset_uuid": "36c21f95-c333-45c4-a4f5-32823a0e30e1"
+}
