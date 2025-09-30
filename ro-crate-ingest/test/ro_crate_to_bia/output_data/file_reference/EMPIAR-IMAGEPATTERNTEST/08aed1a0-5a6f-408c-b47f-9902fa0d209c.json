@@ -20,11 +20,11 @@
       "value": {
         "http://bia/filePath": "data/additional_file.csv",
         "http://bia/sizeInBytes": "0",
-        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": null,
-        "http://schema.org/name": null,
-        "http://bia/sourceImageLabel": null,
-        "http://bia/associatedAnnotationMethod": null,
-        "http://bia/associatedProtocol": null
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "",
+        "http://schema.org/name": "",
+        "http://bia/sourceImageLabel": "",
+        "http://bia/associatedAnnotationMethod": "",
+        "http://bia/associatedProtocol": ""
       }
     }
   ],

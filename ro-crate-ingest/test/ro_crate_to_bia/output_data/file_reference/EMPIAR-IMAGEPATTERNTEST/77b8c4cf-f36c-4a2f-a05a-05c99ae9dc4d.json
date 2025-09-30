@@ -23,8 +23,8 @@
         "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "http://bia/Image",
         "http://schema.org/name": "",
         "http://bia/sourceImageLabel": "",
-        "http://bia/associatedAnnotationMethod": "    ",
-        "http://bia/associatedProtocol": null
+        "http://bia/associatedAnnotationMethod": "",
+        "http://bia/associatedProtocol": ""
       }
     }
   ],
