@@ -55,7 +55,7 @@ def calculate_dependency_chain_length(
     """
     dependecy_chain_length = {}
 
-    for uuid, creation_process in object_by_type["CreationProcess"].items():
+    for uuid, creation_process in object_by_type.get("CreationProcess",{}).items():
         if uuid not in dependecy_chain_length.keys():
             creation_process_dependency_chain_length(
                 creation_process,
@@ -64,18 +64,18 @@ def calculate_dependency_chain_length(
                 object_by_type["CreationProcess"],
             )
 
-    for uuid, image in object_by_type["Image"].items():
+    for uuid, image in object_by_type.get("Image",{}).items():
         if uuid not in dependecy_chain_length.keys():
-            result_data_depenedcy_chain_length(
+            result_data_dependency_chain_length(
                 image,
                 dependecy_chain_length,
                 object_by_type["Image"],
                 object_by_type["CreationProcess"],
             )
 
-    for uuid, annotation_data in object_by_type["AnnotationData"].items():
+    for uuid, annotation_data in object_by_type.get("AnnotationData",{}).items():
         if uuid not in dependecy_chain_length.keys():
-            result_data_depenedcy_chain_length(
+            result_data_dependency_chain_length(
                 annotation_data,
                 dependecy_chain_length,
                 object_by_type["AnnotationData"],
@@ -104,7 +104,7 @@ def creation_process_dependency_chain_length(
         else:
             max_length = 0
             for image_uuid in creation_process["input_image_uuid"]:
-                img_chain_length = result_data_depenedcy_chain_length(
+                img_chain_length = result_data_dependency_chain_length(
                     images[image_uuid],
                     dependency_chain_length,
                     images,
@@ -117,7 +117,7 @@ def creation_process_dependency_chain_length(
     return dependency_chain_length[uuid]
 
 
-def result_data_depenedcy_chain_length(
+def result_data_dependency_chain_length(
     image: dict,
     dependency_chain_length: dict,
     images: dict[str, dict],
