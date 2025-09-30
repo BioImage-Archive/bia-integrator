@@ -28,7 +28,7 @@ def get_file_reference_by_dataset_as_map(
     study_uuid: UUID,
     datasets_in_submission: List[bia_data_model.Dataset],
     result_summary: dict,
-) -> dict[str, bia_data_model.FileReference]:
+) -> dict[str, bia_data_model.FileReference] | None:
     """
     Return Dict of list of file references in datasets.
     """
@@ -59,8 +59,7 @@ def get_file_reference_by_dataset_as_map(
 
     for dataset_name, dataset in datasets_to_process.items():
         for file_list in dataset_file_list_map[dataset_name]:
-
-            fname = file_list["File List"]
+            fname: str | list[str] | None = file_list["File List"]
             files_in_fl = flist_from_flist_fname(submission.accno, fname)
 
             file_path_to_file_ref_map = get_file_reference_dicts_for_submission_dataset(
@@ -79,8 +78,8 @@ def get_file_reference_dicts_for_submission_dataset(
     accession_id: str,
     study_uuid: UUID,
     submission_dataset: bia_data_model.Dataset,
-    files_in_file_list: List[BioStudiesAPIFile],
-    file_path_to_file_ref_map: dict[str:UUID],
+    files_in_file_list: list[BioStudiesAPIFile],
+    file_path_to_file_ref_map: dict[str, UUID],
     result_summary: dict,
 ) -> dict[UUID, dict]:
     """
@@ -162,7 +161,7 @@ def get_source_image(
         ):
             if isinstance(attributes_from_filelist[key], list):
                 raise TypeError(
-                    f"Expected a single string, but found list, when trying to get Source Image from row in filelist."
+                    "Expected a single string, but found list, when trying to get Source Image from row in filelist."
                 )
 
             try:

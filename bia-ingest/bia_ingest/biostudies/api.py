@@ -3,6 +3,7 @@ import logging
 import pathlib
 import datetime
 from typing import List, Union, Dict, Optional, Any
+from http import HTTPStatus
 from copy import deepcopy
 
 import requests
@@ -209,7 +210,7 @@ def load_submission_table_info(accession_id: str) -> SubmissionTable:
         "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36"
     }
     r = requests.get(url, headers=headers)
-    assert r.status_code == 200
+    assert r.status_code == HTTPStatus.OK
     table_info = SubmissionTable.model_validate_json(r.content)
     return table_info
 
@@ -251,6 +252,7 @@ def read_override(accession_id: str) -> Submission:
     assert submission.accno == accession_id
     return submission
 
+
 def submission_from_biostudies_api(accession_id) -> Submission:
     url = STUDY_URL_TEMPLATE.format(accession=accession_id)
     logger.info(f"Fetching submission from {url}")
@@ -259,15 +261,14 @@ def submission_from_biostudies_api(accession_id) -> Submission:
     }
     r = requests.get(url, headers=headers)
 
-    assert r.status_code == 200
+    assert r.status_code == HTTPStatus.OK
 
     # As of 21/05/2025, biostudies UI may return either pagetab json or a forwarding url
     # see: https://biostudies.slack.com/archives/CH32H9SSK/p1747738324948869?thread_ts=1747736444.671019&cid=CH32H9SSK
     if "ftpHttp_link" in r.json():
         forward_to_url = f"{r.json().get('ftpHttp_link')}{accession_id}.json"
         r = requests.get(forward_to_url, headers=headers)
-        assert r.status_code == 200
-
+        assert r.status_code == HTTPStatus.OK
 
     submission = Submission.model_validate_json(r.content)
 
@@ -301,7 +302,7 @@ def get_file_uri_template_for_accession(accession_id: str) -> str:
     return file_uri_template
 
 
-def get_with_case_insensitive_key(dictionary: Dict[str, Any], key: str) -> Any:
+def get_with_case_insensitive_key(dictionary: dict[str, Any], key: str) -> Any:
     keys = [k.lower() for k in dictionary.keys()]
     temp_key = key.lower()
     if temp_key in keys:
@@ -332,20 +333,20 @@ def filter_filelist_content(dictionary: Dict[str, Any]) -> Dict[str, Any]:
 
 
 def flist_from_flist_fname(
-    accession_id: str, flist_fname: str, extra_attribute: Union[List[str], str] = None
-) -> List[File]:
+    accession_id: str, flist_fname: str, extra_attribute: list[str] | str | None = None
+) -> list[File]:
     flist_url = FLIST_URI_TEMPLATE.format(
         accession_id=accession_id, flist_fname=flist_fname
     )
 
-    r = requests.get(flist_url)
+    response = requests.get(flist_url)
     logger.info(f"Fetching file list from {flist_url}")
-    assert r.status_code == 200
+    assert response.status_code == HTTPStatus.OK
 
     # fl = parse_raw_as(List[File], r.content)
     # KB 18/08/2023 - Hack to fix error due to null values in attributes
     # Remove attribute entries with {"value": "null"}
-    dict_content = json.loads(r.content)
+    dict_content = json.loads(response.content)
     dict_filtered_content = filter_filelist_content(dict_content)
     filtered_content = bytes(json.dumps(dict_filtered_content), "utf-8")
     fl = TypeAdapter(List[File]).validate_json(filtered_content)

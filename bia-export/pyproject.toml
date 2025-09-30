@@ -23,6 +23,7 @@ python-dotenv = "^1.0.0"
 typer = "^0.17.4"
 rich = "^13.7.0"
 ruamel-yaml = "^0.18.5"
+deepdiff = "6.7.1"
 
 
 [tool.poetry.group.dev.dependencies]

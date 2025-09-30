@@ -6,7 +6,7 @@ An object outside the BIA that a user wants to refer to.
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**link** | **str** | A URL linking to the refered resource. | 
+**link** | **str** | A URL linking to the referred resource. | 
 **link_type** | **str** |  | [optional] 
 **description** | **str** |  | [optional] 
 

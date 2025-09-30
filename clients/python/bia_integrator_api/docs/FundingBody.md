@@ -1,7 +1,6 @@
 # FundingBody
 
 
-
 ## Properties
 
 Name | Type | Description | Notes

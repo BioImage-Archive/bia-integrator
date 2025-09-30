@@ -36,6 +36,7 @@ def get_study_dict(completeness=Completeness.COMPLETE) -> dict:
 
     if completeness == Completeness.COMPLETE:
         study_dict |= {
+            "doi": AnyUrl("https://doi.org/10.1101/2024.06.23"),
             "release_date": datetime.date(2024, 6, 23),
             "author": [get_contributor_dict(Completeness.COMPLETE)],
             "related_publication": [],

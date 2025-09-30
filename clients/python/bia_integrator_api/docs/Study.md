@@ -11,6 +11,7 @@ Name | Type | Description | Notes
 **model** | [**ModelMetadata**](ModelMetadata.md) |  | [optional] 
 **additional_metadata** | [**List[Attribute]**](Attribute.md) | Freeform key-value pairs that don&#39;t otherwise fit our data model, potentially from user provided metadata, BIA curation, and experimental fields. | [optional] 
 **accession_id** | **str** | Unique ID provided by BioStudies. | 
+**doi** | **str** |  | [optional] 
 **licence** | [**Licence**](Licence.md) |  | 
 **author** | [**List[Contributor]**](Contributor.md) |  | 
 **title** | **str** | The title of a study. This will usually be displayed when search results including your data are shown. | 

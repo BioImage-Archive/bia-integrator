@@ -39,6 +39,7 @@
   "title": "Spatiotemporal dissection of the cell cycle with single-cell proteogenomics",
   "release_date": "2020-12-17",
   "description": "Cellular division is a fundamental source of variability between individual cells, and while studies of transcript and protein abundances have revealed several hundred genes that are regulated by the cell cycle, none provide single-cell resolution of protein expression. Here, we present the first comprehensive map of spatiotemporal heterogeneity of the human proteome by integrating proteomics at subcellular resolution, single-cell transcriptomics, and pseudotime measurements of individual cells within the cell cycle. We identify that 18% of the human proteome displays cell-to-cell variability, of which 27% is correlated to cell cycle progression, and we present the first evidence of cell cycle association for 301 proteins. Only 15% of proteomic cell cycle regulation is due to transcriptomic cycling, which points to other means of regulation such as post-translational modifications. For proteins regulated at the transcript level, we observe a 8.6 hour delay between peak expression of transcript and protein on average. This spatially resolved proteomic map of the cell cycle has been integrated into the Human Protein Atlas and serves as a valuable resource for accelerating molecular studies of the human cell cycle and cell proliferation.",
+  "doi": null,
   "keyword": [],
   "acknowledgement": null,
   "see_also": [],
