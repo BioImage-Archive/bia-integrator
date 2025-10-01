@@ -23,7 +23,7 @@ pyyaml = "^6.0.2"
 pytest-check = "^2.5.4"
 
 [tool.poetry.scripts]
-annotation_data_converter = "annotation_data_converter.cli:annotation_data_convert"
+annotation-data-converter = "annotation_data_converter.cli:annotation_data_convert"
 
 [tool.poetry.group.dev.dependencies]
 ipython = "^8.32.0"
