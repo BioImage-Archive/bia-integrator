@@ -8,7 +8,6 @@ from bia_shared_datamodels.package_specific_uuid_creation.ro_crate_uuid_creation
     create_annotation_method_uuid,
 )
 from bia_shared_datamodels import ro_crate_models
-from bia_shared_datamodels.package_specific_uuid_creation.shared import create_image_representation_uuid
 import bia_integrator_api.models as APIModels
 from ro_crate_ingest.save_utils import PersistenceMode, persist
 
@@ -26,8 +25,8 @@ def create_images_and_dependencies(
     study_uuid: str,
     accession_id: str,
     persistence_mode: PersistenceMode,
-    max_workers: int = None,
-) -> pd.DataFrame:
+    max_workers: int,
+) -> None:
 
     specimens_by_group = [
         (uuid, group_df)
@@ -136,7 +135,7 @@ def create_creation_process(
     accession_id: str,
     persistence_mode: PersistenceMode,
     image_id_uuid_map: dict[str, str],
-):
+) -> None:
     import pandas as pd
 
     uuid = group[0]
@@ -190,7 +189,7 @@ def create_result_data(
     row: dict,
     accession_id: str,
     persistence_mode: PersistenceMode,
-):
+) -> None:
     if row["result_type"] == ro_crate_models.Image.model_config["model_type"]:
         create_image(row, accession_id, persistence_mode)
         create_image_representation(row, accession_id, persistence_mode)
@@ -204,7 +203,7 @@ def create_image(
     row: dict,
     accession_id: str,
     persistence_mode: PersistenceMode,
-):
+) -> None:
     import pandas as pd
 
     model_dict = {
@@ -232,7 +231,7 @@ def create_image_representation(
     row: dict,
     accession_id: str,
     persistence_mode: PersistenceMode,
-):
+) -> None:
     model_dict = {
         "uuid": row["image_rep_uuid"],
         "representation_of_uuid": row["result_data_uuid"],
@@ -257,7 +256,7 @@ def create_uuid_list(
     object_ro_crate_id_list: list[str] | float,
     uuid_creation_function: callable,
     study_uuid: str,
-):
+) -> list[str]:
 
     return [
         str(uuid_creation_function(study_uuid, obj_id)[0])
@@ -269,7 +268,7 @@ def create_annotation_data(
     row: dict,
     accession_id: str,
     persistence_mode: PersistenceMode,
-):
+) -> None:
     import pandas as pd
 
     model_dict = {
@@ -294,7 +293,7 @@ def create_annotation_data(
     )
 
 
-def caluclate_dependency_chain_length(df):
+def caluclate_dependency_chain_length(df) -> pd.DataFrame:
     """
     Calculate the longest dependency chain for a given result data (image or annotation data).
     This is always 1 more than the largest value of all of it's dependencies.

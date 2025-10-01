@@ -3,7 +3,6 @@ from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_api import (
     Section,
     Submission,
 )
-from ro_crate_ingest.biostudies_to_ro_crate.biostudies.filelist_api import File
 
 from typing import Optional
 import logging
@@ -72,8 +71,7 @@ def find_file_lists_under_section(
         flists.append(attr_dict["file list"])
 
     for subsection in section.subsections:
-        subsection_type = type(subsection)
-        if subsection_type == Section:
+        if isinstance(subsection, Section):
             find_file_lists_under_section(subsection, flists)
 
     return flists
@@ -84,12 +82,6 @@ def find_file_lists_in_submission(
 ) -> list[str]:
     return find_file_lists_under_section(submission.section, [])
 
-
-def find_files_under_section(section: Section) -> list[File]:
-    """
-    For earlier Biostudies submissions where files are documented in the pagetab json, rather than in a separate filelist
-    """
-    pass
 
 
 def find_sections_with_filelists_recursive(

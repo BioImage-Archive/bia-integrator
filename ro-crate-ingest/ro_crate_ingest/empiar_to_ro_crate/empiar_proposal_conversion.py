@@ -25,7 +25,7 @@ import logging
 logger = logging.getLogger("__main__." + __name__)
 
 
-def convert_empiar_proposal_to_ro_crate(proposal_path: Path, crate_path: Path):
+def convert_empiar_proposal_to_ro_crate(proposal_path: Path, crate_path: Path | None):
 
     with open(proposal_path) as f:
         yaml_file = yaml.safe_load(f)

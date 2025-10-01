@@ -123,9 +123,9 @@ def get_dataset_from_generic_filelist_section(
     attr_dict = attributes_to_dict(section.attributes)
     filelist_id_ref = {"@id": get_filelist_reference(roc_id, section)}
 
+    # Handle older submission formats (prior to v4 template submission) by creating protocols for the subsections.
     protocol_subsections_ids = [
-        protocol.accno
-        for protocol in find_sections_recursive(section, ["Protocol"])
+        protocol.accno for protocol in find_sections_recursive(section, ["Protocol"])
     ]
 
     model_dict = {
@@ -144,15 +144,62 @@ def get_dataset_from_generic_filelist_section(
 
 
 def get_association_field_from_associations(
-    section,
+    section: Section,
     image_aquisition_protocols: dict[str, ro_crate_models.ImageAcquisitionProtocol],
     specimen_imaging_preparation_protocols: dict[
         str, ro_crate_models.SpecimenImagingPreparationProtocol
     ],
     image_analysis_methods: dict[str, ro_crate_models.ImageAnalysisMethod],
     image_correlation_method: dict[str, ro_crate_models.ImageCorrelationMethod],
-    bio_samples_association: dict[str, dict[Optional[str], str]],
-):
+    bio_samples_association: dict[str, dict[str | None, str]],
+) -> dict[str, list[dict[str, str]]]:
+    """
+    Function that fills in the association fields for an ro-crate BIA Dataset based on the associations of the BioSample Study Component.
+
+        Parameters:
+            section (Section):
+                A dataset section which should have associations of the form:
+                "subsections": [
+                    {
+                        "type": "Associations",
+                        "attributes": [
+                        {
+                            "name": "Biosample",
+                            "value": "Cell Lines"
+                        },
+                        {
+                            "name": "Specimen",
+                            "value": "Protocol"
+                        },
+                        {
+                            "name": "Image acquisition",
+                            "value": "Image Acquisition using CQ1 confocal imaging"
+                        }
+                        ]
+                    }
+                ]
+                Where the value in the attribute corresponds to the title of other biostudies objects.
+
+            image_aquisition_protocols (dict[str, ro_crate_models.ImageAcquisitionProtocol]):
+                A map between the title of the ImageAcquisitionProtocol and the ImageAcquisitionProtocol in order to retrieve the ID
+
+            specimen_imaging_preparation_protocols, image_analysis_methods, image_analysis_methods, image_correlation_method:
+                These other parameters are the same as image_aquisition_protocols for their respective types
+
+            bio_samples_association (dict[str, dict[str | None, str]]]):
+                Essentially a tree to get to the correct ID of a ro-crate biosample. Unlikely the other objects, there is a 1 -> many
+                relationship betwen Biostudies Biosample and ro-crate BioSamples. The correct ID to use depends on both a) the title
+                of the biosample being present in the assoication (the key of the outer dict) and b) whether the association Specimen
+                resulted in a Growth Protocol. In this case the correct id for the ro-crate BioSample will be under [Biosample Title]
+                [Specimen title]. If no Growth protocol was needed the correct id for the BioSample is under [Biosample Title][None].
+                See get_taxons_bio_samples_and_association_map in bio_sample.py for how this is created. See S-BIADTEST_COMPLEX_BIOSAMPLE 
+                in the tests for an example of the expected end-to-end input-output.
+
+            Returns:
+                association_dict ( dict[str, list[dict[str, str]]]):
+                    A dictionary which can be used as part of an BIA ro-crate Dataset object, containing all the association fields
+                    for a non-annotation Study Component.
+    """
 
     association_dict = {
         "associatedBiologicalEntity": [],
@@ -163,6 +210,9 @@ def get_association_field_from_associations(
         "associatedProtocol": [],
     }
 
+    # Mapping that groups the name of the association in the biostudies submission, the objects we have created in ro-crate,
+    # and the field in the ro-crate dataset we want to put the object ID references into.
+    # Does not include BioSamples, as that has different logic.
     rembi_component_mapping = [
         (
             "image acquisition",
@@ -186,7 +236,6 @@ def get_association_field_from_associations(
         ),
     ]
 
-    # Assocations will only come up for REMBI components
     associations = find_sections_recursive(section, ["Associations"], [])
     for association in associations:
         attr_dict = attributes_to_dict(association.attributes)
@@ -199,9 +248,9 @@ def get_association_field_from_associations(
             ):
                 association_dict[mapping[2]].append({"@id": mapping[1][title].id})
 
-        biosample_title = attr_dict.get("biosample", None)
-        specimen_title = attr_dict.get("specimen", None)
-
+        # If no biosample and specimen, review Study
+        biosample_title: str = attr_dict["biosample"]
+        specimen_title: str = attr_dict["specimen"]
         if (
             specimen_title in bio_samples_association[biosample_title]
             and {"@id": bio_samples_association[biosample_title][specimen_title]}

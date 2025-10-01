@@ -18,7 +18,7 @@ def get_taxon_under_biosample(
     bio_sample_section: Section,
     unique_taxon_list: list[ro_crate_models.Taxon],
     taxon_bnode_int: int,
-) -> tuple[ro_crate_models.Taxon, int]:
+) -> tuple[list[ro_crate_models.Taxon], int]:
 
     roc_object_list = []
 

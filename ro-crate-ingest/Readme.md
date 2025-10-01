@@ -36,6 +36,21 @@ poetry run ro-crate-ingest biostudies-to-roc S-BIAD843
 
 Can choose the output folder with -c 
 
+
+## EMPIAR to ro-crate
+
+Creates an ro-crate with an ro-crate-metadata.json and filelist per imageset using REMBI and MIFA components from the yaml proposal associated with the EMPIAR deposition. 
+Note that unassigned files will go under an unassigned filelist. This creates an invalid ro-crate (the folder with the filelist must be deleted & the filelist removed from the metadata.json). This is intentional as there can't be files that are disconnected from a dataset in our API models.
+
+Example use:
+
+```
+poetry run ro-crate-ingest empiar-to-roc proposals/empiar_10988.yaml
+```
+
+Where you can replace proposals/empiar_10988.yaml with the path to the respective proposal you wish to create an ro-crate for. Can choose the output folder with -c 
+
+
 ## Testing
 
 Docker is required to run tests. 

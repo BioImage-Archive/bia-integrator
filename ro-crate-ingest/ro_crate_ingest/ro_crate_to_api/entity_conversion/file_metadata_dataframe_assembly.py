@@ -145,7 +145,7 @@ def file_list_df(
 
 
 def ro_crate_object_df(
-    rd_ro_crate_objects: list[ro_crate_models.Image],
+    rd_ro_crate_objects: list[ro_crate_models.Image | ro_crate_models.AnnotationData],
     size_order: dict[str, int],
     crate_graph: Graph,
     ro_crate_path: Path,

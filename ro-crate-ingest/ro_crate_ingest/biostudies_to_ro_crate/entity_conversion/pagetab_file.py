@@ -3,7 +3,6 @@ from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_parsing_utils 
     attributes_to_dict,
 )
 from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_api import (
-    Submission,
     Section,
     File,
 )

@@ -1,4 +1,5 @@
 from bia_shared_datamodels import ro_crate_models
+from collections.abc import Iterable
 from ro_crate_ingest.empiar_to_ro_crate.empiar.entry_api_models import Entry
 
 
@@ -6,7 +7,7 @@ def get_study(
     accession_id: str,
     empiar_api_entry: Entry,
     contributors: list[ro_crate_models.Contributor],
-    datasets: list[ro_crate_models.Dataset],
+    datasets: Iterable[ro_crate_models.Dataset],
 ) -> ro_crate_models.Study:
 
     study_dict = {
