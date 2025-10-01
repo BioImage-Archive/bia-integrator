@@ -9,7 +9,10 @@ from annotation_data_converter.point_annotations import (
 from typing import Annotated
 from rich.logging import RichHandler
 from annotation_data_converter.api_client import get_client, APIMode
-from annotation_data_converter.point_annotations.Proposal import PointAnnotationProposal
+from annotation_data_converter.point_annotations.Proposal import (
+    PointAnnotationProposal,
+)
+from annotation_data_converter.settings import get_settings
 
 logging.basicConfig(
     level="NOTSET", format="%(message)s", datefmt="[%X]", handlers=[RichHandler()]
@@ -27,39 +30,38 @@ def point_annotation_conversion(
         typer.Option(
             "--proposal",
             "-p",
-            help="Path to the json propsal for the study.",
+            help="Path to the json proposal for the study.",
         ),
     ],
     output_directory: Annotated[
-        pathlib.Path | None,
+        pathlib.Path,
         typer.Option(
             "--output_directory",
             "-od",
             case_sensitive=False,
-            help="Output directory for the data",
+            help="Output directory for the data.",
         ),
-    ] = None,
+    ] = get_settings().default_output_directory,
     api_mode: Annotated[
         APIMode,
         typer.Option(
             "--api-mode",
             "-am",
             case_sensitive=False,
-            help="Mode to persist the data. Options: local_api, bia_api",
+            help="Mode to persist the data. Options: local_api, bia_api. ",
         ),
     ] = APIMode.LOCAL_API,
 ):
     api_client = get_client(api_mode)
 
     with open(proposal_path.absolute(), "r") as proposal_file:
-        proposal_list: list[PointAnnotationProposal] = json.loads(
-            proposal_file.read(), #object_hook=PointAnnotationProposal()
+        list_of_group_proposals: list[dict] = json.loads(
+            proposal_file.read(),
         )
 
+    proposal_list = point_annotations.collect_proposals(list_of_group_proposals)
+
     for proposal in proposal_list:
-
-        proposal = PointAnnotationProposal(**proposal)
-
         # Note, returns image and annotation data as these objects will need curating to add the s3 links.
         image_rep, image, annotation_data, file_reference = (
             point_annotations.fetch_api_object_dependencies(
@@ -76,7 +78,9 @@ def point_annotation_conversion(
         )
 
         converter.load()
-        converter.convert_to_neuroglancer_precomputed(output_directory / f"{annotation_data.uuid}_{image.uuid}/")
+        converter.convert_to_neuroglancer_precomputed(
+            output_directory / f"{annotation_data.uuid}_{image.uuid}/"
+        )
 
         # TODO: upload result to s3 & update api objects with s3 url
 

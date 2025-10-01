@@ -15,7 +15,7 @@ class PointAnnotationConverter:
     proposal: PointAnnotationProposal
     image_representation: APIModels.ImageRepresentation
     annotation_data_file_reference: APIModels.FileReference
-    point_annotation_data: pd.DataFrame | None
+    point_annotation_data: pd.DataFrame
 
     def __init__(
         self,
@@ -26,7 +26,7 @@ class PointAnnotationConverter:
         self.proposal = proposal
         self.image_representation = image_representation
         self.annotation_data_file_reference = annotation_data_file_reference
-        self.point_annotation_data: None
+        self.point_annotation_data = pd.DataFrame()
 
     def load(self):
         raise NotImplementedError(
@@ -51,20 +51,16 @@ class PointAnnotationConverter:
             coordinate_space=coordinate_space, annotation_type="point"
         )
 
-        x_column = self.proposal.x
-        y_column = self.proposal.y
-        z_column = self.proposal.z
-
         def create_point(
             row: pd.Series,
             writer: write_annotations.AnnotationWriter,
-            x_column,
-            y_column,
-            z_column,
+            x_column: str | int,
+            y_column: str | int,
+            z_column: str | int,
         ):
-            x = int(row.get(x_column))
-            y = int(row.get(y_column))
-            z = int(row.get(z_column))
+            x = int(row[x_column])
+            y = int(row[y_column])
+            z = int(row[z_column])
             writer.add_point([z, y, x])
 
         self.point_annotation_data.apply(
@@ -72,9 +68,9 @@ class PointAnnotationConverter:
             axis=1,
             args=(
                 writer,
-                x_column,
-                y_column,
-                z_column,
+                self.proposal.x_column,
+                self.proposal.y_column,
+                self.proposal.z_column,
             ),
         )
 

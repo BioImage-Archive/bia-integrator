@@ -21,10 +21,6 @@ class Settings(BaseSettings):
         case_sensitive=False,
         extra="ignore",
     )
-
-    bia_data_dir: str = Field(
-        str(Path(os.environ.get("HOME", "")) / ".cache" / "ro-crate-ingest"),
-    )
     local_bia_api_basepath: str = Field("http://localhost:8080")
     local_bia_api_username: str = Field("test@example.com")
     local_bia_api_password: str = Field("test")
@@ -37,6 +33,8 @@ class Settings(BaseSettings):
     bia_api_username: str = Field("")
     bia_api_password: str = Field("")
 
+    default_output_directory: Path = Field(Path(__file__).parents[1])
+
 
 def get_settings():
-    return Settings() # pyright: ignore[reportCallIssue]
+    return Settings()  # pyright: ignore[reportCallIssue]

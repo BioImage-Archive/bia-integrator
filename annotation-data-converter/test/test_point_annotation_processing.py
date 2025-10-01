@@ -1,5 +1,4 @@
 import os
-import pathlib
 import pytest_check as check
 
 from typer.testing import CliRunner
