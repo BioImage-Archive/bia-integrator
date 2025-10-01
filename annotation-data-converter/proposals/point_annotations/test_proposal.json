@@ -1,0 +1,38 @@
+[
+  {
+    "mode": "star",
+    "proposal": [
+      {
+        "annotation_data_uuid": "dc76699b-a366-4062-8084-e0cab772fa36",
+        "image_representation_uuid": "7e235e62-59d2-4987-bcd4-a2be9bba3009",
+        "filter_value": "TS_006.tomostar",
+        "filter_column": "rlnMicrographName",
+        "x_column": "rlnCoordinateX",
+        "y_column": "rlnCoordinateY",
+        "z_column": "rlnCoordinateZ",
+        "local_file_path": "test/input_data/point_annotation_data_files/rln_multi_tomo_point_data.star"
+      },
+      {
+        "annotation_data_uuid": "15402ddb-30db-459b-9e2d-3a16479de8c4",
+        "image_representation_uuid": "7e235e62-59d2-4987-bcd4-a2be9bba3009",
+        "x_column": "orig_x",
+        "y_column": "orig_y",
+        "z_column": "orig_z",
+        "local_file_path": "test/input_data/point_annotation_data_files/single_tomo_point_data.star"
+      }
+    ]
+  },
+  {
+    "mode": "csv",
+    "x_column": 0,
+    "y_column": 1,
+    "z_column": 2,
+    "proposal": [
+      {
+        "annotation_data_uuid": "35c60bfa-6f41-46ef-b058-7b2207d681af",
+        "image_representation_uuid": "7e235e62-59d2-4987-bcd4-a2be9bba3009",
+        "local_file_path": "test/input_data/point_annotation_data_files/single_tomo_point_data.csv"
+      }
+    ]
+  }
+]

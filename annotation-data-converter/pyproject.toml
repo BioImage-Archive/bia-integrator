@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "annotation-data-converter"
+version = "0.0.1"
+description = "BioImage Archive annotation data conversion package"
+authors = ["Chris Rookyard <rookyard@ebi.ac.uk>", "Francois Sherwood <fsherwood@ebi.ac.uk>"]
+readme = "README.md"
+packages = [{include = "annotation_data_converter"}]
+
+[tool.poetry.dependencies]
+python = "^3.13"
+rich = "^13.8.1"
+bia-shared-datamodels = { path = "../bia-shared-datamodels", develop = true }
+bia-integrator-api = { path = "../clients/python", develop = true }
+bia-test-data = { path = "../bia-test-data", develop = true }
+typer = "^0.17"
+requests = "^2.32.3"
+pydantic = "^2.9.2"
+pydantic-settings = "^2.5.2"
+tensorstore = "^0.1.71"
+starfile = "^0.5.13"
+neuroglancer = "^2.40.1"
+pyyaml = "^6.0.2"
+pytest-check = "^2.5.4"
+
+[tool.poetry.scripts]
+annotation-data-converter = "annotation_data_converter.cli:annotation_data_convert"
+
+[tool.poetry.group.dev.dependencies]
+ipython = "^8.32.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

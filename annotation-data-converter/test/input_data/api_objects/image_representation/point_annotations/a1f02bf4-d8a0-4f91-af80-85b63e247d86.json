@@ -1,0 +1,33 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "a1f02bf4-d8a0-4f91-af80-85b63e247d86",
+  "version": 0,
+  "model": {
+    "type_name": "ImageRepresentation",
+    "version": 4
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "f0444894-c673-458c-a07d-fd63994fce1e"
+      }
+    }
+  ],
+  "image_format": ".tomo",
+  "file_uri": [
+    "None?"
+  ],
+  "total_size_in_bytes": 10,
+  "voxel_physical_size_x": null,
+  "voxel_physical_size_y": null,
+  "voxel_physical_size_z": null,
+  "size_x": null,
+  "size_y": null,
+  "size_z": null,
+  "size_c": null,
+  "size_t": null,
+  "image_viewer_setting": [],
+  "representation_of_uuid": "f0444894-c673-458c-a07d-fd63994fce1e"
+}
