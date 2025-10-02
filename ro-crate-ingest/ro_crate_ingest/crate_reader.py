@@ -55,7 +55,7 @@ def load_entities(data: dict) -> dict[str, ROCrateModel]:
 
     for entity in entities:
         start_len = len(crate_objects_by_id)
-        entity_type = expand_entity(entity, loaded_context).get("@type")
+        entity_type: list = expand_entity(entity, loaded_context).get("@type")
         for et in entity_type:
             if et in classes:
                 model = classes[et]
@@ -111,7 +111,9 @@ def map_files_to_datasets(crate_path: str, datasets: list):
     return file_mapping
 
 
-def expand_entity(entity: dict, context: dict) -> str:
+def expand_entity(
+    entity: dict, context: dict | list | str
+) -> dict[str, str | list[dict] | list[str]]:
     document = {"@context": context, "@graph": [entity]}
     expanded = pyld.jsonld.expand(document)
     assert len(expanded) == 1
