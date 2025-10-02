@@ -76,6 +76,11 @@ def get_test_ro_crate_path(accession_id) -> Path:
                 ),
             ],
         ),
+        (
+            "test_minimal_valid_ro_crate",
+            0,
+            [],
+        ),
     ],
 )
 def test_ro_crate_context_validation_error_messages(

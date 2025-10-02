@@ -1,7 +1,6 @@
 from pydantic import BaseModel, Field
 from pathlib import Path
 import json
-from typing import Optional
 import os
 import bia_shared_datamodels.ro_crate_models as ROCrateModels
 from bia_shared_datamodels.linked_data.pydantic_ld.ROCrateModel import ROCrateModel
@@ -53,9 +52,7 @@ def write_ro_crate_metadata(
         )
 
 
-def create_ro_crate_folder(
-    accession_id: str, crate_path: Optional[Path] = None
-) -> Path:
+def create_ro_crate_folder(accession_id: str, crate_path: Path | None = None) -> Path:
     output_path = crate_path if crate_path else Path(__file__).parents[1]
     ro_crate_dir = output_path / accession_id
     if not os.path.exists(ro_crate_dir):
@@ -65,7 +62,7 @@ def create_ro_crate_folder(
 
 
 @lru_cache
-def get_all_ro_crate_classes() -> dict:
+def get_all_ro_crate_classes() -> dict[str, type[ROCrateModel]]:
     ro_crate_pydantic_models = {
         ro_crate_class.model_config["model_type"]: ro_crate_class
         for name, ro_crate_class in inspect.getmembers(

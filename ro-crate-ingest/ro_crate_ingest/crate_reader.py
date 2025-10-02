@@ -51,10 +51,17 @@ def load_entities(data: dict) -> dict[str, ROCrateModel]:
     # TODO: hand off some of the validation to the ro-crate validation package, and just parse the data.
     for entity in entities:
         start_len = len(crate_objects_by_id)
+<<<<<<< HEAD
         entity_type = expand_entity(entity, loaded_context).get("@type", ())
         for entity_type in entity_type:
             if entity_type in classes:
                 model = classes[entity_type]
+=======
+        entity_type: list = expand_entity(entity, loaded_context).get("@type")
+        for et in entity_type:
+            if et in classes:
+                model = classes[et]
+>>>>>>> 3c6c3de8 (added context validation)
                 object: ROCrateModel = model(**entity)
                 if object.id in crate_objects_by_id.keys():
                     raise RuntimeError(
@@ -107,7 +114,9 @@ def map_files_to_datasets(crate_path: str | Path, datasets: list):
     return file_mapping
 
 
-def expand_entity(entity: dict, context: dict) -> dict:
+def expand_entity(
+    entity: dict, context: dict | list | str
+) -> dict[str, str | list[dict] | list[str]]:
     document = {"@context": context, "@graph": [entity]}
     expanded = pyld.jsonld.expand(document)
     assert len(expanded) == 1
