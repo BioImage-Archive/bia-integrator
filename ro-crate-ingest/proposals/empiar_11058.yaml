@@ -10,14 +10,14 @@ rembis:
       imaging_method_name:
         - "cryo-electron tomography"
   BioSample:
-    - title: "T. kivui LKT-1 bacterial cells"
+    - title: "T. kivui bacterial cells"
       organism_classification:
         - common_name: "T. kivui"
           scientific_name: "Thermoanaerobacter kivui"
           ncbi_id: "NCBI:txid2325"
       biological_entity_description: "Wild-type T. kivui strain bacterial cells grown at 66°C to early exponential growth stage, containing HDCR filament bundles and other cellular structures"
   SpecimenImagingPreparationProtocol:
-    - title: "Cryo-ET sample preparation and focused ion beam (FIB) milling"
+    - title: "Cryo-ET sample preparation and focused ion beam milling"
       protocol_description: "Cultures of T. kivui wild-type strain were grown for 6 h at 66°C until early exponential growth stage (OD600 nm around 0.25). Cultures were centrifuged and concentrated to OD600 nm around 5. Cell handling was performed in nitrogen atmosphere to maintain anaerobic conditions. Four microlitres of culture was placed on R 2/1 carbon-foil 200-mesh copper EM grids (Quantifoil Micro Tools) and blotted for 10 s with blot force of 10, then plunge-frozen in liquid ethane–propane mixture using Vitrobot Mark 4. Grids were clipped into Autogrid support rings and stored in liquid nitrogen. Cryo-FIB milling was performed with Aquilos dual-beam FIB/SEM instrument. Grids were coated with organometallic platinum, micro-expansion joints were milled, and gallium ion beam was used for milling. Bacterial carpets of 2-3 cell layers were milled at 14-15° angle to form lamellae of 150-200 nm thickness."
   AnnotationMethod:
     - title: "HDCR filament tracing and subtomogram averaging"

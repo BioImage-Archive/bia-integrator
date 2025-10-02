@@ -1,0 +1,36 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "08aed1a0-5a6f-408c-b47f-9902fa0d209c",
+  "version": 0,
+  "model": {
+    "type_name": "FileReference",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "data/additional_file.csv0"
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "attributes_from_file_list",
+      "value": {
+        "http://bia/filePath": "data/additional_file.csv",
+        "http://bia/sizeInBytes": "0",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "",
+        "http://schema.org/name": "",
+        "http://bia/sourceImageLabel": "",
+        "http://bia/associatedAnnotationMethod": "",
+        "http://bia/associatedProtocol": ""
+      }
+    }
+  ],
+  "file_path": "data/additional_file.csv",
+  "format": ".csv",
+  "size_in_bytes": 0,
+  "uri": "https://ftp.ebi.ac.uk/empiar/world_availability/IMAGEPATTERNTEST/data/additional_file.csv",
+  "submission_dataset_uuid": "8745e192-ad53-4a7f-adba-200cdeab3d95"
+}

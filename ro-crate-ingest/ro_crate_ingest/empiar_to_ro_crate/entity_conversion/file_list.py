@@ -2,6 +2,7 @@ import pandas as pd
 import logging
 import parse
 
+from dataclasses import dataclass
 from ro_crate_ingest.empiar_to_ro_crate.empiar.entry_api_models import Entry
 from ro_crate_ingest.empiar_to_ro_crate.empiar.file_api import get_files, EMPIARFile
 from pathlib import Path
@@ -17,8 +18,13 @@ logger = logging.getLogger("__main__." + __name__)
 requests_logger = logging.getLogger("parse")
 requests_logger.setLevel(logging.INFO)
 
-COLUMN_BNODE_INT = 0
-SCHEMA_BNODE_INT = 0
+
+@dataclass
+class PatternMatch:
+    file_pattern: str
+    dataset_id: str
+    object_type: str | None
+    yaml_object: dict | None
 
 
 def generate_relative_filelist_path(dataset_path: str) -> str:
@@ -44,9 +50,11 @@ def create_file_list(
 
     file_df = create_base_dataframe_from_file_paths(yaml_file)
 
-    file_list_df = expand_dataframe_metadata(
-        yaml_file, empiar_api_entry, datasets_map, file_df
+    path_pattern_objects = get_file_patterns_matches_and_objects(
+        yaml_file, empiar_api_entry, datasets_map
     )
+
+    file_list_df = expand_dataframe_metadata(path_pattern_objects, file_df)
 
     dataframes_by_dataset_map = split_dataframe_by_dataset(file_list_df)
 
@@ -71,51 +79,96 @@ def create_base_dataframe_from_file_paths(yaml_file):
 
 
 def expand_dataframe_metadata(
-    yaml_file: dict,
-    empiar_api_entry: Entry,
-    datasets_map: dict[str, ro_crate_models.Dataset],
+    path_pattern_objects: list[PatternMatch],
     file_df: pd.DataFrame,
 ):
-    dir_to_imageset_map = {
-        Path(imageset.directory): imageset.name
-        for imageset in empiar_api_entry.imagesets
-    }
-
-    imageset_to_dataset_id = {
-        imageset_title: dataset.id for imageset_title, dataset in datasets_map.items()
-    }
-
-    yaml_datasets_by_title = {
-        dataset["title"]: dataset for dataset in yaml_file["datasets"]
-    }
-
-    additional_files_pattern_to_dataset_map = {}
-    for dataset in yaml_file["datasets"]:
-        for additional_file in dataset.get("additional_files", []):
-            additional_files_pattern_to_dataset_map[additional_file["file_pattern"]] = (
-                dataset["title"]
-            )
 
     file_list_df = file_df.apply(
-        expand_row_metdata,
-        args=(
-            dir_to_imageset_map,
-            additional_files_pattern_to_dataset_map,
-            imageset_to_dataset_id,
-            yaml_datasets_by_title,
-        ),
+        expand_row_metadata,
+        args=(path_pattern_objects,),
         axis=1,
     )
 
     return file_list_df
 
 
-def expand_row_metdata(
+def get_file_patterns_matches_and_objects(
+    yaml_file, empiar_api_entry: Entry, datasets_map: dict[str, ro_crate_models.Dataset]
+) -> list[PatternMatch]:
+    """
+    yaml containts the assigned image, annotation & file assocaiation file patterns
+    empiar api entry has folder paths
+
+    returns a PatternMatch:
+    (pattern, (optional) object type, (optional) object from yaml, dataset id)
+    where the pattern can be used to match file paths.
+    """
+
+    image_to_dataset_map = []
+    annotation_data_to_dataset_map = []
+    file_pattern_to_dataset_map = []
+    images_set_path_to_dataset_map = []
+
+    imageset_to_path = {
+        imageset.name: imageset.directory for imageset in empiar_api_entry.imagesets
+    }
+
+    title_to_dataset_id = {
+        imageset_title: dataset.id for imageset_title, dataset in datasets_map.items()
+    }
+
+    for dataset in yaml_file["datasets"]:
+        dataset_id = title_to_dataset_id[dataset["title"]]
+        for image in dataset.get("assigned_images", ()):
+            image_to_dataset_map.append(
+                PatternMatch(
+                    f"data/{image["file_pattern"]}",
+                    dataset_id,
+                    "http://bia/Image",
+                    image,
+                )
+            )
+        for annotation in dataset.get("assigned_annotations", ()):
+            annotation_data_to_dataset_map.append(
+                PatternMatch(
+                    f"data/{annotation["file_pattern"]}",
+                    dataset_id,
+                    "http://bia/AnnotationData",
+                    annotation,
+                )
+            )
+        for additional_file in dataset.get("additional_files", ()):
+            file_pattern_to_dataset_map.append(
+                PatternMatch(
+                    f"data/{additional_file["file_pattern"]}",
+                    dataset_id,
+                    None,
+                    additional_file,
+                )
+            )
+        images_set_path_to_dataset_map.append(
+            PatternMatch(
+                f"{imageset_to_path[dataset["title"]]}{{rest}}",
+                dataset_id,
+                None,
+                None,
+            )
+        )
+
+    # Order matters for preferential matching: image_sets should be last, and file_patterns should be after images & annotation.
+    path_maps = (
+        image_to_dataset_map
+        + annotation_data_to_dataset_map
+        + file_pattern_to_dataset_map
+        + images_set_path_to_dataset_map
+    )
+
+    return path_maps
+
+
+def expand_row_metadata(
     row: pd.Series,
-    dir_to_imageset_map: dict[Path, str],
-    additional_files_pattern_to_dataset_map: dict[str, str],
-    imageset_to_dataset_id: dict[str, StopIteration],
-    yaml_dataset_by_title: dict,
+    path_maps: list[PatternMatch],
 ) -> pd.Series:
     file_path: Path = row["file_path"]
 
@@ -132,88 +185,41 @@ def expand_row_metdata(
         "associated_protocol": None,
     }
 
-    imageset_title = find_matching_imageset_path(dir_to_imageset_map, path)
-
-    output_row["dataset_ref"] = get_dataset_id(
-        additional_files_pattern_to_dataset_map,
-        imageset_to_dataset_id,
-        path,
-        imageset_title,
-    )
-
-    if imageset_title and (imageset_title in yaml_dataset_by_title):
-        dataset = yaml_dataset_by_title[imageset_title]
-
-        # Build a flattened sequence of (object, type) pairs
-        objects_with_types = chain(
-            ((obj, "http://bia/Image") for obj in dataset.get("assigned_images", ())),
-            (
-                (obj, "http://bia/AnnotationData")
-                for obj in dataset.get("assigned_annotations", ())
-            ),
-        )
-
-        for obj, obj_type in objects_with_types:
-            if is_matching_file_pattern_from_yaml_object(obj, path):
-                update_row(output_row, obj, obj_type)
-                break
+    for pattern_match in path_maps:
+        if parse.parse(pattern_match.file_pattern, path):
+            update_row(
+                output_row,
+                pattern_match.yaml_object,
+                pattern_match.object_type,
+                pattern_match.dataset_id,
+            )
+            break
 
     return pd.Series(output_row)
 
 
-def update_row(output_row: dict, yaml_object: dict, row_type: str):
-    output_row["label"] = yaml_object["label"]
+def update_row(
+    output_row: dict,
+    yaml_object: Optional[dict],
+    row_type: Optional[str],
+    dataset_id: str,
+):
     output_row["type"] = row_type
-    output_row["associated_annotation_method"] = yaml_object.get(
-        "annotation_method_title", None
-    )
-    output_row["associated_protocol"] = yaml_object.get("protocol_title", None)
+    output_row["dataset_ref"] = dataset_id
 
-    input_images = yaml_object.get("input_image_label", None)
-    if isinstance(input_images, list):
-        output_row["source_image_label"] = [
-            input_image.get("label") for input_image in input_images
-        ]
-    else:
-        output_row["source_image_label"] = input_images
-
-
-def get_dataset_id(
-    additional_files_pattern_to_dataset_map: dict[str, str],
-    imageset_to_dataset_id: dict[str, str],
-    path: Path,
-    imageset_title: str,
-) -> Optional[str]:
-    dataset_id = imageset_to_dataset_id.get(imageset_title, None)
-    if dataset_id is None:
-        for pattern in additional_files_pattern_to_dataset_map:
-            result = parse.parse(pattern, path)
-            if result is not None:
-                dataset_id = imageset_to_dataset_id.get(
-                    additional_files_pattern_to_dataset_map[pattern], None
-                )
-
-    return dataset_id
-
-
-def find_matching_imageset_path(
-    dir_to_imageset_map: dict[Path, str], path: Path
-) -> Optional[str]:
-    for dir_path in dir_to_imageset_map:
-        if path.startswith(dir_path.as_posix()):
-            imageset_title = dir_to_imageset_map[dir_path]
-            return imageset_title
-
-
-def is_matching_file_pattern_from_yaml_object(
-    image_or_annotation_data: dict, path: Path
-) -> bool:
-    pattern = image_or_annotation_data.get("file_pattern", None)
-    if pattern:
-        result = parse.parse(f"data/{pattern}", path)
-        return result is not None
-    else:
-        return False
+    if yaml_object:
+        output_row["label"] = yaml_object.get("label", None)
+        output_row["associated_annotation_method"] = yaml_object.get(
+            "annotation_method_title", None
+        )
+        output_row["associated_protocol"] = yaml_object.get("protocol_title", None)
+        input_images = yaml_object.get("input_image_label", None)
+        if isinstance(input_images, list):
+            output_row["source_image_label"] = [
+                input_image.get("label") for input_image in input_images
+            ]
+        else:
+            output_row["source_image_label"] = input_images
 
 
 def split_dataframe_by_dataset(file_df: pd.DataFrame) -> dict[str, pd.DataFrame]:

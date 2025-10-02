@@ -296,7 +296,7 @@ def create_annotation_data(
 
 def caluclate_dependency_chain_length(df):
     """
-    Calcualte the longest dependency chain for a given result data (image or annotation data).
+    Calculate the longest dependency chain for a given result data (image or annotation data).
     This is always 1 more than the largest value of all of it's dependencies.
     """
     dep_map = dict(zip(df["result_data_id"], df["source_image_id"]))

@@ -301,10 +301,11 @@ def get_filelist_to_ro_crate_object_reference(
         value = []
         if field in info_from_file_list:
             ro_crate_id: str = info_from_file_list[field]
-            if ro_crate_id.startswith("["):
-                value = [x.strip("'\"\\ ") for x in ro_crate_id.strip("[]").split(",")]
-            elif ro_crate_id != "":
-                value = [ro_crate_id]
+            if ro_crate_id and ro_crate_id != "":
+                if ro_crate_id.startswith("["):
+                    value = [x.strip("'\"\\ ") for x in ro_crate_id.strip("[]").split(",")]
+                elif ro_crate_id != "":
+                    value = [ro_crate_id]
 
             result_dict[field] = value
 
