@@ -2,6 +2,7 @@ import pandas as pd
 import logging
 import parse
 
+from dataclasses import dataclass
 from ro_crate_ingest.empiar_to_ro_crate.empiar.entry_api_models import Entry
 from ro_crate_ingest.empiar_to_ro_crate.empiar.file_api import get_files, EMPIARFile
 from pathlib import Path
@@ -16,6 +17,14 @@ logger = logging.getLogger("__main__." + __name__)
 # Avoid debug logging for every attempted parse.
 requests_logger = logging.getLogger("parse")
 requests_logger.setLevel(logging.INFO)
+
+
+@dataclass
+class PatternMatch:
+    file_pattern: str
+    dataset_id: str
+    object_type: str | None
+    yaml_object: dict | None
 
 
 def generate_relative_filelist_path(dataset_path: str) -> str:
@@ -70,7 +79,7 @@ def create_base_dataframe_from_file_paths(yaml_file):
 
 
 def expand_dataframe_metadata(
-    path_pattern_objects: list[tuple[str, Optional[str], Optional[dict], str]],
+    path_pattern_objects: list[PatternMatch],
     file_df: pd.DataFrame,
 ):
 
@@ -85,14 +94,13 @@ def expand_dataframe_metadata(
 
 def get_file_patterns_matches_and_objects(
     yaml_file, empiar_api_entry: Entry, datasets_map: dict[str, ro_crate_models.Dataset]
-) -> list[tuple[str, Optional[str], Optional[dict], str]]:
+) -> list[PatternMatch]:
     """
     yaml containts the assigned image, annotation & file assocaiation file patterns
     empiar api entry has folder paths
 
-    returns list of tuples of the form:
+    returns a PatternMatch:
     (pattern, (optional) object type, (optional) object from yaml, dataset id)
-    where the pattern can be used to match file paths.
     where the pattern can be used to match file paths.
     """
 
@@ -113,37 +121,37 @@ def get_file_patterns_matches_and_objects(
         dataset_id = title_to_dataset_id[dataset["title"]]
         for image in dataset.get("assigned_images", ()):
             image_to_dataset_map.append(
-                (
+                PatternMatch(
                     f"data/{image["file_pattern"]}",
+                    dataset_id,
                     "http://bia/Image",
                     image,
-                    dataset_id,
                 )
             )
         for annotation in dataset.get("assigned_annotations", ()):
             annotation_data_to_dataset_map.append(
-                (
+                PatternMatch(
                     f"data/{annotation["file_pattern"]}",
+                    dataset_id,
                     "http://bia/AnnotationData",
                     annotation,
-                    dataset_id,
                 )
             )
         for additional_file in dataset.get("additional_files", ()):
             file_pattern_to_dataset_map.append(
-                (
+                PatternMatch(
                     f"data/{additional_file["file_pattern"]}",
+                    dataset_id,
                     None,
                     additional_file,
-                    dataset_id,
                 )
             )
         images_set_path_to_dataset_map.append(
-            (
+            PatternMatch(
                 f"{imageset_to_path[dataset["title"]]}{{rest}}",
-                None,
-                None,
                 dataset_id,
+                None,
+                None,
             )
         )
 
@@ -160,7 +168,7 @@ def get_file_patterns_matches_and_objects(
 
 def expand_row_metadata(
     row: pd.Series,
-    path_maps: tuple[str, Optional[str], Optional[dict], str],
+    path_maps: list[PatternMatch],
 ) -> pd.Series:
     file_path: Path = row["file_path"]
 
@@ -177,9 +185,14 @@ def expand_row_metadata(
         "associated_protocol": None,
     }
 
-    for pattern, obj_type, yaml_obj, dataset_id in path_maps:
-        if parse.parse(pattern, path):
-            update_row(output_row, yaml_obj, obj_type, dataset_id)
+    for pattern_match in path_maps:
+        if parse.parse(pattern_match.file_pattern, path):
+            update_row(
+                output_row,
+                pattern_match.yaml_object,
+                pattern_match.object_type,
+                pattern_match.dataset_id,
+            )
             break
 
     return pd.Series(output_row)
