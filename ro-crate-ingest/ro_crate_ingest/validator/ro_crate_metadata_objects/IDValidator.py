@@ -5,12 +5,13 @@ from ro_crate_ingest.validator.validator import (
     Severity,
 )
 
+
 class IDValidator(Validator):
 
-    graph = list[dict]
+    graph_objects: list[dict]
 
-    def __init__(self, graph):
-        self.graph = graph
+    def __init__(self, graph_objects: list[dict]):
+        self.graph_objects = graph_objects
         super().__init__()
 
     def validate(self) -> ValidationResult:
@@ -19,7 +20,7 @@ class IDValidator(Validator):
 
         ro_crate_object_ids = []
 
-        for ro_crate_object in self.graph:
+        for ro_crate_object in self.graph_objects:
 
             roc_object_id = ro_crate_object.get("@id")
 
@@ -40,8 +41,8 @@ class IDValidator(Validator):
             else:
                 ro_crate_object_ids.append(roc_object_id)
 
-            #TODO: add URI/blank node validation as per: https://www.researchobject.org/ro-crate/specification/1.2/appendix/jsonld#describing-entities-in-json-ld
+            # TODO: add URI/blank node validation as per: https://www.researchobject.org/ro-crate/specification/1.2/appendix/jsonld#describing-entities-in-json-ld
 
         return ValidationResult(
-            issues=self.issues,
+            issues=self.issues, validated_object=ro_crate_object_ids
         )

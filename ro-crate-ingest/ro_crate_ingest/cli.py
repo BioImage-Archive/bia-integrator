@@ -101,13 +101,13 @@ def empiar_to_ro_crate(
 
 
 @ro_crate_ingest.command("validate")
-def validate_ro_crate( crate_path: Annotated[
-        Optional[Path],
-        typer.Option(
-            "--crate-path",
-            "-c",
+def validate_ro_crate(
+    crate_path: Annotated[
+        Path,
+        typer.Argument(
             case_sensitive=False,
             help="Path to the ro-crate root (or ro-crate-metadata.json)",
         ),
-    ] = None,):
+    ],
+):
     bia_roc_validation(crate_path)
