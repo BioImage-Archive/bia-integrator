@@ -17,6 +17,15 @@ class ContextTerm:
         self.field_name = field_name
         self.type_mapping = type_mapping
 
+    def __eq__(self, other):
+        if not isinstance(other, ContextTerm):
+            return False
+
+        return self.full_uri == other.full_uri and self.field_name == other.field_name
+
+    def __hash__(self):
+        return hash((self.full_uri, self.field_name, self.type_mapping))
+
     def to_context_term_dict(self, prefixes: Optional[dict[str, str]] = None) -> dict:
         context_term = {}
 
