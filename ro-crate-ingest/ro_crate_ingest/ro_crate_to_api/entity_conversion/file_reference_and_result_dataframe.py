@@ -1,19 +1,20 @@
 import pandas as pd
+import logging
+import bia_integrator_api.models as APIModels
+import pathlib
+
+from ro_crate_ingest.save_utils import persist, PersistenceMode
+from numpy import nan
+from ro_crate_ingest.settings import get_settings
+from typing import Optional
 from concurrent.futures import ProcessPoolExecutor
 from functools import partial
-import bia_integrator_api.models as APIModels
 from bia_shared_datamodels.package_specific_uuid_creation.shared import (
     create_file_reference_uuid,
 )
 from bia_shared_datamodels.package_specific_uuid_creation.ro_crate_uuid_creation import (
     create_dataset_uuid,
 )
-import pathlib
-from ro_crate_ingest.save_utils import persist, PersistenceMode
-from numpy import nan
-from ro_crate_ingest.settings import get_settings
-from typing import Optional
-import logging
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -22,9 +23,9 @@ def process_and_persist_file_references(
     df: pd.DataFrame,
     study_uuid: str,
     accession_id: str,
-    url_prefix: str,
+    url_prefix: str | None,
     persistence_mode: PersistenceMode,
-    max_workers=None,
+    max_workers: int,
 ):
 
     image_extensions = accepted_image_extensions(
@@ -52,7 +53,7 @@ def create_file_reference_and_result_data_row(
     row: dict,
     study_uuid: str,
     accession_id: str,
-    file_ref_url_prefix: str,
+    file_ref_url_prefix: str | None,
     persistence_mode: PersistenceMode,
     image_extensions: list[str],
 ) -> dict:
@@ -157,7 +158,7 @@ def get_suffix(file_path: str) -> str:
     return pathlib.Path(file_path).suffix
 
 
-def get_file_ref_uri(file_ref_url_prefix, accession_id, file_path) -> str:
+def get_file_ref_uri(file_ref_url_prefix: str | None, accession_id: str, file_path: str) -> str:
     if file_ref_url_prefix == "empiar":
         accession_no = accession_id.split("-")[1]
         return f"https://ftp.ebi.ac.uk/empiar/world_availability/{accession_no}/{file_path}"
@@ -270,7 +271,7 @@ def accepted_image_extensions(path: str) -> list[str]:
     return file_formats
 
 
-def get_file_list_source_image_id(file_list_info: dict) -> Optional[str]:
+def get_file_list_source_image_id(file_list_info: dict) -> list[str] | None:
     for bia_source_image_property in [
         "http://bia/sourceImagePath",
         "http://bia/sourceImageLabel",
@@ -287,7 +288,7 @@ def get_file_list_source_image_id(file_list_info: dict) -> Optional[str]:
 
 def get_filelist_to_ro_crate_object_reference(
     info_from_file_list: dict,
-) -> Optional[dict]:
+) -> dict:
     list_fields = [
         "http://bia/associatedBiologicalEntity",
         "http://bia/associatedImagingPreparationProtocol",
@@ -298,7 +299,7 @@ def get_filelist_to_ro_crate_object_reference(
 
     result_dict = {}
     for field in list_fields:
-        value = []
+        value: list = []
         if field in info_from_file_list:
             ro_crate_id: str = info_from_file_list[field]
             if ro_crate_id and ro_crate_id != "":

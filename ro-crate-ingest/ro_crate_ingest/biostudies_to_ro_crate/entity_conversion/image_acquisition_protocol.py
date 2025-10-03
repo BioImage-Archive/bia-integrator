@@ -56,7 +56,7 @@ def get_image_acquisition_protocol(
 
 def get_imaging_method_fbbi_from_subsection(
     image_acquisition_section: Section,
-) -> list:
+) -> tuple[list[str], list[str]]:
     sections = find_sections_recursive(image_acquisition_section, ["Imaging Method"])
     imaging_method_name = []
     fbbi_id = []

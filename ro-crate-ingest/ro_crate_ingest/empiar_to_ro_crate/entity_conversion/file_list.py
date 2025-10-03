@@ -58,7 +58,7 @@ def create_file_list(
 
     dataframes_by_dataset_map = split_dataframe_by_dataset(file_list_df)
 
-    ro_crate_objects = [schema]
+    ro_crate_objects: list = [schema]
     ro_crate_objects.extend(columns)
 
     for dataset_id, dataframe in dataframes_by_dataset_map.items():
@@ -99,9 +99,11 @@ def get_file_patterns_matches_and_objects(
     yaml containts the assigned image, annotation & file assocaiation file patterns
     empiar api entry has folder paths
 
-    returns a PatternMatch:
-    (pattern, (optional) object type, (optional) object from yaml, dataset id)
-    where the pattern can be used to match file paths.
+    returns a list of PatternMatch objects, containing:
+        file pattern which can be used to match file paths  
+        dataset id 
+        (optional) object type, 
+        (optional) object from yaml
     """
 
     image_to_dataset_map = []
@@ -251,7 +253,7 @@ def get_ro_crate_filelist(
 
 
 def get_schema(
-    columns_for_schema: list[ObjectReference],
+    columns_for_schema: list[ro_crate_models.Column],
 ) -> ro_crate_models.TableSchema:
 
     tableSchema = {

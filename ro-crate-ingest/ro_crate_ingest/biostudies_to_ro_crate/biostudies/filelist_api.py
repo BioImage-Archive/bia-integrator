@@ -1,10 +1,11 @@
 import json
 import requests
-from pydantic import TypeAdapter, BaseModel
-from typing import Any
-import pathlib
-from .submission_api import Attribute
 import logging
+import pathlib
+
+from pydantic import TypeAdapter
+from typing import Any
+from .submission_api import File
 from ro_crate_ingest.settings import get_settings
 
 
@@ -13,16 +14,6 @@ logger = logging.getLogger("__main__." + __name__)
 FLIST_URI_TEMPLATE = (
     "https://www.ebi.ac.uk/biostudies/files/{accession_id}/{flist_fname}"
 )
-
-
-# File list
-
-
-class File(BaseModel):
-    path: pathlib.Path
-    size: int
-    type: str
-    attributes: list[Attribute] = []
 
 
 def filter_filelist_content(

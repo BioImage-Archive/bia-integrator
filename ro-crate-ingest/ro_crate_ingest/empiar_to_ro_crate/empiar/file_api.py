@@ -1,9 +1,8 @@
-from pydantic import BaseModel
 import pathlib
-from ftplib import FTP
 import aioftp
-from ro_crate_ingest.settings import get_settings
 import asyncio
+from pydantic import BaseModel
+from ro_crate_ingest.settings import get_settings
 
 
 class EMPIARFile(BaseModel, frozen=True):
@@ -50,7 +49,7 @@ async def get_files_from_ftp_async(accession_id: str) -> list[EMPIARFile]:
                     rel_path = path.relative_to(root_path)
                     empiar_files.append(
                         EMPIARFile(
-                            path=rel_path, size_in_bytes=path_info.get("size", 0)
+                            path=rel_path, size_in_bytes=int(path_info.get("size", 0))
                         )
                     )
         except aioftp.StatusCodeError as e:

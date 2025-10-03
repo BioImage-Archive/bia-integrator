@@ -24,16 +24,16 @@ logger = logging.getLogger()
 @ro_crate_ingest.command("ingest")
 def ro_crate_to_bia(
     crate_path: Annotated[
-        Optional[Path],
+        Path,
         typer.Option(
             "--crate-path",
             "-c",
             case_sensitive=False,
             help="Path to the ro-crate root (or ro-crate-metadata.json)",
         ),
-    ] = None,
+    ],
     persistence_mode: Annotated[
-        Optional[PersistenceMode],
+        PersistenceMode,
         typer.Option(
             "--persistence-mode",
             "-p",
@@ -42,7 +42,7 @@ def ro_crate_to_bia(
         ),
     ] = PersistenceMode.LOCAL_FILE,
     file_ref_url_prefix: Annotated[
-        Optional[str],
+        str | None,
         typer.Option(
             "--url-prefix",
             "-u",
@@ -101,13 +101,15 @@ def empiar_to_ro_crate(
 
 
 @ro_crate_ingest.command("validate")
-def validate_ro_crate( crate_path: Annotated[
-        Optional[Path],
+def validate_ro_crate(
+    crate_path: Annotated[
+        Path,
         typer.Option(
             "--crate-path",
             "-c",
             case_sensitive=False,
             help="Path to the ro-crate root (or ro-crate-metadata.json)",
         ),
-    ] = None,):
+    ],
+):
     bia_roc_validation(crate_path)

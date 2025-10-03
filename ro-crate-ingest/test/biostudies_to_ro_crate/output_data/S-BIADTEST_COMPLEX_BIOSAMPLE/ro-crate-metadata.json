@@ -424,7 +424,7 @@
             "description": "Has 1 association, re-using biosample 1, but with different specimen to Component 1 (which has a growth protocol) so should have a different ro-crate biosample.",
             "associatedBiologicalEntity": [
                 {
-                    "@id": "_:Biosample-1 fcdd4e00-45d6-45b7-9a03-d01dc34ce221"
+                    "@id": "_:Biosample-1 9094eed1-c332-4f45-add1-dc6e153ceb56"
                 }
             ],
             "associatedSpecimenImagingPreparationProtocol": [
@@ -600,7 +600,7 @@
             "growthProtocol": null
         },
         {
-            "@id": "_:Biosample-1 fcdd4e00-45d6-45b7-9a03-d01dc34ce221",
+            "@id": "_:Biosample-1 9094eed1-c332-4f45-add1-dc6e153ceb56",
             "@type": [
                 "bia:BioSample"
             ],

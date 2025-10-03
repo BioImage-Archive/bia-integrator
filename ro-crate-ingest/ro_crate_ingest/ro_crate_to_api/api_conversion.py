@@ -32,7 +32,7 @@ logger = logging.getLogger()
 def convert_ro_crate_to_bia_api(
     crate_path: Path,
     persistence_mode: PersistenceMode,
-    file_ref_url_prefix: str,
+    file_ref_url_prefix: str | None,
 ):
     entities = process_ro_crate(crate_path)
     crate_graph = load_ro_crate_metadata_to_graph(crate_path)

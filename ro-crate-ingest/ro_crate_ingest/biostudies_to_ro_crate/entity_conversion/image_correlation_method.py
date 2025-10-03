@@ -29,7 +29,7 @@ def get_image_correlation_method_by_title(
 
 def get_image_correlation_method(
     section: Section,
-) -> ro_crate_models.Protocol:
+) -> ro_crate_models.ImageCorrelationMethod:
     attr_dict = attributes_to_dict(section.attributes)
 
     model_dict = {
