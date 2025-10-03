@@ -4,14 +4,10 @@ import logging
 
 from pathlib import Path
 from ro_crate_ingest.validator.ro_crate_metadata_objects import (
-    FileListValidator,
     IDValidator,
     ModelTypeValidator,
-    IDReferenceValidatory,
 )
-from ro_crate_ingest.validator.rdf_graph import (
-    ContextValidator
-)
+from ro_crate_ingest.validator.rdf_graph import ContextValidator
 from ro_crate_ingest.validator.validator import ValidationResult, Validator
 from ro_crate_ingest.validator.ro_crate_standard import (
     ReadableMetadataValidator,
@@ -40,16 +36,11 @@ def bia_roc_validation(ro_crate_directory: Path):
     graph: list[dict] = ro_crate_json["@graph"]
     context = ro_crate_json["@context"]
 
-    x = ContextValidator.ContextValidator(context)
-    x.validate()
+    validate(ContextValidator.ContextValidator(context))
 
     logging.info(f"Validating ro-crate objects under in the @graph of {metadata_path}")
-    list_of_ids: list[str] = validate(IDValidator.IDValidator(graph)).validated_object
-    model_objects: dict[str, ROCrateModel] = validate(
-        ModelTypeValidator.ModelTypeValidator(graph, context)
-    ).validated_object
-
-    file_lists = [model_object for model_object in model_objects]
+    validate(IDValidator.IDValidator(graph)).validated_object
+    validate(ModelTypeValidator.ModelTypeValidator(graph, context)).validated_object
 
     # TODO: Add file list validation
 
