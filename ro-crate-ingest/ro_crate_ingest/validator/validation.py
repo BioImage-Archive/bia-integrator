@@ -31,8 +31,6 @@ def bia_roc_validation(ro_crate_directory: Path):
     with open(metadata_path, "r") as f:
         ro_crate_json = json.load(f)
 
-    # TODO: Add context validation
-
     graph: list[dict] = ro_crate_json["@graph"]
     context = ro_crate_json["@context"]
 
