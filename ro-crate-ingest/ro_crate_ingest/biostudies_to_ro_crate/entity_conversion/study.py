@@ -6,7 +6,8 @@ from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_parsing_utils 
 from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_api import Submission
 
 from bia_shared_datamodels import ro_crate_models, semantic_models
-
+from collections.abc import Iterable
+from typing import Any
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -14,7 +15,7 @@ logger = logging.getLogger("__main__." + __name__)
 def get_study(
     submission: Submission,
     contributors: list[ro_crate_models.Contributor],
-    datasets: list[ro_crate_models.Dataset],
+    datasets: Iterable[ro_crate_models.Dataset],
 ) -> ro_crate_models.Study:
     submission_attributes = attributes_to_dict(submission.attributes)
     study_attributes = attributes_to_dict(submission.section.attributes)
@@ -48,7 +49,7 @@ def study_title_from_submission(submission: Submission) -> str:
     return study_title
 
 
-def get_licence(study_attributes: dict[str, any]) -> semantic_models.Licence:
+def get_licence(study_attributes: dict[str, Any]) -> semantic_models.Licence:
     """
     Return enum version of licence of study
     """

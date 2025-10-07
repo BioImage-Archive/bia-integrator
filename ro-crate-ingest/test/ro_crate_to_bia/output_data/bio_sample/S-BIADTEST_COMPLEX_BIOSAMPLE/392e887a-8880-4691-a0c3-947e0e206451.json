@@ -1,6 +1,6 @@
 {
   "object_creator": "bia_ingest",
-  "uuid": "4752a2f9-577f-4d8b-ac06-513253c66fee",
+  "uuid": "392e887a-8880-4691-a0c3-947e0e206451",
   "version": 0,
   "model": {
     "type_name": "BioSample",
@@ -11,11 +11,11 @@
       "provenance": "bia_ingest",
       "name": "uuid_unique_input",
       "value": {
-        "uuid_unique_input": "Biosample-1 fcdd4e00-45d6-45b7-9a03-d01dc34ce221"
+        "uuid_unique_input": "Biosample-1 9094eed1-c332-4f45-add1-dc6e153ceb56"
       }
     }
   ],
-  "title": "_:Biosample-1 fcdd4e00-45d6-45b7-9a03-d01dc34ce221",
+  "title": "_:Biosample-1 9094eed1-c332-4f45-add1-dc6e153ceb56",
   "organism_classification": [
     {
       "additional_metadata": [],

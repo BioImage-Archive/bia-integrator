@@ -48,7 +48,9 @@ def convert_biostudies_to_ro_crate(accession_id: str, crate_path: Optional[Path]
     graph = []
 
     # Used for the creation of other uuids, not the actual study.
-    study_uuid = create_study_uuid(submission.accno)
+    if not submission.accno:
+        raise ValueError("Missing accession id for study: cannot proccess.")
+    study_uuid = str(create_study_uuid(submission.accno)[0])
 
     roc_iam = image_analysis_method.get_image_analysis_method_by_title(submission)
     graph += roc_iam.values()

@@ -6,7 +6,7 @@ logger = logging.getLogger("__main__." + __name__)
 
 def get_taxon_under_biosample(
     bio_sample_yaml: dict,
-    taxon_dict: dict[ro_crate_models.Taxon],
+    taxon_dict: dict,
 ) -> None:
 
     taxons_yaml: list[dict] = bio_sample_yaml.get("organism_classification", [])

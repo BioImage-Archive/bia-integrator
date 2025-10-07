@@ -17,7 +17,7 @@ def get_dataset_for_filelist(
         )
     )
     if len(subjects) == 1:
-        parent_id = pathlib.Path.from_uri(subjects[0]).relative_to(crate_path)
+        parent_id = pathlib.Path.from_uri(str(subjects[0])).relative_to(crate_path)
         return f"{str(parent_id)}/"
     else:
         raise ValueError(
@@ -26,7 +26,7 @@ def get_dataset_for_filelist(
 
 
 def get_hasPart_parent_id_from_child(
-    child_id: str, graph: rdflib.Graph, crate_path: str
+    child_id: str, graph: rdflib.Graph, crate_path: pathlib.Path
 ) -> str:
     pathlib_path_uri = pathlib.Path(crate_path).absolute().as_uri() + "/"
     child_rdf_ref = urljoin(pathlib_path_uri, child_id)
@@ -46,7 +46,7 @@ def get_hasPart_parent_id_from_child(
             f"Multiple datasets found for hasPart object: {child_id}. Please check the RO-Crate metadata."
         )
     else:
-        parent_id = pathlib.Path.from_uri(subjects[0]).relative_to(crate_path)
+        parent_id = pathlib.Path.from_uri(str(subjects[0])).relative_to(crate_path)
         return f"{str(parent_id)}/"
 
 

@@ -16,7 +16,7 @@ def get_contributors(empiar_api_entry: Entry) -> list[Contributor]:
     return contributors
 
 
-def get_contributor(author: AuthorEditor, contributor_bnode_int: int) -> Contributor:
+def get_contributor(author: AuthorEditor, contributor_bnode_int: int) -> tuple[Contributor, int]:
     contributor_id, contributor_bnode_int = get_contributor_id(
         author, contributor_bnode_int
     )

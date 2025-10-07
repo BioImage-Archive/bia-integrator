@@ -15,7 +15,7 @@ def create_study_uuid(
 def create_file_reference_uuid(
     study_uuid: str,
     file_path: str,
-    file_size_in_bytes: str,
+    file_size_in_bytes: str | int,
     provenance: Provenance = Provenance.bia_ingest,
 ) -> tuple[UUID, attribute_models.DocumentUUIDUinqueInputAttribute]:
     unique_string = f"{file_path}{file_size_in_bytes}"

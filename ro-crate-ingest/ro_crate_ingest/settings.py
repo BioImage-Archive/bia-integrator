@@ -55,5 +55,5 @@ class Settings(BaseSettings):
     parallelisation_max_workers: int = Field(4)
 
 
-def get_settings():
+def get_settings() -> Settings:
     return Settings()

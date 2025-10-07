@@ -16,7 +16,7 @@ from ro_crate_ingest.ro_crate_defaults import get_all_ro_crate_classes
 logger = logging.getLogger("__main__." + __name__)
 
 
-def load_ro_crate_metadata_to_dict(crate_path: str) -> dict:
+def load_ro_crate_metadata_to_dict(crate_path: str | Path) -> dict:
     crate_path: Path = Path(crate_path)
 
     if crate_path.is_dir():
@@ -33,11 +33,6 @@ def load_ro_crate_metadata_to_dict(crate_path: str) -> dict:
     return data
 
 
-def validate_json(data):
-    # TODO: Implement actual validation logic using models & context. RO-CRATE json structure is still under a lot of discussion, so defaulting to True for now.
-    return True
-
-
 def load_entities(data: dict) -> dict[str, ROCrateModel]:
     # TODO: maybe loading using ro-crate libaries would be better
     context = data.get("@context", {})
@@ -49,16 +44,17 @@ def load_entities(data: dict) -> dict[str, ROCrateModel]:
         elif isinstance(item, dict):
             loaded_context |= item
 
-    entities = data.get("@graph", [])
+    entities: list[dict[str, dict | str]] = data.get("@graph", [])
     crate_objects_by_id = {}
     classes = get_all_ro_crate_classes()
 
+    # TODO: hand off some of the validation to the ro-crate validation package, and just parse the data.
     for entity in entities:
         start_len = len(crate_objects_by_id)
-        entity_type = expand_entity(entity, loaded_context).get("@type")
-        for et in entity_type:
-            if et in classes:
-                model = classes[et]
+        entity_type = expand_entity(entity, loaded_context).get("@type", ())
+        for entity_type in entity_type:
+            if entity_type in classes:
+                model = classes[entity_type]
                 object: ROCrateModel = model(**entity)
                 if object.id in crate_objects_by_id.keys():
                     raise RuntimeError(
@@ -68,10 +64,10 @@ def load_entities(data: dict) -> dict[str, ROCrateModel]:
                 break
         if len(crate_objects_by_id) == start_len:
             if "ro-crate-metadata.json" == entity.get("@id"):
-                logger.info("Skipping ro-crate-metadata.json entity.")
+                logger.debug("Skipping ro-crate-metadata.json entity.")
             elif str(rdflib.RDF.Property) in entity_type:
-                logger.info(
-                    f"Skipping RDF.Property: {entity.get('name')}. Though we may want to processes these in some way later"
+                logger.warning(
+                    f"Skipping RDF.Property: {entity.get("@id")}. Though we may want to processes these in some way later"
                 )
             else:
                 logger.warning(
@@ -91,8 +87,8 @@ def process_ro_crate(crate_path):
     return load_entities(data)
 
 
-def map_files_to_datasets(crate_path: str, datasets: list):
-    crate_path = Path(crate_path)
+def map_files_to_datasets(crate_path: str | Path, datasets: list):
+    crate_path: Path = Path(crate_path)
     files = []
 
     for root, _, filenames in os.walk(crate_path):
@@ -111,7 +107,7 @@ def map_files_to_datasets(crate_path: str, datasets: list):
     return file_mapping
 
 
-def expand_entity(entity: dict, context: dict) -> str:
+def expand_entity(entity: dict, context: dict) -> dict:
     document = {"@context": context, "@graph": [entity]}
     expanded = pyld.jsonld.expand(document)
     assert len(expanded) == 1
@@ -130,7 +126,7 @@ def load_external_context(url) -> dict:
         return {}
 
 
-def load_ro_crate_metadata_to_graph(crate_path: str) -> rdflib.Graph:
+def load_ro_crate_metadata_to_graph(crate_path: str | Path) -> rdflib.Graph:
     crate_path: Path = Path(crate_path)
 
     if crate_path.is_dir():

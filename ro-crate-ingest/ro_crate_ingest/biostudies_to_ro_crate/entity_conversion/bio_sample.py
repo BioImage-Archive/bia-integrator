@@ -27,8 +27,18 @@ def get_taxons_bio_samples_and_association_map(
 ) -> tuple[
     list[ro_crate_models.Taxon],
     list[ro_crate_models.BioSample],
-    dict[str, dict[Optional[str], str]],
+    dict[str, dict[str | None, str]],
 ]:
+    """
+    Returns a tuple of:
+        taxon_list (list[ro_crate_models.Taxon]): A list of Taxons to include in the ro-crate metadata
+        roc_biosamples (list[ro_crate_models.BioSample]): A list of BioSamples to include in the ro-crate metadata
+        association_mapping (dict[str, dict[str | None, str]]): Essentially a tree to get to the correct ID of a ro-crate biosample using a Study Component's associations.
+            The dict structure is of the form: { "biostudies biosample title": { "biostudies specimen title": "ro-crate biosample id 1", None: "ro-crate biosample id 2" } }
+            This is because whether a specimen in an association includes growth protocol information influences how many biosamples get created.
+            See get_association_field_from_associations in dataset.py for where this information gets use. See S-BIADTEST_COMPLEX_BIOSAMPLE example in the tests for expected
+            end-to-end input-output.
+    """
 
     biosample_sections = find_sections_recursive(submission.section, ["Biosample"], [])
 
@@ -46,7 +56,7 @@ def get_taxons_bio_samples_and_association_map(
         biosample_taxons, taxon_bnode_int = get_taxon_under_biosample(
             bio_sample_section=section,
             unique_taxon_list=taxon_list,
-            taxon_bnode_int=taxon_bnode_int
+            taxon_bnode_int=taxon_bnode_int,
         )
 
         attr_dict = attributes_to_dict(section.attributes)
@@ -80,7 +90,7 @@ def get_bio_sample(
 
     model_dict = {
         "@id": (
-            f"_:{section.accno} {str(biostudies_ingest_uuid_creation.create_protocol_uuid(shared.create_study_uuid(accession_id), growth_protocol.id.removeprefix("_:_"))[0])}"
+            f"_:{section.accno} {str(biostudies_ingest_uuid_creation.create_protocol_uuid(str(shared.create_study_uuid(accession_id)[0]), growth_protocol.id.removeprefix("_:_"))[0])}"
             if growth_protocol
             else f"_:{section.accno}"
         ),

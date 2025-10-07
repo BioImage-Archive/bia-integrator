@@ -138,7 +138,12 @@
     "release_date": "2023-09-05",
     "obsolete_date": null,
     "update_date": "2023-09-05",
-    "corresponding_author": {},
+    "corresponding_author": {
+      "author": {
+          "name": "Test",
+          "author_orcid": null
+        }
+    },
     "authors": [
       {
         "author": {
