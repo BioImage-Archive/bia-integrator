@@ -32,7 +32,7 @@ def generate_bia_ro_crate_context(file_path: Path):
             context.add_term(field_term)
 
     with open(file_path, "w") as f:
-        json.dump(context.to_dict(), f, indent=2)
+        json.dump({"@context": context.to_dict()}, f, indent=2)
 
 
 if __name__ == "__main__":
@@ -40,7 +40,7 @@ if __name__ == "__main__":
         Path(__file__).parents[1]
         / "bia_shared_datamodels"
         / "linked_data"
-        / "bia_ro_crate_context.json"
+        / "bia_ro_crate_context.jsonld"
     )
     generate_bia_ro_crate_context(path_to_context)
     print(f"BIA RO-Crate context generated at: {path_to_context}")

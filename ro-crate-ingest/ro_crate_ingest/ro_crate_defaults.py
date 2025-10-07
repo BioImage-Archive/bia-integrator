@@ -23,13 +23,13 @@ def get_default_context():
         / "src"
         / "bia_shared_datamodels"
         / "linked_data"
-        / "bia_ro_crate_context.json"
+        / "bia_ro_crate_context.jsonld"
     ) as f:
         bia_specific_context = json.loads(f.read())
 
     bia_ro_crate_context = [
         "https://w3id.org/ro/crate/1.1/context",
-        bia_specific_context,
+        bia_specific_context["@context"],
     ]
 
     return bia_ro_crate_context
