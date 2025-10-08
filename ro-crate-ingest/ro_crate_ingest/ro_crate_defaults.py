@@ -1,11 +1,10 @@
-from pydantic import BaseModel, Field
-from pathlib import Path
 import json
 import os
-import bia_shared_datamodels.ro_crate_models as ROCrateModels
+
+from pydantic import BaseModel, Field
+from pathlib import Path
 from bia_shared_datamodels.linked_data.pydantic_ld.ROCrateModel import ROCrateModel
-import inspect
-from functools import lru_cache
+from bia_shared_datamodels import ro_crate_generator_utils
 
 
 class ROCrateCreativeWork(BaseModel):
@@ -61,15 +60,5 @@ def create_ro_crate_folder(accession_id: str, crate_path: Path | None = None) ->
     return ro_crate_dir
 
 
-@lru_cache
 def get_all_ro_crate_classes() -> dict[str, type[ROCrateModel]]:
-    ro_crate_pydantic_models = {
-        ro_crate_class.model_config["model_type"]: ro_crate_class
-        for name, ro_crate_class in inspect.getmembers(
-            ROCrateModels,
-            lambda member: inspect.isclass(member)
-            and member.__module__ == "bia_shared_datamodels.ro_crate_models"
-            and issubclass(member, ROCrateModel),
-        )
-    }
-    return ro_crate_pydantic_models
+    return ro_crate_generator_utils.get_all_ro_crate_classes()

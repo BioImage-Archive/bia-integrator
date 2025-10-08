@@ -4,8 +4,6 @@ from pathlib import Path
 import urllib.parse
 from bia_shared_datamodels.linked_data.pydantic_ld.ROCrateModel import ROCrateModel
 from rocrate.rocrate import ROCrate
-import bia_shared_datamodels.ro_crate_models as ro_crate_models
-import inspect
 import pyld
 import rdflib
 import logging
