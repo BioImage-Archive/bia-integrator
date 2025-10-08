@@ -38,9 +38,9 @@ def bia_roc_validation(ro_crate_directory: Path):
 
     logging.info(f"Validating ro-crate objects under in the @graph of {metadata_path}")
     validate(IDValidator.IDValidator(graph)).validated_object
-    validate(ModelTypeValidator.ModelTypeValidator(graph, context)).validated_object
-
-    # TODO: Add file list validation
+    ro_crate_objects: dict = validate(
+        ModelTypeValidator.ModelTypeValidator(graph, context)
+    ).validated_object
 
 
 def log_issues(validation_result: ValidationResult):
