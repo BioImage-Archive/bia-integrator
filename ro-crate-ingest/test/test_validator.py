@@ -45,6 +45,16 @@ def get_test_ro_crate_path(accession_id) -> Path:
             ],
         ),
         (
+            "test_invalid_redefined_context_term",
+            1,
+            [
+                (
+                    "ERROR",
+                    "At displayName:\nTerm has been remapped in context: displayName must be mapped to http://schema.org/name",
+                ),
+            ],
+        ),
+        (
             "test_invalid_ro_crate_object_ids",
             1,
             [
@@ -76,6 +86,11 @@ def get_test_ro_crate_path(accession_id) -> Path:
                 ),
             ],
         ),
+        (
+            "test_minimal_valid_ro_crate",
+            0,
+            [],
+        ),
     ],
 )
 def test_ro_crate_context_validation_error_messages(
@@ -86,7 +101,7 @@ def test_ro_crate_context_validation_error_messages(
 
     crate_path = get_test_ro_crate_path(accession_id)
 
-    arguments = ["validate", "-c", crate_path]
+    arguments = ["validate", str(crate_path)]
     result = runner.invoke(ro_crate_ingest, arguments)
     assert result.exit_code == expected_result
 

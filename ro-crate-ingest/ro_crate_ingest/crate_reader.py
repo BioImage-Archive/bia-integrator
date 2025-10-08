@@ -4,8 +4,6 @@ from pathlib import Path
 import urllib.parse
 from bia_shared_datamodels.linked_data.pydantic_ld.ROCrateModel import ROCrateModel
 from rocrate.rocrate import ROCrate
-import bia_shared_datamodels.ro_crate_models as ro_crate_models
-import inspect
 import pyld
 import rdflib
 import logging
@@ -107,7 +105,9 @@ def map_files_to_datasets(crate_path: str | Path, datasets: list):
     return file_mapping
 
 
-def expand_entity(entity: dict, context: dict) -> dict:
+def expand_entity(
+    entity: dict, context: dict | list | str
+) -> dict[str, str | list[dict] | list[str]]:
     document = {"@context": context, "@graph": [entity]}
     expanded = pyld.jsonld.expand(document)
     assert len(expanded) == 1

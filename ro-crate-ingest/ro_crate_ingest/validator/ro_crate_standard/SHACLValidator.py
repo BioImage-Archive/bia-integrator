@@ -2,6 +2,7 @@ from ro_crate_ingest.validator.validator import (
     ValidationError,
     ValidationResult,
     Validator,
+    Severity,
 )
 from pathlib import Path
 from rocrate_validator import services, models
@@ -39,9 +40,15 @@ class SHACLValidator(Validator):
                 )
                 self.issues.append(
                     ValidationError(
-                        severity=severity_map.get(issue.severity.name),
+                        severity=Severity(
+                            severity_map.get(issue.severity.name, "INFO")
+                        ),
                         location_description=error_location,
-                        message=issue.message,
+                        message=(
+                            issue.message
+                            if issue.message
+                            else f"ro-crate shacl validation failed without message."
+                        ),
                     )
                 )
 
