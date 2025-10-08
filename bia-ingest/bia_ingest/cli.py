@@ -44,6 +44,14 @@ logging.basicConfig(
 
 logger = logging.getLogger()
 
+LOGGING_LEVELS: dict = {
+    0: logging.CRITICAL,
+    1: logging.ERROR,
+    2: logging.WARNING,
+    3: logging.INFO,
+    4: logging.DEBUG,
+}
+
 
 class ProcessFilelistMode(str, Enum):
     """Wether to process all file references, ask if there are a lot of files, or always skip."""
@@ -67,22 +75,24 @@ def ingest(
     persistence_mode: Annotated[
         PersistenceMode, typer.Option("--persistence-mode", "-pm", case_sensitive=False)
     ] = PersistenceMode.disk,
-    verbose: Annotated[bool, typer.Option("--verbose", "-v")] = False,
     process_filelist: Annotated[
         ProcessFilelistMode,
         typer.Option("--process-filelist", "-pf", case_sensitive=False),
     ] = ProcessFilelistMode.ask,
     dryrun: Annotated[bool, typer.Option()] = False,
-    write_csv: Annotated[str, typer.Option()] = None,
+    write_csv: Annotated[str, typer.Option()] = "",
     counts: Annotated[bool, typer.Option("--counts", "-c")] = False,
+    logging: Annotated[int, typer.Option("--logging", "-l")] = 0,
 ) -> None:
-    if verbose:
-        logger.setLevel(logging.DEBUG)
+    logger.setLevel(LOGGING_LEVELS[logging])
+
+    if accession_id_list is None:
+        accession_id_list = []
 
     result_summary = {}
 
-    if input_file and not accession_id_list:
-        accession_id_list = read_file_input(input_file)
+    if input_file:
+        accession_id_list.extend(read_file_input(input_file))
 
     for accession_id in accession_id_list:
         print(f"[blue]-------- Starting ingest of {accession_id} --------[/blue]")
@@ -106,7 +116,7 @@ def ingest(
                 "Uncaught_Exception",
                 "Non-200 repsonse from BioStudies",
             )
-            logging.exception("message")
+            logger.exception("message")
             continue
         except Exception as error:
             logger.error("Failed to parse information from BioStudies")
@@ -114,7 +124,7 @@ def ingest(
                 "Uncaught_Exception",
                 str(result_summary[accession_id].Uncaught_Exception) + str(error),
             )
-            logging.exception("message")
+            logger.exception("message")
             continue
 
         processing_version = determine_biostudies_processing_version(submission)
@@ -138,7 +148,7 @@ def ingest(
                 get_study(submission, result_summary, persister)
 
         except Exception as error:
-            logging.exception("message")
+            logger.exception("message")
             result_summary[accession_id].__setattr__(
                 "Uncaught_Exception",
                 str(result_summary[accession_id].Uncaught_Exception) + str(error),
