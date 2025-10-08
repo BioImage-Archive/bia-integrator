@@ -148,6 +148,8 @@ def tabulate_ingestion_errors(
             status.stylize("red")
             error_message = Text(error_message)
             error_message.stylize("red")
+        else:
+            status = Text("Unknown")
 
         row_info = [
             accession_id_key,
