@@ -9,9 +9,8 @@ from bia_shared_datamodels.linked_data.pydantic_ld.ROCrateModel import ROCrateMo
 from bia_shared_datamodels.linked_data.ld_context.SimpleJSONLDContext import (
     SimpleJSONLDContext,
 )
-from rdflib import Graph
+from bia_shared_datamodels.ro_crate_generator_utils import generate_standard_bia_context
 from pyld.jsonld import JsonLdProcessor
-from pathlib import Path
 
 
 class ContextValidator(Validator):
@@ -26,23 +25,12 @@ class ContextValidator(Validator):
             active_ctx={"mappings": {}}, local_ctx=context_to_check, options=None
         )["mappings"]
 
-        class_map: dict[str, type[ROCrateModel]] = get_all_ro_crate_classes()
+        self._get_expected_context()
 
-        standard_prefixes = {
-            "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-            "schema": "http://schema.org/",
-            "dc": "http://purl.org/dc/terms/",
-            "bia": "http://bia/",
-            "csvw": "http://www.w3.org/ns/csvw#",
-        }
-        context = SimpleJSONLDContext(prefixes=standard_prefixes)
-
-        for ldclass in class_map.values():
-            for field_term in ldclass.generate_field_context():
-                context.add_term(field_term)
-
-        self.expected_bia_context_terms = context
         super().__init__()
+
+    def _get_expected_context(self) -> None:
+        self.expected_bia_context_terms = generate_standard_bia_context()
 
     def validate(self) -> ValidationResult:
 
