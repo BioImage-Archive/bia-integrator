@@ -9,11 +9,7 @@ jobs:
         python-version: ["3.13"]
         poetry-version: ["1.8"]
         os: [ubuntu-22.04, macos-latest, windows-latest]
-        project:
-          [
-            bia-shared-datamodels,
-            core,
-          ]
+        project: [bia-shared-datamodels, core]
     runs-on: ${{ matrix.os }}
     defaults:
       run:
@@ -46,15 +42,7 @@ jobs:
         # Note we do not test on windows or mac. Currently, github mac runners do not support nested virtualization, so we cannot run docker on them (since mac docker virtualises linux)
         # See https://docs.github.com/en/actions/using-github-hosted-runners/using-github-hosted-runners/about-github-hosted-runners#limitations-for-arm64-macos-runners
         os: [ubuntu-22.04]
-        project:
-          [
-            bia-export,
-            bia-ingest,
-            bia-assign-image,
-            bia-converter,
-            ro-crate-ingest,
-            annotation-data-converter,
-          ]
+        project: [bia-export, bia-ingest, bia-assign-image, bia-converter, ro-crate-ingest, annotation-data-converter]
     runs-on: ${{ matrix.os }}
     defaults:
       run:
