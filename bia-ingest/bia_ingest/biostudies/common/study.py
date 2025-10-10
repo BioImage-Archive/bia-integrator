@@ -333,12 +333,11 @@ def get_related_publications(
         }
         try:
             publications.append(semantic_models.Publication.model_validate(publication))
-        except ValidationError as error:
+        except ValidationError:
             log_failed_model_creation(
                 semantic_models.Publication,
                 result_summary[getattr(submission, "accno")],
             )
-            raise error
 
     return publications
 

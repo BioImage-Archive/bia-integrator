@@ -31,7 +31,12 @@ from bia_ingest.biostudies.find_bia_studies import find_unprocessed_studies
 import logging
 from rich import print
 from rich.logging import RichHandler
-from .cli_logging import tabulate_ingestion_errors, write_table, IngestionResult
+from .cli_logging import (
+    extract_table_row,
+    tabulate_ingestion_errors,
+    write_table,
+    IngestionResult,
+)
 
 app = typer.Typer()
 find = typer.Typer()
@@ -43,6 +48,14 @@ logging.basicConfig(
 )
 
 logger = logging.getLogger()
+
+LOGGING_LEVELS: dict = {
+    0: logging.CRITICAL,
+    1: logging.ERROR,
+    2: logging.WARNING,
+    3: logging.INFO,
+    4: logging.DEBUG,
+}
 
 
 class ProcessFilelistMode(str, Enum):
@@ -67,25 +80,29 @@ def ingest(
     persistence_mode: Annotated[
         PersistenceMode, typer.Option("--persistence-mode", "-pm", case_sensitive=False)
     ] = PersistenceMode.disk,
-    verbose: Annotated[bool, typer.Option("--verbose", "-v")] = False,
     process_filelist: Annotated[
         ProcessFilelistMode,
         typer.Option("--process-filelist", "-pf", case_sensitive=False),
     ] = ProcessFilelistMode.ask,
     dryrun: Annotated[bool, typer.Option()] = False,
-    write_csv: Annotated[str, typer.Option()] = None,
+    write_csv: Annotated[str, typer.Option()] = "",
     counts: Annotated[bool, typer.Option("--counts", "-c")] = False,
+    logging: Annotated[int, typer.Option("--logging", "-l")] = 0,
+    simple_output: Annotated[bool, typer.Option("--simple-output", "-so")] = False,
 ) -> None:
-    if verbose:
-        logger.setLevel(logging.DEBUG)
+    logger.setLevel(LOGGING_LEVELS[logging])
+
+    if accession_id_list is None:
+        accession_id_list = []
 
     result_summary = {}
 
-    if input_file and not accession_id_list:
-        accession_id_list = read_file_input(input_file)
+    if input_file:
+        accession_id_list.extend(read_file_input(input_file))
 
     for accession_id in accession_id_list:
-        print(f"[blue]-------- Starting ingest of {accession_id} --------[/blue]")
+        if not simple_output:
+            print(f"[blue]-------- Starting ingest of {accession_id} --------[/blue]")
         logger.debug(f"starting ingest of {accession_id}")
 
         result_summary[accession_id] = IngestionResult()
@@ -106,15 +123,16 @@ def ingest(
                 "Uncaught_Exception",
                 "Non-200 repsonse from BioStudies",
             )
-            logging.exception("message")
+            logger.exception("message")
             continue
-        except Exception as error:
+        except Exception as error_or_warning:
             logger.error("Failed to parse information from BioStudies")
             result_summary[accession_id].__setattr__(
                 "Uncaught_Exception",
-                str(result_summary[accession_id].Uncaught_Exception) + str(error),
+                str(result_summary[accession_id].Uncaught_Exception)
+                + str(error_or_warning),
             )
-            logging.exception("message")
+            logger.exception("message")
             continue
 
         processing_version = determine_biostudies_processing_version(submission)
@@ -137,16 +155,33 @@ def ingest(
             else:
                 get_study(submission, result_summary, persister)
 
-        except Exception as error:
-            logging.exception("message")
+        except Exception as error_or_warning:
+            logger.exception("message")
             result_summary[accession_id].__setattr__(
                 "Uncaught_Exception",
-                str(result_summary[accession_id].Uncaught_Exception) + str(error),
+                str(result_summary[accession_id].Uncaught_Exception)
+                + str(error_or_warning),
             )
 
         logger.debug(f"COMPLETED: Ingest of: {accession_id}")
-        print(f"[green]-------- Completed ingest of {accession_id} --------[/green]")
+        if not simple_output:
+            print(
+                f"[green]-------- Completed ingest of {accession_id} --------[/green]"
+            )
 
+    if simple_output:
+        for accession_id, ingestion_result in result_summary.items():
+            simplified_output: list = extract_table_row(
+                accession_id_key=accession_id,
+                result=ingestion_result,
+                result_dict=ingestion_result.model_dump(),
+            )
+
+            status = simplified_output[2]
+            error_or_warning = simplified_output[3]
+            print(accession_id, status, error_or_warning, sep=", ")
+
+        return
     result_table = tabulate_ingestion_errors(result_summary, counts)
     print(result_table)
 

@@ -94,76 +94,89 @@ def tabulate_ingestion_errors(
         table.add_column(header, overflow="fold")
 
     for accession_id_key, result in dict_of_results.items():
-        error_message = ""
         result_dict = result.model_dump()
-        for field, value in result_dict.items():
-            if field.endswith("ValidationErrorCount") and (value > 0):
-                error_message += f"{field}: {value}; "
+        row_info = extract_table_row(
+            accession_id_key=accession_id_key,
+            result=result,
+            result_dict=result_dict,
+        )
 
-        if result.ProcessingVersion == BioStudiesProcessingVersion.V4:
-            if result.Dataset_CreationCount == 0:
-                error_message += "No datasets were created; "
-
-            rembi_object_creation_count = [
-                result.BioSample_CreationCount,
-                result.SpecimenImagingPreparationProtocol_CreationCount,
-                result.ImageAcquisitionProtocol_CreationCount,
-            ]
-            if any(rembi_object_creation_count) and not all(
-                rembi_object_creation_count
-            ):
-                error_message += "Incomplete REMBI objects created; "
-
-            if (
-                not any(rembi_object_creation_count)
-                and not result.AnnotationMethod_CreationCount
-                and not result.Protocol_CreationCount
-            ):
-                error_message += "No creation protocols created; "
-
-        if result.Uncaught_Exception:
-            error_message += f"Uncaught exception: {result.Uncaught_Exception}"
-
-        warning_message = ""
-        if result.Warning:
-            warning_message = result.Warning
-
-        if (error_message == "") & (warning_message == ""):
-            status = Text("Success")
-            status.stylize("green")
-        elif (error_message == "") & (warning_message != ""):
-            status = Text("Success with warnings")
-            status.stylize("yellow")
-            warning_message = Text(warning_message)
-            warning_message.stylize("yellow")
-        elif (error_message != "") & (warning_message != ""):
-            status = Text("Failures with warnings")
-            status.stylize("red")
-            warning_message = Text(warning_message)
-            warning_message.stylize("yellow")
-            error_message = Text(error_message)
-            error_message.stylize("red")
-        elif (error_message != "") & (warning_message == ""):
-            status = Text("Failures")
-            status.stylize("red")
-            error_message = Text(error_message)
-            error_message.stylize("red")
-
-        row_info = [
-            accession_id_key,
-            result.ProcessingVersion,
-            status,
-            error_message,
-            warning_message,
-        ]
-
-        if include_object_count:
+        if include_object_count and isinstance(headers, list):
             for header in headers[5:]:
                 row_info.append(str(result_dict[header + "_CreationCount"]))
 
         table.add_row(*row_info)
 
     return table
+
+
+def extract_table_row(
+    accession_id_key: str,
+    result: IngestionResult,
+    result_dict: dict[str, int],
+) -> list[str]:
+    error_message = ""
+    for field, value in result_dict.items():
+        if field.endswith("ValidationErrorCount") and (value > 0):
+            error_message += f"{field}: {value}; "
+
+    if result.ProcessingVersion == BioStudiesProcessingVersion.V4:
+        if result.Dataset_CreationCount == 0:
+            error_message += "No datasets were created; "
+
+        rembi_object_creation_count = [
+            result.BioSample_CreationCount,
+            result.SpecimenImagingPreparationProtocol_CreationCount,
+            result.ImageAcquisitionProtocol_CreationCount,
+        ]
+        if any(rembi_object_creation_count) and not all(rembi_object_creation_count):
+            error_message += "Incomplete REMBI objects created; "
+
+        if (
+            not any(rembi_object_creation_count)
+            and not result.AnnotationMethod_CreationCount
+            and not result.Protocol_CreationCount
+        ):
+            error_message += "No creation protocols created; "
+
+    if result.Uncaught_Exception:
+        error_message += f"Uncaught exception: {result.Uncaught_Exception}"
+
+    warning_message = ""
+    if result.Warning:
+        warning_message = result.Warning
+
+    if (error_message == "") & (warning_message == ""):
+        status = Text("Success")
+        status.stylize("green")
+    elif (error_message == "") & (warning_message != ""):
+        status = Text("Success with warnings")
+        status.stylize("yellow")
+        warning_message = Text(warning_message)
+        warning_message.stylize("yellow")
+    elif (error_message != "") & (warning_message != ""):
+        status = Text("Failures with warnings")
+        status.stylize("red")
+        warning_message = Text(warning_message)
+        warning_message.stylize("yellow")
+        error_message = Text(error_message)
+        error_message.stylize("red")
+    elif (error_message != "") & (warning_message == ""):
+        status = Text("Failures")
+        status.stylize("red")
+        error_message = Text(error_message)
+        error_message.stylize("red")
+    else:
+        status = Text("Unknown")
+
+    row_info = [
+        accession_id_key,
+        result.ProcessingVersion,
+        status,
+        error_message,
+        warning_message,
+    ]
+    return row_info
 
 
 def write_table(table: Table, location: str):
