@@ -31,7 +31,12 @@ from bia_ingest.biostudies.find_bia_studies import find_unprocessed_studies
 import logging
 from rich import print
 from rich.logging import RichHandler
-from .cli_logging import tabulate_ingestion_errors, write_table, IngestionResult
+from .cli_logging import (
+    extract_table_row,
+    tabulate_ingestion_errors,
+    write_table,
+    IngestionResult,
+)
 
 app = typer.Typer()
 find = typer.Typer()
@@ -83,6 +88,7 @@ def ingest(
     write_csv: Annotated[str, typer.Option()] = "",
     counts: Annotated[bool, typer.Option("--counts", "-c")] = False,
     logging: Annotated[int, typer.Option("--logging", "-l")] = 0,
+    simple_output: Annotated[bool, typer.Option("--simple-output", "-so")] = False,
 ) -> None:
     logger.setLevel(LOGGING_LEVELS[logging])
 
@@ -95,7 +101,8 @@ def ingest(
         accession_id_list.extend(read_file_input(input_file))
 
     for accession_id in accession_id_list:
-        print(f"[blue]-------- Starting ingest of {accession_id} --------[/blue]")
+        if not simple_output:
+            print(f"[blue]-------- Starting ingest of {accession_id} --------[/blue]")
         logger.debug(f"starting ingest of {accession_id}")
 
         result_summary[accession_id] = IngestionResult()
@@ -118,11 +125,12 @@ def ingest(
             )
             logger.exception("message")
             continue
-        except Exception as error:
+        except Exception as error_or_warning:
             logger.error("Failed to parse information from BioStudies")
             result_summary[accession_id].__setattr__(
                 "Uncaught_Exception",
-                str(result_summary[accession_id].Uncaught_Exception) + str(error),
+                str(result_summary[accession_id].Uncaught_Exception)
+                + str(error_or_warning),
             )
             logger.exception("message")
             continue
@@ -147,16 +155,33 @@ def ingest(
             else:
                 get_study(submission, result_summary, persister)
 
-        except Exception as error:
+        except Exception as error_or_warning:
             logger.exception("message")
             result_summary[accession_id].__setattr__(
                 "Uncaught_Exception",
-                str(result_summary[accession_id].Uncaught_Exception) + str(error),
+                str(result_summary[accession_id].Uncaught_Exception)
+                + str(error_or_warning),
             )
 
         logger.debug(f"COMPLETED: Ingest of: {accession_id}")
-        print(f"[green]-------- Completed ingest of {accession_id} --------[/green]")
+        if not simple_output:
+            print(
+                f"[green]-------- Completed ingest of {accession_id} --------[/green]"
+            )
 
+    if simple_output:
+        for accession_id, ingestion_result in result_summary.items():
+            simplified_output: list = extract_table_row(
+                accession_id_key=accession_id,
+                result=ingestion_result,
+                result_dict=ingestion_result.model_dump(),
+            )
+
+            status = simplified_output[2]
+            error_or_warning = simplified_output[3]
+            print(accession_id, status, error_or_warning, sep=", ")
+
+        return
     result_table = tabulate_ingestion_errors(result_summary, counts)
     print(result_table)
 
