@@ -158,7 +158,9 @@ def get_suffix(file_path: str) -> str:
     return pathlib.Path(file_path).suffix
 
 
-def get_file_ref_uri(file_ref_url_prefix: str | None, accession_id: str, file_path: str) -> str:
+def get_file_ref_uri(
+    file_ref_url_prefix: str | None, accession_id: str, file_path: str
+) -> str:
     if file_ref_url_prefix == "empiar":
         accession_no = accession_id.split("-")[1]
         return f"https://ftp.ebi.ac.uk/empiar/world_availability/{accession_no}/{file_path}"
@@ -190,7 +192,7 @@ def select_size_in_bytes(row: dict) -> int:
     if not pd.isna(file_list_info) and "http://bia/sizeInBytes" in file_list_info:
         return int(file_list_info["http://bia/sizeInBytes"])
 
-    raise ValueError(f"No dataset found for file: {row["path"]}")
+    raise ValueError(f"No file size calculatable or found for: {row["path"]}")
 
 
 def select_result_data_id_and_type(
@@ -304,15 +306,18 @@ def get_filelist_to_ro_crate_object_reference(
             ro_crate_id: str = info_from_file_list[field]
             if ro_crate_id and ro_crate_id != "":
                 if ro_crate_id.startswith("["):
-                    value = [x.strip("'\"\\ ") for x in ro_crate_id.strip("[]").split(",")]
+                    value = [
+                        x.strip("'\"\\ ") for x in ro_crate_id.strip("[]").split(",")
+                    ]
                 elif ro_crate_id != "":
                     value = [ro_crate_id]
 
             result_dict[field] = value
 
     if "http://bia/associatedSubject" in info_from_file_list:
-        value: str = info_from_file_list[field]
-        result_dict["http://bia/associatedSubject"] = value
+        result_dict["http://bia/associatedSubject"] = info_from_file_list[
+            "http://bia/associatedSubject"
+        ]
 
     source_image_id = get_file_list_source_image_id(info_from_file_list)
     if isinstance(source_image_id, list):

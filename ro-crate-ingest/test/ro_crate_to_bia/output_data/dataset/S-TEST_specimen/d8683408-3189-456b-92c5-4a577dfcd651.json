@@ -1,0 +1,24 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "d8683408-3189-456b-92c5-4a577dfcd651",
+  "version": 0,
+  "model": {
+    "type_name": "Dataset",
+    "version": 2
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "data1"
+      }
+    }
+  ],
+  "title": "Specimen test.",
+  "description": "Dataset where specimens from image or file list get used.",
+  "analysis_method": [],
+  "correlation_method": [],
+  "example_image_uri": [],
+  "submitted_in_study_uuid": "7435dbaa-a053-41d1-a78b-0e344088119c"
+}

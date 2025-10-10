@@ -1,10 +1,17 @@
-from pathlib import Path
-from typer.testing import CliRunner
-from ro_crate_ingest.cli import ro_crate_ingest
 import json
 import pytest
 import pytest_check as check
 import deepdiff
+
+from pathlib import Path
+from typer.testing import CliRunner
+from ro_crate_ingest.cli import ro_crate_ingest
+from bia_shared_datamodels.package_specific_uuid_creation.ro_crate_uuid_creation import (
+    create_specimen_uuid,
+)
+from bia_shared_datamodels.package_specific_uuid_creation.shared import (
+    create_study_uuid,
+)
 
 runner = CliRunner()
 
@@ -34,6 +41,10 @@ def get_empiar_to_ro_crate_path(accession_id) -> Path:
     return Path(__file__).parent / "empiar_to_ro_crate" / "output_data" / accession_id
 
 
+def accession_id_from_path(ro_crate_path: Path) -> str:
+    return ro_crate_path.name
+
+
 def get_expected_files(accession_id) -> list[Path]:
     expected_out_dir = Path(__file__).parent / "ro_crate_to_bia" / "output_data"
 
@@ -43,92 +54,49 @@ def get_expected_files(accession_id) -> list[Path]:
 
 
 @pytest.mark.parametrize(
-    "accession_id", ["S-BIAD1494", "S-BIAD843", "S-BIADWITHFILELIST"]
-)
-def test_ingest_mock_ro_crate_metadata(accession_id: str, tmp_bia_data_dir: Path):
-
-    crate_path = get_mock_ro_crate_path(accession_id)
-
-    ingest_local_test(accession_id, tmp_bia_data_dir, crate_path)
-
-
-@pytest.mark.parametrize(
-    "accession_id", ["S-BIAD1494", "S-BIAD843", "S-BIADWITHFILELIST"]
-)
-def test_ingest_mock_ro_crate_metadata_with_api(accession_id: str, get_bia_api_client):
-
-    crate_path = get_mock_ro_crate_path(accession_id)
-
-    ingest_api_test(accession_id, get_bia_api_client, crate_path)
-
-
-@pytest.mark.parametrize(
-    "accession_id",
+    "ro_crate_path,url_prefix",
     [
-        "S-BIADTEST_AUTHOR_AFFILIATION",
-        "S-BIADTEST_COMPLEX_BIOSAMPLE",
-        "S-BIADTEST_PROTOCOL_STUDY",
+        (
+            get_biostudies_to_ro_crate_path("S-BIADTEST_AUTHOR_AFFILIATION"),
+            "biostudies",
+        ),
+        (get_biostudies_to_ro_crate_path("S-BIADTEST_COMPLEX_BIOSAMPLE"), "biostudies"),
+        (get_biostudies_to_ro_crate_path("S-BIADTEST_PROTOCOL_STUDY"), "biostudies"),
+        (get_mock_ro_crate_path("S-BIAD1494"), None),
+        (get_mock_ro_crate_path("S-BIAD843"), None),
+        (get_mock_ro_crate_path("S-BIADWITHFILELIST"), None),
+        (get_empiar_to_ro_crate_path("EMPIAR-IMAGEPATTERNTEST"), "empiar"),
+        (get_empiar_to_ro_crate_path("EMPIAR-STARFILETEST"), "empiar"),
     ],
 )
-def test_ingest_biostudies_ro_crate_metadata(accession_id: str, tmp_bia_data_dir: Path):
+class TestGenericROCrateToAPI:
 
-    crate_path = get_biostudies_to_ro_crate_path(accession_id)
+    def test_ingest_local(self, ro_crate_path, url_prefix, tmp_bia_data_dir):
+        accession_id = accession_id_from_path(ro_crate_path)
 
-    ingest_local_test(
-        accession_id, tmp_bia_data_dir, crate_path, file_ref_url_prefix="biostudies"
-    )
+        ingest_local_test(
+            accession_id,
+            tmp_bia_data_dir,
+            ro_crate_path,
+            file_ref_url_prefix=url_prefix,
+        )
 
+    def test_ingest_api(self, ro_crate_path, url_prefix, tmp_bia_data_dir):
+        accession_id = accession_id_from_path(ro_crate_path)
 
-@pytest.mark.parametrize(
-    "accession_id",
-    [
-        "S-BIADTEST_AUTHOR_AFFILIATION",
-        "S-BIADTEST_COMPLEX_BIOSAMPLE",
-        "S-BIADTEST_PROTOCOL_STUDY",
-    ],
-)
-def test_ingest_biostudies_ro_crate_metadata_with_api(
-    accession_id: str, get_bia_api_client
-):
-
-    crate_path = get_biostudies_to_ro_crate_path(accession_id)
-
-    ingest_api_test(
-        accession_id, get_bia_api_client, crate_path, file_ref_url_prefix="biostudies"
-    )
-
-
-@pytest.mark.parametrize(
-    "accession_id", ["EMPIAR-IMAGEPATTERNTEST", "EMPIAR-STARFILETEST"]
-)
-def test_ingest_empiar_ro_crate_metadata(accession_id: str, tmp_bia_data_dir: Path):
-
-    crate_path = get_empiar_to_ro_crate_path(accession_id)
-
-    ingest_local_test(
-        accession_id, tmp_bia_data_dir, crate_path, file_ref_url_prefix="empiar"
-    )
-
-
-@pytest.mark.parametrize(
-    "accession_id", ["EMPIAR-IMAGEPATTERNTEST", "EMPIAR-STARFILETEST"]
-)
-def test_ingest_empiar_ro_crate_metadata_with_api(
-    accession_id: str, get_bia_api_client
-):
-
-    crate_path = get_empiar_to_ro_crate_path(accession_id)
-
-    ingest_api_test(
-        accession_id, get_bia_api_client, crate_path, file_ref_url_prefix="empiar"
-    )
+        ingest_api_test(
+            accession_id,
+            tmp_bia_data_dir,
+            ro_crate_path,
+            file_ref_url_prefix=url_prefix,
+        )
 
 
 def ingest_local_test(
     accession_id: str,
     tmp_bia_data_dir: Path,
     crate_path: Path,
-    file_ref_url_prefix: str = None,
+    file_ref_url_prefix: str | None = None,
 ):
 
     arguments = ["ingest", "-c", crate_path]
@@ -158,7 +126,9 @@ def ingest_local_test(
         with open(file, "r") as f:
             expected_out = json.load(f)
 
-        diff = deepdiff.DeepDiff(expected_out, cli_out, ignore_order=True, verbose_level=2)
+        diff = deepdiff.DeepDiff(
+            expected_out, cli_out, ignore_order=True, verbose_level=2
+        )
 
         check.is_true(
             not diff,
@@ -170,7 +140,7 @@ def ingest_api_test(
     accession_id: str,
     get_bia_api_client,
     crate_path: Path,
-    file_ref_url_prefix: str = None,
+    file_ref_url_prefix: str | None = None,
 ):
     arguments = ["ingest", "-c", crate_path, "-p", "local_api"]
     if file_ref_url_prefix:
@@ -197,13 +167,48 @@ def ingest_api_test(
         expected_object = api_obj_type.model_validate(expected_out)
 
         diff = deepdiff.DeepDiff(
-            expected_object.model_dump(), api_obj.model_dump(), ignore_order=True, verbose_level=2
+            expected_object.model_dump(),
+            api_obj.model_dump(),
+            ignore_order=True,
+            verbose_level=2,
         )
 
         check.is_true(
             not diff,
             f"Missmatch in object: {'/'.join(relative_file_path)}:\n{diff.pretty()}",
         )
+
+
+def test_specimen_ro_crate_ingest(
+    tmp_bia_data_dir: Path,
+):
+    """
+    Checks that a specimen that is included in the ro-crate but isn't connected to any objects doesn't get created.
+    I'm not sure whether this is really the intended behaviour (we still create protocol etc. objects even if they aren't connected to by any other object)
+    """
+
+    accession_id = "S-TEST_specimen"
+    crate_path = get_test_ro_crate_path(accession_id)
+
+    ingest_local_test(
+        accession_id,
+        tmp_bia_data_dir,
+        crate_path,
+        file_ref_url_prefix=None,
+    )
+
+    not_created_specmimen_uuid = create_specimen_uuid(
+        str(create_study_uuid(accession_id)[0]), "_:UnusedSpecimen"
+    )[0]
+
+    not_created_path = (
+        tmp_bia_data_dir
+        / "specimen"
+        / accession_id
+        / f"{not_created_specmimen_uuid}.json"
+    )
+
+    assert not not_created_path.exists()
 
 
 def test_overlapping_image_data(

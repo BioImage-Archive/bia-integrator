@@ -1,0 +1,31 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "ff6e13e9-eb52-4cf8-9e23-66ce231e0fc3",
+  "version": 0,
+  "model": {
+    "type_name": "FileReference",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "data3/image_4_use_generated_specimen.tiff13"
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "attributes_from_file_list",
+      "value": {
+        "http://bia/filePath": "data3/image_4_use_generated_specimen.tiff",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "http://bia/Image"
+      }
+    }
+  ],
+  "file_path": "data3/image_4_use_generated_specimen.tiff",
+  "format": ".tiff",
+  "size_in_bytes": 13,
+  "uri": "None?",
+  "submission_dataset_uuid": "4721f317-04b1-42d4-9404-4c4041f8b346"
+}
