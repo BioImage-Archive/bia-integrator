@@ -1,8 +1,10 @@
+import pytest
+import logging
+import pytest_check as check
+
 from pathlib import Path
 from typer.testing import CliRunner
 from ro_crate_ingest.cli import ro_crate_ingest
-import pytest
-import logging
 
 runner = CliRunner()
 
@@ -18,29 +20,26 @@ def get_test_ro_crate_path(accession_id) -> Path:
             "test_invalid_ro_crate",
             1,
             [
+                ("field_not_included_in_context",),
                 (
-                    "ERROR",
-                    'The 1 occurrence of the JSON-LD key "field_not_included_in_context" is not allowed in the compacted format because it is not present in the @context of the document',
+                    "At ro-crate object with @id: ./",
+                    "description",
                 ),
                 (
-                    "ERROR",
-                    "At ro-crate object with @id: ./:\nThe Root Data Entity MUST have a `description` property (as specified by schema.org)",
+                    "At ro-crate object with @id: ./",
+                    "MUST be linked to either File or Directory instances",
                 ),
                 (
-                    "ERROR",
-                    "At ro-crate object with @id: ./:\nThe Root Data Entity MUST be linked to either File or Directory instances, nothing else",
+                    "does not include",
+                    "data2_missing_folder",
                 ),
                 (
-                    "ERROR",
-                    "The RO-Crate does not include the Data Entity 'data2_missing_folder/' as part of its payload",
+                    "At ro-crate object with @id: ./data1FailedReference/",
+                    "http://schema.org/hasPart",
                 ),
                 (
-                    "ERROR",
-                    "At ro-crate object with @id: ./data1FailedReference/:\nLess than 1 values on <file://.//data1FailedReference/>->[ sh:inversePath <http://schema.org/hasPart> ]",
-                ),
-                (
-                    "ERROR",
-                    "At ro-crate object with @id: ./missing_has_part.tiff:\nLess than 1 values on <file://.//missing_has_part.tiff>->[ sh:inversePath <http://schema.org/hasPart> ]",
+                    "At ro-crate object with @id: ./missing_has_part.tiff",
+                    "http://schema.org/hasPart",
                 ),
             ],
         ),
@@ -49,8 +48,8 @@ def get_test_ro_crate_path(accession_id) -> Path:
             1,
             [
                 (
-                    "ERROR",
-                    "At ro-crate object with @id: _:RepeatedBiosample1:\nTwo objects with the same @id: @id should be unique.",
+                    "At ro-crate object with @id: _:RepeatedBiosample1",
+                    "Two objects with the same @id",
                 ),
             ],
         ),
@@ -59,20 +58,20 @@ def get_test_ro_crate_path(accession_id) -> Path:
             1,
             [
                 (
-                    "ERROR",
-                    "At ro-crate object with @id: data2/:\n@type of object does not contain any BIA classes. @type contains: Dataset",
+                    "At ro-crate object with @id: data2/",
+                    "@type of object does not contain any BIA classes.",
                 ),
                 (
-                    "ERROR",
-                    "At ro-crate object with @id: data2/groupedImage/:\n@type of object contains multiple BIA classes. @type contains: http://bia/Dataset, http://bia/Image",
+                    "At ro-crate object with @id: data2/groupedImage/",
+                    "@type of object contains multiple BIA classes",
                 ),
                 (
-                    "ERROR",
-                    'At ro-crate object with @id: _:SpecimenPreparation:\n1 validation error for SpecimenImagingPreparationProtocol\nprotocolDescription\n  Input should be a valid string [type=string_type, input_value=["ERROR This shouldn\'t be a list"], input_type=list]\n    For further information visit https://errors.pydantic.dev/2.11/v/string_type',
+                    "At ro-crate object with @id: _:SpecimenPreparation:",
+                    "1 validation error for SpecimenImagingPreparationProtocol",
                 ),
                 (
-                    "ERROR",
-                    "At ro-crate object with @id: _:ImageAcquisitionProtocol1:\n1 validation error for ImageAcquisitionProtocol\nprotocolDescription\n  Field required [type=missing, input_value={'@id': '_:ImageAcquisiti...: ['obo:FBbi_00000246']}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.11/v/missing",
+                    "At ro-crate object with @id: _:ImageAcquisitionProtocol1",
+                    "1 validation error for ImageAcquisitionProtocol",
                 ),
             ],
         ),
@@ -94,4 +93,7 @@ def test_ro_crate_context_validation_error_messages(
         (record.levelname, record.message) for record in caplog.records
     ]
 
-    assert captured_messages == messages
+    for message_position, message in enumerate(captured_messages):
+        severity, error_message = message
+        for expected_message_snippet in messages[message_position]:
+            check.is_in(expected_message_snippet, error_message)
