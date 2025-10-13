@@ -81,12 +81,12 @@ class TestGenericROCrateToAPI:
             file_ref_url_prefix=url_prefix,
         )
 
-    def test_ingest_api(self, ro_crate_path, url_prefix, tmp_bia_data_dir):
+    def test_ingest_api(self, ro_crate_path, url_prefix, get_bia_api_client):
         accession_id = accession_id_from_path(ro_crate_path)
 
         ingest_api_test(
             accession_id,
-            tmp_bia_data_dir,
+            get_bia_api_client,
             ro_crate_path,
             file_ref_url_prefix=url_prefix,
         )
