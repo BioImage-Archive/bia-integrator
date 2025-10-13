@@ -27,9 +27,8 @@ def dict_to_api_model(
         api_model = api_model_class.model_validate(input_dict)
         log_model_creation_count(api_model_class, 1, valdiation_error_tracking)
         return api_model
-    except ValidationError as error:
+    except ValidationError:
         log_failed_model_creation(api_model_class, valdiation_error_tracking)
-        raise error
 
 
 def dicts_to_api_models(

@@ -1,37 +1,37 @@
-import typer
-from typing import List, Optional
-from pathlib import Path
+import logging
 from enum import Enum
-from typing import Annotated
+from pathlib import Path
+from typing import Annotated, List, Optional
+
+import typer
+from rich import print
+from rich.logging import RichHandler
+
 from bia_ingest.biostudies.api import (
+    Submission,
     load_submission,
     load_submission_table_info,
-    Submission,
 )
+from bia_ingest.biostudies.biostudies_processing_version import (
+    BioStudiesProcessingVersion,
+)
+from bia_ingest.biostudies.common.study import get_study
+from bia_ingest.biostudies.find_bia_studies import find_unprocessed_studies
 from bia_ingest.biostudies.generic_conversion_utils import attributes_to_dict
-
+from bia_ingest.biostudies.process_submission_default import process_submission_default
+from bia_ingest.biostudies.process_submission_v4 import process_submission_v4
 from bia_ingest.persistence_strategy import (
     PersistenceMode,
     persistence_strategy_factory,
 )
+from bia_ingest.settings import LOGGING_LEVELS, OutputMode
 
-from bia_ingest.biostudies.biostudies_processing_version import (
-    BioStudiesProcessingVersion,
+from .cli_logging import (
+    IngestionResult,
+    extract_table_row,
+    tabulate_ingestion_errors,
+    write_table,
 )
-
-from bia_ingest.biostudies.common.study import get_study
-from bia_ingest.biostudies.process_submission_v4 import (
-    process_submission_v4,
-)
-from bia_ingest.biostudies.process_submission_default import (
-    process_submission_default,
-)
-from bia_ingest.biostudies.find_bia_studies import find_unprocessed_studies
-
-import logging
-from rich import print
-from rich.logging import RichHandler
-from .cli_logging import tabulate_ingestion_errors, write_table, IngestionResult
 
 app = typer.Typer()
 find = typer.Typer()
@@ -67,25 +67,31 @@ def ingest(
     persistence_mode: Annotated[
         PersistenceMode, typer.Option("--persistence-mode", "-pm", case_sensitive=False)
     ] = PersistenceMode.disk,
-    verbose: Annotated[bool, typer.Option("--verbose", "-v")] = False,
     process_filelist: Annotated[
         ProcessFilelistMode,
         typer.Option("--process-filelist", "-pf", case_sensitive=False),
     ] = ProcessFilelistMode.ask,
     dryrun: Annotated[bool, typer.Option()] = False,
-    write_csv: Annotated[str, typer.Option()] = None,
+    write_csv: Annotated[str | None, typer.Option()] = None,
     counts: Annotated[bool, typer.Option("--counts", "-c")] = False,
+    logging: Annotated[int, typer.Option("--logging", "-l")] = 0,
+    output_mode: OutputMode = typer.Option(
+        OutputMode.table, "--output-mode", "-om", case_sensitive=False
+    ),
 ) -> None:
-    if verbose:
-        logger.setLevel(logging.DEBUG)
+    logger.setLevel(LOGGING_LEVELS[logging])
+
+    if accession_id_list is None:
+        accession_id_list = []
 
     result_summary = {}
 
-    if input_file and not accession_id_list:
-        accession_id_list = read_file_input(input_file)
+    if input_file:
+        accession_id_list.extend(read_file_input(input_file))
 
     for accession_id in accession_id_list:
-        print(f"[blue]-------- Starting ingest of {accession_id} --------[/blue]")
+        if output_mode == OutputMode.table:
+            print(f"[blue]-------- Starting ingest of {accession_id} --------[/blue]")
         logger.debug(f"starting ingest of {accession_id}")
 
         result_summary[accession_id] = IngestionResult()
@@ -106,15 +112,16 @@ def ingest(
                 "Uncaught_Exception",
                 "Non-200 repsonse from BioStudies",
             )
-            logging.exception("message")
+            logger.exception("message")
             continue
-        except Exception as error:
+        except Exception as error_or_warning:
             logger.error("Failed to parse information from BioStudies")
             result_summary[accession_id].__setattr__(
                 "Uncaught_Exception",
-                str(result_summary[accession_id].Uncaught_Exception) + str(error),
+                str(result_summary[accession_id].Uncaught_Exception)
+                + str(error_or_warning),
             )
-            logging.exception("message")
+            logger.exception("message")
             continue
 
         processing_version = determine_biostudies_processing_version(submission)
@@ -137,21 +144,38 @@ def ingest(
             else:
                 get_study(submission, result_summary, persister)
 
-        except Exception as error:
-            logging.exception("message")
+        except Exception as error_or_warning:
+            logger.exception("message")
             result_summary[accession_id].__setattr__(
                 "Uncaught_Exception",
-                str(result_summary[accession_id].Uncaught_Exception) + str(error),
+                str(result_summary[accession_id].Uncaught_Exception)
+                + str(error_or_warning),
             )
 
         logger.debug(f"COMPLETED: Ingest of: {accession_id}")
-        print(f"[green]-------- Completed ingest of {accession_id} --------[/green]")
+        if output_mode == OutputMode.table:
+            print(
+                f"[green]-------- Completed ingest of {accession_id} --------[/green]"
+            )
 
-    result_table = tabulate_ingestion_errors(result_summary, counts)
-    print(result_table)
+    match output_mode:
+        case OutputMode.simple:
+            for accession_id, ingestion_result in result_summary.items():
+                simplified_output: list = extract_table_row(
+                    accession_id_key=accession_id,
+                    result=ingestion_result,
+                    result_dict=ingestion_result.model_dump(),
+                )
 
-    if write_csv:
-        write_table(result_table, write_csv)
+                status = simplified_output[2]
+                error_or_warning = simplified_output[3]
+                print(accession_id, status, error_or_warning, sep=", ")
+        case OutputMode.table:
+            result_table = tabulate_ingestion_errors(result_summary, counts)
+            print(result_table)
+
+            if write_csv:
+                write_table(result_table, write_csv)
 
 
 def read_file_input(input_file: Path):
