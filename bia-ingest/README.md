@@ -99,26 +99,26 @@ $ poetry run biaingest ingest S-BIAD1285 S-BIAD1385 -c --write-csv output_table.
 
 ### Logging level
 
-By default the logging level of the command is set to Critical. So it will output only if a critical event will occur.
-To change that is enough to add the '-l' option with the wanted level of logging.
+By default, the command logs only CRITICAL events.
+To increase verbosity, use the `-l` option followed by a numeric level:
 
-  0. CRITICAL
-  1. ERROR and above
-  2. WARNING and above
-  3. INFO and above
-  4. DEBUG and above
+  0. CRITICAL only
+  1. ERROR and CRITICAL
+  2. WARNING, ERROR, and CRITICAL
+  3. INFO, WARNING, ERROR, and CRITICAL
+  4. DEBUG, INFO, WARNING, ERROR, and CRITICAL
 
-For example:
-```
+Examples:
+
+Show all logs:
+```sh
 $ poetry run biaingest command -l4
 ```
-It will output all the loggin levels from DEBUG to CRITICAL
-
-Wereas:
-```
+Show only warnings and above:
+```sh
 $ poetry run biaingest command -l2
 ```
-It will output all the loggins with level CRITICAL ERROR or WARNING.
+
 
 
 
@@ -140,10 +140,10 @@ The script `parallel_ingest.py` allows you to run the command:
 $ poetry run biaingest ingest --dryrun -om=simple --process-filelist=skip ${accession_id}
 ```
 
-where the `accession_id` is defined in a json file
-that defines a list of strings where each string is an accession ID.
+The `accession_id` values are stored in a JSON file containing a list of strings, each representing one accession ID.
 
-eg.
+Example:
+
 ```json
 [
   "S-BIAD2197",
@@ -161,16 +161,16 @@ eg.
 
 ```
 
-This is a standalone script as the original definition of the program was not designed to support parallelisation.
+This is a standalone script, created because the original program was not built for parallel execution.
 
-The ouptut of the script will be two log files: `ingest_success` and `ingest_failure` each containing the result of the above defined processing.
+It produces two log files: `ingest_success.log` and `ingest_failure.log`, each containing the results of the processing described above.
 
-You can run the script in the followin way:
+Run the script as follows:
 
 ```bash
 $ poetry run python parallel_ingest.py -json my_file.json -j 100
 ```
 
-Where `j` represent the numbers of parallel processes.
+The `-j` option specifies the number of parallel processes to use.
 
-If no `json` file is specified, the script will try to source by default from the `accessions.json` file.
+If no `--json` file is provided, the script defaults to using `accessions.json`.
