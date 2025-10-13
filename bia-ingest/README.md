@@ -89,6 +89,7 @@ In case of success or
 S-BIAD1285, Failures, Error message
 ```
 otherwise.
+By default the output mode is set to table.
 
 ### Results table & object count
 When ingest finishes a table of results is printed out. To also get this table written to a csv (which can be useful when running ingest on a lot of studies), add the --write-csv option with the path of where to write out the file. You can also include a count of all the objects that were created with the --count/-c options:
