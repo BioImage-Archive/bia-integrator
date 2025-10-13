@@ -67,6 +67,28 @@ Some studies have huge filelists, which can cause issues when running locally. T
 ```sh
 $ poetry run biaingest ingest --dryrun --process-filelist skip S-BIAD1285
 ```
+### Output Mode
+
+There are two types of outputs:
+ the comprehensive table for each accession or the simple output mode which will print out Accession ID, Status, Message.
+
+You can set the output mode by sepcifiyng `-om` or `--output-mode`.
+
+For example
+
+```sh
+$ poetry run biaingest ingest --dryrun - --process-filelist skip -om simple S-BIAD1285
+```
+will output the following:
+
+```log
+S-BIAD1285, Success,
+```
+In case of success or
+```log
+S-BIAD1285, Failures, Error message
+```
+otherwise.
 
 ### Results table & object count
 When ingest finishes a table of results is printed out. To also get this table written to a csv (which can be useful when running ingest on a lot of studies), add the --write-csv option with the path of where to write out the file. You can also include a count of all the objects that were created with the --count/-c options:
@@ -75,12 +97,80 @@ When ingest finishes a table of results is printed out. To also get this table w
 $ poetry run biaingest ingest S-BIAD1285 S-BIAD1385 -c --write-csv output_table.csv
 ```
 
+### Logging level
+
+By default the logging level of the command is set to Critical. So it will output only if a critical event will occur.
+To change that is enough to add the '-l' option with the wanted level of logging.
+
+  0. CRITICAL
+  1. ERROR and above
+  2. WARNING and above
+  3. INFO and above
+  4. DEBUG and above
+
+For example:
+```
+$ poetry run biaingest command -l4
+```
+It will output all the loggin levels from DEBUG to CRITICAL
+
+Wereas:
+```
+$ poetry run biaingest command -l2
+```
+It will output all the loggins with level CRITICAL ERROR or WARNING.
+
+
 
 ## Getting new Biostudies Studies
 
 run:
-```
-poetry run biaingest find new-biostudies-studies
+```bash
+$ poetry run biaingest find new-biostudies-studies
 ```
 
 which will create a file in the input_files/ directory of studies that are relevant to the current ingest process but are not yet ingested.
+
+
+## Running ingestion in parallel
+
+The script `parallel_ingest.py` allows you to run the command:
+
+```bash
+$ poetry run biaingest ingest --dryrun -om=simple --process-filelist=skip ${accession_id}
+```
+
+where the `accession_id` is defined in a json file
+that defines a list of strings where each string is an accession ID.
+
+eg.
+```json
+[
+  "S-BIAD2197",
+  "S-BIAD2279",
+  "S-BIAD2277",
+  "S-BIAD2273",
+  "S-BIAD2275",
+  "S-BIAD2272",
+  "S-BIAD2271",
+  "S-BIAD2248",
+  "S-BIAD2247",
+  "S-BIAD2246",
+  "S-BIAD2245"
+]
+
+```
+
+This is a standalone script as the original definition of the program was not designed to support parallelisation.
+
+The ouptut of the script will be two log files: `ingest_success` and `ingest_failure` each containing the result of the above defined processing.
+
+You can run the script in the followin way:
+
+```bash
+$ poetry run python parallel_ingest.py -json my_file.json -j 100
+```
+
+Where `j` represent the numbers of parallel processes.
+
+If no `json` file is specified, the script will try to source by default from the `accessions.json` file.
