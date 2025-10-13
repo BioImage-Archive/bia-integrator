@@ -141,7 +141,7 @@ The script `parallel_ingest.py` allows you to run the command:
 $ poetry run biaingest ingest --dryrun -om=simple --process-filelist=skip ${accession_id}
 ```
 
-The `accession_id` values are stored in a JSON file containing a list of strings, each representing one accession ID.
+The `accession_id` values are stored either in a JSON file containing a list of strings, each representing one accession ID.
 
 Example:
 
@@ -159,7 +159,24 @@ Example:
   "S-BIAD2246",
   "S-BIAD2245"
 ]
+```
 
+or a file soring the entries in the following format:
+
+```log
+S-BIAD627
+S-BIAD624
+S-BSST1007
+S-BSST1021
+S-BIAD621
+S-BIAD620
+S-BIAD453
+S-BIAD616
+S-BIAD618
+S-BIAD619
+S-BIAD606
+S-BIAD466
+S-BSST1009
 ```
 
 This is a standalone script, created because the original program was not built for parallel execution.
@@ -169,9 +186,9 @@ It produces two log files: `ingest_success.log` and `ingest_failure.log`, each c
 Run the script as follows:
 
 ```bash
-$ poetry run python parallel_ingest.py -json my_file.json -j 100
+$ poetry run python scripts/parallel_ingest.py -f my_file.json -j 100
 ```
 
 The `-j` option specifies the number of parallel processes to use.
 
-If no `--json` file is provided, the script defaults to using `accessions.json`.
+If no `--file` or `-f` file is provided, the script defaults to using `accessions.json`.
