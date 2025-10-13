@@ -5,7 +5,7 @@ from typing import Optional, Iterable
 
 class SimpleJSONLDContext:
     prefixes: dict[str, str]
-    terms: list[ContextTerm]
+    terms: set[ContextTerm]
 
     def __init__(
         self,
@@ -13,7 +13,7 @@ class SimpleJSONLDContext:
         terms: Optional[list[ContextTerm]] = None,
     ):
         self.prefixes = prefixes if prefixes else {}
-        self.terms = terms if terms else []
+        self.terms = terms if terms else set()
 
     def to_dict(self) -> dict:
         context_dict = self.prefixes.copy()
@@ -21,7 +21,7 @@ class SimpleJSONLDContext:
         for term in self.terms:
             context_dict |= term.to_mapping_dict(self.prefixes)
 
-        return context_dict
+        return dict(sorted(context_dict.items()))
 
     def add_prefix(self, short_term: str, uri: str) -> None:
         self.prefixes[short_term] = uri
@@ -30,7 +30,7 @@ class SimpleJSONLDContext:
         self.prefixes.pop(prefix)
 
     def add_term(self, term: ContextTerm) -> None:
-        self.terms.append(term)
+        self.terms.add(term)
 
     def remove_field_term(self, field: str) -> None:
         self.terms = [term for term in self.terms if term.field_name != field]

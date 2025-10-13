@@ -104,9 +104,7 @@ def empiar_to_ro_crate(
 def validate_ro_crate(
     crate_path: Annotated[
         Path,
-        typer.Option(
-            "--crate-path",
-            "-c",
+        typer.Argument(
             case_sensitive=False,
             help="Path to the ro-crate root (or ro-crate-metadata.json)",
         ),

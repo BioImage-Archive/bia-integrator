@@ -23,7 +23,7 @@ class ReadableMetadataValidator(Validator):
             self.issues.append(
                 ValidationError(
                     severity=Severity.ERROR,
-                    message=e,
+                    message=str(e),
                 )
             )
 
