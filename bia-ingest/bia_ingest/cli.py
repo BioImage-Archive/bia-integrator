@@ -1,41 +1,36 @@
-import typer
-from typing import List, Optional
-from pathlib import Path
+import logging
 from enum import Enum
-from typing import Annotated
+from pathlib import Path
+from typing import Annotated, List, Optional
+
+import typer
+from rich import print
+from rich.logging import RichHandler
+
 from bia_ingest.biostudies.api import (
+    Submission,
     load_submission,
     load_submission_table_info,
-    Submission,
 )
+from bia_ingest.biostudies.biostudies_processing_version import (
+    BioStudiesProcessingVersion,
+)
+from bia_ingest.biostudies.common.study import get_study
+from bia_ingest.biostudies.find_bia_studies import find_unprocessed_studies
 from bia_ingest.biostudies.generic_conversion_utils import attributes_to_dict
-
+from bia_ingest.biostudies.process_submission_default import process_submission_default
+from bia_ingest.biostudies.process_submission_v4 import process_submission_v4
 from bia_ingest.persistence_strategy import (
     PersistenceMode,
     persistence_strategy_factory,
 )
+from bia_ingest.settings import LOGGING_LEVELS, OutputMode
 
-from bia_ingest.biostudies.biostudies_processing_version import (
-    BioStudiesProcessingVersion,
-)
-
-from bia_ingest.biostudies.common.study import get_study
-from bia_ingest.biostudies.process_submission_v4 import (
-    process_submission_v4,
-)
-from bia_ingest.biostudies.process_submission_default import (
-    process_submission_default,
-)
-from bia_ingest.biostudies.find_bia_studies import find_unprocessed_studies
-
-import logging
-from rich import print
-from rich.logging import RichHandler
 from .cli_logging import (
+    IngestionResult,
     extract_table_row,
     tabulate_ingestion_errors,
     write_table,
-    IngestionResult,
 )
 
 app = typer.Typer()
@@ -48,14 +43,6 @@ logging.basicConfig(
 )
 
 logger = logging.getLogger()
-
-LOGGING_LEVELS: dict = {
-    0: logging.CRITICAL,
-    1: logging.ERROR,
-    2: logging.WARNING,
-    3: logging.INFO,
-    4: logging.DEBUG,
-}
 
 
 class ProcessFilelistMode(str, Enum):
@@ -85,10 +72,12 @@ def ingest(
         typer.Option("--process-filelist", "-pf", case_sensitive=False),
     ] = ProcessFilelistMode.ask,
     dryrun: Annotated[bool, typer.Option()] = False,
-    write_csv: Annotated[str, typer.Option()] = "",
+    write_csv: Annotated[str | None, typer.Option()] = None,
     counts: Annotated[bool, typer.Option("--counts", "-c")] = False,
     logging: Annotated[int, typer.Option("--logging", "-l")] = 0,
-    simple_output: Annotated[bool, typer.Option("--simple-output", "-so")] = False,
+    output_mode: OutputMode = typer.Option(
+        OutputMode.table, "--output-mode", "-om", case_sensitive=False
+    ),
 ) -> None:
     logger.setLevel(LOGGING_LEVELS[logging])
 
@@ -101,7 +90,7 @@ def ingest(
         accession_id_list.extend(read_file_input(input_file))
 
     for accession_id in accession_id_list:
-        if not simple_output:
+        if output_mode == OutputMode.table:
             print(f"[blue]-------- Starting ingest of {accession_id} --------[/blue]")
         logger.debug(f"starting ingest of {accession_id}")
 
@@ -164,29 +153,29 @@ def ingest(
             )
 
         logger.debug(f"COMPLETED: Ingest of: {accession_id}")
-        if not simple_output:
+        if output_mode == OutputMode.table:
             print(
                 f"[green]-------- Completed ingest of {accession_id} --------[/green]"
             )
 
-    if simple_output:
-        for accession_id, ingestion_result in result_summary.items():
-            simplified_output: list = extract_table_row(
-                accession_id_key=accession_id,
-                result=ingestion_result,
-                result_dict=ingestion_result.model_dump(),
-            )
+    match output_mode:
+        case OutputMode.simple:
+            for accession_id, ingestion_result in result_summary.items():
+                simplified_output: list = extract_table_row(
+                    accession_id_key=accession_id,
+                    result=ingestion_result,
+                    result_dict=ingestion_result.model_dump(),
+                )
 
-            status = simplified_output[2]
-            error_or_warning = simplified_output[3]
-            print(accession_id, status, error_or_warning, sep=", ")
+                status = simplified_output[2]
+                error_or_warning = simplified_output[3]
+                print(accession_id, status, error_or_warning, sep=", ")
+        case OutputMode.table:
+            result_table = tabulate_ingestion_errors(result_summary, counts)
+            print(result_table)
 
-        return
-    result_table = tabulate_ingestion_errors(result_summary, counts)
-    print(result_table)
-
-    if write_csv:
-        write_table(result_table, write_csv)
+            if write_csv:
+                write_table(result_table, write_csv)
 
 
 def read_file_input(input_file: Path):

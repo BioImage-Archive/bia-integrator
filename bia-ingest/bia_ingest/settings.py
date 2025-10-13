@@ -1,11 +1,26 @@
-from pathlib import Path
-import os
 import logging
+import os
+from enum import Enum
+from pathlib import Path
 
-from pydantic import Field, AliasChoices
+from pydantic import AliasChoices, Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 logger = logging.getLogger("__main__." + __name__)
+
+
+LOGGING_LEVELS: dict = {
+    0: logging.CRITICAL,
+    1: logging.ERROR,
+    2: logging.WARNING,
+    3: logging.INFO,
+    4: logging.DEBUG,
+}
+
+
+class OutputMode(str, Enum):
+    table = "table"
+    simple = "simple"
 
 
 class Settings(BaseSettings):
@@ -19,7 +34,7 @@ class Settings(BaseSettings):
         ],
         env_file_encoding="utf-8",
         case_sensitive=False,
-        extra='ignore'
+        extra="ignore",
     )
 
     bia_data_dir: str = Field(
@@ -36,7 +51,6 @@ class Settings(BaseSettings):
     bia_api_basepath: str = Field("")
     bia_api_username: str = Field("")
     bia_api_password: str = Field("")
-
 
 
 def get_settings():

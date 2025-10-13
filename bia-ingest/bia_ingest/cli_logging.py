@@ -101,10 +101,11 @@ def tabulate_ingestion_errors(
             result_dict=result_dict,
         )
 
-        table.add_row(*row_info)
         if include_object_count and isinstance(headers, list):
             for header in headers[5:]:
                 row_info.append(str(result_dict[header + "_CreationCount"]))
+
+        table.add_row(*row_info)
 
     return table
 
