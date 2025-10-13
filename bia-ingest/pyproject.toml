@@ -21,11 +21,11 @@ click = "<8.2.0"
 ipdb = "^0.13.13"
 debugpy = "^1.6.7"
 isort = "^7.0.0"
-tdqm = "^4.67.1"
+tqdm = "^4.67.1"
 
 [tool.poetry.scripts]
 biaingest = "bia_ingest.cli:app"
-biaingest-debug = "bia_ingest.debug:main"
+
 
 
 [tool.poetry.group.dev.dependencies]
