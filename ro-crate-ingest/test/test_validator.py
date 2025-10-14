@@ -80,6 +80,26 @@ def get_test_ro_crate_path(accession_id) -> Path:
 def test_ro_crate_context_validation_error_messages(
     accession_id, expected_result, messages, caplog
 ):
+    """
+    See parametrisation above for test expectations.
+
+    Structure of test paraters are tuples with:
+    - Accesion id of the ro-crate to test
+    - Expected result code (0 for no validation issues, 1 otherwise)
+    - List of tuples of strings to check in each error message. E.g.
+
+    [
+        (
+            "At ro-crate object with @id: data2/",
+            "@type of object does not contain any BIA classes.",
+        ),
+        (
+            "At ro-crate object with @id: data2/groupedImage/",
+            "@type of object contains multiple BIA classes",
+        ),
+    ]
+    Would result in a check that the validator returned 2 messages, and that each message contained all (2) expected substrings
+    """
 
     caplog.set_level(logging.ERROR)
 
@@ -92,6 +112,14 @@ def test_ro_crate_context_validation_error_messages(
     captured_messages = [
         (record.levelname, record.message) for record in caplog.records
     ]
+
+    assert len(messages) == len(captured_messages)
+
+    # check that no duplicate messages were created
+    unique_error_messages = set(
+        severity_message[1] for severity_message in captured_messages
+    )
+    assert len(unique_error_messages) == len(messages)
 
     for message_position, message in enumerate(captured_messages):
         severity, error_message = message
