@@ -35,8 +35,14 @@ def get_image_analysis_method_as_map(
         # has been requested, but some studies have slipped through.
         # Without a title, it can't be associated to anything, so we
         # skip creating them because they won't appear in any dataset.
-        if "Title" not in attr_dict:
+        if attr_dict.get("Title") is None and attr_dict.get("Image analysis overview") is None:
+            #logger.warning(
+            #    f"Skipping empty Image Analysis Method section in submission {submission.accno}"
+            #)
             continue
+        elif attr_dict.get("Image analysis overview") is None:
+            attr_dict["Image analysis overview"] = ""
+
 
         model_dict = {
             k: case_insensitive_get(attr_dict, v, default)
