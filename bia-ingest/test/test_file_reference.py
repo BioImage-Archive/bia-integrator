@@ -2,7 +2,6 @@ import pytest
 from bia_test_data.mock_objects import (
     mock_file_reference,
     mock_dataset,
-    mock_object_constants,
 )
 from bia_ingest.biostudies import submission_parsing_utils
 from bia_ingest.biostudies.biostudies_default import default_file_reference
@@ -17,8 +16,7 @@ from bia_test_data.mock_objects.mock_object_constants import (
     accession_id,
     accession_id_biostudies_default,
 )
-from bia_ingest.cli_logging import IngestionResult
-
+import logging
 
 @pytest.fixture
 def dataset_in_submission() -> Dataset:
@@ -81,6 +79,7 @@ def test_create_file_reference_for_study_component(
     dataset_in_submission,
     mock_request_get,
 ):
+    caplog.set_level(logging.WARNING)
     file_path_to_file_ref_map = {}
     expected = {}
     [
@@ -106,6 +105,7 @@ def test_create_file_reference_for_study_component_when_no_matching_sc_in_file_l
     """Test attempted creation of study FileReferences when study
     components in dataset do not match does in file_list
     """
+    caplog.set_level(logging.WARNING)
     file_path_to_file_ref_map = {}
     dataset = mock_dataset.get_dataset()[0]
     dataset.title = "Test name not in file list"
