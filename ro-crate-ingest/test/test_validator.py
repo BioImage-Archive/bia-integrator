@@ -48,8 +48,8 @@ def get_test_ro_crate_path(accession_id) -> Path:
             1,
             [
                 (
-                    "ERROR",
-                    "At displayName:\nTerm has been remapped in context: displayName must be mapped to http://schema.org/name",
+                    "At displayName",
+                    "Term has been remapped in context",
                 ),
             ],
         ),
