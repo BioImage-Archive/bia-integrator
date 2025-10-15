@@ -1,0 +1,21 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "195b4e1e-7a53-4d42-9f19-9fd89388b37d",
+  "version": 0,
+  "model": {
+    "type_name": "SpecimenImagingPreparationProtocol",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "SpecimenPreparation"
+      }
+    }
+  ],
+  "title": "Specimen preparation",
+  "protocol_description": "Steps 1-5.",
+  "signal_channel_information": []
+}
