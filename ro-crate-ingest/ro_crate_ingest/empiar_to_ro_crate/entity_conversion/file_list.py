@@ -85,7 +85,7 @@ def expand_dataframe_metadata(
 
     file_list_df = file_df.apply(
         expand_row_metadata,
-        args=(path_pattern_objects,),
+        args=(path_pattern_objects, file_df["file_path"].to_list()),
         axis=1,
     )
 
@@ -171,6 +171,7 @@ def get_file_patterns_matches_and_objects(
 def expand_row_metadata(
     row: pd.Series,
     path_maps: list[PatternMatch],
+    all_file_paths: list[Path]
 ) -> pd.Series:
     file_path: Path = row["file_path"]
 
@@ -194,6 +195,7 @@ def expand_row_metadata(
                 pattern_match.yaml_object,
                 pattern_match.object_type,
                 pattern_match.dataset_id,
+                all_file_paths
             )
             break
 
@@ -205,12 +207,13 @@ def update_row(
     yaml_object: Optional[dict],
     row_type: Optional[str],
     dataset_id: str,
+    all_file_paths: list[Path]
 ):
     output_row["type"] = row_type
     output_row["dataset_ref"] = dataset_id
 
     if yaml_object:
-        output_row["label"] = yaml_object.get("label", None)
+        output_row["label"] = yaml_object.get("file_group", output_row["file_path"])
         output_row["associated_annotation_method"] = (
             f"_:{yaml_object["annotation_method_title"]}"
             if yaml_object.get("annotation_method_title", None)
@@ -221,13 +224,33 @@ def update_row(
             if yaml_object.get("protocol_title", None)
             else None
         )
-        input_images = yaml_object.get("input_image_label", None)
-        if isinstance(input_images, list):
-            output_row["source_image_label"] = [
+        input_images = yaml_object.get("input_image_pattern", None)
+        if input_images:
+            output_row["source_image_label"] = find_matching_input_images(all_file_paths, input_images)
+        else:
+            output_row["source_image_label"] = yaml_object.get("input_image_group", None)
+
+
+def find_matching_input_images(
+        file_paths: list[Path], 
+        input_images: str | list
+) -> list[str]:
+    
+    if isinstance(input_images, list):
+        return [
                 input_image.get("label") for input_image in input_images
             ]
-        else:
-            output_row["source_image_label"] = input_images
+    
+    matches = []
+    for path in file_paths:
+        result = parse.parse(f"data/{input_images}", str(path))
+        if result is not None:
+            matches.append(str(path))
+    
+    if len(matches) == 0:
+        raise ValueError(f"No files found matching input image pattern: {input_images}")
+
+    return matches
 
 
 def split_dataframe_by_dataset(file_df: pd.DataFrame) -> dict[str, pd.DataFrame]:
