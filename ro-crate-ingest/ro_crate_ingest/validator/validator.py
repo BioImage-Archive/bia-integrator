@@ -1,7 +1,7 @@
-from typing import Any, Optional
+from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from enum import Enum
-from abc import ABC, abstractmethod
+from typing import Any
 
 
 class Severity(str, Enum):
@@ -20,27 +20,22 @@ class Severity(str, Enum):
 class ValidationError:
     message: str
     severity: Severity
-    location_description: Optional[str] = None
+    location_description: str | None = None
 
 
 class ValidationResult:
     issues: list[ValidationError]
     result: int
-    validated_object: Optional[Any] = None
+    validated_object: Any = None
 
-    def __init__(
-        self, issues: list[ValidationError], validated_object: Optional[Any] = None
-    ):
+    def __init__(self, issues: list[ValidationError], validated_object: Any = None):
         self.issues = issues
         if len(issues) > 0:
             self.result = 1
         else:
             self.result = 0
 
-        if validated_object:
-            self.validated_object = validated_object
-        else:
-            self.validated_object = None
+        self.validated_object = validated_object
 
 
 class Validator(ABC):

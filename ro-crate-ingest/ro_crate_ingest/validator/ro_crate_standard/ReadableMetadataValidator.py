@@ -1,11 +1,13 @@
+from pathlib import Path
+
+from rocrate.rocrate import read_metadata
+
 from ro_crate_ingest.validator.validator import (
+    Severity,
     ValidationError,
     ValidationResult,
     Validator,
-    Severity,
 )
-from pathlib import Path
-from rocrate.rocrate import read_metadata
 
 
 class ReadableMetadataValidator(Validator):

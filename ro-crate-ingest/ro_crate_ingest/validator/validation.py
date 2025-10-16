@@ -1,20 +1,22 @@
 import json
-import typer
 import logging
-
 from pathlib import Path
+
+import typer
+from bia_shared_datamodels.linked_data.pydantic_ld.ROCrateModel import ROCrateModel
+from bia_shared_datamodels.linked_data.utils import load_bia_ontology
+
+from ro_crate_ingest.validator.file_list import FileListValidator
+from ro_crate_ingest.validator.rdf_graph import ContextValidator
 from ro_crate_ingest.validator.ro_crate_metadata_objects import (
     IDValidator,
     ModelTypeValidator,
 )
-from ro_crate_ingest.validator.rdf_graph import ContextValidator
-from ro_crate_ingest.validator.validator import ValidationResult, Validator
 from ro_crate_ingest.validator.ro_crate_standard import (
     ReadableMetadataValidator,
     SHACLValidator,
 )
-from bia_shared_datamodels.linked_data.pydantic_ld.ROCrateModel import ROCrateModel
-
+from ro_crate_ingest.validator.validator import ValidationResult, Validator
 
 logger = logging.getLogger("__main__." + __name__)
 logging.getLogger().setLevel(logging.INFO)
@@ -38,9 +40,17 @@ def bia_roc_validation(ro_crate_directory: Path):
 
     logging.info(f"Validating ro-crate objects under in the @graph of {metadata_path}")
     validate(IDValidator.IDValidator(graph)).validated_object
-    ro_crate_objects: dict = validate(
+    ro_crate_objects: dict[str, ROCrateModel] = validate(
         ModelTypeValidator.ModelTypeValidator(graph, context)
     ).validated_object
+
+    bia_ontology = load_bia_ontology()
+
+    validate(
+        FileListValidator.FileListValidator(
+            ro_crate_objects, ro_crate_directory, bia_ontology
+        )
+    )
 
 
 def log_issues(validation_result: ValidationResult):

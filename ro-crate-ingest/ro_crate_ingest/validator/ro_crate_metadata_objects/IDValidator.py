@@ -1,8 +1,8 @@
 from ro_crate_ingest.validator.validator import (
+    Severity,
     ValidationError,
     ValidationResult,
     Validator,
-    Severity,
 )
 
 

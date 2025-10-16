@@ -1,11 +1,13 @@
+from pathlib import Path
+
+from rocrate_validator import models, services
+
 from ro_crate_ingest.validator.validator import (
+    Severity,
     ValidationError,
     ValidationResult,
     Validator,
-    Severity,
 )
-from pathlib import Path
-from rocrate_validator import services, models
 
 
 class SHACLValidator(Validator):

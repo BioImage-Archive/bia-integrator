@@ -235,7 +235,11 @@
       "datePublished": "2023-09-05",
       "keyword": [],
       "acknowledgement": null,
-      "hasPart": [],
+      "hasPart": [
+        {
+          "@id": "data2/"
+        }
+      ],
       "accessionId": "test_valid_minimal_ro_crate"
     },
     {
@@ -250,6 +254,86 @@
       "affiliation": [],
       "role": [],
       "contactEmail": null
+    },
+    {
+      "@id": "data2/",
+      "@type": [
+        "Dataset",
+        "bia:Dataset"
+      ],
+      "title": "Collection of images and annotations all together.",
+      "description": "Schema doesn't match tsv",
+      "hasPart": [
+        {
+          "@id": "data2/file_list_with_mismatched_schema.tsv"
+        }
+      ],
+      "associationFileMetadata": {
+        "@id": "data2/file_list_with_mismatched_schema.tsv"
+      }
+    },
+    {
+      "@id": "data2/file_list_with_mismatched_schema.tsv",
+      "@type": [
+        "File",
+        "bia:FileList",
+        "csvw:Table"
+      ],
+      "tableSchema": {
+        "@id": "_:ts1"
+      }
+    },
+    {
+      "@id": "_:col1",
+      "@type": [
+        "csvw:Column"
+      ],
+      "columnName": "associated_bio_sample",
+      "propertyUrl": "http://bia/associatedBiologicalEntity"
+    },
+    {
+      "@id": "_:col0",
+      "@type": [
+        "csvw:Column"
+      ],
+      "columnName": "file_path",
+      "propertyUrl": "http://bia/filePath"
+    },
+    {
+      "@id": "_:ts1",
+      "@type": [
+        "csvw:Schema"
+      ],
+      "column": [
+        {
+          "@id": "_:col0"
+        },
+        {
+          "@id": "_:col1"
+        }
+      ]
+    },
+    {
+      "@id": "NCBI:txid9606",
+      "@type": [
+        "bia:Taxon"
+      ],
+      "commonName": "human",
+      "scientificName": "Homo sapiens"
+    },
+    {
+      "@id": "_:Biosample1",
+      "@type": [
+        "bia:BioSample"
+      ],
+      "title": "Some biosample",
+      "biologicalEntityDescription": "Some description",
+      "organismClassification": [
+        {
+          "@id": "NCBI:txid9606"
+        }
+      ],
+      "growthProtocol": null
     }
   ]
 }
