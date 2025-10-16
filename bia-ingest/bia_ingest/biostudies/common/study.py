@@ -256,7 +256,7 @@ def get_grant_and_funding_body(
         attr = attributes_to_dict(section.attributes)
 
         funding_body = None
-        if "Agency" in attr:
+        if attr.get("Agency") is not None:
             funding_body_dict = {"display_name": attr["Agency"]}
             funding_body = dict_to_api_model(
                 funding_body_dict,
@@ -264,7 +264,7 @@ def get_grant_and_funding_body(
                 result_summary[submission.accno],
             )
 
-        if "grant_id" in attr:
+        if attr.get("grant_id") is not None:
             grant_dict = {"id": attr["grant_id"]}
             if funding_body:
                 grant_dict["funder"] = [funding_body]
@@ -337,6 +337,11 @@ def get_related_publications(
                 ("title", "Title", None),
             ]
         }
+        # Check all fields are not None because new ST allowed
+        # some empty publications between August 2025 and October 2025
+        if all(value is None for value in publication.values()):
+            logger.warning("Skipping empty publication entry")
+            continue
         try:
             publications.append(semantic_models.Publication.model_validate(publication))
         except ValidationError:
