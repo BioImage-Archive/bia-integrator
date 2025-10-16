@@ -11,6 +11,7 @@ from ro_crate_ingest.biostudies_to_ro_crate.biostudies_conversion import (
 from ro_crate_ingest.empiar_to_ro_crate.empiar_proposal_conversion import (
     convert_empiar_proposal_to_ro_crate,
 )
+from ro_crate_ingest.validator.file_list.FileListValidator import FileLocationMode
 from ro_crate_ingest.validator.validation import bia_roc_validation
 
 ro_crate_ingest = typer.Typer()
@@ -109,5 +110,14 @@ def validate_ro_crate(
             help="Path to the ro-crate root (or ro-crate-metadata.json)",
         ),
     ],
+    file_location: Annotated[
+        FileLocationMode,
+        typer.Option(
+            "--file_location",
+            "-f",
+            case_sensitive=False,
+            help="Whether to expect files in file lists in the ro-crate or reference to an external location.",
+        ),
+    ] = FileLocationMode.LOCAL,
 ):
-    bia_roc_validation(crate_path)
+    bia_roc_validation(crate_path, file_location)
