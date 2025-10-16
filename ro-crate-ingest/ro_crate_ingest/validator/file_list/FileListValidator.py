@@ -1,7 +1,9 @@
 import os
+from enum import Enum
 from pathlib import Path
 
 import pandas as pd
+import rdflib
 from bia_shared_datamodels.linked_data.pydantic_ld.ROCrateModel import ROCrateModel
 from bia_shared_datamodels.ro_crate_models import Column, FileList, TableSchema
 
@@ -11,11 +13,9 @@ from ro_crate_ingest.validator.validator import (
     ValidationResult,
     Validator,
 )
-import rdflib
-from enum import Enum
 
 
-class RemoteFileMode(str, Enum):
+class FileLocationMode(str, Enum):
     LOCAL = "local"
     REMOTE = "remote"
 
@@ -30,14 +30,14 @@ class FileListValidator(Validator):
     file_path_column_ids: list[str]
     ontology: rdflib.Graph
     object_reference_columns: dict[str, str]
-    remote_file_mode: RemoteFileMode
+    file_location_mode: FileLocationMode
 
     def __init__(
         self,
         ro_crate_objects: dict[str, ROCrateModel],
         ro_crate_root: Path,
         ontology: rdflib.Graph,
-        remote_file_mode: RemoteFileMode = RemoteFileMode.LOCAL,
+        file_location_mode: FileLocationMode = FileLocationMode.LOCAL,
     ):
         self.ro_crate_root = ro_crate_root
         self.ro_crate_object_lookup = ro_crate_objects
@@ -58,7 +58,7 @@ class FileListValidator(Validator):
         self.file_lists_map = {}
         self.object_reference_columns = {}
         self.ontology = ontology
-        self.remote_file_mode = remote_file_mode
+        self.file_location_mode = file_location_mode
 
         super().__init__()
 
@@ -194,7 +194,7 @@ class FileListValidator(Validator):
         else:
             self.file_path_column_ids = file_path_column_ids
 
-        if self.remote_file_mode == RemoteFileMode.REMOTE:
+        if self.file_location_mode == FileLocationMode.REMOTE:
             size_in_bytes_property = "https://bia/sizeInBytes"
             size_in_bytes = self._get_column_ids_by_property_url(size_in_bytes_property)
             if len(size_in_bytes) == 0:
@@ -245,7 +245,7 @@ class FileListValidator(Validator):
     def _validate_file_list_contents(self, file_list_id: str, file_list: pd.DataFrame):
         for index, row in file_list.iterrows():
             self._validate_object_references(row, file_list_id, str(index))
-            if self.remote_file_mode == RemoteFileMode.LOCAL:
+            if self.file_location_mode == FileLocationMode.LOCAL:
                 self._validate_file_reference_exists(row, file_list_id, str(index))
 
     def _validate_object_references(

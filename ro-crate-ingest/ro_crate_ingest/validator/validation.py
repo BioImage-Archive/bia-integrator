@@ -22,7 +22,7 @@ logger = logging.getLogger("__main__." + __name__)
 logging.getLogger().setLevel(logging.INFO)
 
 
-def bia_roc_validation(ro_crate_directory: Path):
+def bia_roc_validation(ro_crate_directory: Path, file_mode: FileListValidator.FileLocationMode):
 
     metadata_path = ro_crate_directory / "ro-crate-metadata.json"
 
@@ -48,7 +48,7 @@ def bia_roc_validation(ro_crate_directory: Path):
 
     validate(
         FileListValidator.FileListValidator(
-            ro_crate_objects, ro_crate_directory, bia_ontology
+            ro_crate_objects, ro_crate_directory, bia_ontology, file_location_mode=file_mode
         )
     )
 
