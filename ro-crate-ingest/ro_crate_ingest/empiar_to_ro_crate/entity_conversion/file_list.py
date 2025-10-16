@@ -233,13 +233,8 @@ def update_row(
 
 def find_matching_input_images(
         file_paths: list[Path], 
-        input_images: str | list
+        input_images: str
 ) -> list[str]:
-    
-    if isinstance(input_images, list):
-        return [
-                input_image.get("label") for input_image in input_images
-            ]
     
     matches = []
     for path in file_paths:
