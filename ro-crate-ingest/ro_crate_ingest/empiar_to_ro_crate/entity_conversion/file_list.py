@@ -100,9 +100,9 @@ def get_file_patterns_matches_and_objects(
     empiar api entry has folder paths
 
     returns a list of PatternMatch objects, containing:
-        file pattern which can be used to match file paths  
-        dataset id 
-        (optional) object type, 
+        file pattern which can be used to match file paths
+        dataset id
+        (optional) object type,
         (optional) object from yaml
     """
 
@@ -211,10 +211,16 @@ def update_row(
 
     if yaml_object:
         output_row["label"] = yaml_object.get("label", None)
-        output_row["associated_annotation_method"] = yaml_object.get(
-            "annotation_method_title", None
+        output_row["associated_annotation_method"] = (
+            f"_:{yaml_object["annotation_method_title"]}"
+            if yaml_object.get("annotation_method_title", None)
+            else None
         )
-        output_row["associated_protocol"] = yaml_object.get("protocol_title", None)
+        output_row["associated_protocol"] = (
+            f"_:{yaml_object["protocol_title"]}"
+            if yaml_object.get("protocol_title", None)
+            else None
+        )
         input_images = yaml_object.get("input_image_label", None)
         if isinstance(input_images, list):
             output_row["source_image_label"] = [

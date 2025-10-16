@@ -24,7 +24,7 @@
         "http://schema.org/name": "Tomogram TS_017",
         "http://bia/sourceImageLabel": "Tilt series TS_017",
         "http://bia/associatedAnnotationMethod": "",
-        "http://bia/associatedProtocol": "Tomogram reconstruction and sub-tomogram averaging"
+        "http://bia/associatedProtocol": "_:Tomogram reconstruction and sub-tomogram averaging"
       }
     }
   ],
