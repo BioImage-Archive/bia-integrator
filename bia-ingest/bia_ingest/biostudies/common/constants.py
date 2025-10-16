@@ -28,10 +28,15 @@ NUCLEOTIDE_LINK_TYPE = "nucleotide"
 OMIM_LINK_TYPE = "omim"
 PDBE_LINK_TYPE = "pdbe"
 PFAM_LINK_TYPE = "pfam"
+PUBMED_LINK_TYPE = "pubmed"
 RFAM_LINK_TYPE = "rfam"
 RNACENTRAL_LINK_TYPE = "rnacentral"
 SOURCE_DATA_LINK_TYPE = "sourcedata"  # Missing url template
+TAXONOMY_LINK_TYPE = "taxonomy"
 UNIPROT_LINK_TYPE = "uniprot"
+HTTP_LINK_TYPE = "http"
+HTTPS_LINK_TYPE = "https"
+
 
 # ---- URL templates ----
 ARRAYDESIGN_URL_TEMPLATE = "https://www.ebi.ac.uk/arrayexpress/arrays/{0}"
@@ -55,6 +60,8 @@ EXPRESSIONATLAS_SC_URL_TEMPLATE = (
 )
 GEO_URL_TEMPLATE = "http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc={0}"
 GENEONTOLOGY_URL_TEMPLATE = "http://amigo.geneontology.org/amigo/term/{0}"
+HTTP_URL_TEMPLATE = "http://{0}"
+HTTPS_URL_TEMPLATE = "https://{0}"
 IDR_URL_TEMPLATE = "https://idr.openmicroscopy.org/search/?query=Name:{0}"
 INTACT_URL_TEMPLATE = "https://www.ebi.ac.uk/intact/interaction/{0}"
 INTERPRO_URL_TEMPLATE = "https://www.ebi.ac.uk/interpro/entry/{0}"
@@ -63,9 +70,12 @@ NUCLEOTIDE_URL_TEMPLATE = "http://www.ncbi.nlm.nih.gov/nuccore/{0}"
 OMIM_URL_TEMPLATE = "http://omim.org/entry/{0}"
 PDBE_URL_TEMPLATE = "https://www.ebi.ac.uk/pdbe-srv/view/entry/{0}/summary"
 PFAM_URL_TEMPLATE = "http://pfam.xfam.org/family/{0}"
+PUBMED_URL_TEMPLATE = "https://www.ncbi.nlm.nih.gov/pubmed/{0}"
 RFAM_URL_TEMPLATE = "http://rfam.org/family/{0}"
 RNACENTRAL_URL_TEMPLATE = "http://rnacentral.org/rna/{0}"
+TAXONOMY_URL_TEMPLATE = "https://www.ebi.ac.uk/ena/browser/view/Taxon:{0}"
 UNIPROT_URL_TEMPLATE = "https://www.uniprot.org/uniprot/{0}"
+
 
 # ---- LINKTYPE_DISPLAY mapping ----
 LINKTYPE_DISPLAY: Dict[str, str] = {
@@ -86,6 +96,8 @@ LINKTYPE_DISPLAY: Dict[str, str] = {
     "geo": GEO_LINK_TYPE,
     "gxa": EXPRESSIONATLAS_LINK_TYPE,
     "gxa-sc": EXPRESSIONATLAS_SC_LINK_TYPE,
+    "http": HTTP_LINK_TYPE,
+    "https": HTTPS_LINK_TYPE,
     "idr": IDR_LINK_TYPE,
     "intact": INTACT_LINK_TYPE,
     "interpro": INTERPRO_LINK_TYPE,
@@ -93,12 +105,14 @@ LINKTYPE_DISPLAY: Dict[str, str] = {
     "omim": OMIM_LINK_TYPE,
     "pdb": PDBE_LINK_TYPE,
     "pfam": PFAM_LINK_TYPE,
+    "pubmed": PUBMED_LINK_TYPE,
     "refsnp": DBSNP_LINK_TYPE,
     "refseq": NUCLEOTIDE_LINK_TYPE,
     "rfam": RFAM_LINK_TYPE,
     "rnacentral": RNACENTRAL_LINK_TYPE,
     "sourcedata": SOURCE_DATA_LINK_TYPE,
     "sprot": UNIPROT_LINK_TYPE,
+    "taxonomy": TAXONOMY_LINK_TYPE,
 }
 
 # ---- Allowed link types ----
@@ -123,6 +137,8 @@ URL_TEMPLATES: Dict[str, str] = {
     EXPRESSIONATLAS_SC_LINK_TYPE: EXPRESSIONATLAS_SC_URL_TEMPLATE,
     GEO_LINK_TYPE: GEO_URL_TEMPLATE,
     GENEONTOLOGY_LINK_TYPE: GENEONTOLOGY_URL_TEMPLATE,
+    HTTP_LINK_TYPE: HTTP_URL_TEMPLATE,
+    HTTPS_LINK_TYPE: HTTPS_URL_TEMPLATE,
     IDR_LINK_TYPE: IDR_URL_TEMPLATE,
     INTACT_LINK_TYPE: INTACT_URL_TEMPLATE,
     INTERPRO_LINK_TYPE: INTERPRO_URL_TEMPLATE,
@@ -131,7 +147,9 @@ URL_TEMPLATES: Dict[str, str] = {
     OMIM_LINK_TYPE: OMIM_URL_TEMPLATE,
     PDBE_LINK_TYPE: PDBE_URL_TEMPLATE,
     PFAM_LINK_TYPE: PFAM_URL_TEMPLATE,
+    PUBMED_LINK_TYPE: PUBMED_URL_TEMPLATE,
     RFAM_LINK_TYPE: RFAM_URL_TEMPLATE,
     RNACENTRAL_LINK_TYPE: RNACENTRAL_URL_TEMPLATE,
+    TAXONOMY_LINK_TYPE: TAXONOMY_URL_TEMPLATE,
     UNIPROT_LINK_TYPE: UNIPROT_URL_TEMPLATE,
 }
