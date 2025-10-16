@@ -223,7 +223,7 @@ class Entry(BaseModel):
     authors: list[EntryAuthor] = Field(
         default_factory=list, description="Complete list of the entry authors."
     )
-    cross_references: list[CrossReference] = Field(
+    cross_references: list[str] = Field(
         default_factory=list,
     )
     grant_references: list[GrantReference] = Field(
