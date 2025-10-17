@@ -216,7 +216,14 @@ def get_external_references(
     links = getattr(submission.section, "links")
     external_references = list()
     for link_section in links:
-        attributes: dict = attributes_to_dict(getattr(link_section, "attributes"))
+        if hasattr(link_section, "attributes"):
+            attributes_obj = getattr(link_section, "attributes")
+        else:
+            logger.warning(
+                "get_external_references: No attributes found in link section."
+            )
+            continue
+        attributes: dict = attributes_to_dict(attributes_obj)
         link, link_type = (
             getattr(link_section, "url"),
             case_insensitive_get(attributes, "type"),
