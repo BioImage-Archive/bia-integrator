@@ -225,6 +225,9 @@ def get_external_references(
             logger.warning("get_external_references: No link found in link section.")
             continue
         link_type = link_type.lower() if isinstance(link_type, str) else link_type
+        logger.debug(
+            f"get_external_references: before sanitise -> link: {link}, type: {link_type}"
+        )
         link, link_type = sanitise_link_and_link_type(link, link_type)
         link = normalise_link(link)
         logger.debug(f"get_external_references: link: {link}, attributes: {attributes}")
