@@ -214,8 +214,15 @@ def get_external_references(
     Map biostudies.Submission.Link to semantic_models.ExternalReference
     """
     links = getattr(submission.section, "links")
-    external_references = list()
+    # For some studies links section is list of lists -flatten if necessary
+    flattened_links = []
     for link_section in links:
+        if isinstance(link_section, list):
+            flattened_links.extend(link_section)
+        else:
+            flattened_links.append(link_section)
+    external_references = list()
+    for link_section in flattened_links:
         attributes: dict = attributes_to_dict(getattr(link_section, "attributes"))
         link, link_type = (
             getattr(link_section, "url"),
