@@ -1,0 +1,649 @@
+{
+	"accno": "S-BIAD1201",
+	"attributes": [
+		{
+			"name": "Template",
+			"value": "BioImages.v4"
+		},
+		{
+			"name": "DOI",
+			"value": "10.6019/S-BIAD1201"
+		},
+		{
+			"name": "ReleaseDate",
+			"value": "2024-06-07"
+		},
+		{
+			"name": "AttachTo",
+			"value": "BioImages"
+		}
+	],
+	"section": {
+		"type": "Study",
+		"attributes": [
+			{
+				"name": "Title",
+				"value": " Differential Talin Cleavage in Transformed and Non-Transformed Cells and Its Consequences"
+			},
+			{
+				"name": "Description",
+				"value": "TIRF FRAP datasets of Talin in aocal adhesions of transformed and non-transformed cell lines"
+			},
+			{
+				"name": "Keywords",
+				"value": "Talin, Focal Adhesion, TIRF, FRAP, Cancer"
+			},
+			{
+				"name": "Acknowledgements",
+				"value": "Salma Jalal, Mingxi Yao,Oddmund Bakke, Felix Margadant and Michael Sheetz"
+			},
+			{
+				"name": "License",
+				"value": "CC BY 4.0",
+				"valqual": [
+					{
+						"name": "URL",
+						"value": "https://creativecommons.org/licenses/by/4.0/legalcode"
+					}
+				]
+			}
+		],
+		"links": [
+			{
+				"url": "10.3389/fcell.2024.1430728",
+				"attributes": [
+					{
+						"name": "Type",
+						"value": "doi"
+					}
+				]
+			}
+		],
+		"subsections": [
+			{
+				"type": "author",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "Edna Xian Hu"
+					},
+					{
+						"name": "E-mail",
+						"value": "xian.hu@medisin.uio.no"
+					},
+					{
+						"name": "Role",
+						"value": "corresponding author"
+					},
+					{
+						"name": "ORCID",
+						"value": "0000-0002-3381-7514"
+					},
+					{
+						"name": "affiliation",
+						"value": "o1",
+						"reference": true
+					}
+				]
+			},
+			{
+				"accno": "o1",
+				"type": "organisation",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "University of Oslo"
+					}
+				]
+			},
+			{
+				"type": "Publication",
+				"attributes": [
+					{
+						"name": "Title",
+						"value": "Differential Talin Cleavage in Transformed and Non-Transformed Cells and Its Consequences"
+					},
+					{
+						"name": "Authors",
+						"value": "Xian Hu, Salma Jalal, Mingxi Yao, Oddmund Bakke, Felix Margadant, Michael Sheetz"
+					},
+					{
+						"name": "DOI",
+						"value": "doi: 10.3389/fcell.2024.1430728"
+					}
+				]
+			},
+			{
+				"type": "Funding",
+				"attributes": [
+					{
+						"name": "Agency",
+						"value": "National Research Foundation, Prime Minister’s Office, Singapore"
+					}
+				]
+			},
+			{
+				"type": "Funding",
+				"attributes": [
+					{
+						"name": "Agency",
+						"value": "The Ministry of Education under the Research Centres of Excellence programme"
+					},
+					{
+						"name": "grant_id",
+						"value": "R- 714-105-004-135"
+					}
+				]
+			},
+			{
+				"type": "Funding",
+				"attributes": [
+					{
+						"name": "Agency",
+						"value": "The Research Council of Norway (RCN) "
+					},
+					{
+						"name": "grant_id",
+						"value": "NRC INFRASTRUKTUR 208310/F50"
+					}
+				]
+			},
+			{
+				"accno": "Biosample-1",
+				"type": "Biosample",
+				"attributes": [
+					{
+						"name": "Title",
+						"value": "A375P Cells"
+					},
+					{
+						"name": "Organism",
+						"value": "Homo sapiens (human)"
+					},
+					{
+						"name": "Biological entity",
+						"value": "A375P Cellline"
+					},
+					{
+						"name": "Experimental variable",
+						"value": "Construct transfected with different talin mutants"
+					}
+				]
+			},
+			{
+				"accno": "Biosample-13",
+				"type": "Biosample",
+				"attributes": [
+					{
+						"name": "Title",
+						"value": "Meljuso Cells"
+					},
+					{
+						"name": "Organism",
+						"value": "Homo sapiens (human)"
+					},
+					{
+						"name": "Biological entity",
+						"value": "Meljuso Cell lines"
+					},
+					{
+						"name": "Experimental variable",
+						"value": "Construct transfected with different talin mutants"
+					}
+				]
+			},
+			{
+				"accno": "Biosample-15",
+				"type": "Biosample",
+				"attributes": [
+					{
+						"name": "Title",
+						"value": "A2058 Cells"
+					},
+					{
+						"name": "Organism",
+						"value": "Homo sapiens (human)"
+					},
+					{
+						"name": "Biological entity",
+						"value": "A2058 Cell line"
+					},
+					{
+						"name": "Experimental variable",
+						"value": "Construct transfected with different talin mutants"
+					}
+				]
+			},
+			{
+				"accno": "Specimen-2",
+				"type": "Specimen",
+				"attributes": [
+					{
+						"name": "Title",
+						"value": "GTC"
+					},
+					{
+						"name": "Sample preparation protocol",
+						"value": "Cell Transfected with GFP-Talin-mCherry"
+					}
+				]
+			},
+			{
+				"accno": "Specimen-5",
+				"type": "Specimen",
+				"attributes": [
+					{
+						"name": "Title",
+						"value": "GTC-CM(C terminal calpain mutation)"
+					},
+					{
+						"name": "Sample preparation protocol",
+						"value": "Cell transfected with GFP-talin with C terminal calpain mutation(E3292G)-mCherry"
+					}
+				]
+			},
+			{
+				"accno": "Specimen-8",
+				"type": "Specimen",
+				"attributes": [
+					{
+						"name": "Title",
+						"value": "GTC-NM(N terminal calpain mutation)"
+					},
+					{
+						"name": "Sample preparation protocol",
+						"value": "GFP-Talin-mCherry with N terminal calpain mutation"
+					}
+				]
+			},
+			{
+				"accno": "Specimen-9",
+				"type": "Specimen",
+				"attributes": [
+					{
+						"name": "Title",
+						"value": "GRC (Talin Rod)"
+					},
+					{
+						"name": "Sample preparation protocol",
+						"value": "GFP-Rod-mCherry with Rod being the Talin rod domain "
+					}
+				]
+			},
+			{
+				"accno": "Specimen-11",
+				"type": "Specimen",
+				"attributes": [
+					{
+						"name": "Title",
+						"value": "GTC_DM(DualMutation)"
+					},
+					{
+						"name": "Sample preparation protocol",
+						"value": "GFP-Talin-mCherry with dual mutation on both talin calpain binding sites(E2492G and L432G)"
+					}
+				]
+			},
+			{
+				"accno": "Image acquisition-3",
+				"type": "Image acquisition",
+				"attributes": [
+					{
+						"name": "Title",
+						"value": "TIRF FRAP of Focal Adhesion Proteins"
+					},
+					{
+						"name": "Imaging instrument",
+						"value": "Olympus IX81, Gataca Ilas2 Ring TIRF(TIRF and FRAP module), Hamamatsu W-VIEW GEMINI(dual camera beam splitter), 2 Photometrics Prime95 sCMOS( camera) and metamorph software"
+					},
+					{
+						"name": "Image acquisition parameters",
+						"value": "100ms per frame, pixel size: 0.1549X0.1549 micron"
+					},
+					{
+						"name": "Imaging method",
+						"value": "FRAP"
+					},
+					{
+						"name": "Imaging method",
+						"value": "TIRF"
+					}
+				]
+			},
+			{
+				"accno": "Study Component-4",
+				"type": "Study Component",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "A375P-GTC"
+					},
+					{
+						"name": "Description",
+						"value": "A375P Cells transfected with GFP-talin-mCherry, Channel1 is mCherry and Channel2 is GFP"
+					},
+					{
+						"name": "File List",
+						"value": "Upload(3).json"
+					}
+				],
+				"subsections": [
+					{
+						"type": "Associations",
+						"attributes": [
+							{
+								"name": "Biosample",
+								"value": "A375P Cells"
+							},
+							{
+								"name": "Specimen",
+								"value": "GTC"
+							},
+							{
+								"name": "Image acquisition",
+								"value": "TIRF FRAP of Focal Adhesion Proteins"
+							}
+						]
+					}
+				]
+			},
+			{
+				"accno": "Study Component-6",
+				"type": "Study Component",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "A375P GTC CM Frap"
+					},
+					{
+						"name": "Description",
+						"value": "A375P Cells transfected with GFP-TalinCM- mCherry ( calpain C terminal mutant).  Channel 1 is mCherry, Channel 2 is GFP. Frame rate is 100ms, continues."
+					},
+					{
+						"name": "File List",
+						"value": "A375P_GTC_CM_E3292G(1).json"
+					}
+				],
+				"subsections": [
+					{
+						"type": "Associations",
+						"attributes": [
+							{
+								"name": "Biosample",
+								"value": "A375P Cells"
+							},
+							{
+								"name": "Specimen",
+								"value": "GTC-CM(C terminal calpain mutation)"
+							},
+							{
+								"name": "Image acquisition",
+								"value": "TIRF FRAP of Focal Adhesion Proteins"
+							}
+						]
+					}
+				]
+			},
+			{
+				"accno": "Study Component-7",
+				"type": "Study Component",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "A375P GTC-NM(C terminal calpain mutation)"
+					},
+					{
+						"name": "Description",
+						"value": "A375P Cells transfected with  calpain N terminal mutant, GFP-Talin N-Terminal Mutation, L432G.  Channel 1 is mCherry, Channel 2 is GFP. Frame rate is 100ms, continues."
+					},
+					{
+						"name": "File List",
+						"value": "A375P_GTC_NM.json"
+					}
+				],
+				"subsections": [
+					{
+						"type": "Associations",
+						"attributes": [
+							{
+								"name": "Biosample",
+								"value": "A375P Cells"
+							},
+							{
+								"name": "Specimen",
+								"value": "GTC-NM(N terminal calpain mutation)"
+							},
+							{
+								"name": "Image acquisition",
+								"value": "TIRF FRAP of Focal Adhesion Proteins"
+							}
+						]
+					}
+				]
+			},
+			{
+				"accno": "Study Component-10",
+				"type": "Study Component",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "A375P GRC(Talin Rod)"
+					},
+					{
+						"name": "Description",
+						"value": "A375P Cells transfected with GFP-Talin Rod Domain-mCherry. Channel 1 is mCherry, Channel 2 is GFP. Frame rate is 100ms."
+					},
+					{
+						"name": "File List",
+						"value": "A375P_GRC(Talin Rod).json"
+					}
+				],
+				"subsections": [
+					{
+						"type": "Associations",
+						"attributes": [
+							{
+								"name": "Biosample",
+								"value": "A375P Cells"
+							},
+							{
+								"name": "Specimen",
+								"value": "GRC (Talin Rod)"
+							},
+							{
+								"name": "Image acquisition",
+								"value": "TIRF FRAP of Focal Adhesion Proteins"
+							}
+						]
+					}
+				]
+			},
+			{
+				"accno": "Study Component-12",
+				"type": "Study Component",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "A375P Cells transfected with GTC-DM"
+					},
+					{
+						"name": "Description",
+						"value": "A375P Cells transfected with GFP-Talin dual mutation-mCherry. Channel 1 is mCherry, Channel 2 is GFP. Frame rate is 100ms, continues."
+					},
+					{
+						"name": "File List",
+						"value": "A375P_GTC_DM(DualMutation)(1).json"
+					}
+				],
+				"subsections": [
+					{
+						"type": "Associations",
+						"attributes": [
+							{
+								"name": "Biosample",
+								"value": "A375P Cells"
+							},
+							{
+								"name": "Specimen",
+								"value": "GTC_DM(DualMutation)"
+							},
+							{
+								"name": "Image acquisition",
+								"value": "TIRF FRAP of Focal Adhesion Proteins"
+							}
+						]
+					}
+				]
+			},
+			{
+				"accno": "Study Component-14",
+				"type": "Study Component",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "Meljuso GTC"
+					},
+					{
+						"name": "Description",
+						"value": "Meljuso Cells transfected with GFP-talin-mCherry, Channel1 is mCherry and Channel2 is GFP"
+					},
+					{
+						"name": "File List",
+						"value": "Meljuso_GTC(1).json"
+					}
+				],
+				"subsections": [
+					{
+						"type": "Associations",
+						"attributes": [
+							{
+								"name": "Biosample",
+								"value": "Meljuso Cells"
+							},
+							{
+								"name": "Specimen",
+								"value": "GTC"
+							},
+							{
+								"name": "Image acquisition",
+								"value": "TIRF FRAP of Focal Adhesion Proteins"
+							}
+						]
+					}
+				]
+			},
+			{
+				"accno": "Study Component-16",
+				"type": "Study Component",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "A2058 GTC"
+					},
+					{
+						"name": "Description",
+						"value": "A2058 Cells transfected with GFP-talin-mCherry, Channel1 is mCherry and Channel2 is GFP"
+					},
+					{
+						"name": "File List",
+						"value": "A2058_GTC.json"
+					}
+				],
+				"subsections": [
+					{
+						"type": "Associations",
+						"attributes": [
+							{
+								"name": "Biosample",
+								"value": "A2058 Cells"
+							},
+							{
+								"name": "Specimen",
+								"value": "GTC"
+							},
+							{
+								"name": "Image acquisition",
+								"value": "TIRF FRAP of Focal Adhesion Proteins"
+							}
+						]
+					}
+				]
+			},
+			{
+				"accno": "Study Component-17",
+				"type": "Study Component",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "A2058 GTC-DM"
+					},
+					{
+						"name": "Description",
+						"value": "A2058 Cells transfected with GFP-talin-mCherry Dual Mutation, Channel1 is mCherry and Channel2 is GFP"
+					},
+					{
+						"name": "File List",
+						"value": "A2058 GTC-DM(1).json"
+					}
+				],
+				"subsections": [
+					{
+						"type": "Associations",
+						"attributes": [
+							{
+								"name": "Biosample",
+								"value": "A2058 Cells"
+							},
+							{
+								"name": "Specimen",
+								"value": "GTC_DM(DualMutation)"
+							},
+							{
+								"name": "Image acquisition",
+								"value": "TIRF FRAP of Focal Adhesion Proteins"
+							}
+						]
+					}
+				]
+			},
+			{
+				"accno": "Study Component-18",
+				"type": "Study Component",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "A2058 GRC(Talin Rod)"
+					},
+					{
+						"name": "Description",
+						"value": "A2058 Cells transfected with GFP-Talin Rod Domain-mCherry. Channel 1 is mCherry, Channel 2 is GFP. Frame rate is 100ms."
+					},
+					{
+						"name": "File List",
+						"value": "A2058 GRC.json"
+					}
+				],
+				"subsections": [
+					{
+						"type": "Associations",
+						"attributes": [
+							{
+								"name": "Biosample",
+								"value": "A2058 Cells"
+							},
+							{
+								"name": "Specimen",
+								"value": "GRC (Talin Rod)"
+							},
+							{
+								"name": "Image acquisition",
+								"value": "TIRF FRAP of Focal Adhesion Proteins"
+							}
+						]
+					}
+				]
+			}
+		]
+	},
+	"type": "submission"
+}

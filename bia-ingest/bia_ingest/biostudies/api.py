@@ -1,14 +1,13 @@
+import datetime
 import json
 import logging
 import pathlib
-import datetime
-from typing import List, Union, Dict, Optional, Any
-from http import HTTPStatus
 from copy import deepcopy
+from http import HTTPStatus
+from typing import Any, Dict, List, Optional, Union
 
 import requests
-from pydantic import BaseModel, TypeAdapter, ConfigDict
-
+from pydantic import BaseModel, ConfigDict, TypeAdapter
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -221,6 +220,9 @@ def load_submission(accession_id: str) -> Submission:
         "S-BSMS4": "Author links to affiliations were missing 'reference: true'",
         "S-BIAD15": "Invalid licence, and affilicaiton was missing accno",
         "S-BIAD1076": "Biosample had the Experimental variables text split up into 3 sections, possibly due to commas?",
+        "S-BIAD1201": "Doi type missing in link submission",
+        "S-BIAD1419": "Doi type missing in link submission",
+        "S-BIAD1135": "Doi type missing in link submission",
         "S-BIAD1261": "Author had no name, and the email was for a whole lab. Name added as Cytology Department RUB",
         "S-BIAD978": "Unreferenced Image analysis-5, and a broken association to image analysis 1 (that doesn't exist)",
         "S-BIAD954": "invalid email: Julia Nöth <julia.noeth@ufz.de> changed to: julia.noeth@ufz.de",

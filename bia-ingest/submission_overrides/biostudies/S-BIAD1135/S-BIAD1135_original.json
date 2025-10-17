@@ -1,0 +1,405 @@
+{
+	"accno": "S-BIAD1135",
+	"attributes": [
+		{
+			"name": "Template",
+			"value": "BioImages.v4"
+		},
+		{
+			"name": "DOI",
+			"value": "10.6019/S-BIAD1135"
+		},
+		{
+			"name": "ReleaseDate",
+			"value": "2024-04-30"
+		},
+		{
+			"name": "AttachTo",
+			"value": "BioImages"
+		}
+	],
+	"section": {
+		"type": "Study",
+		"attributes": [
+			{
+				"name": "Title",
+				"value": "Calcium waves in MDCK epithelium"
+			},
+			{
+				"name": "Description",
+				"value": "This dataset shows calcium signalling waves in a MDCK epithelium. The cells stably express GCaMP6S, a GFP-based intracellular calcium sensor. Imaging data courtesy of Yasuyuki Fujita (Y. Takeuchi et al., “Calcium Wave Promotes Cell Extrusion,” Current Biology, vol. 30, no. 4. Elsevier BV, pp. 670-681.e6, Feb. 2020. doi: 10.1016/j.cub.2019.11.089). Collective event analysis has been performed using ARCOS (P. A. Gagliardi et al., “Automatic detection of spatio-temporal signaling patterns in cell collectives,” Journal of Cell Biology, vol. 222, no. 10. Rockefeller University Press, Jul. 27, 2023. doi: 10.1083/jcb.202207048). The analysis scripts and results corresponding to the raw data published here are accessible online (Maciej Dobrzynski, “ARCOS, a computational approach for automatic recognition of collective signalling.” Mendeley, Apr. 26, 2023. doi: 10.17632/8GCNCG6ZKT.3).\nAdditionally, the dataset has been used to showcase the capabilities of conv-paint, an interactive pixel classification tool for napari. \n\nData dimensions: [t,y,x] -> [300,1024,1024]\nPixel resolution: 0.86µm/px (880.64μm total)\nTime resolution: 5sec/frame (25min total)\nFiletype: TIFF "
+			},
+			{
+				"name": "Keywords",
+				"value": "calcium"
+			},
+			{
+				"name": "Keywords",
+				"value": "timelapse"
+			},
+			{
+				"name": "Keywords",
+				"value": "fluorescence imaging"
+			},
+			{
+				"name": "Keywords",
+				"value": "epithelium"
+			},
+			{
+				"name": "Keywords",
+				"value": "collective events"
+			},
+			{
+				"name": "License",
+				"value": "CC BY 4.0",
+				"valqual": [
+					{
+						"name": "URL",
+						"value": "https://creativecommons.org/licenses/by/4.0/legalcode"
+					}
+				]
+			}
+		],
+		"links": [
+			{
+				"url": "doi.org/10.17632/8gcncg6zkt.3",
+				"attributes": [
+					{
+						"name": "Description",
+						"value": "Repository containing supplementary data for the publication: Gagliardi et al. (2022) \"Automatic detection of spatio-temporal signalling patterns in cell collectives\". "
+					}
+				]
+			},
+			{
+				"url": "https://github.com/guiwitz/napari-convpaint",
+				"attributes": [
+					{
+						"name": "Description",
+						"value": "Github repository for conv-paint"
+					}
+				]
+			},
+			{
+				"url": "https://guiwitz.github.io/napari-convpaint/book/Landing.html",
+				"attributes": [
+					{
+						"name": "Description",
+						"value": "Documentation for the conv-paint plugin"
+					}
+				]
+			}
+		],
+		"subsections": [
+			{
+				"type": "author",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "Lucien Hinderling"
+					},
+					{
+						"name": "E-mail",
+						"value": "lucien.hinderling@unibe.ch"
+					},
+					{
+						"name": "Role",
+						"value": "submitter"
+					},
+					{
+						"name": "ORCID",
+						"value": "0000-0002-3956-9363"
+					},
+					{
+						"name": "affiliation",
+						"value": "o1",
+						"reference": true
+					},
+					{
+						"name": "affiliation",
+						"value": "o2",
+						"reference": true
+					}
+				]
+			},
+			{
+				"type": "author",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "Maciej Dobrzyński"
+					},
+					{
+						"name": "E-mail",
+						"value": "maciej.dobrzynski@unibe.ch"
+					},
+					{
+						"name": "Role",
+						"value": "data analyst"
+					},
+					{
+						"name": "ORCID",
+						"value": "0000-0003-2368-1534"
+					},
+					{
+						"name": "affiliation",
+						"value": "o1",
+						"reference": true
+					}
+				]
+			},
+			{
+				"type": "author",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "Yasuto Takeuchi"
+					},
+					{
+						"name": "E-mail",
+						"value": "gyro@staff.kanazawa-u.ac.jp"
+					},
+					{
+						"name": "Role",
+						"value": "data acquisition"
+					},
+					{
+						"name": "affiliation",
+						"value": "o3",
+						"reference": true
+					}
+				]
+			},
+			{
+				"type": "author",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "Olivier Pertz"
+					},
+					{
+						"name": "E-mail",
+						"value": "olivier.pertz@unibe.ch"
+					},
+					{
+						"name": "Role",
+						"value": "investigator"
+					},
+					{
+						"name": "affiliation",
+						"value": "o1",
+						"reference": true
+					}
+				]
+			},
+			{
+				"accno": "o1",
+				"type": "organisation",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "Institute of Cell Biology, University of Bern, Baltzerstrasse 4, 3012 Bern, Switzerland"
+					}
+				]
+			},
+			{
+				"accno": "o2",
+				"type": "organisation",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "Graduate School for Cellular and Biomedical Sciences, University of Bern, SwitzerlanGraduate School for Cellular and Biomedical Sciences, University of Bern, Switzerland"
+					}
+				]
+			},
+			{
+				"accno": "o3",
+				"type": "organisation",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "Division of Molecular Oncology, Institute for Genetic Medicine, Hokkaido University Graduate School of Chemical Sciences and Engineering, 060-0815 Sapporo, Japan"
+					}
+				]
+			},
+			{
+				"type": "Publication",
+				"attributes": [
+					{
+						"name": "Pubmed ID",
+						"value": "32004455"
+					},
+					{
+						"name": "Title",
+						"value": "Calcium Wave Promotes Cell Extrusion."
+					},
+					{
+						"name": "Authors",
+						"value": "Takeuchi Y, Narumi R, Akiyama R, Vitiello E, Shirai T, Tanimura N, Kuromiya K, Ishikawa S, Kajita M, Tada M, Haraoka Y, Akieda Y, Ishitani T, Fujioka Y, Ohba Y, Yamada S, Hosokawa Y, Toyama Y, Matsui T, Fujita Y."
+					},
+					{
+						"name": "DOI",
+						"value": "https://doi.org/10.1016/j.cub.2019.11.089"
+					},
+					{
+						"name": "Year",
+						"value": "2023"
+					}
+				]
+			},
+			{
+				"type": "Publication",
+				"attributes": [
+					{
+						"name": "Pubmed ID",
+						"value": "37516918"
+					},
+					{
+						"name": "Title",
+						"value": "Automatic detection of spatio-temporal signaling patterns in cell collectives."
+					},
+					{
+						"name": "Authors",
+						"value": "Gagliardi PA, Grädel B, Jacques MA, Hinderling L, Ender P, Cohen AR, Kastberger G, Pertz O, Dobrzyński M."
+					},
+					{
+						"name": "DOI",
+						"value": "https://doi.org/10.1083/jcb.202207048"
+					},
+					{
+						"name": "Year",
+						"value": "2023"
+					}
+				]
+			},
+			{
+				"accno": "Biosample-1",
+				"type": "Biosample",
+				"attributes": [
+					{
+						"name": "Title",
+						"value": "MDCK epithelium"
+					},
+					{
+						"name": "Organism",
+						"value": "Canis familiaris (dog)"
+					},
+					{
+						"name": "Biological entity",
+						"value": "MDCK epithelium"
+					}
+				]
+			},
+			{
+				"accno": "Specimen-2",
+				"type": "Specimen",
+				"attributes": [
+					{
+						"name": "Title",
+						"value": "MDCK Epithelium"
+					},
+					{
+						"name": "Sample preparation protocol",
+						"value": "Refer to Y. Takeuchi et al., “Calcium Wave Promotes Cell Extrusion,” Current Biology, vol. 30, no. 4. Elsevier BV, pp. 670-681.e6, Feb. 2020. doi: 10.1016/j.cub.2019.11.089."
+					}
+				]
+			},
+			{
+				"accno": "Image acquisition-3",
+				"type": "Image acquisition",
+				"attributes": [
+					{
+						"name": "Title",
+						"value": "MDCK epithelium acquisition"
+					},
+					{
+						"name": "Imaging instrument",
+						"value": "fluorescence microscope"
+					},
+					{
+						"name": "Image acquisition parameters",
+						"value": "Data dimensions: [t,y,x] -> [300,1024,1024]\nPixel resolution: 0.86µm/px (880.64μm total)\nTime resolution: 5sec/frame (25min total)"
+					},
+					{
+						"name": "Imaging method",
+						"value": "fluorescence microscopy"
+					}
+				]
+			},
+			{
+				"accno": "Study Component-4",
+				"type": "Study Component",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "Calcium wave in MDCK epithelium"
+					},
+					{
+						"name": "Description",
+						"value": "A timelapse movie of collective calcium activity in a MDCK monolayer"
+					},
+					{
+						"name": "File List",
+						"value": "calcium_data.json"
+					}
+				],
+				"subsections": [
+					{
+						"type": "Associations",
+						"attributes": [
+							{
+								"name": "Biosample",
+								"value": "MDCK epithelium"
+							},
+							{
+								"name": "Specimen",
+								"value": "MDCK Epithelium"
+							},
+							{
+								"name": "Image acquisition",
+								"value": "MDCK epithelium acquisition"
+							}
+						]
+					}
+				]
+			},
+			{
+				"accno": "Study Component-5",
+				"type": "Study Component",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "Reference Data Analysis of Calcium wave in MDCK epithelium"
+					},
+					{
+						"name": "Description",
+						"value": "Image processing results of the raw data provided in this archive. Step-by-step instructions and code are available in the associated Github repository, in the file Calcium_waves.ipynb. "
+					},
+					{
+						"name": "File List",
+						"value": "files_calcium_waves.json"
+					}
+				],
+				"subsections": [
+					{
+						"type": "Associations",
+						"attributes": [
+							{
+								"name": "Biosample",
+								"value": "MDCK epithelium"
+							},
+							{
+								"name": "Specimen",
+								"value": "MDCK Epithelium"
+							},
+							{
+								"name": "Image acquisition",
+								"value": "MDCK epithelium acquisition"
+							}
+						]
+					}
+				]
+			}
+		]
+	},
+	"type": "submission"
+}
