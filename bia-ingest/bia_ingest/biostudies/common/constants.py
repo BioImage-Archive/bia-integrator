@@ -14,6 +14,7 @@ DOI_LINK_TYPE = "doi"
 EGA_LINK_TYPE = "ega"
 ENA_LINK_TYPE = "ena"
 EMPIAR_LINK_TYPE = "empiar"
+EMDB_LINK_TYPE = "emdb"
 ENSEMBL_LINK_TYPE = "ensembl"  # Missing url template
 EXPRESSIONATLAS_LINK_TYPE = "expression atlas"
 EXPRESSIONATLAS_SC_LINK_TYPE = "expression atlas (single cell)"
@@ -28,6 +29,7 @@ NUCLEOTIDE_LINK_TYPE = "nucleotide"
 OMIM_LINK_TYPE = "omim"
 PDBE_LINK_TYPE = "pdbe"
 PFAM_LINK_TYPE = "pfam"
+PRIDE_LINK_TYPE = "pride"
 PUBMED_LINK_TYPE = "pubmed"
 RFAM_LINK_TYPE = "rfam"
 RNACENTRAL_LINK_TYPE = "rnacentral"
@@ -52,6 +54,7 @@ DOI_URL_TEMPLATE = "https://dx.doi.org/{0}"
 EGA_URL_TEMPLATE = "https://www.ebi.ac.uk/ega/studies/{0}"
 ENA_URL_TEMPLATE = "https://www.ebi.ac.uk/ena/browser/view/{0}"
 EMPIAR_URL_TEMPLATE = "https://www.ebi.ac.uk/empiar/{0}/"
+EMDB_URL_TEMPLATE = "https://www.ebi.ac.uk/emdb/{0}"
 EXPRESSIONATLAS_URL_TEMPLATE = (
     "https://www.ebi.ac.uk/gxa/experiments/{0}?ref=biostudies"
 )
@@ -70,6 +73,7 @@ NUCLEOTIDE_URL_TEMPLATE = "http://www.ncbi.nlm.nih.gov/nuccore/{0}"
 OMIM_URL_TEMPLATE = "http://omim.org/entry/{0}"
 PDBE_URL_TEMPLATE = "https://www.ebi.ac.uk/pdbe-srv/view/entry/{0}/summary"
 PFAM_URL_TEMPLATE = "http://pfam.xfam.org/family/{0}"
+PRIDE_URL_TEMPLATE = "https://www.ebi.ac.uk/pride/archive/projects/{0}"
 PUBMED_URL_TEMPLATE = "https://www.ncbi.nlm.nih.gov/pubmed/{0}"
 RFAM_URL_TEMPLATE = "http://rfam.org/family/{0}"
 RNACENTRAL_URL_TEMPLATE = "http://rnacentral.org/rna/{0}"
@@ -90,6 +94,7 @@ LINKTYPE_DISPLAY: Dict[str, str] = {
     "doi": DOI_LINK_TYPE,
     "ega": EGA_LINK_TYPE,
     "empiar": EMPIAR_LINK_TYPE,
+    "emdb": EMDB_LINK_TYPE,
     "ena": ENA_LINK_TYPE,
     "ensembl": ENSEMBL_LINK_TYPE,
     "": EXTERNAL_LINK_TYPE,
@@ -105,6 +110,7 @@ LINKTYPE_DISPLAY: Dict[str, str] = {
     "omim": OMIM_LINK_TYPE,
     "pdb": PDBE_LINK_TYPE,
     "pfam": PFAM_LINK_TYPE,
+    "pride": PRIDE_LINK_TYPE,
     "pubmed": PUBMED_LINK_TYPE,
     "refsnp": DBSNP_LINK_TYPE,
     "refseq": NUCLEOTIDE_LINK_TYPE,
@@ -133,6 +139,7 @@ URL_TEMPLATES: Dict[str, str] = {
     EGA_LINK_TYPE: EGA_URL_TEMPLATE,
     ENA_LINK_TYPE: ENA_URL_TEMPLATE,
     EMPIAR_LINK_TYPE: EMPIAR_URL_TEMPLATE,
+    EMDB_LINK_TYPE: EMDB_URL_TEMPLATE,
     EXPRESSIONATLAS_LINK_TYPE: EXPRESSIONATLAS_URL_TEMPLATE,
     EXPRESSIONATLAS_SC_LINK_TYPE: EXPRESSIONATLAS_SC_URL_TEMPLATE,
     GEO_LINK_TYPE: GEO_URL_TEMPLATE,
@@ -147,6 +154,7 @@ URL_TEMPLATES: Dict[str, str] = {
     OMIM_LINK_TYPE: OMIM_URL_TEMPLATE,
     PDBE_LINK_TYPE: PDBE_URL_TEMPLATE,
     PFAM_LINK_TYPE: PFAM_URL_TEMPLATE,
+    PRIDE_LINK_TYPE: PRIDE_URL_TEMPLATE,
     PUBMED_LINK_TYPE: PUBMED_URL_TEMPLATE,
     RFAM_LINK_TYPE: RFAM_URL_TEMPLATE,
     RNACENTRAL_LINK_TYPE: RNACENTRAL_URL_TEMPLATE,
