@@ -237,6 +237,7 @@ def load_submission(accession_id: str) -> Submission:
         "S-BIAD677": "missing study component assosiations subsection",
         "S-BIAD2250": "Dataset cannot find Specimen Imaging Prepration Protocol that exists in its associations: All specimens",
         "S-BIAD1500": "Extraenous '.' at end of publication doi causing pydantic validation failure. Also note that study had a zip file > 2TB (greater than FIRE size limit), so we asked for study to be deleted.",
+        "S-BSST592": "links section has a meaningless input -> url: LC3 and p62 ",
     }
     if accession_id in overrides:
         return read_override(accession_id)
