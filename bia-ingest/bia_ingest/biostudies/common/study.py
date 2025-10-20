@@ -180,7 +180,8 @@ def sanitise_link_and_link_type(link_raw, link_type_raw) -> Tuple[str, str]:
     :return: A tuple of the sanitised link and its type
     :rtype: Tuple[str, str]
     """
-    looks_like_a_link = isinstance(link_raw, str) and _URL_RE.match(link_raw.strip())
+    link_raw = link_raw.strip().replace(" ", "")
+    looks_like_a_link = isinstance(link_raw, str) and _URL_RE.match(link_raw)
     if looks_like_a_link:
         return link_raw, link_type_raw  # AnyUrl field will validate it
 
@@ -354,6 +355,22 @@ def get_related_publications(
                 ("title", "Title", None),
             ]
         }
+
+        if publication["doi"] is not None:
+            publication["doi"], _ = sanitise_link_and_link_type(
+                publication["doi"], "doi"
+            )
+            logger.debug(f"get_related_publications: publication: {publication}")
+            logger.debug(f"get_related_publications: publication: {publication}")
+            logger.debug(f"get_related_publications: publication: {publication}")
+            logger.debug(f"get_related_publications: publication: {publication}")
+
+        logger.debug(f"get_related_publications: publication: {publication}")
+        logger.debug(f"get_related_publications: publication: {publication}")
+        logger.debug(f"get_related_publications: publication: {publication}")
+        logger.debug(f"get_related_publications: publication: {publication}")
+        logger.debug(f"get_related_publications: publication: {publication}")
+
         # Check all fields are not None because new ST allowed
         # some empty publications between August 2025 and October 2025
         if all(value is None for value in publication.values()):
