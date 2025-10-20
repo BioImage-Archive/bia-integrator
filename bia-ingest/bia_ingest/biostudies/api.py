@@ -224,11 +224,14 @@ def load_submission(accession_id: str) -> Submission:
         "S-BIAD1419": "Doi type missing in link submission",
         "S-BIAD1135": "Doi type missing in link submission",
         "S-BIAD1261": "Author had no name, and the email was for a whole lab. Name added as Cytology Department RUB",
+        "S-BIAD661": "meaningless pubmed link: pending",
+        "S-BIAD662": "meaningless pubmed link: in revision",
         "S-BIAD978": "Unreferenced Image analysis-5, and a broken association to image analysis 1 (that doesn't exist)",
         "S-BIAD954": "invalid email: Julia Nöth <julia.noeth@ufz.de> changed to: julia.noeth@ufz.de",
         "S-BIAD1136": "invalid email: oona.paavolainen@ut changed to: oona.k.paavolainen@utu.fi (same ending as other authors - seemed to be missing the .k. based off google search)",
         "S-BIAD1223": "invalid email: ylva.ivarsson@kemi..u.se changed to: ylva.ivarsson@kemi.uu.se",
         "S-BIAD1344": "invalid email: raffaeledefilippis92@gmail.comraffaeledefilippis92@gmail.com changed to: raffaeledefilippis92@gmail.com",
+        "S-BIAD2225": "title mismatch for 100x, 488nm - Denoise.AI online processing enabled and reference Image acquisition with Denoise.AI online processing enabled (100x magnification, 488nm)",
         "S-BSST651": "invalid email: huw.williams@williams@nottingham.ac.uk changed to: huw.williams@nottingham.ac.uk",
         "S-BSST744": "invalid email: ‫britta.engelhardt@tki.unibe.ch (right-to-left embedding) changed to: britta.engelhardt@tki.unibe.ch",
         "S-BIAD590": "missing study component assosiations subsection",
@@ -237,6 +240,7 @@ def load_submission(accession_id: str) -> Submission:
         "S-BIAD677": "missing study component assosiations subsection",
         "S-BIAD2250": "Dataset cannot find Specimen Imaging Prepration Protocol that exists in its associations: All specimens",
         "S-BIAD1500": "Extraenous '.' at end of publication doi causing pydantic validation failure. Also note that study had a zip file > 2TB (greater than FIRE size limit), so we asked for study to be deleted.",
+        "S-BSST592": "links section has a meaningless input -> url: LC3 and p62 ",
     }
     if accession_id in overrides:
         return read_override(accession_id)
