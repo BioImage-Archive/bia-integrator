@@ -233,7 +233,7 @@ def load_submission(accession_id: str) -> Submission:
         "S-BIAD1344": "invalid email: raffaeledefilippis92@gmail.comraffaeledefilippis92@gmail.com changed to: raffaeledefilippis92@gmail.com",
         "S-BIAD2225": "title mismatch for 100x, 488nm - Denoise.AI online processing enabled and reference Image acquisition with Denoise.AI online processing enabled (100x magnification, 488nm)",
         "S-BSST651": "invalid email: huw.williams@williams@nottingham.ac.uk changed to: huw.williams@nottingham.ac.uk",
-        "S-BSST744": "invalid email: ‫britta.engelhardt@tki.unibe.ch (right-to-left embedding) changed to: britta.engelhardt@tki.unibe.ch",
+        "S-BSST744": "invalid email: [unicode 20]britta.engelhardt@tki.unibe.ch (right-to-left embedding) changed to: britta.engelhardt@tki.unibe.ch",
         "S-BIAD590": "missing study component assosiations subsection",
         "S-BIAD599": "missing study component assosiations subsection",
         "S-BIAD628": "missing study component assosiations subsection",
