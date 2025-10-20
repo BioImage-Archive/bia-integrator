@@ -231,6 +231,7 @@ def load_submission(accession_id: str) -> Submission:
         "S-BIAD1136": "invalid email: oona.paavolainen@ut changed to: oona.k.paavolainen@utu.fi (same ending as other authors - seemed to be missing the .k. based off google search)",
         "S-BIAD1223": "invalid email: ylva.ivarsson@kemi..u.se changed to: ylva.ivarsson@kemi.uu.se",
         "S-BIAD1344": "invalid email: raffaeledefilippis92@gmail.comraffaeledefilippis92@gmail.com changed to: raffaeledefilippis92@gmail.com",
+        "S-BIAD1752": "invalid doi: https://doi.org/DOI: 10.26508/lsa.202403067 changed to: 10.26508/lsa.202403067",
         "S-BIAD2225": "title mismatch for 100x, 488nm - Denoise.AI online processing enabled and reference Image acquisition with Denoise.AI online processing enabled (100x magnification, 488nm)",
         "S-BIAD2235": "remove meaningless doi: TBD",
         "S-BSST651": "invalid email: huw.williams@williams@nottingham.ac.uk changed to: huw.williams@nottingham.ac.uk",

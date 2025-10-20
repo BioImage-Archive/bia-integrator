@@ -1,0 +1,823 @@
+{
+	"accno": "S-BIAD1752",
+	"attributes": [
+		{
+			"name": "Template",
+			"value": "BioImages.v4"
+		},
+		{
+			"name": "DOI",
+			"value": "10.6019/S-BIAD1752"
+		},
+		{
+			"name": "ReleaseDate",
+			"value": "2025-03-27"
+		},
+		{
+			"name": "AttachTo",
+			"value": "BioImages"
+		}
+	],
+	"section": {
+		"type": "Study",
+		"attributes": [
+			{
+				"name": "Title",
+				"value": "Predicting cell cycle stage from 3D single-cell nuclear stained images."
+			},
+			{
+				"name": "Description",
+				"value": "SUMMARY. Here, we provide the image datasets supporting the development of CellCycleNet, a cell cycle stage classifier tool. We imaged thousands of fixed interphase mouse fibroblast cells containing a Fluorescent Ubiquitination-based Cell Cycle Indicator-2a (Fucci-2a) transgene, stained with DAPI, from two common fluorescent microscope modalities: widefield epifluorescence and spinning-disk confocal microscopy.\n\nABSTRACT. The cell cycle governs proliferation of all eukaryotic cells. Profiling cell cycle dynamics is therefore central to basic and biomedical research. However, current approaches to cell cycle profiling involve complex interventions that may confound experimental interpretation. We developed CellCycleNet, a machine learning (ML) workflow, to simplify cell cycle staging from fluorescent microscopy data with minimal experimenter intervention and cost. CellCycleNet accurately predicts cell cycle phase using only a fluorescent nuclear stain (DAPI) in fixed interphase cells. Using the Fucci2a cell cycle reporter system as ground truth, we collected two benchmarking image datasets and trained 2D and 3D ML models—of support vector machine (SVM) and deep neural network architecture—to classify nuclei in the G1 or S/G2 phases. Our results show that 3D CellCycleNet outperforms SVM models on each dataset. When trained on two image datasets simultaneously, CellCycleNet achieves the highest classification accuracy (AUROC of 0.94-0.95). Overall, we found that using 3D features, rather than 2D features alone, significantly improves classification performance for all model architectures. We released our image data, models, and software as a community resource."
+			},
+			{
+				"name": "Keywords",
+				"value": "cell cycle"
+			},
+			{
+				"name": "Keywords",
+				"value": "FUCCI "
+			},
+			{
+				"name": "Keywords",
+				"value": "fibroblast"
+			},
+			{
+				"name": "Keywords",
+				"value": "mouse"
+			},
+			{
+				"name": "Keywords",
+				"value": "machine learning"
+			},
+			{
+				"name": "Keywords",
+				"value": "artificial intelligence"
+			},
+			{
+				"name": "Keywords",
+				"value": "support vector machine"
+			},
+			{
+				"name": "Keywords",
+				"value": "convolutional neural network"
+			},
+			{
+				"name": "Keywords",
+				"value": "classifier"
+			},
+			{
+				"name": "Keywords",
+				"value": "DNA stain"
+			},
+			{
+				"name": "Keywords",
+				"value": "DAPI"
+			},
+			{
+				"name": "Keywords",
+				"value": "mCherry"
+			},
+			{
+				"name": "Keywords",
+				"value": "mVenus"
+			},
+			{
+				"name": "Keywords",
+				"value": "hCdt1"
+			},
+			{
+				"name": "Keywords",
+				"value": "hGeminin"
+			},
+			{
+				"name": "Keywords",
+				"value": "GFP"
+			},
+			{
+				"name": "Keywords",
+				"value": "RFP"
+			},
+			{
+				"name": "Keywords",
+				"value": "Fucci-2a"
+			},
+			{
+				"name": "Keywords",
+				"value": "interphase"
+			},
+			{
+				"name": "Keywords",
+				"value": "fixed"
+			},
+			{
+				"name": "Keywords",
+				"value": "epifluorescence"
+			},
+			{
+				"name": "Keywords",
+				"value": "spinning disk confocal"
+			},
+			{
+				"name": "Keywords",
+				"value": "confocal "
+			},
+			{
+				"name": "Keywords",
+				"value": "40x"
+			},
+			{
+				"name": "Keywords",
+				"value": "60x"
+			},
+			{
+				"name": "Keywords",
+				"value": " model"
+			},
+			{
+				"name": "Acknowledgements",
+				"value": "We thank Dr. Richard Mort and Dr. Jennifer Kong for their gracious gift of the Fucci2a knock-in cell line and 3T3 fibroblast parental cell line, respectively. E.K.N thanks all faculty at the Deep Learning for Microscopy Image Analysis Course (2023) at the MBL for their excellent instruction. We thank members of the Noble, Beliveau, and Shendure labs for helpful discussion"
+			},
+			{
+				"name": "License",
+				"value": "CC BY 4.0",
+				"valqual": [
+					{
+						"name": "URL",
+						"value": "https://creativecommons.org/licenses/by/4.0/legalcode"
+					}
+				]
+			},
+			{
+				"name": "Funding statement",
+				"value": "This work is supported by NIH award UM1 HG011531. E.K.N was supported by the Washington Research Foundation Postdoctoral Fellowship. G.L.’s research is supported by University of Washington eScience Institute."
+			}
+		],
+		"links": [
+			{
+				"url": "https://doi.org/10.1101/2024.08.30.610553",
+				"attributes": [
+					{
+						"name": "Description",
+						"value": "CellCycleNet preprint."
+					}
+				]
+			},
+			{
+				"url": "https://github.com/Noble-Lab/CellCycleNet/tree/main#",
+				"attributes": [
+					{
+						"name": "Description",
+						"value": "CellCycleNet Github repository."
+					}
+				]
+			}
+		],
+		"subsections": [
+			{
+				"type": "author",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "Gang Li"
+					},
+					{
+						"name": "E-mail",
+						"value": "gangliuw@uw.edu"
+					},
+					{
+						"name": "Role",
+						"value": "first author"
+					},
+					{
+						"name": "affiliation",
+						"value": "o1",
+						"reference": true
+					}
+				]
+			},
+			{
+				"type": "author",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "Eva K. Nichols"
+					},
+					{
+						"name": "E-mail",
+						"value": "eknich@uw.edu"
+					},
+					{
+						"name": "Role",
+						"value": "first author"
+					},
+					{
+						"name": "ORCID",
+						"value": "0000-0002-8501-8028"
+					},
+					{
+						"name": "affiliation",
+						"value": "o1",
+						"reference": true
+					}
+				]
+			},
+			{
+				"type": "author",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "Valentino E. Browning"
+					},
+					{
+						"name": "E-mail",
+						"value": "vbrow@uw.edu"
+					},
+					{
+						"name": "Role",
+						"value": "data analyst"
+					},
+					{
+						"name": "affiliation",
+						"value": "o1",
+						"reference": true
+					}
+				]
+			},
+			{
+				"type": "author",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "Nicolas J. Longhi"
+					},
+					{
+						"name": "E-mail",
+						"value": "longnic@uw.edu"
+					},
+					{
+						"name": "Role",
+						"value": "data analyst"
+					},
+					{
+						"name": "affiliation",
+						"value": "o1",
+						"reference": true
+					}
+				]
+			},
+			{
+				"type": "author",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "Madison Sanchez-Forman"
+					},
+					{
+						"name": "E-mail",
+						"value": "msforman@uw.edu"
+					},
+					{
+						"name": "Role",
+						"value": "data analyst"
+					},
+					{
+						"name": "affiliation",
+						"value": "o1",
+						"reference": true
+					}
+				]
+			},
+			{
+				"type": "author",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "Conor K. Camplisson"
+					},
+					{
+						"name": "E-mail",
+						"value": "concamp@uw.edu"
+					},
+					{
+						"name": "Role",
+						"value": "software development"
+					},
+					{
+						"name": "affiliation",
+						"value": "o1",
+						"reference": true
+					}
+				]
+			},
+			{
+				"type": "author",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "Brian J. Beliveau"
+					},
+					{
+						"name": "E-mail",
+						"value": "beliveau@uw.edu"
+					},
+					{
+						"name": "Role",
+						"value": "principal investigator"
+					},
+					{
+						"name": "affiliation",
+						"value": "o1",
+						"reference": true
+					}
+				]
+			},
+			{
+				"type": "author",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "Willam S. Noble"
+					},
+					{
+						"name": "E-mail",
+						"value": "wnoble@uw.edu"
+					},
+					{
+						"name": "Role",
+						"value": "corresponding author"
+					},
+					{
+						"name": "affiliation",
+						"value": "o1",
+						"reference": true
+					}
+				]
+			},
+			{
+				"accno": "o1",
+				"type": "organisation",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "University of Washington"
+					}
+				]
+			},
+			{
+				"type": "Publication",
+				"attributes": [
+					{
+						"name": "Title",
+						"value": "Predicting cell cycle stage from 3D single-cell nuclear stained images"
+					},
+					{
+						"name": "Authors",
+						"value": "Gang Li, Eva K. Nichols, Valentino E. Browning, Nicolas J. Longhi, Madison Sanchez-Forman, Conor K. Camplisson, Brian J. Beliveau, William S. Noble"
+					},
+					{
+						"name": "DOI",
+						"value": "10.26508/lsa.202403067"
+					},
+					{
+						"name": "Year",
+						"value": "2025"
+					}
+				]
+			},
+			{
+				"type": "Funding",
+				"attributes": [
+					{
+						"name": "Agency",
+						"value": "NIH"
+					},
+					{
+						"name": "grant_id",
+						"value": "UM1 HG011531"
+					}
+				]
+			},
+			{
+				"accno": "Biosample-1",
+				"type": "Biosample",
+				"attributes": [
+					{
+						"name": "Title",
+						"value": "CellCycleNet 60x Confocal Dataset"
+					},
+					{
+						"name": "Organism",
+						"value": "Mus musculus (mouse)"
+					},
+					{
+						"name": "Description",
+						"value": "3D images of fixed interphase mouse fibroblasts."
+					},
+					{
+						"name": "Biological entity",
+						"value": "3T3 mouse fibroblasts."
+					},
+					{
+						"name": "Extrinsic variable",
+						"value": "Plate-bound cells under continuous positive selection by 100-200 ug/mL hygromycin antibiotic to prevent transgene silencing."
+					},
+					{
+						"name": "Intrinsic variable",
+						"value": "Contains a Fluorescence Ubiquitination-based Cell Cycle Indicator-2a (Fucci-2a) transgene."
+					}
+				]
+			},
+			{
+				"accno": "Biosample-9",
+				"type": "Biosample",
+				"attributes": [
+					{
+						"name": "Title",
+						"value": "CellCycleNet 40x Epifluorescence Dataset"
+					},
+					{
+						"name": "Organism",
+						"value": "Mus musculus (mouse)"
+					},
+					{
+						"name": "Description",
+						"value": "3D images of fixed interphase mouse fibroblasts."
+					},
+					{
+						"name": "Biological entity",
+						"value": "3T3 mouse fibroblasts."
+					},
+					{
+						"name": "Extrinsic variable",
+						"value": "Plate-bound cells under continuous positive selection by 100-200 ug/mL hygromycin antibiotic to prevent transgene silencing."
+					},
+					{
+						"name": "Intrinsic variable",
+						"value": "Contains a Fluorescence Ubiquitination-based Cell Cycle Indicator-2a (Fucci-2a) transgene."
+					}
+				]
+			},
+			{
+				"accno": "Specimen-2",
+				"type": "Specimen",
+				"attributes": [
+					{
+						"name": "Title",
+						"value": "CellCycleNet: Growing and Staining Cells"
+					},
+					{
+						"name": "Sample preparation protocol",
+						"value": "We performed immunofluorescence staining targeting endogenous Fucci2a mVenus and mCherry to boost signal and effectively reduce exposure time. Following cell fixation, cells were permeabilized in 1xPBS containing 0.1% Triton X-100 for ten minutes followed by three five-minute rinses in 1xPBS. Next, cells were blocked with BlockAid Blocking Solution (Thermo, cat. no. B10710) containing 0.05% Tween-20 for thirty minutes at room temperature. Cells were then stained with a primary antibody solution overnight at 4C: 3% BlockAid Blocking Solution in 1xPBS with 1:100 concentration of both primary goat anti GFP (Encor Biotechnologies, cat. No. GPCA-GFP) and rabbit anti RFP (Rockland, cat. No. 600-401-379) antibodies. After three five-minute rinses in 1xPBS, cells underwent secondary antibody staining for 30 minutes with the following solution: 1:1000 concentration of donkey anti goat AF488 (Thermo, cat. No. A32814) and donkey anti rabbit AF555 (Thermo, cat. no. A32794) and 143 µM DAPI (Thermo, cat. no. D1306) in 1xPBS. After, cells underwent three five-minute rinses in 1xPBS before covered in SlowFade Gold Antifade Mountant (Thermo, cat. no. S36936). Stained cells were stored in the dark at 4C until image data acquisition."
+					},
+					{
+						"name": "Growth protocol",
+						"value": "The Fucci (Fluorescent Ubiquitination-based Cell Cycle Indicator) 3T3 Fucci2a reporter cell line was a gracious gift from Richard Mort and were maintained in complete 3T3 complete cell culture media (high glucose 4.5 g/L DMEM with 2 mM L-glutamine, 10% FBS, and 1% pen/strep antibiotic) in the presence of 100-200 ug/mL hygromycin selection antibiotic. Prior to imaging experiments, ~70,000 cells were seeded in a 35 mm dish. Next day, cells were fixed in 4% PFA in 1xPBS for 10 minutes, followed by three washes in 1xPBS for one minute each prior to immunofluorescence staining."
+					}
+				]
+			},
+			{
+				"accno": "Image acquisition-3",
+				"type": "Image acquisition",
+				"attributes": [
+					{
+						"name": "Title",
+						"value": "CellCycleNet 60x Confocal Dataset"
+					},
+					{
+						"name": "Imaging instrument",
+						"value": "The confocal image dataset was acquired using a Nikon Ti2 inverted fluorescence microscope with a Yokogawa CSU W-1 SoRa spinning disk unit."
+					},
+					{
+						"name": "Image acquisition parameters",
+						"value": "A tiled acquisition was obtained over approximately 21 square millimeters of the cell culture plate, at fixed z range of 30 µm and z-step of 0.2 µm. Each image consists of three fluorescent channels, using excitation light emitted at 30 percent maximal intensity from 405 nm, 488 nm, and 561 nm lasers housed in a Nikon LUNF 405/488/561/640NM 1F commercial launch. The nuclear stain DAPI was excited by the 405 nm laser line at 300 ms exposure; the mVenus-hGeminin-AF488 signal was excited by the 488 nm laser line at 300 ms exposure; the mCherry-hCdt1-AF555 signal was excited by the 561 nm laser line at 300 ms exposure. Laser excitation was conveyed through a single-mode optical fiber fed into the CSU-W1 SoRa unit and directed through a microlens array and ’SoRa’ disc containing 50 µm pinholes. A Nikon Plan Apochromat Lambda 60X air objective lens (NA 0.95/0.17 mm) was used to project the excitation and collects the emission light. Emission light was relayed by a 1x lens, through the pinhole disc, after which it was spectrally separated by a quad bandpass dichroic mirror (Semrock Di01-T405/488/568/647-13x15x0.5) and then filtered by one of three single bandpass filters (DAPI: Chroma ET455/50M; mVenus-hGeminin-AF488: Chroma ET525/36M; mCherry-hCdt1-AF555:Chroma ET605/50M). Emission light was then focused by a 1x relay lens onto an Andor Sona 4.2B-11 camera with a physical pixel size of 11 µm, resulting in an effective pixel size of 110 nm. The Andor Sona 4.2B-11 camera was operated in 16-bit mode with rolling shutter. The final dataset used for analysis and model training consists of 625 tiled z-stacks (150 images per z-stack) and 3 channels; each image is 1024x1024 pixels. The voxel size for each image in the dataset was 182nm*182nm*200nm (X*Y*Z)."
+					},
+					{
+						"name": "Imaging method",
+						"value": "spinning disk confocal microscopy"
+					}
+				]
+			},
+			{
+				"accno": "Image acquisition-9",
+				"type": "Image acquisition",
+				"attributes": [
+					{
+						"name": "Title",
+						"value": "CellCycleNet 40x Epifluorescence Dataset"
+					},
+					{
+						"name": "Imaging instrument",
+						"value": "The epifluorescence image dataset was acquired using a Keyence BZ-X800 fluorescence microscope."
+					},
+					{
+						"name": "Image acquisition parameters",
+						"value": "All images were acquired using the Keyence Plan Apochromatic 40x objective lens (model PZ-PA40, PlanApo NA 0.95/0.17 mm default). A tiled acquisition was obtained over approximately 5 square millimeters of the cell culture plate, at fixed z range of 35 µm, z-step of 0.5 µm, and optical sectioning width of 10. 100% excitation light (metal halide lamp) was used with no binning and monochromatic camera with a digital zoom of x1.0. Each image consists of three fluorescent channels: nuclear stain DAPI (using the DAPI filter cube; model OP-87762, 360/40 nm excitation filter, 400 nm longpass dichroic mirror, 460/50 nm emission filter; 1/1.2s exposure time), the mVenus-hGeminin-AF488 signal (via the GFP filter cube; model OP-87763, excitation wavelength 470/40 nm, emission wavelength 525/50 nm, dichroic mirror wavelength 495 nm; 1/2.3s exposure time), and the mCherry-hCdt1-AF555 signal (via the Cy3/TRITC filter cube; CHROMA model 49004, excitation wavelength 545/25 nm, emission wavelength 605/70 nm, dichroic mirror wavelength 565 nm; 1/7.5s exposure time). An integrated CCD camera was used in 14-bit mode, without binning and with a physical pixel size of 7.549 µm, resulting in an effective pixel size of 188.7 nm while imaging at 40x magnification. The final dataset used for analysis and model training consists of 19,170 total images over 90 tiled z-stacks (71 images per z-stack) and 3 channels; each image is 1440x1920 pixels. The voxel size for each image in the dataset was 188nm*188nm*500nm (X*Y*Z)."
+					},
+					{
+						"name": "Imaging method",
+						"value": "fluorescence microscopy"
+					}
+				]
+			},
+			{
+				"accno": "Image analysis-5",
+				"type": "Image analysis",
+				"attributes": [
+					{
+						"name": "Title",
+						"value": "CellCycleNet: 3D Segmentation and Image Pre-Processing"
+					},
+					{
+						"name": "Image analysis overview",
+						"value": "We performed instance segmentation and preprocessed the data prior to machine learning (ML) model training. Please see the manuscript and/or GitHub repository for details regarding CellCycleNet model training and/or implementation after preprocessing steps.\n\n3D SEGMENTATION: To quantify features of single nuclei, we performed 3D instance segmentation with Cellpose. Specifically, for the epifluorescence dataset, we used Cellpose 2.0 out-of-the-box using the “CP” model. For the confocal dataset, we used the Cellpose 3.0 package with human-in-the-loop finetuning of the “cyto3” model38. For each tile in our dataset, we extract the nuclear channel (stained with DAPI) and downsample the image by a factor of 2 in the X and Y dimensions. We found that downsampling improves the segmentation results when using Cellpose’s pre-trained models with no fine-tuning. We removed poor segmentation by ignoring objects contacting the image boundary and segmentation with a solidity (ratio of convex hull to total mask volume) of < 0.9.\n\nIMAGE PREPROCESSING: We implemented several preprocessing steps and applied them to the imaging data before creating the training/validation/testing datasets. First, we used the 3D instance segmentation mask to generate single- nucleus images centered on the nucleus’ centroid and padded to a size of 150px*150px*90 (X*Y*Z). Next, each image in the epifluorescence dataset was downsampled by a factor of 2 in the X and Y dimensions to mitigate the data’s anisotropy. Confocal images were downsampled by a factor of 2 in the X, Y, and Z dimensions to more closely match the isotropic voxel size of the epifluorescence images. Then, each image was normalized independently using mean normalization. To achieve this, we first calculated the median values of all nonzero pixels for each image in the training dataset. The validation and test datasets were then normalized by dividing the pixel values of each image by the median of medians of images in the training dataset. The final preprocessed images for both datasets were then padded to a shape of 75px*75px*90 (X*Y*Z).\n"
+					}
+				]
+			},
+			{
+				"accno": "Annotations-6",
+				"type": "Annotations",
+				"attributes": [
+					{
+						"name": "Title",
+						"value": "CellCycleNet 40x Epifluorescence Dataset Segmentation Masks"
+					},
+					{
+						"name": "Annotation Overview",
+						"value": "3D nuclear segmentation mask. "
+					},
+					{
+						"name": "Annotation Type",
+						"value": "segmentation_mask"
+					},
+					{
+						"name": "Annotation Method",
+						"value": "Produced by Cellpose 2.0 using the “CP” model out-of-the-box."
+					},
+					{
+						"name": "Annotation Criteria",
+						"value": "We removed poor segmentation (e.g., multiplets) by filtering out with a solidity (ratio of convex hull to total mask volume) of < 0.9."
+					},
+					{
+						"name": "Annotation Coverage",
+						"value": "We ignored objects contacting the image boundary of tiles. "
+					},
+					{
+						"name": "File List",
+						"value": "mask_40x_filelist_reordered.json"
+					}
+				]
+			},
+			{
+				"accno": "Annotations-9",
+				"type": "Annotations",
+				"attributes": [
+					{
+						"name": "Title",
+						"value": "CellCycleNet 60x Confocal Dataset Segmentation Masks"
+					},
+					{
+						"name": "Annotation Overview",
+						"value": "3D nuclear segmentation mask."
+					},
+					{
+						"name": "Annotation Type",
+						"value": "segmentation_mask"
+					},
+					{
+						"name": "Annotation Method",
+						"value": "We used the Cellpose 3.0 package with human-in-the-loop finetuning of the “cyto3” model."
+					},
+					{
+						"name": "Annotation Criteria",
+						"value": "We removed poor segmentation (e.g., multiplets) by filtering out with solidity (ratio of convex hull to total mask volume) of < 0.9."
+					},
+					{
+						"name": "Annotation Coverage",
+						"value": "We ignored objects contacting the image boundary of tiles."
+					},
+					{
+						"name": "File List",
+						"value": "mask_60x_filelist_reordered.json"
+					}
+				]
+			},
+			{
+				"accno": "Annotations-10",
+				"type": "Annotations",
+				"attributes": [
+					{
+						"name": "Title",
+						"value": "CellCycleNet 40x Epifluorescence Dataset Ground Truth Assignments"
+					},
+					{
+						"name": "Annotation Overview",
+						"value": "Ground truth cell cycle stage assignment corresponding to 3D nuclear segmentation masks. "
+					},
+					{
+						"name": "Annotation Type",
+						"value": "class_labels"
+					},
+					{
+						"name": "Annotation Method",
+						"value": "Ground truth labels (G1 or S/G2) were generated with reference to the methodology described by Narotamo, et al. 2021. Please see manuscript for specific details."
+					},
+					{
+						"name": "Annotation Criteria",
+						"value": "Please see manuscript for specific details."
+					},
+					{
+						"name": "Annotation Coverage",
+						"value": "Prior to assigning labels, each segmented object was passed through several filters to remove nuclei that did not express the Fucci2a fluorescent proteins, had abnormal sizes, or were transitioning between cell cycle phases. Please see manuscript for additional details."
+					},
+					{
+						"name": "File List",
+						"value": "GT_labels_40x_filelist.json"
+					}
+				]
+			},
+			{
+				"accno": "Annotations-11",
+				"type": "Annotations",
+				"attributes": [
+					{
+						"name": "Title",
+						"value": "CellCycleNet 60x Epifluorescence Dataset Ground Truth Assignments"
+					},
+					{
+						"name": "Annotation Overview",
+						"value": "Ground truth cell cycle stage assignment corresponding to 3D nuclear segmentation masks. "
+					},
+					{
+						"name": "Annotation Type",
+						"value": "class_labels"
+					},
+					{
+						"name": "Annotation Method",
+						"value": "Ground truth labels (G1 or S/G2) were generated with reference to the methodology described by Narotamo, et al. 2021. Please see manuscript for specific details."
+					},
+					{
+						"name": "Annotation Criteria",
+						"value": "Please see manuscript for specific details."
+					},
+					{
+						"name": "Annotation Coverage",
+						"value": "Prior to assigning labels, each segmented object was passed through several filters to remove nuclei that did not express the Fucci2a fluorescent proteins, had abnormal sizes, or were transitioning between cell cycle phases. Please see manuscript for additional details."
+					},
+					{
+						"name": "File List",
+						"value": "GT_labels_60x_filelist.json"
+					}
+				]
+			},
+			{
+				"accno": "Study Component-4",
+				"type": "Study Component",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "CellCycleNet 60x Epifluorescence Dataset"
+					},
+					{
+						"name": "Description",
+						"value": "One of two image datasets supporting CellCycleNet model training; acquired by a spinning disk confocal microscope with 60x air objective."
+					},
+					{
+						"name": "File List",
+						"value": "img_60x_filenames.json"
+					}
+				],
+				"subsections": [
+					{
+						"type": "Associations",
+						"attributes": [
+							{
+								"name": "Biosample",
+								"value": "CellCycleNet 60x Confocal Dataset"
+							},
+							{
+								"name": "Specimen",
+								"value": "CellCycleNet: Growing and Staining Cells"
+							},
+							{
+								"name": "Image acquisition",
+								"value": "CellCycleNet 60x Confocal Dataset"
+							}
+						]
+					}
+				]
+			},
+			{
+				"accno": "Study Component-12",
+				"type": "Study Component",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "CellCycleNet 40x Epifluorescence Dataset"
+					},
+					{
+						"name": "Description",
+						"value": "One of two image datasets supporting CellCycleNet model training; acquired by a widefield epifluorescence microscope with 40x air objective."
+					},
+					{
+						"name": "File List",
+						"value": "img_40x_filenames.json"
+					}
+				],
+				"subsections": [
+					{
+						"type": "Associations",
+						"attributes": [
+							{
+								"name": "Biosample",
+								"value": "CellCycleNet 40x Epifluorescence Dataset"
+							},
+							{
+								"name": "Specimen",
+								"value": "CellCycleNet: Growing and Staining Cells"
+							},
+							{
+								"name": "Image acquisition",
+								"value": "CellCycleNet 40x Epifluorescence Dataset"
+							}
+						]
+					}
+				]
+			},
+			{
+				"accno": "Study Component-13",
+				"type": "Study Component",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "CellCycleNet 60x Confocal Dataset: OME-Zarr"
+					},
+					{
+						"name": "Description",
+						"value": "One of two image datasets supporting CellCycleNet model training; acquired by a spinning disk confocal microscope with 60x air objective (in OME-Zarr format). "
+					},
+					{
+						"name": "File List",
+						"value": "img_60x_filenames_OME-Zarr.json"
+					}
+				],
+				"subsections": [
+					{
+						"type": "Associations",
+						"attributes": [
+							{
+								"name": "Biosample",
+								"value": "CellCycleNet 60x Confocal Dataset"
+							},
+							{
+								"name": "Specimen",
+								"value": "CellCycleNet: Growing and Staining Cells"
+							},
+							{
+								"name": "Image acquisition",
+								"value": "CellCycleNet 60x Confocal Dataset"
+							}
+						]
+					}
+				]
+			},
+			{
+				"accno": "Study Component-14",
+				"type": "Study Component",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "CellCycleNet 40x Confocal Dataset: OME-Zarr"
+					},
+					{
+						"name": "Description",
+						"value": "One of two image datasets supporting CellCycleNet model training; acquired by a widefield epifluorescence microscope with 40x air objective (in OME-Zarr format)."
+					},
+					{
+						"name": "File List",
+						"value": "img_40x_filenames_OME-Zarr.json"
+					}
+				],
+				"subsections": [
+					{
+						"type": "Associations",
+						"attributes": [
+							{
+								"name": "Biosample",
+								"value": "CellCycleNet 40x Epifluorescence Dataset"
+							},
+							{
+								"name": "Specimen",
+								"value": "CellCycleNet: Growing and Staining Cells"
+							},
+							{
+								"name": "Image acquisition",
+								"value": "CellCycleNet 40x Epifluorescence Dataset"
+							}
+						]
+					}
+				]
+			}
+		]
+	},
+	"type": "submission"
+}
