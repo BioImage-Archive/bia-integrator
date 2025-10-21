@@ -35,6 +35,7 @@ class Elastic:
                             "dataset": {
                                 "type": "object",
                                 "properties": {
+                                    "uuid": { "type": "keyword" },
                                     "biological_entity": {
                                         "type": "object",
                                         "properties": {
