@@ -10,6 +10,7 @@ import random
 from typing import List, Dict
 from pathlib import Path
 import csv
+from itertools import islice
 from ruamel.yaml import YAML
 from bia_shared_datamodels import bia_data_model
 from bia_assign_image.api_client import get_api_client, ApiTarget
@@ -148,8 +149,8 @@ def get_first_n_convertible_file_references(
 ) -> List[Dict]:
     """Get details of first n convertible images for given accession ID"""
 
-
     api_client = get_api_client(api_target)
+    file_reference_page_size = 100
     study = api_client.search_study_by_accession(accession_id)
     if not study:
         return []
@@ -161,33 +162,44 @@ def get_first_n_convertible_file_references(
 
     convertible_file_references = {}
 
+    n_proposals = 0
     for dataset in datasets:
         if check_image_creation_prerequisites:
             if not dataset_has_image_creation_prerequisites(dataset):
                 continue
 
-        file_references: list[bia_data_model.FileReference] = api_client.get_file_reference_linking_dataset(
-            uuid=str(dataset.uuid),
-            page_size=100,
+        file_references: list[bia_data_model.FileReference] = (
+            api_client.get_file_reference_linking_dataset(
+                uuid=str(dataset.uuid),
+                page_size=file_reference_page_size,
+            )
         )
 
-        file_reference_details = extract_file_reference_details(
-            accession_id,
-            f"{study.uuid}",
-            f"{dataset.uuid}",
-            file_references,
-            include_annotation_details=False,
-        )
-        convertible_file_references.update(file_reference_details)
+        while True:
+            file_reference_details = extract_file_reference_details(
+                accession_id,
+                f"{study.uuid}",
+                f"{dataset.uuid}",
+                file_references,
+                include_annotation_details=False,
+            )
+            convertible_file_references.update(file_reference_details)
+
+            n_proposals = len(convertible_file_references)
+            if n_proposals >= n_to_propose or not file_references:
+                break
+
+            file_references = api_client.get_file_reference_linking_dataset(
+                uuid=str(dataset.uuid),
+                start_from_uuid=str(file_references[-1].uuid),
+                page_size=file_reference_page_size,
+            )
 
     convertible_file_references = dict(
-        sorted(
-            convertible_file_references.items(),
-            key=lambda item: (item[1]["size_in_bytes"], item[1]["name"]),
-            reverse=True,
-        )
+        islice(convertible_file_references.items(), n_to_propose)
     )
     return convertible_file_references
+
 
 def write_convertible_file_references_for_accession_id(
     accession_id: str,

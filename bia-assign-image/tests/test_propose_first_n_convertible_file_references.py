@@ -1,7 +1,6 @@
 from bia_assign_image.propose import (
     get_first_n_convertible_file_references,
 )
-from pathlib import Path
 from typing import List, Dict
 
 import pytest
@@ -40,11 +39,10 @@ def test_get_first_n_convertible_file_references(
     test_accession_id,
     expected_proposal_details,
 ):
-
     proposal_details = get_first_n_convertible_file_references(
         test_accession_id,
         "local",
-        n_to_propose=1,
+        n_to_propose=2,
         check_image_creation_prerequisites=True,
     )
 
