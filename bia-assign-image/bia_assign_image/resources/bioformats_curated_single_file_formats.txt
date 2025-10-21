@@ -23,6 +23,7 @@
 .dm3
 .dm4
 .dti
+.dv
 .eps
 .epsi
 .fdf
@@ -60,6 +61,7 @@
 .lof
 .lsm
 .map
+.mcd
 .mnc
 .mng
 .mod
