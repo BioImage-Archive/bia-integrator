@@ -140,6 +140,55 @@ def get_convertible_file_references(
     return convertible_file_references
 
 
+def get_first_n_convertible_file_references(
+    accession_id: str,
+    api_target: ApiTarget,
+    n_to_propose: int,
+    check_image_creation_prerequisites: bool = True,
+) -> List[Dict]:
+    """Get details of first n convertible images for given accession ID"""
+
+
+    api_client = get_api_client(api_target)
+    study = api_client.search_study_by_accession(accession_id)
+    if not study:
+        return []
+    datasets = get_all_api_results(
+        uuid=study.uuid,
+        api_method=api_client.get_dataset_linking_study,
+        page_size_setting=20,
+    )
+
+    convertible_file_references = {}
+
+    for dataset in datasets:
+        if check_image_creation_prerequisites:
+            if not dataset_has_image_creation_prerequisites(dataset):
+                continue
+
+        file_references: list[bia_data_model.FileReference] = api_client.get_file_reference_linking_dataset(
+            uuid=str(dataset.uuid),
+            page_size=100,
+        )
+
+        file_reference_details = extract_file_reference_details(
+            accession_id,
+            f"{study.uuid}",
+            f"{dataset.uuid}",
+            file_references,
+            include_annotation_details=False,
+        )
+        convertible_file_references.update(file_reference_details)
+
+    convertible_file_references = dict(
+        sorted(
+            convertible_file_references.items(),
+            key=lambda item: (item[1]["size_in_bytes"], item[1]["name"]),
+            reverse=True,
+        )
+    )
+    return convertible_file_references
+
 def write_convertible_file_references_for_accession_id(
     accession_id: str,
     output_path: Path,
