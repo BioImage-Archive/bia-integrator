@@ -113,7 +113,13 @@ def extract_biosample_dicts(
         ):
             model_dict[api_key] = []
             if biostudies_key in attr_dict:
-                model_dict[api_key].append(attr_dict[biostudies_key])
+                # Fix for issue due to new ST allowing some empty non-optional fields
+                # between August 2025 and October 2025
+                biostudies_value = attr_dict.get(biostudies_key, "")
+                if biostudies_value is None:
+                    biostudies_value = ""
+
+                model_dict[api_key].append(biostudies_value)
 
         model_dict["organism_classification"] = [
             t.model_dump()

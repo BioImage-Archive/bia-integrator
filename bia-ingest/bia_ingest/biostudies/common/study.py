@@ -1,32 +1,25 @@
 import logging
-from pydantic import ValidationError
 import re
-from typing import List, Any, Dict, Optional, Tuple
-from email_validator import validate_email, EmailNotValidError
-
-from bia_ingest.cli_logging import (
-    IngestionResult,
-    log_failed_model_creation,
-)
-from bia_ingest.persistence_strategy import PersistenceStrategy
-from bia_ingest.bia_object_creation_utils import (
-    dict_to_api_model,
-    dicts_to_api_models,
-)
-
-from bia_ingest.biostudies.submission_parsing_utils import (
-    attributes_to_dict,
-    find_sections_recursive,
-    mattributes_to_dict,
-    case_insensitive_get,
-)
-from bia_ingest.biostudies.api import Attribute, Submission
-from bia_ingest.biostudies.common.constants import ALLOWED_LINK_TYPES, URL_TEMPLATES
+from typing import Any, Dict, List, Optional, Tuple
 
 from bia_shared_datamodels import bia_data_model, semantic_models
 from bia_shared_datamodels.package_specific_uuid_creation.shared import (
     create_study_uuid,
 )
+from email_validator import EmailNotValidError, validate_email
+from pydantic import ValidationError
+
+from bia_ingest.bia_object_creation_utils import dict_to_api_model, dicts_to_api_models
+from bia_ingest.biostudies.api import Attribute, Submission
+from bia_ingest.biostudies.common.constants import ALLOWED_LINK_TYPES, URL_TEMPLATES
+from bia_ingest.biostudies.submission_parsing_utils import (
+    attributes_to_dict,
+    case_insensitive_get,
+    find_sections_recursive,
+    mattributes_to_dict,
+)
+from bia_ingest.cli_logging import IngestionResult, log_failed_model_creation
+from bia_ingest.persistence_strategy import PersistenceStrategy
 
 # Strict URL detector for pre-checks (scheme://)
 _URL_RE = re.compile(r"^[a-z][a-z0-9+.-]*://", re.I)
@@ -162,6 +155,14 @@ def get_licence(study_attributes: Dict[str, Any]) -> semantic_models.Licence:
     return semantic_models.Licence[licence]
 
 
+def normalise_link(link: str) -> str:
+    # preserve "http://" or "https://"
+    link = re.sub(r"^(https?:)//+", r"\1//", link)
+    # collapse any other sequences of 3+ slashes to a single slash
+    link = re.sub(r"(?<!:)/{3,}", "/", link)
+    return link
+
+
 def sanitise_link_and_link_type(link_raw, link_type_raw) -> Tuple[str, str]:
     # If link looks like a URL, keep as-is. AnyUrl will validate strictly later.
     """
@@ -179,7 +180,8 @@ def sanitise_link_and_link_type(link_raw, link_type_raw) -> Tuple[str, str]:
     :return: A tuple of the sanitised link and its type
     :rtype: Tuple[str, str]
     """
-    looks_like_a_link = isinstance(link_raw, str) and _URL_RE.match(link_raw.strip())
+    link_raw = link_raw.strip().replace(" ", "")
+    looks_like_a_link = isinstance(link_raw, str) and _URL_RE.match(link_raw)
     if looks_like_a_link:
         return link_raw, link_type_raw  # AnyUrl field will validate it
 
@@ -198,8 +200,8 @@ def sanitise_link_and_link_type(link_raw, link_type_raw) -> Tuple[str, str]:
             raise ValueError(
                 f"no URL template for link_type: {ALLOWED_LINK_TYPES[lt_norm]}."
             )
-        built = template.format(link_raw.strip())
-        link = built  # now a proper URL string; AnyUrl will validate
+        link = template.format(link_raw.strip())
+
         return link, ALLOWED_LINK_TYPES[lt_norm]
 
     # If we reach here, link is not a URL and no valid link_type templating is possible
@@ -213,15 +215,37 @@ def get_external_references(
     Map biostudies.Submission.Link to semantic_models.ExternalReference
     """
     links = getattr(submission.section, "links")
-    external_references = list()
+    # For some studies links section is list of lists -flatten if necessary
+    flattened_links = []
     for link_section in links:
-        attributes: dict = attributes_to_dict(getattr(link_section, "attributes"))
+        if isinstance(link_section, list):
+            flattened_links.extend(link_section)
+        else:
+            flattened_links.append(link_section)
+    external_references = list()
+    for link_section in flattened_links:
+        if hasattr(link_section, "attributes"):
+            attributes_obj = getattr(link_section, "attributes")
+        else:
+            logger.warning(
+                "get_external_references: No attributes found in link section."
+            )
+            continue
+        attributes: dict = attributes_to_dict(attributes_obj)
         link, link_type = (
             getattr(link_section, "url"),
             case_insensitive_get(attributes, "type"),
         )
+        if link is None:
+            logger.warning("get_external_references: No link found in link section.")
+            continue
         link_type = link_type.lower() if isinstance(link_type, str) else link_type
+        logger.debug(
+            f"get_external_references: before sanitise -> link: {link}, type: {link_type}"
+        )
         link, link_type = sanitise_link_and_link_type(link, link_type)
+        link = normalise_link(link)
+        logger.debug(f"get_external_references: link: {link}, attributes: {attributes}")
         model_dict = {
             "link": link,
             "link_type": link_type,
@@ -250,7 +274,7 @@ def get_grant_and_funding_body(
         attr = attributes_to_dict(section.attributes)
 
         funding_body = None
-        if "Agency" in attr:
+        if attr.get("Agency") is not None:
             funding_body_dict = {"display_name": attr["Agency"]}
             funding_body = dict_to_api_model(
                 funding_body_dict,
@@ -258,7 +282,7 @@ def get_grant_and_funding_body(
                 result_summary[submission.accno],
             )
 
-        if "grant_id" in attr:
+        if attr.get("grant_id") is not None:
             grant_dict = {"id": attr["grant_id"]}
             if funding_body:
                 grant_dict["funder"] = [funding_body]
@@ -331,6 +355,27 @@ def get_related_publications(
                 ("title", "Title", None),
             ]
         }
+
+        if publication["doi"] is not None:
+            publication["doi"], _ = sanitise_link_and_link_type(
+                publication["doi"], "doi"
+            )
+            logger.debug(f"get_related_publications: publication: {publication}")
+            logger.debug(f"get_related_publications: publication: {publication}")
+            logger.debug(f"get_related_publications: publication: {publication}")
+            logger.debug(f"get_related_publications: publication: {publication}")
+
+        logger.debug(f"get_related_publications: publication: {publication}")
+        logger.debug(f"get_related_publications: publication: {publication}")
+        logger.debug(f"get_related_publications: publication: {publication}")
+        logger.debug(f"get_related_publications: publication: {publication}")
+        logger.debug(f"get_related_publications: publication: {publication}")
+
+        # Check all fields are not None because new ST allowed
+        # some empty publications between August 2025 and October 2025
+        if all(value is None for value in publication.values()):
+            logger.warning("Skipping empty publication entry")
+            continue
         try:
             publications.append(semantic_models.Publication.model_validate(publication))
         except ValidationError:

@@ -1,0 +1,241 @@
+{
+	"accno": "S-BIAD2235",
+	"attributes": [
+		{
+			"name": "Template",
+			"value": "BioImages.v5"
+		},
+		{
+			"name": "Title",
+			"value": "Silicon Flavylium Polymethine Dyes for Shortwave Infrared Imaging"
+		},
+		{
+			"name": "DOI",
+			"value": "10.6019/S-BIAD2235"
+		},
+		{
+			"name": "ReleaseDate",
+			"value": "2025-08-13"
+		},
+		{
+			"name": "AttachTo",
+			"value": "BioImages"
+		}
+	],
+	"section": {
+		"accno": "study-12-jibc",
+		"type": "Study",
+		"attributes": [
+			{
+				"name": "Title",
+				"value": "Silicon Flavylium Polymethine Dyes for Shortwave Infrared Imaging"
+			},
+			{
+				"name": "ReleaseDate",
+				"value": "2025-08-13"
+			},
+			{
+				"name": "Description",
+				"value": "TBD"
+			},
+			{
+				"name": "Keywords",
+				"value": "silicon"
+			},
+			{
+				"name": "Keywords",
+				"value": "polymethine dye"
+			},
+			{
+				"name": "Keywords",
+				"value": "shortwave infrared"
+			},
+			{
+				"name": "Keywords",
+				"value": "fluorescence imaging"
+			},
+			{
+				"name": "License",
+				"value": "CC0",
+				"valqual": [
+					{
+						"name": "URL",
+						"value": "https://creativecommons.org/publicdomain/zero/1.0/legalcode"
+					}
+				]
+			}
+		],
+		"subsections": [
+			{
+				"accno": "publ-13-x2qv",
+				"type": "Publication",
+				"attributes": [
+					{
+						"name": "Title",
+						"value": "Silicon Flavylium Polymethine Dyes for Shortwave Infrared Imaging"
+					},
+					{
+						"name": "Authors",
+						"value": "Quintashia D. Wilson; Emily B. Mobley; Eric Y. Lin; Barry Y. Li; Ash S. Hua; Justin R. Caram; Ellen M. Sletten"
+					},
+					{
+						"name": "DOI",
+						"value": "TBD"
+					}
+				]
+			},
+			{
+				"accno": "fund-15-sdiw",
+				"type": "Funding"
+			},
+			{
+				"accno": "bios-16-pfeg",
+				"type": "Biosample",
+				"attributes": [
+					{
+						"name": "Title",
+						"value": "SWIR fluorescence imaging in mice"
+					},
+					{
+						"name": "Organism",
+						"value": "Mus musculus (mouse)"
+					},
+					{
+						"name": "Biological entity",
+						"value": "Live mice and ex vivo dissected mouse organs"
+					}
+				]
+			},
+			{
+				"accno": "spec-17-qfcp",
+				"type": "Specimen",
+				"attributes": [
+					{
+						"name": "Title",
+						"value": "SWIR fluorescence imaging in mice"
+					},
+					{
+						"name": "Sample preparation protocol",
+						"value": "Animal procedures were performed in accordance with the guidelines of the University of California, Los Angeles International Animal Care and Use Committee (IACUC), with specific protocols approved by the Animal Research Committee (ARC, protocol number ARC-2018-047). Non-invasive, whole mouse imaging was performed on athymic female mice (NU/J) purchased from The Jackson Laboratories. Mice were 7 weeks of age at the start of imaging experiments. For all animal procedures, mice were anesthetized by inhalation of isoflurane (2–4% isoflurane/oxygen) and placed on a heating pad to maintain normal body temperature while under anesthesia. The heating pad was affixed with a nose cone to deliver anesthetic to the imaging stage (see “SWIR Imaging Apparatus”). Artificial tears were added to each eye to prevent corneas from drying out during imaging procedures. Intravenous (i.v.) injections were performed through the tail vein. Briefly, a catheter was assembled from a 29-gauge needle (VetriJecTM) connected through plastic tubing (0.8 mm x 0.3 mm tygon catheter tubing, Braintree Scientific, Inc) prefilled with a sterile isotonic saline solution. The bevel of the needle was inserted into the tail vein and secured with a tissue adhesive. The catheter was then connected to a syringe (29-gauge, VetriJecTM) prefilled with fluorophore-containing emulsions sterilized with a 1 µm syringe filter. Finally, the solution was injected to the tail vein followed by a sterile saline flush to ensure full dosage was achieved. The total volume of i.v. injections never exceeded 200 µL. Mice were briefly imaged post-injection at defined timepoints up to 2 days, followed by humane euthanasia at the endpoint. Individual organs were then dissected and imaged. "
+					}
+				]
+			},
+			{
+				"accno": "imag-18-1s3b",
+				"type": "Image acquisition",
+				"attributes": [
+					{
+						"name": "Title",
+						"value": "SWIR fluorescence imaging in mice"
+					},
+					{
+						"name": "Imaging instrument",
+						"value": "Allied Vision Goldeye G-032 Cool TEC2 camera"
+					},
+					{
+						"name": "Image acquisition parameters",
+						"value": "For whole mouse imaging (see “Animal Procedures”) a custom-built SWIR imaging setup was used. The setup was partially enclosed to avoid excess light pollution, while still allowing for physical manipulation of the field of view during operation. Lumics laser unit LU1064D350- U30AN (35 W) “1064 nm” was used for whole mouse imaging experiments. Excitation wavelength is reported as “1060 nm”, corresponding to the peak wavelength intensity recorded via spectrometer measurement. All lasers were coupled in a fan-out fiber optic bundle with a 600 µm core diameter (Thorlabs BF46LS01) for each optical path. The fiber bundle output was affixed to an excitation cube (ThorLabs KCB1E), reflected off a mirror (Thorlabs BBE-E03), and passed through a positive achromat (Thorlabs AC254-050-AB-ML), SP filters (1100 nm, 2X 25 mm #64-339, Edmund Optics) and an engineered 20˚ square diffuser (Thorlabs ED1-S20-MD) to provide uniform illumination over the imaging stage. This area was covered by a heating pad affixed with a nose cone and non-reflective blackout fabric (Thorlabs BK5) and/or foil (BKF12). The excitation flux at the imaging stage was measured with a digital optical power and energy meter (Thorlabs PM1000D) coupled to a photodiode sensor (S130C). For whole mouse imaging, the power density was set to 160 mW/cm2, in accordance with the ICNIRP guidelines for whole mouse imaging . An InGaAs camera (Allied Vision Goldeye G-032 Cool TEC2) was mounted vertically above the imaging stage to detect emitted SWIR light. The camera used a SWIR C-mount lens (Kowz LM35HC-SW) and a set of longpass (LP) filters. For “1200 nm LP” filtering, 1X 25 mm FELH1200 (Thorlabs) was mounted to a lens tube (SM1L03, Thorlabs) followed by another lens tube (SM1L10) and a 5 mm silicon window (WG81050, Thorlabs) mounted to a lens tube (SM1L03, Thorlabs) and affixed to the camera lens; additionally, 3X lens tubes (SM2L03), followed by 1X 50 mm #89-666 (Edmund Optics) mounted to a lens tube (SM2L05, ThorLabs), a lens tube (SM2L20), and 1X 50 mm #89-666 (Edmund Optics) mounted to a lens tube (SM2L05, ThorLabs) were placed in series below the camera lens filters. For “1300 nm LP” filtering, 1X 25 mm FELH1300 (Thorlabs) was affixed to the camera lens, followed by 1X 50 mm #89-669 (Edmund Optics) mounted by a filter holder (LCFH2-F, Thorlabs), a lens tube (SM2L20), and 1X 50 mm #89-669 (Edmund Optics) mounted to a lens tube (SM2L05, ThorLabs). The camera was set to -30 ˚C and was set to gain = 1. The exposure time property was set for each image. Both the camera and lasers were externally controlled. For image acquisition, the toolbox of MATLAB programming environment was used in combination with a MATLAB script (CCDA V3, https://gitlab.com/brunslab/ccda) to preview and collect image data in 14-bit depth. "
+					},
+					{
+						"name": "Imaging method",
+						"value": "Fluorescence imaging"
+					}
+				]
+			},
+			{
+				"accno": "imag-19-6j31",
+				"type": "Image correlation"
+			},
+			{
+				"accno": "imag-20-k19j",
+				"type": "Image analysis",
+				"attributes": [
+					{
+						"name": "Title",
+						"value": "SWIR fluorescence imaging in mice"
+					},
+					{
+						"name": "Image analysis overview",
+						"value": "Raw image files were processed using the FIJI distribution of ImageJ . All image stacks were first subtracted with a no-laser background (100–200 frames taken at the beginning of each acquisition) to correct for non-linearities in the detector. For still fluorescence images, frames of interest were then averaged using the “Z-project” function (50–100 frames, unless otherwise stated). Still images underwent no further processing. Brightness values obtained from the 14-bit images are displayed with the grey LUT scale. All images were then compressed to an 8-bit depth for display. \n\nFor ex vivo organ quantification, regions of interest were highlighted around individual organs using the hand-drawn ROI tool. The mean intensities were calculated with the “Measure” function and reported as the mean of three hand-drawn measurements, after subtracting image background (measured within the blank region between organs in the same manner). For each animal, these values were normalized to the exposure time property for comparison of fluorescence remaining in each organ 2 days post-injection. Normalized fluorescence intensity values for replicate animals were then averaged to generate quantitative bar graphs, with individual values displayed accordingly . \n\nFor capillary image quantification, regions of interest were highlighted via the line ROI tool, drawing a line horizontally across a set of capillary tubes. Fluorescence intensity across this ROI was plotted using the “Plot profile” feature."
+					}
+				]
+			},
+			{
+				"accno": "stud-22-tfox",
+				"type": "Study Component",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "SWIR fluorescence imaging in mice: IV injection of SiliFlav5 emulsions (single color)"
+					},
+					{
+						"name": "Description",
+						"value": "Study component 1: Two replicate animals (Mouse 1, Mouse 2) were dosed with 290 nmol (Mouse 1), 220 nmol (Mouse 2) of SiliFlav5 encapsulated in canolia oil/PBS emulsions intravenously (iv) and imaged at timepoints up to 2 days. The mouse was then humanely euthanized, and individual organs were dissected and imaged."
+					},
+					{
+						"name": "File List",
+						"value": "File list_study component 1.json"
+					}
+				],
+				"subsections": [
+					{
+						"accno": "asso-23-6yfu",
+						"type": "Associations",
+						"attributes": [
+							{
+								"name": "Biosample",
+								"value": "SWIR fluorescence imaging in mice"
+							},
+							{
+								"name": "Specimen",
+								"value": "SWIR fluorescence imaging in mice"
+							},
+							{
+								"name": "Image acquisition",
+								"value": "SWIR fluorescence imaging in mice"
+							},
+							{
+								"name": "Image analysis",
+								"value": "SWIR fluorescence imaging in mice"
+							}
+						]
+					}
+				]
+			},
+			{
+				"accno": "author-1",
+				"type": "Author",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "Emily Mobley"
+					},
+					{
+						"name": "E-mail",
+						"value": "emilybrimobley@gmail.com"
+					},
+					{
+						"name": "ORCID",
+						"value": "0000-0002-4638-1123"
+					},
+					{
+						"name": "affiliation",
+						"value": "o1",
+						"reference": true
+					}
+				]
+			},
+			{
+				"accno": "o1",
+				"type": "organisation",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "University of California, Los Angeles"
+					}
+				]
+			}
+		]
+	},
+	"type": "submission"
+}
