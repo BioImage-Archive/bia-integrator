@@ -86,6 +86,52 @@ def get_test_ro_crate_path(accession_id) -> Path:
             ],
         ),
         (
+            "test_ro_crate_with_file_list_missing_path_column",
+            1,
+            [
+                ("No column has been assigned csvw:propertyUrl http://bia/filePath",),
+            ],
+        ),
+        (
+            "test_invalid_file_list_schema_missing_path_column",
+            1,
+            [
+                (
+                    "At ro-crate TableSchema object with @id: _:ts0",
+                    "Missing column with property http://bia/filePath",
+                ),
+            ],
+        ),
+        (
+            "test_invalid_file_list_mismatched_schema",
+            1,
+            [
+                (
+                    "associated_protocol expected",
+                    "data2/file_list_with_mismatched_schema.tsv",
+                ),
+                ("Expected order of columns",),
+            ],
+        ),
+        (
+            "test_invalid_file_list_rows",
+            1,
+            [
+                (
+                    "row index: 0",
+                    "_:Biosample2 does not exist",
+                ),
+                (
+                    "row index: 1",
+                    "data3/non_existent_file.tiff does not exist",
+                ),
+                (
+                    "row index: 2",
+                    "not expected type",
+                ),
+            ],
+        ),
+        (
             "test_minimal_valid_ro_crate",
             0,
             [],

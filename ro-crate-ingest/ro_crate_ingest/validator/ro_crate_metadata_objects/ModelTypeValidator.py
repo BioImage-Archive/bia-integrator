@@ -1,13 +1,14 @@
-from ro_crate_ingest.ro_crate_defaults import get_all_ro_crate_classes
+import pydantic
+from bia_shared_datamodels.linked_data.pydantic_ld.ROCrateModel import ROCrateModel
+
 from ro_crate_ingest.crate_reader import expand_entity
+from ro_crate_ingest.ro_crate_defaults import get_all_ro_crate_classes
 from ro_crate_ingest.validator.validator import (
+    Severity,
     ValidationError,
     ValidationResult,
     Validator,
-    Severity,
 )
-from bia_shared_datamodels.linked_data.pydantic_ld.ROCrateModel import ROCrateModel
-import pydantic
 
 
 class ModelTypeValidator(Validator):

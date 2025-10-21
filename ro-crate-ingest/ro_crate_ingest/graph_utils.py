@@ -13,7 +13,8 @@ def get_dataset_for_filelist(
     file_list_rdf_ref = urljoin(pathlib_path_uri, file_list_id)
     subjects = list(
         graph.subjects(
-            rdflib.URIRef("http://bia/associationFileMetadata"), rdflib.URIRef(file_list_rdf_ref)
+            rdflib.URIRef("http://bia/associationFileMetadata"),
+            rdflib.URIRef(file_list_rdf_ref),
         )
     )
     if len(subjects) == 1:
