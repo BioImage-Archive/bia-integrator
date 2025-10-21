@@ -86,6 +86,17 @@ def get_test_ro_crate_path(accession_id) -> Path:
             ],
         ),
         (
+            "test_invalid_ro_crate_with_file_list_without_path_column",
+            1,
+            [
+                ("No column has been assigned csvw:propertyUrl http://bia/filePath",),
+                (
+                    "At ro-crate TableSchema object with @id: ts0",
+                    "Missing column with required property: http://bia/filePat",
+                ),
+            ],
+        ),
+        (
             "test_minimal_valid_ro_crate",
             0,
             [],
