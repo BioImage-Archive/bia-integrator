@@ -13,6 +13,10 @@ from bia_shared_datamodels.linked_data.bia_ontology_utils import load_bia_ontolo
 
 
 class ReferenceValidation(Validator):
+    """
+    Validates that refernences to objects in the @graph of the ro-crate-metadata.json via fields that are owl:ObjectProperties (i.e. expect an object)
+    are defined in the the ro-crate-metadata.json and are of the expected type.
+    """
 
     ro_crate_metadata_graph: rdflib.Graph
     bia_ontology: rdflib.Graph
