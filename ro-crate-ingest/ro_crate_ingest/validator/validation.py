@@ -3,10 +3,11 @@ import logging
 from pathlib import Path
 
 import typer
+
 from ro_crate_ingest.validator.file_list import (
     FileListDefinitionValidator,
 )
-from ro_crate_ingest.validator.rdf_graph import ContextValidator
+from ro_crate_ingest.validator.rdf_graph import ContextValidator, ReferenceValidation
 from ro_crate_ingest.validator.ro_crate_metadata_objects import (
     IDValidator,
     ModelTypeValidator,
@@ -41,7 +42,7 @@ def bia_roc_validation(ro_crate_directory: Path):
     validate(IDValidator.IDValidator(graph)).validated_object
     validate(ModelTypeValidator.ModelTypeValidator(graph, context)).validated_object
 
-    # TODO: validate cross-object references
+    validate(ReferenceValidation.ReferenceValidation(metadata_path))
 
     validate(
         FileListDefinitionValidator.FileListDefinitionValidator(

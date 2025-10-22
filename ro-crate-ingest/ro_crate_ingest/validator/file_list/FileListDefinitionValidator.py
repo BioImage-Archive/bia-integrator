@@ -1,8 +1,9 @@
+from collections import defaultdict
 from pathlib import Path
+from typing import Iterable
 
 import rdflib
-from typing import Iterable
-from collections import defaultdict
+
 from ro_crate_ingest.crate_reader import load_ro_crate_metadata_to_graph
 from ro_crate_ingest.validator.validator import (
     Severity,
@@ -22,7 +23,6 @@ class FileListDefinitionValidator(Validator):
     only the graph of information described in the ro-crate-metadata.json.
     """
 
-    ro_crate_metadata_path: Path
     ro_crate_metadata_graph: rdflib.Graph
     required_properties: set[str]
     file_path_property: rdflib.URIRef = rdflib.URIRef("http://bia/filePath")
@@ -76,8 +76,9 @@ class FileListDefinitionValidator(Validator):
             Iterable[str | rdflib.URIRef] | None
         ) = None,
     ):
-        self.ro_crate_metadata_path = ro_crate_metadata_path
-        self._parse_metadata()
+        self.ro_crate_metadata_graph = load_ro_crate_metadata_to_graph(
+            ro_crate_metadata_path
+        )
 
         self.required_properties = set()
         self.required_properties.add(str(self.file_path_property))
@@ -88,11 +89,6 @@ class FileListDefinitionValidator(Validator):
             )
 
         super().__init__()
-
-    def _parse_metadata(self):
-        self.ro_crate_metadata_graph = load_ro_crate_metadata_to_graph(
-            self.ro_crate_metadata_path
-        )
 
     def validate(self) -> ValidationResult:
 
