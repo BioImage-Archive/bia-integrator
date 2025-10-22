@@ -1,0 +1,102 @@
+{
+  "EMPIAR-IMAGELABELTEST": {
+    "imagesets": [
+      {
+        "segmentations": [],
+        "name": "Raw unaligned multi-frame micrographs for each tilt in 10 tilt-series acquired with defocus-only (DEF) on S. pombe cryo-FIB lamellae",
+        "directory": "data/frames",
+        "category": "micrographs - multiframe",
+        "header_format": "TIFF",
+        "data_format": "TIFF",
+        "num_images_or_tilt_series": 510,
+        "frames_per_image": 10,
+        "frame_range_min": null,
+        "frame_range_max": null,
+        "voxel_type": "UNSIGNED 16 BIT INTEGER",
+        "pixel_width": 3.3702,
+        "pixel_height": 3.3702,
+        "micrographs_file_pattern": "",
+        "picked_particles_file_pattern": "",
+        "picked_particles_directory": "",
+        "details": "Raw unaligned multi-frame micrographs were aligned, sorted and combined into tilt series stacks using Warp (st files in metadata folder) and tomograms reconstructed using etomo (IMOD) (rec files in tomgrams folder). Naming from TS_026 to TS_045 corresponds to TS_0011 to TS_0020 in the original publication.\nOriginal metadata files (mdocs_ori) and the count ref file (dm4 file) are provided in the frames folder.",
+        "image_width": "3838",
+        "image_height": "3710"
+      },
+      {
+        "segmentations": [],
+        "name": "Reconstructed cryo-electron tomograms acquired with defocus-only (DEF) on S. pombe cryo-FIB lamellae",
+        "directory": "data/tomograms",
+        "category": "reconstructed volumes",
+        "header_format": "MRC",
+        "data_format": "MRC",
+        "num_images_or_tilt_series": 10,
+        "frames_per_image": 1,
+        "frame_range_min": null,
+        "frame_range_max": null,
+        "voxel_type": "SIGNED 16 BIT INTEGER",
+        "pixel_width": 13.48,
+        "pixel_height": 13.48,
+        "micrographs_file_pattern": "",
+        "picked_particles_file_pattern": "",
+        "picked_particles_directory": "",
+        "details": "Tomograms (4-times binned reconstructions, original pixel size 3.3702 Å) from aligned frame stacks (st files in metadata folder, tif files in frames folder), mdoc and xf alignment files (in metadata folder). Naming from TS_026 to TS_045 corresponds to TS_0011 to TS_0020 in the original publication.\nFor each of the 10 tomograms, comprehensive segmentation volumes (32 bit floats, 928x960, 13.48 Å voxel size) of ribosomes, fatty acid synthase (FAS), membranes, organelles (labels) and cytosol are provided in the labels folder. Voxel labels of individual organelles in labels files are defined in organelle_labels.txt.\nRibosome and FAS particle coordinates (csv files) are provided in the corresponding particle_lists folder (in csv files with x, y, z coordinates in columns 1, 2, 3 respectively, 4-times binned pixels with original pixel size 3.3702 Å).",
+        "image_width": "960",
+        "image_height": "928"
+      },
+      {
+        "segmentations": [],
+        "name": "Tilt series stacks and metadata of cryo-electron tomograms acquired with defocus-only (DEF) on S. pombe cryo-FIB lamellae",
+        "directory": "data/metadata",
+        "category": "tilt series",
+        "header_format": "MRC",
+        "data_format": "MRC",
+        "num_images_or_tilt_series": 10,
+        "frames_per_image": 1,
+        "frame_range_min": null,
+        "frame_range_max": null,
+        "voxel_type": "32 BIT FLOAT",
+        "pixel_width": 3.3702,
+        "pixel_height": 3.3702,
+        "micrographs_file_pattern": "",
+        "picked_particles_file_pattern": "",
+        "picked_particles_directory": "",
+        "details": "Tilt series stacks (st files from Warp) from aligned frame stacks (in frames folder), tilt series alignment files (xf from etomo, IMOD) and acquisition metadata files modified to match tilt series stacks (in mdocs_modified) to reconstruct tomograms (in tomograms folder). Naming from TS_026 to TS_045 corresponds to TS_0011 to TS_0020 in the original publication.",
+        "image_width": "3708",
+        "image_height": "3838"
+      }
+    ], 
+    "workflow_file": null,
+    "grant_references": [],
+    "version_history": [],
+    "title": "Defocus and Volta potential phase plate cryo-electron tomography of S. pombe cryo-FIB lamellae with comprehensive annotations of structures and macromolecules",
+    "principal_investigator": [],
+    "status": "REL",
+    "deposition_date": "2021-09-21",
+    "release_date": "2022-11-17",
+    "obsolete_date": null,
+    "update_date": "2023-01-20",
+    "corresponding_author": {
+      "author": {
+        "name": "Test", 
+        "author_orcid": null
+      }
+    },
+    "authors": [
+      {
+        "author": {
+          "name": "Test",
+          "author_orcid": null
+        }
+      }
+    ],
+    "cross_references": [],
+    "biostudies_references": [],
+    "idr_references": [],
+    "empiar_references": [],
+    "citation": [],
+    "dataset_size": "305.5 GB",
+    "experiment_type": "EMDB",
+    "scale": "cell",
+    "entry_doi": "10.6019/EMPIAR-10988"
+  }
+}

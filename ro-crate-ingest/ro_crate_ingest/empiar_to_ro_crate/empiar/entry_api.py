@@ -13,6 +13,7 @@ def load_empiar_entry(accession_id) -> Entry:
     overrides = {
         "EMPIAR-IMAGEPATTERNTEST": "A test submission covering file pattern shapes.",
         "EMPIAR-STARFILETEST": "A test submission covering star file annotation, with tomograms, and other image dependencies.",
+        "EMPIAR-IMAGELABELTEST": "A test submission covering file-to-image grouping strategies."
     }
     if accession_id in overrides:
         return read_empiar_entry_override(accession_id)

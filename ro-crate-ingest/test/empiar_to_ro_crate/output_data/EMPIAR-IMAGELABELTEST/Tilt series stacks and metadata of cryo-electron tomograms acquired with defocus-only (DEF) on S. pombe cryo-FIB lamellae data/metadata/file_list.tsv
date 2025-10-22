@@ -1,0 +1,3 @@
+file_path	size_in_bytes	type	label	source_image_label	associated_annotation_method	associated_protocol
+data/metadata/TS_026.st	12	http://bia/Image	data/metadata/TS_026.st	['data/frames/TS_026_001_-0.0.tif', 'data/frames/TS_026_003_-2.0.tif', 'data/frames/TS_026_002_2.0.tif']		_:Tilt series preprocessing
+data/metadata/TS_027.st	12	http://bia/Image	data/metadata/TS_027.st	TS_027 movie stack series		_:Tilt series preprocessing
