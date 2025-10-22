@@ -86,6 +86,22 @@ def get_test_ro_crate_path(accession_id) -> Path:
             ],
         ),
         (
+            "test_invalid_ro_crate_object_references",
+            1,
+            [
+                (
+                    "At ro-crate object with @id: Biosample1",
+                    "contains references to Non-existant growth protocol",
+                    "not defined",
+                ),
+                (
+                    "At ro-crate object with @id: Biosample2",
+                    "contains references to Biosample1",
+                    "not of the expected type",
+                ),
+            ],
+        ),
+        (
             "test_invalid_ro_crate_with_file_list_without_path_column",
             1,
             [
