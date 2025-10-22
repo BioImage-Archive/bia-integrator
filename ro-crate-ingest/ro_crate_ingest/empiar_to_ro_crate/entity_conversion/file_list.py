@@ -213,7 +213,13 @@ def update_row(
     output_row["dataset_ref"] = dataset_id
 
     if yaml_object:
-        output_row["label"] = yaml_object.get("image_label", output_row["file_path"])
+        if label := yaml_object.get("label", None):
+            output_row["label"] = label
+        elif label_prefix := yaml_object.get("label_prefix", None):
+            label_parts = parse_file_path_for_label(output_row["file_path"], yaml_object.get("file_pattern", ""))
+            if label_parts is not None:
+                output_row["label"] = f"{label_prefix}_{label_parts}"
+
         output_row["associated_annotation_method"] = (
             f"_:{yaml_object["annotation_method_title"]}"
             if yaml_object.get("annotation_method_title", None)
@@ -224,28 +230,52 @@ def update_row(
             if yaml_object.get("protocol_title", None)
             else None
         )
-        input_images = yaml_object.get("input_image_pattern", None)
-        if input_images:
-            output_row["source_image_label"] = find_matching_input_images(all_file_paths, input_images)
-        else:
-            output_row["source_image_label"] = yaml_object.get("input_image_label", None)
+
+        if input_label := yaml_object.get("input_label", None):
+            output_row["source_image_label"] = input_label
+        elif input_label_prefix := yaml_object.get("input_label_prefix", None):
+            matching_label_parts = find_matching_input_label_parts(all_file_paths, yaml_object.get("input_file_pattern", ""))
+            output_row["source_image_label"] = create_input_labels(input_label_prefix, matching_label_parts)
 
 
-def find_matching_input_images(
+def parse_file_path_for_label(
+        file_path: str, 
+        file_pattern: str
+) -> str | None:
+
+    result = parse.parse(f"data/{file_pattern}", file_path)
+    if result is not None:
+        label_parts = [str(part) for part in result.fixed]
+        return "_".join(label_parts)
+    
+    return result
+
+
+def find_matching_input_label_parts(
         file_paths: list[Path], 
-        input_images: str
+        input_image_pattern: str
 ) -> list[str]:
+    
     
     matches = []
     for path in file_paths:
-        result = parse.parse(f"data/{input_images}", str(path))
-        if result is not None:
-            matches.append(str(path))
+        matching_parts = parse_file_path_for_label(str(path), input_image_pattern)
+        if matching_parts is not None:
+            matches.append(matching_parts)
     
     if len(matches) == 0:
-        raise ValueError(f"No files found matching input image pattern: {input_images}")
+        raise ValueError(f"No file parts found to match input image pattern")
 
     return matches
+
+
+def create_input_labels(
+        label_prefix: str, 
+        file_parts: list[str]
+) -> list[str]:
+    
+    labels = [f"{label_prefix}_{part}" for part in file_parts]
+    return labels
 
 
 def split_dataframe_by_dataset(file_df: pd.DataFrame) -> dict[str, pd.DataFrame]:
