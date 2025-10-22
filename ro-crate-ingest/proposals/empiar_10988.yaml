@@ -45,7 +45,7 @@ datasets:
       
       # NOTE: this is the file grouping for many-to-one (but inappropriate for the entry, here)
       - file_pattern: "DEF/frames/TS_027_{}_{}.tif"
-        file_group: "TS_027 movie stack series"
+        image_label: "TS_027 movie stack series"
         biosample_title: "S. pombe wild-type cells"
         image_acquisition_protocol_title: "Cryo-electron tomography"
         specimen_imaging_preparation_protocol_title: "Cryo-ET sample preparation and focused ion beam (FIB) milling"
@@ -60,7 +60,7 @@ datasets:
       
       - file_pattern: "DEF/metadata/TS_027.st"
         protocol_title: "Tilt series preprocessing"
-        input_image_group: "TS_027 movie stack series"
+        input_image_label: "TS_027 movie stack series"
     
   # Image set 3 (tomogram, defocus condition)
   - title: "Reconstructed cryo-electron tomograms acquired with defocus-only (DEF) on S. pombe cryo-FIB lamellae"

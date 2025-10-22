@@ -213,7 +213,7 @@ def update_row(
     output_row["dataset_ref"] = dataset_id
 
     if yaml_object:
-        output_row["label"] = yaml_object.get("file_group", output_row["file_path"])
+        output_row["label"] = yaml_object.get("image_label", output_row["file_path"])
         output_row["associated_annotation_method"] = (
             f"_:{yaml_object["annotation_method_title"]}"
             if yaml_object.get("annotation_method_title", None)
@@ -228,7 +228,7 @@ def update_row(
         if input_images:
             output_row["source_image_label"] = find_matching_input_images(all_file_paths, input_images)
         else:
-            output_row["source_image_label"] = yaml_object.get("input_image_group", None)
+            output_row["source_image_label"] = yaml_object.get("input_image_label", None)
 
 
 def find_matching_input_images(
