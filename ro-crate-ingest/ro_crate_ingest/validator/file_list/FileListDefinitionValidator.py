@@ -27,7 +27,7 @@ class FileListDefinitionValidator(Validator):
     file_path_property: rdflib.URIRef = rdflib.URIRef("http://bia/filePath")
 
     # return schemas in use by filelists, and all propertyUrls of their columns (if any)
-    schema_column_property_query: str = """
+    SCHEMA_COLUMN_PROPERTY_QUERY: str = """
         prefix bia: <http://bia/>
         prefix csvw: <http://www.w3.org/ns/csvw#>
         SELECT ?schema ?column ?propertyUrl
@@ -45,7 +45,7 @@ class FileListDefinitionValidator(Validator):
     """
 
     # return all columns and their propertyUrls
-    column_property_urls_query: str = """
+    COLUMN_PROPERTY_URLS_QUERY: str = """
         prefix bia: <http://bia/>
         prefix csvw: <http://www.w3.org/ns/csvw#>
         SELECT ?column ?propertyUrl
@@ -53,10 +53,11 @@ class FileListDefinitionValidator(Validator):
             ?column rdf:type csvw:Column .
             ?column csvw:propertyUrl ?propertyUrl .
         }
+        }
     """
 
     # return all filelists and their schemas (if any)
-    file_list_objects_query: str = """
+    FILE_LIST_OBJECTS_QUERY: str = """
         prefix bia: <http://bia/>
         prefix csvw: <http://www.w3.org/ns/csvw#>
         SELECT ?fileList ?schema
@@ -98,7 +99,7 @@ class FileListDefinitionValidator(Validator):
     def validate(self) -> ValidationResult:
 
         file_list_objects_results = self.ro_crate_metadata_graph.query(
-            self.file_list_objects_query
+            self.FILE_LIST_OBJECTS_QUERY
         )
 
         if len(file_list_objects_results) > 0:
@@ -124,7 +125,7 @@ class FileListDefinitionValidator(Validator):
         )
 
         schema_to_column_property_result = self.ro_crate_metadata_graph.query(
-            self.schema_column_property_query
+            self.SCHEMA_COLUMN_PROPERTY_QUERY
         )
 
         schema_map = defaultdict(set)
@@ -148,7 +149,7 @@ class FileListDefinitionValidator(Validator):
         error_message_template = "No column has been assigned csvw:propertyUrl {property_url} in the ro-crate-metadata.json."
 
         resolved_query = self.ro_crate_metadata_graph.query(
-            self.column_property_urls_query
+            self.COLUMN_PROPERTY_URLS_QUERY
         )
 
         column_properties = [
