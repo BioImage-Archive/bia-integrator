@@ -1,8 +1,0 @@
-file_path	size_in_bytes	type	label	source_image_label	associated_annotation_method	associated_protocol
-data/HeLa/Raw SEM images/SEM Image - SliceImage - 001.tif	12	http://bia/Image	Cryo-serial pFIB/SEM of HeLa cell			
-data/HeLa/Raw SEM images/SEM Image - SliceImage - 002.tif	12	http://bia/Image	Cryo-serial pFIB/SEM of HeLa cell			
-data/HeLa/Raw SEM images/param.pdf	0					
-data/HeLa/segmentation/centrioles.tif	12					
-data/HeLa/tilt series/tiltimage 001 -30.tif	12	http://bia/Image				
-data/HeLa/tilt series/tiltimage 002 30.tif	12	http://bia/Image				
-data/additional_file.csv	0					
