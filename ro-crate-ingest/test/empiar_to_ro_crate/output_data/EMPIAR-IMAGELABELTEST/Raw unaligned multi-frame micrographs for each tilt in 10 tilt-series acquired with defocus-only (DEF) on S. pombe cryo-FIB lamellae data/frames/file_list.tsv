@@ -1,8 +1,8 @@
 file_path	size_in_bytes	type	label	source_image_label	associated_annotation_method	associated_protocol
-data/frames/TS_026_001_-0.0.tif	12	http://bia/Image	data/frames/TS_026_001_-0.0.tif			
-data/frames/TS_026_002_2.0.tif	12	http://bia/Image	data/frames/TS_026_002_2.0.tif			
-data/frames/TS_026_003_-2.0.tif	12	http://bia/Image	data/frames/TS_026_003_-2.0.tif			
+data/frames/TS_026_001_-0.0.tif	12	http://bia/Image	TS_026_001_-0.0			
+data/frames/TS_026_002_2.0.tif	12	http://bia/Image	TS_026_002_2.0			
+data/frames/TS_026_003_-2.0.tif	12	http://bia/Image	TS_026_003_-2.0			
 data/frames/TS_027_001_-0.0.tif	12	http://bia/Image	TS_027 movie stack series			
 data/frames/TS_027_002_2.0.tif	12	http://bia/Image	TS_027 movie stack series			
 data/frames/TS_027_003_-2.0.tif	12	http://bia/Image	TS_027 movie stack series			
-data/frames/TS_028_001_-0.0.tif	12	http://bia/Image	data/frames/TS_028_001_-0.0.tif			
+data/frames/TS_028_001_-0.0.tif	12	http://bia/Image				

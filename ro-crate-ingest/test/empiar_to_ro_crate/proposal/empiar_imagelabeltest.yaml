@@ -36,21 +36,22 @@ datasets:
   # Image set 1 (movie stacks)
   - title: "Raw unaligned multi-frame micrographs for each tilt in 10 tilt-series acquired with defocus-only (DEF) on S. pombe cryo-FIB lamellae"
     assigned_images:
-      # one-to-one grouping
+      # one-to-one grouping, without label
       - file_pattern: "frames/TS_028_001_-0.0.tif"
         biosample_title: "S. pombe wild-type cells"
         image_acquisition_protocol_title: "Cryo-electron tomography"
         specimen_imaging_preparation_protocol_title: "Cryo-ET sample preparation and focused ion beam (FIB) milling"
 
       # many-to-many grouping
-      - file_pattern: "frames/TS_026_{}_{}.tif"
+      - label_prefix: "TS_026"
+        file_pattern: "frames/TS_026_{}_{}.tif"
         biosample_title: "S. pombe wild-type cells"
         image_acquisition_protocol_title: "Cryo-electron tomography"
         specimen_imaging_preparation_protocol_title: "Cryo-ET sample preparation and focused ion beam (FIB) milling"
       
-      # image_label grouping for many-to-one
-      - file_pattern: "frames/TS_027_{}_{}.tif"
-        image_label: "TS_027 movie stack series"
+      # label grouping for many-to-one
+      - label: "TS_027 movie stack series"
+        file_pattern: "frames/TS_027_{}_{}.tif"
         biosample_title: "S. pombe wild-type cells"
         image_acquisition_protocol_title: "Cryo-electron tomography"
         specimen_imaging_preparation_protocol_title: "Cryo-ET sample preparation and focused ion beam (FIB) milling"
@@ -60,14 +61,17 @@ datasets:
   - title: "Tilt series stacks and metadata of cryo-electron tomograms acquired with defocus-only (DEF) on S. pombe cryo-FIB lamellae"
     assigned_images:
       # many-to-many input image
-      - file_pattern: "metadata/TS_026.st"
+      - label: "TS 026 tilt series"
+        file_pattern: "metadata/TS_026.st"
         protocol_title: "Tilt series preprocessing"
-        input_image_pattern: "frames/TS_026_{}_{}.tif"
+        input_label_prefix: "TS_026"
+        input_file_pattern: "frames/TS_026_{}_{}.tif"
       
       # many-to-one input image
-      - file_pattern: "metadata/TS_027.st"
+      - label: "TS 027 tilt series"
+        file_pattern: "metadata/TS_027.st"
         protocol_title: "Tilt series preprocessing"
-        input_image_label: "TS_027 movie stack series"
+        input_label: "TS_027 movie stack series"
     
   # Image set 3 (tomograms, and annotations in additional files)
   - title: "Reconstructed cryo-electron tomograms acquired with defocus-only (DEF) on S. pombe cryo-FIB lamellae"
@@ -78,13 +82,13 @@ datasets:
       - label: "TS_026 tomogram"
         file_pattern: "tomograms/TS_026.rec"
         protocol_title: "Tomogram reconstruction"
-        input_image_pattern: "metadata/TS_026.st"
+        input_label: "TS 026 tilt series"
     assigned_annotations:
       - label: "TS_026 ribosome annotations defocus data"
         file_pattern: "particle_lists/TS_026_cyto_ribosomes.csv"
         annotation_method_title: "Annotation of ribosomes and fatty acid synthase (FAS) in defocus-only data"
-        input_image_pattern: "tomograms/TS_026.rec"
+        input_label: "TS_026 tomogram"
       - label: "TS_026 FAS annotations defocus data"
         file_pattern: "particle_lists/TS_026_fas.csv"
         annotation_method_title: "Annotation of ribosomes and fatty acid synthase (FAS) in defocus-only data"
-        input_image_pattern: "tomograms/TS_026.rec"
+        input_label: "TS_026 tomogram"

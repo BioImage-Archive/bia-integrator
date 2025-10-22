@@ -16,6 +16,12 @@
             "website": {
                 "@id": "bia:website"
             },
+            "resultOf": {
+                "@id": "bia:resultOf"
+            },
+            "label": {
+                "@id": "schema:name"
+            },
             "title": {
                 "@id": "schema:name"
             },
@@ -129,12 +135,6 @@
             },
             "tableSchema": {
                 "@id": "csvw:tableSchema"
-            },
-            "resultOf": {
-                "@id": "bia:resultOf"
-            },
-            "label": {
-                "@id": "schema:name"
             },
             "imagingInstrumentDescription": {
                 "@id": "bia:imagingInstrumentDescription"
@@ -621,7 +621,7 @@
                 "bia:Protocol"
             ],
             "title": "Tomogram reconstruction and sub-tomogram averaging",
-            "protocolDescription": "Dose-weighted motion-corrected images were exported for tomographic reconstruction by weighted back-projection in AreTomo and 4-times binned. Averaging was performed in RELION with 1,284 particles, I1 symmetry, using a 60-Å-low-pass-filtered map of the encapsulin scaffold (PDB 6X8M) as a reference."
+            "protocolDescription": "Dose-weighted motion-corrected images were exported for tomographic reconstruction by weighted back-projection in AreTomo and 4-times binned. Averaging was performed in RELION with 1,284 particles, I1 symmetry, using a 60-\u00c5-low-pass-filtered map of the encapsulin scaffold (PDB 6X8M) as a reference."
         },
         {
             "@id": "_:CTF estimation and motion correction",
