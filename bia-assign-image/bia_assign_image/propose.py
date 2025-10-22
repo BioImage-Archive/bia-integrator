@@ -5,6 +5,7 @@ partitioning into n groups and randomly selecting one
 file reference from each group
 """
 
+from enum import Enum
 import math
 import random
 from typing import List, Dict
@@ -19,6 +20,10 @@ from bia_assign_image.utils import (
     get_all_api_results,
     get_value_from_attribute_list,
 )
+
+class ProposeStrategy(str, Enum):
+    FIRST_N = "first_n"
+    SIZE_STRATIFIED_SAMPLING = "size_stratified_sampling"
 
 
 def dataset_has_image_creation_prerequisites(dataset: bia_data_model.Dataset) -> bool:
@@ -102,7 +107,7 @@ def get_convertible_file_references(
     api_client = get_api_client(api_target)
     study = api_client.search_study_by_accession(accession_id)
     if not study:
-        return []
+        return {}
     datasets = get_all_api_results(
         uuid=study.uuid,
         api_method=api_client.get_dataset_linking_study,
@@ -146,14 +151,14 @@ def get_first_n_convertible_file_references(
     api_target: ApiTarget,
     n_to_propose: int,
     check_image_creation_prerequisites: bool = True,
-) -> List[Dict]:
+) -> dict[str, dict]:
     """Get details of first n convertible images for given accession ID"""
 
     api_client = get_api_client(api_target)
     file_reference_page_size = 100
     study = api_client.search_study_by_accession(accession_id)
     if not study:
-        return []
+        return {}
     datasets = get_all_api_results(
         uuid=study.uuid,
         api_method=api_client.get_dataset_linking_study,
@@ -161,7 +166,6 @@ def get_first_n_convertible_file_references(
     )
 
     convertible_file_references = {}
-
     n_proposals = 0
     for dataset in datasets:
         if check_image_creation_prerequisites:
@@ -195,6 +199,9 @@ def get_first_n_convertible_file_references(
                 page_size=file_reference_page_size,
             )
 
+        if n_proposals >= n_to_propose:
+            break
+
     convertible_file_references = dict(
         islice(convertible_file_references.items(), n_to_propose)
     )
@@ -208,6 +215,7 @@ def write_convertible_file_references_for_accession_id(
     max_items: int = 5,
     append: bool = True,
     check_image_creation_prerequisites: bool = True,
+    propose_strategy: ProposeStrategy = ProposeStrategy.FIRST_N,
 ) -> int:
     """
     Write details of file references proposed for conversion to file
@@ -224,17 +232,29 @@ def write_convertible_file_references_for_accession_id(
             f"Proposals writer not implemented for suffix {output_path_suffix}"
         )
 
-    convertible_file_references = list(
-        get_convertible_file_references(
-            accession_id, api_target, check_image_creation_prerequisites
-        ).values()
-    )
+    if propose_strategy == ProposeStrategy.FIRST_N:
+        file_reference_details = list(
+            get_first_n_convertible_file_references(
+                accession_id,
+                api_target,
+                n_to_propose=max_items,
+                check_image_creation_prerequisites=check_image_creation_prerequisites,
+            ).values()
+        )
+    elif propose_strategy == ProposeStrategy.SIZE_STRATIFIED_SAMPLING:
+        convertible_file_references = list(
+            get_convertible_file_references(
+                accession_id, api_target, check_image_creation_prerequisites
+            ).values()
+        )
 
-    n_proposal_candidates = len(convertible_file_references)
-    indicies_to_select = select_indicies(n_proposal_candidates, max_items)
-    file_reference_details = [
-        convertible_file_references[i] for i in indicies_to_select
-    ]
+        n_proposal_candidates = len(convertible_file_references)
+        indicies_to_select = select_indicies(n_proposal_candidates, max_items)
+        file_reference_details = [
+            convertible_file_references[i] for i in indicies_to_select
+        ]
+    else:
+        raise Exception(f"Propose strategy {propose_strategy} not recognised")
 
     write_file_reference_details_func(
         file_reference_details,
@@ -242,7 +262,7 @@ def write_convertible_file_references_for_accession_id(
         append,
     )
 
-    return len(indicies_to_select)
+    return len(file_reference_details)
 
 
 def write_convertible_source_annotation_file_refs_for_acc_id(

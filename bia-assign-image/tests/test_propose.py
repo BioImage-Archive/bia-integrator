@@ -58,6 +58,7 @@ def test_propose_works_with_supported_file_formats(
         output_path,
         "local",
         append=False,
+        propose_strategy="size_stratified_sampling",
     )
     proposal_details = read_proposals(output_path)
     assert proposal_details == expected_proposal_details
@@ -78,12 +79,14 @@ def test_propose_append_flag(
         output_path,
         "local",
         append=False,
+        propose_strategy="size_stratified_sampling",
     )
     write_convertible_file_references_for_accession_id(
         test_accession_id,
         output_path,
         "local",
         append=True,
+        propose_strategy="size_stratified_sampling",
     )
 
     # We should have duplicate records

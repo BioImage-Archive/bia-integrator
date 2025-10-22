@@ -196,6 +196,13 @@ def propose_images(
             help="Check whether dataset linked to file reference contains requirements needed to create a bia_data_model Image object."
         ),
     ] = True,
+    propose_strategy: Annotated[
+        propose.ProposeStrategy, typer.Option(
+            "--strategy",
+            "-s",
+            help="Strategy for generating proposals. Size stratified sampling requires getting all file references in study."
+        )
+    ] = propose.ProposeStrategy.FIRST_N,
 ) -> None:
     """Propose file references to convert for the given accession IDs"""
     for accession_id in accession_ids:
@@ -206,6 +213,7 @@ def propose_images(
             max_items=max_items,
             check_image_creation_prerequisites=check_image_creation_prerequisites,
             append=append,
+            propose_strategy=propose_strategy,
         )
         logger.info(f"Wrote {count} proposals for {accession_id} to {output_path}")
 
