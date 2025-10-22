@@ -3,6 +3,7 @@ from pathlib import Path
 import rdflib
 from typing import Iterable
 from collections import defaultdict
+from ro_crate_ingest.crate_reader import load_ro_crate_metadata_to_graph
 from ro_crate_ingest.validator.validator import (
     Severity,
     ValidationError,
@@ -53,7 +54,6 @@ class FileListDefinitionValidator(Validator):
             ?column rdf:type csvw:Column .
             ?column csvw:propertyUrl ?propertyUrl .
         }
-        }
     """
 
     # return all filelists and their schemas (if any)
@@ -90,11 +90,9 @@ class FileListDefinitionValidator(Validator):
         super().__init__()
 
     def _parse_metadata(self):
-        graph = rdflib.Graph()
-
-        graph.parse(self.ro_crate_metadata_path, format="json-ld")
-
-        self.ro_crate_metadata_graph = graph
+        self.ro_crate_metadata_graph = load_ro_crate_metadata_to_graph(
+            self.ro_crate_metadata_path
+        )
 
     def validate(self) -> ValidationResult:
 
