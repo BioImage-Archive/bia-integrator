@@ -48,8 +48,58 @@ Example use:
 poetry run ro-crate-ingest empiar-to-roc proposals/empiar_10988.yaml
 ```
 
-Where you can replace proposals/empiar_10988.yaml with the path to the respective proposal you wish to create an ro-crate for. Can choose the output folder with -c 
+Where you can replace proposals/empiar_10988.yaml with the path to the respective proposal you wish to create an ro-crate for. Can choose the output folder with -c.
 
+*On YAML proposals*
+
+There are some options when specifying image/annotation labels and file patterns in assigned images.
+
+Firstly, a `file_pattern` should always be present, and can contain curly braces to indicate parts of the pattern string that should be parsed in order to match more than one file in the entry. For example:
+
+    file_pattern: "frames/TS_028_001_-0.0.tif"
+
+will match a single file, whereas:
+
+    file_pattern: "frames/TS_026_{}_{}.tif"
+
+will match all files that fit this pattern, e.g., `frames/TS_026_001_-0.0.tif`, and `data/frames/TS_026_002_2.0.tif`.
+
+Labelling an image or annotation, to give it a human-friendly name, is recommended, but optional — without either a `label` or `label_prefix` field, no label for the assigned image/annotation will be generated. If a `label` is present, it can be used in two ways — this:
+
+    label: "TS_026 movie stack 001 -0.0"
+    file_pattern: "frames/TS_026_001_-0.0.tif"
+
+would generate a single image from the single given file, with the given label. Or this:
+
+    label: "TS_026 movie stack series"
+    file_pattern: "frames/TS_026_{}_{}.tif"
+
+would generate a single image from as many files as match the given pattern, with the given label.
+
+These two examples cover the cases where we want to make a one:one mapping between file and object, and a many:one file:object mapping. To avoid lengthy yaml files for when there are tens of images or annotations that are similar, but distinct, a many:many file:object mapping can be specified thus:
+
+    label_prefix: "TS_026"
+    file_pattern: "frames/TS_026_{}_{}.tif"
+
+where the `label_prefix` indicates that labels should be made file-by-matching-file, the parsed parts in curly braces of `file_pattern` appended to the prefix.
+
+For input images, there are two options. The first:
+
+    input_label: "Tomogram TS_008"
+
+or:
+
+    input_label: 
+          - "Tomogram TS_008"
+          - "Tomogram TS_010"
+          - "Tomogram TS_017"
+
+should be used when the images being referred to have a `label` field, while these two:
+
+    input_label_prefix: "TS_026"
+    input_file_pattern: "frames/TS_026_{}_{}.tif"
+
+can be used if the images referred to have a `label_prefix` field. Note that string values, not lists, are assumed in this case; in the unlikely situation of more than one many:many file:object mapping being referred to as an input image, a manually created list of `input_label` will be necessary. 
 
 ## Testing
 

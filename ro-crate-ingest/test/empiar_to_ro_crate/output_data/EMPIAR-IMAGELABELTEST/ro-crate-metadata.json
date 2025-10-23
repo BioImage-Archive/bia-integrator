@@ -1,0 +1,570 @@
+{
+    "@context": [
+        "https://w3id.org/ro/crate/1.1/context",
+        {
+            "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+            "schema": "http://schema.org/",
+            "dc": "http://purl.org/dc/terms/",
+            "bia": "http://bia/",
+            "csvw": "http://www.w3.org/ns/csvw#",
+            "displayName": {
+                "@id": "schema:name"
+            },
+            "address": {
+                "@id": "schema:address"
+            },
+            "website": {
+                "@id": "bia:website"
+            },
+            "resultOf": {
+                "@id": "bia:resultOf"
+            },
+            "label": {
+                "@id": "schema:name"
+            },
+            "title": {
+                "@id": "schema:name"
+            },
+            "protocolDescription": {
+                "@id": "schema:description"
+            },
+            "annotationCriteria": {
+                "@id": "bia:annotationCriteria"
+            },
+            "annotationCoverage": {
+                "@id": "bia:annotationCoverage"
+            },
+            "transformationDescription": {
+                "@id": "bia:transformationDescription"
+            },
+            "spatialInformation": {
+                "@id": "bia:spatialInformation"
+            },
+            "methodType": {
+                "@id": "bia:annotationMethodType"
+            },
+            "annotationSourceIndicator": {
+                "@id": "bia:annotationSourceIndicator"
+            },
+            "biologicalEntityDescription": {
+                "@id": "bia:biologicalEntityDescription"
+            },
+            "experimentalVariableDescription": {
+                "@id": "bia:experimentalVariableDescription"
+            },
+            "extrinsicVariableDescription": {
+                "@id": "bia:extrinsicVariableDescription"
+            },
+            "intrinsicVariableDescription": {
+                "@id": "bia:intrinsicVariableDescription"
+            },
+            "organismClassification": {
+                "@id": "bia:organismClassification"
+            },
+            "growthProtocol": {
+                "@id": "bia:growthProtocol"
+            },
+            "columnName": {
+                "@id": "csvw:name"
+            },
+            "propertyUrl": {
+                "@id": "csvw:propertyUrl"
+            },
+            "affiliation": {
+                "@id": "schema:memberOf"
+            },
+            "role": {
+                "@id": "bia:role"
+            },
+            "contactEmail": {
+                "@id": "schema:email"
+            },
+            "imageAcquisitionProtocol": {
+                "@id": "bia:imageAcquisitionProtocol"
+            },
+            "subject": {
+                "@id": "bia:subject"
+            },
+            "protocol": {
+                "@id": "bia:protocol"
+            },
+            "annotationMethod": {
+                "@id": "bia:annotationMethod"
+            },
+            "inputImage": {
+                "@id": "bia:inputImage"
+            },
+            "description": {
+                "@id": "schema:description"
+            },
+            "associatedBiologicalEntity": {
+                "@id": "bia:associatedBiologicalEntity"
+            },
+            "associatedSpecimenImagingPreparationProtocol": {
+                "@id": "bia:associatedImagingPreparationProtocol"
+            },
+            "associatedSpecimen": {
+                "@id": "bia:associatedSubject"
+            },
+            "associatedImageAcquisitionProtocol": {
+                "@id": "bia:associatedImageAcquisitionProtocol"
+            },
+            "associatedAnnotationMethod": {
+                "@id": "bia:associatedAnnotationMethod"
+            },
+            "associatedImageAnalysisMethod": {
+                "@id": "bia:associatedAnalysisMethod"
+            },
+            "associatedImageCorrelationMethod": {
+                "@id": "bia:associatedCorrelationMethod"
+            },
+            "associatedProtocol": {
+                "@id": "bia:associatedProtocol"
+            },
+            "hasPart": {
+                "@id": "schema:hasPart"
+            },
+            "associationFileMetadata": {
+                "@id": "bia:associationFileMetadata"
+            },
+            "link": {
+                "@id": "schema:url"
+            },
+            "linkDescription": {
+                "@id": "schema:description"
+            },
+            "tableSchema": {
+                "@id": "csvw:tableSchema"
+            },
+            "imagingInstrumentDescription": {
+                "@id": "bia:imagingInstrumentDescription"
+            },
+            "imagingMethodName": {
+                "@id": "bia:imagingMethodName"
+            },
+            "fbbiId": {
+                "@id": "bia:fbbiId"
+            },
+            "featuresAnalysed": {
+                "@id": "bia:featuresAnalysed"
+            },
+            "fiducialsUsed": {
+                "@id": "bia:fiducialsUsed"
+            },
+            "transformationMatrix": {
+                "@id": "bia:transformationMatrix"
+            },
+            "authorNames": {
+                "@id": "bia:authorNames"
+            },
+            "signalContrastMechanismDescription": {
+                "@id": "bia:signalContrastMechanismDescription"
+            },
+            "channelContentDescription": {
+                "@id": "bia:channelContentDescription"
+            },
+            "channelBiologicalEntity": {
+                "@id": "bia:channelBiologicalEntity"
+            },
+            "channelLabel": {
+                "@id": "dc:identifier"
+            },
+            "biologicalEntity": {
+                "@id": "bia:sampleOf"
+            },
+            "imagingPreparationProtocol": {
+                "@id": "bia:imagingPreparationProtocol"
+            },
+            "signalChannelInformation": {
+                "@id": "bia:signalChannelInformation"
+            },
+            "contributor": {
+                "@id": "schema:author"
+            },
+            "licence": {
+                "@id": "schema:license"
+            },
+            "datePublished": {
+                "@id": "schema:datePublished"
+            },
+            "keyword": {
+                "@id": "schema:keywords"
+            },
+            "acknowledgement": {
+                "@id": "bia:acknowledgement"
+            },
+            "accessionId": {
+                "@id": "schema:identifier"
+            },
+            "column": {
+                "@id": "csvw:column"
+            },
+            "commonName": {
+                "@id": "bia:commonName"
+            },
+            "scientificName": {
+                "@id": "bia:scientificName"
+            }
+        }
+    ],
+    "@graph": [
+        {
+            "@id": "ro-crate-metadata.json",
+            "@type": "CreativeWork",
+            "conformsTo": {
+                "@id": "https://w3id.org/ro/crate/1.1"
+            },
+            "about": {
+                "@id": "./"
+            }
+        },
+        {
+            "@id": "./",
+            "@type": [
+                "Dataset",
+                "bia:Study"
+            ],
+            "title": "Defocus and Volta potential phase plate cryo-electron tomography of S. pombe cryo-FIB lamellae with comprehensive annotations of structures and macromolecules",
+            "contributor": [
+                {
+                    "@id": "_:c0"
+                }
+            ],
+            "description": "",
+            "licence": "https://creativecommons.org/publicdomain/zero/1.0/",
+            "datePublished": "2022-11-17",
+            "keyword": [],
+            "acknowledgement": null,
+            "hasPart": [
+                {
+                    "@id": "Movie%20stacks%20data/frames/"
+                },
+                {
+                    "@id": "Tilt%20series%20data/metadata/"
+                },
+                {
+                    "@id": "Tomograms%20data/tomograms/"
+                }
+            ],
+            "accessionId": "EMPIAR-IMAGELABELTEST"
+        },
+        {
+            "@id": "_:c0",
+            "@type": [
+                "Person",
+                "bia:Contributor"
+            ],
+            "displayName": "Test",
+            "address": null,
+            "website": null,
+            "affiliation": [],
+            "role": [],
+            "contactEmail": null
+        },
+        {
+            "@id": "Tilt%20series%20data/metadata/file_list.tsv",
+            "@type": [
+                "File",
+                "bia:FileList",
+                "csvw:Table"
+            ],
+            "tableSchema": {
+                "@id": "_:ts0"
+            }
+        },
+        {
+            "@id": "Tomograms%20data/tomograms/file_list.tsv",
+            "@type": [
+                "File",
+                "bia:FileList",
+                "csvw:Table"
+            ],
+            "tableSchema": {
+                "@id": "_:ts0"
+            }
+        },
+        {
+            "@id": "Movie%20stacks%20data/frames/file_list.tsv",
+            "@type": [
+                "File",
+                "bia:FileList",
+                "csvw:Table"
+            ],
+            "tableSchema": {
+                "@id": "_:ts0"
+            }
+        },
+        {
+            "@id": "_:col6",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "associated_protocol",
+            "propertyUrl": "http://bia/associatedProtocol"
+        },
+        {
+            "@id": "_:col5",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "associated_annotation_method",
+            "propertyUrl": "http://bia/associatedAnnotationMethod"
+        },
+        {
+            "@id": "_:col4",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "source_image_label",
+            "propertyUrl": "http://bia/sourceImageLabel"
+        },
+        {
+            "@id": "_:col3",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "label",
+            "propertyUrl": "http://schema.org/name"
+        },
+        {
+            "@id": "_:col2",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "type",
+            "propertyUrl": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+        },
+        {
+            "@id": "_:col1",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "size_in_bytes",
+            "propertyUrl": "http://bia/sizeInBytes"
+        },
+        {
+            "@id": "_:col0",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "file_path",
+            "propertyUrl": "http://bia/filePath"
+        },
+        {
+            "@id": "_:ts0",
+            "@type": [
+                "csvw:Schema"
+            ],
+            "column": [
+                {
+                    "@id": "_:col0"
+                },
+                {
+                    "@id": "_:col1"
+                },
+                {
+                    "@id": "_:col2"
+                },
+                {
+                    "@id": "_:col3"
+                },
+                {
+                    "@id": "_:col4"
+                },
+                {
+                    "@id": "_:col5"
+                },
+                {
+                    "@id": "_:col6"
+                }
+            ]
+        },
+        {
+            "@id": "Tomograms%20data/tomograms/",
+            "@type": [
+                "Dataset",
+                "bia:Dataset"
+            ],
+            "title": "Tomograms",
+            "description": "Tomograms (4-times binned reconstructions, original pixel size 3.3702 \u00c5) from aligned frame stacks (st files in metadata folder, tif files in frames folder), mdoc and xf alignment files (in metadata folder). Naming from TS_026 to TS_045 corresponds to TS_0011 to TS_0020 in the original publication.\nFor each of the 10 tomograms, comprehensive segmentation volumes (32 bit floats, 928x960, 13.48 \u00c5 voxel size) of ribosomes, fatty acid synthase (FAS), membranes, organelles (labels) and cytosol are provided in the labels folder. Voxel labels of individual organelles in labels files are defined in organelle_labels.txt.\nRibosome and FAS particle coordinates (csv files) are provided in the corresponding particle_lists folder (in csv files with x, y, z coordinates in columns 1, 2, 3 respectively, 4-times binned pixels with original pixel size 3.3702 \u00c5).",
+            "associatedBiologicalEntity": [],
+            "associatedSpecimenImagingPreparationProtocol": [],
+            "associatedSpecimen": null,
+            "associatedImageAcquisitionProtocol": [],
+            "associatedAnnotationMethod": [
+                {
+                    "@id": "_:Annotation of ribosomes and fatty acid synthase (FAS) in defocus-only data"
+                },
+                {
+                    "@id": "_:Annotation of ribosomes and fatty acid synthase (FAS) in defocus-only data"
+                }
+            ],
+            "associatedImageAnalysisMethod": [],
+            "associatedImageCorrelationMethod": [],
+            "associatedProtocol": [],
+            "hasPart": [
+                {
+                    "@id": "Tomograms%20data/tomograms/file_list.tsv"
+                }
+            ],
+            "associationFileMetadata": {
+                "@id": "Tomograms%20data/tomograms/file_list.tsv"
+            }
+        },
+        {
+            "@id": "Tilt%20series%20data/metadata/",
+            "@type": [
+                "Dataset",
+                "bia:Dataset"
+            ],
+            "title": "Tilt series",
+            "description": "Tilt series stacks (st files from Warp) from aligned frame stacks (in frames folder), tilt series alignment files (xf from etomo, IMOD) and acquisition metadata files modified to match tilt series stacks (in mdocs_modified) to reconstruct tomograms (in tomograms folder). Naming from TS_026 to TS_045 corresponds to TS_0011 to TS_0020 in the original publication.",
+            "associatedBiologicalEntity": [],
+            "associatedSpecimenImagingPreparationProtocol": [],
+            "associatedSpecimen": null,
+            "associatedImageAcquisitionProtocol": [],
+            "associatedAnnotationMethod": [],
+            "associatedImageAnalysisMethod": [],
+            "associatedImageCorrelationMethod": [],
+            "associatedProtocol": [],
+            "hasPart": [
+                {
+                    "@id": "Tilt%20series%20data/metadata/file_list.tsv"
+                }
+            ],
+            "associationFileMetadata": {
+                "@id": "Tilt%20series%20data/metadata/file_list.tsv"
+            }
+        },
+        {
+            "@id": "Movie%20stacks%20data/frames/",
+            "@type": [
+                "Dataset",
+                "bia:Dataset"
+            ],
+            "title": "Movie stacks",
+            "description": "Raw unaligned multi-frame micrographs were aligned, sorted and combined into tilt series stacks using Warp (st files in metadata folder) and tomograms reconstructed using etomo (IMOD) (rec files in tomgrams folder). Naming from TS_026 to TS_045 corresponds to TS_0011 to TS_0020 in the original publication.\nOriginal metadata files (mdocs_ori) and the count ref file (dm4 file) are provided in the frames folder.",
+            "associatedBiologicalEntity": [
+                {
+                    "@id": "_:S. pombe wild-type cells"
+                }
+            ],
+            "associatedSpecimenImagingPreparationProtocol": [
+                {
+                    "@id": "_:Cryo-ET sample preparation and focused ion beam (FIB) milling"
+                }
+            ],
+            "associatedSpecimen": null,
+            "associatedImageAcquisitionProtocol": [
+                {
+                    "@id": "_:Cryo-electron tomography"
+                }
+            ],
+            "associatedAnnotationMethod": [],
+            "associatedImageAnalysisMethod": [],
+            "associatedImageCorrelationMethod": [],
+            "associatedProtocol": [],
+            "hasPart": [
+                {
+                    "@id": "Movie%20stacks%20data/frames/file_list.tsv"
+                }
+            ],
+            "associationFileMetadata": {
+                "@id": "Movie%20stacks%20data/frames/file_list.tsv"
+            }
+        },
+        {
+            "@id": "_:Tomogram reconstruction",
+            "@type": [
+                "bia:Protocol"
+            ],
+            "title": "Tomogram reconstruction",
+            "protocolDescription": "Tomograms were reconstructed via weighted back projection. Tomogram thicknesses ranged between 80\u2013310\u2009nm."
+        },
+        {
+            "@id": "_:Tilt series preprocessing",
+            "@type": [
+                "bia:Protocol"
+            ],
+            "title": "Tilt series preprocessing",
+            "protocolDescription": "Tilt movie frames were aligned using a SerialEM plugin. Tilt series were filtered according to the accumulated electron dose by Fourier cropping using the mtffilter function in etomo (IMOD/BETA4.10.1258), and sorted by tilt angle using a python script. Four-times-binned tilt images were aligned in etomo (IMOD/4.9.4) using patch tracking (typical residual error 0.291\u20130.569\u2009pixels)."
+        },
+        {
+            "@id": "_:Annotation of ribosomes and fatty acid synthase (FAS) in defocus data",
+            "@type": [
+                "bia:AnnotationMethod"
+            ],
+            "title": "Annotation of ribosomes and fatty acid synthase (FAS) in defocus data",
+            "protocolDescription": "A procedure similar to that used for VPP data was applied, except that: (i) the initial annotations for ribosomes were manually cleaned after template matching and initial FAS manual picking was incomplete; and (ii) in step 2 of the ribosomes ground truth construction, two of the three rounds of DeePiCt predictions were obtained using models trained on VPP data (first and second round of VPP ground truth construction; Supplementary Table 2).",
+            "annotationCriteria": null,
+            "annotationCoverage": null,
+            "transformationDescription": null,
+            "spatialInformation": null,
+            "methodType": [],
+            "annotationSourceIndicator": null
+        },
+        {
+            "@id": "_:Annotation of ribosomes and fatty acid synthase (FAS) in VPP data",
+            "@type": [
+                "bia:AnnotationMethod"
+            ],
+            "title": "Annotation of ribosomes and fatty acid synthase (FAS) in VPP data",
+            "protocolDescription": "Ribosome and FAS were localized in 4\u00d7-binned tomograms (13.48\u2009\u00c5 voxel size) in an iterative workflow. Manually curated template matching for ribosomes and non-exhaustive manual picking for FAS (step 1; Supplementary Tables 2 and 3) were used for training 3D CNNs (step 2). CNN predictions were masked with a segmentation of the cytosol. For ribosomes, step 2 was repeated three times (always trained on combined predictions of step 1 and the preceding round) and each round consisted of three simultaneously trained networks with default hyperparameters (Supplementary Tables 2 and 3), except for the number of IF\u2009=\u20094, 8, and 32, to provide a cumulative prediction that is less overfitted to the incomplete training data. Cumulative predictions were manually revised in tom_chooser (ribosomes) and in EMAN2 (FAS) and manual picking was performed in either spectrum-matched or Gaussian-filtered tomograms (\u03c3\u2009=\u20093) for up to three rounds in EMAN2 spt2_boxer (step 3; Supplementary Tables 2 and 3). The particle lists were cleaned for duplicates by applying elliptic distance constraints to the coordinates (Supplementary Note 1 and Supplementary Tables 2 and 3). Template matching for ribosomes was performed with pyTOM by a 3D cross-correlation search over 1,944 Euler angle combinations using the large subunit of S. cerevisiae 80S ribosome map (EMDB accession EMD-3228) scaled to the corresponding pixel size, and a spherical mask (diameter 337\u2009\u00c5). The 2,000\u20133,000 highest cross correlation scores were manually revised in Gaussian-filtered tomograms (\u03c3\u2009=\u20093) with tom_chooser (pyTOM toolbox). For FAS in the VPP dataset template matching with a published S. cerevisiae FAS33 map (EMDB accession EMD-1623) as reference failed.",
+            "annotationCriteria": null,
+            "annotationCoverage": null,
+            "transformationDescription": null,
+            "spatialInformation": null,
+            "methodType": [],
+            "annotationSourceIndicator": null
+        },
+        {
+            "@id": "_:Cryo-ET sample preparation and focused ion beam (FIB) milling",
+            "@type": [
+                "bia:SpecimenImagingPreparationProtocol"
+            ],
+            "title": "Cryo-ET sample preparation and focused ion beam (FIB) milling",
+            "protocolDescription": "TEM grids with vitrified yeast cells were clipped into an autogrid with a cut-out. Mounted on a 45\u00b0 pre-tilt shuttle, grids were transferred into an Aquilos Dual beam microscope (Thermo Fisher Scientific), sputter-coated with platinum for 10\u201315\u2009s (1\u2009kV, 10\u2009mA, 10\u2009Pa), and subsequently coated with organometallic platinum using the gas injection system (8\u2009s with the stage positioned 3\u2009mm below the coincidence point). In three independent sessions, three grids with five lamellae each were processed at a milling angle of 15\u00b0. Agglomerations of several cells were thinned in three steps of rough milling to a thickness of 5\u2009\u00b5m at 1\u2009nA ion beam current, 3\u2009\u00b5m at 0.5\u2009nA and 1\u2009\u00b5m at 0.1\u2009nA. Milling progress was visually monitored between each milling step with the scanning electron microscope beam (10\u2009kV, 50\u2009pA). Fine milling was performed at 50\u2009pA to a target thickness of 200\u2009nm. To render the lamellae conductive for TEM imaging, grids were sputtered with platinum for 5\u2009s (1\u2009kV, 10\u2009mA, 10\u2009Pa) and transferred into cryo-boxes.",
+            "signalChannelInformation": []
+        },
+        {
+            "@id": "_:Cryo-electron tomography",
+            "@type": [
+                "bia:ImageAcquisitionProtocol"
+            ],
+            "title": "Cryo-electron tomography",
+            "protocolDescription": "Milled lamellae were loaded into a Titan Krios (Thermo Fisher Scientific) such that the axis of the pre-tilt introduced by FIB milling was aligned perpendicular to the tilt axis of the microscope. Tomograms were acquired on a K2 Summit direct detection camera (Gatan) operating in dose fractionation mode utilizing a Quantum post-column energy filter operated at zero-loss (Gatan). A calibrated pixel size of 3.45\u2009\u00c5 was used for the NPC defocus* data and 3.37\u2009\u00c5 for the remaining datasets. Up to 14 tilt series were collected on a single lamella in low dose mode using SerialEM. Starting from the lamella pre-tilt, images were acquired in 2\u00b0 increments within a range of +58\u00b0 to \u221240\u00b0 using a dose-symmetric tilt scheme with a constant electron dose per tilt image. For ground truth data, a set of ten tilt series were either collected with a 70\u2009\u03bcm objective aperture or a VPP56 (Thermo Fisher Scientific) with prior conditioning for 5\u2009min. NPC data was collected as described in previous work, but at 1.5\u20134.5\u2009\u03bcm defocus, with 3\u00b0 increments and an effective tilt range of +50\u00b0 to \u221250\u00b0.",
+            "imagingInstrumentDescription": "Titan Krios (Thermo Fisher Scientific) microscope with K2 Summit direct detection camera (Gatan) operating in dose fractionation mode utilizing a Quantum post-column energy filter operated at zero-loss (Gatan).",
+            "imagingMethodName": [
+                "cryo-electron tomography"
+            ],
+            "fbbiId": [
+                "obo:FBbi_00000256"
+            ]
+        },
+        {
+            "@id": "NCBI:txid4896",
+            "@type": [
+                "bia:Taxon"
+            ],
+            "commonName": "Fission yeast",
+            "scientificName": "Schizosaccharomyces pombe"
+        },
+        {
+            "@id": "_:S. pombe wild-type cells",
+            "@type": [
+                "bia:BioSample"
+            ],
+            "title": "S. pombe wild-type cells",
+            "biologicalEntityDescription": "S. pombe K972 Sp h- wild-type haploid cells.",
+            "experimentalVariableDescription": [],
+            "extrinsicVariableDescription": [],
+            "intrinsicVariableDescription": [],
+            "organismClassification": [
+                {
+                    "@id": "NCBI:txid4896"
+                }
+            ],
+            "growthProtocol": null
+        }
+    ]
+}

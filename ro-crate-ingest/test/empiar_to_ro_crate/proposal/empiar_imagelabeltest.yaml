@@ -1,4 +1,4 @@
-accession_id: EMPIAR-10988
+accession_id: EMPIAR-IMAGELABELTEST
 paper_doi: https://doi.org/10.1038/s41592-022-01746-2
 rembis:
   ImageAcquisitionProtocol:
@@ -19,7 +19,6 @@ rembis:
   SpecimenImagingPreparationProtocol:
     - title: "Cryo-ET sample preparation and focused ion beam (FIB) milling"
       protocol_description: "TEM grids with vitrified yeast cells were clipped into an autogrid with a cut-out. Mounted on a 45° pre-tilt shuttle, grids were transferred into an Aquilos Dual beam microscope (Thermo Fisher Scientific), sputter-coated with platinum for 10–15 s (1 kV, 10 mA, 10 Pa), and subsequently coated with organometallic platinum using the gas injection system (8 s with the stage positioned 3 mm below the coincidence point). In three independent sessions, three grids with five lamellae each were processed at a milling angle of 15°. Agglomerations of several cells were thinned in three steps of rough milling to a thickness of 5 µm at 1 nA ion beam current, 3 µm at 0.5 nA and 1 µm at 0.1 nA. Milling progress was visually monitored between each milling step with the scanning electron microscope beam (10 kV, 50 pA). Fine milling was performed at 50 pA to a target thickness of 200 nm. To render the lamellae conductive for TEM imaging, grids were sputtered with platinum for 5 s (1 kV, 10 mA, 10 Pa) and transferred into cryo-boxes."
-  # Note: there are segmentation volumes to add here.
   AnnotationMethod:
     - title: "Annotation of ribosomes and fatty acid synthase (FAS) in VPP data"
       protocol_description: "Ribosome and FAS were localized in 4×-binned tomograms (13.48 Å voxel size) in an iterative workflow. Manually curated template matching for ribosomes and non-exhaustive manual picking for FAS (step 1; Supplementary Tables 2 and 3) were used for training 3D CNNs (step 2). CNN predictions were masked with a segmentation of the cytosol. For ribosomes, step 2 was repeated three times (always trained on combined predictions of step 1 and the preceding round) and each round consisted of three simultaneously trained networks with default hyperparameters (Supplementary Tables 2 and 3), except for the number of IF = 4, 8, and 32, to provide a cumulative prediction that is less overfitted to the incomplete training data. Cumulative predictions were manually revised in tom_chooser (ribosomes) and in EMAN2 (FAS) and manual picking was performed in either spectrum-matched or Gaussian-filtered tomograms (σ = 3) for up to three rounds in EMAN2 spt2_boxer (step 3; Supplementary Tables 2 and 3). The particle lists were cleaned for duplicates by applying elliptic distance constraints to the coordinates (Supplementary Note 1 and Supplementary Tables 2 and 3). Template matching for ribosomes was performed with pyTOM by a 3D cross-correlation search over 1,944 Euler angle combinations using the large subunit of S. cerevisiae 80S ribosome map (EMDB accession EMD-3228) scaled to the corresponding pixel size, and a spherical mask (diameter 337 Å). The 2,000–3,000 highest cross correlation scores were manually revised in Gaussian-filtered tomograms (σ = 3) with tom_chooser (pyTOM toolbox). For FAS in the VPP dataset template matching with a published S. cerevisiae FAS33 map (EMDB accession EMD-1623) as reference failed."
@@ -32,55 +31,64 @@ rembis:
       protocol_description: "Tilt movie frames were aligned using a SerialEM plugin. Tilt series were filtered according to the accumulated electron dose by Fourier cropping using the mtffilter function in etomo (IMOD/BETA4.10.1258), and sorted by tilt angle using a python script. Four-times-binned tilt images were aligned in etomo (IMOD/4.9.4) using patch tracking (typical residual error 0.291–0.569 pixels)."
     - title: "Tomogram reconstruction"
       protocol_description: "Tomograms were reconstructed via weighted back projection. Tomogram thicknesses ranged between 80–310 nm."
+
 datasets:
-  # Image set 1 (movie stacks, defocus condition)
-  - title: "Raw unaligned multi-frame micrographs for each tilt in 10 tilt-series acquired with defocus-only (DEF) on S. pombe cryo-FIB lamellae"
+  # Image set 1 (movie stacks)
+  - title: "Movie stacks"
     assigned_images:
-
-      # NOTE: this is many-to-many (and would also work for one-to-one where the pattern is a single path)
-      - file_pattern: "DEF/frames/TS_026_{}_{}.tif"
-        biosample_title: "S. pombe wild-type cells"
-        image_acquisition_protocol_title: "Cryo-electron tomography"
-        specimen_imaging_preparation_protocol_title: "Cryo-ET sample preparation and focused ion beam (FIB) milling"
-      
-      # NOTE: this is the file grouping for many-to-one (but inappropriate for the entry, here)
-      - file_pattern: "DEF/frames/TS_027_{}_{}.tif"
-        image_label: "TS_027 movie stack series"
+      # one-to-one grouping, without label
+      - file_pattern: "frames/TS_028_001_-0.0.tif"
         biosample_title: "S. pombe wild-type cells"
         image_acquisition_protocol_title: "Cryo-electron tomography"
         specimen_imaging_preparation_protocol_title: "Cryo-ET sample preparation and focused ion beam (FIB) milling"
 
-  # Image set 2 (tilt series, defocus condition)
-  # same organisation as above re. demo of group
-  - title: "Tilt series stacks and metadata of cryo-electron tomograms acquired with defocus-only (DEF) on S. pombe cryo-FIB lamellae"
-    assigned_images:
-      - file_pattern: "DEF/metadata/TS_026.st"
-        protocol_title: "Tilt series preprocessing"
-        input_image_pattern: "DEF/frames/TS_026_{}_{}.tif"
+      # many-to-many grouping
+      - label_prefix: "TS_026"
+        file_pattern: "frames/TS_026_{}_{}.tif"
+        biosample_title: "S. pombe wild-type cells"
+        image_acquisition_protocol_title: "Cryo-electron tomography"
+        specimen_imaging_preparation_protocol_title: "Cryo-ET sample preparation and focused ion beam (FIB) milling"
       
-      - file_pattern: "DEF/metadata/TS_027.st"
+      # label grouping for many-to-one
+      - label: "TS_027 movie stack series"
+        file_pattern: "frames/TS_027_{}_{}.tif"
+        biosample_title: "S. pombe wild-type cells"
+        image_acquisition_protocol_title: "Cryo-electron tomography"
+        specimen_imaging_preparation_protocol_title: "Cryo-ET sample preparation and focused ion beam (FIB) milling"
+
+  # Image set 2 (tilt series)
+  # same organisation as above with reference to inputs from image set 1; both one-to-one for assigned image
+  - title: "Tilt series"
+    assigned_images:
+      # many-to-many input image
+      - label: "TS 026 tilt series"
+        file_pattern: "metadata/TS_026.st"
         protocol_title: "Tilt series preprocessing"
-        input_image_label: "TS_027 movie stack series"
+        input_label_prefix: "TS_026"
+        input_file_pattern: "frames/TS_026_{}_{}.tif"
+      
+      # many-to-one input image
+      - label: "TS 027 tilt series"
+        file_pattern: "metadata/TS_027.st"
+        protocol_title: "Tilt series preprocessing"
+        input_label: "TS_027 movie stack series"
     
-  # Image set 3 (tomogram, defocus condition)
-  - title: "Reconstructed cryo-electron tomograms acquired with defocus-only (DEF) on S. pombe cryo-FIB lamellae"
+  # Image set 3 (tomograms, and annotations in additional files)
+  - title: "Tomograms"
     additional_files:
-      - label: "TS_026 defocus-only ribosomes csv file"
-        file_pattern: "DEF/particle_lists/TS_026_cyto_ribosomes.csv"
-      - label: "TS_026 defocus-only FAS csv file"
-        file_pattern: "DEF/particle_lists/TS_026_fas.csv"
+      - file_pattern: "particle_lists/TS_026_cyto_ribosomes.csv"
+      - file_pattern: "particle_lists/TS_026_fas.csv"
     assigned_images:
       - label: "TS_026 tomogram"
-        file_pattern: "DEF/tomograms/TS_026.rec"
+        file_pattern: "tomograms/TS_026.rec"
         protocol_title: "Tomogram reconstruction"
-        input_image_pattern: "DEF/metadata/TS_026.st"
+        input_label: "TS 026 tilt series"
     assigned_annotations:
       - label: "TS_026 ribosome annotations defocus data"
-        file_pattern: "DEF/particle_lists/TS_026_cyto_ribosomes.csv"
+        file_pattern: "particle_lists/TS_026_cyto_ribosomes.csv"
         annotation_method_title: "Annotation of ribosomes and fatty acid synthase (FAS) in defocus-only data"
-        input_image_pattern: "DEF/tomograms/TS_026.rec"
+        input_label: "TS_026 tomogram"
       - label: "TS_026 FAS annotations defocus data"
-        file_pattern: "DEF/particle_lists/TS_026_fas.csv"
+        file_pattern: "particle_lists/TS_026_fas.csv"
         annotation_method_title: "Annotation of ribosomes and fatty acid synthase (FAS) in defocus-only data"
-        input_image_pattern: "DEF/tomograms/TS_026.rec"
-
+        input_label: "TS_026 tomogram"

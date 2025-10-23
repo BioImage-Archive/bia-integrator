@@ -16,6 +16,12 @@
             "website": {
                 "@id": "bia:website"
             },
+            "resultOf": {
+                "@id": "bia:resultOf"
+            },
+            "label": {
+                "@id": "schema:name"
+            },
             "title": {
                 "@id": "schema:name"
             },
@@ -129,12 +135,6 @@
             },
             "tableSchema": {
                 "@id": "csvw:tableSchema"
-            },
-            "resultOf": {
-                "@id": "bia:resultOf"
-            },
-            "label": {
-                "@id": "schema:name"
             },
             "imagingInstrumentDescription": {
                 "@id": "bia:imagingInstrumentDescription"
