@@ -21,14 +21,16 @@ The artefacts created are saved to the production version of the API by default.
 version of the API use the `--api local` (for prod it is `--api prod` which is the default).
 
 ### Proposing and Processing Images
-The recommended workflow is to first generate proposals for which images to convert:
+The recommended workflow is to first generate proposals for which images to convert. Proposals can be generated in two ways - picking the first n convertable file references or sampling from size stratified groups of all convertible file references in a study. The default is to pick the first n convertible file references, as this places less computational burden on the API, especially for studies with large number of images.
+
+Example commands:
 
 ```sh
-poetry run bia-assign-image propose-images S-BIAD1423 proposals.yaml --max-items 5
+poetry run bia-assign-image propose-images S-BIAD1423 proposals.yaml --max-items 5 --strategy first_n
 ```
 or to run against your local version of the API
 ```sh
-poetry run bia-assign-image propose-images S-BIAD1423 proposals.yaml --max-items 5 --api local
+poetry run bia-assign-image propose-images S-BIAD1423 proposals.yaml --max-items 5 --api local --strategy first_n
 ```
 
 This will analyze the accession and suggest up to 5 file references to convert, writing them to proposals.yaml.
