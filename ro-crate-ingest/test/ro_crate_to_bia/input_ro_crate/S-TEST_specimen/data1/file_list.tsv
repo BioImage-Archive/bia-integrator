@@ -1,0 +1,3 @@
+file_path	type	associated_specimen
+data1/image_1_use_ro_crate_specimen.tiff	http://bia/Image	_:UnusedSpecimen
+data1/image_2_use_file_list_specimen.tiff	http://bia/Image	_:Specimen1

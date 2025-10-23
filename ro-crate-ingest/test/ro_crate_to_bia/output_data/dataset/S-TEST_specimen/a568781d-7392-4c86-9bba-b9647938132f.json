@@ -1,0 +1,24 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "a568781d-7392-4c86-9bba-b9647938132f",
+  "version": 0,
+  "model": {
+    "type_name": "Dataset",
+    "version": 2
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "data2"
+      }
+    }
+  ],
+  "title": "Specimen test.",
+  "description": "Dataset where specimens from association property on dataset are used.",
+  "analysis_method": [],
+  "correlation_method": [],
+  "example_image_uri": [],
+  "submitted_in_study_uuid": "7435dbaa-a053-41d1-a78b-0e344088119c"
+}
