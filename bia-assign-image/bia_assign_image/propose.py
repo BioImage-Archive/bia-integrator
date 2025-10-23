@@ -21,6 +21,7 @@ from bia_assign_image.utils import (
     get_value_from_attribute_list,
 )
 
+
 class ProposeStrategy(str, Enum):
     FIRST_N = "first_n"
     SIZE_STRATIFIED_SAMPLING = "size_stratified_sampling"
@@ -101,6 +102,7 @@ def get_convertible_file_references(
     api_target: ApiTarget,
     check_image_creation_prerequisites: bool = True,
     include_annotation_details: bool = False,
+    file_reference_page_size=100,
 ) -> dict[str, dict]:
     """Get details of convertible images for given accession ID"""
 
@@ -124,7 +126,7 @@ def get_convertible_file_references(
         file_references: list[bia_data_model.FileReference] = get_all_api_results(
             uuid=dataset.uuid,
             api_method=api_client.get_file_reference_linking_dataset,
-            page_size_setting=100,
+            page_size_setting=file_reference_page_size,
         )
 
         file_reference_details = extract_file_reference_details(
@@ -151,11 +153,11 @@ def get_first_n_convertible_file_references(
     api_target: ApiTarget,
     n_to_propose: int,
     check_image_creation_prerequisites: bool = True,
+    file_reference_page_size: int = 100,
 ) -> dict[str, dict]:
     """Get details of first n convertible images for given accession ID"""
 
     api_client = get_api_client(api_target)
-    file_reference_page_size = 100
     study = api_client.search_study_by_accession(accession_id)
     if not study:
         return {}
@@ -216,6 +218,7 @@ def write_convertible_file_references_for_accession_id(
     append: bool = True,
     check_image_creation_prerequisites: bool = True,
     propose_strategy: ProposeStrategy = ProposeStrategy.FIRST_N,
+    file_reference_page_size: int = 100,
 ) -> int:
     """
     Write details of file references proposed for conversion to file
@@ -239,12 +242,16 @@ def write_convertible_file_references_for_accession_id(
                 api_target,
                 n_to_propose=max_items,
                 check_image_creation_prerequisites=check_image_creation_prerequisites,
+                file_reference_page_size=file_reference_page_size,
             ).values()
         )
     elif propose_strategy == ProposeStrategy.SIZE_STRATIFIED_SAMPLING:
         convertible_file_references = list(
             get_convertible_file_references(
-                accession_id, api_target, check_image_creation_prerequisites
+                accession_id,
+                api_target,
+                check_image_creation_prerequisites,
+                file_reference_page_size=file_reference_page_size,
             ).values()
         )
 

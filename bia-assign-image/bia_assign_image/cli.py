@@ -197,12 +197,16 @@ def propose_images(
         ),
     ] = True,
     propose_strategy: Annotated[
-        propose.ProposeStrategy, typer.Option(
+        propose.ProposeStrategy,
+        typer.Option(
             "--strategy",
             "-s",
-            help="Strategy for generating proposals. Size stratified sampling requires getting all file references in study."
-        )
+            help="Strategy for generating proposals. Size stratified sampling requires getting all file references in study.",
+        ),
     ] = propose.ProposeStrategy.FIRST_N,
+    page_size: Annotated[
+        int, typer.Option(help="Page size for getting file references")
+    ] = 100,
 ) -> None:
     """Propose file references to convert for the given accession IDs"""
     for accession_id in accession_ids:
@@ -214,6 +218,7 @@ def propose_images(
             check_image_creation_prerequisites=check_image_creation_prerequisites,
             append=append,
             propose_strategy=propose_strategy,
+            file_reference_page_size=page_size,
         )
         logger.info(f"Wrote {count} proposals for {accession_id} to {output_path}")
 
