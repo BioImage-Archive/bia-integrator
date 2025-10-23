@@ -266,7 +266,7 @@ def find_matching_input_label_parts(
     if len(matches) == 0:
         raise ValueError(f"No file parts found to match input image pattern")
 
-    return matches
+    return sorted(matches)
 
 
 def create_input_labels(
