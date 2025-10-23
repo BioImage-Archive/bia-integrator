@@ -237,13 +237,13 @@
             "acknowledgement": null,
             "hasPart": [
                 {
-                    "@id": "Raw%20unaligned%20multi-frame%20micrographs%20for%20each%20tilt%20in%2010%20tilt-series%20acquired%20with%20defocus-only%20%28DEF%29%20on%20S.%20pombe%20cryo-FIB%20lamellae%20data/frames/"
+                    "@id": "Movie%20stacks%20data/frames/"
                 },
                 {
-                    "@id": "Tilt%20series%20stacks%20and%20metadata%20of%20cryo-electron%20tomograms%20acquired%20with%20defocus-only%20%28DEF%29%20on%20S.%20pombe%20cryo-FIB%20lamellae%20data/metadata/"
+                    "@id": "Tilt%20series%20data/metadata/"
                 },
                 {
-                    "@id": "Reconstructed%20cryo-electron%20tomograms%20acquired%20with%20defocus-only%20%28DEF%29%20on%20S.%20pombe%20cryo-FIB%20lamellae%20data/tomograms/"
+                    "@id": "Tomograms%20data/tomograms/"
                 }
             ],
             "accessionId": "EMPIAR-IMAGELABELTEST"
@@ -262,7 +262,7 @@
             "contactEmail": null
         },
         {
-            "@id": "Tilt%20series%20stacks%20and%20metadata%20of%20cryo-electron%20tomograms%20acquired%20with%20defocus-only%20%28DEF%29%20on%20S.%20pombe%20cryo-FIB%20lamellae%20data/metadata/file_list.tsv",
+            "@id": "Tilt%20series%20data/metadata/file_list.tsv",
             "@type": [
                 "File",
                 "bia:FileList",
@@ -273,7 +273,7 @@
             }
         },
         {
-            "@id": "Reconstructed%20cryo-electron%20tomograms%20acquired%20with%20defocus-only%20%28DEF%29%20on%20S.%20pombe%20cryo-FIB%20lamellae%20data/tomograms/file_list.tsv",
+            "@id": "Tomograms%20data/tomograms/file_list.tsv",
             "@type": [
                 "File",
                 "bia:FileList",
@@ -284,7 +284,7 @@
             }
         },
         {
-            "@id": "Raw%20unaligned%20multi-frame%20micrographs%20for%20each%20tilt%20in%2010%20tilt-series%20acquired%20with%20defocus-only%20%28DEF%29%20on%20S.%20pombe%20cryo-FIB%20lamellae%20data/frames/file_list.tsv",
+            "@id": "Movie%20stacks%20data/frames/file_list.tsv",
             "@type": [
                 "File",
                 "bia:FileList",
@@ -380,12 +380,12 @@
             ]
         },
         {
-            "@id": "Reconstructed%20cryo-electron%20tomograms%20acquired%20with%20defocus-only%20%28DEF%29%20on%20S.%20pombe%20cryo-FIB%20lamellae%20data/tomograms/",
+            "@id": "Tomograms%20data/tomograms/",
             "@type": [
                 "Dataset",
                 "bia:Dataset"
             ],
-            "title": "Reconstructed cryo-electron tomograms acquired with defocus-only (DEF) on S. pombe cryo-FIB lamellae",
+            "title": "Tomograms",
             "description": "Tomograms (4-times binned reconstructions, original pixel size 3.3702 \u00c5) from aligned frame stacks (st files in metadata folder, tif files in frames folder), mdoc and xf alignment files (in metadata folder). Naming from TS_026 to TS_045 corresponds to TS_0011 to TS_0020 in the original publication.\nFor each of the 10 tomograms, comprehensive segmentation volumes (32 bit floats, 928x960, 13.48 \u00c5 voxel size) of ribosomes, fatty acid synthase (FAS), membranes, organelles (labels) and cytosol are provided in the labels folder. Voxel labels of individual organelles in labels files are defined in organelle_labels.txt.\nRibosome and FAS particle coordinates (csv files) are provided in the corresponding particle_lists folder (in csv files with x, y, z coordinates in columns 1, 2, 3 respectively, 4-times binned pixels with original pixel size 3.3702 \u00c5).",
             "associatedBiologicalEntity": [],
             "associatedSpecimenImagingPreparationProtocol": [],
@@ -404,20 +404,20 @@
             "associatedProtocol": [],
             "hasPart": [
                 {
-                    "@id": "Reconstructed%20cryo-electron%20tomograms%20acquired%20with%20defocus-only%20%28DEF%29%20on%20S.%20pombe%20cryo-FIB%20lamellae%20data/tomograms/file_list.tsv"
+                    "@id": "Tomograms%20data/tomograms/file_list.tsv"
                 }
             ],
             "associationFileMetadata": {
-                "@id": "Reconstructed%20cryo-electron%20tomograms%20acquired%20with%20defocus-only%20%28DEF%29%20on%20S.%20pombe%20cryo-FIB%20lamellae%20data/tomograms/file_list.tsv"
+                "@id": "Tomograms%20data/tomograms/file_list.tsv"
             }
         },
         {
-            "@id": "Tilt%20series%20stacks%20and%20metadata%20of%20cryo-electron%20tomograms%20acquired%20with%20defocus-only%20%28DEF%29%20on%20S.%20pombe%20cryo-FIB%20lamellae%20data/metadata/",
+            "@id": "Tilt%20series%20data/metadata/",
             "@type": [
                 "Dataset",
                 "bia:Dataset"
             ],
-            "title": "Tilt series stacks and metadata of cryo-electron tomograms acquired with defocus-only (DEF) on S. pombe cryo-FIB lamellae",
+            "title": "Tilt series",
             "description": "Tilt series stacks (st files from Warp) from aligned frame stacks (in frames folder), tilt series alignment files (xf from etomo, IMOD) and acquisition metadata files modified to match tilt series stacks (in mdocs_modified) to reconstruct tomograms (in tomograms folder). Naming from TS_026 to TS_045 corresponds to TS_0011 to TS_0020 in the original publication.",
             "associatedBiologicalEntity": [],
             "associatedSpecimenImagingPreparationProtocol": [],
@@ -429,20 +429,20 @@
             "associatedProtocol": [],
             "hasPart": [
                 {
-                    "@id": "Tilt%20series%20stacks%20and%20metadata%20of%20cryo-electron%20tomograms%20acquired%20with%20defocus-only%20%28DEF%29%20on%20S.%20pombe%20cryo-FIB%20lamellae%20data/metadata/file_list.tsv"
+                    "@id": "Tilt%20series%20data/metadata/file_list.tsv"
                 }
             ],
             "associationFileMetadata": {
-                "@id": "Tilt%20series%20stacks%20and%20metadata%20of%20cryo-electron%20tomograms%20acquired%20with%20defocus-only%20%28DEF%29%20on%20S.%20pombe%20cryo-FIB%20lamellae%20data/metadata/file_list.tsv"
+                "@id": "Tilt%20series%20data/metadata/file_list.tsv"
             }
         },
         {
-            "@id": "Raw%20unaligned%20multi-frame%20micrographs%20for%20each%20tilt%20in%2010%20tilt-series%20acquired%20with%20defocus-only%20%28DEF%29%20on%20S.%20pombe%20cryo-FIB%20lamellae%20data/frames/",
+            "@id": "Movie%20stacks%20data/frames/",
             "@type": [
                 "Dataset",
                 "bia:Dataset"
             ],
-            "title": "Raw unaligned multi-frame micrographs for each tilt in 10 tilt-series acquired with defocus-only (DEF) on S. pombe cryo-FIB lamellae",
+            "title": "Movie stacks",
             "description": "Raw unaligned multi-frame micrographs were aligned, sorted and combined into tilt series stacks using Warp (st files in metadata folder) and tomograms reconstructed using etomo (IMOD) (rec files in tomgrams folder). Naming from TS_026 to TS_045 corresponds to TS_0011 to TS_0020 in the original publication.\nOriginal metadata files (mdocs_ori) and the count ref file (dm4 file) are provided in the frames folder.",
             "associatedBiologicalEntity": [
                 {
@@ -466,11 +466,11 @@
             "associatedProtocol": [],
             "hasPart": [
                 {
-                    "@id": "Raw%20unaligned%20multi-frame%20micrographs%20for%20each%20tilt%20in%2010%20tilt-series%20acquired%20with%20defocus-only%20%28DEF%29%20on%20S.%20pombe%20cryo-FIB%20lamellae%20data/frames/file_list.tsv"
+                    "@id": "Movie%20stacks%20data/frames/file_list.tsv"
                 }
             ],
             "associationFileMetadata": {
-                "@id": "Raw%20unaligned%20multi-frame%20micrographs%20for%20each%20tilt%20in%2010%20tilt-series%20acquired%20with%20defocus-only%20%28DEF%29%20on%20S.%20pombe%20cryo-FIB%20lamellae%20data/frames/file_list.tsv"
+                "@id": "Movie%20stacks%20data/frames/file_list.tsv"
             }
         },
         {

@@ -34,7 +34,7 @@ rembis:
 
 datasets:
   # Image set 1 (movie stacks)
-  - title: "Raw unaligned multi-frame micrographs for each tilt in 10 tilt-series acquired with defocus-only (DEF) on S. pombe cryo-FIB lamellae"
+  - title: "Movie stacks"
     assigned_images:
       # one-to-one grouping, without label
       - file_pattern: "frames/TS_028_001_-0.0.tif"
@@ -58,7 +58,7 @@ datasets:
 
   # Image set 2 (tilt series)
   # same organisation as above with reference to inputs from image set 1; both one-to-one for assigned image
-  - title: "Tilt series stacks and metadata of cryo-electron tomograms acquired with defocus-only (DEF) on S. pombe cryo-FIB lamellae"
+  - title: "Tilt series"
     assigned_images:
       # many-to-many input image
       - label: "TS 026 tilt series"
@@ -74,7 +74,7 @@ datasets:
         input_label: "TS_027 movie stack series"
     
   # Image set 3 (tomograms, and annotations in additional files)
-  - title: "Reconstructed cryo-electron tomograms acquired with defocus-only (DEF) on S. pombe cryo-FIB lamellae"
+  - title: "Tomograms"
     additional_files:
       - file_pattern: "particle_lists/TS_026_cyto_ribosomes.csv"
       - file_pattern: "particle_lists/TS_026_fas.csv"

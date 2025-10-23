@@ -19,10 +19,6 @@ jobs:
       run:
         working-directory: ${{ matrix.project }}
     steps:
-      - name: Enable long path support on windows
-        if: runner.os == 'Windows'
-        run: git config --global core.longpaths true
-        working-directory: .
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
         with:

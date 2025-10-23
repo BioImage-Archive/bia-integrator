@@ -3,7 +3,7 @@
     "imagesets": [
       {
         "segmentations": [],
-        "name": "Raw unaligned multi-frame micrographs for each tilt in 10 tilt-series acquired with defocus-only (DEF) on S. pombe cryo-FIB lamellae",
+        "name": "Movie stacks",
         "directory": "data/frames",
         "category": "micrographs - multiframe",
         "header_format": "TIFF",
@@ -24,7 +24,7 @@
       },
       {
         "segmentations": [],
-        "name": "Reconstructed cryo-electron tomograms acquired with defocus-only (DEF) on S. pombe cryo-FIB lamellae",
+        "name": "Tomograms",
         "directory": "data/tomograms",
         "category": "reconstructed volumes",
         "header_format": "MRC",
@@ -45,7 +45,7 @@
       },
       {
         "segmentations": [],
-        "name": "Tilt series stacks and metadata of cryo-electron tomograms acquired with defocus-only (DEF) on S. pombe cryo-FIB lamellae",
+        "name": "Tilt series",
         "directory": "data/metadata",
         "category": "tilt series",
         "header_format": "MRC",
