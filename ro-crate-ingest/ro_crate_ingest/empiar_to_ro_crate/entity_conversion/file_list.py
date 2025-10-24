@@ -150,12 +150,17 @@ def get_file_patterns_matches_and_objects(
             )
         images_set_path_to_dataset_map.append(
             PatternMatch(
-                f"{imageset_to_path[dataset["title"]]}{{rest}}",
+                f"{imageset_to_path[dataset["title"]]}/{{rest}}",
                 dataset_id,
                 None,
                 None,
             )
         )
+
+    # Sort paths by specificity to deal with nested imagesets
+    images_set_path_to_dataset_map = sort_imageset_paths_by_specificity(
+        images_set_path_to_dataset_map
+    )
 
     # Order matters for preferential matching: image_sets should be last, and file_patterns should be after images & annotation.
     path_maps = (
@@ -166,6 +171,13 @@ def get_file_patterns_matches_and_objects(
     )
 
     return path_maps
+
+
+def sort_imageset_paths_by_specificity(
+        pattern_matches: list[PatternMatch]
+) -> list[PatternMatch]:
+    
+    return sorted(pattern_matches, key=lambda pm: pm.file_pattern.count('/'), reverse=True)
 
 
 def expand_row_metadata(
