@@ -433,11 +433,7 @@ def convert_uploaded_by_submitter_to_interactive_display(
     ome_zarr_uri = zarr_group_uri + "/0"
     # ome_zarr_uri = zarr_group_uri
 
-    # rich.print(zarr_group_uri)
-    # import sys; sys.exit(0)
-
     # Set image_rep properties that we now know
-    # base_image_rep.file_uri =
     base_image_rep.total_size_in_bytes = get_dir_size(output_zarr_fpath)
     base_image_rep.file_uri = [ome_zarr_uri]
     update_dict = get_dimensions_dict_from_zarr(ome_zarr_uri)
@@ -472,8 +468,8 @@ def unzip_ome_zarr_archive(
     # Get the file references we'll need
     file_references = get_all_file_references_for_image(image)
 
-    # TODO: refactor to move extraction of zips to its own function
     if input_image_rep.image_format == ".ome.zarr.zip":
+        # TODO: We will need to handle multiple zip archives here in future
         assert len(file_references) == 1
         output_zarr_fpath = fetch_ome_zarr_zip_fileref_and_unzip(
             file_references[0], base_image_rep
@@ -489,11 +485,7 @@ def unzip_ome_zarr_archive(
     ome_zarr_uri = zarr_group_uri + "/0"
     # ome_zarr_uri = zarr_group_uri
 
-    # rich.print(zarr_group_uri)
-    # import sys; sys.exit(0)
-
     # Set image_rep properties that we now know
-    # base_image_rep.file_uri =
     base_image_rep.total_size_in_bytes = get_dir_size(output_zarr_fpath)
     base_image_rep.file_uri = [ome_zarr_uri]
     update_dict = get_dimensions_dict_from_zarr(ome_zarr_uri)
