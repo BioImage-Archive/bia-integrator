@@ -43,6 +43,11 @@ def runner() -> CliRunner:
 
 
 @pytest.fixture
+def zipped_ome_zarr_rep_uuid() -> str:
+    return "2ecdac48-f4ef-44aa-aa32-a69ffc937585"
+
+
+@pytest.fixture
 def uploaded_by_submitter_rep_uuid() -> str:
     return "3b4415ed-fe6f-4591-a4a1-eebc9f4a6750"
 
@@ -138,6 +143,41 @@ def test_cli_convert_uploaded_by_submitter_to_interactive_display(
             "convert",
             uploaded_by_submitter_rep_uuid,
             "convert_uploaded_by_submitter_to_interactive_display",
+        ],
+        catch_exceptions=False,
+    )
+
+    assert result.exit_code == 0
+
+    created_interactive_display = api_client.get_image_representation(
+        str(expected_interactive_display.uuid)
+    )
+    assert compare_created_vs_expected_image_representation(
+        created_interactive_display, expected_interactive_display
+    )
+
+    created_zarr_path = (
+        settings.cache_root_dirpath
+        / "zarr"
+        / f"{expected_interactive_display.uuid}.zarr"
+    )
+    assert created_zarr_path.exists()
+
+
+def test_cli_unzip_and_stage_zipped_ome_zarr(
+    runner,
+    zipped_ome_zarr_rep_uuid,
+    mock_copy_uri_to_local,
+    mock_sync_dirpath_to_s3,
+    expected_interactive_display,
+    reset_expected_interactive_display_in_api,
+):
+    result = runner.invoke(
+        cli.app,
+        [
+            "convert",
+            zipped_ome_zarr_rep_uuid,
+            # "unzip_ome_zarr_zip",
         ],
         catch_exceptions=False,
     )
