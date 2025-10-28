@@ -56,6 +56,7 @@ curl -k -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX}" \
 				"dataset": {
 					"type": "object",
 					"properties": {
+						"uuid": { "type": "keyword" },
 						"biological_entity": {
 							"type": "object",
 							"properties": {
