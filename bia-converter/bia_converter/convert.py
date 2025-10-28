@@ -449,6 +449,61 @@ def convert_uploaded_by_submitter_to_interactive_display(
     return base_image_rep
 
 
+def unzip_ome_zarr_archive(
+    input_image_rep: ImageRepresentation, conversion_parameters: dict = {}
+) -> ImageRepresentation:
+    """Unzip an OME-ZARR zip archive image representation to an OME-ZARR"""
+
+    image = api_client.get_image(input_image_rep.representation_of_uuid)
+
+    conversion_process_dict = {
+        "image_representation_of_submitted_by_uploader": f"{input_image_rep.uuid}",
+        "conversion_function": "unzip_ome_zarr_archive",
+        "conversion_config": conversion_parameters,
+    }
+
+    base_image_rep = create_image_representation_object(
+        image, conversion_process_dict, image_format=".ome.zarr"
+    )
+    logger.info(
+        f"Created image representation for converted image with uuid: {base_image_rep.uuid}"
+    )
+
+    # Get the file references we'll need
+    file_references = get_all_file_references_for_image(image)
+
+    # TODO: refactor to move extraction of zips to its own function
+    if input_image_rep.image_format == ".ome.zarr.zip":
+        assert len(file_references) == 1
+        output_zarr_fpath = fetch_ome_zarr_zip_fileref_and_unzip(
+            file_references[0], base_image_rep
+        )
+    else:
+        raise Exception("Input image representation format {input_image_rep.image_format} is not an OME-ZARR zip archive. Expecting .ome.zarr.zip")
+
+    # Upload to S3
+    dst_suffix = create_s3_uri_suffix_for_image_representation(base_image_rep)
+    zarr_group_uri = sync_dirpath_to_s3(output_zarr_fpath, dst_suffix)
+    # TODO: Discuss how to handle whether to append '/0'
+    # After discussion with MH on 11/02/2025 agreed to default to '/0' (which currently won't work for plate-well)
+    ome_zarr_uri = zarr_group_uri + "/0"
+    # ome_zarr_uri = zarr_group_uri
+
+    # rich.print(zarr_group_uri)
+    # import sys; sys.exit(0)
+
+    # Set image_rep properties that we now know
+    # base_image_rep.file_uri =
+    base_image_rep.total_size_in_bytes = get_dir_size(output_zarr_fpath)
+    base_image_rep.file_uri = [ome_zarr_uri]
+    update_dict = get_dimensions_dict_from_zarr(ome_zarr_uri)
+    base_image_rep.__dict__.update(update_dict)
+
+    # Write back to API
+    store_object_in_api_idempotent(base_image_rep)
+
+    return base_image_rep
+
 def update_recommended_vizarr_representation_for_image(image_rep: ImageRepresentation):
     """Update 'recommended_vizarr_representation' attr of underlying Image object"""
 

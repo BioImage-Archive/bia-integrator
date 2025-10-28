@@ -100,33 +100,46 @@ def expected_interactive_display() -> api_models.ImageRepresentation:
 
 
 @pytest.fixture
-def reset_expected_interactive_display_in_api(expected_interactive_display):
+def expected_ome_zarr_interactive_display() -> api_models.ImageRepresentation:
+    obj_path = (
+        Path(__file__).parent
+        / "data"
+        / "expected_ome_zarr_interactive_display_image_representation.json"
+    )
+
+    # Compute UUID at runtime as uuid_unique_input includes version of bioformats2raw on testing machine
+    obj_dict = json.loads(obj_path.read_text())
+    return api_models.ImageRepresentation.model_validate(obj_dict)
+
+@pytest.fixture
+def reset_expected_interactive_display_in_api(expected_interactive_display, expected_ome_zarr_interactive_display):
     """If the expected interactive display is in the api reset its values
 
     This may happen if this test is run more than once without cleaning out the local API.
     """
-    try:
-        im_rep = api_client.get_image_representation(
-            str(expected_interactive_display.uuid)
-        )
+    for interactive_display in [expected_interactive_display, expected_ome_zarr_interactive_display]:
+        try:
+            im_rep = api_client.get_image_representation(
+                str(interactive_display.uuid)
+            )
 
-        im_rep.additional_metadata = []
-        im_rep.file_uri = []
-        im_rep.image_format = ""
-        im_rep.size_c = 0
-        im_rep.size_t = 0
-        im_rep.size_x = 0
-        im_rep.size_y = 0
-        im_rep.size_z = 0
-        im_rep.total_size_in_bytes = 0
-        im_rep.voxel_physical_size_x = 0.0
-        im_rep.voxel_physical_size_y = 0.0
-        im_rep.voxel_physical_size_z = 0.0
+            im_rep.additional_metadata = []
+            im_rep.file_uri = []
+            im_rep.image_format = ""
+            im_rep.size_c = 0
+            im_rep.size_t = 0
+            im_rep.size_x = 0
+            im_rep.size_y = 0
+            im_rep.size_z = 0
+            im_rep.total_size_in_bytes = 0
+            im_rep.voxel_physical_size_x = 0.0
+            im_rep.voxel_physical_size_y = 0.0
+            im_rep.voxel_physical_size_z = 0.0
 
-        im_rep.version += 1
-        api_client.post_image_representation(im_rep)
-    except NotFoundException:
-        pass
+            im_rep.version += 1
+            api_client.post_image_representation(im_rep)
+        except NotFoundException:
+            continue
 
 
 def test_cli_convert_uploaded_by_submitter_to_interactive_display(
@@ -169,7 +182,7 @@ def test_cli_unzip_and_stage_zipped_ome_zarr(
     zipped_ome_zarr_rep_uuid,
     mock_copy_uri_to_local,
     mock_sync_dirpath_to_s3,
-    expected_interactive_display,
+    expected_ome_zarr_interactive_display,
     reset_expected_interactive_display_in_api,
 ):
     result = runner.invoke(
@@ -177,7 +190,7 @@ def test_cli_unzip_and_stage_zipped_ome_zarr(
         [
             "convert",
             zipped_ome_zarr_rep_uuid,
-            # "unzip_ome_zarr_zip",
+            "unzip_ome_zarr_archive",
         ],
         catch_exceptions=False,
     )
@@ -185,15 +198,15 @@ def test_cli_unzip_and_stage_zipped_ome_zarr(
     assert result.exit_code == 0
 
     created_interactive_display = api_client.get_image_representation(
-        str(expected_interactive_display.uuid)
+        str(expected_ome_zarr_interactive_display.uuid)
     )
     assert compare_created_vs_expected_image_representation(
-        created_interactive_display, expected_interactive_display
+        created_interactive_display, expected_ome_zarr_interactive_display
     )
 
     created_zarr_path = (
         settings.cache_root_dirpath
         / "zarr"
-        / f"{expected_interactive_display.uuid}.zarr"
+        / f"{expected_ome_zarr_interactive_display.uuid}.zarr"
     )
     assert created_zarr_path.exists()
