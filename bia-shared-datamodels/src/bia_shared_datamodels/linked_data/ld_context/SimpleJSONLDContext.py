@@ -1,6 +1,5 @@
-from __future__ import annotations
 from .ContextTerm import ContextTerm
-from typing import Optional, Iterable
+from typing import Iterable
 
 
 class SimpleJSONLDContext:
@@ -9,11 +8,11 @@ class SimpleJSONLDContext:
 
     def __init__(
         self,
-        prefixes: Optional[dict[str, str]] = None,
-        terms: Optional[list[ContextTerm]] = None,
+        prefixes: dict[str, str] | None = None,
+        terms: Iterable[ContextTerm] | None = None,
     ):
         self.prefixes = prefixes if prefixes else {}
-        self.terms = terms if terms else set()
+        self.terms = set(terms) if terms else set()
 
     def to_dict(self) -> dict:
         context_dict = self.prefixes.copy()
@@ -32,10 +31,7 @@ class SimpleJSONLDContext:
     def add_term(self, term: ContextTerm) -> None:
         self.terms.add(term)
 
-    def remove_field_term(self, field: str) -> None:
-        self.terms = [term for term in self.terms if term.field_name != field]
-
-    def merge(self, *contexts: Iterable[SimpleJSONLDContext]) -> SimpleJSONLDContext:
+    def merge(self, *contexts: Iterable["SimpleJSONLDContext"]) -> "SimpleJSONLDContext":
         """Merge multiple SimpleJSONLDContext instances into a new one."""
         merged_prefixes = self.prefixes.copy()
         merged_terms = self.terms.copy()
@@ -50,6 +46,6 @@ class SimpleJSONLDContext:
             existing_fields = {term.field_name for term in merged_terms}
             for term in context.terms:
                 if term.field_name not in existing_fields:
-                    merged_terms.append(term)
+                    merged_terms.add(term)
 
         return SimpleJSONLDContext(prefixes=merged_prefixes, terms=merged_terms)
