@@ -232,15 +232,18 @@ def update_row(
             if label_parts is not None:
                 output_row["label"] = f"{label_prefix}_{label_parts}"
 
+        annotation_method_title = yaml_object.get("annotation_method_title", None)
         output_row["associated_annotation_method"] = (
-            f"_:{yaml_object["annotation_method_title"]}"
-            if yaml_object.get("annotation_method_title", None)
-            else None
+            [f"_:{title}" for title in annotation_method_title]
+            if isinstance(annotation_method_title, list)
+            else f"_:{annotation_method_title}" if annotation_method_title else None
         )
+
+        protocol_title = yaml_object.get("protocol_title", None)
         output_row["associated_protocol"] = (
-            f"_:{yaml_object["protocol_title"]}"
-            if yaml_object.get("protocol_title", None)
-            else None
+            [f"_:{title}" for title in protocol_title]
+            if isinstance(protocol_title, list)
+            else f"_:{protocol_title}" if protocol_title else None
         )
 
         if input_label := yaml_object.get("input_label", None):
