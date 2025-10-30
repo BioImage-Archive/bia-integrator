@@ -1,0 +1,209 @@
+{
+    "@context": [
+        "https://w3id.org/ro/crate/1.1/context",
+        "https://github.com/BioImage-Archive/bia-integrator/blob/3695d53f03cda7b890dd25baaf9f38600a3e9d71/bia-shared-datamodels/src/bia_shared_datamodels/linked_data/bia_ro_crate_context.jsonld"
+    ],
+    "@graph": [
+        {
+            "@type": "CreativeWork",
+            "@id": "ro-crate-metadata.json",
+            "conformsTo": {
+                "@id": "https://w3id.org/ro/crate/1.1"
+            },
+            "about": {
+                "@id": "./"
+            }
+        },
+        {
+            "@id": "./",
+            "@type": [
+                "bia:Study",
+                "Dataset"
+            ],
+            "title": "Short study title",
+            "datePublished": "2023-08-14",
+            "licence": "https://creativecommons.org/publicdomain/zero/1.0/",
+            "description": "Description of the overall study",
+            "accessionId": "S-1",
+            "contributor": [
+                {
+                    "@id": "https://orcid.org/0009-0007-4223-1439"
+                }
+            ],
+            "hasPart": [
+                {
+                    "@id": "dataset/"
+                },
+                {
+                    "@id": "annotations/"
+                }
+            ]
+        },
+        {
+            "@type": [
+                "bia:Contributor",
+                "Person"
+            ],
+            "displayName": "Francois Sherwood",
+            "@id": "https://orcid.org/0009-0007-4223-1439",
+            "role": [
+                "data acquisition",
+                "data curator"
+            ],
+            "contactEmail": "fsherwood@ebi.ac.uk",
+            "affiliation": [
+                {
+                    "@id": "https://ror.org/02catss52"
+                }
+            ]
+        },
+        {
+            "@id": "https://ror.org/02catss52",
+            "@type": [
+                "bia:Affiliation"
+            ],
+            "displayName": "European Bioinformatics Institute"
+        },
+        {
+            "@id": "_:BS-1",
+            "@type": [
+                "bia:BioSample"
+            ],
+            "title": "Title of biosample",
+            "biologicalEntityDescription": "Description of the organism/part",
+            "organismClassification": [
+                {
+                    "@id": "NCBI:txid7227"
+                }
+            ]
+        },
+        {
+            "@id": "NCBI:txid7227",
+            "@type": [
+                "bia:Taxon"
+            ],
+            "scientificName": "Drosophila melanogaster"
+        },
+        {
+            "@id": "_:SIPP-1",
+            "@type": [
+                "bia:SpecimenImagingPreparationProtocol"
+            ],
+            "title": "Title of imaging prepration protocol",
+            "protocolDescription": "Steps involved in preparing the biosample (or a part of it) for imaging."
+        },
+        {
+            "@id": "_:IAP-1",
+            "@type": [
+                "bia:ImageAcquisitionProtocol"
+            ],
+            "title": "Title of imaging prepration protocol",
+            "protocolDescription": "Steps and settings involved in image capture.",
+            "imagingInstrumentDescription": "Make and model of the instrument",
+            "imagingMethodName": [
+                "confocal microscopy"
+            ],
+            "fbbiId": [
+                "fbbi_00000251"
+            ]
+        },
+        {
+            "@id": "_:AM-1",
+            "@type": [
+                "bia:AnnotationMethod"
+            ],
+            "title": "Segmentation",
+            "protocolDescription": "Description of the steps involved in annotating the image.",
+            "methodType": [
+                "segmentation"
+            ]
+        },
+        {
+            "@id": "dataset/",
+            "@type": [
+                "Dataset",
+                "bia:Dataset"
+            ],
+            "title": "Principal dataset of images",
+            "description": "Folder of the produced images.",
+            "associatedBiologicalEntity": [
+                {
+                    "@id": "_:BS-1"
+                }
+            ],
+            "associatedSpecimenImagingPreparationProtocol": [
+                {
+                    "@id": "_:SIPP-1"
+                }
+            ],
+            "associatedImageAcquisitionProtocol": [
+                {
+                    "@id": "_:IAP-1"
+                }
+            ]
+        },
+        {
+            "@id": "annotations/",
+            "@type": [
+                "Dataset",
+                "bia:Dataset"
+            ],
+            "title": "Principal dataset of annotations",
+            "description": "Folder of segmentation masks.",
+            "associatedAnnotationMethod": [
+                {
+                    "@id": "_:AM-1"
+                }
+            ],
+            "hasPart": [
+                {
+                    "@id": "annotations/file_list.tsv"
+                }
+            ],
+            "associationFileMetadata": {
+                "@id": "annotations/file_list.tsv"
+            }
+        },
+        {
+            "@id": "annotations/file_list.tsv",
+            "@type": [
+                "File",
+                "bia:FileList",
+                "csvw:Table"
+            ],
+            "tableSchema": {
+                "@id": "_:ts0"
+            }
+        },
+        {
+            "@id": "_:ts0",
+            "@type": [
+                "csvw:Schema"
+            ],
+            "column": [
+                {
+                    "@id": "_:col0"
+                },
+                {
+                    "@id": "_:col1"
+                }
+            ]
+        },
+        {
+            "@id": "_:col0",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "file_path",
+            "propertyUrl": "http://bia/filePath"
+        },
+        {
+            "@id": "_:col1",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "source_image_path",
+            "propertyUrl": "http://bia/sourceImageLabel"
+        }
+    ]
+}
