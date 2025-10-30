@@ -6,47 +6,64 @@ from bia_shared_datamodels.linked_data.ld_context.SimpleJSONLDContext import (
 )
 from bia_shared_datamodels.linked_data.pydantic_ld.ROCrateModel import ROCrateModel
 from rdflib import Graph
-from rocrate import rocrate
+from collections import defaultdict
 
 
-class BIAROCrateMetadata(rocrate.ROCrate):
+class BIAROCrateMetadata:
 
-    graph_bia_entities: dict[str, ROCrateModel]
-    context: SimpleJSONLDContext
+    _graph_bia_entities: dict[str, ROCrateModel]
+    _context: SimpleJSONLDContext
 
     def __init__(
         self,
         graph_bia_entities: dict[str, ROCrateModel],
         context: SimpleJSONLDContext,
     ) -> None:
-        self.graph_bia_entities = graph_bia_entities
-        self.context = context
+        self._graph_bia_entities = graph_bia_entities
+        self._context = context
 
     def to_graph(self) -> Graph:
-        graph = Graph()
-        return graph
+        # TODO: need some way of converting between a the entities and it's graph, and preferably keeping both in sync.
+        # Could potentially store the graph rather than the objects and convert the opposite way
+        raise NotImplementedError
 
     def to_dict(self) -> dict:
-        context_dict = self.context.to_dict()
+        context_dict = self._context.to_dict()
 
         graph_objects = [
             json.loads(entity.model_dump_json(by_alias=True))
             for entity in sorted(
-                self.graph_bia_entities.values(), key=lambda entity: entity.id
+                self._graph_bia_entities.values(), key=lambda entity: entity.id
             )
         ]
 
         return {"@context": context_dict, "@graph": graph_objects}
 
-    def objects(self) -> Iterable[ROCrateModel]:
-        return self.graph_bia_entities.values()
+    def get_context(self) -> SimpleJSONLDContext:
+        return self._context
 
-    def get_object(self, id) -> ROCrateModel | None:
-        return self.graph_bia_entities.get(id)
+    def get_objects(self) -> Iterable[ROCrateModel]:
+        return self._graph_bia_entities.values()
 
-    def get_objects_by_type(self, filter_type: type) -> dict[str, ROCrateModel]:
-        return {
-            object_id: bia_object
-            for object_id, bia_object in self.graph_bia_entities.items()
-            if isinstance(bia_object, filter_type)
+    def get_object_lookup(self) -> dict[str, ROCrateModel]:
+        return self._graph_bia_entities
+
+    def get_object(self, id: str) -> ROCrateModel | None:
+        return self._graph_bia_entities.get(id)
+
+    def get_objects_by_type(
+        self,
+    ) -> dict[type, dict[str, ROCrateModel]]:
+        """
+        Returns a dictionary of the form:
+        {
+            "type_A": {
+                "id_a": <Object of type: type_A with id: id_a>
+            }
         }
+        """
+        objects_by_type = defaultdict(dict)
+        for object_id, bia_object in self._graph_bia_entities.items():
+            objects_by_type[type(bia_object)][object_id] = bia_object
+
+        return objects_by_type

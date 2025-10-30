@@ -15,6 +15,9 @@ from ro_crate_ingest.bia_ro_crate.bia_ro_crate_metadata import BIAROCrateMetadat
 
 
 class BIAROCrateMetadataParser:
+    """
+    Class to parse a ro-crate-metadata.json from inside a BIA ro-crate and output a BIAROCrateMetadata
+    """
 
     def __init__(self) -> None:
         pass
@@ -53,13 +56,14 @@ class BIAROCrateMetadataParser:
                     break
 
         return BIAROCrateMetadata(
-            graph_bia_entities=rocrate_objects_by_id, context=context
+            graph_bia_entities=rocrate_objects_by_id,
+            context=context,
         )
 
     def parse_to_graph(self, path_to_ro_crate: Path) -> Graph:
         crate_metadata_path = self._get_metadata_path(path_to_ro_crate)
         graph = Graph()
-        graph.parse(crate_metadata_path, format="jsonld")
+        graph.parse(crate_metadata_path, format="json-ld")
         return graph
 
     @staticmethod
@@ -91,14 +95,14 @@ class BIAROCrateMetadataParser:
         terms = set()
         prefixes = {}
         for key, mapping in mappings.items():
-            if mapping._prefix:
+            if mapping.get("_prefix"):
                 prefixes[key] = mapping.get("@id")
             else:
                 terms.add(
                     ContextTerm.ContextTerm(
                         full_uri=mapping.get("@id"),
                         field_name=key,
-                        is_reverse=mapping.reverse,
+                        is_reverse=mapping.get("reverse"),
                     )
                 )
         return SimpleJSONLDContext.SimpleJSONLDContext(prefixes=prefixes, terms=terms)

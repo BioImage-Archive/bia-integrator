@@ -9,6 +9,7 @@ class FileList:
     ro_crate_id: str | None
     ro_crate_schema: dict[str, Column]
     data: pd.DataFrame
+    FILE_LIST_ID_COL: str = "_filelist_id"
 
     def __init__(
         self,
@@ -79,20 +80,19 @@ class FileList:
 
         return filelist_graph
 
-    def move_filelist_id_to_data(self) -> None:
+    def add_filelist_id_column(self) -> None:
         if self.ro_crate_id:
-            filelist_id_name = "_filelist_id"
+            filelist_id_name = self.FILE_LIST_ID_COL
             column_type = "http://www.w3.org/ns/csvw#Column"
             self.data[filelist_id_name] = self.ro_crate_id
-            self.ro_crate_schema.append(
-                Column.model_validate(
-                    {
-                        "columnName": filelist_id_name,
-                        "@id": filelist_id_name,
-                        "@type": column_type,
-                    }
-                )
+            self.ro_crate_schema[filelist_id_name] = Column.model_validate(
+                {
+                    "columnName": filelist_id_name,
+                    "@id": filelist_id_name,
+                    "@type": column_type,
+                }
             )
+            self.ro_crate_id = None
 
     def align_schema_to_data_columns(self):
         sorted_schema_columns = {}
@@ -104,8 +104,8 @@ class FileList:
         self.data = self.data[list(self.ro_crate_schema.keys())]
 
     def merge(self, other: "FileList", align_schema_with_data: bool = True):
-        self.move_filelist_id_to_data()
-        other.move_filelist_id_to_data()
+        self.add_filelist_id_column()
+        other.add_filelist_id_column()
         combined = pd.concat([self.data, other.data], ignore_index=True)
         self.data = combined
 

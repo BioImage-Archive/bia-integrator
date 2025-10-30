@@ -1,11 +1,9 @@
-from ro_crate_ingest.ro_crate_defaults import get_all_ro_crate_classes
 from ro_crate_ingest.validator.validator import (
     ValidationError,
     ValidationResult,
     Validator,
     Severity,
 )
-from bia_shared_datamodels.linked_data.pydantic_ld.ROCrateModel import ROCrateModel
 from bia_shared_datamodels.linked_data.ld_context.SimpleJSONLDContext import (
     SimpleJSONLDContext,
 )
