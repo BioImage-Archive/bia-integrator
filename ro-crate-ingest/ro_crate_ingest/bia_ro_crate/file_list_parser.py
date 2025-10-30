@@ -12,6 +12,7 @@ from bia_shared_datamodels.ro_crate_models import (
 
 from ro_crate_ingest.bia_ro_crate.bia_ro_crate_metadata import BIAROCrateMetadata
 from ro_crate_ingest.bia_ro_crate.file_list import FileList
+from urllib.parse import unquote
 
 DEFAULT_LIST_PROPERTIES = [
     "http://bia/associatedBiologicalEntity",
@@ -25,7 +26,10 @@ DEFAULT_LIST_PROPERTIES = [
 ]
 
 
-class FileListParser:
+class TSVFileListParser:
+    """
+    Reads a tsv filelist and creates a FileList object.
+    """
 
     ro_crate_root: pathlib.Path
     bia_rocrate_metadata: BIAROCrateMetadata
@@ -41,7 +45,7 @@ class FileListParser:
         self.bia_rocrate_metadata = bia_rocrate_metadata
         self.list_properties = list_properties or DEFAULT_LIST_PROPERTIES
 
-    def parse(self, file_list_id: pathlib.Path) -> FileList:
+    def parse(self, file_list_id: str) -> FileList:
 
         file_list: FileListMetadata = self.bia_rocrate_metadata.get_object(file_list_id)
 
@@ -57,7 +61,7 @@ class FileListParser:
             for column_ref in schema_object.column
         ]
 
-        data = pd.read_csv(self.ro_crate_root / file_list_id, delimiter="\t")
+        data = pd.read_csv(self.ro_crate_root / unquote(file_list_id), delimiter="\t")
 
         split_re = re.compile(r"\s*,\s*")
 

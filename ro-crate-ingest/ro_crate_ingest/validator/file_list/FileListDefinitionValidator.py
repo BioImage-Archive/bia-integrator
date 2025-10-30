@@ -3,8 +3,9 @@ from pathlib import Path
 from typing import Iterable
 
 import rdflib
-
-from ro_crate_ingest.crate_reader import load_ro_crate_metadata_to_graph
+from ro_crate_ingest.bia_ro_crate.bia_ro_crate_metadata_parser import (
+    BIAROCrateMetadataParser,
+)
 from ro_crate_ingest.validator.validator import (
     Severity,
     ValidationError,
@@ -76,7 +77,7 @@ class FileListDefinitionValidator(Validator):
             Iterable[str | rdflib.URIRef] | None
         ) = None,
     ):
-        self.ro_crate_metadata_graph = load_ro_crate_metadata_to_graph(
+        self.ro_crate_metadata_graph = BIAROCrateMetadataParser().parse_to_graph(
             ro_crate_metadata_path
         )
 
