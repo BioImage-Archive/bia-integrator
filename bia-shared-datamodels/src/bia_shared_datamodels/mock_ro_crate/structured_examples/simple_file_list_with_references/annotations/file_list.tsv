@@ -1,0 +1,3 @@
+file_path	source_image_path
+annotations/image_1_segmentation.tiff	dataset/image_1.tiff
+annotations/image_2_segmentation.tiff	dataset/image_2.tiff
