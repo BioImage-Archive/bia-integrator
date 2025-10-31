@@ -74,10 +74,26 @@ def ingest(
     ] = ProcessFilelistMode.ask,
     dryrun: Annotated[bool, typer.Option()] = False,
     write_csv: Annotated[str, typer.Option()] = None,
+    logfile: Annotated[Optional[Path], typer.Option()] = None,
     counts: Annotated[bool, typer.Option("--counts", "-c")] = False,
 ) -> None:
     if verbose:
         logger.setLevel(logging.DEBUG)
+
+    # If a logfile is provided, remove other handlers and add a FileHandler
+    if logfile:
+        # Clear existing handlers (like RichHandler)
+        logger.handlers = []
+
+        # Create a file handler
+        file_handler = logging.FileHandler(logfile)
+
+        # Create a formatter and set it for the handler
+        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+        file_handler.setFormatter(formatter)
+
+        # Add the handler to the logger
+        logger.addHandler(file_handler)
 
     result_summary = {}
 
