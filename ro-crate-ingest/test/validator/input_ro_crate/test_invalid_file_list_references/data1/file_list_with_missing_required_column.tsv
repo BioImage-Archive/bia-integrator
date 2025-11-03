@@ -1,0 +1,4 @@
+file_path	associated_bio_sample
+example_file_1.tiff	NCBI:txid9606
+example_file_2.tiff	_:not_present
+example_file_3.tiff	_:Biosample1

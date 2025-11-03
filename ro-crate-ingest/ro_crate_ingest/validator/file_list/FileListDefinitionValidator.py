@@ -3,6 +3,7 @@ from pathlib import Path
 from typing import Iterable
 
 import rdflib
+
 from ro_crate_ingest.bia_ro_crate.bia_ro_crate_metadata_parser import (
     BIAROCrateMetadataParser,
 )

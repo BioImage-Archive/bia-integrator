@@ -1,4 +1,5 @@
 import json
+from collections import defaultdict
 from typing import Iterable
 
 from bia_shared_datamodels.linked_data.ld_context.SimpleJSONLDContext import (
@@ -6,7 +7,6 @@ from bia_shared_datamodels.linked_data.ld_context.SimpleJSONLDContext import (
 )
 from bia_shared_datamodels.linked_data.pydantic_ld.ROCrateModel import ROCrateModel
 from rdflib import Graph
-from collections import defaultdict
 
 
 class BIAROCrateMetadata:
@@ -23,8 +23,10 @@ class BIAROCrateMetadata:
         self._context = context
 
     def to_graph(self) -> Graph:
-        # TODO: need some way of converting between a the entities and it's graph, and preferably keeping both in sync.
-        # Could potentially store the graph rather than the objects and convert the opposite way
+        # TODO: need some way of converting between a the entities and its graph, and preferably keeping both in sync.
+        # This is not straightforward, as the paths for certain objects should consistently relative to the root of the ro-crate.
+        # Could potentially store the graph rather than the objects and convert the opposite way.
+        # For now: use parse_to_graph from BIAROCrateMetadataParser
         raise NotImplementedError
 
     def to_dict(self) -> dict:

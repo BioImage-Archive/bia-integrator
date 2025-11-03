@@ -1,9 +1,4 @@
 import logging
-
-# from ro_crate_ingest.crate_reader import (
-#     process_ro_crate,
-#     load_ro_crate_metadata_to_graph,
-# )
 from ro_crate_ingest.ro_crate_to_api.entity_conversion import (
     annotation_method,
     bio_sample,
@@ -22,7 +17,6 @@ from rich.logging import RichHandler
 from ..save_utils import PersistenceMode, persist
 from bia_integrator_api import models
 from ro_crate_ingest.settings import get_settings
-from ro_crate_ingest.bia_ro_crate.bia_ro_crate_parser import BIAROCrateParser
 from ro_crate_ingest.bia_ro_crate.bia_ro_crate_metadata_parser import (
     BIAROCrateMetadataParser,
 )
@@ -39,7 +33,7 @@ def convert_ro_crate_to_bia_api(
     persistence_mode: PersistenceMode,
     file_ref_url_prefix: str | None,
 ):
-    roc_metadata, combined_file_list = BIAROCrateParser().parse(crate_path)
+    roc_metadata = BIAROCrateMetadataParser().parse_to_objects(crate_path)
     crate_graph = BIAROCrateMetadataParser().parse_to_graph(crate_path)
 
     api_objects = []

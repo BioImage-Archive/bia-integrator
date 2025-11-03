@@ -1,5 +1,6 @@
 import pathlib
 import re
+from urllib.parse import unquote
 
 import pandas as pd
 from bia_shared_datamodels.ro_crate_models import (
@@ -12,7 +13,6 @@ from bia_shared_datamodels.ro_crate_models import (
 
 from ro_crate_ingest.bia_ro_crate.bia_ro_crate_metadata import BIAROCrateMetadata
 from ro_crate_ingest.bia_ro_crate.file_list import FileList
-from urllib.parse import unquote
 
 DEFAULT_LIST_PROPERTIES = [
     "http://bia/associatedBiologicalEntity",
@@ -56,10 +56,10 @@ class TSVFileListParser:
             file_list.tableSchema.id
         )
 
-        columns: list[Column] = [
-            self.bia_rocrate_metadata.get_object(column_ref.id)
+        columns: dict[str, Column] = {
+            column_ref.id: self.bia_rocrate_metadata.get_object(column_ref.id)
             for column_ref in schema_object.column
-        ]
+        }
 
         data = pd.read_csv(self.ro_crate_root / unquote(file_list_id), delimiter="\t")
 
@@ -77,7 +77,7 @@ class TSVFileListParser:
             ]
             return clean_list_value
 
-        for column in columns:
+        for column in columns.values():
             if column.propertyUrl in self.list_properties:
                 data[column.columnName] = data[column.columnName].apply(
                     _expand_array_cells,

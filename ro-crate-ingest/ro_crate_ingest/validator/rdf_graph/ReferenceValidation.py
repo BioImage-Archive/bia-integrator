@@ -1,7 +1,9 @@
+from collections import defaultdict
 from pathlib import Path
 
 import rdflib
-from collections import defaultdict
+from bia_shared_datamodels.linked_data.bia_ontology_utils import load_bia_ontology
+
 from ro_crate_ingest.bia_ro_crate.bia_ro_crate_metadata_parser import (
     BIAROCrateMetadataParser,
 )
@@ -11,7 +13,6 @@ from ro_crate_ingest.validator.validator import (
     ValidationResult,
     Validator,
 )
-from bia_shared_datamodels.linked_data.bia_ontology_utils import load_bia_ontology
 
 
 class ReferenceValidation(Validator):
@@ -21,7 +22,6 @@ class ReferenceValidation(Validator):
     """
 
     ro_crate_metadata_graph: rdflib.Graph
-    bia_ontology: rdflib.Graph
 
     def __init__(
         self,
@@ -30,20 +30,21 @@ class ReferenceValidation(Validator):
         self.ro_crate_metadata_graph = BIAROCrateMetadataParser().parse_to_graph(
             ro_crate_metadata_path
         )
-        self.bia_ontology = load_bia_ontology()
 
         super().__init__()
 
     def _get_properties_to_validate(self) -> dict[rdflib.Node, set[rdflib.Node]]:
+        bia_ontology = load_bia_ontology()
+
         object_properties = set(
-            self.bia_ontology.subjects(
+            bia_ontology.subjects(
                 rdflib.RDF.type, rdflib.OWL.ObjectProperty, unique=True
             )
         )
 
         object_properties_and_ranges = {}
         for property in object_properties:
-            range_class = set(self.bia_ontology.objects(property, rdflib.RDFS.range))
+            range_class = set(bia_ontology.objects(property, rdflib.RDFS.range))
             object_properties_and_ranges[property] = range_class
 
         return object_properties_and_ranges

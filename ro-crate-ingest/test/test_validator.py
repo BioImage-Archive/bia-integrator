@@ -108,7 +108,25 @@ def get_test_ro_crate_path(accession_id, test_folder="validator") -> Path:
                 ("No column has been assigned csvw:propertyUrl http://bia/filePath",),
                 (
                     "At ro-crate TableSchema object with @id: ts0",
-                    "Missing column with required property: http://bia/filePat",
+                    "Missing column with required property: http://bia/filePath",
+                ),
+            ],
+        ),
+        (
+            "test_invalid_file_list_references",
+            1,
+            [
+                (
+                    "filelist: data1/file_list_with_missing_required_column.tsv",
+                    "row: example_file_1.tiff",
+                    "NCBI:txid9606",
+                    "unexpected type",
+                ),
+                (
+                    "filelist: data1/file_list_with_missing_required_column.tsv",
+                    "row: example_file_2.tiff",
+                    "_:not_present",
+                    "does not exist",
                 ),
             ],
         ),
