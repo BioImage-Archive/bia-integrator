@@ -1,6 +1,16 @@
 accession_id: 
 paper_doi: 
-rembis:
+rembis:  
+  BioSample:
+    - title: ""
+      organism_classification:
+        - common_name: ""
+          scientific_name: ""
+          ncbi_id: ""
+      biological_entity_description: ""
+  SpecimenImagingPreparationProtocol:
+    - title: ""
+      protocol_description: ""
   ImageAcquisitionProtocol:
     - title: ""
       protocol_description: ""
@@ -9,19 +19,6 @@ rembis:
         - ""
       imaging_method_name:
         - ""
-  
-  BioSample:
-    - title: ""
-      organism_classification:
-        - common_name: ""
-          scientific_name: ""
-          ncbi_id: ""
-      biological_entity_description: ""
-  
-  SpecimenImagingPreparationProtocol:
-    - title: ""
-      protocol_description: ""
-  
   AnnotationMethod:
     - title: ""
       protocol_description: ""
