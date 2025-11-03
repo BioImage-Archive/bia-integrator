@@ -1,8 +1,5 @@
-from typing import Iterable
-
 import pandas as pd
 from bia_shared_datamodels.ro_crate_models import Column
-from rdflib import Graph
 
 
 class FileList:

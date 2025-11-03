@@ -105,6 +105,7 @@ class FileListReferenceValidator(Validator):
             "http://bia/associatedImageAcquisitionProtocol": ro_crate_models.ImageAcquisitionProtocol,
             "http://bia/associatedAnnotationMethod": ro_crate_models.AnnotationMethod,
             "http://bia/associatedProtocol": ro_crate_models.Protocol,
+            "http://bia/associatedSubject": ro_crate_models.Specimen,
         }
 
         column_types_to_check = {}
