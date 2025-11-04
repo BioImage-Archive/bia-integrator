@@ -159,13 +159,13 @@ def convert_image_analysis_method(
 
 
 def convert_image_correlation_method(
-    ro_crate_image_analysis_method: ROCrateModels.ImageCorrelationMethod,
+    ro_crate_image_correlation_method: ROCrateModels.ImageCorrelationMethod,
 ) -> APIModels.ImageCorrelationMethod:
     image_correlation_method = {
-        "title": ro_crate_image_analysis_method.title,
-        "protocol_description": ro_crate_image_analysis_method.protocolDescription,
-        "fiducials_used": ro_crate_image_analysis_method.fiducialsUsed,
-        "transformation_matrix": ro_crate_image_analysis_method.transformationMatrix,
+        "title": ro_crate_image_correlation_method.title,
+        "protocol_description": ro_crate_image_correlation_method.protocolDescription,
+        "fiducials_used": ro_crate_image_correlation_method.fiducialsUsed,
+        "transformation_matrix": ro_crate_image_correlation_method.transformationMatrix,
         "additional_metadata": [],
     }
     return APIModels.ImageCorrelationMethod(**image_correlation_method)
