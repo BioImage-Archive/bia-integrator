@@ -450,7 +450,9 @@ def unzip_ome_zarr_archive(
 ) -> ImageRepresentation:
     """Unzip an OME-ZARR zip archive image representation to an OME-ZARR"""
 
-    image = api_client.get_image(input_image_rep.representation_of_uuid)
+
+    if input_image_rep.image_format != ".ome.zarr.zip":
+        raise Exception(f"Input image representation format {input_image_rep.image_format} is not an OME-ZARR zip archive. Expecting type '.ome.zarr.zip'")
 
     conversion_process_dict = {
         "image_representation_of_submitted_by_uploader": f"{input_image_rep.uuid}",
@@ -458,6 +460,7 @@ def unzip_ome_zarr_archive(
         "conversion_config": conversion_parameters,
     }
 
+    image = api_client.get_image(input_image_rep.representation_of_uuid)
     base_image_rep = create_image_representation_object(
         image, conversion_process_dict, image_format=".ome.zarr"
     )
@@ -468,14 +471,11 @@ def unzip_ome_zarr_archive(
     # Get the file references we'll need
     file_references = get_all_file_references_for_image(image)
 
-    if input_image_rep.image_format == ".ome.zarr.zip":
-        # TODO: We will need to handle multiple zip archives here in future
-        assert len(file_references) == 1
-        output_zarr_fpath = fetch_ome_zarr_zip_fileref_and_unzip(
-            file_references[0], base_image_rep
-        )
-    else:
-        raise Exception("Input image representation format {input_image_rep.image_format} is not an OME-ZARR zip archive. Expecting .ome.zarr.zip")
+    # TODO: We will need to handle multiple zip archives here in future
+    assert len(file_references) == 1
+    output_zarr_fpath = fetch_ome_zarr_zip_fileref_and_unzip(
+        file_references[0], base_image_rep
+    )
 
     # Upload to S3
     dst_suffix = create_s3_uri_suffix_for_image_representation(base_image_rep)
