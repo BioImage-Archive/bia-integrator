@@ -393,10 +393,10 @@
             "associatedImageAcquisitionProtocol": [],
             "associatedAnnotationMethod": [
                 {
-                    "@id": "_:Annotation of ribosomes and fatty acid synthase (FAS) in defocus-only data"
+                    "@id": "_:Annotation of ribosomes and fatty acid synthase (FAS) in defocus data"
                 },
                 {
-                    "@id": "_:Annotation of ribosomes and fatty acid synthase (FAS) in defocus-only data"
+                    "@id": "_:Annotation of ribosomes and fatty acid synthase (FAS) in defocus data"
                 }
             ],
             "associatedImageAnalysisMethod": [],

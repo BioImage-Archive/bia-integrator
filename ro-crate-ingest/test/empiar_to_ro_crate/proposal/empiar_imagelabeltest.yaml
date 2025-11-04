@@ -86,9 +86,9 @@ datasets:
     assigned_annotations:
       - label: "TS_026 ribosome annotations defocus data"
         file_pattern: "particle_lists/TS_026_cyto_ribosomes.csv"
-        annotation_method_title: "Annotation of ribosomes and fatty acid synthase (FAS) in defocus-only data"
+        annotation_method_title: "Annotation of ribosomes and fatty acid synthase (FAS) in defocus data"
         input_label: "TS_026 tomogram"
       - label: "TS_026 FAS annotations defocus data"
         file_pattern: "particle_lists/TS_026_fas.csv"
-        annotation_method_title: "Annotation of ribosomes and fatty acid synthase (FAS) in defocus-only data"
+        annotation_method_title: "Annotation of ribosomes and fatty acid synthase (FAS) in defocus data"
         input_label: "TS_026 tomogram"

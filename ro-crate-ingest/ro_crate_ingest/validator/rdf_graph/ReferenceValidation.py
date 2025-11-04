@@ -56,6 +56,11 @@ class ReferenceValidation(Validator):
 
         properties_to_validate = self._get_properties_to_validate()
 
+        # NOTE: do not attempt to validate inputImage as this might reference a file path that would 
+        # not necessarily need to be in the ro-crate-metadata.json, just in the ro-crate in general.
+        # This is/will be covered by the specific input image validators.
+        properties_to_validate.pop(rdflib.URIRef("http://bia/inputImage"), None)
+
         for subject, predicate, obj in self.ro_crate_metadata_graph:
             if predicate in properties_to_validate:
                 if obj not in typed_subjects:

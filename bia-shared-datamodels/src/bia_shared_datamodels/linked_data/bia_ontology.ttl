@@ -240,28 +240,28 @@ bia:associatedImagingPreparationProtocol a owl:ObjectProperty ;
     rdfs:comment 
         """Used to indicate an ImageAcquisitionProtocol as a protocol that was followed in the process of creating all the specimens associated with the subject data."""@en ;
     rdfs:domain obo:IAO_0000030 ;
-    rdfs:range bia:Specimen .
+    rdfs:range bia:SpecimenImagingPreparationProtocol .
 
 bia:associatedImageAcquisitionProtocol a owl:ObjectProperty ;
     rdfs:label "associated image acquisition protocol"@en ;
     rdfs:comment 
         """Used to indicate an ImageAcquisitionProtocol as a protocol that was followed in the process of creating all the Images or Annotation Data associated with the subject data."""@en ;
     rdfs:domain obo:IAO_0000030 ;
-    rdfs:range bia:Specimen .
+    rdfs:range bia:ImageAcquisitionProtocol .
 
 bia:associatedProtocol a owl:ObjectProperty ;
     rdfs:label "associated protocol"@en ;
     rdfs:comment 
         """Used to indicate a Protocol that was followed in the process of creating all the Images or Annotation Data associated with the subject data."""@en ;
     rdfs:domain obo:IAO_0000030 ;
-    rdfs:range bia:Specimen .
+    rdfs:range bia:Protocol .
 
 bia:associatedAnnotationMethod a owl:ObjectProperty ;
     rdfs:label "associated protocol"@en ;
     rdfs:comment 
         """Used to indicate an Annotation Method as a protocol that was followed in the process of creating all the Images or Annotation Data associated with the subject data."""@en;
     rdfs:domain obo:IAO_0000030 ;
-    rdfs:range bia:Specimen .
+    rdfs:range bia:AnnotationMethod .
 
 bia:associatedSourceImage a owl:ObjectProperty ;
     rdfs:label "associated source image"@en ;
@@ -437,13 +437,13 @@ bia:protocol a owl:ObjectProperty ;
     rdfs:label "image acquisition protocol"@en ;
     rdfs:comment "A protocol which was followed that resulted in the creation of this new image from existing image data."@en ;
     rdfs:domain bia:CreationProcess ;
-    rdfs:range bia:ImageAcquisitionProtocol .
+    rdfs:range bia:Protocol .
 
 bia:annotationMethod a owl:ObjectProperty ;
     rdfs:label "annotation method"@en ;
     rdfs:comment "The annotation method describing the process followed to create a new image from exsiting image data."@en ;
     rdfs:domain bia:CreationProcess ;
-    rdfs:range bia:Image .
+    rdfs:range bia:AnnotationMethod .
 
 bia:inputImage a owl:ObjectProperty ;
     rdfs:label "input image"@en ;
