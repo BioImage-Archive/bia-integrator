@@ -237,7 +237,13 @@
       "acknowledgement": null,
       "hasPart": [
         {
-          "@id": "data/"
+          "@id": "data1/"
+        },
+        {
+          "@id": "data2/"
+        },
+        {
+          "@id": "data3/"
         }
       ],
       "accessionId": "S-TEST_specimen"

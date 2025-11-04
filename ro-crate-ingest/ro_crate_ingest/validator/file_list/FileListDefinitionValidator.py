@@ -124,11 +124,11 @@ class FileListDefinitionValidator(Validator):
 
         schema_map = defaultdict(set)
         for result in schema_to_column_property_result:
-            schema_map[result.schema].add(result.propertyUrl)
+            schema_map[result.schema].add(str(result.propertyUrl))
 
         for schema, property_urls in schema_map.items():
             for required_property in self.required_properties:
-                if required_property not in property_urls:
+                if str(required_property) not in property_urls:
                     self.issues.append(
                         ValidationError(
                             severity=Severity.ERROR,

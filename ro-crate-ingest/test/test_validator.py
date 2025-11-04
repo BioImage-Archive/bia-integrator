@@ -9,8 +9,8 @@ from ro_crate_ingest.cli import ro_crate_ingest
 runner = CliRunner()
 
 
-def get_test_ro_crate_path(accession_id) -> Path:
-    return Path(__file__).parent / "validator" / "input_ro_crate" / accession_id
+def get_test_ro_crate_path(accession_id, test_folder="validator") -> Path:
+    return Path(__file__).parent / test_folder / "input_ro_crate" / accession_id
 
 
 @pytest.mark.parametrize(
@@ -167,3 +167,22 @@ def test_ro_crate_context_validation_error_messages(
         severity, error_message = message
         for expected_message_snippet in messages[message_position]:
             check.is_in(expected_message_snippet, error_message)
+
+
+@pytest.mark.parametrize(
+    "accession_id",
+    ["S-TEST_specimen", "S-TEST_overlapping_file_list_and_ro_crate_info"],
+)
+def test_valid_ro_crate(accession_id, caplog):
+    """
+    Check that the ro-crates that get used to test our ingest pipeline are valid
+    """
+
+    caplog.set_level(logging.ERROR)
+
+    crate_path = get_test_ro_crate_path(accession_id, "ro_crate_to_bia")
+
+    arguments = ["validate", str(crate_path)]
+    result = runner.invoke(ro_crate_ingest, arguments)
+    assert result.exit_code == 0
+    assert len(caplog.records) == 0
