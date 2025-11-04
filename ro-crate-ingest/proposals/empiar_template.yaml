@@ -1,0 +1,75 @@
+accession_id: 
+paper_doi: 
+rembis:  
+  BioSample:
+    - title: ""
+      organism_classification:
+        - common_name: ""
+          scientific_name: ""
+          ncbi_id: ""
+      biological_entity_description: ""
+  SpecimenImagingPreparationProtocol:
+    - title: ""
+      protocol_description: ""
+  ImageAcquisitionProtocol:
+    - title: ""
+      protocol_description: ""
+      imaging_instrument_description: ""
+      fbbi_id:
+        - ""
+      imaging_method_name:
+        - ""
+  AnnotationMethod:
+    - title: ""
+      protocol_description: ""
+      method_type: [""]
+  
+  Protocol:
+    - title: ""
+      protocol_description: ""
+
+datasets:
+  # many- or one-to-one mapping with single label
+  - title: ""
+    assigned_images:
+      - label: ""
+        file_pattern: ""
+        protocol_title: ""
+  
+  # many-to-many mapping with label_prefix
+  - title: ""
+    assigned_images:
+      - label_prefix: ""
+        file_pattern: ""
+        biosample_title: ""
+        image_acquisition_protocol_title: ""
+        specimen_imaging_preparation_protocol_title: ""
+  
+  # input label structures; referencing many-to-one and many-to-many, respectively
+  - title: ""
+    assigned_images:
+      - label: ""
+        file_pattern: ""
+        protocol_title: ""
+        input_label: ""
+      - label: ""
+        file_pattern: ""
+        protocol_title: ""
+        input_label_prefix: ""
+        input_file_pattern: ""
+
+  # annotations and additional files
+  - title: ""
+    additional_files:
+      - label: ""
+        file_pattern: ""
+    assigned_annotations:
+      - label: ""
+        file_pattern: ""
+        annotation_method_title: ""
+        input_label: ""
+      - label: ""
+        file_pattern: ""
+        annotation_method_title: ""
+        input_label_prefix: ""
+        input_file_pattern: ""

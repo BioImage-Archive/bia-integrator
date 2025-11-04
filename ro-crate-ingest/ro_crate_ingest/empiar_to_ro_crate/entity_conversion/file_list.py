@@ -150,12 +150,17 @@ def get_file_patterns_matches_and_objects(
             )
         images_set_path_to_dataset_map.append(
             PatternMatch(
-                f"{imageset_to_path[dataset["title"]]}{{rest}}",
+                f"{imageset_to_path[dataset["title"]]}/{{rest}}",
                 dataset_id,
                 None,
                 None,
             )
         )
+
+    # Sort paths by specificity to deal with nested imagesets
+    images_set_path_to_dataset_map = sort_imageset_paths_by_specificity(
+        images_set_path_to_dataset_map
+    )
 
     # Order matters for preferential matching: image_sets should be last, and file_patterns should be after images & annotation.
     path_maps = (
@@ -166,6 +171,13 @@ def get_file_patterns_matches_and_objects(
     )
 
     return path_maps
+
+
+def sort_imageset_paths_by_specificity(
+        pattern_matches: list[PatternMatch]
+) -> list[PatternMatch]:
+    
+    return sorted(pattern_matches, key=lambda pm: pm.file_pattern.count('/'), reverse=True)
 
 
 def expand_row_metadata(
@@ -220,15 +232,18 @@ def update_row(
             if label_parts is not None:
                 output_row["label"] = f"{label_prefix}_{label_parts}"
 
+        annotation_method_title = yaml_object.get("annotation_method_title", None)
         output_row["associated_annotation_method"] = (
-            f"_:{yaml_object["annotation_method_title"]}"
-            if yaml_object.get("annotation_method_title", None)
-            else None
+            [f"_:{title}" for title in annotation_method_title]
+            if isinstance(annotation_method_title, list)
+            else f"_:{annotation_method_title}" if annotation_method_title else None
         )
+
+        protocol_title = yaml_object.get("protocol_title", None)
         output_row["associated_protocol"] = (
-            f"_:{yaml_object["protocol_title"]}"
-            if yaml_object.get("protocol_title", None)
-            else None
+            [f"_:{title}" for title in protocol_title]
+            if isinstance(protocol_title, list)
+            else f"_:{protocol_title}" if protocol_title else None
         )
 
         if input_label := yaml_object.get("input_label", None):
