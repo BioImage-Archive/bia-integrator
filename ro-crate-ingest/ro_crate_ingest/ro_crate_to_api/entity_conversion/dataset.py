@@ -19,15 +19,41 @@ logger = logging.getLogger("__main__." + __name__)
 def create_api_dataset(
     crate_objects_by_id: dict[str, ROCrateModel], study_uuid: str
 ) -> list[APIModels.Dataset]:
-    ro_crate_datasets = (
-        obj
-        for obj in crate_objects_by_id.values()
-        if isinstance(obj, ROCrateModels.Dataset)
-    )
+    ro_crate_datasets = []
+    ro_crate_image_analysis_methods = []
+    ro_crate_image_correlation_methods = []
+
+    for obj in crate_objects_by_id.values():
+        if isinstance(obj, ROCrateModels.Dataset):
+            ro_crate_datasets.append(obj)
+        elif isinstance(obj, ROCrateModels.ImageAnalysisMethod):
+            ro_crate_image_analysis_methods.append(obj)
+        elif isinstance(obj, ROCrateModels.ImageCorrelationMethod):
+            ro_crate_image_correlation_methods.append(obj)
+
+    api_image_analysis_methods = {}
+    api_image_correlation_methods = {}
+
+    for image_analysis_method in ro_crate_image_analysis_methods:
+        api_image_analysis_methods[image_analysis_method.id] = (
+            convert_image_analysis_method(image_analysis_method)
+        )
+
+    for image_correlation_method in ro_crate_image_correlation_methods:
+        api_image_correlation_methods[image_correlation_method.id] = (
+            convert_image_correlation_method(image_correlation_method)
+        )
 
     dataset_list = []
     for dataset in ro_crate_datasets:
-        dataset_list.append(convert_dataset(dataset, study_uuid))
+        dataset_list.append(
+            convert_dataset(
+                dataset,
+                study_uuid,
+                api_image_analysis_methods,
+                api_image_correlation_methods,
+            )
+        )
 
     return dataset_list
 
@@ -35,6 +61,8 @@ def create_api_dataset(
 def convert_dataset(
     ro_crate_dataset: ROCrateModels.Dataset,
     study_uuid: str,
+    api_image_analysis_methods: dict[str, APIModels.ImageAnalysisMethod],
+    api_image_correlation_methods: dict[str, APIModels.ImageCorrelationMethod],
 ) -> APIModels.Dataset:
 
     title = None
@@ -50,6 +78,16 @@ def convert_dataset(
     )
     additional_metadata.append(uuid_attribute.model_dump())
 
+    analysis_methods = [
+        api_image_analysis_methods[reference.id]
+        for reference in ro_crate_dataset.associatedImageAnalysisMethod
+    ]
+
+    correlation_methods = [
+        api_image_correlation_methods[reference.id]
+        for reference in ro_crate_dataset.associatedImageCorrelationMethod
+    ]
+
     dataset = {
         "uuid": str(uuid),
         "submitted_in_study_uuid": study_uuid,
@@ -59,8 +97,8 @@ def convert_dataset(
         "example_image_uri": [],
         "object_creator": APIModels.Provenance.BIA_INGEST,
         "additional_metadata": additional_metadata,
-        "analysis_method": [],
-        "correlation_method": [],
+        "analysis_method": analysis_methods,
+        "correlation_method": correlation_methods,
     }
 
     return APIModels.Dataset(**dataset)
@@ -106,3 +144,28 @@ def dataset_attribute_links_with_uuids(
             )
 
     return additional_metadata
+
+
+def convert_image_analysis_method(
+    ro_crate_image_analysis_method: ROCrateModels.ImageAnalysisMethod,
+) -> APIModels.ImageAnalysisMethod:
+    image_analysis_method = {
+        "title": ro_crate_image_analysis_method.title,
+        "protocol_description": ro_crate_image_analysis_method.protocolDescription,
+        "features_analysed": ro_crate_image_analysis_method.featuresAnalysed,
+        "additional_metadata": [],
+    }
+    return APIModels.ImageAnalysisMethod(**image_analysis_method)
+
+
+def convert_image_correlation_method(
+    ro_crate_image_correlation_method: ROCrateModels.ImageCorrelationMethod,
+) -> APIModels.ImageCorrelationMethod:
+    image_correlation_method = {
+        "title": ro_crate_image_correlation_method.title,
+        "protocol_description": ro_crate_image_correlation_method.protocolDescription,
+        "fiducials_used": ro_crate_image_correlation_method.fiducialsUsed,
+        "transformation_matrix": ro_crate_image_correlation_method.transformationMatrix,
+        "additional_metadata": [],
+    }
+    return APIModels.ImageCorrelationMethod(**image_correlation_method)
