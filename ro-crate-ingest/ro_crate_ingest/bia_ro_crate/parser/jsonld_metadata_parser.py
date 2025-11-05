@@ -11,10 +11,10 @@ from bia_shared_datamodels.ro_crate_generator_utils import get_all_ro_crate_clas
 from rdflib import Graph
 
 from ro_crate_ingest.bia_ro_crate.bia_ro_crate_metadata import BIAROCrateMetadata
-from ro_crate_ingest.bia_ro_crate.parser.base_parser import BaseParser
+from ro_crate_ingest.bia_ro_crate.parser.metadata_parser import MetadataParser
 
 
-class JSONLDMetadataParser(BaseParser[BIAROCrateMetadata]):
+class JSONLDMetadataParser(MetadataParser[BIAROCrateMetadata]):
     """
     Parser for the ro-crate-metadata.json file in an ro-crate, producing a BIAROCrateMetadata.
     """
