@@ -132,25 +132,19 @@ class FileListReferenceValidator(Validator):
                 references = [references]
 
             for reference in references:
+                message = None
                 if reference not in roc_metadata_lookup:
-                    file_list_validator.issues.append(
-                        ValidationError(
-                            severity=Severity.ERROR,
-                            message=f"{reference} does not exist in ro-crate-metadata.json",
-                            location_description=file_list_validator.ERROR_MESSAGE_LOCATION.format(
-                                filelist_id=file_list_id,
-                                row_index=row["http://bia/filePath"],
-                            ),
-                        )
-                    )
-
+                    message = f"{reference} does not exist in ro-crate-metadata.json"
                 elif not isinstance(
                     roc_metadata_lookup[reference], columns_to_check[column]
                 ):
+                    message = f"{reference} references an object of unexpected type."
+
+                if message:
                     file_list_validator.issues.append(
                         ValidationError(
                             severity=Severity.ERROR,
-                            message=f"{reference} references an object of unexpected type.",
+                            message=message,
                             location_description=file_list_validator.ERROR_MESSAGE_LOCATION.format(
                                 filelist_id=file_list_id,
                                 row_index=row["http://bia/filePath"],
