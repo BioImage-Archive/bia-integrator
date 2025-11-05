@@ -12,10 +12,11 @@ from bia_shared_datamodels.ro_crate_models import (
 )
 
 from ro_crate_ingest.bia_ro_crate.bia_ro_crate_metadata import BIAROCrateMetadata
+from ro_crate_ingest.bia_ro_crate.file_list import FileList
 from ro_crate_ingest.bia_ro_crate.parser.metadata_parser import MetadataParser
 
 
-class OSVMetadataParser(MetadataParser):
+class OSVMetadataParser(MetadataParser[FileList]):
     """
     Generic parser for operator separated value (e.g. csv, tsv) file lists:
     i.e. structured files who's schema is described in the ro-crate metadata.json
