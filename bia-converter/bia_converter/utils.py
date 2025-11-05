@@ -143,3 +143,26 @@ def add_or_update_attribute(attribute_to_add: Attribute, attributes: list[Attrib
             return
     # If not found, append it
     attributes.append(attribute_to_add)
+
+def is_zarr_multiscales(zarr_path: Path) -> bool:
+    """
+    Check if a given Zarr is multiscales
+
+    Parameters:
+    - zarr_path: Path to the Zarr directory.
+
+    Returns:
+    - bool: True if the Zarr directory is multiscales, False otherwise.
+    """
+    zattrs_path = zarr_path / ".zattrs"
+    if not zattrs_path.is_file():
+        return False
+
+    try:
+        import json
+
+        with open(zattrs_path, "r") as f:
+            zattrs_content = json.load(f)
+            return "multiscales" in zattrs_content
+    except (json.JSONDecodeError, IOError):
+        return False

@@ -1,7 +1,11 @@
+from pathlib import Path
 import pytest
 from bia_integrator_api.models import Attribute
-from bia_converter.utils import add_or_update_attribute
+from bia_converter.utils import add_or_update_attribute, is_zarr_multiscales
 
+@pytest.fixture
+def current_dir() -> Path:
+    return Path(__file__).parent.resolve()
 
 @pytest.fixture
 def static_display_attribute1() -> Attribute:
@@ -169,3 +173,7 @@ def test_no_duplicate_addition(attribute1):
 
     assert len(attributes) == 1
     assert attributes[0].value == attribute1.value
+
+def test_is_zarr_multiscales(current_dir):
+    assert is_zarr_multiscales(current_dir / "data" / "im_06.ome.zarr")
+    assert not is_zarr_multiscales(current_dir / "data" / "hcs.ome.zarr")
