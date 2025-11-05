@@ -12,7 +12,7 @@ from bia_shared_datamodels.ro_crate_models import (
 )
 
 from ro_crate_ingest.bia_ro_crate.bia_ro_crate_metadata import BIAROCrateMetadata
-from ro_crate_ingest.bia_ro_crate.parser.MetadataParser import MetadataParser
+from ro_crate_ingest.bia_ro_crate.parser.metadata_parser import MetadataParser
 
 
 class OSVMetadataParser(MetadataParser):
@@ -64,7 +64,7 @@ class OSVMetadataParser(MetadataParser):
     def _get_full_path(self, path) -> Path:
         full_file_path = self.ro_crate_root / path
 
-        if not os.path.exists(full_file_path) or os.path.isfile(full_file_path):
+        if not os.path.exists(full_file_path) or not os.path.isfile(full_file_path):
             raise ValueError(f"{full_file_path} does not exist or is not a file.")
 
         return full_file_path

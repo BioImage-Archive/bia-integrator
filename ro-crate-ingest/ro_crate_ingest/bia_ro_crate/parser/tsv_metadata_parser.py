@@ -2,7 +2,7 @@ from pathlib import Path
 from urllib.parse import quote
 
 import pandas as pd
-from bia_ro_crate.parser.OSVMetadataParser import OSVMetadataParser
+from ro_crate_ingest.bia_ro_crate.parser.osv_metadata_parser import OSVMetadataParser
 
 from ro_crate_ingest.bia_ro_crate.file_list import FileList
 

@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import Any
 
 
-class Parser[ParsedType](ABC):
+class BaseParser[ParsedType](ABC):
     """Generic parser for any kind of file needed to be parsed in an ro-crate."""
 
     def __init__(self, *, context: Any | None = None) -> None:

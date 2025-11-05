@@ -25,6 +25,19 @@ class FileList:
     ) -> None:
         self.ro_crate_id = ro_crate_id
 
+        self._validate_schema_dict(schema)
+        schema_name_map = {
+            column.columnName: column.id for column in self.schema.values()
+        }
+        self._validate_column_defitions(schema_name_map, data.columns, strict)
+        column_id_map = {
+            col_name: schema_name_map[col_name] for col_name in data.columns
+        }
+        self.data = data.rename(columns=column_id_map)
+
+        super().__init__()
+
+    def _validate_schema_dict(self, schema: dict[str, Column]):
         if all(key == column.id for key, column in schema.items()):
             self.schema = schema
         else:
@@ -32,25 +45,18 @@ class FileList:
                 "Schema dictionary must have keys that are the IDs of the column objects"
             )
 
-        dataframe_column_names = data.columns
-        name_map = {column.columnName: column.id for column in self.schema.values()}
-
+    def _validate_column_defitions(
+        self, schema_name_map: dict[str, str], data_columns: pd.Index, strict: bool
+    ):
         if strict:
-            if list(name_map.keys()) != list(dataframe_column_names):
+            if list(schema_name_map.keys()) != list(data_columns):
                 raise ValueError("Schema does not match data columns")
 
-        try:
-            column_ids = {
-                col_name: name_map[col_name] for col_name in dataframe_column_names
-            }
-        except KeyError:
-            raise ValueError(
-                "Schema does not contain columns with names that match data columns."
-            )
-
-        self.data = data.rename(columns=column_ids)
-
-        super().__init__()
+        for column in data_columns:
+            if column not in schema_name_map:
+                raise ValueError(
+                    "Schema does not contain columns with names that match data columns."
+                )
 
     def get_column_properties(self) -> dict[str, None | str]:
         return {column.id: column.propertyUrl for column in self.schema.values()}

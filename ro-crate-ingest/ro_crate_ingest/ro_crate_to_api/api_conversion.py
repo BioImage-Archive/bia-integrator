@@ -17,7 +17,7 @@ from rich.logging import RichHandler
 from ..save_utils import PersistenceMode, persist
 from bia_integrator_api import models
 from ro_crate_ingest.settings import get_settings
-from ro_crate_ingest.bia_ro_crate.parser.JSONLDMetadataParser import (
+from ro_crate_ingest.bia_ro_crate.parser.jsonld_metadata_parser import (
     JSONLDMetadataParser,
 )
 

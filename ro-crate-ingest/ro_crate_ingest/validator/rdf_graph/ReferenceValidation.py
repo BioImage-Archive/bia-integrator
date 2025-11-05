@@ -4,7 +4,7 @@ from pathlib import Path
 import rdflib
 from bia_shared_datamodels.linked_data.bia_ontology_utils import load_bia_ontology
 
-from ro_crate_ingest.bia_ro_crate.parser.JSONLDMetadataParser import (
+from ro_crate_ingest.bia_ro_crate.parser.jsonld_metadata_parser import (
     JSONLDMetadataParser,
 )
 from ro_crate_ingest.validator.validator import (

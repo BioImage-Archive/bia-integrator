@@ -1,5 +1,6 @@
 from pathlib import Path
 from typing import Iterable
+from urllib.parse import unquote
 
 import rdflib
 from bia_shared_datamodels import ro_crate_models
@@ -7,10 +8,12 @@ from bia_shared_datamodels.linked_data.bia_ontology_utils import load_bia_ontolo
 from bia_shared_datamodels.linked_data.pydantic_ld.ROCrateModel import ROCrateModel
 
 from ro_crate_ingest.bia_ro_crate.bia_ro_crate_metadata import BIAROCrateMetadata
-from ro_crate_ingest.bia_ro_crate.parser.JSONLDMetadataParser import (
+from ro_crate_ingest.bia_ro_crate.parser.jsonld_metadata_parser import (
     JSONLDMetadataParser,
 )
-from ro_crate_ingest.bia_ro_crate.parser.JSONLDMetadataParser import JSONLDMetadataParser
+from ro_crate_ingest.bia_ro_crate.parser.tsv_metadata_parser import (
+    TSVMetadataParser,
+)
 from ro_crate_ingest.validator.validator import (
     Severity,
     ValidationError,
@@ -79,12 +82,13 @@ class FileListReferenceValidator(Validator):
                 issues=self.issues,
             )
 
-        file_list_parser = TSVFileListParser(
-            ro_crate_root=self.ro_crate_root, bia_rocrate_metadata=self.ro_crate_objects
+        tsv_file_list_parser = TSVMetadataParser(
+            ro_crate_root=self.ro_crate_root, ro_crate_metadata=self.ro_crate_objects
         )
 
         for file_list_id in file_lists_roc_objects:
-            file_list = file_list_parser.parse(file_list_id)
+            tsv_file_list_parser.parse(Path(unquote(str(file_list_id))))
+            file_list = tsv_file_list_parser.result
             processeable_dataframe = file_list.to_processable_data()
 
             columns_to_check = self._get_columns_to_check(
