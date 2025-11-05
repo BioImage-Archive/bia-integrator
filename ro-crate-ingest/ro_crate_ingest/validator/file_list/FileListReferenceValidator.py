@@ -7,10 +7,10 @@ from bia_shared_datamodels.linked_data.bia_ontology_utils import load_bia_ontolo
 from bia_shared_datamodels.linked_data.pydantic_ld.ROCrateModel import ROCrateModel
 
 from ro_crate_ingest.bia_ro_crate.bia_ro_crate_metadata import BIAROCrateMetadata
-from ro_crate_ingest.bia_ro_crate.bia_ro_crate_metadata_parser import (
-    BIAROCrateMetadataParser,
+from ro_crate_ingest.bia_ro_crate.parser.JSONLDMetadataParser import (
+    JSONLDMetadataParser,
 )
-from ro_crate_ingest.bia_ro_crate.file_list_parser import TSVFileListParser
+from ro_crate_ingest.bia_ro_crate.parser.JSONLDMetadataParser import JSONLDMetadataParser
 from ro_crate_ingest.validator.validator import (
     Severity,
     ValidationError,
@@ -32,14 +32,22 @@ class FileListReferenceValidator(Validator):
     ro_crate_objects: BIAROCrateMetadata
     ro_crate_root: Path
     ERROR_MESSAGE_LOCATION = "In filelist: {filelist_id}, at row: {row_index}."
+    ROC_LOOKUP_TYPES = {
+        "http://bia/associatedBiologicalEntity": ro_crate_models.BioSample,
+        "http://bia/associatedImagingPreparationProtocol": ro_crate_models.SpecimenImagingPreparationProtocol,
+        "http://bia/associatedImageAcquisitionProtocol": ro_crate_models.ImageAcquisitionProtocol,
+        "http://bia/associatedAnnotationMethod": ro_crate_models.AnnotationMethod,
+        "http://bia/associatedProtocol": ro_crate_models.Protocol,
+        "http://bia/associatedSubject": ro_crate_models.Specimen,
+    }
 
     def __init__(
         self,
         ro_crate_path: Path,
     ):
-        self.ro_crate_objects = BIAROCrateMetadataParser().parse_to_objects(
-            ro_crate_path
-        )
+        ro_crate_metatadata_parser = JSONLDMetadataParser()
+        ro_crate_metatadata_parser.parse(ro_crate_path)
+        self.ro_crate_objects = ro_crate_metatadata_parser.result
         self.ro_crate_root = ro_crate_path
         super().__init__()
 
@@ -96,23 +104,13 @@ class FileListReferenceValidator(Validator):
             issues=self.issues,
         )
 
-    @staticmethod
-    def _get_columns_to_check(columns: Iterable[str]):
-
-        roc_lookup_types = {
-            "http://bia/associatedBiologicalEntity": ro_crate_models.BioSample,
-            "http://bia/associatedImagingPreparationProtocol": ro_crate_models.SpecimenImagingPreparationProtocol,
-            "http://bia/associatedImageAcquisitionProtocol": ro_crate_models.ImageAcquisitionProtocol,
-            "http://bia/associatedAnnotationMethod": ro_crate_models.AnnotationMethod,
-            "http://bia/associatedProtocol": ro_crate_models.Protocol,
-            "http://bia/associatedSubject": ro_crate_models.Specimen,
-        }
+    def _get_columns_to_check(self, columns: Iterable[str]):
 
         column_types_to_check = {}
 
         for column in columns:
-            if column in roc_lookup_types:
-                column_types_to_check[column] = roc_lookup_types[column]
+            if column in self.ROC_LOOKUP_TYPES:
+                column_types_to_check[column] = self.ROC_LOOKUP_TYPES[column]
 
         return column_types_to_check
 
@@ -142,7 +140,9 @@ class FileListReferenceValidator(Validator):
                         )
                     )
 
-                elif not isinstance(roc_metadata_lookup[reference], columns_to_check[column]):
+                elif not isinstance(
+                    roc_metadata_lookup[reference], columns_to_check[column]
+                ):
                     file_list_validator.issues.append(
                         ValidationError(
                             severity=Severity.ERROR,

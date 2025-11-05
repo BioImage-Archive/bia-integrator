@@ -1,8 +1,5 @@
-from ro_crate_ingest.bia_ro_crate.parser.Parser import Parser
-from ro_crate_ingest.bia_ro_crate.bia_ro_crate_metadata import BIAROCrateMetadata
 import json
 from pathlib import Path
-from typing import Iterable
 
 import pyld
 from bia_shared_datamodels.linked_data.ld_context import (
@@ -14,22 +11,30 @@ from bia_shared_datamodels.ro_crate_generator_utils import get_all_ro_crate_clas
 from rdflib import Graph
 
 from ro_crate_ingest.bia_ro_crate.bia_ro_crate_metadata import BIAROCrateMetadata
+from ro_crate_ingest.bia_ro_crate.parser.Parser import Parser
 
 
-class JSONLDParser(Parser[BIAROCrateMetadata]):
+class JSONLDMetadataParser(Parser[BIAROCrateMetadata]):
+    """
+    Parser for the ro-crate-metadata.json file in an ro-crate, producing a BIAROCrateMetadata.
+    """
 
-    def __init__(self, context=None) -> None:
-        super().__init__(context)
+    parser_classes_map: dict[str, type[ROCrateModel]]
 
-    def parse(self, data):
-        crate_metadata_path = self._get_metadata_path(path_to_ro_crate)
-        if parser_classes:
+    def __init__(self, context: dict | None = None) -> None:
+        if context and "parser_classes" in context:
             parser_classes_map: dict[str, type[ROCrateModel]] = {
                 ro_crate_class.model_config["model_type"]: ro_crate_class
-                for ro_crate_class in parser_classes
+                for ro_crate_class in context[f"parser_classes"]
             }
         else:
             parser_classes_map = get_all_ro_crate_classes()
+        self.parser_classes_map = parser_classes_map
+
+        super().__init__(context=context)
+
+    def parse(self, path):
+        crate_metadata_path = self._get_metadata_path(path)
 
         with open(crate_metadata_path, "r") as jsonfile:
             json_dict = json.loads(jsonfile.read())
@@ -43,13 +48,13 @@ class JSONLDParser(Parser[BIAROCrateMetadata]):
                 "@type", ()
             )
             for entity_type in entity_type:
-                if entity_type in parser_classes_map:
-                    model = parser_classes_map[entity_type]
-                    object = model(**entity)
+                if entity_type in self.parser_classes_map:
+                    ro_crate_model = self.parser_classes_map[entity_type]
+                    object = ro_crate_model(**entity)
                     rocrate_objects_by_id[object.id] = object
                     break
 
-        return BIAROCrateMetadata(
+        self._result = BIAROCrateMetadata(
             graph_bia_entities=rocrate_objects_by_id,
             context=context,
         )

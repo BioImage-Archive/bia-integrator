@@ -4,8 +4,8 @@ from pathlib import Path
 import rdflib
 from bia_shared_datamodels.linked_data.bia_ontology_utils import load_bia_ontology
 
-from ro_crate_ingest.bia_ro_crate.bia_ro_crate_metadata_parser import (
-    BIAROCrateMetadataParser,
+from ro_crate_ingest.bia_ro_crate.parser.JSONLDMetadataParser import (
+    JSONLDMetadataParser,
 )
 from ro_crate_ingest.validator.validator import (
     Severity,
@@ -27,7 +27,7 @@ class ReferenceValidation(Validator):
         self,
         ro_crate_metadata_path: Path,
     ):
-        self.ro_crate_metadata_graph = BIAROCrateMetadataParser().parse_to_graph(
+        self.ro_crate_metadata_graph = JSONLDMetadataParser().parse_to_graph(
             ro_crate_metadata_path
         )
 

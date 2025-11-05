@@ -17,8 +17,8 @@ from rich.logging import RichHandler
 from ..save_utils import PersistenceMode, persist
 from bia_integrator_api import models
 from ro_crate_ingest.settings import get_settings
-from ro_crate_ingest.bia_ro_crate.bia_ro_crate_metadata_parser import (
-    BIAROCrateMetadataParser,
+from ro_crate_ingest.bia_ro_crate.parser.JSONLDMetadataParser import (
+    JSONLDMetadataParser,
 )
 
 
@@ -33,8 +33,10 @@ def convert_ro_crate_to_bia_api(
     persistence_mode: PersistenceMode,
     file_ref_url_prefix: str | None,
 ):
-    roc_metadata = BIAROCrateMetadataParser().parse_to_objects(crate_path)
-    crate_graph = BIAROCrateMetadataParser().parse_to_graph(crate_path)
+    ro_crate_metadata_parser = JSONLDMetadataParser()
+    ro_crate_metadata_parser.parse(crate_path)
+    roc_metadata = ro_crate_metadata_parser.result
+    crate_graph = JSONLDMetadataParser().parse_to_graph(crate_path)
 
     api_objects = []
     api_study = study.create_api_study(roc_metadata.get_object_lookup())

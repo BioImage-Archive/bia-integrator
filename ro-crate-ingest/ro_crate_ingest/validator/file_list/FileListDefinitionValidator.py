@@ -4,8 +4,8 @@ from typing import Iterable
 
 import rdflib
 
-from ro_crate_ingest.bia_ro_crate.bia_ro_crate_metadata_parser import (
-    BIAROCrateMetadataParser,
+from ro_crate_ingest.bia_ro_crate.parser.JSONLDMetadataParser import (
+    JSONLDMetadataParser,
 )
 from ro_crate_ingest.validator.validator import (
     Severity,
@@ -78,7 +78,7 @@ class FileListDefinitionValidator(Validator):
             Iterable[str | rdflib.URIRef] | None
         ) = None,
     ):
-        self.ro_crate_metadata_graph = BIAROCrateMetadataParser().parse_to_graph(
+        self.ro_crate_metadata_graph = JSONLDMetadataParser().parse_to_graph(
             ro_crate_metadata_path
         )
 
@@ -126,11 +126,11 @@ class FileListDefinitionValidator(Validator):
 
         schema_map = defaultdict(set)
         for result in schema_to_column_property_result:
-            schema_map[result.schema].add(str(result.propertyUrl))
+            schema_map[result.schema].add(result.propertyUrl)
 
         for schema, property_urls in schema_map.items():
             for required_property in self.required_properties:
-                if str(required_property) not in property_urls:
+                if required_property not in property_urls:
                     self.issues.append(
                         ValidationError(
                             severity=Severity.ERROR,

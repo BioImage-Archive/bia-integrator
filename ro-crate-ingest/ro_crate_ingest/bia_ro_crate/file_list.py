@@ -3,8 +3,14 @@ from bia_shared_datamodels.ro_crate_models import Column
 
 
 class FileList:
+    """
+    A file list is a columnar metadata container describing other files in an ro-crate.
+    It is made up of the data about the other files (data), and a schema (a dictionary of Column objects, keyed by id).
+    Its schema is usually described in the ro-crate-metadata.json, using a csvw:TableSchema object to hold a set of csvw:Column objects.
+    """
+
     ro_crate_id: str | None
-    ro_crate_schema: dict[str, Column]
+    schema: dict[str, Column]
     data: pd.DataFrame
     FILE_LIST_ID_COL: str = "_filelist_id"
     PROPERTYLESS_COLUMNS: str = "_propertyless_columns"
@@ -20,16 +26,14 @@ class FileList:
         self.ro_crate_id = ro_crate_id
 
         if all(key == column.id for key, column in schema.items()):
-            self.ro_crate_schema = schema
+            self.schema = schema
         else:
             raise KeyError(
                 "Schema dictionary must have keys that are the IDs of the column objects"
             )
 
         dataframe_column_names = data.columns
-        name_map = {
-            column.columnName: column.id for column in self.ro_crate_schema.values()
-        }
+        name_map = {column.columnName: column.id for column in self.schema.values()}
 
         if strict:
             if list(name_map.keys()) != list(dataframe_column_names):
@@ -49,21 +53,16 @@ class FileList:
         super().__init__()
 
     def get_column_properties(self) -> dict[str, None | str]:
-        return {
-            column.id: column.propertyUrl for column in self.ro_crate_schema.values()
-        }
+        return {column.id: column.propertyUrl for column in self.schema.values()}
 
     def get_column_names(self) -> dict[str, str]:
-
-        return {
-            column.id: column.columnName for column in self.ro_crate_schema.values()
-        }
+        return {column.id: column.columnName for column in self.schema.values()}
 
     def add_filelist_id_column(self) -> None:
         if self.ro_crate_id:
             filelist_id_name = self.FILE_LIST_ID_COL
             self.data[filelist_id_name] = self.ro_crate_id
-            self.ro_crate_schema[filelist_id_name] = Column.model_validate(
+            self.schema[filelist_id_name] = Column.model_validate(
                 {
                     "columnName": filelist_id_name,
                     "@id": filelist_id_name,
@@ -80,7 +79,7 @@ class FileList:
             file_list_dataset_map
         )
 
-        self.ro_crate_schema[self.DATASET_COLUMN_ID] = Column.model_validate(
+        self.schema[self.DATASET_COLUMN_ID] = Column.model_validate(
             {
                 "columnName": self.DATASET_COLUMN_ID,
                 "@id": self.DATASET_COLUMN_ID,
@@ -92,11 +91,11 @@ class FileList:
     def align_schema_to_data_columns(self):
         sorted_schema_columns = {}
         for column_id in self.data.columns:
-            sorted_schema_columns[column_id] = self.ro_crate_schema[column_id]
-        self.ro_crate_schema = sorted_schema_columns
+            sorted_schema_columns[column_id] = self.schema[column_id]
+        self.schema = sorted_schema_columns
 
     def align_data_columns_to_schema(self):
-        self.data = self.data[list(self.ro_crate_schema.keys())]
+        self.data = self.data[list(self.schema.keys())]
 
     def merge(self, other: "FileList", align_schema_with_data: bool = True):
         self.add_filelist_id_column()
@@ -104,7 +103,7 @@ class FileList:
         combined = pd.concat([self.data, other.data], ignore_index=True)
         self.data = combined
 
-        self.ro_crate_schema = other.ro_crate_schema | self.ro_crate_schema
+        self.schema = other.schema | self.schema
 
         if align_schema_with_data:
             self.align_schema_to_data_columns()
@@ -114,10 +113,10 @@ class FileList:
     def to_processable_data(self) -> pd.DataFrame:
         semantic_column_map = {}
         non_semantic_column_map = {}
-        for column in self.ro_crate_schema.values():
+        for column in self.schema.values():
             if column.propertyUrl:
                 semantic_column_map[column.id] = column.propertyUrl
-            elif column.columnName:
+            else:
                 non_semantic_column_map[column.id] = column.columnName
 
         def _to_property_cols(
@@ -132,16 +131,12 @@ class FileList:
                 if col_id in semantic_column_map:
                     propertyUrl = semantic_column_map[col_id]
                     if propertyUrl in row:
-                        existing_data = row.get(propertyUrl) or []
-                        if not isinstance(existing_data, list):
-                            existing_data = [existing_data]
-                        value = value or []
-                        if not isinstance(value, list):
-                            value = [value]
+                        existing_data = self._ensure_list(row.get(propertyUrl, []))
+                        value = self._ensure_list(value or [])
                         output_row[propertyUrl] = existing_data + value
                     else:
                         output_row[propertyUrl] = value
-                elif col_id in non_semantic_column_map:
+                else:
                     non_prop_rows[non_semantic_column_map[col_id]] = value
 
             output_row[propertyless_column_name] = non_prop_rows
@@ -158,3 +153,7 @@ class FileList:
         )
 
         return result_data
+
+    @staticmethod
+    def _ensure_list(possible_list):
+        return possible_list if isinstance(possible_list, list) else [possible_list]
