@@ -207,7 +207,7 @@ datasets:
           - "Cryo-ET sample preparation"
           - "Cryo-FIB lamellae preparation"
         image_acquisition_protocol_title: "Cryo-electron tomography with Volta phase plate"
-      - label_preifx: "Frames 36"
+      - label_prefix: "Frames 36"
         file_pattern: "220506/data/frames/TS_036_32_{}_{}.tif"
         biosample_title: "HeLa cells expressing Mito-EGFP with GEM2 labelling"
         specimen_imaging_preparation_protocol_title:
