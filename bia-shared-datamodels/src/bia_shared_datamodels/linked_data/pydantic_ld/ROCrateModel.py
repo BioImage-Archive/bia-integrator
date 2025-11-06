@@ -1,5 +1,5 @@
 from .LDModel import LDModel
-from pydantic import Field, field_validator
+from pydantic import Field, field_validator, model_validator
 from rdflib import URIRef
 from typing import Union
 
@@ -38,3 +38,17 @@ class ROCrateModel(LDModel):
                 )
 
         return value
+
+    @model_validator(mode="after")
+    def coerce_dataset_ids(self):
+        dataset_class = [
+            "http://schema.org/Dataset",
+            "https://schema.org/Dataset",
+            "Dataset",
+        ]
+        rdf_types = self.type if isinstance(self.type, list) else [self.type]
+        for class_string in dataset_class:
+            if class_string in rdf_types:
+                self.id = f"{self.id}/" if not str.endswith(self.id, "/") else self.id
+
+        return self

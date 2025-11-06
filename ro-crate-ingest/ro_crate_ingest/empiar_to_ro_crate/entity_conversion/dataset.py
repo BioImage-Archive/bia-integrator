@@ -48,7 +48,8 @@ def get_dataset(
         yaml_dict, image_analysis_methods_map, image_correlation_method_map
     )
 
-    id = quote(f"{imageset.name} {imageset.directory}/")
+    id = quote(yaml_dict.get("id", f"{imageset.name} {imageset.directory}/"))
+
     filelist_id = generate_relative_filelist_path(id)
 
     model_dict = {
