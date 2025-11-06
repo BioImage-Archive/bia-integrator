@@ -1,5 +1,4 @@
 from ro_crate_ingest.ro_crate_defaults import get_all_ro_crate_classes
-from ro_crate_ingest.crate_reader import expand_entity
 from ro_crate_ingest.validator.validator import (
     ValidationError,
     ValidationResult,
@@ -8,6 +7,7 @@ from ro_crate_ingest.validator.validator import (
 )
 from bia_shared_datamodels.linked_data.pydantic_ld.ROCrateModel import ROCrateModel
 import pydantic
+import pyld
 
 
 class ModelTypeValidator(Validator):
@@ -35,7 +35,7 @@ class ModelTypeValidator(Validator):
                 continue
 
             try:
-                object_types = expand_entity(ro_crate_object_dict, self.context)[
+                object_types = self._expand_entity(ro_crate_object_dict, self.context)[
                     "@type"
                 ]
             except KeyError:
@@ -95,3 +95,11 @@ class ModelTypeValidator(Validator):
 
     def _get_class_intersection(self, object_types: list[str]) -> set[str]:
         return set(self.class_map.keys()) & set(object_types)
+
+    @staticmethod
+    def _expand_entity(
+        entity: dict, context: dict | list | str
+    ) -> dict[str, str | list[dict] | list[str]]:
+        document = {"@context": context, "@graph": [entity]}
+        expanded = pyld.jsonld.expand(document)
+        return expanded[0]

@@ -6,6 +6,7 @@ import typer
 
 from ro_crate_ingest.validator.file_list import (
     FileListDefinitionValidator,
+    FileListReferenceValidator,
 )
 from ro_crate_ingest.validator.rdf_graph import ContextValidator, ReferenceValidation
 from ro_crate_ingest.validator.ro_crate_metadata_objects import (
@@ -50,7 +51,9 @@ def bia_roc_validation(ro_crate_directory: Path):
         )
     )
 
-    # TODO: validate file list contents
+    validate(FileListReferenceValidator.FileListReferenceValidator(ro_crate_directory))
+
+    # TODO: validate file / image references
 
 
 def log_issues(validation_result: ValidationResult):
