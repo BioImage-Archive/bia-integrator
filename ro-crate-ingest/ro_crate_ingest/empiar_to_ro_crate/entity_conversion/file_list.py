@@ -25,6 +25,7 @@ class PatternMatch:
     dataset_id: str
     object_type: str | None
     yaml_object: dict | None
+    match_count: int = 0
 
 
 def generate_relative_filelist_path(dataset_path: str) -> str:
@@ -88,6 +89,10 @@ def expand_dataframe_metadata(
         args=(path_pattern_objects, file_df["file_path"].to_list()),
         axis=1,
     )
+
+    for pattern_match in path_pattern_objects:
+        if pattern_match.match_count == 0 and pattern_match.yaml_object:
+            logger.warning(f"Pattern: {pattern_match.file_pattern} matched zero files.")
 
     return file_list_df
 
@@ -209,6 +214,7 @@ def expand_row_metadata(
                 pattern_match.dataset_id,
                 all_file_paths
             )
+            pattern_match.match_count += 1 
             break
 
     return pd.Series(output_row)
