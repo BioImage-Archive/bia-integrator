@@ -31,6 +31,7 @@ rembis:
 datasets:
   # One image set contains all data — movies, tilts, and tomos.
   - title: "A Minimal TOMOMAN (https://doi.org/10.1093/micmic/ozad067.516) project containing 18 tilt series and preprocessed metadata for C. reinhardtii prepared using cryo-plasmaFIB milling"
+    id: "TOMOMAN project"
     assigned_images: 
       # Frames
       - label_prefix: "Frames lam 1 pos 4"
@@ -212,7 +213,7 @@ datasets:
         file_pattern: "tomoman_minimal_project/17072022_BrnoKrios_Arctis_p3ar_grid_Position_101/17072022_BrnoKrios_Arctis_p3ar_grid_Position_101.st"
         protocol_title: "High-throughput visual proteomics workflow"
         input_label_prefix: "Frames pos 101"
-        input_file_pattern: "tomoman_minimal_project/17072022_BrnoKrios_Arctis_p3ar_grid_Position_101/frames/Position_101_{}_{}_20220719_{}_EER.eer"
+        input_file_pattern: "tomoman_minimal_project/17072022_BrnoKrios_Arctis_p3ar_grid_Position_101/frames/Position_101_{}_{}_{}_{}_EER.eer"
       - label: "Tilt series grid 9 pos 7"
         file_pattern: "tomoman_minimal_project/27042022_BrnoKrios_Arctis_grid9_hGIS_Position_7/27042022_BrnoKrios_Arctis_grid9_hGIS_Position_7.st"
         protocol_title: "High-throughput visual proteomics workflow"
