@@ -14,7 +14,7 @@ ELASTIC_INDEX_IMAGES=${ELASTIC_INDEX_IMAGES:-"${ELASTIC_INDEX}_images"}
 # Export studies
 poetry --directory ${SCRIPT_DIR}/../../bia-export run bia-export website study --out_file=$EXPORT_JSON_OUT_FILE
 
-jq -c 'to_entries | map(.value)[:1000000][] | ({"index": {"_index": "'"${ELASTIC_INDEX}"'"}}, .)' $EXPORT_JSON_OUT_FILE | sed 's/"\./\"A./g' > ${EXPORT_JSON_OUT_FILE}.bulk
+jq -c 'to_entries | map(.value)[:1000000][] | ({"index": {"_index": "'"${ELASTIC_INDEX}"'"}}, .)' $EXPORT_JSON_OUT_FILE > ${EXPORT_JSON_OUT_FILE}.bulk
 
 curl -k -u "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -X DELETE "${ELASTIC_URL}/${ELASTIC_INDEX}"
 
@@ -104,7 +104,7 @@ rm -rf $EXPORT_JSON_OUT_FILE
 
 poetry --directory ${SCRIPT_DIR}/../../bia-export run bia-export website image --out_file=$EXPORT_JSON_OUT_FILE
 
-jq -c 'to_entries | map(.value)[:1000000][] | ({"index": {"_index": "'"${ELASTIC_INDEX_IMAGES}"'"}}, .)' $EXPORT_JSON_OUT_FILE | sed 's/"\./\"A./g' > ${EXPORT_JSON_OUT_FILE}.bulk
+jq -c 'to_entries | map(.value)[:1000000][] | ({"index": {"_index": "'"${ELASTIC_INDEX_IMAGES}"'"}}, .)' $EXPORT_JSON_OUT_FILE > ${EXPORT_JSON_OUT_FILE}.bulk
 
 curl -k -u "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -X DELETE "${ELASTIC_URL}/${ELASTIC_INDEX_IMAGES}"
 
