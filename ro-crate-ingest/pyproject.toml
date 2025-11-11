@@ -12,7 +12,7 @@ ro-crate-ingest = "ro_crate_ingest.cli:ro_crate_ingest"
 python = "^3.13"
 bia-shared-datamodels = { path = "../bia-shared-datamodels", develop = true }
 bia-integrator-api = { path = "../clients/python", develop = true }
-cets_data_model = { git = "https://github.com/TomoBabel/cets-data-models.git", branch = "add_linkML" }
+cets_data_model = { git = "https://github.com/TomoBabel/cets-data-models.git", branch = "cets_ro_crate_specs" }
 
 typer = "^0.17"
 rocrate = "^0"
