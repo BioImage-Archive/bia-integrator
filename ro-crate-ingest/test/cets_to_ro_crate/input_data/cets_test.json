@@ -1,0 +1,325 @@
+{
+  "name": "TEST",
+  "regions": [
+    {
+      "name": "Test region 1", 
+      "movie_stack_collections": [
+        {
+          "movie_stacks": [
+            {
+              "stacks": [
+                {
+                  "images": [
+                    {
+                      "width": 5760,
+                      "height": 4092,
+                      "coordinate_systems": null,
+                      "coordinate_transformations": null,
+                      "nominal_tilt_angle": -0.0078542,
+                      "accumulated_dose": null,
+                      "ctf_metadata": null,
+                      "path": null,
+                      "section": "0"
+                    },
+                    {
+                      "width": 5760,
+                      "height": 4092,
+                      "coordinate_systems": null,
+                      "coordinate_transformations": null,
+                      "nominal_tilt_angle": -0.0078542,
+                      "accumulated_dose": null,
+                      "ctf_metadata": null,
+                      "path": null,
+                      "section": "1"
+                    },
+                    {
+                      "width": 5760,
+                      "height": 4092,
+                      "coordinate_systems": null,
+                      "coordinate_transformations": null,
+                      "nominal_tilt_angle": -0.0078542,
+                      "accumulated_dose": null,
+                      "ctf_metadata": null,
+                      "path": null,
+                      "section": "2"
+                    }
+                  ],
+                  "path": "https://ftp.ebi.ac.uk/empiar/world_availability/12104/data/Control/frames/TS_006_00001_-0.0.tif"
+                },
+                {
+                  "images": [
+                    {
+                      "width": 5760,
+                      "height": 4092,
+                      "coordinate_systems": null,
+                      "coordinate_transformations": null,
+                      "nominal_tilt_angle": 1.9914,
+                      "accumulated_dose": null,
+                      "ctf_metadata": null,
+                      "path": null,
+                      "section": "0"
+                    },
+                    {
+                      "width": 5760,
+                      "height": 4092,
+                      "coordinate_systems": null,
+                      "coordinate_transformations": null,
+                      "nominal_tilt_angle": 1.9914,
+                      "accumulated_dose": null,
+                      "ctf_metadata": null,
+                      "path": null,
+                      "section": "1"
+                    },
+                    {
+                      "width": 5760,
+                      "height": 4092,
+                      "coordinate_systems": null,
+                      "coordinate_transformations": null,
+                      "nominal_tilt_angle": 1.9914,
+                      "accumulated_dose": null,
+                      "ctf_metadata": null,
+                      "path": null,
+                      "section": "2"
+                    }
+                  ],
+                  "path": "https://ftp.ebi.ac.uk/empiar/world_availability/12104/data/Control/frames/TS_006_00002_2.0.tif"
+                },
+                {
+                  "images": [
+                    {
+                      "width": 5760,
+                      "height": 4092,
+                      "coordinate_systems": null,
+                      "coordinate_transformations": null,
+                      "nominal_tilt_angle": -2.00911,
+                      "accumulated_dose": null,
+                      "ctf_metadata": null,
+                      "path": null,
+                      "section": "0"
+                    },
+                    {
+                      "width": 5760,
+                      "height": 4092,
+                      "coordinate_systems": null,
+                      "coordinate_transformations": null,
+                      "nominal_tilt_angle": -2.00911,
+                      "accumulated_dose": null,
+                      "ctf_metadata": null,
+                      "path": null,
+                      "section": "1"
+                    },
+                    {
+                      "width": 5760,
+                      "height": 4092,
+                      "coordinate_systems": null,
+                      "coordinate_transformations": null,
+                      "nominal_tilt_angle": -2.00911,
+                      "accumulated_dose": null,
+                      "ctf_metadata": null,
+                      "path": null,
+                      "section": "2"
+                    }
+                  ],
+                  "path": "https://ftp.ebi.ac.uk/empiar/world_availability/12104/data/Control/frames/TS_006_00003_-2.0.tif"
+                }
+              ]
+            }
+          ],
+          "gain_file": null,
+          "defect_file": null
+        }
+      ],
+      "tilt_series": [
+        {
+          "images": [
+            {
+              "width": 5760,
+              "height": 4092,
+              "coordinate_systems": null,
+              "coordinate_transformations": null,
+              "nominal_tilt_angle": -0.0078542,
+              "accumulated_dose": null,
+              "ctf_metadata": null,
+              "path": null,
+              "section": "0"
+            },
+            {
+              "width": 5760,
+              "height": 4092,
+              "coordinate_systems": null,
+              "coordinate_transformations": null,
+              "nominal_tilt_angle": 1.9914,
+              "accumulated_dose": null,
+              "ctf_metadata": null,
+              "path": null,
+              "section": "1"
+            },
+            {
+              "width": 5760,
+              "height": 4092,
+              "coordinate_systems": null,
+              "coordinate_transformations": null,
+              "nominal_tilt_angle": -2.00911,
+              "accumulated_dose": null,
+              "ctf_metadata": null,
+              "path": null,
+              "section": "2"
+            }
+          ],
+          "path": "https://ftp.ebi.ac.uk/empiar/world_availability/12104/data/Control/metadata/TS_006.st"
+        }
+      ],
+      "alignments": null,
+      "tomograms": [
+        {
+          "width": 1022,
+          "height": 1440,
+          "depth": 500,
+          "coordinate_systems": [
+            {
+              "name": "default_image_voxel",
+              "axes": [
+                {
+                  "name": "default voxel axis X",
+                  "axis_unit": "voxel",
+                  "axis_type": "X"
+                },
+                {
+                  "name": "default voxel axis Y",
+                  "axis_unit": "voxel",
+                  "axis_type": "Y"
+                },
+                {
+                  "name": "default voxel axis Z",
+                  "axis_unit": "voxel",
+                  "axis_type": "Z"
+                }
+              ]
+            },
+            {
+              "name": "physical_sampling_angstrom",
+              "axes": [
+                {
+                  "name": "physical sampling angstrom axis X",
+                  "axis_unit": "angstrom",
+                  "axis_type": "X"
+                },
+                {
+                  "name": "physical sampling angstrom axis Y",
+                  "axis_unit": "angstrom",
+                  "axis_type": "Y"
+                },
+                {
+                  "name": "physical sampling angstrom axis Z",
+                  "axis_unit": "angstrom",
+                  "axis_type": "Z"
+                }
+              ]
+            }
+          ],
+          "coordinate_transformations": [
+            {
+              "name": "default_image_voxel_to_physical_sampling_angstrom_scale_13.699999809265137_13.699999809265137_13.699999809265137",
+              "input": "default_image_voxel",
+              "output": "physical_sampling_angstrom",
+              "transformation_type": "scale",
+              "scale": [
+                13.699999809265137,
+                13.699999809265137,
+                13.699999809265137
+              ]
+            }
+          ],
+          "path": "https://ftp.ebi.ac.uk/empiar/world_availability/12104/data/Control/tomograms/TS_006_aretomo.mrc"
+        }
+      ],
+      "annotations": [
+        {
+          "coordinate_systems": [
+            {
+              "name": "default_image_voxel",
+              "axes": [
+                {
+                  "name": "default voxel axis X",
+                  "axis_unit": "voxel",
+                  "axis_type": "X"
+                },
+                {
+                  "name": "default voxel axis Y",
+                  "axis_unit": "voxel",
+                  "axis_type": "Y"
+                },
+                {
+                  "name": "default voxel axis Z",
+                  "axis_unit": "voxel",
+                  "axis_type": "Z"
+                }
+              ]
+            }
+          ],
+          "coordinate_transformations": [],
+          "type": "point_set_3D",
+          "path": "local-data/EMPIAR-12104/star/TS_006_star.json",
+          "origin3D": [
+            [
+              1003.0,
+              889.0,
+              69.0
+            ],
+            [
+              1006.0,
+              1322.0,
+              59.0
+            ],
+            [
+              1006.0,
+              345.0,
+              51.0
+            ],
+            [
+              1002.0,
+              733.0,
+              50.0
+            ],
+            [
+              990.0,
+              1352.0,
+              61.0
+            ],
+            [
+              1006.0,
+              474.0,
+              52.0
+            ],
+            [
+              989.0,
+              936.0,
+              55.0
+            ],
+            [
+              986.0,
+              1234.0,
+              53.0
+            ],
+            [
+              974.0,
+              884.0,
+              63.0
+            ],
+            [
+              954.0,
+              1405.0,
+              54.0
+            ],
+            [
+              1006.0,
+              830.0,
+              52.0
+            ]
+          ]
+        }
+      ]
+    }
+  ],
+  "averages": null
+}

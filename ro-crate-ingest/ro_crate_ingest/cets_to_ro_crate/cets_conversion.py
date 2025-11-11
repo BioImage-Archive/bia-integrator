@@ -10,8 +10,7 @@ from urllib.parse import quote
 
 from ro_crate_ingest.cets_to_ro_crate.cets.utils import dict_to_cets_model
 from ro_crate_ingest.cets_to_ro_crate.entity_conversion import (
-    dataset, 
-    file_list
+    dataset
 )
 from ro_crate_ingest.ro_crate_defaults import (
     ROCrateCreativeWork,
