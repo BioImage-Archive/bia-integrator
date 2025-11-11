@@ -73,11 +73,8 @@ datasets:
         protocol_title: "Tilt series preprocessing"
         input_label: "TS_027 movie stack series"
     
-  # Image set 3 (tomograms, and annotations in additional files)
+  # Image set 3 (tomograms and annotations)
   - title: "Tomograms"
-    additional_files:
-      - file_pattern: "particle_lists/TS_026_cyto_ribosomes.csv"
-      - file_pattern: "particle_lists/TS_026_fas.csv"
     assigned_images:
       - label: "TS_026 tomogram"
         file_pattern: "tomograms/TS_026.rec"
