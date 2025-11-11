@@ -90,9 +90,11 @@ def aggregate_associations(yaml_dict: dict) -> dict:
     ):
         for field in association_yaml_fields:
             if field in yaml_object:
-                id = {"@id": f"_:{yaml_object[field]}"}
-                if id not in association_yaml_fields[field]:
-                    association_yaml_fields[field].append(id)
+                titles = [yaml_object[field]] if isinstance(yaml_object[field], str) else yaml_object[field]
+                for title in titles:
+                    id = {"@id": f"_:{title}"}
+                    if id not in association_yaml_fields[field]:
+                        association_yaml_fields[field].append(id)
 
     return association_yaml_fields
 
