@@ -4,7 +4,7 @@ from bia_shared_datamodels import ro_crate_models
 from typing import Any, Dict, List
 from urllib.parse import quote
 
-#from ro_crate_ingest.cets_to_ro_crate.entity_conversion.file_list import generate_relative_filelist_path
+from ro_crate_ingest.cets_to_ro_crate.entity_conversion.file_list import generate_relative_filelist_path
 
 
 logger = logging.getLogger("__main__." + __name__)
