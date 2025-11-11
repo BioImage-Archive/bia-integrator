@@ -11,6 +11,9 @@ from ro_crate_ingest.biostudies_to_ro_crate.biostudies_conversion import (
 from ro_crate_ingest.empiar_to_ro_crate.empiar_proposal_conversion import (
     convert_empiar_proposal_to_ro_crate,
 )
+from ro_crate_ingest.cets_to_ro_crate.cets_conversion import (
+    convert_cets_to_ro_crate, 
+)
 from ro_crate_ingest.validator.validation import bia_roc_validation
 
 ro_crate_ingest = typer.Typer()
@@ -98,6 +101,30 @@ def empiar_to_ro_crate(
 ):
 
     convert_empiar_proposal_to_ro_crate(proposal_path, crate_path)
+
+
+@ro_crate_ingest.command("cets-to-roc")
+def cets_to_ro_crate(
+    cets_path: Annotated[
+        Path,
+        typer.Argument(help="Path to the CETS json file."),
+    ],
+    proposal_path: Annotated[
+        Path,
+        typer.Argument(help="Path to the yaml proposal file."),
+    ],
+    crate_path: Annotated[
+        Optional[Path],
+        typer.Option(
+            "--crate-path",
+            "-c",
+            case_sensitive=False,
+            help="Path to output the ro-crate document",
+        ),
+    ] = None,
+):
+
+    convert_cets_to_ro_crate(cets_path, proposal_path, crate_path)
 
 
 @ro_crate_ingest.command("validate")
