@@ -4,6 +4,7 @@ from ro_crate_ingest.empiar_to_ro_crate.entity_conversion.file_list import (
     generate_relative_filelist_path,
 )
 import logging
+from itertools import chain
 from urllib.parse import quote
 
 logger = logging.getLogger("__main__." + __name__)
@@ -65,10 +66,7 @@ def get_dataset(
             "specimen_imaging_preparation_protocol_title"
         ],
         "associatedBiologicalEntity": association_yaml_fields["biosample_title"],
-        "associatedAnnotationMethod": [
-            {"@id": f"_:{x["annotation_method_title"]}"}
-            for x in yaml_dict.get("assigned_annotations", [])
-        ],
+        "associatedAnnotationMethod": association_yaml_fields["annotation_method_title"],
         "associatedImageAnalysisMethod": image_analysis_methods,
         "associatedImageCorrelationMethod": image_correlations,
         "associatedProtocol": [],
@@ -83,14 +81,20 @@ def aggregate_associations(yaml_dict: dict) -> dict:
         "biosample_title": [],
         "image_acquisition_protocol_title": [],
         "specimen_imaging_preparation_protocol_title": [],
+        "annotation_method_title": [],
     }
 
-    for image in yaml_dict.get("assigned_images", []):
+    for yaml_object in chain(
+        yaml_dict.get("assigned_images", []), 
+        yaml_dict.get("assigned_annotations", [])
+    ):
         for field in association_yaml_fields:
-            if field in image:
-                id = {"@id": f"_:{image[field]}"}
-                if id not in association_yaml_fields[field]:
-                    association_yaml_fields[field].append(id)
+            if field in yaml_object:
+                titles = [yaml_object[field]] if isinstance(yaml_object[field], str) else yaml_object[field]
+                for title in titles:
+                    id = {"@id": f"_:{title}"}
+                    if id not in association_yaml_fields[field]:
+                        association_yaml_fields[field].append(id)
 
     return association_yaml_fields
 
